@@ -1,5 +1,6 @@
 // Observations only: never used for admission, fingerprints or acceptance.
 import { replayAdmissionFailure, withReplayAdmissionScope } from "./source-diagnostics.mjs";
+import { AsyncLocalStorage } from "node:async_hooks";
 const stages = new Set([
   "CLASSIFICATION",
   "ORDINARY_ADMISSION",
@@ -7,6 +8,13 @@ const stages = new Set([
   "TECHNICAL_COMPLETE",
   "HISTORICAL_EXPERIENCE",
   "EXPERIENCE_REPLAY",
+  "REVIEWED_MEDIA",
+  "CAPTURE_ARTIFACT",
+  "REVIEW_ARTIFACT",
+  "ATTESTATION_CUSTODY",
+  "COMPLETED_EVIDENCE_INTAKE",
+  "FINGERPRINT_GRAPH",
+  "PREPARED_GRAPH_CHECK",
   "PHASE_DIRECTORY",
   "PHASE_CREATE",
   "REPLAY_ADMISSION",
@@ -57,6 +65,33 @@ const syscalls = new Set(["mkdir", "open", "write", "read", "stat", "lstat", "re
 const signals = new Set(["SIGTERM", "SIGKILL", "SIGINT", "SIGABRT", "SIGSEGV", "SIGPIPE", "SIGHUP", "SIGQUIT"]);
 const phases = new Set(["ordinary", "technical", "technical-launch", "technical-complete", "experience", "render"]);
 const observations = new WeakMap();
+const progressScopes = new AsyncLocalStorage();
+export function withVerificationProgressScope(
+  operation,
+  emit = (entry) => process.stdout.write(`${JSON.stringify(entry)}\n`),
+) {
+  return progressScopes.run({ emit, sequence: 0, reserved: 0 }, operation);
+}
+function beginProgress(stage) {
+  const scope = progressScopes.getStore();
+  if (!scope || scope.reserved >= 256) return null;
+  scope.reserved += 2;
+  const entry = {
+    kind: "SOUNDING_LINE_STAGE",
+    version: 1,
+    sequence: ++scope.sequence,
+    stage: stages.has(stage) ? stage : "UNCLASSIFIED",
+  };
+  const emit = (value) => {
+    try {
+      scope.emit(value);
+    } catch {
+      // Observation failure must not replace the original authority outcome.
+    }
+  };
+  emit({ ...entry, event: "START" });
+  return { entry, emit, startedAt: performance.now() };
+}
 const object = (value) => value !== null && ["object", "function"].includes(typeof value);
 function property(value, key) {
   try {
@@ -87,10 +122,22 @@ export function observeVerificationFailure(stage, error, { cause = error, phase 
   return error;
 }
 export async function withVerificationStage(stage, operation) {
+  const progress = beginProgress(stage);
+  let status = "FAIL";
   try {
-    return await (stage === "REPLAY_ADMISSION" ? withReplayAdmissionScope(operation) : operation());
+    const result = await (stage === "REPLAY_ADMISSION" ? withReplayAdmissionScope(operation) : operation());
+    status = "PASS";
+    return result;
   } catch (error) {
     throw observeVerificationFailure(stage, error);
+  } finally {
+    if (progress)
+      progress.emit({
+        ...progress.entry,
+        event: "END",
+        status,
+        durationMs: Math.max(0, Math.round(performance.now() - progress.startedAt)),
+      });
   }
 }
 export function verificationFailureObservation(error) {

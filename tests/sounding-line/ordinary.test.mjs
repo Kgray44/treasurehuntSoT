@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
+import childProcess from "node:child_process";
+import { syncBuiltinESMExports } from "node:module";
 import { EventEmitter } from "node:events";
 import { createServer as createHttpServer } from "node:http";
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
@@ -225,6 +227,60 @@ async function withEvidenceFixture(assertion) {
     rmSync(fixture.root, { force: true, recursive: true });
   }
 }
+
+test("snapshot blob text cache preserves importer paths, failed reads and independent snapshots", async () => {
+  await withEvidenceFixture(async (fixture) => {
+    const contents = "import { value } from './dependency';\nvoid value;\n";
+    for (const directory of ["left", "right"]) {
+      mkdirSync(path.join(fixture.root, "src", directory), { recursive: true });
+      writeFileSync(path.join(fixture.root, "src", directory, "main.test.ts"), contents);
+      writeFileSync(
+        path.join(fixture.root, "src", directory, "dependency.ts"),
+        `export const value = '${directory}';\n`,
+      );
+    }
+    const candidateSha = commit(fixture.root, "shared text, different importers");
+    const plan = await buildPlan({ ...fixture, candidateSha, mode: "ordinary", prNumber: 0 });
+    plan.selected.unitTests = ["src/left/main.test.ts", "src/right/main.test.ts"];
+    const original = childProcess.execFileSync;
+    const reads = [];
+    let failOnce = false;
+    childProcess.execFileSync = (command, args, options) => {
+      if (command === "git" && args[0] === "show" && args[1].startsWith(`${candidateSha}:`)) {
+        reads.push(args[1]);
+        if (failOnce && args[1] === `${candidateSha}:src/left/dependency.ts`) {
+          failOnce = false;
+          throw Object.assign(new Error("owned read fault"), { code: "EIO" });
+        }
+      }
+      return original(command, args, options);
+    };
+    syncBuiltinESMExports();
+    try {
+      const first = (await buildEvidenceObligations(fixture.root, plan)).find((entry) => entry.kind === "unit");
+      assert.equal(first.reuseIndeterminate, false);
+      for (const directory of ["left", "right"])
+        assert(
+          first.fingerprint.semanticClosureMembers.some((entry) => entry.startsWith(`src/${directory}/dependency.ts@`)),
+        );
+      assert.equal(reads.filter((entry) => /\/main\.test\.ts$/u.test(entry)).length, 1);
+      const before = reads.length;
+      const second = (await buildEvidenceObligations(fixture.root, plan)).find((entry) => entry.kind === "unit");
+      assert.deepEqual(second, first);
+      assert(reads.length > before, "A different snapshot must perform its own immutable reads");
+      reads.length = 0;
+      failOnce = true;
+      const faulted = await buildEvidenceObligations(fixture.root, plan);
+      const typecheck = faulted.find((entry) => entry.commandLabels.some((label) => label.includes("tsc --noEmit")));
+      assert.equal(typecheck.reuseIndeterminate, true);
+      assert.equal(faulted.find((entry) => entry.kind === "unit").reuseIndeterminate, false);
+      assert.equal(reads.filter((entry) => entry === `${candidateSha}:src/left/dependency.ts`).length, 2);
+    } finally {
+      childProcess.execFileSync = original;
+      syncBuiltinESMExports();
+    }
+  });
+});
 
 async function runReconciliation(root, plan, commandDelayMs = 0) {
   const calls = [];

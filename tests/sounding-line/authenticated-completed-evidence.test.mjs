@@ -1,14 +1,16 @@
 import assert from "node:assert/strict";
-import { execFileSync, spawnSync } from "node:child_process";
+import childProcess, { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { chmodSync, cpSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { syncBuiltinESMExports } from "node:module";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   authenticateCompletedEvidence,
   authenticatedCompletedReceipt,
+  authenticatedPreparedObligations,
   discoverCompletedEvidenceProducerHints,
 } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
 import {
@@ -392,6 +394,158 @@ function mandatoryFreshObligations(state) {
   const admitted = new Set(matchingReusableObligations(state).map((obligation) => obligation.id));
   return state.obligations.filter((obligation) => !admitted.has(obligation.id));
 }
+
+test("opaque prepared graph is isolated, source-bound and grants no additional receipts", async () => {
+  await fixture(async (state) => {
+    const proof = await state.authenticate();
+    const graph = await authenticatedPreparedObligations(proof, { root: state.root, plan: state.plan });
+    assert.deepEqual(graph, state.obligations);
+    const admitted = proof.admitted;
+    graph[0].fingerprint.semanticClosureMembers.push("foreign@" + "f".repeat(40));
+    assert.deepEqual(
+      await authenticatedPreparedObligations(proof, { root: state.root, plan: state.plan }),
+      state.obligations,
+    );
+    assert.equal(proof.admitted, admitted);
+    for (const token of [{}, clone(proof), { ...proof }])
+      assert.equal(await authenticatedPreparedObligations(token, { root: state.root, plan: state.plan }), null);
+    assert.equal(
+      await authenticatedPreparedObligations(proof, { root: path.dirname(state.root), plan: state.plan }),
+      null,
+    );
+    const changed = clone(state.plan);
+    changed.selected.unitTests = [];
+    assert.equal(await authenticatedPreparedObligations(proof, { root: state.root, plan: changed }), null);
+    git(state.root, "checkout", "--detach", state.baseSha);
+    assert.equal(await authenticatedPreparedObligations(proof, { root: state.root, plan: state.plan }), null);
+  });
+});
+
+test("prepared graph rejects changed trusted reader, environment and toolchain context", async () => {
+  await fixture(async (state) => {
+    const owner = mkdtempSync(path.join(tmpdir(), "sl-prepared-context-"));
+    try {
+      cpSync(path.join(installed, "scripts/sounding-line"), path.join(owner, "scripts/sounding-line"), {
+        recursive: true,
+      });
+      put(owner, WORKFLOW, readFileSync(path.join(installed, WORKFLOW)));
+      const isolated = await import(
+        pathToFileURL(path.join(owner, "scripts/sounding-line/authenticated-completed-evidence.mjs"))
+      );
+      const proof = await isolated.authenticateCompletedEvidence({
+        root: state.root,
+        plan: state.plan,
+        producers: [],
+        request: state.request,
+      });
+      assert.equal(proof.admitted, 0);
+      assert.deepEqual(
+        await isolated.authenticatedPreparedObligations(proof, { root: state.root, plan: state.plan }),
+        state.obligations,
+      );
+      const previous = process.env.GITHUB_ACTIONS;
+      try {
+        process.env.GITHUB_ACTIONS = "false";
+        assert.equal(
+          await isolated.authenticatedPreparedObligations(proof, { root: state.root, plan: state.plan }),
+          null,
+        );
+      } finally {
+        if (previous === undefined) delete process.env.GITHUB_ACTIONS;
+        else process.env.GITHUB_ACTIONS = previous;
+      }
+      for (const key of ["version", "execPath"]) {
+        const descriptor = Object.getOwnPropertyDescriptor(process, key);
+        try {
+          Object.defineProperty(process, key, { ...descriptor, value: `${process[key]}-changed` });
+          assert.equal(
+            await isolated.authenticatedPreparedObligations(proof, { root: state.root, plan: state.plan }),
+            null,
+          );
+        } finally {
+          Object.defineProperty(process, key, descriptor);
+        }
+      }
+      const reader = path.join(owner, "scripts/sounding-line/evidence.mjs");
+      writeFileSync(reader, readFileSync(reader, "utf8") + "\n// isolated trusted-source mutation\n");
+      assert.equal(
+        await isolated.authenticatedPreparedObligations(proof, { root: state.root, plan: state.plan }),
+        null,
+      );
+    } finally {
+      rmSync(owner, { recursive: true, force: true });
+    }
+  });
+});
+
+test("prepared graph denies a previously read object disappearing before reuse", async () => {
+  await fixture(async (state) => {
+    const proof = await state.authenticate();
+    const blob = git(state.root, "rev-parse", `${state.plan.candidateSha}:src/example.ts`);
+    const target = path.join(state.root, ".git", "objects", blob.slice(0, 2), blob.slice(2));
+    assert(existsSync(target));
+    rmSync(target);
+    let commands = 0;
+    await assert.rejects(
+      runReconciledVerification(
+        state.root,
+        state.plan,
+        async () => {
+          commands++;
+        },
+        { authenticatedEvidence: proof },
+      ),
+      /PREPARED_SOURCE_OBJECTS_UNAVAILABLE/u,
+    );
+    assert.equal(commands, 0);
+    assert.equal(existsSync(path.join(state.root, "artifacts", "sounding-line", "parent-observed-evidence")), false);
+  });
+});
+
+test("prepared graph rejects wrong-type, malformed and unavailable batch checks before execution", async () => {
+  await fixture(async (state) => {
+    const proof = await state.authenticate();
+    const original = childProcess.execFileSync;
+    for (const fault of ["wrong-type", "malformed", "unavailable"]) {
+      let commands = 0;
+      let checked = false;
+      try {
+        childProcess.execFileSync = (file, args, options) => {
+          if (file === "git" && args.includes("--batch-check")) {
+            checked = true;
+            assert.equal(options.env.GIT_NO_LAZY_FETCH, "1");
+            if (fault === "unavailable") throw new Error("isolated batch read failure");
+            const output = original(file, args, options);
+            return fault === "wrong-type" ? output.replace(" blob ", " tree ") : output + "unexpected-row\n";
+          }
+          return original(file, args, options);
+        };
+        syncBuiltinESMExports();
+        await assert.rejects(
+          runReconciledVerification(
+            state.root,
+            state.plan,
+            async () => {
+              commands++;
+            },
+            { authenticatedEvidence: proof },
+          ),
+          /PREPARED_SOURCE_OBJECTS_UNAVAILABLE/u,
+        );
+        assert(checked);
+        assert.equal(commands, 0);
+      } finally {
+        childProcess.execFileSync = original;
+        syncBuiltinESMExports();
+      }
+    }
+    assert.deepEqual(
+      await authenticatedPreparedObligations(proof, { root: state.root, plan: state.plan }),
+      state.obligations,
+    );
+    assert.equal(existsSync(path.join(state.root, "artifacts", "sounding-line", "parent-observed-evidence")), false);
+  });
+});
 
 async function rejected(action, options) {
   await fixture(async (state) => {
