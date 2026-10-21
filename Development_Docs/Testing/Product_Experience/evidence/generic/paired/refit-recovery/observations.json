@@ -10,8 +10,8 @@
     "DB revoked the exact test-owned phone surface while its personal Journal was visible"
   ],
   "recordings": {
-    "desktop": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/Development_Docs/Testing/Product_Experience/evidence/generic/paired/refit-recovery/4e78c1b1388b8a59f44bc8667d85f4d2.webm",
-    "phone": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/Development_Docs/Testing/Product_Experience/evidence/generic/paired/refit-recovery/8eb7bce63ad74c91d8284def10ebcd74.webm"
+    "desktop": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-TuABKr/raw/generic/paired/refit-recovery/ccc3d845fd2e8ab782e162464b699d45.webm",
+    "phone": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-TuABKr/raw/generic/paired/refit-recovery/53ea162832e7159ad2cea440d326daec.webm"
   },
   "passed": [
     "Pairing canceled in the Chronicle; focus and reading route preserved",
@@ -26,9 +26,9 @@
     "A current surface revocation clears visible private content on the canonical participation refresh"
   ],
   "timings": {
-    "sendToSharedOfferMs": 184,
-    "receiveToRenderedReceiptMs": 545,
-    "revokeToPrivateViewClearedMs": 4876
+    "sendToSharedOfferMs": 187,
+    "receiveToRenderedReceiptMs": 418,
+    "revokeToPrivateViewClearedMs": 5882
   },
   "privateJournalRequestsWhileShared": [],
   "progressionAndMembershipUnchanged": true

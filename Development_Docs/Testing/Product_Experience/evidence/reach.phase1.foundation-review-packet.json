@@ -4,17 +4,31 @@
     "id": "reach.phase1.foundation",
     "name": "Reach Phase 1 observation, calibration and laboratory foundation",
     "authority": "reach",
-    "owners": ["reach", "project-sextant", "watchglass"],
+    "owners": [
+      "reach",
+      "project-sextant",
+      "watchglass"
+    ],
     "critical": true,
     "experienceIntent": {
       "objective": "Point at calibration targets using my real hand and understand whether I can act",
       "visibleOutcome": "Detected hand, tracking quality, gesture classification and calibration eligibility remain visibly distinct",
       "integrationOwner": "Reach calibration experience integration",
-      "systems": ["reach", "project-sextant", "watchglass"],
-      "sourcePaths": ["src/reach", "src/components/reach"],
+      "systems": [
+        "reach",
+        "project-sextant",
+        "watchglass"
+      ],
+      "sourcePaths": [
+        "src/reach",
+        "src/components/reach"
+      ],
       "persona": "A Creator or Player completing the named human objective",
       "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
-      "devices": ["DESKTOP", "MOBILE"],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
       "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
       "baselineDebt": [
         {
@@ -34,8 +48,16 @@
       "objective": "Enable a camera, see honest tracking, calibrate and independently check pointing, practice, recover and return naturally",
       "visibleOutcome": "A coherent staged camera and pointing workspace with visible acquisition, distinct recognition stages, safe recovery and independent results",
       "integrationOwner": "Reach calibration experience integration",
-      "systems": ["reach", "project-sextant", "watchglass"],
-      "sourcePaths": ["src/reach", "src/app/devices/reach", "src/app/devices/pair/page.tsx"],
+      "systems": [
+        "reach",
+        "project-sextant",
+        "watchglass"
+      ],
+      "sourcePaths": [
+        "src/reach",
+        "src/app/devices/reach",
+        "src/app/devices/pair/page.tsx"
+      ],
       "projectionPaths": [
         "src/watchglass/hand-observation.ts",
         "src/watchglass/hand-provider.ts",
@@ -61,9 +83,14 @@
         "CAMERA_UNAVAILABLE",
         "RETURNED"
       ],
-      "devices": ["DESKTOP", "MOBILE"],
-      "roles": ["ANONYMOUS"],
-      "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. A disclosed guided demo explains the full flow without a camera.",
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "ANONYMOUS"
+      ],
+      "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. The setup request remains operable by keyboard and touch; activation checks current readiness, either opens setup under the existing guards or keeps preparation visible with polite live guidance, and never queues an automatic start. A disclosed guided demo explains the full flow without a camera.",
       "fallback": "Camera failure gives a plain-language explanation, retry and a guided conventional demonstration. All Voyagewright navigation remains conventional.",
       "navigation": "Existing device connections link opens Reach; the visible return clears owned camera resources and restores device connections; safe contextual return is accepted.",
       "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target.",
@@ -115,11 +142,15 @@
         "Camera movement can be undetectable. Calibration is session-only and must be repeated after placement, identity or geometry changes.",
         "Phase 2 target selection, Phase 3 manipulation and Crossdeck Air Handoff are not implemented by this laboratory."
       ],
-      "resolvedDebtIds": ["PE-DEBT-REACH-STAGES"],
+      "resolvedDebtIds": [
+        "PE-DEBT-REACH-STAGES"
+      ],
       "journeys": [
         {
           "id": "absolute-calibration-and-recovery",
-          "roles": ["ANONYMOUS"],
+          "roles": [
+            "ANONYMOUS"
+          ],
           "outcome": "A person enters naturally, understands tracking, completes nine training and five independent targets, practices, sees detected ineligible hands and safely returns",
           "steps": [
             {
@@ -445,7 +476,9 @@
         },
         {
           "id": "relative-movement-and-check",
-          "roles": ["ANONYMOUS"],
+          "roles": [
+            "ANONYMOUS"
+          ],
           "outcome": "A person uses a comfortable movement setup, independently checks cursor control and practices without an absolute-accuracy claim",
           "steps": [
             {
@@ -642,7 +675,9 @@
         },
         {
           "id": "camera-unavailability-and-conventional-recovery",
-          "roles": ["ANONYMOUS"],
+          "roles": [
+            "ANONYMOUS"
+          ],
           "outcome": "A person understands an unavailable camera and completes a useful conventional demonstration before returning",
           "steps": [
             {
@@ -711,7 +746,7 @@
       "roleSetup": {}
     }
   },
-  "sourceDigest": "bb6176ebcd887a881b54773d76d7942cc266542142dfee09da44bd9021f39119",
+  "sourceDigest": "e6cf2d544efc36fce2ccfee7f16334296a1f82e783726e7dfd067a67d3a7debf",
   "artifacts": [
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
@@ -776,7 +811,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30.png",
-      "sha256": "a640d50d9cd83ada64b2ef173ec4abb3d5ac8b1a9d8f6f45cae633b0a2c6d642",
+      "sha256": "c7476b619faee8ff6bcbe9b2d56ba19d9ee995080585fc85074e38c880fe721f",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -788,7 +823,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40.png",
-      "sha256": "5d1b9c9af941c845ecdeb698b48c5d2454330d5ddb3533cea01927d3db7a22e1",
+      "sha256": "3ed9a0a80c72f8753abcb41e16d78522ec360fe55401c7772fd910a8198ee854",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -800,7 +835,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
-      "sha256": "3c2d10d945b82de02278f8f392f2644ef76f135baac89993bf20afb59f203189",
+      "sha256": "cd4299d8f32633b01d535aae98580c718057a1750791a9c6b97c643f03c3b47a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -812,7 +847,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
-      "sha256": "613c9a46eb0cf6ea5d6a8bc4ac8d90c45be229c42c0ce078a7ddf6f919a9145a",
+      "sha256": "9ed2027b6964f461e4a7baab17ee63cea8be0141fbcb020ea8758b73beacf962",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -824,7 +859,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
-      "sha256": "cf424ae560044d46243848a69ddb9cec3bd71ec74a7981bc6fc62695e73123dd",
+      "sha256": "7fd3bc27f282dbe350414303709b450d5cf11da5f51df02ba089177ca4bf7871",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -836,7 +871,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57.png",
-      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -848,7 +883,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "6432857ddbb38bf3ecdc5bb9121d14f4fb79158ee8f8997e92efd499227cde25",
+      "sha256": "7195eaacd9d153c9ddf568ac2b462082ccbed10505b5f70dd991ac86ed638007",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -858,8 +893,8 @@
     },
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d5bda3cbc34dbcb410b963d12046a109.webm",
-      "sha256": "6fe40714c500c358db13505916d09f593a25a2f7c483252b3e1ba31f19897f58",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/95144fe7e000e148666810990949158d.webm",
+      "sha256": "de217e80ee18eeee6caaf6528fadbc81d39248ecce30ba4809cdb2dd185625de",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -906,7 +941,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9.png",
-      "sha256": "f5055a836adba291adc8e1ae7bf5b810a714e056465cbbe43db934a3c97ab852",
+      "sha256": "0f6f8de008d003269346d4ca86215d968300b0c3e6c95c742bf7029ec6a1f3b2",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -930,7 +965,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-VALIDATION-30",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-VALIDATION-30.png",
-      "sha256": "6a9fb547d2592403dedc5c059631ff7ecfdda3c03b0b77c6a09fd6d82950718a",
+      "sha256": "a55cc67b555344d69695c9cc18072dd57edd6441c328feb34fa351fb6a3c7f96",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -942,7 +977,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40.png",
-      "sha256": "11980b938bcfc04bead9a37f595ba741616aa7b36dfce71db93ab7d6af197602",
+      "sha256": "91952de1d7d4ced90971b9e0e6e459d270eecb1345bfca3aede634206c227fb2",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -954,7 +989,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
-      "sha256": "2e089136ad4380b8099168ae3262abafbc1a7fb646c50d8b736a3314a8fb76d4",
+      "sha256": "ec6a970414a79fe39b514b0a34b4c106f3c4cb55aa1ff912495443fa9bee772c",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -966,7 +1001,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
-      "sha256": "8f0dda037dbdfc1d717f4640d3e2472758368e853c49d1566cbdc904dabfb4bf",
+      "sha256": "cccc7286c3a4104f1df4759093b0618fc137ba15e5b8b828140d0fba1f380934",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -978,7 +1013,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
-      "sha256": "88e634982a5991de8735215fc513b6cc210ad32c76c85ce5e2c8988c70f6a1fd",
+      "sha256": "a9065db3e3fae608b5943eded9946fbea62c840fdc45869e5eb2e749effd97cd",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -990,7 +1025,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57.png",
-      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
+      "sha256": "a1cd04095da94fdfc3a26d19f9329aacbc0a25febab523a2a25ae6152b159d9a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1002,7 +1037,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "776d9e86fbd6453a70f5b1b59a682248dbfb2ad964d2d0037be22154dabda7a9",
+      "sha256": "98194b685f4fa81c653f399543e073f0148ac7e47b8d41e6a1e550dd274bad61",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1012,8 +1047,8 @@
     },
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fb95984fb8bd0964be789c188bbb6ed3.webm",
-      "sha256": "cce32a4d69f1a23cd5c1126eb77e58899dd4818bba5f7d32cf0609f5c950ba62",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/4cf30214e9c983725f19d5f88f99c371.webm",
+      "sha256": "06bfddd77a5a3e8ea4bf61b14fc797535b967fa83185be994560c8789a2bde12",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1048,7 +1083,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5.png",
-      "sha256": "62f040f81e6e0f6a919e8f399d2335fa6eb7b60f28ee822c6b2db2d9a6823f91",
+      "sha256": "589cd8bfdc74b2fa8d0804e9e75f2f75c895e5c2fc0e11c1df4cff772bf13a20",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1060,7 +1095,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
-      "sha256": "448ab9a4eb00b999436f93a35606052e4e798117f1e7d61e150a6bb9530e5aee",
+      "sha256": "3e9462de125f2ed4da41bf875dc08caa2e23554ef5f84710277d7c7fe0ef88f5",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1072,7 +1107,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
-      "sha256": "ba109baf6141f2b63505e0f8e147a2ce4ddde66459037ed9e763e275a168107d",
+      "sha256": "fd034a488da6149c5687dc7fd4121c869d2bd5fc9bbbf2ed8cd4393e9280acbb",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1084,7 +1119,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31.png",
-      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1096,7 +1131,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "a222c0ad756f461c13e25bd00c6986f855ae94c46eff2dc3c4c5a6beec756e28",
+      "sha256": "bafefe368c9caa0a235d018d383f088affc7f442e983d47c81555d95c075a64e",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1106,8 +1141,8 @@
     },
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/111a23ab61ca3b3a6a276f73c0b72536.webm",
-      "sha256": "af653dc43bd6bd75c6124add609a850c387127d89387f9cc35643876e5141686",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/abca98ed69c0eaafafa3815647b86eed.webm",
+      "sha256": "7c135b0aa5ab4bbf6be61bf987bb77d92e91dea8d8f7d0de2974442ced810e7d",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1130,7 +1165,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3.png",
-      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3",
+      "sha256": "3f4986578f36521bfbad66f7d7612a19d3a224fdb78050c9b54e2b1b61810bc4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1154,7 +1189,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
-      "sha256": "f5ca1c71395223c930cee09e97c0f8c8834c74109df926743f0ad580bab8ca7f",
+      "sha256": "ace2be01513c9bce1008e5e9d9061b364398c79572ad07b56d153c238f0618fa",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1166,7 +1201,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
-      "sha256": "d47a96abd71bb2524ea6ddab0a66e15b241687381f976b7b2ee966d9cb6b3de0",
+      "sha256": "ba109baf6141f2b63505e0f8e147a2ce4ddde66459037ed9e763e275a168107d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1178,7 +1213,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31.png",
-      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1190,7 +1225,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "d1f31fa42393fa04a2457219b39c6d72533611c9ebf22fbcb12e3c87d5fa3078",
+      "sha256": "0d934b7e9243ef1487b8ba848dd02c2e86171d0ed50e7d0f75418bd96814c8e8",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1200,8 +1235,8 @@
     },
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7c3050f7d970215bf987c6776eae55b2.webm",
-      "sha256": "7704eb4d8aed5435926b20cfa7fbc8b3dca7bb41d527522d8cacb0ee58c5c462",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/97a3084a37a6b940df624fe53c2fb131.webm",
+      "sha256": "4f8f9bfa37e3ca8b1353bcb816ac88136d9bdda6506ba143ff1a8ef0171450a0",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1248,7 +1283,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7.png",
-      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1260,7 +1295,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "b06ad5d85c68810cb264d44c05047eeb2fc136c88a8016ca5de8b24bb77c4dca",
+      "sha256": "ce17b97c24d5780800d982de503c672993dad3f4293cf4490a1bf34570a03ebd",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1270,8 +1305,8 @@
     },
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/cf8a4d7995fbaa128218bdf04db17d91.webm",
-      "sha256": "545babdb79965bda8d975c751cd1ebbd9ea28c24244ae7087ef15886e456e69c",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7722aa1fb68b858b12cc23a5a445703e.webm",
+      "sha256": "d2066168e4efbf78d480ba94a801af41d2389bcffc0d97a811988255a6f25bca",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1282,7 +1317,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
-      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef",
+      "sha256": "a49f98d57841fb4e903891737ebbe12883c5f20c75dcf5fe36c3663de9030e8d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1318,7 +1353,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7.png",
-      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1330,7 +1365,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "fee711852eb0bd314db57b69a6c528e129a79ab2ec383d977cc2749df936fb7b",
+      "sha256": "47eee330aa90f929db4e31de5062bcaeb6e3f137cf5fb1f21e224df9afc719dd",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1340,8 +1375,8 @@
     },
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/9f85ab80bb1722fc4954460c74f75e43.webm",
-      "sha256": "1feb67038dd29128902997d18ae387246c48fa6f4db50d4633e722866ca38d8b",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/cf51f2f045e76c71c925937ae8a8a607.webm",
+      "sha256": "7078651202d930113fbf67b002ac8a80c9af2432a36ab4cb2ca6d2b66baec90a",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1412,7 +1447,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30.png",
-      "sha256": "94bf43f1f8ca5ab31e7645904f48898730af57f7958d0d8ef63588561453b551",
+      "sha256": "c86a2c9700227b3dba88fd77d8aa89e211d00177e09d9ec91e8b5b7491b6cd55",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1424,7 +1459,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40.png",
-      "sha256": "b974aea2dd57788702ea004252ebc8a5b2f9ff976377546d1d24e03589c0aea8",
+      "sha256": "bf1d733c709c5320b0feeff08ef4fb5a30d769d22474bf3cf5a5b03b1963ea64",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1436,7 +1471,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
-      "sha256": "d2eece7f0bdbc1e62e551d0d592d9dec833395e1b0e01b5dafb4f91f16e58cf6",
+      "sha256": "dd1143b0ec28c6aefb023702255a09a788054cf9c24f5375efe61edac4bf88f6",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1448,7 +1483,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
-      "sha256": "24afc63e8f74d2bbace1052be73d05be243b908a559f66458fa5fb8278931bfa",
+      "sha256": "110907eca65f42fd9804f060199a49ab7b043cb393bb61c8f0312ee0ecae28d2",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1460,7 +1495,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
-      "sha256": "d370c4cdf46ad75121c176442eba9cca01c25e65786977e9ab3d3d02c4e744cf",
+      "sha256": "4a3e217c3eed1524326b49e18b0ee5943200d14ace9c036b6c1b08b9332ef10c",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1472,7 +1507,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57.png",
-      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1484,7 +1519,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "0b09ee9fc6ccd69d5c8eacf6221fe5ceee7ede39cea5f9df0ae3996181df209e",
+      "sha256": "937a616d240886e574e17425d6727da1747b78e85a3f8d1b837c38ea49747f10",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1494,8 +1529,8 @@
     },
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/354a25c1add3760cde3120c7877a5772.webm",
-      "sha256": "0c3a7f262a2f641c68de388c3232764dbd644c44aad194140a3d04e7c7ec8686",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/53609390d5a2c9720126cbbc31c67b96.webm",
+      "sha256": "2729460108e45db5985a02ece7f8cf9ed7b1cacfd15389c2de560d5f34edcd48",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1578,7 +1613,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40.png",
-      "sha256": "7a3ce92f512d46da102c2e882347b467c7adc0df8c77c5ff5e962d108d86d2fa",
+      "sha256": "bf1d733c709c5320b0feeff08ef4fb5a30d769d22474bf3cf5a5b03b1963ea64",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1590,7 +1625,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
-      "sha256": "22eae17fe0be5b102da77f3764e143bcc6a448e17e70d12dd62cbf21f4a8fae0",
+      "sha256": "dd1143b0ec28c6aefb023702255a09a788054cf9c24f5375efe61edac4bf88f6",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1602,7 +1637,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
-      "sha256": "5b7f92ed59df5991e646b0a26c0787db40a1b379173c43c894d4bbfa62810ad0",
+      "sha256": "4181a2afe6b64b73abec28753dcbfbafc5bc204579158c33602fc7cdebaad291",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1614,7 +1649,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
-      "sha256": "8cfec711c2b214bf1a5c0930843ed8971f529ecb231b16fec95f53aed3fee8f5",
+      "sha256": "d83199d9aac83b4887cd4b938e2c4bab5b712c394a357b37ce81234a899c9f4a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1626,7 +1661,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57.png",
-      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1638,7 +1673,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "f09a7ae43c721d34fa96f7e2a1ceb80b61ded3a4a8bec9a807d7386f305fdb64",
+      "sha256": "1416a2ae3747bab91074e9f61f4daa075173fbe9a8a5eaddfb8b58fae16f041e",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1648,8 +1683,8 @@
     },
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/842a2ce005c87aa5ab6d78767bac368c.webm",
-      "sha256": "99127f71460503fd4272ef38b40349064f0a0b6d66854d72d1645286cd87df8a",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7c6ebbdca6e77be709853d03264353f8.webm",
+      "sha256": "a0191e7e35b0ab287a23348e434f2b69b5fc0eeefdf018087d8b38f24896f31d",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1696,7 +1731,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
-      "sha256": "986b3a2b998cb21f2f83f131a41ca21c7ac8c32c5d159d20f7d3a975e2a540ae",
+      "sha256": "bb0a05f73ebe17b3a1a5216ec61343b6370165df59cd432b900a5472a45459f4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1708,7 +1743,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
-      "sha256": "989bdcb1ce94c127ec29d57d4b00701e54b14ebf02fd8dd6292c237faf9c8749",
+      "sha256": "12a6e7acc131d2135dbc53bbdd7558386c29a35b8296153968e48a4cfadbb620",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1720,7 +1755,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31.png",
-      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1732,7 +1767,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "0889664ae6340731696634a699f9690094ef22ebf8908e862c754feb758acdf2",
+      "sha256": "8129bc8a87ad0c5c0784ba98ca614c0fb6a363bd976cf1e40212b1c2b6233c04",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1742,8 +1777,8 @@
     },
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fa13a3067ec06c763dd6cddf439c4e4f.webm",
-      "sha256": "9548228ca7f273f85db4de23ddea6fa93a2b3c0f6ad73e0a11e62066c7bac185",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0e92f461def57e06501c53c02b8186ad.webm",
+      "sha256": "8c1cccf694849c47f7ae4f23857694a591b8b22e019fca4f308392a0b329a33b",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1754,7 +1789,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-WELCOME-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
-      "sha256": "f131ab87ca5333448159f7ecaefadc3be17e73c3a93586bd80a3e4ae7450af96",
+      "sha256": "e2dd9ab426c7f5e7661089b617d97471485608e66d97d264f09e7eca7c72b9de",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1790,7 +1825,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
-      "sha256": "b886ea77c1f5f64507699e602eda72b1f01488b0b89e75b0b62ad5e9866719cf",
+      "sha256": "8c4162419957d77993095d8aa588efb3832700fa063705b7f24fecedd92e1688",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1814,7 +1849,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31.png",
-      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1826,7 +1861,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "4baf7244fc29316e83c1d465379a40794b7278513529d6c23c9de51591aeb023",
+      "sha256": "02af1ebc2bd3d2a88835255434054810c7dbd67e0b84cffeed5a83a76c385123",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1836,8 +1871,8 @@
     },
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fb01f837806a50b1e1922335ccb97cf9.webm",
-      "sha256": "8a28a0700950c9c49ee3b9c5b5e7b0723064b8d5a4227838ed2aad8706957c2d",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/84ee1c740ad69b6300130e9b80034cb1.webm",
+      "sha256": "eb4fe4e61cf9cdeec4beda8c945ec59383d81fd70ba38050f7c11ae9e9c9838b",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1884,7 +1919,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7.png",
-      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1896,7 +1931,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "5f65817b3be52f2f2c174d10c95f1a4a28bd44f534b3db52a343527d540fae82",
+      "sha256": "f830a1227a29bcf820bf0f09bd9e49cb91bafae385ad853bacac18899aba26a7",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1906,8 +1941,8 @@
     },
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0777714e1505e072ede8d4398c2bd190.webm",
-      "sha256": "e28896ce7ae6be13f92516557a1bfb6b25008f45e17025a43c8cb3be9849a968",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/866ef6e08f24a16c6692ef2c008c7605.webm",
+      "sha256": "b09fbe50df1be284208eb3d881c4b8e9b3a84a70b1f382ee417e268ee1e65c0d",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1954,7 +1989,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7.png",
-      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1966,7 +2001,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "b6d9645c002e180832ea2de250be01796ce95da899cdadb7e32962dd5ebe9714",
+      "sha256": "609b81ae242bc50c84597d4307738e990b79af60daf53e3505de891094e81bfe",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1976,8 +2011,8 @@
     },
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a94cc3c516ee8ef1be021e448163e049.webm",
-      "sha256": "6390ba149d3056d01c10a67963317064d85a94386ff5cc2176333acdf4b22cd0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0b1a1c212ff75468c4e57797cfb7fc39.webm",
+      "sha256": "800796abfde5f45dd999784afcc3e6b920312109e33b3289a26edfecf679c26e",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1986,7 +2021,7 @@
       "motionMode": "REDUCED"
     }
   ],
-  "packetDigest": "2b194415c577fac29b3e99bbb8826c21c10d33802aa106a34991d45b51666dd5",
+  "packetDigest": "b0bd6b7b6af425b000cd2d141b73c4560e9f43618b5b9a6586b2f5b112740b62",
   "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
   "reviewDimensions": [
     "composition",

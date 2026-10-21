@@ -3,19 +3,19 @@
   "status": "PASS",
   "caseId": "crossdeck-pair-reduced",
   "binding": {
-    "baseSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
-    "candidateSha": "3415165ed9c4c11f2512d99aea0947f62696146a",
-    "candidateTree": "8069deb92f810deeafd9e1afa953abd18f15bc3a",
-    "sourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
-    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
-    "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
-    "databaseSha256": "0e1a7f897ec2328826a40cd653d273aa599ee0571cdefd9bbfc1059fb7e907ee"
+    "baseSha": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+    "candidateSha": "f5e0cddde5c626648bc264f93819836a49c04d33",
+    "candidateTree": "938c007861668b996eb5787ce9121354c7c0d56b",
+    "sourceDigest": "e6cf2d544efc36fce2ccfee7f16334296a1f82e783726e7dfd067a67d3a7debf",
+    "contractDigest": "38acd7ca5fe745298cd50f83ae7ecdb9a9a2c0aaefccfd6889a818f7285ee2a7",
+    "recordDigest": "02391f9e6ee41b656e228a1b38ff3ee7e29065f4ae8e2a585f5eb23aabda751d",
+    "databaseSha256": "af777322c37feb9c1e5b848684e3d11fca1bd8870787b9ef50d88ef6519d045f"
   },
   "contexts": {
     "DESKTOP": {
-      "voyageId": "cmvazbekc000x0cprchhzbfz6",
-      "editionId": "cmvazbek8000v0cpri80rb3dm",
-      "surfaceId": "17d9ecbf-c2d2-42ff-98e6-ead922455bc9",
+      "voyageId": "cmvhe0l31000x0c13cvqnu2zz",
+      "editionId": "cmvhe0l2x000v0c13m22i1x4k",
+      "surfaceId": "cbdd80e2-98dd-47af-9dd7-f8c61a3682cc",
       "viewport": {
         "width": 1440,
         "height": 1000
@@ -23,9 +23,9 @@
       "reducedMotion": true
     },
     "MOBILE": {
-      "voyageId": "cmvazbekc000x0cprchhzbfz6",
-      "editionId": "cmvazbek8000v0cpri80rb3dm",
-      "surfaceId": "20e5faac-7e54-4af7-919f-8ccf19267755",
+      "voyageId": "cmvhe0l31000x0c13cvqnu2zz",
+      "editionId": "cmvhe0l2x000v0c13m22i1x4k",
+      "surfaceId": "8277d758-48a1-4a5a-82c6-186bba09896e",
       "viewport": {
         "width": 390,
         "height": 844
@@ -34,9 +34,9 @@
     }
   },
   "fixture": {
-    "voyageId": "cmvazbekc000x0cprchhzbfz6",
-    "editionId": "cmvazbek8000v0cpri80rb3dm",
-    "databaseSha256": "0e1a7f897ec2328826a40cd653d273aa599ee0571cdefd9bbfc1059fb7e907ee"
+    "voyageId": "cmvhe0l31000x0c13cvqnu2zz",
+    "editionId": "cmvhe0l2x000v0c13m22i1x4k",
+    "databaseSha256": "af777322c37feb9c1e5b848684e3d11fca1bd8870787b9ef50d88ef6519d045f"
   },
   "outcomes": {
     "JOIN_AUTHORIZED": true,
@@ -91,7 +91,7 @@
           "height": 1180
         }
       },
-      "recording": "1688fae87e761c78dbbb5e9d9ff59439.webm",
+      "recording": "88b2fa1e191538493795e381504ab83c.webm",
       "trace": "desktop-trace.zip"
     },
     "MOBILE": {
@@ -169,7 +169,7 @@
           "height": 844
         }
       },
-      "recording": "1fb0bfde81262cab253f5dbdd8c3c467.webm",
+      "recording": "294150e08af0e3bf12b0c0a7140104a5.webm",
       "trace": "phone-trace.zip"
     }
   }

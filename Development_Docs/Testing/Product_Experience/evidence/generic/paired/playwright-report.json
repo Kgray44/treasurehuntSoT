@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/151417a772c1bcde4e5c7f256302b803d25d40da",
-        "commitHash": "151417a772c1bcde4e5c7f256302b803d25d40da",
-        "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861"
+        "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+        "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+        "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
       },
       "gitCommit": {
-        "shortHash": "3415165ed",
-        "hash": "3415165ed9c4c11f2512d99aea0947f62696146a",
-        "subject": "evidence(crossdeck): preserve successful R8 paired readiness proof",
-        "body": "evidence(crossdeck): preserve successful R8 paired readiness proof\n",
+        "shortHash": "f5e0cddde",
+        "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+        "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+        "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
         "author": {
-          "name": "Kgray44",
-          "email": "kkidsgray@icloud.com",
-          "time": 1792154199000
+          "name": "Codex",
+          "email": "codex@openai.com",
+          "time": 1792541275000
         },
         "committer": {
-          "name": "Kgray44",
-          "email": "kkidsgray@icloud.com",
-          "time": 1792154199000
+          "name": "Codex",
+          "email": "codex@openai.com",
+          "time": 1792541275000
         },
         "branch": "HEAD"
       },
@@ -53,24 +53,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/151417a772c1bcde4e5c7f256302b803d25d40da",
-            "commitHash": "151417a772c1bcde4e5c7f256302b803d25d40da",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
           },
           "gitCommit": {
-            "shortHash": "3415165ed",
-            "hash": "3415165ed9c4c11f2512d99aea0947f62696146a",
-            "subject": "evidence(crossdeck): preserve successful R8 paired readiness proof",
-            "body": "evidence(crossdeck): preserve successful R8 paired readiness proof\n",
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
             "author": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "committer": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "branch": "HEAD"
           },
@@ -91,24 +91,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/151417a772c1bcde4e5c7f256302b803d25d40da",
-            "commitHash": "151417a772c1bcde4e5c7f256302b803d25d40da",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
           },
           "gitCommit": {
-            "shortHash": "3415165ed",
-            "hash": "3415165ed9c4c11f2512d99aea0947f62696146a",
-            "subject": "evidence(crossdeck): preserve successful R8 paired readiness proof",
-            "body": "evidence(crossdeck): preserve successful R8 paired readiness proof\n",
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
             "author": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "committer": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "branch": "HEAD"
           },
@@ -135,24 +135,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/151417a772c1bcde4e5c7f256302b803d25d40da",
-            "commitHash": "151417a772c1bcde4e5c7f256302b803d25d40da",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
           },
           "gitCommit": {
-            "shortHash": "3415165ed",
-            "hash": "3415165ed9c4c11f2512d99aea0947f62696146a",
-            "subject": "evidence(crossdeck): preserve successful R8 paired readiness proof",
-            "body": "evidence(crossdeck): preserve successful R8 paired readiness proof\n",
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
             "author": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "committer": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "branch": "HEAD"
           },
@@ -173,24 +173,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/151417a772c1bcde4e5c7f256302b803d25d40da",
-            "commitHash": "151417a772c1bcde4e5c7f256302b803d25d40da",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
           },
           "gitCommit": {
-            "shortHash": "3415165ed",
-            "hash": "3415165ed9c4c11f2512d99aea0947f62696146a",
-            "subject": "evidence(crossdeck): preserve successful R8 paired readiness proof",
-            "body": "evidence(crossdeck): preserve successful R8 paired readiness proof\n",
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
             "author": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "committer": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "branch": "HEAD"
           },
@@ -211,24 +211,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/151417a772c1bcde4e5c7f256302b803d25d40da",
-            "commitHash": "151417a772c1bcde4e5c7f256302b803d25d40da",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
           },
           "gitCommit": {
-            "shortHash": "3415165ed",
-            "hash": "3415165ed9c4c11f2512d99aea0947f62696146a",
-            "subject": "evidence(crossdeck): preserve successful R8 paired readiness proof",
-            "body": "evidence(crossdeck): preserve successful R8 paired readiness proof\n",
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
             "author": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "committer": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "branch": "HEAD"
           },
@@ -249,24 +249,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/151417a772c1bcde4e5c7f256302b803d25d40da",
-            "commitHash": "151417a772c1bcde4e5c7f256302b803d25d40da",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
           },
           "gitCommit": {
-            "shortHash": "3415165ed",
-            "hash": "3415165ed9c4c11f2512d99aea0947f62696146a",
-            "subject": "evidence(crossdeck): preserve successful R8 paired readiness proof",
-            "body": "evidence(crossdeck): preserve successful R8 paired readiness proof\n",
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
             "author": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "committer": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "branch": "HEAD"
           },
@@ -287,24 +287,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/151417a772c1bcde4e5c7f256302b803d25d40da",
-            "commitHash": "151417a772c1bcde4e5c7f256302b803d25d40da",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38902634861"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
           },
           "gitCommit": {
-            "shortHash": "3415165ed",
-            "hash": "3415165ed9c4c11f2512d99aea0947f62696146a",
-            "subject": "evidence(crossdeck): preserve successful R8 paired readiness proof",
-            "body": "evidence(crossdeck): preserve successful R8 paired readiness proof\n",
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
             "author": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "committer": {
-              "name": "Kgray44",
-              "email": "kkidsgray@icloud.com",
-              "time": 1792154199000
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
             },
             "branch": "HEAD"
           },
@@ -350,7 +350,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 36843,
+                  "duration": 38714,
                   "errors": [],
                   "stdout": [
                     {
@@ -359,7 +359,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-16T13:03:25.801Z",
+                  "startTime": "2026-10-21T00:41:30.489Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -369,7 +369,7 @@
           ],
           "id": "eaee6e498f685fa0f405-39e31452bc8424cc89fa",
           "file": "crossdeck-experience-refit.spec.ts",
-          "line": 51,
+          "line": 52,
           "column": 7
         },
         {
@@ -388,7 +388,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 48721,
+                  "duration": 40974,
                   "errors": [],
                   "stdout": [
                     {
@@ -397,7 +397,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-16T13:04:02.790Z",
+                  "startTime": "2026-10-21T00:42:09.332Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -407,7 +407,7 @@
           ],
           "id": "eaee6e498f685fa0f405-a651dbc18c2d72534e8f",
           "file": "crossdeck-experience-refit.spec.ts",
-          "line": 51,
+          "line": 52,
           "column": 7
         }
       ]
@@ -434,7 +434,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 30448,
+                  "duration": 30317,
                   "errors": [],
                   "stdout": [
                     {
@@ -446,10 +446,10 @@
                   "steps": [
                     {
                       "title": "Author only this synthetic edition’s Map for crew visibility",
-                      "duration": 5
+                      "duration": 6
                     }
                   ],
-                  "startTime": "2026-10-16T13:04:51.543Z",
+                  "startTime": "2026-10-21T00:42:50.336Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -459,7 +459,7 @@
           ],
           "id": "944bee6c1097f4f4312c-1b7d149a659d601850de",
           "file": "crossdeck-refit-recovery.spec.ts",
-          "line": 72,
+          "line": 73,
           "column": 5
         }
       ]
@@ -467,8 +467,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-16T13:03:22.285Z",
-    "duration": 119860.768,
+    "startTime": "2026-10-21T00:41:27.160Z",
+    "duration": 113644.773,
     "expected": 3,
     "skipped": 0,
     "unexpected": 0,
