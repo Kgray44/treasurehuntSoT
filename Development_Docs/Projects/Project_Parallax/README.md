@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-20
 ---
 
 # Project Parallax
@@ -73,6 +73,12 @@ The [Phase 1 implementation and verification record](Phase_1_Implementation.md) 
 Software integration does not certify real-world placement accuracy. D4/D5 hardware and field qualification remain explicit gates. Phase 3 provides adaptive staging and durable logical decisions; distributed shared physical anchors and richer artifacts remain governed by Phases 4–6.
 
 Crossdeck Phase 1 can proceed independently: this implementation adds no pairing, surface-identity, shared-scene transport, or cross-device synchronization authority.
+
+## Native Chronicle Lens series
+
+The [NCL Series Charter v1.0](../../Programs/Spatial_Experience/NCL_Native_Chronicle_Lens_Program_Charter_v1.0.md) governs the proposed native program beneath the existing Spatial Experience/Parallax chain, with explicit platform, registration, deployment and physical/product acceptance requirements. It preserves the six phases below. Future NCL-02/NCL-03 names and assignments are proposals awaiting owner ratification, not historical iOS-only/Android-only phases or implementation authorization.
+
+The [NCL-01 implementation and acceptance status](NCL01_Implementation_and_Acceptance_Status.md) is the current source-bound reconciliation for the original shared Scene/native-model candidate and its TestFlight descendants. The original NCL-01 includes both platforms. PR #741 remains draft/unmerged; later iOS internal-beta distribution and owner-reported bedroom/classroom visibility are meaningful evidence, while physical Android, exact-build native journeys, room fidelity, browser/Crossdeck integration and full NCL-01 acceptance remain open. Preserved branch receipts retain their original evidence classes.
 
 ## Six-phase program
 

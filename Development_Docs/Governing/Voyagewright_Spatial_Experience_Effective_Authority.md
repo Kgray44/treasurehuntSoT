@@ -3,7 +3,7 @@ title: Voyagewright Spatial Experience Effective Authority
 audience: product-engineering
 status: current-additive-authority-index
 canonical_for: spatial-experience-effective-authority
-last_reviewed: 2026-10-09
+last_reviewed: 2026-10-20
 ---
 
 # Voyagewright Spatial Experience Effective Authority
@@ -31,6 +31,10 @@ Landfall's v1.0/v1.1 foundational chain remains linked from its [project home](.
 ## Unchanged adjacent authority
 
 [Figurehead spatial presence v1.0](Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md) remains people/character presence, not hand identity or user intent. [Wakebook spatial memory v1.1](Project_Wakebook_Governing_Amendment_v1.1_Spatial_Memories_and_AR_Capture.md) remains the private archive; ephemeral hand interaction is not automatically a Journey Memory. One Voyage, Wayfarer and Helm keep progression, artifact ownership and Captain authority. No amendment is needed to invent new ownership for those projects.
+
+## Subordinate native program governance
+
+The [Native Chronicle Lens Series Charter v1.0](../Programs/Spatial_Experience/NCL_Native_Chronicle_Lens_Program_Charter_v1.0.md) is the subordinate Parallax native implementation/qualification program charter candidate. Its requirements do not amend the master or owner constitutions above, create progression or release authority, or authorize engineering execution. Proposed future increment assignments remain **PROPOSED / AWAITING OWNER RATIFICATION**. The [NCL-01 status record](../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) distinguishes implemented/virtual/owner-observed evidence from open physical, product and protected-main acceptance.
 
 ## Implementation and registry entry
 

@@ -3,7 +3,7 @@ title: Voyagewright Spatial Experience Architecture program home
 audience: product-engineering
 status: governing-baseline
 canonical_for: spatial-experience-program-home
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-20
 ---
 
 # Voyagewright Spatial Experience Architecture
@@ -47,6 +47,12 @@ The [v1.1 Reach launch successor](Voyagewright_Spatial_Experience_Wave_4_Impleme
 [Sextant Phase 3 - Read the Field](../../Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) provides advanced field context, optional nearby hardware and media capability lifecycle on protected main. Its source and qualification record preserve the Reach camera/intent boundary and outstanding native/physical/owner gates. Concurrent phases must reconcile additive registry and generated-document changes at integration.
 
 None of these governance records, by themselves, claim implementation beyond the accepted current-main behavior of their owning projects.
+
+## Native Chronicle Lens series
+
+The [Native Chronicle Lens Series Charter v1.0](NCL_Native_Chronicle_Lens_Program_Charter_v1.0.md) is the subordinate native program governance candidate under the effective Spatial Experience and Parallax authority. It defines immutable Scene realization, platform/registration contracts, evidence tiers and mainline-safe increment boundaries. It does not rewrite Parallax's six phases or authorize implementation. Proposed NCL-02 registration/fidelity and NCL-03 richer Scene/Player qualification assignments await owner ratification; the original NCL-01 already includes both iOS and Android.
+
+The [NCL-01 status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) reconciles the unmerged #741 candidate with newer TestFlight branches, Simulator/Emulator proof and owner-reported iPhone observations. Signed internal beta availability and object visibility do not establish accepted authored-room fidelity, complete native qualification or protected integration. Crossdeck/browser and physical acceptance gates remain open.
 
 ## Required derived governing work
 
