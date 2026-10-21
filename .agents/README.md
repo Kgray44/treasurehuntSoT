@@ -19,6 +19,7 @@ not authorize restarting a completed phase.
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)
 - [Sounding Line replay failure diagnostic repair](replay-failure-diagnostics.md)
 - [Current replay artifact folder correction](replay-artifact-root-repair.md)
+- [Crossdeck R26 finite replay-folder successor](crossdeck-r26-replay-path-successor.md)
 - [Replay admission Git failure observations](replay-admission-git-diagnostics.md)
 - [Crossdeck ordinary6 finite hosted source diagnostic](crossdeck-ordinary6-source-diagnostic.md)
 - [Crossdeck ordinary6 finite posttechnical diagnostic](crossdeck-ordinary6-posttechnical-diagnostic.md)
