@@ -123,3 +123,22 @@ alone cannot establish that fact. No consumer capture is authorized here.
 
 This infrastructure bug fix changes no completed product capability or feature
 availability. Feature Catalog: NO CHANGE REQUIRED.
+
+## Preserved Linux integration failure
+
+Normal protected run39863418213/1 at154dd9b65 completed with901 tests,898PASS,
+2FAIL and1Windows-only skip. All15 supervisor cases passed on native Linux,
+but the whole result is nonaccepting. The original completed provider metadata,
+job list, focused log and failed Mainline Decision are preserved.
+
+The two failures were existing ordinary.test.mjs assertions: an exact original
+ensureProductionBuild call and the seven-workflow inventory. The source now emits
+PRODUCTION_BUILD conditionally immediately before calling that unchanged helper;
+its original body and assertion are restored verbatim. The exact workflow list
+adds only the named inert probe and retains all seven existing entries/assertions.
+Additional checks restrict the probe to manual exact installed source, one fixed
+synthetic job/command, read permissions plus job-only statuses:write, public-only
+uploads and no admission/capture/custody entrypoint. No assertion, timeout, suite,
+source gate or finite authority is removed. A changed source requires fresh
+independent review and normal qualification; this failed run is never retried or
+reinterpreted as acceptance.

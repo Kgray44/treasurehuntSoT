@@ -154,6 +154,7 @@ try {
     run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"], environment, "FIXTURE_SEED");
   for (const [preparerIndex, preparer] of (profile.preparers ?? []).entries())
     run(process.execPath, preparerArguments(preparer), environment, "FIXTURE_PREPARER", preparerIndex + 1);
+  if (profile.taskOwnedProductionHttp) emitPreparationPhase("PRODUCTION_BUILD");
   ensureProductionBuild();
   if (readiness) {
     await runBrowserDependencyProbe({ attempt: readiness, environment: productEnvironment(environment) });
@@ -225,7 +226,7 @@ try {
 
 function ensureProductionBuild() {
   if (!profile.taskOwnedProductionHttp) return;
-  run(process.execPath, ["node_modules/next/dist/bin/next", "build"], environment, "PRODUCTION_BUILD");
+  run(process.execPath, ["node_modules/next/dist/bin/next", "build"], environment);
 }
 
 function profileEnvironment({ profileId, candidateSha: sha, databaseUrl: requestedDatabaseUrl }) {
