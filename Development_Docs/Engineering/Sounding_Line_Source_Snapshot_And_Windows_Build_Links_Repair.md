@@ -12,9 +12,9 @@ Two source-bound infrastructure failures prevent existing Parallax development
 preparation. They do not establish a product defect or authorize consumer
 qualification. The original failed outputs remain retained privately and failed.
 The implementation candidate is reconciled to accepted main
-`fc5855f465314fa2c80c3a8966f8b6ce405f010a`. Independent documentation follow-up
-#786 may qualify concurrently; its 38 historical migration rows remain separately
-owned until accepted. Exact-source review and normal protected qualification bind
+`8e49351e62e1f32340109566557a824bfa74e14d`, retaining all 38 accepted #786
+inventory rows. The separate diagnostic-retention repair may qualify independently.
+Exact-source review and normal protected qualification bind
 this candidate, and merge still requires fresh accepted main ancestry.
 
 ## Complete Git object transport
@@ -23,9 +23,10 @@ On the diagnosed immutable candidate
 `871431cd0827d42551c8a8b9d2d7fde5e16c1f77`, unchanged source selection includes
 3,946 entries with 172,504,656 bytes of framed Git output. The largest individual
 blob is 19,284,170 bytes. The original single `cat-file --batch` exceeds the
-134,217,728-byte per-call limit and fails with `ENOBUFS`. Accepted main selects
-2,312 entries and 90,593,533 framed bytes, so its smaller snapshot does not expose
-that aggregate failure.
+134,217,728-byte per-call limit and fails with `ENOBUFS`. The diagnosed accepted
+base `aaff919428ef9ab421579415ce3409949724760d` selects 2,312 entries and
+90,593,533 framed bytes, so that smaller snapshot does not expose the aggregate
+failure.
 
 The correction retains every selected object, including aliases and historical
 JSON, with the same complete entries, insertion order and UTF-8 decoding. Exact
@@ -80,6 +81,17 @@ fingerprint. Installed dependency fingerprints before and after execution and
 all owned-process cleanup checks remain unchanged.
 
 ## Evidence boundary
+
+The first protected run `39714164483/1` on source
+`79edd5830b0319d583d7fc2a14e1543cca9d636d` failed one of 853 regressions, with
+851 passes and one platform-only skip. The unchanged R3 admission test correctly
+rejected an extra `experience:test` script entry: its historical frozen package
+permits only `test:sounding-line` to inherit the protected base. The correction
+restores only that redundant script edit and retains both new regression files in
+the canonical command. The original R3 positive admission and all three rejection
+assertions then pass unchanged at the one-field correction
+`951fe1156e9a50c2e6d1649375be4e6dfc77946a`. The failed head and run remain failed
+and preserved; fresh qualification must bind the reconciled source.
 
 These are development infrastructure corrections. Native Windows fixtures are not
 an actual consumer build or product experience review. Protected Linux
