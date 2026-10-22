@@ -68,6 +68,26 @@ Prettier correction from `50bbfe1f20c34ade7c7b972dcb69f519bd8da84f` into this
 maintenance candidate. The title assertion stays meaningful; the authoritative
 fragment and generated catalog are unchanged.
 
+The first protected maintenance run `39705869028/1` remains failed: 833 of 834
+Linux regressions passed, while the historical R20 transfer fixture read today's
+Homeport ledger as its original input. The same failure reproduces on accepted
+main. R20 authoring commit `d06a109fa2d3a74ad26e3d83649bc73eb13ba874` contains the
+exact three declared Refit document proof hashes; its ledger SHA-256 is
+`0ad5741b8a2a568bf4add9bc582090a555bc83e8814a6bfde7777ae239df925f`.
+The accepted Crossdeck integration contains a later closure of the single
+`PE-DEBT-CROSSDECK-LENS` row. Its ledger blob
+`cc4628f5fd611e21cf1d17ea88dbc350567f0b07` has SHA-256
+`709cecf7f2e129657ca90b6f6224dc0954bea48fe4201595bce3ea516b06fc20`.
+This is the Homeport ledger, distinct from Ledgerlight's generated inventory.
+
+The test-only prerequisite pins the historical fixture to all three original
+proof hashes and retains the production validator and its six negative
+mutations. A separate current-ledger check binds the exact accepted closure row,
+requires every other original raw row and all three transfers unchanged in
+relative order, and rejects deletions, duplicate IDs, reordering or changed
+closure evidence. Later unique rows may be added. Ledger data, proof constants,
+registry, production preservation guards and historical receipts stay unchanged.
+
 The 38 pending historical Ledgerlight media inventory additions remain owned by
 #786. Documentation generation may discover them, but this repair restores those
 unrelated additions after generation and retains only its own new documentation

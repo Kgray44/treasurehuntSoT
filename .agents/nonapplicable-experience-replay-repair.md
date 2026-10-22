@@ -29,6 +29,17 @@ historical Ledgerlight media inventory rows with #786; inspect generated indexes
 and restore those unrelated pending additions explicitly. The UTC-generated index
 date may advance to 2026-10-22.
 
+The first protected run `39705869028/1` failed the inherited R20 Homeport ledger
+fixture (833/834 regressions passed). The documentation owner agrees to a named
+test-only prerequisite: pin the original Refit documents to R20 authoring commit
+`d06a109fa2d3a74ad26e3d83649bc73eb13ba874` and their declared proof hashes, retain
+the existing validator and all negative mutations, and separately prove current
+raw-row preservation with only the exact accepted Crossdeck closure overlay.
+Reject missing, duplicate, reordered or edited historical rows/transfers; allow
+new unique rows. Do not edit ledger data, production guards, proof constants or
+historical receipts. Keep the PR draft until a fresh successor is independently
+reviewed, then use one deliberate normal protected qualification.
+
 Require the retained unchanged-source reproduction, focused canonical and
 malformed-plan regressions, existing direct capture/replay denial, independent
 exact-source review, normal protected Linux qualification, protected merge and
