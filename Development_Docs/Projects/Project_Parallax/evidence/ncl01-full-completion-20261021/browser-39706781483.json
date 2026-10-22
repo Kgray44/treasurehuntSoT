@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "ENGINEERING_EVIDENCE",
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "reviewKind": "INDEPENDENT_READ_ONLY_FOCUSED_BROWSER_REVIEW",
+  "reviewedAtUtc": "2026-10-22T01:57:29.584Z",
+  "source": {
+    "candidateSha": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+    "candidateTree": "56d660781a0f41af1a5568eb1f1156f87eecf823",
+    "authoritySha": "aaff919428ef9ab421579415ce3409949724760d",
+    "workflowPath": ".github/workflows/sounding-line-focused-repair.yml",
+    "workflowBlob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+    "workflowSha256": "5c071c38ebcc45b6c2f23d18f96f0da2f1142576715248bdcff01f55b09bbc4a",
+    "testSelector": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+    "preparedManifestSha256Published": "a8f16f8cb9e638b1394f86a82bef6b337fbcfc6c3cd4a10f544528c2969601dc",
+    "preparedManifestLogLine": 921,
+    "witnesses": [
+      {
+        "revision": "aaff919428ef9ab421579415ce3409949724760d",
+        "path": ".github/workflows/sounding-line-focused-repair.yml",
+        "blob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+        "sha256": "5c071c38ebcc45b6c2f23d18f96f0da2f1142576715248bdcff01f55b09bbc4a",
+        "bytes": 5837
+      },
+      {
+        "revision": "aaff919428ef9ab421579415ce3409949724760d",
+        "path": "scripts/sounding-line/develop-browser-suite.mjs",
+        "blob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+        "sha256": "fa81fc38bbf22e5cfd3ef9c88286837b4d3085b18e0567978d2834089167589e",
+        "bytes": 32395
+      },
+      {
+        "revision": "aaff919428ef9ab421579415ce3409949724760d",
+        "path": "scripts/sounding-line/browser-authority.mjs",
+        "blob": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+        "sha256": "4f0921a6080419c674c4c2373d5807f22a7daf8449f650fa14b873643e02454d",
+        "bytes": 26506
+      },
+      {
+        "revision": "aaff919428ef9ab421579415ce3409949724760d",
+        "path": "scripts/sounding-line/browser-suite-profiles.mjs",
+        "blob": "dff446c5d211fbbb477e64c8720da0e93baaf1df",
+        "sha256": "6e41b1d1c9a4b300e16b0104a953f6358e328d67fabc59106da468cc181e4c4a",
+        "bytes": 7220
+      },
+      {
+        "revision": "aaff919428ef9ab421579415ce3409949724760d",
+        "path": "scripts/sounding-line/private-browser-failure-output.mjs",
+        "blob": "8850b6c55bdf52eb110846b40c6571cd426ab43b",
+        "sha256": "b219b50c63e94ced1a82e1ee925ce27773d2872ff5374aa5eb0cc07b16a62f59",
+        "bytes": 6162
+      },
+      {
+        "revision": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+        "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+        "blob": "d9b4aa544e3983c41264d728ef39c35f7823f5d5",
+        "sha256": "68f74da1a4b4ab30e06165f4579633b782a0fd586bf180d2374cb7bb7f28b321",
+        "bytes": 14842
+      },
+      {
+        "revision": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+        "path": "tests/e2e/fixtures/ncl01-experience.ts",
+        "blob": "c6c222d120af1cee17e743720175954f665da2a0",
+        "sha256": "df50153965ba3ffc066b191609bb85bc5947fa6cc5ceb71c2e70ef8a59802798",
+        "bytes": 8921
+      },
+      {
+        "revision": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+        "path": "prisma/seed.ts",
+        "blob": "1b3d718af62a0430aa967afc9fd50d0eebef0521",
+        "sha256": "5527241b4abb5ca4468d26c67afd342334d93cc83b8a450f9402e51e17454c76",
+        "bytes": 38487
+      },
+      {
+        "revision": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+        "path": "src/components/homeport/AccountSurfaces.tsx",
+        "blob": "542a69311439e6da6d4ab7542db51c25d94001e2",
+        "sha256": "cd9eb2f28d05ef2a357c36ea4fae1c851c12f8db6b16c0b712ae6e78c7659806",
+        "bytes": 73000
+      },
+      {
+        "revision": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+        "path": "testing/contracts.json",
+        "blob": "83591873e7da049cecf2a8f81cd3c334d935ddc5",
+        "sha256": "92d449b0263bb50e8df8a9f774046c0edb0907097b3966d0824a33b23d346d52",
+        "bytes": 313651
+      },
+      {
+        "revision": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+        "path": "package-lock.json",
+        "blob": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+        "sha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+        "bytes": 397906
+      },
+      {
+        "revision": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+        "path": ".nvmrc",
+        "blob": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "sha256": "7e8a2fa94951112b894a3dbe3d05efef5e9263741fa49125f0a70f40fedab4cc",
+        "bytes": 8
+      }
+    ]
+  },
+  "observed": {
+    "run": {
+      "id": 39706781483,
+      "attempt": 1,
+      "event": "workflow_dispatch",
+      "workflowHeadBranch": "main",
+      "workflowHeadSha": "aaff919428ef9ab421579415ce3409949724760d",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39706781483",
+      "createdAtUtc": "2026-10-22T01:37:44Z",
+      "updatedAtUtc": "2026-10-22T01:50:33Z"
+    },
+    "job": {
+      "id": 119588576846,
+      "name": "Focused browser development (no mainline decision)",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "conclusion": "success",
+      "startedAtUtc": "2026-10-22T01:37:48Z",
+      "completedAtUtc": "2026-10-22T01:50:32Z"
+    },
+    "environment": {
+      "osName": "Ubuntu",
+      "osVersion": "24.04.5",
+      "image": "ubuntu-24.04",
+      "source": "Original job setup log lines 12-17"
+    },
+    "preparation": {
+      "status": "PASS_DEVELOPMENT_PREPARED_NOT_ACCEPTANCE",
+      "role": "DEVELOPMENT_ONLY",
+      "qualification": false,
+      "logLine": 912
+    },
+    "execution": {
+      "status": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+      "role": "DEVELOPMENT_ONLY",
+      "qualification": false,
+      "logLine": 955,
+      "captureChild": {
+        "logLine": 947,
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "capture-child.exit",
+        "utc": "2026-10-22T01:50:06.491Z",
+        "elapsedMs": 40804.566,
+        "exitCode": 0,
+        "signal": null
+      },
+      "authorityResult": {
+        "logLine": 954,
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "authority.result",
+        "utc": "2026-10-22T01:50:06.548Z",
+        "elapsedMs": 40861.656,
+        "failureCategory": null,
+        "failureCode": null
+      }
+    },
+    "cleanup": {
+      "browser": {
+        "logLine": 951,
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.browser.result",
+        "utc": "2026-10-22T01:50:06.547Z",
+        "elapsedMs": 40861.272,
+        "exitCode": 0,
+        "signal": null,
+        "outcome": "EXITED",
+        "cleanupStatus": "PASS",
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false
+      },
+      "proxy": {
+        "logLine": 952,
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.proxy.result",
+        "utc": "2026-10-22T01:50:06.548Z",
+        "elapsedMs": 40861.396,
+        "outcome": "CLOSED"
+      },
+      "server": {
+        "logLine": 953,
+        "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+        "version": 1,
+        "component": "browser-authority",
+        "event": "cleanup.server.result",
+        "utc": "2026-10-22T01:50:06.548Z",
+        "elapsedMs": 40861.427,
+        "exitCode": 1,
+        "signal": null,
+        "outcome": "EXITED",
+        "cleanupStatus": "PASS",
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false
+      },
+      "interpretation": "Browser and server explicitly report cleanup PASS, trees reaped and streams closed; proxy reports CLOSED. Server cleanup exit code 1 is preserved and is not a test failure claim."
+    },
+    "artifactCount": 0,
+    "encryptedFailureRetentionStep": "SKIPPED",
+    "counts": {
+      "sourceDeclaredCases": 7,
+      "executedCases": null,
+      "passedCases": null,
+      "failedCases": null,
+      "skippedCases": null,
+      "flakyCases": null,
+      "reportSha256": null,
+      "availability": "Exact report and counts were not published in retained job/run logs or uploaded artifacts; source declaration is not a measured execution count."
+    },
+    "archiveCrosscheck": {
+      "archiveEntryCount": 15,
+      "aggregateJobLogBytes": 87281,
+      "aggregateJobLogSha256": "4ff0917ee1c3c970983e003dfd75b8d364ac04c67164167f7e108438e7be105d",
+      "separatelyDownloadedJobLogSha256": "4ff0917ee1c3c970983e003dfd75b8d364ac04c67164167f7e108438e7be105d",
+      "byteDigestMatch": true
+    }
+  },
+  "sourceCheckedGuards": {
+    "basis": "Read-only exact authority source inspection; these statements describe conditions required before the published status, not independently published fingerprint values or case counts.",
+    "conditions": [
+      "Protected main workflow requires exact candidate SHA and focused test selector; dedicated detached candidate worktree and no persisted checkout credentials.",
+      "Preparation uses fresh guarded generic isolated SQLite fixture, production build and immutable prepared snapshot; run requires supplied manifest digest and exact source/build/dependency/credential/database bindings.",
+      "Real Chromium against the production HTTP runtime and canonical isolated database; workers 1, retries 0 and repeat-each 1.",
+      "Successful helper status requires runtime cleanup PASS, nonempty selected report, zero skipped/flaky cases, agreement between unexpected cases and runtime failure, plus unchanged source/build/dependency fingerprints.",
+      "Actual selected count and report digest are stored privately by the helper but are not printed by its CLI and were not supplied as artifacts."
+    ],
+    "sourceFingerprintValuesPublished": false,
+    "buildFingerprintValuesPublished": false
+  },
+  "sourceCheckedCaseScope": [
+    "Natural anonymous registration/sign-in navigation without account creation.",
+    "Natural Player sign-in, Profile accessibility, visible home/account return, canonical Passport/history/version-pinned detail, and non-owner denial routes.",
+    "Natural Creator sign-in and real private editor/create-form cancellation, with read-only before/after canonical draft and publication authority comparison.",
+    "Natural Captain sign-in, eligible public edition/private-title exclusion and wizard cancellation without creating a Voyage.",
+    "Natural Administrator sign-in and actual People empty/privacy state, accessibility and account return.",
+    "Natural fixed synthetic owner Sea Trials visibility without preparing or accepting a pilot, then Player Library empty state and home.",
+    "Anonymous Community/catalog private-title absence with meaningful empty/recovery states, a real public preview positive control and actual private Chronicle route denial."
+  ],
+  "limits": [
+    "Development evidence only: not protected experience capture, review, MainlineDecision, merge, landed smoke or owner acceptance.",
+    "No screenshots, traces or Playwright original report were uploaded for independent media review; exact executed case count remains UNKNOWN.",
+    "No native graphics/input, physical iPhone/Android AR, live browser METRIC_6DOF provider or authored-room alignment proof.",
+    "The Linux result binds candidate 846ef70e exactly and does not supersede separately retained Windows failures or prove later test/contract edits.",
+    "Synthetic fixture records and canonical read-only comparisons do not establish real-world story completion or absence of every unrelated database metadata write."
+  ],
+  "retainedInputs": [
+    {
+      "role": "initialRunMetadata",
+      "fileName": "initial-run.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "10e3fa5643b4647475a186feea11f8645cbc2e69fe7dee3a5fc1aa51d165ed1e",
+      "bytes": 12780
+    },
+    {
+      "role": "initialJobMetadata",
+      "fileName": "initial-jobs.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "7760713ce32764cbe6fb45701bc6d6c59024b4f2c819be47ac01487f35dd732a",
+      "bytes": 2619
+    },
+    {
+      "role": "initialArtifactMetadata",
+      "fileName": "initial-artifacts.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bytes": 32
+    },
+    {
+      "role": "finalRunMetadata",
+      "fileName": "final-run.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "b425fbb6f85b241bf9bc3c3c4136f2e516e8693b2f6873fc1137997c65785f3e",
+      "bytes": 12783
+    },
+    {
+      "role": "finalJobMetadata",
+      "fileName": "final-jobs.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "b1eea8fcffd70682b4b860f9461ddf51bec5d08bef9c4a2a26ccc52adefe5066",
+      "bytes": 3501
+    },
+    {
+      "role": "finalArtifactMetadata",
+      "fileName": "final-artifacts.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "bytes": 32
+    },
+    {
+      "role": "runLogsArchive",
+      "fileName": "run-logs.original.zip",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "2a27d66bb2c19f7a1c7d170414d4e3a3109c506c5bbc286315385ca1218be669",
+      "bytes": 44047
+    },
+    {
+      "role": "jobLog",
+      "fileName": "job-119588576846.original.log",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "4ff0917ee1c3c970983e003dfd75b8d364ac04c67164167f7e108438e7be105d",
+      "bytes": 87281
+    },
+    {
+      "role": "watchLog",
+      "fileName": "watch.original.log",
+      "kind": "ORIGINAL_PROCESS_OUTPUT",
+      "sha256": "c5868f255f83c902410f4f26527e9672ddf6fe4b7135421fccd715927f29a396",
+      "bytes": 8834
+    },
+    {
+      "role": "sourceWitnesses",
+      "fileName": "source-witnesses.json",
+      "kind": "DERIVED_GIT_SOURCE_HASHES",
+      "sha256": "225bf6ea1e9831c6834d6fd8e92dd4b578cf09439bb7ac93af8b9c31889a0057",
+      "bytes": 3565
+    },
+    {
+      "role": "archiveLogCrosscheck",
+      "fileName": "archive-log-crosscheck.private.json",
+      "kind": "DERIVED_BYTE_CROSSCHECK",
+      "sha256": "828bb9b1d77ca0655e2c45e4803d564d6dd37d08300d51a8b97c1fec1a02ecef",
+      "bytes": 399
+    }
+  ]
+}

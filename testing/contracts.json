@@ -4962,8 +4962,8 @@
           "src/components/admiralty/AdmiraltyShell.tsx",
           "src/components/admiralty/DossierSupportPanel.tsx"
         ],
-        "entryPoint": "/admin",
-        "states": ["ADMIN_READY", "PEOPLE_EMPTY", "RETURNED"],
+        "entryPoint": "/account",
+        "states": ["ACCOUNT_READY", "ADMIN_READY", "PEOPLE_EMPTY", "RETURNED"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ADMINISTRATOR"],
         "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
@@ -5034,13 +5034,13 @@
           "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
         },
         "continuity": {
-          "objective": "The same canonical synthetic account identity remains visible through the consumer task and contextual return; domain ownership and published identity remain canonical.",
+          "objective": "Navigation only: the existing Voyagewright Home link preserves its destination through account entry, Admiralty and account return. Canonical account authority is separately retained by real UI sign-in and exact account-label witnesses at entry and return; the href does not identify an account.",
           "checks": [
             {
-              "id": "canonical-account-label",
-              "role": "button",
-              "name": "Synthetic NCL01 Administrator",
-              "attribute": "aria-label"
+              "id": "navigation-home-destination",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
             }
           ]
         },
@@ -5050,6 +5050,24 @@
             "roles": ["ADMINISTRATOR"],
             "outcome": "An authorized operator opens the actual non-enumerating People search and returns to the same canonical account without privileged mutation.",
             "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic NCL01 Administrator",
+                "text": "Synthetic NCL01 Administrator",
+                "path": "/account",
+                "state": "ACCOUNT_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic NCL01 Administrator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Admiralty"
+              },
               {
                 "action": "assert",
                 "role": "heading",
@@ -5084,6 +5102,13 @@
                 "role": "heading",
                 "name": "Overview",
                 "text": "Overview",
+                "path": "/account"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic NCL01 Administrator",
+                "text": "Synthetic NCL01 Administrator",
                 "path": "/account",
                 "state": "RETURNED",
                 "returnPath": true
@@ -7314,18 +7339,18 @@
       "critical": true,
       "experience": {
         "persona": "The fixed synthetic pilot account in the already nonce-isolated generic development fixture",
-        "objective": "Read the existing private trial preparation and its pending-physical-acceptance boundary, reach the real Player library and leave safely.",
-        "visibleOutcome": "The gated synthetic preparation remains honest about unperformed physical trials and offers the real canonical Player library and Home return without claiming an owner judgment.",
+        "objective": "Read the existing private trial preparation and its pending-physical-acceptance boundary, reach the real Player library and return to the same canonical account.",
+        "visibleOutcome": "The gated synthetic preparation remains honest about unperformed physical trials and offers the real canonical Player library, Home and Personal Harbor return without claiming an owner judgment.",
         "integrationOwner": "NCL-01 private trial continuity with Spatial Pilot",
         "systems": ["one-voyage", "project-parallax", "project-landfall"],
         "sourcePaths": ["src/app/dev/spatial-pilot/page.tsx", "src/spatial-pilot/OwnerSeaTrials.tsx"],
         "entryPoint": "/dev/spatial-pilot",
-        "states": ["TRIAL_UNPROVISIONED", "LIBRARY_EMPTY", "RETURNED"],
+        "states": ["TRIAL_UNPROVISIONED", "LIBRARY_EMPTY", "HOME_READY", "RETURNED"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["OWNER"],
         "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
         "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
-        "navigation": "Enter through the named existing workspace or canonical account/library, use its visible task controls, and leave through the existing contextual return. No test-only route is introduced.",
+        "navigation": "Enter the existing server-authorized private trial URL directly after real account sign-in; no visible Sea Trials entry from Personal Harbor is claimed. Use the actual Player Library, Home and account-menu returns. No test-only route is introduced.",
         "designTarget": "Keep the existing private preparation hierarchy and explicit pending owner/physical status. Preparation, synthetic library access and feedback controls must never imply measured tracking, a reconstructed-room registration or completed owner acceptance.",
         "references": [
           {
@@ -7393,13 +7418,13 @@
           "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
         },
         "continuity": {
-          "objective": "The same canonical synthetic account identity remains visible through the consumer task and contextual return; domain ownership and published identity remain canonical.",
+          "objective": "Navigation only: the existing Voyagewright Home link preserves its destination through private trial entry, Player Library, Home and account return. Canonical account authority is separately retained by real UI sign-in and exact account-label witnesses at setup and return; the href does not identify an account.",
           "checks": [
             {
-              "id": "canonical-account-label",
-              "role": "button",
-              "name": "Synthetic NCL01 Owner",
-              "attribute": "aria-label"
+              "id": "navigation-home-destination",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
             }
           ]
         },
@@ -7407,7 +7432,7 @@
           {
             "id": "ncl01-private-trial-library-and-safe-return",
             "roles": ["OWNER"],
-            "outcome": "The actual gated preparation exposes its pending physical boundary, opens the empty canonical Player library, and returns safely without provisioning or recording a judgment.",
+            "outcome": "The actual gated preparation exposes its pending physical boundary, opens the empty canonical Player library, and returns through Home to the same canonical account without provisioning or recording a judgment.",
             "steps": [
               {
                 "action": "assert",
@@ -7444,6 +7469,24 @@
                 "name": "Choose your role in Voyagewright",
                 "text": "Choose your role in Voyagewright",
                 "path": "/",
+                "state": "HOME_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic NCL01 Owner"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic NCL01 Owner",
+                "text": "Synthetic NCL01 Owner",
+                "path": "/account",
                 "state": "RETURNED",
                 "returnPath": true
               }

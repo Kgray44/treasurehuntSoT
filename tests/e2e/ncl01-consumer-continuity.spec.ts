@@ -44,6 +44,46 @@ async function authoringAuthority() {
 }
 
 async function accessible(page: Page) {
+  // Audit the actual current destination after its owned transition settles.
+  // A visible heading alone can precede the route's reveal and input readiness.
+  const pathname = new URL(page.url()).pathname;
+  await expect
+    .poll(() =>
+      page.evaluate((expectedPath) => {
+        const boundaries = document.querySelectorAll<HTMLElement>("[data-route-state]");
+        const boundary = boundaries[0];
+        const layers = document.querySelectorAll<HTMLElement>("[data-route-layer]");
+        const layer = layers[0];
+        const generation =
+          boundary?.getAttribute("data-route-active-generation") ?? boundary?.getAttribute("data-route-generation");
+        return {
+          boundaryCount: boundaries.length,
+          state: boundary?.getAttribute("data-route-state"),
+          layerCount: layers.length,
+          currentPath: layer?.getAttribute("data-route-layer") === expectedPath,
+          generationMatches: Boolean(generation && layer?.getAttribute("data-route-generation") === generation),
+          opacity: layer ? getComputedStyle(layer).opacity : null,
+          interactive: Boolean(
+            layer &&
+              !layer.inert &&
+              layer.getAttribute("aria-hidden") !== "true" &&
+              layer.getAttribute("data-route-interactive") !== "false" &&
+              getComputedStyle(layer).visibility === "visible",
+          ),
+          outgoingCount: document.querySelectorAll('[data-route-role="outgoing"]').length,
+        };
+      }, pathname),
+    )
+    .toEqual({
+      boundaryCount: 1,
+      state: "settled",
+      layerCount: 1,
+      currentPath: true,
+      generationMatches: true,
+      opacity: "1",
+      interactive: true,
+      outgoingCount: 0,
+    });
   const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
   expect(result.violations.filter(({ impact }) => impact === "serious" || impact === "critical")).toEqual([]);
 }
@@ -200,6 +240,9 @@ test("isolated fixed Owner opens Sea Trials and follows the actual conventional 
   await expect(page.getByRole("heading", { name: "No Chronicles yet", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Voyagewright home", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Choose your role in Voyagewright", exact: true })).toBeVisible();
+  await workspace(page, "Owner", "Personal Harbor");
+  await expect(page).toHaveURL(/\/account$/u);
+  await expect(page.getByRole("heading", { name: "Synthetic NCL01 Owner", exact: true })).toBeVisible();
 });
 
 test("public Community and Chronicle discovery preserve private history through empty-state recovery", async ({

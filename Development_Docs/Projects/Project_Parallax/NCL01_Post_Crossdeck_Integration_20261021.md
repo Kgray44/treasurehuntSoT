@@ -406,3 +406,50 @@ live browser engine or physical acceptance is not automatically a prohibition
 on that source integration. The full physical milestone remains unaccepted.
 No ordinary decision, merge, landed smoke or new signed beta has been performed
 at this preparation checkpoint.
+
+## Corrected browser execution and actual readiness
+
+Correction `846ef70ebdcbe45c75dfeb6171f31f11d243a45c`, tree
+`56d660781a0f41af1a5568eb1f1156f87eecf823`, was normally pushed to the two
+existing owned branches and PR741. The protected development workflow at aaff
+completed [39706781483](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39706781483)
+successfully. Its
+[independent original-log review](evidence/ncl01-full-completion-20261021/browser-39706781483.json)
+binds exact source, locked preparation, production execution, browser/server
+tree and stream cleanup, and closed proxy. The separately downloaded job log
+matches the original run ZIP entry. No artifact, exact executed-case denominator
+or report digest is published; seven remains the declared source count. This
+is focused development success, not a Mainline Decision or physical acceptance.
+
+The separate
+[Windows846 diagnostic](evidence/ncl01-full-completion-20261021/consumer-local-846ef70e.failure.json)
+executed seven cases: six passed and one failed, without retries or skips.
+The corrected profile audit and Administrator case passed. Player advanced to
+actual immutable Voyage detail, then its second audit reported six contrast
+nodes while the retained trace showed route preparation/reveal in progress.
+Observed route attributes and timestamps are preserved; later screenshots and
+nominal CSS differ from those blended colors. This supports a missing test
+readiness precondition, not a proved static stylesheet defect. Player's later
+return/denial assertions were not reached. All78 new originals remain private,
+47 previous originals rehash unchanged, and setup/browser/server/proxy/port
+cleanup passed. The Linux pass does not erase this Windows failure.
+
+The next bounded test correction awaits the existing route's actual settled
+state, exact pathname/generation, one fully visible interactive layer and no
+outgoing layer under the existing expectation timeout, then runs the unchanged
+AXE audit once. It changes no animation, color, runtime deadline or serious/
+critical assertion, and uses no sleep, repeated input, re-audit or forced reduced
+motion. Independent review confirmed normal and reduced modes against the
+actual RouteMotionBoundary source. A fresh current-test execution is required.
+
+Static pre-capture review also found that the two new Admiralty/private-trial
+contracts selected an account button absent from their tokenized/development
+shells. Their corrected design uses the unconditional Home link only as
+navigation continuity. Actual natural sign-in, canonical role/owner guards and
+exact account headings at setup/return prove their separate account obligation.
+Admiralty now enters through the real account menu; the private trial retains
+its direct authorized URL and adds a real account-menu return. No Sea Trials
+entry is invented, no production test hook is added, and no protected existing
+contract is changed. The other493 contracts and global policy remain preserved.
+These are corrections to the new prepared design before capture, not removal
+of a governed identity requirement or an experience exemption.

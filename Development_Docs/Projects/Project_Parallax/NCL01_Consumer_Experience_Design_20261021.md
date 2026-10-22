@@ -102,6 +102,24 @@ accepted Inspect remain covered by their actual canonical handoff tests;
 ordinary browser capture does not pretend to exercise an unavailable native
 camera.
 
+The new Admiralty journey starts at Personal Harbor, verifies the actual
+synthetic Administrator heading, and uses the visible account menu to enter
+Admiralty. It retains Platform Overview, the real People known-clue empty state
+and Return to account, then verifies the same exact account heading. The private
+trial journey retains its directly authorized development URL; no visible Sea
+Trials entry from Personal Harbor is invented. Its existing Player Library and
+Home path continues through the real account menu to Personal Harbor, where the
+exact synthetic Owner heading is visible again.
+
+Admiralty's tokenized shell and the private trial's development shell do not
+render the ordinary account button. For these two new experiences only, the
+unconditional Voyagewright Home link supplies navigation-only continuity of its
+`href`. It does not prove account identity. Real UI sign-in, the canonical
+role/owner gates and exact account headings at setup and contextual return retain
+that separate obligation. Other family selectors, protected journeys, feedback
+bounds and privacy assertions remain unchanged. This corrects the prepared new
+design before capture and removes no governed obligation or production control.
+
 Every new role journey runs on desktop and constrained mobile, in normal and
 reduced motion. Actual keyboard activation, focus, overflow, serious/critical
 accessibility findings, feedback and contextual return remain blocking.

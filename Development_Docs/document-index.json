@@ -13137,6 +13137,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/browser-39706781483.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/browser-focused.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -13192,6 +13198,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/consumer-freeze-local-observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/consumer-local-846ef70e.failure.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
