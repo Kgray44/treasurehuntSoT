@@ -20,9 +20,11 @@ The candidate also consumes accepted Sounding Line repair787 and accepted
 inventory publication786. The corrected local journey passes all seven cases;
 its capacity-control failure is retained separately. The secure read-only Apple
 preflight passes without publishing a beta. Accepted shared classification
-repair790 removes the earlier unrelated-expiry block. Current exact-base
-experience capture, independent review and protected qualification remain
-pending. The implementation record preserves the original failed attempt;
+repair790 removes the earlier unrelated-expiry block. The current protected
+plan succeeds with eighteen contracts and74 planned contexts. Capture39788400044
+is cancelled without media after an unobservable preparation interval;
+independent review and protected qualification remain pending. The
+implementation record preserves both original attempts;
 this candidate has not been merged.
 This does not establish combined experience or protected
 acceptance, and the installed internal beta 7 has not changed. Browser Lens

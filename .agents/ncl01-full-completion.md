@@ -93,8 +93,32 @@ denial. The prior failure remains immutable; do not repeat its unchanged inputs,
 extend expiry, borrow721 slots, inject an earlier clock or weaken protection.
 The normal Linux capture path is available after publishing the reconciled
 candidate and pinning the actual protected base. Static registry inspection is
-not an official plan or selected-context denominator. Capture, review and the
-ordinary gate remain pending. Keep PR741 draft until its own evidence is ready.
+not an official plan or selected-context denominator. Keep PR741 draft until
+its own evidence is ready.
+
+Current capture39788400044/1 uses protected39/inputbe9. Its official plan
+selects18 contracts,68 generic+6 paired=74 contexts,3 paired cases,10 declared
+browser files, no uncertainty and no exception. These are planned obligations,
+not executed counts. Step9 exposes no subphase after13:50:36. Normal owned
+cancellation requested14:11:39 succeeds; step cancelled14:12:14, job completed
+14:12:20, aggregate terminal cancelled observed14:19:49. Retained artifacts
+contain only the exact plan and encrypted retention index, no media, packet or
+runtime/profile cleanup receipt. App/build/capture execution and hosted
+cleanup remain unproved. No force action, retry, Mainline Decision or merge.
+No finite reservation is written by this run by the source-bound PR741/721
+custody inference; remote ledger is unaudited and no retry right is inferred.
+
+One10-second noncapturing readonly recognition probe observes59 completed Git
+reads before timeout and owned Windows tree/stream cleanup PASS. Repeated
+historical comparisons are a profiling lead, not the proved hosted cause;
+local Node24.18 differs from hosted24.19. Next profiling belongs to the existing
+Sounding Line owner. Do not launch a replacement capture or competing repair.
+For future owned hosted work, investigate ten minutes without demonstrated
+subphase/child progress rather than relying on in_progress. Check supported
+live evidence boundedly, use normal owned cancellation when progress cannot
+be demonstrated, preserve retention and verify terminal state. Force cancellation
+requires evidence that graceful cancellation has not stopped active work;
+stale aggregate metadata alone is insufficient.
 
 Generic capture/review admission requires exact protected-base identity. An
 advancing main requires fresh planning/capture/review; source equivalence alone

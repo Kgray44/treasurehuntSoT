@@ -32,8 +32,13 @@ last_reviewed: 2026-10-22
   source order; no capture, review or Mainline Decision occurred. Accepted
   retention repair789 is reconciled normally and leaves that guard unchanged.
   Accepted classification repair790 is now reconciled normally and removes the
-  unrelated-expiry block. Current exact-base capture and independent review
-  remain pending; the earlier failure is preserved.
+  unrelated-expiry block. Current39/be9 planning succeeds with eighteen
+  contracts and74 planned contexts. Capture39788400044 is cancelled without
+  media after an unobservable preparation interval; its cause and hosted
+  application cleanup remain unproved. Independent review remains pending;
+  all original failures and cancellation evidence are preserved. One bounded
+  noncapturing probe observes repeated Git reads without proving the hosted
+  cause; no capture retry or protected-framework change follows.
   Accepted reader repair788 is also reconciled normally; its changed producer
   fingerprints do not refresh old NCL evidence. The preserved older preview was
   restored through its reviewed wrapper and passes bounded loopback checks;

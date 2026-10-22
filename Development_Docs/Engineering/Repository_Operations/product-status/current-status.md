@@ -24,8 +24,10 @@ honor the capacity stop remains recorded. The secure hosted read-only Apple
 preflight verifies matching signing material and app/group read access without
 uploading a beta. Accepted diagnostic-retention repair789 is also preserved.
 Accepted shared classification repair790 removes the earlier unrelated-expiry
-block. Current exact-base capture, independent review, ordinary protected
-integration, physical and owner acceptance remain open. Internal beta 7
+block. The current39/be9 protected plan selects eighteen contracts and74
+planned contexts. Capture39788400044 is cancelled without media; its cause
+and hosted application cleanup remain unproved. Independent review, ordinary
+protected integration, physical and owner acceptance remain open. Internal beta 7
 has not been replaced.
 
 The earlier [October 21 NCL-01 completion ledger](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)

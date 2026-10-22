@@ -13197,6 +13197,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/capture-admission-probe-be9abdac.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/capture-prerequisites-90bff6ec-b1a1f44f.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -13306,6 +13312,24 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/experience-39719820417.protected-gate-source.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/experience-39788400044.cancellation-request.original.json.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/experience-39788400044.cancelled.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/experience-39788400044.plan.original.json.txt",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -13450,6 +13474,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/local-plan-readiness-8da951e2.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/local-plan-readiness-be9abdac.timeout.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

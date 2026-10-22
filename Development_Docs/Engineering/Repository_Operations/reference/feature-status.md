@@ -23,8 +23,10 @@ inventory publication786 are consumed. The corrected local journey passes
 seven cases; its capacity-control failure remains separate. Hosted read-only
 Apple readiness passes without publishing a beta. Accepted diagnostic-retention
 repair789 is preserved. Accepted shared classification repair790 removes the
-earlier unrelated-expiry block. Current exact-base capture, independent review
-and combined experience qualification remain pending.
+earlier unrelated-expiry block. The current39/be9 protected plan succeeds with
+eighteen contracts and74 planned contexts. Capture39788400044 is cancelled
+without media; no hosted cause or application cleanup is proved. Independent
+review and combined experience qualification remain pending.
 This is scoped development evidence, not combined experience, protected-main,
 physical or owner acceptance. Internal beta 7 remains unchanged; Feature Catalog
 promotion remains deferred.
