@@ -1,0 +1,698 @@
+{
+  "schemaVersion": 1,
+  "role": "ACCEPTED_790_NCL_NORMAL_RECONCILIATION_SOURCE_APPLICABILITY",
+  "qualification": false,
+  "result": "READY_FOR_CONTROLLED_NORMAL_RECONCILIATION_SOURCE_ONLY",
+  "reviewedUtc": "2026-10-22T12:58:33.574Z",
+  "source": {
+    "acceptedMain": "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+    "acceptedMainTree": "54669bc7d6723bdb61067017d2b29844046d92f3",
+    "acceptedMainOrderedParents": [
+      "408f37389e6dd358b1ab005d91f3f588405f61db",
+      "e1b50367cb7ff5c97e2ab4b945c976f9b41d6c2f"
+    ],
+    "acceptedPullRequest": 790,
+    "acceptedHead": "e1b50367cb7ff5c97e2ab4b945c976f9b41d6c2f",
+    "nclBefore": "d61b3ca297b9e489db2bd3779acfb5e55fd7efdc",
+    "nclBeforeTree": "55380aa386b3aa11e20ab062a62463e8be5eb49f",
+    "actualNormalNclMerge": "b1a1f44f4b4b1f1bc3e66958f21f01f52dfc6d5f",
+    "actualNormalNclMergeTree": "205efe8c7b32caf86b4385c23dd385f22776013c",
+    "actualNormalNclMergeOrderedParents": [
+      "d61b3ca297b9e489db2bd3779acfb5e55fd7efdc",
+      "90bff6ec281d79a6788c8270a8a3d67fd8257010"
+    ],
+    "parentReportedRemoteMainVerification": "2026-10-22T12:47Z",
+    "freshRemoteMainQueriedByThisAudit": false
+  },
+  "completeAcceptedDelta": [
+    {
+      "status": "M",
+      "path": ".agents/README.md",
+      "beforeBlob": "55c49f0525000b0553d7d913ee9f67580656e771",
+      "acceptedBlob": "8322c155502f7bfd89960cf6030a8c489b866b0e",
+      "mergedBlob": "f49bebe030d05899bb89dc14e8e359ba0981b03e",
+      "beforeMode": "100644",
+      "afterMode": "100644",
+      "afterBlob": "8322c155502f7bfd89960cf6030a8c489b866b0e"
+    },
+    {
+      "status": "A",
+      "path": ".agents/unrelated-expired-r26-repair.md",
+      "beforeBlob": "0000000000000000000000000000000000000000",
+      "acceptedBlob": "857058cba66a00fb77a08858895339ce719a9570",
+      "mergedBlob": "857058cba66a00fb77a08858895339ce719a9570",
+      "beforeMode": "000000",
+      "afterMode": "100644",
+      "afterBlob": "857058cba66a00fb77a08858895339ce719a9570"
+    },
+    {
+      "status": "A",
+      "path": "Development_Docs/Engineering/Sounding_Line_Expired_R26_Unrelated_Classification_Repair.md",
+      "beforeBlob": "0000000000000000000000000000000000000000",
+      "acceptedBlob": "ef9a815a25784160482c1e383cb4128a62c09c38",
+      "mergedBlob": "ef9a815a25784160482c1e383cb4128a62c09c38",
+      "beforeMode": "000000",
+      "afterMode": "100644",
+      "afterBlob": "ef9a815a25784160482c1e383cb4128a62c09c38"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "beforeBlob": "4d94360570b00628f8b008ac554187b8cb1534c0",
+      "acceptedBlob": "0f23bd3a74b32b092dc934f36ee9681f0ac00aaa",
+      "mergedBlob": "768aeccb927ef268b867aa1768e6b91ca35cc5c6",
+      "beforeMode": "100644",
+      "afterMode": "100644",
+      "afterBlob": "0f23bd3a74b32b092dc934f36ee9681f0ac00aaa"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/document-index.json",
+      "beforeBlob": "e18ad5b7b14c2cb251d86dd3c804705255b3a0da",
+      "acceptedBlob": "b089f2147852e1a6b42d29c26dabe9e26edb3fc4",
+      "mergedBlob": "c60cee2d25fd38879f45a9e837f2cc19388b9a58",
+      "beforeMode": "100644",
+      "afterMode": "100644",
+      "afterBlob": "b089f2147852e1a6b42d29c26dabe9e26edb3fc4"
+    },
+    {
+      "status": "M",
+      "path": "package.json",
+      "beforeBlob": "94a936609579a5a517fd837deba77f628a10ad27",
+      "acceptedBlob": "b7ec471124730fc29fd419d0c388397bc518d98a",
+      "mergedBlob": "b7ec471124730fc29fd419d0c388397bc518d98a",
+      "beforeMode": "100644",
+      "afterMode": "100644",
+      "afterBlob": "b7ec471124730fc29fd419d0c388397bc518d98a"
+    },
+    {
+      "status": "M",
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "beforeBlob": "b2205c9d8953228e282dcce336e6086f8120886c",
+      "acceptedBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b",
+      "mergedBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b",
+      "beforeMode": "100644",
+      "afterMode": "100644",
+      "afterBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b"
+    },
+    {
+      "status": "M",
+      "path": "tests/sounding-line/experience-current-admission.test.mjs",
+      "beforeBlob": "c1b0fe8eef32c6a80a43445f856c62f1600818d5",
+      "acceptedBlob": "966ad4d107e15f2351caf12fd36fc74601367401",
+      "mergedBlob": "966ad4d107e15f2351caf12fd36fc74601367401",
+      "beforeMode": "100644",
+      "afterMode": "100644",
+      "afterBlob": "966ad4d107e15f2351caf12fd36fc74601367401"
+    },
+    {
+      "status": "M",
+      "path": "tests/sounding-line/experience-exception.test.mjs",
+      "beforeBlob": "485b78ac9cc3256d5687c033a170ce2b25723e0e",
+      "acceptedBlob": "09b70143551f6b05c94c5e29b73142b8f8d2b5d1",
+      "mergedBlob": "09b70143551f6b05c94c5e29b73142b8f8d2b5d1",
+      "beforeMode": "100644",
+      "afterMode": "100644",
+      "afterBlob": "09b70143551f6b05c94c5e29b73142b8f8d2b5d1"
+    },
+    {
+      "status": "M",
+      "path": "tests/sounding-line/experience-r26.test.mjs",
+      "beforeBlob": "1c5e30d004cf8f6ddd28fafe527c7fb80cfb99d4",
+      "acceptedBlob": "866ed4ab9b86bbea065d6252625939c2459a0da4",
+      "mergedBlob": "866ed4ab9b86bbea065d6252625939c2459a0da4",
+      "beforeMode": "100644",
+      "afterMode": "100644",
+      "afterBlob": "866ed4ab9b86bbea065d6252625939c2459a0da4"
+    },
+    {
+      "status": "A",
+      "path": "tests/sounding-line/unrelated-expired-r26.test.mjs",
+      "beforeBlob": "0000000000000000000000000000000000000000",
+      "acceptedBlob": "d6505db91f5db2d992be0fbfb31d53ad706f110f",
+      "mergedBlob": "d6505db91f5db2d992be0fbfb31d53ad706f110f",
+      "beforeMode": "000000",
+      "afterMode": "100644",
+      "afterBlob": "d6505db91f5db2d992be0fbfb31d53ad706f110f"
+    }
+  ],
+  "completeNclMergeDelta": [
+    {
+      "status": "M",
+      "path": ".agents/README.md"
+    },
+    {
+      "status": "A",
+      "path": ".agents/unrelated-expired-r26-repair.md"
+    },
+    {
+      "status": "A",
+      "path": "Development_Docs/Engineering/Sounding_Line_Expired_R26_Unrelated_Classification_Repair.md"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv"
+    },
+    {
+      "status": "M",
+      "path": "Development_Docs/document-index.json"
+    },
+    {
+      "status": "M",
+      "path": "package.json"
+    },
+    {
+      "status": "M",
+      "path": "scripts/sounding-line/experience-exception.mjs"
+    },
+    {
+      "status": "M",
+      "path": "tests/sounding-line/experience-current-admission.test.mjs"
+    },
+    {
+      "status": "M",
+      "path": "tests/sounding-line/experience-exception.test.mjs"
+    },
+    {
+      "status": "M",
+      "path": "tests/sounding-line/experience-r26.test.mjs"
+    },
+    {
+      "status": "A",
+      "path": "tests/sounding-line/unrelated-expired-r26.test.mjs"
+    }
+  ],
+  "positiveTreeScopes": [
+    {
+      "path": "src",
+      "kind": "tree",
+      "acceptedBefore": "75a313c3d1d252793dedfa26c76d3e76b71e9ce6",
+      "acceptedAfter": "75a313c3d1d252793dedfa26c76d3e76b71e9ce6",
+      "nclBefore": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "nclAfter": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": "native",
+      "kind": "tree",
+      "acceptedBefore": "bbdee2ec61f34b8a4d6da1fc2d2c0e086c4ecc02",
+      "acceptedAfter": "bbdee2ec61f34b8a4d6da1fc2d2c0e086c4ecc02",
+      "nclBefore": "e09204778f7cfe91039656e1e29efe89df25972e",
+      "nclAfter": "e09204778f7cfe91039656e1e29efe89df25972e",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": "public",
+      "kind": "tree",
+      "acceptedBefore": "c83c10066b6513478c9e4398f39b1f19b1c45678",
+      "acceptedAfter": "c83c10066b6513478c9e4398f39b1f19b1c45678",
+      "nclBefore": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "nclAfter": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": "prisma",
+      "kind": "tree",
+      "acceptedBefore": "a6352d94b93ffe8a12636f38b054a98a627fa4e4",
+      "acceptedAfter": "a6352d94b93ffe8a12636f38b054a98a627fa4e4",
+      "nclBefore": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "nclAfter": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": "testing",
+      "kind": "tree",
+      "acceptedBefore": "aeb0f17e35e21be3559b6e57471d6aff257a9e20",
+      "acceptedAfter": "aeb0f17e35e21be3559b6e57471d6aff257a9e20",
+      "nclBefore": "3428809cf89d66123588c141f027649edb162b76",
+      "nclAfter": "3428809cf89d66123588c141f027649edb162b76",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": "tests/e2e",
+      "kind": "tree",
+      "acceptedBefore": "aedcadb36870f970448ed806c44805fcbeb2ccc1",
+      "acceptedAfter": "aedcadb36870f970448ed806c44805fcbeb2ccc1",
+      "nclBefore": "dfca40239784a21cfec9f980cfa114e0bd1e166f",
+      "nclAfter": "dfca40239784a21cfec9f980cfa114e0bd1e166f",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": "scripts/landfall",
+      "kind": "tree",
+      "acceptedBefore": "d24a622426987534973abf65328a59f076ab4ebd",
+      "acceptedAfter": "d24a622426987534973abf65328a59f076ab4ebd",
+      "nclBefore": "d0e21d83f79a0d0b5c0cac6d00cdb1f93ede9d78",
+      "nclAfter": "d0e21d83f79a0d0b5c0cac6d00cdb1f93ede9d78",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": ".github/workflows",
+      "kind": "tree",
+      "acceptedBefore": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "acceptedAfter": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "nclBefore": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "nclAfter": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax",
+      "kind": "tree",
+      "acceptedBefore": "e0f2a7105c982d8de82bb532a04c250cc188b779",
+      "acceptedAfter": "e0f2a7105c982d8de82bb532a04c250cc188b779",
+      "nclBefore": "0ffe91d811fc914cac70f6b1bffaf52b2fbc1352",
+      "nclAfter": "0ffe91d811fc914cac70f6b1bffaf52b2fbc1352",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    },
+    {
+      "path": "Development_Docs/Features",
+      "kind": "tree",
+      "acceptedBefore": "f8e155b482046cdd73c2858d775a5d37efd936c7",
+      "acceptedAfter": "f8e155b482046cdd73c2858d775a5d37efd936c7",
+      "nclBefore": "f8e155b482046cdd73c2858d775a5d37efd936c7",
+      "nclAfter": "f8e155b482046cdd73c2858d775a5d37efd936c7",
+      "acceptedDeltaUnchanged": true,
+      "nclMergeUnchanged": true,
+      "positiveNonempty": true
+    }
+  ],
+  "unchangedInputBindings": [
+    {
+      "path": "package-lock.json",
+      "gitBlob": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "bytes": 397906,
+      "sha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+      "identicalToD61": true
+    },
+    {
+      "path": ".nvmrc",
+      "gitBlob": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "bytes": 8,
+      "sha256": "7e8a2fa94951112b894a3dbe3d05efef5e9263741fa49125f0a70f40fedab4cc",
+      "identicalToD61": true
+    },
+    {
+      "path": ".node-version",
+      "gitBlob": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "bytes": 8,
+      "sha256": "7e8a2fa94951112b894a3dbe3d05efef5e9263741fa49125f0a70f40fedab4cc",
+      "identicalToD61": true
+    },
+    {
+      "path": "tsconfig.json",
+      "gitBlob": "45df8a341097f1492f6947cf685aa94422d852aa",
+      "bytes": 1929,
+      "sha256": "487d8c43420f0bdf5107c5a14dc16a972ba568e409a104b2a5b1efacdba7457f",
+      "identicalToD61": true
+    },
+    {
+      "path": "next.config.ts",
+      "gitBlob": "76a78483839ff606b9706867a5c442857e7a2456",
+      "bytes": 1355,
+      "sha256": "3b3016289bd66534e24c1d4d1f6ce169fe764ddb49228a196559b255f01743b8",
+      "identicalToD61": true
+    },
+    {
+      "path": "playwright.config.ts",
+      "gitBlob": "e43e9912bc263909c58a31ded843a25209761917",
+      "bytes": 2198,
+      "sha256": "9dd00e6d1d9b914a50da93bf30f0d8a3b05e8bcc217dfa1865d7306106057e3d",
+      "identicalToD61": true
+    },
+    {
+      "path": "testing/contracts.json",
+      "gitBlob": "e0adec7671ba3967ca480a0bf1e1c84731fb0463",
+      "bytes": 315479,
+      "sha256": "6ec9284f9a6f75c88caab48aee68646d96580218da77f56f582c9a978e79e785",
+      "identicalToD61": true
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "gitBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+      "bytes": 10079573,
+      "sha256": "404670ce9f99e960b8805571dd4f463f4ca3ab6c61162b5d51e33d361d8e67d7",
+      "identicalToD61": true
+    },
+    {
+      "path": "src/parallax/scene-delivery.ts",
+      "gitBlob": "0d38df18eac76c5b8ea346cc8e11f0504bcacd60",
+      "bytes": 9706,
+      "sha256": "708e29d20b45ead918487962cd246d5cccf976c47f117814e2edb227f59d6e5c",
+      "identicalToD61": true
+    },
+    {
+      "path": "src/parallax/runtime.ts",
+      "gitBlob": "d483f0ce693c9b2886270fd4a318aa8a973bbdf3",
+      "bytes": 28405,
+      "sha256": "6b73104b699e0b4b66e03457d29dc24489f4a33ca61176c9871c7391a10c1f51",
+      "identicalToD61": true
+    },
+    {
+      "path": "src/parallax/native.ts",
+      "gitBlob": "cb7ec284ed71e23938949e9bcec42363013ded41",
+      "bytes": 13307,
+      "sha256": "7067190cbda2536cb0d82f7a3eb1d157d381c971392a4fe41b9ac1529302cf94",
+      "identicalToD61": true
+    },
+    {
+      "path": "src/parallax/asset-delivery.ts",
+      "gitBlob": "1d355cd496e326f3eb8af860ca6f5ad7b887e4c4",
+      "bytes": 2953,
+      "sha256": "f2f4c5ab3361feb4ec30b81921d89ef9c3d5b93e290ee627f788944a4bd90148",
+      "identicalToD61": true
+    },
+    {
+      "path": "src/parallax/asset-catalog.ts",
+      "gitBlob": "3c40ace20221b3ab7b711ddfcbbd506e5b25cc3e",
+      "bytes": 7978,
+      "sha256": "00de469ac13fba557293c1da96c76abd0faed7fa81be456b69ec63f53c15de79",
+      "identicalToD61": true
+    },
+    {
+      "path": "src/parallax/element-contracts.ts",
+      "gitBlob": "1850bb64358313ab61f00d8580d71bee991386ee",
+      "bytes": 2807,
+      "sha256": "8129ec09dde86f2d542b94e1886c71784142b63e21ccbcbe2b5db536ee44c046",
+      "identicalToD61": true
+    },
+    {
+      "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "gitBlob": "4def6bcd8094233afe90a63afe843441153a2221",
+      "bytes": 17128,
+      "sha256": "c05e517d79d0fb88304ed52a4ba19eeb37d80c4064fccf81556a6094504bb98b",
+      "identicalToD61": true
+    },
+    {
+      "path": "tests/e2e/fixtures/ncl01-experience.ts",
+      "gitBlob": "c6c222d120af1cee17e743720175954f665da2a0",
+      "bytes": 8921,
+      "sha256": "df50153965ba3ffc066b191609bb85bc5947fa6cc5ceb71c2e70ef8a59802798",
+      "identicalToD61": true
+    },
+    {
+      "path": "tests/e2e/parallax-native-authority.spec.ts",
+      "gitBlob": "544e5478868aea3cb52a7ee697714bc16ee2c189",
+      "bytes": 25034,
+      "sha256": "36443e23eeb78e1a6ccb06b7351096ca85f4288d836c5e924435c6fd98832263",
+      "identicalToD61": true
+    },
+    {
+      "path": "native/ios/project.yml",
+      "gitBlob": "9d09991534263e5cba6b6182b3ba00c6d71cf163",
+      "bytes": 4244,
+      "sha256": "3a1b86a74eddf166290865875d38039984d4457862ee540a3cb1ce1a6e0929fc",
+      "identicalToD61": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Landfall.entitlements",
+      "gitBlob": "3950d3193db7ecc168c54b9d50da4788e56802ee",
+      "bytes": 276,
+      "sha256": "2e50985b36334dd681cc0accc904a5f5fc4a0527b384ef57233cbd4a46a2889a",
+      "identicalToD61": true
+    },
+    {
+      "path": ".agents/ncl01-testflight-hosted.yml",
+      "gitBlob": "1c352e591460455d5a5b5872b5bd3066dfc08c19",
+      "bytes": 5145,
+      "sha256": "9e04245a62e55e65010c503bf257c38f526fb4735adb6bf87f59b9fdddf860a3",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/landfall/testflight/dispatch.mjs",
+      "gitBlob": "2c688278ba9ec38ca977614e457fa259dc688141",
+      "bytes": 5087,
+      "sha256": "b4932d711692dbdaa69bc19ccc238006bb77ecdb32d253d5e9bee6a5fff14324",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/landfall/testflight/dispatch.test.mjs",
+      "gitBlob": "b06b9818c9bd5b39de0f3dcb8d8f56a7bb580059",
+      "bytes": 3698,
+      "sha256": "36d7bae3c1ae9ee81eba73d1519922719ab71650dfbf4c48a2b9f9363b29c895",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/landfall/testflight/runner.py",
+      "gitBlob": "36e4f1c39406930920790c18eb75b55d489905b3",
+      "bytes": 42399,
+      "sha256": "a1922ac0838730c55c52dc91b71672fc95f4d9896041f28f9c712958563a0d40",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/landfall/testflight/release_proof.py",
+      "gitBlob": "d7a470dffdee35c624da532bbed59fef63be60ac",
+      "bytes": 10642,
+      "sha256": "ea5211be5c92cccfa59e8a5fcfde67760daa981c960ee776e18a0c35771228d7",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/landfall/testflight/test_runner.py",
+      "gitBlob": "562cbd6f11c98cd1b3e4d80de1d607bec4f5001b",
+      "bytes": 35272,
+      "sha256": "bcf5fe2cb270f3ed3df543d80dc2e937755dd020c661de11ac2c7cd05b330d2a",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/landfall/testflight/test_release_proof.py",
+      "gitBlob": "603f858ed1b369781e56748d860677582a284fd2",
+      "bytes": 8136,
+      "sha256": "fe74e2bae5d6678de890549700daa05dc198a0bc5f5b077af5034da3c25d760a",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/sounding-line/develop-browser-suite.mjs",
+      "gitBlob": "7fb4e359a06b3a9bdf31b7d8c28196125b5393f1",
+      "bytes": 34045,
+      "sha256": "876f1580c75fcf7807f5365eb5bbcfec62e4246b3ea1c681e51d8aa848b0bf58",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "gitBlob": "3aa54fc3fbd342adc3218aecdccc9dd660cfb3b7",
+      "bytes": 27530,
+      "sha256": "ba53d79ec0dd234c9ee9aa608563f141522ddf7c05241f5547321110c2dcc55a",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/sounding-line/owned-process.mjs",
+      "gitBlob": "d2051a5f5809e634c1b2c1a99a052edbcd060c3d",
+      "bytes": 7087,
+      "sha256": "28266ddb98360512d8196ae4a71ceb92a447c98128b0b5156b95f5aaab9d18df",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/sounding-line/owned-process-windows.ps1",
+      "gitBlob": "63221fa37a288fb1f1c18161aef2146a83117171",
+      "bytes": 6450,
+      "sha256": "a07a54452b7f67c0b730c8361be674defcc52c90a5cccca804cf3a92d5bb179c",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/sounding-line/browser-suite-profiles.mjs",
+      "gitBlob": "dff446c5d211fbbb477e64c8720da0e93baaf1df",
+      "bytes": 7220,
+      "sha256": "6e41b1d1c9a4b300e16b0104a953f6358e328d67fabc59106da468cc181e4c4a",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r26.mjs",
+      "gitBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100",
+      "bytes": 23311,
+      "sha256": "c6475a1098f45d84fc231545b9a5505b8b0e209964423f77d76ad1cbcf0f772f",
+      "identicalToD61": true
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-admission.mjs",
+      "gitBlob": "540ba2ea53d30535fc34c6d19dda578776cc9a11",
+      "bytes": 92400,
+      "sha256": "5418df7a1028bb56d7736e5a411f08684b191615c76a708f9f7194a7510f2024",
+      "identicalToD61": true
+    }
+  ],
+  "originalAssetBindings": [
+    {
+      "path": "public/parallax/sc02/models/brass-compass.glb",
+      "gitBlob": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+      "bytes": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "identicalToD61": true,
+      "originalExpectedDigestMatches": true
+    },
+    {
+      "path": "public/parallax/sc02/models/treasure-chest.glb",
+      "gitBlob": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+      "bytes": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "identicalToD61": true,
+      "originalExpectedDigestMatches": true
+    },
+    {
+      "path": "public/parallax/sc02/manifest.json",
+      "gitBlob": "83f1bd55b1fc515957afd64ab311c2139382b036",
+      "bytes": 21968,
+      "sha256": "96b6c0756b4ad50be647a4051fe4a1c70e5464ef086c2e806ce6a04cac4aed92",
+      "identicalToD61": true
+    },
+    {
+      "path": "public/parallax/sc02/LICENSE.txt",
+      "gitBlob": "4e2c30687d3667abc1fa5057728ad09735bdbd76",
+      "bytes": 351,
+      "sha256": "9edd08a1c9c15e6174ddd2bf9c5783c35a2e47ee9113e190b8754894cbcd5f3c",
+      "identicalToD61": true
+    },
+    {
+      "path": "public/parallax/sc02/THREE-LICENSE.txt",
+      "gitBlob": "8ada2a5f982916b0ba4b7a0aa7de347587e745d7",
+      "bytes": 1081,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+      "identicalToD61": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+      "gitBlob": "448bba68585527f2b53db02966a579084610a30b",
+      "bytes": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+      "identicalToD61": true,
+      "originalExpectedDigestMatches": true
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+      "gitBlob": "448bba68585527f2b53db02966a579084610a30b",
+      "bytes": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+      "identicalToD61": true,
+      "originalExpectedDigestMatches": true
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+      "gitBlob": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+      "bytes": 2719555,
+      "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+      "identicalToD61": true,
+      "originalExpectedDigestMatches": true
+    }
+  ],
+  "packageSemantics": {
+    "acceptedDelta": {
+      "beforeBlob": "94a936609579a5a517fd837deba77f628a10ad27",
+      "afterBlob": "b7ec471124730fc29fd419d0c388397bc518d98a",
+      "onlyChangedKey": "scripts.test:sounding-line",
+      "addedExistingCommandArgument": "tests/sounding-line/unrelated-expired-r26.test.mjs",
+      "dependenciesDevDependenciesEnginesOverridesAndOtherFieldsIdentical": true
+    },
+    "nclMerge": {
+      "beforeBlob": "94a936609579a5a517fd837deba77f628a10ad27",
+      "afterBlob": "b7ec471124730fc29fd419d0c388397bc518d98a",
+      "onlyChangedKey": "scripts.test:sounding-line",
+      "addedExistingCommandArgument": "tests/sounding-line/unrelated-expired-r26.test.mjs",
+      "dependenciesDevDependenciesEnginesOverridesAndOtherFieldsIdentical": true
+    }
+  },
+  "changedAuthority": {
+    "path": "scripts/sounding-line/experience-exception.mjs",
+    "beforeGitBlob": "b2205c9d8953228e282dcce336e6086f8120886c",
+    "acceptedGitBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b",
+    "sourceSha256": "536781f00c78e98387f405a71bd4e9737951126f5faff1b72079cc274fe3653a",
+    "sourceAnchors": {
+      "historicalUnrelatedLookup": 754,
+      "historicalShapeValidation": 758,
+      "unrelatedNoBindingReturn": 761,
+      "relatedOriginalLiveValidationReturn": 762,
+      "comparisonHeldPerInvocation": 783,
+      "bindEntry": 943,
+      "cliApplicableRead": 2983
+    },
+    "behavior": [
+      "Full installed R26 record shape is validated at its original deadline solely for recognizing an unrelated lookup.",
+      "An unrelated lookup returns no binding/record/slot/execution authority.",
+      "Any recognized campaign returns through original trustedExceptions and its original real wall-clock validation and downstream gates.",
+      "All original history signals remain; metadata is cached only inside one comparison of two exact revisions, including directory and exact shared-review identity signals."
+    ],
+    "unchangedGuardRegistryWorkflowInputs": [
+      "testing/product-experience-exceptions.json",
+      "scripts/sounding-line/experience-current-r26.mjs",
+      "scripts/sounding-line/experience-current-admission.mjs",
+      ".github/workflows"
+    ],
+    "expiredR26RelatedPath": "FAIL_CLOSED_BY_UNCHANGED_WALL_CLOCK_GUARD",
+    "actual741AuthoritativePlanExecutedByThisAudit": false,
+    "actual741PlanExceptionCampaignAbsence": "NOT_YET_OBSERVED_ON_B1_MERGE",
+    "acceptedTestSourceCoverage": [
+      "Unrelated changed-head and same-source binder/CLI return null or campaign=false, with refs/files unchanged.",
+      "Recognized721 and immutable file/directory/shared-review campaign signals remain expired-denied.",
+      "Malformed R26/missing or changed predecessor records fail closed.",
+      "Historical unit fixtures freeze Date inside the authorized window and retain explicit after-deadline/expiry assertions; the original custody assertion remains."
+    ],
+    "pr788AuthorityUsed": false,
+    "syntheticPr788InAcceptedTestMeaning": "Numeric unrelated-consumer fixture only; no uninstalled788 code, grant, workflow or authority imported."
+  },
+  "evidenceApplicability": {
+    "applicationNativeAndCanonicalAuthoritySourceUnchangedFromD61": true,
+    "authoredAssetsAndApprovedArtworkBytesUnchanged": true,
+    "lockedDependenciesEnginesAndSigningInputsUnchanged": true,
+    "consumerUiSpecAndCanonicalFixtureBytesUnchanged": true,
+    "landfallNativeLabAndArchiveScriptsUnchanged": true,
+    "parallaxEvidenceAndFeatureCatalogTreesUnchanged": true,
+    "allPriorEvidenceKeepsOriginalSourceEnvironmentFailureAndAcceptanceLimits": true,
+    "newNativeGpuPhysicalOrArchiveResultClaimed": false,
+    "wholeOldBuildOrSourceDigestEqualityClaimed": false,
+    "oldAuthorityOrMainlineReceiptReusedAsNewQualification": false,
+    "changedPackageAndAuthorityInputsRequireFreshSourceBoundPlannerAndGovernedCapture": true
+  },
+  "requiredNextBoundary": [
+    "Root may reconcile by normal ancestry to the exact b1 merge; this audit does not import, push or modify a worktree.",
+    "Run the canonical read-only plan on the actual reconciled commit and installed90 base; verify normal741 routing has no exception/campaign binding before any fresh capture.",
+    "Preserve all prior failed receipts and original native/source/artwork evidence; qualify new capture/review/final gates separately."
+  ],
+  "activity": {
+    "onlyFrozenGitObjectsRead": true,
+    "positivePathsAllExistWithExpectedKindsAndNonemptyTrees": true,
+    "testsBuildsOrProductionAuthorityExecuted": false,
+    "ciDispatches": 0,
+    "repositoryRefsOrWorktreesChangedByThisAudit": false,
+    "cSourceAccessRequired": false,
+    "signingSecretsOrCurrentCertificateValidityInspected": false,
+    "appleOrDeploymentActions": 0,
+    "uninstalled788Used": false
+  },
+  "retention": {
+    "factsSha256": "55cf114290b218d01b0a63354f3f22266d4cb863bd9b35b678feae76aa013e8e",
+    "acceptedCodePatchSha256": "dba29420cb14d018f3336b80ee86122029be39d57d6cd6c15b38aa501a86f2fc",
+    "originalMapSha256": "ecf481d46604d33490b5337128287a52972d02dda3bce56b09e28f120c31a7cb",
+    "originalFileCount": 5,
+    "originalBytes": 189084
+  },
+  "limits": [
+    "Source applicability only: no new hosted/local test pass, protected Mainline result, capture acceptance, physical AR, signature validity or owner acceptance is inferred.",
+    "package.json and authority source are changed inputs; only the documented positive scopes/blobs and dependency semantics are identical.",
+    "The new accepted790 routing source is installed authority at the known pinned main; no later remote-main state was queried or assumed.",
+    "The actual normal741 plan has not been executed by this audit; its absence of exception/campaign binding remains an explicit pre-capture check.",
+    "The main merge and candidate merge were created by their owner; this audit read those existing objects without mutating refs/source/worktrees.",
+    "All review outputs and explicit temporary storage were confined to D."
+  ],
+  "reviewCorrection": {
+    "supersededReviewSha256": "c7385399cfcea0b4f0b5bbc890b93d47844bd7aac614010541374e4f8eae6460",
+    "changedField": "changedAuthority.sourceAnchors.relatedOriginalLiveValidationReturn",
+    "before": 756,
+    "after": 762,
+    "reason": "First occurrence was the legacy-base return; corrected to the recognized-related branch after unrelated-null selection. Source behavior, scopes, facts and original bytes unchanged."
+  }
+}

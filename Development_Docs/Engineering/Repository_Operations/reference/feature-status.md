@@ -22,8 +22,9 @@ return or authorization obligations. Accepted Sounding Line repair787 and
 inventory publication786 are consumed. The corrected local journey passes
 seven cases; its capacity-control failure remains separate. Hosted read-only
 Apple readiness passes without publishing a beta. Accepted diagnostic-retention
-repair789 is preserved. Current combined experience qualification is blocked
-before capture by an expired shared verification window.
+repair789 is preserved. Accepted shared classification repair790 removes the
+earlier unrelated-expiry block. Current exact-base capture, independent review
+and combined experience qualification remain pending.
 This is scoped development evidence, not combined experience, protected-main,
 physical or owner acceptance. Internal beta 7 remains unchanged; Feature Catalog
 promotion remains deferred.

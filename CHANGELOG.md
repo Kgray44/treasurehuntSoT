@@ -25,12 +25,15 @@ last_reviewed: 2026-10-22
   The candidate also consumes accepted Sounding Line repair787 and inventory
   publication786. The corrected local journey passes seven cases, with its
   capacity-control failure retained separately. A secure hosted read-only Apple
-  preflight passes without an archive, upload or group change. Combined current
-  experience qualification is blocked: ordinary capture39719820417 stopped
+  preflight passes without an archive, upload or group change. Historical
+  ordinary capture39719820417 stopped
   before planning/media when protected authority validated an expired Crossdeck
   execution window before NCL applicability. No reservation was reached by
   source order; no capture, review or Mainline Decision occurred. Accepted
   retention repair789 is reconciled normally and leaves that guard unchanged.
+  Accepted classification repair790 is now reconciled normally and removes the
+  unrelated-expiry block. Current exact-base capture and independent review
+  remain pending; the earlier failure is preserved.
   No combined experience, protected-main, physical or owner acceptance is claimed. Internal beta 7 and
   its official artwork remain unchanged.
 

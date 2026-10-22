@@ -23,6 +23,11 @@ Published0dccf762 is further reconciled with accepted789/main408f3738 by
 normal mergeffc3cb34ae7e7bb371e2d1ab2c7c9553f3c81d58. Its14 maintenance
 files leave app/native/assets/fixtures/contracts/signing/dependencies unchanged;
 browser producer/helper fingerprints changed, so retain old execution scopes.
+Accepted790/main90bff6ec281d79a6788c8270a8a3d67fd8257010 is consumed by
+normal mergeb1a1f44f4b4b1f1bc3e66958f21f01f52dfc6d5f, tree
+205efe8c7b32caf86b4385c23dd385f22776013c, preserving d61b3ca2 and90.
+Its eleven files change shared classification/tests/documentation, with no new
+native, application, asset, fixture, contract, dependency or signing behavior.
 Use this owned worktree and existing PR741; no force-push, successor PR or other
 project takeover. PR781 remains the separate documentation owner. Future
 NCL02/03 are proposals, not this implementation's authority.
@@ -76,13 +81,21 @@ PRODUCT_EXPERIENCE_EXCEPTION_R26_RECORD_OR_EXPIRY_CHANGED. Actual check
 04:05:13.808Z exceeded the fixed Crossdeck owner execution deadline03:59:59Z;
 registry expiresAt23:59:59Z was still valid. Protected registry validation runs
 before741 applicability; reservation code was not reached by source order.
-There are zero artifacts and no fresh plan, media or visual review. Accepted789
-does not change this guard. Do not repeat the same dispatch, extend expiry,
-borrow721 slots, inject an earlier clock, weaken protection or absorb generic
-maintenance into NCL. A legitimate installed authority repair must precede fresh
-current-base planning/capture, independent17-dimension review and ordinary gate.
-Current classification: IMPLEMENTATION COMPLETE / INTEGRATION BLOCKED; physical
-and browser metric-provider boundaries remain separate. Keep PR741 draft.
+There are zero artifacts and no fresh plan, media or visual review from that run.
+Accepted790 now fixes unrelated classification while retaining expired campaign
+denial. The prior failure remains immutable; do not repeat its unchanged inputs,
+extend expiry, borrow721 slots, inject an earlier clock or weaken protection.
+The normal Linux capture path is available after publishing the reconciled
+candidate and pinning the actual protected base. Static registry inspection is
+not an official plan or selected-context denominator. Capture, review and the
+ordinary gate remain pending. Keep PR741 draft until its own evidence is ready.
+
+Generic capture/review admission requires exact protected-base identity. An
+advancing main requires fresh planning/capture/review; source equivalence alone
+does not rebind old media. PR788 and Studio are separately owned and unaccepted
+changes are not consumed. Check actual active prerequisites before costly work,
+respect the existing product integration order and recheck strict protection at
+the final merge. Physical and live metric-browser gates remain separate.
 
 Preserve beta0.1.0(7), original GLBs, private Classroom Chronicle/environment,
 existing app/team/group/signing, official original-crop icon SHA256

@@ -1,7 +1,7 @@
 ---
 title: NCL-01 post-Crossdeck integration and acceptance
 audience: engineering
-status: integration-blocked
+status: implementation-candidate
 canonical_for: ncl01-post-crossdeck-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -65,6 +65,40 @@ does not recover earlier missing failure bytes or unpublished success counts.
 Existing app/native evidence retains its recorded scope. The protected R26
 deadline, custody and exception-registry source is unchanged;789 does not
 resolve the new pre-capture failure below.
+
+Accepted [PR790](https://github.com/Kgray44/treasurehuntSoT/pull/790) merged
+October22 at12:27:05 UTC as
+`90bff6ec281d79a6788c8270a8a3d67fd8257010`. Normal merge
+`b1a1f44f4b4b1f1bc3e66958f21f01f52dfc6d5f`, tree
+`205efe8c7b32caf86b4385c23dd385f22776013c`, preserves ordered parents
+`d61b3ca297b9e489db2bd3779acfb5e55fd7efdc` and that accepted main.
+The [accepted-source impact review](evidence/ncl01-full-completion-20261021/accepted-main-90bff6ec.source-impact.json)
+binds the complete eleven-file delta and positively unchanged application,
+native, asset, fixture, contract, dependency and signing inputs. Package metadata
+adds only the new classification regression test to `test:sounding-line`.
+Existing source-equivalent native and consumer evidence retains its original
+scope; the accepted maintenance decision is not an NCL decision.
+
+This accepted repair removes the unrelated-expiry block while retaining live
+denial for recognized expired R26 work. No registry, deadline, grant or workflow
+is changed. NCL's original failed capture remains failed. The normal Linux
+capture route is available after publishing and pinning the reconciled source;
+there is not yet a fresh official selected plan, capture or independent review.
+Static inspection of nineteen registered experience families is not a selected
+context denominator or executed plan result.
+
+Ordinary capture/review admission requires exact protected-base identity. A
+later mainline advance requires fresh planning, capture and review; source
+equivalence alone cannot rebind old media. Any selected paired-evidence reuse
+also retains its exact executed tree and publication-path restrictions. Freeze
+automation and new NCL JSON receipts before capture. Unaccepted reader PR788 is
+not a Linux capture prerequisite or installed authority. Respect the separately
+owned product integration order and recheck fresh main/strict protection before
+final integration, without spending capture work on a known obsolete base.
+The [installed prerequisite review](evidence/ncl01-full-completion-20261021/capture-prerequisites-90bff6ec-b1a1f44f.json)
+and [paired publication supplement](evidence/ncl01-full-completion-20261021/capture-publication-90bff6ec-b1a1f44f.json)
+bind these source rules to the actual merge. Both are explicitly non-qualifying
+source reviews; neither executes a plan, capture or acceptance check.
 
 Accepted [PR721](https://github.com/Kgray44/treasurehuntSoT/pull/721) merged
 October 21 at 22:23:22 UTC as `aaff919428ef9ab421579415ce3409949724760d`.
@@ -373,25 +407,25 @@ history, without accepting these later Inspect, placement or accessibility
 changes. Current software receipts keep their own exact source and fixture
 scope; they are not a fresh aggregate Mainline Decision.
 
-Current classification is **NCL-01 IMPLEMENTATION COMPLETE / INTEGRATION
-BLOCKED**. Accepted Crossdeck interfaces are consumed, but actual current plan,
-capture, independent review, ordinary decision, protected integration and landed
-verification are not complete. The installed shared deadline gate prevents the
-next ordinary qualification step. Physical iPhone/Android acceptance and live
-browser metric-provider admission remain separate outstanding boundaries.
+Software implementation is complete and accepted Crossdeck interfaces are
+consumed. Actual current plan, capture, independent review, ordinary decision,
+protected integration and landed verification remain pending. Accepted790
+removes the previous shared deadline block; it does not supply any missing NCL
+experience evidence. Physical iPhone/Android acceptance and live browser
+metric-provider admission remain separate outstanding boundaries.
 
-| #   | Implemented behavior                                                                                                                                        | Software evidence                                                                                                                                                                             | Remaining acceptance boundary                                                                                                                                                    | Acceptance status                                                                             |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| 1   | Immutable canonical Scene delivers the original SC02 chest and compass.                                                                                     | Original asset checksums, shared delivery/validation negatives and actual original-model frames on both native platforms.                                                                     | Current physical visual fidelity and final integrated experience acceptance.                                                                                                     | Implemented; native/delivery software qualified. Physical/integrated acceptance open.         |
-| 2   | Canonical entity IDs, hierarchy, transforms, metric widths, orientation, bottom pivot, visibility and Scene updates.                                        | Three-entity and hierarchy/update tests; native original bounds, transforms, geometry hit/miss and clear/disposal guards.                                                                     | Hardware scale, relative alignment and drift. The selected origin does not identify classroom tables automatically.                                                              | Implemented and software qualified; physical fidelity open.                                   |
-| 3   | iOS GLB/SceneKit realization, actual mesh association, staging, cancellation and accessible return.                                                         | Fresh0d83 native29/0/1 and joined4 actions; unchanged native tree retains full31/0/1 and unsigned Release20/compiled icon proof.                                                              | Exact new installed-build physical camera, tracking, touch and assistive acceptance.                                                                                             | Implemented and Simulator qualified; exact-device acceptance open.                            |
-| 4   | Android equivalent Scene/Filament realization, actual pointer and accessibility input, disposal and fallback.                                               | Fresh39e28 native16/16, original pixels, joined4 actions, permission1/1 and cleanup. Earlier15/1 failures remain separate; full lint retains eight matched baseline errors.                   | Supported physical Android hardware and real ARCore tracking/interaction acceptance.                                                                                             | Implemented and emulator qualified; Android hardware acceptance open.                         |
-| 5   | Capability-checked native tracking, bounded supported surface/local placement, limited/failure feedback and recovery.                                       | Compiled adapters and software placement/frame/state/cancellation cases.                                                                                                                      | Both platforms' actual anchors, relocalization, drift and camera interruption. No automatic room registration.                                                                   | Software implemented; both-platform physical qualification outstanding.                       |
-| 6   | Accepted Crossdeck custody, same immutable Scene/edition, truthful capabilities and authored Guided fallback.                                               | Fresh component continuity and real pairing/HTTP/SQLite browser journey; accepted721 interfaces are consumed.                                                                                 | Current plan/capture/review are blocked by the protected shared deadline gate. No admitted live metric browser engine exists; normal browser use is Guided.                      | Bounded semantics implemented; current integration and live metric browser admission blocked. |
-| 7   | Actual selected native mesh emits canonical Inspect intent; pending/error/accepted Player presentation and same-Voyage return; accessible center selection. | Both platforms' actual OS input reaches real SQLite simulation rejection and return with zero mutation. Separate emulated-native D1 proves positive authorized content/idempotency.           | Positive physical mesh/assistive Inspect on each installed platform. A simulation rejection or emulated D1 is not that result.                                                   | Implemented and software qualified; positive physical native Inspect open.                    |
-| 8   | One account/Player/Voyage/edition/Scene; canonical authorization, eligibility, checksums, expiry, revocation, idempotency and stale rejection.              | Real SQLite positive D1 adds one observation and zero progression; both native simulations add zero. Shared revocation/receipt guards pass.                                                   | Positive exact-device canonical join; new consumer runtime passes7/7 locally with the separate capacity-control failure retained.                                                | Canonical software verified; exact-device joined acceptance open.                             |
-| 9   | Close/reopen, staging cancellation, pending escape, interruption/supersession, late callback rejection and cleanup.                                         | Shared guards, fresh native/joined/permission cleanup and retained full31 Home/foreground/Settings assertions. Android27 readiness observations retain original input assertions.             | Real active-camera/permission/tracking recovery on hardware. Historical Home and input failure causes remain unproved.                                                           | Implemented and software qualified; actual-camera recovery acceptance open.                   |
-| 10  | Reproducible source/tree, locked native builds, original hashes, unsupported-profile disclosure, privacy and retained failed receipts.                      | Reconciled614 tests; new fixture16 and experience49 guards; frozen-input TypeScript, lint/format/docs/catalog checks; guarded current hosted consumer PASS and scoped native/Release records. | Protected shared deadline gate blocks current plan/capture/review/ordinary decision; merge/landed proof, matching-source distribution and physical/owner acceptance remain open. | Build/evidence implementation complete; current experience and protected acceptance blocked.  |
+| #   | Implemented behavior                                                                                                                                        | Software evidence                                                                                                                                                                             | Remaining acceptance boundary                                                                                                                         | Acceptance status                                                                                       |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| 1   | Immutable canonical Scene delivers the original SC02 chest and compass.                                                                                     | Original asset checksums, shared delivery/validation negatives and actual original-model frames on both native platforms.                                                                     | Current physical visual fidelity and final integrated experience acceptance.                                                                          | Implemented; native/delivery software qualified. Physical/integrated acceptance open.                   |
+| 2   | Canonical entity IDs, hierarchy, transforms, metric widths, orientation, bottom pivot, visibility and Scene updates.                                        | Three-entity and hierarchy/update tests; native original bounds, transforms, geometry hit/miss and clear/disposal guards.                                                                     | Hardware scale, relative alignment and drift. The selected origin does not identify classroom tables automatically.                                   | Implemented and software qualified; physical fidelity open.                                             |
+| 3   | iOS GLB/SceneKit realization, actual mesh association, staging, cancellation and accessible return.                                                         | Fresh0d83 native29/0/1 and joined4 actions; unchanged native tree retains full31/0/1 and unsigned Release20/compiled icon proof.                                                              | Exact new installed-build physical camera, tracking, touch and assistive acceptance.                                                                  | Implemented and Simulator qualified; exact-device acceptance open.                                      |
+| 4   | Android equivalent Scene/Filament realization, actual pointer and accessibility input, disposal and fallback.                                               | Fresh39e28 native16/16, original pixels, joined4 actions, permission1/1 and cleanup. Earlier15/1 failures remain separate; full lint retains eight matched baseline errors.                   | Supported physical Android hardware and real ARCore tracking/interaction acceptance.                                                                  | Implemented and emulator qualified; Android hardware acceptance open.                                   |
+| 5   | Capability-checked native tracking, bounded supported surface/local placement, limited/failure feedback and recovery.                                       | Compiled adapters and software placement/frame/state/cancellation cases.                                                                                                                      | Both platforms' actual anchors, relocalization, drift and camera interruption. No automatic room registration.                                        | Software implemented; both-platform physical qualification outstanding.                                 |
+| 6   | Accepted Crossdeck custody, same immutable Scene/edition, truthful capabilities and authored Guided fallback.                                               | Fresh component continuity and real pairing/HTTP/SQLite browser journey; accepted721 interfaces are consumed.                                                                                 | Current exact-base plan/capture/review remain pending after accepted790. No admitted live metric browser engine exists; normal browser use is Guided. | Bounded semantics implemented; integration qualification and live metric browser admission remain open. |
+| 7   | Actual selected native mesh emits canonical Inspect intent; pending/error/accepted Player presentation and same-Voyage return; accessible center selection. | Both platforms' actual OS input reaches real SQLite simulation rejection and return with zero mutation. Separate emulated-native D1 proves positive authorized content/idempotency.           | Positive physical mesh/assistive Inspect on each installed platform. A simulation rejection or emulated D1 is not that result.                        | Implemented and software qualified; positive physical native Inspect open.                              |
+| 8   | One account/Player/Voyage/edition/Scene; canonical authorization, eligibility, checksums, expiry, revocation, idempotency and stale rejection.              | Real SQLite positive D1 adds one observation and zero progression; both native simulations add zero. Shared revocation/receipt guards pass.                                                   | Positive exact-device canonical join; new consumer runtime passes7/7 locally with the separate capacity-control failure retained.                     | Canonical software verified; exact-device joined acceptance open.                                       |
+| 9   | Close/reopen, staging cancellation, pending escape, interruption/supersession, late callback rejection and cleanup.                                         | Shared guards, fresh native/joined/permission cleanup and retained full31 Home/foreground/Settings assertions. Android27 readiness observations retain original input assertions.             | Real active-camera/permission/tracking recovery on hardware. Historical Home and input failure causes remain unproved.                                | Implemented and software qualified; actual-camera recovery acceptance open.                             |
+| 10  | Reproducible source/tree, locked native builds, original hashes, unsupported-profile disclosure, privacy and retained failed receipts.                      | Reconciled614 tests; new fixture16 and experience49 guards; frozen-input TypeScript, lint/format/docs/catalog checks; guarded current hosted consumer PASS and scoped native/Release records. | Current exact-base capture/review/ordinary decision, merge/landed proof, matching-source distribution and physical/owner acceptance remain open.      | Build/evidence implementation complete; current experience and protected acceptance pending.            |
 
 ## Historical consumer source freeze
 
@@ -626,9 +660,9 @@ establish that NCL matched or requested Crossdeck's finite campaign. By actual
 source order, request/store construction and reservation code were not reached;
 no independent remote custody-storage audit is claimed.
 
-The normal next path is a legitimate installed Sounding Line routing/authority
-repair that preserves Crossdeck's expired limits, followed by the current
-source/base plan, actual capture, fresh independent17-dimension media review,
+Accepted790 supplies the legitimate installed classification repair while
+preserving Crossdeck's expired limits. The next path is the current source/base
+plan, actual capture, fresh independent17-dimension media review,
 authenticated ordinary review submission and final Mainline Decision. This
 product task does not extend a deadline, reset counters, borrow721 authority,
 inject a historical clock, change branch protection or create a substitute
