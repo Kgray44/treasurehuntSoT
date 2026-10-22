@@ -66,6 +66,13 @@ and bounds Git calls, child processes and the outer runner.
 
 The unchanged accepted R26 suite also reproduced five historical valid-fixture
 failures after the deadline, and its retained finalizer case reproduced a sixth.
+Protected control-plane run `39724531889/1` then passed 858 of 859 cases and
+failed the custody-only probe assertion: its live R26 read expired before the
+intended scope rejection. The same single test fails unchanged on accepted #789.
+Its clock now uses the original R26 valid window; both original rejection
+assertions, workflow checks and the production probe remain unchanged. The failed
+run and original source are preserved. Fresh exact-source review and qualification
+are required; the earlier 858 passes do not make that run accepted.
 Only these R26 test cases now use the original authorized fixture clock. Their
 assertions, malformed-record mutations, live before-floor/after-deadline checks
 and explicit expired-reader rejection remain intact. The clock wrapper is local
