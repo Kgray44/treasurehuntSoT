@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: phone-header-row-reuse-prepared-runtime-pending
+status: phone-reading-development-verified-integration-held
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -273,7 +273,7 @@ establish the geometry throughout the polling interval. Full element rectangles,
 numeric actual scroll offsets, settled layout and font completion remain unknown;
 the underlying CSS/state cause is not proved.
 
-The next narrow correction reuses the existing Library row for the compact Lens
+The follow-up correction, committed in `b617b6825688`, reuses the existing Library row for the compact Lens
 in the 381–430-pixel portrait grid, restores the full-width title row and scopes
 the narrower Library placement to headers containing Lens. Existing connection
 status and other control rows remain. The compact phone label reads **Lens**,
@@ -292,10 +292,58 @@ The [independent source review](evidence/protected-integration-20261021/journal-
 reports no confirmed finding on the exact three-file delta, with the five-file
 source tuple and unchanged test/helper independently verified. Its numbered
 source review is not a formal Product Experience review iteration. A newly
-prepared changed-source development run remains required. Keep the 390 by 844 viewport, 211-pixel criterion, heading/hit
+prepared changed-source development run was required at that source freeze; its
+result is recorded below. Keep the 390 by 844 viewport, 211-pixel criterion, heading/hit
 checks and ten-second deadline intact. No final capture, ordinary qualification
 or protected acceptance follows from these development results. Unlanded
 maintenance repairs still hold final accepted-main reconciliation and planning.
+
+## Row-reuse development verification
+
+[Run 39735856149/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39735856149)
+completed successfully on exact consumer `b617b6825688d2d3d89a34284588ce456701aa8f`
+and installed authority `408f37389e6dd358b1ab005d91f3f588405f61db`.
+Source-bound preparation and the unchanged whole-file browser selector passed;
+the controller returned `PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE`, role
+`DEVELOPMENT_ONLY`, `qualification: false`. Exactly one workflow request was sent.
+The first immediate provider discovery had no registered match; the second
+read-only discovery bound the unique run, without redispatch.
+
+The exact spec unconditionally declares normal and reduced motion. Its whole-file
+pass verifies the original reading-area checks without changing the viewport,
+threshold, timeout or assertions. The public success logs do not expose per-case
+numeric counts or retain the raw Playwright report. Do not describe those counts
+as privately inspected. The installed controller's passing path requires a
+positive selected count, zero skipped/flaky cases and no runtime failure; its
+browser arguments set zero retries and one repeat.
+
+The browser child exited zero at 07:01:17.114 UTC. Browser and server cleanup
+passed with trees reaped, streams closed and no escalation; the proxy closed at
+07:01:17.170 UTC. Failure-diagnostic upload was correctly skipped and no failure
+artifact exists. The retained 46,714-byte provider log ZIP passes CRC and has
+local SHA-256 `e7a1809f851e15703a7c478b452ff2a48d31f7a4037cfdfb02c697acc6c13390`;
+the provider exposes no digest for that logs endpoint. The selected browser-step
+log is 11,010 bytes with SHA-256
+`bb170014106d00e6fc1c953d6edc060494b647c18909baff316f70c3c829c93c`.
+
+The [runtime intake](evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime-intake.json)
+preserves exact public metadata, the public step log and the authored
+[development-only receipt](evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/development-pass.receipt.json).
+An [independent result readback](evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/development-result-39735856149.review.original.json)
+confirms provider status, log/receipt hashes, cleanup and the count limitation;
+it is not an independent rendered Product Experience review.
+All earlier failed runs, private ciphertexts and authenticated findings remain
+unchanged. This verifies the bounded layout correction on its producer; it
+provides no protected seal for a later commit or final integrated experience
+acceptance.
+
+Final integration remains held: #790 is open and blocked on ordinary required-check
+routing, while #788 is an unmerged draft awaiting the accepted maintenance chain.
+After that bundle actually lands, reconcile main once, complete the planner,
+fresh governed capture, independent rendered review and authenticated submission,
+then normal protected qualification, merge and landed smoke. No competing
+maintenance repair, final capture or protected merge is authorized by this
+development pass.
 
 Physical iPhone alignment and browser tracker reliability remain unqualified.
 Plane prototypes return no admitted planes/hit tests. The unchanged root's 30

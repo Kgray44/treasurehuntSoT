@@ -1,7 +1,7 @@
 ---
 title: Parallax accepted-main reconciliation evidence
 audience: product-engineering
-status: phone-header-row-reuse-prepared-runtime-pending
+status: phone-reading-development-verified-integration-held
 canonical_for: parallax-protected-integration-evidence-20261021
 last_reviewed: 2026-10-22
 ---
@@ -70,6 +70,15 @@ producing source. Fresh protected qualification is pending.
   row for Lens and restores the full-width title. Forty-two component tests,
   full TypeScript and strict lint pass; new browser verification remains pending.
   Original source-bound failures and all private artifact custody are preserved.
+- [Row-reuse runtime intake](journal-row-reuse-20261022/runtime-intake.json)
+  records successful whole-file development run `39735856149/1` on exact
+  producer `b617b6825688` and installed authority `408f3738`. Preparation,
+  browser execution and supervised cleanup passed; the proxy closed. The spec
+  declares both motion variants and keeps all original reading criteria.
+  Public logs do not expose per-case counts or the raw success report; the
+  receipt retains that limit. Expected failure upload was skipped, with no
+  failure artifact. This is DEVELOPMENT_ONLY; final maintenance, experience
+  capture/review and normal protected integration remain held.
 
 Phone alignment, unavailable plane detection, browser tracker resets, native
 installation, physical AR, live-provider and owner acceptance remain unqualified.

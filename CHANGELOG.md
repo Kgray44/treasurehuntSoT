@@ -37,9 +37,12 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   reading space and current/past-scene access. Passage changes close the previous
   Lens runtime before rebinding. Forty-two component tests, full TypeScript and
   strict lint pass. The changed-source browser run passes normal motion and fails
-  the original reduced-motion reading-area assertion. The next structural phone
+  the original reduced-motion reading-area assertion. The follow-up structural phone
   correction places the compact Lens action in the Library row and restores the
-  full-width title; fresh browser verification remains pending.
+  full-width title. The unchanged whole-file browser selector passes on
+  `b617b6825688` in development run `39735856149/1`, with supervised cleanup
+  passing. Final maintenance prerequisites, experience review and protected
+  qualification remain open.
   The [integration checkpoint](Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md)
   preserves the authenticated failure, negative control and independent source review.
 - Reconciled the Spatial Studio candidate with accepted Crossdeck connection and

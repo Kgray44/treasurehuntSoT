@@ -138,3 +138,26 @@ verification. Recheck original route, authority, no duplicate and storage gates.
 No unchanged rerun, 2px threshold workaround or speculative instrumentation is
 authorized by the final sample. Final maintenance/capture/qualification holds
 remain independent.
+
+## Verified development producer, final integration held
+
+Run `39735856149/1` succeeded on consumer `b617b6825688d2d3d89a34284588ce456701aa8f`
+and installed authority `408f37389e6dd358b1ab005d91f3f588405f61db`.
+Preparation and the same whole browser file passed; public controller status is
+`PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE`, DEVELOPMENT_ONLY and qualification false.
+Spec/helper and all phone predicates remain byte-exact. Both motion cases are
+unconditionally declared; public success logs expose no per-case counts or raw
+Playwright report, so do not invent inspected numeric counts. The controller
+enforces positive selection, zero skipped/flaky cases and no runtime failure,
+with retries zero/repeat one. Browser child exit zero and both process cleanup
+PASS/tree-reaped/streams-closed/no-escalation plus proxy CLOSED are retained.
+Expected failure upload was skipped, with no failure artifact.
+
+Keep producer-bound originals and all earlier failed receipts. Documentation
+publication does not rebind the development receipt or mint a protected seal.
+No new runtime-source edit or browser retry is needed absent a confirmed finding.
+Final #790/#788 acceptance/installation, one main reconciliation, complete plan,
+fresh governed capture, independent rendered review, authenticated submission,
+ordinary qualification, normal protected merge and landed smoke remain pending.
+Do not absorb the maintenance lane or claim physical/native/provider/owner
+acceptance from this bounded development pass.
