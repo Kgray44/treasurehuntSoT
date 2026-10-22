@@ -76,13 +76,30 @@ and the new admission/selection tests. They exercise rejection before external
 operations and confirm that only the dedicated target selects this finite job.
 The first local test launcher failed before tests because Windows ESM imports
 require file URLs; that failure was retained and the launcher path corrected.
-No C compilation or hosted execution has occurred at this document revision.
-Independent source review cleared one finite development attempt against C
+Independent source review cleared the first finite development attempt against C
 SHA256 `672a947451c4a4530c77d7b764bdbcc7c14db9d95e7c2e5accafb590fb6173f5`.
 The reviewer confirmed that unavailable records remain unknown, actual reaping
 is distinct from successful exit, and core API failures retain their operation,
 return code and error without being overwritten during cleanup. A positive result would still have
 `qualification: false` and would not authorize production guardian installation.
+
+The first hosted attempt, [run 39783532658](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39783532658),
+failed strict compilation on macOS 15.7.9 / build 24G830 with SDK 15.5. The SDK
+deprecates `mach_port_destroy`; `-Werror` correctly stopped before installation or
+child creation. The original failed run, compiler output, six-member artifact
+`12428435286` (1,577 bytes, SHA256
+`dfd935f462f7a4e9b10e308514680412dba8cd971023b4ee1cbed92ffc32dcda`)
+and source `17f0a0049c2144d96336fa8a4bac0d2886f2f8c1` remain preserved.
+Its temporary transport branch was removed only after independent remote absence
+verification; source and all five transport objects remain retained.
+
+The correction releases precisely the allocated receive right with
+`mach_port_mod_refs(..., MACH_PORT_RIGHT_RECEIVE, -1)`, following the SDK's
+supported API guidance. It retains strict compilation and the fixed experiment
+scope. Independent re-review verified corrected C SHA256
+`13ad543dc724e434a66ea0a1fd2b43237df9e89f1525806c462c9ae18b8bcee2`
+and cleared one newly frozen finite attempt. No runtime feasibility has been
+established by the original compiler failure.
 
 This experiment cannot prove arbitrary descendant ownership, service containment,
 global session emptiness, forced identifier reuse, hardened process signaling,

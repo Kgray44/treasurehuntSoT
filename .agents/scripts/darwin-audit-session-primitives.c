@@ -573,9 +573,9 @@ cleanup:
     if (!endpoint_send_released) record_failure(&failure, "cleanup_endpoint_send_release", code, 0);
   }
   if (MACH_PORT_VALID(endpoint)) {
-    code = mach_port_destroy(mach_task_self(), endpoint);
+    code = mach_port_mod_refs(mach_task_self(), endpoint, MACH_PORT_RIGHT_RECEIVE, -1);
     endpoint_destroyed = code == KERN_SUCCESS;
-    if (!endpoint_destroyed) record_failure(&failure, "cleanup_endpoint_destroy", code, 0);
+    if (!endpoint_destroyed) record_failure(&failure, "cleanup_endpoint_receive_release", code, 0);
   }
   observer_unchanged = getaudit_addr(&final, sizeof(final)) == 0 && same_identity(&original, &final);
   child_observation *a = &children[CHILD_A].observation;
