@@ -5,6 +5,7 @@ import { createServer } from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { bounded, observeProcess, processExit, spawnOwnedProcess, stopOwnedProcess } from "./owned-process.mjs";
+import { emitPreparationPhase, preparationProductEnvironment } from "./preparation-phases.mjs";
 import { browserReceiptPaths, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
 import { createPublishableBrowserFailureRetention } from "./private-browser-failure-publication.mjs";
 import { createBrowserFailurePublicationOutput } from "./private-browser-failure-output.mjs";
@@ -325,7 +326,7 @@ export async function runBrowserAuthority({
   const baseURL = `http://127.0.0.1:${browserPort}`;
   const serverBaseURL = `http://127.0.0.1:${serverPort}`;
   // The trusted host retains workflow outputs; product children never receive it.
-  const childEnvironment = { ...environment };
+  const childEnvironment = preparationProductEnvironment(environment);
   delete childEnvironment.GITHUB_OUTPUT;
   delete childEnvironment.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
   const outputDirectory = environment.NEXT_DIST_DIR ?? ".next";
@@ -351,6 +352,7 @@ export async function runBrowserAuthority({
   let fixture;
   let failureCategory = null;
   let failureCodeValue = null;
+  let preparationProgressFailed = false;
   const lifecycle = { capture: "NOT_STARTED", fixture: "NOT_STARTED", cleanup: null };
   const privateFailureSessions = new Map();
   const preparePrivateFailure = (phase) => {
@@ -401,6 +403,7 @@ export async function runBrowserAuthority({
     return child;
   };
   try {
+    emitPreparationPhase("BROWSER_STARTUP");
     assertBrowserAuthorityTopology({
       serverMode: nextServerMode(serverArguments),
       productionOutputDirectory: outputDirectory,
@@ -427,6 +430,7 @@ export async function runBrowserAuthority({
       progress("readiness.proxy.result", { child: server });
     }
     if (fixtureArguments.length) {
+      emitPreparationPhase("BROWSER_FIXTURE");
       progress("fixture.start");
       const privateFixture = preparePrivateFailure("fixture");
       fixture = start(
@@ -471,6 +475,7 @@ export async function runBrowserAuthority({
         );
     }
     const browserStartedAt = now();
+    emitPreparationPhase("CAPTURE");
     progress("capture-child.start");
     // Custom supervision test scripts are not Playwright CLI invocations.
     const privateBrowser = browserScriptArguments ? null : preparePrivateFailure("browser");
@@ -524,6 +529,11 @@ export async function runBrowserAuthority({
     progress("authority.failure", { failureCategory, failureCode: failureCodeValue });
   } finally {
     clearTimeout(executionTimer);
+    try {
+      emitPreparationPhase("CLEANUP");
+    } catch {
+      preparationProgressFailed = true;
+    }
     const cleanupStartedAt = now();
     progress("cleanup.browser.start", { child: browser });
     progress("cleanup.proxy.start");
@@ -622,6 +632,10 @@ export async function runBrowserAuthority({
     signal?.removeEventListener("abort", cancel);
     process.removeListener("SIGTERM", cancel);
     process.removeListener("SIGINT", cancel);
+  }
+  if (preparationProgressFailed && !failureCategory) {
+    failureCategory = "INFRASTRUCTURE_RUNTIME_FAILURE";
+    failureCodeValue = "SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:PREPARATION_PHASE";
   }
   const receipt = browserRuntimeReceipt({
     timings,

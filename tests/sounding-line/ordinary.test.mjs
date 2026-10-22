@@ -1687,6 +1687,7 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     "sounding-line-exhaustive-release.yml",
     "sounding-line-focused-repair.yml",
     "sounding-line-ordinary.yml",
+    "sounding-line-preparation-probe.yml",
     "sounding-line-replay-admission-diagnostic.yml",
     "sounding-line-replay-historical-validation-diagnostic.yml",
     "sounding-line-replay-posttechnical-diagnostic.yml",
@@ -1714,6 +1715,50 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     /pull_request_target|pull_request:|push:|workflow_call|schedule:|Mainline Decision|experience-exception\.mjs|--mode (?:ordinary|release)|PROTECTED_FINAL_VERIFICATION/u,
   );
   assert.doesNotMatch(ordinaryWorkflow, /sounding-line-focused-repair|develop-browser-suite\.mjs/u);
+  const probeWorkflow = readFileSync(".github/workflows/sounding-line-preparation-probe.yml", "utf8");
+  assert.match(probeWorkflow, /on:\n  workflow_dispatch:\n    inputs:\n/u);
+  assert.deepEqual(
+    [...probeWorkflow.split("\npermissions:\n")[0].matchAll(/^      ([a-z_]+):$/gmu)].map((match) => match[1]),
+    ["expected_sha"],
+  );
+  assert.doesNotMatch(
+    probeWorkflow,
+    /pull_request_target|pull_request:|push:|workflow_call|schedule:|Mainline Decision/u,
+  );
+  assert.deepEqual(
+    [...probeWorkflow.split("\njobs:\n")[1].matchAll(/^  ([a-z-]+):$/gmu)].map((match) => match[1]),
+    ["synthetic"],
+  );
+  assert.match(probeWorkflow, /permissions:\n  contents: read\n/u);
+  assert.match(probeWorkflow, /    permissions:\n      contents: read\n      statuses: write\n/u);
+  assert.equal((probeWorkflow.match(/^\s*permissions:/gmu) ?? []).length, 2);
+  assert.equal((probeWorkflow.match(/: write$/gmu) ?? []).length, 1);
+  assert(probeWorkflow.includes('test "$INSTALLED_REF" = refs/heads/main'));
+  assert(probeWorkflow.includes('test "$EXPECTED_SHA" = "$INSTALLED_SHA"'));
+  assert(
+    probeWorkflow.indexOf('test "$EXPECTED_SHA" = "$INSTALLED_SHA"') <
+      probeWorkflow.indexOf("uses: actions/checkout@v4"),
+  );
+  assert(probeWorkflow.includes("ref: ${{ github.sha }}"));
+  assert.match(probeWorkflow, /persist-credentials: false/u);
+  assert.deepEqual(
+    [...probeWorkflow.matchAll(/run: (node [^\n]+)/gu)].map((match) => match[1]),
+    ['node authority/scripts/sounding-line/preparation-supervisor-probe.mjs --source "$EXPECTED_SHA"'],
+  );
+  assert.deepEqual(
+    [...probeWorkflow.matchAll(/^            (\$\{\{[^\n]+\}\})$/gmu)].map((match) => match[1]),
+    ["${{ steps.probe.outputs.probe_progress_paths }}", "${{ steps.probe.outputs.probe_summary_path }}"],
+  );
+  assert.doesNotMatch(
+    probeWorkflow,
+    /transport|experience-exception\.mjs|experience-prepare\.mjs|ordinary\.mjs|campaign-custody/u,
+  );
+  const probeSource = readFileSync("scripts/sounding-line/preparation-supervisor-probe.mjs", "utf8");
+  assert.deepEqual(
+    [...probeSource.matchAll(/from "(\.\/[^"]+)"/gu)].map((match) => match[1]),
+    ["./preparation-phases.mjs", "./preparation-supervisor.mjs"],
+  );
+  assert.match(probeSource, /\["hosted-advance", "hosted-silent"\]\.entries\(\)/u);
   const releaseWorkflow = readFileSync(".github/workflows/sounding-line-exhaustive-release.yml", "utf8");
   assert.match(releaseWorkflow, /--mode release/u);
   const controlPlaneWorkflow = readFileSync(".github/workflows/sounding-line-control-plane.yml", "utf8");

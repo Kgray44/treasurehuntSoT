@@ -375,6 +375,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Capture_Preparation_Supervisor_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md",
       "record_type": "engineering-record",
       "status": "current",

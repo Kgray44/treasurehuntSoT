@@ -15,6 +15,7 @@ not authorize restarting a completed phase.
 
 - [Focused development and final verification](testing-workflow.md)
 - [Immutable recognition read reuse repair](immutable-recognition-read-repair.md)
+- [Capture preparation observability repair](capture-preparation-observability-repair.md)
 - [Unrelated work after expired R26 execution authority](unrelated-expired-r26-repair.md)
 - [Nonapplicable experience replay admission repair](nonapplicable-experience-replay-repair.md)
 - [Development report and producer output retention repair](development-failure-retention-repair.md)

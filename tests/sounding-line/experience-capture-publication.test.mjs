@@ -26,6 +26,7 @@ import {
   createCaptureSubmission,
   publishExperienceCapture,
 } from "../../scripts/sounding-line/experience-capture-publication.mjs";
+import { PREPARATION_CHANNEL } from "../../scripts/sounding-line/preparation-phases.mjs";
 import { writeExperienceReviewPackets } from "../../scripts/sounding-line/experience-browser.mjs";
 import { writeCaptureOutputs } from "../../scripts/sounding-line/experience-prepare.mjs";
 import {
@@ -1257,4 +1258,33 @@ test("capture workflow projects only emitted current paths for success, failure 
     });
     assert.deepEqual(projectWorkflowUpload(block, "success", current, "review"), { enabled: false, paths: [] });
   }
+});
+
+test("failed progress emission still retains raw output and preserves the replay failure", async (t) => {
+  const f = fixture(t);
+  const originalChannel = process.env[PREPARATION_CHANNEL];
+  const failure = new Error("synthetic replay failure with unavailable progress channel");
+  const events = [];
+  process.env[PREPARATION_CHANNEL] = path.join(f.root, "invalid-progress-channel");
+  try {
+    await assert.rejects(
+      captureAndPublishExperience({
+        ...f,
+        onPaths: async (paths) => events.push(structuredClone(paths)),
+        replay: async ({ root, plan }) => {
+          write(root, plan.outputDirectory + "/partial.txt", "synthetic retained partial output\n");
+          throw failure;
+        },
+      }),
+      (error) => error === failure,
+    );
+  } finally {
+    if (originalChannel === undefined) delete process.env[PREPARATION_CHANNEL];
+    else process.env[PREPARATION_CHANNEL] = originalChannel;
+  }
+  assert.equal(events[0].capture_raw_retention_status, "PENDING");
+  assert.equal(events.at(-1).capture_raw_retention_status, "COMPLETE");
+  assert(events.at(-1).capture_raw_verified_paths.length >= 2);
+  for (const file of events.at(-1).capture_raw_verified_paths) assert(existsSync(path.join(f.root, file)));
+  assert.deepEqual(snapshot(f.root), f.before);
 });
