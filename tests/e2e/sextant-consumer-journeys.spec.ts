@@ -174,8 +174,9 @@ for (const viewport of [
         ).toHaveAttribute("href", `/devices/companion?voyage=${fixture.voyageId}`);
         const registered = await db.crossdeckSurfaceSession.findFirstOrThrow({
           where: { label: deviceName, revokedAt: null, accountSession: { accountId: fixture.accountId } },
+          include: { membership: { select: { playthroughId: true } } },
         });
-        expect(registered.voyageId).toBe(fixture.voyageId);
+        expect(registered.membership.playthroughId).toBe(fixture.voyageId);
         const input = page.getByRole("region", { name: "Optional device input", exact: true });
         await input.getByRole("button", { name: "Continue with screen controls", exact: true }).focus();
         await page.keyboard.press("Enter");

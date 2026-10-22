@@ -216,9 +216,10 @@ for (const viewport of [
         );
         const surface = await db.crossdeckSurfaceSession.findFirstOrThrow({
           where: { label, revokedAt: null, accountSession: { accountId: fixture.crewAccountId } },
+          include: { membership: { select: { playthroughId: true } } },
         });
         expect(surface.role).toBe("SHARED_CREW_DISPLAY");
-        expect(surface.voyageId).toBe(fixture.voyageId);
+        expect(surface.membership.playthroughId).toBe(fixture.voyageId);
         await expect(row.getByRole("link", { name: "Open on this device", exact: true })).toHaveAttribute(
           "href",
           `/devices/display?voyage=${fixture.voyageId}`,

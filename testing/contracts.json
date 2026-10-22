@@ -14356,6 +14356,13 @@
                 "role": "heading",
                 "name": "Sign in",
                 "text": "Sign in",
+                "path": "/sign-in"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Email or Player name",
                 "path": "/sign-in",
                 "state": "ACCOUNT_SIGN_IN_READY",
                 "kind": "outcome",
@@ -14505,6 +14512,13 @@
                 "role": "heading",
                 "name": "Sign in",
                 "text": "Sign in",
+                "path": "/sign-in"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Email or Player name",
                 "path": "/sign-in",
                 "state": "ACCOUNT_SIGN_IN_READY",
                 "kind": "outcome",
