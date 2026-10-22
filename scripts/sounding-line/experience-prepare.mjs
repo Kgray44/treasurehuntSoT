@@ -16,6 +16,7 @@ import { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } fro
 import { buildPlan } from "./ordinary.mjs";
 import { exceptionStore, trustedExceptions, sealedReviewIdentity } from "./experience-exception.mjs";
 import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
+import { emitPreparationPhase } from "./preparation-phases.mjs";
 
 export function createReviewSubmission({ baseSha, plan, evidence, exceptionFields = {}, submittedBy }) {
   return {
@@ -96,6 +97,7 @@ export function activationPlan({ root, baseSha, candidateSha }) {
   return plan;
 }
 async function main() {
+  emitPreparationPhase("ADMISSION");
   const options = Object.fromEntries(
     process.argv.slice(2).reduce((pairs, value, index, values) => {
       if (value.startsWith("--")) pairs.push([value.slice(2), values[index + 1]]);
@@ -116,6 +118,7 @@ async function main() {
   assert.equal(execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(), candidateSha);
   const changedPaths = experienceChangedPaths(root, baseSha, candidateSha);
   const diagnostic = options.diagnostic === "true";
+  emitPreparationPhase("PLANNING");
   if (!diagnostic) await buildPlan({ root, baseSha, candidateSha, experienceEvidenceRequired: false });
   else assert.equal(baseSha, candidateSha);
   const plan = diagnostic
@@ -125,6 +128,11 @@ async function main() {
   const policy = plan.attestationPolicy;
   if (!policy?.required || !policy.trustedReviewActors.includes(process.env.GITHUB_ACTOR))
     throw new Error("PRODUCT_EXPERIENCE_AUTHENTICATED_SUBMISSION_REQUIRED");
+  emitPreparationPhase("STAGING", {
+    sourceDigest: plan.sourceDigest,
+    contractDigest: plan.contractDigest,
+    planDigest: experienceDigest(plan),
+  });
   const onPaths = (paths) =>
     writeCaptureOutputs(paths, process.env, path.relative(process.cwd(), root).split(path.sep).join("/"));
   let receiptRoot;
@@ -164,6 +172,7 @@ async function main() {
       ) + "\n",
       { flag: "wx" },
     );
+    emitPreparationPhase("COMPLETE");
     return;
   }
   const evidenceRoot = path.resolve(options.evidence ?? root);
