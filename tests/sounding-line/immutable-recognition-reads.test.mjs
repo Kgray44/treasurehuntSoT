@@ -198,11 +198,14 @@ test("immutable keys distinguish material input and copy retained buffers", () =
   assert.notEqual(a, b);
 });
 
-test("mutable, private, material-env and inherited-output reads always pass through", () => {
+test("mutable, private, material-env and implicit or inherited output always pass through", () => {
   const reader = createImmutableSuccessReuse();
   let calls = 0;
   const exec = () => String(++calls);
+  const implicitOutput = { ...options };
+  delete implicitOutput.stdio;
   for (const [ar, opts] of [
+    [args, implicitOutput],
     [["rev-parse", "HEAD"], options],
     [["rev-parse", "origin/main"], options],
     [["show", `${base}:PRIVATE_CONTEXT_FILE`], options],
@@ -210,7 +213,7 @@ test("mutable, private, material-env and inherited-output reads always pass thro
     [args, { ...options, stdio: ["ignore", "pipe", "inherit"] }],
   ])
     assert.notEqual(reader.executeGitRead(exec, ar, opts), reader.executeGitRead(exec, ar, opts));
-  assert.equal(calls, 10);
+  assert.equal(calls, 12);
   assert.equal(reader.stats.entries, 0);
   let getters = 0;
   const special = { ...options };

@@ -41,6 +41,7 @@ function keyFor(args, options) {
     if (!immutable) return null;
     const descriptors = Object.getOwnPropertyDescriptors(options),
       values = [];
+    if (!Object.hasOwn(descriptors, "stdio")) return null;
     const allowed = new Set([
       "cwd",
       "encoding",
