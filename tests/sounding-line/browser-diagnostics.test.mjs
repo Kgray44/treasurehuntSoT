@@ -820,6 +820,37 @@ test("actual product-source Git readers preserve failure provenance through thei
   assert(!JSON.stringify(observed).includes(root));
 });
 
+test("only exact product-source batch-check reads retain native failure provenance", async (t) => {
+  const root = await fixture(t);
+  const { first } = diagnosticRepository(root);
+  for (const [component, args, input, recognized] of [
+    ["PRODUCT_EXPERIENCE", ["cat-file", "--batch-check"], `${first}\n`, true],
+    ["EXPERIENCE_EXCEPTION", ["cat-file", "--batch-check"], `${first}\n`, false],
+    ["PRODUCT_EXPERIENCE", ["cat-file", "--batch-check=%(objectname)"], `${first}\n`, false],
+    ["PRODUCT_EXPERIENCE", ["cat-file", "--batch-check"], "HEAD\n", false],
+    ["PRODUCT_EXPERIENCE", ["cat-file", "--batch-check"], Buffer.from(`${first}\n`), false],
+  ]) {
+    const error = await admissionFailure("PLAN_REBUILD", () =>
+      sourceDiagnosticGit(component, args, {
+        cwd: path.join(root, "nonexistent-read-directory"),
+        encoding: null,
+        maxBuffer: 128 * 1024 * 1024,
+        input,
+      }),
+    );
+    const observed = verificationFailureObservation(error);
+    const git = observed.replayAdmission.git;
+    if (recognized) {
+      assert.equal(git.component, "PRODUCT_EXPERIENCE");
+      assert.equal(git.operation, "CAT_FILE");
+      assert.equal(git.arguments[1].fixed, "--batch-check");
+    } else assert.equal(git, null);
+    assert.equal(error.code, "ENOENT");
+    assert(!JSON.stringify(observed).includes(root));
+    assert(!JSON.stringify(observed).includes(first));
+  }
+});
+
 test("unknown components and unsupported private command shapes execute unchanged without hashing", async (t) => {
   const root = await fixture(t);
   const { first } = diagnosticRepository(root);
