@@ -3,12 +3,12 @@ title: Native Chronicle Lens Series Program Charter v1.0
 audience: product-engineering
 status: proposed-governing-charter-awaiting-protected-review
 canonical_for: native-chronicle-lens-series-program-charter
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 version: 1.0
 document_id: VW-PARALLAX-NCL-CHARTER-1.0
 repository_baseline: e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab
 integration_reference: aaff919428ef9ab421579415ce3409949724760d
-qualification_baseline: 8e49351e62e1f32340109566557a824bfa74e14d
+qualification_baseline: 408f37389e6dd358b1ab005d91f3f588405f61db
 ---
 
 # Native Chronicle Lens Series Program Charter v1.0
@@ -32,7 +32,7 @@ qualification_baseline: 8e49351e62e1f32340109566557a824bfa74e14d
 
 This charter establishes one discoverable program beneath existing owners. It does not replace a governing constitution, reopen a closed project, authorize an implementation phase, or accept an unmerged candidate. Requirements describe the intended native experience; the linked status record describes what was actually implemented and demonstrated. A requirement written here is not an implementation claim.
 
-**October 21 integration refresh:** Crossdeck #721 has landed at `aaff919428ef9ab421579415ce3409949724760d`; its accepted continuity design is now present upstream. This governance candidate adopts protected main `8e49351e62e1f32340109566557a824bfa74e14d`, including #787's verification repairs and #786's 38-row inventory maintenance, for its own documentation qualification. The pending #776 Studio and #741 native product lanes retain separate acceptance; their product landings are not prerequisites for accepting this governance charter. This charter's original source/subset snapshot below remains dated October 20; the [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) supplies current PR identities and distinguishes the cleared upstream prerequisite from unaccepted NCL consumer/native work. No native product acceptance or future-increment ratification is implied by this documentation source adoption.
+**October 22 reconciliation preparation:** Crossdeck #721 remains landed at `aaff919428ef9ab421579415ce3409949724760d`. This local governance preparation adopts accepted main `408f37389e6dd358b1ab005d91f3f588405f61db`, retaining #787's verification repairs, all #786 media inventory rows and #789's accepted development-diagnostic retention documentation. Published #781 remains at `716931965e60e527dcd407ea3a4c36835f87ef86`; its protected run failed when the shared classifier reached R26's expired execution window. This preparation invokes no campaign admission, capture, review, seal or protected run. Publication awaits an accepted shared-guard repair and exact-source review; the user's Studio-next product merge order remains separate. This charter's original source/subset snapshot below remains dated October 20; the [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) records the dated qualification failure and separate Studio/native lanes. No native product acceptance or future-increment ratification follows from this documentation preparation.
 
 MUST and MUST NOT are mandatory within the accepted increment's scope. SHOULD requires an explained disposition. MAY describes an optional supported capability. Future increment proposals and proposed numerical qualification profiles remain inactive until their stated owner decisions are recorded. Existing higher-authority gates remain effective throughout.
 
@@ -477,7 +477,8 @@ This is the sole NCL series charter topic. The status record is its factual comp
 
 Changing increment ownership or a mandatory acceptance requirement needs an explicit owner decision and reconciliation with parent authority. Routine updates must not rewrite preserved Parallax constitutions, reassign One Voyage progression, alter historical receipts or promote a partial feature in the Feature Catalog. Documentation acceptance authorizes only this governance deliverable; implementation and deployment need their own bounded task and current acceptance process.
 
-| Version              | Date       | Change                                                                                                                                                                   |
-| -------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1.0                  | 2026-10-20 | Establish subordinate NCL program governance, evidence tiers, initial-milestone boundary and explicitly proposed future increment contracts; no product behavior changed |
-| 1.0 review candidate | 2026-10-21 | Record landed Crossdeck prerequisite and separate pending Studio/native lanes; preserve original source/evidence snapshot and unratified increment boundaries            |
+| Version               | Date       | Change                                                                                                                                                                                       |
+| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0                   | 2026-10-20 | Establish subordinate NCL program governance, evidence tiers, initial-milestone boundary and explicitly proposed future increment contracts; no product behavior changed                     |
+| 1.0 review candidate  | 2026-10-21 | Record landed Crossdeck prerequisite and separate pending Studio/native lanes; preserve original source/evidence snapshot and unratified increment boundaries                                |
+| 1.0 local preparation | 2026-10-22 | Reconcile accepted #789 documentation additively; preserve the original failed #781 run and expired-window diagnosis; await accepted guard repair and exact-source review before publication |
