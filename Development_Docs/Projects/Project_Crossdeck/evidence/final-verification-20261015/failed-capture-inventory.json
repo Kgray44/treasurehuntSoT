@@ -1,0 +1,31 @@
+{
+  "classification": "Failed-run partial capture inventory; not acceptance",
+  "genericFiles": 338,
+  "byExtension": { ".png": 131, ".zip": 25, ".webm": 182, ".json": 0 },
+  "submissionCaptureManifestPresent": false,
+  "genericCaptureManifestPresent": false,
+  "newestVideoCandidates": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d6809833a941f0de37e6d4523d140c18.webm",
+      "zipTime": [2026, 10, 15, 15, 41, 4],
+      "bytes": 1366
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3733e38d5c2789ac0066cef06849f1ba.webm",
+      "zipTime": [2026, 10, 15, 15, 41, 6],
+      "bytes": 878879
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/78795e39bea5752f4397f1e2cdc08567.webm",
+      "zipTime": [2026, 10, 15, 15, 41, 36],
+      "bytes": 462721
+    }
+  ],
+  "extractedNewestVideo": {
+    "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\finite-verification-9983-f000\\failure-media\\last-recorded-context.webm",
+    "archivePath": "Development_Docs/Testing/Product_Experience/evidence/generic/78795e39bea5752f4397f1e2cdc08567.webm",
+    "sha256": "9f828e6489be50d6855b31bcad7174e29a03dbeb4bf8ae50b3472cf34b797bef",
+    "bytes": 462721,
+    "interpretation": "Latest archived video timestamp; visual state/context must be verified, not presumed."
+  }
+}

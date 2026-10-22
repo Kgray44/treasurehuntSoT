@@ -1,0 +1,309 @@
+{
+  "classification": "READ_ONLY_INFRASTRUCTURE_DIAGNOSIS_OF_CONSUMED_ORDINARY2_BEFORE_ANY_VERIFICATION_COMMAND",
+  "status": "CONFIRMED_INVENTORY_OUTPUT_BUFFER_FAILURE",
+  "runId": 38929134845,
+  "candidateSha": "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b",
+  "candidateTree": "d01cbdae76db4ac460f3474cb857bc779f59963f",
+  "baseSha": "43340791355526fb31fe2dbf9274eb8632589b30",
+  "currentSourceDigest": "ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136",
+  "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+  "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
+  "supplementDigest": "b8b55b2051d0b176271f07a195ad7a57acd7fc594374f1cbfab532c71c289c11",
+  "decisionArtifactId": 12058059957,
+  "decisionArtifactServerDigest": "sha256:d1f348a90409bde9fd35b4818b8ee22dd569b1209e94d54ff0d625cf796c579c",
+  "decisionZipBytes": 115718,
+  "terminalLogSha256": "fca77bfb48843e4d9be54c5861a65cd26a9936ed0093dfd9aa04178c369ea3ff",
+  "classificationPreflightMs": 119062,
+  "verificationCommandsExecuted": 0,
+  "buildsExecuted": 0,
+  "technicalSuitesExecuted": 0,
+  "experienceReplaysExecuted": 0,
+  "browserRuntimeReceipts": null,
+  "treeInventoryBytes": 1541876,
+  "treeInventorySha256": "a4218c12f4d32412e8051e9967610570013671382fd69e6bde2dc531e4b82297",
+  "defaultChildProcessMaxBufferBytes": 1048576,
+  "defaultInvocationError": {
+    "code": "ENOBUFS",
+    "errno": -4060,
+    "syscall": "spawnSync git",
+    "message": "spawnSync git ENOBUFS",
+    "stack": "Error: spawnSync git ENOBUFS\n    at Object.spawnSync (node:internal/child_process:1143:20)\n    at spawnSync (node:child_process:911:24)\n    at Object.execFileSync (node:child_process:954:15)\n    at file:///D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r8-readiness-20261016/diagnose-ordinary2-before-command-failure.mjs:10:30",
+    "stdoutBytes": 1056768,
+    "stderrBytes": 0
+  },
+  "actualNonexecutingPlannerError": {
+    "code": "ENOBUFS",
+    "errno": -4060,
+    "syscall": "spawnSync git",
+    "message": "spawnSync git ENOBUFS",
+    "stack": "Error: spawnSync git ENOBUFS\n    at Object.spawnSync (node:internal/child_process:1143:20)\n    at spawnSync (node:child_process:911:24)\n    at execFileSync (node:child_process:954:15)\n    at trackedEntries (file:///D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/scripts/sounding-line/ordinary.mjs:307:18)\n    at semanticSnapshot (file:///D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/scripts/sounding-line/ordinary.mjs:564:19)\n    at buildEvidenceObligations (file:///D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/scripts/sounding-line/ordinary.mjs:617:26)\n    at file:///D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r8-readiness-20261016/diagnose-ordinary2-before-command-failure.mjs:11:138"
+  },
+  "qualificationReservation": {
+    "version": 1,
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8",
+    "binding": {
+      "exception": {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8",
+        "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
+        "frozenReferenceSha": "d2ce2f29f3c86dd62e673000befc90fc39835d50",
+        "priorRepairRecaptureAttempts": 11,
+        "independentReviewOrdinal": 7,
+        "version": 8,
+        "predecessor": {
+          "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R7",
+          "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R7",
+          "recordDigest": "5073e5c04e60985cfd1f0fcce1f3f9a11fdffe5bb2d29cf269aa3a6356e6e851",
+          "campaignEpoch": "2026-10-15T13:54Z",
+          "prepareCommit": "dd8c3856c097b5c1154e29396f0c959e38c2a076",
+          "preparePayloadDigest": "50f4243825efbe174d4edc69a73c9c771109b092bdc5cf5e280f60279e78dadf",
+          "runId": 38880737676,
+          "runAttempt": 1,
+          "workflowId": 341545080,
+          "createdAt": "2026-10-16T09:28:52Z",
+          "conclusion": "failure",
+          "baseSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+          "candidateSha": "0dd0847458dedaab3b5b1d0f5b4b73fe78aaa087",
+          "candidateTree": "bb030c5a449081d51cf2e5d7cfe692c7288b541e",
+          "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+          "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+          "independentReviewsCompleted": 6,
+          "reservedIndependentReviewOrdinal": 7,
+          "artifacts": [
+            {
+              "id": 12038770189,
+              "size": 49279,
+              "digest": "sha256:7dbd634e95d42b7f6d5257cbc02a4346464e6de0027438de58d5d37488a3b8b7"
+            },
+            {
+              "id": 12037519792,
+              "size": 1388686658,
+              "digest": "sha256:2647f25006cea85efd5f127d31dec7e96968a259436c6c15ff6daa12ff4a88ee"
+            }
+          ],
+          "failureCommit": "18529e44b28d8b64eb190fbf8b8a23476ba5707a",
+          "failureIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/failed-preparation-index.json",
+          "failureIndexSha256": "d9db9f58a492d3a78f2ff98b3b0083461a178ef6fcad31ea09a78da7225b1029",
+          "localProofIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-proof-index.json",
+          "localProofIndexSha256": "b5b164a5643a95abe77bf6b8c521c8b711c1b027b1504dee41147892334d4eaa",
+          "originalMarkerSha256": "0e1cbde32958b1c867159f4f65947a82204f108d12f5f2452c967d1d70b942b4",
+          "localStatus": "PASS",
+          "localProofInvocations": 1,
+          "childReplayInvocations": 1,
+          "pairedCaseExecutions": 3,
+          "participatingBrowserContexts": 6,
+          "preparationStatus": "FAIL",
+          "preparationInvocations": 1,
+          "preparationPairedPassed": 2,
+          "preparationPairedFailed": 1,
+          "preparationPairedSkipped": 0,
+          "completeCaptureManifestIssued": false,
+          "reviewStarted": false,
+          "authenticatedSubmissionStarted": false,
+          "ordinaryStarted": false
+        },
+        "attemptHistory": {
+          "version": 8,
+          "priorRepairRecaptureAttempts": 11,
+          "failedVerificationPreparations": 2,
+          "successfulBlockedVerificationPreparations": 2,
+          "successfulAcceptedVerificationPreparations": 2,
+          "totalPriorExecutedAttempts": 17,
+          "nextPreparationAttemptTotal": 18,
+          "completedIndependentReviews": 6,
+          "remainingIndependentReviewOrdinal": 7,
+          "boundedProductRepairsCompletedSeparately": 1,
+          "targetedLocalProofInvocationsCompletedSeparately": 1,
+          "targetedLocalChildReplaysCompletedSeparately": 2,
+          "priorAuthenticatedReviewDispatches": 2,
+          "priorAuthenticatedReviewCancellations": 1,
+          "nextAuthenticatedReviewDispatchTotal": 3,
+          "priorOrdinaryDispatches": 1,
+          "priorOrdinaryFailures": 1,
+          "nextOrdinaryDispatchTotal": 2,
+          "pairedLocalProofInvocationsCompletedSeparately": 2,
+          "nextPairedLocalProofInvocationTotal": 3,
+          "nextPairedLocalCaseExecutions": 3,
+          "pairedLocalChildReplaysCompletedSeparately": 2,
+          "pairedLocalProofFailuresCompletedSeparately": 1,
+          "priorPairedLocalCaseAccounting": {
+            "r6": {
+              "normal": "FAILED",
+              "reduced": "SKIPPED_NOT_EXECUTED",
+              "adverse": "PASSED",
+              "executedCases": 2,
+              "pairedCaseExecutions": null,
+              "participatingBrowserContexts": null,
+              "retries": 0
+            },
+            "r7": {
+              "normal": "PASSED",
+              "reduced": "PASSED",
+              "adverse": "PASSED",
+              "pairedCaseExecutions": 3,
+              "participatingBrowserContexts": 6,
+              "retries": 0
+            }
+          },
+          "pairedLocalProofPassesCompletedSeparately": 1
+        },
+        "nonExecutingReconciliation": {
+          "version": 1,
+          "id": "PE-R8-HISTORICAL-FORMAT-20261016",
+          "recordDigest": "b8b55b2051d0b176271f07a195ad7a57acd7fc594374f1cbfab532c71c289c11",
+          "originalBaseSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
+          "originalSourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+          "originalPublicationCandidateSha": "4e365e82fda3f272ca6fc2fec61b599b07746834",
+          "currentBaseSha": "43340791355526fb31fe2dbf9274eb8632589b30",
+          "currentSourceDigest": "ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136",
+          "overlay": [
+            {
+              "path": ".agents/README.md",
+              "oldMode": "100644",
+              "oldBlob": "55b6e4c2f9d9263a73abc26a7ade21ab3d87a223",
+              "newMode": "100644",
+              "newBlob": "9efe4e0b4f233ea6ad8c22c1e4354371e0d5ad63"
+            },
+            {
+              "path": ".agents/crossdeck-r8-historical-format.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "d3207cd8623313991de7c3a8687b658a8fb9d9bb"
+            },
+            {
+              "path": ".prettierignore",
+              "oldMode": "100644",
+              "oldBlob": "060d552e1efc8fa1186b04b5ff97355a9386faa3",
+              "newMode": "100644",
+              "newBlob": "d21c485a0c9996cafbd53dde2ab76d0abaa779b4"
+            },
+            {
+              "path": "Development_Docs/Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "9d725dcc8e10f003c69be07a02398b2b6c103910"
+            },
+            {
+              "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+              "oldMode": "100644",
+              "oldBlob": "466dc8f094cbda15ac891478a7ea4f0eaf78b071",
+              "newMode": "100644",
+              "newBlob": "a88c26165238cb316b3559ab31365f1d7d0477e2"
+            },
+            {
+              "path": "Development_Docs/Testing/Product_Experience/README.md",
+              "oldMode": "100644",
+              "oldBlob": "b9d7c1a786f67edbc85d1a183113cd2286614508",
+              "newMode": "100644",
+              "newBlob": "7ce7e94d64b3cbc19d0ce3a52ee1a9ecfcff9d44"
+            },
+            {
+              "path": "Development_Docs/document-index.json",
+              "oldMode": "100644",
+              "oldBlob": "62a34a16c684a5323dfbb49a992c31e6483b5ced",
+              "newMode": "100644",
+              "newBlob": "d1aec00e7df9926a9ffa51fc5b85fac8ae913664"
+            },
+            {
+              "path": "scripts/sounding-line/experience-attestation.mjs",
+              "oldMode": "100644",
+              "oldBlob": "4dd55317623762d927412ace1d215e12e10b83e5",
+              "newMode": "100644",
+              "newBlob": "6f1a9e061b69264955e912dc6ee58e16f36c4a0a"
+            },
+            {
+              "path": "scripts/sounding-line/experience-exception.mjs",
+              "oldMode": "100644",
+              "oldBlob": "ab6bfd80a294e69838912f62b0fbc5574107e02e",
+              "newMode": "100644",
+              "newBlob": "0d59057274596d8ea8a8c317092bde6c64a29322"
+            },
+            {
+              "path": "scripts/sounding-line/experience-paired.mjs",
+              "oldMode": "100644",
+              "oldBlob": "64a85160f5dcea10de8774f6fac9510e3cb45f34",
+              "newMode": "100644",
+              "newBlob": "a8d45b8e4849fd737dc9492642c990b8317645d0"
+            },
+            {
+              "path": "scripts/sounding-line/experience-r8-format.mjs",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "7349f4c87e6fe4218bc404e8c04190e22ea027dd"
+            },
+            {
+              "path": "scripts/sounding-line/ordinary.mjs",
+              "oldMode": "100644",
+              "oldBlob": "09e5d7ac0a391dca2fd67fee17585e231cb0e32a",
+              "newMode": "100644",
+              "newBlob": "6e7833a98d95d1a7ba7f803543e846d15cd63edd"
+            },
+            {
+              "path": "scripts/sounding-line/product-experience.mjs",
+              "oldMode": "100644",
+              "oldBlob": "a32d21e6b564171245c6d05b277e0b23b7629e36",
+              "newMode": "100644",
+              "newBlob": "a9ffaa8ff1b4466e6013ee05d28c8fcbb0c77508"
+            },
+            {
+              "path": "tests/sounding-line/experience-exception.test.mjs",
+              "oldMode": "100644",
+              "oldBlob": "813584d63ce944e8d0f93be5d4a90e903c84c496",
+              "newMode": "100644",
+              "newBlob": "3e150d7a34b40e7a23e3c707287cf21e49c727e9"
+            },
+            {
+              "path": "tests/sounding-line/fixtures/r8-format-originals.json",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "8336e08fdeef6117d987e22114fb6b2f34e4aaa9"
+            },
+            {
+              "path": "tests/sounding-line/product-experience.test.mjs",
+              "oldMode": "100644",
+              "oldBlob": "8f72331bfd02a0c1f29cfce226e7b8a802e513ce",
+              "newMode": "100644",
+              "newBlob": "f522d181bd94353aaf604f52b1a1e20da7c123c9"
+            }
+          ],
+          "captureSeal": "81847b8e96943609329990c7bca317d5206e60a8",
+          "reviewSeal": "0de6d65c804dbc7ce0cd589559473ccda0df7a4b",
+          "reviewSubmission": "2d0169e6425884f3440e76ddc9b4b8fe924e51f7",
+          "reviewArtifact": {
+            "id": 12051889841,
+            "digest": "sha256:4bbb290f32061175579b8ce7c1de4a05acb8ccfcac0678f4346194d3caa84c20",
+            "runId": 38913515007
+          }
+        }
+      },
+      "baseSha": "43340791355526fb31fe2dbf9274eb8632589b30",
+      "sourceDigest": "ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136",
+      "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274"
+    },
+    "run": {
+      "runId": 38929134845,
+      "runAttempt": 1,
+      "actor": "Kgray44",
+      "workflowPath": ".github/workflows/sounding-line-ordinary.yml",
+      "event": "pull_request_target",
+      "headSha": "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "createdAt": "2026-10-16T16:05:14Z",
+      "workflowId": 341545080,
+      "displayTitle": "Sounding Line finite 1 ordinary 721 0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b active"
+    },
+    "candidateSha": "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b",
+    "candidateTree": "d01cbdae76db4ac460f3474cb857bc779f59963f",
+    "status": "ONE_ORDINARY_INVOCATION_RESERVED_VALIDATION_PENDING",
+    "commitSha": "d0bb0e170d1ee102d0a596b9df1fc427ba8f782e"
+  },
+  "qualifiedSeal": null,
+  "preparation18AndReview7AndAuth3Unchanged": true,
+  "consumerSourceModified": false,
+  "rootExtraRuntimeExecuted": false,
+  "next": "Existing authorized authority owner must diagnose/repair canonical inventory buffer and provide an independently reviewed/protected finite qualification successor preserving this consumed run, original old evidence, all source bindings and expiry. Never reset/refund/retry current ordinary2.",
+  "observedAt": "2026-10-16T16:19:43.469Z"
+}

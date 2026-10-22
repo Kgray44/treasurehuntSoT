@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-18
 ---
 
 # Current status
+
+The Crossdeck refit candidate connects a phone from the active Chronicle and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact and restricted crew views. Contextual pairing, acknowledged handoff, continuation and recovery retain the authorized Voyage. The [R11 source record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), original 38-context capture and seven-contract/119-judgment independent review remain historical source-bound evidence. [Ordinary5](../../../Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) and later [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) are consumed failures. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft, unqualified and unmerged. Its continuation with accepted Reach changes requires fresh combined-source experience evidence, current whole qualification and exact qualified seal, protected merge and landed smoke. Earlier outcomes remain preserved; unsupported dedicated purposes explain their limits. Physical/native, field, assistive-technology and product-owner acceptance remain separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
@@ -286,4 +288,4 @@ inputs, Chronicle Passport, Personal Harbor, and workspace navigation were
 observed. A physical-phone run is still mandatory, so staging desktop evidence
 does not establish owner acceptance or deployment.
 
-Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance; spatial refit remains pending.
+Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance. The [Crossdeck R8 record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) supplies the refit's current source-bound experience evidence; exact qualification and integration remain bound to PR #721.

@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # Engineering-record index
@@ -57,11 +57,15 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Crossdeck finite final-verification dispatch audit](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Dispatch_Audit_20261015.md)
 - [Crossdeck finite final-verification control plane](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md)
 - [Experience context setup replay repair](Programs/Sounding_Line/Project_Sounding_Line_Context_Setup_Replay_Repair_20261015.md)
-- [Crossdeck R2 owner-decision proposal (pending and inactive)](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R2_Owner_Decision_Proposal_20261015.md)
-- [Crossdeck R3 phone-return authority amendment (approved; protected installation required)](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R3_Owner_Decision_Proposal_20261015.md)
+- [Crossdeck R2 finite-verification authority](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R2_Owner_Decision_Proposal_20261015.md)
+- [Crossdeck R3 phone-return authority amendment](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R3_Owner_Decision_Proposal_20261015.md)
 - [Crossdeck R3 review cancellation audit and inactive owner disposition](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R3_Review_Cancellation_Disposition_20261015.md)
 - [Crossdeck R4 checkout correction and approved fresh-evidence recovery](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R4_Recovery_20261015.md)
+- [Crossdeck R4 consumer source-bound verification](Projects/Project_Crossdeck/Spatial_Experience_Refit_R4_Verification_20261015.md)
 - [Crossdeck R5 bounded custody transport recovery](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R5_Transport_Recovery_20261015.md)
+- [Crossdeck R5 consumer source-bound verification](Projects/Project_Crossdeck/Spatial_Experience_Refit_R5_Verification_20261015.md)
+- [Crossdeck R5 missing two-device evidence and inactive bounded correction](Projects/Project_Crossdeck/R5_Evidence_Coverage_Disposition_20261015.md)
+- [Crossdeck R5 original capture gallery](Projects/Project_Crossdeck/evidence/r5-verification-20261015/gallery/README.md)
 - [Project Homeport](Projects/Project_Homeport/README.md)
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
 - [Project Tideglass](Projects/Project_Tideglass/README.md)
@@ -77,6 +81,8 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Parallax](Projects/Project_Parallax/README.md)
 - [NCL-01 implementation and acceptance status](Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) — exact #741/TestFlight ancestry, virtual proof, owner physical observations, classroom fidelity limits and open acceptance gates.
 - [Project Crossdeck](Projects/Project_Crossdeck/README.md)
+- [Crossdeck R2 capture and final-review blocker](Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md)
+- [Crossdeck R3 phone-return repair and verification](Projects/Project_Crossdeck/Spatial_Experience_Refit_R3_Verification_20261015.md)
 
 ## Historical and additive governing records
 

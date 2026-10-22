@@ -1,0 +1,14 @@
+{"namespace":"SOUNDING_LINE_CUSTODY_TRANSPORT","method":"GET","endpoint":"actions/runs/38988948661/jobs","attempt":1,"maximumAttempts":2,"outcome":"TERMINAL_HTTP_FAILURE","status":401,"willRetry":false}
+file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/custody-transport.mjs:11
+const fail = (code) => new Error(`PRODUCT_EXPERIENCE_EXCEPTION_${code}`);
+                       ^
+
+Error: PRODUCT_EXPERIENCE_EXCEPTION_CUSTODY_ACCESS_401
+    at fail (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/custody-transport.mjs:11:24)
+    at file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/custody-transport.mjs:60:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async campaignHistory (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/experience-exception.mjs:1583:20)
+    at async admitR12FocusedTechnical (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/experience-r12.mjs:471:19)
+    at async file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/experience-r12-technical-proof.mjs:766:38
+
+Node.js v24.19.0

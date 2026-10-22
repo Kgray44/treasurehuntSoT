@@ -1,0 +1,88 @@
+{
+  "classification": "Installed authority verifies actual completed capture/review artifacts and immutable custody; read-only validation",
+  "status": "PASS",
+  "decision": {
+    "status": "PASS",
+    "exception": {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+      "recordDigest": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+      "frozenReferenceSha": "97cdcad1b60210efef07ac3bcbe407abda936baf",
+      "priorRepairRecaptureAttempts": 11,
+      "independentReviewOrdinal": 5,
+      "version": 4,
+      "predecessor": {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+        "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+        "recordDigest": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
+        "prepareCommit": "00e2e1ba20c9f746e0fe49b9eb14de63a9d76a32",
+        "runId": 38798375927,
+        "runAttempt": 1,
+        "workflowId": 341545080,
+        "createdAt": "2026-10-15T19:59:57Z",
+        "conclusion": "success",
+        "baseSha": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+        "candidateSha": "63c64e8dc6f894087a7f6f7b45caff55f8317c9a",
+        "candidateTree": "bd15adef8cf1058950e2910f4dd6b976a100a574",
+        "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+        "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+        "campaignEpoch": "2026-10-15T13:54Z",
+        "independentReviewsCompleted": 3,
+        "reservedIndependentReviewOrdinal": 4,
+        "artifacts": [
+          {
+            "id": 12003734252,
+            "size": 1301581627,
+            "digest": "sha256:e8b9e055f4c0fcd84a39aa1e950da52761d0c1cc682250ad3671d2e830fd9c08"
+          },
+          {
+            "id": 12003933605,
+            "size": 38925,
+            "digest": "sha256:6ea201c9f8b4c7ed769ebe1950b14655d4d538ac5fc06f2c20f648a0edab21fa"
+          }
+        ]
+      },
+      "attemptHistory": {
+        "version": 4,
+        "priorRepairRecaptureAttempts": 11,
+        "failedVerificationPreparations": 1,
+        "successfulBlockedVerificationPreparations": 1,
+        "successfulAcceptedVerificationPreparations": 1,
+        "totalPriorExecutedAttempts": 14,
+        "nextPreparationAttemptTotal": 15,
+        "completedIndependentReviews": 4,
+        "remainingIndependentReviewOrdinal": 5,
+        "boundedProductRepairsCompletedSeparately": 1,
+        "targetedLocalProofInvocationsCompletedSeparately": 1,
+        "targetedLocalChildReplaysCompletedSeparately": 2,
+        "priorAuthenticatedReviewDispatches": 1,
+        "priorAuthenticatedReviewCancellations": 1,
+        "nextAuthenticatedReviewDispatchTotal": 2
+      }
+    },
+    "exceptionCustody": {
+      "prepareReservation": "ab215f42af06e5b5942a9d562595dea3af5a5a6a",
+      "reviewSeal": "de1f2097ac8c21093ed5917c6bda5886c6f53d1e"
+    },
+    "captureArtifactId": 12009949926,
+    "reviewArtifactId": 12012399990,
+    "provenance": "PROTECTED_WORKFLOW_AUTHENTICATED_SUBMISSION",
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "captureProvenance": {
+    "id": 12009949926,
+    "digest": "sha256:bc21c7f921ad6a0afce9c5fd7fd23b17290c4d7b58e9534bcd8637c96ae5b5fd",
+    "runId": 38814444774,
+    "runAttempt": 1
+  },
+  "reviewProvenance": {
+    "id": 12012399990,
+    "digest": "sha256:5fec42361d6f7b07d208a3f4cf422c726a0b9c4dd6061c87b738094198a2741a",
+    "runId": 38820570426,
+    "runAttempt": 1
+  },
+  "artifactMetadataGets": 6,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalHardwareAcceptance": "NOT_CLAIMED"
+}

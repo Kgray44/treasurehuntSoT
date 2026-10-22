@@ -1,0 +1,53 @@
+{
+  "classification": "CONSUMED_ORDINARY2_ORIGINAL_HOSTED_RECORDS_AND_INDEPENDENT_NONEXECUTING_DIAGNOSIS",
+  "runId": 38929134845,
+  "sourceDigest": "ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136",
+  "decisionArtifactId": 12058059957,
+  "decisionArtifactServerDigest": "sha256:d1f348a90409bde9fd35b4818b8ee22dd569b1209e94d54ff0d625cf796c579c",
+  "entries": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary2-failed-20261016/run.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "0bd5a686e0864124c6f8a2748124f2c3fac6b4fe",
+      "sha256": "85820f1e9d7cfaed98b901dbb5a2a804400f19f599738433bc113f27a81f02f4",
+      "bytes": 13208
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary2-failed-20261016/jobs.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "d4fc2b6e03f9bb519a4ddb6010044db0739e3f39",
+      "sha256": "c96ff98689be279a1992efa056263a879dd80997afa3ee9939659619aa93c3b5",
+      "bytes": 11921
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary2-failed-20261016/artifacts.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "aa0bd6bede3e7523ad9aea75aadc8a69ab22ee3b",
+      "sha256": "6f5bb7a97afe8f9ad365e5a9446ff75e57402550f1bf3a1c0e4927acb22551b0",
+      "bytes": 797
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary2-failed-20261016/protected-run.original.log",
+      "mode": "100644",
+      "gitBlob": "cd2aeba3f19693ced37936b40a39e3237d0a5894",
+      "sha256": "fca77bfb48843e4d9be54c5861a65cd26a9936ed0093dfd9aa04178c369ea3ff",
+      "bytes": 2713898
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary2-failed-20261016/decision-12058059957.original.zip",
+      "mode": "100644",
+      "gitBlob": "a21b4b541b57f6d958e7a172a36f59c7454fb680",
+      "sha256": "d1f348a90409bde9fd35b4818b8ee22dd569b1209e94d54ff0d625cf796c579c",
+      "bytes": 115718
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary2-failed-20261016/independent-read-only-diagnosis.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "fca1cfc60d5ab6337d3f3578e53b723d267fcd61",
+      "sha256": "9e64ef0e5a67614829964a2d36f1f67d1bc8ed258fe1e0f9d681ab8c1f7bdeca",
+      "bytes": 15418
+    }
+  ],
+  "hostedUnderlyingErrorCodePreserved": false,
+  "originalCaptureReviewUnchanged": true
+}

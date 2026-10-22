@@ -1,3 +1,9 @@
+import {
+  isReviewedEvidenceAdoption,
+  historicalReviewedPlan,
+  validateReviewedIdentity,
+  reviewedEvidenceAdoption,
+} from "./experience-reviewed-adoption.mjs";
 import { REVIEW_DIMENSIONS } from "./experience-review-dimensions.mjs";
 import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
@@ -106,6 +112,10 @@ export function revisionJson(root, revision, file, optional = false) {
     fail("REGISTRY_INVALID", file, cause);
   }
 }
+export const sourceSnapshotReadsPath = (file) =>
+  sourceFile.test(file) &&
+  !testFile.test(file) &&
+  (/^(?:src|app|components|lib|styles)\//u.test(file) || file.endsWith(".json"));
 export function sourceSnapshot(root, revision) {
   const entries = git(root, ["ls-tree", "-rz", revision])
     .split("\0")
@@ -116,12 +126,7 @@ export function sourceSnapshot(root, revision) {
       return { path: file, mode, type, blob };
     })
     .filter((entry) => entry.type === "blob");
-  const sources = entries.filter(
-    (entry) =>
-      sourceFile.test(entry.path) &&
-      !testFile.test(entry.path) &&
-      (/^(?:src|app|components|lib|styles)\//u.test(entry.path) || entry.path.endsWith(".json")),
-  );
+  const sources = entries.filter((entry) => sourceSnapshotReadsPath(entry.path));
   const contents = new Map();
   if (sources.length) {
     const bytes = git(root, ["cat-file", "--batch"], {
@@ -759,6 +764,10 @@ export function validateExperienceEvidence({
 }) {
   const currentPlan = plan;
   if (!automatedOnly) {
+    if (isReviewedEvidenceAdoption(plan)) {
+      validateReviewedIdentity(plan, evidence);
+      plan = historicalReviewedPlan(plan);
+    }
     validateR8FormatEvidenceIdentity(plan, evidence ?? {});
     plan = r8FormatEvidencePlan(plan);
   }
@@ -926,7 +935,7 @@ export function validateExperienceEvidence({
         fail("FINDING_INVALID", contract.id);
       if (finding.disposition === R20_DEFERRED_DISPOSITION) {
         validateScopedR20Finding({
-          plan: currentPlan,
+          plan: isReviewedEvidenceAdoption(currentPlan) ? historicalReviewedPlan(currentPlan) : currentPlan,
           finding,
           contractId: contract.id,
           artifacts: evidence.artifacts,
@@ -1005,6 +1014,7 @@ export function validateExperienceEvidence({
     status: "PASS",
     contractIds: plan.contractIds,
     sourceDigest: currentPlan.sourceDigest,
+    ...(!automatedOnly ? reviewedEvidenceAdoption(currentPlan) : {}),
     ...(currentPlan.exception?.nonExecutingReconciliation
       ? {
           reviewedBaseSha: plan.baseSha,

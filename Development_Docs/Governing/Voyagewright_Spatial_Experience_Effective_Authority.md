@@ -3,7 +3,7 @@ title: Voyagewright Spatial Experience Effective Authority
 audience: product-engineering
 status: current-additive-authority-index
 canonical_for: spatial-experience-effective-authority
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # Voyagewright Spatial Experience Effective Authority

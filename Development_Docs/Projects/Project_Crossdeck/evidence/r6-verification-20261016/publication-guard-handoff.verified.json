@@ -1,0 +1,26 @@
+{
+  "classification": "ACCEPTED_EXACT_PUBLICATION_METADATA_AUTHORITY_CORRECTION_NOT_CONSUMER_ACCEPTANCE",
+  "status": "PASS",
+  "acceptedMain": "ed96ead50e31553b1779c08284b022047d5edd8d",
+  "acceptedTree": "bb94e3ffb40ba057dd95d1d230f94a546b596110",
+  "qualifiedCandidate": "1f892577e4712d1f0277c3a2c5de1731f734ce1a",
+  "runId": 38863079327,
+  "runAttempt": 1,
+  "wholeRun": "success",
+  "mainlineDecision": "success",
+  "landedNoncapturingTests": 9,
+  "recordDigest": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787",
+  "historyBindings": 405,
+  "archivedR5Media": 228,
+  "allowedPublicationPaths": [
+    "Development_Docs/Features/catalog/crossdeck.json",
+    "CHANGELOG.md",
+    ".agents/crossdeck-refit-checkpoint.md"
+  ],
+  "independentReviewUrl": "https://github.com/Kgray44/treasurehuntSoT/pull/745#issuecomment-6209779447",
+  "landedReceiptSha256": "a22e96d57fabfff672d941505543e2edcf0cd45d9ef937abf7a425b0d51e1bcc",
+  "reviewReceiptSha256": "7482380bdd8b2c22fa67bfff15f80de0ed50a5cea10df729991f2bdb18beec0e",
+  "consumerExecutions": 0,
+  "newGrantOrReset": false,
+  "verifiedAt": "2026-10-16T07:03:57.938Z"
+}

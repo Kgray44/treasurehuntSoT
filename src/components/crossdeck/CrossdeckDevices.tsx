@@ -1,448 +1,587 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useId, useRef, useState } from "react";
 import QRCode from "qrcode";
-import { CHALLENGE_MS, HEARTBEAT_MS, roles, type SurfaceRole } from "@/crossdeck/contracts";
-import type { SurfaceDto } from "@/crossdeck/service";
-import { browserProjection, createCrossdeckId, crossdeckRequest, storageKey } from "@/crossdeck/client";
+import { CHALLENGE_MS, type SurfaceRole } from "@/crossdeck/contracts";
+import { browserProjection, createCrossdeckId } from "@/crossdeck/client";
+import { companionHref, experienceProfiles, roleNames, type ExperienceAvailability } from "@/crossdeck/experiences";
 import { signInHref } from "@/homeport/return-to";
+import { useCrossdeckSession } from "./useCrossdeckSession";
+import { VoyageContext, type VoyageContextData } from "./VoyageContext";
 import styles from "./CrossdeckDevices.module.css";
-const roleNames: Record<SurfaceRole, string> = {
-  PRIMARY_STORY: "Main story",
-  CHRONICLE_LENS: "Chronicle Lens companion",
-  CHART: "Chart",
-  JOURNAL: "Journal",
-  ARTIFACT_VIEWER: "Artifact viewer",
-  SHARED_CREW_DISPLAY: "Crew display",
-  AMBIENT: "Atmosphere",
-  CAPTAIN_AUXILIARY: "Captain companion",
-  CREATOR_PREVIEW: "Creator preview",
-  ACCESSIBILITY_COMPANION: "Accessibility companion",
-};
+
+const pendingKey = "crossdeck.pending-pair.v1";
+export function DeviceMark({ phone = false }: { phone?: boolean }) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      aria-hidden="true"
+    >
+      {phone ? (
+        <>
+          <rect x="6" y="2" width="12" height="20" rx="3" />
+          <path d="M10 18h4" />
+        </>
+      ) : (
+        <>
+          <rect x="2" y="3" width="20" height="14" rx="2" />
+          <path d="M8 21h8M12 17v4" />
+        </>
+      )}
+    </svg>
+  );
+}
 export function CrossdeckDevices({
   initialVoyage = "",
   compact = false,
+  pairing = false,
+  voyageContext,
+  onPresentationChange,
 }: {
   initialVoyage?: string;
   compact?: boolean;
+  pairing?: boolean;
+  voyageContext?: VoyageContextData;
+  onPresentationChange?: (open: boolean) => void;
 }) {
-  const [surfaces, setSurfaces] = useState<SurfaceDto[]>([]);
-  const [voyages, setVoyages] = useState<{ id: string; title: string }[]>([]);
-  const [voyage, setVoyage] = useState(initialVoyage);
-  const [label, setLabel] = useState("My device");
+  const router = useRouter();
+  const dialogTitle = useId();
+  const connection = useCrossdeckSession(initialVoyage);
+  const {
+    voyage,
+    setVoyage,
+    voyages,
+    surfaces,
+    here,
+    ready,
+    signedOut,
+    busy,
+    message,
+    setMessage,
+    act,
+    label,
+    setLabel,
+    refresh,
+  } = connection;
   const [code, setCode] = useState("");
-  const [challenge, setChallenge] = useState<{ code: string; expiresAt: string; qr: string } | null>(null);
-  const [role, setRole] = useState<SurfaceRole>("CHRONICLE_LENS");
-  const [message, setMessage] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [signedOut, setSignedOut] = useState(false);
-  const [ready, setReady] = useState(false);
-  const csrf = useRef("");
-  const own = useRef<string | null>(null);
-  const [ownId, setOwnId] = useState<string | null>(null);
-  const abort = useRef<AbortController | null>(null);
-  const refresh = useCallback(
-    async (signal?: AbortSignal) => {
-      const response = await fetch(`/api/crossdeck${voyage ? `?voyage=${encodeURIComponent(voyage)}` : ""}`, {
-        cache: "no-store",
-        signal,
-      });
-      if (response.status === 403 && voyage) {
-        setVoyage("");
-        setSurfaces([]);
-        setChallenge(null);
-        own.current = null;
-        setOwnId(null);
-        setMessage("This Voyage is no longer available. Choose another Voyage to connect.");
-        return;
-      }
-      if (response.status === 401) {
-        setSignedOut(true);
-        setSurfaces([]);
-        setChallenge(null);
-        csrf.current = "";
-        own.current = null;
-        setOwnId(null);
-        return;
-      }
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Devices could not be loaded.");
-      csrf.current = data.csrfToken;
-      setSignedOut(false);
-      setSurfaces(data.surfaces);
-      setVoyages(data.voyages);
-      setReady(true);
-      if (voyage) {
-        const id = sessionStorage.getItem(storageKey(voyage));
-        own.current = data.surfaces.some((s: SurfaceDto) => s.surfaceId === id && s.thisSession) ? id : null;
-        setOwnId(own.current);
-        const source = data.surfaces.find((s: SurfaceDto) => s.surfaceId === id);
-        if (source?.pairing?.state === "CONNECTED") {
-          setChallenge(null);
-          const target = data.surfaces.find((s: SurfaceDto) => s.surfaceId === source.pairing.surfaceId);
-          if (target) setMessage(`${target.label} connected. ${roleNames[target.role as SurfaceRole]} is ready.`);
-        }
-        if (id && !own.current) {
-          sessionStorage.removeItem(storageKey(voyage));
-          setChallenge(null);
-        }
-      }
-    },
-    [voyage],
+  const [pendingChallenge, setChallenge] = useState<{ code: string; expiresAt: string; qr: string } | null>(null);
+  const challenge = !signedOut && here && here.pairing?.state !== "CONNECTED" ? pendingChallenge : null;
+  const [availableVoyage, setAvailability] = useState<{ voyage: string; value: ExperienceAvailability } | null>(null);
+  const availability =
+    availableVoyage?.voyage === voyage ? availableVoyage.value : { lens: false, chart: false, artifacts: false };
+  const requestedRole: SurfaceRole = "JOURNAL";
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [opening, setOpening] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const [copied, setCopied] = useState(false);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const pairGeneration = useRef(0);
+  const profiles = experienceProfiles(availability);
+  const companions = surfaces.filter(
+    (s) => s.surfaceId !== here?.surfaceId && s.voyageId === voyage && s.presence === "ACTIVE",
   );
+
   useEffect(() => {
-    if (compact) return;
-    const fragment = new URLSearchParams(window.location.hash.slice(1));
-    const pendingKey = "crossdeck.pending-pair.v1";
-    let pairing = fragment.get("code");
-    if (pairing && /^[A-F0-9]{12}$/.test(pairing)) {
-      sessionStorage.setItem(pendingKey, JSON.stringify({ code: pairing, expiresAt: Date.now() + CHALLENGE_MS }));
-    } else {
-      try {
-        const pending = JSON.parse(sessionStorage.getItem(pendingKey) || "null");
-        if (pending?.expiresAt > Date.now()) pairing = pending.code;
-        else sessionStorage.removeItem(pendingKey);
-      } catch {
-        sessionStorage.removeItem(pendingKey);
-      }
-    }
-    if (pairing && /^[A-F0-9]{12}$/.test(pairing)) {
-      const timer = window.setTimeout(() => setCode(pairing), 0);
-      return () => window.clearTimeout(timer);
-    }
-    // Keep a bounded, tab-local return credential; sign-in URLs never contain it.
-  }, [compact]);
+    if (!compact) return;
+    if (dialog.current?.open) onPresentationChange?.(true);
+    return () => onPresentationChange?.(false);
+  }, [compact, onPresentationChange]);
+
   useEffect(() => {
-    const controller = new AbortController();
-    abort.current = controller;
-    let leaving = false;
-    const tick = async () => {
-      if (leaving || controller.signal.aborted) return;
-      try {
-        // Restore the authorized tab-local surface before the first heartbeat.
-        // Navigation marks the previous page disconnected; waiting for the
-        // interval leaves a freshly opened Journal unable to send or receive.
-        if (!own.current || !csrf.current) await refresh(controller.signal);
-        if (leaving || controller.signal.aborted) return;
-        if (own.current && csrf.current)
-          await crossdeckRequest(
-            {
-              action: "heartbeat",
-              surfaceId: own.current,
-              lifecycle: document.visibilityState === "visible" ? "ACTIVE" : "BACKGROUND",
-              capabilities: browserProjection(),
-            },
-            csrf.current,
-            controller.signal,
-          );
-        if (!leaving) await refresh(controller.signal);
-      } catch (cause) {
-        if (!controller.signal.aborted) {
-          setMessage(cause instanceof Error ? cause.message : "Connection interrupted.");
-          setSurfaces([]);
-          setChallenge(null);
+    if (!pairing) return;
+    let frame: number | undefined;
+    const hydrateIntent = () => {
+      let intent = "";
+      const fragment = new URLSearchParams(location.hash.slice(1)).get("code");
+      if (fragment && /^[A-Z0-9-]{6,20}$/i.test(fragment)) {
+        intent = fragment.toUpperCase();
+        sessionStorage.setItem(
+          pendingKey,
+          JSON.stringify({ code: fragment.toUpperCase(), expires: Date.now() + CHALLENGE_MS }),
+        );
+        history.replaceState(null, "", location.pathname + location.search);
+      } else {
+        try {
+          const saved = JSON.parse(sessionStorage.getItem(pendingKey) || "null");
+          if (saved && saved.expires > Date.now()) intent = saved.code;
+          else sessionStorage.removeItem(pendingKey);
+        } catch {
+          sessionStorage.removeItem(pendingKey);
         }
       }
+      // The browser-owned fragment is removed immediately; hydrate the form after the first browser frame.
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => setCode(intent));
     };
-    void tick();
-    const timer = window.setInterval(() => void tick(), HEARTBEAT_MS);
-    const hidden = () => {
-      void tick();
-    };
-    const leave = () => {
-      leaving = true;
-      if (own.current && csrf.current)
-        void crossdeckRequest(
-          { action: "heartbeat", surfaceId: own.current, lifecycle: "DISCONNECTED" },
-          csrf.current,
-          undefined,
-          true,
-        ).catch(() => {});
-    };
-    const returned = (event: PageTransitionEvent) => {
-      if (event.persisted) {
-        leaving = false;
-        void tick();
-      }
-    };
-    document.addEventListener("visibilitychange", hidden);
-    window.addEventListener("pagehide", leave);
-    window.addEventListener("pageshow", returned);
+    hydrateIntent();
+    window.addEventListener("hashchange", hydrateIntent);
     return () => {
-      controller.abort();
-      window.clearInterval(timer);
-      document.removeEventListener("visibilitychange", hidden);
-      window.removeEventListener("pagehide", leave);
-      window.removeEventListener("pageshow", returned);
+      if (frame !== undefined) cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", hydrateIntent);
     };
-  }, [refresh]);
+  }, [pairing]);
+  useEffect(() => {
+    if (!voyage || (compact && !dialogOpen)) return;
+    const controller = new AbortController();
+    void Promise.all([
+      fetch("/api/play/sessions/" + encodeURIComponent(voyage), { cache: "no-store", signal: controller.signal }),
+      fetch("/api/player/playthroughs/" + encodeURIComponent(voyage) + "/landfall", {
+        cache: "no-store",
+        signal: controller.signal,
+      }),
+    ])
+      .then(async ([journal, chart]) => {
+        const state = journal.ok ? await journal.json() : null;
+        const map = chart.ok ? await chart.json() : null;
+        if (!controller.signal.aborted)
+          setAvailability({
+            voyage,
+            value: {
+              lens: Boolean(
+                state?.journal?.chapters?.some((c: { blocks: { presentation: { spatialMoment?: unknown } }[] }) =>
+                  c.blocks.some((b) => b.presentation.spatialMoment),
+                ),
+              ),
+              chart: map?.available === true,
+              artifacts: Boolean(
+                state?.journal?.chapters?.some((c: { blocks: { journalKind: string }[] }) =>
+                  c.blocks.some((b) => b.journalKind === "artifact"),
+                ),
+              ),
+            },
+          });
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [voyage, compact, dialogOpen]);
   useEffect(() => {
     if (!challenge) return;
-    const remaining = Math.max(0, Date.parse(challenge.expiresAt) - Date.now());
-    const timer = window.setTimeout(() => {
-      setChallenge(null);
-      setMessage("The code expired. Create a new one when your other device is ready.");
-    }, remaining);
-    return () => window.clearTimeout(timer);
-  }, [challenge]);
-  const act = async (body: unknown, success: string) => {
-    setBusy(true);
-    setMessage("");
-    try {
-      const data = await crossdeckRequest(body, csrf.current);
-      if (data.surface?.thisSession) {
-        sessionStorage.setItem(storageKey(data.surface.voyageId), data.surface.surfaceId);
-        own.current = data.surface.surfaceId;
-        setOwnId(data.surface.surfaceId);
-        setVoyage(data.surface.voyageId);
+    const tick = () => {
+      const remaining = Math.max(0, Math.ceil((Date.parse(challenge.expiresAt) - Date.now()) / 1000));
+      setSeconds(remaining);
+      if (!remaining) {
+        setChallenge(null);
+        setMessage("That code expired. Create a new code when your phone is ready.");
       }
-      if (data.code) {
-        const link = `${window.location.origin}/devices/pair#${new URLSearchParams({ code: data.code })}`;
-        setChallenge({
-          ...data,
-          qr: await QRCode.toDataURL(link, { width: 240, margin: 2, errorCorrectionLevel: "M" }),
-        });
-      }
-      if (data.removed) setChallenge(null);
-      if ((body as { action: string }).action === "claim") {
-        setCode("");
-        sessionStorage.removeItem("crossdeck.pending-pair.v1");
-        window.history.replaceState(null, "", window.location.pathname + window.location.search);
-      }
-      setMessage(success);
-      if (!data.surface || data.surface.voyageId === voyage) await refresh();
-    } catch (cause) {
-      setMessage(cause instanceof Error ? cause.message : "Try again in a moment.");
-    } finally {
-      setBusy(false);
+    };
+    tick();
+    const countdown = setInterval(tick, 1000);
+    // A bounded enrollment refresh ends with this short-lived challenge. Presentation synchronization remains event driven.
+    const enrollment = setInterval(() => void refresh().catch(() => {}), 2000);
+    return () => {
+      clearInterval(countdown);
+      clearInterval(enrollment);
+    };
+  }, [challenge, refresh, setMessage]);
+
+  async function createPair(surfaceId: string) {
+    if (compact && !dialog.current?.open) return;
+    const generation = ++pairGeneration.current;
+    setCopied(false);
+    const result = await act({ action: "challenge", surfaceId, role: requestedRole }, "Your phone can join now.");
+    if (result?.code && result.expiresAt) {
+      const url = location.origin + "/devices/pair#code=" + encodeURIComponent(result.code);
+      const qr = await QRCode.toDataURL(url, { width: 240, margin: 2, errorCorrectionLevel: "M" });
+      if (generation === pairGeneration.current && (!compact || dialog.current?.open))
+        setChallenge({ code: result.code, expiresAt: result.expiresAt, qr });
     }
-  };
+  }
+  async function openConnection() {
+    setDialogOpen(true);
+    dialog.current?.showModal();
+    onPresentationChange?.(true);
+    if (!ready || signedOut) return;
+    setOpening(true);
+    try {
+      const surface =
+        here ??
+        (
+          await act(
+            {
+              action: "register",
+              surfaceId: createCrossdeckId(),
+              voyageId: voyage,
+              label,
+              capabilities: browserProjection(),
+            },
+            "This screen is ready.",
+          )
+        )?.surface;
+      if (surface) await createPair(surface.surfaceId);
+    } finally {
+      setOpening(false);
+    }
+  }
+  function closeConnection() {
+    pairGeneration.current++;
+    setChallenge(null);
+    dialog.current?.close();
+    setDialogOpen(false);
+    onPresentationChange?.(false);
+    trigger.current?.focus();
+  }
+  async function join() {
+    const result = await act(
+      {
+        action: "claim",
+        code: code.trim().toUpperCase(),
+        surfaceId: createCrossdeckId(),
+        label,
+        capabilities: browserProjection(),
+      },
+      "Connected. Opening your companion…",
+    );
+    if (result?.surface) {
+      sessionStorage.removeItem(pendingKey);
+      setCode("");
+      router.push(
+        result.surface.role === "SHARED_CREW_DISPLAY"
+          ? "/devices/display?voyage=" + encodeURIComponent(result.surface.voyageId)
+          : companionHref(result.surface.voyageId),
+      );
+    }
+  }
+  const credentials = challenge ? (
+    <div className={styles.pairing}>
+      <Image
+        className={styles.qr}
+        src={challenge.qr}
+        width={240}
+        height={240}
+        alt="Scan with your phone to join this Chronicle"
+        unoptimized
+      />
+      <p className={styles.instruction}>Open your phone’s camera and scan.</p>
+      <p className={styles.muted}>Sign in with the same Voyagewright account.</p>
+      <details className={styles.alternative}>
+        <summary>Use a code instead</summary>
+        <p>
+          On your phone, open <strong>/devices/pair</strong> and enter:
+        </p>
+        <code className={styles.code}>{challenge.code}</code>
+        <button
+          type="button"
+          onClick={() => {
+            void navigator.clipboard?.writeText(challenge.code).then(() => setCopied(true));
+          }}
+        >
+          {copied ? "Copied" : "Copy code"}
+        </button>
+      </details>
+      <p className={styles.expiry}>This code expires in {seconds} seconds.</p>
+    </div>
+  ) : (
+    <div className={styles.waiting}>
+      <DeviceMark phone />
+      <p>
+        {opening || busy
+          ? "Preparing your connection…"
+          : here?.pairing?.state === "CONNECTED"
+            ? "Your phone is connected."
+            : "Ready when your phone is."}
+      </p>
+      {!opening && here && (
+        <button type="button" disabled={busy} onClick={() => void createPair(here.surfaceId)}>
+          Create a new code
+        </button>
+      )}
+    </div>
+  );
+  const status = (
+    <p className={styles.status} role="status">
+      {message}
+    </p>
+  );
+  const signin = (
+    <p className={styles.signin}>
+      Sign in to connect your screens.{" "}
+      <Link href={signInHref(pairing ? "/devices/pair" : locationPath(compact, initialVoyage))}>Sign in</Link>
+    </p>
+  );
+
   if (compact)
     return (
-      <span className={styles.compact}>
-        <Link href={`/account/devices?voyage=${encodeURIComponent(voyage)}`}>
-          Devices{surfaces.length > 0 ? ` · ${surfaces.filter((s) => s.presence === "ACTIVE").length} connected` : ""}
-        </Link>
-      </span>
-    );
-  if (signedOut)
-    return (
-      <section className={styles.panel}>
-        <h2>Bring your other device aboard</h2>
-        <p>Sign in with the same Voyagewright account you use on your other device.</p>
-        <Link
-          className="button"
-          href={signInHref(
-            typeof window === "undefined" ? "/devices/pair" : window.location.pathname + window.location.search,
-          )}
+      <>
+        <button
+          ref={trigger}
+          className={styles.connectButton}
+          type="button"
+          aria-label="Connect another device"
+          disabled={!ready}
+          onClick={() => void openConnection()}
         >
-          Sign in to connect
-        </Link>
-      </section>
+          <DeviceMark phone /> Connect another device
+          {companions.length > 0 && (
+            <span className={styles.connectedDot} aria-label={companions.length + " connected companions"} />
+          )}
+        </button>
+        <dialog
+          ref={dialog}
+          className={styles.connectDialog}
+          aria-labelledby={dialogTitle}
+          onCancel={(event) => {
+            event.preventDefault();
+            closeConnection();
+          }}
+          onClose={() => {
+            pairGeneration.current++;
+            setChallenge(null);
+            setDialogOpen(false);
+            onPresentationChange?.(false);
+          }}
+        >
+          <div className={styles.dialogHeading}>
+            <div>
+              <p className={styles.eyebrow}>One Chronicle, your screens</p>
+              <h2 id={dialogTitle}>Bring your phone aboard</h2>
+              {!signedOut && voyageContext?.voyageId === voyage && <VoyageContext voyage={voyageContext} />}
+            </div>
+            <button className={styles.close} type="button" aria-label="Close connection" onClick={closeConnection}>
+              ×
+            </button>
+          </div>
+          <p>Your adventure stays here. Your phone becomes its companion.</p>
+          {signedOut ? signin : credentials}
+          {status}
+          {companions.length > 0 && (
+            <ul className={styles.connectedList}>
+              {companions.map((surface) => (
+                <li key={surface.surfaceId}>
+                  <DeviceMark phone />
+                  <span>
+                    {surface.label}
+                    <small>{roleNames[surface.role as keyof typeof roleNames]} · Connected</small>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className={styles.dialogFooter}>
+            <button type="button" onClick={closeConnection}>
+              Continue the Chronicle
+            </button>
+            <Link href="/account/devices">Device preferences & security</Link>
+          </div>
+        </dialog>
+      </>
     );
-  const here = surfaces.find((s) => s.surfaceId === ownId);
-  return (
-    <section className={styles.panel} aria-label="Voyage devices">
-      <div className={styles.masthead}>
-        <p className="eyebrow">One Player · Many screens</p>
-        <h2>Your Voyage, across your devices</h2>
-        <p>Connect your phone, chart, or companion screen to the same Voyage. Your story stays with you.</p>
-      </div>
-      <p role="status" aria-live="polite">
-        {message || (!ready ? "Loading your devices…" : "Choose a Voyage or enter the code from your other screen.")}
-      </p>
-      <div className={styles.columns}>
-        <div className={styles.card}>
-          <h3>Use this device</h3>
-          <label>
-            Voyage
-            <select
-              aria-label="Voyage"
-              disabled={!ready || busy}
-              value={voyage}
-              onChange={(e) => {
-                setVoyage(e.target.value);
-                own.current = null;
-                setOwnId(null);
-                setChallenge(null);
+  if (pairing)
+    return (
+      <section className={styles.onboarding} aria-label="Connect your phone">
+        <div className={styles.welcomeMark}>
+          <DeviceMark phone />
+        </div>
+        <p className={styles.eyebrow}>Your Chronicle, with you</p>
+        <h1>Bring the adventure with you</h1>
+        <p>Join the Chronicle already open on your other screen.</p>
+        {!ready ? (
+          <p role="status">Checking your connection…</p>
+        ) : signedOut ? (
+          signin
+        ) : (
+          <>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                void join();
               }}
             >
-              <option value="">Choose your Voyage</option>
-              {voyages.map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.title}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Device name
-            <input
-              disabled={!ready || busy}
-              maxLength={60}
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              autoComplete="off"
-            />
-          </label>
-          {here ? (
-            <p>This device is connected as {roleNames[here.role as SurfaceRole]}.</p>
-          ) : (
-            <button
-              className="button"
-              disabled={busy || !ready || !voyage || !label.trim()}
-              onClick={() =>
-                void act(
-                  {
-                    action: "register",
-                    surfaceId: createCrossdeckId(),
-                    voyageId: voyage,
-                    label,
-                    capabilities: browserProjection(),
-                  },
-                  "This device joined your Voyage.",
-                )
-              }
-            >
-              Use this device
-            </button>
-          )}
-          <h3>Connect from another screen</h3>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void act(
-                { action: "claim", surfaceId: createCrossdeckId(), code, label, capabilities: browserProjection() },
-                "Joined this Voyage. Your other screen stays connected.",
-              );
-            }}
-          >
+              <label>
+                Connection code
+                <input
+                  name="pairCode"
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  value={code}
+                  onChange={(event) => setCode(event.target.value.toUpperCase())}
+                  maxLength={20}
+                  required
+                />
+              </label>
+              <details>
+                <summary>Name this device</summary>
+                <label>
+                  Device name
+                  <input value={label} onChange={(event) => setLabel(event.target.value)} maxLength={60} />
+                </label>
+              </details>
+              <button className={styles.primary} type="submit" disabled={busy || !code.trim()}>
+                {busy ? "Connecting…" : "Join the Chronicle"}
+              </button>
+            </form>
+            {status}
+            {here && (
+              <Link className={styles.resumeLink} href={companionHref(here.voyageId)}>
+                Open your connected companion
+              </Link>
+            )}
+          </>
+        )}
+        <p className={styles.muted}>Codes are private and short lived. Each screen uses your own authorized Voyage.</p>
+        <Link href="/player">Back to your Chronicles</Link>
+      </section>
+    );
+  return (
+    <section className={styles.panel} aria-label="Connected devices">
+      <p className={styles.eyebrow}>Personal Harbor</p>
+      <h2>Your connected screens</h2>
+      <p>Keep your devices familiar. Connect one when you are ready to continue an adventure.</p>
+      {!ready ? (
+        <p role="status">Finding your screens…</p>
+      ) : signedOut ? (
+        signin
+      ) : (
+        <>
+          <div className={styles.setup}>
             <label>
-              One-time code
-              <input
-                disabled={!ready || busy}
-                value={code}
-                onChange={(e) =>
-                  setCode(
-                    e.target.value
-                      .toUpperCase()
-                      .replace(/[^A-F0-9]/g, "")
-                      .slice(0, 12),
-                  )
-                }
-                autoComplete="off"
-                spellCheck={false}
-                maxLength={12}
-                placeholder="12-character code"
-              />
-            </label>
-            <button className="button" disabled={busy || !ready || code.length !== 12 || !label.trim()}>
-              Join this Voyage
-            </button>
-          </form>
-        </div>
-        <div className={styles.card}>
-          <h3>Bring another device aboard</h3>
-          <p>
-            Sign in with this same account on your other device, then scan the QR or enter its code. Codes expire after
-            two minutes and work once.
-          </p>
-          <label>
-            Companion role
-            <select value={role} onChange={(e) => setRole(e.target.value as SurfaceRole)}>
-              {roles
-                .filter((r) => r !== "CREATOR_PREVIEW")
-                .map((r) => (
-                  <option key={r} value={r}>
-                    {roleNames[r]}
+              Chronicle
+              <select aria-label="Chronicle" value={voyage} onChange={(event) => setVoyage(event.target.value)}>
+                <option value="">Choose a Chronicle</option>
+                {voyages.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.title}
                   </option>
                 ))}
-            </select>
-          </label>
-          <button
-            className="button"
-            disabled={busy || !here}
-            onClick={() =>
-              void act(
-                { action: "challenge", surfaceId: here!.surfaceId, role },
-                "Scan this QR on your other device, or enter the code there.",
-              )
-            }
-          >
-            {challenge ? "Create a new code" : "Connect another device"}
-          </button>
-          {challenge && (
-            <div className={styles.challenge}>
-              <Image unoptimized src={challenge.qr} alt="Scan to connect another device" width={240} height={240} />
-              <code>{challenge.code.match(/.{1,4}/g)?.join(" ")}</code>
-              <p>Expires at {new Date(challenge.expiresAt).toLocaleTimeString()}.</p>
-            </div>
-          )}
-        </div>
-      </div>
-      <h3>Connected devices</h3>
-      {surfaces.length === 0 ? (
-        <p>No devices connected yet. Your Voyage still works on a single screen.</p>
-      ) : (
-        <ul className={styles.devices}>
-          {surfaces.map((s) => (
-            <li key={s.surfaceId}>
-              <div>
-                <strong>
-                  {s.label}
-                  {s.surfaceId === ownId ? " · This device" : ""}
-                </strong>
-                <p>
-                  {s.voyageTitle} ·{" "}
-                  {s.presence === "ACTIVE" ? "Connected" : s.presence === "BACKGROUND" ? "In background" : "Away"}
-                </p>
-              </div>
-              <label>
-                Role for {s.label}
-                <select
-                  value={s.role}
-                  disabled={busy}
-                  onChange={(e) =>
-                    void act({ action: "role", surfaceId: s.surfaceId, role: e.target.value }, "Device role updated.")
+              </select>
+            </label>
+            {!here && (
+              <>
+                <label>
+                  Device name
+                  <input value={label} onChange={(event) => setLabel(event.target.value)} maxLength={60} />
+                </label>
+                <button
+                  type="button"
+                  disabled={busy || !voyage}
+                  onClick={() =>
+                    void act(
+                      {
+                        action: "register",
+                        surfaceId: createCrossdeckId(),
+                        voyageId: voyage,
+                        label,
+                        capabilities: browserProjection(),
+                      },
+                      "This screen is ready.",
+                    )
                   }
                 >
-                  {roles
-                    .filter((r) => r !== "CREATOR_PREVIEW")
-                    .map((r) => (
-                      <option key={r} value={r}>
-                        {roleNames[r]}
-                      </option>
-                    ))}
-                </select>
-              </label>
-              <Link
-                href={
-                  s.role === "SHARED_CREW_DISPLAY"
-                    ? `/devices/display?voyage=${encodeURIComponent(s.voyageId)}`
-                    : s.voyageHref
-                }
-              >
-                {s.role === "SHARED_CREW_DISPLAY" ? "Open crew display" : "Continue Voyage"}
-              </Link>
-              <button
-                className="button button--danger"
-                disabled={busy}
-                onClick={() =>
-                  void act({ action: "remove", surfaceId: s.surfaceId }, "Device removed. Your Voyage is unchanged.")
-                }
-              >
-                Remove {s.label}
+                  Use this device
+                </button>
+              </>
+            )}
+            {here && (
+              <button type="button" disabled={busy} onClick={() => void createPair(here.surfaceId)}>
+                Connect another device
               </button>
-            </li>
-          ))}
-        </ul>
+            )}
+          </div>
+          {challenge && credentials}
+          {status}
+          <ul className={styles.deviceList}>
+            {surfaces.map((surface) => (
+              <li key={surface.surfaceSessionId}>
+                <div className={styles.deviceHeading}>
+                  <DeviceMark phone={surface.surfaceId !== here?.surfaceId} />
+                  <div>
+                    <h3>
+                      {surface.label}
+                      {surface.surfaceId === here?.surfaceId ? " · This screen" : ""}
+                    </h3>
+                    <p>
+                      {roleNames[surface.role as keyof typeof roleNames]} ·{" "}
+                      {surface.presence === "ACTIVE"
+                        ? "Connected"
+                        : surface.presence === "BACKGROUND"
+                          ? "In the background"
+                          : "Offline"}
+                    </p>
+                    <small>{surface.voyageTitle}</small>
+                  </div>
+                </div>
+                <div className={styles.deviceActions}>
+                  {surface.surfaceId === here?.surfaceId && (
+                    <Link
+                      href={
+                        surface.role === "SHARED_CREW_DISPLAY"
+                          ? "/devices/display?voyage=" + encodeURIComponent(surface.voyageId)
+                          : companionHref(surface.voyageId)
+                      }
+                    >
+                      Open on this device
+                    </Link>
+                  )}
+                  <details>
+                    <summary>Device options</summary>
+                    <label>
+                      Device purpose
+                      <select
+                        value={surface.role}
+                        disabled={busy}
+                        onChange={(event) =>
+                          void act(
+                            { action: "role", surfaceId: surface.surfaceId, role: event.target.value },
+                            "Device purpose updated.",
+                          )
+                        }
+                      >
+                        {profiles.map((profile) => (
+                          <option key={profile.role} value={profile.role} disabled={!profile.available}>
+                            {profile.title}
+                            {!profile.available ? " · unavailable" : ""}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <p className={styles.muted}>
+                      Shared screens show only explicitly shared crew views. Camera and spatial access depend on this
+                      device’s supported Parallax connection.
+                    </p>
+                    <button
+                      className={styles.remove}
+                      type="button"
+                      disabled={busy}
+                      onClick={() =>
+                        void act(
+                          { action: "remove", surfaceId: surface.surfaceId },
+                          "Device disconnected. Its access has ended.",
+                        )
+                      }
+                    >
+                      Disconnect {surface.label}
+                    </button>
+                  </details>
+                </div>
+              </li>
+            ))}
+          </ul>
+          {surfaces.length === 0 && (
+            <p className={styles.empty}>No screens connected yet. Your Chronicles are ready whenever you are.</p>
+          )}
+          <details className={styles.advanced}>
+            <summary>Specialized device purposes</summary>
+            {profiles
+              .filter((p) => p.advanced)
+              .map((p) => (
+                <p key={p.role}>
+                  <strong>{p.title}</strong> — {p.available ? p.description : p.reason}
+                </p>
+              ))}
+          </details>
+        </>
       )}
-      <p className={styles.note}>
-        Open your Voyage Journal to send a released chart, note, or artifact to another connected device. Crew displays
-        receive explicitly shared read-only views. Connecting never turns on your camera or changes your story progress.
-      </p>
-      <Link href="/account/sessions">Manage sign-ins and revoke device access</Link>
     </section>
   );
+}
+function locationPath(compact: boolean, voyage: string) {
+  if (compact && typeof location !== "undefined") return location.pathname + location.search;
+  return voyage ? "/account/devices?voyage=" + encodeURIComponent(voyage) : "/account/devices";
 }

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "classification": "OPERATOR_LOCAL_ONE_USE_TECHNICAL_DIAGNOSTIC_NOT_AUTHENTICATED_CUSTODY",
+  "status": "FAIL",
+  "stage": "original",
+  "ownerPid": 60297,
+  "lease": "2962bc91-0fda-404d-bab9-1cf57f58a36c",
+  "baseSha": "e85ceda26a3770dfb2b01f2afd916e45761a5d9e",
+  "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+  "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+  "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+  "recordDigest": "9d140072d1cd31a363bf667380b1298eb1b8a9ef0489eb0be564922f85f5239c",
+  "sourceManifestSha256": "f4a1feba6b24223852ba69837db97e8de5b5dd5f45c16205acd6e627fbf930a9",
+  "startedAt": "2026-10-17T02:00:01.208Z",
+  "databaseUrl": "file:/workspace/crossdeck-r12-original-proof/artifacts/sounding-line/generic-53601e9e386b/validation-isolated-20261017-020001208-731489ebe9af42b68807258c4f543eb0.db",
+  "proofRoot": "/workspace/crossdeck-r12-original-proof",
+  "caseExecutions": 0,
+  "outcome": "EXECUTION_UNKNOWN",
+  "completedAt": "2026-10-17T02:00:19.045Z"
+}

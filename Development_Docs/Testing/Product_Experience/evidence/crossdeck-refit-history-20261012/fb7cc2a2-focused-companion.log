@@ -1,0 +1,66 @@
+Development preset 'awaiting-first-release' ready for development-forever-treasure; GM user: kato. Credentials come from local environment values.
+{
+  "mode": "execute",
+  "campaignsInspected": 1,
+  "chroniclesCreated": 1,
+  "publishedVersionsCreated": 1,
+  "sessionsCreated": 1,
+  "playersMigrated": 1,
+  "membershipsMigrated": 1,
+  "invitationsMigrated": 0,
+  "chaptersTranslated": 5,
+  "storyBlocksCreated": 5,
+  "artifactsMigrated": 5,
+  "sideQuestsMigrated": 4,
+  "locationsMigrated": 5,
+  "routesMigrated": 2,
+  "eventsMigrated": 0,
+  "auditRecordsMigrated": 2,
+  "legacyIdentifiersMapped": 61,
+  "warnings": [],
+  "failures": [],
+  "unmappedFields": [],
+  "checksumMismatches": []
+}
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+▲ Next.js 16.3.8
+- Local:         http://127.0.0.1:56265
+- Network:       http://127.0.0.1:56265
+✓ Ready in 133ms
+✓ Running next.config.ts took 36ms
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+locator.waitFor: Error: strict mode violation: getByRole('region', { name: 'Voyage Chart', exact: true }) resolved to 2 elements:
+    1) <section aria-label="Voyage Chart" class="CrossdeckCompanion-module__imzf2G__workspace">…</section> aka locator('section').filter({ hasText: 'Your companionVoyage' })
+    2) <section aria-label="Voyage Chart" data-landfall-phase1-preview="true" class="physical-section voyage-chart-section">…</section> aka locator('section').filter({ hasText: 'Your companionVoyage' }).getByLabel('Voyage Chart')
+
+Call log:
+  - waiting for getByRole('region', { name: 'Voyage Chart', exact: true }) to be visible
+
+    at runExperienceJourney (C:\Users\kkids\.codex\worktrees\crossdeck-experience-refit\Codex_TreasureHunt\scripts\sounding-line\experience-browser.mjs:79:20)
+    at async captureProductExperience (C:\Users\kkids\.codex\worktrees\crossdeck-experience-refit\Codex_TreasureHunt\scripts\sounding-line\experience-browser.mjs:269:34)
+    at async main (C:\Users\kkids\.codex\worktrees\crossdeck-experience-refit\Codex_TreasureHunt\scripts\sounding-line\experience-browser.mjs:392:5)
+    at async file:///C:/Users/kkids/.codex/worktrees/crossdeck-experience-refit/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:501:90
+
+Node.js v24.18.0
+file:///C:/Users/kkids/.codex/worktrees/crossdeck-experience-refit/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:19
+  throw new Error(`PRODUCT_EXPERIENCE_${code}`);
+        ^
+
+Error: PRODUCT_EXPERIENCE_TRUSTED_REPLAY_FAILED:SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED
+    at fail (file:///C:/Users/kkids/.codex/worktrees/crossdeck-experience-refit/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:19:9)
+    at main (file:///C:/Users/kkids/.codex/worktrees/crossdeck-experience-refit/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:387:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/kkids/.codex/worktrees/crossdeck-experience-refit/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:501:90
+
+Node.js v24.18.0
+file:///C:/Users/kkids/.codex/worktrees/crossdeck-experience-refit/Codex_TreasureHunt/artifacts/crossdeck/run-focused-companion-stage.mjs:73
+ if(result.status!==0)throw new Error(`OWNED_STAGE_FAILED:${name}`);
+                            ^
+
+Error: OWNED_STAGE_FAILED:canonical-experience-capture
+    at file:///C:/Users/kkids/.codex/worktrees/crossdeck-experience-refit/Codex_TreasureHunt/artifacts/crossdeck/run-focused-companion-stage.mjs:73:29
+
+Node.js v24.18.0

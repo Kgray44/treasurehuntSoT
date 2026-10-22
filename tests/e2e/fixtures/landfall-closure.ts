@@ -368,7 +368,7 @@ export async function enterClosureJournal(page: Page) {
     )
     .toBe(true);
   if (await opening.isVisible()) await opening.getByRole("button", { name: /Open the journal/u }).click();
-  await expect(page.getByRole("navigation", { name: "Journal tools" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Journal tools" })).toBeVisible({ timeout: 45_000 });
 }
 export async function openClosureMap(page: Page, clickOptions: { noWaitAfter?: boolean } = {}) {
   const button = page

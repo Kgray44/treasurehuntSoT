@@ -2669,7 +2669,7 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "testing/product-experience-exceptions.json",
     JSON.stringify({ version: 1, exceptions: [template, successorTemplate, r3Template] }),
   );
-  // This synthetic base predates R13, R14, R16, R17, R18 and R19; its three historical grants must not
+  // This synthetic base predates the later grants through R26; its three historical grants must not
   // inherit the installed-source sentinel from the current repository tree.
   run([
     "update-index",
@@ -2681,6 +2681,9 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "scripts/sounding-line/experience-current-r18.mjs",
     "scripts/sounding-line/experience-current-r19.mjs",
     "scripts/sounding-line/experience-current-r20.mjs",
+    "scripts/sounding-line/experience-current-r26.mjs",
+    "scripts/sounding-line/experience-current-r25.mjs",
+    "scripts/sounding-line/experience-current-r24.mjs",
     "scripts/sounding-line/experience-current-r23.mjs",
     "scripts/sounding-line/experience-current-r22.mjs",
     "scripts/sounding-line/experience-current-r21.mjs",
@@ -4855,7 +4858,17 @@ test("R4 requires review FIVE and a fresh preparation binding; accepted review F
 test("custody-only diagnostic has no finalization path and preserves ordinary protections", () => {
   const workflow = readFileSync(path.join(repo, ".github/workflows/sounding-line-ordinary.yml"), "utf8");
   const guard = workflow.slice(workflow.indexOf("  campaign-custody:"), workflow.indexOf("  experience-preparation:"));
-  assert(guard.includes("timeout-minutes: 15"));
+  assert(guard.includes("timeout-minutes: 35"));
+  const accepted = execFileSync(
+    "git",
+    ["show", "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab:.github/workflows/sounding-line-ordinary.yml"],
+    { cwd: repo, encoding: "utf8" },
+  );
+  const acceptedGuard = accepted.slice(
+    accepted.indexOf("  campaign-custody:"),
+    accepted.indexOf("  experience-preparation:"),
+  );
+  assert(acceptedGuard.includes("timeout-minutes: 15"));
   assert.match(guard, /path: authority\s+fetch-depth: 1/u);
   assert.match(guard, /path: candidate\s+fetch-depth: 0/u);
   assert.equal(guard.includes("sparse-checkout"), false);

@@ -1,0 +1,21 @@
+{
+  "motion": "no-preference",
+  "timings": {
+    "connectToQRMs": 210,
+    "claimToCompanionMs": 402,
+    "sendToVisibleOfferMs": 213,
+    "acceptToRenderedAcknowledgedMs": 422
+  },
+  "recordings": {
+    "desktop": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\Development_Docs\\Projects\\Project_Crossdeck\\evidence\\r8-verification-20261016\\paired-local-execution\\generic\\paired\\refit-no-preference\\bee272e148fc8a018e94c763718fd75a.webm",
+    "phone": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\Development_Docs\\Projects\\Project_Crossdeck\\evidence\\r8-verification-20261016\\paired-local-execution\\generic\\paired\\refit-no-preference\\96f5a805ab002166f78746a838d39eab.webm"
+  },
+  "hardware": "CHROMIUM_EMULATION",
+  "personAndMembershipUnchanged": true,
+  "continuation": {
+    "beforeSequence": 4,
+    "afterSequence": 7,
+    "nextBlockId": "next-19049c78-57a8-467a-9706-4ab2e87ac34a"
+  },
+  "ownerAcceptance": "NOT_CLAIMED"
+}

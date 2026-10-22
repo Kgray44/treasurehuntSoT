@@ -1,0 +1,11 @@
+{
+  "classification": "Confirmed source-bound product navigation regression; no repair applied",
+  "base": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+  "candidate": "d3dea09e782af9899ffc0003dbd1664c3e257b96",
+  "file": "src/app/devices/pair/page.tsx",
+  "acceptedBlob": "7439da747e9665d68c79f4d491a202822f8fcef5",
+  "candidateBlob": "560de8b3d7075ac45f853f45a18785a6e3e69e46",
+  "sourceDelta": "diff --git a/src/app/devices/pair/page.tsx b/src/app/devices/pair/page.tsx\nindex 7439da74..560de8b3 100644\n--- a/src/app/devices/pair/page.tsx\n+++ b/src/app/devices/pair/page.tsx\n@@ -1,13 +1,9 @@\n import { CrossdeckDevices } from \"@/components/crossdeck/CrossdeckDevices\";\n-import Link from \"next/link\";\n export const metadata = { title: \"Connect your device · Voyagewright\", referrer: \"no-referrer\" };\n export default function PairDevicePage() {\n   return (\n     <main>\n-      <p>\n-        <Link href=\"/devices/reach\">Find the Hand interaction laboratory</Link>\n-      </p>\n-      <CrossdeckDevices />\n+      <CrossdeckDevices pairing />\n     </main>\n   );\n }\n",
+  "exactEntryLabelOccurrencesInCandidateProductSource": 0,
+  "sourceSearchOutput": ""
+}

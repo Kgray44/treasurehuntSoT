@@ -1,0 +1,1502 @@
+{
+  "summary": {
+    "evidence": "Development_Docs\\Testing\\Product_Experience\\evidence\\crossdeck-refit-6f1069cc9a41",
+    "candidateSha": "0e1074c1cf3e7abbe7dd572c6cb828cf45419dc4",
+    "sourceDigest": "6f1069cc9a41414fc7735235fe864b3e5c4f4c842de09cb49872cbd71903b654",
+    "traces": 16,
+    "analyses": 72,
+    "contextsWithSerious": 2,
+    "seriousAnalyses": [
+      {
+        "contractId": "homeport.shell.crossdeck-access-recovery",
+        "journeyId": "player-entry-account-recovery",
+        "device": "MOBILE",
+        "role": "ANONYMOUS",
+        "motion": "NORMAL",
+        "state": "RETURNED",
+        "violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  ".CrossdeckDevices-module__XfCrNG__eyebrow"
+                ],
+                "html": "<p class=\"CrossdeckDevices-module__XfCrNG__eyebrow\">Your Chronicle, with you</p>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.25 (foreground color: #8a7745, background color: #061518, font size: 8.6pt (11.52px), font weight: bold). Expected contrast ratio of 4.5:1",
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "fgColor": "#8a7745",
+                      "bgColor": "#061518",
+                      "contrastRatio": 4.25,
+                      "fontSize": "8.6pt (11.52px)",
+                      "fontWeight": "bold",
+                      "messageKey": null,
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<section class=\"CrossdeckDevices-module__XfCrNG__onboarding\" aria-label=\"Connect your phone\">",
+                        "target": [
+                          ".CrossdeckDevices-module__XfCrNG__onboarding"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element has insufficient color contrast of 4.25 (foreground color: #8a7745, background color: #061518, font size: 8.6pt (11.52px), font weight: bold). Expected contrast ratio of 4.5:1"
+                  }
+                ],
+                "all": [],
+                "none": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "contractId": "homeport.shell.crossdeck-companion-mobile",
+        "journeyId": "companion-context-exit-return",
+        "device": "MOBILE",
+        "role": "PLAYER",
+        "motion": "NORMAL",
+        "state": "LIBRARY_READY",
+        "violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "label:nth-child(1) > input[type=\"search\"][value=\"\"]"
+                ],
+                "html": "<input placeholder=\"Title, Captain, voyage, or year\" type=\"search\" value=\"\">",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.42 (foreground color: #666a62, background color: #051315, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "fgColor": "#666a62",
+                      "bgColor": "#051315",
+                      "contrastRatio": 3.42,
+                      "fontSize": "12.0pt (16px)",
+                      "fontWeight": "normal",
+                      "messageKey": null,
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<input placeholder=\"Title, Captain, voyage, or year\" type=\"search\" value=\"\">",
+                        "target": [
+                          "label:nth-child(1) > input[type=\"search\"][value=\"\"]"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element has insufficient color contrast of 3.42 (foreground color: #666a62, background color: #051315, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                  }
+                ],
+                "all": [],
+                "none": []
+              },
+              {
+                "target": [
+                  "label:nth-child(2) > select"
+                ],
+                "html": "<select>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.44 (foreground color: #676b63, background color: #051417, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "fgColor": "#676b63",
+                      "bgColor": "#051417",
+                      "contrastRatio": 3.44,
+                      "fontSize": "12.0pt (16px)",
+                      "fontWeight": "normal",
+                      "messageKey": null,
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<select>",
+                        "target": [
+                          "label:nth-child(2) > select"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element has insufficient color contrast of 3.44 (foreground color: #676b63, background color: #051417, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                  }
+                ],
+                "all": [],
+                "none": []
+              },
+              {
+                "target": [
+                  "label:nth-child(3) > select"
+                ],
+                "html": "<select><option value=\"RECENT\">Recently active</option><option value=\"TITLE\">Title</option><option value=\"COMPLETED\">Completion date</option></select>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.75 (foreground color: #8c897b, background color: #2a322e, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "fgColor": "#8c897b",
+                      "bgColor": "#2a322e",
+                      "contrastRatio": 3.75,
+                      "fontSize": "12.0pt (16px)",
+                      "fontWeight": "normal",
+                      "messageKey": null,
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<select><option value=\"RECENT\">Recently active</option><option value=\"TITLE\">Title</option><option value=\"COMPLETED\">Completion date</option></select>",
+                        "target": [
+                          "label:nth-child(3) > select"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element has insufficient color contrast of 3.75 (foreground color: #8c897b, background color: #2a322e, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                  }
+                ],
+                "all": [],
+                "none": []
+              },
+              {
+                "target": [
+                  ".active"
+                ],
+                "html": "<button class=\"active\" aria-pressed=\"true\">Gallery</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.3 (foreground color: #333128, background color: #898060, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "fgColor": "#333128",
+                      "bgColor": "#898060",
+                      "contrastRatio": 3.3,
+                      "fontSize": "12.0pt (16px)",
+                      "fontWeight": "normal",
+                      "messageKey": null,
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<button class=\"active\" aria-pressed=\"true\">Gallery</button>",
+                        "target": [
+                          ".active"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element has insufficient color contrast of 3.3 (foreground color: #333128, background color: #898060, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                  }
+                ],
+                "all": [],
+                "none": []
+              },
+              {
+                "target": [
+                  ".button-danger"
+                ],
+                "html": "<button class=\"button-danger\">Leave Voyage</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3 (foreground color: #696263, background color: #201415, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+                "any": [
+                  {
+                    "id": "color-contrast",
+                    "data": {
+                      "fgColor": "#696263",
+                      "bgColor": "#201415",
+                      "contrastRatio": 3,
+                      "fontSize": "12.0pt (16px)",
+                      "fontWeight": "normal",
+                      "messageKey": null,
+                      "expectedContrastRatio": "4.5:1"
+                    },
+                    "relatedNodes": [
+                      {
+                        "html": "<button class=\"button-danger\">Leave Voyage</button>",
+                        "target": [
+                          ".button-danger"
+                        ]
+                      }
+                    ],
+                    "impact": "serious",
+                    "message": "Element has insufficient color contrast of 3 (foreground color: #696263, background color: #201415, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                  }
+                ],
+                "all": [],
+                "none": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "findings": [
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "JOURNAL_READY",
+      "analysis": 1,
+      "callId": "call@1408",
+      "atMs": 38388.824,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "CONNECT_READY",
+      "analysis": 2,
+      "callId": "call@1558",
+      "atMs": 39735.121,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "RETURNED",
+      "analysis": 3,
+      "callId": "call@1620",
+      "atMs": 40519.696,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "FINAL",
+      "analysis": 4,
+      "callId": "call@1654",
+      "atMs": 41261.836,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "JOURNAL_READY",
+      "analysis": 1,
+      "callId": "call@1713",
+      "atMs": 44003.363,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "CONNECT_READY",
+      "analysis": 2,
+      "callId": "call@1863",
+      "atMs": 45721.846,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "RETURNED",
+      "analysis": 3,
+      "callId": "call@1925",
+      "atMs": 46931.983,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "FINAL",
+      "analysis": 4,
+      "callId": "call@1959",
+      "atMs": 47921.608,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "JOURNAL_READY",
+      "analysis": 1,
+      "callId": "call@2018",
+      "atMs": 54272.156,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "CONNECT_READY",
+      "analysis": 2,
+      "callId": "call@2168",
+      "atMs": 55351.551,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "RETURNED",
+      "analysis": 3,
+      "callId": "call@2230",
+      "atMs": 55985.491,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "FINAL",
+      "analysis": 4,
+      "callId": "call@2264",
+      "atMs": 56529.427,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "JOURNAL_READY",
+      "analysis": 1,
+      "callId": "call@2323",
+      "atMs": 58669.192,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "CONNECT_READY",
+      "analysis": 2,
+      "callId": "call@2473",
+      "atMs": 59785.611,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "RETURNED",
+      "analysis": 3,
+      "callId": "call@2535",
+      "atMs": 60625.495,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.phase2.continuity",
+      "journeyId": "contextual-connect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "FINAL",
+      "analysis": 4,
+      "callId": "call@2569",
+      "atMs": 61402.531,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "JOURNAL_READY",
+      "analysis": 1,
+      "callId": "call@52",
+      "atMs": 6461.664,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "LENS_READY",
+      "analysis": 2,
+      "callId": "call@156",
+      "atMs": 7504.96,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "INSPECTED",
+      "analysis": 3,
+      "callId": "call@230",
+      "atMs": 8381.816,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "RETURNED",
+      "analysis": 4,
+      "callId": "call@298",
+      "atMs": 9269.418,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "FINAL",
+      "analysis": 5,
+      "callId": "call@332",
+      "atMs": 10067.299,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "JOURNAL_READY",
+      "analysis": 1,
+      "callId": "call@391",
+      "atMs": 12702.718,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "LENS_READY",
+      "analysis": 2,
+      "callId": "call@495",
+      "atMs": 14153.939,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "INSPECTED",
+      "analysis": 3,
+      "callId": "call@569",
+      "atMs": 15267.787,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "RETURNED",
+      "analysis": 4,
+      "callId": "call@637",
+      "atMs": 16641.967,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "FINAL",
+      "analysis": 5,
+      "callId": "call@671",
+      "atMs": 17656.018,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "JOURNAL_READY",
+      "analysis": 1,
+      "callId": "call@730",
+      "atMs": 24172.505,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "LENS_READY",
+      "analysis": 2,
+      "callId": "call@834",
+      "atMs": 24908.216,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "INSPECTED",
+      "analysis": 3,
+      "callId": "call@908",
+      "atMs": 25519.147,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "RETURNED",
+      "analysis": 4,
+      "callId": "call@976",
+      "atMs": 26157.67,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "FINAL",
+      "analysis": 5,
+      "callId": "call@1010",
+      "atMs": 26721.789,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "JOURNAL_READY",
+      "analysis": 1,
+      "callId": "call@1069",
+      "atMs": 28949.572,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "LENS_READY",
+      "analysis": 2,
+      "callId": "call@1173",
+      "atMs": 29836.517,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "INSPECTED",
+      "analysis": 3,
+      "callId": "call@1247",
+      "atMs": 30579.706,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "RETURNED",
+      "analysis": 4,
+      "callId": "call@1315",
+      "atMs": 31438.592,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "crossdeck.refit.published-lens",
+      "journeyId": "published-clue-inspect-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "FINAL",
+      "analysis": 5,
+      "callId": "call@1349",
+      "atMs": 32126.624,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "PLAYER_ENTRY_READY",
+      "analysis": 1,
+      "callId": "call@2612",
+      "atMs": 62805.096,
+      "url": "http://127.0.0.1:61445/player/sign-in?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "SIGN_IN_READY",
+      "analysis": 2,
+      "callId": "call@2701",
+      "atMs": 63490.36,
+      "url": "http://127.0.0.1:61445/sign-in?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "RECOVERY_READY",
+      "analysis": 3,
+      "callId": "call@2780",
+      "atMs": 64138.995,
+      "url": "http://127.0.0.1:61445/forgot-password?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "RETURNED",
+      "analysis": 4,
+      "callId": "call@2896",
+      "atMs": 64899.526,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "FINAL",
+      "analysis": 5,
+      "callId": "call@2926",
+      "atMs": 65242.02,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "PLAYER_ENTRY_READY",
+      "analysis": 1,
+      "callId": "call@2969",
+      "atMs": 66418.573,
+      "url": "http://127.0.0.1:61445/player/sign-in?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "SIGN_IN_READY",
+      "analysis": 2,
+      "callId": "call@3058",
+      "atMs": 67077.283,
+      "url": "http://127.0.0.1:61445/sign-in?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "RECOVERY_READY",
+      "analysis": 3,
+      "callId": "call@3137",
+      "atMs": 67751.437,
+      "url": "http://127.0.0.1:61445/forgot-password?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "RETURNED",
+      "analysis": 4,
+      "callId": "call@3253",
+      "atMs": 68461.648,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "FINAL",
+      "analysis": 5,
+      "callId": "call@3283",
+      "atMs": 68770.031,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "PLAYER_ENTRY_READY",
+      "analysis": 1,
+      "callId": "call@3326",
+      "atMs": 69840.857,
+      "url": "http://127.0.0.1:61445/player/sign-in?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "SIGN_IN_READY",
+      "analysis": 2,
+      "callId": "call@3415",
+      "atMs": 70361.254,
+      "url": "http://127.0.0.1:61445/sign-in?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "RECOVERY_READY",
+      "analysis": 3,
+      "callId": "call@3494",
+      "atMs": 70831.124,
+      "url": "http://127.0.0.1:61445/forgot-password?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "RETURNED",
+      "analysis": 4,
+      "callId": "call@3610",
+      "atMs": 71417.588,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "serious": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#8a7745",
+                    "bgColor": "#061518",
+                    "contrastRatio": 4.25,
+                    "fontSize": "8.6pt (11.52px)",
+                    "fontWeight": "bold",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<section class=\"CrossdeckDevices-module__XfCrNG__onboarding\" aria-label=\"Connect your phone\">",
+                      "target": [
+                        ".CrossdeckDevices-module__XfCrNG__onboarding"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.25 (foreground color: #8a7745, background color: #061518, font size: 8.6pt (11.52px), font weight: bold). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"CrossdeckDevices-module__XfCrNG__eyebrow\">Your Chronicle, with you</p>",
+              "target": [
+                ".CrossdeckDevices-module__XfCrNG__eyebrow"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.25 (foreground color: #8a7745, background color: #061518, font size: 8.6pt (11.52px), font weight: bold). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "artifactSnapshot": null
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "NORMAL",
+      "state": "FINAL",
+      "analysis": 5,
+      "callId": "call@3640",
+      "atMs": 71726.87,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "PLAYER_ENTRY_READY",
+      "analysis": 1,
+      "callId": "call@3683",
+      "atMs": 72847.607,
+      "url": "http://127.0.0.1:61445/player/sign-in?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "SIGN_IN_READY",
+      "analysis": 2,
+      "callId": "call@3772",
+      "atMs": 73347.199,
+      "url": "http://127.0.0.1:61445/sign-in?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "RECOVERY_READY",
+      "analysis": 3,
+      "callId": "call@3851",
+      "atMs": 73802.83,
+      "url": "http://127.0.0.1:61445/forgot-password?returnTo=%2Fdevices%2Fpair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "RETURNED",
+      "analysis": 4,
+      "callId": "call@3967",
+      "atMs": 74354.438,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "journeyId": "player-entry-account-recovery",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motion": "REDUCED",
+      "state": "FINAL",
+      "analysis": 5,
+      "callId": "call@3997",
+      "atMs": 74659.778,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "COMPANION_READY",
+      "analysis": 1,
+      "callId": "call@4058",
+      "atMs": 77423.009,
+      "url": "http://127.0.0.1:61445/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "LIBRARY_READY",
+      "analysis": 2,
+      "callId": "call@4147",
+      "atMs": 78213.841,
+      "url": "http://127.0.0.1:61445/player/library",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "RETURNED",
+      "analysis": 3,
+      "callId": "call@4243",
+      "atMs": 81540.057,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "FINAL",
+      "analysis": 4,
+      "callId": "call@4275",
+      "atMs": 82383.814,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "COMPANION_READY",
+      "analysis": 1,
+      "callId": "call@4336",
+      "atMs": 84910.736,
+      "url": "http://127.0.0.1:61445/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "LIBRARY_READY",
+      "analysis": 2,
+      "callId": "call@4425",
+      "atMs": 85621.693,
+      "url": "http://127.0.0.1:61445/player/library",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "RETURNED",
+      "analysis": 3,
+      "callId": "call@4521",
+      "atMs": 86905.77,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion",
+      "journeyId": "companion-context-exit-return",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "FINAL",
+      "analysis": 4,
+      "callId": "call@4553",
+      "atMs": 87931.601,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "COMPANION_READY",
+      "analysis": 1,
+      "callId": "call@4614",
+      "atMs": 90542.711,
+      "url": "http://127.0.0.1:61445/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "LIBRARY_READY",
+      "analysis": 2,
+      "callId": "call@4703",
+      "atMs": 91180.229,
+      "url": "http://127.0.0.1:61445/player/library",
+      "serious": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#666a62",
+                    "bgColor": "#051315",
+                    "contrastRatio": 3.42,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<input placeholder=\"Title, Captain, voyage, or year\" type=\"search\" value=\"\">",
+                      "target": [
+                        "label:nth-child(1) > input[type=\"search\"][value=\"\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.42 (foreground color: #666a62, background color: #051315, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<input placeholder=\"Title, Captain, voyage, or year\" type=\"search\" value=\"\">",
+              "target": [
+                "label:nth-child(1) > input[type=\"search\"][value=\"\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.42 (foreground color: #666a62, background color: #051315, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#676b63",
+                    "bgColor": "#051417",
+                    "contrastRatio": 3.44,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select>",
+                      "target": [
+                        "label:nth-child(2) > select"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.44 (foreground color: #676b63, background color: #051417, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select>",
+              "target": [
+                "label:nth-child(2) > select"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.44 (foreground color: #676b63, background color: #051417, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#8c897b",
+                    "bgColor": "#2a322e",
+                    "contrastRatio": 3.75,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<select><option value=\"RECENT\">Recently active</option><option value=\"TITLE\">Title</option><option value=\"COMPLETED\">Completion date</option></select>",
+                      "target": [
+                        "label:nth-child(3) > select"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.75 (foreground color: #8c897b, background color: #2a322e, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<select><option value=\"RECENT\">Recently active</option><option value=\"TITLE\">Title</option><option value=\"COMPLETED\">Completion date</option></select>",
+              "target": [
+                "label:nth-child(3) > select"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.75 (foreground color: #8c897b, background color: #2a322e, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#333128",
+                    "bgColor": "#898060",
+                    "contrastRatio": 3.3,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button class=\"active\" aria-pressed=\"true\">Gallery</button>",
+                      "target": [
+                        ".active"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.3 (foreground color: #333128, background color: #898060, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"active\" aria-pressed=\"true\">Gallery</button>",
+              "target": [
+                ".active"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.3 (foreground color: #333128, background color: #898060, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#696263",
+                    "bgColor": "#201415",
+                    "contrastRatio": 3,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button class=\"button-danger\">Leave Voyage</button>",
+                      "target": [
+                        ".button-danger"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3 (foreground color: #696263, background color: #201415, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button class=\"button-danger\">Leave Voyage</button>",
+              "target": [
+                ".button-danger"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3 (foreground color: #696263, background color: #201415, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "artifactSnapshot": null
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "RETURNED",
+      "analysis": 3,
+      "callId": "call@4799",
+      "atMs": 94320.757,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "NORMAL",
+      "state": "FINAL",
+      "analysis": 4,
+      "callId": "call@4831",
+      "atMs": 94884.109,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "COMPANION_READY",
+      "analysis": 1,
+      "callId": "call@4892",
+      "atMs": 97477.765,
+      "url": "http://127.0.0.1:61445/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "LIBRARY_READY",
+      "analysis": 2,
+      "callId": "call@4981",
+      "atMs": 98167.054,
+      "url": "http://127.0.0.1:61445/player/library",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "RETURNED",
+      "analysis": 3,
+      "callId": "call@5077",
+      "atMs": 99249.789,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "journeyId": "companion-context-exit-return",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motion": "REDUCED",
+      "state": "FINAL",
+      "analysis": 4,
+      "callId": "call@5109",
+      "atMs": 99948.327,
+      "url": "http://127.0.0.1:61445/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "serious": []
+    }
+  ]
+}
