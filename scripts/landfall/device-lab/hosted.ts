@@ -28,10 +28,16 @@ export async function dispatchLandfallHostedLab(
       "android-background",
       "ios",
       "ios-presentation",
+      "darwin-audit-session",
     ].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
+  if (
+    target === "darwin-audit-session" &&
+    (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
+  )
+    throw new Error("LANDFALL_HOSTED_DARWIN_AUDIT_SESSION_SCOPE_INVALID");
   if (
     target === "android-journal" &&
     selectedScenarios !== undefined &&
@@ -82,6 +88,7 @@ export async function dispatchLandfallHostedLab(
   const workflow = template
     .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
+    .replaceAll("__RUN_DARWIN_AUDIT_SESSION__", String(target === "darwin-audit-session"))
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
     .replaceAll("__RUN_BROWSER__", String(target === "all" || target === "browser"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))

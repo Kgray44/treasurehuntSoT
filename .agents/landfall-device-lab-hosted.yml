@@ -10,6 +10,70 @@ concurrency:
   group: landfall-device-lab-${{ github.ref_name }}
   cancel-in-progress: false
 jobs:
+  darwin-audit-session:
+    if: __RUN_DARWIN_AUDIT_SESSION__
+    name: Host / Darwin audit-session capability feasibility (development only)
+    runs-on: macos-15
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: .agents/scripts/darwin-audit-session-primitives.c
+          sparse-checkout-cone-mode: false
+      - name: Observe only fixed session-capability primitives on finite owned children
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = __CANDIDATE_SHA__
+          umask 077
+          output=artifacts/sounding-line/darwin-audit-session
+          mkdir -p "$output"
+          shasum -a 256 .agents/scripts/darwin-audit-session-primitives.c > "$output/source.sha256"
+          sw_vers > "$output/host-version.txt"
+          xcrun --show-sdk-version > "$output/sdk-version.txt"
+          clang --version > "$output/compiler-version.txt"
+          build_binary=$(mktemp "$RUNNER_TEMP/sextant-audit-session.XXXXXXXX")
+          owned_probe=
+          probe_status=null
+          cleanup_probe() {
+            original_status=$?
+            trap - EXIT
+            binary_removed=true
+            directory_removed=true
+            build_removed=false
+            if test -n "$owned_probe"; then
+              binary_removed=false
+              directory_removed=false
+              if sudo -n rm -f -- "$owned_probe/probe" && sudo -n test ! -e "$owned_probe/probe"; then binary_removed=true; fi
+              if sudo -n rmdir -- "$owned_probe" && sudo -n test ! -e "$owned_probe"; then directory_removed=true; fi
+            fi
+            if rm -f -- "$build_binary" && test ! -e "$build_binary"; then build_removed=true; fi
+            printf '{"installedBinaryRemoved":%s,"privateDirectoryRemoved":%s,"buildBinaryRemoved":%s,"originalStepExitCode":%s,"probeExitCode":%s}\n' "$binary_removed" "$directory_removed" "$build_removed" "$original_status" "$probe_status" > "$output/install-cleanup.json"
+            if test "$binary_removed" != true || test "$directory_removed" != true || test "$build_removed" != true; then exit 1; fi
+            exit "$original_status"
+          }
+          trap cleanup_probe EXIT
+          clang -Wall -Wextra -Werror .agents/scripts/darwin-audit-session-primitives.c -o "$build_binary" -lbsm -lproc > "$output/compiler.original.log" 2>&1
+          owned_probe=$(sudo -n mktemp -d /private/tmp/vw-darwin-audit-session.XXXXXXXX)
+          case "$owned_probe" in /private/tmp/vw-darwin-audit-session.*) ;; *) owned_probe=; exit 1 ;; esac
+          sudo -n install -m 700 "$build_binary" "$owned_probe/probe"
+          set +e
+          sudo -n env GITHUB_ACTIONS=true RUNNER_ENVIRONMENT=github-hosted "$owned_probe/probe" __CANDIDATE_SHA__ > "$output/observations.json" 2> "$output/probe.original.stderr.log"
+          probe_status=$?
+          set -e
+          exit "$probe_status"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: darwin-audit-session-__CANDIDATE_SHA__
+          path: artifacts/sounding-line/darwin-audit-session
+          if-no-files-found: error
+          retention-days: 14
   browser:
     if: __RUN_BROWSER__
     name: Browser / optimized first-party Phase 4

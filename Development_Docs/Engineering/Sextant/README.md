@@ -8,6 +8,10 @@ last_reviewed: 2026-10-10
 
 # Sextant — Device Context
 
+[Darwin audit-session capability experiment](Darwin_Audit_Session_Capability_Experiment_20261022.md)
+records a separate bounded host prerequisite, currently source-reviewed with no
+host qualification or production guardian acceptance.
+
 [Phase 3 - Read the Field](Project_Sextant_Phase_3_Implementation_Receipt.md) is an isolated local candidate for rich magnetic/pressure/step semantics, media declarations, bounded optional BLE/NFC, secure ranging contracts, safe magnetic reference controls and versioned Drydock requirements. Its D0/D1 software evidence is distinct from D2/native, D4/D5, protected mainline and owner acceptance. Reuse the existing runtime's `advanced` context; media factories and authenticated peer meaning remain with their consumers.
 
 [Phase 2 — Hold the Horizon](Project_Sextant_Phase_2_Implementation_Receipt.md) adds real web event-family providers, normalized attitude/motion, six bounded device gestures, semantic haptics and accessible consent/status controls. Software qualification is separate from physical hardware evidence.
