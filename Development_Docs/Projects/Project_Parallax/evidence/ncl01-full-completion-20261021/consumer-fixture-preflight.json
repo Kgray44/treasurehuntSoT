@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "role": "NCL01_CONSUMER_FIXTURE_FOCUSED_CHECK",
+  "qualification": false,
+  "head": "39e28ffdea15171f8373bb6fdf752a118c20dccd",
+  "sourcePins": [
+    {
+      "path": "tests/e2e/fixtures/ncl01-experience.ts",
+      "sha256": "df50153965ba3ffc066b191609bb85bc5947fa6cc5ceb71c2e70ef8a59802798"
+    },
+    {
+      "path": "src/parallax/ncl01-experience-fixture.test.ts",
+      "sha256": "a7179b3f54b0025ca2045403e708cc5e6a32ab1f9b2b2fb5c3ebe5d1692d034a"
+    },
+    {
+      "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "sha256": "2b4db1e299032171d397d2c6fea99ab2a4cdba628bd891477f50ad778cec72a1"
+    },
+    {
+      "path": "prisma/seed.ts",
+      "sha256": "5527241b4abb5ca4468d26c67afd342334d93cc83b8a450f9402e51e17454c76"
+    }
+  ],
+  "results": {
+    "unitSuccess": true,
+    "unitTestsPassed": 16,
+    "unitTestsFailed": 0,
+    "lint": "PASS",
+    "formatting": "PASS",
+    "browserExecution": "NOT_RUN",
+    "actualDatabaseExecution": "NOT_RUN",
+    "browserCasesCollected": 7,
+    "browserCollection": "PASS_CHROMIUM_LIST_ONLY"
+  },
+  "proofLimits": [
+    "Unit tests use strict mocked Prisma boundaries; no actual database or runtime executed by this preflight.",
+    "Seven browser cases collected only; natural UI, private-detail404, Owner guard and read-only canonical DB invariants await frozen-candidate execution.",
+    "Source uses actual /chronicles/[taleSlug] public-preview guard, not nonexistent /tales/<slug>.",
+    "Two additive generic seed lines preserve prior Parallax/Crossdeck calls; no production/native/auth-policy source changed.",
+    "Read-only Prisma lookup in E2E is constructed only after existing generic nonce-bound isolation plus loopback guard; no sessions or data are pre-authenticated."
+  ],
+  "originals": [
+    {
+      "file": "vitest.original.json",
+      "sha256": "29e4354eea2aeae19288283f614b976826d76d6d1f2dda5fca8fa2067c67b3b2"
+    },
+    {
+      "file": "vitest.original.log",
+      "sha256": "392063661c94df0ae81de3d245f8abef81f48b5d75be732902f81806e3cac978"
+    },
+    {
+      "file": "playwright-list.original.log",
+      "sha256": "48ade1a1e854421c8bb3e33f3f745455c8c3b38ab55ffca5dc25adecfbeda43f"
+    },
+    {
+      "file": "playwright-list.final.original.log",
+      "sha256": "bb636f7a09523c179b4488aeafd5a6f2c0d86cb170a0c58916c2f80b2d610fd7"
+    }
+  ],
+  "supersedes": {
+    "file": "review.public.json",
+    "sha256": "8424e173577b2e2252817b3a17ac5ec2873913236a56a3a571066930d19b66b7",
+    "reason": "Final E2E adds real visible exit, auth navigation, actual private-detail guard and read-only authoring invariants; fixture/unit/seed unchanged."
+  }
+}

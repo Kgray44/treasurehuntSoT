@@ -20,6 +20,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 - [NCL-01 post-Crossdeck integration](NCL01_Post_Crossdeck_Integration_20261021.md)
   continues the preserved native candidate against accepted continuity source.
+- [NCL-01 shared consumer experience design](NCL01_Consumer_Experience_Design_20261021.md)
+  assigns bounded account, publication, privacy and workspace regression journeys.
 - [NCL-01 full completion working ledger](NCL01_Full_Completion_20261021.md) binds
   the current-main/TestFlight reconciliation, original ten requirements and
   outstanding native, browser, physical and protected acceptance gates. The
