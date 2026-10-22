@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Voyagewright features
@@ -20,7 +20,9 @@ The candidate also consumes accepted Sounding Line repair787 and accepted
 inventory publication786. The corrected local journey passes all seven cases;
 its capacity-control failure is retained separately. The secure read-only Apple
 preflight passes without publishing a beta. Combined current experience
-qualification remains pending.
+qualification is blocked before capture by an expired shared verification
+window. The implementation record preserves the exact failure and required
+normal recovery path; this candidate has not been merged.
 This does not establish combined experience or protected
 acceptance, and the installed internal beta 7 has not changed. Browser Lens
 remains Guided where no admitted metric-spatial provider is available.

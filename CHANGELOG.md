@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Changelog
@@ -26,7 +26,11 @@ last_reviewed: 2026-10-21
   publication786. The corrected local journey passes seven cases, with its
   capacity-control failure retained separately. A secure hosted read-only Apple
   preflight passes without an archive, upload or group change. Combined current
-  experience qualification remains pending.
+  experience qualification is blocked: ordinary capture39719820417 stopped
+  before planning/media when protected authority validated an expired Crossdeck
+  execution window before NCL applicability. No reservation was reached by
+  source order; no capture, review or Mainline Decision occurred. Accepted
+  retention repair789 is reconciled normally and leaves that guard unchanged.
   No combined experience, protected-main, physical or owner acceptance is claimed. Internal beta 7 and
   its official artwork remain unchanged.
 

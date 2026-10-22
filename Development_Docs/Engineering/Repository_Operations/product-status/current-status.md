@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Current status
@@ -22,8 +22,10 @@ inventory publication786. The corrected local journey passes seven cases,
 including Player detail/return/authorization checks; its separate failure to
 honor the capacity stop remains recorded. The secure hosted read-only Apple
 preflight verifies matching signing material and app/group read access without
-uploading a beta. Current combined experience qualification, ordinary
-protected integration, physical and owner acceptance remain open. Internal beta 7
+uploading a beta. Accepted diagnostic-retention repair789 is also preserved.
+Current qualification is blocked before capture by an expired shared
+verification window; ordinary protected integration, physical and owner
+acceptance remain open. Internal beta 7
 has not been replaced.
 
 The earlier [October 21 NCL-01 completion ledger](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)

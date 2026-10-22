@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
@@ -21,8 +21,9 @@ new test-selector/readiness defects without removing identity, accessibility,
 return or authorization obligations. Accepted Sounding Line repair787 and
 inventory publication786 are consumed. The corrected local journey passes
 seven cases; its capacity-control failure remains separate. Hosted read-only
-Apple readiness passes without publishing a beta. Current combined experience
-qualification remains pending.
+Apple readiness passes without publishing a beta. Accepted diagnostic-retention
+repair789 is preserved. Current combined experience qualification is blocked
+before capture by an expired shared verification window.
 This is scoped development evidence, not combined experience, protected-main,
 physical or owner acceptance. Internal beta 7 remains unchanged; Feature Catalog
 promotion remains deferred.

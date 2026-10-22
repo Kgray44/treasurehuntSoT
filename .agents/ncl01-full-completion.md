@@ -3,7 +3,7 @@ title: NCL-01 post-Crossdeck execution context
 audience: automation
 status: current
 canonical_for: ncl01-full-completion-task-context
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # NCL-01 post-Crossdeck continuation
@@ -17,8 +17,12 @@ Original brief/addendum and failed receipts remain in the engineering ledger.
 Preserved candidate347a401ca8e1cb2086c51a8db95be687d124412c is reconciled by a
 normal merge of accepted721/main aaff919428ef9ab421579415ce3409949724760d,
 then accepted787/main fc5855f465314fa2c80c3a8966f8b6ce405f010a and
-accepted786/main8e49351e62e1f32340109566557a824bfa74e14d. The last merge,
+accepted786/main8e49351e62e1f32340109566557a824bfa74e14d. That merge,
 d989e47192ba24b136099f150545ec915ac425ea, adds only38 accepted inventory rows.
+Published0dccf762 is further reconciled with accepted789/main408f3738 by
+normal mergeffc3cb34ae7e7bb371e2d1ab2c7c9553f3c81d58. Its14 maintenance
+files leave app/native/assets/fixtures/contracts/signing/dependencies unchanged;
+browser producer/helper fingerprints changed, so retain old execution scopes.
 Use this owned worktree and existing PR741; no force-push, successor PR or other
 project takeover. PR781 remains the separate documentation owner. Future
 NCL02/03 are proposals, not this implementation's authority.
@@ -66,6 +70,19 @@ Focused tests first, source frozen before governed hosted checks, actual-app
 capture and independent review before ordinary Mainline Decision. No final
 qualification debugging loop, required-check bypass or manufactured approval.
 Merge only when current normal policy permits; verify landed source separately.
+
+Ordinary capture39719820417 at0dcc/protected8e failed before plan/capture with
+PRODUCT_EXPERIENCE_EXCEPTION_R26_RECORD_OR_EXPIRY_CHANGED. Actual check
+04:05:13.808Z exceeded the fixed Crossdeck owner execution deadline03:59:59Z;
+registry expiresAt23:59:59Z was still valid. Protected registry validation runs
+before741 applicability; reservation code was not reached by source order.
+There are zero artifacts and no fresh plan, media or visual review. Accepted789
+does not change this guard. Do not repeat the same dispatch, extend expiry,
+borrow721 slots, inject an earlier clock, weaken protection or absorb generic
+maintenance into NCL. A legitimate installed authority repair must precede fresh
+current-base planning/capture, independent17-dimension review and ordinary gate.
+Current classification: IMPLEMENTATION COMPLETE / INTEGRATION BLOCKED; physical
+and browser metric-provider boundaries remain separate. Keep PR741 draft.
 
 Preserve beta0.1.0(7), original GLBs, private Classroom Chronicle/environment,
 existing app/team/group/signing, official original-crop icon SHA256
