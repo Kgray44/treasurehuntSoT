@@ -453,3 +453,24 @@ entry is invented, no production test hook is added, and no protected existing
 contract is changed. The other493 contracts and global policy remain preserved.
 These are corrections to the new prepared design before capture, not removal
 of a governed identity requirement or an experience exemption.
+
+The next frozen candidate `d8065ceed41e3bff77b01838145afeb8e57f1b7f`, tree
+`6b148c3ee070da924a8cd4412c9b501ba0444ca9`, changes no production/native/
+asset/build implementation from846. Its
+[fresh Windows diagnostic](evidence/ncl01-full-completion-20261021/consumer-local-d8065cee.failure.json)
+executed seven cases, six passing and one failing. The Owner's added exact
+account return passed. Player's readiness probe correctly found a settled,
+opaque, interactive detail route, but compared it with the old list pathname
+captured immediately after the click. The existing title and edition text were
+also present in the list, so those assertions did not witness completed
+navigation. This is a demonstrated false test precondition, not a runtime or
+stylesheet defect. The detail audit and later Player assertions were not run.
+All72 new originals remain private;125 prior originals rehash unchanged, and
+all setup/browser/server/proxy/port cleanup passed.
+
+The smallest correction records the actual projected Voyage link, verifies its
+real detail-route shape, clicks once and awaits that exact URL before retaining
+the original heading/edition, settled-route and full accessibility assertions.
+It does not refresh the expected path opportunistically, remove a condition,
+force motion, weaken colors or rerun an audit. A new execution must verify the
+previously unreached detail audit, Player return and authorization denials.

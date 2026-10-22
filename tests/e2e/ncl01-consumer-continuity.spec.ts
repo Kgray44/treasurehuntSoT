@@ -150,7 +150,12 @@ test("Player returns through account and real version-pinned private history", a
     .click();
   await expect(page.getByRole("heading", { name: "Your private shelf", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "NCL01 Consumer Chronicle", exact: true })).toBeVisible();
-  await page.getByRole("link", { name: "Open NCL01 Consumer Chronicle Voyage", exact: true }).click();
+  const detailLink = page.getByRole("link", { name: "Open NCL01 Consumer Chronicle Voyage", exact: true });
+  const detailHref = await detailLink.getAttribute("href");
+  expect(detailHref).toMatch(/^\/passport\/history\/[A-Za-z0-9_-]+$/u);
+  const detailUrl = new URL(detailHref!, page.url()).href;
+  await detailLink.click();
+  await expect(page).toHaveURL(detailUrl);
   await expect(page.getByRole("heading", { name: "NCL01 Consumer Chronicle", exact: true })).toBeVisible();
   await expect(page.getByText("Synthetic account history v1", { exact: true })).toBeVisible();
   await accessible(page);
