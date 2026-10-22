@@ -34,6 +34,10 @@ last_reviewed: 2026-10-22
   Accepted classification repair790 is now reconciled normally and removes the
   unrelated-expiry block. Current exact-base capture and independent review
   remain pending; the earlier failure is preserved.
+  Accepted reader repair788 is also reconciled normally; its changed producer
+  fingerprints do not refresh old NCL evidence. The preserved older preview was
+  restored through its reviewed wrapper and passes bounded loopback checks;
+  current public/phone reachability remains unverified.
   No combined experience, protected-main, physical or owner acceptance is claimed. Internal beta 7 and
   its official artwork remain unchanged.
 

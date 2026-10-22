@@ -63,7 +63,10 @@ client's HTTP403 is retained without an established cause or security change.
 These anonymous checks do not prove private-account/database integrity or
 physical AR. Only an inactive task-owned derived Gradle cache was relocated
 to C:, retaining every file and its original D: path, to recover about 391 MiB.
-Storage remains constrained; keep new temporary state on C:. See the current
+That storage incident is historical. Preserve the pinned C: runtime metadata
+and D: build/database paths. Keep new diagnostic output in owned D: storage
+while C: is near its 30 GiB reserve; recheck current capacity before allocating.
+See the current
 [engineering ledger](../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
 for recovery, health and source-bound evidence.
 

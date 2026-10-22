@@ -28,6 +28,12 @@ normal mergeb1a1f44f4b4b1f1bc3e66958f21f01f52dfc6d5f, tree
 205efe8c7b32caf86b4385c23dd385f22776013c, preserving d61b3ca2 and90.
 Its eleven files change shared classification/tests/documentation, with no new
 native, application, asset, fixture, contract, dependency or signing behavior.
+Accepted788/main39b706ad3c9a2b8e1d589f71db909cf6c32c468b is consumed by
+normal merge32aa6136d5d5a753ca24a179ff30ca0dce661041, tree
+d35990c4282252c1ace6a043cdc1cc7e7bb778c5, preserving8da951e2 and39.
+Its thirteen files change bounded source reading and development build links,
+tests and documentation. Product/native/asset/signing inputs remain unchanged;
+reader and producer fingerprints have changed. Do not call old ones current.
 Use this owned worktree and existing PR741; no force-push, successor PR or other
 project takeover. PR781 remains the separate documentation owner. Future
 NCL02/03 are proposals, not this implementation's authority.
@@ -92,9 +98,9 @@ ordinary gate remain pending. Keep PR741 draft until its own evidence is ready.
 
 Generic capture/review admission requires exact protected-base identity. An
 advancing main requires fresh planning/capture/review; source equivalence alone
-does not rebind old media. PR788 and Studio are separately owned and unaccepted
-changes are not consumed. Check actual active prerequisites before costly work,
-respect the existing product integration order and recheck strict protection at
+does not rebind old media. Reader788 is now accepted. Studio remains separately
+owned and unaccepted changes are not consumed. Check actual prerequisites before
+costly work, respect the existing product integration order and recheck strict protection at
 the final merge. Physical and live metric-browser gates remain separate.
 
 Preserve beta0.1.0(7), original GLBs, private Classroom Chronicle/environment,

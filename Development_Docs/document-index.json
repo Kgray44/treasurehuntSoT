@@ -13095,6 +13095,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/accepted-main-39b706ad.source-impact.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/accepted-main-408f3738.source-impact.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -13437,6 +13443,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/local-plan-coverage-8da951e2.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/local-plan-readiness-8da951e2.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/post-crossdeck-consumer-coverage-0d83.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -13510,6 +13528,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/preview-publication-urllib-403.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/preview-restoration-20261022.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
