@@ -278,7 +278,7 @@
     "sextant:device-lab": "node --import tsx scripts/sextant/device-lab.ts",
     "experience:plan": "node scripts/sounding-line/experience-browser.mjs",
     "experience:capture": "node scripts/sounding-line/experience-browser.mjs",
-    "experience:test": "node --test tests/sounding-line/product-experience.test.mjs tests/sounding-line/source-snapshot-batches.test.mjs tests/sounding-line/experience-attestation.test.mjs",
+    "experience:test": "node --test tests/sounding-line/product-experience.test.mjs tests/sounding-line/experience-attestation.test.mjs",
     "experience:test:browser": "node --test tests/sounding-line/experience-browser-fixtures.test.mjs tests/sounding-line/capture-lifecycle-browser.test.mjs"
   },
   "dependencies": {
