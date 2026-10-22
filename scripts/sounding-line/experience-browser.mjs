@@ -683,6 +683,40 @@ export async function runTrustedExperienceReplay({
   diagnostics,
   onDiagnosticScope,
 }) {
+  if (plan?.applicable !== true) {
+    const keys = plan && typeof plan === "object" ? Reflect.ownKeys(plan) : [];
+    const graph = keys.length === 6;
+    const allowed = new Set([
+      "applicable",
+      "classification",
+      "contractIds",
+      "affectedSurfaces",
+      "transitivePaths",
+      "uncertainty",
+    ]);
+    if (
+      !plan ||
+      Array.isArray(plan) ||
+      Object.getPrototypeOf(plan) !== Object.prototype ||
+      plan.applicable !== false ||
+      !["BACKEND_ONLY", "DOCUMENTATION_ONLY", "INTERNAL_TOOLING", "TRUSTED_POLICY_NOT_YET_ACTIVATED"].includes(
+        plan.classification,
+      ) ||
+      !Array.isArray(plan.contractIds) ||
+      plan.contractIds.length ||
+      ![3, 6].includes(keys.length) ||
+      keys.some((key) => !allowed.has(key)) ||
+      (graph &&
+        (!Array.isArray(plan.affectedSurfaces) ||
+          plan.affectedSurfaces.length ||
+          !Array.isArray(plan.uncertainty) ||
+          plan.uncertainty.length ||
+          !Array.isArray(plan.transitivePaths) ||
+          plan.transitivePaths.some((file) => typeof file !== "string")))
+    )
+      fail("REPLAY_PLAN_INVALID");
+    return { status: "NOT_APPLICABLE" };
+  }
   const exceptionLease = await withVerificationStage("REPLAY_ADMISSION", () =>
     assertExceptionExecution({
       root,
@@ -692,7 +726,6 @@ export async function runTrustedExperienceReplay({
       claim: true,
     }),
   );
-  if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   if (plan.paired)
     diagnostics ??= createBrowserDiagnosticSession(root, {
       baseSha: plan.baseSha,
