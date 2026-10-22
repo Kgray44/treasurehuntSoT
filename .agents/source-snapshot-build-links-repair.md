@@ -1,19 +1,21 @@
 ---
 title: Source snapshot and Windows development build link repair
 audience: automation
-status: implementation-preparation-awaiting-base-reconciliation
+status: implementation-candidate
 canonical_for: source-snapshot-build-links-repair-20261021
 last_reviewed: 2026-10-21
 ---
 
 # Source snapshot and Windows development build link repair
 
-Prepare the two necessary Sounding Line infrastructure corrections for the
-existing Parallax integration owner. Starting protected main is
-`aaff919428ef9ab421579415ce3409949724760d`; reconcile to the actual accepted
-documentation follow-up #786 before final source freeze, independent exact-source
-review, PR publication or protected qualification. Reversible source and test
-preparation may proceed in the isolated owned D worktree during that hold.
+Implement the two necessary Sounding Line infrastructure corrections for the
+existing Parallax integration owner. The candidate is reconciled to accepted main
+`fc5855f465314fa2c80c3a8966f8b6ce405f010a` in its existing owned D worktree. The
+independent documentation follow-up #786 may qualify concurrently. Preserve its
+38 historical migration rows as that owner's scope until accepted; retain every
+accepted row when regenerating the inventory. Freeze and independently review the
+exact candidate before normal protected qualification. Merge requires fresh main
+ancestry and requalification if accepted source changes.
 
 Keep complete source selection, all historical JSON, entry and Map order, UTF-8
 conversion and the existing 128 MiB per-call bound. Read bounded exact blob
