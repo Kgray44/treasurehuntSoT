@@ -1521,6 +1521,17 @@ test("SC00A authenticated ancestry comparison distinguishes true absence from in
     }),
     false,
   );
+  assert.throws(
+    () =>
+      validateSC00AAncestryComparison(base, {
+        ...ahead,
+        status: "diverged",
+        merge_base_commit: { sha: "b".repeat(40) },
+        behind_by: 2,
+        commits: [{ sha: base }],
+      }),
+    /HISTORY_CANDIDATE_UNVERIFIABLE/u,
+  );
   for (const mutate of [
     (c) => {
       delete c.merge_base_commit;

@@ -415,6 +415,7 @@ export function validateSC00AAncestryComparison(candidate, comparison) {
     return false;
   if (
     c.status === "diverged" &&
+    candidate !== base &&
     merge !== base &&
     merge !== candidate &&
     c.ahead_by > 0 &&
