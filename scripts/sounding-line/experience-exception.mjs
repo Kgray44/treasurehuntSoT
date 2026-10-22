@@ -748,6 +748,24 @@ export const trustedExceptions = (root, baseSha) => {
   else if (sentinels.has("scripts/sounding-line/experience-r13.mjs")) validateR13Registry(registry);
   return selectTrustedExceptions(records);
 };
+// Historical validation supplies no live record, binding, slot or execution authority.
+// Only an unrelated lookup may stop here; every recognized campaign still uses
+// the original wall-clock validator and all downstream live gates.
+function applicableTrustedExceptions({ root, baseSha, candidateSha, prNumber }) {
+  if (!present(root, baseSha, "scripts/sounding-line/experience-current-r26.mjs"))
+    return trustedExceptions(root, baseSha);
+  const registry = exceptionRegistry(root, baseSha);
+  validateCurrentAdmissionRegistry(registry, new Date(CURRENT_R26.ownerApproval.executionDeadlineUtc), {
+    requiredVersion: 26,
+  });
+  if (
+    ![CROSSDECK_CAMPAIGN, ...registry.exceptions].some((record) =>
+      campaignRelated({ root, baseSha, candidateSha, record, prNumber }),
+    )
+  )
+    return [];
+  return trustedExceptions(root, baseSha);
+}
 export function campaignRelated({ root, baseSha, candidateSha, record, prNumber }) {
   if (Number(prNumber) === record.pullRequest) return true;
   // Every remaining signal compares additions between two revisions. An exact
@@ -872,18 +890,15 @@ export function validateExceptionRecord(record, now = new Date()) {
   if (!Number.isFinite(Date.parse(record.expiresAt)) || now.getTime() >= Date.parse(record.expiresAt)) fail("EXPIRED");
 }
 export function bindExperienceException({ root, baseSha, candidateSha, plan, prNumber, now }) {
+  const trusted = applicableTrustedExceptions({ root, baseSha, candidateSha, prNumber });
   if (
     [CROSSDECK_CAMPAIGN, ...exceptionRecords(root, baseSha)].some((record) =>
       campaignRelated({ root, baseSha, candidateSha, record, prNumber }),
     ) &&
-    !trustedExceptions(root, baseSha).some((record) =>
-      campaignRelated({ root, baseSha, candidateSha, record, prNumber }),
-    )
+    !trusted.some((record) => campaignRelated({ root, baseSha, candidateSha, record, prNumber }))
   )
     fail("APPROVAL_MISSING_OR_INACTIVE");
-  const records = trustedExceptions(root, baseSha).filter((record) =>
-    campaignRelated({ root, baseSha, candidateSha, record, prNumber }),
-  );
+  const records = trusted.filter((record) => campaignRelated({ root, baseSha, candidateSha, record, prNumber }));
   if (!records.length) return null;
   if (records.length !== 1) fail("AMBIGUOUS_CAMPAIGN");
   const record = records[0];
@@ -2917,7 +2932,7 @@ async function main() {
   const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
   const prNumber = event.pull_request?.number ?? event.inputs?.pr_number;
   const installedBase = process.env.GITHUB_SHA;
-  const record = trustedExceptions(root, installedBase).find((value) =>
+  const record = applicableTrustedExceptions({ root, baseSha: installedBase, candidateSha, prNumber }).find((value) =>
     campaignRelated({ root, baseSha: installedBase, candidateSha, record: value, prNumber }),
   );
   const output = (value) => {
