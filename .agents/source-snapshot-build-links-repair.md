@@ -10,10 +10,14 @@ last_reviewed: 2026-10-22
 
 Implement the two necessary Sounding Line infrastructure corrections for the
 existing Parallax integration owner. The candidate is reconciled to accepted main
-`408f37389e6dd358b1ab005d91f3f588405f61db` in its existing owned D worktree. Retain
+`90bff6ec281d79a6788c8270a8a3d67fd8257010` in its existing owned D worktree. Retain
 all 38 accepted documentation follow-up #786 rows when regenerating the inventory.
 The separately reviewed diagnostic-retention repair #789 is accepted in this
-base. Preserve its launcher binding, closed-stream retention, private publication
+base. The neutral expiry-routing repair #790 is also accepted, through its exact
+one-time human-approved exception. Preserve its registry, live campaign expiry
+and scoped historical test clocks; that exception is exhausted and does not apply
+to this reader PR. This candidate requires the normal protected route. Preserve
+the retention launcher binding, closed-stream retention, private publication
 and canonical test registration. Freeze and independently review the exact
 composed candidate before fresh normal protected qualification. Merge requires fresh main
 ancestry and requalification if accepted source changes.

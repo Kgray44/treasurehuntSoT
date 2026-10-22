@@ -12,8 +12,13 @@ Two source-bound infrastructure failures prevent existing Parallax development
 preparation. They do not establish a product defect or authorize consumer
 qualification. The original failed outputs remain retained privately and failed.
 The implementation candidate is reconciled to accepted main
-`408f37389e6dd358b1ab005d91f3f588405f61db`, retaining all 38 accepted #786
+`90bff6ec281d79a6788c8270a8a3d67fd8257010`, retaining all 38 accepted #786
 inventory rows and the separately accepted diagnostic-retention repair #789.
+The base also includes neutral expiry-routing repair #790, accepted at exactly
+this main through its one-time human-approved merge exception. Its unchanged
+registry, live campaign expiry and historical test clocks remain accepted base.
+The exception applies only to #790; this reader requires fresh normal protected
+qualification and ordinary merge eligibility.
 Exact-source review and normal protected qualification bind
 this candidate, and merge still requires fresh accepted main ancestry.
 
@@ -108,8 +113,9 @@ unspent because these corrections exist.
 The separate development diagnostic retention repair #789 is accepted in the
 current base and retains original reports and closed producer output privately
 through encryption. Its runtime, private launcher and test registrations remain
-intact in this composed candidate. The sole consumer owner retains its separate
-unapplied test-attachment patch; this repair does not apply or execute it.
+intact in this composed candidate. The consumer owner controls its separate
+test-attachment patch and development attempts; this repair neither applies nor
+executes them.
 
 The corrected reader source `1ee701d62b8af34bb0a8522adb9cd3361a0eb223` passed
 normal run `39718154197/1` on the previous accepted base, with 852 of 853
