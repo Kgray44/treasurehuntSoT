@@ -3,17 +3,19 @@ title: Source snapshot and Windows development build link repair
 audience: automation
 status: implementation-candidate
 canonical_for: source-snapshot-build-links-repair-20261021
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Source snapshot and Windows development build link repair
 
 Implement the two necessary Sounding Line infrastructure corrections for the
 existing Parallax integration owner. The candidate is reconciled to accepted main
-`8e49351e62e1f32340109566557a824bfa74e14d` in its existing owned D worktree. Retain
+`408f37389e6dd358b1ab005d91f3f588405f61db` in its existing owned D worktree. Retain
 all 38 accepted documentation follow-up #786 rows when regenerating the inventory.
-The separate diagnostic-retention repair may qualify independently. Freeze and independently review the
-exact candidate before normal protected qualification. Merge requires fresh main
+The separately reviewed diagnostic-retention repair #789 is accepted in this
+base. Preserve its launcher binding, closed-stream retention, private publication
+and canonical test registration. Freeze and independently review the exact
+composed candidate before fresh normal protected qualification. Merge requires fresh main
 ancestry and requalification if accepted source changes.
 
 Keep complete source selection, all historical JSON, entry and Map order, UTF-8
