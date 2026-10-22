@@ -1,7 +1,7 @@
 ---
 title: Development report and producer output retention repair
 audience: engineering
-status: implementation-preparation-awaiting-base-reconciliation
+status: implementation-candidate
 canonical_for: development-report-producer-retention-engineering-20261021
 last_reviewed: 2026-10-21
 ---
@@ -106,9 +106,12 @@ growth, truncation and replacement at the read boundary must preserve the fixed
 I/O bound and reject changed files. These tests do not launch a
 product browser or use the owner's private key.
 
-Reconciliation to accepted prerequisites, independent exact-source review, normal
-protected Linux qualification, protected merge and independent landed proof are
-still required. The sole consumer owner's attachment patch remains separately
+The candidate is reconciled to accepted main
+`fc5855f465314fa2c80c3a8966f8b6ce405f010a`. Independent exact-source review, normal
+protected Linux qualification, protected merge and independent landed proof remain
+required. Independent documentation follow-up #786 and the source-reader repair
+may qualify concurrently; merge still requires fresh accepted main ancestry. The
+sole consumer owner's attachment patch remains separately
 reviewed and unapplied by this maintenance lane. A future browser attempt requires
 its accepted route and exact source; this repair cannot recover the old cause.
 

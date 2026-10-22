@@ -1,7 +1,7 @@
 ---
 title: Development report and producer output retention repair
 audience: automation
-status: implementation-preparation-awaiting-base-reconciliation
+status: implementation-candidate
 canonical_for: development-report-producer-retention-repair-20261021
 last_reviewed: 2026-10-21
 ---
@@ -14,12 +14,13 @@ FAILURE with UNKNOWN cause; its immutable manifest-only artifact cannot explain
 the browser failure after the fact. The sole consumer owner separately owns its
 test-only recognized attachment patch.
 
-Reversible implementation and tests may proceed from accepted main
-`aaff919428ef9ab421579415ce3409949724760d` in an isolated owned D worktree. Preserve
-the #786 hold on publication, protected qualification and main movement. Reconcile
-to the actual accepted prerequisite base, rerun affected checks, freeze one exact
-source and obtain independent review before normal protected installation. No
-consumer browser rerun is authorized by this preparation.
+The candidate is reconciled to accepted main
+`fc5855f465314fa2c80c3a8966f8b6ce405f010a` in its existing owned D worktree.
+Independent documentation follow-up #786 and the source-reader repair may qualify
+concurrently. Preserve separately owned pending inventory rows until accepted.
+Freeze the exact source and obtain independent review before normal protected
+qualification; merge requires fresh accepted main ancestry and requalification if
+that source changes. No consumer browser rerun is authorized by this repair.
 
 Capture only fixed development report and closed producer streams through the
 live trusted-host route. Preserve source, provider run/attempt and selector
