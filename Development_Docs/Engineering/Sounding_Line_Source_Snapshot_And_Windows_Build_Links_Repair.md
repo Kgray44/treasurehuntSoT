@@ -3,7 +3,7 @@ title: Bounded source snapshots and contained Windows build links
 audience: engineering
 status: implementation-candidate
 canonical_for: sounding-line-source-snapshot-windows-links-repair-20261021
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Bounded source snapshots and contained Windows build links
@@ -12,8 +12,8 @@ Two source-bound infrastructure failures prevent existing Parallax development
 preparation. They do not establish a product defect or authorize consumer
 qualification. The original failed outputs remain retained privately and failed.
 The implementation candidate is reconciled to accepted main
-`8e49351e62e1f32340109566557a824bfa74e14d`, retaining all 38 accepted #786
-inventory rows. The separate diagnostic-retention repair may qualify independently.
+`408f37389e6dd358b1ab005d91f3f588405f61db`, retaining all 38 accepted #786
+inventory rows and the separately accepted diagnostic-retention repair #789.
 Exact-source review and normal protected qualification bind
 this candidate, and merge still requires fresh accepted main ancestry.
 
@@ -105,9 +105,18 @@ passing regressions and the POSIX-only case. Lint and formatting pass. No old
 failed consumer run becomes accepted, diagnosable or
 unspent because these corrections exist.
 
-The separate development diagnostic retention scope preserves original reports
-and closed process output privately through encryption; the sole consumer owner
-owns its separate test-attachment patch. Neither scope is implemented here.
+The separate development diagnostic retention repair #789 is accepted in the
+current base and retains original reports and closed producer output privately
+through encryption. Its runtime, private launcher and test registrations remain
+intact in this composed candidate. The sole consumer owner retains its separate
+unapplied test-attachment patch; this repair does not apply or execute it.
+
+The corrected reader source `1ee701d62b8af34bb0a8522adb9cd3361a0eb223` passed
+normal run `39718154197/1` on the previous accepted base, with 852 of 853
+regressions passing, one platform skip and all 13 rendered fixtures passing.
+That original success is preserved. It does not qualify the newly composed
+candidate on accepted #789; fresh exact-source review and protected checks remain
+required.
 
 Feature Catalog disposition: ordinary infrastructure corrections; no completed
 major capability or important subfeature changes.
