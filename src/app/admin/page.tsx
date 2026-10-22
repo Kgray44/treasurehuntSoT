@@ -1,9 +1,9 @@
 import Link from "next/link";
+import { AdmiraltyWatchPanel } from "@/components/admiralty/AdmiraltyConsole";
 import { admiraltyPageOperator } from "@/admiralty/page-authorization";
 import { admiraltyOverview } from "@/admiralty/projections";
 import {
   ChartroomPage,
-  DetailList,
   EvidenceStrip,
   Metric,
   Panel,
@@ -53,23 +53,16 @@ export default async function AdmiraltyPage() {
         />
       </div>
       <div className="chartroom-grid chartroom-grid--wide">
-        <Panel title="Your watch" kicker="Authority">
-          <DetailList
-            items={[
-              { label: "Operator", value: operator.displayName },
-              { label: "Roles", value: operator.roles.join(", ") },
-              { label: "Session expires", value: dateTime(operator.sessionExpiresAt) },
-              {
-                label: "Privileged assurance",
-                value: <StatusBadge state={overview.assurance.recent ? "HEALTHY" : "NOT_CONFIGURED"} />,
-              },
-              {
-                label: "Support grants",
-                value: `${overview.support.activeGrantCount} active · ${overview.support.pendingRequestCount} pending`,
-              },
-            ]}
-          />
-        </Panel>
+        <AdmiraltyWatchPanel
+          watch={{
+            displayName: operator.displayName,
+            roles: operator.roles,
+            sessionExpires: dateTime(operator.sessionExpiresAt),
+            recentAssurance: overview.assurance.recent,
+            activeGrantCount: overview.support.activeGrantCount,
+            pendingRequestCount: overview.support.pendingRequestCount,
+          }}
+        />
         <Panel title="Attention and owner handoffs" kicker="Current safe data">
           <div className="chartroom-timeline">
             {overview.attention.pendingSupportCases ? (
@@ -86,7 +79,9 @@ export default async function AdmiraltyPage() {
               <article>
                 <span aria-hidden="true" />
                 <div>
-                  <strong>{overview.attention.communityDeadLetters} Community dead letter(s) need owner review</strong>
+                  <strong>
+                    {overview.attention.communityDeadLetters} Community dead letter(s) need owner review
+                  </strong>
                   <p>Harborlight owns recovery and moderation business logic.</p>
                   <Link href="/admin/operations">Open Community operations →</Link>
                 </div>

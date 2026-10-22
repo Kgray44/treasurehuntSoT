@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ChroniclePassportOverview, type PassportOverviewDto } from "@/components/wayfarer/ChroniclePassport";
 import { useEffect, useState, type FormEvent } from "react";
 import { usePersonalHarbor } from "@/components/homeport/PersonalHarborLayout";
 import {
@@ -10,7 +11,10 @@ import {
 } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 
-type LoadState<T> = { status: "loading" } | { status: "error"; message: string } | { status: "ready"; value: T };
+type LoadState<T> =
+  | { status: "loading" }
+  | { status: "error"; message: string }
+  | { status: "ready"; value: T };
 function presentationLabel(value: string) {
   return value
     .replace(/([a-z])([A-Z])/gu, "$1 $2")
@@ -60,45 +64,11 @@ function MutationMessage({ message, error = false }: { message: string; error?: 
   return message ? <MutationStatus state={error ? "failure" : "success"}>{message}</MutationStatus> : null;
 }
 
-type PassportOverviewDto = {
-  sections: Array<{ id: string; label: string; href: string; count: number; empty: string }>;
-};
 export function PassportHome() {
   const { state, reload } = useResource<PassportOverviewDto>("/api/passport/overview");
   if (state.status === "loading") return <LoadingState />;
   if (state.status === "error") return <ErrorState message={state.message} retry={reload} />;
-  return (
-    <div className="harbor-stack">
-      <section className="passport-intro">
-        <p className="personal-harbor__eyebrow">Your record, in one place</p>
-        <h2>A record you can return to</h2>
-        <p>
-          Return to the Voyages you joined, the private Memories you kept, artifacts authoritatively granted to you, and
-          eligible Community items you saved. No engineering simulators or test controls live here.
-        </p>
-      </section>
-      <div className="passport-card-grid">
-        {state.value.sections.map((section) => (
-          <Link href={section.href} key={section.id} className="passport-card">
-            <span>{section.count}</span>
-            <h2>{section.label}</h2>
-            <p>{section.count ? "Open this part of your record." : section.empty}</p>
-            <strong>
-              Open <span aria-hidden="true">→</span>
-            </strong>
-          </Link>
-        ))}
-      </div>
-      <section className="harbor-callout">
-        <strong>Profile and Passport are related, but not the same.</strong>
-        <p>
-          Your public Profile is the identity other people may see. Your Chronicle Passport is the private, record-led
-          home for your own Voyage history.
-        </p>
-        <Link href="/account/profile">Edit public Profile</Link>
-      </section>
-    </div>
-  );
+  return <ChroniclePassportOverview sections={state.value.sections} />;
 }
 
 type HistoryItem = {
@@ -123,7 +93,8 @@ export function HistoryExplorer() {
     `/api/passport/history${query ? `?search=${encodeURIComponent(query)}` : ""}`,
   );
   if (resource.state.status === "loading") return <LoadingState label="Reading Chronicle History" />;
-  if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
+  if (resource.state.status === "error")
+    return <ErrorState message={resource.state.message} retry={resource.reload} />;
   return (
     <div className="harbor-stack">
       <form
@@ -159,8 +130,8 @@ export function HistoryExplorer() {
                       : "Completion time unavailable"}
                   </p>
                   <p>
-                    Version-pinned edition · {item.memories.length} memories · {item.artifactSummary.length} artifact
-                    records
+                    Version-pinned edition · {item.memories.length} memories · {item.artifactSummary.length}{" "}
+                    artifact records
                   </p>
                 </div>
                 <div className="personal-harbor__actions">
@@ -245,7 +216,8 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
   if (resource.state.status === "loading") return <LoadingState label="Opening Chronicle record" />;
-  if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
+  if (resource.state.status === "error")
+    return <ErrorState message={resource.state.message} retry={resource.reload} />;
   const value = resource.state.value;
   const mutate = async (url: string, method: string, body?: unknown) => {
     setMessage("Saving…");
@@ -292,7 +264,10 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
             Write or update public review
           </Link>
         ) : null}
-        <Link className="button button--quiet" href={`/passport/history/${encodeURIComponent(recordId)}/compare`}>
+        <Link
+          className="button button--quiet"
+          href={`/passport/history/${encodeURIComponent(recordId)}/compare`}
+        >
           See what changed
         </Link>
       </section>
@@ -307,7 +282,9 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
             ))}
           </ol>
         ) : (
-          <p className="harbor-empty">No exact completed-chapter events are available for this pinned version.</p>
+          <p className="harbor-empty">
+            No exact completed-chapter events are available for this pinned version.
+          </p>
         )}
         {value.choiceSummary.map((summary, index) => (
           <p className="harbor-field-hint" key={index}>
@@ -319,7 +296,9 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
         className="harbor-panel harbor-form"
         onSubmit={(event) => {
           event.preventDefault();
-          void mutate(`/api/passport/history/${encodeURIComponent(recordId)}`, "PATCH", { privateNote: note || null });
+          void mutate(`/api/passport/history/${encodeURIComponent(recordId)}`, "PATCH", {
+            privateNote: note || null,
+          });
         }}
       >
         <h2>Private reflection</h2>
@@ -341,7 +320,11 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
         className="harbor-panel harbor-form"
         onSubmit={async (event) => {
           event.preventDefault();
-          const ok = await mutate(`/api/passport/history/${encodeURIComponent(recordId)}/memories`, "POST", memory);
+          const ok = await mutate(
+            `/api/passport/history/${encodeURIComponent(recordId)}/memories`,
+            "POST",
+            memory,
+          );
           if (ok) setMemory({ title: "", body: "" });
         }}
       >
@@ -377,17 +360,22 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
         {value.keepsake ? (
           <>
             <p>
-              Status: {value.keepsake.status}. Generated {new Date(value.keepsake.generatedAt).toLocaleString()}.
+              Status: {value.keepsake.status}. Generated{" "}
+              {new Date(value.keepsake.generatedAt).toLocaleString()}.
             </p>
             <div className="personal-harbor__actions">
               <button
                 type="button"
                 className="button"
                 onClick={() =>
-                  void mutate(`/api/passport/history/${encodeURIComponent(recordId)}/keepsake/consent`, "PUT", {
-                    scope: "DISPLAY_NAME",
-                    state: "GRANTED",
-                  })
+                  void mutate(
+                    `/api/passport/history/${encodeURIComponent(recordId)}/keepsake/consent`,
+                    "PUT",
+                    {
+                      scope: "DISPLAY_NAME",
+                      state: "GRANTED",
+                    },
+                  )
                 }
               >
                 Allow my display name
@@ -396,10 +384,14 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
                 type="button"
                 className="button button--quiet"
                 onClick={() =>
-                  void mutate(`/api/passport/history/${encodeURIComponent(recordId)}/keepsake/consent`, "PUT", {
-                    scope: "DISPLAY_NAME",
-                    state: "REVOKED",
-                  })
+                  void mutate(
+                    `/api/passport/history/${encodeURIComponent(recordId)}/keepsake/consent`,
+                    "PUT",
+                    {
+                      scope: "DISPLAY_NAME",
+                      state: "REVOKED",
+                    },
+                  )
                 }
               >
                 Revoke name consent
@@ -412,7 +404,9 @@ export function HistoryDetail({ recordId }: { recordId: string }) {
             <button
               type="button"
               className="button"
-              onClick={() => void mutate(`/api/passport/history/${encodeURIComponent(recordId)}/keepsake`, "POST")}
+              onClick={() =>
+                void mutate(`/api/passport/history/${encodeURIComponent(recordId)}/keepsake`, "POST")
+              }
             >
               Prepare private Keepsake
             </button>
@@ -440,7 +434,8 @@ export function MemoriesExplorer() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   if (resource.state.status === "loading") return <LoadingState label="Reading Chronicle Memories" />;
-  if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
+  if (resource.state.status === "error")
+    return <ErrorState message={resource.state.message} retry={resource.reload} />;
   const remove = async (item: MemoryDto) => {
     if (
       !(await requestAction({
@@ -478,7 +473,9 @@ export function MemoriesExplorer() {
                   <p className="personal-harbor__eyebrow">{item.chronicleTitle}</p>
                   <h2>{item.title}</h2>
                   {item.body && <p>{item.body}</p>}
-                  <p className="harbor-field-hint">Private · {new Date(item.createdAt).toLocaleDateString()}</p>
+                  <p className="harbor-field-hint">
+                    Private · {new Date(item.createdAt).toLocaleDateString()}
+                  </p>
                   <div className="personal-harbor__actions">
                     <Link className="button" href={`/passport/history/${encodeURIComponent(item.recordId)}`}>
                       Open record
@@ -494,7 +491,10 @@ export function MemoriesExplorer() {
         ) : (
           <div className="harbor-empty harbor-empty--large">
             <h2>No private Memories yet</h2>
-            <p>Open a Chronicle History record to write a private Memory. Nothing here is published to your Profile.</p>
+            <p>
+              Open a Chronicle History record to write a private Memory. Nothing here is published to your
+              Profile.
+            </p>
             <Link className="button" href="/passport/history">
               Open Chronicle History
             </Link>
@@ -533,7 +533,8 @@ export function ArtifactExplorer() {
     `/api/passport/artifacts${query ? `?search=${encodeURIComponent(query)}` : ""}`,
   );
   if (resource.state.status === "loading") return <LoadingState label="Opening Artifact Cabinet" />;
-  if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
+  if (resource.state.status === "error")
+    return <ErrorState message={resource.state.message} retry={resource.reload} />;
   return (
     <div className="harbor-stack">
       <form
@@ -594,7 +595,13 @@ export function ArtifactExplorer() {
 
 type ArtifactDetailDto = {
   id: string;
-  artifact: { id: string; name: string; type: string; representation: string; accessibleRepresentation: string };
+  artifact: {
+    id: string;
+    name: string;
+    type: string;
+    representation: string;
+    accessibleRepresentation: string;
+  };
   provenance: {
     chronicle: string;
     publishedVersionChecksum: string;
@@ -611,7 +618,9 @@ type ArtifactDetailDto = {
   assemblies: Array<{ id: string; name: string; status: string }>;
 };
 export function ArtifactDetail({ artifactId }: { artifactId: string }) {
-  const resource = useResource<ArtifactDetailDto>(`/api/passport/artifacts/${encodeURIComponent(artifactId)}`);
+  const resource = useResource<ArtifactDetailDto>(
+    `/api/passport/artifacts/${encodeURIComponent(artifactId)}`,
+  );
   const { csrfToken, setDirty } = usePersonalHarbor();
   const [draft, setDraft] = useState<ArtifactDetailDto["personalization"] | null>(null);
   const [message, setMessage] = useState("");
@@ -622,8 +631,10 @@ export function ArtifactDetail({ artifactId }: { artifactId: string }) {
     if (resource.state.status === "ready") setDraft(resource.state.value.personalization);
   }, [resource.state]);
   useEffect(() => () => setDirty(false), [setDirty]);
-  if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
-  if (resource.state.status === "loading" || !draft) return <LoadingState label="Opening artifact provenance" />;
+  if (resource.state.status === "error")
+    return <ErrorState message={resource.state.message} retry={resource.reload} />;
+  if (resource.state.status === "loading" || !draft)
+    return <LoadingState label="Opening artifact provenance" />;
   const value = resource.state.value;
   const save = async (event: FormEvent) => {
     event.preventDefault();
@@ -691,7 +702,10 @@ export function ArtifactDetail({ artifactId }: { artifactId: string }) {
         {value.provenance.status === "UNRESOLVED" && (
           <div className="harbor-callout">
             <strong>Witnessed, not claimed as owned.</strong>
-            <p>Shared inventory evidence is preserved without silently converting it into an ArtifactGrantReceipt.</p>
+            <p>
+              Shared inventory evidence is preserved without silently converting it into an
+              ArtifactGrantReceipt.
+            </p>
           </div>
         )}
       </section>
@@ -768,7 +782,8 @@ export function SavedExplorer() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   if (resource.state.status === "loading") return <LoadingState label="Reading saved Community items" />;
-  if (resource.state.status === "error") return <ErrorState message={resource.state.message} retry={resource.reload} />;
+  if (resource.state.status === "error")
+    return <ErrorState message={resource.state.message} retry={resource.reload} />;
   const unsave = async (item: SavedItem) => {
     setMessage("Removing saved item…");
     setError(false);
@@ -792,8 +807,8 @@ export function SavedExplorer() {
       <section className="harbor-callout">
         <strong>Eligibility is checked each time this page opens.</strong>
         <p>
-          Private, unlisted, blocked, quarantined, archived, removed, or missing subjects are omitted without revealing
-          why. Raw save rows are never returned.
+          Private, unlisted, blocked, quarantined, archived, removed, or missing subjects are omitted without
+          revealing why. Raw save rows are never returned.
         </p>
       </section>
       {resource.state.value.items.length ? (

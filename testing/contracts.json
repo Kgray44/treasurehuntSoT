@@ -6671,10 +6671,11 @@
           "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
           "The Creator capture saves a working draft while reading the already pinned published edition. It does not claim publication of those new draft changes; canonical publishing remains separately tested.",
           "The accepted spatial-pilot.experience Assistant contract, its synthetic account, fixtures, journeys and review obligations remain unchanged. This native-consumer contract makes no claim about additional paid model calls or new edition publication.",
-          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState."
+          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState.",
+          "The actual Chronicle chooser uses native keyboard Home/ArrowDown/Enter only after the owned fixture verifies or refuses exactly one account membership with the expected Voyage ID, Chronicle and pinned edition. Extra or inactive membership, wrong edition, expiry or removal is refused without reset. The accepted runner cannot directly assert the select live value or URL query; registered development checks retain actual selection response, surface Voyage and pinned Journal edition proof."
         ],
-        "navigation": "Use the readable returning Journal, explicitly replay its full opening, then enter contextual Devices or Creator Studio. Continue Voyage uses the canonical /play/{slug}/session/{voyageId} route; Continue Adventure uses the Player-library Journal route. Preserve the same Voyage landmark and destination identity through every outcome and return.",
-        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Preserve the visible connected count as the Devices action description. Edit the Experience title through the ordinary Inspector, save and reopen the working scene to witness persistence. Restore the synthetic working title before comparing the independently pinned Player clue. Saving a working draft never counts as publication.",
+        "navigation": "Use the readable returning Journal, replay its full opening, then Account → Personal Harbor → Sessions & Devices → Connect your Voyage devices and the actual Chronicle chooser. After ordinary registration return through Account → Player → Continue Adventure to the same pinned Journal. Creator entry and return retain the actual account-menu route. Lens returns to that same Journal.",
+        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Use the actual account/device controls and the real Chronicle chooser; never activate Connect another device as a route replacement because it enrolls a screen and displays a pairing credential. Edit the Experience title through the ordinary Inspector, save and reopen the working scene to witness persistence. Restore the synthetic working title before comparing the independently pinned Player clue. Saving a working draft never counts as publication.",
         "objective": "Use optional device input while preserving a released Voyage clue and compare the Creator working draft with its pinned Player presentation",
         "visibleOutcome": "Truthful optional-input capability or screen fallback accompanies the actual readable pinned clue, with safe return to the same Voyage and a distinct editable working draft",
         "integrationOwner": "Sextant Phase 4 consumer qualification; Parallax, Crossdeck and One Voyage retain canonical ownership",
@@ -6698,7 +6699,9 @@
           "src/components/studio/TaleEditor.tsx",
           "src/components/studio/TaleEditorSection.tsx",
           "src/app/studio/tales/[taleId]/page.tsx",
-          "src/app/player/library/page.tsx"
+          "src/app/player/library/page.tsx",
+          "src/components/homeport/AccountSurfaces.tsx",
+          "src/components/homeport/PersonalHarborLayout.tsx"
         ],
         "states": [
           "JOURNAL_READY",
@@ -6736,12 +6739,12 @@
             "roles": [
               "PLAYER"
             ],
-            "outcome": "The connected screen opens the published clue in the actual accessible Chronicle Lens and returns to its Journal",
+            "outcome": "The ordinary registered screen returns through its actual Player library to the same pinned Journal, opens the published clue in Chronicle Lens and returns to the Journal",
             "steps": [
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices"
+                "role": "button",
+                "name": "Open Chronicle Lens"
               },
               {
                 "action": "click",
@@ -6750,15 +6753,106 @@
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices",
+                "role": "button",
+                "name": "Open Chronicle Lens",
                 "state": "JOURNAL_READY",
                 "feedbackBoundary": true
               },
               {
                 "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
                 "role": "link",
-                "name": "Devices"
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Sessions & Devices"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sessions & Devices",
+                "text": "Sessions & Devices",
+                "path": "/account/sessions"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Connect your Voyage devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Your connected screens",
+                "path": "/account/devices"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Chronicle"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Device name",
+                "value": "Synthetic Sextant formal native device"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Your connected screens",
+                "absentRole": {
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal native device"
+                }
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Your connected screens",
+                "absentRole": {
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal native device · This screen"
+                }
               },
               {
                 "action": "click",
@@ -6767,19 +6861,38 @@
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Continue Voyage",
-                "state": "DEVICE_JOINED"
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "Continue Voyage"
+                "role": "heading",
+                "name": "Synthetic Sextant formal native device · This screen",
+                "text": "Synthetic Sextant formal native device · This screen",
+                "state": "DEVICE_JOINED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary canonical registration follows actual keyboard Chronicle selection, guarded by a refusal-only sole-membership ID/edition fixture preflight. No UUID or session identity is injected."
               },
               {
                 "action": "assert",
                 "role": "link",
-                "name": "Devices",
+                "name": "Open on this device"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Player"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Open Chronicle Lens",
                 "state": "JOURNAL_READY",
                 "feedbackBoundary": true
               },
@@ -6793,7 +6906,7 @@
                 "role": "dialog",
                 "name": "A message between worlds",
                 "kind": "outcome",
-                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
                 "text": "The next bearing is written in the stars. Look for the northern light.",
                 "meaning": "The registered screen delivers the actual published clue through Guided View; a stored companion-role label is insufficient.",
                 "state": "GUIDED_CLUE_READY"
@@ -6807,7 +6920,7 @@
                 "action": "assert",
                 "role": "main",
                 "name": "",
-                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
                 "returnPath": true,
                 "state": "RETURNED_TO_VOYAGE",
                 "text": "The Captain’s note",
@@ -6827,8 +6940,8 @@
             "steps": [
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices"
+                "role": "button",
+                "name": "Open Chronicle Lens"
               },
               {
                 "action": "click",
@@ -6837,8 +6950,8 @@
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices",
+                "role": "button",
+                "name": "Open Chronicle Lens",
                 "state": "JOURNAL_READY",
                 "feedbackBoundary": true
               },
@@ -6984,8 +7097,8 @@
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices",
+                "role": "button",
+                "name": "Open Chronicle Lens",
                 "state": "JOURNAL_READY",
                 "feedbackBoundary": true
               },
@@ -8207,7 +8320,8 @@
           "src/components/wakebook/PassportLayout.tsx",
           "src/components/wakebook/WakebookArchive.tsx",
           "src/components/wakebook/WakebookInsights.tsx",
-          "src/styles/personal-harbor.css"
+          "src/styles/personal-harbor.css",
+          "src/components/wayfarer/ChroniclePassport.tsx"
         ],
         "entryPoint": "/account",
         "states": [
@@ -8275,14 +8389,15 @@
         "accessibility": "Ordinary keyboard/touch navigation and named section landmarks remain readable on desktop/mobile with normal and reduced motion; the development case checks axe on each actual Passport section.",
         "fallback": "Absent historical detail, artifact grants, saved items or geography remain visibly unavailable; no active Voyage completion or private record is invented.",
         "navigation": "Overview opens Chronicle Passport; its real section navigation opens each task; Personal Harbor returns directly to the same Overview.",
-        "designTarget": "Preserve the accepted account typography, private Passport masthead, distinct task landmarks, truthful source quality and readable constrained layout.",
+        "designTarget": "Preserve the accepted account typography, private Passport masthead, distinct task landmarks, truthful source quality and readable constrained layout. ChroniclePassportOverview owns the actual record-led overview cards, counts, empty states and navigation under PassportHome. The existing authenticated controller owns identity and private resource loading. The retained legacy combined Profile/preferences/simulator root is unmounted and not covered or accepted.",
         "browserTests": [
           "tests/e2e/sextant-consumer-journeys.spec.ts"
         ],
         "limitations": [
           "This registration covers the actual overview and section projections, including honest empty collections. Historical detail/book/replay, granted artifact detail and the unused legacy ChroniclePassport component remain separate obligations.",
           "The existing synthetic active-Voyage baseline is reused unchanged. No additional progression, reader-state preparation, historical detail, artifact grant or geography is fabricated; registration grants no rendered or protected acceptance.",
-          "The shared stylesheet declaration is limited to these actual journeys. Other affected consumers retain their separate registration, capture and acceptance obligations."
+          "The shared stylesheet declaration is limited to these actual journeys. Other affected consumers retain their separate registration, capture and acceptance obligations.",
+          "ChroniclePassportOverview owns the actual record-led overview cards, counts, empty states and navigation under PassportHome. The existing authenticated controller owns identity and private resource loading. The retained legacy combined Profile/preferences/simulator root is unmounted and not covered or accepted."
         ],
         "motion": {
           "measurement": "Ordinary Passport navigation activation to the distinct response-rendered section outcome on each desktop/mobile and normal/reduced-motion variant",
@@ -8311,6 +8426,12 @@
                 "action": "click",
                 "role": "link",
                 "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "A record you can return to",
+                "text": "A record you can return to"
               },
               {
                 "action": "assert",
@@ -8366,6 +8487,12 @@
               },
               {
                 "action": "assert",
+                "role": "heading",
+                "name": "A record you can return to",
+                "text": "A record you can return to"
+              },
+              {
+                "action": "assert",
                 "role": "region",
                 "name": "Chronicle Passport content",
                 "path": "/passport",
@@ -8415,6 +8542,12 @@
                 "action": "click",
                 "role": "link",
                 "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "A record you can return to",
+                "text": "A record you can return to"
               },
               {
                 "action": "assert",
@@ -8470,6 +8603,12 @@
               },
               {
                 "action": "assert",
+                "role": "heading",
+                "name": "A record you can return to",
+                "text": "A record you can return to"
+              },
+              {
+                "action": "assert",
                 "role": "region",
                 "name": "Chronicle Passport content",
                 "path": "/passport",
@@ -8519,6 +8658,12 @@
                 "action": "click",
                 "role": "link",
                 "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "A record you can return to",
+                "text": "A record you can return to"
               },
               {
                 "action": "assert",
@@ -8574,6 +8719,12 @@
               },
               {
                 "action": "assert",
+                "role": "heading",
+                "name": "A record you can return to",
+                "text": "A record you can return to"
+              },
+              {
+                "action": "assert",
                 "role": "region",
                 "name": "Chronicle Passport content",
                 "path": "/passport",
@@ -8626,6 +8777,12 @@
               },
               {
                 "action": "assert",
+                "role": "heading",
+                "name": "A record you can return to",
+                "text": "A record you can return to"
+              },
+              {
+                "action": "assert",
                 "role": "region",
                 "name": "Chronicle Passport content",
                 "path": "/passport",
@@ -8675,6 +8832,12 @@
                 "action": "click",
                 "role": "link",
                 "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "A record you can return to",
+                "text": "A record you can return to"
               },
               {
                 "action": "assert",
@@ -8757,7 +8920,9 @@
           "src/styles/platform.css",
           "src/app/captain/tales/[taleId]/page.tsx",
           "src/components/captain/CaptainDashboard.tsx",
-          "src/styles/chronicle.css"
+          "src/styles/chronicle.css",
+          "src/components/captain/CaptainSessionControl.tsx",
+          "src/components/gm/Quartermaster.tsx"
         ],
         "entryPoint": "/account",
         "states": [
@@ -8824,7 +8989,7 @@
         "accessibility": "Keyboard and touch preserve actual resource navigation, named content and visible return on desktop/mobile with normal and reduced motion; development checks axe on actual Muster and authoring content.",
         "fallback": "The active Voyage disables gathering chat honestly. Captain command review is cancelled. Missing or locked resources retain canonical access decisions; no role or resource is granted by browser navigation.",
         "navigation": "Ordinary account menu opens All Workspaces, visible workspace entry opens the real library, and Personal Harbor returns to the same account Overview.",
-        "designTarget": "Preserve existing readable task hierarchy, visible ownership and safe return. Keep the real Muster roster, command consequences, non-mutating preview and authored draft distinct.",
+        "designTarget": "Preserve existing readable task hierarchy, visible ownership and safe return. Keep the real Muster roster, command consequences, non-mutating preview and authored draft distinct. CaptainOperationalScan owns the actual selected-Voyage readiness/presence/synchronization/freshness and attention presentation; VoyageCommandChoices owns current governed choices, passage selection, busy states and prepared revision. Existing canonical controllers retain resource selection, authoritative preview/sequence, confirmation and stable retry identity. Legacy session/campaign loaders, Quartermaster root, legacy login and legacy publication/delivery/acknowledgment receipts are unmounted and not covered or accepted.",
         "browserTests": [
           "tests/e2e/sextant-resource-journeys.spec.ts"
         ],
@@ -8834,7 +8999,8 @@
           "Creator settings are read through the declared journey. The development browser case additionally saves, reopens and ordinarily restores a working title, with unchanged canonical progression and published checksums.",
           "This separate resource-owner persona preserves the canonical active-Player Creator safety lock. It does not satisfy the older single-persona native-context Creator/Parallax-to-Player handoff.",
           "The shared stylesheet declaration is limited to these actual journeys. Other affected consumers retain their separate registration, capture and acceptance obligations.",
-          "The Published Chronicles Open Chronicle path visits the live CaptainDashboard and returns to the same Voyage controls without executing commands. Styling retains the same named navigation panel; dashboard capture/review remains source-bound."
+          "The Published Chronicles Open Chronicle path visits the live CaptainDashboard and returns to the same Voyage controls without executing commands. Styling retains the same named navigation panel; dashboard capture/review remains source-bound.",
+          "CaptainOperationalScan owns the actual selected-Voyage readiness/presence/synchronization/freshness and attention presentation; VoyageCommandChoices owns current governed choices, passage selection, busy states and prepared revision. Existing canonical controllers retain resource selection, authoritative preview/sequence, confirmation and stable retry identity. Legacy session/campaign loaders, Quartermaster root, legacy login and legacy publication/delivery/acknowledgment receipts are unmounted and not covered or accepted."
         ],
         "motion": {
           "measurement": "Ordinary workspace and resource activation to the distinct response-rendered task, separately for desktop/mobile and reduced motion",
@@ -8905,6 +9071,24 @@
                 "state": "RESOURCE_READY",
                 "feedbackBoundary": true,
                 "meaning": "The ordinary visible action opens the actual owner-authorized persisted resource rather than a role label or manufactured route."
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "What you can do now",
+                "text": "What you can do now"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Operational voyage summary",
+                "text": "Synthetic Sextant command Voyage"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "What needs your attention",
+                "text": "What needs your attention"
               },
               {
                 "action": "click",
@@ -11114,7 +11298,8 @@
           "src/components/admiralty/DossierSupportPanel.tsx",
           "src/components/admiralty/AdminPrimitives.tsx",
           "src/components/admiralty/AdminNav.tsx",
-          "src/styles/admiralty.css"
+          "src/styles/admiralty.css",
+          "src/components/admiralty/AdmiraltyConsole.tsx"
         ],
         "entryPoint": "/account",
         "states": [
@@ -11186,7 +11371,7 @@
         "accessibility": "Actual account-menu entry, named Admiralty navigation, bounded labelled People search, real synthetic dossier and support fields at desktop/mobile and normal/reduced motion; development audits all actual task surfaces.",
         "fallback": "People does not enumerate accounts without a known clue; a nonmatching synthetic search shows its real empty result. Ungranted support controls preserve required verification, consent and exact comparison-pair requirements; no authority or content is fabricated.",
         "navigation": "Authenticated ordinary account menu opens Admiralty. Its actual People station and known account link open the dossier. The outer shell Safe return reaches Overview with the same canonical owner.",
-        "designTarget": "Preserve real operator identity, bounded account finding, readable dossier metadata and explicit ungranted support state with visible ordinary return.",
+        "designTarget": "Preserve real operator identity, bounded account finding, readable dossier metadata and explicit ungranted support state with visible ordinary return. AdmiraltyWatchPanel owns the actual Your watch panel in the authorized /admin overview, using only server-projected current operator/roles/session/assurance/support counts. The retained legacy console root and arbitrary-account support grant forms are unmounted and not covered or accepted.",
         "browserTests": [
           "tests/e2e/sextant-admiralty-journeys.spec.ts"
         ],
@@ -11196,7 +11381,8 @@
           "No privileged assurance, consent request, grant, approved support read or command is performed. Read audit metadata may be appended. Consented support and operational outcomes remain separate requirements.",
           "The old AdmiraltyConsole component has no production host found in current source and is not declared covered by these live routes.",
           "Formal continuity observes the actual canonical operator name across ordinary account and Admiralty shells. Unchanged development database baselines retain progression and support requirements; a DOM identity digest alone does not establish backend continuity or authorization.",
-          "Development additionally selects the existing Tideglass scope to inspect its actual conditional immutable-pair fields without submitting; the formal journey here inspects the ungranted account-state controls only."
+          "Development additionally selects the existing Tideglass scope to inspect its actual conditional immutable-pair fields without submitting; the formal journey here inspects the ungranted account-state controls only.",
+          "AdmiraltyWatchPanel owns the actual Your watch panel in the authorized /admin overview, using only server-projected current operator/roles/session/assurance/support counts. The retained legacy console root and arbitrary-account support grant forms are unmounted and not covered or accepted."
         ],
         "motion": {
           "feedbackBudgetMs": 3000,
@@ -11251,6 +11437,18 @@
                 "feedbackBoundary": true,
                 "meaning": "The actual canonical operator enters the live Admiralty shell through ordinary account navigation.",
                 "text": "Platform Overview"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Your watch",
+                "text": "Your watch"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Privileged assurance"
               },
               {
                 "action": "click",
@@ -12372,11 +12570,11 @@
         "limitations": [
           "Source declarations do not grant execution, rendered acceptance, protected custody, native, physical or owner acceptance.",
           "Formal journeys cover disconnected incoming entry/return and ordinary default-role current-tab registration/removal only. The fixed development journey separately assigns/removes the empty shared display and uses explicitly synthetic browser-local pilot feedback.",
-          "Existing accepted-main Crossdeck semantics are used; unmerged #721 is not consumed. A connected empty display does not prove a received share or populated crew view.",
+          "Accepted #721 Crossdeck semantics are used. A connected empty display does not prove a received share or populated crew view.",
           "The pilot fixture verifies or refuses the exact reserved owner and existing credential; it never resets identity, enables another environment, publishes, launches, cancels or prepares an adventure.",
           "Exact HEAD-derived nonce, owned database and persisted audit identity are checked before mutation. Two independent ACTIVE Voyages, events, memberships and exact edition bytes remain compared.",
           "Authentication references constrain readable hierarchy and ordinary identity/gateway controls only. Display and pilot layouts still require independent source-bound rendered review.",
-          "Five unhosted legacy components remain separately accountable. These current-route journeys do not cover or exempt retired paths.",
+          "Five current hosted subsurfaces are registered separately with explicit legacy-mode exclusions. These display journeys do not accept those old standalone modes.",
           "The accepted declarative runner compares pathname only. Full query-bearing entryPoint and sign-in returnTo remain; exact Voyage/edition binding is separately asserted by the source-bound development journey. Initial page states are visible entry assertions; only actual subsequent actions are measured as transition outcomes."
         ],
         "motion": {
@@ -12416,9 +12614,21 @@
               },
               {
                 "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Display disconnected"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Reconnect this display",
+                "text": "Reconnect this display"
+              },
+              {
+                "action": "assert",
                 "role": "main",
                 "name": "",
-                "text": "Connect this device as a crew display first.",
+                "text": "Connect this device as a crew display from your Chronicle to receive a shared view.",
                 "path": "/devices/display",
                 "state": "DISPLAY_DISCONNECTED",
                 "meaning": "The ordinary signed-in tab has no owned Crew-display surface, so its real connection prerequisite remains visible."
@@ -12431,8 +12641,8 @@
               {
                 "action": "assert",
                 "role": "region",
-                "name": "Voyage devices",
-                "text": "Your Voyage, across your devices",
+                "name": "Connected devices",
+                "text": "Your connected screens",
                 "path": "/account/devices",
                 "state": "DEVICES_RETURN",
                 "kind": "outcome",
@@ -12465,7 +12675,7 @@
             "roles": [
               "PLAYER"
             ],
-            "outcome": "The product creates the current tab surface through ordinary controls, identifies This device, removes it and returns to the same claimed Crew account without sharing or advancing the Voyage",
+            "outcome": "The product creates the current tab surface through ordinary controls, identifies This screen, removes it and returns to the same claimed Crew account without sharing or advancing the Voyage",
             "steps": [
               {
                 "action": "assert",
@@ -12476,9 +12686,21 @@
               },
               {
                 "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Display disconnected"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Reconnect this display",
+                "text": "Reconnect this display"
+              },
+              {
+                "action": "assert",
                 "role": "main",
                 "name": "",
-                "text": "Connect this device as a crew display first.",
+                "text": "Connect this device as a crew display from your Chronicle to receive a shared view.",
                 "path": "/devices/display",
                 "state": "DISPLAY_DISCONNECTED",
                 "meaning": "The ordinary signed-in tab has no owned Crew-display surface, so its real connection prerequisite remains visible."
@@ -12491,8 +12713,8 @@
               {
                 "action": "assert",
                 "role": "region",
-                "name": "Voyage devices",
-                "text": "Your Voyage, across your devices",
+                "name": "Connected devices",
+                "text": "Your connected screens",
                 "path": "/account/devices",
                 "state": "DEVICES_RETURN",
                 "kind": "outcome",
@@ -12508,21 +12730,21 @@
               {
                 "action": "assert",
                 "role": "region",
-                "name": "Voyage devices",
-                "text": "Your Voyage, across your devices",
+                "name": "Connected devices",
+                "text": "Your connected screens",
                 "absentRole": {
-                  "role": "combobox",
-                  "name": "Role for Synthetic Sextant formal entry device"
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal entry device · This screen"
                 }
               },
               {
                 "action": "assert",
                 "role": "region",
-                "name": "Voyage devices",
-                "text": "Your Voyage, across your devices",
+                "name": "Connected devices",
+                "text": "Your connected screens",
                 "absentRole": {
-                  "role": "button",
-                  "name": "Remove Synthetic Sextant formal entry device"
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal entry device"
                 }
               },
               {
@@ -12533,8 +12755,8 @@
               {
                 "action": "assert",
                 "role": "region",
-                "name": "Voyage devices",
-                "text": "Synthetic Sextant formal entry device · This device",
+                "name": "Connected devices",
+                "text": "Synthetic Sextant formal entry device · This screen",
                 "path": "/account/devices",
                 "state": "DEVICE_REGISTERED",
                 "kind": "outcome",
@@ -12544,7 +12766,12 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Remove Synthetic Sextant formal entry device"
+                "name": "Device options"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Disconnect Synthetic Sextant formal entry device"
               },
               {
                 "action": "assert",
@@ -12556,14 +12783,14 @@
               {
                 "action": "assert",
                 "role": "region",
-                "name": "Voyage devices",
-                "text": "Device removed. Your Voyage is unchanged.",
+                "name": "Connected devices",
+                "text": "Device disconnected. Its access has ended.",
                 "state": "DEVICE_REMOVED",
                 "kind": "outcome",
                 "feedbackBoundary": true,
                 "absentRole": {
-                  "role": "combobox",
-                  "name": "Role for Synthetic Sextant formal entry device"
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal entry device · This screen"
                 },
                 "meaning": "The actual remove action revokes only its owned surface; the original fixed-label preconditions refuse preserved failed state.",
                 "path": "/account/devices"
@@ -12571,11 +12798,11 @@
               {
                 "action": "assert",
                 "role": "region",
-                "name": "Voyage devices",
-                "text": "Device removed. Your Voyage is unchanged.",
+                "name": "Connected devices",
+                "text": "Device disconnected. Its access has ended.",
                 "absentRole": {
-                  "role": "button",
-                  "name": "Remove Synthetic Sextant formal entry device"
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal entry device"
                 }
               },
               {
@@ -14009,6 +14236,296 @@
                 "name": "Voyagewright Studio",
                 "text": "Voyagewright Studio",
                 "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.captain-contextual-entry",
+      "name": "Sextant captain contextual account entrance",
+      "authority": "project-sextant",
+      "owners": [
+        "project-sextant",
+        "project-homeport",
+        "one-voyage"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "An anonymous visitor following an existing captain entrance",
+        "objective": "Understand the workspace context and continue to the sole ordinary account sign-in product",
+        "visibleOutcome": "The real contextual entrance leads to canonical sign-in and a visible return home without a second credential product",
+        "integrationOwner": "Sextant shared-consumer verification; Homeport and One Voyage retain identity, capability and safe-return authority",
+        "systems": [
+          "project-sextant",
+          "project-homeport",
+          "one-voyage"
+        ],
+        "sourcePaths": [
+          "src/app/captain/sign-in/page.tsx",
+          "src/components/auth/RoleEntryAdapter.tsx",
+          "src/components/platform/StaffSignIn.tsx"
+        ],
+        "entryPoint": "/captain/sign-in",
+        "states": [
+          "CONTEXT_READY",
+          "ACCOUNT_SIGN_IN_READY",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "ANONYMOUS"
+        ],
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication family reference; actual registration/verification/recovery/lifecycle task states require fresh source-bound review.",
+            "preserve": "Readable named account fields, explicit secure outcome and ordinary return; no current recovery acceptance is inferred from historical references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication family reference; actual registration/verification/recovery/lifecycle task states require fresh source-bound review.",
+            "preserve": "Readable named account fields, explicit secure outcome and ordinary return; no current recovery acceptance is inferred from historical references."
+          }
+        ],
+        "accessibility": "Existing readable account hierarchy, labeled canonical fields, keyboard links and mobile focus order remain. No credential form is mounted by StaffEntryAdapter.",
+        "fallback": "Recovery and registration remain ordinary canonical account links. Denied/restricted/unavailable identities use the existing server capability decision.",
+        "recordingRequired": true,
+        "fixtureProfile": "generic",
+        "limitations": [
+          "Only StaffEntryAdapter is hosted and covered here. The retained legacy StaffSignIn credential/animation ceremony is unmounted and not covered or accepted.",
+          "The existing server page retains capability resolution, safe return validation and signed-in redirects. These anonymous journeys submit no credentials, create no session and claim no privileged access.",
+          "Source declarations and unit tests are not browser, rendered, protected, physical or owner acceptance."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Actual ordinary account preparation and production registration, verification, password/email change, deactivation/reactivation and scheduling/cancellation to visible loaded outcomes. No sleeps, forced clicks, retries or increased budgets."
+        },
+        "continuity": {
+          "objective": "Retain the real shared home gateway while development verifies stable canonical synthetic account identity and untouched independent Voyage/edition baselines",
+          "checks": [
+            {
+              "id": "actual-home-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ],
+          "requirements": [
+            "The contextual adapter submits no credential and does not create a second session.",
+            "The canonical server supplies a bounded safe return and retains role authorization."
+          ]
+        },
+        "designTarget": "Preserve the actual contextual account ledger, intent heading and primary canonical sign-in link, then return via the shared home link. No new animation or data authority.",
+        "journeys": [
+          {
+            "id": "ordinary-captain-context-to-account-and-home",
+            "roles": [
+              "ANONYMOUS"
+            ],
+            "outcome": "The visitor follows the real contextual link to account sign-in and returns home without entering credentials",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Open the Captain's Console",
+                "text": "Open the Captain's Console",
+                "path": "/captain/sign-in",
+                "state": "CONTEXT_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue to account sign-in"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "text": "Sign in",
+                "path": "/sign-in",
+                "state": "ACCOUNT_SIGN_IN_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The existing contextual link opens the sole ordinary account product with its server-built safe return."
+              },
+              {
+                "action": "assert",
+                "role": "textbox",
+                "name": "Email or Player name"
+              },
+              {
+                "action": "assert",
+                "role": "textbox",
+                "name": "Password"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Voyagewright home"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Voyagewright home",
+                "path": "/",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.creator-contextual-entry",
+      "name": "Sextant creator contextual account entrance",
+      "authority": "project-sextant",
+      "owners": [
+        "project-sextant",
+        "project-homeport",
+        "one-voyage"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "An anonymous visitor following an existing creator entrance",
+        "objective": "Understand the workspace context and continue to the sole ordinary account sign-in product",
+        "visibleOutcome": "The real contextual entrance leads to canonical sign-in and a visible return home without a second credential product",
+        "integrationOwner": "Sextant shared-consumer verification; Homeport and One Voyage retain identity, capability and safe-return authority",
+        "systems": [
+          "project-sextant",
+          "project-homeport",
+          "one-voyage"
+        ],
+        "sourcePaths": [
+          "src/app/studio/sign-in/page.tsx",
+          "src/components/auth/RoleEntryAdapter.tsx",
+          "src/components/platform/StaffSignIn.tsx"
+        ],
+        "entryPoint": "/studio/sign-in",
+        "states": [
+          "CONTEXT_READY",
+          "ACCOUNT_SIGN_IN_READY",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "ANONYMOUS"
+        ],
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication family reference; actual registration/verification/recovery/lifecycle task states require fresh source-bound review.",
+            "preserve": "Readable named account fields, explicit secure outcome and ordinary return; no current recovery acceptance is inferred from historical references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication family reference; actual registration/verification/recovery/lifecycle task states require fresh source-bound review.",
+            "preserve": "Readable named account fields, explicit secure outcome and ordinary return; no current recovery acceptance is inferred from historical references."
+          }
+        ],
+        "accessibility": "Existing readable account hierarchy, labeled canonical fields, keyboard links and mobile focus order remain. No credential form is mounted by StaffEntryAdapter.",
+        "fallback": "Recovery and registration remain ordinary canonical account links. Denied/restricted/unavailable identities use the existing server capability decision.",
+        "recordingRequired": true,
+        "fixtureProfile": "generic",
+        "limitations": [
+          "Only StaffEntryAdapter is hosted and covered here. The retained legacy StaffSignIn credential/animation ceremony is unmounted and not covered or accepted.",
+          "The existing server page retains capability resolution, safe return validation and signed-in redirects. These anonymous journeys submit no credentials, create no session and claim no privileged access.",
+          "Source declarations and unit tests are not browser, rendered, protected, physical or owner acceptance."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Actual ordinary account preparation and production registration, verification, password/email change, deactivation/reactivation and scheduling/cancellation to visible loaded outcomes. No sleeps, forced clicks, retries or increased budgets."
+        },
+        "continuity": {
+          "objective": "Retain the real shared home gateway while development verifies stable canonical synthetic account identity and untouched independent Voyage/edition baselines",
+          "checks": [
+            {
+              "id": "actual-home-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ],
+          "requirements": [
+            "The contextual adapter submits no credential and does not create a second session.",
+            "The canonical server supplies a bounded safe return and retains role authorization."
+          ]
+        },
+        "designTarget": "Preserve the actual contextual account ledger, intent heading and primary canonical sign-in link, then return via the shared home link. No new animation or data authority.",
+        "journeys": [
+          {
+            "id": "ordinary-creator-context-to-account-and-home",
+            "roles": [
+              "ANONYMOUS"
+            ],
+            "outcome": "The visitor follows the real contextual link to account sign-in and returns home without entering credentials",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Open Voyagewright Studio",
+                "text": "Open Voyagewright Studio",
+                "path": "/studio/sign-in",
+                "state": "CONTEXT_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue to account sign-in"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "text": "Sign in",
+                "path": "/sign-in",
+                "state": "ACCOUNT_SIGN_IN_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The existing contextual link opens the sole ordinary account product with its server-built safe return."
+              },
+              {
+                "action": "assert",
+                "role": "textbox",
+                "name": "Email or Player name"
+              },
+              {
+                "action": "assert",
+                "role": "textbox",
+                "name": "Password"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Voyagewright home"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Voyagewright home",
+                "path": "/",
                 "state": "RETURNED",
                 "returnPath": true
               }

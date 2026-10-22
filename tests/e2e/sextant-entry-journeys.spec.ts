@@ -5,10 +5,14 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
-import { seedSextantEntryExperience, type SextantEntryCase } from "../../.agents/scripts/sextant-entry-fixture";
+import {
+  seedSextantEntryExperience,
+  type SextantEntryCase,
+} from "../../.agents/scripts/sextant-entry-fixture";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { enterClosureJournal } from "./fixtures/landfall-closure";
 import { observeSextantSignIn } from "./fixtures/sextant-consumer-diagnostics";
+import { observeNoSextantPairing, openSextantDevicePreferences } from "./fixtures/sextant-device-journey";
 
 test.describe.configure({ mode: "default", timeout: 180000 });
 // No pairing code or installation credential is issued. Network traces stay off.
@@ -29,13 +33,22 @@ for (const viewport of [
       test("ordinary connected-empty Display and unprepared pilot return preserve the actual Voyages", async ({
         page,
       }, info) => {
-        const fixture = await seedSextantEntryExperience(`${viewport.width}-${reducedMotion}` as SextantEntryCase);
+        const fixture = await seedSextantEntryExperience(
+          `${viewport.width}-${reducedMotion}` as SextantEntryCase,
+        );
+        const pairing = observeNoSextantPairing(page);
         const voyageIds = [fixture.voyageId, fixture.playerVoyageId];
         const readProgress = () =>
           db.taleSession.findMany({
             where: { id: { in: voyageIds } },
             orderBy: { id: "asc" },
-            select: { id: true, status: true, currentSequence: true, currentBlockId: true, publishedVersionId: true },
+            select: {
+              id: true,
+              status: true,
+              currentSequence: true,
+              currentBlockId: true,
+              publishedVersionId: true,
+            },
           });
         const progress = await readProgress();
         expect(progress).toHaveLength(2);
@@ -62,7 +75,11 @@ for (const viewport of [
           });
         const memberships = await readMemberships();
         const feedback: Array<{ task: string; elapsedMs: number; budgetMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const began = performance.now();
           await activate();
           await ready();
@@ -80,6 +97,7 @@ for (const viewport of [
             .click();
         };
         const capture = async (name: string, target: Locator, scope = "main") => {
+          pairing.assertNone();
           expect((await new AxeBuilder({ page }).include(scope).analyze()).violations).toEqual([]);
           await target.evaluate((node) => node.scrollIntoView({ block: "center", behavior: "instant" }));
           await expect(target).toBeInViewport({ ratio: 1 });
@@ -101,8 +119,12 @@ for (const viewport of [
           });
         };
         const crewName = fixture.crewDisplayName;
-        await signIn(fixture.crewEmail!, "Synthetic-Sextant-Crew-2026!", fixture.crewAccountId, "/account", () =>
-          expect(heading("Overview")).toBeVisible(),
+        await signIn(
+          fixture.crewEmail!,
+          "Synthetic-Sextant-Crew-2026!",
+          fixture.crewAccountId,
+          "/account",
+          () => expect(heading("Overview")).toBeVisible(),
         );
         await accountDestination(crewName, "Player");
         await expect(heading("My Chronicle Library")).toBeVisible();
@@ -122,77 +144,123 @@ for (const viewport of [
         const journal = page.getByRole("main", { name: "", exact: true });
         await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
         await page.getByRole("button", { name: "Replay full opening", exact: true }).click();
-        await expect(journal.getByRole("link", { name: "Devices", exact: true })).toBeVisible({ timeout: 15000 });
-        await journal.getByRole("link", { name: "Devices", exact: true }).click();
-        const devices = page.getByRole("region", { name: "Voyage devices", exact: true });
-        const display = page.locator("main.page-shell").filter({ has: heading("Crew display") });
+        await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 15000 });
+        const preferenceEntry = await openSextantDevicePreferences(page, crewName, fixture.voyageId);
+        feedback.push(...preferenceEntry.feedback);
+        const devices = preferenceEntry.devices;
+        const display = page.locator("main[data-crossdeck-crew-display]");
         await expect(devices).toBeVisible();
-        await expect(devices).toHaveAttribute("data-voyage-id", fixture.voyageId);
+        await expect(devices.getByRole("combobox", { name: "Chronicle", exact: true })).toHaveValue(
+          fixture.voyageId,
+        );
         // An incoming bookmarked display has no tab-owned surface yet. Exercise
         // its real fallback and ordinary Manage return before registering here.
         await measure(
           "Incoming disconnected Crew display fallback",
           () => page.goto(`/devices/display?voyage=${encodeURIComponent(fixture.voyageId)}`),
-          () => expect(display.getByRole("alert")).toHaveText("Connect this device as a crew display first."),
+          async () => {
+            await expect(display.getByRole("status")).toHaveText("Display disconnected");
+            await expect(
+              display.getByRole("heading", { name: "Reconnect this display", exact: true }),
+            ).toBeVisible();
+            await expect(display).toContainText(
+              "Connect this device as a crew display from your Chronicle to receive a shared view.",
+            );
+          },
         );
         await expect(page.getByRole("region", { name: "Send to your devices", exact: true })).toHaveCount(0);
-        await capture("disconnected-display", display.getByRole("alert"));
+        await capture(
+          "disconnected-display",
+          display.getByRole("heading", { name: "Reconnect this display", exact: true }),
+          "main[data-crossdeck-crew-display]",
+        );
         await measure(
           "Disconnected display Manage return",
           () => page.getByRole("link", { name: "Manage this display", exact: true }).click(),
           () => expect(devices).toBeVisible(),
         );
-        // Manage already binds this route to the actual Voyage. Its chooser is
-        // intentionally omitted while that binding is present.
-        await expect(devices).toHaveAttribute("data-voyage-id", fixture.voyageId);
+        // Manage binds the real Chronicle chooser through its exact Voyage URL.
         await expect(page).toHaveURL(new URL(`/account/devices?voyage=${fixture.voyageId}`, page.url()).href);
-        await expect(devices.getByRole("combobox", { name: "Voyage", exact: true })).toHaveCount(0);
+        await expect(devices.getByRole("combobox", { name: "Chronicle", exact: true })).toHaveValue(
+          fixture.voyageId,
+        );
         const label = `Synthetic crew screen ${viewport.width} ${reducedMotion}`;
+        await expect(devices.getByRole("heading", { name: label, exact: true })).toHaveCount(0);
+        await expect(
+          devices.getByRole("heading", { name: `${label} · This screen`, exact: true }),
+        ).toHaveCount(0);
         await devices.getByLabel("Device name", { exact: true }).fill(label);
         const row = devices
           .locator("li")
-          .filter({ has: page.getByRole("combobox", { name: `Role for ${label}`, exact: true }) });
+          .filter({ has: page.getByRole("heading", { name: `${label} · This screen`, exact: true }) });
         await measure(
           "Register current ordinary Crew device",
           () => devices.getByRole("button", { name: "Use this device", exact: true }).click(),
           () => expect(row).toBeVisible(),
         );
         await measure(
+          "Open this screen's device options",
+          () => row.locator("summary").click(),
+          () => expect(row.getByRole("combobox", { name: "Device purpose", exact: true })).toBeVisible(),
+        );
+        await measure(
           "Assign existing Crew display role",
-          () => row.getByLabel(`Role for ${label}`, { exact: true }).selectOption("SHARED_CREW_DISPLAY"),
-          () => expect(row.getByRole("link", { name: "Open crew display", exact: true })).toBeVisible(),
+          () =>
+            row
+              .getByRole("combobox", { name: "Device purpose", exact: true })
+              .selectOption("SHARED_CREW_DISPLAY"),
+          () =>
+            expect(row.getByRole("combobox", { name: "Device purpose", exact: true })).toHaveValue(
+              "SHARED_CREW_DISPLAY",
+            ),
         );
         const surface = await db.crossdeckSurfaceSession.findFirstOrThrow({
           where: { label, revokedAt: null, accountSession: { accountId: fixture.crewAccountId } },
         });
         expect(surface.role).toBe("SHARED_CREW_DISPLAY");
-        await capture("connected-role", row, '[aria-label="Voyage devices"]');
+        expect(surface.voyageId).toBe(fixture.voyageId);
+        await expect(row.getByRole("link", { name: "Open on this device", exact: true })).toHaveAttribute(
+          "href",
+          `/devices/display?voyage=${fixture.voyageId}`,
+        );
+        await capture("connected-role", row, '[aria-label="Connected devices"]');
         await measure(
           "Open actual connected empty Crew display",
-          () => row.getByRole("link", { name: "Open crew display", exact: true }).click(),
+          () => row.getByRole("link", { name: "Open on this device", exact: true }).click(),
           async () => {
             await expect(heading("Crew display")).toBeVisible();
-            await expect(page.getByRole("region", { name: "Send to your devices", exact: true })).toBeVisible();
+            await expect(
+              page.getByRole("region", { name: "Send to your devices", exact: true }),
+            ).toBeVisible();
           },
         );
         await expect(display.getByRole("alert")).toHaveCount(0);
         await expect(page.getByRole("article", { name: "Shared crew view", exact: true })).toHaveCount(0);
-        await expect(page.getByRole("main")).toContainText("Only views explicitly shared with your crew appear here.");
+        await expect(page.getByRole("main")).toContainText(
+          "Only views deliberately shared with the crew appear here. Personal notes stay private.",
+        );
         await capture("connected-empty-display", heading("Crew display"));
         await measure(
           "Manage the same Crew display",
           () => page.getByRole("link", { name: "Manage this display", exact: true }).click(),
-          () => expect(row.getByLabel(`Role for ${label}`, { exact: true })).toHaveValue("SHARED_CREW_DISPLAY"),
+          async () => {
+            await expect(row).toBeVisible();
+            await row.locator("summary").click();
+            await expect(row.getByRole("combobox", { name: "Device purpose", exact: true })).toHaveValue(
+              "SHARED_CREW_DISPLAY",
+            );
+          },
         );
         await measure(
           "Remove the owned Crew display",
-          () => row.getByRole("button", { name: `Remove ${label}`, exact: true }).click(),
+          () => row.getByRole("button", { name: `Disconnect ${label}`, exact: true }).click(),
           () => expect(row).toHaveCount(0),
         );
         expect(
           (await db.crossdeckSurfaceSession.findUniqueOrThrow({ where: { id: surface.id } })).revokedAt,
         ).not.toBeNull();
-        await capture("removed-display", devices.getByRole("status"), '[aria-label="Voyage devices"]');
+        await expect(devices.getByRole("status")).toHaveText("Device disconnected. Its access has ended.");
+        await capture("removed-display", devices.getByRole("status"), '[aria-label="Connected devices"]');
         await accountDestination(crewName, "Personal Harbor");
         await expect(heading("Overview")).toBeVisible();
         await expect(menu(crewName)).toBeVisible();
@@ -209,17 +277,25 @@ for (const viewport of [
           if (new URL(request.url()).pathname === "/api/dev/spatial-pilot" && request.method() === "POST")
             pilotProvisionPosts++;
         });
-        await signIn(fixture.pilot.email, fixture.pilot.password, fixture.pilot.id, "/dev/spatial-pilot", () =>
-          expect(heading("The Lost Navigator’s Chart")).toBeVisible(),
+        await signIn(
+          fixture.pilot.email,
+          fixture.pilot.password,
+          fixture.pilot.id,
+          "/dev/spatial-pilot",
+          () => expect(heading("The Lost Navigator’s Chart")).toBeVisible(),
         );
         await expect(menu("Prepare the adventure")).toBeEnabled();
         await expect(menu("Start a fresh Voyage")).toHaveCount(0);
         const preparation = page.getByRole("region", { name: "Session preparation", exact: true });
-        await expect(preparation).toContainText("OWNER_ACCEPTANCE_PENDING · OWNER_PHYSICAL_ACCEPTANCE_PENDING");
+        await expect(preparation).toContainText(
+          "OWNER_ACCEPTANCE_PENDING · OWNER_PHYSICAL_ACCEPTANCE_PENDING",
+        );
         await capture("pilot-unprepared", heading("The Lost Navigator’s Chart"));
         await capture(
           "pilot-pending-hardware",
-          preparation.getByText("OWNER_ACCEPTANCE_PENDING · OWNER_PHYSICAL_ACCEPTANCE_PENDING", { exact: true }),
+          preparation.getByText("OWNER_ACCEPTANCE_PENDING · OWNER_PHYSICAL_ACCEPTANCE_PENDING", {
+            exact: true,
+          }),
         );
         const firstTrial = page.getByRole("main").locator("ol > li").first();
         await firstTrial.locator("summary").click();
@@ -247,7 +323,11 @@ for (const viewport of [
         await measure(
           "Return from unprepared pilot to Player Library",
           () =>
-            page.getByRole("main").locator("footer").getByRole("link", { name: "Player Library", exact: true }).click(),
+            page
+              .getByRole("main")
+              .locator("footer")
+              .getByRole("link", { name: "Player Library", exact: true })
+              .click(),
           () => expect(heading("My Chronicle Library")).toBeVisible(),
         );
         await accountDestination(fixture.pilot.name, "Personal Harbor");
@@ -261,6 +341,8 @@ for (const viewport of [
         expect(await readEditions()).toEqual(editions);
         expect(await readEvents()).toEqual(events);
         expect(await readMemberships()).toEqual(memberships);
+        pairing.assertNone();
+        pairing.dispose();
         await writeFile(
           info.outputPath("entry-receipt.json"),
           JSON.stringify(
@@ -268,6 +350,7 @@ for (const viewport of [
               source: await deviceLabSourceIdentity([
                 "tests/e2e/sextant-entry-journeys.spec.ts",
                 "tests/e2e/fixtures/sextant-consumer-diagnostics.ts",
+                "tests/e2e/fixtures/sextant-device-journey.ts",
                 ".agents/scripts/sextant-entry-fixture.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
@@ -280,6 +363,7 @@ for (const viewport of [
               reducedMotion,
               feedback,
               qualification: false,
+              pairingChallengesOrClaims: 0,
               display: {
                 ordinaryClaimedCrew: true,
                 registeredViaActualUi: true,
@@ -298,7 +382,13 @@ for (const viewport of [
                 noHardwareOrOwnerJudgment: true,
                 sameOwnerReturn: true,
               },
-              unchanged: { activeVoyages: 2, progress: true, events: true, memberships: true, exactEditionBytes: true },
+              unchanged: {
+                activeVoyages: 2,
+                progress: true,
+                events: true,
+                memberships: true,
+                exactEditionBytes: true,
+              },
             },
             null,
             2,

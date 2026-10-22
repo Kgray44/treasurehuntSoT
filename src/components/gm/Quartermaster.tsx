@@ -14,9 +14,17 @@ import type {
 import { lottieAssets } from "@/animation/assets/lottie-contracts";
 import { riveAssets } from "@/animation/assets/rive-contracts";
 import { useAnimationDirector } from "@/animation/director/useAnimationDirector";
-import { SceneHost, useRuntimeOwnedSceneTarget, useSceneTargetRegistration } from "@/animation/hosts/SceneHost";
+import {
+  SceneHost,
+  useRuntimeOwnedSceneTarget,
+  useSceneTargetRegistration,
+} from "@/animation/hosts/SceneHost";
 import { useOptionalSceneHost } from "@/animation/hosts/SceneHostContext";
-import type { ExternalSceneTargetHandle, SceneHostHandle, SceneTargetHandle } from "@/animation/hosts/scene-host-types";
+import type {
+  ExternalSceneTargetHandle,
+  SceneHostHandle,
+  SceneTargetHandle,
+} from "@/animation/hosts/scene-host-types";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
 import { cardVariants, pressable } from "@/animation/motion/variants";
 import { LottieEffect } from "@/components/animation/LottieEffect";
@@ -186,17 +194,37 @@ const actions = [
     "Prepare Chapter",
     "Make this Chapter ready for later release. The Crew cannot see its content yet.",
   ],
-  ["RELEASE_CHAPTER", "Release Chapter", "Make this Chapter available to the Crew and begin its presentation."],
+  [
+    "RELEASE_CHAPTER",
+    "Release Chapter",
+    "Make this Chapter available to the Crew and begin its presentation.",
+  ],
   ["MARK_SOLVED", "Mark Chapter solved", "Record that the active Chapter has been solved."],
-  ["AWARD_ARTIFACT", "Award test Artifact", "Add the Broken Compass Needle to the Crew's Artifact collection."],
+  [
+    "AWARD_ARTIFACT",
+    "Award test Artifact",
+    "Add the Broken Compass Needle to the Crew's Artifact collection.",
+  ],
   ["REVEAL_MAP", "Reveal test Waypoint", "Mark Port Merrick on the Voyage chart."],
   ["REVEAL_ROUTE", "Reveal route segment", "Reveal the next safe development route between Waypoints."],
-  ["REVEAL_ARTIFACT_SILHOUETTE", "Reveal Artifact silhouette", "Show only the next Artifact's approved safe outline."],
-  ["CONNECT_ARTIFACTS", "Connect test Artifacts", "Reveal the development connection between configured Artifacts."],
+  [
+    "REVEAL_ARTIFACT_SILHOUETTE",
+    "Reveal Artifact silhouette",
+    "Show only the next Artifact's approved safe outline.",
+  ],
+  [
+    "CONNECT_ARTIFACTS",
+    "Connect test Artifacts",
+    "Reveal the development connection between configured Artifacts.",
+  ],
   ["DISCOVER_SIDE_QUEST", "Discover Echo", "Make the next optional Echo available to the Crew."],
   ["UPDATE_SIDE_QUEST", "Update Echo", "Advance one released Echo objective."],
   ["COMPLETE_SIDE_QUEST", "Complete Echo", "Complete the active Echo and grant its configured reward."],
-  ["ADD_JOURNAL_ANNOTATION", "Add journal annotation", "Release a development note beside the active Chapter."],
+  [
+    "ADD_JOURNAL_ANNOTATION",
+    "Add journal annotation",
+    "Release a development note beside the active Chapter.",
+  ],
   ["ADD_LOG_ENTRY", "Add Crew log entry", "Record a generic Crew-facing Captain note."],
   ["TEASE_FINALE", "Preview sealed finale", "Prepare the finale shell without releasing finale content."],
   ["UPDATE_FINALE_REQUIREMENT", "Update finale requirement", "Advance one configured finale requirement."],
@@ -286,7 +314,9 @@ const commandTargetSpecs: Record<Action[0], readonly CommandTargetSpec[]> = {
     workspaceLight,
   ],
   MARK_SOLVED: [
-    commandTarget("solved-stamp", "solved-stamp", ["transform", "opacity"], "div", { className: "solved-stamp" }),
+    commandTarget("solved-stamp", "solved-stamp", ["transform", "opacity"], "div", {
+      className: "solved-stamp",
+    }),
     commandLight,
   ],
   AWARD_ARTIFACT: [
@@ -307,9 +337,15 @@ const commandTargetSpecs: Record<Action[0], readonly CommandTargetSpec[]> = {
       className: "marker",
     }),
     commandTarget("map-fog", "map-fog", ["clip-path", "opacity"], "div", { externalKey: "map-fog" }),
-    commandTarget("route-path", "route-path", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], "path", {
-      externalKey: "route-path",
-    }),
+    commandTarget(
+      "route-path",
+      "route-path",
+      ["path-drawing", "stroke-dasharray", "stroke-dashoffset"],
+      "path",
+      {
+        externalKey: "route-path",
+      },
+    ),
     workspaceLight,
   ],
   REVEAL_ROUTE: [
@@ -349,9 +385,15 @@ const commandTargetSpecs: Record<Action[0], readonly CommandTargetSpec[]> = {
       externalKey: "quest-note",
       className: "quest-note",
     }),
-    commandTarget("quest-red-thread", "red-thread", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], "path", {
-      externalKey: "quest-red-thread",
-    }),
+    commandTarget(
+      "quest-red-thread",
+      "red-thread",
+      ["path-drawing", "stroke-dasharray", "stroke-dashoffset"],
+      "path",
+      {
+        externalKey: "quest-red-thread",
+      },
+    ),
     workspaceLight,
   ],
   UPDATE_SIDE_QUEST: [
@@ -359,9 +401,15 @@ const commandTargetSpecs: Record<Action[0], readonly CommandTargetSpec[]> = {
       externalKey: "quest-note",
       className: "quest-note",
     }),
-    commandTarget("quest-red-thread", "red-thread", ["path-drawing", "stroke-dasharray", "stroke-dashoffset"], "path", {
-      externalKey: "quest-red-thread",
-    }),
+    commandTarget(
+      "quest-red-thread",
+      "red-thread",
+      ["path-drawing", "stroke-dasharray", "stroke-dashoffset"],
+      "path",
+      {
+        externalKey: "quest-red-thread",
+      },
+    ),
     workspaceLight,
   ],
   COMPLETE_SIDE_QUEST: [
@@ -423,7 +471,10 @@ const commandTargetSpecs: Record<Action[0], readonly CommandTargetSpec[]> = {
     commandTarget("undo-mark", "undo-mark", ["transform", "opacity"], "div", { className: "undo-mark" }),
     commandLight,
   ],
-  PAUSE: [commandTarget("lantern", "lantern", ["transform", "opacity"], "div", { className: "lantern" }), commandLight],
+  PAUSE: [
+    commandTarget("lantern", "lantern", ["transform", "opacity"], "div", { className: "lantern" }),
+    commandLight,
+  ],
   RESUME: [
     commandTarget("lantern", "lantern", ["transform", "opacity"], "div", { className: "lantern" }),
     commandLight,
@@ -727,14 +778,22 @@ function QuartermasterLoginHost({
         <span>Captain’s Console access</span>
         <LoginTarget as="i" part="door-bolt" targetKey="quartermaster-login:door-bolt" />
         <LoginTarget part="lock" targetKey="quartermaster-login:lock" className="door-keyhole">
-          <RiveStatefulObject asset={riveAssets.invitationSeal} mode={mode} label="Captain's Console door lock" />
+          <RiveStatefulObject
+            asset={riveAssets.invitationSeal}
+            mode={mode}
+            label="Captain's Console door lock"
+          />
         </LoginTarget>
       </LoginTarget>
       <LoginTarget part="lantern" targetKey="quartermaster-login:lantern" className="login-lantern">
         <i />
         <b />
       </LoginTarget>
-      <LoginTarget part="login-ledger" targetKey="quartermaster-login:ledger" className="login-ledger-cinematic" />
+      <LoginTarget
+        part="login-ledger"
+        targetKey="quartermaster-login:ledger"
+        className="login-ledger-cinematic"
+      />
     </>
   );
 }
@@ -779,9 +838,12 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     waiter.resolve(runtime);
   }, []);
 
-  const handleLoginRuntimeReady = useCallback((runtime: Readonly<{ host: SceneHostHandle; root: HTMLElement }>) => {
-    loginRuntime.current = runtime;
-  }, []);
+  const handleLoginRuntimeReady = useCallback(
+    (runtime: Readonly<{ host: SceneHostHandle; root: HTMLElement }>) => {
+      loginRuntime.current = runtime;
+    },
+    [],
+  );
 
   const refresh = useCallback(async (signal?: AbortSignal) => {
     try {
@@ -881,7 +943,9 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     flushSync(() => setPresentationWarning(warning));
     const rendered = presentationWarningTarget.current;
     return Boolean(
-      rendered?.isConnected && rendered.getAttribute("role") === "status" && rendered.textContent?.includes(warning),
+      rendered?.isConnected &&
+        rendered.getAttribute("role") === "status" &&
+        rendered.textContent?.includes(warning),
     );
   }
 
@@ -975,7 +1039,11 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               ? { completed: true, readable: true, semanticState: "quartermaster-result-readable" }
               : { completed: false, readable: false, reason: "quartermaster-login-fallback-not-readable" };
           } catch {
-            return { completed: false, readable: false, reason: "quartermaster-login-fallback-operation-failed" };
+            return {
+              completed: false,
+              readable: false,
+              reason: "quartermaster-login-fallback-operation-failed",
+            };
           }
         },
       });
@@ -1090,7 +1158,10 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
         });
         const body = await readJson(response);
         if (!response.ok || !isCommandResult(body)) {
-          operationError = safeServerError(body, "The Voyage action could not be recorded. No progress has changed.");
+          operationError = safeServerError(
+            body,
+            "The Voyage action could not be recorded. No progress has changed.",
+          );
           throw new Error("authoritative-command-failed");
         }
         authoritativeResult = body;
@@ -1146,7 +1217,11 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               ? { completed: true, readable: true, semanticState: fallbackContract.semanticState }
               : { completed: false, readable: false, reason: "quartermaster-command-fallback-not-readable" };
           } catch {
-            return { completed: false, readable: false, reason: "quartermaster-command-fallback-operation-failed" };
+            return {
+              completed: false,
+              readable: false,
+              reason: "quartermaster-command-fallback-operation-failed",
+            };
           }
         },
       });
@@ -1178,7 +1253,9 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
       if (receipt.outcome === "presented-fallback" || presentationFailed(receipt.outcome)) {
         setPresentationWarning(readablePresentationWarning("order"));
       } else if (!refreshed) {
-        setPresentationWarning("The Voyage action was saved, but the latest Voyage record could not be loaded.");
+        setPresentationWarning(
+          "The Voyage action was saved, but the latest Voyage record could not be loaded.",
+        );
       } else {
         setPresentationWarning("");
       }
@@ -1237,7 +1314,11 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
           <p className="eyebrow">Restricted Captain’s Console</p>
           <h1>Captain’s Console</h1>
           <p>Captain, sign in before changing Voyage progress.</p>
-          <form onSubmit={login} aria-busy={busy} aria-describedby={error ? "quartermaster-login-error" : undefined}>
+          <form
+            onSubmit={login}
+            aria-busy={busy}
+            aria-describedby={error ? "quartermaster-login-error" : undefined}
+          >
             <label>
               Captain name
               <input ref={loginInput} name="username" autoComplete="username" required />
@@ -1277,7 +1358,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
     );
   }
 
-  if (!status) return <main className="quartermaster-shell loading-quarters">Opening Captain’s Console...</main>;
+  if (!status)
+    return <main className="quartermaster-shell loading-quarters">Opening Captain’s Console...</main>;
   const selectedPreflight = selected ? commandPreflight(selected, status) : null;
 
   return (
@@ -1420,7 +1502,9 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
               <motion.li layout key={event.id}>
                 <span>{event.sequence}</span>
                 <b>{event.type.replaceAll("_", " ")}</b>
-                <time>{new Date(event.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</time>
+                <time>
+                  {new Date(event.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                </time>
               </motion.li>
             ))}
           </ol>
@@ -1456,7 +1540,11 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 aria-labelledby="confirm-title"
                 tabIndex={-1}
                 initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                animate={{ opacity: activeAction ? 0 : 1, y: activeAction ? -8 : 0, scale: activeAction ? 0.985 : 1 }}
+                animate={{
+                  opacity: activeAction ? 0 : 1,
+                  y: activeAction ? -8 : 0,
+                  scale: activeAction ? 0.985 : 1,
+                }}
               >
                 <p className="eyebrow">Confirm Voyage action</p>
                 <h2 id="confirm-title">{selected[1]}</h2>
@@ -1480,8 +1568,8 @@ export function Quartermaster({ authenticated }: { authenticated: boolean }) {
                 <div className="impact-note">
                   <b>What happens next</b>
                   <span>
-                    This runs atomically, records an audit entry, saves a recovery point, and then attempts live
-                    delivery. Crew delivery and presentation are confirmed separately.
+                    This runs atomically, records an audit entry, saves a recovery point, and then attempts
+                    live delivery. Crew delivery and presentation are confirmed separately.
                   </span>
                 </div>
                 {error && (
@@ -1591,5 +1679,115 @@ function QuartermasterActionScene({
         <button onClick={skip}>Skip nonessential motion</button>
       </motion.div>
     </>
+  );
+}
+
+export type VoyageCommand = {
+  id: string;
+  label: string;
+  description: string;
+  risk: "LOW" | "MEDIUM" | "HIGH";
+  reversible: boolean;
+  playersSeeResult: boolean;
+  consequence: string;
+  warning: string | null;
+  requiresConfirmation: boolean;
+  requiresReason: boolean;
+  target: "NONE" | "PASSAGE";
+};
+
+function commandTier(command: VoyageCommand) {
+  return command.risk === "HIGH" ? "authority" : "ordinary";
+}
+
+/** Governed choices for the current Voyage; preview/confirmation/commit stay with the console. */
+export function VoyageCommandChoices({
+  commands,
+  progressMap,
+  busy,
+  moveTarget,
+  onMoveTargetChange,
+  onPrepare,
+  preview,
+}: {
+  commands: VoyageCommand[];
+  progressMap: Array<{ id: string; title: string; chapterTitle: string; state: string }>;
+  busy: string;
+  moveTarget: string;
+  onMoveTargetChange: (value: string) => void;
+  onPrepare: (command: VoyageCommand, targetBlockId?: string) => void;
+  preview: { command: { label: string }; currentState: { expectedSequence: number } } | null;
+}) {
+  const directCommands = commands.filter((command) => command.target === "NONE");
+  const moveCommand = commands.find((command) => command.target === "PASSAGE");
+  const moveTargets = progressMap.filter((node) => node.state !== "CURRENT");
+  return (
+    <section className="captain-command-console__commands" aria-labelledby="captain-commands-heading">
+      <p className="card-kicker">Governed Voyage actions</p>
+      <h2 id="captain-commands-heading">What you can do now</h2>
+      <p className="captain-command-console__action-intro">
+        Ordinary actions support the current Voyage. Authority actions change shared state and show their
+        consequence before confirmation.
+      </p>
+      {directCommands.length ? (
+        <div className="captain-command-console__command-list">
+          {directCommands.map((command) => (
+            <button
+              key={command.id}
+              data-action-tier={commandTier(command)}
+              disabled={Boolean(busy)}
+              onClick={() => onPrepare(command)}
+            >
+              <span>
+                <strong>{command.label}</strong>
+                <small>{command.description}</small>
+              </span>
+              <em>{commandTier(command) === "authority" ? "Authority action" : "Voyage action"}</em>
+              <i>
+                {command.requiresConfirmation
+                  ? "Review consequence before confirming"
+                  : "Applies to the current Voyage"}
+              </i>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <p>No Captain command is currently safe or relevant for this Voyage state.</p>
+      )}
+      {moveCommand ? (
+        <div className="captain-command-console__move" data-action-tier={commandTier(moveCommand)}>
+          <label htmlFor="captain-passage-target">Move Crew to a published Passage</label>
+          <p>
+            {commandTier(moveCommand) === "authority"
+              ? "Authority action: review the new Passage and consequence before confirming."
+              : "Voyage action: choose the released Passage the Crew should see next."}
+          </p>
+          <select
+            id="captain-passage-target"
+            value={moveTarget}
+            onChange={(event) => onMoveTargetChange(event.target.value)}
+          >
+            <option value="">Choose a Passage</option>
+            {moveTargets.map((node) => (
+              <option key={node.id} value={node.id}>
+                {node.chapterTitle} - {node.title}
+              </option>
+            ))}
+          </select>
+          <button
+            className={commandTier(moveCommand) === "authority" ? "button-secondary" : "brass-button"}
+            disabled={Boolean(busy) || !moveTarget}
+            onClick={() => onPrepare(moveCommand, moveTarget)}
+          >
+            {busy === moveCommand.id ? "Preparing command…" : moveCommand.label}
+          </button>
+        </div>
+      ) : null}
+      {preview ? (
+        <p className="captain-command-console__preview" role="status">
+          Prepared preview: {preview.command.label} at revision {preview.currentState.expectedSequence}.
+        </p>
+      ) : null}
+    </section>
   );
 }

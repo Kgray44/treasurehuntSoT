@@ -24,7 +24,13 @@ const ceremonyProperties = [
   "filter",
 ] as const satisfies readonly AnimatedProperty[];
 
-function StaffCeremonyTarget({ part, targetKey }: { part: "accepted-pose" | "rejected-pose"; targetKey: string }) {
+function StaffCeremonyTarget({
+  part,
+  targetKey,
+}: {
+  part: "accepted-pose" | "rejected-pose";
+  targetKey: string;
+}) {
   const registration = useMemo(
     () => ({ targetKey, part, ownerHint: "gsap" as const, allowedProperties: ceremonyProperties }),
     [part, targetKey],
@@ -46,7 +52,13 @@ function StaffCeremonyBoundary({
 }) {
   const hostKey = `staff-${intent}`;
   const relicState =
-    state === "accepted" ? "arrived" : state === "rejected" ? "failure" : state === "pending" ? "resolving" : "idle";
+    state === "accepted"
+      ? "arrived"
+      : state === "rejected"
+        ? "failure"
+        : state === "pending"
+          ? "resolving"
+          : "idle";
   return (
     <SceneHost
       kind="platform-ceremony"
@@ -138,7 +150,10 @@ export function StaffSignIn({
       });
       if (!response.ok) {
         const body = await parseJsonResponse<{ error?: string }>(response);
-        return restoreAfterFailure(run, body?.error ?? "We couldn't sign you in. Check your details, then try again.");
+        return restoreAfterFailure(
+          run,
+          body?.error ?? "We couldn't sign you in. Check your details, then try again.",
+        );
       }
 
       const statusResponse = await fetch("/api/gateway/status", {
@@ -149,7 +164,8 @@ export function StaffSignIn({
       if (!statusResponse.ok || !gatewayStatus) {
         return restoreAfterFailure(
           run,
-          gatewayStatus?.error ?? `Sign-in succeeded, but ${title} permission could not be verified. Please try again.`,
+          gatewayStatus?.error ??
+            `Sign-in succeeded, but ${title} permission could not be verified. Please try again.`,
         );
       }
       if (!gatewayStatus[intent]?.authenticated) {
@@ -202,7 +218,8 @@ export function StaffSignIn({
           </Link>
         ) : signedIn ? (
           <p className="platform-error" role="alert">
-            Your current account is not authorized for this workspace. Return to a role you are allowed to use.
+            Your current account is not authorized for this workspace. Return to a role you are allowed to
+            use.
           </p>
         ) : null}
         <form onSubmit={submit} aria-busy={busy} aria-describedby={error ? "staff-sign-in-error" : undefined}>
@@ -244,6 +261,36 @@ export function StaffSignIn({
             {status}
           </p>
         )}
+      </section>
+    </main>
+  );
+}
+
+/** Current contextual entrance; ordinary credentials belong to /sign-in. */
+export function StaffEntryAdapter({
+  title,
+  description,
+  signInHref,
+  children,
+}: {
+  title: string;
+  description: string;
+  signInHref: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <main className="platform-auth role-entry-adapter">
+      <section className="auth-ledger">
+        <p className="eyebrow">One Voyagewright account</p>
+        <h1>{title}</h1>
+        <p>{description}</p>
+        <Link className="brass-button" href={signInHref}>
+          Continue to account sign-in
+        </Link>
+        {children}
+        <p>
+          <Link href="/register">Create Account</Link> or <Link href="/forgot-password">Forgot Password</Link>
+        </p>
       </section>
     </main>
   );

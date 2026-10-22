@@ -1,25 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { VoyageCommandChoices, type VoyageCommand } from "@/components/gm/Quartermaster";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 import { ErrorState, StatusBanner } from "@/components/ui/AsyncState";
 import { TechnicalDetails } from "@/components/ui/TechnicalDetails";
 import type { LandfallContextSummary } from "@/landfall/journey-projection";
 
-type Command = {
-  id: string;
-  label: string;
-  description: string;
-  risk: "LOW" | "MEDIUM" | "HIGH";
-  reversible: boolean;
-  playersSeeResult: boolean;
-  consequence: string;
-  warning: string | null;
-  requiresConfirmation: boolean;
-  requiresReason: boolean;
-  target: "NONE" | "PASSAGE";
-};
+type Command = VoyageCommand;
 
 type Projection = {
   csrfToken: string;
@@ -92,7 +81,12 @@ type Projection = {
   resilience: {
     preflight: {
       state: "READY" | "READY_WITH_WARNINGS" | "NOT_READY" | "UNKNOWN_DEPENDENCY";
-      checks: Array<{ id: string; state: "PASS" | "WARNING" | "BLOCKED" | "UNKNOWN"; label: string; detail: string }>;
+      checks: Array<{
+        id: string;
+        state: "PASS" | "WARNING" | "BLOCKED" | "UNKNOWN";
+        label: string;
+        detail: string;
+      }>;
     };
     recovery: {
       state: "HEALTHY" | "ACTIONABLE" | "ESCALATE";
@@ -136,10 +130,6 @@ function words(value: string) {
   return value.replaceAll("_", " ").toLocaleLowerCase();
 }
 
-function commandTier(command: Command) {
-  return command.risk === "HIGH" ? "authority" : "ordinary";
-}
-
 function CaptainLoadingComposition() {
   return (
     <>
@@ -163,7 +153,8 @@ function CaptainLoadingComposition() {
           <p className="card-kicker">Voyage position</p>
           <h2>Confirming current operational state</h2>
           <p>
-            Loading only the live Captain projection. No commands or Voyage data are shown until it is authoritative.
+            Loading only the live Captain projection. No commands or Voyage data are shown until it is
+            authoritative.
           </p>
           <div className="captain-command-console__loading-lines" aria-hidden="true">
             <i />
@@ -195,7 +186,13 @@ function CaptainLoadingComposition() {
   );
 }
 
-export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: string; authenticated: boolean }) {
+export function CaptainCommandConsole({
+  voyageId,
+  authenticated,
+}: {
+  voyageId: string;
+  authenticated: boolean;
+}) {
   const { requestAction, dialog } = useActionDialog();
   const [projection, setProjection] = useState<Projection | null>(null);
   const [error, setError] = useState("");
@@ -220,7 +217,8 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
   const load = useCallback(async () => {
     const response = await fetch(`/api/captain/voyages/${voyageId}`, { cache: "no-store" });
     const body = (await response.json().catch(() => ({}))) as Projection & { error?: string };
-    if (!response.ok) setError(body.error ?? "The Captain console is unavailable. No Voyage state has changed.");
+    if (!response.ok)
+      setError(body.error ?? "The Captain console is unavailable. No Voyage state has changed.");
     else {
       setProjection(body);
       setError("");
@@ -262,13 +260,20 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
       const body = (await response.json().catch(() => ({}))) as { error?: string; message?: string };
       if (!response.ok) {
         if (response.status === 409)
-          setError("Voyage changed while this command was being prepared. Refresh current state before continuing.");
-        else setError(body.error ?? "This Captain command could not be completed. No Voyage progress has changed.");
+          setError(
+            "Voyage changed while this command was being prepared. Refresh current state before continuing.",
+          );
+        else
+          setError(
+            body.error ?? "This Captain command could not be completed. No Voyage progress has changed.",
+          );
         await load();
         return;
       }
       delete idempotencyKeys.current[keyId];
-      setNotice(body.message ?? `${prepared.command.label} was recorded from the authoritative Voyage state.`);
+      setNotice(
+        body.message ?? `${prepared.command.label} was recorded from the authoritative Voyage state.`,
+      );
       setPreview(null);
       await load();
     } catch {
@@ -294,7 +299,9 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
       });
       const body = (await response.json().catch(() => ({}))) as Preview & { error?: string };
       if (!response.ok) {
-        setError(body.error ?? "This command is no longer available. Refresh current state before continuing.");
+        setError(
+          body.error ?? "This command is no longer available. Refresh current state before continuing.",
+        );
         await load();
         return;
       }
@@ -432,13 +439,12 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
       </main>
     );
 
-  const directCommands = projection.commandConsole.commands.filter((command) => command.target === "NONE");
-  const moveCommand = projection.commandConsole.commands.find((command) => command.target === "PASSAGE");
-  const moveTargets = projection.commandConsole.progressMap.filter((node) => node.state !== "CURRENT");
   const landfallTargets = !projection.landfall
     ? []
     : ["revealRoute", "selectRoute"].includes(landfallAction)
-      ? projection.landfall.routes.filter((item) => (landfallAction === "revealRoute" ? item.hidden : !item.hidden))
+      ? projection.landfall.routes.filter((item) =>
+          landfallAction === "revealRoute" ? item.hidden : !item.hidden,
+        )
       : projection.landfall.waypoints.filter((item) =>
           landfallAction === "revealWaypoint"
             ? item.hidden
@@ -457,7 +463,8 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
           <p className="eyebrow">Live Voyage operations</p>
           <h1>{projection.voyage.voyageName}</h1>
           <p>
-            {projection.voyage.chronicle} · {projection.voyage.edition} · {words(projection.voyage.operationalStatus)}
+            {projection.voyage.chronicle} · {projection.voyage.edition} ·{" "}
+            {words(projection.voyage.operationalStatus)}
           </p>
           <nav className="captain-command-console__context-nav" aria-label="Captain destinations">
             <Link href="/captain/library">Captain library</Link>
@@ -482,12 +489,15 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
           <p className="card-kicker">Clear for Voyage</p>
           <h2 id="captain-ready-heading">A complete Captain and Player handoff</h2>
           <p>
-            Captain commands remain canonical and Crew membership remains ordinary Player-owned. Before acting, read the
-            current preflight, use governed recovery where it is offered, and refresh if the Voyage changes.
+            Captain commands remain canonical and Crew membership remains ordinary Player-owned. Before
+            acting, read the current preflight, use governed recovery where it is offered, and refresh if the
+            Voyage changes.
           </p>
           <ul>
             <li>Healthy and degraded Voyages stay legible without inventing unavailable provider results.</li>
-            <li>Command conflicts preserve current state and ask the Captain to refresh before trying again.</li>
+            <li>
+              Command conflicts preserve current state and ask the Captain to refresh before trying again.
+            </li>
             <li>Completion remains historical context; this console never rewrites the Journey afterward.</li>
           </ul>
         </section>
@@ -509,87 +519,31 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
             <p>No current operational condition requires Captain intervention.</p>
           )}
         </section>
-        <section className="captain-command-console__commands" aria-labelledby="captain-commands-heading">
-          <p className="card-kicker">Governed Voyage actions</p>
-          <h2 id="captain-commands-heading">What you can do now</h2>
-          <p className="captain-command-console__action-intro">
-            Ordinary actions support the current Voyage. Authority actions change shared state and show their
-            consequence before confirmation.
-          </p>
-          {directCommands.length ? (
-            <div className="captain-command-console__command-list">
-              {directCommands.map((command) => (
-                <button
-                  key={command.id}
-                  data-action-tier={commandTier(command)}
-                  disabled={Boolean(busy)}
-                  onClick={() => void prepare(command)}
-                >
-                  <span>
-                    <strong>{command.label}</strong>
-                    <small>{command.description}</small>
-                  </span>
-                  <em>{commandTier(command) === "authority" ? "Authority action" : "Voyage action"}</em>
-                  <i>
-                    {command.requiresConfirmation
-                      ? "Review consequence before confirming"
-                      : "Applies to the current Voyage"}
-                  </i>
-                </button>
-              ))}
-            </div>
-          ) : (
-            <p>No Captain command is currently safe or relevant for this Voyage state.</p>
-          )}
-          {moveCommand ? (
-            <div className="captain-command-console__move" data-action-tier={commandTier(moveCommand)}>
-              <label htmlFor="captain-passage-target">Move Crew to a published Passage</label>
-              <p>
-                {commandTier(moveCommand) === "authority"
-                  ? "Authority action: review the new Passage and consequence before confirming."
-                  : "Voyage action: choose the released Passage the Crew should see next."}
-              </p>
-              <select
-                id="captain-passage-target"
-                value={moveTarget}
-                onChange={(event) => setMoveTarget(event.target.value)}
-              >
-                <option value="">Choose a Passage</option>
-                {moveTargets.map((node) => (
-                  <option key={node.id} value={node.id}>
-                    {node.chapterTitle} - {node.title}
-                  </option>
-                ))}
-              </select>
-              <button
-                className={commandTier(moveCommand) === "authority" ? "button-secondary" : "brass-button"}
-                disabled={Boolean(busy) || !moveTarget}
-                onClick={() => void prepare(moveCommand, moveTarget)}
-              >
-                {busy === moveCommand.id ? "Preparing command…" : moveCommand.label}
-              </button>
-            </div>
-          ) : null}
-          {preview ? (
-            <p className="captain-command-console__preview" role="status">
-              Prepared preview: {preview.command.label} at revision {preview.currentState.expectedSequence}.
-            </p>
-          ) : null}
-        </section>
+        <VoyageCommandChoices
+          commands={projection.commandConsole.commands}
+          progressMap={projection.commandConsole.progressMap}
+          busy={busy}
+          moveTarget={moveTarget}
+          onMoveTargetChange={setMoveTarget}
+          onPrepare={(command, target) => void prepare(command, target)}
+          preview={preview}
+        />
         {projection.landfall && (
           <section className="captain-command-console__commands" aria-labelledby="captain-landfall-heading">
             <p className="card-kicker">Landfall · safe operational status</p>
             <h2 id="captain-landfall-heading">{projection.landfall.worldspaceName}</h2>
             <p>
               Current waypoint:{" "}
-              {projection.landfall.waypoints.find((item) => item.id === projection.landfall?.currentWaypointId)?.name ??
-                "none released"}
-              . {projection.landfall.visitedCount} visited. Route: {projection.landfall.routeName ?? "none selected"}.{" "}
-              Progress {projection.landfall.paused ? "paused" : "active"}.
+              {projection.landfall.waypoints.find(
+                (item) => item.id === projection.landfall?.currentWaypointId,
+              )?.name ?? "none released"}
+              . {projection.landfall.visitedCount} visited. Route:{" "}
+              {projection.landfall.routeName ?? "none selected"}. Progress{" "}
+              {projection.landfall.paused ? "paused" : "active"}.
             </p>
             <p>
-              Live permission and offline queue state are unknown until a Player reports them. Exact Player coordinates
-              are unavailable here.
+              Live permission and offline queue state are unknown until a Player reports them. Exact Player
+              coordinates are unavailable here.
             </p>
             <p>
               Last recorded arrival:{" "}
@@ -618,8 +572,8 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
                 {projection.landfall.contextualSummary.evidenceCategories.length
                   ? ` Evidence: ${projection.landfall.contextualSummary.evidenceCategories.map(words).join(", ")}.`
                   : ""}{" "}
-                This derived summary is historical; use the existing configured Captain fallback when independent
-                verification is needed.
+                This derived summary is historical; use the existing configured Captain fallback when
+                independent verification is needed.
               </p>
             )}
             <label>
@@ -657,7 +611,8 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
               type="button"
               className="button-secondary"
               disabled={
-                Boolean(busy) || (!(["pause", "resume"] as string[]).includes(landfallAction) && !landfallTarget)
+                Boolean(busy) ||
+                (!(["pause", "resume"] as string[]).includes(landfallAction) && !landfallTarget)
               }
               onClick={() => void prepareLandfall()}
             >
@@ -682,8 +637,8 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
           <TechnicalDetails summary="Show progression map details">
             <p>
               Hints released: {projection.commandConsole.hintSummary.released} of{" "}
-              {projection.commandConsole.hintSummary.available}. This Captain-only map remains separately projected from
-              the Player view.
+              {projection.commandConsole.hintSummary.available}. This Captain-only map remains separately
+              projected from the Player view.
             </p>
             <ul>
               {projection.commandConsole.progressMap.map((node) => (
@@ -704,8 +659,8 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
                   {member.isCaptainsOwnPlayerMembership ? " (your Player membership)" : ""}
                 </strong>
                 <span>
-                  {member.crewRole ?? "Crew"} - {words(member.membership.status)} - {words(member.presence.state)} -{" "}
-                  {words(member.synchronization.state)}
+                  {member.crewRole ?? "Crew"} - {words(member.membership.status)} -{" "}
+                  {words(member.presence.state)} - {words(member.synchronization.state)}
                   {member.synchronization.lag
                     ? `, ${member.synchronization.lag} event${member.synchronization.lag === 1 ? "" : "s"} behind`
                     : ""}
@@ -739,7 +694,11 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
                   <strong>{step.label}</strong>
                   <span>{step.detail}</span>
                   {command ? (
-                    <button className="button-secondary" disabled={Boolean(busy)} onClick={() => void prepare(command)}>
+                    <button
+                      className="button-secondary"
+                      disabled={Boolean(busy)}
+                      onClick={() => void prepare(command)}
+                    >
                       Prepare governed action
                     </button>
                   ) : null}
@@ -768,7 +727,8 @@ export function CaptainCommandConsole({ voyageId, authenticated }: { voyageId: s
             <ul>
               {projection.events.map((event) => (
                 <li key={event.id}>
-                  {words(event.category)} · revision {event.sequence} · {new Date(event.timestamp).toLocaleTimeString()}
+                  {words(event.category)} · revision {event.sequence} ·{" "}
+                  {new Date(event.timestamp).toLocaleTimeString()}
                 </li>
               ))}
             </ul>

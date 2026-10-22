@@ -7,12 +7,14 @@ import { db } from "../../src/lib/db";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { enterClosureJournal } from "./fixtures/landfall-closure";
 import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
+import { observeNoSextantPairing, openSextantDevicePreferences } from "./fixtures/sextant-device-journey";
 
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
 let fixture: Awaited<ReturnType<typeof seedSextantExperience>>;
 test.beforeAll(async () => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
   fixture = await seedSextantExperience();
   expect(await seedSextantExperience()).toEqual(fixture);
@@ -47,6 +49,7 @@ for (const viewport of [
         await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
         const page = await context.newPage();
         ownedPage = page;
+        const pairing = observeNoSextantPairing(page);
         page.on("response", (response) => {
           const path = new URL(response.url()).pathname;
           if (path === "/api/auth/sign-in" || path === "/api/auth/context")
@@ -64,14 +67,18 @@ for (const viewport of [
         await page
           .getByRole("textbox", { name: "Email or Player name", exact: true })
           .fill("sextant.experience@example.test");
-        await page.getByRole("textbox", { name: "Password", exact: true }).fill("Synthetic-Sextant-Review-2026!");
+        await page
+          .getByRole("textbox", { name: "Password", exact: true })
+          .fill("Synthetic-Sextant-Review-2026!");
         await page.getByRole("button", { name: "Sign in", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
         const accountMenu = page.getByRole("button", { name: "Synthetic Sextant Navigator", exact: true });
         await accountMenu.click();
         await page.getByRole("link", { name: "All Workspaces", exact: true }).click();
         await expect(page.getByRole("heading", { name: "All Workspaces", exact: true })).toBeVisible();
-        await expect(page.getByRole("region", { name: "Account workspace capabilities" })).toContainText("Player");
+        await expect(page.getByRole("region", { name: "Account workspace capabilities" })).toContainText(
+          "Player",
+        );
         await expect(page.getByRole("main")).toContainText("Workspace activation never grants ownership");
         await page.getByRole("link", { name: "Enter Player", exact: true }).click();
         await expect(page.getByRole("heading", { name: "My Chronicle Library", exact: true })).toBeVisible();
@@ -82,7 +89,9 @@ for (const viewport of [
         const passportTimings: Record<string, number> = {};
         const passportStart = await page.evaluate(() => performance.now());
         await page.getByRole("link", { name: "Open Chronicle Passport", exact: true }).click();
-        await expect(page.getByRole("heading", { name: "A record you can return to", exact: true })).toBeVisible();
+        await expect(
+          page.getByRole("heading", { name: "A record you can return to", exact: true }),
+        ).toBeVisible();
         passportTimings.overview = (await page.evaluate(() => performance.now())) - passportStart;
         expect(passportTimings.overview).toBeLessThanOrEqual(3000);
         expect((await new AxeBuilder({ page }).include(".passport-shell").analyze()).violations).toEqual([]);
@@ -109,12 +118,18 @@ for (const viewport of [
           await expect(section.getByRole("heading", { name: outcome, exact: true })).toBeVisible();
           passportTimings[label] = (await page.evaluate(() => performance.now())) - sectionStart;
           expect(passportTimings[label]).toBeLessThanOrEqual(3000);
-          expect((await new AxeBuilder({ page }).include(".passport-shell").analyze()).violations).toEqual([]);
-          await page.screenshot({ path: info.outputPath(`passport-${label.toLowerCase().replaceAll(" ", "-")}.png`) });
+          expect((await new AxeBuilder({ page }).include(".passport-shell").analyze()).violations).toEqual(
+            [],
+          );
+          await page.screenshot({
+            path: info.outputPath(`passport-${label.toLowerCase().replaceAll(" ", "-")}.png`),
+          });
           await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();
           await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
           await page.getByRole("link", { name: "Open Chronicle Passport", exact: true }).click();
-          await expect(page.getByRole("heading", { name: "A record you can return to", exact: true })).toBeVisible();
+          await expect(
+            page.getByRole("heading", { name: "A record you can return to", exact: true }),
+          ).toBeVisible();
         }
         await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
@@ -127,33 +142,72 @@ for (const viewport of [
         await expect(page.getByRole("button", { name: "Replay full opening", exact: true })).toBeVisible();
         const start = await page.evaluate(() => performance.now());
         await page.getByRole("button", { name: "Replay full opening", exact: true }).click();
-        await expect(page.getByRole("link", { name: "Devices", exact: true })).toBeVisible({ timeout: 15000 });
+        await expect(journal).toHaveAttribute("data-journal-phase", "JOURNAL_READY", { timeout: 15000 });
         const openingMs = (await page.evaluate(() => performance.now())) - start;
         await page.screenshot({ path: info.outputPath("journal-ready.png"), fullPage: true });
-        await page.getByRole("link", { name: "Devices", exact: true }).click();
-        const devices = page.getByRole("region", { name: "Voyage devices", exact: true });
-        await expect(devices).toHaveAttribute("data-voyage-id", fixture.voyageId);
+        const preferenceEntry = await openSextantDevicePreferences(
+          page,
+          "Synthetic Sextant Navigator",
+          fixture.voyageId,
+        );
+        const devices = preferenceEntry.devices;
+        await expect(devices.getByRole("combobox", { name: "Chronicle", exact: true })).toHaveValue(
+          fixture.voyageId,
+        );
         const deviceName = `Synthetic Sextant ${viewport.width} ${reducedMotion}`;
+        await expect(devices.getByRole("heading", { name: deviceName, exact: true })).toHaveCount(0);
+        await expect(
+          devices.getByRole("heading", { name: `${deviceName} · This screen`, exact: true }),
+        ).toHaveCount(0);
         await devices.getByRole("textbox", { name: "Device name", exact: true }).fill(deviceName);
         const register = devices.getByRole("button", { name: "Use this device", exact: true });
         await expect(register).toBeEnabled();
         const existingDeviceCount = await devices.getByRole("listitem").count();
         await register.click();
         const currentDevice = devices.getByRole("listitem").filter({
-          has: page.getByText(`${deviceName} · This device`, { exact: true }),
+          has: page.getByRole("heading", { name: `${deviceName} · This screen`, exact: true }),
         });
         await expect(currentDevice).toHaveCount(1);
         await expect(devices.getByRole("listitem")).toHaveCount(existingDeviceCount + 1);
+        await expect(
+          currentDevice.getByRole("link", { name: "Open on this device", exact: true }),
+        ).toHaveAttribute("href", `/devices/companion?voyage=${fixture.voyageId}`);
+        const registered = await db.crossdeckSurfaceSession.findFirstOrThrow({
+          where: { label: deviceName, revokedAt: null, accountSession: { accountId: fixture.accountId } },
+        });
+        expect(registered.voyageId).toBe(fixture.voyageId);
         const input = page.getByRole("region", { name: "Optional device input", exact: true });
         await input.getByRole("button", { name: "Continue with screen controls", exact: true }).focus();
         await page.keyboard.press("Enter");
         await expect(input).toContainText("Screen controls are ready. Device input is optional.");
         expect(
-          (await new AxeBuilder({ page }).include('[aria-label="Optional device input"]').analyze()).violations,
+          (await new AxeBuilder({ page }).include('[aria-label="Optional device input"]').analyze())
+            .violations,
         ).toEqual([]);
         await page.screenshot({ path: info.outputPath("device-fallback.png"), fullPage: true });
-        await currentDevice.getByRole("link", { name: "Continue Voyage", exact: true }).click();
+        pairing.assertNone();
+        await accountMenu.click();
+        await page
+          .getByRole("dialog", { name: "Account navigation", exact: true })
+          .getByRole("link", { name: "Player", exact: true })
+          .click();
+        await expect(page.getByRole("heading", { name: "My Chronicle Library", exact: true })).toBeVisible();
+        const sameVoyage = page
+          .locator("article.player-tale-card")
+          .filter({
+            has: page.getByRole("heading", { name: "Synthetic Sextant experience Voyage", exact: true }),
+          })
+          .locator(".card-actions > a.brass-button");
+        await expect(sameVoyage).toHaveAttribute("href", `/player/playthroughs/${fixture.voyageId}/journal`);
+        const reopened = page.waitForResponse(
+          (response) =>
+            new URL(response.url()).pathname === `/api/play/sessions/${fixture.voyageId}` &&
+            response.request().method() === "GET" &&
+            response.status() === 200,
+        );
+        await sameVoyage.click();
         await enterClosureJournal(page);
+        expect((await (await reopened).json()).session.versionId).toBe(fixture.versionId);
         await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
         await page.getByRole("button", { name: "Open Chronicle Lens", exact: true }).click();
         const lens = page.getByRole("dialog");
@@ -163,7 +217,9 @@ for (const viewport of [
           name: "A parchment note bearing the Captain’s next clue.",
           exact: true,
         });
-        await expect(note).toContainText("The next bearing is written in the stars. Look for the northern light.");
+        await expect(note).toContainText(
+          "The next bearing is written in the stars. Look for the northern light.",
+        );
         await note.getByRole("button", { name: "Inspect", exact: true }).click();
         await expect(note).toContainText("You are inspecting The Captain’s note.");
         await page.screenshot({ path: info.outputPath("guided-clue.png"), fullPage: true });
@@ -184,6 +240,8 @@ for (const viewport of [
             select: { checksum: true },
           }),
         ).toEqual(version);
+        pairing.assertNone();
+        pairing.dispose();
         await writeFile(
           info.outputPath("consumer-receipt.json"),
           JSON.stringify(
@@ -191,6 +249,7 @@ for (const viewport of [
               source: await deviceLabSourceIdentity([
                 "tests/e2e/sextant-consumer-journeys.spec.ts",
                 "tests/e2e/fixtures/landfall-closure.ts",
+                "tests/e2e/fixtures/sextant-device-journey.ts",
                 "tests/e2e/fixtures/sounding-line-isolation.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
                 "testing/contracts.json",
@@ -204,6 +263,8 @@ for (const viewport of [
               passportHistoricalDetailOrArtifactGrant: false,
               sameVoyage: fixture.voyageId,
               openingMs,
+              deviceNavigationFeedback: preferenceEntry.feedback,
+              pairingChallengesOrClaims: 0,
               unchangedCanonicalProgress: true,
               unchangedPublishedEdition: true,
               evidence: "D1_REAL_BROWSER_SYNTHETIC_PERSISTED_VOYAGE",

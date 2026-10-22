@@ -37,7 +37,11 @@ type State = {
     payload: JsonObject;
     createdAt: string;
   }>;
-  chapters?: Array<{ id: string; title: string; blocks: Array<{ id: string; title: string; blockType: string }> }>;
+  chapters?: Array<{
+    id: string;
+    title: string;
+    blocks: Array<{ id: string; title: string; blockType: string }>;
+  }>;
 };
 
 function presentationLabel(value: string) {
@@ -65,7 +69,13 @@ function presentationValue(value: unknown): string {
   return "Structured Chronicle state";
 }
 
-export function CaptainSessionControl({ sessionId, authenticated }: { sessionId: string; authenticated: boolean }) {
+export function CaptainSessionControl({
+  sessionId,
+  authenticated,
+}: {
+  sessionId: string;
+  authenticated: boolean;
+}) {
   const [state, setState] = useState<State | null>(null);
   const [csrf, setCsrf] = useState("");
   const [error, setError] = useState("");
@@ -179,7 +189,10 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
             action={{ label: "Try again", onClick: () => void load() }}
           />
         ) : (
-          <LoadingState title="Opening Voyage controls" detail="Reading the latest Captain-authorized state." />
+          <LoadingState
+            title="Opening Voyage controls"
+            detail="Reading the latest Captain-authorized state."
+          />
         )}
       </main>
     );
@@ -234,7 +247,9 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
                   : "No verification request"}
               </strong>
               {state.pendingVerification && (
-                <span>Waiting since {new Date(state.pendingVerification.requestedAt).toLocaleTimeString()}</span>
+                <span>
+                  Waiting since {new Date(state.pendingVerification.requestedAt).toLocaleTimeString()}
+                </span>
               )}
             </div>
           </section>
@@ -258,7 +273,9 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
                 disabled={busy}
                 onClick={() => void action(state.session.status === "PAUSED" ? "resume" : "pause")}
               >
-                {state.session.status === "PAUSED" ? captainCopy.resumeVoyage.value : captainCopy.pauseVoyage.value}
+                {state.session.status === "PAUSED"
+                  ? captainCopy.resumeVoyage.value
+                  : captainCopy.pauseVoyage.value}
               </button>
               <button disabled={busy} onClick={() => void action("presentation")}>
                 Replay presentation
@@ -285,7 +302,10 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
                 ))}
               </select>
             </label>
-            <button disabled={busy || !jumpTarget} onClick={() => void action("jump", { targetBlockId: jumpTarget })}>
+            <button
+              disabled={busy || !jumpTarget}
+              onClick={() => void action("jump", { targetBlockId: jumpTarget })}
+            >
               Move Crew to selected Passage
             </button>
             {busy ? (
@@ -299,7 +319,9 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
             <ul>
               {state.inventory.length ? (
                 state.inventory.map((item, index) => (
-                  <li key={item}>{looksOpaque(item) ? `Recorded Artifact ${index + 1}` : presentationLabel(item)}</li>
+                  <li key={item}>
+                    {looksOpaque(item) ? `Recorded Artifact ${index + 1}` : presentationLabel(item)}
+                  </li>
                 ))
               ) : (
                 <li>No Artifacts</li>
@@ -340,8 +362,8 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
               <p className="card-kicker">Development tool: verification provider seam</p>
               <h2>Verification Simulator</h2>
               <p>
-                Tests standardized evidence against the current verification request. It cannot advance a Voyage without
-                a pending verification request.
+                Tests standardized evidence against the current verification request. It cannot advance a
+                Voyage without a pending verification request.
               </p>
               <label>
                 <span>Outcome</span>
@@ -366,16 +388,25 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
                 <button disabled={busy || !state.pendingVerification} onClick={() => void simulate()}>
                   Submit simulated outcome
                 </button>
-                <button disabled={busy || !state.pendingVerification} onClick={() => void simulate("duplicate")}>
+                <button
+                  disabled={busy || !state.pendingVerification}
+                  onClick={() => void simulate("duplicate")}
+                >
                   Test duplicate
                 </button>
                 <button disabled={busy || !state.pendingVerification} onClick={() => void simulate("stale")}>
                   Test stale
                 </button>
-                <button disabled={busy || !state.pendingVerification} onClick={() => void simulate("wrongBlock")}>
+                <button
+                  disabled={busy || !state.pendingVerification}
+                  onClick={() => void simulate("wrongBlock")}
+                >
                   Test wrong Passage
                 </button>
-                <button disabled={busy || !state.pendingVerification} onClick={() => void simulate("wrongVersion")}>
+                <button
+                  disabled={busy || !state.pendingVerification}
+                  onClick={() => void simulate("wrongVersion")}
+                >
                   Test wrong version
                 </button>
               </div>
@@ -384,6 +415,122 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
         </div>
       </main>
       {dialog}
+    </>
+  );
+}
+
+export type CaptainOperationalScanProjection = {
+  voyage: {
+    sourceUpdatedAt: string;
+    computedAt: string;
+    crewPresenceSummary: {
+      connected: number;
+      recentlyLost: number;
+      synchronized: number;
+      catchingUp: number;
+    };
+  };
+  crew: Array<{ membership: { status: string }; readiness: { state: string } }>;
+  attention: Array<{ key: string; severity: string; title: string; explanation: string; stale: boolean }>;
+};
+
+function freshness(sourceUpdatedAt: string, computedAt: string) {
+  const sourceTime = Date.parse(sourceUpdatedAt);
+  const computedTime = Date.parse(computedAt);
+  if (!Number.isFinite(sourceTime) || !Number.isFinite(computedTime))
+    return {
+      label: "Freshness unknown",
+      detail: "Check the operational details before acting on this view.",
+      state: "unknown",
+    };
+  const age = Math.max(0, computedTime - sourceTime);
+  if (age > 120_000)
+    return {
+      label: "May be stale",
+      detail: "Review the attention items and refresh before making a consequential change.",
+      state: "stale",
+    };
+  return {
+    label: "Current when checked",
+    detail: "This view is based on the latest available operational projection.",
+    state: "current",
+  };
+}
+
+function readinessSummary(crew: CaptainOperationalScanProjection["crew"]) {
+  const participatingCrew = crew.filter(
+    (member) => !["REMOVED", "LEFT", "CANCELLED"].includes(member.membership.status),
+  );
+  const ready = participatingCrew.filter((member) => member.readiness.state === "READY").length;
+  return { ready, total: participatingCrew.length };
+}
+
+/** Read-only scan of the selected canonical Voyage, with honest freshness. */
+export function CaptainOperationalScan({ projection }: { projection: CaptainOperationalScanProjection }) {
+  const crewReadiness = readinessSummary(projection.crew);
+  const viewFreshness = freshness(projection.voyage.sourceUpdatedAt, projection.voyage.computedAt);
+  const needsAttention = projection.attention.length > 0;
+  return (
+    <>
+      <section className="captain-operational-panel__snapshot" aria-labelledby="captain-scan-heading">
+        <div className="captain-operational-panel__section-heading">
+          <div>
+            <p className="card-kicker">Operational scan</p>
+            <h3 id="captain-scan-heading">What needs your attention</h3>
+          </div>
+          <span data-state={needsAttention ? "attention" : "clear"}>
+            {needsAttention
+              ? `${projection.attention.length} item${projection.attention.length === 1 ? "" : "s"} to review`
+              : "No active attention"}
+          </span>
+        </div>
+        <dl className="captain-status-cells">
+          <div data-state={crewReadiness.ready === crewReadiness.total ? "ready" : "attention"}>
+            <dt>Who is ready</dt>
+            <dd>{crewReadiness.ready} ready</dd>
+            <dd className="captain-status-cells__detail">of {crewReadiness.total} participating Crew</dd>
+          </div>
+          <div data-state={projection.voyage.crewPresenceSummary.connected > 0 ? "current" : "attention"}>
+            <dt>Who is present</dt>
+            <dd>{projection.voyage.crewPresenceSummary.connected} present</dd>
+            <dd className="captain-status-cells__detail">
+              {projection.voyage.crewPresenceSummary.recentlyLost} recently disconnected
+            </dd>
+          </div>
+          <div data-state={projection.voyage.crewPresenceSummary.catchingUp > 0 ? "attention" : "ready"}>
+            <dt>Synchronization</dt>
+            <dd>{projection.voyage.crewPresenceSummary.synchronized} in sync</dd>
+            <dd className="captain-status-cells__detail">
+              {projection.voyage.crewPresenceSummary.catchingUp} catching up
+            </dd>
+          </div>
+          <div data-state={viewFreshness.state}>
+            <dt>Is this view current?</dt>
+            <dd>{viewFreshness.label}</dd>
+            <dd className="captain-status-cells__detail">{viewFreshness.detail}</dd>
+          </div>
+        </dl>
+      </section>
+      <section aria-labelledby="needs-attention-heading">
+        <h3 id="needs-attention-heading" aria-label="Operational attention and safety">
+          Needs Attention
+        </h3>
+        {projection.attention.length ? (
+          <ul>
+            {projection.attention.map((item) => (
+              <li key={item.key} data-severity={item.severity}>
+                <strong>{item.title}</strong>
+                <span>
+                  {item.explanation}
+                  {item.stale ? " Information may be stale." : ""}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No active operational condition is currently derived from the available canonical sources.</p>
+        )}
+      </section>
     </>
   );
 }

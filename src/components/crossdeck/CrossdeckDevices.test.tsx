@@ -8,7 +8,9 @@ import { VoyageContext } from "./VoyageContext";
 
 const router = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => router }));
-vi.mock("qrcode", () => ({ default: { toDataURL: vi.fn().mockResolvedValue("data:image/png;base64,synthetic") } }));
+vi.mock("qrcode", () => ({
+  default: { toDataURL: vi.fn().mockResolvedValue("data:image/png;base64,synthetic") },
+}));
 vi.mock("next/image", async () => {
   const React = await import("react");
   return {
@@ -73,6 +75,81 @@ afterEach(() => {
   else Reflect.deleteProperty(HTMLDialogElement.prototype, "close");
 });
 
+it.each(["", "voyage"])(
+  "registers, changes purpose and disconnects through full preferences without pairing (initial %s)",
+  async (initialVoyage) => {
+    let surface: typeof savedSurface | null = null;
+    const actions: string[] = [];
+    const requests = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      if (init?.method === "POST") {
+        const body = JSON.parse(String(init.body));
+        actions.push(body.action);
+        if (body.action === "register") {
+          expect(body.voyageId).toBe("voyage");
+          expect(body.surfaceId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+          surface = { ...savedSurface, surfaceId: body.surfaceId, label: body.label, role: "JOURNAL" };
+        } else if (body.action === "role") {
+          expect(body.surfaceId).toBe(surface!.surfaceId);
+          surface = { ...surface!, role: body.role };
+        } else if (body.action === "remove") {
+          expect(body.surfaceId).toBe(surface!.surfaceId);
+          surface = null;
+          return Response.json({ removed: true });
+        } else {
+          expect(body.action).toBe("heartbeat");
+        }
+        return Response.json({ surface });
+      }
+      return Response.json({
+        csrfToken: "synthetic-preference-csrf",
+        voyages: [{ id: "voyage", title: "Northern Light" }],
+        surfaces: surface ? [surface] : [],
+      });
+    });
+    vi.stubGlobal("fetch", requests);
+    render(<CrossdeckDevices initialVoyage={initialVoyage} />);
+    const panel = screen.getByRole("region", { name: "Connected devices" });
+    const chooser = await within(panel).findByRole("combobox", { name: "Chronicle" });
+    expect(chooser).toHaveValue(initialVoyage);
+    if (!initialVoyage) fireEvent.change(chooser, { target: { value: "voyage" } });
+    expect(chooser).toHaveValue("voyage");
+    fireEvent.change(within(panel).getByRole("textbox", { name: "Device name" }), {
+      target: { value: "Synthetic preference screen" },
+    });
+    const register = within(panel).getByRole("button", { name: "Use this device" });
+    await waitFor(() => expect(register).toBeEnabled());
+    fireEvent.click(register);
+    const heading = await within(panel).findByRole("heading", {
+      name: "Synthetic preference screen · This screen",
+    });
+    const row = heading.closest("li")!;
+    expect(within(row).getByRole("link", { name: "Open on this device" })).toHaveAttribute(
+      "href",
+      "/devices/companion?voyage=voyage",
+    );
+    fireEvent.click(within(row).getByText("Device options", { exact: true }));
+    const purpose = within(row).getByRole("combobox", { name: "Device purpose" });
+    fireEvent.change(purpose, { target: { value: "SHARED_CREW_DISPLAY" } });
+    await waitFor(() => expect(purpose).toHaveValue("SHARED_CREW_DISPLAY"));
+    expect(within(row).getByRole("link", { name: "Open on this device" })).toHaveAttribute(
+      "href",
+      "/devices/display?voyage=voyage",
+    );
+    fireEvent.click(within(row).getByRole("button", { name: "Disconnect Synthetic preference screen" }));
+    await waitFor(() =>
+      expect(
+        within(panel).queryByRole("heading", { name: "Synthetic preference screen · This screen" }),
+      ).toBeNull(),
+    );
+    await waitFor(() => expect(within(panel).getByRole("button", { name: "Use this device" })).toBeVisible());
+    expect(within(panel).getByRole("status")).toHaveTextContent("Device disconnected. Its access has ended.");
+    expect(actions.filter((action) => action !== "heartbeat")).toEqual(["register", "role", "remove"]);
+    expect(actions).not.toContain("challenge");
+    expect(actions).not.toContain("claim");
+    expect(surface).toBeNull();
+  },
+);
+
 it("replaces a failed pairing intent when a new QR opens in the same phone tab", async () => {
   sessionStorage.setItem(
     "crossdeck.pending-pair.v1",
@@ -106,7 +183,9 @@ it("reactivates an authorized saved surface on Journal mount before the periodic
   );
   vi.stubGlobal("fetch", requests);
   render(<CrossdeckDevices initialVoyage="voyage" compact />);
-  await waitFor(() => expect(requests.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1));
+  await waitFor(() =>
+    expect(requests.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1),
+  );
   const heartbeat = requests.mock.calls.find(([, init]) => init?.method === "POST")![1]!;
   expect(JSON.parse(heartbeat.body as string)).toMatchObject({
     action: "heartbeat",
@@ -265,7 +344,12 @@ it("restores a still-mounted parent identity when the open compact connection is
           <VoyageContext voyage={voyage} heading />
         </div>
         {showConnection && (
-          <CrossdeckDevices initialVoyage="voyage" compact voyageContext={voyage} onPresentationChange={setPresented} />
+          <CrossdeckDevices
+            initialVoyage="voyage"
+            compact
+            voyageContext={voyage}
+            onPresentationChange={setPresented}
+          />
         )}
       </>
     );
@@ -383,7 +467,9 @@ it.each(["JOURNAL", "SHARED_CREW_DISPLAY"])(
     fireEvent.click(screen.getByRole("button", { name: "Join the Chronicle" }));
     await waitFor(() =>
       expect(router.push).toHaveBeenCalledWith(
-        role === "SHARED_CREW_DISPLAY" ? "/devices/display?voyage=voyage" : "/devices/companion?voyage=voyage",
+        role === "SHARED_CREW_DISPLAY"
+          ? "/devices/display?voyage=voyage"
+          : "/devices/companion?voyage=voyage",
       ),
     );
     const claim = requests.mock.calls

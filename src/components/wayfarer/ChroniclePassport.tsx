@@ -107,7 +107,8 @@ export function ChroniclePassport() {
     if (!loadedSessionId) return;
     const focusSection = () => {
       const sectionId = window.location.hash.slice(1);
-      if (!new Set(["profile", "providers", "preferences", "privacy", "history", "artifacts"]).has(sectionId)) return;
+      if (!new Set(["profile", "providers", "preferences", "privacy", "history", "artifacts"]).has(sectionId))
+        return;
       const section = document.getElementById(sectionId);
       const heading = section?.querySelector<HTMLElement>("h2, h3");
       if (!heading) return;
@@ -199,7 +200,11 @@ export function ChroniclePassport() {
       await fetch("/api/passport/media", {
         method: "POST",
         headers,
-        body: JSON.stringify({ kind, dataUrl, altText: kind === "AVATAR" ? "Profile avatar" : "Profile banner" }),
+        body: JSON.stringify({
+          kind,
+          dataUrl,
+          altText: kind === "AVATAR" ? "Profile avatar" : "Profile banner",
+        }),
       }).then(responseJson);
       const next = await fetch("/api/passport/profile").then(responseJson);
       setProfile(next);
@@ -334,7 +339,12 @@ export function ChroniclePassport() {
           </label>
           <label>
             Public handle
-            <input name="handle" defaultValue={profile.handle ?? ""} placeholder="optional-handle" maxLength={32} />
+            <input
+              name="handle"
+              defaultValue={profile.handle ?? ""}
+              placeholder="optional-handle"
+              maxLength={32}
+            />
           </label>
           <label>
             Biography
@@ -370,8 +380,8 @@ export function ChroniclePassport() {
       <section id="providers">
         <h2>Linked identities</h2>
         <p>
-          Provider visibility and sign-in permission are independent. Provider tokens never appear here. Xbox Network is
-          a separately governed partner capability, not a Microsoft-account alias.
+          Provider visibility and sign-in permission are independent. Provider tokens never appear here. Xbox
+          Network is a separately governed partner capability, not a Microsoft-account alias.
         </p>
         {providerGroups.map(([label, status]) => {
           const providers = adapters.filter((adapter) => adapter.status === status);
@@ -425,15 +435,17 @@ export function ChroniclePassport() {
                 <input
                   type="checkbox"
                   checked={identity.useForLogin}
-                  onChange={(event) => void providerUpdate(identity.id, { useForLogin: event.target.checked })}
+                  onChange={(event) =>
+                    void providerUpdate(identity.id, { useForLogin: event.target.checked })
+                  }
                 />{" "}
                 Permit sign-in
               </label>
               {unlinkingIdentityId === identity.id ? (
                 <div role="status">
                   <p>
-                    Remove this linked identity? It will no longer be available for sign-in. The account must retain
-                    another login or recovery method before removal.
+                    Remove this linked identity? It will no longer be available for sign-in. The account must
+                    retain another login or recovery method before removal.
                   </p>
                   <button type="button" onClick={() => void unlinkProvider(identity.id)}>
                     Confirm unlink identity
@@ -482,15 +494,20 @@ export function ChroniclePassport() {
             </select>
           </label>
           <label>
-            <input name="captions" type="checkbox" defaultChecked={profile.preferences.experience.captions} /> Captions
+            <input name="captions" type="checkbox" defaultChecked={profile.preferences.experience.captions} />{" "}
+            Captions
           </label>
           <label>
-            <input name="autoplay" type="checkbox" defaultChecked={profile.preferences.experience.autoplay} /> Autoplay
-            permitted
+            <input name="autoplay" type="checkbox" defaultChecked={profile.preferences.experience.autoplay} />{" "}
+            Autoplay permitted
           </label>
           <label>
-            <input name="searchable" type="checkbox" defaultChecked={profile.preferences.discovery.searchable} /> Allow
-            profile discovery
+            <input
+              name="searchable"
+              type="checkbox"
+              defaultChecked={profile.preferences.discovery.searchable}
+            />{" "}
+            Allow profile discovery
           </label>
           <button>Save preferences</button>
         </form>
@@ -518,5 +535,46 @@ export function ChroniclePassport() {
       <ChronicleHistory />
       <ArtifactCabinet />
     </main>
+  );
+}
+
+export type PassportOverviewDto = {
+  sections: Array<{ id: string; label: string; href: string; count: number; empty: string }>;
+};
+
+/** The record-led overview consumes only the canonical private projection. */
+export function ChroniclePassportOverview({ sections }: PassportOverviewDto) {
+  return (
+    <div className="harbor-stack">
+      <section className="passport-intro">
+        <p className="personal-harbor__eyebrow">Your record, in one place</p>
+        <h2>A record you can return to</h2>
+        <p>
+          Return to the Voyages you joined, the private Memories you kept, artifacts authoritatively granted
+          to you, and eligible Community items you saved. No engineering simulators or test controls live
+          here.
+        </p>
+      </section>
+      <div className="passport-card-grid">
+        {sections.map((section) => (
+          <Link href={section.href} key={section.id} className="passport-card">
+            <span>{section.count}</span>
+            <h2>{section.label}</h2>
+            <p>{section.count ? "Open this part of your record." : section.empty}</p>
+            <strong>
+              Open <span aria-hidden="true">→</span>
+            </strong>
+          </Link>
+        ))}
+      </div>
+      <section className="harbor-callout">
+        <strong>Profile and Passport are related, but not the same.</strong>
+        <p>
+          Your public Profile is the identity other people may see. Your Chronicle Passport is the private,
+          record-led home for your own Voyage history.
+        </p>
+        <Link href="/account/profile">Edit public Profile</Link>
+      </section>
+    </div>
   );
 }

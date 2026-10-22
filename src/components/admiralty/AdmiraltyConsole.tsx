@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { DetailList, Panel, StatusBadge } from "@/components/admiralty/AdminPrimitives";
 import { SignOutButton } from "@/components/auth/SignOutButton";
 import type { admiraltyOverview } from "@/admiralty/projections";
 import type { SupportAccessScope } from "@/admiralty/schemas";
@@ -142,7 +143,9 @@ export function AdmiraltyConsole({ initialOverview }: { initialOverview: Overvie
         <article className="admiralty-card">
           <p className="admiralty-card__kicker">Privileged assurance</p>
           <h2>
-            {overview.assurance.level === "ADMIN_REAUTHENTICATED" ? "Recently verified" : "Base administrative access"}
+            {overview.assurance.level === "ADMIN_REAUTHENTICATED"
+              ? "Recently verified"
+              : "Base administrative access"}
           </h2>
           <p>
             {overview.assurance.recent
@@ -192,7 +195,8 @@ export function AdmiraltyConsole({ initialOverview }: { initialOverview: Overvie
             </div>
           </dl>
           <p className="admiralty__truth">
-            Database, worker, release, backup, and provider command systems are registered but not active in Phase 1.
+            Database, worker, release, backup, and provider command systems are registered but not active in
+            Phase 1.
           </p>
         </article>
 
@@ -220,7 +224,8 @@ export function AdmiraltyConsole({ initialOverview }: { initialOverview: Overvie
             <h2 id="support-console-title">Request only what the person can review</h2>
           </div>
           <p>
-            {overview.support.activeGrantCount} active · {overview.support.pendingRequestCount} awaiting a decision
+            {overview.support.activeGrantCount} active · {overview.support.pendingRequestCount} awaiting a
+            decision
           </p>
         </div>
         <form
@@ -241,7 +246,11 @@ export function AdmiraltyConsole({ initialOverview }: { initialOverview: Overvie
         >
           <label>
             Target canonical account ID
-            <input value={targetAccountId} onChange={(event) => setTargetAccountId(event.target.value)} required />
+            <input
+              value={targetAccountId}
+              onChange={(event) => setTargetAccountId(event.target.value)}
+              required
+            />
           </label>
           <label>
             Plain-language purpose
@@ -271,8 +280,8 @@ export function AdmiraltyConsole({ initialOverview }: { initialOverview: Overvie
             ))}
           </fieldset>
           <p className="admiralty__exclusions">
-            Always excluded: passwords, session and OAuth tokens, provider or encryption keys, private Chronicle prose,
-            and private media.
+            Always excluded: passwords, session and OAuth tokens, provider or encryption keys, private
+            Chronicle prose, and private media.
           </p>
           <button type="submit" disabled={busy === "support-request" || !selectedScopes.length}>
             {busy === "support-request" ? "Creating request…" : "Create scoped request"}
@@ -296,7 +305,9 @@ export function AdmiraltyConsole({ initialOverview }: { initialOverview: Overvie
                     disabled={busy === item.id}
                     onClick={() =>
                       void run(item.id, async () => {
-                        await request(`/api/admin/support/requests/${item.id}/cancel`, { reason: "No longer needed" });
+                        await request(`/api/admin/support/requests/${item.id}/cancel`, {
+                          reason: "No longer needed",
+                        });
                         await refresh();
                       })
                     }
@@ -387,5 +398,37 @@ export function AdmiraltyConsole({ initialOverview }: { initialOverview: Overvie
         </ol>
       </section>
     </main>
+  );
+}
+
+export type AdmiraltyWatch = {
+  displayName: string;
+  roles: string[];
+  sessionExpires: string;
+  recentAssurance: boolean;
+  activeGrantCount: number;
+  pendingRequestCount: number;
+};
+
+/** Safe current-operator projection; no private-resource commands are mounted. */
+export function AdmiraltyWatchPanel({ watch }: { watch: AdmiraltyWatch }) {
+  return (
+    <Panel title="Your watch" kicker="Authority">
+      <DetailList
+        items={[
+          { label: "Operator", value: watch.displayName },
+          { label: "Roles", value: watch.roles.join(", ") },
+          { label: "Session expires", value: watch.sessionExpires },
+          {
+            label: "Privileged assurance",
+            value: <StatusBadge state={watch.recentAssurance ? "HEALTHY" : "NOT_CONFIGURED"} />,
+          },
+          {
+            label: "Support grants",
+            value: `${watch.activeGrantCount} active · ${watch.pendingRequestCount} pending`,
+          },
+        ]}
+      />
+    </Panel>
   );
 }
