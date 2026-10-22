@@ -1,7 +1,7 @@
 ---
 title: Bounded source snapshots and contained Windows build links
 audience: engineering
-status: implementation-preparation-awaiting-base-reconciliation
+status: implementation-candidate
 canonical_for: sounding-line-source-snapshot-windows-links-repair-20261021
 last_reviewed: 2026-10-21
 ---
@@ -11,10 +11,11 @@ last_reviewed: 2026-10-21
 Two source-bound infrastructure failures prevent existing Parallax development
 preparation. They do not establish a product defect or authorize consumer
 qualification. The original failed outputs remain retained privately and failed.
-Implementation starts from accepted main
-`aaff919428ef9ab421579415ce3409949724760d`; documentation follow-up #786 must land
-and its actual accepted source must be reconciled before final review or protected
-installation.
+The implementation candidate is reconciled to accepted main
+`fc5855f465314fa2c80c3a8966f8b6ce405f010a`. Independent documentation follow-up
+#786 may qualify concurrently; its 38 historical migration rows remain separately
+owned until accepted. Exact-source review and normal protected qualification bind
+this candidate, and merge still requires fresh accepted main ancestry.
 
 ## Complete Git object transport
 
