@@ -387,6 +387,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Development_Report_And_Producer_Output_Retention_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Device_Lab/README.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -424,6 +430,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Experience_Changed_Path_Buffer_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Nonapplicable_Experience_Replay_Admission_Repair.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -718,6 +730,18 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/README.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sounding_Line_Expired_R26_Unrelated_Classification_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sounding_Line_Source_Snapshot_And_Windows_Build_Links_Repair.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -15286,6 +15310,108 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/source-review-04.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-handoff.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-independent-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-merge.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-qualification.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-smoke.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-handoff.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-independent-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-smoke.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/actual-merge-staged.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/checks.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/input.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/unit-report.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/intake.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/provider-preflight.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/reconciliation-prep.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/root-source-dispositions-pre-reconcile.addendum.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/root-source-dispositions-pre-reconcile.original.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

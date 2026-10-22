@@ -27,6 +27,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { createDevelopmentFailureEvidence } from "../../scripts/sounding-line/development-failure-evidence.mjs";
 
 const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -48,7 +49,7 @@ const binding = () => ({
   candidateSha: "b".repeat(40),
   planDigest: "c".repeat(64),
 });
-async function fixture(t) {
+async function fixture(t, developmentOnlyEvidence = false) {
   const root = mkdtempSync(path.join(tmpdir(), "private-browser-failure-test-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const helperSource = readFileSync(path.join(sourceRoot, "scripts/sounding-line/private-browser-failure.mjs"), "utf8");
@@ -62,15 +63,21 @@ async function fixture(t) {
     pathToFileURL(path.join(sourceRoot, "scripts/sounding-line/replay-posttechnical-diagnostic.mjs")).href,
   );
   const replacement = `const publicKey = ${JSON.stringify(generated.publicKey)};`;
+  const evidenceImport = '"./development-failure-evidence.mjs"';
+  const absoluteEvidence = JSON.stringify(
+    pathToFileURL(path.join(sourceRoot, "scripts/sounding-line/development-failure-evidence.mjs")).href,
+  );
   const transformed = helperSource
     .replace(literal[0], replacement)
     .replace(originalId, hash(generated.publicKey))
-    .replace(sealerImport, absoluteSealer);
+    .replace(sealerImport, absoluteSealer)
+    .replace(evidenceImport, absoluteEvidence);
   assert.equal(
     transformed
       .replace(replacement, literal[0])
       .replace(hash(generated.publicKey), originalId)
-      .replace(absoluteSealer, sealerImport),
+      .replace(absoluteSealer, sealerImport)
+      .replace(absoluteEvidence, evidenceImport),
     helperSource,
     "production logic unchanged after reversing generated-key/import substitutions",
   );
@@ -80,7 +87,7 @@ async function fixture(t) {
     readFileSync(path.join(sourceRoot, "scripts/sounding-line/private-browser-failure-reporter.mjs")),
   );
   const api = await import(pathToFileURL(path.join(root, "private-browser-failure.mjs")).href);
-  const session = api.createBrowserFailureRetention({ root, binding: binding() });
+  const session = api.createBrowserFailureRetention({ root, binding: binding(), developmentOnlyEvidence });
   const context = JSON.parse(session.environment[api.PRIVATE_BROWSER_FAILURE_CONTEXT]);
   return { root, api, session, context };
 }
@@ -106,8 +113,8 @@ function uploadReceipt(f) {
     ciphertextDigest: hash(readFileSync(path.join(f.session.directory, "failure.encrypted"))),
   };
 }
-function finish(f) {
-  return f.session.complete({ exitCode: 1, signal: null, workerClosed: true });
+function finish(f, developmentEvidence) {
+  return f.session.complete({ exitCode: 1, signal: null, workerClosed: true, developmentEvidence });
 }
 function decrypt(f) {
   const envelope = JSON.parse(readFileSync(path.join(f.session.directory, "failure.encrypted")));
@@ -135,6 +142,135 @@ function decrypt(f) {
   }
   return { header, plaintext };
 }
+
+function developmentEvidence(f, report, stdout = Buffer.from(canary), stderr = Buffer.alloc(0)) {
+  const bytes = [Buffer.alloc(0), Buffer.alloc(0), Buffer.from(stdout), Buffer.from(stderr)];
+  return createDevelopmentFailureEvidence({
+    binding: f.context.binding,
+    selector: "tests/e2e/synthetic.spec.ts:1",
+    provider: { repository: "Kgray44/treasurehuntSoT", runId: "123", attempt: 1, workflowSha: "d".repeat(40) },
+    report,
+    producersClosed: true,
+    streams: ["server.stdout", "server.stderr", "browser.stdout", "browser.stderr"].map((label, index) => ({
+      label,
+      bytes: bytes[index],
+      originalBytes: bytes[index].length,
+      originalStreamSHA256: hash(bytes[index]),
+      complete: true,
+    })),
+  });
+}
+
+for (const mode of ["early-global-error", "test-without-attachments"]) {
+  test(
+    `development encryption retains original real Playwright ${mode} output without inventing attachments`,
+    { skip: process.platform === "win32", timeout: 35000 },
+    async (t) => {
+      const f = await fixture(t, true);
+      const require = createRequire(path.join(sourceRoot, "package.json"));
+      const packageFile = process.env.SOUNDING_LINE_TEST_PLAYWRIGHT_PACKAGE
+        ? path.join(process.env.SOUNDING_LINE_TEST_PLAYWRIGHT_PACKAGE, "package.json")
+        : require.resolve("@playwright/test/package.json");
+      const packageRoot = path.dirname(packageFile),
+        config = path.join(f.root, "playwright.config.mjs"),
+        reportFile = path.join(f.root, "original-report.private.json");
+      assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.56.1");
+      if (mode === "early-global-error") writeFileSync(config, `throw new Error(${JSON.stringify(canary)});`);
+      else {
+        writeFileSync(
+          config,
+          `export default {testDir:'.',testMatch:'worker.spec.mjs',workers:1,retries:0,repeatEach:1,reporter:[['list'],['json',{outputFile:${JSON.stringify(reportFile)}}]],timeout:10000};`,
+        );
+        writeFileSync(
+          path.join(f.root, "worker.spec.mjs"),
+          `import {test,expect} from ${JSON.stringify(pathToFileURL(path.join(packageRoot, "index.mjs")).href)}; test('inert failed case',async()=>{expect(${JSON.stringify(canary)}).toBe('different');});`,
+        );
+      }
+      const worker = spawnSync(process.execPath, [path.join(packageRoot, "cli.js"), "test", "--config", config], {
+        cwd: f.root,
+        env: { ...process.env, ...f.session.environment },
+        maxBuffer: 1024 * 1024,
+        timeout: 30000,
+      });
+      assert.ifError(worker.error);
+      assert.equal(worker.status, 1);
+      assert(Buffer.concat([worker.stdout, worker.stderr]).includes(Buffer.from(canary)));
+      const report = existsSync(reportFile)
+        ? { status: "COMPLETE", bytes: readFileSync(reportFile) }
+        : { status: "MISSING" };
+      if (mode === "early-global-error")
+        assert.equal(existsSync(path.join(f.session.directory, "manifest.private.json")), false);
+      else assert.equal(report.status, "COMPLETE");
+      const receipt = finish(f, developmentEvidence(f, report, worker.stdout, worker.stderr));
+      assert.equal(receipt.worker.exitCode, 1);
+      assert.equal(receipt.retention, "INCOMPLETE");
+      assert(receipt.issues.includes("NO_FAILURE_ATTACHMENTS"));
+      assert.equal(receipt.qualification, false);
+      const { header, plaintext } = decrypt(f);
+      for (const [key, value] of Object.entries(f.context.binding)) assert.equal(header[key], value);
+      const files = new Map(plaintext.files.map((file) => [file.name, Buffer.from(file.content, "base64")]));
+      assert(files.get("private/development/browser.stdout.retained.bin").equals(worker.stdout));
+      assert(files.get("private/development/browser.stderr.retained.bin").equals(worker.stderr));
+      if (report.status === "COMPLETE")
+        assert(files.get("private/development/playwright-report.original.json").equals(report.bytes));
+      const context = JSON.parse(files.get("private/development/context.json"));
+      assert.equal(context.provider.attempt, 1);
+      assert.equal(context.provider.runId, "123");
+      assert.equal(context.selector, "tests/e2e/synthetic.spec.ts:1");
+      assert.deepEqual(context.binding, f.context.binding);
+      assert.equal(plaintext.inventory.length, 0);
+      assert.equal(JSON.stringify(receipt).includes(canary), false);
+      assert.equal(
+        readFileSync(path.join(f.session.directory, "failure.encrypted")).includes(Buffer.from(canary)),
+        false,
+      );
+    },
+  );
+}
+
+test(
+  "development evidence cannot change generic collection, clone itself into trust, or bypass worker closure",
+  { skip: process.platform === "win32" },
+  async (t) => {
+    const original = await fixture(t);
+    manifest(original, []);
+    const report = { status: "COMPLETE", bytes: Buffer.from(JSON.stringify({ error: canary })) };
+    const historical = finish(original, developmentEvidence(original, report));
+    assert.equal(historical.memberCount, 1);
+    assert.equal(decrypt(original).plaintext.files.length, 1);
+    const clone = await fixture(t, true);
+    manifest(clone, []);
+    const untrusted = JSON.parse(JSON.stringify(developmentEvidence(clone, report)));
+    const rejected = finish(clone, untrusted);
+    assert(rejected.issues.includes("DEVELOPMENT_EVIDENCE_INVALID"));
+    assert.equal(rejected.memberCount, 1);
+    const unclosed = await fixture(t, true);
+    const closed = unclosed.session.complete({
+      exitCode: 1,
+      workerClosed: false,
+      developmentEvidence: developmentEvidence(unclosed, report),
+    });
+    assert.deepEqual(closed.issues, ["WORKER_CLOSURE_UNPROVEN"]);
+    assert.equal(existsSync(path.join(unclosed.session.directory, "failure.encrypted")), false);
+  },
+);
+
+test(
+  "complete development diagnostics keep the four original attachment requirements intact",
+  { skip: process.platform === "win32" },
+  async (t) => {
+    const f = await fixture(t, true);
+    manifest(f, attachments(f));
+    const receipt = finish(
+      f,
+      developmentEvidence(f, { status: "COMPLETE", bytes: Buffer.from(JSON.stringify({ error: canary })) }),
+    );
+    assert.equal(receipt.retention, "COMPLETE");
+    assert.equal(receipt.memberCount, 11);
+    assert.equal(decrypt(f).plaintext.inventory.length, 4);
+    assert.equal(receipt.worker.exitCode, 1);
+  },
+);
 
 test("real failing Playwright worker preserves four actual attachment paths, original reporters, binding and missing diagnostics from a second failure", async (t) => {
   const f = await fixture(t);

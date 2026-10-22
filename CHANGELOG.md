@@ -32,6 +32,12 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Reconciled the sole Studio integration candidate once with accepted maintenance
+  main `39b706ad`, preserving product, Prisma and browser-test source from
+  `720e4575`. Fresh 42-case component, full TypeScript and strict lint checks pass.
+  Exact maintenance handoffs and independent landed/source reviews remain
+  engineering evidence; complete planning and fresh governed experience/protected
+  verification are still required for this candidate.
 - Draft Studio integration correction: keep the live primary Lens action in the
   Journal header and full scene details/history below the book, preserving phone
   reading space and current/past-scene access. Passage changes close the previous

@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: phone-reading-development-verified-integration-held
+status: accepted-maintenance-reconciled-planning-pending
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -12,6 +12,12 @@ PR #776 is the sole combined Studio integration and protected qualification
 candidate. The directly approved ownership agreement leaves #722's root/domain
 owner responsible for domain and sibling-disposition review, without a competing
 root rewrite or qualification.
+
+The accepted maintenance bundle is now installed at
+`39b706ad3c9a2b8e1d589f71db909cf6c32c468b`. The one final reconciliation from
+`720e45753e1a7504b116c1f2e3c5a93e69ad75f1` has no conflicts and changes no
+product source, Prisma source or browser specs. The latest source-bound
+maintenance intake and remaining exact-candidate verification are recorded below.
 
 Crossdeck #721 landed through normal protection at
 `aaff919428ef9ab421579415ce3409949724760d`. Its tree equals qualified head
@@ -337,13 +343,66 @@ unchanged. This verifies the bounded layout correction on its producer; it
 provides no protected seal for a later commit or final integrated experience
 acceptance.
 
-Final integration remains held: #790 is open and blocked on ordinary required-check
-routing, while #788 is an unmerged draft awaiting the accepted maintenance chain.
+At checkpoint `720e4575`, final integration remained held: #790 was open and blocked on ordinary required-check
+routing, while #788 was an unmerged draft awaiting the accepted maintenance chain.
 After that bundle actually lands, reconcile main once, complete the planner,
 fresh governed capture, independent rendered review and authenticated submission,
 then normal protected qualification, merge and landed smoke. No competing
 maintenance repair, final capture or protected merge is authorized by this
 development pass.
+
+## Accepted maintenance and single final reconciliation
+
+The [accepted-main intake](evidence/protected-integration-20261021/main39-20261022/intake.json)
+preserves byte-exact original handoffs, qualification, normal merge, actual-landed
+smoke and independent reviews. #789 remains accepted at `408f3738`. #790 landed
+at `90bff6ec` through its single directly authorized exception; its old ordinary
+failure stays failed, and that exception applies to no other PR. All six #790
+landed commands and six unit cases pass; all twelve output streams were rehashed.
+
+#788 landed normally at `39b706ad3c9a2b8e1d589f71db909cf6c32c468b`, tree
+`a628d0c648c10541b9017ee9077b2b60f9707d3a`, with ordered parents `90bff6ec` and
+`513d2f4f30bc14727aad12d3c7c1e202ab1fc01b`. Fresh eligible ordinary run
+`39780857222/1` passed custody, focused verification and native Mainline Decision
+`119846490080` from app `15368`, suite `107812560859`. Its policy result is
+876 passes and one platform skip; thirteen rendered fixtures and nine feature
+tests pass. Strict protection remains unchanged and no #790 exception is reused.
+
+All eight #788 actual-landed commands pass. The Windows smoke reports 38 cases:
+27 pass, eleven platform skips and no failures. All sixteen output streams were
+rehashed; each before/after/final HEAD, tree, ordered-parent and clean-state
+snapshot matches the actual merge. The independent landed review reports
+`PASS_NORMAL_PROTECTED_QUALIFICATION_AND_EXACT_LANDED_SOURCE`, with no findings.
+The accepted handoff is 6,904 bytes with SHA-256
+`12d0d0787be714b8f48fbf231c35dee33dd072028588042c95803e43ba4768af`.
+This clears the infrastructure dependency without granting product acceptance,
+new reservations or capture/review allowances.
+
+The sole owner applied that exact main once to prior candidate `720e4575`.
+The initial merged tree is `6349d21553648b77bf7523e789e2e732f836f690`; no
+conflicts occurred. `src/`, `prisma/` and `tests/e2e/` are unchanged from that
+candidate. Fresh frozen-byte checks pass all 42 component cases, full no-emit
+TypeScript and zero-warning strict lint, with every owned process cleanup
+passing and actual escalation flags retained. The earlier browser-development
+pass remains bound to `b617b68256`; no duplicate unchanged browser run was taken.
+
+The root's [source disposition refresh](evidence/protected-integration-20261021/main39-20261022/root-source-dispositions-pre-reconcile.original.json)
+and [addendum](evidence/protected-integration-20261021/main39-20261022/root-source-dispositions-pre-reconcile.addendum.original.json)
+confirm the latest root ancestry, no missing root product paths, all 24 historical
+intake blobs and #734's 141 original records. Seven later surrounding documents
+remain distinct. The current publisher and publishing-test blobs differ from
+#736/#739 by formatting; their current byte equality is not claimed. Historical
+PRs remain open pending exact accepted disposition. #725/#726 and #741/#781
+retain their own scopes and limits.
+
+The next gate is the complete non-consuming plan on the committed reconciled
+candidate and accepted base `39b706ad`. Then obtain fresh governed source-bound
+capture, independent rendered review, authenticated submission and normal
+protected qualification, merge and landed smoke. No old source receipt is rebound.
+The previous ENOBUFS and Windows-junction failures remain intact; the newly
+installed repairs must prove their effect on this actual candidate. C: still
+fails the measured local-production-build reserve plus allocation and margin;
+measure owned/hosted execution and artifact intake before allocating them.
 
 Physical iPhone alignment and browser tracker reliability remain unqualified.
 Plane prototypes return no admitted planes/hit tests. The unchanged root's 30

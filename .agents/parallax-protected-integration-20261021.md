@@ -161,3 +161,32 @@ fresh governed capture, independent rendered review, authenticated submission,
 ordinary qualification, normal protected merge and landed smoke remain pending.
 Do not absorb the maintenance lane or claim physical/native/provider/owner
 acceptance from this bounded development pass.
+
+## Accepted maintenance base and single final reconciliation
+
+The #788 accepted handoff SHA-256 is
+`12d0d0787be714b8f48fbf231c35dee33dd072028588042c95803e43ba4768af`.
+Exact main `39b706ad3c9a2b8e1d589f71db909cf6c32c468b` has tree
+`a628d0c648c10541b9017ee9077b2b60f9707d3a`, ordered parents `90bff6ec` and
+`513d2f4f30bc14727aad12d3c7c1e202ab1fc01b`. Normal ordinary run
+`39780857222/1` is eligible and successful; actual-landed smoke and independent
+review pass. Preserve 876 Linux policy passes/one platform skip and 27 Windows
+smoke passes/eleven platform skips. #790's one exception stays confined to #790;
+its ordinary failure is not rewritten and no finite #721 grant transfers.
+
+The one agreed merge from `720e4575` is staged without conflicts, initial tree
+`6349d21553648b77bf7523e789e2e732f836f690`. Product source, Prisma and browser specs
+are unchanged. Frozen-byte local checks pass 42 component cases, full TypeScript
+and strict lint; all original receipts stay source-bound. Complete docs/catalog,
+privacy, intake and source-byte checks, then commit this single two-parent merge.
+Run the complete non-consuming plan against accepted `39b706ad`; do not repeat
+old focused browser runs or take another intermediate main reconciliation.
+
+After source/domain and eligibility readback, use the existing ordinary protected
+capture/review workflow on main with the exact new candidate/base/PR identity.
+Derive the cumulative #776 review ordinal from its own history; do not reset local
+reviews 1/2 or import #721's special review/capture entitlements. Require fresh
+independent rendered critique and authenticated submission before ordinary
+qualification. C: still rejects a local build budget; retain its 30 GiB floor,
+put scratch/artifact originals on D: and measure staging/build allocations.
+Final product/physical/native/provider/owner acceptance boundaries remain open.

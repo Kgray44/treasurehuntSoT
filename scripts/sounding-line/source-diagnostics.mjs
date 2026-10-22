@@ -51,6 +51,7 @@ const fixedArguments = new Set([
   "--is-ancestor",
   "--stdout",
   "--batch",
+  "--batch-check",
   "-rz",
   "--",
   "--exit-code",
@@ -120,7 +121,7 @@ function supportedRead(component, args, options, metadata) {
     if (args[0] === "cat-file")
       return (
         args.length === 2 &&
-        args[1] === "--batch" &&
+        (args[1] === "--batch" || (component === "PRODUCT_EXPERIENCE" && args[1] === "--batch-check")) &&
         typeof options.input === "string" &&
         /^[a-f0-9]{40}(?:\n[a-f0-9]{40})*\n?$/u.test(options.input)
       );

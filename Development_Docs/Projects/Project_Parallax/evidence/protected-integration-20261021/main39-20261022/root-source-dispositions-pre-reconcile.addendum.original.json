@@ -1,0 +1,65 @@
+{
+  "kind": "PARALLAX_ROOT_ACCEPTED39_DOMAIN_REVIEW_ADDENDUM",
+  "classification": "ENGINEERING_SOURCE_EVIDENCE_REVIEW_NOT_ACCEPTANCE",
+  "atUtc": "2026-10-22T13:25:00.819Z",
+  "acceptedBase": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "consumerBeforeReconciliation": "720e45753e1a7504b116c1f2e3c5a93e69ad75f1",
+  "primaryRoot": "8715b61b301df519fff637e52ecd2d982ca38271",
+  "priorAudit": {
+    "path": "source-dispositions-pre-reconcile.original.json",
+    "bytes": 27255,
+    "sha256": "937e62e9b103dd8592f63b081c185f9c01b9aabac6050cedce25099492aae888"
+  },
+  "liveFamilyHeadsMatchHistoricalManifest": [
+    722,
+    727,
+    728,
+    729,
+    733,
+    734,
+    736,
+    739
+  ],
+  "adoptedHistoricalRecordBlobs": {
+    "total": 24,
+    "exact": 24,
+    "nonExact": []
+  },
+  "packet734": {
+    "exactOriginalRecords": 141,
+    "laterChangedSurroundingDocuments": 7,
+    "missing": 0
+  },
+  "publisher736And739": {
+    "currentPublisherAndBrowserTestBlobsDifferFromRoot": true,
+    "manualDiffReview": "Only formatting changes between primary root8715 and consumer720; no changed behavior or assertions identified.",
+    "byteEqualityToCurrentCandidateClaimed": false
+  },
+  "ancestryAdoptionsRetained": [
+    "76da4c36b5b01f47fa27c4d4810312ae27902a7b",
+    "6bea21300369db4598d0e746b63f2f5cfcebc517",
+    "73db990b554e2236df7bbda4286f5b8023a3636f"
+  ],
+  "currentIndependentDependencies": {
+    "creator726": "6309b2d1c587e484a63ded1025faa298b83f3e4e",
+    "governance781": "0c332757aa591e7c4f77066a7a3b17c4fb00fbfd",
+    "creatorGrantExpiresAtUtc": "2026-10-23T03:59:59Z",
+    "earlyCaptureOrReviewConsumed": false,
+    "grantExtended": false
+  },
+  "noHistoricalPrClosed": true,
+  "noCompetingSourceOrCapture": true,
+  "physicalIPhoneCalibration": "NEGATIVE_UNRESOLVED",
+  "historicalFailedRuns": [
+    39696321296,
+    39721702762,
+    39730281230
+  ],
+  "passingDevelopmentRun": {
+    "id": 39735856149,
+    "producer": "b617b6825688d2d3d89a34284588ce456701aa8f",
+    "receiptRebound": false
+  },
+  "next": "Review actual reconciled sole #776 candidate once committed; exact #788 terminal landed proof and normal product qualification remain separate.",
+  "qualification": false
+}

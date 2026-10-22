@@ -1,7 +1,7 @@
 ---
 title: Parallax accepted-main reconciliation evidence
 audience: product-engineering
-status: phone-reading-development-verified-integration-held
+status: accepted-maintenance-reconciled-planning-pending
 canonical_for: parallax-protected-integration-evidence-20261021
 last_reviewed: 2026-10-22
 ---
@@ -79,6 +79,14 @@ producing source. Fresh protected qualification is pending.
   receipt retains that limit. Expected failure upload was skipped, with no
   failure artifact. This is DEVELOPMENT_ONLY; final maintenance, experience
   capture/review and normal protected integration remain held.
+- [Accepted-main reconciliation intake](main39-20261022/intake.json) preserves
+  51 exact originals for the #790/#788 accepted handoffs, independent landed
+  reviews, original qualification/smoke streams, root source dispositions and
+  fresh local checks. The one main reconciliation uses accepted `39b706ad`, with
+  no conflicts or product/Prisma/browser-test delta from `720e4575`.
+  Forty-two component cases, full TypeScript and strict lint pass. Exact-candidate
+  complete planning and fresh governed capture/review/qualification remain pending;
+  historical failure and pass receipts keep their original producers.
 
 Phone alignment, unavailable plane detection, browser tracker resets, native
 installation, physical AR, live-provider and owner acceptance remain unqualified.
