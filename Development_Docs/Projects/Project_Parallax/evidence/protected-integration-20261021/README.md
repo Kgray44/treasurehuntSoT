@@ -1,7 +1,7 @@
 ---
 title: Parallax accepted-main reconciliation evidence
 audience: product-engineering
-status: development-browser-failed-diagnostics-retained
+status: phone-reading-repair-prepared-runtime-pending
 canonical_for: parallax-protected-integration-evidence-20261021
 last_reviewed: 2026-10-22
 ---
@@ -46,11 +46,21 @@ producing source. Fresh protected qualification is pending.
   remains incomplete and causally UNKNOWN. Its instrumented successor
   `39721702762/1` passed preparation, failed the selected browser worker and
   passed supervised cleanup. Encrypted upload and archive/ciphertext checks
-  passed; the collector reports COMPLETE retention with 14 members. Private
-  report inspection and the actual cause remain blocked on an identified
-  approved decryption route. No private runtime payload or log ZIP is included.
+  passed; the collector reports COMPLETE retention with 14 members. At that
+  checkpoint private inspection was blocked on an identified decryption route;
+  the follow-up repair intake records its resolution. No private runtime payload
+  or log ZIP is included.
 - [Terminal development disposition](diagnostic-2e1ea05c/hosted-crossdeck-development-02/failure-disposition.json)
   records the exact consumer/controller pair, separate outcomes and proof limits.
+- [Phone reading-area repair intake](journal-reading-repair-20261022/intake.json)
+  preserves exact local verification and failed-control originals, plus the
+  authenticated sanitized diagnosis and independent source review. The custodian
+  confirmed heading obstruction by Journal tools after the restored Charts
+  drawer closes. The compact header action, preserved history and runtime
+  identity correction pass 42 component tests, full TypeScript and strict lint;
+  the original browser reading-band criterion is still awaiting fresh verification.
+  Earlier access-blocker observations remain historical. No private browser
+  payload, key or raw media is included.
 
 Phone alignment, unavailable plane detection, browser tracker resets, native
 installation, physical AR, live-provider and owner acceptance remain unqualified.

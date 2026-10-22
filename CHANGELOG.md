@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Changelog
@@ -32,6 +32,13 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Draft Studio integration correction: keep the live primary Lens action in the
+  Journal header and full scene details/history below the book, preserving phone
+  reading space and current/past-scene access. Passage changes close the previous
+  Lens runtime before rebinding. Forty-two component tests, full TypeScript and
+  strict lint pass; the original browser reading-area assertion remains pending.
+  The [integration checkpoint](Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md)
+  preserves the authenticated failure, negative control and independent source review.
 - Reconciled the Spatial Studio candidate with accepted Crossdeck connection and
   companion flows while preserving BrowserRoomView, motion, released-scene
   revisits, above-book Lens access and immutable Voyage context. The

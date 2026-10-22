@@ -1,0 +1,10 @@
+{
+  "kind": "LOCAL_LAUNCHER_PREFLIGHT_FAILURE",
+  "timeUtc": "2026-10-22T05:10:33.7067250Z",
+  "code": "ERR_UNSUPPORTED_ESM_URL_SCHEME",
+  "reason": "Owned launcher import used C:/ path instead of file:///C:/ URL",
+  "testsStarted": 0,
+  "childProcessesStarted": 0,
+  "productSourceChanged": false,
+  "correction": "Changed only D helper import URL"
+}

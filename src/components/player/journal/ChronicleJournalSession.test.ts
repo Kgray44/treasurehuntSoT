@@ -468,20 +468,22 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
           ],
         },
       };
-      vi.stubGlobal(
-        "fetch",
-        vi.fn((input: RequestInfo | URL) =>
-          Promise.resolve(
-            jsonResponse(
-              String(input).startsWith("/api/crossdeck")
-                ? { surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }
-                : String(input).includes("/parallax?")
-                  ? { moment, binding: syntheticBinding, replayOnly: past }
-                  : state,
-            ),
+      let currentState = state;
+      let currentMoment = moment;
+      let currentBinding = syntheticBinding;
+      let currentReplay = past;
+      const fetchMock = vi.fn((input: RequestInfo | URL) =>
+        Promise.resolve(
+          jsonResponse(
+            String(input).startsWith("/api/crossdeck")
+              ? { surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }
+              : String(input).includes("/parallax?")
+                ? { moment: currentMoment, binding: currentBinding, replayOnly: currentReplay }
+                : currentState,
           ),
         ),
       );
+      vi.stubGlobal("fetch", fetchMock);
       const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
       const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "close");
       Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
@@ -508,6 +510,9 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
       fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
       await act(flushMicrotasks);
       const entry = screen.getByRole("button", { name: "Open Chronicle Lens" });
+      expect(entry).toHaveAccessibleDescription(
+        `${moment.version.title}. ${past ? "Revisit this released scene in view-only mode." : "Open this passage’s scene in your room."}`,
+      );
       expect(entry.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
       const workspace = view.container.querySelector(".chronicle-journal-workspace")!;
       expect(entry.compareDocumentPosition(workspace) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -517,6 +522,49 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
       const dialog = view.container.querySelector<HTMLDialogElement>("dialog[open]")!;
       expect(dialog).not.toBeNull();
       expect(dialog.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
+      expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
+      const nextBlockId = `${block.id}-next`;
+      const nextMoment = syntheticSpatialMoment(nextBlockId);
+      nextMoment.attachment.id = `${moment.attachment.id}-next`;
+      const nextBlock = {
+        ...block,
+        id: nextBlockId,
+        presentation: { spatialMoment: nextMoment },
+        progress: "active",
+      };
+      currentState = {
+        ...state,
+        session: { ...state.session, currentSequence: 2 },
+        journal: {
+          ...state.journal,
+          currentBlockId: nextBlock.id,
+          chapters: [{ ...state.journal.chapters[0], blocks: [{ ...block, progress: "completed" }, nextBlock] }],
+        },
+      };
+      currentMoment = nextMoment;
+      currentBinding = { ...syntheticBinding, blockId: nextBlock.id };
+      currentReplay = false;
+      await act(async () => {
+        ControlledEventSource.instances.at(-1)!.dispatchEvent(
+          new MessageEvent("progression", {
+            data: JSON.stringify({ id: "next-spatial", eventType: "BLOCK_RELEASED", sequence: 2 }),
+          }),
+        );
+        await flushMicrotasks();
+      });
+      expect(view.container.querySelector("dialog[open]")).toBeNull();
+      fireEvent.click(
+        screen.getByRole("button", {
+          name: "Open Chronicle Lens",
+          description: `${moment.version.title}. Open this passage’s scene in your room.`,
+        }),
+      );
+      await act(flushMicrotasks);
+      expect(fetchMock).toHaveBeenCalledWith(
+        `/api/player/playthroughs/${encodeURIComponent(syntheticBinding.sessionId)}/parallax?block=${encodeURIComponent(nextBlock.id)}`,
+        { cache: "no-store" },
+      );
+      expect(view.container.querySelector("dialog[open]")).not.toBeNull();
       expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
       view.unmount();
     },

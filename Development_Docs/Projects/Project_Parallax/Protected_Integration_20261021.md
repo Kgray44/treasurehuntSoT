@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: development-browser-failed-diagnostics-retained
+status: phone-reading-repair-prepared-runtime-pending
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -152,8 +152,8 @@ as blob `5b38e628378047b14f4ba4ab66cfd773a71697bf` in producer
 `2e1ea05caa88e790f9b6f4f7a36981efed5826a3`. Formatting, lint and whole-candidate
 TypeScript passed on these bytes. Documentation and catalog checks passed;
 unrelated generated maintenance inventory rows and a date-only change were
-preserved separately and restored. Production source remains unchanged from
-the reconciled `871431cd` producer.
+preserved separately and restored. That diagnostic producer's production source
+remains unchanged from the reconciled `871431cd` producer.
 
 Retention repair #789 landed at protected main
 `408f37389e6dd358b1ab005d91f3f588405f61db`, tree
@@ -173,14 +173,12 @@ with trees reaped and streams closed; the proxy closed. Encrypted artifact
 `12401793016` matches the provider's 25,128,132-byte ZIP and SHA-256, passes ZIP
 CRC checks, and matches the retained ciphertext digest and source binding.
 The collector reports COMPLETE retention: 14 members, 18,760,953 raw bytes and
-no collection issues. Actual private member/report inspection is blocked:
-the existing maintenance owner has no approved decryption route. The older
-Sounding Line diagnostic documentation identifies an owner-held key and private
-cloud-owner inspection process for the same public key identity, but current
-custodian identity and access remain unverified. That non-secret custody lead
-is being coordinated through the root owner. The UI cause and actual case
-counts are not inferred from the public failure code or collection status.
-No repeat run or speculative product repair followed.
+no collection issues. At checkpoint `ae52b7e0`, private inspection was blocked
+in the maintenance session. The established matching-key cloud custodian later
+verified the existing human authorization, artifact provenance, all 14 members,
+source bindings and the original private report. No key, raw private error or
+media was transferred into this checkout. The authenticated finding is recorded
+below; the earlier access-blocker observations retain their original timestamps.
 
 The [diagnostic intake](evidence/protected-integration-20261021/diagnostic-2e1ea05c/intake.json)
 preserves exact copies of public metadata and source-validation records.
@@ -196,6 +194,63 @@ review. No protected capture, authenticated review or qualification has been
 consumed by these development attempts. The diagnostic correction changes no
 major feature availability; the combined integration's catalog decision remains
 subject to its own completed criteria.
+
+## Phone reading-area correction
+
+The [sanitized private diagnosis](evidence/protected-integration-20261021/journal-reading-repair-20261022/private-diagnosis.sanitized.receipt.json)
+is an exact 2,362-byte copy with SHA-256
+`6ee58f3fffb526da278056a76943b56bbeab2df567a15eed102da79e054d021a`.
+The normal-motion case failed after returning from the companion to the full
+Journal at 390 by 844 pixels and closing the restored Charts drawer. The active
+heading intersects Journal tools; hit tests at `(82,721)`, `(156,721)` and
+`(231,721)` hit buttons. The original ten-second assertion found no unobscured,
+heading-containing 280 by 211 reading band. Actual report counts are one failed
+case and one skipped case, with no passing or flaky case. This establishes a
+functional heading obstruction, without attributing the older failed run.
+
+The retained close-control assertion and JOURNAL_READY state passed, and the
+test called scroll-to-zero immediately before polling. Full element rectangles,
+numeric actual scroll offsets, individual button identities and active computed
+positioning were not retained. The [state observation](evidence/protected-integration-20261021/journal-reading-repair-20261022/geometry-state-relay-observation.json)
+keeps those limits explicit. A source comparison identifies the full spatial
+card newly placed in normal flow above the book as a concrete layout lead;
+it does not prove that this was the sole underlying cause.
+
+The prepared correction places the live primary Lens action beside the existing
+header identity, retaining access before the book and outside imperative page
+clones. Complete scene descriptions and earlier released-scene controls remain
+below the workspace. One Parallax provider preserves binding, replay permissions,
+modal lifecycle and Voyage context. The portrait phone grid explicitly places
+the Lens beside the title while retaining the existing connection, status and
+tool rows. An identity key includes the passage and immutable scene checksum so
+an open Lens cannot retain the preceding passage's runtime.
+
+Independent source review found and resolved the phone-selector topology,
+missing runtime identity key and unsupported ARIA attribute. The final
+[source-only review](evidence/protected-integration-20261021/journal-reading-repair-20261022/source-review-03.original.json)
+reports no remaining confirmed source finding on its exact five-file tuple.
+It grants no media review, browser pass or protected acceptance.
+
+Final local checks pass 42 of 42 component tests, whole-project no-emit
+TypeScript and strict lint with zero warnings, with all owned process cleanup
+receipts passing. The expanded current/past-scene regression closes an old open
+Lens on authoritative passage replacement, then requires the new binding request
+and readable content. The unkeyed negative control failed both selected cases
+at the stale-dialog predicate. Earlier ARIA, selector ambiguity and invalid
+synthetic attachment failures remain preserved; the attachment mismatch guard
+and all content assertions remain intact. An independent AST audit retains all
+392 original expect-rooted calls in order, with 402 in the extended test file.
+
+The [repair intake](evidence/protected-integration-20261021/journal-reading-repair-20261022/intake.json)
+preserves exact local originals and the sanitized custody/source reviews. The
+original browser spec and geometry helper are byte-unchanged, including the
+390 by 844 viewport, 280 by 211 criterion and ten-second deadline. A coordinated
+changed-source DEVELOPMENT_ONLY regression remains required before claiming
+runtime success. The installed focused route is separate from ordinary
+qualification; the earlier source already reached this assertion on accepted
+controller `408f3738`. No unchanged-source retry, extra capture or qualification
+is inferred from the local passes. Final accepted-main reconciliation, complete
+planning, fresh experience evidence and normal protection remain pending.
 
 Physical iPhone alignment and browser tracker reliability remain unqualified.
 Plane prototypes return no admitted planes/hit tests. The unchanged root's 30

@@ -1,7 +1,7 @@
 "use client";
 import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { createBrowserUuid } from "@/lib/browser-uuid";
-import { createContext, useContext, useEffect, useRef, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useCallback, useId, type ReactNode } from "react";
 import { ParallaxLensRuntime, type LensSnapshot } from "@/parallax/runtime";
 import { unknownState } from "@/sextant/contracts";
 import type { InstanceBinding, SpatialMoment } from "@/parallax/contracts";
@@ -59,27 +59,43 @@ export function ChronicleLensEntry({
   blockId,
   replayOnly,
   initiallyOpen = false,
+  compact = false,
 }: {
   moment: SpatialMoment;
   blockId: string;
   replayOnly: boolean;
   initiallyOpen?: boolean;
+  compact?: boolean;
 }) {
   const voyage = useContext(context);
+  const descriptionId = useId();
   const [open, setOpen] = useState(initiallyOpen);
   return (
-    <div className={styles.entry}>
-      <span aria-hidden="true" className={styles.mark}>
-        <LensMark />
-      </span>
-      <div>
-        <strong>{moment.version.title}</strong>
-        <p>
+    <div className={compact ? styles.compactEntry : styles.entry}>
+      {!compact && (
+        <>
+          <span aria-hidden="true" className={styles.mark}>
+            <LensMark />
+          </span>
+          <div>
+            <strong>{moment.version.title}</strong>
+            <p>
+              {replayOnly
+                ? "Revisit this released scene in view-only mode."
+                : "Open this passage’s scene in your room."}
+            </p>
+          </div>
+        </>
+      )}
+      {compact && (
+        <span id={descriptionId} className="sr-only">
+          {moment.version.title}.{" "}
           {replayOnly ? "Revisit this released scene in view-only mode." : "Open this passage’s scene in your room."}
-        </p>
-      </div>
+        </span>
+      )}
       <button
         type="button"
+        aria-describedby={compact ? descriptionId : undefined}
         onClick={() => {
           setOpen(true);
         }}

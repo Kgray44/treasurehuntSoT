@@ -68,8 +68,8 @@ COMPLETE retention with 14 members and no collection issues. Preserve the
 original ZIP, cipher, metadata and public logs under the owned D: intake.
 Do not repeat the unchanged run or infer a product cause from PRODUCT_FAILURE.
 
-The maintenance owner cannot privately inspect the report because no approved
-decryption route is available in that session. The documented same-key
+At checkpoint `ae52b7e0`, the maintenance owner could not privately inspect the
+report because no approved decryption route was available in that session. The documented same-key
 cloud-owner custody process is a non-secret identity lead, not proof of current
 access. Coordinate identification through the existing root owner; do not search
 for credentials or publish private keys, raw errors, cookies or media. Keep UI
@@ -80,3 +80,37 @@ Reader/Windows-junction repair #788 is still unlanded. Final main reconciliation
 complete planning, capture, independent review and ordinary protection remain
 pending. Earlier source-bound local results and failed run `39696321296` retain
 their original identities; no #721 authority or protected consumer stage is used.
+
+## Confirmed phone obstruction and reviewed correction
+
+The established matching-key cloud custodian resolved the authorization/access
+question and privately authenticated artifact `12401793016`, all 14 members and
+the original report. The approved sanitized receipt has SHA-256
+`6ee58f3fffb526da278056a76943b56bbeab2df567a15eed102da79e054d021a`.
+It confirms normal-motion heading obstruction by Journal tools after returning
+to the portrait Journal and closing Charts: one failed case, one skipped.
+Full element rectangles and computed positioning remain unavailable; do not
+promote the normal-flow card hypothesis to a sole-cause claim.
+
+The final reviewed five-file correction keeps a compact primary Lens action
+before the book in the live header, with scene details/history below the book.
+It preserves one provider, authoritative binding/replay rules, phone grid rows
+and an identity key for passage/checksum changes. Final frozen source and test
+hashes are in the `journal-reading-repair-20261022` intake. Independent SOURCE
+review reports no remaining confirmed finding; 42 component tests, full
+TypeScript and zero-warning lint pass. All 392 original unit expect-rooted calls
+and the exact browser spec/helper remain. Source reviews are not additional
+Product Experience review iterations or authenticated experience acceptance.
+
+After exact source/style/docs/custody checks, one unique new commit and provider
+readback, coordinate one changed-source focused DEVELOPMENT_ONLY regression on
+the original `crossdeck-experience-refit.spec.ts` selector through the actually
+installed focused workflow. Recheck authority, no concurrent duplicate and C:
+reserve; keep outputs on D:. Preserve the 390 by 844 viewport, 280 by 211 band,
+heading hit tests and ten-second deadline. This is reviewed repair verification,
+not a blind unchanged-source retry or ordinary qualification. The focused route
+already executed the real assertion on controller `408f3738`; its authority is
+independent of the separate expired-R26 ordinary-routing issue. No local build
+or bypass of the unadmitted Windows manifest is justified by current headroom.
+Keep the accepted #788/bundle reconciliation and final capture/qualification
+holds until their actual normal acceptance and installation are verified.
