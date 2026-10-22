@@ -1,5 +1,5 @@
 // Explicit generated research reproduction; no production, camera, model or recording route.
-// Usage: node scripts/reach/research/session-epochs-20261021/run-research.mjs --output <new absolute directory>
+// Usage: node scripts/reach/research/session-epochs-20261021/run-research.mjs --output <new absolute directory> [--append-only-authority]
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
@@ -10,22 +10,43 @@ const self = fileURLToPath(import.meta.url),
   root = path.resolve(here, "../../../..");
 const childMode = process.argv[2] === "--child",
   args = process.argv.slice(childMode ? 3 : 2);
-if (args.length !== 2 || args[0] !== "--output" || !path.isAbsolute(args[1]))
+if (
+  (args.length !== 2 && args.length !== 3) ||
+  args[0] !== "--output" ||
+  !path.isAbsolute(args[1]) ||
+  (args.length === 3 && args[2] !== "--append-only-authority")
+)
   throw Error("EXPLICIT_ABSOLUTE_OUTPUT_REQUIRED");
+const authorityMode = args.length === 3,
+  expectedTests = authorityMode ? 2 : 42,
+  scope = authorityMode ? "GENERATED_APPEND_ONLY_AUTHORITY_DIAGNOSTIC" : "GENERATED_SESSION_EPOCH_RESEARCH_ONLY";
 const out = path.resolve(args[1]),
-  LIMIT = 32 * 1048576,
+  LIMIT = (authorityMode ? 2 : 32) * 1048576,
   LOG = 65536,
   RESERVE = 5 * LOG;
 const relativeOutput = path.relative(root, out);
 if (!path.isAbsolute(relativeOutput) && relativeOutput !== ".." && !relativeOutput.startsWith(`..${path.sep}`))
   throw Error("OUTPUT_MUST_BE_OUTSIDE_REPOSITORY");
+if (authorityMode && process.platform === "win32") {
+  const parent = fs.realpathSync(path.dirname(out));
+  if (path.parse(out).root.toUpperCase() !== "D:\\" || path.parse(parent).root.toUpperCase() !== "D:\\")
+    throw Error("AUTHORITY_OUTPUT_REQUIRES_D_DRIVE");
+  if (!childMode) {
+    const space = fs.statfsSync(parent, { bigint: true });
+    if (space.bavail * space.bsize < 64n * 1048576n) throw Error("AUTHORITY_PARENT_FREE_SPACE_64M_REQUIRED");
+  }
+}
 const base = path.relative(root, here).replaceAll("\\", "/");
-const experiments = ["pointing-session-epoch", "calibration-epoch-compatibility", "session-epoch-perception"].map(
-  (n) => `${base}/${n}.experiment.ts`,
-);
+const originalExperiments = [
+  "pointing-session-epoch",
+  "calibration-epoch-compatibility",
+  "session-epoch-perception",
+].map((n) => `${base}/${n}.experiment.ts`);
+const authorityExperiment = `${base}/session-epoch-authority.experiment.ts`,
+  experiments = authorityMode ? [authorityExperiment] : originalExperiments;
 const sources = [
   path.relative(root, self),
-  ...experiments,
+  ...originalExperiments,
   `${base}/pointing-session-epoch.ts`,
   `${base}/calibration-epoch-compatibility.ts`,
   ...[
@@ -45,6 +66,7 @@ const sources = [
   ...["owned-process.mjs", "owned-process-windows.ps1", "owned-process-linux.py"].map(
     (n) => `scripts/sounding-line/${n}`,
   ),
+  ...(authorityMode ? [authorityExperiment] : []),
 ];
 const sha = (b) => crypto.createHash("sha256").update(b).digest("hex");
 const snapshot = () =>
@@ -67,8 +89,8 @@ if (childMode) {
   const pins = JSON.parse(fs.readFileSync(path.join(out, "source-pins.json"), "utf8"));
   const r = {
     qualification: false,
-    scope: "GENERATED_SESSION_EPOCH_RESEARCH_ONLY",
-    expectedTests: 42,
+    scope,
+    expectedTests,
     pass: false,
     startedAt: new Date().toISOString(),
   };
@@ -146,7 +168,13 @@ if (childMode) {
       pending: j.numPendingTests,
       todo: j.numTodoTests,
     });
-    r.pass = r.total === 42 && r.passed === 42 && r.failed === 0 && r.pending === 0 && r.todo === 0 && !consoleOverflow;
+    r.pass =
+      r.total === expectedTests &&
+      r.passed === expectedTests &&
+      r.failed === 0 &&
+      r.pending === 0 &&
+      r.todo === 0 &&
+      !consoleOverflow;
   } catch (e) {
     r.error = String(e.stack || e);
   } finally {
@@ -183,8 +211,8 @@ if (childMode) {
   process.env.TMPDIR = temp;
   const r = {
     qualification: false,
-    scope: "GENERATED_SESSION_EPOCH_RESEARCH_ONLY",
-    expectedTests: 42,
+    scope,
+    expectedTests,
     innerDeadlineMs: 45000,
     ownerDeadlineMs: 60000,
     directoryLimitBytes: LIMIT,
@@ -207,21 +235,32 @@ if (childMode) {
         return [k, fd];
       }),
     );
-    child = spawnOwnedProcess(process.execPath, ["--max-old-space-size=1024", self, "--child", "--output", out], {
-      root,
-      env: {
-        ...process.env,
-        REACH_RESEARCH_OWNED_OUTPUT: out,
-        TEMP: temp,
-        TMP: temp,
-        TMPDIR: temp,
-        NODE_DISABLE_COMPILE_CACHE: "1",
-        NODE_COMPILE_CACHE: "",
-        APPDATA: path.join(temp, "roaming"),
-        LOCALAPPDATA: path.join(temp, "local"),
-        XDG_CACHE_HOME: path.join(temp, "cache"),
+    child = spawnOwnedProcess(
+      process.execPath,
+      [
+        "--max-old-space-size=1024",
+        self,
+        "--child",
+        "--output",
+        out,
+        ...(authorityMode ? ["--append-only-authority"] : []),
+      ],
+      {
+        root,
+        env: {
+          ...process.env,
+          REACH_RESEARCH_OWNED_OUTPUT: out,
+          TEMP: temp,
+          TMP: temp,
+          TMPDIR: temp,
+          NODE_DISABLE_COMPILE_CACHE: "1",
+          NODE_COMPILE_CACHE: "",
+          APPDATA: path.join(temp, "roaming"),
+          LOCALAPPDATA: path.join(temp, "local"),
+          XDG_CACHE_HOME: path.join(temp, "cache"),
+        },
       },
-    });
+    );
     for (const k of ["stdout", "stderr"]) {
       child[k].unpipe(k === "stdout" ? process.stdout : process.stderr);
       child[k].on("data", (b) => {
@@ -236,7 +275,7 @@ if (childMode) {
     }
     monitor = setInterval(() => {
       try {
-        if (bytes(out) > LIMIT - RESERVE) throw Error("OUTPUT_32M_CAP");
+        if (bytes(out) > LIMIT - RESERVE) throw Error(authorityMode ? "OUTPUT_2M_CAP" : "OUTPUT_32M_CAP");
       } catch (e) {
         trip(e);
       }

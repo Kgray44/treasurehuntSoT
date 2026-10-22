@@ -11215,6 +11215,18 @@
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/append-only-authority-20261021/aggregate.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Phase_1_Append_Only_Authority_Diagnostic_20261021.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
     }
   ]
 }

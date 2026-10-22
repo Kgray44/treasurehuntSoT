@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "scope": "GENERATED_APPEND_ONLY_AUTHORITY_DIAGNOSTIC",
+  "qualification": false,
+  "decision": "COPIED_TERMINAL_FALSIFIER_FAILED_NO_AUTHORITY_ACCEPTANCE",
+  "sourceBaseCommit": "290b620cc7668873209404b8bdd303ef3d3a9215",
+  "execution": {
+    "executions": 1,
+    "tests": 2,
+    "passed": 1,
+    "failed": 1,
+    "pending": 0,
+    "todo": 0,
+    "exitCode": 1,
+    "suitePass": false,
+    "lifecyclePass": true,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "cleanupEscalated": true,
+    "sourcePinsUnchanged": true,
+    "vitestClosed": true,
+    "passingCase": "True-terminal uninterrupted control",
+    "failingCase": "Copied-terminal zero-READY safety assertion",
+    "jointSafetyAssertionReached": false,
+    "jointDiagnosticRetainedBeforeAssertions": true
+  },
+  "copiedArmSourcePrediction": {
+    "classification": "PRE_EXECUTION_SOURCE_PREDICTION_NOT_MEASUREMENT",
+    "publishedPoints": 6,
+    "readyRows": 1,
+    "numericProjectionRows": 3,
+    "readyAndNumericProjectionRows": 1,
+    "firstReadyGeneratedCaptureMs": 1166,
+    "matchedByActualCounts": true,
+    "matchingPredictionDoesNotPassSafetyAssertion": true
+  },
+  "actualArms": {
+    "uninterruptedTrueTerminal": {
+      "captures": 11,
+      "publishedPoints": 6,
+      "readyRows": 1,
+      "numericProjectionRows": 3,
+      "readyAndNumericProjectionRows": 1,
+      "publishedWithOriginalLogicalIdentity": 6,
+      "publishedWithNewLogicalIdentity": 0,
+      "fitImmutable": true
+    },
+    "uninterruptedCopiedTerminal": {
+      "captures": 11,
+      "publishedPoints": 6,
+      "readyRows": 1,
+      "numericProjectionRows": 3,
+      "readyAndNumericProjectionRows": 1,
+      "publishedWithOriginalLogicalIdentity": 6,
+      "publishedWithNewLogicalIdentity": 0,
+      "fitImmutable": true,
+      "originalNineCapturePrefix": {
+        "captures": 9,
+        "publishedPoints": 4,
+        "readyRows": 0,
+        "numericProjectionRows": 1,
+        "readyAndNumericProjectionRows": 0
+      },
+      "twoFixedAppendedCaptures": {
+        "captures": 2,
+        "publishedPoints": 2,
+        "readyRows": 1,
+        "numericProjectionRows": 2,
+        "readyAndNumericProjectionRows": 1
+      }
+    },
+    "explicitColdReset": false,
+    "comparisonScope": "Two generated uninterrupted arms, not independent physical trials. The copied terminal is an overlapping transplanted appearance, not a filmed wrong finger or detached silhouette."
+  },
+  "clockAndFitScope": {
+    "evaluationNowIsCapturePlusMs": 3,
+    "externalFitCreatedAtGeneratedMs": 1000,
+    "numericProjectionGeneratedCapturesMs": [1033, 1100, 1166],
+    "readyGeneratedCaptureMs": 1166,
+    "jointReadyAndNumericProjectionGeneratedCaptureMs": 1166,
+    "sameInBothArms": true,
+    "earlierNullProjectionInterpretation": "Earlier published rows are evaluated before fit creation and are rejected by that clock guard. Their null numerical result is not proof of binding safety.",
+    "fitScope": "Externally constructed and independently numerically validated fixture bound to the original observation; each projection uses the actual incoming binding. It is not an actual pre-pause physical calibration journey; the original seed block did not reach READY.",
+    "measurementScope": "Generated capture clocks and numerical projections are not measured inference, recovery, capture-to-display latency or action authority."
+  },
+  "retainedOriginalResearch": {
+    "tests": 42,
+    "passed": 40,
+    "failed": 2,
+    "rerunForThisDiagnostic": false,
+    "priorFailedReceiptPinsChecked": 10,
+    "priorFailedReceiptPinMismatches": 0,
+    "preservationPinsCheckedAfterDiagnostic": 13,
+    "preservationPinMismatches": 0,
+    "priorPublicAggregatesInPreservationReceipt": 5,
+    "priorPublicAggregatesUnchanged": true,
+    "interpretation": "This separate two-case failed diagnostic neither replaces the old 42-case results nor turns their failed assertions into passes."
+  },
+  "boundsAndNonClaims": {
+    "runOutputLimitBytes": 2097152,
+    "privateRootLimitBytes": 8388608,
+    "runBytesBeforeOwnerReceipt": 16618,
+    "perLogLimitBytes": 65536,
+    "innerDeadlineMs": 45000,
+    "ownerDeadlineMs": 60000,
+    "minimumOutputVolumeFreeBytes": 67108864,
+    "minimumSystemVolumeFreeBytes": 32212254720,
+    "methodRetuning": false,
+    "canonicalProductionEdits": 0,
+    "buildRuns": 0,
+    "neuralInferenceOrProviderCalls": 0,
+    "paidCalls": 0,
+    "cameraOrBrowserRuns": 0,
+    "recordingOrHiddenControlRuns": 0,
+    "rawWatchglassInput": false,
+    "constructedModelAnchors": true,
+    "applicationIntegration": false,
+    "calibrationAdoption": false,
+    "actionAuthority": false,
+    "physicalAccuracyOrIdentityProof": false
+  },
+  "provenance": {
+    "publicSourceSha256": {
+      "scripts/reach/research/session-epochs-20261021/session-epoch-authority.experiment.ts": "a8f4807e828c6ccb58faacb86512c5246e25f3cb83bf4bcd8d834b9110da9c3c",
+      "scripts/reach/research/session-epochs-20261021/run-research.mjs": "8bb94075a4cf9a318c02ace46f5108ae1d4ed5c90c7155b3068f3a306ea06cee",
+      "scripts/reach/research/session-epochs-20261021/session-epoch-perception.experiment.ts": "89dc34873c449c71fcbd933cac338f7d9b167b000a26b8bf853308d5db8efa99",
+      "src/reach/index-image-tracker.ts": "c3bfe20e82a4c9e6230b357bb2890b0eebf5add5930948f003e8b1bb8780ed56",
+      "src/reach/index-image-readiness.ts": "7ca31f494a3e607bd97467f85fcb9d5336e0bdf6e2c70cdca10e1235f04ca4fb",
+      "src/reach/index-image-observation.ts": "733475e1ebf5934fa9c01a6e81d206c37e378c8652c8403ea2e3eb2ae882b2a3",
+      "src/reach/calibration.ts": "bdac50d3fb2e8ecde6542770e198baa757f10150db260f17cef3eb21f974a90d"
+    },
+    "receiptSha256": {
+      "prospectiveProtocol": "45bef5cf592bd696d344d734fdca14b9960507c2b0f8aa6e7d10079ca8492ce6",
+      "preExecutionFreeze": "47600ab9ee818a4e52610c9e3b412c24f8bff4860d913bbede5f12215510b4ae",
+      "preservationBefore": "db81cc021f0614d127f962885a6bde49f0604352a35755639bba07d490343e1b",
+      "strictTypecheck": "6f6d10e3699240ebf8d4026c8ea90f53027dcf21c98b1afeb7ea37f5fdb4a72d",
+      "actualTrueArm": "8875d330db08f661fc29e07c231ae9098096b1bc98ad3ec2dd45aa5e445c0aed",
+      "actualCopiedArm": "0a44ff5977bf40507955a23a219044f9b480ca3b3669e74559239722d6a65891",
+      "testResult": "ffa52e12b2bc641cd718a49f5468c9216b16dc35899ea1c8e6241b4ac0d53832",
+      "execution": "e645eddc14390ed42be4949717bda1969c912578bb947645cec0e33dba997acd",
+      "ownedLifecycle": "b7131571bec740f00dc36268201f7b958b2079618e393b21d0e491ce6fc34723",
+      "sourcePins": "da607b4aa4f98098dc2df90cbd9f76c1b9fe9599954a2114e90f5b48af5712e2",
+      "unchangedOriginalSessionEpochAggregate": "455b080703cffeded1fc15ac70cc0667ef486098610ff7e55df6e170c4b500e5"
+    }
+  }
+}
