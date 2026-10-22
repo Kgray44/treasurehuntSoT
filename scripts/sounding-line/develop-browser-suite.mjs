@@ -12,6 +12,7 @@ import { runBrowserAuthority } from "./browser-authority.mjs";
 import { createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
 import { createBrowserFailurePublicationOutput } from "./private-browser-failure-output.mjs";
 import { processExit, spawnOwnedProcess, stopOwnedProcess } from "./owned-process.mjs";
+import { createDevelopmentFailureEvidence, readDevelopmentFailureReport } from "./development-failure-evidence.mjs";
 
 const ROLE = "DEVELOPMENT_ONLY";
 const DIST = ".next";
@@ -238,13 +239,19 @@ async function inspectBuildLink(file, relative, workspace) {
   const before = await lstat(file),
     literal = await readlink(file);
   const target = path.resolve(path.dirname(path.join(workspace, DIST, relative)), literal);
+  const absolute = path.isAbsolute(literal);
   requireValue(
-    before.isSymbolicLink() &&
-      !path.isAbsolute(literal) &&
-      contained(path.join(workspace, "node_modules"), target) &&
-      (await realpath(target)) === target,
+    before.isSymbolicLink() && contained(path.join(workspace, "node_modules"), target),
     "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
   );
+  if (absolute) {
+    const targetStat = process.platform === "win32" && literal === target ? await lstat(target) : null;
+    requireValue(
+      targetStat?.isDirectory() && !targetStat.isSymbolicLink(),
+      "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+    );
+  }
+  requireValue((await realpath(target)) === target, "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES");
   const after = await lstat(file);
   requireValue(
     after.isSymbolicLink() &&
@@ -255,7 +262,7 @@ async function inspectBuildLink(file, relative, workspace) {
       (await readlink(file)) === literal,
     "DEVELOPMENT_BUILD_LINK_CHANGED",
   );
-  return { link: literal, target };
+  return { link: literal, target, ...(absolute ? { linkType: "junction" } : {}) };
 }
 async function treeFingerprint(root, workspace) {
   const files = [];
@@ -289,7 +296,7 @@ async function copyBuild(from, to, workspace, prefix = "") {
       target = path.join(to, entry.name);
     if (entry.isSymbolicLink()) {
       const descriptor = await inspectBuildLink(source, relative, workspace);
-      await symlink(descriptor.link, target);
+      await symlink(descriptor.link, target, descriptor.linkType);
     } else if (entry.isDirectory()) await copyBuild(source, target, workspace, relative);
     else await privateWrite(target, await regularBytes(source));
   }
@@ -310,6 +317,11 @@ async function immutable(root, workspace, prefix = "") {
   }
   await chmod(root, 0o500);
 }
+export {
+  treeFingerprint as developmentBuildFingerprint,
+  copyBuild as copyDevelopmentBuild,
+  immutable as makeDevelopmentBuildImmutable,
+};
 async function streamedFileHash(file) {
   const handle = await open(file, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   try {
@@ -464,9 +476,22 @@ function privateLauncher(output, secret) {
             item.retained += chunk.length;
           } else item.complete = false;
         });
+        stream.resume();
       }
       children.push({ command, args, streams });
       return child;
+    },
+    snapshot() {
+      requireValue(children.length === 2, "DEVELOPMENT_PRODUCER_SET_CHANGED");
+      return children.flatMap((child, index) =>
+        Object.entries(child.streams).map(([kind, item]) => ({
+          label: `${index === 0 ? "server" : "browser"}.${kind}`,
+          bytes: Buffer.concat(item.chunks),
+          originalBytes: item.bytes,
+          originalStreamSHA256: item.digest.copy().digest("hex"),
+          complete: item.complete,
+        })),
+      );
     },
     async close() {
       const receipts = [];
@@ -501,6 +526,7 @@ function privateLauncher(output, secret) {
     },
   };
 }
+export { privateLauncher as createDevelopmentPrivateLauncher };
 async function setupCommand(plan, env, launcher, step, receipts) {
   const args = step.args.map((arg) => (arg === "<owned-database-url>" ? env.DATABASE_URL : arg));
   const child = launcher.launch(process.execPath, args, { root: plan.workspace, env });
@@ -541,6 +567,7 @@ async function execute(mode, plan, options) {
     requireValue(await missing(path.join(plan.workspace, file)), "DEVELOPMENT_UNOWNED_ENVIRONMENT_FILE_REFUSED");
   await ownedDirectory(path.dirname(plan.outputDirectory));
   await ownedDirectory(plan.outputDirectory, true);
+  const outputStartedAt = Math.floor((await lstat(plan.outputDirectory)).ctimeMs);
   for (const artifacts of [
     path.join(plan.workspace, "artifacts"),
     path.join(plan.workspace, "artifacts", "sounding-line"),
@@ -669,6 +696,27 @@ async function execute(mode, plan, options) {
       receipt.runtime = await runBrowserAuthority({
         root: plan.workspace,
         onPrivateFailurePublication: publicationOutput.capture,
+        async collectDevelopmentFailureEvidence({ binding, producersClosed }) {
+          requireValue(producersClosed, "DEVELOPMENT_PRODUCER_CLOSURE_UNPROVEN");
+          const report = await readDevelopmentFailureReport(plan.outputDirectory, outputStartedAt);
+          const provider =
+            process.env.GITHUB_ACTIONS === "true"
+              ? {
+                  repository: process.env.GITHUB_REPOSITORY,
+                  runId: process.env.GITHUB_RUN_ID,
+                  attempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+                  workflowSha: process.env.GITHUB_SHA,
+                }
+              : null;
+          return createDevelopmentFailureEvidence({
+            binding,
+            selector: plan.test,
+            provider,
+            report,
+            streams: launcher.snapshot(),
+            producersClosed,
+          });
+        },
         environment: {
           ...environment,
           ...diagnosticSession.beginScope(),

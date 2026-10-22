@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-21",
+  "generated_at": "2026-10-22",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -387,6 +387,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Development_Report_And_Producer_Output_Retention_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Device_Lab/README.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -424,6 +430,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Experience_Changed_Path_Buffer_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Nonapplicable_Experience_Replay_Admission_Repair.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -6322,6 +6334,18 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/README.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sounding_Line_Expired_R26_Unrelated_Classification_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sounding_Line_Source_Snapshot_And_Windows_Build_Links_Repair.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
