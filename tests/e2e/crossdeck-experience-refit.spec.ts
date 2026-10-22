@@ -1,6 +1,7 @@
 // @sounding-line-registration owner=project-crossdeck suite=browser.crossdeck contracts=crossdeck.phase2.continuity,crossdeck.refit.companion,spatial-pilot.experience,homeport.shell.crossdeck-companion
-import { test, expect, type Page, type Locator } from "@playwright/test";
-import { mkdir, writeFile } from "node:fs/promises";
+import { test, expect, type Page, type Locator, type TestInfo } from "@playwright/test";
+import { mkdir, writeFile, lstat, realpath, open } from "node:fs/promises";
+import { constants as fileConstants } from "node:fs";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import AxeBuilder from "@axe-core/playwright";
@@ -14,6 +15,250 @@ import { assertDesktopHandoffReceiptReadable, assertPhoneJournalReadingArea } fr
 test.describe.configure({ mode: "serial", timeout: 180_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
 test.afterAll(() => db.$disconnect());
+
+// Failure-only private attachments; the original assertions and teardown stay authoritative.
+type FailureMedia = {
+  directory: string;
+  tracesFinalized: boolean;
+  contextsFinalized: boolean;
+  screenshots: string[];
+  videos: ReturnType<Page["video"]>[];
+  bodyFailure?: unknown;
+  cleanupErrors: unknown[];
+};
+const failureMediaByTest = new Map<string, FailureMedia>();
+const privateFailureFileLimit = 64 * 1024 * 1024;
+const privateFailureContextLimit = 1024 * 1024;
+
+async function attachPrivateFailureFile(
+  info: TestInfo,
+  root: string,
+  file: string,
+  name: "screenshot" | "video" | "trace" | "error-context",
+  contentType: string,
+  budget: { remaining: number; sequence: number },
+) {
+  const parent = path.resolve(root),
+    source = path.resolve(file);
+  const relative = path.relative(parent, source);
+  if (
+    !relative ||
+    relative === ".." ||
+    relative.startsWith(".." + path.sep) ||
+    path.isAbsolute(relative) ||
+    (await realpath(parent)) !== parent ||
+    (await realpath(source)) !== source
+  )
+    throw new Error("CROSSDECK_PRIVATE_ATTACHMENT_OUTSIDE_ROOT");
+  const named = await lstat(source);
+  if (
+    !named.isFile() ||
+    named.isSymbolicLink() ||
+    named.nlink !== 1 ||
+    named.size <= 0 ||
+    named.size > privateFailureFileLimit ||
+    named.size > budget.remaining ||
+    (typeof process.getuid === "function" && named.uid !== process.getuid())
+  )
+    throw new Error("CROSSDECK_PRIVATE_ATTACHMENT_FILE_OR_LIMIT");
+  const handle = await open(source, fileConstants.O_RDONLY | fileConstants.O_NOFOLLOW | fileConstants.O_NONBLOCK);
+  let bytes: Buffer;
+  try {
+    const opened = await handle.stat();
+    const stable = (stat: typeof named) =>
+      stat.isFile() &&
+      !stat.isSymbolicLink() &&
+      (["dev", "ino", "size", "nlink", "mtimeMs", "ctimeMs"] as const).every((key) => stat[key] === named[key]);
+    if (!stable(opened)) throw new Error("CROSSDECK_PRIVATE_ATTACHMENT_CHANGED");
+    bytes = Buffer.alloc(named.size);
+    let offset = 0;
+    while (offset < bytes.length) {
+      const read = await handle.read(bytes, offset, bytes.length - offset, offset);
+      if (!read.bytesRead) throw new Error("CROSSDECK_PRIVATE_ATTACHMENT_CHANGED");
+      offset += read.bytesRead;
+    }
+    const extra = await handle.read(Buffer.alloc(1), 0, 1, bytes.length);
+    if (
+      extra.bytesRead ||
+      !stable(await handle.stat()) ||
+      !stable(await lstat(source)) ||
+      (await realpath(source)) !== source
+    )
+      throw new Error("CROSSDECK_PRIVATE_ATTACHMENT_CHANGED");
+  } finally {
+    await handle.close();
+  }
+  budget.remaining -= bytes.length;
+  const staged = info.outputPath(`crossdeck-private-${name}-${budget.sequence++}${path.extname(source)}`);
+  await writeFile(staged, bytes, { flag: "wx", mode: 0o600 });
+  // A path attachment is copied by Playwright into its owned results tree.
+  await info.attach(name, { path: staged, contentType });
+}
+
+function boundedDiagnosticText(value: unknown, maximum: number) {
+  if (typeof value !== "string") return { available: false, type: typeof value };
+  const clip = (text: string) => {
+    let characters = Math.min(text.length, maximum);
+    if (
+      characters < text.length &&
+      characters > 0 &&
+      text.charCodeAt(characters - 1) >= 0xd800 &&
+      text.charCodeAt(characters - 1) <= 0xdbff &&
+      text.charCodeAt(characters) >= 0xdc00 &&
+      text.charCodeAt(characters) <= 0xdfff
+    )
+      characters--;
+    const prefix = Buffer.from(text.slice(0, characters), "utf8");
+    let end = Math.min(prefix.length, maximum);
+    while (end < prefix.length && end > 0 && (prefix[end] & 0xc0) === 0x80) end--;
+    return prefix.subarray(0, end).toString("utf8");
+  };
+  const prefix = clip(value);
+  const redacted = prefix
+    .replace(
+      /\b(authorization|cookie|password|token|secret|csrf|session)\s*[:=]\s*(?:Bearer\s+)?[^\s,;]+/giu,
+      "$1=[REDACTED]",
+    )
+    .replace(/([?&](?:token|code|secret|session|csrf|password)=)[^&#\s<>]+/giu, "$1[REDACTED]");
+  const text = clip(redacted);
+  return {
+    available: true,
+    text,
+    maximumBytes: maximum,
+    sourceCodeUnits: value.length,
+    capturedSourceCodeUnits: prefix.length,
+    omittedSourceCodeUnits: value.length - prefix.length,
+    truncated: prefix.length < value.length || text.length < redacted.length,
+    redacted: redacted !== prefix,
+    postRedactionClipped: text.length < redacted.length,
+  };
+}
+function privateErrorSummary(error: unknown) {
+  if (error === null || typeof error !== "object") return { value: boundedDiagnosticText(error, 2048) };
+  const field = (name: string, maximum: number) => {
+    try {
+      return boundedDiagnosticText((error as Record<string, unknown>)[name], maximum);
+    } catch {
+      return { available: false, getterFailed: true };
+    }
+  };
+  return {
+    name: field("name", 256),
+    message: field("message", 2048),
+    stack: field("stack", 4096),
+    value: field("value", 1024),
+    snippet: field("snippet", 1024),
+  };
+}
+function boundedErrorList(errors: readonly unknown[], maximum: number) {
+  return {
+    count: errors.length,
+    omitted: Math.max(0, errors.length - maximum),
+    items: errors.slice(0, maximum).map(privateErrorSummary),
+  };
+}
+function privateFailureContext(
+  info: Pick<TestInfo, "status" | "errors">,
+  media: FailureMedia | undefined,
+  collectionErrors: readonly unknown[],
+) {
+  const observedStatus = info.status;
+  const status =
+    typeof observedStatus === "string" &&
+    ["passed", "failed", "timedOut", "skipped", "interrupted"].includes(observedStatus)
+      ? observedStatus
+      : "UNKNOWN";
+  const observations = {
+    status,
+    errors: boundedErrorList(info.errors, 4),
+    bodyFailure: media?.bodyFailure === undefined ? null : privateErrorSummary(media.bodyFailure),
+    cleanupErrors: boundedErrorList(media?.cleanupErrors ?? [], 5),
+    collectionErrors: boundedErrorList(collectionErrors, 5),
+    mediaFinalized: media ? { traces: media.tracesFinalized, contexts: media.contextsFinalized } : null,
+    screenshotFiles: (media?.screenshots ?? [])
+      .slice(0, 2)
+      .map((file) => boundedDiagnosticText(path.basename(file), 256)),
+    screenshotFilesOmitted: Math.max(0, (media?.screenshots.length ?? 0) - 2),
+    limitation: "Bounded private summary; full original errors remain in the existing private producer channel.",
+  };
+  // Only bounded plain values reach JSON serialization; original producer errors are never modified.
+  const serialized = Buffer.from(JSON.stringify(observations, null, 2));
+  if (serialized.length <= privateFailureContextLimit) return serialized;
+  // Retain a valid useful context even if future summary fields increase overhead.
+  return Buffer.from(
+    JSON.stringify({
+      status,
+      constructionOmitted: true,
+      reason: "CONTEXT_OVERHEAD_LIMIT",
+      errors: boundedErrorList(info.errors, 1),
+      bodyFailure: media?.bodyFailure === undefined ? null : privateErrorSummary(media.bodyFailure),
+      originalCounts: {
+        errors: info.errors.length,
+        cleanup: media?.cleanupErrors.length ?? 0,
+        collection: collectionErrors.length,
+      },
+    }),
+  );
+}
+
+test.afterEach(async ({}, info) => {
+  const media = failureMediaByTest.get(info.testId);
+  failureMediaByTest.delete(info.testId);
+  if (info.status === info.expectedStatus) return;
+  const collectionErrors: unknown[] = [];
+  const attempt = async (operation: () => Promise<void>) => {
+    try {
+      await operation();
+    } catch (error) {
+      collectionErrors.push(error);
+    }
+  };
+  // Keep the installed 64 MiB aggregate cap, reserving 1 MiB each for context and manifest.
+  const mediaBudget = {
+    remaining: privateFailureFileLimit - 2 * privateFailureContextLimit,
+    sequence: 0,
+  };
+  if (media) {
+    if (!media.screenshots.length) collectionErrors.push(new Error("CROSSDECK_PRIVATE_SCREENSHOT_UNAVAILABLE"));
+    for (const file of media.screenshots)
+      await attempt(() =>
+        attachPrivateFailureFile(info, media.directory, file, "screenshot", "image/png", mediaBudget),
+      );
+    if (media.tracesFinalized) {
+      for (const file of ["desktop-trace.zip", "phone-trace.zip"])
+        await attempt(() =>
+          attachPrivateFailureFile(
+            info,
+            media.directory,
+            path.join(media.directory, file),
+            "trace",
+            "application/zip",
+            mediaBudget,
+          ),
+        );
+    } else collectionErrors.push(new Error("CROSSDECK_PRIVATE_TRACE_NOT_FINALIZED"));
+    if (media.contextsFinalized && media.videos.length === 2) {
+      for (const video of media.videos)
+        await attempt(async () => {
+          if (!video) throw new Error("CROSSDECK_PRIVATE_VIDEO_UNAVAILABLE");
+          await attachPrivateFailureFile(info, media.directory, await video.path(), "video", "video/webm", mediaBudget);
+        });
+    } else collectionErrors.push(new Error("CROSSDECK_PRIVATE_VIDEO_NOT_FINALIZED"));
+  } else collectionErrors.push(new Error("CROSSDECK_PRIVATE_MEDIA_UNAVAILABLE_BEFORE_SETUP"));
+  await attempt(async () => {
+    const context = privateFailureContext(info, media, collectionErrors);
+    const file = info.outputPath("crossdeck-private-error-context.md");
+    await writeFile(file, context, { flag: "wx", mode: 0o600 });
+    await attachPrivateFailureFile(info, info.outputDir, file, "error-context", "text/markdown", {
+      remaining: privateFailureContextLimit,
+      sequence: 0,
+    });
+  });
+  // Playwright appends hook errors to the existing failure; it never replaces it.
+  if (collectionErrors.length)
+    throw new AggregateError(collectionErrors, "Crossdeck private failure attachment collection incomplete");
+});
+
 const pairedBinding = process.env.SOUNDING_LINE_PAIRED_BINDING
   ? (JSON.parse(process.env.SOUNDING_LINE_PAIRED_BINDING) as Record<string, string>)
   : null;
@@ -61,6 +306,15 @@ for (const motion of ["no-preference", "reduce"] as const)
     const companionSession = await createAccountSession(account.id, "Synthetic Crossdeck companion");
     const directory = (process.env.CROSSDECK_REFIT_ARTIFACT_ROOT ?? "artifacts/crossdeck") + "/refit-" + motion;
     await mkdir(directory, { recursive: true });
+    const failureMedia: FailureMedia = {
+      directory,
+      tracesFinalized: false,
+      contextsFinalized: false,
+      screenshots: [],
+      videos: [],
+      cleanupErrors: [],
+    };
+    failureMediaByTest.set(test.info().testId, failureMedia);
     const desktop = await browser.newContext({
       viewport: { width: 1440, height: 1000 },
       reducedMotion: motion,
@@ -77,6 +331,7 @@ for (const motion of ["no-preference", "reduce"] as const)
     await phone.tracing.start({ screenshots: true, snapshots: true });
     const d = await desktop.newPage(),
       p = await phone.newPage();
+    failureMedia.videos = [d.video(), p.video()];
     d.setDefaultTimeout(15000);
     p.setDefaultTimeout(15000);
     const timings: Record<string, number> = {};
@@ -445,6 +700,13 @@ for (const motion of ["no-preference", "reduce"] as const)
       const errors = [...traces, ...closed, ...removed].flatMap((result) =>
         result.status === "rejected" ? [result.reason] : [],
       );
+      failureMedia.bodyFailure = bodyFailure;
+      failureMedia.cleanupErrors = errors;
+      failureMedia.tracesFinalized = traces.every((result) => result.status === "fulfilled");
+      failureMedia.contextsFinalized = closed.every((result) => result.status === "fulfilled");
+      failureMedia.screenshots = [screenshots.DESKTOP.at(-1), screenshots.MOBILE.at(-1)]
+        .filter((name): name is string => name !== undefined)
+        .map((name) => path.join(directory, name));
       if (errors.length)
         throw new AggregateError(
           bodyFailure === undefined ? errors : [bodyFailure, ...errors],
