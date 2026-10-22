@@ -157,7 +157,11 @@ test("Player returns through account and real version-pinned private history", a
   await detailLink.click();
   await expect(page).toHaveURL(detailUrl);
   await expect(page.getByRole("heading", { name: "NCL01 Consumer Chronicle", exact: true })).toBeVisible();
-  await expect(page.getByText("Synthetic account history v1", { exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "Exact Edition", exact: true })
+      .getByText("Synthetic account history v1", { exact: true }),
+  ).toBeVisible();
   await accessible(page);
   await page.getByRole("link", { name: "Back to Your Voyages", exact: true }).click();
   await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();

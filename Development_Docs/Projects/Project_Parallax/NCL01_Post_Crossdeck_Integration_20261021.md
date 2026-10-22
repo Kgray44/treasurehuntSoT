@@ -474,3 +474,34 @@ the original heading/edition, settled-route and full accessibility assertions.
 It does not refresh the expected path opportunistically, remove a condition,
 force motion, weaken colors or rerun an audit. A new execution must verify the
 previously unreached detail audit, Player return and authorization denials.
+
+That exact-destination correction was frozen as
+`7c114fe26c1e9dafe79e42b2dec94fa4c938e6a4`, tree
+`7399d6e42ca7475d6e731af524cb755a079a08e6`. Its
+[new isolated Windows run](evidence/ncl01-full-completion-20261021/consumer-local-7c114fe2.failure.json)
+executed seven cases, six passing and one failing, without retries or skips.
+The real projected detail URL assertion passed. The next edition-label
+assertion failed strict uniqueness: the correct label appears in both the
+detail hero and the named Exact Edition section, and the outgoing list briefly
+provides a third match. The current detail legitimately retains two matches
+after transition; waiting longer cannot make the broad text locator unique.
+The detail accessibility audit and later Player return/denials remain unrun.
+The Owner account return and the other five cases passed; all setup and
+browser/server/proxy cleanup passed. This is a separate test-selector failure,
+not a failure of the exact destination correction or an established product
+defect. Original diagnostics and earlier failures remain retained.
+
+The next minimal correction scopes the unchanged exact edition text to the
+actual named Exact Edition region. Independent source/trace review confirms
+its accessible name and historical-label field. It retains exact destination,
+title, settled-route, full accessibility, return and authorization assertions;
+there is no first/last selection, retry or relaxed deadline. Current execution
+is required before calling the new Player case qualified.
+
+The [commit-bound source review](evidence/ncl01-full-completion-20261021/source-applicability-d8065cee.json)
+separately verifies native, runtime, original assets, official artwork and
+distribution-input equivalence through d806. It explicitly excludes mutable
+uncommitted tests and makes no claim about concurrent browser execution or a
+clean worktree at the end of its read-only audit. Its corrected second receipt
+preserves the first receipt privately. Source applicability is not a new native
+run, aggregate acceptance, deployment or physical-device result.

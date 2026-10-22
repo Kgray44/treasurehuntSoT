@@ -13203,6 +13203,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/consumer-local-7c114fe2.failure.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/consumer-local-846ef70e.failure.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -13456,6 +13462,18 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/software.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/source-applicability-7c114fe2.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/source-applicability-d8065cee.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
