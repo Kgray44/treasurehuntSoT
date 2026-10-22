@@ -5243,3 +5243,69 @@ test("SC00A cannot append an active grant or change the canonical R26 registry d
   for (const changed of [rows.slice(1), [...rows].reverse(), [...rows, { id: "invented" }]])
     assert.throws(() => selectTrustedExceptions([...changed, SC00A]), /SC00A_PREDECESSOR_REGISTRY_CHANGED/u);
 });
+
+test("SC00A REST history retains ancestry-only failed attempts when local objects or contracts are absent", async (t) => {
+  const f = fixture(t);
+  const candidate = "a".repeat(40),
+    tree = "b".repeat(40);
+  const record = {
+    ...SC00A,
+    repository: "Kgray44/treasurehuntSoT",
+    ownerApproval: {
+      actor: "Kgray44",
+      sourceTurnStartedAt: SC00A.sourceTurnStartedAt,
+      executionNotBeforeUtc: SC00A.sourceTurnStartedAt,
+    },
+  };
+  const current = {
+    ...runIdentity(f.plan, 20),
+    createdAt: "2026-10-22T12:00:00Z",
+    displayTitle: `Sounding Line finite 1 capture 726 ${f.plan.candidateSha} active`,
+  };
+  const prior = {
+    ...runIdentity(f.plan, 10),
+    createdAt: "2026-10-22T11:00:00Z",
+    displayTitle: `Sounding Line finite 1 capture 999 ${candidate} active`,
+  };
+  for (const hasContracts of [false, true]) {
+    const calls = [];
+    const request = async (endpoint, method) => {
+      assert(!method || method === "GET");
+      calls.push(endpoint);
+      if (endpoint.startsWith(`actions/workflows/${current.workflowId}/runs?`))
+        return { total_count: 2, workflow_runs: [remoteRun(current), remoteRun(prior, "completed", "failure")] };
+      if (endpoint === `git/commits/${candidate}`) return { sha: candidate, tree: { sha: tree } };
+      if (endpoint === `git/trees/${tree}?recursive=1`)
+        return {
+          truncated: false,
+          tree: hasContracts ? [{ path: "testing/contracts.json", type: "blob", sha: "c".repeat(40) }] : [],
+        };
+      if (endpoint === `git/blobs/${"c".repeat(40)}`)
+        return { encoding: "base64", content: Buffer.from(JSON.stringify({ contracts: [] })).toString("base64") };
+      if (endpoint === `compare/${SC00A.frozenReferenceSha}...${candidate}`)
+        return {
+          base_commit: { sha: SC00A.frozenReferenceSha },
+          merge_base_commit: { sha: SC00A.frozenReferenceSha },
+          status: "ahead",
+          ahead_by: 1,
+          behind_by: 0,
+          commits: [{ sha: candidate }],
+        };
+      throw new Error(`Unexpected synthetic endpoint ${endpoint}`);
+    };
+    await assert.rejects(
+      () =>
+        requireFirstCampaignRun({
+          root: f.root,
+          record,
+          plan: f.plan,
+          mode: "capture",
+          run: current,
+          request,
+          now: new Date("2026-10-22T12:01:00Z"),
+        }),
+      /EARLIER_ATTEMPT_CONSUMED/u,
+    );
+    assert(calls.includes(`compare/${SC00A.frozenReferenceSha}...${candidate}`));
+  }
+});

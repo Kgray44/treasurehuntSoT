@@ -197,6 +197,7 @@ import {
   validateSC00APlan,
   sc00aRecordBinding,
   validateSC00AEvidence,
+  validateSC00AAncestryComparison,
 } from "./experience-sc00a.mjs";
 
 export const EXCEPTION_REGISTRY = "testing/product-experience-exceptions.json";
@@ -2161,8 +2162,9 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
         try {
           git(root, "merge-base", "--is-ancestor", SC00A.frozenReferenceSha, candidate);
           return true;
-        } catch {
-          return false;
+        } catch (error) {
+          if (error.status === 1) return false;
+          throw error; // Missing/incomplete local ancestry requires authenticated REST proof.
         }
       }
       if (r3SourceFingerprint([...inventory]) === CROSSDECK_R3.maskedSrcDigest) return true;
@@ -2181,7 +2183,7 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
       }
     } catch {
       const commit = await request(`git/commits/${candidate}`);
-      if (!commit) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
+      if (!commit || (record.id === SC00A.id && commit.sha !== candidate)) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
       const tree = await request(`git/trees/${commit.tree.sha}?recursive=1`);
       if (!tree || tree.truncated || !Array.isArray(tree.tree)) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
       if (record.id === SC00A.id) {
@@ -2195,11 +2197,19 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
           return true;
         if (tree.tree.some((entry) => SC00A.immutableHistory.some((marker) => marker.path === entry.path))) return true;
         const contracts = tree.tree.find((entry) => entry.path === "testing/contracts.json");
-        if (!contracts) return false;
-        const blob = await request(`git/blobs/${contracts.sha}`);
-        if (!blob?.content || blob.encoding !== "base64") fail("HISTORY_CANDIDATE_UNVERIFIABLE");
-        return (JSON.parse(Buffer.from(blob.content.replaceAll("\n", ""), "base64").toString()).contracts ?? []).some(
-          (entry) => entry.id === SC00A.contractId,
+        if (contracts) {
+          const blob = await request(`git/blobs/${contracts.sha}`);
+          if (!blob?.content || blob.encoding !== "base64") fail("HISTORY_CANDIDATE_UNVERIFIABLE");
+          if (
+            (JSON.parse(Buffer.from(blob.content.replaceAll("\n", ""), "base64").toString()).contracts ?? []).some(
+              (entry) => entry.id === SC00A.contractId,
+            )
+          )
+            return true;
+        }
+        return validateSC00AAncestryComparison(
+          candidate,
+          await request(`compare/${SC00A.frozenReferenceSha}...${candidate}`),
         );
       }
       if (

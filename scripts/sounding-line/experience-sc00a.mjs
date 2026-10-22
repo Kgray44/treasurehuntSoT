@@ -367,6 +367,64 @@ export function validateSC00AEvidence(plan, evidence, automatedOnly = false) {
     fail("NEW_BLOCKING_FINDING");
 }
 
+// Authenticated unpaginated compare response; GitHub returns the actual head last
+// even when the intervening list is capped. No tree-only absence proves ancestry.
+export function validateSC00AAncestryComparison(candidate, comparison) {
+  const c = comparison,
+    base = SC00A.frozenReferenceSha,
+    merge = c?.merge_base_commit?.sha;
+  if (
+    !sha(candidate) ||
+    c?.base_commit?.sha !== base ||
+    !sha(merge) ||
+    !Number.isSafeInteger(c.ahead_by) ||
+    c.ahead_by < 0 ||
+    !Number.isSafeInteger(c.behind_by) ||
+    c.behind_by < 0 ||
+    !Array.isArray(c.commits) ||
+    c.commits.length > 250
+  )
+    fail("HISTORY_CANDIDATE_UNVERIFIABLE");
+  const head = c.commits.at(-1)?.sha;
+  if (
+    c.status === "identical" &&
+    candidate === base &&
+    merge === base &&
+    c.ahead_by === 0 &&
+    c.behind_by === 0 &&
+    c.commits.length === 0
+  )
+    return true;
+  if (
+    c.status === "ahead" &&
+    merge === base &&
+    candidate !== base &&
+    c.ahead_by > 0 &&
+    c.behind_by === 0 &&
+    head === candidate
+  )
+    return true;
+  if (
+    c.status === "behind" &&
+    merge === candidate &&
+    candidate !== base &&
+    c.ahead_by === 0 &&
+    c.behind_by > 0 &&
+    c.commits.length === 0
+  )
+    return false;
+  if (
+    c.status === "diverged" &&
+    merge !== base &&
+    merge !== candidate &&
+    c.ahead_by > 0 &&
+    c.behind_by > 0 &&
+    head === candidate
+  )
+    return false;
+  fail("HISTORY_CANDIDATE_UNVERIFIABLE");
+}
+
 export function reviewIterationsAllowed(plan, iterations) {
   if (!Number.isInteger(iterations)) return false;
   if (!plan.exception) return iterations >= 1 && iterations <= 3;

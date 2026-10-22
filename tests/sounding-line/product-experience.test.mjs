@@ -30,6 +30,7 @@ import {
   validateSC00AEvidence,
   sc00aReviewProof,
   reviewIterationsAllowed,
+  validateSC00AAncestryComparison,
 } from "../../scripts/sounding-line/experience-sc00a.mjs";
 import { selectSC00ACheckoutRecord } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
 import { validateExceptionSubmissionEvidence } from "../../scripts/sounding-line/experience-exception.mjs";
@@ -1482,4 +1483,69 @@ test("SC00A review helper preserves the canonical current R26 review ordinal", (
   const required = record.currentSourceAdmission.requiredReviewIterations;
   assert.equal(reviewIterationsAllowed({ exception: record }, required), true);
   assert.equal(reviewIterationsAllowed({ exception: record }, required + 1), false);
+});
+
+test("SC00A authenticated ancestry comparison distinguishes true absence from incomplete proof", () => {
+  const base = SC00A.frozenReferenceSha,
+    candidate = "a".repeat(40);
+  const ahead = {
+    base_commit: { sha: base },
+    merge_base_commit: { sha: base },
+    status: "ahead",
+    ahead_by: 500,
+    behind_by: 0,
+    commits: [{ sha: candidate }],
+  };
+  assert.equal(validateSC00AAncestryComparison(candidate, ahead), true);
+  assert.equal(
+    validateSC00AAncestryComparison(base, { ...ahead, status: "identical", ahead_by: 0, commits: [] }),
+    true,
+  );
+  assert.equal(
+    validateSC00AAncestryComparison(candidate, {
+      ...ahead,
+      status: "behind",
+      merge_base_commit: { sha: candidate },
+      ahead_by: 0,
+      behind_by: 2,
+      commits: [],
+    }),
+    false,
+  );
+  assert.equal(
+    validateSC00AAncestryComparison(candidate, {
+      ...ahead,
+      status: "diverged",
+      merge_base_commit: { sha: "b".repeat(40) },
+      behind_by: 2,
+    }),
+    false,
+  );
+  for (const mutate of [
+    (c) => {
+      delete c.merge_base_commit;
+    },
+    (c) => {
+      c.base_commit.sha = "0".repeat(40);
+    },
+    (c) => {
+      c.commits = [];
+    },
+    (c) => {
+      c.commits[0].sha = "0".repeat(40);
+    },
+    (c) => {
+      c.status = "unknown";
+    },
+    (c) => {
+      c.behind_by = 1;
+    },
+    (c) => {
+      c.ahead_by = -1;
+    },
+  ]) {
+    const bad = structuredClone(ahead);
+    mutate(bad);
+    assert.throws(() => validateSC00AAncestryComparison(candidate, bad), /HISTORY_CANDIDATE_UNVERIFIABLE/u);
+  }
 });

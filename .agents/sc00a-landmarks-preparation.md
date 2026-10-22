@@ -24,7 +24,7 @@ SHA-256 `d92ff80369604adec514ec9a1bac4393b9a3a2a80d01d42cc78529b190c57e76`
 and the TaleEditor labels `Passage library` / `Passage inspector`. The consumer
 owner retains the unapplied additive test patch.
 
-Installation is ordered after accepted, landed #721 and its accepted #776 Studio successor, with #781 present in the reconciled base. Reconcile the
+Installation is ordered after accepted, landed #721 and the accepted #776 Studio successor to #722, with #781 present in the reconciled base. Reconcile the
 unpatched SC source onto actual main, freeze exact product/runtime/history
 bindings, preserve predecessor records, and independently review the final
 record/source before existing protected maintenance qualification. Only that
@@ -54,3 +54,5 @@ The trusted history pins cover exactly forty-two archived review-three files, fo
 The final binding still needs the actual accepted/landed #776 and #781 tuples; the full #721 accepted tuple; a reconciled unpatched SC reference and base including those prerequisites; exact post-repair product trees, contract/configuration identities and TaleEditor before/after blobs; the unchanged review-two archive destination in the reconciled SC source; and an execution-not-before bound to the verified approval. Independent exact-installation review, protected qualification, protected merge and actual landed verification remain later gates.
 
 The current checkout-probe selection validates the SC grant before any SC-specific Git proof. Unbound records fail closed. A future installed probe binds prerequisite ancestry, the unpatched label preimage and all forty-eight historical identities while reporting zero reservations, captures, product reviews or decisions. No hosted probe or consumer execution is authorized by this preparation.
+
+Remote SC campaign-history classification retains ancestry-only attempts after source witnesses, markers or contracts are stripped. It uses the authenticated unpaginated [GitHub commit comparison](https://docs.github.com/en/rest/commits/commits#compare-two-commits), binds both endpoints and merge-base/status/count consistency, and fails closed on incomplete or contradictory proof. Missing local ancestry objects use that same fallback; only a proven local non-ancestor is unrelated. The original held review finding and its failing synthetic reproduction remain immutable.
