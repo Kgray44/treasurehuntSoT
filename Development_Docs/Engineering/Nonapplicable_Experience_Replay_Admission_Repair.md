@@ -35,8 +35,12 @@ The replay entry point accepts only canonical nonapplicable shapes before
 exception admission: explicit `applicable: false`, a known non-user-facing
 classification, no contract obligations, and either the minimal result or the
 complete graph result with empty surfaces and uncertainty. Graph paths remain
-typed strings. Extra fields, inherited state, unknown classifications, nonempty
-obligations, uncertain results and malformed applicability fail closed.
+typed strings in dense plain arrays. Every top-level field and array entry must
+be an own enumerable data property; input accessors and input-owned methods are
+never invoked. The inactive-policy classification accepts only its minimal
+three-field form. Extra fields, sparse arrays, inherited state, unknown
+classifications, nonempty obligations, uncertain results and malformed
+applicability fail closed. Frozen canonical data remains valid.
 
 Valid nonapplicable calls return `NOT_APPLICABLE` without source recognition,
 exception claims, diagnostic setup, replay files or process execution. An

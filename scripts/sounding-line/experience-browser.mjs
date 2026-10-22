@@ -683,8 +683,12 @@ export async function runTrustedExperienceReplay({
   diagnostics,
   onDiagnosticScope,
 }) {
-  if (plan?.applicable !== true) {
-    const keys = plan && typeof plan === "object" ? Reflect.ownKeys(plan) : [];
+  const applicability = plan && Object.getOwnPropertyDescriptor(plan, "applicable");
+  if (!applicability || !Object.hasOwn(applicability, "value") || !applicability.enumerable)
+    fail("REPLAY_PLAN_INVALID");
+  if (applicability.value !== true) {
+    const descriptors = Object.getOwnPropertyDescriptors(plan);
+    const keys = Reflect.ownKeys(descriptors);
     const graph = keys.length === 6;
     const allowed = new Set([
       "applicable",
@@ -694,25 +698,35 @@ export async function runTrustedExperienceReplay({
       "transitivePaths",
       "uncertainty",
     ]);
+    const canonicalArray = (value, empty) => {
+      if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) return false;
+      const entries = Object.getOwnPropertyDescriptors(value);
+      const length = entries.length.value;
+      if ((empty && length !== 0) || Reflect.ownKeys(entries).length !== length + 1) return false;
+      for (let index = 0; index < length; index++) {
+        const entry = entries[index];
+        if (!entry || !entry.enumerable || !Object.hasOwn(entry, "value") || typeof entry.value !== "string")
+          return false;
+      }
+      return true;
+    };
     if (
-      !plan ||
       Array.isArray(plan) ||
       Object.getPrototypeOf(plan) !== Object.prototype ||
-      plan.applicable !== false ||
-      !["BACKEND_ONLY", "DOCUMENTATION_ONLY", "INTERNAL_TOOLING", "TRUSTED_POLICY_NOT_YET_ACTIVATED"].includes(
-        plan.classification,
-      ) ||
-      !Array.isArray(plan.contractIds) ||
-      plan.contractIds.length ||
+      applicability.value !== false ||
       ![3, 6].includes(keys.length) ||
-      keys.some((key) => !allowed.has(key)) ||
+      keys.some(
+        (key) => !allowed.has(key) || !descriptors[key].enumerable || !Object.hasOwn(descriptors[key], "value"),
+      ) ||
+      !["BACKEND_ONLY", "DOCUMENTATION_ONLY", "INTERNAL_TOOLING", "TRUSTED_POLICY_NOT_YET_ACTIVATED"].includes(
+        descriptors.classification?.value,
+      ) ||
+      !canonicalArray(descriptors.contractIds?.value, true) ||
       (graph &&
-        (!Array.isArray(plan.affectedSurfaces) ||
-          plan.affectedSurfaces.length ||
-          !Array.isArray(plan.uncertainty) ||
-          plan.uncertainty.length ||
-          !Array.isArray(plan.transitivePaths) ||
-          plan.transitivePaths.some((file) => typeof file !== "string")))
+        (descriptors.classification.value === "TRUSTED_POLICY_NOT_YET_ACTIVATED" ||
+          !canonicalArray(descriptors.affectedSurfaces?.value, true) ||
+          !canonicalArray(descriptors.uncertainty?.value, true) ||
+          !canonicalArray(descriptors.transitivePaths?.value, false)))
     )
       fail("REPLAY_PLAN_INVALID");
     return { status: "NOT_APPLICABLE" };

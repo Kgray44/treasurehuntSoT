@@ -354,7 +354,11 @@ test("nonapplicable replay returns before exception admission and diagnostic set
         () =>
           runTrustedExperienceReplay({
             root,
-            plan: Object.freeze(plan),
+            plan: Object.freeze(
+              Object.fromEntries(
+                Object.entries(plan).map(([key, value]) => [key, Array.isArray(value) ? Object.freeze(value) : value]),
+              ),
+            ),
             environment: syntheticEnvironment({ SOUNDING_LINE_PR_NUMBER: "721" }),
             diagnostics: {
               clearScope() {
@@ -381,6 +385,13 @@ test("malformed or forged nonapplicable replay plans cannot bypass admission or 
   const root = await fixture(t);
   diagnosticRepository(root);
   const empty = { applicable: false, classification: "BACKEND_ONLY", contractIds: [] };
+  const graph = { ...empty, affectedSurfaces: [], uncertainty: [], transitivePaths: [] };
+  let accessorCalls = 0,
+    methodCalls = 0;
+  const accessor = () => {
+    accessorCalls++;
+    return false;
+  };
   for (const plan of [
     undefined,
     Object.assign(Object.create({ exception: { id: "inherited-forgery" } }), empty),
@@ -397,11 +408,34 @@ test("malformed or forged nonapplicable replay plans cannot bypass admission or 
     { ...empty, affectedSurfaces: [], uncertainty: ["unknown"], transitivePaths: [] },
     { ...empty, affectedSurfaces: [], uncertainty: [], transitivePaths: [1] },
     { ...empty, transitivePaths: [] },
+    { ...graph, transitivePaths: new Array(1) },
+    {
+      ...graph,
+      transitivePaths: Object.assign([1], {
+        some: () => {
+          methodCalls++;
+          return false;
+        },
+      }),
+    },
+    { ...graph, transitivePaths: Object.defineProperty(["path"], "0", { get: accessor }) },
+    { ...graph, transitivePaths: Object.defineProperty(["path"], "0", { enumerable: false }) },
+    { ...graph, transitivePaths: Object.assign([], { extra: "path" }) },
+    { ...graph, transitivePaths: Object.assign([], { [Symbol("extra")]: "path" }) },
+    { ...graph, transitivePaths: Object.setPrototypeOf([], Object.create(Array.prototype)) },
+    { ...empty, contractIds: Object.assign([], { extra: "obligation" }) },
+    Object.defineProperty({ ...empty }, "applicable", { get: accessor }),
+    Object.defineProperty({ ...empty }, "classification", { get: accessor }),
+    Object.defineProperty({ ...empty }, "contractIds", { get: accessor }),
+    Object.defineProperty({ ...empty }, "classification", { enumerable: false }),
+    { ...graph, classification: "TRUSTED_POLICY_NOT_YET_ACTIVATED" },
   ])
     await assert.rejects(
       runTrustedExperienceReplay({ root, plan, environment: syntheticEnvironment({ SOUNDING_LINE_PR_NUMBER: "721" }) }),
       /PRODUCT_EXPERIENCE_REPLAY_PLAN_INVALID/u,
     );
+  assert.equal(accessorCalls, 0, "malformed input accessors never execute");
+  assert.equal(methodCalls, 0, "malformed input methods never execute");
   await assert.rejects(access(path.join(root, "artifacts")), { code: "ENOENT" });
 });
 
