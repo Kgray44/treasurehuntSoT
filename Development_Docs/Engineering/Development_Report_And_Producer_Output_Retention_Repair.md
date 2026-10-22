@@ -106,11 +106,18 @@ growth, truncation and replacement at the read boundary must preserve the fixed
 I/O bound and reject changed files. These tests do not launch a
 product browser or use the owner's private key.
 
+The first protected run `39714517395/1` on source
+`375da5201710bf88fdd493b196e7cc91302e9522` passed all 855 Linux regressions and
+13 rendered adversarial fixtures, including the POSIX guards and real inert
+Playwright cases. Its original source, output and successful decision remain
+preserved. That proof does not make a later source eligible for merge.
+
 The candidate is reconciled to accepted main
-`fc5855f465314fa2c80c3a8966f8b6ce405f010a`. Independent exact-source review, normal
-protected Linux qualification, protected merge and independent landed proof remain
-required. Independent documentation follow-up #786 and the source-reader repair
-may qualify concurrently; merge still requires fresh accepted main ancestry. The
+`8e49351e62e1f32340109566557a824bfa74e14d` and retains all 38 accepted #786
+inventory rows. Independent exact-source review, fresh normal protected Linux
+qualification, protected merge and independent landed proof remain required. The
+source-reader repair may qualify independently; merge still requires fresh
+accepted main ancestry. The
 sole consumer owner's attachment patch remains separately
 reviewed and unapplied by this maintenance lane. A future browser attempt requires
 its accepted route and exact source; this repair cannot recover the old cause.

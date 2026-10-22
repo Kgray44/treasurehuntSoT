@@ -15,9 +15,10 @@ the browser failure after the fact. The sole consumer owner separately owns its
 test-only recognized attachment patch.
 
 The candidate is reconciled to accepted main
-`fc5855f465314fa2c80c3a8966f8b6ce405f010a` in its existing owned D worktree.
-Independent documentation follow-up #786 and the source-reader repair may qualify
-concurrently. Preserve separately owned pending inventory rows until accepted.
+`8e49351e62e1f32340109566557a824bfa74e14d` in its existing owned D worktree.
+Its inventory retains all 38 accepted documentation follow-up #786 rows. The
+source-reader repair may qualify independently; preserve every accepted inventory
+row when regenerating this repair's own engineering record.
 Freeze the exact source and obtain independent review before normal protected
 qualification; merge requires fresh accepted main ancestry and requalification if
 that source changes. No consumer browser rerun is authorized by this repair.
