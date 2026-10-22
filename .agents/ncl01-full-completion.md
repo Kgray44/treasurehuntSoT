@@ -59,6 +59,32 @@ Use this owned worktree and existing PR741; no force-push, successor PR or other
 project takeover. PR781 remains the separate documentation owner. Future
 NCL02/03 are proposals, not this implementation's authority.
 
+Fresh capture39850146091/1 at18b4cd23/base1a is terminal FAILURE. Actual build
+and timestamped generic-browser execution are observed; the MOBILE normal-motion
+Administrator journey waits30seconds for visible Return to account, then fails
+at21:01:30UTC. Protected and candidate CSS both hide Chartroom action links at
+this width. Browser/server cleanup PASS and whole-run terminal failure are
+distinct from unfinished capture/publication. Retain artifacts12458726519,
+12459116353 and12458302682 with exact provider digests; verify actual media and
+the inherited mobile defect, repair the product return and run focused real-UI
+development before a new frozen candidate/capture. No unchanged retry, hidden
+locator, skipped mobile context or weakened deadline. Unchanged native GPU and
+model evidence keep their existing scopes. The external output-drain wrapper
+repair is isolated and does not explain the old hosted cancellation.
+
+All three39850146091 original ZIPs now match provider bytes/SHA256. Preserve the
+406241280-byte timed-out prefix and the successful exactHTTP206 continuation;
+no full download/capture retry occurred. Raw retention COMPLETE has424 verified
+encrypted members, never decrypted. Full expansion stops after42 members on a
+314-character destination; that member independently passes ZIP CRC. Preserve
+the failed directory and prepared/unexecuted extended-path helper. Selected
+desktop/mobile People PNGs and completed desktop control trace are reviewed;
+compiledCSS retains the52rem hidden-link rule. Failed mobile trace/all-dimension
+acceptance are not claimed. The CSS correction and three Administrator cases
+are prepared; collection passes nine cases, runtime remains pending. Studio776/792
+has first call on shared local/CI/reviewer resources. Continue lightweight source
+and retained-evidence work; do not start another capture or seize shared resources.
+
 Read current repository/testing/experience instructions and feature governance.
 Accepted continuity and published-Lens designs now supply the old missing
 contract. Preserve Gateway authorization, same Voyage/edition/Scene, canonical

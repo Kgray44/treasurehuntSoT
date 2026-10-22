@@ -14,6 +14,13 @@ last_reviewed: 2026-10-22
 
 ### Engineering
 
+- Restored Admiralty's visible account return on mobile. The header now places
+  its wrapping account/sign-out controls below the brand instead of hiding the
+  return link. The real People-to-account regression retains its desktop case
+  and adds mobile normal/Reduced Motion, keyboard, unobscured-control and
+  overflow checks. The original failed capture and qualification boundaries
+  remain in the NCL-01 post-Crossdeck record.
+
 - NCL-01's [post-Crossdeck candidate](Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
   consumes the accepted continuity interfaces. Fresh iOS native/joined evidence
   and Android `39e28ff`'s 16-test original-model/input, joined and permission
