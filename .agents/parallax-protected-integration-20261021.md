@@ -10,9 +10,10 @@ last_reviewed: 2026-10-22
 
 Integration / UNATTENDED_CONTINUATION. Continue the directly authorized complete
 Parallax objective after accepted Crossdeck landing. Use the existing owned
-`codex/parallax-integration-prep-20261019` branch and PR #776. The accepted base is
-`aaff919428ef9ab421579415ce3409949724760d`; prior candidate is
-`6119eb58ae06a50236c396d4a6d27f9d9ae36f7c`.
+`codex/parallax-integration-prep-20261019` branch and PR #776. The current accepted
+base is `1c516d27fca521157732fca4cbba773d1542f1b2`; the preserved prior candidate is
+`d16f0c09a9374b47353ea78f9f0eed61646f8b83`. Earlier checkpoints below retain their
+original source and evidence identities.
 
 The human authorized direct coordination with #722 owner
 `01a12c32-ea0a-70d3-a918-5f9f735fa107`. Both owners agree this chat
@@ -230,3 +231,39 @@ changes only exact h1 test selection and main/text/path metadata return witness;
 TypeScript/lint/schema pass, browser proof pending. Finish source/docs custody
 and use the existing focused hosted development route for outstanding proof;
 do not invent a workflow, reuse finite owner authority or promote partial passes.
+
+## Installed supervisor and source-only reconciliation
+
+#792 landed normally at `1c516d27fca521157732fca4cbba773d1542f1b2`, tree
+`d134ad7b9c27283c0e7a356a1ff571a6a7531296`, equal to reviewed/qualified `c48c56e6`.
+Normal run `39866798098/1` succeeded. Independent landed review verifies the exact
+tree, 16 selected smoke cases and cleanup. The single non-consuming installed
+probe `39870937509/1` passed independent live progress, deliberate timeout and
+cleanup review; its original review SHA-256 is
+`f0c35b5ba6949d6db302077a5f680d65ae8e4c8cd17825758f53ea8bb84c6416`.
+The [main1c intake](../Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main1c-20261022/intake.original.json)
+retains byte-exact original reviews and the historical disposition.
+
+The existing maintenance owner released the source reconciliation hold only.
+The sole #776 owner is performing one non-destructive reconciliation from d16f
+to this accepted main. The three shared documentation files merged without
+conflicts; product source, Prisma, E2E tests and contracts remain unchanged.
+Preserve exact installed controller blobs and all original evidence. Complete
+documentation, focused source checks and a committed source freeze; obtain
+independent source review. Then prove accepted main is an ancestor and use the
+actual installed controller's read-only planning/classification for the NEW head.
+Old d16f's ancestry denial is not eligibility for that new source.
+
+The original main39/d16f disposition is ORDINARY_PRODUCT with no applicable
+trusted finite record. It does not expose hidden hosted counters or grant a
+future slot. Capture `39835375376/1` remains CANCELLED/NONACCEPTING, historical
+cleanup UNKNOWN and new rendered review 3 UNPERFORMED. No capture repeat is
+authorized by infrastructure acceptance or this source reconciliation. Require
+actual current-source eligibility and authenticated governed capture/review/
+ordinary qualification before product merge. Preserve the physical iPhone
+negative and separate native/provider/owner acceptance boundaries.
+
+Maintain at least 30 GiB on EACH C: and D:, with mandatory bounded ReserveGuard
+preflights and five-minute rechecks during long writers. Keep temporary/cache
+writes on D:. This rule is not an OS quota and cannot control external apps,
+cloud jobs or processes without these instructions.

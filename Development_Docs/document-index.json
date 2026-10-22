@@ -375,6 +375,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Capture_Preparation_Supervisor_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Clean_Slate_Development_Pipeline_Cutover.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -430,6 +436,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Experience_Changed_Path_Buffer_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Immutable_Recognition_Read_Reuse_Repair.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -28126,6 +28138,36 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main1c-20261022/historical-main39-d16f-domain-disposition.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main1c-20261022/independent-hosted-probe-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main1c-20261022/independent-landed-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main1c-20261022/independent-source-review-integration.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main1c-20261022/intake.original.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

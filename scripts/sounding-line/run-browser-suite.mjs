@@ -6,6 +6,7 @@ import path from "node:path";
 import process from "node:process";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { emitPreparationPhase, preparationProductEnvironment } from "./preparation-phases.mjs";
 import { browserSuiteProfiles, isolatedBrowserFixtureCredentials } from "./browser-suite-profiles.mjs";
 import {
   assertExceptionExecution,
@@ -140,15 +141,20 @@ try {
     process.execPath,
     ["node_modules/prisma/build/index.js", "generate", "--schema", "prisma/schema.sqlite.prisma"],
     environment,
+    "FIXTURE_PRISMA",
   );
   if (profile.bootstrap)
     run(
       process.execPath,
       ["scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", environment.DATABASE_URL],
       environment,
+      "FIXTURE_BOOTSTRAP",
     );
-  if (profile.seed) run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"], environment);
-  for (const preparer of profile.preparers ?? []) run(process.execPath, preparerArguments(preparer), environment);
+  if (profile.seed)
+    run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"], environment, "FIXTURE_SEED");
+  for (const [preparerIndex, preparer] of (profile.preparers ?? []).entries())
+    run(process.execPath, preparerArguments(preparer), environment, "FIXTURE_PREPARER", preparerIndex + 1);
+  if (profile.taskOwnedProductionHttp) emitPreparationPhase("PRODUCTION_BUILD");
   ensureProductionBuild();
   if (readiness) {
     await runBrowserDependencyProbe({ attempt: readiness, environment: productEnvironment(environment) });
@@ -167,6 +173,7 @@ try {
       [options["experience-runner"], "--workspace", root, "--run-server", options["experience-plan"]],
       environment,
     );
+    emitPreparationPhase("PROFILE_RESULT");
   } else {
     if (r12Technical) assertR12TechnicalSource(root, r12Technical);
     if (r13Technical) {
@@ -291,14 +298,22 @@ function taskOwnedProductionHttpEnvironment(profileId, sha) {
 }
 
 function productEnvironment(env) {
-  const result = { ...process.env, ...env };
+  const result = preparationProductEnvironment({ ...process.env, ...env });
   delete result.GITHUB_OUTPUT;
   delete result.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
   return result;
 }
 
-function run(command, argumentsList, env) {
-  const childEnvironment = { ...process.env, ...env };
+function run(command, argumentsList, env, preparationPhase, preparationStep = 0) {
+  if (preparationPhase) emitPreparationPhase(preparationPhase, { step: preparationStep });
+  const trustedCaptureController =
+    command === process.execPath &&
+    argumentsList[0] === fileURLToPath(new URL("./experience-browser.mjs", import.meta.url)) &&
+    argumentsList.includes("--run-server") &&
+    Boolean(options["experience-plan"]);
+  const childEnvironment = trustedCaptureController
+    ? { ...process.env, ...env }
+    : preparationProductEnvironment({ ...process.env, ...env });
   if (
     command !== process.execPath ||
     argumentsList[0] !== fileURLToPath(new URL("./browser-authority.mjs", import.meta.url))

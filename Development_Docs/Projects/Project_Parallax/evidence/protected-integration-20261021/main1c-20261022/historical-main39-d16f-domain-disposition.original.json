@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "kind": "ATTRIBUTED_ORIGINAL_SOURCE_ONLY_HISTORICAL_DOMAIN_DISPOSITION",
+  "createdAt": "2026-10-22T22:24:23.629274+00:00",
+  "status": "SEALED_HISTORICAL_ORDINARY_NO_APPLICABLE_FINITE_RECORD_EXECUTION_HELD",
+  "issuer": {
+    "thread": "01a12c32-ea0a-70d3-a918-5f9f735fa107",
+    "role": "Existing Parallax722 domain/custody reviewer",
+    "requester": "01a15554-1edc-7fe0-b644-6c9391ac237e",
+    "scope": "Attributed immutable domain evidence disposition only; not a permission-producing ref, protected submission, authenticated human approval or new execution authority."
+  },
+  "request": {
+    "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\supervisor792-postinstall-readiness-01\\historical-disposition-request.original.json",
+    "sha256": "59f9788559bb7e29c9abf9d258d516a7878eb12efde26dc3bd35d8e47fb87234"
+  },
+  "source": {
+    "pr": 776,
+    "originalProtectedBase": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+    "candidate": "d16f0c09a9374b47353ea78f9f0eed61646f8b83",
+    "candidateTree": "70331b156fc4db1c6354bddb965f2e013399ce29",
+    "run": 39835375376,
+    "attempt": 1,
+    "sourceDigest": "516e2156890c22fd1791b6d982a21fa07632bb641793abeb1f116a4e8305de91",
+    "contractDigest": "e69bab5d61e76b85c59cfd40a9fe4c4a47cc6ffe98ef302f6b2a185886fbe089"
+  },
+  "decision": {
+    "originalPlanningClassification": "ORDINARY_PRODUCT",
+    "originalFiniteApplicability": "NO_APPLICABLE_TRUSTED_FINITE_RECORD_FOR_THIS_RETAINED_ORIGINAL_SOURCE_TUPLE",
+    "applicableRecordId": null,
+    "applicableRecordDigest": null,
+    "custodyNamespaceForThisDecision": null,
+    "basis": "Existing independently verified successful nonconsuming admission on original39/d16f/pr776, exact protected planner/binder code equality, retained same source-bound plan and null retention recordDigest. No new planning or recognition execution.",
+    "notAPullRequestOnlyShortcut": true
+  },
+  "sourceProof": {
+    "coreSourceIdentities": {
+      "scripts/sounding-line/ordinary.mjs": {
+        "baseAndCandidateBytesEqual": true,
+        "gitBlob": "554870c4ffd51a1d57dbf9f4fc16a4818ceaefe2",
+        "sha256": "19b5bbae03947191e35ae8c64a00321ff13392792083a260262e04d042144ac2"
+      },
+      "scripts/sounding-line/product-experience.mjs": {
+        "baseAndCandidateBytesEqual": true,
+        "gitBlob": "03fc1ae9c0c27c18895381020dd9765c7952a7c7",
+        "sha256": "cd253cec0d1b3a7a3edcbb6776efda6b9168ff8a319bdb0e68f904c02c73e302"
+      },
+      "scripts/sounding-line/experience-exception.mjs": {
+        "baseAndCandidateBytesEqual": true,
+        "gitBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b",
+        "sha256": "536781f00c78e98387f405a71bd4e9737951126f5faff1b72079cc274fe3653a"
+      }
+    },
+    "plannerSemantics": "planProductExperience always calls bindExperienceException; a nonnull binding is included in returned plan.",
+    "binderSemantics": "bindExperienceException uses campaignComparison/applicableTrustedExceptions across full exact base/candidate history. It fails if any recognized campaign lacks an active trusted record, fails ambiguous matches, and returns null only if no related trusted records remain. Successful retained plan has no exception.",
+    "combinedInference": "Prior admission success plus source-bound exception-free plan therefore supports no applicable finite record for ORIGINAL tuple; ORDINARY_PRODUCT label alone would not suffice.",
+    "registry": "testing/product-experience-exceptions.json",
+    "registryBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+    "registeredRecords": 26,
+    "registeredPullRequests": [
+      721
+    ],
+    "no776SpecificFiniteRecord": true,
+    "targetBoundary": "Any selected721 record cannot authorize776; original CLI target mismatch fails before reservation. No721 namespace is borrowed or queried."
+  },
+  "observedVsUnexposed": {
+    "observedPriorAdmissionReviewSHA256": "f9402596d0f6b5ea62eef55fcd0d00f96e4b424f014b13b6f5e007a199eaad03",
+    "observedAdmissionStdoutSHA256": "067b605eb952a3b767d1acd3ab564072aeaa1b3f84e39a75179c66ac3da94090",
+    "observedRetainedPlanSHA256": "b69f969220ba399b68c23539e0d75386ed5dcdfc8d454b9640c3eabef860eca1",
+    "hiddenHostedCampaignOutput": "NOT_EXPOSED_NOT_CLAIMED_OBSERVED",
+    "hostedFiniteCounterOrReservationInventory": "UNPROVEN_NOT_QUERIED",
+    "meaning": "Historical source classification is sealed; no assertion about hidden output value, remote counter inventory, consumed or absent remote refs, slot refund, reservation or fresh entitlement."
+  },
+  "historicalCapture": {
+    "run": 39835375376,
+    "attempt": 1,
+    "status": "COMPLETED_CANCELLED_NONACCEPTING",
+    "custodyJob": "SUCCESS",
+    "preparationJob": "CANCELLED",
+    "media": "NONE_RETAINED",
+    "lastProvedPhase": "PLAN_SUBMISSION_AND_OWNED_RAW_RETENTION_INITIALIZATION",
+    "internalBlockedOperation": "UNKNOWN",
+    "historicalCleanup": "UNKNOWN",
+    "descendantStreamPortLeaseCleanup": "UNKNOWN_NO_BOUND_ORIGINAL_RECEIPT",
+    "newReview3": "UNPERFORMED",
+    "rawRetentionCompleteIsNotCaptureOrCleanupProof": true
+  },
+  "custodyQueryDecision": {
+    "neededForThisHistoricalSourceClassification": false,
+    "performed": false,
+    "reason": "No applicable finite record or legitimate776namespace is selected for this source-only decision; querying or creating a721/776 finite object would add no authority. Hidden remote counters remain unproved."
+  },
+  "futureBoundary": {
+    "scopeDoesNotExtendTo": "Any later installed authority, unreconciled/reconciled candidate, changed history or new source/contract digests",
+    "repairAndInstalledProbe": "NOT_AVAILABLE_FOR_THIS_HISTORICAL_DECISION; must be verified when actually installed",
+    "futureCandidateClassification": "RECOMPUTE_UNDER_ACTUAL_INSTALLED_AUTHORITY_AFTER_SEPARATELY_AUTHORIZED_RECONCILIATION",
+    "newProbeCannotProveOldCleanup": true,
+    "sourceMutationHold": "UNCHANGED_HELD",
+    "futureCaptureOrContinuation": "NOT_AUTHORIZED",
+    "remainingGates": [
+      "Accepted installed whole supervisor repair and independent landed review",
+      "Installed inert probe with independent actual active-progress observation and original cleanup proof",
+      "Existing authorized continuation decision preserving historical cleanup UNKNOWN",
+      "One materially admitted reconciliation, exact source verification and fresh plans",
+      "Separate ordinary authenticated capture/review/submission/qualification and source-bound authority"
+    ]
+  },
+  "actions": {
+    "newPlannerRecognizerOrTestExecution": false,
+    "reserveCliInvocation": false,
+    "custodyGetOrMutation": false,
+    "postPatchDeleteOrRefCounterResetRefund": false,
+    "sourceMutationFetchOrReconciliation": false,
+    "newCaptureProbeOrQualification": false,
+    "privatePayloadDecryption": false
+  },
+  "boundEvidence": [
+    {
+      "path": "D:\\CodexTemp\\parallax-root-accepted39-review-20261022-01a12c32\\supervisor792-postinstall-projection-disposition-path-review.original.json",
+      "bytes": 8061,
+      "sha256": "e5a961d4641fe4d78749a6602f388fce926b6f4884a974f35878f81f82e75a9a"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-root-accepted39-review-20261022-01a12c32\\nonconsuming-d16f-admission-plan-review.original.json",
+      "bytes": 2219,
+      "sha256": "f9402596d0f6b5ea62eef55fcd0d00f96e4b424f014b13b6f5e007a199eaad03"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-admission-plan-d16f-01\\stdout.original.log",
+      "bytes": 4332199,
+      "sha256": "067b605eb952a3b767d1acd3ab564072aeaa1b3f84e39a75179c66ac3da94090"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-admission-plan-d16f-01\\execution.original.json",
+      "bytes": 812,
+      "sha256": "fc25c3137899100ea0e5a37bf1f912a67af86fd26c76ed0cacc0b9b18f21a700"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\governed-capture-d16f-01\\retained-artifacts\\12451594887\\product-experience-submission\\plan.json",
+      "bytes": 2179293,
+      "sha256": "b69f969220ba399b68c23539e0d75386ed5dcdfc8d454b9640c3eabef860eca1"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\governed-capture-d16f-01\\retained-artifacts\\12452138381\\retention.json",
+      "bytes": 722,
+      "sha256": "9caaad7d523a2e125b7ee8432d845af3a174ee938c8458822860b79fbb3a2a81"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\governed-capture-d16f-01\\retained-artifact-intake.original.json",
+      "bytes": 2530,
+      "sha256": "3ed7d390abdaa8364977a775dabd05a716aa8596ac521571f814beef85a0215c"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\governed-capture-d16f-01\\bounded-cancel-request.original.json",
+      "bytes": 372,
+      "sha256": "5204d0526d6f4c9ca3370dd8d49a477f60153f378e4627cc77342c0eb37f373a"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\governed-capture-d16f-01\\run-api-terminal.original.json",
+      "bytes": 12752,
+      "sha256": "01f6137bc6fc38c8c9aaade5170e6e8defbe55ec7dc21ac0e754ce86ab0e2f1b"
+    }
+  ],
+  "immutability": "New exclusive original written once; prior failures, cancelled run, unknown-cleanup evidence and earlier reviews are not rewritten.",
+  "reserveGuard": {
+    "utc": "2026-10-22T22:23:38.2941512Z",
+    "allowed": true,
+    "estimatedCBytes": 4194304,
+    "estimatedDBytes": 4194304,
+    "cFreeBytes": 56213647360,
+    "dFreeBytes": 87541383168,
+    "floorEach": 32212254720,
+    "coverage": "Bounded reviewer-controlled writes only; not OS/external/cloud enforcement."
+  },
+  "qualification": false,
+  "physicalAcceptance": false,
+  "featureCatalog": "NO CHANGE REQUIRED"
+}

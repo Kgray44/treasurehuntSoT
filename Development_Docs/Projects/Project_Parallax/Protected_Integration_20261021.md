@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: consumer-compatibility-source-prepared
+status: reconciled-awaiting-installed-classification
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -13,11 +13,12 @@ candidate. The directly approved ownership agreement leaves #722's root/domain
 owner responsible for domain and sibling-disposition review, without a competing
 root rewrite or qualification.
 
-The accepted maintenance bundle is now installed at
-`39b706ad3c9a2b8e1d589f71db909cf6c32c468b`. The one final reconciliation from
-`720e45753e1a7504b116c1f2e3c5a93e69ad75f1` has no conflicts and changes no
-product source, Prisma source or browser specs. The latest source-bound
-maintenance intake and remaining exact-candidate verification are recorded below.
+The current accepted maintenance bundle is installed at
+`1c516d27fca521157732fca4cbba773d1542f1b2`. The source-only reconciliation from
+preserved `d16f0c09a9374b47353ea78f9f0eed61646f8b83` has no conflicts and changes
+no product source, Prisma source, browser specs or contracts. The latest
+source-bound intake and remaining exact-candidate gates are recorded below.
+Earlier main39 checkpoints retain their original producing identities.
 
 Crossdeck #721 landed through normal protection at
 `aaff919428ef9ab421579415ce3409949724760d`. Its tree equals qualified head
@@ -410,7 +411,7 @@ bounded software checks are not rebound here and establish no physical pass.
 Native signed installation, live-provider fidelity and PRODUCT_ACCEPTED retain
 their separate owners and evidence gates.
 
-## Shared-consumer source preparation after complete planning
+## Shared-consumer source preparation after complete planning (historical)
 
 Published `28ece6275` completed the canonical source reader and reached the real
 173-surface registration gate. Its original failed plan is preserved. The
@@ -440,3 +441,56 @@ Host hibernation accounts for the final receipt-write wall-clock gap; the separa
 disk allocator is unknown. The reviewed freeze05 corrects only the drafts-return
 selector and metadata witness, with static checks passing and browser proof
 pending. See the compatibility record for exact receipts and remaining gates.
+
+## Installed supervisor and current source reconciliation
+
+#791's immutable recognition read repair and #792's bounded preparation
+supervisor are installed at exact main
+`1c516d27fca521157732fca4cbba773d1542f1b2`, tree
+`d134ad7b9c27283c0e7a356a1ff571a6a7531296`, with ordered parents `1a7653c3` and
+`c48c56e6`. The whole tree equals reviewed/qualified c48. Normal protected run
+`39866798098/1` succeeded with 900 passes, zero failures, one Windows-only skip
+and thirteen rendered fixtures. Independent landed review verifies 16 separate
+selected smoke cases and cleanup. These are maintenance results, not a new
+whole-Studio test pass or product acceptance.
+
+The single inert installed-main probe `39870937509/1` succeeded. An independent
+observer retrieved ADMISSION then PLANNING while the advancing fixture was still
+active. Its complete case passed; the silent case failed with the expected
+PHASE_TIMEOUT and cleanup passed, including tree/stream closure, released port,
+absent descendants and stripped credentials/channel. Archive integrity and the
+independent final review passed. The [main1c intake](evidence/protected-integration-20261021/main1c-20261022/intake.original.json)
+binds byte-exact original source, landed, probe and historical-disposition
+reviews. The probe establishes synthetic infrastructure behavior only.
+
+The existing maintenance owner explicitly released the hold for one source
+reconciliation. The sole #776 owner merged exact main1c into preserved d16f;
+the three overlapping documentation files merged without conflicts. Product
+source, Prisma, E2E specs and `testing/contracts.json` remain byte-unchanged.
+Installed maintenance source and tests are retained exactly. Documentation,
+focused source checks, commit freeze and independent source review precede
+read-only planning/classification through the actual installed authority on the
+new candidate. Accepted main must be an ancestor of that new exact head; d16f
+was correctly denied at ancestry and is not treated as future eligible.
+
+Earlier d16f hosted Community `39829592914`, Admiralty `39829598774` and
+Availability `39832495446` completed at DEVELOPMENT_ONLY with controller-level
+file success. Their private per-case reports were not published on pass; no
+independently inspected numeric case totals or pooled 39/39 result is claimed.
+The original failed and interrupted development receipts remain unchanged.
+
+Governed capture `39835375376/1` remains CANCELLED/NONACCEPTING with plan and
+raw-retention initialization only. The sealed original main39/d16f decision is
+ORDINARY_PRODUCT / NO_APPLICABLE_TRUSTED_FINITE_RECORD. Hidden hosted counters
+and historical runtime/descendant/stream/port/lease cleanup remain unproved.
+The new probe does not prove that past cleanup, refund a reservation or create a
+finite slot. New rendered review 3 remains UNPERFORMED. No capture repeat is
+authorized by this source-only reconciliation; current installed classification
+and normal authenticated eligibility must precede any capture, rendered review,
+submission, ordinary qualification, protected merge and landed product smoke.
+
+The physical iPhone calibration result remains negative/unresolved. Native,
+live-provider and human owner acceptance remain separate. Each local writer
+must preserve the separate 30 GiB C:/D: floors using bounded ReserveGuard
+preflights and five-minute rechecks for long writers. The guard is not an OS quota
+and cannot control external apps, cloud work or uninstructed processes.

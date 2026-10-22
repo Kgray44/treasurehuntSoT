@@ -28,6 +28,7 @@ import {
   sealRawCaptureOutput,
 } from "./experience-raw-output.mjs";
 import { retainRawCaptureOutput, verifiedRawCapturePaths } from "./experience-raw-retention.mjs";
+import { emitPreparationPhase } from "./preparation-phases.mjs";
 
 const canonical = "Development_Docs/Testing/Product_Experience/evidence";
 const staging = "artifacts/sounding-line/product-experience-capture-staging";
@@ -459,6 +460,12 @@ export async function captureAndPublishExperience({
   } catch (error) {
     failure = error;
   }
+  let preparationProgressFailure;
+  try {
+    emitPreparationPhase("RETENTION");
+  } catch (error) {
+    preparationProgressFailure = error;
+  }
   try {
     await sealRawCaptureOutput({
       root,
@@ -494,8 +501,10 @@ export async function captureAndPublishExperience({
     throw new AggregateError(errors, "PRODUCT_EXPERIENCE_RAW_OUTPUT_RETENTION_FAILED", { cause: errors[0] });
   }
   if (failure) throw failure;
+  if (preparationProgressFailure) throw preparationProgressFailure;
   // Verify the complete retained raw closure before any canonical mutation.
   // Publication has its own outcome and rollback journal; raw PASS is no acceptance.
+  emitPreparationPhase("PUBLICATION");
   const published = await publishExperienceCapture({
     root,
     plan,

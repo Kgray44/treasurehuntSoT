@@ -16,6 +16,8 @@ not authorize restarting a completed phase.
 - [Parallax protected integration continuation](parallax-protected-integration-20261021.md)
 - [Complete Parallax integration preparation](parallax-integration-preparation-20261019.md)
 - [Focused development and final verification](testing-workflow.md)
+- [Immutable recognition read reuse repair](immutable-recognition-read-repair.md)
+- [Capture preparation observability repair](capture-preparation-observability-repair.md)
 - [Unrelated work after expired R26 execution authority](unrelated-expired-r26-repair.md)
 - [Nonapplicable experience replay admission repair](nonapplicable-experience-replay-repair.md)
 - [Development report and producer output retention repair](development-failure-retention-repair.md)
