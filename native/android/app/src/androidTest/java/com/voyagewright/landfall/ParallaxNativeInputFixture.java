@@ -43,48 +43,106 @@ final class ParallaxNativeInputFixture {
     }
     return null;
   }
-  private static void tap(View view, float x, float y) {
-    int[] location = new int[2]; onMain(() -> view.getLocationOnScreen(location));
-    long time = SystemClock.uptimeMillis();
-    for (int action : new int[] {MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP}) {
-      MotionEvent event = MotionEvent.obtain(time, SystemClock.uptimeMillis(), action, location[0] + x, location[1] + y, 0);
-      event.setSource(InputDevice.SOURCE_TOUCHSCREEN);
-      try { InstrumentationRegistry.getInstrumentation().sendPointerSync(event); } finally { event.recycle(); }
-    }
-    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  private static final class ReadyPoint {
+    float x, y, screenX, screenY;
   }
-  private static void tap(View view) { tap(view, view.getWidth() / 2f, view.getHeight() / 2f); }
-  private static JSONObject returnReadiness(View escape, boolean preDrawObserved, long elapsedMs) {
-    View root = escape.getRootView(); Rect visible = new Rect(), window = new Rect();
-    boolean shown = escape.getGlobalVisibleRect(visible), windowShown = root.getGlobalVisibleRect(window);
-    boolean fullyVisible = shown && visible.width() == escape.getWidth() && visible.height() == escape.getHeight();
-    boolean attached = escape.isAttachedToWindow(), laidOut = escape.isLaidOut();
-    boolean focused = escape.hasWindowFocus(), layoutPending = escape.isLayoutRequested() || root.isLayoutRequested();
-    boolean centerInsideWindow = windowShown && window.contains(visible.centerX(), visible.centerY());
-    boolean ready = preDrawObserved && attached && laidOut && focused && !layoutPending && escape.isShown()
-        && escape.isEnabled() && escape.isClickable() && escape.getWidth() > 0 && escape.getHeight() > 0
-        && fullyVisible && centerInsideWindow;
+  private static boolean pendingLayout(View view) {
+    for (View current = view; current != null;
+        current = current.getParent() instanceof View ? (View) current.getParent() : null)
+      if (current.isLayoutRequested()) return true;
+    return false;
+  }
+  /** Passive event observation: the same TextureView dispatch and production listener run exactly once. */
+  private static final class ObservedTarget extends android.view.TextureView {
+    View owner; int generation; String phase = "UNBOUND";
+    ObservedTarget(Context context) { super(context); }
+    @Override public boolean dispatchTouchEvent(MotionEvent event) {
+      boolean handled = super.dispatchTouchEvent(event);
+      if (event.getActionMasked() == MotionEvent.ACTION_DOWN || event.getActionMasked() == MotionEvent.ACTION_UP
+          || event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
+        try {
+          android.util.Log.i("NCL01Filament", "NATIVE_FIXTURE_TARGET_EVENT:" + new JSONObject()
+              .put("phase", phase).put("ownerGeneration", generation).put("ownerAttached", owner != null && owner.isAttachedToWindow())
+              .put("action", event.getActionMasked()).put("pointerCount", event.getPointerCount())
+              .put("localX", event.getX()).put("localY", event.getY()).put("screenX", event.getRawX()).put("screenY", event.getRawY())
+              .put("width", getWidth()).put("height", getHeight()).put("layoutPending", pendingLayout(this) || (owner != null && pendingLayout(owner)))
+              .put("handled", handled));
+        } catch (JSONException ignored) { /* Diagnostics cannot change event handling. */ }
+      }
+      return handled;
+    }
+  }
+  static android.view.TextureView observedTarget(Context context) { return new ObservedTarget(context); }
+  private static int nextOwnerGeneration(View target) { return ((ObservedTarget) target).generation + 1; }
+  private static void observeOwner(View target, View owner, String phase, int generation) {
+    assertTrue("The owned fixture observes its actual TextureView dispatch", target instanceof ObservedTarget);
+    ObservedTarget observed = (ObservedTarget) target;
+    assertEquals("Each replacement owns the next fixture generation", observed.generation + 1, generation);
+    observed.owner = owner; observed.phase = phase; observed.generation = generation;
+  }
+  private static View inputOwner(View view) {
+    if (view instanceof ObservedTarget) return ((ObservedTarget) view).owner;
+    for (View current = view; current != null;
+        current = current.getParent() instanceof View ? (View) current.getParent() : null)
+      if (current instanceof ParallaxInteractionView) return current;
+    return null;
+  }
+  private static void observePickRequest(View target, String expectedPhase, int expectedGeneration, float x, float y) {
+    ObservedTarget observed = (ObservedTarget) target;
     try {
-      return new JSONObject().put("ready", ready).put("elapsedMs", elapsedMs)
-          .put("preDrawObserved", preDrawObserved).put("attached", attached).put("laidOut", laidOut)
-          .put("windowFocused", focused).put("layoutPending", layoutPending).put("shown", escape.isShown())
-          .put("enabled", escape.isEnabled()).put("clickable", escape.isClickable())
-          .put("buttonWidth", escape.getWidth()).put("buttonHeight", escape.getHeight())
-          .put("visibleWidth", visible.width()).put("visibleHeight", visible.height())
-          .put("windowWidth", window.width()).put("windowHeight", window.height())
-          .put("centerInsideWindow", centerInsideWindow).put("fullyVisible", fullyVisible);
+      android.util.Log.i("NCL01Filament", "NATIVE_FIXTURE_PICK_REQUEST:" + new JSONObject()
+          .put("expectedPhase", expectedPhase).put("activePhase", observed.phase)
+          .put("expectedOwnerGeneration", expectedGeneration).put("activeOwnerGeneration", observed.generation)
+          .put("ownerAttached", observed.owner != null && observed.owner.isAttachedToWindow()).put("localX", x).put("localY", y));
+    } catch (JSONException ignored) { /* This observes the existing synchronous production picker boundary. */ }
+  }
+  private static JSONObject inputReadiness(View view, boolean center, float x, float y,
+      boolean preDrawObserved, long elapsedMs, ReadyPoint point) {
+    View root = view.getRootView(), owner = inputOwner(view);
+    Rect visible = new Rect(), display = new Rect(); int[] location = new int[2], rootLocation = new int[2];
+    boolean shown = view.getLocalVisibleRect(visible);
+    view.getLocationOnScreen(location); root.getLocationOnScreen(rootLocation); root.getWindowVisibleDisplayFrame(display);
+    Rect window = new Rect(rootLocation[0], rootLocation[1], rootLocation[0] + root.getWidth(), rootLocation[1] + root.getHeight());
+    point.x = center ? view.getWidth() / 2f : x; point.y = center ? view.getHeight() / 2f : y;
+    point.screenX = location[0] + point.x; point.screenY = location[1] + point.y;
+    boolean localPointInside = Float.isFinite(point.x) && Float.isFinite(point.y) && point.x >= 0 && point.y >= 0
+        && point.x < view.getWidth() && point.y < view.getHeight() && visible.contains((int) point.x, (int) point.y);
+    boolean fullyVisible = shown && visible.left == 0 && visible.top == 0
+        && visible.width() == view.getWidth() && visible.height() == view.getHeight();
+    boolean attached = view.isAttachedToWindow(), laidOut = view.isLaidOut(), focused = view.hasWindowFocus();
+    boolean layoutPending = pendingLayout(view) || (owner != null && pendingLayout(owner));
+    boolean ownerAttached = owner != null && owner.isAttachedToWindow() && owner.isLaidOut() && owner.isShown()
+        && owner.getParent() != null && owner.getRootView() == root;
+    boolean pointInsideWindow = window.contains((int) point.screenX, (int) point.screenY);
+    boolean pointInsideDisplay = display.contains((int) point.screenX, (int) point.screenY);
+    boolean actionable = !(view instanceof Button) || view.isClickable();
+    boolean ready = preDrawObserved && attached && laidOut && focused && !layoutPending && view.isShown()
+        && view.isEnabled() && actionable && ownerAttached && view.getWidth() > 0 && view.getHeight() > 0
+        && fullyVisible && localPointInside && pointInsideWindow && pointInsideDisplay;
+    try {
+      return new JSONObject().put("ready", ready).put("elapsedMs", elapsedMs).put("preDrawObserved", preDrawObserved)
+          .put("attached", attached).put("laidOut", laidOut).put("windowFocused", focused).put("layoutPending", layoutPending)
+          .put("shown", view.isShown()).put("enabled", view.isEnabled()).put("clickable", view.isClickable()).put("ownerAttached", ownerAttached)
+          .put("ownerGeneration", view instanceof ObservedTarget ? ((ObservedTarget) view).generation : 0)
+          .put("ownerPhase", view instanceof ObservedTarget ? ((ObservedTarget) view).phase : "CONTROL")
+          .put("width", view.getWidth()).put("height", view.getHeight()).put("localX", point.x).put("localY", point.y)
+          .put("screenX", point.screenX).put("screenY", point.screenY).put("visibleLeft", visible.left).put("visibleTop", visible.top)
+          .put("visibleWidth", visible.width()).put("visibleHeight", visible.height()).put("windowLeft", window.left).put("windowTop", window.top)
+          .put("windowWidth", window.width()).put("windowHeight", window.height()).put("displayLeft", display.left).put("displayTop", display.top)
+          .put("displayWidth", display.width()).put("displayHeight", display.height()).put("fullyVisible", fullyVisible)
+          .put("localPointInside", localPointInside).put("pointInsideWindow", pointInsideWindow).put("pointInsideDisplay", pointInsideDisplay);
     } catch (JSONException failure) { throw new AssertionError(failure); }
   }
-  private static void awaitTouchableReturn(View escape, long startedAt) {
-    // Main-queue idle does not establish a newly shown Dialog's first layout/focus.
-    // This is a new setup-only bound; the existing GPU/input deadlines and gesture/assertions stay unchanged.
+  private static ReadyPoint awaitInputReadiness(View view, boolean center, float x, float y, long startedAt, String phase) {
+    // New setup-only bounds observe layout/focus after hierarchy or status changes; no gesture is retried.
+    // The existing GPU/input callback deadlines and the outer 180s instrumentation bound remain unchanged.
     long deadline = startedAt + 10000;
     CountDownLatch ready = new CountDownLatch(1); AtomicLong completedAt = new AtomicLong();
-    AtomicBoolean preDrawObserved = new AtomicBoolean();
+    AtomicBoolean preDrawObserved = new AtomicBoolean(); ReadyPoint point = new ReadyPoint();
     AtomicReference<JSONObject> initial = new AtomicReference<>(), observed = new AtomicReference<>();
     AtomicReference<ViewTreeObserver> observer = new AtomicReference<>();
     Runnable check = () -> {
-      JSONObject sample = returnReadiness(escape, preDrawObserved.get(), SystemClock.elapsedRealtime() - startedAt);
+      JSONObject sample = inputReadiness(view, center, x, y, preDrawObserved.get(), SystemClock.elapsedRealtime() - startedAt, point);
       observed.set(sample);
       if (sample.optBoolean("ready") && completedAt.compareAndSet(0, SystemClock.elapsedRealtime())) ready.countDown();
     };
@@ -93,32 +151,52 @@ final class ParallaxNativeInputFixture {
     boolean signaled = false;
     try {
       onMain(() -> {
-        initial.set(returnReadiness(escape, false, SystemClock.elapsedRealtime() - startedAt));
-        ViewTreeObserver owned = escape.getRootView().getViewTreeObserver(); observer.set(owned);
+        initial.set(inputReadiness(view, center, x, y, false, SystemClock.elapsedRealtime() - startedAt, point));
+        ViewTreeObserver owned = view.getRootView().getViewTreeObserver(); observer.set(owned);
         owned.addOnPreDrawListener(draw); owned.addOnWindowFocusChangeListener(focus);
-        escape.getRootView().postInvalidateOnAnimation();
+        view.getRootView().postInvalidateOnAnimation();
       });
       long remaining = deadline - SystemClock.elapsedRealtime();
       if (remaining > 0) signaled = ready.await(remaining, TimeUnit.MILLISECONDS);
     } catch (InterruptedException interrupted) {
-      Thread.currentThread().interrupt(); throw new AssertionError("Return readiness interrupted", interrupted);
+      Thread.currentThread().interrupt(); throw new AssertionError("Input readiness interrupted", interrupted);
     } finally {
       onMain(() -> {
         ViewTreeObserver owned = observer.get();
-        if (owned != null && !owned.isAlive()) owned = escape.getRootView().getViewTreeObserver();
+        if (owned != null && !owned.isAlive()) owned = view.getRootView().getViewTreeObserver();
         if (owned != null && owned.isAlive()) { owned.removeOnPreDrawListener(draw); owned.removeOnWindowFocusChangeListener(focus); }
-        observed.set(returnReadiness(escape, preDrawObserved.get(), SystemClock.elapsedRealtime() - startedAt));
+        observed.set(inputReadiness(view, center, x, y, preDrawObserved.get(), SystemClock.elapsedRealtime() - startedAt, point));
         try {
-          android.util.Log.i("NCL01Filament", "SOFTWARE_PROVIDER_RETURN_READINESS:" + new JSONObject()
-              .put("schemaVersion", 1).put("readinessBudgetMs", 10000).put("initial", initial.get())
-              .put("final", observed.get()).put("completionElapsedMs", completedAt.get() == 0 ? -1 : completedAt.get() - startedAt));
+          String prefix = phase.equals("SOFTWARE_PROVIDER_RETURN") ? "SOFTWARE_PROVIDER_RETURN_READINESS:" : "NATIVE_FIXTURE_INPUT_READINESS:";
+          android.util.Log.i("NCL01Filament", prefix + new JSONObject().put("schemaVersion", 1).put("phase", phase)
+              .put("readinessBudgetMs", 10000).put("initial", initial.get()).put("final", observed.get())
+              .put("completionElapsedMs", completedAt.get() == 0 ? -1 : completedAt.get() - startedAt));
         } catch (JSONException failure) { throw new AssertionError(failure); }
       });
     }
-    assertTrue("Actual Return is laid out, focused and fully visible within its setup deadline", signaled);
-    assertTrue("Return readiness completed before the single setup deadline", completedAt.get() <= deadline);
-    assertTrue("Return is still touchable immediately before the one gesture", observed.get().optBoolean("ready"));
+    if (phase.equals("SOFTWARE_PROVIDER_RETURN")) {
+      assertTrue("Actual Return is laid out, focused and fully visible within its setup deadline", signaled);
+      assertTrue("Return readiness completed before the single setup deadline", completedAt.get() <= deadline);
+      assertTrue("Return is still touchable immediately before the one gesture", observed.get().optBoolean("ready"));
+    } else {
+      assertTrue("Actual input target and replacement owner became ready within the setup deadline", signaled);
+      assertTrue("Input readiness completed before the single setup deadline", completedAt.get() <= deadline);
+      assertTrue("The exact original input point remains visible immediately before the one action", observed.get().optBoolean("ready"));
+    }
+    return point;
   }
+  private static void tap(View view, boolean center, float x, float y, long startedAt, String phase) {
+    ReadyPoint point = awaitInputReadiness(view, center, x, y, startedAt, phase);
+    long time = SystemClock.uptimeMillis();
+    for (int action : new int[] {MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP}) {
+      MotionEvent event = MotionEvent.obtain(time, SystemClock.uptimeMillis(), action, point.screenX, point.screenY, 0);
+      event.setSource(InputDevice.SOURCE_TOUCHSCREEN);
+      try { InstrumentationRegistry.getInstrumentation().sendPointerSync(event); } finally { event.recycle(); }
+    }
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+  private static void tap(View view, float x, float y) { tap(view, false, x, y, SystemClock.elapsedRealtime(), "MOTION_EVENT"); }
+  private static void tap(View view) { tap(view, true, 0, 0, SystemClock.elapsedRealtime(), "MOTION_EVENT"); }
   static void verifySoftwareProvider(Activity activity) {
     AtomicReference<ParallaxLocalRuntime> owner = new AtomicReference<>();
     AtomicReference<android.app.Dialog> dialog = new AtomicReference<>();
@@ -144,8 +222,7 @@ final class ParallaxNativeInputFixture {
       View root = dialog.get().getWindow().getDecorView();
       assertNotNull(text(root, "Device Lab: camera-free software fixture. No AR tracking or physical proof."));
       View escape = text(root, "Return to Guided View"); assertNotNull(escape);
-      awaitTouchableReturn(escape, readinessStartedAt);
-      tap(escape);
+      tap(escape, true, 0, 0, readinessStartedAt, "SOFTWARE_PROVIDER_RETURN");
       assertFalse("Actual Return dismisses the camera-free controller", dialog.get().isShowing());
       assertEquals(1, terminated.get());
       assertTrue("Software frames never publish world tracking or measured capabilities", events.stream().allMatch(event ->
@@ -210,6 +287,7 @@ final class ParallaxNativeInputFixture {
   }
   private static void accessibilityClick(View view) {
     assertNotNull(view);
+    awaitInputReadiness(view, true, 0, 0, SystemClock.elapsedRealtime(), "ACCESSIBILITY_ACTION_CLICK");
     onMain(() -> {
       AccessibilityNodeInfo node = view.createAccessibilityNodeInfo();
       assertTrue("The standard button exposes an enabled accessibility click", node.isEnabled() && node.isClickable()
@@ -233,9 +311,11 @@ final class ParallaxNativeInputFixture {
     };
     try {
       onMain(() -> {
+        int ownerGeneration = nextOwnerGeneration(target);
         ParallaxInteractionView input = new ParallaxInteractionView(activity, target,
             (x, y, result) -> {
               assertEquals(target.getWidth() / 2f, x, 0); assertEquals(target.getHeight() / 2f, y, 0);
+              observePickRequest(target, "ACCESSIBLE_INPUT", ownerGeneration, x, y);
               requests.incrementAndGet(); renderer.pick(x, y, result);
             }, hit -> {
               selected.set(hit);
@@ -244,7 +324,7 @@ final class ParallaxNativeInputFixture {
               if (hit != null) intent.accept("PICK");
               callbacks.incrementAndGet();
             }, intent, () -> { returns.incrementAndGet(); controls.get().close(); });
-        controls.set(input); host.addView(input);
+        controls.set(input); host.addView(input); observeOwner(target, input, "ACCESSIBLE_INPUT", ownerGeneration);
       });
       InstrumentationRegistry.getInstrumentation().waitForIdleSync();
       View center = text(controls.get(), "Select object at center"); assertNotNull(center);
@@ -313,15 +393,16 @@ final class ParallaxNativeInputFixture {
     };
     try {
     onMain(() -> {
+      int ownerGeneration = nextOwnerGeneration(target);
       ParallaxInteractionView input = new ParallaxInteractionView(activity, target,
-          (px, py, result) -> { requests.incrementAndGet(); renderer.pick(px, py, result); },
+          (px, py, result) -> { observePickRequest(target, "MODEL_INPUT", ownerGeneration, px, py); requests.incrementAndGet(); renderer.pick(px, py, result); },
           hit -> {
             selected.set(hit);
             controls.get().update("NORMAL", false, false, hit == null ? Collections.emptySet()
                 : new HashSet<>(Arrays.asList("PICK", "INSPECT", "PLACE")));
             if (hit != null) intent.accept("PICK");
           }, intent, () -> { returns.incrementAndGet(); controls.get().close(); });
-      controls.set(input); host.addView(input);
+      controls.set(input); host.addView(input); observeOwner(target, input, "MODEL_INPUT", ownerGeneration);
     });
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     tap(target, x, y); assertEquals("Loading cannot acquire a selection", 0, requests.get());
@@ -367,10 +448,11 @@ final class ParallaxNativeInputFixture {
     // Controlled delayed callback proves cancellation even if the backend completes after Return.
     AtomicReference<Consumer<String>> delayed = new AtomicReference<>(); AtomicInteger lateSelections = new AtomicInteger();
     onMain(() -> {
+      int ownerGeneration = nextOwnerGeneration(target);
       ParallaxInteractionView input = new ParallaxInteractionView(activity, target,
-          (px, py, result) -> delayed.set(result), hit -> lateSelections.incrementAndGet(), action -> {},
+          (px, py, result) -> { observePickRequest(target, "DELAYED_INPUT", ownerGeneration, px, py); delayed.set(result); }, hit -> lateSelections.incrementAndGet(), action -> {},
           () -> controls.get().close());
-      controls.set(input); host.addView(input); input.update("NORMAL", false, false, Collections.emptySet());
+      controls.set(input); host.addView(input); observeOwner(target, input, "DELAYED_INPUT", ownerGeneration); input.update("NORMAL", false, false, Collections.emptySet());
     });
     InstrumentationRegistry.getInstrumentation().waitForIdleSync(); tap(target, x, y); assertNotNull(delayed.get());
     Consumer<String> beforeTrackingLoss = delayed.get();

@@ -64,7 +64,7 @@ final class ParallaxModelRenderingFixture {
         stage("SURFACE_CREATE_BEGIN");
         Dialog owned = new Dialog(activity, android.R.style.Theme_Material_NoActionBar_Fullscreen);
         dialog.set(owned);
-        TextureView surface = new TextureView(activity); surface.setOpaque(false); target.set(surface);
+        TextureView surface = ParallaxNativeInputFixture.observedTarget(activity); surface.setOpaque(false); target.set(surface);
         LinearLayout presentation = new LinearLayout(activity); presentation.setOrientation(LinearLayout.VERTICAL);
         presentation.setGravity(Gravity.CENTER_HORIZONTAL);
         presentation.addView(surface, new LinearLayout.LayoutParams(256, 256));
