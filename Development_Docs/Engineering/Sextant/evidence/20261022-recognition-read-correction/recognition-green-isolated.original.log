@@ -1,0 +1,36 @@
+✔ recognition shares immutable reads across inherited records and reads afresh after failure (28741.135ms)
+ℹ 79 recognition rows retain inherited history using 97 Git reads per invocation
+✔ recognition preserves empty history tree presence and recognizes copied empty frozen src (10771.3511ms)
+✖ recognition retains explicit PR and base mismatch short circuits and new refit signals (5875.7808ms)
+✔ source diagnostics captures only the fixed full-SHA tree-presence read shape (1955.6142ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 47619.2081
+
+✖ failing tests:
+
+test at tests\sounding-line\recognition-immutable-reads.test.mjs:164:1
+✖ recognition retains explicit PR and base mismatch short circuits and new refit signals (5875.7808ms)
+  Error: Command failed: git ls-tree dddddddddddddddddddddddddddddddddddddddd -- testing/product-experience-exceptions.json
+      at genericNodeError (node:internal/errors:985:15)
+      at wrappedFn (node:internal/errors:539:14)
+      at checkExecSyncError (node:child_process:925:11)
+      at execFileSync (node:child_process:961:15)
+      at file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/tests/sounding-line/recognition-immutable-reads.test.mjs:101:12
+      at Object.apply (node:internal/test_runner/mock/mock:763:20)
+      at sourceDiagnosticGit (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/source-diagnostics.mjs:294:12)
+      at git (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:269:3)
+      at present (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:276:51)
+      at exceptionRegistry (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:312:8) {
+    status: 128,
+    signal: null,
+    output: [ null, '', null ],
+    pid: 146304,
+    stdout: '',
+    stderr: null
+  }

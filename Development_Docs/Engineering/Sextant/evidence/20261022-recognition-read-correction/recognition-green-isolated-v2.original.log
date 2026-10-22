@@ -1,0 +1,13 @@
+✔ recognition shares immutable reads across inherited records and reads afresh after failure (27717.9776ms)
+ℹ 79 recognition rows retain inherited history using 97 Git reads per invocation
+✔ recognition preserves empty history tree presence and recognizes copied empty frozen src (10282.84ms)
+✔ recognition retains explicit PR and base mismatch short circuits and new refit signals (12233.3718ms)
+✔ source diagnostics captures only the fixed full-SHA tree-presence read shape (2318.0692ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 52837.7694

@@ -1,0 +1,23 @@
+{
+  "classification": "FOCUSED_SYNTHETIC_REGRESSION_NOT_QUALIFICATION",
+  "mode": "green-isolated",
+  "selected": [
+    "tests/sounding-line/recognition-immutable-reads.test.mjs"
+  ],
+  "originalCandidate": "fc2d65232579b290b54d89556418f188a50eb673",
+  "testedSourceSha256": "34d6d8966581a9b41da98b5c97f7165d8f8acb21c50033eac25ce2c80a0ed115",
+  "currentSourceSha256": "34d6d8966581a9b41da98b5c97f7165d8f8acb21c50033eac25ce2c80a0ed115",
+  "sourceBytesUnchangedDuringTest": true,
+  "testSha256": "d1fbc757bbddd6d8560ec9480b8962972a1b774085850c985c7183e7a2d30182",
+  "inheritedGitOverridesRemoved": true,
+  "sourceReadOnlyLoaderUsed": false,
+  "expectedFailure": false,
+  "exitCode": 1,
+  "errorCode": null,
+  "durationMs": 47917.7743,
+  "logSha256": "6f31bab75f3ad009e968cd9904b22d330dddb51e84bb30f82739d0764b708349",
+  "logBytes": 2081,
+  "result": "FAIL",
+  "qualification": false,
+  "recordedAt": "2026-10-22T19:55:43.193Z"
+}

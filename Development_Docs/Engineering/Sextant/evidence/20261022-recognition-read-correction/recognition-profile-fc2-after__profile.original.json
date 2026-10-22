@@ -1,0 +1,62 @@
+{
+  "classification": "BOUNDED_READ_ONLY_RECOGNITION_PROFILE_NOT_ADMISSION",
+  "label": "after",
+  "candidate": "fc2d65232579b290b54d89556418f188a50eb673",
+  "base": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "installedHead": "fc2d65232579b290b54d89556418f188a50eb673",
+  "sourceSha256": "91011afeaf1bad60d21b74c68ec29a0b37dab1ee9c05501e5ff9b4fc876b1cde",
+  "limits": {
+    "calls": 512,
+    "wallMs": 45000,
+    "individualReadMs": 5000,
+    "originalSourceOutputBoundsUnchanged": true
+  },
+  "disposition": "COMPLETE_MEASUREMENT_ONLY",
+  "ceiling": null,
+  "recognizedForMeasurementOnly": false,
+  "failure": null,
+  "calls": 148,
+  "elapsedMs": 18765.3218,
+  "operations": {
+    "REV-PARSE": {
+      "calls": 4,
+      "durationMs": 460.3266000000002,
+      "outputBytes": 164,
+      "failures": 0
+    },
+    "LS-TREE": {
+      "calls": 7,
+      "durationMs": 906.4178,
+      "outputBytes": 4110160,
+      "failures": 0
+    },
+    "SHOW": {
+      "calls": 6,
+      "durationMs": 770.0074000000002,
+      "outputBytes": 31648989,
+      "failures": 0
+    },
+    "TREE_INVENTORY": {
+      "calls": 2,
+      "durationMs": 330.0563000000002,
+      "outputBytes": 4342226,
+      "failures": 0
+    },
+    "ANCESTRY": {
+      "calls": 129,
+      "durationMs": 15885.913300000017,
+      "outputBytes": 0,
+      "failures": 0
+    }
+  },
+  "minimumFreeBytes": {
+    "C:/": "33390465024",
+    "D:/": "96256909312"
+  },
+  "separateDriveReserveBytes": "32212254720",
+  "noLazyFetching": true,
+  "appExecuted": false,
+  "countersOrAuthorityCreated": false,
+  "qualification": false,
+  "recordedAt": "2026-10-22T19:52:04.804Z"
+}

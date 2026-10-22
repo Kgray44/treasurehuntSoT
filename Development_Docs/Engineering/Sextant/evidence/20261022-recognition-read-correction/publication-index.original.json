@@ -1,0 +1,97 @@
+{
+  "classification": "DEVELOPMENT_EVIDENCE_EXACT_COPIES_NOT_ACCEPTANCE",
+  "sourceBase": "fc2d65232579b290b54d89556418f188a50eb673",
+  "files": [
+    {
+      "file": "recognition-red-isolated.original.json",
+      "original": "recognition-red-isolated.original.json",
+      "bytes": 969,
+      "sha256": "c71c3e57608f7fdaed16f0bad0de360d8efe57b1c16fbeb88c1c56ad6607611d"
+    },
+    {
+      "file": "recognition-red-isolated.original.log",
+      "original": "recognition-red-isolated.original.log",
+      "bytes": 1932,
+      "sha256": "94a9e4b9e8c5b636f0e2b0e9354a21b36fc4dc19ce4fde0f4e0963ab31b5ca95"
+    },
+    {
+      "file": "recognition-green-isolated-v2.original.json",
+      "original": "recognition-green-isolated-v2.original.json",
+      "bytes": 928,
+      "sha256": "5645f1d3a915bcffa774759b330d07d4a4942c413e26a397e79df55db3850e13"
+    },
+    {
+      "file": "recognition-green-isolated-v2.original.log",
+      "original": "recognition-green-isolated-v2.original.log",
+      "bytes": 615,
+      "sha256": "22d25ca80bee9dbd433dcc50eb86d52b0fc7802cce238a63c96f19797e96a3b8"
+    },
+    {
+      "file": "recognition-existing-r26-guards.original.json",
+      "original": "recognition-existing-r26-guards.original.json",
+      "bytes": 924,
+      "sha256": "a5b8c44d3332fb9202d94a5338a013786016ac0635d3cf66264336539137ae1f"
+    },
+    {
+      "file": "recognition-existing-r26-guards.original.log",
+      "original": "recognition-existing-r26-guards.original.log",
+      "bytes": 624,
+      "sha256": "50f828e4c0821e6c91cccb39152e6b1e89e88d331bdf8f33a85d209943eadbb2"
+    },
+    {
+      "file": "recognition-existing-signal-parity.original.json",
+      "original": "recognition-existing-signal-parity.original.json",
+      "bytes": 977,
+      "sha256": "df8dfb340e23d88470237c78b4ae453f5f19dd179883fda139f3b165a9cb8c60"
+    },
+    {
+      "file": "recognition-existing-signal-parity.original.log",
+      "original": "recognition-existing-signal-parity.original.log",
+      "bytes": 227,
+      "sha256": "05786586a9f85ad5f6b8370c548351887bf25bd8535a378734cca0b29dcf7d7f"
+    },
+    {
+      "file": "recognition-green-isolated.original.json",
+      "original": "recognition-green-isolated.original.json",
+      "bytes": 926,
+      "sha256": "0ebeed99f9fd10564f55689575e24edaa13f16741e8fc5432b7b6819e54b5111"
+    },
+    {
+      "file": "recognition-green-isolated.original.log",
+      "original": "recognition-green-isolated.original.log",
+      "bytes": 2081,
+      "sha256": "6f31bab75f3ad009e968cd9904b22d330dddb51e84bb30f82739d0764b708349"
+    },
+    {
+      "file": "recognition-regression-red.original.log",
+      "original": "recognition-regression-red.original.log",
+      "bytes": 1964,
+      "sha256": "35f1ba055c156ed9d98c49c42769605d1b0365793e7f07252045db3ed2915a1e"
+    },
+    {
+      "file": "recognition-regression-green.original.log",
+      "original": "recognition-regression-green.original.log",
+      "bytes": 630,
+      "sha256": "9e20b379b96d2c4ced69467eb66bda848587b24b07ae064ca30652824c0f896d"
+    },
+    {
+      "file": "recognition-profile-fc2-before__profile.original.json",
+      "original": "recognition-profile-fc2-before/profile.original.json",
+      "bytes": 1752,
+      "sha256": "fb4d36a3ff01bf0d47cc3c421b1b63e6a679749f6a760e399ad1916b0423b33e"
+    },
+    {
+      "file": "recognition-profile-fc2-before-corrected__profile.original.json",
+      "original": "recognition-profile-fc2-before-corrected/profile.original.json",
+      "bytes": 1712,
+      "sha256": "41b51ef952cd512fd21c7aeb95a3f56e31b4dd1719274f21f2d88dbc5acb85f9"
+    },
+    {
+      "file": "recognition-profile-fc2-after__profile.original.json",
+      "original": "recognition-profile-fc2-after/profile.original.json",
+      "bytes": 1617,
+      "sha256": "29db2c6e80d333011422dd6d28c268ff73a2ecc3ff60787ca8662a228f543e5c"
+    }
+  ],
+  "qualification": false
+}

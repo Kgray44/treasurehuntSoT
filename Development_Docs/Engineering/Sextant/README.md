@@ -3,10 +3,15 @@ title: Sextant implementation and consumer integration
 audience: product-engineering
 status: current
 canonical_for: sextant-phase1-implementation
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-22
 ---
 
 # Sextant — Device Context
+
+The [recognition read correction](Phase4_Recognition_Immutable_Reads_20261022.md)
+retains three watchdog-cancelled hosted attempts and isolates repeated immutable
+Git reads before setup. Focused development proof preserves all admission gates;
+it does not establish product acceptance or canonical iOS cleanup.
 
 The [2026-10-19 virtual completion continuation](Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
 reconciles the existing draft with current main, inventories every Phase 4 gate,

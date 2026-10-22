@@ -5709,6 +5709,60 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/publication-index.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-existing-r26-guards.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-existing-signal-parity.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-green-isolated-v2.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-green-isolated.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-profile-fc2-after__profile.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-profile-fc2-before__profile.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-profile-fc2-before-corrected__profile.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-red-isolated.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-hierarchy.txt",
       "record_type": "engineering-record",
       "status": "current",
@@ -6094,6 +6148,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/evidence/820178bf/uncovered-consumers.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/Phase4_Recognition_Immutable_Reads_20261022.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

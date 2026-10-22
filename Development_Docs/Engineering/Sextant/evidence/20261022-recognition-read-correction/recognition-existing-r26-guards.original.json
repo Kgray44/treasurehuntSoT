@@ -1,0 +1,23 @@
+{
+  "classification": "FOCUSED_SYNTHETIC_REGRESSION_NOT_QUALIFICATION",
+  "mode": "existing-r26-guards",
+  "selected": [
+    "tests/sounding-line/unrelated-expired-r26.test.mjs"
+  ],
+  "originalCandidate": "fc2d65232579b290b54d89556418f188a50eb673",
+  "testedSourceSha256": "34d6d8966581a9b41da98b5c97f7165d8f8acb21c50033eac25ce2c80a0ed115",
+  "currentSourceSha256": "34d6d8966581a9b41da98b5c97f7165d8f8acb21c50033eac25ce2c80a0ed115",
+  "sourceBytesUnchangedDuringTest": true,
+  "testSha256": "a0f7e620dd0dcc8d95d8435b1f8294739063dba95507f88f1394d5a41bfb70ff",
+  "inheritedGitOverridesRemoved": true,
+  "sourceReadOnlyLoaderUsed": false,
+  "expectedFailure": false,
+  "exitCode": 0,
+  "errorCode": null,
+  "durationMs": 61992.1994,
+  "logSha256": "50f828e4c0821e6c91cccb39152e6b1e89e88d331bdf8f33a85d209943eadbb2",
+  "logBytes": 624,
+  "result": "PASS",
+  "qualification": false,
+  "recordedAt": "2026-10-22T19:55:57.285Z"
+}

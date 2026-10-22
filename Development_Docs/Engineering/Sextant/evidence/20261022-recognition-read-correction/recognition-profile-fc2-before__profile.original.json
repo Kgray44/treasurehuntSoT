@@ -1,0 +1,65 @@
+{
+  "classification": "BOUNDED_READ_ONLY_RECOGNITION_PROFILE_NOT_ADMISSION",
+  "label": "before",
+  "candidate": "fc2d65232579b290b54d89556418f188a50eb673",
+  "base": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "installedHead": "fc2d65232579b290b54d89556418f188a50eb673",
+  "sourceSha256": "536781f00c78e98387f405a71bd4e9737951126f5faff1b72079cc274fe3653a",
+  "limits": {
+    "calls": 512,
+    "wallMs": 45000,
+    "individualReadMs": 5000,
+    "originalSourceOutputBoundsUnchanged": true
+  },
+  "disposition": "INCOMPLETE",
+  "ceiling": null,
+  "recognizedForMeasurementOnly": null,
+  "failure": {
+    "name": "RangeError",
+    "message": "The value of \"timeout\" is out of range. It must be an unsigned integer. Received 4956.5265"
+  },
+  "calls": 330,
+  "elapsedMs": 40044.569299999996,
+  "operations": {
+    "REV-PARSE": {
+      "calls": 9,
+      "durationMs": 1012.9455000000012,
+      "outputBytes": 369,
+      "failures": 0
+    },
+    "LS-TREE": {
+      "calls": 280,
+      "durationMs": 33030.295799999985,
+      "outputBytes": 48043,
+      "failures": 1
+    },
+    "SHOW": {
+      "calls": 16,
+      "durationMs": 1905.1487000000018,
+      "outputBytes": 35781554,
+      "failures": 0
+    },
+    "TREE_INVENTORY": {
+      "calls": 7,
+      "durationMs": 1183.3058,
+      "outputBytes": 15197791,
+      "failures": 0
+    },
+    "ANCESTRY": {
+      "calls": 18,
+      "durationMs": 2191.0961000000007,
+      "outputBytes": 0,
+      "failures": 0
+    }
+  },
+  "minimumFreeBytes": {
+    "C:/": "33395965952",
+    "D:/": "96289857536"
+  },
+  "separateDriveReserveBytes": "32212254720",
+  "noLazyFetching": true,
+  "appExecuted": false,
+  "countersOrAuthorityCreated": false,
+  "qualification": false,
+  "recordedAt": "2026-10-22T19:46:03.056Z"
+}

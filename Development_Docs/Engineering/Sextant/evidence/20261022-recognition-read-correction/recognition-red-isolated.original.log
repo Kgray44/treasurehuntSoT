@@ -1,0 +1,32 @@
+✖ recognition shares immutable reads across inherited records and reads afresh after failure (17407.3228ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17665.4733
+
+✖ failing tests:
+
+test at tests\sounding-line\recognition-immutable-reads.test.mjs:130:1
+✖ recognition shares immutable reads across inherited records and reads afresh after failure (17407.3228ms)
+  AssertionError [ERR_ASSERTION]: recognition exceeded 128 immutable Git reads
+      at file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/tests/sounding-line/recognition-immutable-reads.test.mjs:97:5
+      at Object.apply (node:internal/test_runner/mock/mock:763:20)
+      at sourceDiagnosticGit (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/source-diagnostics.mjs:294:12)
+      at git (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:269:3)
+      at Object.present (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:276:51)
+      at file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:853:16
+      at Array.some (<anonymous>)
+      at campaignRelatedWithSource (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:851:29)
+      at campaignRelated (file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:779:10)
+      at file:///D:/CodexWorktrees/sextant-phase4-current-main-readiness-01a15554/scripts/sounding-line/experience-exception.mjs:2535:11 {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

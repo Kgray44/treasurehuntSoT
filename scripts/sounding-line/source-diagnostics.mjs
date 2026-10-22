@@ -53,6 +53,7 @@ const fixedArguments = new Set([
   "--batch",
   "--batch-check",
   "-rz",
+  "-rtz",
   "--",
   "--exit-code",
 ]);
@@ -109,7 +110,9 @@ function supportedRead(component, args, options, metadata) {
     if (args[0] === "show") return args.length === 2 && revision(args[1]);
     if (args[0] === "ls-tree")
       return (
-        (args.length === 3 && args[1] === "-rz" && fullSha(args[2])) ||
+        (args.length === 3 &&
+          (args[1] === "-rz" || (component === "EXPERIENCE_EXCEPTION" && args[1] === "-rtz")) &&
+          fullSha(args[2])) ||
         (args.length === 4 && fullSha(args[1]) && args[2] === "--" && publicPath(args[3]))
       );
     if (args[0] === "merge-base")

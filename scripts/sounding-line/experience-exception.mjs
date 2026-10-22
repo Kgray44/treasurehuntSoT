@@ -278,9 +278,9 @@ const identity = (root, revision, file) => git(root, "rev-parse", `${revision}:$
 const runtimePath = (file) =>
   /^(?:src|app|components|lib|styles|public|prisma|scripts|tests|testing|\.github)\//u.test(file) ||
   /^(?:package(?:-lock)?\.json|.*\.config\.[^/]+|tsconfig\.json|\.nvmrc)$/u.test(file);
-function entries(root, revision) {
+function entries(root, revision, treeFlag = "-rz") {
   return new Map(
-    git(root, "ls-tree", "-rz", revision)
+    git(root, "ls-tree", treeFlag, revision)
       .split("\0")
       .filter(Boolean)
       .map((entry) => {
@@ -780,12 +780,13 @@ export function campaignRelated(options) {
 }
 // One comparison owns immutable metadata for its two exact revisions. Nothing is
 // cached between calls, and every original history row/signal is still evaluated.
-function campaignComparison(options) {
+function campaignComparison(options, { exactPresence = false } = {}) {
   const inventories = new Map(),
     paths = new Map(),
     identities = new Map(),
     documents = new Map(),
-    ancestors = new Map();
+    ancestors = new Map(),
+    presencePaths = new Map();
   const inventory = (root, revision) => {
     if (!inventories.has(revision)) {
       const value = entries(root, revision);
@@ -800,6 +801,10 @@ function campaignComparison(options) {
   };
   const source = {
     present(root, revision, file) {
+      // Recognition previously used direct presence reads, which include empty
+      // trees. Keep those exact signals separate from leaf-only R3 inventories.
+      if (exactPresence)
+        return memo(presencePaths, revision, () => new Set(entries(root, revision, "-rtz").keys())).has(file);
       inventory(root, revision);
       return paths.get(revision).has(file);
     },
@@ -2517,6 +2522,17 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
     }
     return candidateSrcIdentity;
   };
+  // Preserve every record and short circuit. Only successful immutable reads
+  // are shared, within this invocation and one exact reference-base comparison.
+  const comparisons = new Map();
+  const related = (referenceBase, record) => {
+    if (!comparisons.has(referenceBase))
+      comparisons.set(
+        referenceBase,
+        campaignComparison({ root, baseSha: referenceBase, candidateSha }, { exactPresence: true }),
+      );
+    return comparisons.get(referenceBase)(record);
+  };
   return records.some((record) => {
     const marker = campaignHistoryMarker(record, candidateInventory, candidatePaths);
     const frozen = record.frozenTrees?.src && readCandidateSrcIdentity() === record.frozenTrees.src;
@@ -2529,10 +2545,7 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
     return (
       Number(environment.SOUNDING_LINE_PR_NUMBER) === record.pullRequest ||
       ((marker || descends || refit || frozen || r3Family) &&
-        (!referenceBase ||
-          baseSha !== referenceBase ||
-          baseSha === candidateSha ||
-          campaignRelated({ root, baseSha: referenceBase, candidateSha, record })))
+        (!referenceBase || baseSha !== referenceBase || baseSha === candidateSha || related(referenceBase, record)))
     );
   });
 }

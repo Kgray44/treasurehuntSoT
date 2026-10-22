@@ -1,0 +1,24 @@
+{
+  "classification": "FOCUSED_SYNTHETIC_REGRESSION_NOT_QUALIFICATION",
+  "mode": "existing-signal-parity",
+  "selected": [
+    "--test-name-pattern=^R9 shared review pins",
+    "tests/sounding-line/experience-exception.test.mjs"
+  ],
+  "originalCandidate": "fc2d65232579b290b54d89556418f188a50eb673",
+  "testedSourceSha256": "34d6d8966581a9b41da98b5c97f7165d8f8acb21c50033eac25ce2c80a0ed115",
+  "currentSourceSha256": "34d6d8966581a9b41da98b5c97f7165d8f8acb21c50033eac25ce2c80a0ed115",
+  "sourceBytesUnchangedDuringTest": true,
+  "testSha256": "79b62abbe963089f0f3eae8b957e895c40897beed52ae609ce7e0c6189d094af",
+  "inheritedGitOverridesRemoved": true,
+  "sourceReadOnlyLoaderUsed": false,
+  "expectedFailure": false,
+  "exitCode": 0,
+  "errorCode": null,
+  "durationMs": 125475.3392,
+  "logSha256": "05786586a9f85ad5f6b8370c548351887bf25bd8535a378734cca0b29dcf7d7f",
+  "logBytes": 227,
+  "result": "PASS",
+  "qualification": false,
+  "recordedAt": "2026-10-22T19:59:06.077Z"
+}

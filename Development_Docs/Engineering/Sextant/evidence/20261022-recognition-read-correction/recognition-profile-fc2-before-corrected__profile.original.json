@@ -1,0 +1,65 @@
+{
+  "classification": "BOUNDED_READ_ONLY_RECOGNITION_PROFILE_NOT_ADMISSION",
+  "label": "before-corrected",
+  "candidate": "fc2d65232579b290b54d89556418f188a50eb673",
+  "base": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "installedHead": "fc2d65232579b290b54d89556418f188a50eb673",
+  "sourceSha256": "536781f00c78e98387f405a71bd4e9737951126f5faff1b72079cc274fe3653a",
+  "limits": {
+    "calls": 512,
+    "wallMs": 45000,
+    "individualReadMs": 5000,
+    "originalSourceOutputBoundsUnchanged": true
+  },
+  "disposition": "INCOMPLETE",
+  "ceiling": "FIXED_READ_OR_WALL_CEILING",
+  "recognizedForMeasurementOnly": null,
+  "failure": {
+    "name": "Error",
+    "message": "spawnSync git ETIMEDOUT"
+  },
+  "calls": 374,
+  "elapsedMs": 45005.3558,
+  "operations": {
+    "REV-PARSE": {
+      "calls": 9,
+      "durationMs": 1041.7373000000034,
+      "outputBytes": 369,
+      "failures": 0
+    },
+    "LS-TREE": {
+      "calls": 324,
+      "durationMs": 38180.76820000005,
+      "outputBytes": 57129,
+      "failures": 1
+    },
+    "SHOW": {
+      "calls": 16,
+      "durationMs": 2046.0165999999977,
+      "outputBytes": 35781554,
+      "failures": 0
+    },
+    "TREE_INVENTORY": {
+      "calls": 7,
+      "durationMs": 1310.0410999999983,
+      "outputBytes": 15197791,
+      "failures": 0
+    },
+    "ANCESTRY": {
+      "calls": 18,
+      "durationMs": 2153.1604999999963,
+      "outputBytes": 0,
+      "failures": 0
+    }
+  },
+  "minimumFreeBytes": {
+    "C:/": "33395511296",
+    "D:/": "96289841152"
+  },
+  "separateDriveReserveBytes": "32212254720",
+  "noLazyFetching": true,
+  "appExecuted": false,
+  "countersOrAuthorityCreated": false,
+  "qualification": false,
+  "recordedAt": "2026-10-22T19:46:58.538Z"
+}
