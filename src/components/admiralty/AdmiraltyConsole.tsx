@@ -403,7 +403,7 @@ export function AdmiraltyConsole({ initialOverview }: { initialOverview: Overvie
 
 export type AdmiraltyWatch = {
   displayName: string;
-  roles: string[];
+  roles: readonly string[];
   sessionExpires: string;
   recentAssurance: boolean;
   activeGrantCount: number;

@@ -439,6 +439,7 @@ export function CaptainCommandConsole({
       </main>
     );
 
+  const directCommands = projection.commandConsole.commands.filter((command) => command.target === "NONE");
   const landfallTargets = !projection.landfall
     ? []
     : ["revealRoute", "selectRoute"].includes(landfallAction)

@@ -6867,7 +6867,8 @@
                 "state": "DEVICE_JOINED",
                 "kind": "outcome",
                 "feedbackBoundary": true,
-                "meaning": "The ordinary canonical registration follows actual keyboard Chronicle selection, guarded by a refusal-only sole-membership ID/edition fixture preflight. No UUID or session identity is injected."
+                "meaning": "The ordinary canonical registration follows actual keyboard Chronicle selection, guarded by a refusal-only sole-membership ID/edition fixture preflight. No UUID or session identity is injected.",
+                "path": "/account/devices"
               },
               {
                 "action": "assert",
@@ -14386,6 +14387,10 @@
               }
             ]
           }
+        ],
+        "navigation": "Follow the actual contextual account entrance to canonical sign-in, then use the existing Voyagewright home link to return to the public gateway. The server retains the safe workspace return.",
+        "browserTests": [
+          "tests/e2e/homeport-phase5.spec.ts"
         ]
       }
     },
@@ -14531,6 +14536,10 @@
               }
             ]
           }
+        ],
+        "navigation": "Follow the actual contextual account entrance to canonical sign-in, then use the existing Voyagewright home link to return to the public gateway. The server retains the safe workspace return.",
+        "browserTests": [
+          "tests/e2e/homeport-phase5.spec.ts"
         ]
       }
     }
