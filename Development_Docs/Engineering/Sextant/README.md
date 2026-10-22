@@ -8,7 +8,7 @@ last_reviewed: 2026-10-22
 
 # Sextant — Device Context
 
-The [recognition read correction](Phase4_Recognition_Immutable_Reads_20261022.md)
+The [retired recognition experiment](Phase4_Recognition_Immutable_Reads_20261022.md)
 retains three watchdog-cancelled hosted attempts and isolates repeated immutable
 Git reads before setup. Focused development proof preserves all admission gates;
 it does not establish product acceptance or canonical iOS cleanup.

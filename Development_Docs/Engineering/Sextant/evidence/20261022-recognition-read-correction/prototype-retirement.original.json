@@ -1,0 +1,25 @@
+{
+  "classification": "RETIRED_UNACCEPTED_ARCHITECTURE_SPECIFIC_EXPERIMENT",
+  "source": "189c6ad8b7653b9c6a0e98ffdd8ef7d93a00645e",
+  "acceptedReplacementMain": "1a7653c3d6f3476b38f789c9b7a017b4e529243c",
+  "reason": "Comparison memoization retained derived ancestry false after native errors; accepted raw reader preserves those errors and original decision body",
+  "priorBroadEquivalenceClearanceWithdrawn": true,
+  "priorFocusedResultsApplyOnlyTo189": {
+    "new": 4,
+    "unchangedR26": 4,
+    "unchangedR9": 1,
+    "inheritedReadBenchmark": 97
+  },
+  "prior148ReadProfilesNotTransferred": true,
+  "originalCommitReceiptsAndAssertionsPreserved": true,
+  "benchmark": {
+    "archived": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-immutable-reads.test.mjs.original.txt",
+    "bytes": 9248,
+    "sha256": "a06c56d8b5270ca0d15b095498b9ec4cf0d6fba9ef6f0f2f87c753e3d43210b0"
+  },
+  "activeAcceptedTestsOrTimeoutsWeakened": false,
+  "architectureSpecificBenchmarkNotClaimedAtReplacementSource": true,
+  "prototypeBasedHostedRunSubmitted": false,
+  "qualification": false,
+  "recordedAt": "2026-10-22T20:16:17.929Z"
+}

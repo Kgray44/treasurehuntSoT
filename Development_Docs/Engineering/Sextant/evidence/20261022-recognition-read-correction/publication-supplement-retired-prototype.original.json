@@ -1,0 +1,12 @@
+{
+  "classification": "RETIRED_UNACCEPTED_ARCHITECTURE_SPECIFIC_EXPERIMENT",
+  "files": [
+    {
+      "file": "recognition-immutable-reads.test.mjs.original.txt",
+      "original": "recognition-prototype-retired-test.original.mjs.txt",
+      "bytes": 9248,
+      "sha256": "a06c56d8b5270ca0d15b095498b9ec4cf0d6fba9ef6f0f2f87c753e3d43210b0"
+    }
+  ],
+  "qualification": false
+}

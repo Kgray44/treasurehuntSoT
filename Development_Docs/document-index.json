@@ -435,6 +435,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Immutable_Recognition_Read_Reuse_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Nonapplicable_Experience_Replay_Admission_Repair.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -5709,7 +5715,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/prototype-retirement.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/publication-index.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/publication-supplement-retired-prototype.original.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -5734,6 +5752,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-green-isolated.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261022-recognition-read-correction/recognition-immutable-reads.test.mjs.original.txt",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

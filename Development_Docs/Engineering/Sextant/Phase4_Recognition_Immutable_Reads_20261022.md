@@ -1,12 +1,24 @@
 ---
 title: Sextant Phase 4 recognition read correction
 audience: engineering
-status: development-only
+status: retired-development-experiment
 canonical_for: sextant-phase4-recognition-immutable-read-correction-20261022
 last_reviewed: 2026-10-22
 ---
 
 # Recognition read correction
+
+This is the historical source-189 experiment. Its broad equivalence clearance
+is withdrawn: comparison memoization could retain a caught ancestry failure as
+false. The accepted PR791 reader at main `1a7653c3` preserves raw failure reads
+and replaces the prototype production changes. The original 4+4+1 results and
+128-read benchmark remain source-189-only. Its benchmark is archived byte-exact
+as engineering evidence, with every assertion intact. Neither the 148-read
+measurements nor prior Resources clearance transfers to the replacement source.
+No prototype-based hosted capture was submitted.
+
+[Retirement and assertion provenance](evidence/20261022-recognition-read-correction/prototype-retirement.original.json)
+records the disposition. The historical implementation and observations follow.
 
 This development correction starts from consumer source
 `fc2d65232579b290b54d89556418f188a50eb673` and accepted base

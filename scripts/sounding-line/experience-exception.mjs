@@ -1,3 +1,4 @@
+import { recognitionGitRead, withImmutableRecognitionReads } from "./immutable-recognition-reads.mjs";
 import { CURRENT_R24, assertR24Mode, validateR24Custody } from "./experience-current-r24.mjs";
 import { CURRENT_R25, assertR25Mode } from "./experience-current-r25.mjs";
 import { CURRENT_R26, assertR26Mode } from "./experience-current-r26.mjs";
@@ -265,8 +266,9 @@ const digest = (value) =>
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_EXCEPTION_${code}`);
 };
+const diagnosticGit = (_command, args, options) => sourceDiagnosticGit("EXPERIENCE_EXCEPTION", args, options);
 const git = (root, ...args) =>
-  sourceDiagnosticGit("EXPERIENCE_EXCEPTION", args, {
+  recognitionGitRead(diagnosticGit, args, {
     cwd: root,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "ignore"],
@@ -278,9 +280,9 @@ const identity = (root, revision, file) => git(root, "rev-parse", `${revision}:$
 const runtimePath = (file) =>
   /^(?:src|app|components|lib|styles|public|prisma|scripts|tests|testing|\.github)\//u.test(file) ||
   /^(?:package(?:-lock)?\.json|.*\.config\.[^/]+|tsconfig\.json|\.nvmrc)$/u.test(file);
-function entries(root, revision, treeFlag = "-rz") {
+function entries(root, revision) {
   return new Map(
-    git(root, "ls-tree", treeFlag, revision)
+    git(root, "ls-tree", "-rz", revision)
       .split("\0")
       .filter(Boolean)
       .map((entry) => {
@@ -780,13 +782,12 @@ export function campaignRelated(options) {
 }
 // One comparison owns immutable metadata for its two exact revisions. Nothing is
 // cached between calls, and every original history row/signal is still evaluated.
-function campaignComparison(options, { exactPresence = false } = {}) {
+function campaignComparison(options) {
   const inventories = new Map(),
     paths = new Map(),
     identities = new Map(),
     documents = new Map(),
-    ancestors = new Map(),
-    presencePaths = new Map();
+    ancestors = new Map();
   const inventory = (root, revision) => {
     if (!inventories.has(revision)) {
       const value = entries(root, revision);
@@ -801,10 +802,6 @@ function campaignComparison(options, { exactPresence = false } = {}) {
   };
   const source = {
     present(root, revision, file) {
-      // Recognition previously used direct presence reads, which include empty
-      // trees. Keep those exact signals separate from leaf-only R3 inventories.
-      if (exactPresence)
-        return memo(presencePaths, revision, () => new Set(entries(root, revision, "-rtz").keys())).has(file);
       inventory(root, revision);
       return paths.get(revision).has(file);
     },
@@ -2484,7 +2481,10 @@ export function requireExceptionPhase({ root, phase, plan, environment = process
   }
   return value;
 }
-export function recognizeExceptionExecution({ root, baseSha, candidateSha, environment = process.env }) {
+export function recognizeExceptionExecution(options) {
+  return withImmutableRecognitionReads(() => recognizeExceptionSource(options));
+}
+function recognizeExceptionSource({ root, baseSha, candidateSha, environment = process.env }) {
   const installed = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
   const installedHead = git(installed, "rev-parse", "HEAD");
   const records = [
@@ -2522,17 +2522,6 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
     }
     return candidateSrcIdentity;
   };
-  // Preserve every record and short circuit. Only successful immutable reads
-  // are shared, within this invocation and one exact reference-base comparison.
-  const comparisons = new Map();
-  const related = (referenceBase, record) => {
-    if (!comparisons.has(referenceBase))
-      comparisons.set(
-        referenceBase,
-        campaignComparison({ root, baseSha: referenceBase, candidateSha }, { exactPresence: true }),
-      );
-    return comparisons.get(referenceBase)(record);
-  };
   return records.some((record) => {
     const marker = campaignHistoryMarker(record, candidateInventory, candidatePaths);
     const frozen = record.frozenTrees?.src && readCandidateSrcIdentity() === record.frozenTrees.src;
@@ -2545,7 +2534,10 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
     return (
       Number(environment.SOUNDING_LINE_PR_NUMBER) === record.pullRequest ||
       ((marker || descends || refit || frozen || r3Family) &&
-        (!referenceBase || baseSha !== referenceBase || baseSha === candidateSha || related(referenceBase, record)))
+        (!referenceBase ||
+          baseSha !== referenceBase ||
+          baseSha === candidateSha ||
+          campaignRelated({ root, baseSha: referenceBase, candidateSha, record })))
     );
   });
 }
