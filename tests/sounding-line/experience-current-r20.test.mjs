@@ -35,6 +35,62 @@ const git = (...args) => execFileSync("git", args, { cwd: sourceRoot, maxBuffer:
 const raw = git("show", `${CURRENT_R20.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`);
 const installed = JSON.parse(raw);
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
+const r20DocumentCommit = "d06a109fa2d3a74ad26e3d83649bc73eb13ba874";
+function originalR20Document(proof) {
+  const bytes = git("show", `${r20DocumentCommit}:${proof.path}`);
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), proof.sha256);
+  return bytes.toString();
+}
+
+// Keep complete raw CSV records, including quoted newlines and escaped quotes.
+function ledgerRecords(text) {
+  const rows = [];
+  let quoted = false,
+    start = 0;
+  for (let index = 0; index < text.length; index++) {
+    if (text[index] === '"') {
+      if (quoted && text[index + 1] === '"') index++;
+      else quoted = !quoted;
+    } else if (text[index] === "\n" && !quoted) {
+      rows.push(text.slice(start, index + 1));
+      start = index + 1;
+    }
+  }
+  assert.equal(quoted, false);
+  if (start < text.length) rows.push(text.slice(start));
+  return rows;
+}
+function ledgerRowId(row) {
+  const match = /^"([^"\r\n]+)",/u.exec(row);
+  assert(match, "ledger row has an explicit ID");
+  return match[1];
+}
+function assertCurrentR20Ledger(current, original, acceptedOverlay) {
+  const [header, ...originalRows] = ledgerRecords(original),
+    [acceptedHeader, ...acceptedRows] = ledgerRecords(acceptedOverlay),
+    [currentHeader, ...currentRows] = ledgerRecords(current);
+  assert.equal(acceptedHeader, header);
+  assert.equal(currentHeader, header);
+  assert.equal(acceptedRows.length, originalRows.length);
+  const ids = currentRows.map(ledgerRowId);
+  assert.equal(new Set(ids).size, ids.length, "no duplicate ledger IDs, including later additions");
+  let previousIndex = -1,
+    closures = 0;
+  for (const [index, row] of originalRows.entries()) {
+    const id = ledgerRowId(row),
+      accepted = acceptedRows[index];
+    assert.equal(ledgerRowId(accepted), id, "accepted overlay preserves historical row order and IDs");
+    if (id === "PE-DEBT-CROSSDECK-LENS") {
+      assert.notEqual(accepted, row);
+      closures++;
+    } else assert.equal(accepted, row, "accepted overlay changes only the named Crossdeck debt row");
+    const currentIndex = ids.indexOf(id);
+    assert(currentIndex > previousIndex, "every historical row remains present in relative order");
+    assert.equal(currentRows[currentIndex], accepted, `historical row ${id} retains exact accepted bytes`);
+    previousIndex = currentIndex;
+  }
+  assert.equal(closures, 1);
+}
 
 function fixture(t) {
   t.mock.timers.enable({ apis: ["Date"], now: new Date("2026-10-19T19:10:00Z") });
@@ -405,12 +461,12 @@ test("generation20 narrowly accepts the three approved B1 component splits while
 
 test("generation20 requires a real Refit packet and three transfers while preserving the prior registry and ledger", () => {
   const options = {
-    registry: JSON.parse(git("show", ":" + R20_SCOPE.refit.registryProof.path)),
+    registry: JSON.parse(originalR20Document(R20_SCOPE.refit.registryProof)),
     previousRegistry: JSON.parse(
       git("show", CURRENT_R20.protectedBaseAncestorSha + ":" + R20_SCOPE.refit.registryProof.path),
     ),
-    packet: git("show", ":" + R20_SCOPE.refit.packetProof.path).toString(),
-    ledger: git("show", ":" + R20_SCOPE.refit.ledgerProof.path).toString(),
+    packet: originalR20Document(R20_SCOPE.refit.packetProof),
+    ledger: originalR20Document(R20_SCOPE.refit.ledgerProof),
     previousLedger: git(
       "show",
       CURRENT_R20.protectedBaseAncestorSha + ":" + R20_SCOPE.refit.ledgerProof.path,
@@ -441,6 +497,39 @@ test("generation20 requires a real Refit packet and three transfers while preser
     mutate(changed);
     assert.throws(() => validateR20TransferDocuments(changed), /R20_ADJUDICATION_/u);
   }
+});
+
+test("current Homeport ledger preserves original R20 rows and transfers with only the accepted Crossdeck closure", () => {
+  const original = originalR20Document(R20_SCOPE.refit.ledgerProof),
+    accepted = git("cat-file", "blob", "cc4628f5fd611e21cf1d17ea88dbc350567f0b07"),
+    current = git("show", ":" + R20_SCOPE.refit.ledgerProof.path).toString();
+  assert.equal(
+    createHash("sha256").update(accepted).digest("hex"),
+    "709cecf7f2e129657ca90b6f6224dc0954bea48fe4201595bce3ea516b06fc20",
+    "exact ledger overlay accepted by PR721, separate from the original R20 proof",
+  );
+  const overlay = accepted.toString(),
+    rows = ledgerRecords(current),
+    prior = rows.find((row) => row.startsWith('"HP-NC-001",')),
+    closure = rows.find((row) => row.startsWith('"PE-DEBT-CROSSDECK-LENS",')),
+    transfer = rows.find((row) => row.startsWith('"HP-NC-CD-B1-01",'));
+  assert(prior && closure && transfer);
+  assertCurrentR20Ledger(current, original, overlay);
+  const later = prior.replace('"HP-NC-001",', '"SYNTHETIC-LATER-UNIQUE",');
+  assertCurrentR20Ledger(current + later, original, overlay);
+  assertCurrentR20Ledger(current.replace(transfer, later + transfer), original, overlay);
+  for (const changed of [
+    current.replace(prior, ""),
+    current.replace('"HP-NC-001",', '"changed-history",'),
+    current.replace(transfer, ""),
+    current + transfer,
+    current + later + later,
+    current.replace(closure, closure.replace('"CLOSED"', '"OPEN"')),
+    current.replace(closure, closure.replace("capture38814444774", "unapproved-evidence")),
+    current.replace(prior, "") + prior,
+    current.replace(transfer, "") + transfer,
+  ])
+    assert.throws(() => assertCurrentR20Ledger(changed, original, overlay));
 });
 
 test("generation20 consumes the exact successful R19 capture and blocked raw review without inventing success seals", async (t) => {

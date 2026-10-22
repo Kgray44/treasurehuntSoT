@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { access, mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -20,11 +20,17 @@ import {
   sanitizedFailureCode,
 } from "../../scripts/sounding-line/ordinary.mjs";
 import { runTrustedExperienceReplay } from "../../scripts/sounding-line/experience-browser.mjs";
-import { revisionJson, sourceSnapshot } from "../../scripts/sounding-line/product-experience.mjs";
+import {
+  planProductExperience,
+  revisionJson,
+  sourceSnapshot,
+} from "../../scripts/sounding-line/product-experience.mjs";
 import {
   REPLAY_ADMISSION_SUBSTAGES,
   sourceDiagnosticGit,
   withReplayAdmissionSubstage,
+  withReplayAdmissionScope,
+  withSourceDiagnosticCapture,
 } from "../../scripts/sounding-line/source-diagnostics.mjs";
 import {
   claimExceptionPhase,
@@ -294,6 +300,176 @@ test("actual suite setup failure writes only its current profile and preserves o
   assert.equal(receipt.profile.status, "FAIL");
   assert.equal(receipt.profile.failureCategory, "SUITE_FIXTURE_CONTRACT_UNSATISFIED");
   await preserved();
+});
+
+test("nonapplicable replay returns before exception admission and diagnostic setup", async (t) => {
+  const root = await fixture(t);
+  const { git } = diagnosticRepository(root);
+  await mkdir(path.join(root, "testing"));
+  await writeFile(
+    path.join(root, "testing/contracts.json"),
+    JSON.stringify({ experiencePolicy: { version: 1, evidencePath: "Development_Docs/evidence.json" }, contracts: [] }),
+  );
+  git("add", "--", "testing/contracts.json");
+  git("commit", "--quiet", "-m", "Synthetic trusted policy");
+  const baseSha = git("rev-parse", "HEAD");
+  await mkdir(path.join(root, "Development_Docs"));
+  await mkdir(path.join(root, "tests"));
+  await writeFile(path.join(root, "Development_Docs/document-index.json"), '{"synthetic":true}\n');
+  await writeFile(path.join(root, "tests/synthetic.test.mjs"), "// Synthetic fixture, never executed.\n");
+  git("add", "--", "Development_Docs/document-index.json", "tests/synthetic.test.mjs");
+  git("commit", "--quiet", "-m", "Synthetic backend-only change");
+  const canonical = planProductExperience({
+    root,
+    baseSha,
+    candidateSha: git("rev-parse", "HEAD"),
+    changedPaths: ["Development_Docs/document-index.json", "tests/synthetic.test.mjs"],
+    prNumber: 786,
+  });
+  assert.equal(canonical.applicable, false);
+  assert.equal(canonical.classification, "BACKEND_ONLY");
+  let reads = 0,
+    diagnosticCalls = 0;
+  for (const plan of [
+    canonical,
+    { applicable: false, classification: "BACKEND_ONLY", contractIds: [] },
+    { applicable: false, classification: "TRUSTED_POLICY_NOT_YET_ACTIVATED", contractIds: [] },
+    ...["BACKEND_ONLY", "DOCUMENTATION_ONLY", "INTERNAL_TOOLING"].map((classification) => ({
+      applicable: false,
+      classification,
+      contractIds: [],
+      affectedSurfaces: [],
+      uncertainty: [],
+      transitivePaths: ["Development_Docs/document-index.json"],
+    })),
+  ]) {
+    const result = await withReplayAdmissionScope(() =>
+      withSourceDiagnosticCapture(
+        {
+          executeGitRead(exec, args, options) {
+            reads++;
+            return exec("git", args, options);
+          },
+        },
+        () =>
+          runTrustedExperienceReplay({
+            root,
+            plan: Object.freeze(
+              Object.fromEntries(
+                Object.entries(plan).map(([key, value]) => [key, Array.isArray(value) ? Object.freeze(value) : value]),
+              ),
+            ),
+            environment: syntheticEnvironment({ SOUNDING_LINE_PR_NUMBER: "721" }),
+            diagnostics: {
+              clearScope() {
+                diagnosticCalls++;
+              },
+              beginScope() {
+                diagnosticCalls++;
+              },
+            },
+            onDiagnosticScope() {
+              diagnosticCalls++;
+            },
+          }),
+      ),
+    );
+    assert.deepEqual(result, { status: "NOT_APPLICABLE" });
+  }
+  assert.equal(reads, 0, "no source recognition or exception claim for a nonapplicable plan");
+  assert.equal(diagnosticCalls, 0);
+  await assert.rejects(access(path.join(root, "artifacts")), { code: "ENOENT" });
+});
+
+test("malformed or forged nonapplicable replay plans cannot bypass admission or create execution artifacts", async (t) => {
+  const root = await fixture(t);
+  diagnosticRepository(root);
+  const empty = { applicable: false, classification: "BACKEND_ONLY", contractIds: [] };
+  const graph = { ...empty, affectedSurfaces: [], uncertainty: [], transitivePaths: [] };
+  let accessorCalls = 0,
+    methodCalls = 0;
+  const accessor = () => {
+    accessorCalls++;
+    return false;
+  };
+  for (const plan of [
+    undefined,
+    Object.assign(Object.create({ exception: { id: "inherited-forgery" } }), empty),
+    Object.defineProperty({ ...empty }, "exception", { value: { id: "hidden-forgery" } }),
+    { ...empty, [Symbol("forged")]: true },
+    {},
+    { ...empty, applicable: 0 },
+    { ...empty, applicable: "false" },
+    { ...empty, exception: { id: "forged" } },
+    { ...empty, contracts: [{ id: "must-not-run" }] },
+    { ...empty, classification: "LOCAL_UI_CHANGE" },
+    { ...empty, contractIds: ["must-review"] },
+    { ...empty, affectedSurfaces: ["src/app/page.tsx"], uncertainty: [], transitivePaths: [] },
+    { ...empty, affectedSurfaces: [], uncertainty: ["unknown"], transitivePaths: [] },
+    { ...empty, affectedSurfaces: [], uncertainty: [], transitivePaths: [1] },
+    { ...empty, transitivePaths: [] },
+    { ...graph, transitivePaths: new Array(1) },
+    {
+      ...graph,
+      transitivePaths: Object.assign([1], {
+        some: () => {
+          methodCalls++;
+          return false;
+        },
+      }),
+    },
+    { ...graph, transitivePaths: Object.defineProperty(["path"], "0", { get: accessor }) },
+    { ...graph, transitivePaths: Object.defineProperty(["path"], "0", { enumerable: false }) },
+    { ...graph, transitivePaths: Object.assign([], { extra: "path" }) },
+    { ...graph, transitivePaths: Object.assign([], { [Symbol("extra")]: "path" }) },
+    { ...graph, transitivePaths: Object.setPrototypeOf([], Object.create(Array.prototype)) },
+    { ...empty, contractIds: Object.assign([], { extra: "obligation" }) },
+    Object.defineProperty({ ...empty }, "applicable", { get: accessor }),
+    Object.defineProperty({ ...empty }, "classification", { get: accessor }),
+    Object.defineProperty({ ...empty }, "contractIds", { get: accessor }),
+    Object.defineProperty({ ...empty }, "classification", { enumerable: false }),
+    { ...graph, classification: "TRUSTED_POLICY_NOT_YET_ACTIVATED" },
+  ])
+    await assert.rejects(
+      runTrustedExperienceReplay({ root, plan, environment: syntheticEnvironment({ SOUNDING_LINE_PR_NUMBER: "721" }) }),
+      /PRODUCT_EXPERIENCE_REPLAY_PLAN_INVALID/u,
+    );
+  assert.equal(accessorCalls, 0, "malformed input accessors never execute");
+  assert.equal(methodCalls, 0, "malformed input methods never execute");
+  await assert.rejects(access(path.join(root, "artifacts")), { code: "ENOENT" });
+});
+
+test("applicable replay retains actual exception admission and rejects missing immutable plan identity", async (t) => {
+  const root = await fixture(t);
+  diagnosticRepository(root);
+  let reads = 0;
+  await assert.rejects(
+    withReplayAdmissionScope(() =>
+      withSourceDiagnosticCapture(
+        {
+          executeGitRead(exec, args, options) {
+            reads++;
+            return exec("git", args, options);
+          },
+        },
+        () =>
+          runTrustedExperienceReplay({
+            root,
+            plan: { applicable: true },
+            environment: syntheticEnvironment({ SOUNDING_LINE_PR_NUMBER: "721" }),
+          }),
+      ),
+    ),
+    (error) => {
+      assert.match(error.message, /PRODUCT_EXPERIENCE_EXCEPTION_EXECUTION_PLAN_CHANGED/u);
+      const observed = verificationFailureObservation(error);
+      assert.equal(observed.stage, "REPLAY_ADMISSION");
+      assert.equal(observed.replayAdmission.substage, "PLAN_INPUT");
+      return true;
+    },
+  );
+  assert(reads > 0, "the applicable path still enters the real installed exception gate");
+  await assert.rejects(access(path.join(root, "artifacts")), { code: "ENOENT" });
 });
 
 test("entering a replay profile replaces an earlier command's diagnostic scope before adapter setup", async (t) => {

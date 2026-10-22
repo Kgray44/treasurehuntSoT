@@ -429,6 +429,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Nonapplicable_Experience_Replay_Admission_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md",
       "record_type": "engineering-record",
       "status": "current",
