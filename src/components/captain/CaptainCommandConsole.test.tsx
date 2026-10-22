@@ -210,7 +210,7 @@ describe("CaptainCommandConsole", () => {
     const retry = screen.getByRole("button", { name: /Restore prior Passage/ });
     await waitFor(() => expect(retry).toBeEnabled());
     fireEvent.click(retry);
-    expect(await screen.findByRole("status")).toHaveTextContent("Canonical command recorded.");
+    expect(await screen.findByText("Canonical command recorded.", { exact: true })).toBeVisible();
     expect(commits).toHaveLength(2);
     expect(commits[0]).toMatchObject({
       commandId: command.id,

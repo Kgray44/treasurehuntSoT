@@ -10,7 +10,8 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -62,7 +63,13 @@ for (const viewport of [
         const baseline = await db.taleSession.findMany({
           where: { id: { in: voyageIds } },
           orderBy: { id: "asc" },
-          select: { id: true, currentBlockId: true, currentSequence: true, publishedVersionId: true, status: true },
+          select: {
+            id: true,
+            currentBlockId: true,
+            currentSequence: true,
+            publishedVersionId: true,
+            status: true,
+          },
         });
         expect(baseline).toHaveLength(2);
         const editionIds = baseline.map((row) => row.publishedVersionId!);
@@ -73,7 +80,11 @@ for (const viewport of [
         });
         const releaseCount = await db.publishedTaleVersion.count({ where: { taleId: fixture.taleId } });
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const started = performance.now();
           await activate();
           await ready();
@@ -83,7 +94,9 @@ for (const viewport of [
         };
         await page.goto("/sign-in?returnTo=%2Faccount");
         await page.getByRole("textbox", { name: "Email or Player name", exact: true }).fill(fixture.email);
-        await page.getByRole("textbox", { name: "Password", exact: true }).fill("Synthetic-Sextant-Resources-2026!");
+        await page
+          .getByRole("textbox", { name: "Password", exact: true })
+          .fill("Synthetic-Sextant-Resources-2026!");
         await page.getByRole("button", { name: "Sign in", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
         const accountMenu = page.getByRole("button", { name: fixture.displayName, exact: true });
@@ -91,7 +104,10 @@ for (const viewport of [
         await page.getByRole("link", { name: "All Workspaces", exact: true }).click();
         await page.getByRole("link", { name: "Enter Creator", exact: true }).click();
         await page.getByRole("link", { name: "Edit Chronicle", exact: true }).click();
-        const navigation = page.getByRole("navigation", { name: "Chronicle authoring sections", exact: true });
+        const navigation = page.getByRole("navigation", {
+          name: "Chronicle authoring sections",
+          exact: true,
+        });
         const main = page.getByRole("main");
         for (const [label, heading] of [
           ["Assets", "Asset Library"],
@@ -110,13 +126,19 @@ for (const viewport of [
                 await expect(page.getByRole("region", { name: "Launch Gate", exact: true })).toContainText(
                   "Exact source checksum:",
                 );
-                await expect(page.getByRole("region", { name: "Compatibility", exact: true })).toContainText("Policy:");
+                await expect(page.getByRole("region", { name: "Compatibility", exact: true })).toContainText(
+                  "Policy:",
+                );
               }
               if (label === "Versions")
-                await expect(page.locator(".version-list [data-version-lock='immutable']")).toHaveCount(releaseCount);
+                await expect(page.locator(".version-list [data-version-lock='immutable']")).toHaveCount(
+                  releaseCount,
+                );
             },
           );
-          await expect(page.getByRole("heading", { level: 1, name: fixture.title, exact: true })).toBeVisible();
+          await expect(
+            page.getByRole("heading", { level: 1, name: fixture.title, exact: true }),
+          ).toBeVisible();
           if (label === "Assets") {
             await expect(page.locator(".asset-grid article")).toHaveCount(0);
             await expect(main).toContainText("0 assets");
@@ -193,12 +215,16 @@ for (const viewport of [
             const review = page.getByRole("region", { name: "Review and publish", exact: true });
             await expect(review).toContainText("Drydock release decision");
             await expect(review.getByRole("checkbox")).not.toBeChecked();
-            await expect(review.getByRole("button", { name: "Publish immutable Version", exact: true })).toBeDisabled();
+            await expect(
+              review.getByRole("button", { name: "Publish immutable Version", exact: true }),
+            ).toBeDisabled();
           }
           expect((await new AxeBuilder({ page }).include("main").analyze()).violations).toEqual([]);
           await page.getByRole("heading", { level: 2, name: heading, exact: true }).scrollIntoViewIfNeeded();
           await expect(page.getByRole("heading", { level: 2, name: heading, exact: true })).toBeInViewport();
-          await page.screenshot({ path: info.outputPath(`authoring-${label.toLowerCase().replaceAll(" ", "-")}.png`) });
+          await page.screenshot({
+            path: info.outputPath(`authoring-${label.toLowerCase().replaceAll(" ", "-")}.png`),
+          });
           if (label === "Sea Trials") {
             const suite = page.getByRole("region", { name: "Scenario Suite controls", exact: true });
             await suite.scrollIntoViewIfNeeded();
@@ -245,7 +271,13 @@ for (const viewport of [
           await db.taleSession.findMany({
             where: { id: { in: voyageIds } },
             orderBy: { id: "asc" },
-            select: { id: true, currentBlockId: true, currentSequence: true, publishedVersionId: true, status: true },
+            select: {
+              id: true,
+              currentBlockId: true,
+              currentSequence: true,
+              publishedVersionId: true,
+              status: true,
+            },
           }),
         ).toEqual(baseline);
         expect(
@@ -263,6 +295,7 @@ for (const viewport of [
               source: await deviceLabSourceIdentity([
                 "tests/e2e/sextant-authoring-resource-journeys.spec.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
               ]),
               viewport,
               reducedMotion,

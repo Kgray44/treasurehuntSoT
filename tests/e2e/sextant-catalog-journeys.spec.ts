@@ -11,7 +11,8 @@ import { enterClosureJournal } from "./fixtures/landfall-closure";
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -36,7 +37,13 @@ for (const viewport of [
         const baseline = await db.taleSession.findMany({
           where: { id: { in: ids } },
           orderBy: { id: "asc" },
-          select: { id: true, currentBlockId: true, currentSequence: true, status: true, publishedVersionId: true },
+          select: {
+            id: true,
+            currentBlockId: true,
+            currentSequence: true,
+            status: true,
+            publishedVersionId: true,
+          },
         });
         const editions = await db.publishedTaleVersion.findMany({
           where: { taleId: fixture.publicTaleId },
@@ -46,7 +53,11 @@ for (const viewport of [
         expect(editions.map((e) => e.checksum)).toEqual(fixture.publicChecksums);
         expect(await db.taleSession.count({ where: { taleId: fixture.publicTaleId } })).toBe(0);
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const start = performance.now();
           await activate();
           await ready();
@@ -54,7 +65,11 @@ for (const viewport of [
           feedback.push({ task, elapsedMs });
           expect(elapsedMs, task).toBeLessThanOrEqual(3000);
         };
-        const capture = async (name: string, selector: string, target = page.getByRole("heading", { level: 1 })) => {
+        const capture = async (
+          name: string,
+          selector: string,
+          target = page.getByRole("heading", { level: 1 }),
+        ) => {
           expect((await new AxeBuilder({ page }).include(selector).analyze()).violations).toEqual([]);
           await target.scrollIntoViewIfNeeded();
           await expect(target).toBeInViewport();
@@ -68,13 +83,17 @@ for (const viewport of [
         };
         await page.goto("/");
         await measure("Ordinary catalog entry", openCatalog, () =>
-          expect(page.getByRole("heading", { level: 2, name: fixture.publicTitle, exact: true })).toBeVisible(),
+          expect(
+            page.getByRole("heading", { level: 2, name: fixture.publicTitle, exact: true }),
+          ).toBeVisible(),
         );
         const card = page
           .locator(".catalog-grid article")
           .filter({ has: page.getByRole("heading", { level: 2, name: fixture.publicTitle, exact: true }) });
         await expect(card).toHaveCount(1);
-        await expect(page.getByRole("heading", { level: 2, name: fixture.title, exact: true })).toHaveCount(0);
+        await expect(page.getByRole("heading", { level: 2, name: fixture.title, exact: true })).toHaveCount(
+          0,
+        );
         const search = page.getByRole("searchbox", { name: "Search", exact: true });
         await search.fill("sextant-no-public-course-20261019");
         const empty = page.locator(".ui-empty-state");
@@ -96,7 +115,10 @@ for (const viewport of [
         await measure(
           "Public immutable preview",
           () => card.getByRole("link", { name: "Preview Chronicle", exact: true }).click(),
-          () => expect(page.getByRole("heading", { level: 1, name: fixture.publicTitle, exact: true })).toBeVisible(),
+          () =>
+            expect(
+              page.getByRole("heading", { level: 1, name: fixture.publicTitle, exact: true }),
+            ).toBeVisible(),
         );
         await expect(page).toHaveURL(new RegExp(`/chronicles/${fixture.publicSlug}$`));
         await capture("catalog-public-preview", ".community-harbor");
@@ -105,7 +127,10 @@ for (const viewport of [
         await measure(
           "Actual Tideglass entry",
           () => page.getByRole("link", { name: "See what changed", exact: true }).click(),
-          () => expect(page.getByRole("combobox", { name: "Played or starting edition", exact: true })).toBeVisible(),
+          () =>
+            expect(
+              page.getByRole("combobox", { name: "Played or starting edition", exact: true }),
+            ).toBeVisible(),
         );
         await page
           .getByRole("combobox", { name: "Played or starting edition", exact: true })
@@ -117,16 +142,16 @@ for (const viewport of [
           "Exact public edition comparison",
           () => page.getByRole("button", { name: "Compare editions", exact: true }).click(),
           () =>
-            expect(page.getByRole("region", { name: "Edition comparison result", exact: true })).toContainText(
-              "Edition 1.0.0 to Edition 2.0.0",
-            ),
+            expect(
+              page.getByRole("region", { name: "Edition comparison result", exact: true }),
+            ).toContainText("Edition 1.0.0 to Edition 2.0.0"),
         );
-        await expect(page.getByRole("region", { name: "Selected edition context", exact: true })).toContainText(
-          "1.0.0",
-        );
-        await expect(page.getByRole("region", { name: "Selected edition context", exact: true })).toContainText(
-          "2.0.0",
-        );
+        await expect(
+          page.getByRole("region", { name: "Selected edition context", exact: true }),
+        ).toContainText("1.0.0");
+        await expect(
+          page.getByRole("region", { name: "Selected edition context", exact: true }),
+        ).toContainText("2.0.0");
         await capture(
           "catalog-tideglass",
           ".community-harbor",
@@ -180,7 +205,7 @@ for (const viewport of [
         await expect(journal.getByRole("button", { name: "Continue Voyage", exact: true })).toBeVisible();
         await capture(
           "catalog-actual-guest-journal",
-          'main[data-experience-voyage]',
+          "main[data-experience-voyage]",
           journal.getByRole("heading", { level: 1, name: fixture.publicTitle, exact: true }),
         );
         const progress = await db.taleSession.findUniqueOrThrow({
@@ -234,7 +259,13 @@ for (const viewport of [
           await db.taleSession.findMany({
             where: { id: { in: ids } },
             orderBy: { id: "asc" },
-            select: { id: true, currentBlockId: true, currentSequence: true, status: true, publishedVersionId: true },
+            select: {
+              id: true,
+              currentBlockId: true,
+              currentSequence: true,
+              status: true,
+              publishedVersionId: true,
+            },
           }),
         ).toEqual(baseline);
         expect(
@@ -251,6 +282,7 @@ for (const viewport of [
               source: await deviceLabSourceIdentity([
                 "tests/e2e/sextant-catalog-journeys.spec.ts",
                 ".agents/scripts/sextant-catalog-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
               ]),
               viewport,
               reducedMotion,

@@ -4,7 +4,7 @@ import { execFileSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { hash } from "bcryptjs";
-import { assertSextantOnlyChronicle } from "./sextant-chronicle-choice";
+import { assertSextantOnlyChronicle, assertSextantFormalSurfaceCount } from "./sextant-chronicle-choice";
 import { db } from "../../src/lib/db";
 import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
 import { closureVoyage } from "../../tests/e2e/fixtures/landfall-closure";
@@ -183,6 +183,21 @@ async function main() {
   ) {
     const { seedSextantEntryExperience } = await import("./sextant-entry-fixture");
     await seedSextantEntryExperience();
+  }
+  // Formal replay has only global role selectors. Refuse an ambiguous disclosure
+  // before capture. This is plan admission, not a reusable development-seed rule:
+  // browser tests still preserve and verify older rows through their own scopes.
+  const formalIds = new Set(plan.contracts.map((entry: { id: string }) => entry.id));
+  const formalAccounts = new Set<string>();
+  if (formalIds.has("sextant.phase3.field-context") || formalIds.has("sextant.phase4.native-context"))
+    formalAccounts.add("sextant-experience-navigator");
+  if (formalIds.has("sextant.shared-consumers.display-entry"))
+    formalAccounts.add("sextant-resource-crew-entry-default");
+  for (const accountId of formalAccounts) {
+    const liveSurfaceCount = await db.crossdeckSurfaceSession.count({
+      where: { accountSession: { accountId }, revokedAt: null },
+    });
+    assertSextantFormalSurfaceCount(liveSurfaceCount);
   }
 }
 

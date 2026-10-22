@@ -11,7 +11,8 @@ import { enterClosureJournal } from "./fixtures/landfall-closure";
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -45,7 +46,11 @@ for (const viewport of [
           select: { checksum: true, contentSnapshot: true },
         });
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const started = performance.now();
           await activate();
           await ready();
@@ -55,15 +60,23 @@ for (const viewport of [
         };
         const passport = page.locator(".passport-shell");
         const passportCapture = async (name: string) => {
-          expect((await new AxeBuilder({ page }).include(".passport-shell").analyze()).violations).toEqual([]);
+          expect((await new AxeBuilder({ page }).include(".passport-shell").analyze()).violations).toEqual(
+            [],
+          );
           await passport.getByRole("heading", { level: 1 }).scrollIntoViewIfNeeded();
           await page.screenshot({ path: info.outputPath(`${name}-heading.png`) });
-          await passport.getByRole("heading", { level: 2, name: fixture.title, exact: true }).scrollIntoViewIfNeeded();
+          await passport
+            .getByRole("heading", { level: 2, name: fixture.title, exact: true })
+            .scrollIntoViewIfNeeded();
           await page.screenshot({ path: info.outputPath(`${name}-content.png`) });
         };
         await page.goto("/sign-in?returnTo=%2Faccount");
-        await page.getByRole("textbox", { name: "Email or Player name", exact: true }).fill(fixture.crewEmail!);
-        await page.getByRole("textbox", { name: "Password", exact: true }).fill("Synthetic-Sextant-Crew-2026!");
+        await page
+          .getByRole("textbox", { name: "Email or Player name", exact: true })
+          .fill(fixture.crewEmail!);
+        await page
+          .getByRole("textbox", { name: "Password", exact: true })
+          .fill("Synthetic-Sextant-Crew-2026!");
         await page.getByRole("button", { name: "Sign in", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
         const accountMenu = page.getByRole("button", { name: fixture.crewDisplayName, exact: true });
@@ -91,12 +104,15 @@ for (const viewport of [
         const currentPassageIs = async (id: string) => {
           await expect
             .poll(
-              async () => (await db.taleSession.findUniqueOrThrow({ where: { id: fixture.voyageId } })).currentBlockId,
+              async () =>
+                (await db.taleSession.findUniqueOrThrow({ where: { id: fixture.voyageId } })).currentBlockId,
             )
             .toBe(id);
           await expect(journal.getByRole("button", { name: "Continue Voyage", exact: true })).toBeEnabled();
         };
-        await advance("Narrative response and next action", () => currentPassageIs(`sextant-history-grant-${key}`));
+        await advance("Narrative response and next action", () =>
+          currentPassageIs(`sextant-history-grant-${key}`),
+        );
         await advance("Personal grant response and next action", () =>
           currentPassageIs(`sextant-resource-ending-${key}`),
         );
@@ -125,7 +141,9 @@ for (const viewport of [
         });
         expect(JSON.parse(grants[0].resolvedRecipientProfileIds)).toEqual([crew.id]);
         expect(
-          await db.taleSessionEvent.count({ where: { sessionId: fixture.voyageId, eventType: "sessionCompleted" } }),
+          await db.taleSessionEvent.count({
+            where: { sessionId: fixture.voyageId, eventType: "sessionCompleted" },
+          }),
         ).toBe(1);
         expect(
           (await db.taleSessionEvent.findUniqueOrThrow({ where: { id: grants[0].sourceEventId } })).eventType,
@@ -136,7 +154,9 @@ for (const viewport of [
           currentSequence: completed.currentSequence,
           publishedVersionId: completed.publishedVersionId,
         };
-        const completedEventCount = await db.taleSessionEvent.count({ where: { sessionId: fixture.voyageId } });
+        const completedEventCount = await db.taleSessionEvent.count({
+          where: { sessionId: fixture.voyageId },
+        });
         const enterPassport = async () => {
           await accountMenu.click();
           await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();
@@ -155,7 +175,10 @@ for (const viewport of [
         );
         const record = await db.playerChronicleRecord.findUniqueOrThrow({
           where: {
-            playerProfileId_sourcePlaythroughId: { playerProfileId: crew.id, sourcePlaythroughId: fixture.voyageId },
+            playerProfileId_sourcePlaythroughId: {
+              playerProfileId: crew.id,
+              sourcePlaythroughId: fixture.voyageId,
+            },
           },
         });
         expect(record).toMatchObject({
@@ -166,7 +189,10 @@ for (const viewport of [
         await measure(
           "Actual completed Voyage Detail",
           () => archiveCard.getByRole("link", { name: `Open ${fixture.title} Voyage`, exact: true }).click(),
-          () => expect(passport.getByRole("heading", { level: 2, name: fixture.title, exact: true })).toBeVisible(),
+          () =>
+            expect(
+              passport.getByRole("heading", { level: 2, name: fixture.title, exact: true }),
+            ).toBeVisible(),
         );
         await expect(page).toHaveURL(new RegExp(`/passport/history/${record.id}$`));
         await passportCapture("history-detail");
@@ -202,7 +228,7 @@ for (const viewport of [
         const replayOpeningMs = performance.now() - replayStarted;
         await expect(journal.getByRole("button", { name: "Continue Voyage", exact: true })).toHaveCount(0);
         expect(
-          (await new AxeBuilder({ page }).include('main[data-experience-voyage]').analyze()).violations,
+          (await new AxeBuilder({ page }).include("main[data-experience-voyage]").analyze()).violations,
         ).toEqual([]);
         await historical.scrollIntoViewIfNeeded();
         await page.screenshot({ path: info.outputPath("history-read-only-replay.png") });
@@ -217,7 +243,9 @@ for (const viewport of [
         );
         const artifact = page
           .locator("article.artifact-card")
-          .filter({ has: page.getByRole("heading", { level: 2, name: "Synthetic Sextant Compass", exact: true }) });
+          .filter({
+            has: page.getByRole("heading", { level: 2, name: "Synthetic Sextant Compass", exact: true }),
+          });
         await expect(artifact).toContainText("Backed by an authoritative grant record.");
         await measure(
           "Actual personal provenance",
@@ -245,9 +273,12 @@ for (const viewport of [
           .getByRole("heading", { level: 1, name: "Artifact Provenance", exact: true })
           .scrollIntoViewIfNeeded();
         await page.screenshot({ path: info.outputPath("history-artifact-provenance.png") });
-        const authority = page.getByText("Authoritative grant evidence is on file for this personal record.", {
-          exact: true,
-        });
+        const authority = page.getByText(
+          "Authoritative grant evidence is on file for this personal record.",
+          {
+            exact: true,
+          },
+        );
         await authority.scrollIntoViewIfNeeded();
         await expect(authority).toBeInViewport();
         await page.screenshot({ path: info.outputPath("history-artifact-authority.png") });
@@ -261,8 +292,12 @@ for (const viewport of [
             select: { status: true, currentBlockId: true, currentSequence: true, publishedVersionId: true },
           }),
         ).toEqual(completedProgress);
-        expect(await db.taleSessionEvent.count({ where: { sessionId: fixture.voyageId } })).toBe(completedEventCount);
-        expect(await db.artifactGrantReceipt.findMany({ where: { sessionId: fixture.voyageId } })).toEqual(grants);
+        expect(await db.taleSessionEvent.count({ where: { sessionId: fixture.voyageId } })).toBe(
+          completedEventCount,
+        );
+        expect(await db.artifactGrantReceipt.findMany({ where: { sessionId: fixture.voyageId } })).toEqual(
+          grants,
+        );
         expect(
           await db.publishedTaleVersion.findUniqueOrThrow({
             where: { id: fixture.versionId },
@@ -282,6 +317,7 @@ for (const viewport of [
               source: await deviceLabSourceIdentity([
                 "tests/e2e/sextant-history-journeys.spec.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
               ]),
               fixture,
               viewport,

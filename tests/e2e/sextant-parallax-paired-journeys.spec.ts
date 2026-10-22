@@ -14,7 +14,8 @@ test.describe.configure({ mode: "default", timeout: 180000 });
 // screenshot ordinals. Capture both personas explicitly under distinct paths.
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "off" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -74,7 +75,9 @@ for (const viewport of [
           await expect(note).toContainText("You are inspecting The Captain’s note.");
           // Chronicle Lens is a native HTML dialog with an implicit role.
           // Audit that actual open dialog, not an absent explicit-role attribute.
-          expect((await new AxeBuilder({ page: crew }).include("dialog[open]").analyze()).violations).toEqual([]);
+          expect((await new AxeBuilder({ page: crew }).include("dialog[open]").analyze()).violations).toEqual(
+            [],
+          );
           await crew.screenshot({ path: info.outputPath(`crew-${stage}-published-clue.png`) });
           await crew.getByRole("button", { name: "Close Chronicle Lens", exact: true }).click();
         };
@@ -156,7 +159,9 @@ for (const viewport of [
           await comparePublishedClue("after-working-save");
           await page.getByRole("button", { name: "Open object behavior", exact: true }).click();
           await page.getByText("Library, reuse & publication", { exact: true }).click();
-          await page.getByRole("textbox", { name: "Experience title", exact: true }).fill("A message between worlds");
+          await page
+            .getByRole("textbox", { name: "Experience title", exact: true })
+            .fill("A message between worlds");
           const restore = page.waitForResponse(
             (r) =>
               new URL(r.url()).pathname === "/api/studio/parallax" &&
@@ -191,6 +196,7 @@ for (const viewport of [
                 source: await deviceLabSourceIdentity([
                   "tests/e2e/sextant-parallax-paired-journeys.spec.ts",
                   ".agents/scripts/sextant-resource-fixtures.ts",
+                  ".agents/scripts/sextant-chronicle-choice.ts",
                 ]),
                 viewport,
                 reducedMotion,
@@ -256,7 +262,8 @@ for (const viewport of [
           if (!primaryFailure && cleanupFailures.length) await captureFailure();
         }
         if (primaryFailure) throw primaryFailure;
-        if (cleanupFailures.length) throw new AggregateError(cleanupFailures, "SEXTANT_PAIRED_CONTEXT_CLEANUP_FAILED");
+        if (cleanupFailures.length)
+          throw new AggregateError(cleanupFailures, "SEXTANT_PAIRED_CONTEXT_CLEANUP_FAILED");
       });
     });
   }

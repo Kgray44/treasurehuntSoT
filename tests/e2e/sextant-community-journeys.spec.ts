@@ -1,5 +1,10 @@
 // @sounding-line-registration owner=project-sextant suite=browser.sextant contracts=sextant.shared-consumers.public-community
-import { test, expect, type Request as BrowserRequest, type Response as BrowserResponse } from "@playwright/test";
+import {
+  test,
+  expect,
+  type Request as BrowserRequest,
+  type Response as BrowserResponse,
+} from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -10,7 +15,8 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -49,7 +55,11 @@ for (const viewport of [
           select: { checksum: true, contentSnapshot: true },
         });
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const started = performance.now();
           await activate();
           await ready();
@@ -62,7 +72,9 @@ for (const viewport of [
         const checkPublic = async () => {
           for (const slug of [...fixture.ineligibleSlugs, "private-curator-notes"])
             await expect(page.locator(`a[href$="/${slug}"]`)).toHaveCount(0);
-          expect((await new AxeBuilder({ page }).include(".community-harbor").analyze()).violations).toEqual([]);
+          expect((await new AxeBuilder({ page }).include(".community-harbor").analyze()).violations).toEqual(
+            [],
+          );
         };
         const capture = async (name: string, target = page.getByRole("heading", { level: 1 })) => {
           // Make each actual task heading visible only after its readiness
@@ -82,7 +94,9 @@ for (const viewport of [
               .click(),
           () => expect(heading("Find your next bearing")).toBeVisible(),
         );
-        await expect(page.getByRole("heading", { name: "Featured at the Harbor", exact: true })).toBeVisible();
+        await expect(
+          page.getByRole("heading", { name: "Featured at the Harbor", exact: true }),
+        ).toBeVisible();
         await checkPublic();
         await capture("community-harbor");
         for (const [label, title, card] of districts) {
@@ -151,7 +165,10 @@ for (const viewport of [
           };
           const onGuideResponse = (response: BrowserResponse) => {
             if (new URL(response.url()).pathname !== guidePath || guideResponses++ >= 12) return;
-            console.log("SEXTANT_GUIDE_RESPONSE", JSON.stringify({ count: guideResponses, status: response.status() }));
+            console.log(
+              "SEXTANT_GUIDE_RESPONSE",
+              JSON.stringify({ count: guideResponses, status: response.status() }),
+            );
           };
           if (detail.district === "Guides") {
             page.on("request", onGuideRequest);
@@ -176,7 +193,10 @@ for (const viewport of [
                     const pseudo = getComputedStyle(expected, "::after");
                     const ancestry = [];
                     for (let node = target; node && ancestry.length < 4; node = node.parentElement)
-                      ancestry.push({ tag: node.tagName, class: node.getAttribute("class")?.slice(0, 120) ?? "" });
+                      ancestry.push({
+                        tag: node.tagName,
+                        class: node.getAttribute("class")?.slice(0, 120) ?? "",
+                      });
                     events.push({
                       event: event.type,
                       phase,
@@ -197,7 +217,9 @@ for (const viewport of [
                             : href.startsWith("/community")
                               ? "OTHER_PUBLIC"
                               : "NONE",
-                      pathname: location.pathname.startsWith("/community") ? location.pathname : "OUTSIDE_COMMUNITY",
+                      pathname: location.pathname.startsWith("/community")
+                        ? location.pathname
+                        : "OUTSIDE_COMMUNITY",
                       scrollY: Math.round(scrollY),
                       scrollRoot: Math.round(document.scrollingElement?.scrollTop ?? 0),
                       viewport: {
@@ -222,7 +244,9 @@ for (const viewport of [
                         left: pseudo.left,
                         pointerEvents: pseudo.pointerEvents,
                       },
-                      matchingAnchors: [...document.querySelectorAll<HTMLAnchorElement>(`a[href="${expectedPath}"]`)]
+                      matchingAnchors: [
+                        ...document.querySelectorAll<HTMLAnchorElement>(`a[href="${expectedPath}"]`),
+                      ]
                         .slice(0, 4)
                         .map((link) => {
                           const rect = link.getBoundingClientRect(),
@@ -251,7 +275,9 @@ for (const viewport of [
                       expectedInactive: Boolean(expected?.closest('[inert], [aria-hidden="true"]')),
                       routeRole: layer?.getAttribute("data-route-role"),
                       generation: layer?.getAttribute("data-route-generation"),
-                      transition: document.querySelector(".product-route-transition")?.getAttribute("data-route-state"),
+                      transition: document
+                        .querySelector(".product-route-transition")
+                        ?.getAttribute("data-route-state"),
                     });
                   } catch {
                     /* Observation never controls the action or primary error. */
@@ -286,7 +312,9 @@ for (const viewport of [
               },
             );
           } catch (error) {
-            await observeGuide("failed").catch(() => console.warn("SEXTANT_GUIDE_FAILURE_OBSERVATION_UNAVAILABLE"));
+            await observeGuide("failed").catch(() =>
+              console.warn("SEXTANT_GUIDE_FAILURE_OBSERVATION_UNAVAILABLE"),
+            );
             throw error;
           } finally {
             if (detail.district === "Guides") {
@@ -315,7 +343,9 @@ for (const viewport of [
           if (detail.card === "The Lantern Coast") {
             const comments = page.getByRole("region", { name: "Comments", exact: true });
             await expect(comments).toContainText("No public comments yet.");
-            await expect(comments.getByRole("link", { name: "Sign in to comment", exact: true })).toBeVisible();
+            await expect(
+              comments.getByRole("link", { name: "Sign in to comment", exact: true }),
+            ).toBeVisible();
             await expect(comments.getByRole("textbox")).toHaveCount(0);
           }
           await checkPublic();
@@ -409,6 +439,7 @@ for (const viewport of [
               source: await deviceLabSourceIdentity([
                 "tests/e2e/sextant-community-journeys.spec.ts",
                 ".agents/scripts/sextant-community-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 "scripts/homeport/seed-phase4-fixture.mjs",
               ]),
               fixture,

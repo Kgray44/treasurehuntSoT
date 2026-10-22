@@ -6431,10 +6431,11 @@
         "limitations": [
           "Browser capture proves the actual built product and canonical persisted synthetic Voyage, not native sensor output, physical assistive technology or radio range.",
           "Owner-reported baseline debt remains accountable and is not waived by this design or a persisted surface role.",
-          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState."
+          "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState.",
+          "Only declarative-plan admission requires zero non-revoked surfaces for the exact synthetic Device persona(s), refusing preserved rows without deletion. Reusable development seeders and browser tests keep their older-row behavior and count assertions. Every successful formal registration disconnects its own row; a failed fixed label remains a refusal. The sole membership/ID/edition guard supports the actual keyboard chooser; direct select-value/query proof remains in the registered development journey."
         ],
-        "navigation": "Use the readable returning Journal, explicitly replay its full opening, then enter contextual Devices or Creator Studio. Continue Voyage uses the canonical /play/{slug}/session/{voyageId} route; Continue Adventure uses the Player-library Journal route. Preserve the same Voyage landmark and destination identity through every outcome and return.",
-        "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Preserve the visible connected count as the Devices action description.",
+        "navigation": "Replay the readable Journal, use Account → Harbor → Sessions & Devices → Connect your Voyage devices and the actual Chronicle chooser, register this screen, choose screen fallback, disconnect only the owned screen, and return through Player → Continue Adventure to the same released clue.",
+        "designTarget": "Keep the released clue and optional input legible; preserve the actual fallback button and its visible confirmation. Use accepted account/device navigation and the real chooser, with ordinary successful owned-surface cleanup and canonical Journal return. No pairing challenge or hardware lease is required.",
         "objective": "Use an instrument in my Voyage and understand supported sensing or fallback",
         "visibleOutcome": "Instrument choice produces its corresponding task, truthful capability state and useful return/recovery",
         "integrationOwner": "Sextant instrument experience integration",
@@ -6447,7 +6448,9 @@
           "src/components/sextant",
           "src/app/account/devices/page.tsx",
           "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
-          "src/components/player/journal/ChronicleJournalSession.tsx"
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/components/homeport/AccountSurfaces.tsx",
+          "src/components/homeport/PersonalHarborLayout.tsx"
         ],
         "states": [
           "JOURNAL_READY",
@@ -6457,7 +6460,8 @@
         ],
         "browserTests": [
           "tests/e2e/sextant-phase4.spec.ts",
-          "tests/e2e/sextant-native-apple-devices.spec.ts"
+          "tests/e2e/sextant-native-apple-devices.spec.ts",
+          "tests/e2e/sextant-consumer-journeys.spec.ts"
         ],
         "continuity": {
           "objective": "Keep the canonical authorized Voyage bound through device fallback and return",
@@ -6466,12 +6470,7 @@
               "id": "canonical-voyage",
               "role": "main",
               "name": "",
-              "attribute": "data-voyage-id",
-              "destination": {
-                "role": "region",
-                "name": "Voyage devices",
-                "attribute": "data-voyage-id"
-              }
+              "attribute": "data-voyage-id"
             }
           ]
         },
@@ -6485,8 +6484,8 @@
             "steps": [
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices"
+                "role": "button",
+                "name": "Open Chronicle Lens"
               },
               {
                 "action": "click",
@@ -6495,15 +6494,118 @@
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices",
+                "role": "button",
+                "name": "Open Chronicle Lens",
                 "state": "JOURNAL_READY",
                 "feedbackBoundary": true
               },
               {
                 "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
                 "role": "link",
-                "name": "Devices"
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Sessions & Devices"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sessions & Devices",
+                "text": "Sessions & Devices",
+                "path": "/account/sessions"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Connect your Voyage devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Your connected screens",
+                "path": "/account/devices"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Chronicle"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Device name",
+                "value": "Synthetic Sextant formal fallback device"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Your connected screens",
+                "absentRole": {
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal fallback device"
+                }
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Your connected screens",
+                "absentRole": {
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal fallback device · This screen"
+                }
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant formal fallback device · This screen",
+                "text": "Synthetic Sextant formal fallback device · This screen",
+                "feedbackBoundary": true
               },
               {
                 "action": "assert",
@@ -6514,37 +6616,73 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Use this device"
-              },
-              {
-                "action": "assert",
-                "role": "link",
-                "name": "Continue Voyage"
-              },
-              {
-                "action": "click",
-                "role": "button",
                 "name": "Continue with screen controls"
               },
               {
                 "action": "assert",
-                "role": "main",
-                "name": "",
-                "kind": "outcome",
-                "path": "/account/devices",
+                "role": "region",
+                "name": "Optional device input",
                 "text": "Screen controls are ready. Device input is optional.",
-                "meaning": "The explicit alternate action confirms screen controls are usable without acquiring a hardware lease.",
-                "state": "SCREEN_FALLBACK_READY"
+                "state": "SCREEN_FALLBACK_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Device options"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Disconnect Synthetic Sextant formal fallback device"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Use this device",
+                "text": "Use this device",
+                "path": "/account/devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Device disconnected. Its access has ended.",
+                "feedbackBoundary": true,
+                "absentRole": {
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal fallback device · This screen"
+                }
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Device disconnected. Its access has ended.",
+                "absentRole": {
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal fallback device"
+                }
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
               },
               {
                 "action": "click",
                 "role": "link",
-                "name": "Continue Voyage"
+                "name": "Player"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
               },
               {
                 "action": "assert",
-                "role": "link",
-                "name": "Devices",
+                "role": "button",
+                "name": "Open Chronicle Lens",
                 "state": "JOURNAL_READY",
                 "feedbackBoundary": true
               },
@@ -6552,10 +6690,12 @@
                 "action": "assert",
                 "role": "main",
                 "name": "",
-                "path": "/play/sextant-experience-chronicle/session/sextant-experience-voyage",
-                "returnPath": true,
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "text": "The Captain’s note",
                 "state": "RETURNED_TO_VOYAGE",
-                "text": "The Captain’s note"
+                "returnPath": true,
+                "kind": "outcome",
+                "meaning": "After the actual alternate screen-control action confirms usable fallback without a hardware lease, ordinary Player navigation returns the same canonical released clue. Its real Journal Voyage attribute remains the continuity witness."
               }
             ]
           }
@@ -6673,7 +6813,8 @@
           "The accepted spatial-pilot.experience Assistant contract, its synthetic account, fixtures, journeys and review obligations remain unchanged. This native-consumer contract makes no claim about additional paid model calls or new edition publication.",
           "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState.",
           "The actual Chronicle chooser uses native keyboard Home/ArrowDown/Enter only after the owned fixture verifies or refuses exactly one account membership with the expected Voyage ID, Chronicle and pinned edition. Extra or inactive membership, wrong edition, expiry or removal is refused without reset. The accepted runner cannot directly assert the select live value or URL query; registered development checks retain actual selection response, surface Voyage and pinned Journal edition proof.",
-          "The successful Player formal journey disconnects only its actual fixed-label owned surface through Device options/Disconnect and returns to the same Journal. Fixed-label absence still refuses a preserved failed surface. The registration readiness/timing assertion is not a Lens continuity outcome; the actual Lens remains the semantic outcome."
+          "The successful Player formal journey disconnects only its actual fixed-label owned surface through Device options/Disconnect and returns to the same Journal. Fixed-label absence still refuses a preserved failed surface. The registration readiness/timing assertion is not a Lens continuity outcome; the actual Lens remains the semantic outcome.",
+          "Only declarative-plan admission requires zero non-revoked surfaces for the exact synthetic Device persona(s), refusing preserved rows without deletion. Reusable development seeders and browser tests keep their older-row behavior and count assertions. Every successful formal registration disconnects its own row; a failed fixed label remains a refusal. The sole membership/ID/edition guard supports the actual keyboard chooser; direct select-value/query proof remains in the registered development journey."
         ],
         "navigation": "Use the readable returning Journal, replay its full opening, then Account → Personal Harbor → Sessions & Devices → Connect your Voyage devices and the actual Chronicle chooser. After ordinary registration return through Account → Player → Continue Adventure to the same pinned Journal. Creator entry and return retain the actual account-menu route. Lens returns to that same Journal.",
         "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Use the actual account/device controls and the real Chronicle chooser; never activate Connect another device as a route replacement because it enrolls a screen and displays a pairing credential. Edit the Experience title through the ordinary Inspector, save and reopen the working scene to witness persistence. Restore the synthetic working title before comparing the independently pinned Player clue. Saving a working draft never counts as publication.",
@@ -12721,7 +12862,8 @@
           "Exact HEAD-derived nonce, owned database and persisted audit identity are checked before mutation. Two independent ACTIVE Voyages, events, memberships and exact edition bytes remain compared.",
           "Authentication references constrain readable hierarchy and ordinary identity/gateway controls only. Display and pilot layouts still require independent source-bound rendered review.",
           "Five current hosted subsurfaces are registered separately with explicit legacy-mode exclusions. These display journeys do not accept those old standalone modes.",
-          "The accepted declarative runner compares pathname only. Full query-bearing entryPoint and sign-in returnTo remain; exact Voyage/edition binding is separately asserted by the source-bound development journey. Initial page states are visible entry assertions; only actual subsequent actions are measured as transition outcomes."
+          "The accepted declarative runner compares pathname only. Full query-bearing entryPoint and sign-in returnTo remain; exact Voyage/edition binding is separately asserted by the source-bound development journey. Initial page states are visible entry assertions; only actual subsequent actions are measured as transition outcomes.",
+          "Only declarative-plan admission requires zero non-revoked surfaces for the exact synthetic Device persona(s), refusing preserved rows without deletion. Reusable development seeders and browser tests keep their older-row behavior and count assertions. Every successful formal registration disconnects its own row; a failed fixed label remains a refusal. The sole membership/ID/edition guard supports the actual keyboard chooser; direct select-value/query proof remains in the registered development journey."
         ],
         "motion": {
           "feedbackBudgetMs": 3000,

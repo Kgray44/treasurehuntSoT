@@ -31,3 +31,8 @@ export function assertSextantOnlyChronicle(
   )
     throw new Error("SEXTANT_SINGLE_CHRONICLE_FIXTURE_REQUIRED");
 }
+
+/** Used only by declarative-plan preparation; reusable development seeders do not call this. */
+export function assertSextantFormalSurfaceCount(liveSurfaceCount: number) {
+  if (liveSurfaceCount !== 0) throw new Error("SEXTANT_FORMAL_PRISTINE_DEVICE_SURFACES_REQUIRED");
+}

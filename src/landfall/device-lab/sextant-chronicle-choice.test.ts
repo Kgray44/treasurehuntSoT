@@ -1,5 +1,8 @@
 import { expect, it } from "vitest";
-import { assertSextantOnlyChronicle } from "../../../.agents/scripts/sextant-chronicle-choice";
+import {
+  assertSextantOnlyChronicle,
+  assertSextantFormalSurfaceCount,
+} from "../../../.agents/scripts/sextant-chronicle-choice";
 
 const now = new Date("2026-10-21T18:00:00Z");
 const expected = {
@@ -45,5 +48,17 @@ it.each(
       "SEXTANT_SINGLE_CHRONICLE_FIXTURE_REQUIRED",
     );
     expect(rows).toEqual(before);
+  },
+);
+
+it("admits the pristine formal surface case without changing development fixture behavior", () => {
+  expect(() => assertSextantFormalSurfaceCount(0)).not.toThrow();
+});
+it.each([1, 3, -1, Number.NaN])(
+  "refuses a non-pristine formal surface count without clearing any row (%s)",
+  (count) => {
+    expect(() => assertSextantFormalSurfaceCount(count)).toThrow(
+      "SEXTANT_FORMAL_PRISTINE_DEVICE_SURFACES_REQUIRED",
+    );
   },
 );
