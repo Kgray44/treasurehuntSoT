@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { ChronicleLens } from "./ChronicleLens";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { ChronicleLens, ChronicleLensEntry, ParallaxJournalProvider } from "./ChronicleLens";
 import { syntheticSpatialMoment, syntheticBinding } from "@/parallax/fixtures";
 beforeEach(() => {
   cleanup();
@@ -24,6 +24,7 @@ it("opens camera-free Guided View with readable meaning and keyboard controls", 
     />,
   );
   await screen.findByText("This device uses Guided View for this spatial moment.");
+  expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
   expect(screen.getByText(/The next bearing is written/)).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "Inspect" }));
   await waitFor(() => expect(record).toHaveBeenCalledTimes(1));
@@ -31,6 +32,64 @@ it("opens camera-free Guided View with readable meaning and keyboard controls", 
   expect(screen.getByText(/You are inspecting/)).toBeVisible();
   fireEvent.click(screen.getByLabelText("Close Chronicle Lens"));
   expect(close).toHaveBeenCalled();
+});
+it("carries the authorized immutable Voyage context into the actual released Lens instead of its preview binding", async () => {
+  const presentation = vi.fn();
+  const moment = syntheticSpatialMoment();
+  const request = vi.fn(async () => Response.json({ moment, binding: syntheticBinding, replayOnly: false }));
+  vi.stubGlobal("fetch", request);
+  render(
+    <ParallaxJournalProvider
+      sessionId={syntheticBinding.sessionId}
+      csrfToken="synthetic-csrf"
+      onLensPresentationChange={presentation}
+      voyageContext={{
+        voyageId: syntheticBinding.sessionId,
+        versionId: syntheticBinding.chronicleVersionId,
+        title: "The Northern Light",
+      }}
+    >
+      <ChronicleLensEntry moment={moment} blockId={syntheticBinding.blockId} replayOnly={false} />
+    </ParallaxJournalProvider>,
+  );
+  expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Open Chronicle Lens" }));
+  await screen.findByText("This device uses Guided View for this spatial moment.");
+  expect(presentation).toHaveBeenLastCalledWith(true);
+  const dialog = screen.getByRole("dialog", { name: "A message between worlds" });
+  const context = within(dialog).getByRole("region", { name: "Voyage context" });
+  expect(context).toHaveTextContent("Voyage");
+  expect(context).toHaveTextContent("The Northern Light");
+  expect(context).toHaveAttribute("data-experience-voyage", syntheticBinding.sessionId);
+  expect(context).toHaveAttribute("data-experience-version", syntheticBinding.chronicleVersionId);
+  expect(context.textContent).not.toContain(syntheticBinding.sessionId);
+  expect(context.textContent).not.toContain(syntheticBinding.chronicleVersionId);
+  expect(request).toHaveBeenCalledWith(
+    `/api/player/playthroughs/${syntheticBinding.sessionId}/parallax?block=${syntheticBinding.blockId}`,
+    { cache: "no-store" },
+  );
+  fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
+  expect(presentation).toHaveBeenLastCalledWith(false);
+});
+
+it("omits another Voyage's private title when the Lens provider has a different authorized session", async () => {
+  const moment = syntheticSpatialMoment();
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => Response.json({ moment, binding: syntheticBinding, replayOnly: false })),
+  );
+  render(
+    <ParallaxJournalProvider
+      sessionId={syntheticBinding.sessionId}
+      csrfToken="synthetic-csrf"
+      voyageContext={{ voyageId: "another-voyage", versionId: "another-edition", title: "A private Chronicle" }}
+    >
+      <ChronicleLensEntry moment={moment} blockId={syntheticBinding.blockId} replayOnly={false} initiallyOpen />
+    </ParallaxJournalProvider>,
+  );
+  await screen.findByText("This device uses Guided View for this spatial moment.");
+  expect(screen.queryByRole("region", { name: "Voyage context" })).toBeNull();
+  expect(screen.queryByText("A private Chronicle")).toBeNull();
 });
 it("replays locally without submitting evidence or changing progression", async () => {
   const record = vi.fn();

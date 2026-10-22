@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "publication": true,
+  "classification": "FINITE_INFRASTRUCTURE_READINESS_NO_PRODUCT_JOURNEYS",
+  "policyDigest": "c3eca238565d710cd2392818a0409b2ab7ae998e28d322c600500d18a04cf9d2",
+  "stage": "original",
+  "attempt": 2,
+  "receiptSha256": "83b32eab0a8db865b1436751576e5e853944d7a2fbfadd956a25be0acc9340ee",
+  "proofRoot": "/workspace/crossdeck-r13-original-proof",
+  "databaseUrl": "file:/workspace/crossdeck-r13-original-proof/artifacts/sounding-line/generic-53601e9e386b/validation-isolated-20261017-042306168-863e0ab25b3143d08af8b934c8f74836.db",
+  "binding": {
+    "version": 1,
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+    "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+    "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+    "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+    "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+    "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "sourceManifestSha256": "f4a1feba6b24223852ba69837db97e8de5b5dd5f45c16205acd6e627fbf930a9",
+    "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+    "stage": "original",
+    "manifestSha256": "8b4bed30df4a5dd24dbf5316f9593fc9e2f681e56394771c67b4782775e151c2",
+    "attempt": 2,
+    "lease": "d97b9a5e-a39c-4bd1-a6d9-58ffa0116af7"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "binding": {
+        "version": 1,
+        "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+        "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+        "baseSha": "986aa0002711a43b425600f03803fae3d5b9906f",
+        "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+        "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+        "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+        "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+        "sourceManifestSha256": "f4a1feba6b24223852ba69837db97e8de5b5dd5f45c16205acd6e627fbf930a9",
+        "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+        "stage": "original",
+        "manifestSha256": "ca4414877f37b500adfbe521a737d9ab5eee92e1b662220ec387b08d49cb36fc",
+        "attempt": 1,
+        "lease": "87086365-4c03-4a6d-a8bb-987860c3dfe0"
+      },
+      "status": "UNKNOWN",
+      "files": {
+        "marker": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/marker.json",
+          "sha256": "5e65c941749df979247f6de4244d68f3be17fed5e34d192ba8db7bf4f971499a"
+        },
+        "launch": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/launch.json",
+          "sha256": "75ac633fd7ec4b3f7501993accb8f923fc1cb3f0c9460ea4baadfa45feac9158"
+        },
+        "receipt": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/receipt.json",
+          "sha256": "3af4cdab910710fe31dae54de5d96a5cbc5f1b041cf06986f5664cf1a805f53b"
+        },
+        "contextSeal": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/contextSeal.json",
+          "sha256": "8ee44761918448316f9dae6f5085bf67b394d072b9d5bf21477a78a91fc14685"
+        },
+        "nativeReceipt": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/nativeReceipt.json",
+          "sha256": "a19b5d39db75f889c0f8a51bbacb2b52711320c8a83fc341f894e6f5aa347ade"
+        },
+        "browserReceipt": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/browserReceipt.json",
+          "sha256": "7e4e6bc3aae5a57e5f98c7ac41314e15219e6b1e4ce2906ec92d25e04fee5be7"
+        },
+        "setupReceipt": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/setupReceipt.json",
+          "sha256": "915f0d7e9dbb5fa114b25b1b56c155d0f3e4a1df7a54a467b57b0b3fb6821225"
+        },
+        "stdout": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/stdout.txt",
+          "sha256": "19f76ec2511627802ea2c5d6778898b2cb3bb538315f7ff8ec4e18879c6e5c33"
+        },
+        "stderr": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-1/stderr.txt",
+          "sha256": "319da8a0b29e143f5d55331973358a1f4183cd3f7953876f8ac7fea065fa14a7"
+        }
+      }
+    },
+    {
+      "attempt": 2,
+      "binding": {
+        "version": 1,
+        "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+        "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+        "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+        "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+        "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+        "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+        "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+        "sourceManifestSha256": "f4a1feba6b24223852ba69837db97e8de5b5dd5f45c16205acd6e627fbf930a9",
+        "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+        "stage": "original",
+        "manifestSha256": "8b4bed30df4a5dd24dbf5316f9593fc9e2f681e56394771c67b4782775e151c2",
+        "attempt": 2,
+        "lease": "d97b9a5e-a39c-4bd1-a6d9-58ffa0116af7"
+      },
+      "status": "PASS",
+      "files": {
+        "marker": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/marker.json",
+          "sha256": "97561cfdec5d200151c3d27d858db2cbd5726330cc47c447958ca3147ec7bb76"
+        },
+        "launch": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/launch.json",
+          "sha256": "14e98d55b4c675fd11e6c15353d8c1a6a2523ddf1e1e12fa19c1aa2a74d9640d"
+        },
+        "receipt": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/receipt.json",
+          "sha256": "83b32eab0a8db865b1436751576e5e853944d7a2fbfadd956a25be0acc9340ee"
+        },
+        "contextSeal": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/contextSeal.json",
+          "sha256": "26d03b2acf170e0e0a7db7bab16d43ca58931e74fc10e8249b2bb64a6d3efb1e"
+        },
+        "nativeReceipt": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/nativeReceipt.json",
+          "sha256": "a6e8c346293997d38b61e1b117d5311ea637232c14607fe9ec50288c4635ace0"
+        },
+        "browserReceipt": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/browserReceipt.json",
+          "sha256": "f977363e18b29e71596e5090e2d675fbb731f8390d426fa97504e2b707b53efb"
+        },
+        "setupReceipt": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/setupReceipt.json",
+          "sha256": "e7e32e504aa6f02f08821dfd826ff2d617ba3e4e154e650397b92a8e58a350ff"
+        },
+        "dependencyManifest": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/dependencyManifest.json",
+          "sha256": "96e1b92d83b8712ecf62ba4b2678524fd0e3fd795b3ab8a0cee0bf20ad4f44d3"
+        },
+        "stdout": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/stdout.txt",
+          "sha256": "d5ee3083103f81b934fbf7325e9cfe151d1563b9cf7be4d0e9cab7262e7da19c"
+        },
+        "stderr": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/original/dependency-readiness/attempt-2/stderr.txt",
+          "sha256": "170649756853ed687386c8fe5c3508ef573c375f81390945792a28551276fe11"
+        }
+      }
+    }
+  ]
+}

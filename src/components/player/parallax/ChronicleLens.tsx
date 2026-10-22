@@ -8,6 +8,7 @@ import { NativeSpatialAdapter } from "@/parallax/native";
 import { landfallNativeHost } from "@/landfall/native-bridge";
 import styles from "./ChronicleLens.module.css";
 import { fieldConsentDisclosure, type FieldMetadata } from "@/parallax/field-contracts";
+import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 
 function LensMark() {
   return (
@@ -26,29 +27,44 @@ function LensMark() {
   );
 }
 
-const context = createContext<{ sessionId: string; csrfToken: string } | null>(null);
+const context = createContext<{
+  sessionId: string;
+  csrfToken: string;
+  voyageContext?: VoyageContextData;
+  onLensPresentationChange?: (open: boolean) => void;
+} | null>(null);
 export function ParallaxJournalProvider({
   sessionId,
   csrfToken,
   children,
+  voyageContext,
+  onLensPresentationChange,
 }: {
   sessionId: string;
   csrfToken: string;
   children: ReactNode;
+  voyageContext?: VoyageContextData;
+  onLensPresentationChange?: (open: boolean) => void;
 }) {
-  return <context.Provider value={{ sessionId, csrfToken }}>{children}</context.Provider>;
+  return (
+    <context.Provider value={{ sessionId, csrfToken, voyageContext, onLensPresentationChange }}>
+      {children}
+    </context.Provider>
+  );
 }
 export function ChronicleLensEntry({
   moment,
   blockId,
   replayOnly,
+  initiallyOpen = false,
 }: {
   moment: SpatialMoment;
   blockId: string;
   replayOnly: boolean;
+  initiallyOpen?: boolean;
 }) {
   const voyage = useContext(context);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(initiallyOpen);
   return (
     <div className={styles.entry}>
       <span aria-hidden="true" className={styles.mark}>
@@ -72,6 +88,8 @@ export function ChronicleLensEntry({
             runId: voyage?.sessionId ?? "preview-run",
           }}
           replayOnly={replayOnly || !voyage}
+          voyageContext={voyage?.voyageContext?.voyageId === voyage?.sessionId ? voyage?.voyageContext : undefined}
+          onPresentationChange={voyage?.onLensPresentationChange}
           loadBinding={
             voyage
               ? async () => {
@@ -131,6 +149,8 @@ export function ChronicleLens({
   record,
   onClose,
   field,
+  voyageContext,
+  onPresentationChange,
 }: {
   moment: SpatialMoment;
   binding: InstanceBinding;
@@ -144,6 +164,8 @@ export function ChronicleLens({
   record?: (receipt: unknown) => Promise<void>;
   onClose: () => void;
   field?: (body: unknown) => Promise<{ observationId?: string; withdrawn?: boolean }>;
+  voyageContext?: VoyageContextData;
+  onPresentationChange?: (open: boolean) => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null),
     runtime = useRef<ParallaxLensRuntime | null>(null);
@@ -172,6 +194,7 @@ export function ChronicleLens({
     const previous = document.activeElement as HTMLElement | null;
     const view = dialog.current;
     view?.showModal();
+    onPresentationChange?.(true);
     async function initialize() {
       try {
         const bound = loadBinding ? await loadBinding() : { moment, binding, replayOnly, fieldObservationId: null };
@@ -254,6 +277,7 @@ export function ChronicleLens({
       void runtime.current?.close();
       runtime.current = null;
       view?.close();
+      onPresentationChange?.(false);
       previous?.focus();
     };
     // A Lens opening binds one immutable passage until it closes.
@@ -321,6 +345,7 @@ export function ChronicleLens({
         <div>
           <p>Chronicle Lens</p>
           <h2 id="chronicle-lens-title">{activeMoment.version.title}</h2>
+          {voyageContext?.voyageId === binding.sessionId && <VoyageContext voyage={voyageContext} />}
         </div>
         <button type="button" onClick={onClose} aria-label="Close Chronicle Lens">
           ×

@@ -110,7 +110,7 @@ for (const viewport of [
           await expect(crew.getByRole("main")).toContainText(fixture.title);
           await crew.getByRole("link", { name: "Continue Adventure", exact: true }).click();
           await enterClosureJournal(crew);
-          const journal = crew.getByRole("main", { name: "Voyage Journal", exact: true });
+          const journal = crew.getByRole("main", { name: "", exact: true });
           await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
           await comparePublishedClue("before");
 

@@ -1,0 +1,34 @@
+async function fetchChecksum(url) {
+  try {
+    const checksumUrl = `${url}.sha256`;
+    const response = await fetch(checksumUrl, {
+      agent: (0, import_chunk_VAPNG6TS.getProxyAgent)(url)
+    });
+    if (!response.ok) {
+      let errorMessage = `Failed to fetch sha256 checksum at ${checksumUrl} - ${response.status} ${response.statusText}`;
+      if (!process.env.PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING) {
+        errorMessage += `
+
+If you need to ignore this error (e.g. in an offline environment), set the PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING environment variable to a truthy value.
+Example: PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1`;
+      }
+      throw new Error(errorMessage);
+    }
+    const body = await response.text();
+    const [checksum] = body.split(/\s+/);
+    if (!/^[a-f0-9]{64}$/gi.test(checksum)) {
+      throw new Error(`Unable to parse checksum from ${checksumUrl} - response body: ${body}`);
+    }
+    return checksum;
+  } catch (error) {
+    if (process.env.PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING) {
+      debug(
+        `fetchChecksum() failed and was ignored as the PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING environment variable is truthy.
+Error: ${error}`
+      );
+      return null;
+    }
+    throw error;
+  }
+}
+

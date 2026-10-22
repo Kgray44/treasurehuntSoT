@@ -1,0 +1,41 @@
+{
+  "classification": "PREFLIGHT_INPUTS_AND_IMMUTABLE_R5_ARCHIVE_NOT_CONSUMER_ACCEPTANCE",
+  "status": "PREPARED",
+  "acceptedMain": "0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09",
+  "recordId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R6",
+  "recordDigest": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787",
+  "historyBindings": 405,
+  "existingHistoryFiles": 177,
+  "archivedR5Media": 228,
+  "archivedR5Bytes": 469472935,
+  "originalMediaPathsRewritten": false,
+  "localPreflightStarted": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalNativeAcceptance": "NOT_CLAIMED",
+  "files": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/authority-handoff.verified.json",
+      "sha256": "062408f93d35c7988f270a728f984bfb6d828a33181ac94034256de0bcfcd2c2",
+      "bytes": 1500,
+      "classification": "ENGINEERING_EVIDENCE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/authority-landed.original.raw.txt",
+      "sha256": "e5407ecd4bdfa7955703b31241cfebd023b93cdd69a7362b4e6ff20229b54be3",
+      "bytes": 3627,
+      "classification": "ENGINEERING_EVIDENCE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/authority-independent-review.original.raw.txt",
+      "sha256": "599c1a78c1ccc9fec0757deef0fd54fb3791e8a194b4a40d2304759e9c12aaea",
+      "bytes": 17493,
+      "classification": "ENGINEERING_EVIDENCE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/r5-preservation.original.raw.txt",
+      "sha256": "90262abbe04341b4755e12738a3e3a1deed908e1e13d79a89279a92910cb534b",
+      "bytes": 122709,
+      "classification": "ENGINEERING_EVIDENCE"
+    }
+  ]
+}

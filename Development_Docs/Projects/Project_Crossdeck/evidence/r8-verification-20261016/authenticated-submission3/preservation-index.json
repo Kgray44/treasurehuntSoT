@@ -1,0 +1,47 @@
+{
+  "classification": "WHOLE_AUTHENTICATED_SUBMISSION3_ORIGINALS_AND_ACTUAL_CUSTODY_SEALS",
+  "runId": 38913515007,
+  "sourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+  "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+  "captureArtifactId": 12048176159,
+  "reviewArtifactId": 12051889841,
+  "reviewArtifactServerDigest": "sha256:4bbb290f32061175579b8ce7c1de4a05acb8ccfcac0678f4346194d3caa84c20",
+  "files": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authenticated-submission3/review-12051889841.original.zip",
+      "bytes": 21959,
+      "sha256": "4bbb290f32061175579b8ce7c1de4a05acb8ccfcac0678f4346194d3caa84c20"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authenticated-submission3/run.original.raw.txt",
+      "bytes": 12754,
+      "sha256": "df25eaea353726418beae0bfb5fcacdc5dc3fd772d09e3a2d17d99dd04ed6cf8"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authenticated-submission3/jobs.original.raw.txt",
+      "bytes": 8722,
+      "sha256": "94051b147606313c84d7ca642f3052f1604895e13a75f1c6405b50d3e7210be3"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authenticated-submission3/artifacts.original.raw.txt",
+      "bytes": 747,
+      "sha256": "bc211be6cdc2a9844db151464fcd764397057e898f852244184b0c527058bf9b"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authenticated-submission3/workflow.original.raw.txt",
+      "bytes": 544,
+      "sha256": "8e5ed0458185315f0dd0d256251a1df531ad3172bea302cb398ed6da93ad8efe"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authenticated-submission3/protected-run.original.log",
+      "bytes": 388629,
+      "sha256": "b1c76c388ed4ab00c6066790bb1f5e640a09389961a19dee08fef5fc83484174"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/authenticated-submission3/custody-seals.original.raw.txt",
+      "bytes": 24293,
+      "sha256": "ee3315fbb7b71f04904c281af2ab83d785f756ec20b32fb1242a55ffd276ed28"
+    }
+  ],
+  "ownerAcceptance": "NOT_CLAIMED"
+}

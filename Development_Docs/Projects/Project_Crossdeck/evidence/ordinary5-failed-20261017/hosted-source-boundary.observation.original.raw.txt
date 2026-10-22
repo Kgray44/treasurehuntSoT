@@ -1,0 +1,29 @@
+{
+  "classification": "AUTHOR_SOURCE_AND_DECODED_LOG_OBSERVATION_NOT_NEW_BROWSER_PROOF",
+  "failedStage": {
+    "version": 1,
+    "stage": "TECHNICAL_VERIFICATION",
+    "phase": null,
+    "errorName": "Error",
+    "code": null,
+    "causeCode": null,
+    "syscall": null,
+    "exitCode": 1,
+    "signal": null
+  },
+  "test": "crossdeck.surface-handoff",
+  "path": "tests/e2e/crossdeck-phase2.spec.ts",
+  "line": 218,
+  "operation": "ordinary actionable click of Receive Living navigation",
+  "observed": "Open Journal objects drawer intercepted pointer events; some scrolling retries also encountered product shell Return link",
+  "sourceInference": "MAP presentation following can reopen the map drawer after the earlier conditional close; exact scheduling event is not proved",
+  "repairBoundary": "Close the current modal using its visible Close journal tool drawer control immediately before reverse Receive, then require closed state; retain normal click and every existing outcome assertion. No product/CSS correction established by this evidence.",
+  "technical": {
+    "passed": 36,
+    "failed": 1,
+    "notRun": 1
+  },
+  "productExperienceReplayIssued": false,
+  "qualifiedIssued": false,
+  "cleanup": "PASS"
+}

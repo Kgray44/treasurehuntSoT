@@ -1,0 +1,23 @@
+{
+  "classification": "OFFLINE_ORIGINAL_CAPTURE_AUTOMATED_VALIDATION_ONLY",
+  "result": {
+    "status": "PASS",
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+    "independence": "AUTOMATED_REPLAY_ONLY",
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "contexts": 32,
+  "artifacts": 228,
+  "maxFeedbackMs": 902.3516959999979,
+  "independentReview4Performed": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

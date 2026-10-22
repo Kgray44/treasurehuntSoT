@@ -1,0 +1,10 @@
+{
+  "classification": "Engineering integration verification; no new repair",
+  "requestKey": "crossdeck-mechanical-main-reconciliation-20261012-r1",
+  "historicalRepairLedger": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json",
+  "repairAttempts": 10,
+  "repairLimit": 3,
+  "repairOverrun": "EXCEEDED_PRESERVED",
+  "verificationPurpose": "Fresh same-contract source-bound evidence after accepted-main and helper integration; no product or fixture correction",
+  "ownerAcceptance": "NOT_CLAIMED"
+}

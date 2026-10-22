@@ -1,0 +1,36 @@
+{
+  "classification": "WHOLE_AUTHENTICATED_SUBMISSION3_ORIGINAL_REVIEW_ARTIFACT_AND_REAL_CUSTODY_SEALS_NOT_QUALIFICATION",
+  "status": "PASS",
+  "runId": 38913515007,
+  "runAttempt": 1,
+  "baseSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
+  "candidateSha": "3415165ed9c4c11f2512d99aea0947f62696146a",
+  "evidenceRef": "4e365e82fda3f272ca6fc2fec61b599b07746834",
+  "sourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+  "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+  "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
+  "captureArtifactId": 12048176159,
+  "reviewArtifactId": 12051889841,
+  "reviewArtifactName": "product-experience-review-6d8ebc54902e7bce",
+  "reviewArtifactServerDigest": "sha256:4bbb290f32061175579b8ce7c1de4a05acb8ccfcac0678f4346194d3caa84c20",
+  "reviewArtifactZipBytes": 21959,
+  "prepareReservation": "d37e647ec70c459f5cdf69704d3a5ba02f077a9b",
+  "review7Seal": "0de6d65c804dbc7ce0cd589559473ccda0df7a4b",
+  "captureSeal": "81847b8e96943609329990c7bca317d5206e60a8",
+  "reviewSubmissionReservation": "2d0169e6425884f3440e76ddc9b4b8fe924e51f7",
+  "wholeWorkflowSeconds": 1541,
+  "jobs": [
+    { "name": "Sounding Line / Finite campaign custody", "conclusion": "success", "elapsedSeconds": 699 },
+    {
+      "name": "Sounding Line / Experience preparation (no mainline decision)",
+      "conclusion": "success",
+      "elapsedSeconds": 834
+    },
+    { "name": "Sounding Line / Focused verification", "conclusion": "skipped", "elapsedSeconds": null },
+    { "name": "Sounding Line / Mainline Decision", "conclusion": "skipped", "elapsedSeconds": null }
+  ],
+  "ordinary2SlotsUnused": true,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "verifiedAt": "2026-10-16T14:36:31.191Z",
+  "jobTimingNote": "Skipped jobs have no execution duration; original GitHub timestamps remain in jobs.original.raw.txt."
+}

@@ -116,7 +116,7 @@ function JournalBlock({
             {line}
           </p>
         ))}
-        {chart ?? <p>The canonical Chart is shown when you read this Passage.</p>}
+        {chart ?? <p className="journal-chart-placeholder">The canonical Chart is shown when you read this Passage.</p>}
       </section>
     );
   const heading =

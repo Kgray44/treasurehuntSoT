@@ -1,9 +1,11 @@
 import { createElement, StrictMode } from "react";
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from "vitest";
 import type { JournalPhaseOutcome } from "@/animation/core/animation-types";
 import type { JournalOpeningPhase } from "@/animation/journal/opening-machine";
 import { syntheticBinding, syntheticSpatialMoment } from "@/parallax/fixtures";
+import type { CrossdeckConnection } from "@/components/crossdeck/useCrossdeckSession";
+import { storageKey } from "@/crossdeck/client";
 import {
   journalOpeningAllowsPersistence,
   runJournalOpeningPhases,
@@ -11,6 +13,7 @@ import {
 } from "./ChronicleJournalSession";
 
 const openingTestDouble = vi.hoisted(() => ({ waitForPhase: vi.fn() }));
+const motionTestDouble = vi.hoisted(() => ({ mode: "reduced" as "reduced" | "full" }));
 const pageFlipTestDouble = vi.hoisted(() => ({
   fallbackVisible: false,
   forceReadableFallback: vi.fn(),
@@ -31,12 +34,32 @@ vi.mock("next/link", async () => {
   };
 });
 
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+
+vi.mock("@/components/crossdeck/CrossdeckCompanion", async () => {
+  const React = await import("react");
+  return {
+    CrossdeckCompanion: ({
+      state,
+      liveNotice,
+    }: {
+      state: { session: { id: string; currentSequence: number } };
+      liveNotice: string;
+    }) =>
+      React.createElement(
+        "main",
+        { "data-testid": "companion-controller", "data-live-notice": liveNotice },
+        `${state.session.id}:${state.session.currentSequence}`,
+      ),
+  };
+});
+
 vi.mock("@/animation/motion/useMotionMode", () => ({
   useMotionMode: () => ({
-    mode: "reduced",
-    productMode: "reduced",
-    systemReduced: true,
-    policy: { level: "reduced" },
+    mode: motionTestDouble.mode,
+    productMode: motionTestDouble.mode,
+    systemReduced: motionTestDouble.mode === "reduced",
+    policy: { level: motionTestDouble.mode },
     setMode: vi.fn(),
     cycle: vi.fn(),
   }),
@@ -356,6 +379,8 @@ describe("ChronicleJournalSession opening outcome consumer", () => {
 describe("ChronicleJournalSession mounted synchronous teardown", () => {
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
+    motionTestDouble.mode = "reduced";
     ControlledEventSource.reset();
     openingTestDouble.waitForPhase.mockReset();
     openingTestDouble.waitForPhase.mockImplementation(async (_root: HTMLElement, phase: JournalOpeningPhase) =>
@@ -400,7 +425,126 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
     localStorage.clear();
+    sessionStorage.clear();
     ControlledEventSource.reset();
+  });
+
+  it("keeps exactly one authorized visible Voyage context through idle, activated, opening status and ready Journal", async () => {
+    motionTestDouble.mode = "full";
+    const activated = deferred<JournalPhaseOutcome>();
+    const closed = deferred<JournalPhaseOutcome>();
+    openingTestDouble.waitForPhase.mockImplementation((_root: HTMLElement, phase: JournalOpeningPhase) =>
+      phase === "ENTRY_ACTIVATED"
+        ? activated.promise
+        : phase === "CLOSED_BOOK_REVEAL"
+          ? closed.promise
+          : Promise.resolve(completed(phase)),
+    );
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((input: RequestInfo | URL) =>
+        Promise.resolve(
+          jsonResponse(
+            String(input).startsWith("/api/crossdeck")
+              ? { surfaces: [], voyages: [], csrfToken: "synthetic-device-csrf" }
+              : sessionState("context"),
+          ),
+        ),
+      ),
+    );
+    const view = render(createElement(ChronicleJournalSession, { sessionId: "context" }));
+    await act(flushMicrotasks);
+    const expectContext = () => {
+      const contexts = screen.getAllByRole("region", { name: "Voyage context" });
+      expect(contexts).toHaveLength(1);
+      expect(contexts[0]).toHaveTextContent("Voyage");
+      expect(contexts[0]).toHaveTextContent("Tale context");
+      expect(contexts[0]).toHaveAttribute("data-experience-voyage", "context");
+      expect(contexts[0]).toHaveAttribute("data-experience-version", "version-context");
+      return contexts[0];
+    };
+    expectContext();
+    expect(
+      within(screen.getByRole("dialog", { name: "Open the voyage journal" })).getByRole("region", {
+        name: "Voyage context",
+      }),
+    ).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Open the journal" }));
+    await act(flushMicrotasks);
+    expect(view.container.querySelector("main")).toHaveAttribute("data-journal-phase", "ENTRY_ACTIVATED");
+    expectContext();
+    expect(
+      within(screen.getByRole("dialog", { name: "Journal opening in progress" })).getByRole("region", {
+        name: "Voyage context",
+      }),
+    ).toBeVisible();
+    await act(async () => {
+      activated.resolve(completed("ENTRY_ACTIVATED"));
+      await flushMicrotasks();
+    });
+    expect(view.container.querySelector("main")).toHaveAttribute("data-journal-phase", "CLOSED_BOOK_REVEAL");
+    expectContext();
+    await act(async () => {
+      closed.resolve(completed("CLOSED_BOOK_REVEAL"));
+      await flushMicrotasks();
+    });
+    expect(view.container.querySelector("main")).toHaveAttribute("data-journal-phase", "JOURNAL_READY");
+    const context = expectContext();
+    expect(context.closest("header")).not.toBeNull();
+    expect(context.closest("[inert],[aria-hidden='true']")).toBeNull();
+    expect(screen.queryByRole("dialog", { name: "Journal opening in progress" })).toBeNull();
+    view.unmount();
+  });
+
+  it("shares the companion live controller without book readiness or primary reading-state requests", async () => {
+    journalPageModelTestDouble.buildPages.mockReturnValue([
+      { id: "journal-title", kind: "title", density: "soft", label: "Tale companion title page", folio: 1 },
+    ]);
+    let sequence = 1;
+    const fetchMock = vi.fn<(input: RequestInfo | URL) => Promise<Response>>(() =>
+      Promise.resolve(
+        jsonResponse({
+          ...sessionState("companion"),
+          session: { ...sessionState("companion").session, currentSequence: sequence },
+        }),
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const companion = { voyage: "companion", here: { surfaceId: "phone", role: "JOURNAL" } } as CrossdeckConnection;
+    const view = render(
+      createElement(ChronicleJournalSession, { sessionId: "companion", identitySession: true, companion }),
+    );
+    await act(flushMicrotasks);
+    expect(screen.getByTestId("companion-controller")).toHaveTextContent("companion:1");
+    expect(screen.queryByTestId("physical-journal-book")).toBeNull();
+    expect(pageFlipTestDouble.readiness).not.toHaveBeenCalled();
+    expect(openingTestDouble.waitForPhase).not.toHaveBeenCalled();
+    expect(ControlledEventSource.activeStreams).toBe(1);
+
+    sequence = 2;
+    await act(async () => {
+      ControlledEventSource.instances.at(-1)!.dispatchEvent(
+        new MessageEvent("progression", {
+          data: JSON.stringify({ id: "next", eventType: "BLOCK_RELEASED", sequence: 2 }),
+        }),
+      );
+      await flushMicrotasks();
+    });
+    expect(screen.getByTestId("companion-controller")).toHaveTextContent("companion:2");
+    expect(screen.getByTestId("companion-controller")).toHaveAttribute(
+      "data-live-notice",
+      "A new page was released: the current objective.",
+    );
+    expect(fetchMock.mock.calls.some(([input]) => String(input).includes("/journal-state"))).toBe(false);
+    expect(localStorage.getItem("chronicle-journal:companion")).toBeNull();
+
+    await act(async () => {
+      ControlledEventSource.instances.at(-1)!.dispatchEvent(new Event("access-revoked"));
+    });
+    expect(screen.queryByTestId("companion-controller")).toBeNull();
+    expect(screen.getByText("Voyage access ended")).toBeVisible();
+    expect(ControlledEventSource.activeStreams).toBe(0);
+    view.unmount();
   });
 
   it("opens the released Chronicle Lens from a live control outside imperative book pages", async () => {
@@ -469,6 +613,7 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     fireEvent.click(screen.getByRole("button", { name: /Open the journal/i }));
     await act(flushMicrotasks);
     const entry = screen.getByRole("button", { name: "Open Chronicle Lens" });
+    const headerContext = screen.getByRole("region", { name: "Voyage context" });
     expect(entry.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
     fireEvent.click(entry);
     await act(flushMicrotasks);
@@ -476,6 +621,104 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(dialog).not.toBeNull();
     expect(dialog.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
     expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
+    const context = within(dialog).getByRole("region", { name: "Voyage context" });
+    expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([context]);
+    expect(headerContext.closest('[aria-hidden="true"][inert]')).not.toBeNull();
+    expect(context).toHaveTextContent(state.tale.title);
+    expect(context).toHaveAttribute("data-experience-voyage", state.session.id);
+    expect(context).toHaveAttribute("data-experience-version", state.session.versionId);
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
+    expect(screen.getAllByRole("region", { name: "Voyage context" })).toHaveLength(1);
+    expect(screen.getByRole("region", { name: "Voyage context" })).toBe(headerContext);
+    expect(headerContext.closest('[aria-hidden="true"],[inert]')).toBeNull();
+    view.unmount();
+  });
+
+  it("keeps the connection dialog's Voyage context active while its nested header identity is inactive", async () => {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({ matches: false })),
+    );
+    const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
+    const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "close");
+    Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+      configurable: true,
+      value: function (this: HTMLDialogElement) {
+        this.setAttribute("open", "");
+      },
+    });
+    Object.defineProperty(HTMLDialogElement.prototype, "close", {
+      configurable: true,
+      value: function (this: HTMLDialogElement) {
+        this.removeAttribute("open");
+      },
+    });
+    onTestFinished(() => {
+      if (originalShowModal) Object.defineProperty(HTMLDialogElement.prototype, "showModal", originalShowModal);
+      else Reflect.deleteProperty(HTMLDialogElement.prototype, "showModal");
+      if (originalClose) Object.defineProperty(HTMLDialogElement.prototype, "close", originalClose);
+      else Reflect.deleteProperty(HTMLDialogElement.prototype, "close");
+    });
+    sessionStorage.setItem(storageKey("connection"), "source");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        if (String(input).startsWith("/api/crossdeck") && init?.method === "POST") {
+          const body = JSON.parse(String(init.body));
+          return Response.json(
+            body.action === "register"
+              ? {
+                  surface: {
+                    surfaceId: body.surfaceId,
+                    voyageId: "connection",
+                    thisSession: true,
+                    presence: "ACTIVE",
+                    role: "PRIMARY_STORY",
+                    label: "Desktop",
+                  },
+                }
+              : { code: "ABCD-1234", expiresAt: new Date(Date.now() + 60_000).toISOString() },
+          );
+        }
+        if (String(input).startsWith("/api/crossdeck"))
+          return Response.json(
+            init?.method === "POST"
+              ? { code: "ABCD-1234", expiresAt: new Date(Date.now() + 60_000).toISOString() }
+              : {
+                  csrfToken: "csrf",
+                  voyages: [],
+                  surfaces: [
+                    {
+                      surfaceId: "source",
+                      voyageId: "connection",
+                      thisSession: true,
+                      presence: "ACTIVE",
+                      role: "PRIMARY_STORY",
+                      label: "Desktop",
+                    },
+                  ],
+                },
+          );
+        return jsonResponse(sessionState("connection"));
+      }),
+    );
+    const view = render(createElement(ChronicleJournalSession, { sessionId: "connection" }));
+    await act(flushMicrotasks);
+    fireEvent.click(screen.getByRole("button", { name: "Open the journal" }));
+    await act(flushMicrotasks);
+    const headerContext = screen.getByRole("region", { name: "Voyage context" });
+    fireEvent.click(screen.getByRole("button", { name: "Connect another device" }));
+    await act(flushMicrotasks);
+    const dialog = screen.getByRole("dialog", { name: "Bring your phone aboard" });
+    const context = within(dialog).getByRole("region", { name: "Voyage context" });
+    expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([context]);
+    expect(context).toHaveAttribute("data-experience-voyage", "connection");
+    expect(context).toHaveAttribute("data-experience-version", "version-connection");
+    expect(context.closest('[aria-hidden="true"],[inert]')).toBeNull();
+    expect(headerContext.closest('[aria-hidden="true"][inert]')).not.toBeNull();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue the Chronicle" }));
+    expect(screen.getAllByRole("region", { name: "Voyage context" })).toEqual([headerContext]);
+    expect(headerContext.closest('[aria-hidden="true"],[inert]')).toBeNull();
     view.unmount();
   });
 
@@ -635,7 +878,11 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     const view = render(createElement(ChronicleJournalSession, { sessionId: "fulfilled" }));
     await act(flushMicrotasks);
     // The opening dialog makes the Journal tools inert until opened; the scoped entry is still prepared.
-    expect(view.container.querySelector('a[href="/account/devices?voyage=fulfilled"]')).toHaveTextContent("Devices");
+    expect(
+      Array.from(view.container.querySelectorAll("button")).find((button) =>
+        button.textContent?.includes("Connect another device"),
+      ),
+    ).toBeDefined();
     expect(fulfilledSignal?.aborted).toBe(false);
     expect(ControlledEventSource.activeStreams).toBe(1);
     const journalIntervals = setIntervalSpy.mock.results
@@ -736,7 +983,7 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
 
     const open = screen.getByRole("button", { name: /Open the journal/i });
     expect(open.getAttribute("aria-describedby")).toBe("journal-opening-action-description");
-    expect(screen.getByRole("main", { name: "Voyage Journal" }).getAttribute("data-voyage-id")).toBe("focus");
+    expect(screen.getByRole("main", { name: "" }).getAttribute("data-voyage-id")).toBe("focus");
     open.focus();
     fireEvent.click(open);
     await act(flushMicrotasks);
@@ -937,7 +1184,13 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(journal.dataset.journalReadyReason).toBe("pageflip-readiness-failure");
     expect(pageFlipTestDouble.forceReadableFallback).toHaveBeenCalledWith("PageFlip readiness probe failed");
     expect(screen.getByTestId("pageflip-static-current-page")).toBeTruthy();
-    expect(screen.getByRole("alert").textContent).not.toContain("private readiness failure");
+    const feedback = screen.getByRole("alert");
+    expect(feedback).toBeVisible();
+    expect(feedback.closest('[inert], [aria-hidden="true"]')).toBeNull();
+    expect(
+      feedback.compareDocumentPosition(screen.getByTestId("physical-journal-book")) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(feedback.textContent).not.toContain("private readiness failure");
     expect(JSON.parse(localStorage.getItem("chronicle-journal:pageflip-failure") ?? "{}").hasOpened).not.toBe(true);
   });
 

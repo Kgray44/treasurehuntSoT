@@ -1,0 +1,10 @@
+{
+  "classification": "OPERATOR_LOCAL_ONE_USE_TECHNICAL_DIAGNOSTIC_NOT_AUTHENTICATED_CUSTODY",
+  "stage": "original",
+  "lease": "b23b2544-889c-4ecf-9662-e07a8b0831dd",
+  "ownerPid": 188345,
+  "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+  "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+  "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+  "startedAt": "2026-10-17T04:34:18.216Z"
+}

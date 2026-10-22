@@ -1,0 +1,35 @@
+{
+  "hardware": "CHROMIUM_EMULATION",
+  "physicalDeviceProof": "NOT_CLAIMED",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "motion": "no-preference",
+  "fixture": "ISOLATED_SYNTHETIC_EDITION",
+  "authoredPermissionsSetup": "Only the released Map declares CREW in this owned edition; the Captain letter stays PRIVATE",
+  "faultInjection": [
+    "DB expired the exact test-owned pairing challenge before its UI claim",
+    "DB revoked the exact test-owned phone surface while its personal Journal was visible"
+  ],
+  "recordings": {
+    "desktop": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-TuABKr/raw/generic/paired/refit-recovery/ccc3d845fd2e8ab782e162464b699d45.webm",
+    "phone": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-TuABKr/raw/generic/paired/refit-recovery/53ea162832e7159ad2cea440d326daec.webm"
+  },
+  "passed": [
+    "Pairing canceled in the Chronicle; focus and reading route preserved",
+    "Expired pairing refused through the phone form without creating a surface",
+    "A new UI-created code pairs the same phone successfully",
+    "Unavailable device purposes remain visibly explained and disabled",
+    "Private-note confirmation is required; sender cancellation clears the receiver offer",
+    "Receiver decline closes the pending transfer and leaves the source note readable",
+    "Shared participation refuses the PRIVATE Captain letter through /api/crossdeck/view",
+    "A real crew-visible Map opens read-only and is acknowledged after rendering; no personal Journal consumer loads",
+    "The explicit return control changes the canonical own role before personal passages reappear",
+    "A current surface revocation clears visible private content on the canonical participation refresh"
+  ],
+  "timings": {
+    "sendToSharedOfferMs": 187,
+    "receiveToRenderedReceiptMs": 418,
+    "revokeToPrivateViewClearedMs": 5882
+  },
+  "privateJournalRequestsWhileShared": [],
+  "progressionAndMembershipUnchanged": true
+}

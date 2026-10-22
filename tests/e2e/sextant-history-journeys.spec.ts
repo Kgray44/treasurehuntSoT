@@ -71,7 +71,7 @@ for (const viewport of [
         await page.getByRole("link", { name: "All Workspaces", exact: true }).click();
         await page.getByRole("link", { name: "Return to Chronicle", exact: true }).click();
         await enterClosureJournal(page);
-        const journal = page.getByRole("main", { name: "Voyage Journal", exact: true });
+        const journal = page.getByRole("main", { name: "", exact: true });
         await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
         const advance = async (task: string, ready: () => Promise<unknown>) => {
           await measure(
@@ -202,7 +202,7 @@ for (const viewport of [
         const replayOpeningMs = performance.now() - replayStarted;
         await expect(journal.getByRole("button", { name: "Continue Voyage", exact: true })).toHaveCount(0);
         expect(
-          (await new AxeBuilder({ page }).include('main[aria-label="Voyage Journal"]').analyze()).violations,
+          (await new AxeBuilder({ page }).include('main[data-experience-voyage]').analyze()).violations,
         ).toEqual([]);
         await historical.scrollIntoViewIfNeeded();
         await page.screenshot({ path: info.outputPath("history-read-only-replay.png") });

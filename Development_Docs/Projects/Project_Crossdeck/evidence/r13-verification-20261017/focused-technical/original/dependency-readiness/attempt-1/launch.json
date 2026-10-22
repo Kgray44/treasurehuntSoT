@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "classification": "FINITE_INFRASTRUCTURE_READINESS_NO_PRODUCT_JOURNEYS",
+  "binding": {
+    "version": 1,
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+    "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+    "baseSha": "986aa0002711a43b425600f03803fae3d5b9906f",
+    "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+    "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+    "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "sourceManifestSha256": "f4a1feba6b24223852ba69837db97e8de5b5dd5f45c16205acd6e627fbf930a9",
+    "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+    "stage": "original",
+    "manifestSha256": "ca4414877f37b500adfbe521a737d9ab5eee92e1b662220ec387b08d49cb36fc",
+    "attempt": 1,
+    "lease": "87086365-4c03-4a6d-a8bb-987860c3dfe0"
+  },
+  "ownerPid": 149543,
+  "parentPid": 148752,
+  "launchedAt": "2026-10-17T03:41:25.818Z"
+}

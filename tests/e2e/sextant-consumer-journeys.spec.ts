@@ -122,7 +122,7 @@ for (const viewport of [
         await page.getByRole("link", { name: "All Workspaces", exact: true }).click();
         await page.getByRole("link", { name: "Return to Chronicle", exact: true }).click();
         await enterClosureJournal(page);
-        const journal = page.getByRole("main", { name: "Voyage Journal", exact: true });
+        const journal = page.getByRole("main", { name: "", exact: true });
         await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
         await expect(page.getByRole("button", { name: "Replay full opening", exact: true })).toBeVisible();
         const start = await page.evaluate(() => performance.now());

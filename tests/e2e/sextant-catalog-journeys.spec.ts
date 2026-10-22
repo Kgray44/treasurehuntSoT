@@ -175,12 +175,12 @@ for (const viewport of [
         if (!created) throw new Error("SEXTANT_CATALOG_START_RECEIPT_MISSING");
         await enterClosureJournal(page);
         const journalOpeningMs = performance.now() - openingStarted;
-        const journal = page.getByRole("main", { name: "Voyage Journal", exact: true });
+        const journal = page.getByRole("main", { name: "", exact: true });
         await expect(journal).toHaveAttribute("data-voyage-id", created.sessionId);
         await expect(journal.getByRole("button", { name: "Continue Voyage", exact: true })).toBeVisible();
         await capture(
           "catalog-actual-guest-journal",
-          'main[aria-label="Voyage Journal"]',
+          'main[data-experience-voyage]',
           journal.getByRole("heading", { level: 1, name: fixture.publicTitle, exact: true }),
         );
         const progress = await db.taleSession.findUniqueOrThrow({

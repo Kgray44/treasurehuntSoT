@@ -119,7 +119,7 @@ for (const viewport of [
         await enterClosureJournal(page);
         const journalBody = await (await journalResponse).json();
         expect(journalBody.session.versionId).toBe(fixture.versionId);
-        const journal = page.getByRole("main", { name: "Voyage Journal", exact: true });
+        const journal = page.getByRole("main", { name: "", exact: true });
         await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
         await page.getByRole("button", { name: "Replay full opening", exact: true }).click();
         await expect(journal.getByRole("link", { name: "Devices", exact: true })).toBeVisible({ timeout: 15000 });

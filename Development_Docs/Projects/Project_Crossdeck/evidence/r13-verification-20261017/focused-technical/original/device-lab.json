@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "scenarioId": "crossdeck.surface-handoff",
+  "scenarioVersion": 1,
+  "owningProject": "CROSSDECK",
+  "scenarioFingerprint": "1c81676f6695118aed2925f38be07d9aebbffd6e3a7a1b79aec51805e7f3368d",
+  "source": {
+    "sourceSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+    "sourceTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+    "sourceFingerprint": "40ce0978cde6eab9506f632e7b2f1f84643587c90e713f5c2ea058a004709fef",
+    "dirty": false
+  },
+  "baseSha": "7284b0dfaa31037d074d27df0f27b968f3977000",
+  "tier": "D1",
+  "profile": "chromium-mobile",
+  "hostOs": "linux",
+  "runtimeVersion": "v24.19.0",
+  "capabilitySnapshot": [
+    "surface.handoff"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-17T04:35:15.365Z",
+  "completedAt": "2026-10-17T04:35:38.647Z",
+  "assertions": [],
+  "evidenceClass": "EXECUTION_FAILED",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_HARDWARE",
+    "D5_COLOCATED_FIELD",
+    "OWNER_WALKTHROUGH"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "owned-desktop",
+      "owned-receiver",
+      "synthetic-account-voyage"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "FAIL",
+  "failureClassification": "EXECUTION_OR_RESULT_INVALID"
+}

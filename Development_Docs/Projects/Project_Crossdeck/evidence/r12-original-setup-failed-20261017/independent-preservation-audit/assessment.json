@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "classification": "INDEPENDENT_SOURCE_BOUND_SETUP_FAILURE_ASSESSMENT_NOT_QUALIFICATION",
+  "reviewerContext": "/root/qualification_audit",
+  "auditTimeUtc": "2026-10-17T02:03:40.273620+00:00",
+  "preservationIndexSha256": "1f8fc1748c267ca8e75b10861bec73f17ce9f8aaffa8dadb6a4bae0f253c3ccd",
+  "preservedOutputs": 12,
+  "exactSource": {
+    "baseSha": "e85ceda26a3770dfb2b01f2afd916e45761a5d9e",
+    "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+    "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+    "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "recordDigest": "9d140072d1cd31a363bf667380b1298eb1b8a9ef0489eb0be564922f85f5239c"
+  },
+  "sourceVerification": {
+    "trackedDiff": "CLEAN",
+    "workingAndCommittedManifestFilesVerified": 2589,
+    "workingManifestDigest": "f4a1feba6b24223852ba69837db97e8de5b5dd5f45c16205acd6e627fbf930a9",
+    "canonicalProductSourceDigestIndependentlyRecomputed": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+    "expectedUntrackedPublicationOnly": "?? Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/"
+  },
+  "receiptAndMarkerCopies": "BYTE_IDENTICAL",
+  "publishedPreservationIndex": "ALL_ENTRIES_HASH_MATCH",
+  "terminalStdoutStderrHashes": "MATCH",
+  "entryAccounting": {
+    "status": "FAIL",
+    "outcome": "EXECUTION_UNKNOWN",
+    "invocations": 1,
+    "caseExecutions": 0,
+    "retries": 0,
+    "additionalRepeats": 0,
+    "productCaptures": 0,
+    "productReviews": 0,
+    "providerCalls": 0,
+    "startedAt": "2026-10-17T02:00:01.208Z",
+    "completedAt": "2026-10-17T02:00:19.045Z"
+  },
+  "execution": {
+    "exitCode": 1,
+    "cancelled": false,
+    "cleanup": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false,
+      "payloadExitCode": 1,
+      "elapsedMs": 3,
+      "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+    }
+  },
+  "profileFailure": {
+    "status": "FAIL",
+    "failureCategory": "SUITE_FIXTURE_CONTRACT_UNSATISFIED",
+    "failureCode": "SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:generic"
+  },
+  "historicalAdmissionObservation": {
+    "status": "PASS",
+    "observedRuns": 162,
+    "preservedPredecessorRuns": 15,
+    "throughUtc": "2026-10-17T01:58:40.568Z",
+    "custodyWrites": 0
+  },
+  "admissionDigestAndDiagnosticBinding": "MATCH_ab72a53f1d69000945838295420f642683328e6bf7817c4dc0554092c4f713a4",
+  "diagnosis": {
+    "operation": "First generic setup command: Prisma generate against prisma/schema.sqlite.prisma",
+    "observedFailure": "HTTPS download of libquery_engine.so.node.sha256 failed for engine commit c2990dca591cba766e3b7ef5d9e8a84796e47ab7, debian-openssl-3.0.x",
+    "rawReason": "EMPTY_IN_STDERR",
+    "underlyingCause": "NOT_ESTABLISHED_FROM_PRESERVED_OUTPUT; do not claim certificate/TLS/HTTP/provider subcause",
+    "productOrHostedReverseReceiveReproduction": "NOT_ESTABLISHED; zero cases executed"
+  },
+  "absenceObserved": {
+    "playwrightReport": true,
+    "browserRuntimeReceipt": true,
+    "deviceLabReceipt": true,
+    "media": true,
+    "correctedReservation": true,
+    "correctedLaunch": true
+  },
+  "conclusion": "Original R12 entry is spent. No correction pass, reproduction, browser/product acceptance, ordinary qualification or merge authority is established. Keep all markers/raw outputs unchanged. Corrected remains locally unstarted. Ordinary6 remote custody was not reobserved in this audit; stored admission history is time-bounded. Any further execution needs accepted successor authority.",
+  "prohibitedActionsPerformed": []
+}

@@ -214,7 +214,7 @@ for (const viewport of [
             () => enterClosureJournal(page),
             30000,
           );
-          await expect(page.getByRole("main", { name: "Voyage Journal", exact: true })).toHaveAttribute(
+          await expect(page.getByRole("main", { name: "", exact: true })).toHaveAttribute(
             "data-voyage-id",
             fixture.landfallVoyageId,
           );

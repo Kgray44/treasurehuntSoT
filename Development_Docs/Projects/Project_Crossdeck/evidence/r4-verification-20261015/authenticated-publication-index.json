@@ -1,0 +1,108 @@
+{
+  "classification": "Actual independent review FIVE and authenticated protected artifact publication; ordinary decision is separate",
+  "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "captureArtifactId": 12009949926,
+  "reviewArtifactId": 12012399990,
+  "reviews": 7,
+  "dimensions": 119,
+  "validation": {
+    "status": "PASS",
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+    "independence": "SEPARATE_CONTEXT_RECORDED",
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "files": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/authenticated-attestation.verified.json",
+      "bytes": 3734,
+      "sha256": "8d3d32fc63e8d910b29e99896af105000e3887691012b95e047ed34d0d4123e1"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-dispatch-once.json",
+      "bytes": 630,
+      "sha256": "b938d7769f43c6dc7817b4b005a227c2726134f59c37017c33264a091c161e38"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-evidence-ref.json",
+      "bytes": 1591,
+      "sha256": "31586bb77b855a43815eaccf28a7546dca38193f71611aec3da4c53555c67f64"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-run.terminal.json",
+      "bytes": 12923,
+      "sha256": "2ec9b01e83ae11360e64095e5a0095e8895b14798ff5b41105c7fe15f2f1f085"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-jobs.terminal.json",
+      "bytes": 8722,
+      "sha256": "18fbcd598a46bad3420644fa9076b7f5e8d1543b3617a2fa6d9fe88829ba49fd"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-artifacts.terminal.json",
+      "bytes": 747,
+      "sha256": "325d07bdf190652ab33ccfbed13dc222086e2dd758f29ff7987b02341f3220a2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-12012399990.zip.metadata.original.raw.txt",
+      "bytes": 715,
+      "sha256": "b17445a6b94fba6c1ca81a421dcb2921d1e6cab6847a9f3922d765ad421cd0f2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/review-12012399990.zip.verified.json",
+      "bytes": 651,
+      "sha256": "f6917661c7867abca6dd22efd46472d2f92b582560cbe345c9c1a2585f3244f6"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/trusted-review.json",
+      "bytes": 112682,
+      "sha256": "9e21cba4d0d10cc5dc60a390bb56af483876e27dce0a783606d91684e64890d5"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/reviews.original.raw.txt",
+      "bytes": 108286,
+      "sha256": "b1ba52860eef74bed952fb31b2e5c998edb519a26fe907b72c8e6defe2c7088e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/review-receipt.original.raw.txt",
+      "bytes": 93846,
+      "sha256": "753893ebf3c6d4f748c65a78e6ef924d42d30d838dcbc7300141faf9f0b3dbe8"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/review-analysis.original.raw.txt",
+      "bytes": 23780,
+      "sha256": "42206e329ad9ffad2bc40c4920afdcd1aa6f853d5c75cbe3959218936e0bc7d8"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/original-inventory.original.raw.txt",
+      "bytes": 264457,
+      "sha256": "ac1bfc51ca9ecd7664e202619da4ba63b5d5a5cc33a93497d948206f5ae088a5"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/trace-inspection-summary.original.raw.txt",
+      "bytes": 145874,
+      "sha256": "c9f1552a4833d5832623eacf4740c3125edd0b177b7697ab852b0e7e29531711"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/diagnostic-inventory.original.raw.txt",
+      "bytes": 480874,
+      "sha256": "6549328188f90f8063f5687563fc7565c914513d05f2efe92556601c972cd9a1"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/final-inventory.original.raw.txt",
+      "bytes": 2727,
+      "sha256": "a514105449c14a8da43e36c274f8d46446a30bd65cd44653dcf49586cd40bce8"
+    }
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalHardwareAcceptance": "NOT_CLAIMED"
+}

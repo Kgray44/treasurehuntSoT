@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # Current status
@@ -57,7 +57,7 @@ formal creation and private-package file input still require canonical Sounding
 Line support.
 Account/recovery/invitation/private-content/Landfall work, legacy disposition,
 formal reference/layout and protected qualification remain. Reach diagnostics
-are accepted; Crossdeck #721 remains unmerged and unconsumed. No completed
+are accepted; Crossdeck #721 is merged on accepted main; this source proposal remains unintegrated and unqualified. No completed
 feature, native/physical or owner acceptance is promoted.
 
 Sextant's separately authorized R1 follow-up preserves its original exhausted 3/3
@@ -91,6 +91,11 @@ At Apple source `71b46a0b`, the native baseline passed 29 tests with one expecte
 Source035 completed its production build and ordinary sign-in, and reached the actual Devices and Guided Lens. All three captures nevertheless failed. Independent review confirmed pale Lens clue text and route/returning-state contract mismatches. A bounded local ink and journey repair requires recapture and the final review cycle;141 uncovered shared consumers and native/physical qualification remain open.
 
 At source `820178bf`, the build, 54 focused tests and 53 D0/D1 scenarios passed with cleanup. Actual first opening and screen fallback were observed, but all three consumer journeys failed. Final independent review is BLOCK_WITH_EVIDENCE at the three-iteration cap: split Journal reading state, ambiguous continuation and fixture route mismatch remain; Lens/mobile/reduced/Creator proof is incomplete. Both native handoffs are explicitly held. The Phase 4 record retains all 12 reviewed assets and original receipts. Further repeated repair or native dispatch requires its specific release trigger.
+
+> Historical Crossdeck description from the accepted source, retained as pre-merge provenance:
+>
+> The Crossdeck refit candidate connects a phone from the active Chronicle and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact and restricted crew views. Contextual pairing, acknowledged handoff, continuation and recovery retain the authorized Voyage. The [R11 source record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), original 38-context capture and seven-contract/119-judgment independent review remain historical source-bound evidence. [Ordinary5](../../../Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) and later [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) are consumed failures. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft, unqualified and unmerged. Its continuation with accepted Reach changes requires fresh combined-source experience evidence, current whole qualification and exact qualified seal, protected merge and landed smoke. Earlier outcomes remain preserved; unsupported dedicated purposes explain their limits. Physical/native, field, assistive-technology and product-owner acceptance remain separate.
+>
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
@@ -370,4 +375,4 @@ inputs, Chronicle Passport, Personal Harbor, and workspace navigation were
 observed. A physical-phone run is still mandatory, so staging desktop evidence
 does not establish owner acceptance or deployment.
 
-Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance; spatial refit remains pending.
+Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance. The [Crossdeck R8 record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) supplies the refit's current source-bound experience evidence; exact qualification and integration remain bound to PR #721.

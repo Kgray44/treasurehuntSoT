@@ -3,7 +3,7 @@ title: Product Experience Engineering operations
 audience: engineering
 status: current
 canonical_for: product-experience-engineering
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Product Experience Engineering
@@ -13,8 +13,10 @@ preserves its original preparation, private-packet validation and consumed R18
 failure. Later R19 capture success and blocked raw review9 remain separate facts.
 The [R20 approved boundary](../../Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/causal-disposition.md)
 binds the exact three owner-approved contract clauses and real Refit transfer.
-Its protected installed record is required before the sole #721 owner takes one
-fresh source-bound capture and independent review10; this document grants none.
+R20 capture succeeded, but its source-first raw review10 remains completed,
+spent, nonqualifying auxiliary evidence. The [R21 approved successor](../../Programs/Sounding_Line/evidence/crossdeck-media-first-successor-20261020-r21/causal-disposition.md)
+requires protected installation before the sole #721 owner takes preparation25
+and a distinct media-first independent review11; this document grants none.
 
 Only R20's three original B1 instances may use
 `FUNCTIONAL_RESOLVED_EDITORIAL_DEFERRED`, preserving their original severity.
@@ -25,6 +27,185 @@ registered packet and per-contract ledger entry. Refit owner acceptance stays
 outstanding. B2 and every other blocker retain the normal full-resolution rules.
 No R19 capture compatibility, refund, counter reset, new general debt exemption
 or weaker functional/accessibility/security/continuity requirement is introduced.
+
+## R23 bounded checkout recovery
+
+The [checkout recovery disposition](../../Programs/Sounding_Line/evidence/crossdeck-checkout-recovery-20261020-r23/causal-disposition.md)
+preserves cancelled preparation 26 and its zero-artifact outcome. The original
+reservation remains spent; review 12 was not performed. Completed preparations 26/
+next 27, completed reviews 11/remaining 12, iteration 16 and original expiry remain.
+The R22 pre-source schema, native freshness and report/seal/attestation rules
+below apply unchanged to the fixed R23 successor; no prior R22 receipt can supply
+the current record binding.
+
+Preparation fetches only its exact pinned authority commit at depth 1, while the
+candidate keeps full history at depth 0. Named authority/candidate/evidence
+checkout steps have a hard ten-minute step deadline and explicit Git progress.
+This bounds a silent checkout stall; it is not a ten-minute browser-suite cap or
+an inactivity-specific detector. The preparation job remains 40 minutes. Retain
+actual provider step start, latest progress and completion timestamps. During
+the one replacement, the existing owner/coordinator checks at intervals no
+greater than 60 seconds and stops a no-progress checkout by its ten-minute
+deadline. No fallback fetch, automatic rerun, refund or reset is authorized.
+
+The existing #721 owner reconciles only after the independently reviewed
+maintenance source is protected-qualified, merged and handed off. It alone owns
+the one replacement capture and still-unperformed review 12, then remaining
+submission/ordinary/technical/replay closure. Maintenance dispatches none of
+these stages. Transfer cause remains unknown; source-only checkout tests and
+maintenance CI do not claim successful hosted consumer preparation.
+
+## R22 actual-byte pre-source admission
+
+The [R22 recovery disposition](../../Programs/Sounding_Line/evidence/crossdeck-pre-source-byte-gate-20261020-r22/causal-disposition.md)
+preserves successful R21 capture and its spent, malformed review11. The existing
+owner/custodian must use the controlled source gate for the replacement review12.
+A parsed JSON/count/citation summary cannot release source. No later canonical
+judgments or fabricated ACCEPTED rows are needed to run the first-pass check.
+
+Keep the fresh critic's initial context free of source, contracts, history,
+producer review packets and builder rationale. Provide only neutral identities,
+rubric and current media. After actual viewing, freeze the original UTF-8 JSON
+using the canonical first-pass fields below. Do not replace evidenceIds with
+mediaIds, or caseId/contexts with scenario/devices. Missing evidence fails the
+check; do not invent citations or observations to fill required fields.
+
+The custodian prepares a private source-pointer/text packet, keeping it away
+from the critic, then runs the installed accepted-base gate:
+
+```sh
+node <accepted-authority>/scripts/sounding-line/experience-review-source-gate.mjs --workspace <owned-candidate-checkout> --base <accepted-main> --candidate <exact-captured-candidate> --identity <actual-critic-metadata.json> --observations <frozen-original.json> --bytes <original-byte-count> --sha256 <original-byte-sha256> --capture <current-protected-capture-artifact-id> --packet <custodian-only-source-packet.txt> --output <new-private-output-directory>
+```
+
+The identity file supplies the fixed R22 protocol kind and actual reviewer,
+task path, builder and criticCreation metadata. The command reads the actual
+frozen file, authenticates the current capture/original prepare, and applies the
+same first-pass predicates used by final review. It fsyncs create-only
+first-pass.original.json and pre-source-admission.original.json before reading
+the input source packet. Only source-packet.released.original.txt from a
+successful new output directory may be handed to the critic. Preserve every
+failure; a failed check grants no repair/refund/retry entitlement.
+
+The command returns PASS_STAGED_NOT_DISCLOSED, with a separate
+source-packet-stage.original.json. It does not send a message or claim source
+was disclosed. The existing authorized custodian delivers the exact released
+packet through the native reviewer route and verifies the real native message
+and earliest exposure time. An ambiguous/failed send is not DELIVERED.
+
+The final mediaFirstReview envelope includes the exact preSourceAdmission and
+sourcePacketStage objects from the retained originals, plus sourceDisclosure:
+
+```json
+{
+  "kind": "CROSSDECK_NATIVE_SOURCE_DISCLOSURE_1",
+  "status": "DELIVERED",
+  "preSourceAdmissionDigest": "<shared semantic digest of exact PASS object>",
+  "sourcePacketStageDigest": "<shared semantic digest of exact STAGED object>",
+  "reviewerContext": "<actual same fresh critic>",
+  "verifiedByContext": "01a14744-5390-77a1-8532-5c32db6980eb",
+  "nativeMessageId": "<actual verified native disclosure message ID>",
+  "sourcePacketSha256": "<exact staged packet hash>",
+  "startedAtUtc": "<earliest actual source exposure; matches sourceInspectionStartedAt>",
+  "completedAtUtc": "<actual successful handoff completion>"
+}
+```
+
+Use actual objects, numbers, identifiers and UTC times. PASS must precede packet
+staging and native disclosure; completed disclosure precedes final judgments.
+The protected report and immutable review12 seal bind the complete envelope and
+all three receipt digests. Attestation compares the protected original capture
+index/preparation and installed validator blobs. This is controlled-route
+provenance, not cryptographic proof of a human identity or absence of independent
+source browsing; actual fresh-context/exposure verification remains mandatory.
+
+The seven explicit final judgments, all17 dimensions, B1/B2 findings, paired
+witnesses, functional/accessibility/privacy and technical evidence remain
+required. Counts are preparations25/next26, reviews11/next12 and iteration16;
+all original expiry, failures, authority caps and downstream ownership remain.
+
+## R21 media-first review11
+
+This finite successor preserves the original R20 raw review and clarification;
+neither becomes a canonical accepted judgment. Its current-base and paired
+execution bindings require a new capture. A distinct critic must start in a fresh
+child context (`fork_turns: none`) with an actual `/root/<new critic>` task path
+and no inherited source, fixtures, contract text, R19/R20 reports or
+blocker history. The existing cloud owner verifies the actual selection against
+every previous critic before giving the new critic any review material.
+
+Give the critic opaque source/contract identities, a neutral seventeen-dimension
+rubric and the original fresh media, without implementation, contract prose or
+builder rationale. Inspect screenshots and meaningful recording/decoded-trace
+sequences across all 32 generic and six paired contexts. Hashing a recording is
+not viewing its transitions. Record honest limitations rather than claiming an
+unobserved outcome.
+
+Before exposing source/contracts/fixtures/history, freeze one original UTF-8 JSON
+first pass with kind `CROSSDECK_MEDIA_FIRST_OBSERVATIONS_1`. It includes:
+
+- Actual `reviewerContext`, `reviewerTaskPath`, `builderContext` and
+  `criticCreation` from native creation metadata. The creation object contains
+  `reviewerContext`, `createdAtUtc`, `initialHistory: NONE` and
+  `selectionVerifiedByContext` equal to the cloud owner. Context IDs record
+  provenance; do not infer creation time or identity authentication from ID text.
+- Current opaque `sourceDigest`, `contractDigest`, `captureArtifactId`,
+  `genericContexts: 32`, `pairedContexts: 6`, `contexts: 38`,
+  `mediaInspectionStartedAt` and `observationsFrozenAt`.
+- `criticSelection` with `freshContext: true`,
+  `distinctFromAllPreviousCritics: true`, and
+  `inheritedSourceOrBuilderContext: false`; `exposureBeforeFreeze` with
+  `source`, `contracts`, `fixtures`, `historicalReports` and `blockerHistory`
+  all false. These must describe actual chronology.
+- Seven `contractObservations` with exact `contractId` and all seventeen
+  `dimensions`, each containing substantive `observation` and current
+  same-contract `evidenceIds`. Each contract references inspected screenshots
+  and recording or trace media.
+- Three `pairedObservations`, each with its canonical `caseId` and
+  `contexts.DESKTOP` / `contexts.MOBILE` observations and current paired media
+  IDs. Each context references screenshots and recording or trace media from
+  that exact paired case.
+
+Preserve these frozen original bytes privately. After the freeze, provide exact
+source/contracts and the adjudication history. The same fresh critic then issues
+seven explicit canonical `status: ACCEPTED` judgments only where all requirements
+pass, retaining actual separate context identities, packet digests, all seventeen
+dimensions, findings, cumulative iteration15/review11 and current repair evidence.
+B1's exact functional/editorial split and B2's full resolution remain mandatory.
+
+The existing canonical `candidate-review.json` carries a `mediaFirstReview`
+object; no additional publication path or review entitlement is created:
+
+```json
+{
+  "kind": "CROSSDECK_REVIEW11_MEDIA_FIRST_1",
+  "reviewerContext": "<actual new native context ID>",
+  "reviewerTaskPath": "<actual new critic task path>",
+  "builderContext": "01a14744-5390-77a1-8532-5c32db6980eb",
+  "criticCreation": "<same creation object frozen in the first pass>",
+  "sourceInspectionStartedAt": "<after the media-observation freeze>",
+  "canonicalJudgmentsCompletedAt": "<after source inspection>",
+  "frozenFirstPass": {
+    "encoding": "utf8-original-json",
+    "content": "<exact original first-pass UTF-8 JSON text>",
+    "bytes": "<original byte count, maximum 1048576>",
+    "sha256": "<original byte SHA-256>"
+  }
+}
+```
+
+Use actual objects, numbers and UTC timestamps in the report; the strings above
+describe fields. Every canonical review uses the same verified critic and builder
+identities, `independence: SEPARATE_CONTEXT` and
+`sourceInspectionOrder: EXPERIENCE_BEFORE_SOURCE`. Creation, inspection, freeze,
+source access and judgment times must be truthful and ordered. The finite guard
+checks consistency and original bytes; ordinary authenticated submission and all
+existing media, paired, accessibility, privacy and technical gates still apply.
+The immutable review11 seal and protected `review.json` both bind
+`mediaFirstReviewDigest` to the complete envelope, including original observation
+text, byte identity, critic creation and chronology. Authenticated attestation
+rejects any substituted envelope, even if it independently passes the protocol
+and retains the same canonical judgments and media. Other review formats retain
+their existing identities.
 
 Engineering maintenance: [R8 historical format reconciliation](../../Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md).
 Engineering maintenance: [complete changed-path buffer repair](../../Engineering/Experience_Changed_Path_Buffer_Repair.md).
@@ -145,6 +326,7 @@ Implementation, contract validation, integration, visual completion, journey
 validation, readiness for walkthrough and PRODUCT_ACCEPTED remain separate.
 AI/browser qualification cannot grant owner acceptance or physical-device proof.
 
-See the [campaign evidence](Campaign_Evidence.md) and run
+See the [activation closure](Activation_Closure.md),
+[campaign evidence](Campaign_Evidence.md), and run
 `npm run experience:test`, `npm run experience:test:browser`, and the existing
 `npm run test:sounding-line` for focused regression.

@@ -1,0 +1,90 @@
+{
+  "id": "R3-HOMEPORT-MOBILE-P01",
+  "classification": "INTERACTION_DEFECT",
+  "disposition": "UNRESOLVED_BLOCKER",
+  "contractId": "homeport.shell.crossdeck-companion-mobile",
+  "reviewerContext": "/root/final_product_review_3",
+  "independentReviewOrdinal": 3,
+  "verdict": "BLOCKED",
+  "originalEvidence": [
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7.png",
+      "sha256": "b21719086b7154d6f07690d4b51d6a1b0db0bd0e7fbda274d5e3f84cae2fb609",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "sha256": "4fd89858ad1b0569671816dde7f8ab21e95d966e4d9693422d57bf4f595307bc",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/048354007b78c581c2f58847bda59553.webm",
+      "sha256": "de5506e8f5def3a506e26083ad4075bce1bc28b529d6a7172748205e4e7b648d",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    }
+  ],
+  "settledFrames": [
+    {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r2-aaef\\independent-review3\\frames\\homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL\\0032.png",
+      "approxFrameGridSeconds": 7.75
+    },
+    {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r2-aaef\\independent-review3\\frames\\homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL\\0036.png",
+      "approxFrameGridSeconds": 8.75
+    },
+    {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r2-aaef\\independent-review3\\frames\\homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL\\0040.png",
+      "approxFrameGridSeconds": 9.75
+    }
+  ],
+  "preSettlementFramesAlsoInspected": [
+    {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r2-aaef\\independent-review3\\frames\\homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL\\0027.png",
+      "approxFrameGridSeconds": 6.5
+    },
+    {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r2-aaef\\independent-review3\\frames\\homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL\\0028.png",
+      "approxFrameGridSeconds": 6.75
+    },
+    {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r2-aaef\\independent-review3\\frames\\homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL\\0029.png",
+      "approxFrameGridSeconds": 7.0
+    },
+    {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r2-aaef\\independent-review3\\frames\\homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL\\0030.png",
+      "approxFrameGridSeconds": 7.25
+    },
+    {
+      "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r2-aaef\\independent-review3\\frames\\homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL\\0031.png",
+      "approxFrameGridSeconds": 7.5
+    }
+  ],
+  "observed": "The ceremony is present in frames 27-31, then gone in frame 32. Frames 32, 36 and 40 show the readable Journal with the multiline degradation note fully covering Continue Voyage in the fixed objective tray. The collision persists through the final recorded frame; it is not merely a frame during the opening animation.",
+  "fullHumanObjectiveRationale": "The human objective includes natural return and honest useful recovery while staying in one Voyage. Library exit/re-entry and identity continuity succeed, and the message is honest, but the primary action for continuing that returned Voyage is visually covered at the handed-back normal-phone endpoint. Passing the Journal-tools destination assertion does not establish usable continuation. A ready state that obscures that action is a blocking interaction defect within the actual product experience.",
+  "usableAlternativeAssessment": {
+    "sourceFacts": "The degradation note has position: relative in src/styles/chronicle.css; the objective tray is fixed. This permits a plausible scroll-position escape.",
+    "existingRelatedMedia": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8 shows the same normal-mode message above an exposed objective tray in another captured scroll position.",
+    "limit": "No scroll clearing, dismiss/retry or Continue Voyage activation is captured in the affected Homeport return journey. Therefore a permanent global trap is not claimed, but a demonstrated usable path in this returned state is absent. The related media/source do not downgrade the observed primary-action occlusion to polish."
+  },
+  "requiredOutcome": "An affected normal-phone return must hand back a readable Journal with an unobscured, usable primary continuation action and honest degradation feedback. The current evidence does not establish that outcome.",
+  "scopeStop": "Review stopped with this blocker. No product repair, browser run, recapture, test, workflow dispatch or authenticated submission was made. Any further authorized work is for the parent to determine."
+}
