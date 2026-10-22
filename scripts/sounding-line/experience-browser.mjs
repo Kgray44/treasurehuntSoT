@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
+import { observeSC00ALandmarks, sc00aReviewProof } from "./experience-sc00a.mjs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -278,7 +279,8 @@ export async function runExperienceJourney({
       actionStarted = null;
     }
     if (step.state) {
-      if (accessibilityCheck) stateAccessibility.push({ state: step.state, ...(await accessibilityCheck()) });
+      if (accessibilityCheck)
+        stateAccessibility.push({ state: step.state, ...(await accessibilityCheck({ state: step.state })) });
       const id = `${contract.id}-${journey.id}-${device}-${role}-${motionMode}-${step.state}-${index}`;
       const file = path.join(artifactRoot, `${id.replaceAll(/[^a-zA-Z0-9_.-]/gu, "-")}.png`);
       // Capture the view actually used by this journey. Chromium's beyond-viewport
@@ -510,9 +512,18 @@ export async function captureProductExperience({
                   root,
                   role,
                   motionMode,
-                  accessibilityCheck: async () => {
+                  accessibilityCheck: async ({ state }) => {
                     const a11y = await new AxeBuilder({ page }).analyze();
+                    const sc00aLandmarks = await observeSC00ALandmarks({
+                      plan,
+                      contractId: contract.id,
+                      device,
+                      state,
+                      page,
+                      AxeBuilder,
+                    });
                     return {
+                      ...(sc00aLandmarks ? { sc00aLandmarks } : {}),
                       axeSerious: a11y.violations
                         .filter((violation) => ["critical", "serious"].includes(violation.impact))
                         .map((violation) => violation.id),
@@ -601,11 +612,13 @@ export async function writeExperienceReviewPackets({ plan, evidence, artifactRoo
       contract,
       sourceDigest: plan.sourceDigest,
       artifacts,
+      ...sc00aReviewProof(plan, evidence, contract.id),
       ...(contract.experience.pairedEvidence ? { pairedEvidence: evidence.pairedEvidence } : {}),
       packetDigest: experienceDigest({
         sourceDigest: plan.sourceDigest,
         contract,
         artifacts: artifacts.map(({ id, sha256 }) => ({ id, sha256 })),
+        ...sc00aReviewProof(plan, evidence, contract.id),
         ...(contract.experience.pairedEvidence ? { pairedEvidence: evidence.pairedEvidence } : {}),
       }),
       instructions:

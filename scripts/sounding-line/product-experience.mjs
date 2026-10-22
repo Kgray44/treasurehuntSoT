@@ -10,6 +10,7 @@ import { readSourceSnapshotBatches } from "./source-snapshot-batches.mjs";
 import { createHash } from "node:crypto";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { R20_DEFERRED_DISPOSITION, validateScopedR20Finding } from "./experience-scope-adjudication.mjs";
+import { SC00A, sc00aReviewProof } from "./experience-sc00a.mjs";
 import { readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { inflateSync } from "node:zlib";
@@ -895,6 +896,7 @@ export function validateExperienceEvidence({
         sourceDigest: plan.sourceDigest,
         contract,
         artifacts: captures.map(({ id, sha256 }) => ({ id, sha256 })),
+        ...sc00aReviewProof(plan, evidence, contract.id),
         ...(contract.experience.pairedEvidence ? { pairedEvidence: evidence.pairedEvidence } : {}),
       })
     )
@@ -988,7 +990,11 @@ export function validateExperienceEvidence({
       !Number.isInteger(review.iterations) ||
       (plan.exception
         ? review.iterations !==
-          (isCurrentAdmissionPlan(plan) ? plan.exception.currentSourceAdmission.requiredReviewIterations : 11)
+          (plan.exception.id === SC00A.id
+            ? 4
+            : isCurrentAdmissionPlan(plan)
+              ? plan.exception.currentSourceAdmission.requiredReviewIterations
+              : 11)
         : continuation
           ? review.iterations !== 4
           : review.iterations < 1 || review.iterations > 3) ||

@@ -30,6 +30,7 @@ import "./experience-r13-technical-proof.test.mjs";
 import "./experience-dependency-readiness.test.mjs";
 import { createCustodyRequest } from "../../scripts/sounding-line/custody-transport.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { SC00A, SC00A_HISTORY } from "../../scripts/sounding-line/experience-sc00a.mjs";
 import {
   R8_FORMAT,
   R8_RAW_ORIGINALS,
@@ -78,6 +79,7 @@ import {
   validateLiveContext,
   verifyExceptionAttestation,
   selectTrustedExceptions,
+  validateSC00ARegistry,
   trustedExceptions,
   recordBinding,
   recognizeExceptionExecution,
@@ -732,6 +734,128 @@ test("R8 reused custody requires exact successful original runs, seals and artif
   slots.set("review7", saved);
   replies.get(`actions/artifacts/${R8_FORMAT.reviewArtifact}`).digest = "sha256:" + "0".repeat(64);
   await assert.rejects(() => validateR8FormatCustody({ plan: f.plan, store, request }), /ORIGINAL_ARTIFACT_CHANGED/u);
+});
+
+test("SC00A copied source cannot evade denial by dropping contracts, history, ancestry or PR identity", async (t) => {
+  const root = mkdtempSync(path.join(tmpdir(), "sc00a-recognition-"));
+  assert(root.startsWith(path.resolve(tmpdir()) + path.sep));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const git = (args, input) =>
+    execFileSync("git", args, {
+      cwd: root,
+      encoding: "utf8",
+      input,
+      stdio: ["pipe", "pipe", "pipe"],
+    }).trim();
+  git(["init", "-q"]);
+  git(["config", "user.name", "Synthetic recognition fixture"]);
+  git(["config", "user.email", "fixture@example.invalid"]);
+  git(["commit", "--allow-empty", "-qm", "Unrelated synthetic base"]);
+  const baseSha = git(["rev-parse", "HEAD"]);
+  git(["update-ref", "refs/remotes/origin/main", baseSha]);
+  assert.equal(recognizeExceptionExecution({ root, baseSha, candidateSha: baseSha, environment: {} }), false);
+  for (const witness of SC00A.sourceWitnesses)
+    for (const mode of ["100644", "100755"]) {
+      git(["read-tree", baseSha]);
+      // Metadata-only Git fixture: no application source is materialized or run.
+      // --missing-ok permits the known public source object identity to be tested
+      // without adding a second copy of that source to the repository.
+      git(["update-index", "--add", "--info-only", "--cacheinfo", `${mode},${witness.blob},${witness.path}`]);
+      const tree = git(["write-tree", "--missing-ok"]);
+      const candidateSha = git(["commit-tree", tree, "-p", baseSha], "Copied identity denial fixture\n");
+      assert.equal(campaignRelated({ root, baseSha, candidateSha, record: SC00A, prNumber: 999 }), true);
+      assert.equal(recognizeExceptionExecution({ root, baseSha, candidateSha, environment: {} }), true);
+      assert.equal(
+        recognizeExceptionExecution({ root, baseSha, candidateSha, environment: { SOUNDING_LINE_PR_NUMBER: "999" } }),
+        true,
+      );
+      assert.throws(
+        () => bindExperienceException({ root, baseSha, candidateSha, plan: { applicable: false }, prNumber: 999 }),
+        /APPROVAL_MISSING_OR_INACTIVE/u,
+      );
+      git(["update-ref", "refs/remotes/origin/main", candidateSha]);
+      git(["update-ref", "HEAD", candidateSha]);
+      assert.equal(recognizeExceptionExecution({ root, baseSha: candidateSha, candidateSha, environment: {} }), true);
+      for (const environment of [{}, { SOUNDING_LINE_PR_NUMBER: "999" }])
+        await assert.rejects(
+          () =>
+            assertExceptionExecution({
+              root,
+              kind: "experience",
+              environment,
+              plan: { baseSha: candidateSha, candidateSha, applicable: false },
+            }),
+          /INSTALLED_PROTECTED_BASE_REQUIRED/u,
+        );
+      git(["update-ref", "refs/remotes/origin/main", baseSha]);
+      git(["update-ref", "HEAD", baseSha]);
+    }
+  const directoryCandidate = (parent, file) => {
+    git(["read-tree", parent]);
+    const blob = git(["hash-object", "-w", "--stdin"], "Synthetic marker child\n");
+    git(["update-index", "--add", "--cacheinfo", `100644,${blob},${file}/synthetic.txt`]);
+    return git(["commit-tree", git(["write-tree"]), "-p", parent], "Directory presence fixture\n");
+  };
+  for (const marker of SC00A.immutableHistory) {
+    const candidateSha = directoryCandidate(baseSha, marker.path);
+    assert.equal(campaignRelated({ root, baseSha, candidateSha, record: SC00A }), true, marker.path);
+    assert.equal(recognizeExceptionExecution({ root, baseSha, candidateSha, environment: {} }), true, marker.path);
+    const retainedDirectory = directoryCandidate(candidateSha, "unrelated");
+    assert.equal(
+      campaignRelated({ root, baseSha: candidateSha, candidateSha: retainedDirectory, record: SC00A }),
+      false,
+    );
+  }
+  const contractsDirectory = directoryCandidate(baseSha, "testing/contracts.json");
+  assert.throws(() => campaignRelated({ root, baseSha, candidateSha: contractsDirectory, record: SC00A }), /JSON/u);
+  assert.throws(
+    () => recognizeExceptionExecution({ root, baseSha, candidateSha: contractsDirectory, environment: {} }),
+    /JSON/u,
+  );
+  const validContract = git(
+    ["hash-object", "-w", "--stdin"],
+    JSON.stringify({ contracts: [{ id: SC00A.contractId }] }),
+  );
+  git(["read-tree", baseSha]);
+  git(["update-index", "--add", "--cacheinfo", `100644,${validContract},testing/contracts.json`]);
+  const validContractCandidate = git(
+    ["commit-tree", git(["write-tree"]), "-p", contractsDirectory],
+    "Valid contract after malformed base\n",
+  );
+  assert.throws(
+    () => campaignRelated({ root, baseSha: contractsDirectory, candidateSha: validContractCandidate, record: SC00A }),
+    /JSON/u,
+  );
+});
+
+test("SC00A unbound installation cannot reserve execution or perform a custody write", async () => {
+  let reads = 0,
+    writes = 0,
+    requests = 0;
+  for (const mode of ["capture", "review", "ordinary", "verify"])
+    await assert.rejects(
+      () =>
+        reserveExceptionStage({
+          record: SC00A,
+          plan: {},
+          mode,
+          now: new Date("2026-10-16T15:00:00Z"),
+          store: {
+            read: async () => {
+              reads++;
+              return null;
+            },
+            create: async () => {
+              writes++;
+            },
+          },
+          request: async () => {
+            requests++;
+          },
+        }),
+      /INSTALLATION_UNBOUND/u,
+    );
+  assert.deepEqual({ reads, writes, requests }, { reads: 0, writes: 0, requests: 0 });
 });
 
 function transportFixture(sequence) {
@@ -5098,3 +5222,24 @@ for (const record of [r4Template, r5Template, r6Template, r7Template, r8Template
       assert.throws(() => bind(commit(baseSha)), /FROZEN_|RUNTIME_|HISTORY_/u);
     }
   });
+
+test("SC00A cannot append an active grant or change the canonical R26 registry during held preparation", () => {
+  const registry = JSON.parse(
+    readFileSync(new URL("../../testing/product-experience-exceptions.json", import.meta.url), "utf8"),
+  );
+  const rows = registry.exceptions;
+  assert.equal(rows.length, 26);
+  assert.equal(rows.filter((row) => row.id === SC00A.id).length, 0);
+  assert.equal(
+    createHash("sha256").update(JSON.stringify(rows)).digest("hex"),
+    SC00A_HISTORY.predecessorRegistry.digest,
+  );
+  assert.throws(() => selectTrustedExceptions([...rows, SC00A]), /INSTALLATION_UNBOUND/u);
+  assert.throws(() => validateSC00ARegistry({ ...registry, exceptions: [...rows, SC00A] }), /INSTALLATION_UNBOUND/u);
+  assert.throws(
+    () => validateSC00ARegistry({ version: 1, exceptions: [...rows, SC00A] }),
+    /R26_REGISTRY_PREFIX_CHANGED/u,
+  );
+  for (const changed of [rows.slice(1), [...rows].reverse(), [...rows, { id: "invented" }]])
+    assert.throws(() => selectTrustedExceptions([...changed, SC00A]), /SC00A_PREDECESSOR_REGISTRY_CHANGED/u);
+});

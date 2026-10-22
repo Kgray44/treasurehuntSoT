@@ -705,6 +705,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/SC00A_Landmark_Authority_Preparation.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/Project_Sextant_Phase_1_Implementation_Receipt.md",
       "record_type": "engineering-record",
       "status": "current",

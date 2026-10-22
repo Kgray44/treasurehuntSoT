@@ -1,6 +1,7 @@
 // Noncapturing installed-workflow checkout proof. No network, custody or decision writes.
 import { execFileSync } from "node:child_process";
 import path from "node:path";
+import { SC00A, validateSC00ARecord } from "./experience-sc00a.mjs";
 import { fileURLToPath } from "node:url";
 import {
   trustedExceptions,
@@ -17,6 +18,14 @@ import {
   CROSSDECK_R13,
   CROSSDECK_R14,
 } from "./experience-exception.mjs";
+
+export function selectSC00ACheckoutRecord(records) {
+  const matches = records.filter((record) => record.id === SC00A.id);
+  if (!matches.length) return null;
+  if (matches.length !== 1) throw new Error("SOUNDING_LINE_CUSTODY_PROBE_SC00A_RECORD_AMBIGUOUS");
+  validateSC00ARecord(matches[0]);
+  return matches[0];
+}
 
 export function checkoutProbe({ root, baseSha, candidateSha, environment = process.env }) {
   const fail = () => {
@@ -44,6 +53,30 @@ export function checkoutProbe({ root, baseSha, candidateSha, environment = proce
     )
   )
     fail();
+  const scRecord = selectSC00ACheckoutRecord(records);
+  if (scRecord) {
+    git("merge-base", "--is-ancestor", scRecord.reconciledBaseSha, baseSha);
+    git("merge-base", "--is-ancestor", scRecord.reconciledBaseSha, scRecord.frozenReferenceSha);
+    for (const prerequisite of [...scRecord.integrationPrerequisites, scRecord.governancePrerequisite])
+      git("merge-base", "--is-ancestor", prerequisite.mergeSha, scRecord.reconciledBaseSha);
+    if (git("rev-parse", `${scRecord.frozenReferenceSha}:${SC00A.productPath}`) !== scRecord.repair.beforeBlob) fail();
+    for (const entry of scRecord.immutableHistory)
+      if (git("rev-parse", `${scRecord.frozenReferenceSha}:${entry.path}`) !== entry.blob) fail();
+    return {
+      classification: "READ_ONLY_NONCAPTURING_CUSTODY_CHECKOUT_PROBE",
+      status: "PASS",
+      baseSha,
+      candidateSha,
+      candidateHistory: "COMPLETE",
+      frozenReferenceSha: scRecord.frozenReferenceSha,
+      predecessorLineage: "PASS",
+      recordId: scRecord.id,
+      consumerReservations: 0,
+      captures: 0,
+      productReviews: 0,
+      mainlineDecision: "NONE",
+    };
+  }
   const expected = records.some((r) => r.id === CROSSDECK_R14.id)
     ? CROSSDECK_R14
     : records.some((r) => r.id === CROSSDECK_R13.id)

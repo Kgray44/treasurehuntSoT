@@ -190,6 +190,15 @@ function assertOrdinaryOnlyMode(plan, mode) {
   assertR14Mode(plan, mode);
 }
 
+import {
+  SC00A,
+  SC00A_HISTORY,
+  validateSC00ARecord,
+  validateSC00APlan,
+  sc00aRecordBinding,
+  validateSC00AEvidence,
+} from "./experience-sc00a.mjs";
+
 export const EXCEPTION_REGISTRY = "testing/product-experience-exceptions.json";
 // Recognition survives retirement/removal of a grant. It never grants admission.
 export const CROSSDECK_CAMPAIGN = {
@@ -324,7 +333,33 @@ function r3FamilyRelated(root, candidateSha) {
     return false;
   }
 }
+function sc00aRow(rows) {
+  if (
+    !Array.isArray(rows) ||
+    rows.length !== SC00A_HISTORY.predecessorRegistry.count + 1 ||
+    digest(rows.slice(0, -1)) !== SC00A_HISTORY.predecessorRegistry.digest ||
+    rows.at(-1)?.id !== SC00A.id
+  )
+    fail("SC00A_PREDECESSOR_REGISTRY_CHANGED");
+  return rows.at(-1);
+}
+export function validateSC00ARegistry(registry, now = new Date()) {
+  const record = sc00aRow(registry?.exceptions);
+  // Preserve the entire accepted envelope, including every historical reconciliation.
+  validateCurrentAdmissionRegistry(
+    { ...registry, exceptions: registry.exceptions.slice(0, -1) },
+    new Date(CURRENT_R26.ownerApproval.executionDeadlineUtc),
+    { requiredVersion: 26 },
+  );
+  validateSC00ARecord(record, now);
+  return record;
+}
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => record.id === SC00A.id)) {
+    const record = sc00aRow(records);
+    validateSC00ARecord(record);
+    return record.status === "ACTIVE" ? [record] : [];
+  }
   if (records.some((record) => record.version === 26)) {
     if (records.length !== 26 || digest(records.slice(0, 25)) !== CURRENT_R26.previousRecordsDigest)
       fail("R26_PREDECESSOR_REGISTRY_CHANGED");
@@ -693,6 +728,10 @@ export const trustedExceptions = (root, baseSha) => {
   // Reuse only this immutable revision's read, never a cached validation result.
   const registry = exceptionRegistry(root, baseSha);
   const records = registry?.exceptions ?? [];
+  if (records.some((record) => record.id === SC00A.id)) {
+    const record = validateSC00ARegistry(registry);
+    return record.status === "ACTIVE" ? [record] : [];
+  }
   // Read this immutable revision's fixed sentinel paths together. Nothing is
   // cached across calls, and a missing successor row cannot reactivate a prefix.
   const sentinels = new Set(
@@ -755,6 +794,12 @@ function applicableTrustedExceptions({ root, baseSha }, related) {
   if (!present(root, baseSha, "scripts/sounding-line/experience-current-r26.mjs"))
     return trustedExceptions(root, baseSha);
   const registry = exceptionRegistry(root, baseSha);
+  if (registry.exceptions.some((record) => record.id === SC00A.id)) {
+    const record = registry.exceptions.at(-1);
+    validateSC00ARegistry(registry, new Date(record.ownerApproval?.executionNotBeforeUtc));
+    if (![CROSSDECK_CAMPAIGN, SC00A, ...registry.exceptions].some(related)) return [];
+    return trustedExceptions(root, baseSha);
+  }
   validateCurrentAdmissionRegistry(registry, new Date(CURRENT_R26.ownerApproval.executionDeadlineUtc), {
     requiredVersion: 26,
   });
@@ -829,6 +874,26 @@ function campaignRelatedWithSource({ root, baseSha, candidateSha, record, prNumb
   // Every remaining signal compares additions between two revisions. An exact
   // same-source checkout probe cannot add campaign history or product content.
   if (baseSha === candidateSha) return false;
+  if (record.id === SC00A.id) {
+    const witness = (revision, { path: file, blob }) =>
+      source.present(root, revision, file) && source.identity(root, revision, file) === blob;
+    if (SC00A.sourceWitnesses.some((entry) => witness(candidateSha, entry) && !witness(baseSha, entry))) return true;
+    const ids = (revision) =>
+      source.present(root, revision, "testing/contracts.json")
+        ? (source.json(root, revision, "testing/contracts.json").contracts ?? []).map((entry) => entry.id)
+        : [];
+    if (ids(candidateSha).includes(SC00A.contractId) && !ids(baseSha).includes(SC00A.contractId)) return true;
+    if (
+      SC00A.immutableHistory.some(
+        ({ path: file }) => source.present(root, candidateSha, file) && !source.present(root, baseSha, file),
+      )
+    )
+      return true;
+    return (
+      source.ancestor(root, SC00A.frozenReferenceSha, candidateSha) &&
+      !source.ancestor(root, SC00A.frozenReferenceSha, baseSha)
+    );
+  }
   if (source.r3FamilyRelated(root, candidateSha) && !source.r3FamilyRelated(root, baseSha)) return true;
   if (
     record.frozenTrees?.src &&
@@ -859,6 +924,7 @@ function campaignRelatedWithSource({ root, baseSha, candidateSha, record, prNumb
   );
 }
 export function validateExceptionRecord(record, now = new Date()) {
+  if (record?.id === SC00A.id) return validateSC00ARecord(record, now);
   if (isCurrentAdmissionRecord(record)) return validateCurrentAdmissionRecord(record, { now });
   if (ordinaryOnly(record?.id)) {
     validateOrdinaryOnlyRecord(record);
@@ -943,13 +1009,26 @@ export function validateExceptionRecord(record, now = new Date()) {
 export function bindExperienceException({ root, baseSha, candidateSha, plan, prNumber, now }) {
   const related = campaignComparison({ root, baseSha, candidateSha, prNumber });
   const trusted = applicableTrustedExceptions({ root, baseSha }, related);
-  if ([CROSSDECK_CAMPAIGN, ...exceptionRecords(root, baseSha)].some(related) && !trusted.some(related))
+  if ([CROSSDECK_CAMPAIGN, SC00A, ...exceptionRecords(root, baseSha)].some(related) && !trusted.some(related))
     fail("APPROVAL_MISSING_OR_INACTIVE");
   const records = trusted.filter(related);
   if (!records.length) return null;
   if (records.length !== 1) fail("AMBIGUOUS_CAMPAIGN");
   const record = records[0];
   validateExceptionRecord(record, now);
+  if (record.id === SC00A.id) {
+    validateSC00APlan(plan, record);
+    git(root, "merge-base", "--is-ancestor", record.reconciledBaseSha, baseSha);
+    git(root, "merge-base", "--is-ancestor", record.reconciledBaseSha, record.frozenReferenceSha);
+    git(root, "merge-base", "--is-ancestor", record.frozenReferenceSha, candidateSha);
+    for (const prerequisite of [...record.integrationPrerequisites, record.governancePrerequisite])
+      git(root, "merge-base", "--is-ancestor", prerequisite.mergeSha, record.reconciledBaseSha);
+    if (
+      identity(root, record.frozenReferenceSha, SC00A.productPath) !== record.repair.beforeBlob ||
+      identity(root, candidateSha, SC00A.productPath) !== record.repair.afterBlob
+    )
+      fail("SC00A_REPAIR_BINDING_CHANGED");
+  }
   if (isCurrentAdmissionRecord(record)) return bindCurrentAdmission({ root, record, plan, baseSha, candidateSha });
   const nonExecutingReconciliation = ordinaryOnly(record.id)
     ? bindOrdinaryOnlyReconciliation({ root, baseSha, candidateSha, plan, record })
@@ -1057,6 +1136,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   return { ...recordBinding(record), ...(nonExecutingReconciliation ? { nonExecutingReconciliation } : {}) };
 }
 export function recordBinding(record) {
+  if (record.id === SC00A.id) return sc00aRecordBinding(record);
   if (isCurrentAdmissionRecord(record)) return currentAdmissionBinding(record);
   return {
     id: record.id,
@@ -1091,6 +1171,7 @@ export function validateExceptionEvidence(plan, evidence, automatedOnly = false)
     return;
   }
   if (digest(evidence?.exception) !== digest(plan.exception)) fail("EVIDENCE_BINDING_MISSING");
+  if (plan.exception.id === SC00A.id) return validateSC00AEvidence(plan, evidence, automatedOnly);
   if (!automatedOnly && !Array.isArray(evidence.reviews)) fail("ONE_REVIEW3_SCOPE_REQUIRED");
   if (!automatedOnly)
     for (const review of evidence.reviews ?? []) {
@@ -2013,7 +2094,11 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   const predecessor = await validateSuccessorPredecessor({ record, request, now });
   const predecessors = predecessor ? (Array.isArray(predecessor) ? predecessor : [predecessor]) : [];
   const since = new Date(
-    predecessor ? record.predecessor.campaignEpoch : record.ownerApproval.approvedAtUtcMinute,
+    predecessor
+      ? record.predecessor.campaignEpoch
+      : record.id === SC00A.id
+        ? record.ownerApproval.sourceTurnStartedAt
+        : record.ownerApproval.approvedAtUtcMinute,
   ).toISOString();
   const executionFloor = Date.parse(
     record.ownerApproval.executionNotBeforeUtc ?? record.ownerApproval.approvedAtUtcMinute,
@@ -2062,6 +2147,24 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
       // One immutable tree read covers every historical path, including directory
       // markers, rather than spawning a Git process for each path/run pair.
       const paths = treePaths(inventory);
+      if (record.id === SC00A.id) {
+        if (SC00A.sourceWitnesses.some(({ path: file, blob }) => inventory.get(file)?.split(" ").at(-1) === blob))
+          return true;
+        if (SC00A.immutableHistory.some(({ path: file }) => paths.has(file))) return true;
+        if (
+          paths.has("testing/contracts.json") &&
+          (json(root, candidate, "testing/contracts.json").contracts ?? []).some(
+            (entry) => entry.id === SC00A.contractId,
+          )
+        )
+          return true;
+        try {
+          git(root, "merge-base", "--is-ancestor", SC00A.frozenReferenceSha, candidate);
+          return true;
+        } catch {
+          return false;
+        }
+      }
       if (r3SourceFingerprint([...inventory]) === CROSSDECK_R3.maskedSrcDigest) return true;
       if (campaignHistoryMarker(record, inventory, paths)) return true;
       if (record.frozenTrees?.src && paths.has("src") && identity(root, candidate, "src") === record.frozenTrees.src)
@@ -2081,6 +2184,24 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
       if (!commit) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
       const tree = await request(`git/trees/${commit.tree.sha}?recursive=1`);
       if (!tree || tree.truncated || !Array.isArray(tree.tree)) fail("HISTORY_CANDIDATE_UNVERIFIABLE");
+      if (record.id === SC00A.id) {
+        if (
+          tree.tree.some((entry) =>
+            SC00A.sourceWitnesses.some(
+              (witness) => witness.path === entry.path && entry.type === "blob" && witness.blob === entry.sha,
+            ),
+          )
+        )
+          return true;
+        if (tree.tree.some((entry) => SC00A.immutableHistory.some((marker) => marker.path === entry.path))) return true;
+        const contracts = tree.tree.find((entry) => entry.path === "testing/contracts.json");
+        if (!contracts) return false;
+        const blob = await request(`git/blobs/${contracts.sha}`);
+        if (!blob?.content || blob.encoding !== "base64") fail("HISTORY_CANDIDATE_UNVERIFIABLE");
+        return (JSON.parse(Buffer.from(blob.content.replaceAll("\n", ""), "base64").toString()).contracts ?? []).some(
+          (entry) => entry.id === SC00A.contractId,
+        );
+      }
       if (
         r3SourceFingerprint(
           tree.tree
@@ -2215,6 +2336,8 @@ export async function validateCampaignHistoryInventory({
   };
 }
 export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
+  if (record.id === SC00A.id) validateSC00ARecord(record, now);
+  if (record.id === SC00A.id && !["capture", "review", "ordinary", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
   if ([24, 25, 26].includes(record?.version)) {
     if (!isReviewedEvidenceAdoption(plan) || record.id !== plan.exception.id)
       fail(`R${record.version}_RECORD_PLAN_CHANGED`);
@@ -2251,6 +2374,7 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
       CROSSDECK_R6.id,
       CROSSDECK_R7.id,
       CROSSDECK_R8.id,
+      SC00A.id,
     ].includes(record.id) &&
     mode === "review" &&
     (await store.read("review-submit"))
@@ -2484,6 +2608,7 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
   const installedHead = git(installed, "rev-parse", "HEAD");
   const records = [
     CROSSDECK_CAMPAIGN,
+    SC00A,
     ...exceptionRecords(installed, installedHead),
     ...exceptionRecords(root, candidateSha),
     ...(baseSha ? exceptionRecords(root, baseSha) : []),
@@ -2518,6 +2643,28 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
     return candidateSrcIdentity;
   };
   return records.some((record) => {
+    if (record.id === SC00A.id) {
+      const marker = SC00A.immutableHistory.some(({ path: file }) => candidatePaths.has(file));
+      const source = SC00A.sourceWitnesses.some(
+        ({ path: file, blob }) => candidateInventory.get(file)?.split(" ").at(-1) === blob,
+      );
+      const contract = ids.includes(SC00A.contractId);
+      let descends = false;
+      if (!marker && !source && !contract) {
+        try {
+          git(root, "merge-base", "--is-ancestor", SC00A.frozenReferenceSha, candidateSha);
+          descends = true;
+        } catch {}
+      }
+      return (
+        Number(environment.SOUNDING_LINE_PR_NUMBER) === SC00A.pullRequest ||
+        ((marker || contract || descends || source) &&
+          (!protectedBase ||
+            baseSha !== protectedBase ||
+            baseSha === candidateSha ||
+            campaignRelated({ root, baseSha: protectedBase, candidateSha, record })))
+      );
+    }
     const marker = campaignHistoryMarker(record, candidateInventory, candidatePaths);
     const frozen = record.frozenTrees?.src && readCandidateSrcIdentity() === record.frozenTrees.src;
     let descends = false;

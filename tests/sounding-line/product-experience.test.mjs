@@ -18,6 +18,20 @@ import {
   trackedEntries,
   verificationObligationGroups,
 } from "../../scripts/sounding-line/ordinary.mjs";
+import {
+  SC00A,
+  SC00A_INSTALLATION,
+  SC00A_HISTORY,
+  prepareSC00ARecord,
+  validateSC00ARecordShape,
+  validateSC00ARecord,
+  validateSC00APlan,
+  validateSC00ALandmarkObservation,
+  validateSC00AEvidence,
+  sc00aReviewProof,
+  reviewIterationsAllowed,
+} from "../../scripts/sounding-line/experience-sc00a.mjs";
+import { selectSC00ACheckoutRecord } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
 import { validateExceptionSubmissionEvidence } from "../../scripts/sounding-line/experience-exception.mjs";
 import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import {
@@ -308,6 +322,290 @@ test("editorial deferral cannot exempt an unbound contract or a new functional b
   assert.throws(() => f.validate(), /R20_ADJUDICATION_TRUSTED_SCOPE_REQUIRED/u);
   f.evidence.reviews[0].findings[0].disposition = "UNRESOLVED";
   assert.throws(() => f.validate(), /BLOCKING_FINDING/u);
+});
+
+function sc00aLandmarks() {
+  return {
+    version: 1,
+    landmarks: ["Passage library", "Passage inspector"].map((name) => ({
+      role: "complementary",
+      name,
+      count: 1,
+      visible: true,
+    })),
+    audit: {
+      testEngine: { name: "axe-core", version: "synthetic-test-version" },
+      passes: [
+        {
+          id: "landmark-unique",
+          nodes: ["Passage library", "Passage inspector"].map((name) => ({
+            html: `<aside aria-label="${name}">Synthetic landmark</aside>`,
+          })),
+        },
+      ],
+      violations: [],
+      incomplete: [],
+      inapplicable: [],
+    },
+  };
+}
+
+function sc00aEvidenceFixture() {
+  const f = experienceFixture(),
+    e = f.contract.experience;
+  f.contract.id = SC00A.contractId;
+  e.roles = ["CREATOR"];
+  e.states = ["EDITOR_READY", "DETAILS_SAVED"];
+  e.motion = { measurement: "Synthetic action feedback", feedbackBudgetMs: 100 };
+  e.journeys = [
+    {
+      ...e.journeys[0],
+      id: SC00A.journeyId,
+      roles: ["CREATOR"],
+      steps: e.states.map((state) => ({ action: "assert", state })),
+    },
+  ];
+  f.plan.contractIds = [SC00A.contractId];
+  f.plan.contractDigest = experienceDigest([f.contract]);
+  f.plan.exception = {
+    id: SC00A.id,
+    recordDigest: "e".repeat(64),
+    priorReviewIterations: 3,
+    independentReviewOrdinal: 4,
+  };
+  f.evidence.contractDigest = f.plan.contractDigest;
+  f.evidence.exception = structuredClone(f.plan.exception);
+  const recording = f.evidence.artifacts.find((entry) => entry.type === "recording");
+  recording.contractId = SC00A.contractId;
+  f.evidence.artifacts = [recording];
+  f.evidence.journeys = [];
+  for (const device of e.devices)
+    for (const motionMode of ["NORMAL", "REDUCED"]) {
+      const accessibility = {
+        keyboard: true,
+        focus: true,
+        reducedMotion: true,
+        motionPreferenceVerified: true,
+        states: e.states.map((state) => ({
+          state,
+          ...(device === "DESKTOP" ? { sc00aLandmarks: sc00aLandmarks() } : {}),
+        })),
+      };
+      f.evidence.journeys.push({
+        id: SC00A.journeyId,
+        contractId: SC00A.contractId,
+        device,
+        motionMode,
+        role: "CREATOR",
+        status: "PASS",
+        entryPoint: e.entryPoint,
+        outcome: e.journeys[0].outcome,
+        visibleActions: 2,
+        returnPathVerified: true,
+        roleVerified: true,
+        feedbackMs: 1,
+        measurement: e.motion.measurement,
+        accessibility,
+        continuity: [{ id: "voyage", before: "c".repeat(64), atOutcomes: ["c".repeat(64)], after: "c".repeat(64) }],
+      });
+      for (const state of e.states) {
+        const id = `${device}-${motionMode}-${state}`,
+          file = `${id}.png`;
+        f.bytes.set(file, fixturePng);
+        f.evidence.artifacts.push({
+          id,
+          path: file,
+          sha256: createHash("sha256").update(fixturePng).digest("hex"),
+          contractId: SC00A.contractId,
+          type: "screenshot",
+          origin: "ACTUAL_APPLICATION",
+          device,
+          motionMode,
+          state,
+          role: "CREATOR",
+        });
+      }
+    }
+  const review = f.evidence.reviews[0];
+  review.contractId = SC00A.contractId;
+  review.iterations = 4;
+  review.independentReviewOrdinal = 4;
+  for (const judgment of Object.values(review.dimensions)) judgment.evidenceIds = ["DESKTOP-NORMAL-EDITOR_READY"];
+  const evidenceIds = f.evidence.artifacts
+    .filter((entry) => entry.type === "screenshot" && entry.device === "DESKTOP")
+    .map((entry) => entry.id);
+  review.findings = [
+    {
+      id: SC00A.findingId,
+      classification: "ACCESSIBILITY_DEFECT",
+      contractId: SC00A.contractId,
+      observation: "The earlier duplicate complementary landmarks require distinct accessible names.",
+      disposition: "RESOLVED",
+      resolution: "Both landmarks have unique accessible names in both desktop states and motion modes.",
+      evidenceIds,
+      repairEvidenceIds: evidenceIds,
+    },
+  ];
+  review.packetDigest = experienceDigest({
+    sourceDigest: f.plan.sourceDigest,
+    contract: f.contract,
+    artifacts: f.evidence.artifacts.map(({ id, sha256 }) => ({ id, sha256 })),
+    ...sc00aReviewProof(f.plan, f.evidence, f.contract.id),
+  });
+  return f;
+}
+
+test("SC00A draft has no executable installation and retains exact human approval shape", () => {
+  // Synthetic hashes exercise only pure shape validation; they are not landed tuples.
+  const record = prepareSC00ARecord({
+    executionNotBeforeUtc: SC00A.sourceTurnStartedAt,
+    reconciledBaseSha: "a".repeat(40),
+    frozenReferenceSha: "b".repeat(40),
+    contractDigest: "c".repeat(64),
+    frozenTrees: { src: "d".repeat(40), public: "e".repeat(40), prisma: "f".repeat(40) },
+    frozenBlobs: {},
+    beforeBlob: "1".repeat(40),
+    afterBlob: "2".repeat(40),
+    integrationPrerequisites: [721, 776].map((pullRequest) => ({
+      pullRequest,
+      mergeSha: "5".repeat(40),
+      landedVerification: "PASS",
+    })),
+    governancePrerequisite: { pullRequest: 781, mergeSha: "6".repeat(40), landedVerification: "PASS" },
+    historicalReview2ArchivePath:
+      "Development_Docs/Projects/Chronicle_Creator/evidence/review2-original-38684202576/candidate-review.json",
+  });
+  validateSC00ARecordShape(record);
+  assert.equal(SC00A_INSTALLATION, null);
+  assert.throws(() => validateSC00ARecord(record), /INSTALLATION_UNBOUND/u);
+  assert.throws(() => selectSC00ACheckoutRecord([record]), /INSTALLATION_UNBOUND/u);
+  assert.equal(selectSC00ACheckoutRecord([]), null);
+  assert.equal(record.immutableHistory.length, 48);
+  assert.equal(SC00A_HISTORY.archive.length, 42);
+  assert.deepEqual(
+    record.integrationPrerequisites.map((entry) => entry.pullRequest),
+    [721, 776],
+  );
+  assert.throws(() => prepareSC00ARecord({}), /RECORD_INVALID/u);
+  for (const mutate of [
+    (value) => {
+      value.remainingIndependentReviewOrdinal = 5;
+    },
+    (value) => {
+      value.ownerApproval.humanMessageId = "delegated-unverified";
+    },
+    (value) => {
+      value.executionBudget.additionalLocalInvocations = 1;
+    },
+    (value) => {
+      value.repair.patchSha256 = "0".repeat(64);
+    },
+    (value) => {
+      value.expiresAt = "2027-01-01T00:00:00Z";
+    },
+    (value) => {
+      value.integrationPrerequisites.pop();
+    },
+    (value) => {
+      value.integrationPrerequisites[1].pullRequest = 722;
+    },
+    (value) => {
+      value.governancePrerequisite.landedVerification = "PENDING";
+    },
+    (value) => {
+      value.immutableHistory.pop();
+    },
+    (value) => {
+      value.immutableHistory[0].blob = "0".repeat(40);
+    },
+    (value) => {
+      value.immutableHistory[1] = structuredClone(value.immutableHistory[0]);
+    },
+    (value) => {
+      value.historicalReview2.blob = "0".repeat(40);
+    },
+    (value) => {
+      value.registryPredecessor.digest = "0".repeat(64);
+    },
+    (value) => {
+      value.integrationPrerequisites[0].landedVerification = "PENDING";
+    },
+  ]) {
+    const changed = structuredClone(record);
+    mutate(changed);
+    assert.throws(() => validateSC00ARecordShape(changed), /RECORD_INVALID/u);
+  }
+});
+
+test("SC00A review four requires raw executed unique landmarks for every desktop state and motion mode", () => {
+  const f = sc00aEvidenceFixture();
+  validateSC00APlan(f.plan, { contractDigest: f.plan.contractDigest });
+  assert.equal(f.validate().status, "PASS");
+  assert.equal(REVIEW_DIMENSIONS.length, 17);
+  for (const mutate of [
+    (value) => {
+      value.journeys[0].accessibility.states.pop();
+    },
+    (value) => {
+      value.journeys[1].accessibility.states[1].sc00aLandmarks.audit.passes = [];
+    },
+    (value) => {
+      value.journeys[0].accessibility.states[0].sc00aLandmarks.landmarks[0].count = 2;
+    },
+    (value) => {
+      value.journeys[0].accessibility.states[0].sc00aLandmarks.audit.passes[0].nodes.pop();
+    },
+    (value) => {
+      value.journeys[0].motionMode = "REDUCED";
+    },
+    (value) => {
+      value.artifacts.find((entry) => entry.id === "DESKTOP-REDUCED-DETAILS_SAVED").origin = "APPROXIMATION";
+    },
+  ]) {
+    const changed = structuredClone(f.evidence);
+    mutate(changed);
+    assert.throws(() => validateSC00AEvidence(f.plan, changed), /SC00A_/u);
+  }
+  for (const collection of ["violations", "incomplete", "inapplicable"]) {
+    const proof = sc00aLandmarks();
+    proof.audit[collection].push({ id: "landmark-unique" });
+    assert.throws(() => validateSC00ALandmarkObservation(proof), /LANDMARK_PROOF_INVALID/u);
+  }
+});
+
+test("SC00A cannot take review five, baseline the original finding, admit a new blocker or alter reviewed raw proof", () => {
+  const f = sc00aEvidenceFixture();
+  for (const mutate of [
+    (value) => {
+      value.reviews[0].iterations = 5;
+    },
+    (value) => {
+      value.reviews[0].independentReviewOrdinal = 5;
+    },
+    (value) => {
+      value.reviews[0].findings[0].disposition = "UNCHANGED_BASELINE_DEBT";
+    },
+    (value) => {
+      value.reviews[0].findings = [];
+    },
+    (value) => {
+      value.reviews[0].findings.push({ ...value.reviews[0].findings[0], id: "new-blocker" });
+    },
+  ]) {
+    const changed = structuredClone(f.evidence);
+    mutate(changed);
+    assert.throws(() => validateSC00AEvidence(f.plan, changed), /SC00A_/u);
+  }
+  const tampered = structuredClone(f.evidence);
+  tampered.journeys[0].accessibility.states[0].sc00aLandmarks.audit.testEngine.version = "other-valid-version";
+  assert.throws(() => f.validate(tampered), /PACKET/u);
+  delete f.evidence.reviews[0].dimensions.hierarchy;
+  assert.throws(() => f.validate(), /SUBSTANTIVE_REVIEW_MISSING/u);
+  for (const count of [3, 5, 11]) assert.equal(reviewIterationsAllowed(f.plan, count), false);
+  assert.equal(reviewIterationsAllowed(f.plan, 4), true);
+  assert.equal(reviewIterationsAllowed({}, 3), true);
+  assert.equal(reviewIterationsAllowed({}, 4), false);
+  assert.equal(reviewIterationsAllowed({ exception: { id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8" } }, 11), true);
 });
 
 test("finite submission validates ordinary committed media without an evidence checkout and review needs all materialized bytes", async (t) => {
@@ -1174,4 +1472,14 @@ test("dynamic HTTP actions select plausible static endpoints without unrelated s
     assert.deepEqual(affectedConsumers([`src/app/api/invitations/${action}/route.ts`], [snapshot]).surfaces, [
       "src/ceremony/InvitationCeremony.tsx",
     ]);
+});
+
+test("SC00A review helper preserves the canonical current R26 review ordinal", () => {
+  const record = JSON.parse(
+    readFileSync(new URL("../../testing/product-experience-exceptions.json", import.meta.url), "utf8"),
+  ).exceptions.at(-1);
+  assert.equal(record.version, 26);
+  const required = record.currentSourceAdmission.requiredReviewIterations;
+  assert.equal(reviewIterationsAllowed({ exception: record }, required), true);
+  assert.equal(reviewIterationsAllowed({ exception: record }, required + 1), false);
 });
