@@ -10,10 +10,9 @@ last_reviewed: 2026-10-21
 
 Implement the two necessary Sounding Line infrastructure corrections for the
 existing Parallax integration owner. The candidate is reconciled to accepted main
-`fc5855f465314fa2c80c3a8966f8b6ce405f010a` in its existing owned D worktree. The
-independent documentation follow-up #786 may qualify concurrently. Preserve its
-38 historical migration rows as that owner's scope until accepted; retain every
-accepted row when regenerating the inventory. Freeze and independently review the
+`8e49351e62e1f32340109566557a824bfa74e14d` in its existing owned D worktree. Retain
+all 38 accepted documentation follow-up #786 rows when regenerating the inventory.
+The separate diagnostic-retention repair may qualify independently. Freeze and independently review the
 exact candidate before normal protected qualification. Merge requires fresh main
 ancestry and requalification if accepted source changes.
 
@@ -29,6 +28,11 @@ the same workspace's `node_modules`; copy those links with native junction
 semantics. Preserve relative links, POSIX absolute-link rejection, identity and
 literal checks, source/dependency fingerprints and supervised cleanup. Never
 traverse or chmod dependency link targets during build immutability.
+
+Register both new regression files in the canonical `test:sounding-line` command.
+Keep `experience:test` identical to the accepted base: adding a redundant entry
+there violates the unchanged historical R3 package freeze. Preserve the original
+R3 fixture, allowlist, positive admission and three rejection assertions.
 
 Use synthetic real-Git and native filesystem regressions, full independent content
 comparison on the diagnosed immutable consumer revision, exact-source review,
