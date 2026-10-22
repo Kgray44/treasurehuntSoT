@@ -10,8 +10,9 @@ last_reviewed: 2026-10-22
 
 The [retired recognition experiment](Phase4_Recognition_Immutable_Reads_20261022.md)
 retains three watchdog-cancelled hosted attempts and isolates repeated immutable
-Git reads before setup. Focused development proof preserves all admission gates;
-it does not establish product acceptance or canonical iOS cleanup.
+Git reads before setup. It records limited focused proof and the subsequent
+withdrawal of its equivalence clearance. The accepted raw-success reader replaces
+the prototype; product acceptance and canonical iOS cleanup remain unproved.
 
 The [2026-10-19 virtual completion continuation](Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
 reconciles the existing draft with current main, inventories every Phase 4 gate,

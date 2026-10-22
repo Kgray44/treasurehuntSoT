@@ -46,20 +46,23 @@ The ordinary-consumer setup outlier requires a full budget review before any
 fresh attempt. No unchanged attempt, increased timeout or replacement allowance
 is authorized by this record.
 
-## Source correction and proof limits
+## Historical prototype and discovered limit
 
 Recognition combines 79 installed/candidate/base rows. A registry contains
 26116 historical path entries but only 1360 distinct paths. Its former inner
-comparison repeated direct Git presence reads for every row. The correction
-lazily shares successful immutable reads within one recognition invocation and
-one exact reference-base comparison. Every row, predicate, outer ancestry check,
-short circuit, live expiry check and downstream authority gate remains.
+comparison repeated direct Git presence reads for every row. The prototype
+attempted to share immutable reads within one recognition invocation and exact
+reference-base comparison. It retained the predicates and ordered records, but
+that did not prove equivalent behavior after repeated native-read failures.
 
 A separate tree-inclusive `ls-tree -rtz` inventory preserves tracked empty trees.
 Existing leaf-only `-rz` inventories and R3 fingerprint inputs retain their
 original meaning. Presence-read failures propagate. Diagnostics capture only
-the fixed full-SHA read shape in the existing exception component. There is no
-global cache, decision cache, new permissive fallback or counter operation.
+the fixed full-SHA read shape in the existing exception component. The former
+claim that only successful reads were retained was incorrect: the comparison
+memo also retained a derived ancestry false after a caught native error. The
+broader no-decision-cache/equivalence claim is withdrawn. No global cache or
+counter operation was added. The accepted raw-success reader replaces this code.
 
 The corrected isolated baseline regression loads exact fc2 source read-only and
 fails its 128-read ceiling. The corrected four-case regression passes; its
