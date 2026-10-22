@@ -1,3 +1,4 @@
+import { CURRENT_R26 } from "../../scripts/sounding-line/experience-current-r26.mjs";
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -4855,7 +4856,8 @@ test("R4 requires review FIVE and a fresh preparation binding; accepted review F
   );
 });
 
-test("custody-only diagnostic has no finalization path and preserves ordinary protections", () => {
+test("custody-only diagnostic has no finalization path and preserves ordinary protections", (t) => {
+  t.mock.timers.enable({ apis: ["Date"], now: Date.parse(CURRENT_R26.ownerApproval.executionNotBeforeUtc) });
   const workflow = readFileSync(path.join(repo, ".github/workflows/sounding-line-ordinary.yml"), "utf8");
   const guard = workflow.slice(workflow.indexOf("  campaign-custody:"), workflow.indexOf("  experience-preparation:"));
   assert(guard.includes("timeout-minutes: 35"));
@@ -4901,6 +4903,17 @@ test("custody-only diagnostic has no finalization path and preserves ordinary pr
   assert.throws(
     () => checkoutProbe({ root: repo, baseSha: sha, candidateSha: "0".repeat(40), environment: env }),
     /CUSTODY_PROBE/u,
+  );
+  t.mock.timers.setTime(Date.parse(CURRENT_R26.ownerApproval.executionDeadlineUtc) + 1);
+  assert.throws(
+    () =>
+      checkoutProbe({
+        root: repo,
+        baseSha: sha,
+        candidateSha: sha,
+        environment: { ...env, SOUNDING_LINE_PR_NUMBER: "721" },
+      }),
+    /PRODUCT_EXPERIENCE_EXCEPTION_R26_RECORD_OR_EXPIRY_CHANGED/u,
   );
 });
 
