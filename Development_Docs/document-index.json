@@ -435,6 +435,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Immutable_Recognition_Read_Reuse_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Nonapplicable_Experience_Replay_Admission_Repair.md",
       "record_type": "engineering-record",
       "status": "current",

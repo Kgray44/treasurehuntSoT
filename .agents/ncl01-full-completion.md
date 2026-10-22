@@ -34,6 +34,27 @@ d35990c4282252c1ace6a043cdc1cc7e7bb778c5, preserving8da951e2 and39.
 Its thirteen files change bounded source reading and development build links,
 tests and documentation. Product/native/asset/signing inputs remain unchanged;
 reader and producer fingerprints have changed. Do not call old ones current.
+Accepted791/main1a7653c3d6f3476b38f789c9b7a017b4e529243c, tree
+69423e4c42a586cb055371fdd2e2966d162c90a4, is normally reconciled with
+the preserved661fc7a0624df3c9343011a65fa62ae74ac5ef51 checkpoint. The
+nine upstream paths contain the invocation-local immutable recognition reader,
+its eight tests, one suite registration and engineering/automation records.
+Protected39842823500/1 and eight landed checks pass; independent landed review
+and the Native consumer audit match exact qualified/landed source. App/native,
+original assets, contracts, lock, signing and historical evidence are unchanged.
+Recognizer/helper/package fingerprints change; previous producer identities
+cannot qualify this reconciliation. The completed maintenance comparison passes
+13cases/48subcases on frozen healthy metadata and deterministic faults, with
+both healthy arms retaining false after79records. Backing-reader calls157505
+versus2785 are resolver counts, not native Git timing or hosted-cause proof.
+That experiment is complete; no replay or competing maintenance is required.
+First freeze this reconciled candidate, run the bounded owned plan-only route
+against exact1a, and evaluate its actual obligations. Ordinary focused work
+needs no renewed owner permission or finite diagnostic exception. A fresh
+ordinary capture still needs current-base eligibility and its own isolated
+evidence/review; no721slot, old media or retry entitlement transfers. Preserve
+cancelled39788400044 and its unknown cause. Keep both C: and D: above30GiB:
+invoke the host ReserveGuard with separate bounded estimates before writers.
 Use this owned worktree and existing PR741; no force-push, successor PR or other
 project takeover. PR781 remains the separate documentation owner. Future
 NCL02/03 are proposals, not this implementation's authority.

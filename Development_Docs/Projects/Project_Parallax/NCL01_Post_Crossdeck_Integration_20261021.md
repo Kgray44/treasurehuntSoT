@@ -141,6 +141,41 @@ NCL-03 remain proposed and outside this implementation.
 
 ## Conflict and evidence-invalidation ledger
 
+### Accepted immutable-read repair and resumed readiness
+
+Accepted [PR791](https://github.com/Kgray44/treasurehuntSoT/pull/791) advances
+main to `1a7653c3d6f3476b38f789c9b7a017b4e529243c`, tree
+`69423e4c42a586cb055371fdd2e2966d162c90a4`. Its normal reconciliation
+preserves the NCL checkpoint `661fc7a0624df3c9343011a65fa62ae74ac5ef51`
+and accepted main without rewriting either history. All nine upstream paths
+merge automatically. They add bounded invocation-local successful immutable
+read reuse, eight production-reader tests, suite registration and documentation.
+The production helper is blob `2f59d86a5a38bebb779b46a6f73bf619d3c6edaa`;
+the recognizer is `7d9f5073425188b377d980b422b4df5783a1723d`.
+
+The exact protected [run39842823500](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39842823500)
+succeeds. Eight fresh landed checks and independent landed review pass on the
+matching merge tree. The Native consumer audit checks22 retained pins and all
+nine changed-file identities; its SHA256 is
+`5c9588f76322d3fa100200cad78a1f454542247ef1fce1d6511573362f4810ba`.
+The earlier bounded comparison separately passes13cases/48subcases, preserving
+false/null after79records in each healthy arm. Its157505versus2785 backing-reader
+calls concern a controlled metadata resolver, not unmodified native Git speed,
+universal failure equivalence or the cause of cancelled39788400044. Original
+failed, unsupported, challenged and cancelled receipts remain unchanged.
+
+This mainline repair changes recognizer/helper/package producer fingerprints.
+Application, native source, original models/artwork, contracts, dependency lock,
+signing and existing NCL evidence retain their prior identities. Reuse their
+scoped receipts without claiming a fresh aggregate execution. A new exact-base
+plan is required for the reconciled candidate; do not assume the old18contracts
+or74contexts. Plan-only is noncapturing development readiness. Actual capture,
+independent media-first review, ordinary Mainline Decision and landed product
+verification remain separate. No finite Crossdeck allowance, refunded slot,
+capture retry entitlement or physical acceptance follows from791. Local writers
+must pass the host reserve guard with bounded estimates on both drives and
+preserve at least30GiB free on each.
+
 | Scope             | Resolution and required proof                                                                                                                                            |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Lens              | Preserve NCL canonical pending/retry/epoch and Device Lab injection; compose accepted Voyage context/presentation callbacks. Fresh shared presentation/continuity tests. |
@@ -448,8 +483,9 @@ changes. Current software receipts keep their own exact source and fixture
 scope; they are not a fresh aggregate Mainline Decision.
 
 Software implementation is complete and accepted Crossdeck interfaces are
-consumed. The current39/be9 protected plan succeeds; capture39788400044 is
-cancelled without media. Independent review, ordinary decision, protected
+consumed. The historical39/be9 protected plan succeeds; capture39788400044 is
+cancelled without media. Accepted791 is reconciled and requires fresh current-base
+planning and experience evidence. Independent review, ordinary decision, protected
 integration and landed verification remain pending. Accepted790 removes the
 previous shared deadline block; it does not supply missing NCL experience
 evidence. Physical iPhone/Android acceptance and live browser metric-provider
