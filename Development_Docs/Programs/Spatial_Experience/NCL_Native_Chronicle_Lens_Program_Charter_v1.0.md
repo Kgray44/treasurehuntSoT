@@ -8,7 +8,7 @@ version: 1.0
 document_id: VW-PARALLAX-NCL-CHARTER-1.0
 repository_baseline: e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab
 integration_reference: aaff919428ef9ab421579415ce3409949724760d
-qualification_baseline: fc5855f465314fa2c80c3a8966f8b6ce405f010a
+qualification_baseline: 8e49351e62e1f32340109566557a824bfa74e14d
 ---
 
 # Native Chronicle Lens Series Program Charter v1.0
@@ -32,7 +32,7 @@ qualification_baseline: fc5855f465314fa2c80c3a8966f8b6ce405f010a
 
 This charter establishes one discoverable program beneath existing owners. It does not replace a governing constitution, reopen a closed project, authorize an implementation phase, or accept an unmerged candidate. Requirements describe the intended native experience; the linked status record describes what was actually implemented and demonstrated. A requirement written here is not an implementation claim.
 
-**October 21 integration refresh:** Crossdeck #721 has landed at `aaff919428ef9ab421579415ce3409949724760d`; its accepted continuity design is now present upstream. The pending #776 Studio and #741 native product lanes retain separate acceptance; their product landings are not prerequisites for accepting this governance charter. This charter's original source/subset snapshot below remains dated October 20; the [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) supplies current PR identities and distinguishes the cleared upstream prerequisite from unaccepted NCL consumer/native work. No current-base adoption, native product acceptance or future-increment ratification is implied by this refresh.
+**October 21 integration refresh:** Crossdeck #721 has landed at `aaff919428ef9ab421579415ce3409949724760d`; its accepted continuity design is now present upstream. This governance candidate adopts protected main `8e49351e62e1f32340109566557a824bfa74e14d`, including #787's verification repairs and #786's 38-row inventory maintenance, for its own documentation qualification. The pending #776 Studio and #741 native product lanes retain separate acceptance; their product landings are not prerequisites for accepting this governance charter. This charter's original source/subset snapshot below remains dated October 20; the [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) supplies current PR identities and distinguishes the cleared upstream prerequisite from unaccepted NCL consumer/native work. No native product acceptance or future-increment ratification is implied by this documentation source adoption.
 
 MUST and MUST NOT are mandatory within the accepted increment's scope. SHOULD requires an explained disposition. MAY describes an optional supported capability. Future increment proposals and proposed numerical qualification profiles remain inactive until their stated owner decisions are recorded. Existing higher-authority gates remain effective throughout.
 
