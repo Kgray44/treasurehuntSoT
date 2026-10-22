@@ -241,11 +241,9 @@ for (const viewport of [
               page.getByRole("heading", { level: 2, name: "Synthetic Sextant Compass", exact: true }),
             ).toBeVisible(),
         );
-        const artifact = page
-          .locator("article.artifact-card")
-          .filter({
-            has: page.getByRole("heading", { level: 2, name: "Synthetic Sextant Compass", exact: true }),
-          });
+        const artifact = page.locator("article.artifact-card").filter({
+          has: page.getByRole("heading", { level: 2, name: "Synthetic Sextant Compass", exact: true }),
+        });
         await expect(artifact).toContainText("Backed by an authoritative grant record.");
         await measure(
           "Actual personal provenance",

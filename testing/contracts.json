@@ -6456,7 +6456,8 @@
           "JOURNAL_READY",
           "DEVICE_CAPABILITIES_READY",
           "SCREEN_FALLBACK_READY",
-          "RETURNED_TO_VOYAGE"
+          "RETURNED_TO_VOYAGE",
+          "SCREEN_FALLBACK_CLUE_READY"
         ],
         "browserTests": [
           "tests/e2e/sextant-phase4.spec.ts",
@@ -6692,10 +6693,18 @@
                 "name": "",
                 "path": "/player/playthroughs/sextant-experience-voyage/journal",
                 "text": "The Captain’s note",
-                "state": "RETURNED_TO_VOYAGE",
-                "returnPath": true,
+                "state": "SCREEN_FALLBACK_CLUE_READY",
                 "kind": "outcome",
                 "meaning": "After the actual alternate screen-control action confirms usable fallback without a hardware lease, ordinary Player navigation returns the same canonical released clue. Its real Journal Voyage attribute remains the continuity witness."
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "text": "The Captain’s note",
+                "state": "RETURNED_TO_VOYAGE",
+                "returnPath": true
               }
             ]
           }
