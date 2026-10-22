@@ -683,6 +683,54 @@ export async function runTrustedExperienceReplay({
   diagnostics,
   onDiagnosticScope,
 }) {
+  const applicability = plan && Object.getOwnPropertyDescriptor(plan, "applicable");
+  if (!applicability || !Object.hasOwn(applicability, "value") || !applicability.enumerable)
+    fail("REPLAY_PLAN_INVALID");
+  if (applicability.value !== true) {
+    const descriptors = Object.getOwnPropertyDescriptors(plan);
+    const keys = Reflect.ownKeys(descriptors);
+    const graph = keys.length === 6;
+    const allowed = new Set([
+      "applicable",
+      "classification",
+      "contractIds",
+      "affectedSurfaces",
+      "transitivePaths",
+      "uncertainty",
+    ]);
+    const canonicalArray = (value, empty) => {
+      if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) return false;
+      const entries = Object.getOwnPropertyDescriptors(value);
+      const length = entries.length.value;
+      if ((empty && length !== 0) || Reflect.ownKeys(entries).length !== length + 1) return false;
+      for (let index = 0; index < length; index++) {
+        const entry = entries[index];
+        if (!entry || !entry.enumerable || !Object.hasOwn(entry, "value") || typeof entry.value !== "string")
+          return false;
+      }
+      return true;
+    };
+    if (
+      Array.isArray(plan) ||
+      Object.getPrototypeOf(plan) !== Object.prototype ||
+      applicability.value !== false ||
+      ![3, 6].includes(keys.length) ||
+      keys.some(
+        (key) => !allowed.has(key) || !descriptors[key].enumerable || !Object.hasOwn(descriptors[key], "value"),
+      ) ||
+      !["BACKEND_ONLY", "DOCUMENTATION_ONLY", "INTERNAL_TOOLING", "TRUSTED_POLICY_NOT_YET_ACTIVATED"].includes(
+        descriptors.classification?.value,
+      ) ||
+      !canonicalArray(descriptors.contractIds?.value, true) ||
+      (graph &&
+        (descriptors.classification.value === "TRUSTED_POLICY_NOT_YET_ACTIVATED" ||
+          !canonicalArray(descriptors.affectedSurfaces?.value, true) ||
+          !canonicalArray(descriptors.uncertainty?.value, true) ||
+          !canonicalArray(descriptors.transitivePaths?.value, false)))
+    )
+      fail("REPLAY_PLAN_INVALID");
+    return { status: "NOT_APPLICABLE" };
+  }
   const exceptionLease = await withVerificationStage("REPLAY_ADMISSION", () =>
     assertExceptionExecution({
       root,
@@ -692,7 +740,6 @@ export async function runTrustedExperienceReplay({
       claim: true,
     }),
   );
-  if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   if (plan.paired)
     diagnostics ??= createBrowserDiagnosticSession(root, {
       baseSha: plan.baseSha,
