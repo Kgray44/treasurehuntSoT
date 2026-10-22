@@ -1,7 +1,7 @@
 ---
 title: Parallax accepted-main reconciliation evidence
 audience: product-engineering
-status: accepted-maintenance-reconciled-planning-pending
+status: consumer-compatibility-source-prepared
 canonical_for: parallax-protected-integration-evidence-20261021
 last_reviewed: 2026-10-22
 ---
@@ -90,3 +90,15 @@ producing source. Fresh protected qualification is pending.
 
 Phone alignment, unavailable plane detection, browser tracker resets, native
 installation, physical AR, live-provider and owner acceptance remain unqualified.
+
+## Shared-consumer continuation
+
+The [consumer compatibility record](../../Consumer_Compatibility_20261022.md)
+classifies the complete 173-surface planning failure, distinct additive source
+bindings, seven actual Account development passes, the separate Windows
+failure-collector limitation and the first combined FAILED runtime (21 passed,
+18 failed, zero retries/skips/flaky cases, all cleanup PASS). The corrected new
+source freeze requires independent exact review and fresh development proof.
+All original 501 IDs remain plus one additive pilot-availability contract; no
+product/Prisma source, protected guard, trusted journey or finite authority was
+weakened. Private browser logs stay outside the repository.

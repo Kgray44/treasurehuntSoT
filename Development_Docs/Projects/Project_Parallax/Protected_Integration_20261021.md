@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: accepted-maintenance-reconciled-planning-pending
+status: consumer-compatibility-source-prepared
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -409,3 +409,34 @@ Plane prototypes return no admitted planes/hit tests. The unchanged root's 30
 bounded software checks are not rebound here and establish no physical pass.
 Native signed installation, live-provider fidelity and PRODUCT_ACCEPTED retain
 their separate owners and evidence gates.
+
+## Shared-consumer source preparation after complete planning
+
+Published `28ece6275` completed the canonical source reader and reached the real
+173-surface registration gate. Its original failed plan is preserved. The
+[October 22 compatibility continuation](Consumer_Compatibility_20261022.md)
+records distinct Account, Passport, Community, workspace, motion/availability and
+Admiralty declarations and executable checks. All original 501 IDs remain, with
+one additive pilot-availability contract (502 total). All 173 original paths have
+explicit source bindings and all 32 corrected experience schemas pass; this is not a
+canonical-plan or runtime pass. Product and Prisma source remain unchanged.
+
+The first Account working snapshot passed seven actual browser cases with no
+skips, retries, unexpected or flaky outcomes, and supervised cleanup passed. Its
+separate Windows failure collector reports INCOMPLETE/SETUP_FAILED; raw private
+outputs and the original result remain. The first combined 39-case freeze
+finished FAILED, with 21 passed and 18 failed, no retries/skips/flaky cases and
+successful cleanup. Its diagnosed test/metadata corrections pass static checks
+and await exact review before one changed-source preparation and run. Source reviews do not consume rendered review
+iterations or grant protected acceptance. Keep one reviewed freeze, preserve the
+30 GiB C: floor, use admitted D: resources, and complete exact-source publication
+before another canonical plan or governed capture.
+
+The corrected freeze04 prepared successfully, but its second run is separately
+FAILED/INCOMPLETE: 25 raw passes, two Community return-title selector failures,
+and 12 Admiralty cases not run. Availability's raw2/2 and runtime cleanup PASS
+remain distinct from its missing final producer receipt and C: reserve stop.
+Host hibernation accounts for the final receipt-write wall-clock gap; the separate
+disk allocator is unknown. The reviewed freeze05 corrects only the drafts-return
+selector and metadata witness, with static checks passing and browser proof
+pending. See the compatibility record for exact receipts and remaining gates.

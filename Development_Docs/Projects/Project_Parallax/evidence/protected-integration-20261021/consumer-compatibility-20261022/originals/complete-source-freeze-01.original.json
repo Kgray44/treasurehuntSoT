@@ -1,0 +1,30 @@
+{
+  "kind": "COMPLETE_CONSUMER_SOURCE_BINDING_REVIEW_FREEZE_01",
+  "at": "2026-10-22T15:37:45.205818+00:00",
+  "head": "28ece6275ad51a23008e1301964a3eb8a9c0ab8d",
+  "originalIDsPreserved": 501,
+  "additiveIDs": [
+    "parallax.integration.pilot-owner-boundary"
+  ],
+  "totalContracts": 502,
+  "experienceContractsSchemaPass": 31,
+  "original173PathsBound": 173,
+  "remainingOriginalPaths": [],
+  "productAndPrismaDelta": [],
+  "declaredNewBrowserCases": 39,
+  "runtimeOnThisFreeze": false,
+  "capture": false,
+  "qualification": false,
+  "files": {
+    "testing/contracts.json": "da315957a0fd812e487848a9f9b60dab32604db25cf35fe0a5c0e7f8280b1bd4",
+    "tests/e2e/parallax-shared-consumers.spec.ts": "c0ee51bb0128d783fcf24fed6d35a9a88fed4c37c6e21b2097d2618b7189de27",
+    "tests/e2e/parallax-passport-compatibility.spec.ts": "3fcb0d79021920febb5b32755ad7277b7ddf0dba0f6d77885954fc0bd517e700",
+    "tests/e2e/parallax-community-compatibility.spec.ts": "41f77e1ececcf3c1aa3976461b34439a4f4b1c4d1d9b46086a243eeda7d55dbe",
+    "tests/e2e/parallax-workspace-compatibility.spec.ts": "b992f9f46935af6a56da2d39651f2884958022930137dc8ec587a5fef4fd9ea4",
+    "tests/e2e/parallax-access-availability.spec.ts": "6b0fa1284e13ea61e41a0f854d74bef82e5828fd1fcb8755fcf1122ede3eb9ff",
+    "tests/e2e/parallax-admiralty-compatibility.spec.ts": "821d0f2586384d909537e4842f44f6ec25553a1b2ea521f60856eed6826ac7b1",
+    "tests/e2e/fixtures/parallax-experience.ts": "7b74548262c9357b8bf7c141dfcab5dedd323d192bfd6ef7be436deef3aa71fe",
+    "tests/e2e/fixtures/parallax-compatibility-archive.ts": "b01514a8d196e521feff1712c4b73ae98cfdda7176c5299517f7dbcaf8f8ebf0",
+    "tests/e2e/fixtures/parallax-compatibility-governance.ts": "e39eab4f61a323b27ddd2ebb7f76d96ca5e7cdbd808e6690b534a1a18c368600"
+  }
+}

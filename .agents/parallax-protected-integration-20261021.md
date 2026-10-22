@@ -190,3 +190,43 @@ independent rendered critique and authenticated submission before ordinary
 qualification. C: still rejects a local build budget; retain its 30 GiB floor,
 put scratch/artifact originals on D: and measure staging/build allocations.
 Final product/physical/native/provider/owner acceptance boundaries remain open.
+
+## Reviewed shared-consumer continuation
+
+Complete planning on published28 reached 173 real unregistered surfaces after the
+accepted reader completed. Preserve that failed receipt and type edges. Distinct
+Account, Passport, Community, workspace, motion/availability and Admiralty
+contracts/tests now bind the original173; all501 original IDs remain plus one
+explicit pilot-owner-availability contract. Source schema/TypeScript/lint/case
+enumeration pass; 39 declared cases are not runtime passes. The earlier first
+Account working snapshot passed7/7 but remains source-bound; collector setup is
+separately INCOMPLETE on Windows. See the engineering compatibility record.
+
+The sole current writer/runtime is D:/CodexWorktrees/parallax-776-final39-20261022;
+preserve the original C: checkout/builds/receipts. Use one admitted, reviewed
+combined source freeze, monitored C: reserve and D: temporary allocation. Finish
+actual distinct browser checks before publication/canonical planning; never use
+catch-all motion coverage, alter protected obligations, infer owner-body or
+physical success from access denial, or consume another owner finite authority.
+
+The first combined six-file development run is terminal: 21/39 passed, 18 failed,
+zero retries/skips/flaky cases; all cleanup PASS. Preserve its original freeze
+and failures. Apply only the diagnosed selector/semantic-unavailability/visible
+return and explicit owned-Showcase corrections. New multi-system continuity
+requires executable selector objects, with label observations distinct from
+canonical-ID/capability browser assertions. The corrected working declaration
+has 32 experience facets on 502 contracts; original trusted obligations remain.
+Root must review the exact corrected freeze before one changed-source prepare
+and run. No protected capture or acceptance follows from static review.
+
+Freeze04 preparation passed, but run02 is terminal FAILED/INCOMPLETE: 25 raw
+passes, two Community drafts-return selector failures, Admiralty12 not run.
+Availability raw2/2 and runtime cleanup PASS remain distinct from its missing
+final producer receipt and C_PROACTIVE_RESERVE_STOP/minimum12,353,642,496 bytes.
+Host hibernation explains the receipt-write wall-clock gap; separate allocator
+UNKNOWN. Empty owned stale lock was preserved after closure checks. No further
+local heavy build/browser work while capacity is unstable. Reviewed freeze05
+changes only exact h1 test selection and main/text/path metadata return witness;
+TypeScript/lint/schema pass, browser proof pending. Finish source/docs custody
+and use the existing focused hosted development route for outstanding proof;
+do not invent a workflow, reuse finite owner authority or promote partial passes.

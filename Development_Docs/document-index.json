@@ -27739,6 +27739,396 @@
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/Consumer_Compatibility_20261022.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/correction-intake-01.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/correction-intake-02.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/incident-intake-01.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/intake.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/account-failure-collector-disposition.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/account-group-passed.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/admiralty-lint-02.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/availability02-execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/availability02-runtime-cleanup-observation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/case-enumeration.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/combined-browser-results-02.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/combined-browser-results.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/combined-development-prepare-02.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/combined-lint-01.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/combined-runtime-admission-01.failure.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/combined-runtime-admission.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/combined-typecheck-02.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/community-post-run02-source-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-corrections-docs-index-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-corrections-docs-validate-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-corrections-features-sync-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-corrections-features-validate-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-corrections-lint-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-corrections-list-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-corrections-typecheck-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-pilot-return-lint-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/compatibility-pilot-return-typecheck-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/complete-schema-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/complete-source-freeze-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/complete-source-freeze-02.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/complete-source-freeze-03.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/complete-source-freeze-04.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/complete-source-freeze-05.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/contract-obligation-preservation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/corrected-runtime-admission-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/corrected-runtime-storage-measurement-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/corrected-schema-obligations-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/corrected-schema-obligations-02.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/corrected-schema-obligations-03.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/docs-index.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/docs-invocation-failure.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/docs-validate.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/documentation-inventory-preservation-02.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/documentation-inventory-preservation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/features-sync.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/features-validate.execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/first-combined-failure-diagnosis.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/host-power-observations.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/incident-and-lock-recovery.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/independent-closure-observation.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/narrow-draft-return-correction.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/narrow-draft-return-delta-proof.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/narrow-draft-return-format-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/narrow-draft-return-lint-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/narrow-draft-return-typecheck-01.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/original-plan-failure-disposition.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/partial-schema-02.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/partial-schema-03.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/people-label-disposition.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/root-freeze03-source-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/root-freeze04-source-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/root-source-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/originals/runtime-corrections-applied.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/consumer-compatibility-20261022/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
     }
   ]
 }

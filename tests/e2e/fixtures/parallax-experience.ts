@@ -1,3 +1,7 @@
+import { prepareParallaxModerationFixture } from "./parallax-compatibility-governance";
+import { activateWorkspaceCapability } from "../../../src/homeport/workspace-capabilities";
+import { resolvePublicProfileProjection } from "../../../src/community/public-profile";
+import { prepareParallaxCompatibilityArchive } from "./parallax-compatibility-archive";
 import type { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
 import path from "node:path";
@@ -23,6 +27,12 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
     ["a103", "Floating Creator", "CREATOR", "floating-creator"],
     ["a104", "Rooms Creator", "CREATOR", "rooms-creator"],
     ["a105", "Community Creator", "CREATOR", "community-creator"],
+    ["a106", "Archive Player", "PLAYER", "archive-player"],
+    ["a107", "Workspace Creator", "CREATOR", "workspace-creator"],
+    ["a108", "Public Compatibility Creator", "CREATOR", "public-compatibility-creator"],
+    ["a109", "Log Owner", "CREATOR", "log-owner"],
+    ["a110", "Support Target", "PLAYER", "support-target"],
+    ["a111", "Moderation Reviewer", "MODERATION_OPERATOR", "moderation-reviewer"],
   ] as const) {
     const id = `00000000-0000-4000-8000-00000000${suffix}`;
     if (await store.userAccount.findUnique({ where: { id } })) continue;
@@ -34,14 +44,15 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
         ordinaryWorkspaceEntryAt: now,
         profile: {
           create: {
+            ...(emailLabel === "archive-player" ? { id: "00000000-0000-4000-8000-00000000b106" } : {}),
             displayName: `Synthetic Parallax ${label}`,
             normalizedDisplayName: `synthetic parallax ${label.toLowerCase()}`,
             status: "ACTIVE",
             claimedAt: now,
-            ...(emailLabel === "community-creator"
+            ...(["community-creator", "public-compatibility-creator"].includes(emailLabel)
               ? {
-                  handle: "synthetic-parallax-community-creator",
-                  normalizedHandle: "synthetic-parallax-community-creator",
+                  handle: `synthetic-parallax-${emailLabel}`,
+                  normalizedHandle: `synthetic-parallax-${emailLabel}`,
                   defaultVisibility: "PUBLIC",
                 }
               : {}),
@@ -61,4 +72,26 @@ export async function prepareParallaxExperienceAccounts(store: PrismaClient) {
       },
     });
   }
+  const archiveOwner = await store.playerProfile.findUniqueOrThrow({
+    where: { accountId: "00000000-0000-4000-8000-00000000a106" },
+    select: { id: true },
+  });
+  await prepareParallaxCompatibilityArchive(store, archiveOwner.id);
+  await activateWorkspaceCapability("00000000-0000-4000-8000-00000000a107", "CAPTAIN");
+  await resolvePublicProfileProjection(store, "00000000-0000-4000-8000-00000000a108");
+  await prepareParallaxModerationFixture(store, "00000000-0000-4000-8000-00000000a108", "parallax-compat-moderation");
+  await store.communityVoyageLog.upsert({
+    where: { id: "parallax-compat-private-log" },
+    create: {
+      id: "parallax-compat-private-log",
+      ownerAccountId: "00000000-0000-4000-8000-00000000a109",
+      keepsakeId: "parallax-compat-missing-keepsake",
+      slug: "parallax-compat-private-log",
+      title: "Synthetic private compatibility log",
+      visibility: "PRIVATE",
+      lifecycleState: "DRAFT",
+      verifiedCompletion: false,
+    },
+    update: {},
+  });
 }

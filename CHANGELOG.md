@@ -32,6 +32,13 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Prepared distinct shared-consumer compatibility contracts and synthetic browser
+  journeys for the Studio integration planning gate. All 501 original contract
+  IDs remain plus one explicit pilot-availability boundary; product and Prisma
+  source remain unchanged. The [compatibility record](Development_Docs/Projects/Project_Parallax/Consumer_Compatibility_20261022.md)
+  separates seven source-bound Account development passes from the expanded
+  39-case runtime, governed experience review and protected acceptance still pending.
+
 - Reconciled the sole Studio integration candidate once with accepted maintenance
   main `39b706ad`, preserving product, Prisma and browser-test source from
   `720e4575`. Fresh 42-case component, full TypeScript and strict lint checks pass.

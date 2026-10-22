@@ -1,0 +1,35 @@
+{
+  "name": "combined-development-prepare-02",
+  "at": "2026-10-22T16:53:54.549Z",
+  "exit": {
+    "code": 0,
+    "signal": null,
+    "guardianExitCode": 0
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 0,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 0,
+    "elapsedMs": 2,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 32390721536,
+  "cStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 195,
+      "sha256": "3993c45cd6a3932b42e717252cc7c41f5f684bc56a8d87ed73672546afa9576a"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

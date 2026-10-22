@@ -1,0 +1,82 @@
+{
+  "kind": "HOST_HIBERNATION_STORAGE_STOP_AND_OWNED_STALE_LOCK_RECOVERY",
+  "at": "2026-10-22T17:55:51.999Z",
+  "sourceFreeze": "complete-source-freeze-04.original.json",
+  "originalRunStatus": "FAIL_INCOMPLETE",
+  "declaredCases": 39,
+  "executedCases": 27,
+  "rawPassed": 25,
+  "testFailed": 2,
+  "notRunAdmiralty": 12,
+  "availabilityProducerFinalReceipt": "MISSING",
+  "availabilityGroupStatus": "FAIL_DEVELOPMENT_ONLY",
+  "availabilityRawReportPassed": 2,
+  "minimumC": 12353642496,
+  "stopAt": 32346472448,
+  "currentC": 32394752000,
+  "runtimeCleanup": {
+    "browser": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": 0,
+      "elapsedMs": 3,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "fixture": {
+      "status": "NOT_STARTED",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    "server": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": null,
+      "elapsedMs": 154,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "proxy": {
+      "status": "PASS"
+    },
+    "portsReleased": true,
+    "status": "PASS"
+  },
+  "privateFailureDiagnostics": {
+    "browser": {
+      "retention": "INCOMPLETE",
+      "issues": [
+        "SETUP_FAILED"
+      ],
+      "qualification": false
+    }
+  },
+  "concurrentAllocator": "UNKNOWN",
+  "delay": {
+    "itemAt": "2026-10-22T17:15:59.075Z",
+    "summaryAt": "2026-10-22T17:47:19.971Z",
+    "sourceAwait": "writeFile(availability/execution.original.json)",
+    "separateFileWriteTimeout": false,
+    "powerEvidence": "host-power-observations.original.json",
+    "cause": "Host hibernation spans final receipt write; Kernel-General records resume clock jump. Exact separate disk allocator remains unknown."
+  },
+  "recoveredLock": {
+    "from": "D:/CodexWorktrees/parallax-776-final39-20261022/artifacts/sounding-line/browser-development/active.lock",
+    "to": "D:/CodexTemp/parallax-resume-20261021-01a15554/storage-interruption-02/active.lock.original",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "originalCreated": "2026-10-22T16:59:44.436Z",
+    "originalModified": "2026-10-22T16:59:44.436Z",
+    "preservedBySameVolumeRename": true
+  },
+  "qualification": false,
+  "protectedCapture": false
+}
