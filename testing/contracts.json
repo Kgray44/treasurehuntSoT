@@ -14699,7 +14699,8 @@
         ],
         "navigation": "Follow the actual contextual account entrance to canonical sign-in, then use the existing Voyagewright home link to return to the public gateway. The server retains the safe workspace return.",
         "browserTests": [
-          "tests/e2e/homeport-phase5.spec.ts"
+          "tests/e2e/homeport-phase5.spec.ts",
+          "tests/e2e/sextant-contextual-entry-journeys.spec.ts"
         ]
       }
     },
@@ -14861,7 +14862,8 @@
         ],
         "navigation": "Follow the actual contextual account entrance to canonical sign-in, then use the existing Voyagewright home link to return to the public gateway. The server retains the safe workspace return.",
         "browserTests": [
-          "tests/e2e/homeport-phase5.spec.ts"
+          "tests/e2e/homeport-phase5.spec.ts",
+          "tests/e2e/sextant-contextual-entry-journeys.spec.ts"
         ]
       }
     }
