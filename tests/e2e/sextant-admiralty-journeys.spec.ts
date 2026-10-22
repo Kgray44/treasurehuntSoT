@@ -10,7 +10,8 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -21,7 +22,9 @@ for (const viewport of [
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
     test.describe(`${viewport.width}px ${reducedMotion}`, () => {
       test.use({ viewport, contextOptions: { reducedMotion } });
-      test("ordinary Admiralty entry, bounded dossier and ungranted support return", async ({ page }, info) => {
+      test("ordinary Admiralty entry, bounded dossier and ungranted support return", async ({
+        page,
+      }, info) => {
         const key = `admiralty-${viewport.width}-${reducedMotion}` as
           | "admiralty-1280-no-preference"
           | "admiralty-1280-reduce"
@@ -33,7 +36,13 @@ for (const viewport of [
         const baseline = await db.taleSession.findMany({
           where: { id: { in: ids } },
           orderBy: { id: "asc" },
-          select: { id: true, status: true, currentBlockId: true, currentSequence: true, publishedVersionId: true },
+          select: {
+            id: true,
+            status: true,
+            currentBlockId: true,
+            currentSequence: true,
+            publishedVersionId: true,
+          },
         });
         expect(baseline).toHaveLength(2);
         const versionIds = baseline.map((row) => row.publishedVersionId!);
@@ -49,7 +58,11 @@ for (const viewport of [
         });
         const privilegedBefore = await privilegedCounts();
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const began = performance.now();
           await activate();
           await ready();
@@ -58,7 +71,8 @@ for (const viewport of [
           expect(elapsedMs, task).toBeLessThanOrEqual(3000);
         };
         const heading = (name: string) => page.getByRole("heading", { name, exact: true });
-        const emptyState = (name: string) => page.locator(".chartroom-empty").getByText(name, { exact: true });
+        const emptyState = (name: string) =>
+          page.locator(".chartroom-empty").getByText(name, { exact: true });
         const capture = async (name: string, target = page.getByRole("heading", { level: 1 })) => {
           expect((await new AxeBuilder({ page }).include(".chartroom").analyze()).violations).toEqual([]);
           await target.evaluate((node) => node.scrollIntoView({ block: "center", behavior: "instant" }));
@@ -72,7 +86,9 @@ for (const viewport of [
         };
         await page.goto("/sign-in?returnTo=%2Faccount");
         await page.getByRole("textbox", { name: "Email or Player name", exact: true }).fill(fixture.email);
-        await page.getByRole("textbox", { name: "Password", exact: true }).fill("Synthetic-Sextant-Resources-2026!");
+        await page
+          .getByRole("textbox", { name: "Password", exact: true })
+          .fill("Synthetic-Sextant-Resources-2026!");
         await page.getByRole("button", { name: "Sign in", exact: true }).click();
         await expect(heading("Overview")).toBeVisible();
         await page.getByRole("button", { name: fixture.displayName, exact: true }).click();
@@ -90,7 +106,9 @@ for (const viewport of [
           "admiralty-operator-controls",
           page.getByRole("group", { name: "Admiralty controls", exact: true }),
         );
-        await expect(page.getByRole("group", { name: fixture.displayName, exact: true })).toBeInViewport({ ratio: 1 });
+        await expect(page.getByRole("group", { name: fixture.displayName, exact: true })).toBeInViewport({
+          ratio: 1,
+        });
         const navigation = page.getByRole("navigation", { name: "Admiralty navigation", exact: true });
         await measure(
           "Bounded People station",
@@ -98,7 +116,9 @@ for (const viewport of [
           () => expect(emptyState("Start with a known clue")).toBeVisible(),
         );
         await capture("admiralty-known-clue", emptyState("Start with a known clue"));
-        const search = page.locator(".chartroom-search").getByRole("textbox", { name: "Search", exact: true });
+        const search = page
+          .locator(".chartroom-search")
+          .getByRole("textbox", { name: "Search", exact: true });
         const submit = page.locator(".chartroom-search").getByRole("button", { name: "Search", exact: true });
         await search.fill("sextant-no-such-person-20261019");
         await measure(
@@ -119,7 +139,9 @@ for (const viewport of [
           "Actual authorized account dossier",
           () => target.click(),
           () =>
-            expect(page.getByRole("heading", { level: 1, name: fixture.targetDisplayName, exact: true })).toBeVisible(),
+            expect(
+              page.getByRole("heading", { level: 1, name: fixture.targetDisplayName, exact: true }),
+            ).toBeVisible(),
         );
         await expect(page).toHaveURL(new RegExp(`/admin/people/${fixture.targetAccountId}$`));
         await capture("admiralty-dossier");
@@ -133,7 +155,9 @@ for (const viewport of [
         const support = page.locator(".chartroom-panel").filter({ has: heading("Support access") });
         await expect(support).toHaveCount(1);
         await expect(support).toContainText("Verification required");
-        await expect(support.getByRole("button", { name: "Verify for privileged work", exact: true })).toBeDisabled();
+        await expect(
+          support.getByRole("button", { name: "Verify for privileged work", exact: true }),
+        ).toBeDisabled();
         await expect(support.getByRole("textbox", { name: "Grant ID", exact: true })).toHaveValue("");
         await capture("admiralty-ungranted-support", heading("Support access"));
         await measure(
@@ -143,13 +167,17 @@ for (const viewport of [
               .getByRole("combobox", { name: "Scoped category", exact: true })
               .selectOption("TIDEGLASS_DIAGNOSTICS"),
           () =>
-            expect(support.getByRole("group", { name: "Exact immutable comparison pair", exact: true })).toBeVisible(),
+            expect(
+              support.getByRole("group", { name: "Exact immutable comparison pair", exact: true }),
+            ).toBeVisible(),
         );
         await capture(
           "admiralty-ungranted-tideglass",
           support.getByRole("group", { name: "Exact immutable comparison pair", exact: true }),
         );
-        await support.getByRole("combobox", { name: "Scoped category", exact: true }).selectOption("ACCOUNT_STATE");
+        await support
+          .getByRole("combobox", { name: "Scoped category", exact: true })
+          .selectOption("ACCOUNT_STATE");
         await measure(
           "Ordinary Admiralty account return",
           () => page.getByRole("link", { name: "Safe return", exact: true }).click(),
@@ -164,7 +192,13 @@ for (const viewport of [
           await db.taleSession.findMany({
             where: { id: { in: ids } },
             orderBy: { id: "asc" },
-            select: { id: true, status: true, currentBlockId: true, currentSequence: true, publishedVersionId: true },
+            select: {
+              id: true,
+              status: true,
+              currentBlockId: true,
+              currentSequence: true,
+              publishedVersionId: true,
+            },
           }),
         ).toEqual(baseline);
         expect(
@@ -185,6 +219,7 @@ for (const viewport of [
                 ".agents/scripts/sextant-admiralty-fixture.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 "testing/contracts.json",
               ]),
               viewport,

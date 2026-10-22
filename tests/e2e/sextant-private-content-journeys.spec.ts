@@ -13,7 +13,8 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(async () => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
   const taskRoot = process.env.SEXTANT_PRIVATE_CONTENT_TEST_ROOT ?? "";
   if (!path.isAbsolute(taskRoot)) throw new Error("SEXTANT_PRIVATE_STORAGE_REQUIRED");
@@ -57,7 +58,13 @@ for (const viewport of [
           db.taleSession.findMany({
             where: { id: { in: ids } },
             orderBy: { id: "asc" },
-            select: { id: true, status: true, currentBlockId: true, currentSequence: true, publishedVersionId: true },
+            select: {
+              id: true,
+              status: true,
+              currentBlockId: true,
+              currentSequence: true,
+              publishedVersionId: true,
+            },
           });
         const baseline = await readBaselines();
         expect(baseline).toHaveLength(2);
@@ -75,7 +82,11 @@ for (const viewport of [
         const passphrase = "Synthetic-Sextant-Package-2026!";
         const packageBytes = await encryptPrivatePayload(fixture.payload, passphrase);
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const began = performance.now();
           await activate();
           await ready();
@@ -97,7 +108,9 @@ for (const viewport of [
         };
         await page.goto("/sign-in?returnTo=%2Faccount");
         await page.getByRole("textbox", { name: "Email or Player name", exact: true }).fill(fixture.email);
-        await page.getByRole("textbox", { name: "Password", exact: true }).fill("Synthetic-Sextant-Resources-2026!");
+        await page
+          .getByRole("textbox", { name: "Password", exact: true })
+          .fill("Synthetic-Sextant-Resources-2026!");
         await page.getByRole("button", { name: "Sign in", exact: true }).click();
         await expect(heading("Overview")).toBeVisible();
         const enterLibrary = async () => {
@@ -113,8 +126,12 @@ for (const viewport of [
           () => expect(heading("Private content")).toBeVisible(),
         );
         await expect(page.getByRole("button", { name: "Inspect package", exact: true })).toBeDisabled();
-        await expect(page.getByRole("button", { name: "Confirm private import", exact: true })).toBeDisabled();
-        await expect(page.getByRole("button", { name: "Export verified package", exact: true })).toBeDisabled();
+        await expect(
+          page.getByRole("button", { name: "Confirm private import", exact: true }),
+        ).toBeDisabled();
+        await expect(
+          page.getByRole("button", { name: "Export verified package", exact: true }),
+        ).toBeDisabled();
         await expect(
           page.getByText("No private import has completed in this workspace yet.", { exact: true }),
         ).toBeVisible();
@@ -123,13 +140,18 @@ for (const viewport of [
         await page.getByRole("button", { name: "Select protected package", exact: true }).click();
         await (
           await chooserReady
-        ).setFiles({ name: `${fixture.packageId}.ftprivate`, mimeType: "application/json", buffer: packageBytes });
+        ).setFiles({
+          name: `${fixture.packageId}.ftprivate`,
+          mimeType: "application/json",
+          buffer: packageBytes,
+        });
         const secret = page.getByLabel("Passphrase", { exact: true });
         await secret.fill("Wrong-synthetic-package-passphrase");
         const inspect = async (status: number) => {
           const response = page.waitForResponse(
             (r) =>
-              new URL(r.url()).pathname === "/api/studio/private-content/inspect" && r.request().method() === "POST",
+              new URL(r.url()).pathname === "/api/studio/private-content/inspect" &&
+              r.request().method() === "POST",
           );
           await page.getByRole("button", { name: "Inspect package", exact: true }).click();
           const result = await response;
@@ -158,7 +180,9 @@ for (const viewport of [
           () => inspect(200),
           () =>
             expect(
-              page.getByText("Inspection succeeded. Import remains private and is not yet committed.", { exact: true }),
+              page.getByText("Inspection succeeded. Import remains private and is not yet committed.", {
+                exact: true,
+              }),
             ).toBeVisible(),
         );
         await expect(page.getByRole("status").filter({ hasText: "Plan:" })).toContainText(
@@ -174,7 +198,9 @@ for (const viewport of [
         await inspectedStatus.scrollIntoViewIfNeeded();
         await expect(inspectedStatus).toBeInViewport({ ratio: 1 });
         await expect(page.getByRole("status").filter({ hasText: "Plan:" })).toBeInViewport({ ratio: 1 });
-        await expect(page.getByRole("button", { name: "Confirm private import", exact: true })).toBeInViewport({
+        await expect(
+          page.getByRole("button", { name: "Confirm private import", exact: true }),
+        ).toBeInViewport({
           ratio: 1,
         });
         const confirmImport = page.getByRole("button", { name: "Confirm private import", exact: true });
@@ -206,7 +232,10 @@ for (const viewport of [
             background = luminance(style.backgroundColor);
           return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
         });
-        expect(confirmationHoverContrast, "Hovered private confirmation stays readable").toBeGreaterThanOrEqual(4.5);
+        expect(
+          confirmationHoverContrast,
+          "Hovered private confirmation stays readable",
+        ).toBeGreaterThanOrEqual(4.5);
         await expect(confirmImport).toBeInViewport({ ratio: 1 });
         await expect(inspectedStatus).toBeInViewport({ ratio: 1 });
         await capture("private-content-plan-confirmation", inspectedStatus);
@@ -216,7 +245,8 @@ for (const viewport of [
           async () => {
             const response = page.waitForResponse(
               (r) =>
-                new URL(r.url()).pathname === "/api/studio/private-content/import" && r.request().method() === "POST",
+                new URL(r.url()).pathname === "/api/studio/private-content/import" &&
+                r.request().method() === "POST",
             );
             await page.getByRole("button", { name: "Confirm private import", exact: true }).click();
             const result = await response;
@@ -227,11 +257,13 @@ for (const viewport of [
           },
           async () => {
             await expect(
-              page.getByText(`Private import completed: ${importId}. It remains unpublished.`, { exact: true }),
+              page.getByText(`Private import completed: ${importId}. It remains unpublished.`, {
+                exact: true,
+              }),
             ).toBeVisible();
-            await expect(page.getByRole("region", { name: "Private import history", exact: true })).toContainText(
-              `${fixture.packageId} revision 1: COMPLETED`,
-            );
+            await expect(
+              page.getByRole("region", { name: "Private import history", exact: true }),
+            ).toContainText(`${fixture.packageId} revision 1: COMPLETED`);
           },
         );
         const imported = await db.privateContentImport.findUniqueOrThrow({ where: { id: importId } });
@@ -252,11 +284,15 @@ for (const viewport of [
           visibility: "PRIVATE",
           status: "DRAFT",
         });
-        expect(await db.chronicle.count({ where: { creatorAccountId: fixture.ownerId } })).toBe(countBefore + 1);
+        expect(await db.chronicle.count({ where: { creatorAccountId: fixture.ownerId } })).toBe(
+          countBefore + 1,
+        );
         expect(await db.publishedTaleVersion.count({ where: { taleId: tale.id } })).toBe(0);
         expect(await db.taleSession.count({ where: { taleId: tale.id } })).toBe(0);
         await expect(secret).toHaveValue("");
-        await expect(page.getByLabel("Select an encrypted private-content package", { exact: true })).toHaveValue("");
+        await expect(
+          page.getByLabel("Select an encrypted private-content package", { exact: true }),
+        ).toHaveValue("");
         await capture("private-content-completed-history", heading("Private import history"));
         await page.getByRole("combobox", { name: "Imported package", exact: true }).selectOption(importId);
         await secret.fill(passphrase);
@@ -267,7 +303,8 @@ for (const viewport of [
           async () => {
             const response = page.waitForResponse(
               (r) =>
-                new URL(r.url()).pathname === "/api/studio/private-content/export" && r.request().method() === "POST",
+                new URL(r.url()).pathname === "/api/studio/private-content/export" &&
+                r.request().method() === "POST",
             );
             await page.getByRole("button", { name: "Export verified package", exact: true }).click();
             const result = await response;
@@ -276,7 +313,10 @@ for (const viewport of [
             expect(value.roundTripVerified).toBe(true);
             exportedBytes = Buffer.from(value.packageBytes, "base64");
           },
-          () => expect(page.getByText("Encrypted export was verified before download.", { exact: true })).toBeVisible(),
+          () =>
+            expect(
+              page.getByText("Encrypted export was verified before download.", { exact: true }),
+            ).toBeVisible(),
         );
         const download = await downloadReady;
         expect(download.suggestedFilename()).toBe(`${fixture.packageId}.ftprivate`);
@@ -295,7 +335,9 @@ for (const viewport of [
         const projected = JSON.parse(
           Buffer.from(exported.entries[exported.manifest.tales[0].contentPath], "base64url").toString("utf8"),
         );
-        expect(projected.chapters[0].blocks[0].configuration.body).toBe("A reserved synthetic package passage.");
+        expect(projected.chapters[0].blocks[0].configuration.body).toBe(
+          "A reserved synthetic package passage.",
+        );
         await expect(secret).toHaveValue("");
         await capture("private-content-verified-export", heading("Verified private export"));
         await enterLibrary();
@@ -329,6 +371,7 @@ for (const viewport of [
                 ".agents/scripts/sextant-private-content-fixture.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 "testing/contracts.json",
               ]),
               viewport,

@@ -11,7 +11,8 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -38,7 +39,13 @@ for (const viewport of [
         const baseline = await db.taleSession.findMany({
           where: { id: { in: voyageIds } },
           orderBy: { id: "asc" },
-          select: { id: true, status: true, currentSequence: true, currentBlockId: true, publishedVersionId: true },
+          select: {
+            id: true,
+            status: true,
+            currentSequence: true,
+            currentBlockId: true,
+            publishedVersionId: true,
+          },
         });
         expect(baseline).toHaveLength(2);
         const editionIds = baseline.map((row) => row.publishedVersionId!);
@@ -50,7 +57,11 @@ for (const viewport of [
         const countBefore = await db.chronicle.count({ where: { creatorAccountId: fixture.ownerId } });
         expect(await db.chronicle.findUnique({ where: { slug } })).toBeNull();
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const began = performance.now();
           await activate();
           await ready();
@@ -58,7 +69,11 @@ for (const viewport of [
           feedback.push({ task, elapsedMs });
           expect(elapsedMs, task).toBeLessThanOrEqual(3000);
         };
-        const capture = async (name: string, selector: string, target = page.getByRole("heading", { level: 1 })) => {
+        const capture = async (
+          name: string,
+          selector: string,
+          target = page.getByRole("heading", { level: 1 }),
+        ) => {
           expect((await new AxeBuilder({ page }).include(selector).analyze()).violations).toEqual([]);
           await target.scrollIntoViewIfNeeded();
           await expect(target).toBeInViewport();
@@ -67,7 +82,9 @@ for (const viewport of [
         };
         await page.goto("/sign-in?returnTo=%2Faccount");
         await page.getByRole("textbox", { name: "Email or Player name", exact: true }).fill(fixture.email);
-        await page.getByRole("textbox", { name: "Password", exact: true }).fill("Synthetic-Sextant-Resources-2026!");
+        await page
+          .getByRole("textbox", { name: "Password", exact: true })
+          .fill("Synthetic-Sextant-Resources-2026!");
         await page.getByRole("button", { name: "Sign in", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
         await page.getByRole("button", { name: fixture.displayName, exact: true }).click();
@@ -75,7 +92,10 @@ for (const viewport of [
         await measure(
           "Ordinary Creator workspace entry",
           () => page.getByRole("link", { name: "Enter Creator", exact: true }).click(),
-          () => expect(page.getByRole("heading", { level: 1, name: "Voyagewright Studio", exact: true })).toBeVisible(),
+          () =>
+            expect(
+              page.getByRole("heading", { level: 1, name: "Voyagewright Studio", exact: true }),
+            ).toBeVisible(),
         );
         const create = page.getByRole("link", { name: "Create Chronicle", exact: true });
         const submit = page.getByRole("button", { name: "Create and open Chronicle", exact: true });
@@ -87,7 +107,9 @@ for (const viewport of [
         await capture("creator-entry-form", ".new-tale-page");
         await page.getByRole("textbox", { name: "Title", exact: true }).fill("Synthetic cancelled course");
         await page.getByRole("link", { name: "Cancel", exact: true }).click();
-        await expect(page.getByRole("heading", { level: 1, name: "Voyagewright Studio", exact: true })).toBeVisible();
+        await expect(
+          page.getByRole("heading", { level: 1, name: "Voyagewright Studio", exact: true }),
+        ).toBeVisible();
         expect(await db.chronicle.count({ where: { creatorAccountId: fixture.ownerId } })).toBe(countBefore);
         await measure(
           "Reopen secure creation form",
@@ -99,7 +121,9 @@ for (const viewport of [
         await page
           .getByRole("textbox", { name: "Short description", exact: true })
           .fill("Reserved synthetic course for owned Creator entry verification.");
-        await page.getByRole("textbox", { name: "Initial chapter title", exact: true }).fill("A synthetic opening");
+        await page
+          .getByRole("textbox", { name: "Initial chapter title", exact: true })
+          .fill("A synthetic opening");
         await page.getByRole("combobox", { name: "Visibility", exact: true }).selectOption("PRIVATE");
         await capture("creator-entry-confirm", ".new-tale-page", submit);
         let created: { id: string; slug: string; draftId: string } | undefined;
@@ -126,14 +150,19 @@ for (const viewport of [
           visibility: "PRIVATE",
         });
         expect(
-          await db.chronicle.findUniqueOrThrow({ where: { id: created.id }, select: { creatorAccountId: true } }),
+          await db.chronicle.findUniqueOrThrow({
+            where: { id: created.id },
+            select: { creatorAccountId: true },
+          }),
         ).toEqual({ creatorAccountId: fixture.ownerId });
         expect(draft.draft.id).toBe(created.draftId);
         expect(draft.draft.chapters).toHaveLength(1);
         expect(draft.draft.chapters[0]).toMatchObject({ title: "A synthetic opening", blocks: [] });
         expect(draft.versions).toHaveLength(0);
         expect(await db.taleSession.count({ where: { taleId: created.id } })).toBe(0);
-        expect(await db.chronicle.count({ where: { creatorAccountId: fixture.ownerId } })).toBe(countBefore + 1);
+        expect(await db.chronicle.count({ where: { creatorAccountId: fixture.ownerId } })).toBe(
+          countBefore + 1,
+        );
         await capture("creator-entry-draft", ".tale-editor");
         const chapterTitle = page.getByRole("textbox", { name: "Chapter 1 title", exact: true });
         await expect(chapterTitle).toHaveValue("A synthetic opening");
@@ -179,7 +208,13 @@ for (const viewport of [
           await db.taleSession.findMany({
             where: { id: { in: voyageIds } },
             orderBy: { id: "asc" },
-            select: { id: true, status: true, currentSequence: true, currentBlockId: true, publishedVersionId: true },
+            select: {
+              id: true,
+              status: true,
+              currentSequence: true,
+              currentBlockId: true,
+              publishedVersionId: true,
+            },
           }),
         ).toEqual(baseline);
         expect(
@@ -201,6 +236,7 @@ for (const viewport of [
                 "tests/e2e/sextant-creator-entry-journeys.spec.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 "testing/contracts.json",
               ]),
               viewport,

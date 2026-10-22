@@ -15,7 +15,8 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -41,7 +42,13 @@ for (const viewport of [
           db.taleSession.findMany({
             where: { id: { in: ids } },
             orderBy: { id: "asc" },
-            select: { id: true, status: true, currentSequence: true, currentBlockId: true, publishedVersionId: true },
+            select: {
+              id: true,
+              status: true,
+              currentSequence: true,
+              currentBlockId: true,
+              publishedVersionId: true,
+            },
           });
         const baseline = await readBaselines();
         expect(baseline).toHaveLength(2);
@@ -58,7 +65,11 @@ for (const viewport of [
         const owner = page.getByRole("button", { name: displayName, exact: true });
         const currentMain = page.getByRole("main");
         const accountStatus = currentMain.locator("#account-status");
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const began = performance.now();
           await activate();
           await ready();
@@ -87,7 +98,9 @@ for (const viewport of [
                   : [];
                 found = rows
                   .reverse()
-                  .find((row) => row.purpose === purpose && row.email === address && row.accountId === accountId);
+                  .find(
+                    (row) => row.purpose === purpose && row.email === address && row.accountId === accountId,
+                  );
                 // Report only presence; challenge values never enter this assertion or the journey receipt.
                 return Boolean(found?.token);
               },
@@ -115,7 +128,9 @@ for (const viewport of [
         };
         const navigateSection = async (name: "Personal Information" | "Data & Account") => {
           const mobile = currentMain.locator("details.personal-harbor__mobile-sections");
-          const container = (await mobile.isVisible()) ? mobile : currentMain.locator(".personal-harbor__rail");
+          const container = (await mobile.isVisible())
+            ? mobile
+            : currentMain.locator(".personal-harbor__rail");
           if ((await mobile.isVisible()) && (await mobile.getAttribute("open")) === null)
             await mobile.locator("summary").click();
           await measure(
@@ -149,17 +164,26 @@ for (const viewport of [
           () => expect(heading("Verify email")).toBeVisible(),
         );
         expect((await registered).status()).toBe(201);
-        const accountId = (await db.accountEmail.findUniqueOrThrow({ where: { normalizedEmail: email } })).accountId;
+        const accountId = (await db.accountEmail.findUniqueOrThrow({ where: { normalizedEmail: email } }))
+          .accountId;
         const verification = await delivery("VERIFY_EMAIL", email, accountId);
         expect(
-          await db.userAccount.findUnique({ where: { id: verification.accountId }, select: { status: true } }),
+          await db.userAccount.findUnique({
+            where: { id: verification.accountId },
+            select: { status: true },
+          }),
         ).toEqual({ status: "PENDING_VERIFICATION" });
         await capture("account-verification-prepared", heading("Verify email"));
-        await page.getByLabel("Code", { exact: true }).fill(verification.token === "000000" ? "111111" : "000000");
+        await page
+          .getByLabel("Code", { exact: true })
+          .fill(verification.token === "000000" ? "111111" : "000000");
         await page.getByRole("button", { name: "Verify email", exact: true }).click();
         await expect(accountStatus).toContainText(/invalid|incorrect|expired/iu);
         expect(
-          await db.userAccount.findUnique({ where: { id: verification.accountId }, select: { status: true } }),
+          await db.userAccount.findUnique({
+            where: { id: verification.accountId },
+            select: { status: true },
+          }),
         ).toEqual({ status: "PENDING_VERIFICATION" });
         await capture("account-verification-rejected", heading("Verify email"));
         await page.getByLabel("Code", { exact: true }).fill(verification.token!);
@@ -170,7 +194,10 @@ for (const viewport of [
         );
         await expect(heading("Overview")).toBeVisible();
         const readAccount = () =>
-          db.userAccount.findUniqueOrThrow({ where: { id: accountId }, include: { profile: true, emails: true } });
+          db.userAccount.findUniqueOrThrow({
+            where: { id: accountId },
+            include: { profile: true, emails: true },
+          });
         expect((await readAccount()).status).toBe("ACTIVE");
         expect((await readAccount()).emails).toEqual([
           expect.objectContaining({ normalizedEmail: email, isPrimary: true, verificationState: "VERIFIED" }),
@@ -185,7 +212,8 @@ for (const viewport of [
         await measure(
           "Actual synthetic password reset request",
           () => page.getByRole("button", { name: "Send reset instructions", exact: true }).click(),
-          () => expect(accountStatus).toHaveText("If that email can reset an account, we sent a recovery link."),
+          () =>
+            expect(accountStatus).toHaveText("If that email can reset an account, we sent a recovery link."),
         );
         const reset = await delivery("PASSWORD_RESET", email, accountId);
         expect(reset.accountId).toBe(accountId);
@@ -204,9 +232,9 @@ for (const viewport of [
         const credential = await db.accountCredential.findUniqueOrThrow({ where: { accountId } });
         expect(await compare(nextPassword, credential.passwordHash)).toBe(true);
         expect(await compare(initialPassword, credential.passwordHash)).toBe(false);
-        expect(await db.accountToken.count({ where: { accountId, purpose: "PASSWORD_RESET", consumedAt: null } })).toBe(
-          0,
-        );
+        expect(
+          await db.accountToken.count({ where: { accountId, purpose: "PASSWORD_RESET", consumedAt: null } }),
+        ).toBe(0);
         await returnToAccount();
 
         await navigateSection("Personal Information");
@@ -217,7 +245,9 @@ for (const viewport of [
           "Actual synthetic primary email request",
           () => page.getByRole("button", { name: "Send verification link", exact: true }).click(),
           () =>
-            expect(page.getByText("Check the new address to verify this email change.", { exact: true })).toBeVisible(),
+            expect(
+              page.getByText("Check the new address to verify this email change.", { exact: true }),
+            ).toBeVisible(),
         );
         const change = await delivery("EMAIL_CHANGE", nextEmail, accountId);
         expect(change.accountId).toBe(accountId);
@@ -227,14 +257,19 @@ for (const viewport of [
         await measure(
           "Actual primary email confirmation",
           () => page.getByRole("button", { name: "Confirm email change", exact: true }).click(),
-          () => expect(page.getByRole("link", { name: "Sign in with the new email", exact: true })).toBeVisible(),
+          () =>
+            expect(page.getByRole("link", { name: "Sign in with the new email", exact: true })).toBeVisible(),
         );
         await expect(accountStatus).toHaveText(
           "Your primary email was changed and existing sessions were ended. Sign in with the new address.",
         );
         await expect(page.getByRole("button", { name: "Confirm email change", exact: true })).toBeDisabled();
         expect((await readAccount()).emails).toEqual([
-          expect.objectContaining({ normalizedEmail: nextEmail, isPrimary: true, verificationState: "VERIFIED" }),
+          expect.objectContaining({
+            normalizedEmail: nextEmail,
+            isPrimary: true,
+            verificationState: "VERIFIED",
+          }),
         ]);
         expect(await db.accountSession.count({ where: { accountId, revokedAt: null } })).toBe(0);
         await capture("account-email-change-confirmed", heading("Confirm email change"));
@@ -321,7 +356,9 @@ for (const viewport of [
           { kind: "DELETION", state: "CANCELED" },
         ]);
         expect(await db.chronicle.count({ where: { creatorAccountId: accountId } })).toBe(0);
-        expect(await db.playthroughMembership.count({ where: { playerProfileId: finalAccount.profile!.id } })).toBe(0);
+        expect(
+          await db.playthroughMembership.count({ where: { playerProfileId: finalAccount.profile!.id } }),
+        ).toBe(0);
         expect(await readBaselines()).toEqual(baseline);
         expect(await readEditions()).toEqual(editions);
         await capture("account-final-same-owner-return", heading("Overview"), ".personal-harbor");
@@ -336,6 +373,7 @@ for (const viewport of [
                 ".agents/scripts/sextant-account-recovery-fixture.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 "testing/contracts.json",
               ]),
               viewport,

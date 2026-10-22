@@ -14,7 +14,8 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -33,7 +34,10 @@ for (const viewport of [
       }, info) => {
         if (!baseURL) throw new Error("SEXTANT_INVITATION_BASE_URL_REQUIRED");
         const fixture = await createSextantInvitationExperience(
-          `invitation-${viewport.width}-${reducedMotion}` as Exclude<SextantInvitationCase, "invitation-default">,
+          `invitation-${viewport.width}-${reducedMotion}` as Exclude<
+            SextantInvitationCase,
+            "invitation-default"
+          >,
           baseURL,
         );
         const ids = [fixture.voyageId, fixture.playerVoyageId];
@@ -41,7 +45,13 @@ for (const viewport of [
           db.taleSession.findMany({
             where: { id: { in: ids } },
             orderBy: { id: "asc" },
-            select: { id: true, status: true, currentSequence: true, currentBlockId: true, publishedVersionId: true },
+            select: {
+              id: true,
+              status: true,
+              currentSequence: true,
+              currentBlockId: true,
+              publishedVersionId: true,
+            },
           });
         const baseline = await readBaselines();
         expect(baseline).toHaveLength(2);
@@ -68,7 +78,11 @@ for (const viewport of [
           });
         const invitedProgress = await readInvitedProgress();
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const began = performance.now();
           await activate();
           await ready();
@@ -108,7 +122,9 @@ for (const viewport of [
             .getByRole("link", { name: "Personal Information", exact: true })
             .click();
           await expect(heading("Personal Information")).toBeVisible();
-          await expect(page.getByRole("heading", { name: "Keep your guest Voyage", exact: true })).toBeVisible();
+          await expect(
+            page.getByRole("heading", { name: "Keep your guest Voyage", exact: true }),
+          ).toBeVisible();
           await capture(
             `invitation-guest-recovery-${name === fixture.claimName ? "claim" : "merge"}`,
             page.getByRole("link", { name: "Claim this guest Voyage", exact: true }),
@@ -141,8 +157,12 @@ for (const viewport of [
           mergeInvitation = fixture.invited.invitations[1];
         const claimProfileId = invitationRows.find((row) => row.id === claimInvitation.id)!.intendedPlayerId!;
         const mergeProfileId = invitationRows.find((row) => row.id === mergeInvitation.id)!.intendedPlayerId!;
-        expect((await db.playerProfile.findUniqueOrThrow({ where: { id: claimProfileId } })).accountId).toBeNull();
-        expect((await db.playerProfile.findUniqueOrThrow({ where: { id: mergeProfileId } })).accountId).toBeNull();
+        expect(
+          (await db.playerProfile.findUniqueOrThrow({ where: { id: claimProfileId } })).accountId,
+        ).toBeNull();
+        expect(
+          (await db.playerProfile.findUniqueOrThrow({ where: { id: mergeProfileId } })).accountId,
+        ).toBeNull();
 
         await page.goto("/player/sign-in");
         await expect(heading("Open your Chronicle Library")).toBeVisible();
@@ -212,7 +232,9 @@ for (const viewport of [
           }),
         ).toEqual(beforeWrongInvitations);
         expect(await readInvitedMemberships()).toEqual(beforeWrongMemberships);
-        expect((await db.playerProfile.findUniqueOrThrow({ where: { id: claimProfileId } })).accountId).toBeNull();
+        expect(
+          (await db.playerProfile.findUniqueOrThrow({ where: { id: claimProfileId } })).accountId,
+        ).toBeNull();
         await capture(
           "invitation-pin-rejected",
           page.locator("main.invitation-page").getByRole("alert"),
@@ -225,7 +247,11 @@ for (const viewport of [
           const requests: Array<Record<string, unknown>> = [];
           const record = (stage: string, status?: number) => {
             if (stages.length < 8)
-              stages.push({ stage, elapsedMs: performance.now() - began, ...(status === undefined ? {} : { status }) });
+              stages.push({
+                stage,
+                elapsedMs: performance.now() - began,
+                ...(status === undefined ? {} : { status }),
+              });
           };
           const observe = (value: Response) => {
             const pathname = new URL(value.url()).pathname;
@@ -245,10 +271,13 @@ for (const viewport of [
                   : null;
             if (!operation) return;
             const timing = request.timing();
-            const duration = (start: number, end: number) => (start >= 0 && end >= start ? end - start : null);
+            const duration = (start: number, end: number) =>
+              start >= 0 && end >= start ? end - start : null;
             requests.push({
               operation,
-              resource: ["document", "fetch"].includes(request.resourceType()) ? request.resourceType() : "OTHER",
+              resource: ["document", "fetch"].includes(request.resourceType())
+                ? request.resourceType()
+                : "OTHER",
               responseWaitMs: duration(timing.requestStart, timing.responseStart),
               responseReadMs: duration(timing.responseStart, timing.responseEnd),
               totalMs: duration(0, timing.responseEnd),
@@ -282,13 +311,16 @@ for (const viewport of [
           await expect(owner(name)).toBeVisible();
         };
         await accept(fixture.claimName);
-        const claimGuestId = (await db.playerProfile.findUniqueOrThrow({ where: { id: claimProfileId } })).accountId!;
+        const claimGuestId = (await db.playerProfile.findUniqueOrThrow({ where: { id: claimProfileId } }))
+          .accountId!;
         expect((await db.userAccount.findUniqueOrThrow({ where: { id: claimGuestId } })).status).toBe(
           "GUEST_UNCLAIMED",
         );
         expect(
           await db.playthroughMembership.findUniqueOrThrow({
-            where: { playthroughId_playerProfileId: { playthroughId: invitedId, playerProfileId: claimProfileId } },
+            where: {
+              playthroughId_playerProfileId: { playthroughId: invitedId, playerProfileId: claimProfileId },
+            },
           }),
         ).toMatchObject({ status: "READY" });
         await capture("invitation-claim-waiting-room", heading(fixture.title), ".muster-scene");
@@ -336,7 +368,9 @@ for (const viewport of [
           () => page.getByRole("button", { name: "Verify email", exact: true }).click(),
           () => expect(owner(fixture.claimName)).toBeVisible(),
         );
-        expect((await db.userAccount.findUniqueOrThrow({ where: { id: claimGuestId } })).status).toBe("ACTIVE");
+        expect((await db.userAccount.findUniqueOrThrow({ where: { id: claimGuestId } })).status).toBe(
+          "ACTIVE",
+        );
         expect((await db.playerProfile.findUniqueOrThrow({ where: { id: claimProfileId } })).accountId).toBe(
           claimGuestId,
         );
@@ -410,7 +444,9 @@ for (const viewport of [
               JSON.stringify({
                 observations,
                 currentOriginMatchesBase: new URL(page.url()).origin === new URL(baseURL).origin,
-                pendingCookiePresent: cookies.some((cookie) => cookie.name === "chronicle_pending_invitation"),
+                pendingCookiePresent: cookies.some(
+                  (cookie) => cookie.name === "chronicle_pending_invitation",
+                ),
               }),
             );
           } catch {
@@ -420,7 +456,8 @@ for (const viewport of [
         await expect(page.getByLabel("Your display name", { exact: true })).toHaveValue(fixture.mergeName);
         await capture("invitation-secure-link-prepared", heading(fixture.title), ".invitation-page");
         await accept(fixture.mergeName);
-        const mergeGuestId = (await db.playerProfile.findUniqueOrThrow({ where: { id: mergeProfileId } })).accountId!;
+        const mergeGuestId = (await db.playerProfile.findUniqueOrThrow({ where: { id: mergeProfileId } }))
+          .accountId!;
         expect((await db.userAccount.findUniqueOrThrow({ where: { id: mergeGuestId } })).status).toBe(
           "GUEST_UNCLAIMED",
         );
@@ -437,11 +474,15 @@ for (const viewport of [
         );
         const merged = await db.userAccount.findUniqueOrThrow({ where: { id: mergeGuestId } });
         expect(merged).toMatchObject({ status: "MERGED", mergedIntoAccountId: fixture.crewAccountId });
-        expect(await db.accountSession.count({ where: { accountId: mergeGuestId, revokedAt: null } })).toBe(0);
-        const target = await db.playerProfile.findUniqueOrThrow({ where: { accountId: fixture.crewAccountId } });
-        expect((await db.invitation.findUniqueOrThrow({ where: { id: mergeInvitation.id } })).intendedPlayerId).toBe(
-          target.id,
+        expect(await db.accountSession.count({ where: { accountId: mergeGuestId, revokedAt: null } })).toBe(
+          0,
         );
+        const target = await db.playerProfile.findUniqueOrThrow({
+          where: { accountId: fixture.crewAccountId },
+        });
+        expect(
+          (await db.invitation.findUniqueOrThrow({ where: { id: mergeInvitation.id } })).intendedPlayerId,
+        ).toBe(target.id);
         expect(
           await db.playthroughMembership.count({
             where: { playthroughId: invitedId, playerProfileId: mergeProfileId },
@@ -449,7 +490,9 @@ for (const viewport of [
         ).toBe(0);
         expect(
           await db.playthroughMembership.findUniqueOrThrow({
-            where: { playthroughId_playerProfileId: { playthroughId: invitedId, playerProfileId: target.id } },
+            where: {
+              playthroughId_playerProfileId: { playthroughId: invitedId, playerProfileId: target.id },
+            },
           }),
         ).toMatchObject({ status: "READY" });
         await openFromLibrary(fixture.crewDisplayName);
@@ -482,6 +525,7 @@ for (const viewport of [
                 ".agents/scripts/sextant-account-recovery-fixture.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 "testing/contracts.json",
               ]),
               viewport,

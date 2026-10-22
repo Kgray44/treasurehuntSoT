@@ -253,6 +253,7 @@ for (const viewport of [
                 "tests/e2e/fixtures/sextant-device-journey.ts",
                 "tests/e2e/fixtures/sounding-line-isolation.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 "testing/contracts.json",
               ]),
               viewport,

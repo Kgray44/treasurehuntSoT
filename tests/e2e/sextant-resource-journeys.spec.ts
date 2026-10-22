@@ -11,7 +11,8 @@ test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
 
 test.beforeAll(async () => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic")
+    throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
 test.afterAll(() => db.$disconnect());
@@ -36,7 +37,11 @@ for (const viewport of [
         const fixture = await seedSextantResourceExperiences(resourceCase);
         expect(await seedSextantResourceExperiences(resourceCase)).toEqual(fixture);
         const feedback: Array<{ task: string; elapsedMs: number }> = [];
-        const measure = async (task: string, activate: () => Promise<unknown>, ready: () => Promise<unknown>) => {
+        const measure = async (
+          task: string,
+          activate: () => Promise<unknown>,
+          ready: () => Promise<unknown>,
+        ) => {
           const start = performance.now();
           await activate();
           await ready();
@@ -65,7 +70,9 @@ for (const viewport of [
         });
         await page.goto("/sign-in?returnTo=%2Faccount");
         await page.getByRole("textbox", { name: "Email or Player name", exact: true }).fill(fixture.email);
-        await page.getByRole("textbox", { name: "Password", exact: true }).fill("Synthetic-Sextant-Resources-2026!");
+        await page
+          .getByRole("textbox", { name: "Password", exact: true })
+          .fill("Synthetic-Sextant-Resources-2026!");
         await page.getByRole("button", { name: "Sign in", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
         const accountMenu = page.getByRole("button", { name: fixture.displayName, exact: true });
@@ -93,7 +100,9 @@ for (const viewport of [
           () => page.getByRole("link", { name: "Open Captain’s Console", exact: true }).click(),
           () => expect(console).toContainText(fixture.title),
         );
-        const pause = console.getByRole("button").filter({ has: page.getByText("Pause Voyage", { exact: true }) });
+        const pause = console
+          .getByRole("button")
+          .filter({ has: page.getByText("Pause Voyage", { exact: true }) });
         await pause.click();
         const command = page.getByRole("dialog", { name: "Pause Voyage?", exact: true });
         await expect(command).toContainText("The Voyage pauses until a Captain resumes it.");
@@ -114,17 +123,20 @@ for (const viewport of [
             await expect(
               dashboard.getByRole("heading", { level: 1, name: "Captain’s Console", exact: true }),
             ).toBeVisible();
-            await expect(dashboard.getByRole("heading", { level: 2, name: fixture.title, exact: true })).toBeVisible();
+            await expect(
+              dashboard.getByRole("heading", { level: 2, name: fixture.title, exact: true }),
+            ).toBeVisible();
             await expect(dashboard.locator(".captain-session-card")).toHaveCount(1);
           },
         );
-        await expect(dashboard.getByRole("link", { name: "Open Voyage controls", exact: true })).toHaveAttribute(
-          "href",
-          `/captain/sessions/${fixture.voyageId}`,
-        );
+        await expect(
+          dashboard.getByRole("link", { name: "Open Voyage controls", exact: true }),
+        ).toHaveAttribute("href", `/captain/sessions/${fixture.voyageId}`);
         await expect(dashboard.locator(".captain-session-card")).toContainText("Voyage crew");
         await expect(dashboard.locator(".captain-session-card")).not.toContainText("Guest Crew");
-        expect((await new AxeBuilder({ page }).include(".captain-dashboard").analyze()).violations).toEqual([]);
+        expect((await new AxeBuilder({ page }).include(".captain-dashboard").analyze()).violations).toEqual(
+          [],
+        );
         await dashboard.getByRole("heading", { level: 1 }).scrollIntoViewIfNeeded();
         await page.screenshot({ path: info.outputPath("captain-chronicle-dashboard.png") });
         await measure(
@@ -139,7 +151,9 @@ for (const viewport of [
           () => expect(page.getByRole("main")).toContainText("PREVIEW · NO LIVE MUTATIONS"),
         );
         await expect(page.getByRole("heading", { level: 1, name: fixture.title, exact: true })).toBeVisible();
-        expect((await new AxeBuilder({ page }).include(".player-safe-preview").analyze()).violations).toEqual([]);
+        expect((await new AxeBuilder({ page }).include(".player-safe-preview").analyze()).violations).toEqual(
+          [],
+        );
         await page.screenshot({ path: info.outputPath("captain-safe-preview.png") });
         await page.getByRole("link", { name: "Back to Captain’s Command", exact: true }).click();
         await accountMenu.click();
@@ -179,9 +193,10 @@ for (const viewport of [
           .boundingBox();
         expect(shellHeader).not.toBeNull();
         expect(authoringRail).not.toBeNull();
-        expect(authoringRail!.y, "Authoring navigation stays below the application masthead").toBeGreaterThanOrEqual(
-          shellHeader!.y + shellHeader!.height - 1,
-        );
+        expect(
+          authoringRail!.y,
+          "Authoring navigation stays below the application masthead",
+        ).toBeGreaterThanOrEqual(shellHeader!.y + shellHeader!.height - 1);
         if (viewport.width > 760) {
           const topbar = await page.getByRole("main").locator(".editor-topbar").boundingBox();
           expect(topbar).not.toBeNull();
@@ -195,10 +210,14 @@ for (const viewport of [
         const mastheadIsExposed = await page.locator(".product-shell-header").evaluate((header) => {
           const box = header.getBoundingClientRect();
           return Boolean(
-            document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)?.closest(".product-shell-header"),
+            document
+              .elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)
+              ?.closest(".product-shell-header"),
           );
         });
-        expect(mastheadIsExposed, "The masthead remains above editor chrome after autosave scroll").toBe(true);
+        expect(mastheadIsExposed, "The masthead remains above editor chrome after autosave scroll").toBe(
+          true,
+        );
         const more = page.getByRole("button", { name: "More", exact: true });
         await more.click();
         const moreSettings = page
@@ -261,6 +280,7 @@ for (const viewport of [
               source: await deviceLabSourceIdentity([
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 "tests/e2e/sextant-resource-journeys.spec.ts",
                 "testing/contracts.json",
               ]),

@@ -355,6 +355,7 @@ for (const viewport of [
                 ".agents/scripts/sextant-entry-fixture.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",
+                ".agents/scripts/sextant-chronicle-choice.ts",
                 ".agents/scripts/sextant-account-recovery-fixture.ts",
                 "tests/e2e/fixtures/landfall-closure.ts",
                 "tests/e2e/fixtures/sounding-line-isolation.ts",

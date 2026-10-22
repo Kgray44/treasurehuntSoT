@@ -6,7 +6,12 @@ import { db } from "../../src/lib/db";
 import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
 import { seedSextantLandfallExperience } from "../../.agents/scripts/sextant-landfall-fixture";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
-import { auditNativeGeolocation, geoAudit, enterClosureJournal, openClosureMap } from "./fixtures/landfall-closure";
+import {
+  auditNativeGeolocation,
+  geoAudit,
+  enterClosureJournal,
+  openClosureMap,
+} from "./fixtures/landfall-closure";
 import { observeSextantSignIn, observeSextantOfflineShell } from "./fixtures/sextant-consumer-diagnostics";
 
 test.describe.configure({ mode: "default", timeout: 180000 });
@@ -14,7 +19,10 @@ test.describe.configure({ mode: "default", timeout: 180000 });
 // This journey never issues installation tokens or opens native pairing controls.
 test.use({ video: "on", trace: "off", screenshot: "only-on-failure" });
 test.beforeAll(() => {
-  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic" || process.env.LANDFALL_LAB_SYNTHETIC_PACKAGES !== "1")
+  if (
+    process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic" ||
+    process.env.LANDFALL_LAB_SYNTHETIC_PACKAGES !== "1"
+  )
     throw new Error("SEXTANT_OWNED_SIGNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
 });
@@ -47,7 +55,13 @@ for (const viewport of [
             db.taleSession.findMany({
               where: { id: { in: voyageIds } },
               orderBy: { id: "asc" },
-              select: { id: true, status: true, currentSequence: true, currentBlockId: true, publishedVersionId: true },
+              select: {
+                id: true,
+                status: true,
+                currentSequence: true,
+                currentBlockId: true,
+                publishedVersionId: true,
+              },
             });
           const progress = await readProgress();
           expect(progress).toHaveLength(3);
@@ -92,7 +106,8 @@ for (const viewport of [
             feedback.push({ task, elapsedMs, budgetMs });
             expect(elapsedMs, task).toBeLessThanOrEqual(budgetMs);
           };
-          const heading = (name: string, level: 1 | 2 = 1) => page.getByRole("heading", { name, level, exact: true });
+          const heading = (name: string, level: 1 | 2 = 1) =>
+            page.getByRole("heading", { name, level, exact: true });
           const menu = (name: string) => page.getByRole("button", { name, exact: true });
           const accountDestination = async (name: string, destination: string) => {
             await menu(name).click();
@@ -119,10 +134,17 @@ for (const viewport of [
             });
           };
 
-          await signIn(fixture.email, "Synthetic-Sextant-Resources-2026!", fixture.displayName, fixture.ownerId);
+          await signIn(
+            fixture.email,
+            "Synthetic-Sextant-Resources-2026!",
+            fixture.displayName,
+            fixture.ownerId,
+          );
           await accountDestination(fixture.displayName, "All Workspaces");
           await page.getByRole("link", { name: "Enter Creator", exact: true }).click();
-          const card = page.locator("article.tale-studio-card").filter({ has: heading(fixture.landfallTitle, 2) });
+          const card = page
+            .locator("article.tale-studio-card")
+            .filter({ has: heading(fixture.landfallTitle, 2) });
           await card.getByRole("link", { name: "Edit Chronicle", exact: true }).click();
           await measure(
             "Ordinary populated Living Chart authoring",
@@ -131,7 +153,10 @@ for (const viewport of [
                 .getByRole("navigation", { name: "Chronicle authoring sections", exact: true })
                 .getByRole("link", { name: "Living Chart", exact: true })
                 .click(),
-            () => expect(page.getByRole("region", { name: "Landfall authoring workspace", exact: true })).toBeVisible(),
+            () =>
+              expect(
+                page.getByRole("region", { name: "Landfall authoring workspace", exact: true }),
+              ).toBeVisible(),
           );
           const workspace = page.getByRole("region", { name: "Landfall authoring workspace", exact: true });
           const waypointName = kind !== "virtual" ? "Town arrival" : "Secret Isle";
@@ -165,10 +190,20 @@ for (const viewport of [
             );
             await measure(
               "Actual Studio unconfigured installation signing",
-              () => installations.getByRole("button", { name: "Check published installations", exact: true }).click(),
-              () => expect(installations.getByRole("status")).toContainText("Installation signing is not configured"),
+              () =>
+                installations
+                  .getByRole("button", { name: "Check published installations", exact: true })
+                  .click(),
+              () =>
+                expect(installations.getByRole("status")).toContainText(
+                  "Installation signing is not configured",
+                ),
             );
-            await capture("authoring-installation-fallback", installations.getByRole("status"), ".landfall-workspace");
+            await capture(
+              "authoring-installation-fallback",
+              installations.getByRole("status"),
+              ".landfall-workspace",
+            );
           }
           const field = workspace.getByRole("region", { name: "Creator field test", exact: true });
           await expect(field).toContainText("0 of 20 retained in memory");
@@ -221,8 +256,13 @@ for (const viewport of [
           await openClosureMap(page);
           const drawer = page.locator(".journal-objects-drawer.open");
           const chart = drawer.locator("[data-landfall-player-chart]:visible");
-          await expect(chart).toHaveAttribute("data-worldspace-kind", kind === "virtual" ? "VIRTUAL" : "PHYSICAL");
-          await expect(chart.getByRole("region", { name: "Context and floor guidance", exact: true })).toContainText(
+          await expect(chart).toHaveAttribute(
+            "data-worldspace-kind",
+            kind === "virtual" ? "VIRTUAL" : "PHYSICAL",
+          );
+          await expect(
+            chart.getByRole("region", { name: "Context and floor guidance", exact: true }),
+          ).toContainText(
             kind !== "virtual"
               ? "Rooms, floors and exact objects need independent evidence"
               : "No live game position is assumed",
@@ -235,7 +275,9 @@ for (const viewport of [
           );
           await capture(
             "player-context",
-            chart.getByRole("region", { name: "Context and floor guidance", exact: true }).getByRole("status"),
+            chart
+              .getByRole("region", { name: "Context and floor guidance", exact: true })
+              .getByRole("status"),
             ".journal-objects-drawer.open",
           );
           const search = chart.getByRole("region", { name: "Search released places", exact: true });
@@ -251,13 +293,15 @@ for (const viewport of [
           await expect(search.getByRole("searchbox")).toHaveValue("");
           if (kind !== "virtual") {
             // The actual browser host has no companion. Neither hidden native-only panel is fabricated.
-            await expect(chart.getByRole("region", { name: "Optional background reminders", exact: true })).toHaveCount(
-              0,
-            );
+            await expect(
+              chart.getByRole("region", { name: "Optional background reminders", exact: true }),
+            ).toHaveCount(0);
             await expect(chart.locator(".landfall-nearby-panel")).toHaveCount(0);
             const ble = chart.locator(".landfall-ble-panel");
             await ble.locator("summary").click();
-            await expect(ble.getByRole("button", { name: "Scan optional Bluetooth", exact: true })).toBeDisabled();
+            await expect(
+              ble.getByRole("button", { name: "Scan optional Bluetooth", exact: true }),
+            ).toBeDisabled();
             await expect(ble.getByRole("status")).toContainText("scanning is off");
             await capture(
               "bluetooth-browser-absence",
@@ -268,7 +312,10 @@ for (const viewport of [
             await installation.locator("summary").click();
             await measure(
               "Actual Player unconfigured installation signing",
-              () => installation.getByRole("button", { name: "Check installation availability", exact: true }).click(),
+              () =>
+                installation
+                  .getByRole("button", { name: "Check installation availability", exact: true })
+                  .click(),
               () => expect(installation.getByRole("status")).toContainText("unavailable on this deployment"),
             );
             await capture(
@@ -294,15 +341,21 @@ for (const viewport of [
             const landmark = chart.getByRole("region", { name: "Natural landmark", exact: true });
             if (kind === "physical") {
               await expect(landmark).toHaveCount(0);
-              await expect(chart.getByRole("button", { name: "Open landmark camera", exact: true })).toHaveCount(0);
+              await expect(
+                chart.getByRole("button", { name: "Open landmark camera", exact: true }),
+              ).toHaveCount(0);
               await capture(
                 "approximate-landmark-withheld",
                 chart.getByRole("region", { name: "Context and floor guidance", exact: true }),
                 ".journal-objects-drawer.open",
               );
             } else {
-              await expect(landmark.getByRole("button", { name: "Open landmark camera", exact: true })).toBeDisabled();
-              await expect(landmark.getByRole("status")).toContainText("Reach the surrounding area before comparing");
+              await expect(
+                landmark.getByRole("button", { name: "Open landmark camera", exact: true }),
+              ).toBeDisabled();
+              await expect(landmark.getByRole("status")).toContainText(
+                "Reach the surrounding area before comparing",
+              );
               await capture(
                 "landmark-prerequisite",
                 landmark.getByRole("button", { name: "Open landmark camera", exact: true }),
@@ -315,7 +368,10 @@ for (const viewport of [
             await measure(
               "Actual signed offline region preparation",
               () => region.getByRole("button", { name: "Prepare offline region", exact: true }).click(),
-              () => expect(region.getByRole("button", { name: "Download offline region", exact: true })).toBeVisible(),
+              () =>
+                expect(
+                  region.getByRole("button", { name: "Download offline region", exact: true }),
+                ).toBeVisible(),
               15000,
             );
             await expect(region).toContainText("1 authorized first-party images");
@@ -340,7 +396,9 @@ for (const viewport of [
             );
             await capture("offline-region-ready", region.getByRole("status"), ".journal-objects-drawer.open");
             try {
-              await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+              await expect
+                .poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller)))
+                .toBe(true);
             } finally {
               await reportOfflineShell?.();
             }
@@ -357,7 +415,11 @@ for (const viewport of [
                 },
                 15000,
               );
-              await capture("offline-journal-restored", heading("Offline Voyage Journal"), ".landfall-offline-journal");
+              await capture(
+                "offline-journal-restored",
+                heading("Offline Voyage Journal"),
+                ".landfall-offline-journal",
+              );
             } finally {
               await context.setOffline(false);
             }
@@ -375,7 +437,11 @@ for (const viewport of [
               () => expect(restored.getByRole("status")).toContainText("removed from this device"),
               15000,
             );
-            await capture("offline-region-removed", restored.getByRole("status"), ".journal-objects-drawer.open");
+            await capture(
+              "offline-region-removed",
+              restored.getByRole("status"),
+              ".journal-objects-drawer.open",
+            );
           }
           expect((await geoAudit(page)).calls).toBe(0);
           await page.getByRole("button", { name: "Close journal tool drawer", exact: true }).click();
@@ -409,6 +475,7 @@ for (const viewport of [
                   ".agents/scripts/sextant-landfall-physical-context.ts",
                   ".agents/scripts/sextant-resource-fixtures.ts",
                   ".agents/scripts/sextant-experience-fixture.ts",
+                  ".agents/scripts/sextant-chronicle-choice.ts",
                   ".agents/scripts/sextant-account-recovery-fixture.ts",
                   "tests/e2e/fixtures/landfall-closure.ts",
                   "tests/e2e/fixtures/sextant-consumer-diagnostics.ts",

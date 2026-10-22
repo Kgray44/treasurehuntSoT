@@ -6672,7 +6672,8 @@
           "The Creator capture saves a working draft while reading the already pinned published edition. It does not claim publication of those new draft changes; canonical publishing remains separately tested.",
           "The accepted spatial-pilot.experience Assistant contract, its synthetic account, fixtures, journeys and review obligations remain unchanged. This native-consumer contract makes no claim about additional paid model calls or new edition publication.",
           "These consumer journeys use a returning-reader persona prepared through an actual ordinary first opening; its separate first-entry recording must be retained. Full-opening replay is measured on each device/motion variant. Protected role preparation is still unqualified and cannot be inferred from local storageState.",
-          "The actual Chronicle chooser uses native keyboard Home/ArrowDown/Enter only after the owned fixture verifies or refuses exactly one account membership with the expected Voyage ID, Chronicle and pinned edition. Extra or inactive membership, wrong edition, expiry or removal is refused without reset. The accepted runner cannot directly assert the select live value or URL query; registered development checks retain actual selection response, surface Voyage and pinned Journal edition proof."
+          "The actual Chronicle chooser uses native keyboard Home/ArrowDown/Enter only after the owned fixture verifies or refuses exactly one account membership with the expected Voyage ID, Chronicle and pinned edition. Extra or inactive membership, wrong edition, expiry or removal is refused without reset. The accepted runner cannot directly assert the select live value or URL query; registered development checks retain actual selection response, surface Voyage and pinned Journal edition proof.",
+          "The successful Player formal journey disconnects only its actual fixed-label owned surface through Device options/Disconnect and returns to the same Journal. Fixed-label absence still refuses a preserved failed surface. The registration readiness/timing assertion is not a Lens continuity outcome; the actual Lens remains the semantic outcome."
         ],
         "navigation": "Use the readable returning Journal, replay its full opening, then Account → Personal Harbor → Sessions & Devices → Connect your Voyage devices and the actual Chronicle chooser. After ordinary registration return through Account → Player → Continue Adventure to the same pinned Journal. Creator entry and return retain the actual account-menu route. Lens returns to that same Journal.",
         "designTarget": "Preserve the readable Journal clue hierarchy, group Voyage connection before optional inputs, expose a clear screen fallback, and restore the exact parent task without a device-dependent dead end. Prepare the returning-reader persona through an actual first opening, retain that first-entry evidence, and measure the visible Replay full opening action in every normal/reduced capture. Await readable readiness on automatic returns before using the header. Use the actual account/device controls and the real Chronicle chooser; never activate Connect another device as a route replacement because it enrolls a screen and displays a pairing credential. Edit the Experience title through the ordinary Inspector, save and reopen the working scene to witness persistence. Restore the synthetic working title before comparing the independently pinned Player clue. Saving a working draft never counts as publication.",
@@ -6865,7 +6866,6 @@
                 "name": "Synthetic Sextant formal native device · This screen",
                 "text": "Synthetic Sextant formal native device · This screen",
                 "state": "DEVICE_JOINED",
-                "kind": "outcome",
                 "feedbackBoundary": true,
                 "meaning": "The ordinary canonical registration follows actual keyboard Chronicle selection, guarded by a refusal-only sole-membership ID/edition fixture preflight. No UUID or session identity is injected.",
                 "path": "/account/devices"
@@ -6929,6 +6929,151 @@
                   "role": "dialog",
                   "name": "A message between worlds"
                 }
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Account Sessions & Devices"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sessions & Devices",
+                "text": "Sessions & Devices",
+                "path": "/account/sessions"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Connect your Voyage devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Your connected screens",
+                "path": "/account/devices"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Chronicle"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Chronicle"
+                }
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant formal native device · This screen",
+                "text": "Synthetic Sextant formal native device · This screen"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Device options"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Disconnect Synthetic Sextant formal native device"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Use this device",
+                "text": "Use this device",
+                "path": "/account/devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Device disconnected. Its access has ended.",
+                "feedbackBoundary": true,
+                "absentRole": {
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal native device · This screen"
+                }
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Connected devices",
+                "text": "Device disconnected. Its access has ended.",
+                "absentRole": {
+                  "role": "heading",
+                  "name": "Synthetic Sextant formal native device"
+                }
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Player"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Open Chronicle Lens",
+                "state": "JOURNAL_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/player/playthroughs/sextant-experience-voyage/journal",
+                "text": "The Captain’s note",
+                "state": "RETURNED_TO_VOYAGE",
+                "returnPath": true
               }
             ]
           },
@@ -14312,10 +14457,10 @@
         ],
         "motion": {
           "feedbackBudgetMs": 3000,
-          "measurement": "Actual ordinary account preparation and production registration, verification, password/email change, deactivation/reactivation and scheduling/cancellation to visible loaded outcomes. No sleeps, forced clicks, retries or increased budgets."
+          "measurement": "Actual contextual entrance activation to the loaded canonical account form, then visible public-home return, within the existing3000ms feedback budget. No credentials or lifecycle mutation are submitted."
         },
         "continuity": {
-          "objective": "Retain the real shared home gateway while development verifies stable canonical synthetic account identity and untouched independent Voyage/edition baselines",
+          "objective": "Retain the real shared home-link destination across contextual workspace intent, canonical account form and public gateway return",
           "checks": [
             {
               "id": "actual-home-gateway",
@@ -14376,8 +14521,14 @@
               },
               {
                 "action": "assert",
-                "role": "textbox",
-                "name": "Password"
+                "role": "main",
+                "name": "",
+                "text": "Password"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Sign in"
               },
               {
                 "action": "click",
@@ -14468,10 +14619,10 @@
         ],
         "motion": {
           "feedbackBudgetMs": 3000,
-          "measurement": "Actual ordinary account preparation and production registration, verification, password/email change, deactivation/reactivation and scheduling/cancellation to visible loaded outcomes. No sleeps, forced clicks, retries or increased budgets."
+          "measurement": "Actual contextual entrance activation to the loaded canonical account form, then visible public-home return, within the existing3000ms feedback budget. No credentials or lifecycle mutation are submitted."
         },
         "continuity": {
-          "objective": "Retain the real shared home gateway while development verifies stable canonical synthetic account identity and untouched independent Voyage/edition baselines",
+          "objective": "Retain the real shared home-link destination across contextual workspace intent, canonical account form and public gateway return",
           "checks": [
             {
               "id": "actual-home-gateway",
@@ -14532,8 +14683,14 @@
               },
               {
                 "action": "assert",
-                "role": "textbox",
-                "name": "Password"
+                "role": "main",
+                "name": "",
+                "text": "Password"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Sign in"
               },
               {
                 "action": "click",
