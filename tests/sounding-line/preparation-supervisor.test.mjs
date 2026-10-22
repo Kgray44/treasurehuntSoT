@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { open, readFile, rename, writeFile } from "node:fs/promises";
+import { lstat, open, readFile, rename, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import path from "node:path";
 import {
@@ -382,4 +382,27 @@ test("cancellation during terminal persistence preserves the original and gives 
   assert.equal(observations.at(-1).status, "FAIL");
   assert.deepEqual(correction.binding, original.binding);
   assert.equal(correction.sequence, original.sequence);
+});
+
+test("atomic producer retains stable create-only hardlinks while the observer is live", async () => {
+  const session = await sessionFor();
+  for (const [index, phase] of ["ADMISSION", "PLANNING"].entries()) {
+    emitPreparationPhase(phase, { environment: { [PREPARATION_CHANNEL]: session.transport } });
+    const sequence = index + 1;
+    const file = path.join(session.transport, String(sequence).padStart(6, "0") + ".json");
+    const alias = path.join(session.transport, "event." + sequence + ".pending");
+    const before = await lstat(file),
+      linked = await lstat(alias);
+    assert.equal(before.nlink, 2);
+    assert.equal(linked.ino, before.ino);
+    assert.equal(linked.dev, before.dev);
+    const actual = await readPreparationEvent(session, sequence);
+    assert.deepEqual(actual, event(session, sequence, phase));
+    assert.equal(await readFile(file, "utf8"), await readFile(alias, "utf8"));
+    const after = await lstat(file);
+    assert.equal(after.ctimeMs, before.ctimeMs);
+    assert.equal(after.mtimeMs, before.mtimeMs);
+    assert.equal(after.size, before.size);
+    assert.equal(after.nlink, 2);
+  }
 });

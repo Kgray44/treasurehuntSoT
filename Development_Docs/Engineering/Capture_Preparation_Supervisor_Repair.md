@@ -34,7 +34,12 @@ session directory. Events bind repository, full base/candidate SHAs, run,
 attempt, random session nonce, sequence and stable source/contract/plan digests.
 Only closed phase names, integer ordinals and validated digests enter public
 checkpoints. Transport reads use one fixed 4,097-byte buffer and same-handle/path
-identity checks; payloads above 4,096 bytes fail. The 256-event cap exceeds the
+identity checks; payloads above 4,096 bytes fail. The producer closes a pending
+file and links it into its immutable event name. It retains that pending alias
+for the bounded session, so later alias removal cannot change ctime while the
+reader is active. Both names share the same payload blocks. Strict device/inode,
+size, mtime and ctime checks remain unchanged; at most 256 extra directory entries
+are retained and neither transport name is uploaded. The 256-event cap exceeds the
 current six supported profiles' conservative 76-event envelope; the largest
 profile has six preparers. Unknown, repeated, reordered and stale events fail.
 Transport files and raw error prose are never uploaded as public progress.
@@ -88,6 +93,14 @@ The first nine synthetic supervisor cases passed on Windows Node 24.18.0
 a test-control placement error: replacement was rejected at the earlier identity
 check before its expected read. The original failed receipt is preserved; moving
 the mutation after the handle stat made the focused growth/replacement case pass.
+The final fourteen-case local suite then passed. A subsequent fixed native
+publication control exposed a legitimate hard-link cleanup race: the reader
+rejected unchanged published bytes after the producer removed its pending link.
+The original nonaccepting probe is preserved. A candidate reader exception also
+passed local controls but was not promoted. Independent review preferred keeping
+the bounded pending aliases, preserving every strict mutation check. A producer/
+reader regression verifies actual create-only publication, two stable hardlinks,
+unchanged bytes/timestamps and retained growth/replacement denials.
 The other new cases proved phase expiry, cancellation during cleanup/publication,
 final absolute expiry and durable truthful failure. The synthetic publication
 regression proved progress failure still retains verified raw output and preserves

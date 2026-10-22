@@ -107,7 +107,9 @@ export function emitPreparationPhase(
     const eventPending = path.join(channel, "event." + sequence + ".pending");
     writeFileSync(eventPending, bytes, { flag: "wx" });
     linkSync(eventPending, path.join(channel, preparationEventName(sequence)));
-    unlinkSync(eventPending);
+    // Retain the bounded pending alias for this session. Unlinking a visible
+    // event's other hardlink changes ctime and races the reader's strict
+    // immutable-snapshot checks. Both names share the same payload blocks.
     const pending = path.join(channel, "state." + sequence + ".pending");
     writeFileSync(pending, JSON.stringify({ ...state, sequence, digests }) + "\n", { flag: "wx" });
     renameSync(pending, path.join(channel, "state.json"));
