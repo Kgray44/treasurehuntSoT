@@ -6,6 +6,7 @@ import {
 } from "./experience-reviewed-adoption.mjs";
 import { REVIEW_DIMENSIONS } from "./experience-review-dimensions.mjs";
 import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
+import { readSourceSnapshotBatches } from "./source-snapshot-batches.mjs";
 import { createHash } from "node:crypto";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { R20_DEFERRED_DISPOSITION, validateScopedR20Finding } from "./experience-scope-adjudication.mjs";
@@ -127,21 +128,7 @@ export function sourceSnapshot(root, revision) {
     })
     .filter((entry) => entry.type === "blob");
   const sources = entries.filter((entry) => sourceSnapshotReadsPath(entry.path));
-  const contents = new Map();
-  if (sources.length) {
-    const bytes = git(root, ["cat-file", "--batch"], {
-      encoding: null,
-      input: sources.map((entry) => entry.blob).join("\n") + "\n",
-    });
-    let offset = 0;
-    for (const entry of sources) {
-      const newline = bytes.indexOf(10, offset);
-      const length = Number(bytes.subarray(offset, newline).toString().split(" ")[2]);
-      if (!Number.isSafeInteger(length)) fail("SOURCE_SNAPSHOT_INVALID");
-      contents.set(entry.path, bytes.subarray(newline + 1, newline + 1 + length).toString("utf8"));
-      offset = newline + 1 + length + 1;
-    }
-  }
+  const contents = readSourceSnapshotBatches(sources, (args, options) => git(root, args, options));
   return { entries, contents };
 }
 function resolveImport(importer, specifier, files) {

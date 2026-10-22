@@ -17,6 +17,7 @@ not authorize restarting a completed phase.
 - [Unrelated work after expired R26 execution authority](unrelated-expired-r26-repair.md)
 - [Nonapplicable experience replay admission repair](nonapplicable-experience-replay-repair.md)
 - [Development report and producer output retention repair](development-failure-retention-repair.md)
+- [Source snapshot and Windows development build link repair](source-snapshot-build-links-repair.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
