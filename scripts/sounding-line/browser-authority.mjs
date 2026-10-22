@@ -315,6 +315,7 @@ export async function runBrowserAuthority({
   executionTimeoutMs = 15 * 60_000,
   cleanupOptions,
   onPrivateFailurePublication,
+  collectDevelopmentFailureEvidence,
 }) {
   const diagnosticStartedAt = performance.now();
   const progress = (event, fields) => authorityDiagnostic(diagnosticStartedAt, event, fields);
@@ -360,8 +361,9 @@ export async function runBrowserAuthority({
         root,
         binding,
         onPublication: onPrivateFailurePublication,
+        developmentOnlyEvidence: phase === "browser" && typeof collectDevelopmentFailureEvidence === "function",
       });
-      privateFailureSessions.set(phase, session);
+      privateFailureSessions.set(phase, { session, binding });
       return session;
     } catch {
       lifecycle.privateFailureDiagnostics ??= {};
@@ -557,8 +559,9 @@ export async function runBrowserAuthority({
       ["fixture", fixture, fixtureCleanup],
       ["browser", browser, browserCleanup],
     ]) {
-      const session = privateFailureSessions.get(phase);
-      if (!session) continue;
+      const capture = privateFailureSessions.get(phase);
+      if (!capture) continue;
+      const { session, binding } = capture;
       lifecycle.privateFailureDiagnostics ??= {};
       try {
         const workerClosed = cleanup.treeReaped === true && cleanup.streamsClosed === true;
@@ -566,10 +569,32 @@ export async function runBrowserAuthority({
           child && workerClosed
             ? await bounded(() => processExit(child), 2000, "SOUNDING_LINE_PRIVATE_FAILURE_EXIT_UNAVAILABLE")
             : { code: null, signal: null };
+        let developmentEvidence;
+        if (
+          phase === "browser" &&
+          typeof collectDevelopmentFailureEvidence === "function" &&
+          (exit.code !== 0 || (exit.signal ?? null) !== null)
+        ) {
+          try {
+            developmentEvidence = await bounded(
+              () =>
+                collectDevelopmentFailureEvidence({
+                  binding,
+                  producersClosed:
+                    workerClosed && serverCleanup.treeReaped === true && serverCleanup.streamsClosed === true,
+                }),
+              5000,
+              "SOUNDING_LINE_DEVELOPMENT_EVIDENCE_UNAVAILABLE",
+            );
+          } catch {
+            // Supplemental collection never replaces the original child or cleanup outcome.
+          }
+        }
         lifecycle.privateFailureDiagnostics[phase] = session.complete({
           exitCode: exit.code,
           signal: exit.signal,
           workerClosed,
+          developmentEvidence,
         });
       } catch {
         lifecycle.privateFailureDiagnostics[phase] = {

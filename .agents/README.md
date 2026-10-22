@@ -14,6 +14,7 @@ retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
 - [Focused development and final verification](testing-workflow.md)
+- [Development report and producer output retention repair](development-failure-retention-repair.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)

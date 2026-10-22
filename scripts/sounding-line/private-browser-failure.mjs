@@ -17,6 +17,7 @@ import {
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { sealPosttechnicalEvidence } from "./replay-posttechnical-diagnostic.mjs";
+import { developmentFailureEvidenceFiles } from "./development-failure-evidence.mjs";
 
 export const PRIVATE_BROWSER_FAILURE_CONTEXT = "SOUNDING_LINE_PRIVATE_BROWSER_FAILURE_CONTEXT";
 export const BROWSER_FAILURE_LIMITS = Object.freeze({
@@ -172,7 +173,8 @@ export function writeBrowserFailureManifest(context, records, overflow = false, 
   need(bytes.length <= BROWSER_FAILURE_LIMITS.manifestBytes, "LIMIT");
   writeFileSync(path.join(context.directory, "manifest.private.json"), bytes, { flag: "wx", mode: 0o600 });
 }
-export function createBrowserFailureRetention({ root, binding }) {
+export function createBrowserFailureRetention({ root, binding, developmentOnlyEvidence = false }) {
+  need(typeof developmentOnlyEvidence === "boolean");
   need(bindingValid(binding) && hash(publicKey) === keyId);
   root = path.resolve(root);
   privateDirectory(root);
@@ -195,10 +197,17 @@ export function createBrowserFailureRetention({ root, binding }) {
       [PRIVATE_BROWSER_FAILURE_CONTEXT]: JSON.stringify(context),
       PW_TEST_REPORTER: fileURLToPath(new URL("./private-browser-failure-reporter.mjs", import.meta.url)),
     },
-    complete: (outcome) => completeBrowserFailureRetention({ context, ...outcome }),
+    complete: (outcome) => completeBrowserFailureRetention({ context, ...outcome, developmentOnlyEvidence }),
   };
 }
-export function completeBrowserFailureRetention({ context, exitCode, signal = null, workerClosed }) {
+export function completeBrowserFailureRetention({
+  context,
+  exitCode,
+  signal = null,
+  workerClosed,
+  developmentOnlyEvidence = false,
+  developmentEvidence,
+}) {
   need(
     (exitCode === null || Number.isInteger(exitCode)) && (signal === null || /^SIG[A-Z0-9]{1,12}$/u.test(signal)),
     "OUTCOME_INVALID",
@@ -225,12 +234,20 @@ export function completeBrowserFailureRetention({ context, exitCode, signal = nu
   let rawBytes = 0;
   try {
     loadBrowserFailureContext({ [PRIVATE_BROWSER_FAILURE_CONTEXT]: JSON.stringify(context) });
-    const manifestBytes = readOwned(
-      path.join(context.directory, "manifest.private.json"),
-      BROWSER_FAILURE_LIMITS.manifestBytes,
-      context.startedAt,
-    );
-    const manifest = JSON.parse(manifestBytes);
+    let manifestBytes, manifest;
+    try {
+      manifestBytes = readOwned(
+        path.join(context.directory, "manifest.private.json"),
+        BROWSER_FAILURE_LIMITS.manifestBytes,
+        context.startedAt,
+      );
+      manifest = JSON.parse(manifestBytes);
+    } catch (error) {
+      if (!developmentOnlyEvidence) throw error;
+      result.issues.push(safeCode(error));
+      manifest = { version: 1, sessionId: context.sessionId, records: [], overflow: false, failures: [] };
+      manifestBytes = Buffer.from(JSON.stringify(manifest));
+    }
     need(
       manifest.version === 1 &&
         manifest.sessionId === context.sessionId &&
@@ -289,6 +306,25 @@ export function completeBrowserFailureRetention({ context, exitCode, signal = nu
     for (const kind of Object.keys(kinds))
       if (!inventory.some((record) => record.kind === kind))
         result.issues.push(`MISSING_${kind.replaceAll("-", "_").toUpperCase()}`);
+    if (developmentOnlyEvidence) {
+      try {
+        const evidence = developmentFailureEvidenceFiles(developmentEvidence, context.binding);
+        result.issues.push(...evidence.issues);
+        for (const file of evidence.files) {
+          need(
+            files.length < BROWSER_FAILURE_LIMITS.files &&
+              rawBytes + file.bytes.length + manifestBytes.length <= BROWSER_FAILURE_LIMITS.rawBytes,
+            "LIMIT",
+          );
+          files.push(file);
+          rawBytes += file.bytes.length;
+        }
+      } catch (error) {
+        result.issues.push(
+          error?.message === "DEVELOPMENT_FAILURE_EVIDENCE_INVALID" ? "DEVELOPMENT_EVIDENCE_INVALID" : safeCode(error),
+        );
+      }
+    }
     files.unshift({
       name: "private/failure-manifest.json",
       bytes: Buffer.from(JSON.stringify({ ...manifest, inventory, issues: result.issues })),

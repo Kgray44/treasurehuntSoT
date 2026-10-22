@@ -13,6 +13,7 @@ import { runBrowserAuthority } from "../../scripts/sounding-line/browser-authori
 import { createBrowserDiagnosticSession } from "../../scripts/sounding-line/browser-diagnostics.mjs";
 import { PRIVATE_BROWSER_FAILURE_CONTEXT } from "../../scripts/sounding-line/private-browser-failure.mjs";
 import { spawnOwnedProcess, stopOwnedProcess } from "../../scripts/sounding-line/owned-process.mjs";
+import { createDevelopmentFailureEvidence } from "../../scripts/sounding-line/development-failure-evidence.mjs";
 
 const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -79,7 +80,7 @@ async function fixture(t, mode) {
       expect(await response.text()).toBe('owned inert lifecycle'); expect(response.headers.get('x-inert-backend')).toBe('owned'); expect(response.headers.get('set-cookie')).not.toContain('Secure');
       writeFileSync('proxy-observed.private.json',JSON.stringify({forwarded:true,secureCookieRemoved:true}));
       if(${JSON.stringify(mode)}==='cancel'){await new Promise(()=>{});}
-      if(${JSON.stringify(mode)}!=='missing') for(const [name,extension,contentType] of [['screenshot','png','image/png'],['video','webm','video/webm'],['trace','zip','application/zip'],['error-context','md','text/markdown']]){const file=info.outputPath(name+'.'+extension);writeFileSync(file,'INERT_PRIVATE_LIFECYCLE_'+name);await info.attach(name,{path:file,contentType});}
+      if(!['missing','development-missing'].includes(${JSON.stringify(mode)})) for(const [name,extension,contentType] of [['screenshot','png','image/png'],['video','webm','video/webm'],['trace','zip','application/zip'],['error-context','md','text/markdown']]){const file=info.outputPath(name+'.'+extension);writeFileSync(file,'INERT_PRIVATE_LIFECYCLE_'+name);await info.attach(name,{path:file,contentType});}
       expect(1).toBe(2);
     });`,
   );
@@ -151,6 +152,7 @@ async function fixture(t, mode) {
       controller.abort();
       throw Error("INERT_WORKER_START_DEADLINE");
     })();
+  let developmentCollections = 0;
   const receipt = await runBrowserAuthority({
     root,
     browserArguments: ["--config", config, "--project", "chromium"],
@@ -167,6 +169,37 @@ async function fixture(t, mode) {
     signal: controller.signal,
     executionTimeoutMs: 20000,
     cleanupOptions: { gracefulMs: 500, forceMs: 1500 },
+    ...(mode === "development-missing"
+      ? {
+          async collectDevelopmentFailureEvidence({ binding, producersClosed }) {
+            developmentCollections++;
+            assert.equal(producersClosed, true);
+            assert(
+              launches.every((record) => record.closed),
+              "all producer streams closed before supplementary capture",
+            );
+            return createDevelopmentFailureEvidence({
+              binding,
+              selector: "tests/e2e/synthetic.spec.ts:1",
+              provider: null,
+              producersClosed,
+              report: { status: "COMPLETE", bytes: await readFile(path.join(root, "original-reporter.private.json")) },
+              streams: launches.flatMap((record, index) =>
+                ["stdout", "stderr"].map((kind) => {
+                  const bytes = Buffer.concat(record[kind]);
+                  return {
+                    label: `${index === 0 ? "server" : "browser"}.${kind}`,
+                    bytes,
+                    originalBytes: bytes.length,
+                    originalStreamSHA256: digest(bytes),
+                    complete: true,
+                  };
+                }),
+              ),
+            });
+          },
+        }
+      : {}),
   });
   await cancellation;
   const phase = mode === "fixture-failure" ? "fixture" : "browser",
@@ -217,7 +250,7 @@ async function fixture(t, mode) {
     const manifest = JSON.parse(await readFile(path.join(privateContext.directory, "manifest.private.json"), "utf8"));
     assert.equal(manifest.failures.length, 1);
     assert.match(manifest.failures[0].id, /^[a-f0-9]{64}$/u);
-    assert.equal(manifest.records.length, mode === "missing" ? 0 : 4);
+    assert.equal(manifest.records.length, ["missing", "development-missing"].includes(mode) ? 0 : 4);
   }
   if (process.env.SOUNDING_LINE_TEST_RECEIPTS_DIRECTORY) {
     const out = path.join(process.env.SOUNDING_LINE_TEST_RECEIPTS_DIRECTORY, mode);
@@ -266,8 +299,24 @@ async function fixture(t, mode) {
         path.join(out, "original-reporter.private.json"),
       );
   }
-  return { receipt, retention };
+  return { receipt, retention, developmentCollections };
 }
+
+test(
+  "real authority captures source-bound development report and streams only after all owned producers close",
+  { skip: process.platform === "win32", timeout: 35000 },
+  async (t) => {
+    const { receipt, retention, developmentCollections } = await fixture(t, "development-missing");
+    assert.equal(developmentCollections, 1);
+    assert.equal(receipt.failureCategory, "PRODUCT_FAILURE");
+    assert.equal(receipt.lifecycle.cleanup.status, "PASS");
+    assert.equal(retention.worker.exitCode, 1);
+    assert.equal(retention.retention, "INCOMPLETE");
+    assert(retention.issues.includes("NO_FAILURE_ATTACHMENTS"));
+    assert.equal(retention.memberCount, 7);
+    assert.equal(retention.qualification, false);
+  },
+);
 
 for (const mode of ["failure", "missing", "cancel", "collection-error", "fixture-failure"]) {
   test(
