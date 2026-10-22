@@ -53,6 +53,9 @@ const codes = new Set([
   "PERSISTENCE_FAILED",
   "IO_FAILED",
   "CONTEXT_INVALID",
+  "DEVELOPMENT_EVIDENCE_INVALID",
+  "DEVELOPMENT_REPORT_UNAVAILABLE",
+  "DEVELOPMENT_STREAM_INCOMPLETE",
 ]);
 function directory(file) {
   const stat = lstatSync(file);
@@ -317,9 +320,15 @@ export function browserFailurePublicationUploadPaths(publication, notBefore = 0)
 }
 // This closure is the sole publication entry point. Never deserialize a
 // candidate retention.json as a collector result or expose stage(JSON).
-export function createPublishableBrowserFailureRetention({ root, binding, authorityRoot = authority, onPublication }) {
+export function createPublishableBrowserFailureRetention({
+  root,
+  binding,
+  authorityRoot = authority,
+  onPublication,
+  developmentOnlyEvidence = false,
+}) {
   need(onPublication === undefined || typeof onPublication === "function", "CALLBACK_INVALID");
-  const collector = createBrowserFailureRetention({ root, binding: { ...binding } });
+  const collector = createBrowserFailureRetention({ root, binding: { ...binding }, developmentOnlyEvidence });
   const context = JSON.parse(collector.environment[PRIVATE_BROWSER_FAILURE_CONTEXT]);
   let completed;
   return Object.freeze({
@@ -337,6 +346,7 @@ export function createPublishableBrowserFailureRetention({ root, binding, author
         exitCode: outcome.exitCode,
         signal: outcome.signal ?? null,
         workerClosed: outcome.workerClosed,
+        ...(developmentOnlyEvidence ? { developmentEvidence: outcome.developmentEvidence } : {}),
       });
       const publication = publishCaptured(collector, context, retention, authorityRoot);
       if (publication.status === "STAGED" && onPublication) {

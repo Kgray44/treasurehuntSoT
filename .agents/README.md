@@ -15,6 +15,7 @@ not authorize restarting a completed phase.
 
 - [Focused development and final verification](testing-workflow.md)
 - [Nonapplicable experience replay admission repair](nonapplicable-experience-replay-repair.md)
+- [Development report and producer output retention repair](development-failure-retention-repair.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
