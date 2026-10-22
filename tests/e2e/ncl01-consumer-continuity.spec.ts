@@ -178,7 +178,8 @@ test("Administrator uses the real privacy-preserving People empty state and retu
   await signIn(page, "Administrator");
   await workspace(page, "Administrator", "Admiralty");
   await page.getByRole("link", { name: "People", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Start with a known clue", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "People", exact: true, level: 1 })).toBeVisible();
+  await expect(page.getByRole("main").getByText("Start with a known clue", { exact: true })).toBeVisible();
   await expect(page.getByRole("table")).toHaveCount(0);
   await accessible(page);
   await page.getByRole("link", { name: "Return to account", exact: true }).click();

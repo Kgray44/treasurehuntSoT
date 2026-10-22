@@ -36,7 +36,9 @@ progress. A connection or access failure stays visible and does not advance the
 Voyage. **Return to Guided View** remains
 available while the camera is preparing or waiting. These changes still require
 physical acceptance and protected integration; current software results are in the
-[completion ledger](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
+[post-Crossdeck record](../../Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md),
+with earlier results in the [completion ledger](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
+These records describe the candidate; the installed beta 7 has not changed.
 
 Find **The Classroom Compass Trail — NCL01** under **My Chronicle Library → Active
 Voyages**. The owner reports objects appearing when looking around in an earlier

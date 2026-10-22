@@ -163,6 +163,8 @@ affected family and its actual evidence, not a collective header-only approval.
 
 Prepared design, contract validation, integration, visual completeness, journey
 validation, owner walkthrough readiness and product acceptance stay distinct.
-The missing live metric browser provider, current Android instrumentation
-failure, physical iPhone/Android AR qualification and matching-source signed
-beta remain separate work and evidence boundaries.
+The missing live metric browser provider, physical iPhone/Android AR
+qualification and matching-source signed beta remain separate work and evidence
+boundaries. The [current integration record](NCL01_Post_Crossdeck_Integration_20261021.md)
+retains both failed Android runs and the later successful affected replay,
+without claiming that replay established either earlier failure's cause.

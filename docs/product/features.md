@@ -10,7 +10,18 @@ last_reviewed: 2026-10-21
 
 NCL-01 is an implementation candidate for shared 3D Scene delivery in the existing native companions. It reuses the original SC02 chest and compass assets; protected integration, complete browser AR integration, physical tracking and owner acceptance remain pending. See the [native Scene evidence record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md).
 
-The [October 21 completion candidate](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
+The [post-Crossdeck candidate](../../Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
+consumes the accepted continuity interfaces and retains fresh native model,
+input and joined development evidence within its recorded source scopes. The
+new consumer browser run failed after preparation and the production build;
+that hosted run's cause and per-case counts remain unknown. A separate local
+reproduction identified two failures, leading to Profile preview accessibility
+markup and test-expectation corrections. Fresh browser verification is pending.
+This does not establish combined experience or protected
+acceptance, and the installed internal beta 7 has not changed. Browser Lens
+remains Guided where no admitted metric-spatial provider is available.
+
+The earlier [October 21 completion candidate](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
 reconciles the earlier main baseline with the later internal TestFlight source and approved
 official artwork. It adds native placement guidance, canonical Inspect outcome
 presentation, an accessible center-selection control, stricter entity eligibility

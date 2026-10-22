@@ -10,7 +10,20 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
-The [NCL-01 completion candidate](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
+The [post-Crossdeck NCL-01 candidate](../../../Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
+consumes the accepted continuity interfaces without changing domain authority.
+Fresh native, original-model input and joined checks retain their exact source
+scopes, including Android's successful `39e28ff` replay. The new `b9b6956f`
+consumer browser run failed after preparation and the production build; its
+Linux assertion, cause and per-case counts remain unknown. A separate isolated
+Windows reproduction passed five cases and failed two, identifying Profile
+preview accessibility markup and a new People-test heading mismatch. The
+corrections pass focused guards; fresh browser verification remains pending.
+This is scoped development evidence, not combined experience, protected-main,
+physical or owner acceptance. Internal beta 7 remains unchanged; Feature Catalog
+promotion remains deferred.
+
+The earlier [NCL-01 completion candidate](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
 adds native canonical-outcome presentation and recovery corrections to the
 reconciled implementation. Shared, Android, iOS native/joined and unsigned Release
 development checks at pre-integration checkpoint `347a401c` pass within their recorded

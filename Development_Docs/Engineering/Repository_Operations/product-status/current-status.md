@@ -8,7 +8,20 @@ last_reviewed: 2026-10-21
 
 # Current status
 
-The [October 21 NCL-01 completion ledger](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
+The [post-Crossdeck NCL-01 record](../../../Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
+tracks the candidate consuming the accepted continuity interfaces. Fresh iOS
+native/joined evidence and Android `39e28ff`'s 16-test, original-model/input,
+joined and permission checks retain their exact source scopes. The new consumer
+browser run at `b9b6956f` passed preparation and the production build, then failed
+its browser worker; that Linux run's assertion, cause and per-case counts remain
+unknown. A separate isolated Windows reproduction passed five cases and failed
+two, identifying Profile preview accessibility markup and a new People-test
+heading mismatch. Corrections pass focused guards; fresh browser
+verification is pending. Combined experience qualification, ordinary
+protected integration, physical and owner acceptance remain open. Internal beta 7
+has not been replaced.
+
+The earlier [October 21 NCL-01 completion ledger](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
 records the completed pre-integration checkpoint `347a401c` with all approved TestFlight descendants,
 native Inspect/placement/lifecycle corrections and source-bound shared, Android,
 iOS native/joined and unsigned Release development evidence. Independent iOS

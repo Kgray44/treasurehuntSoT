@@ -27,11 +27,21 @@ Inspect, active presentation custody, revocation teardown and Guided fallback.
 Crossdeck MAP/NOTE/ARTIFACT wire messages do not become Scene/progression state.
 No finite721 campaign allowance transfers to741. Inspect the exact current plan.
 
-Reuse unchanged source-bound native evidence after verifying tree/blob identity:
-iOS7a009230 full31/0/1, Android0584aa2f native16, Release20 and official compiled
-icons. Preserve all historical failures and cancelled jobs. Shared Lens/Journal
-custody changed and requires fresh component, real browser and native joined
-verification. Do not repeat unchanged full31 merely because main advanced.
+Keep current post-Crossdeck evidence source-bound: iOS0d83 native29/0/1 and
+joined4 actions; Android39e28ff run39699792641 native16/16, joined4 actions,
+permission1/1 and cleanup. Reuse unchanged iOS7a009230 full31/0/1, Release20 and
+official compiled icons only after verifying tree/blob identity. Preserve all
+historical failures and cancelled jobs; the latest Android pass does not prove
+the earlier input failures' causes. The b9b6956f consumer run39701369791 passed
+preparation/build, then failed its browser worker; its Linux assertion, cause
+and per-case counts remain unknown. A separate isolated Windows b9 reproduction
+passed 5/failed 2, observing invalid ARIA names on generic Profile preview containers
+and a new People-test heading mismatch. Named-group and expectation corrections
+are peer-reviewed; 22 focused and 60 experience guards pass. Fresh browser
+verification remains pending. Do not assign these local findings to the hosted
+failure without evidence.
+Shared Lens/Journal custody still requires its current actual-app capture and
+independent review. Do not repeat unchanged full31 merely because main advanced.
 No admitted live metric browser engine exists; preserve truthful Guided use,
 no POSITION_NO_SCALE to metres or fictitious plane capability. Physical iPhone
 and Android acceptance remain separate. No automatic classroom registration.
