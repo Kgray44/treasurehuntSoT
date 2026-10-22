@@ -13,12 +13,13 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 The [post-Crossdeck NCL-01 candidate](../../../Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
 consumes the accepted continuity interfaces without changing domain authority.
 Fresh native, original-model input and joined checks retain their exact source
-scopes, including Android's successful `39e28ff` replay. The new `b9b6956f`
-consumer browser run failed after preparation and the production build; its
-Linux assertion, cause and per-case counts remain unknown. A separate isolated
-Windows reproduction passed five cases and failed two, identifying Profile
-preview accessibility markup and a new People-test heading mismatch. The
-corrections pass focused guards; fresh browser verification remains pending.
+scopes, including Android's successful `39e28ff` replay. The corrected consumer
+workflow at `846ef70e` passed guarded production execution and cleanup; its exact
+executed count is unpublished. Earlier hosted and separate Windows failures
+remain preserved. Their bounded corrections address Profile accessibility and
+new test-selector/readiness defects without removing identity, accessibility,
+return or authorization obligations. Accepted Sounding Line repair787 is also
+consumed; current combined experience qualification remains pending.
 This is scoped development evidence, not combined experience, protected-main,
 physical or owner acceptance. Internal beta 7 remains unchanged; Feature Catalog
 promotion remains deferred.

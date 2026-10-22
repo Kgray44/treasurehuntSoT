@@ -17,12 +17,13 @@ last_reviewed: 2026-10-21
 - NCL-01's [post-Crossdeck candidate](Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
   consumes the accepted continuity interfaces. Fresh iOS native/joined evidence
   and Android `39e28ff`'s 16-test original-model/input, joined and permission
-  replay retain their exact scopes. The `b9b6956f` consumer browser run passed
-  preparation/build, then failed its browser worker; that Linux run's assertion,
-  cause and per-case counts remain unknown. A separate isolated Windows run
-  passed five cases and failed two, exposing Profile preview accessibility markup
-  and a new People-test heading mismatch. Named-group and test-expectation
-  corrections pass focused guards; fresh browser verification is pending.
+  replay retain their exact scopes. Corrected consumer workflow `39706781483`
+  passes guarded production execution and cleanup; exact case counts remain
+  unpublished. Earlier hosted and separate Windows failures remain preserved.
+  Bounded corrections address Profile accessibility and test-selector/readiness
+  defects, retaining identity, accessibility, return and authorization checks.
+  The candidate also consumes accepted Sounding Line repair787; combined current
+  experience qualification remains pending.
   No combined experience, protected-main, physical or owner acceptance is claimed. Internal beta 7 and
   its official artwork remain unchanged.
 

@@ -15,7 +15,8 @@ waive current protected-main, experience, privacy or physical acceptance gates.
 Original brief/addendum and failed receipts remain in the engineering ledger.
 
 Preserved candidate347a401ca8e1cb2086c51a8db95be687d124412c is reconciled by a
-normal merge of accepted721/main aaff919428ef9ab421579415ce3409949724760d.
+normal merge of accepted721/main aaff919428ef9ab421579415ce3409949724760d,
+then accepted787/main fc5855f465314fa2c80c3a8966f8b6ce405f010a.
 Use this owned worktree and existing PR741; no force-push, successor PR or other
 project takeover. PR781 remains the separate documentation owner. Future
 NCL02/03 are proposals, not this implementation's authority.
@@ -37,9 +38,14 @@ preparation/build, then failed its browser worker; its Linux assertion, cause
 and per-case counts remain unknown. A separate isolated Windows b9 reproduction
 passed 5/failed 2, observing invalid ARIA names on generic Profile preview containers
 and a new People-test heading mismatch. Named-group and expectation corrections
-are peer-reviewed; 22 focused and 60 experience guards pass. Fresh browser
-verification remains pending. Do not assign these local findings to the hosted
-failure without evidence.
+are peer-reviewed; 22 focused and 60 experience guards pass. Corrected hosted
+846 run39706781483 passes guarded preparation/production execution and cleanup;
+its exact executed count/report digest are unpublished. Separate Windows846,
+d806 and7c runs each pass6/fail1, revealing route-readiness, exact-destination
+and edition-locator test defects respectively. Their receipts remain distinct;
+do not assign local findings or counts to either hosted run. Candidatea8208aa0
+includes the real named Exact Edition witness and accepted787. Resource-safe
+current execution must verify the previously unreached Player assertions.
 Shared Lens/Journal custody still requires its current actual-app capture and
 independent review. Do not repeat unchanged full31 merely because main advanced.
 No admitted live metric browser engine exists; preserve truthful Guided use,

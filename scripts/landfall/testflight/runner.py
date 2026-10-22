@@ -89,6 +89,76 @@ def validate_profile(profile, now=None):
     return hashlib.sha1(certificates[0]).hexdigest().upper()
 
 
+def utc_text(value):
+    return value.astimezone(dt.timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def validate_distribution_certificate(details, now=None):
+    """Parse private-captured OpenSSL output; never publish its personal subject."""
+    now = now or dt.datetime.now(dt.timezone.utc)
+    values = {}
+    for name in ("notBefore", "notAfter"):
+        matches = re.findall(rf"^{name}=([^\r\n]+)$", details, re.M)
+        require(len(matches) == 1, "CERTIFICATE_DATES_INVALID")
+        try:
+            values[name] = dt.datetime.strptime(matches[0], "%b %d %H:%M:%S %Y GMT").replace(tzinfo=dt.timezone.utc)
+        except ValueError:
+            raise Failure("CERTIFICATE_DATES_INVALID") from None
+    require(values["notBefore"] <= now, "CERTIFICATE_NOT_YET_VALID")
+    require(values["notAfter"] > now + dt.timedelta(hours=1), "CERTIFICATE_EXPIRED_OR_EXPIRING")
+    require(re.findall(r"^\s*OU\s*=\s*([^\r\n]+)", details, re.M) == [TEAM], "CERTIFICATE_TEAM_MISMATCH")
+    names = re.findall(r"^\s*CN\s*=\s*([^\r\n]+)", details, re.M)
+    require(len(names) == 1 and names[0].startswith("Apple Distribution:"), "CERTIFICATE_DISTRIBUTION_REQUIRED")
+    return {"notBeforeUtc": utc_text(values["notBefore"]), "expiresAtUtc": utc_text(values["notAfter"]),
+            "teamMatches": True, "distributionIdentity": True}
+
+
+def validate_preflight_route(route, app_id, group_id):
+    """A preflight can read only its exact app, configured group and latest builds."""
+    parsed = urllib.parse.urlsplit(route)
+    require(not parsed.scheme and not parsed.netloc and not parsed.fragment, "PREFLIGHT_ROUTE_FORBIDDEN")
+    try:
+        query = urllib.parse.parse_qs(parsed.query, keep_blank_values=True, strict_parsing=True)
+    except ValueError:
+        raise Failure("PREFLIGHT_ROUTE_FORBIDDEN") from None
+    allowed = parsed.path == "apps" and query == {"filter[bundleId]": [BUNDLE]}
+    allowed = allowed or (bool(re.fullmatch(r"[A-Za-z0-9-]+", group_id)) and
+                          parsed.path == f"betaGroups/{group_id}" and query == {"include": ["app"]})
+    allowed = allowed or (bool(re.fullmatch(r"[0-9]+", app_id or "")) and parsed.path == "builds" and
+                          query == {"filter[app]": [app_id], "sort": ["-uploadedDate"],
+                                    "include": ["preReleaseVersion"], "limit": ["10"]})
+    require(allowed, "PREFLIGHT_ROUTE_FORBIDDEN")
+
+
+def latest_build_metadata(result):
+    """Allowlist metadata only; neither a next-number calculation nor reservation."""
+    builds = result.get("data")
+    require(isinstance(builds, list) and len(builds) <= 10, "PREFLIGHT_BUILD_METADATA_INVALID")
+    if not builds:
+        return None
+    latest = builds[0]
+    attrs = latest.get("attributes", {})
+    require(latest.get("type") == "builds" and
+            re.fullmatch(r"[1-9][0-9]{0,3}(\.[0-9]{1,2}){0,2}", attrs.get("version", "")) and
+            attrs.get("processingState") in ("PROCESSING", "FAILED", "INVALID", "VALID"), "PREFLIGHT_BUILD_METADATA_INVALID")
+    version_id = latest.get("relationships", {}).get("preReleaseVersion", {}).get("data", {}).get("id")
+    versions = [item.get("attributes", {}).get("version") for item in result.get("included", [])
+                if item.get("type") == "preReleaseVersions" and item.get("id") == version_id]
+    require(len(versions) == 1 and re.fullmatch(r"[0-9]+\.[0-9]+(?:\.[0-9]+)?", versions[0] or ""), "PREFLIGHT_BUILD_METADATA_INVALID")
+    try:
+        uploaded = dt.datetime.fromisoformat(attrs["uploadedDate"].replace("Z", "+00:00"))
+        require(uploaded.tzinfo is not None, "PREFLIGHT_BUILD_METADATA_INVALID")
+    except (KeyError, ValueError, TypeError, AttributeError):
+        raise Failure("PREFLIGHT_BUILD_METADATA_INVALID") from None
+    return {"buildNumber": attrs["version"], "marketingVersion": versions[0],
+            "processingState": attrs["processingState"], "uploadedAtUtc": utc_text(uploaded)}
+
+
+class PreflightNoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise Failure("PREFLIGHT_REDIRECT_FORBIDDEN")
+
+
 def signing_overlay(root, identity, profile_uuid):
     """Override only the app's Release signing; retain the checked-in project spec."""
     return {
@@ -166,6 +236,7 @@ class Runner:
         self.keychain = None
         self.installed_profiles = []
         self.previous_keychains = []
+        self.restore_keychain_search_list = args.mode != "preflight"
         self.stage = "PREFLIGHT"
         self.receipt = {
             "schemaVersion": 1, "candidateSha": args.candidate, "mode": args.mode,
@@ -179,11 +250,19 @@ class Runner:
     def save_ownership(self):
         self.ownership.write_text(json.dumps({"temp": str(self.temp), "keychain": str(self.keychain) if self.keychain else None,
                                              "profiles": [str(value) for value in self.installed_profiles],
-                                             "previousKeychains": self.previous_keychains}), encoding="utf-8")
+                                             "previousKeychains": self.previous_keychains, "mode": self.args.mode,
+                                             "restoreKeychainSearchList": self.restore_keychain_search_list}), encoding="utf-8")
         self.ownership.chmod(0o600)
 
     def run(self, command, *, data=None, public_log=False, env=None, altool_result=False):
-        result = subprocess.run(command, input=data, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+        if self.args.mode == "preflight":
+            require(not public_log and not altool_result, "PREFLIGHT_PRIVATE_TOOL_OUTPUT_REQUIRED")
+            require(command[0] in ("git", "openssl", "security"), "PREFLIGHT_TOOL_FORBIDDEN")
+        try:
+            result = subprocess.run(command, input=data, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env,
+                                    **({"timeout": 60} if self.args.mode == "preflight" else {}))
+        except subprocess.TimeoutExpired:
+            raise Failure(f"COMMAND_TIMED_OUT_{self.stage}") from None
         if altool_result:
             diagnostic = altool_diagnostics((result.stdout + result.stderr).decode("utf-8", errors="replace"),
                                            [os.environ.get(name, "") for name in SECRET_NAMES])
@@ -211,7 +290,8 @@ class Runner:
         destination.chmod(0o600)
         return destination
 
-    def configure_signing(self):
+    def configure_signing(self, *, install_profiles=True):
+        require(self.args.mode != "preflight" or install_profiles is False, "PREFLIGHT_PROFILE_INSTALL_FORBIDDEN")
         self.stage = "SIGNING_PREFLIGHT"
         for name in SECRET_NAMES:
             require(bool(os.environ.get(name)), f"SECRET_MISSING_{name}")
@@ -228,7 +308,8 @@ class Runner:
             "".join(os.environ["NCL01_DISTRIBUTION_P12_BASE64"].split()), validate=True))
         self.keychain = self.temp / "signing.keychain-db"
         keychain_password = secrets.token_urlsafe(32)
-        self.previous_keychains = shlex.split(self.run(["security", "list-keychains", "-d", "user"]).decode())
+        if self.restore_keychain_search_list:
+            self.previous_keychains = shlex.split(self.run(["security", "list-keychains", "-d", "user"]).decode())
         self.save_ownership()
         self.run(["security", "create-keychain", "-p", keychain_password, str(self.keychain)])
         self.run(["security", "set-keychain-settings", "-lut", "21600", str(self.keychain)])
@@ -236,11 +317,17 @@ class Runner:
         self.run(["security", "import", str(p12), "-P", os.environ["NCL01_DISTRIBUTION_P12_PASSWORD"],
                   "-A", "-t", "cert", "-f", "pkcs12", "-k", str(self.keychain)])
         self.run(["security", "set-key-partition-list", "-S", "apple-tool:,apple:,codesign:", "-k", keychain_password, str(self.keychain)])
-        self.run(["security", "list-keychains", "-d", "user", "-s", str(self.keychain), *self.previous_keychains])
+        if self.restore_keychain_search_list:
+            self.run(["security", "list-keychains", "-d", "user", "-s", str(self.keychain), *self.previous_keychains])
         identities = self.run(["security", "find-identity", "-v", "-p", "codesigning", str(self.keychain)]).decode()
-        require(self.identity in identities and "Apple Distribution:" in identities, "PROFILE_CERTIFICATE_PRIVATE_KEY_UNAVAILABLE")
+        if self.args.mode == "preflight":
+            fingerprints = re.findall(r'^\s*\d+\)\s+([A-Fa-f0-9]{40})\s+"Apple Distribution:[^\r\n]*"\s*$', identities, re.M)
+            require(sum(value.upper() == self.identity for value in fingerprints) == 1,
+                    "PROFILE_CERTIFICATE_PRIVATE_KEY_UNAVAILABLE")
+        else:
+            require(self.identity in identities and "Apple Distribution:" in identities, "PROFILE_CERTIFICATE_PRIVATE_KEY_UNAVAILABLE")
         # Xcode 16+ location plus legacy lookup; install only owned UUID files.
-        for relative in ("Library/Developer/Xcode/UserData/Provisioning Profiles", "Library/MobileDevice/Provisioning Profiles"):
+        for relative in (("Library/Developer/Xcode/UserData/Provisioning Profiles", "Library/MobileDevice/Provisioning Profiles") if install_profiles else ()):
             directory = Path.home() / relative
             directory.mkdir(parents=True, exist_ok=True)
             installed = directory / f"{self.profile_uuid}.mobileprovision"
@@ -251,7 +338,19 @@ class Runner:
             installed.chmod(0o600)
         self.configure_api()
         self.receipt["profileValidated"] = True
-        self.receipt["certificateSha1"] = self.identity
+        if self.args.mode == "preflight":
+            certificate = self.private_file("profile-certificate.der", profile["DeveloperCertificates"][0])
+            details = self.run(["openssl", "x509", "-inform", "DER", "-in", str(certificate), "-noout",
+                                "-dates", "-subject", "-nameopt", "sep_multiline,utf8"]).decode()
+            self.receipt["signingPreflight"] = {
+                "certificate": validate_distribution_certificate(details),
+                "profileExpiresAtUtc": utc_text(profile["ExpirationDate"].replace(tzinfo=dt.timezone.utc)),
+                "profileMatchesTeamAndBundle": True, "privateKeyMatchesProfileCertificate": True,
+                "userProfilesInstalled": False, "certificateRevocationVerified": False,
+                "profileRevocationVerified": False,
+            }
+        else:
+            self.receipt["certificateSha1"] = self.identity
 
     def configure_api(self):
         self.key_id = os.environ.get("NCL01_ASC_KEY_ID", "")
@@ -265,6 +364,9 @@ class Runner:
         self.api_key.write_text(os.environ["NCL01_ASC_PRIVATE_KEY_P8"], encoding="utf-8")
         self.api_key.chmod(0o600)
         self.run(["openssl", "pkey", "-in", str(self.api_key), "-noout", "-check"])
+        if self.args.mode == "preflight":
+            public_details = self.run(["openssl", "pkey", "-in", str(self.api_key), "-noout", "-text_pub"]).decode()
+            require(re.search(r"ASN1 OID:\s*prime256v1(?:\s|$)", public_details), "ASC_P256_KEY_REQUIRED")
 
     def verify_app_signing(self, project):
         self.stage = "SIGNING_SETTINGS_VALIDATION"
@@ -283,6 +385,7 @@ class Runner:
         self.receipt["appTargetSigningSettingsValidated"] = True
 
     def archive(self):
+        require(self.args.mode != "preflight", "PREFLIGHT_MUTATION_FORBIDDEN")
         self.stage = "TOOLCHAIN"
         require(sys.platform == "darwin", "MACOS_REQUIRED")
         require(self.run(["git", "rev-parse", "HEAD"]).decode().strip() == self.args.candidate, "CANDIDATE_CHECKOUT_MISMATCH")
@@ -362,26 +465,58 @@ class Runner:
         return (signing + b"." + encode(signature_raw(signature))).decode()
 
     def api(self, route, body=None):
+        read_only = self.args.mode == "preflight"
+        if read_only:
+            require(body is None, "PREFLIGHT_MUTATION_FORBIDDEN")
+            validate_preflight_route(route, getattr(self, "app_id", None), os.environ.get("NCL01_INTERNAL_GROUP_ID", ""))
         data = None if body is None else json.dumps(body).encode()
         request = urllib.request.Request("https://api.appstoreconnect.apple.com/v1/" + route, data=data,
-                                        headers={"Authorization": "Bearer " + self.token(), "Content-Type": "application/json"})
+                                        headers={"Authorization": "Bearer " + self.token(), "Content-Type": "application/json"},
+                                        method="GET" if read_only else None)
         try:
-            with urllib.request.urlopen(request, timeout=45) as response:
-                contents = response.read()
+            opener = urllib.request.build_opener(PreflightNoRedirect()).open if read_only else urllib.request.urlopen
+            with opener(request, timeout=45) as response:
+                contents = response.read(2_000_001) if read_only else response.read()
+            require(not read_only or len(contents) <= 2_000_000, "PREFLIGHT_RESPONSE_TOO_LARGE")
             return json.loads(contents) if contents else {}
         except urllib.error.HTTPError as error:
             raise Failure(f"ASC_HTTP_{error.code}_{self.stage}") from None
 
     def app_record(self):
         self.stage = "APP_RECORD_VALIDATION"
+        if self.args.mode == "preflight":
+            require(re.fullmatch(r"[0-9]+", os.environ.get("NCL01_ASC_APP_ID", "")), "ASC_APP_ID_REQUIRED")
         apps = self.api("apps?" + urllib.parse.urlencode({"filter[bundleId]": BUNDLE}))["data"]
         require(len(apps) == 1, "EXACT_APPSTORE_CONNECT_RECORD_REQUIRED")
+        if self.args.mode == "preflight":
+            require(apps[0].get("type") == "apps" and apps[0].get("attributes", {}).get("bundleId") == BUNDLE,
+                    "ASC_APP_BUNDLE_MISMATCH")
         self.app_id = apps[0]["id"]
         configured = os.environ.get("NCL01_ASC_APP_ID")
         require(not configured or configured == self.app_id, "ASC_APP_ID_MISMATCH")
         self.receipt["appStoreConnectAppId"] = self.app_id
 
+    def preflight(self):
+        self.configure_signing(install_profiles=False)
+        self.app_record()
+        self.stage = "INTERNAL_GROUP_READ_ONLY"
+        group_id = os.environ.get("NCL01_INTERNAL_GROUP_ID", "")
+        require(re.fullmatch(r"[A-Za-z0-9-]+", group_id), "INTERNAL_GROUP_ID_REQUIRED")
+        group = self.api(f"betaGroups/{group_id}?include=app")["data"]
+        require(group.get("id") == group_id and group.get("type") == "betaGroups" and
+                group["attributes"]["isInternalGroup"] is True and
+                group["relationships"]["app"]["data"]["id"] == self.app_id, "INTERNAL_GROUP_APP_MISMATCH")
+        self.stage = "LATEST_BUILD_READ_ONLY"
+        result = self.api("builds?" + urllib.parse.urlencode({"filter[app]": self.app_id, "sort": "-uploadedDate",
+                          "include": "preReleaseVersion", "limit": "10"}))
+        self.receipt["distributionPreflight"] = {
+            "readOnly": True, "appAndInternalGroupMatch": True, "apiReadAccessVerified": True,
+            "latestObservedBuild": latest_build_metadata(result), "versionAndBuildArgumentsAreReferenceOnly": True,
+            "buildNumberReserved": False, "uploadPermissionVerified": False,
+        }
+
     def export_upload(self):
+        require(self.args.mode != "preflight", "PREFLIGHT_MUTATION_FORBIDDEN")
         self.app_record()
         self.stage = "APPSTORE_EXPORT"
         options = {"method": "app-store-connect", "destination": "export", "teamID": TEAM, "signingStyle": "manual",
@@ -415,6 +550,7 @@ class Runner:
         self.observe_processing()
 
     def observe_processing(self):
+        require(self.args.mode != "preflight", "PREFLIGHT_MUTATION_FORBIDDEN")
         self.stage = "APPLE_PROCESSING"
         deadline = time.monotonic() + 1500
         while time.monotonic() < deadline:
@@ -437,6 +573,7 @@ class Runner:
         raise Failure("APPLE_PROCESSING_PENDING_RESUME_OBSERVATION")
 
     def attach_internal_group(self, build_id):
+        require(self.args.mode != "preflight", "PREFLIGHT_MUTATION_FORBIDDEN")
         group_id = os.environ.get("NCL01_INTERNAL_GROUP_ID", "")
         if not group_id:
             self.receipt["internalTesting"] = "OWNER_SELECT_INTERNAL_GROUP_AND_TESTER"
@@ -464,20 +601,41 @@ class Runner:
             except OSError:
                 errors.append("PROFILE_CLEANUP_FAILED")
         if self.keychain:
-            for args in (["security", "list-keychains", "-d", "user", "-s", *self.previous_keychains],
-                         ["security", "delete-keychain", str(self.keychain)]):
-                if subprocess.run(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode:
+            commands = []
+            if self.restore_keychain_search_list:
+                commands.append(["security", "list-keychains", "-d", "user", "-s", *self.previous_keychains])
+            if self.keychain.exists():
+                commands.append(["security", "delete-keychain", str(self.keychain)])
+            for args in commands:
+                try:
+                    failed = subprocess.run(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                            **({"timeout": 60} if self.args.mode == "preflight" else {})).returncode
+                except (OSError, subprocess.TimeoutExpired):
+                    failed = True
+                if failed:
                     errors.append("KEYCHAIN_CLEANUP_FAILED")
         try:
             shutil.rmtree(self.temp)
+        except FileNotFoundError:
+            pass
         except OSError:
             errors.append("TEMP_CLEANUP_FAILED")
+        if not errors:
+            try:
+                self.ownership.unlink(missing_ok=True)
+            except OSError:
+                errors.append("OWNERSHIP_CLEANUP_FAILED")
         self.receipt["credentialCleanup"] = "PASS" if not errors else "FAIL"
         if errors:
             self.receipt["cleanupErrors"] = errors
-        self.save()
-        if not errors:
-            self.ownership.unlink(missing_ok=True)
+            self.receipt["result"] = "FAIL"
+        try:
+            self.save()
+        except OSError:
+            self.receipt["credentialCleanup"] = "FAIL"
+            self.receipt["result"] = "FAIL"
+            self.receipt.setdefault("cleanupErrors", []).append("RECEIPT_WRITE_FAILED")
+            return False
         return not errors
 
 
@@ -491,16 +649,29 @@ def cleanup_owned():
     owner = json.loads(record.read_text(encoding="utf-8"))
     temp = Path(owner["temp"]).resolve()
     require(temp.parent == root and temp.name.startswith("ncl01-testflight-"), "CLEANUP_TEMP_SCOPE_INVALID")
+    require(owner.get("mode") in (None, "unsigned", "upload", "observe", "preflight"), "CLEANUP_MODE_INVALID")
+    preflight = owner.get("mode") == "preflight"
+    restore_search_list = owner.get("restoreKeychainSearchList", not preflight)
+    require(isinstance(restore_search_list, bool) and (not preflight or not restore_search_list), "CLEANUP_SEARCH_LIST_SCOPE_INVALID")
+    require(not preflight or not owner["profiles"], "CLEANUP_PREFLIGHT_PROFILE_SCOPE_INVALID")
     errors = []
     if owner["keychain"]:
         keychain = Path(owner["keychain"]).resolve()
         require(keychain == temp / "signing.keychain-db", "CLEANUP_KEYCHAIN_SCOPE_INVALID")
-        for command in (["security", "list-keychains", "-d", "user", "-s", *owner["previousKeychains"]],
-                        ["security", "delete-keychain", str(keychain)]):
-            result = subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            if result.returncode:
+        commands = []
+        if restore_search_list:
+            commands.append(["security", "list-keychains", "-d", "user", "-s", *owner["previousKeychains"]])
+        if keychain.exists():
+            commands.append(["security", "delete-keychain", str(keychain)])
+        for command in commands:
+            try:
+                failed = subprocess.run(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                        **({"timeout": 60} if preflight else {})).returncode
+            except (OSError, subprocess.TimeoutExpired):
+                failed = True
+            if failed:
                 errors.append("KEYCHAIN")
-    allowed = [(Path.home() / relative).resolve() for relative in (
+    allowed = [] if preflight else [(Path.home() / relative).resolve() for relative in (
         "Library/Developer/Xcode/UserData/Provisioning Profiles", "Library/MobileDevice/Provisioning Profiles")]
     for value in owner["profiles"]:
         profile = Path(value).resolve()
@@ -511,10 +682,15 @@ def cleanup_owned():
             errors.append("PROFILE")
     try:
         shutil.rmtree(temp)
+    except FileNotFoundError:
+        pass
     except OSError:
         errors.append("TEMP")
     require(not errors, "CREDENTIAL_CLEANUP_FAILED")
-    record.unlink()
+    try:
+        record.unlink(missing_ok=True)
+    except OSError:
+        raise Failure("CREDENTIAL_CLEANUP_FAILED") from None
     print("NCL01_CREDENTIAL_CLEANUP_PASS")
     return 0
 
@@ -523,7 +699,7 @@ def main():
     if sys.argv[1:] == ["--cleanup-owned"]:
         return cleanup_owned()
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=("unsigned", "upload", "observe"), required=True)
+    parser.add_argument("--mode", choices=("unsigned", "upload", "observe", "preflight"), required=True)
     parser.add_argument("--candidate", required=True)
     parser.add_argument("--origin", required=True)
     parser.add_argument("--version", required=True)
@@ -536,12 +712,15 @@ def main():
     runner = Runner(args)
     success = False
     try:
-        if args.mode == "observe":
+        if args.mode in ("observe", "preflight"):
             require(sys.platform == "darwin", "MACOS_REQUIRED")
             require(runner.run(["git", "rev-parse", "HEAD"]).decode().strip() == args.candidate, "CANDIDATE_CHECKOUT_MISMATCH")
-            runner.configure_api()
-            runner.app_record()
-            runner.observe_processing()
+            if args.mode == "preflight":
+                runner.preflight()
+            else:
+                runner.configure_api()
+                runner.app_record()
+                runner.observe_processing()
         else:
             runner.archive()
             if args.mode == "upload":
@@ -553,7 +732,24 @@ def main():
         runner.receipt.update({"result": "FAIL", "failureStage": runner.stage, "error": label})
         print(f"NCL01_{label}", file=sys.stderr)
     finally:
-        success = runner.cleanup() and success
+        try:
+            cleanup_passed = runner.cleanup()
+        except Exception:
+            cleanup_passed = False
+            runner.receipt.update({"credentialCleanup": "FAIL", "cleanupErrors": ["UNEXPECTED_CLEANUP_FAILURE"]})
+        success = cleanup_passed and success
+        if not cleanup_passed:
+            runner.receipt["result"] = "FAIL"
+    try:
+        runner.save()
+    except Exception:
+        success = False
+        runner.receipt.update({"result": "FAIL", "receiptWrite": "FAIL"})
+        try:
+            (runner.public / "receipt.json").unlink(missing_ok=True)
+        except Exception:
+            pass
+        print("NCL01_FINAL_RECEIPT_WRITE_FAILED", file=sys.stderr)
     print(json.dumps(runner.receipt, indent=2))
     return 0 if success else 1
 

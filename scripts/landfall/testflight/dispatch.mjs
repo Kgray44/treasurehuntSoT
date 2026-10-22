@@ -6,7 +6,7 @@ import path from "node:path";
 // No push occurs without --publish. This never updates main or PR #741.
 export function validateInputs({ candidate, mode, origin, version, build }) {
   if (!/^[0-9a-f]{40}$/.test(candidate ?? "")) throw new Error("NCL01_CANDIDATE_INVALID");
-  if (!["unsigned", "upload", "observe"].includes(mode)) throw new Error("NCL01_MODE_INVALID");
+  if (!["unsigned", "upload", "observe", "preflight"].includes(mode)) throw new Error("NCL01_MODE_INVALID");
   const url = new URL(origin);
   if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.pathname !== "/")
     throw new Error("NCL01_HTTPS_ORIGIN_REQUIRED");
@@ -27,8 +27,9 @@ export function renderWorkflow(template, input) {
     __VERSION__: values.version,
     __BUILD__: values.build,
     __MODE__: values.mode,
-    __UPLOAD__: String(values.mode !== "unsigned"),
+    __UPLOAD__: String(["upload", "observe"].includes(values.mode)),
     __UNSIGNED__: String(values.mode === "unsigned"),
+    __PREFLIGHT__: String(values.mode === "preflight"),
   };
   let result = template;
   for (const [key, value] of Object.entries(replacements)) result = result.replaceAll(key, value);

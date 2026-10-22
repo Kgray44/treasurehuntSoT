@@ -40,6 +40,35 @@ addresses, beta numbers, installation gates and commands below are historical
 observations, not current operational instructions. Their original receipts
 remain unchanged.
 
+## Read-only distribution preflight
+
+The existing dispatcher supports `preflight` as a separate job in the same
+restricted `ncl01-testflight` environment. It receives the existing configured
+signing material only on the governed macOS runner. Source inspection and local
+tests do not authorize dispatch; freeze and independently review the exact
+candidate first. No new key, secret, environment protection or app/group change
+is part of this mode.
+
+Use the existing HTTPS origin and historical `0.1.0` / `7` arguments as reference
+metadata. Preflight validates the distribution profile, matching certificate and
+private key, validity dates, team/bundle/NFC entitlement, API key and exact app /
+internal-group association. Its transport permits only the three bounded GET
+routes for the configured app, group and latest build metadata; request bodies
+and redirects are rejected. Latest observed build metadata never reserves or
+proves availability of a future build number. Read access and local signing
+material validity do not prove upload permission, certificate/profile revocation status
+or Apple acceptance of a future signed build.
+
+Preflight creates only owned private temporary files/keychain state, never
+changes the user's keychain search list, and removes owned state on handled exits.
+It installs no user provisioning profiles, generates no Xcode project/archive/
+IPA, and never calls upload or group attachment. The always-cleanup step remains
+mandatory; cleanup failure is a failure, not a successful preflight. Only the
+sanitized `receipt.json` is published, with no private subject, key, profile,
+token, raw Apple/OpenSSL response or account identity. Preserve beta 7 and the
+separately deployed preview. `observe` remains a historical write-capable mode
+and must not substitute for this read-only preflight.
+
 ## Historical isolated-beta execution
 
 LAUNCHDECK_PROJECT_TRIM_ADAPTATION; profile security-sensitive infrastructure;

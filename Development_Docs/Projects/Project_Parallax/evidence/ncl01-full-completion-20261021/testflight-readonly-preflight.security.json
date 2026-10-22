@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_ONLY_TESTFLIGHT_PREFLIGHT_SECURITY_REVIEW",
+  "result": "READY",
+  "qualification": false,
+  "reviewScope": {
+    "sourceSnapshot": "EXACT_UNCOMMITTED_WORKING_FILE_BYTES",
+    "candidateCommitClaimed": false,
+    "gitBlobBinding": "PARENT_TO_BIND_AFTER_COMMITTED_FREEZE",
+    "reviewedFileCount": 6,
+    "files": [
+      {
+        "path": "scripts/landfall/testflight/dispatch.mjs",
+        "byteLength": 5087,
+        "windowsBytesSha256": "b4932d711692dbdaa69bc19ccc238006bb77ecdb32d253d5e9bee6a5fff14324"
+      },
+      {
+        "path": "scripts/landfall/testflight/dispatch.test.mjs",
+        "byteLength": 3698,
+        "windowsBytesSha256": "36d7bae3c1ae9ee81eba73d1519922719ab71650dfbf4c48a2b9f9363b29c895"
+      },
+      {
+        "path": "scripts/landfall/testflight/runner.py",
+        "byteLength": 42399,
+        "windowsBytesSha256": "a1922ac0838730c55c52dc91b71672fc95f4d9896041f28f9c712958563a0d40"
+      },
+      {
+        "path": "scripts/landfall/testflight/test_runner.py",
+        "byteLength": 35272,
+        "windowsBytesSha256": "bcf5fe2cb270f3ed3df543d80dc2e937755dd020c661de11ac2c7cd05b330d2a"
+      },
+      {
+        "path": ".agents/ncl01-testflight-hosted.yml",
+        "byteLength": 5145,
+        "windowsBytesSha256": "9e04245a62e55e65010c503bf257c38f526fb4735adb6bf87f59b9fdddf860a3"
+      },
+      {
+        "path": ".agents/ncl01-testflight.md",
+        "byteLength": 29416,
+        "windowsBytesSha256": "528e608632a3889f20755f1d75f7c4af31786e658ecbea05c0659894a21eb493"
+      }
+    ]
+  },
+  "foundAndRepaired": [
+    {
+      "id": "PREFLIGHT_USER_KEYCHAIN_SEARCH_LIST_MUTATION",
+      "finding": "The reused signing setup and recovery initially read or replaced the user search list.",
+      "repairReviewed": "Preflight skips search-list reads, sets and restores; owned recovery records and validates mode and restore scope. Legacy mode behavior remains separate."
+    },
+    {
+      "id": "LATE_CLEANUP_STALE_PASS_RECEIPT",
+      "finding": "A late ownership-unlink failure initially changed only memory after a PASS artifact had been written.",
+      "repairReviewed": "Cleanup determines ownership-unlink outcome before persisting; main persists final FAIL after late or unexpected cleanup failure. Final receipt-write failure returns nonzero and attempts removal of a stale receipt."
+    },
+    {
+      "id": "UNBOUNDED_OR_NONIDEMPOTENT_PREFLIGHT_CLEANUP",
+      "finding": "Direct cleanup tools initially lacked a timeout, and already-removed owned temporary state could make recovery fail again.",
+      "repairReviewed": "Preflight and its recovery use 60-second security-command bounds, handle timeout or OS failure and continue owned temporary deletion. Already-missing owned temporary/keychain state is idempotent; recovered cleanup does not rewrite an earlier failure receipt."
+    },
+    {
+      "id": "SUBSTRING_PRIVATE_KEY_IDENTITY_MATCH",
+      "finding": "The inherited substring check could match the expected fingerprint inside another certificate subject.",
+      "repairReviewed": "Preflight requires exactly one anchored find-identity entry whose actual fingerprint field matches the profile certificate. A subject containing the expected fingerprint is rejected by the reviewed regression source."
+    }
+  ],
+  "confirmedSourceGuards": {
+    "appleTransport": "Fixed HTTPS App Store Connect host; three exact app/group/latest-build GET route shapes; request bodies rejected before authentication; redirects denied; 45-second socket timeout and 2,000,000-byte response cap.",
+    "signingMaterial": "Profile team, bundle, distribution, NFC, expiry and sole certificate checks; certificate dates, team OU and distribution CN; exact private-key identity entry; P-256 App Store Connect key.",
+    "association": "Configured app ID and exact bundle record, exact internal-group ID and app relationship, and allowlisted latest-build metadata.",
+    "distributionDenial": "Preflight rejects profile-install, archive, export/upload, processing/attachment entrypoints; no project generation, IPA publication or build-number reservation.",
+    "credentialHandling": "Owned private temporary files/keychain; captured private tool output; fixed sanitized error labels; no private material intentionally copied to preflight public logs/artifacts. Existing security CLI password-argument design is retained only for the trusted ephemeral runner.",
+    "cleanup": "Owned path and mode bounds, no preflight user-profile cleanup scope, bounded command failures, final failure persistence, and mandatory always-cleanup workflow step.",
+    "workflow": "Separate 15-minute preflight job in the existing credential-governed environment; exact candidate checkout; unsigned job has no secret environment; only preflight receipt.json is selected for publication.",
+    "compatibility": "Existing unsigned, upload and observe job selection and their distribution paths are retained; read-only preflight is a distinct mode.",
+    "packetLimits": "GET success is explicitly separate from upload rights, revocation, Apple acceptance, build-number availability, physical installation and physical AR."
+  },
+  "reviewerActions": {
+    "sourceAndRegressionTextRead": true,
+    "testsExecuted": false,
+    "realCredentialsRead": false,
+    "appleRequestsMade": false,
+    "signingMaterialImported": false,
+    "keychainOrProfileOperationsExecuted": false,
+    "archiveOrUploadExecuted": false,
+    "workflowDispatched": false,
+    "repositoryOrGitMutated": false,
+    "builderTestResultsClaimedByThisReview": false
+  },
+  "limits": [
+    "READY is an independent code-review conclusion, not candidate qualification, execution authorization or product acceptance.",
+    "Actual credential validity, Apple app/group access, environment protection and cleanup on a real macOS runner were not exercised by this reviewer.",
+    "No upload right, certificate/profile revocation result, future build-number reservation, Apple acceptance, physical installation or AR result is inferred.",
+    "Host I/O failures can prevent writing or deleting a receipt; final write failure remains nonzero and stale-file deletion is best effort, never an unconditional host-storage guarantee.",
+    "Windows byte hashes bind this reviewed uncommitted snapshot; the parent must separately bind committed Git blobs before execution. Builder tests remain separate evidence."
+  ],
+  "primaryReferenceConsulted": {
+    "url": "https://github.com/apple-oss-distributions/Security/blob/main/OSX/libsecurity_keychain/lib/StorageManager.cpp",
+    "scope": "Current Apple source excludes ordinary private keychains from automatic search-list insertion; this supports source review, not an actual host-state measurement."
+  }
+}

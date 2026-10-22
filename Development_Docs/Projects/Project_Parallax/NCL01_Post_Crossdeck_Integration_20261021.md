@@ -23,6 +23,17 @@ The preserved implementation parent is
 [PR741](https://github.com/Kgray44/treasurehuntSoT/pull/741). No ancestry is
 rewritten and no successor PR is created.
 
+Protected main subsequently advanced to
+`fc5855f465314fa2c80c3a8966f8b6ce405f010a` through accepted787. Normal
+merge `a8208aa038d989b8aee17f1494bd37a44e5b1b9b`, tree
+`d64a3d8ab705e54d82f2d139c533f6b4fade5ae8`, preserves that source and the
+edition-region correction `ad5729ecf863d4bfa222f32f772d56847ff64ec5`.
+The accepted nine-file change repairs strictly nonapplicable replay admission
+and its tests/documentation. Positive source comparison shows unchanged app,
+native, models/artwork, locked packages, signing inputs, contracts, planner and
+capture grants. Applicable NCL consumer plans retain the ordinary evidence and
+capture gates. This is source equivalence, not a new aggregate qualification.
+
 Accepted [PR721](https://github.com/Kgray44/treasurehuntSoT/pull/721) merged
 October 21 at 22:23:22 UTC as `aaff919428ef9ab421579415ce3409949724760d`.
 Its tree `6a8b3d8a2a2a24dd9a964e255b2c3034f450e0a7` equals accepted head
@@ -255,7 +266,7 @@ matched baseline errors and retained Release proof are separate from this replay
 
 ## Experience coverage work identified by the protected plan
 
-The current official plan passes the formerly missing721 design, then fails
+The earlier0d83 official plan passes the formerly missing721 design, then fails
 `PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE`. The
 [source-bound diagnostic](evidence/ncl01-full-completion-20261021/post-crossdeck-consumer-coverage-0d83.json)
 retains the original 135 uncovered surfaces, ordered-path digest, 26 exact source
@@ -505,3 +516,35 @@ uncommitted tests and makes no claim about concurrent browser execution or a
 clean worktree at the end of its read-only audit. Its corrected second receipt
 preserves the first receipt privately. Source applicability is not a new native
 run, aggregate acceptance, deployment or physical-device result.
+
+## Read-only distribution readiness
+
+The existing environment still lists all four configured secret names and four
+variable names, with the same restricted `codex/ncl01-testflight-*` branch
+policy. This metadata lookup reads no secret value and proves neither current
+credential validity nor Apple permission. Existing `observe` is write-capable:
+it can attach a processed build to the internal group, so it cannot serve as a
+read-only readiness check.
+
+The existing dispatcher, governed template and runner now provide a distinct
+`preflight` mode. Its transport allows only bounded GET requests for the exact
+app, internal-group association and latest build metadata, rejecting bodies,
+other routes and redirects. Profile/certificate/key validation uses owned
+private state without installing user profiles or changing the keychain search
+list. It neither archives nor uploads, attaches builds, changes testers or
+reserves a build number. Cleanup is bounded and recoverable, and late cleanup
+failures persist as FAIL rather than leaving a stale success artifact.
+
+[Focused local verification](evidence/ncl01-full-completion-20261021/testflight-readonly-preflight.focused.json)
+passes42 tests: five Node dispatcher tests and37 Python tests, comprising28
+runner boundaries and nine unchanged Release-proof checks. Formatting, lint and
+diff checks pass; six source hashes match before and after. The separate
+[independent security review](evidence/ncl01-full-completion-20261021/testflight-readonly-preflight.security.json)
+records the exact reviewed working bytes and four repaired issues. These are
+synthetic local checks and source review, not executed Apple preflight or a
+frozen candidate. A committed-source binding precedes governed execution.
+
+The historical `0.1.0` / `7` arguments are reference metadata only. Successful
+GET access and locally valid signing material would still not establish upload
+permission, revocation status, a free future build number or Apple acceptance
+of a future archive. Beta7 and deployed preview47ff42e4 remain preserved.
