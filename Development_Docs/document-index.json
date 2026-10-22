@@ -15123,6 +15123,108 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/documentation-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/hosted-crossdeck-development-03/artifact/retention.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/hosted-crossdeck-development-03/artifacts.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/hosted-crossdeck-development-03/download-custody.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/hosted-crossdeck-development-03/failure-disposition.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/hosted-crossdeck-development-03/jobs.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/hosted-crossdeck-development-03/run-binding.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/hosted-crossdeck-development-03/run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/hosted-crossdeck-development-03/watch-result.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/intake.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/journal-heading-repair-06/checks.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/journal-heading-repair-06/input.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/journal-heading-repair-06/review-04/local-check-summary.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/journal-heading-repair-06/review-04/manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/journal-heading-repair-06/unit-report.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/private-diagnosis-39730281230.sanitized.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/source-review-04.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/README.md",
       "record_type": "program-record",
       "status": "preserved",

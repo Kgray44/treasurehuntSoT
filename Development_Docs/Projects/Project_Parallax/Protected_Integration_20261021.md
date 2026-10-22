@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: phone-reading-repair-prepared-runtime-pending
+status: phone-header-row-reuse-prepared-runtime-pending
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -216,7 +216,7 @@ keeps those limits explicit. A source comparison identifies the full spatial
 card newly placed in normal flow above the book as a concrete layout lead;
 it does not prove that this was the sole underlying cause.
 
-The prepared correction places the live primary Lens action beside the existing
+The first correction, committed in `933102dbc2b5`, places the live primary Lens action beside the existing
 header identity, retaining access before the book and outside imperative page
 clones. Complete scene descriptions and earlier released-scene controls remain
 below the workspace. One Parallax provider preserves binding, replay permissions,
@@ -251,6 +251,51 @@ qualification; the earlier source already reached this assertion on accepted
 controller `408f3738`. No unchanged-source retry, extra capture or qualification
 is inferred from the local passes. Final accepted-main reconciliation, complete
 planning, fresh experience evidence and normal protection remain pending.
+
+## Reduced-motion follow-up
+
+The changed-source [development run 39730281230/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39730281230)
+used consumer `933102dbc2b5d3702814ab8cee4f5285e880dcfe` and installed authority
+`408f37389e6dd358b1ab005d91f3f588405f61db`. Normal motion passed; reduced motion
+failed the same original reading-band assertion. The whole run failed, with one
+passing case, one failing case and zero skipped, flaky or retried cases.
+Preparation, supervised browser/server cleanup, proxy closure and encrypted upload
+passed. The verified artifact `12405323679` retains all 14 members; its original
+41,422,654-byte ZIP and private ciphertext remain on D:.
+
+The [authenticated sanitized receipt](evidence/protected-integration-20261021/journal-row-reuse-20261022/private-diagnosis-39730281230.sanitized.receipt.json)
+is an exact 3,509-byte copy with SHA-256
+`0f71c93460c9019f4abd13a1f207c450da89e15f39aaf95bc7d3245fa4583c89`.
+The reduced-motion final sample reports a 345.950500 by 209.133789-pixel
+unobscured band against the unchanged 280 by 211 requirement. That sample reports
+neither heading intersection nor heading/band hit-test failures. It does not
+establish the geometry throughout the polling interval. Full element rectangles,
+numeric actual scroll offsets, settled layout and font completion remain unknown;
+the underlying CSS/state cause is not proved.
+
+The next narrow correction reuses the existing Library row for the compact Lens
+in the 381–430-pixel portrait grid, restores the full-width title row and scopes
+the narrower Library placement to headers containing Lens. Existing connection
+status and other control rows remain. The compact phone label reads **Lens**,
+with the full accessible name **Open Chronicle Lens**, the same scene description
+and a 44 by 44-pixel minimum button target. Noncompact scene/history entries,
+DOM order, provider, passage/checksum key, binding guards and modal lifecycle are
+unchanged. This is a structural correction requiring actual browser verification,
+not a claim that the reported height deficit has been eliminated.
+
+The [follow-up intake](evidence/protected-integration-20261021/journal-row-reuse-20261022/intake.json)
+preserves the authenticated finding, original terminal metadata, frozen source
+and exact local validation. Forty-two component tests, full TypeScript and
+zero-warning lint pass on the frozen correction. The existing unit regression,
+browser spec and geometry helper are byte-unchanged from `933102dbc2b5`.
+The [independent source review](evidence/protected-integration-20261021/journal-row-reuse-20261022/source-review-04.original.json)
+reports no confirmed finding on the exact three-file delta, with the five-file
+source tuple and unchanged test/helper independently verified. Its numbered
+source review is not a formal Product Experience review iteration. A newly
+prepared changed-source development run remains required. Keep the 390 by 844 viewport, 211-pixel criterion, heading/hit
+checks and ten-second deadline intact. No final capture, ordinary qualification
+or protected acceptance follows from these development results. Unlanded
+maintenance repairs still hold final accepted-main reconciliation and planning.
 
 Physical iPhone alignment and browser tracker reliability remain unqualified.
 Plane prototypes return no admitted planes/hit tests. The unchanged root's 30

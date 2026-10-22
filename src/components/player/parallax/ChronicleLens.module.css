@@ -19,6 +19,7 @@
 }
 .compactEntry > button {
   width: 100%;
+  min-width: 44px;
   min-height: 44px;
   border: 1px solid #c3a26880;
   border-radius: 10px;
@@ -34,6 +35,11 @@
 .compactEntry > button:focus-visible {
   outline: 3px solid #f2c46b;
   outline-offset: 3px;
+}
+@media (max-width: 760px) {
+  .compactLabelPrefix {
+    display: none;
+  }
 }
 .browserControls {
   width: 100%;

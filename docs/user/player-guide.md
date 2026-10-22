@@ -43,7 +43,8 @@ remove account sessions. See [account security](account-security.md).
 When a released passage includes a spatial moment, choose **Open Chronicle Lens** to read and interact with its clue in Guided View. The same clue stays readable without a camera, while seated or using a keyboard. A compatible native companion can offer local camera placement. Closing the camera, using Android Back, or losing its permission returns the moment to Guided View; reopen it explicitly for a fresh camera session. Lens interactions are recorded separately from Voyage progression. Revisited passages preserve their meaning without changing progress.
 
 The active browser candidate keeps **Open Chronicle Lens** in the Journal header,
-above the book. Scene details and earlier released scenes remain below the book;
+above the book. On phones, the compact action reads **Lens**. Scene details and
+earlier released scenes remain below the book;
 earlier scenes open in view-only mode. **Continue Voyage** inside the Journal
 advances the story; keep the spatial passage open while testing its interactions.
 On the explicitly enabled local browser prototype, choose **Start browser AR**

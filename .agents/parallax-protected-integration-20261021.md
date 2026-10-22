@@ -114,3 +114,27 @@ independent of the separate expired-R26 ordinary-routing issue. No local build
 or bypass of the unadmitted Windows manifest is justified by current headroom.
 Keep the accepted #788/bundle reconciliation and final capture/qualification
 holds until their actual normal acceptance and installation are verified.
+
+## Row-reuse follow-up
+
+Failed whole development run `39730281230/1` on exact consumer `933102dbc2b5`
+passed normal motion and failed reduced motion at the unchanged reading-area
+check; zero cases were skipped or retried. Authenticated sanitized receipt
+`0f71c93460c9019f4abd13a1f207c450da89e15f39aaf95bc7d3245fa4583c89`
+reports a final 345.950500 by 209.133789 band against 280 by 211, without final
+heading intersection/hit failures. Preserve its private originals and exact
+source binding. Do not infer full-interval layout, font state or a sole cause.
+
+The next frozen three-file source delta reuses the existing portrait Library row
+for compact Lens, restores full-width h1 and scopes the Library's narrower span
+to headers containing Lens. Preserve status/control rows, 44px button minimums,
+phone visual Lens/full accessible Open Chronicle Lens, full Library text,
+DOM focus order, key/provider/binding/modal semantics and all history entries.
+The 42 component tests, full TypeScript and strict lint pass; existing unit and
+browser assertions are unchanged. Independent source review04 found no confirmed
+issue in the exact frozen delta; it grants no runtime or experience acceptance.
+Complete own documentation/style/custody before one uniquely committed, coordinated changed-source development
+verification. Recheck original route, authority, no duplicate and storage gates.
+No unchanged rerun, 2px threshold workaround or speculative instrumentation is
+authorized by the final sample. Final maintenance/capture/qualification holds
+remain independent.

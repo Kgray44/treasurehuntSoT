@@ -95,12 +95,22 @@ export function ChronicleLensEntry({
       )}
       <button
         type="button"
+        aria-label={compact ? "Open Chronicle Lens" : undefined}
         aria-describedby={compact ? descriptionId : undefined}
         onClick={() => {
           setOpen(true);
         }}
       >
-        Open Chronicle Lens
+        {compact ? (
+          <>
+            <span className={styles.compactLabelPrefix} aria-hidden="true">
+              Open Chronicle{" "}
+            </span>
+            Lens
+          </>
+        ) : (
+          "Open Chronicle Lens"
+        )}
       </button>
       {open && (
         <ChronicleLens

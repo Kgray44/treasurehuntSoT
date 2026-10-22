@@ -1,7 +1,7 @@
 ---
 title: Parallax accepted-main reconciliation evidence
 audience: product-engineering
-status: phone-reading-repair-prepared-runtime-pending
+status: phone-header-row-reuse-prepared-runtime-pending
 canonical_for: parallax-protected-integration-evidence-20261021
 last_reviewed: 2026-10-22
 ---
@@ -61,6 +61,15 @@ producing source. Fresh protected qualification is pending.
   the original browser reading-band criterion is still awaiting fresh verification.
   Earlier access-blocker observations remain historical. No private browser
   payload, key or raw media is included.
+- [Phone header row-reuse intake](journal-row-reuse-20261022/intake.json)
+  preserves the authenticated follow-up from failed whole run `39730281230/1`:
+  normal motion passed and reduced motion failed the unchanged reading-band
+  assertion. The final reduced sample has no heading/hit failure but is
+  209.133789 pixels high against the 211-pixel minimum. Its underlying cause
+  remains unproved. The next frozen structural correction reuses the Library
+  row for Lens and restores the full-width title. Forty-two component tests,
+  full TypeScript and strict lint pass; new browser verification remains pending.
+  Original source-bound failures and all private artifact custody are preserved.
 
 Phone alignment, unavailable plane detection, browser tracker resets, native
 installation, physical AR, live-provider and owner acceptance remain unqualified.
