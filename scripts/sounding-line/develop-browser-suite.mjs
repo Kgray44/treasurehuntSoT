@@ -239,13 +239,19 @@ async function inspectBuildLink(file, relative, workspace) {
   const before = await lstat(file),
     literal = await readlink(file);
   const target = path.resolve(path.dirname(path.join(workspace, DIST, relative)), literal);
+  const absolute = path.isAbsolute(literal);
   requireValue(
-    before.isSymbolicLink() &&
-      !path.isAbsolute(literal) &&
-      contained(path.join(workspace, "node_modules"), target) &&
-      (await realpath(target)) === target,
+    before.isSymbolicLink() && contained(path.join(workspace, "node_modules"), target),
     "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
   );
+  if (absolute) {
+    const targetStat = process.platform === "win32" && literal === target ? await lstat(target) : null;
+    requireValue(
+      targetStat?.isDirectory() && !targetStat.isSymbolicLink(),
+      "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+    );
+  }
+  requireValue((await realpath(target)) === target, "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES");
   const after = await lstat(file);
   requireValue(
     after.isSymbolicLink() &&
@@ -256,7 +262,7 @@ async function inspectBuildLink(file, relative, workspace) {
       (await readlink(file)) === literal,
     "DEVELOPMENT_BUILD_LINK_CHANGED",
   );
-  return { link: literal, target };
+  return { link: literal, target, ...(absolute ? { linkType: "junction" } : {}) };
 }
 async function treeFingerprint(root, workspace) {
   const files = [];
@@ -290,7 +296,7 @@ async function copyBuild(from, to, workspace, prefix = "") {
       target = path.join(to, entry.name);
     if (entry.isSymbolicLink()) {
       const descriptor = await inspectBuildLink(source, relative, workspace);
-      await symlink(descriptor.link, target);
+      await symlink(descriptor.link, target, descriptor.linkType);
     } else if (entry.isDirectory()) await copyBuild(source, target, workspace, relative);
     else await privateWrite(target, await regularBytes(source));
   }
@@ -311,6 +317,11 @@ async function immutable(root, workspace, prefix = "") {
   }
   await chmod(root, 0o500);
 }
+export {
+  treeFingerprint as developmentBuildFingerprint,
+  copyBuild as copyDevelopmentBuild,
+  immutable as makeDevelopmentBuildImmutable,
+};
 async function streamedFileHash(file) {
   const handle = await open(file, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
   try {
