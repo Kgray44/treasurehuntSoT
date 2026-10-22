@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "operation": "EXACT_OWNED_TRANSPORT_SHA_LEASE_DELETION",
+  "completedUtc": "2026-10-22T03:52:48.0517408+00:00",
+  "ref": "refs/heads/codex/ncl01-testflight-preflight-80a3f2ff5d0e-1792639227906",
+  "expectedTransport": "b77997e1a1b6ef9e62883651cdf4825ed9a42854",
+  "beforeExit": 0,
+  "deleteExit": 0,
+  "afterExit": 2,
+  "absenceVerified": true,
+  "historicalBranchesChanged": false,
+  "otherRefsChanged": false,
+  "privateCredentialInspection": false
+}

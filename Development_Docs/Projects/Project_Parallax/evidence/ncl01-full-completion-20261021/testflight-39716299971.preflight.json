@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "ENGINEERING_EVIDENCE",
+  "role": "READ_ONLY_DISTRIBUTION_PREFLIGHT",
+  "qualification": false,
+  "sealedAtUtc": "2026-10-22T03:32:32.572Z",
+  "run": {
+    "id": 39716299971,
+    "attempt": 1,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39716299971",
+    "event": "push",
+    "conclusion": "success",
+    "createdAtUtc": "2026-10-22T03:20:36Z",
+    "updatedAtUtc": "2026-10-22T03:20:50Z",
+    "path": ".github/workflows/ncl01-testflight.yml",
+    "name": "NCL-01 TestFlight 80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63"
+  },
+  "binding": {
+    "source": "80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63",
+    "sourceTree": "18c80b53c9bac43a291e9241aaf7e3f803650ec2",
+    "transport": "b77997e1a1b6ef9e62883651cdf4825ed9a42854",
+    "transportTree": "128c0f36f3d81b194cde9c2c290df001dcb1bdfa",
+    "branch": "codex/ncl01-testflight-preflight-80a3f2ff5d0e-1792639227906",
+    "transportChangedOnlyWorkflow": true,
+    "workflowExactPreflightRender": true,
+    "workflow": {
+      "path": ".github/workflows/ncl01-testflight.yml",
+      "sha256": "131d391388d6d67d8bcae1e8c443f200d697ddeb6ceb02a7f8e7bd7271676885",
+      "bytes": 5408
+    },
+    "sourceWitnesses": [
+      {
+        "path": ".agents/ncl01-testflight-hosted.yml",
+        "blob": "1c352e591460455d5a5b5872b5bd3066dfc08c19",
+        "sha256": "9e04245a62e55e65010c503bf257c38f526fb4735adb6bf87f59b9fdddf860a3",
+        "bytes": 5145
+      },
+      {
+        "path": ".agents/ncl01-testflight.md",
+        "blob": "7639068624e6a230a76136259da01f1fded9579d",
+        "sha256": "528e608632a3889f20755f1d75f7c4af31786e658ecbea05c0659894a21eb493",
+        "bytes": 29416
+      },
+      {
+        "path": "scripts/landfall/testflight/dispatch.mjs",
+        "blob": "2c688278ba9ec38ca977614e457fa259dc688141",
+        "sha256": "b4932d711692dbdaa69bc19ccc238006bb77ecdb32d253d5e9bee6a5fff14324",
+        "bytes": 5087
+      },
+      {
+        "path": "scripts/landfall/testflight/dispatch.test.mjs",
+        "blob": "b06b9818c9bd5b39de0f3dcb8d8f56a7bb580059",
+        "sha256": "36d7bae3c1ae9ee81eba73d1519922719ab71650dfbf4c48a2b9f9363b29c895",
+        "bytes": 3698
+      },
+      {
+        "path": "scripts/landfall/testflight/runner.py",
+        "blob": "36e4f1c39406930920790c18eb75b55d489905b3",
+        "sha256": "a1922ac0838730c55c52dc91b71672fc95f4d9896041f28f9c712958563a0d40",
+        "bytes": 42399
+      },
+      {
+        "path": "scripts/landfall/testflight/test_runner.py",
+        "blob": "562cbd6f11c98cd1b3e4d80de1d607bec4f5001b",
+        "sha256": "bcf5fe2cb270f3ed3df543d80dc2e937755dd020c661de11ac2c7cd05b330d2a",
+        "bytes": 35272
+      }
+    ],
+    "candidateCheckoutShaObserved": true
+  },
+  "jobs": [
+    {
+      "id": 119619113378,
+      "name": "preflight",
+      "conclusion": "success",
+      "labels": [
+        "macos-26"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate signing material and read Apple distribution metadata",
+          "conclusion": "success"
+        },
+        {
+          "name": "Remove any interrupted owned signing state",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 119619114658,
+      "name": "unsigned",
+      "conclusion": "skipped",
+      "labels": [
+        "macos-26"
+      ],
+      "steps": []
+    },
+    {
+      "id": 119619114903,
+      "name": "upload",
+      "conclusion": "skipped",
+      "labels": [
+        "macos-26"
+      ],
+      "steps": []
+    }
+  ],
+  "environment": {
+    "osName": "macOS",
+    "osVersion": "26.6.2",
+    "image": "macos-26-arm64",
+    "provenance": "Original preflight job setup log"
+  },
+  "producerReceipt": {
+    "schemaVersion": 1,
+    "candidateSha": "80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63",
+    "mode": "preflight",
+    "result": "PASS",
+    "teamId": "X2JZ9N65V2",
+    "bundleId": "com.voyagewright.landfall",
+    "origin": "https://ncl01.absoluterelativesystems.com",
+    "versionReference": "0.1.0",
+    "buildReference": "7",
+    "profileValidated": true,
+    "signingPreflight": {
+      "certificate": {
+        "notBeforeUtc": "2026-10-20T02:32:23Z",
+        "expiresAtUtc": "2027-10-20T02:32:22Z",
+        "teamMatches": true,
+        "distributionIdentity": true
+      },
+      "profileExpiresAtUtc": "2027-10-20T02:32:22Z",
+      "profileMatchesTeamAndBundle": true,
+      "privateKeyMatchesProfileCertificate": true,
+      "userProfilesInstalled": false,
+      "certificateRevocationVerified": false,
+      "profileRevocationVerified": false
+    },
+    "distributionPreflight": {
+      "readOnly": true,
+      "appAndInternalGroupMatch": true,
+      "apiReadAccessVerified": true,
+      "latestObservedBuild": {
+        "buildNumber": "7",
+        "marketingVersion": "0.1.0",
+        "processingState": "VALID",
+        "uploadedAtUtc": "2026-10-21T00:38:15Z"
+      },
+      "versionAndBuildArgumentsAreReferenceOnly": true,
+      "buildNumberReserved": false,
+      "uploadPermissionVerified": false
+    },
+    "configuredAppIdentityMatches": true,
+    "credentialCleanup": "PASS",
+    "uploadAccepted": false,
+    "appleProcessing": "NOT_STARTED",
+    "physicalInstallationProven": false,
+    "physicalARProven": false
+  },
+  "cleanup": {
+    "producerCredentialCleanup": "PASS",
+    "alwaysStepConclusion": "success",
+    "ownershipAlreadyCompleteLogObserved": true,
+    "reviewedSourcePreservesUserKeychainSearchList": true,
+    "reviewedSourceInstallsNoUserProfiles": true,
+    "meaning": "Producer reports owned keychain/temp cleanup; always step observed the ownership record already absent. No independent post-job filesystem inspection is claimed."
+  },
+  "artifact": {
+    "count": 1,
+    "id": 12398194140,
+    "name": "ncl01-preflight-80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63",
+    "archiveSha256": "f73cce4b4866a844889b599f0817b7148b5db8068ce13a834366e435bf2eb262",
+    "githubDigestMatches": true,
+    "onlyMember": "receipt.json",
+    "receiptSha256": "67a921ba0115494ddf9dd0d4adee0fae12d5a151153deb4449a983a3880f0b71"
+  },
+  "logChecks": {
+    "aggregateAndDirectJobBytesMatch": true,
+    "jobLogSha256": "ac6b9908d27dbc8c7e0926c8b3d7fb49ecef5be5a78fd33400bf031b15a116a7",
+    "maskedSecretEnvironmentNames": [
+      {
+        "name": "NCL01_DISTRIBUTION_P12_BASE64",
+        "masked": true
+      },
+      {
+        "name": "NCL01_DISTRIBUTION_P12_PASSWORD",
+        "masked": true
+      },
+      {
+        "name": "NCL01_APPSTORE_PROFILE_BASE64",
+        "masked": true
+      },
+      {
+        "name": "NCL01_ASC_PRIVATE_KEY_P8",
+        "masked": true
+      }
+    ],
+    "pemOrJwtPatternObserved": false,
+    "meaning": "Limited pattern and masking checks; raw logs remain private, and private Apple/OpenSSL output was not published by the reviewed runner."
+  },
+  "remoteAfterResult": {
+    "expectedTransportStillObserved": true,
+    "headSha": "b77997e1a1b6ef9e62883651cdf4825ed9a42854",
+    "deletedByReviewer": false
+  },
+  "limits": {
+    "apiReadAccessVerified": true,
+    "actualAppleReadRequestsExecutedOnGovernedRunner": true,
+    "actualSigningMaterialUsedOnGovernedRunner": true,
+    "reviewerLocalSecretValuesRead": false,
+    "appArchiveProduced": false,
+    "ipaExported": false,
+    "uploadPerformed": false,
+    "internalGroupAttachmentPerformed": false,
+    "certificateRevocationVerified": false,
+    "profileRevocationVerified": false,
+    "uploadPermissionVerified": false,
+    "buildNumberReserved": false,
+    "newBetaPublished": false,
+    "previewChanged": false,
+    "protectedQualificationOrMergeProven": false,
+    "physicalInstallationOrARProven": false
+  },
+  "notes": [
+    "Build0.1.0(7) is only the latest observed existing metadata; no future number availability or reservation is claimed.",
+    "Initial run-list workflowName differs from authoritative run metadata. Both originals are retained; the discrepancy cause is unproved. Exact run head, generated workflow, checkout and receipt bind intended source80a3f2ff.",
+    "Successful material/read-access preflight does not prove Apple acceptance of a future signed archive, App Store upload permission, internal build attachment, deployment, hardware behavior or owner acceptance.",
+    "Configured App ID, issuer/key identifiers and group identifiers are omitted from this public review; their private original producer record/logs are retained by hash."
+  ],
+  "originals": [
+    {
+      "role": "discovery",
+      "fileName": "run-discovery-1.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "d2226ecb9b1cdb2945ea02b085bb181857a1508be83ab15dca2090c9989ceea9",
+      "bytes": 388
+    },
+    {
+      "role": "runMetadata",
+      "fileName": "run.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "e8e94759afaadcef6d8e4699db0beb1d30bac12186f286d278c1572678715a0c",
+      "bytes": 12676
+    },
+    {
+      "role": "jobMetadata",
+      "fileName": "jobs.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "8365bf54b72467c3bfdd2046defe71e8002fcc9b6397d22f1bf080f574cb1954",
+      "bytes": 4255
+    },
+    {
+      "role": "artifactMetadata",
+      "fileName": "artifacts.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "bf86cd7a7612a931fe6a20369799f3401ff002e789467349cedf60d42e1ca35e",
+      "bytes": 814
+    },
+    {
+      "role": "runLogArchive",
+      "fileName": "run-logs.original.zip",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "1e9baddc0c7df15f4709dacd72e7a58ab1c1c011c37c8cd98a01b5fd8001089b",
+      "bytes": 13076
+    },
+    {
+      "role": "receiptArchive",
+      "fileName": "receipt-artifact.original.zip",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "f73cce4b4866a844889b599f0817b7148b5db8068ce13a834366e435bf2eb262",
+      "bytes": 786
+    },
+    {
+      "role": "jobLog",
+      "fileName": "job-119619113378.original.log",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "ac6b9908d27dbc8c7e0926c8b3d7fb49ecef5be5a78fd33400bf031b15a116a7",
+      "bytes": 18486
+    },
+    {
+      "role": "producerReceipt",
+      "fileName": "receipt.original.json",
+      "kind": "EXACT_EXTRACTED_PRODUCER_BYTES",
+      "sha256": "67a921ba0115494ddf9dd0d4adee0fae12d5a151153deb4449a983a3880f0b71",
+      "bytes": 1427
+    },
+    {
+      "role": "remoteHeadAfterResult",
+      "fileName": "remote-transport-after-result.original.json",
+      "kind": "ORIGINAL_API_BYTES",
+      "sha256": "57284cbb46c06d0ae3fead0b1adf7fdc4fef9babf4faec01640bc0127f751fbb",
+      "bytes": 530
+    },
+    {
+      "role": "sourceBinding",
+      "fileName": "source-transport-verification.private.json",
+      "kind": "DERIVED_LOCAL_GIT_AND_LOG_VERIFICATION",
+      "sha256": "9d489e5678d26c2145de89b2ed2c45729d04793b14af1e13da51e0c0180308f5",
+      "bytes": 2553
+    },
+    {
+      "role": "logCrosscheck",
+      "fileName": "log-crosscheck.private.json",
+      "kind": "DERIVED_BYTE_CROSSCHECK",
+      "sha256": "db5e2965d99cd0b544cfdccd4a60ba3e57bdc879216c9e06177e9c22ef7f1cb2",
+      "bytes": 331
+    }
+  ]
+}

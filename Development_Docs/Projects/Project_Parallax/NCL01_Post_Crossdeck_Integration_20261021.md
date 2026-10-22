@@ -34,6 +34,19 @@ native, models/artwork, locked packages, signing inputs, contracts, planner and
 capture grants. Applicable NCL consumer plans retain the ordinary evidence and
 capture gates. This is source equivalence, not a new aggregate qualification.
 
+Accepted786 advances protected main to
+`8e49351e62e1f32340109566557a824bfa74e14d`. Normal merge
+`d989e47192ba24b136099f150545ec915ac425ea`, tree
+`66ba28fe0103262ab5aa87ed9886804c20c9c0d2`, preserves that parent and
+`80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63`. The complete mainline delta
+from fc5855 is38 accepted migration-inventory rows. No application, native,
+asset, fixture, dependency, signing, contract or qualification source changes.
+The [frozen-object applicability supplement](evidence/ncl01-full-completion-20261021/source-applicability-d989e471.json)
+verifies all38 added CSV records against the accepted parent, preserves every
+prior record and positively binds22 scoped source/configuration inputs plus
+five asset pins. Its exact native and consumer identities allow scoped evidence
+reuse; it is not a new execution, aggregate pass or protected decision.
+
 Accepted [PR721](https://github.com/Kgray44/treasurehuntSoT/pull/721) merged
 October 21 at 22:23:22 UTC as `aaff919428ef9ab421579415ce3409949724760d`.
 Its tree `6a8b3d8a2a2a24dd9a964e255b2c3034f450e0a7` equals accepted head
@@ -61,6 +74,12 @@ NCL-03 remain proposed and outside this implementation.
 | Assets/bridge     | Original GLBs, official artwork, delivery and signing inputs preserved; verify exact tree/blob identities.                                                               |
 | Joined Player/web | Shared custody changed: historical full journeys remain source-bound. Fresh integration/browser and native joined proof are required for changed consumers.              |
 | Authority         | Consume accepted contracts; no transfer of721's finite campaign allowance, provider entitlement or physical acceptance.                                                  |
+
+The Android0584aa2f table row records the initial0d83 merge. The two later
+Android test-fixture corrections advance its whole native tree to
+`dc78ec87ba6cd31260cf0ee0b417ddfaa4412a18` at39e28/a820/80a3. Production
+`app/src/main` remains exactly`1dd1e22c655eaa17725cfcd4d33c84740b6576ed`;
+this is fixture qualification, not a new production renderer change.
 
 The focused new component test reproduced a stale-edition witness: companion
 metadata could label a correctly loaded canonical Scene with another edition.
@@ -113,8 +132,10 @@ TestFlight pipeline blobs. All four required secret names and four variable
 names exist in the existing environment; values were never read. Its deployment
 branch restriction remains `codex/ncl01-testflight-*`, and the workflow token
 retains read-only repository permission. Current certificate/profile validity,
-matching keys, Apple role/app/group access, agreements and build-number
-availability remain unverified until the existing governed preflight. No new
+matching keys and Apple app/group read access were unverified at that audit;
+the later executed preflight below supplies their separate current evidence.
+Upload permission, revocation, agreements and future build-number availability
+remain unverified. No new
 Apple enrollment, identity, tester or release is required or inferred.
 
 Physical testing follows the [existing handoff](NCL01_Full_Completion_20261021.md#proposed-physical-acceptance-handoff):
@@ -333,20 +354,20 @@ history, without accepting these later Inspect, placement or accessibility
 changes. Current software receipts keep their own exact source and fixture
 scope; they are not a fresh aggregate Mainline Decision.
 
-| #   | Implemented behavior                                                                                                                                        | Software evidence                                                                                                                                                                   | Remaining acceptance boundary                                                                                                                                                             |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | Immutable canonical Scene delivers the original SC02 chest and compass.                                                                                     | Original asset checksums, shared delivery/validation negatives and actual original-model frames on both native platforms.                                                           | Current physical visual fidelity and final integrated experience acceptance.                                                                                                              |
-| 2   | Canonical entity IDs, hierarchy, transforms, metric widths, orientation, bottom pivot, visibility and Scene updates.                                        | Three-entity and hierarchy/update tests; native original bounds, transforms, geometry hit/miss and clear/disposal guards.                                                           | Hardware scale, relative alignment and drift. The selected origin does not identify classroom tables automatically.                                                                       |
-| 3   | iOS GLB/SceneKit realization, actual mesh association, staging, cancellation and accessible return.                                                         | Fresh0d83 native29/0/1 and joined4 actions; unchanged native tree retains full31/0/1 and unsigned Release20/compiled icon proof.                                                    | Exact new installed-build physical camera, tracking, touch and assistive acceptance.                                                                                                      |
-| 4   | Android equivalent Scene/Filament realization, actual pointer and accessibility input, disposal and fallback.                                               | Fresh39e28 native16/16, original pixels, joined4 actions, permission1/1 and cleanup. Earlier15/1 failures remain separate; full lint retains eight matched baseline errors.         | Supported physical Android hardware and real ARCore tracking/interaction acceptance.                                                                                                      |
-| 5   | Capability-checked native tracking, bounded supported surface/local placement, limited/failure feedback and recovery.                                       | Compiled adapters and software placement/frame/state/cancellation cases.                                                                                                            | Both platforms' actual anchors, relocalization, drift and camera interruption. No automatic room registration.                                                                            |
-| 6   | Accepted Crossdeck custody, same immutable Scene/edition, truthful capabilities and authored Guided fallback.                                               | Fresh component continuity and real pairing/HTTP/SQLite browser journey; accepted721 interfaces are consumed.                                                                       | New consumer capture/review and final protected qualification remain pending. No admitted live metric browser engine exists; normal browser use is Guided.                                |
-| 7   | Actual selected native mesh emits canonical Inspect intent; pending/error/accepted Player presentation and same-Voyage return; accessible center selection. | Both platforms' actual OS input reaches real SQLite simulation rejection and return with zero mutation. Separate emulated-native D1 proves positive authorized content/idempotency. | Positive physical mesh/assistive Inspect on each installed platform. A simulation rejection or emulated D1 is not that result.                                                            |
-| 8   | One account/Player/Voyage/edition/Scene; canonical authorization, eligibility, checksums, expiry, revocation, idempotency and stale rejection.              | Real SQLite positive D1 adds one observation and zero progression; both native simulations add zero. Shared revocation/receipt guards pass.                                         | Positive exact-device canonical join; current new consumer fixture journeys require their own runtime evidence.                                                                           |
-| 9   | Close/reopen, staging cancellation, pending escape, interruption/supersession, late callback rejection and cleanup.                                         | Shared guards, fresh native/joined/permission cleanup and retained full31 Home/foreground/Settings assertions. Android27 readiness observations retain original input assertions.   | Real active-camera/permission/tracking recovery on hardware. Historical Home and input failure causes remain unproved.                                                                    |
-| 10  | Reproducible source/tree, locked native builds, original hashes, unsupported-profile disclosure, privacy and retained failed receipts.                      | Reconciled614 tests; new fixture16 and experience49 guards; frozen-input TypeScript, lint/format/docs/catalog checks; scoped native/browser/Release records.                        | Actual new consumer execution/capture/review, ordinary Mainline Decision, protected merge/landed verification where eligible, matching-source distribution and physical/owner acceptance. |
+| #   | Implemented behavior                                                                                                                                        | Software evidence                                                                                                                                                                             | Remaining acceptance boundary                                                                                                                                      |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Immutable canonical Scene delivers the original SC02 chest and compass.                                                                                     | Original asset checksums, shared delivery/validation negatives and actual original-model frames on both native platforms.                                                                     | Current physical visual fidelity and final integrated experience acceptance.                                                                                       |
+| 2   | Canonical entity IDs, hierarchy, transforms, metric widths, orientation, bottom pivot, visibility and Scene updates.                                        | Three-entity and hierarchy/update tests; native original bounds, transforms, geometry hit/miss and clear/disposal guards.                                                                     | Hardware scale, relative alignment and drift. The selected origin does not identify classroom tables automatically.                                                |
+| 3   | iOS GLB/SceneKit realization, actual mesh association, staging, cancellation and accessible return.                                                         | Fresh0d83 native29/0/1 and joined4 actions; unchanged native tree retains full31/0/1 and unsigned Release20/compiled icon proof.                                                              | Exact new installed-build physical camera, tracking, touch and assistive acceptance.                                                                               |
+| 4   | Android equivalent Scene/Filament realization, actual pointer and accessibility input, disposal and fallback.                                               | Fresh39e28 native16/16, original pixels, joined4 actions, permission1/1 and cleanup. Earlier15/1 failures remain separate; full lint retains eight matched baseline errors.                   | Supported physical Android hardware and real ARCore tracking/interaction acceptance.                                                                               |
+| 5   | Capability-checked native tracking, bounded supported surface/local placement, limited/failure feedback and recovery.                                       | Compiled adapters and software placement/frame/state/cancellation cases.                                                                                                                      | Both platforms' actual anchors, relocalization, drift and camera interruption. No automatic room registration.                                                     |
+| 6   | Accepted Crossdeck custody, same immutable Scene/edition, truthful capabilities and authored Guided fallback.                                               | Fresh component continuity and real pairing/HTTP/SQLite browser journey; accepted721 interfaces are consumed.                                                                                 | New consumer capture/review and final protected qualification remain pending. No admitted live metric browser engine exists; normal browser use is Guided.         |
+| 7   | Actual selected native mesh emits canonical Inspect intent; pending/error/accepted Player presentation and same-Voyage return; accessible center selection. | Both platforms' actual OS input reaches real SQLite simulation rejection and return with zero mutation. Separate emulated-native D1 proves positive authorized content/idempotency.           | Positive physical mesh/assistive Inspect on each installed platform. A simulation rejection or emulated D1 is not that result.                                     |
+| 8   | One account/Player/Voyage/edition/Scene; canonical authorization, eligibility, checksums, expiry, revocation, idempotency and stale rejection.              | Real SQLite positive D1 adds one observation and zero progression; both native simulations add zero. Shared revocation/receipt guards pass.                                                   | Positive exact-device canonical join; new consumer runtime passes7/7 locally with the separate capacity-control failure retained.                                  |
+| 9   | Close/reopen, staging cancellation, pending escape, interruption/supersession, late callback rejection and cleanup.                                         | Shared guards, fresh native/joined/permission cleanup and retained full31 Home/foreground/Settings assertions. Android27 readiness observations retain original input assertions.             | Real active-camera/permission/tracking recovery on hardware. Historical Home and input failure causes remain unproved.                                             |
+| 10  | Reproducible source/tree, locked native builds, original hashes, unsupported-profile disclosure, privacy and retained failed receipts.                      | Reconciled614 tests; new fixture16 and experience49 guards; frozen-input TypeScript, lint/format/docs/catalog checks; guarded current hosted consumer PASS and scoped native/Release records. | Actual capture/review, ordinary Mainline Decision, protected merge/landed verification where eligible, matching-source distribution and physical/owner acceptance. |
 
-## Source freeze and integration state
+## Historical consumer source freeze
 
 The prepared consumer candidate is
 `b9b6956fe291919bd6fcb6329618702d873582af`, tree
@@ -506,8 +527,56 @@ The next minimal correction scopes the unchanged exact edition text to the
 actual named Exact Edition region. Independent source/trace review confirms
 its accessible name and historical-label field. It retains exact destination,
 title, settled-route, full accessibility, return and authorization assertions;
-there is no first/last selection, retry or relaxed deadline. Current execution
-is required before calling the new Player case qualified.
+there is no first/last selection, retry or relaxed deadline. The later actual
+a820 execution below reaches those formerly blocked assertions.
+
+### Seven-case result and resource-control failure
+
+The [separate Windows a820 review](evidence/ncl01-full-completion-20261021/consumer-local-a8208aa0.capacity-control.json)
+retains an actual machine report with seven passed, zero failed, skipped, flaky
+or retried cases in111254.341 milliseconds. Player reached the exact projected
+detail URL, named Exact Edition witness, settled-route accessibility audit,
+return and authorization denials; Owner reached the exact account return.
+Preparation, browser/server JobObject trees, streams, proxy and owned-port
+cleanup passed. Node24.18 differs from declared24.19, so this remains scoped
+Windows development evidence. All48 new originals and269 earlier originals
+are retained; earlier failures are not replaced.
+
+The whole run was not resource-compliant: it continued into server/browser
+execution after the capacity stop directive. Two later stop preflights refused
+without sending a signal because their expected processes had already exited.
+The directive and attempts' exact UTC timestamps were not retained, so only
+the established ordering is claimed. This is not a cancelled or capacity-safe
+run. No source defect or cause of disk use is inferred. Further heavy build,
+browser and capture work uses hosted runners; bounded source/evidence edits
+preserve the existing checkout and other services.
+
+The obsolete7c/aaff local official planner was stopped once after exact process
+ownership verification. Its Node exited after that single signal; its parent
+and two observed read-only Git children exited naturally. Original empty log,
+exit-1 terminal, both earlier no-signal helper refusals and cancellation record
+are retained privately. It produced no plan qualification. Current capture
+must generate a fresh plan against the accepted protected source.
+
+### Current hosted consumer execution
+
+[Run39717629819](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39717629819)
+passes against exact80a3/tree18c80b53 using protected workflow main8e49351e
+and actual Node24.19.0. The
+[sealed original-log review](evidence/ncl01-full-completion-20261021/browser-39717629819.json)
+binds all29 retained originals, the seven-case source specification, unchanged
+authority helpers and source-bound prepared manifest
+`9f3a2aea821e69c7f3e85c7b056e06ee09987da11b727d9a3d66bd7e6d4113af`.
+Both guarded preparation and development-case PASS statuses were published.
+The helper's cleanup gate passed; no raw per-resource cleanup receipt is
+exported, so independent per-process inspection is not claimed. Exact executed
+count and report digest are unpublished: seven is the source-declared count.
+
+This supported-host development result does not erase any earlier failure or
+the separate Windows capacity-control failure. The later accepted inventory
+merge leaves the test, fixture, application and helper bytes unchanged. It
+does not supply Product Experience capture, independent visual acceptance,
+Mainline Decision, protected merge, new beta or physical-device acceptance.
 
 The [commit-bound source review](evidence/ncl01-full-completion-20261021/source-applicability-d8065cee.json)
 separately verifies native, runtime, original assets, official artwork and
@@ -541,10 +610,41 @@ runner boundaries and nine unchanged Release-proof checks. Formatting, lint and
 diff checks pass; six source hashes match before and after. The separate
 [independent security review](evidence/ncl01-full-completion-20261021/testflight-readonly-preflight.security.json)
 records the exact reviewed working bytes and four repaired issues. These are
-synthetic local checks and source review, not executed Apple preflight or a
-frozen candidate. A committed-source binding precedes governed execution.
+synthetic local checks and source review. The
+[committed-source binding](evidence/ncl01-full-completion-20261021/testflight-80a3f2ff.source-binding.json)
+separately confirms the six exact reviewed file bytes at80a3, without line-ending
+normalization, and unchanged application/native/asset/build inputs froma820.
 
 The historical `0.1.0` / `7` arguments are reference metadata only. Successful
 GET access and locally valid signing material would still not establish upload
 permission, revocation status, a free future build number or Apple acceptance
 of a future archive. Beta7 and deployed preview47ff42e4 remain preserved.
+
+### Executed governed preflight
+
+[Run39716299971](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39716299971)
+passes at exact source80a3/tree18c80b53 through workflow-only transport
+`b77997e1a1b6ef9e62883651cdf4825ed9a42854`. Its
+[independent original-byte review](evidence/ncl01-full-completion-20261021/testflight-39716299971.preflight.json)
+binds the actual macOS job, matching generated workflow, original log/receipt
+and exact committed inputs. Configured credentials were used only inside the
+existing protected environment. Matching certificate, profile, private key,
+bundle/team and API app/internal-group read access passed. The certificate and
+profile expire2027-10-20T02:32:22Z. The latest observed existing build is
+0.1.0(7), VALID. No future build number was reserved.
+
+Only preflight executed; archive/upload jobs were skipped. Producer credential
+cleanup passed, followed by an idempotent ALREADY_COMPLETE cleanup step. This
+does not claim independent post-job filesystem inspection. No
+user profile or keychain search-list change, upload, build attachment, tester
+change, preview replacement or new beta occurred. Read access and valid local
+material do not verify upload permission, revocation or future Apple archive
+acceptance. An initial run-list name differs from authoritative run metadata;
+both originals remain retained and the discrepancy's cause is unproved.
+
+The new disposable preflight transport alone was subsequently deleted with
+its exact expected-SHA lease. The
+[cleanup record](evidence/ncl01-full-completion-20261021/testflight-39716299971.transport-cleanup.json)
+retains successful deletion and a separate empty-ref exit2 absence check.
+Original before/deletion output remains private; the retained exit2/empty-result observation proves absence. Historical TestFlight
+branches, source branches and receipts are preserved.

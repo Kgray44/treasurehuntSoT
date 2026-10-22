@@ -12,13 +12,17 @@ The [post-Crossdeck NCL-01 record](../../../Projects/Project_Parallax/NCL01_Post
 tracks the candidate consuming the accepted continuity interfaces. Fresh iOS
 native/joined evidence and Android `39e28ff`'s 16-test, original-model/input,
 joined and permission checks retain their exact source scopes. The corrected
-consumer browser workflow at `846ef70e` passed guarded production execution and
+consumer browser workflow at `80a3f2ff` passed guarded production execution and
 cleanup; its exact executed count is unpublished. Earlier hosted and separate
 Windows failures remain preserved. Windows checks identified Profile preview
 accessibility markup and new test-selector/readiness defects; corrections keep
 the original accessibility, identity, return and authorization obligations.
-The candidate also consumes accepted Sounding Line repair787. Current combined
-experience qualification, ordinary
+The candidate also consumes accepted Sounding Line repair787 and accepted
+inventory publication786. The corrected local journey passes seven cases,
+including Player detail/return/authorization checks; its separate failure to
+honor the capacity stop remains recorded. The secure hosted read-only Apple
+preflight verifies matching signing material and app/group read access without
+uploading a beta. Current combined experience qualification, ordinary
 protected integration, physical and owner acceptance remain open. Internal beta 7
 has not been replaced.
 

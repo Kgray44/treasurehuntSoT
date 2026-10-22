@@ -17,12 +17,15 @@ last_reviewed: 2026-10-21
 - NCL-01's [post-Crossdeck candidate](Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
   consumes the accepted continuity interfaces. Fresh iOS native/joined evidence
   and Android `39e28ff`'s 16-test original-model/input, joined and permission
-  replay retain their exact scopes. Corrected consumer workflow `39706781483`
+  replay retain their exact scopes. Current consumer workflow `39717629819`
   passes guarded production execution and cleanup; exact case counts remain
   unpublished. Earlier hosted and separate Windows failures remain preserved.
   Bounded corrections address Profile accessibility and test-selector/readiness
   defects, retaining identity, accessibility, return and authorization checks.
-  The candidate also consumes accepted Sounding Line repair787; combined current
+  The candidate also consumes accepted Sounding Line repair787 and inventory
+  publication786. The corrected local journey passes seven cases, with its
+  capacity-control failure retained separately. A secure hosted read-only Apple
+  preflight passes without an archive, upload or group change. Combined current
   experience qualification remains pending.
   No combined experience, protected-main, physical or owner acceptance is claimed. Internal beta 7 and
   its official artwork remain unchanged.

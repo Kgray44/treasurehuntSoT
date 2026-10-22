@@ -1,0 +1,347 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_NORMAL_MERGE_SOURCE_APPLICABILITY_NOT_EXECUTION",
+  "qualification": false,
+  "result": "PASS_SOURCE_APPLICABILITY_ONLY",
+  "source": {
+    "commit": "d989e47192ba24b136099f150545ec915ac425ea",
+    "tree": "66ba28fe0103262ab5aa87ed9886804c20c9c0d2",
+    "orderedParents": [
+      "80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63",
+      "8e49351e62e1f32340109566557a824bfa74e14d"
+    ],
+    "bothParentsAreAncestors": true,
+    "baseline": {
+      "commit": "80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63",
+      "tree": "18c80b53c9bac43a291e9241aaf7e3f803650ec2"
+    },
+    "acceptedMain": {
+      "commit": "8e49351e62e1f32340109566557a824bfa74e14d",
+      "tree": "856588ebd490a15bacbe9947763b35923fcf75ce"
+    },
+    "consumerEvidenceSource": {
+      "commit": "a8208aa038d989b8aee17f1494bd37a44e5b1b9b",
+      "tree": "d64a3d8ab705e54d82f2d139c533f6b4fade5ae8"
+    },
+    "onlyFrozenObjectsRead": true,
+    "bareMirrorUsed": true,
+    "mutableWorktreeRead": false,
+    "implicitFetchDisabled": true
+  },
+  "completeCommittedDelta": [
+    {
+      "status": "M",
+      "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "addedPhysicalLines": 38,
+      "deletedPhysicalLines": 0
+    }
+  ],
+  "csvProof": {
+    "headerUnchanged": true,
+    "everyOriginalRecordPreservedByteForByteInOrder": true,
+    "originalRecordCount": 7294,
+    "mergedRecordCount": 7332,
+    "addedRecordCount": 38,
+    "addedRecordsExactlyEqualAcceptedMainNewRecordsInOrder": true,
+    "addedRecordsSha256": "e3a971cae8c9056efbdfd595a2bd0342e2013014b6dafdfd9d8a5cf82d517836",
+    "baselineBlob": "7aaff3ce6131dc7d7e2d1fb5be8cc7c9358a0c62",
+    "acceptedMainBlob": "9a8cad5d7401494d03b9bc442caa2bd0ca1182e7",
+    "mergedBlob": "5b7711a449d243ecc245dbfa5e98147d805e0a4e",
+    "mergedBytesSha256": "ced208ef630663cd9802cfb59eaba532836a91b4fd448f370ee2a78bc829ceff",
+    "mergedByteLength": 3782994
+  },
+  "unchangedInputs": [
+    {
+      "path": "src",
+      "kind": "tree",
+      "baselineObject": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "committedObject": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "identicalTo80a3": true,
+      "a820Object": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "native",
+      "kind": "tree",
+      "baselineObject": "e09204778f7cfe91039656e1e29efe89df25972e",
+      "committedObject": "e09204778f7cfe91039656e1e29efe89df25972e",
+      "identicalTo80a3": true,
+      "a820Object": "e09204778f7cfe91039656e1e29efe89df25972e",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "public",
+      "kind": "tree",
+      "baselineObject": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "committedObject": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "identicalTo80a3": true,
+      "a820Object": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "prisma",
+      "kind": "tree",
+      "baselineObject": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "committedObject": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "identicalTo80a3": true,
+      "a820Object": "78003b641cb139afb4ad965d5506451a671fefdf",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "testing",
+      "kind": "tree",
+      "baselineObject": "3428809cf89d66123588c141f027649edb162b76",
+      "committedObject": "3428809cf89d66123588c141f027649edb162b76",
+      "identicalTo80a3": true,
+      "a820Object": "3428809cf89d66123588c141f027649edb162b76",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "scripts",
+      "kind": "tree",
+      "baselineObject": "a88136349f72c55c8d575239150cca21cc30a375",
+      "committedObject": "a88136349f72c55c8d575239150cca21cc30a375",
+      "identicalTo80a3": true,
+      "a820Object": "0e2960aa3a4c1f76ba4a811b12ddb35885aa1f62",
+      "identicalToA820": false,
+      "a820ComparisonRequired": false
+    },
+    {
+      "path": ".github/workflows",
+      "kind": "tree",
+      "baselineObject": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "committedObject": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "identicalTo80a3": true,
+      "a820Object": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "identicalToA820": true,
+      "a820ComparisonRequired": false
+    },
+    {
+      "path": "package.json",
+      "kind": "blob",
+      "baselineObject": "37b096381c2acaa747a24bccee901c62215b3577",
+      "committedObject": "37b096381c2acaa747a24bccee901c62215b3577",
+      "identicalTo80a3": true,
+      "a820Object": "37b096381c2acaa747a24bccee901c62215b3577",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "package-lock.json",
+      "kind": "blob",
+      "baselineObject": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "committedObject": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "identicalTo80a3": true,
+      "a820Object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": ".nvmrc",
+      "kind": "blob",
+      "baselineObject": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "committedObject": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "identicalTo80a3": true,
+      "a820Object": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": ".node-version",
+      "kind": "blob",
+      "baselineObject": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "committedObject": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "identicalTo80a3": true,
+      "a820Object": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "tsconfig.json",
+      "kind": "blob",
+      "baselineObject": "45df8a341097f1492f6947cf685aa94422d852aa",
+      "committedObject": "45df8a341097f1492f6947cf685aa94422d852aa",
+      "identicalTo80a3": true,
+      "a820Object": "45df8a341097f1492f6947cf685aa94422d852aa",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "next.config.ts",
+      "kind": "blob",
+      "baselineObject": "76a78483839ff606b9706867a5c442857e7a2456",
+      "committedObject": "76a78483839ff606b9706867a5c442857e7a2456",
+      "identicalTo80a3": true,
+      "a820Object": "76a78483839ff606b9706867a5c442857e7a2456",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "vitest.config.ts",
+      "kind": "blob",
+      "baselineObject": "9277e84d3bd2605f82e08ee29ecf41474e0936d5",
+      "committedObject": "9277e84d3bd2605f82e08ee29ecf41474e0936d5",
+      "identicalTo80a3": true,
+      "a820Object": "9277e84d3bd2605f82e08ee29ecf41474e0936d5",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "playwright.config.ts",
+      "kind": "blob",
+      "baselineObject": "e43e9912bc263909c58a31ded843a25209761917",
+      "committedObject": "e43e9912bc263909c58a31ded843a25209761917",
+      "identicalTo80a3": true,
+      "a820Object": "e43e9912bc263909c58a31ded843a25209761917",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "kind": "blob",
+      "baselineObject": "4def6bcd8094233afe90a63afe843441153a2221",
+      "committedObject": "4def6bcd8094233afe90a63afe843441153a2221",
+      "identicalTo80a3": true,
+      "a820Object": "4def6bcd8094233afe90a63afe843441153a2221",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "tests/e2e/fixtures/ncl01-experience.ts",
+      "kind": "blob",
+      "baselineObject": "c6c222d120af1cee17e743720175954f665da2a0",
+      "committedObject": "c6c222d120af1cee17e743720175954f665da2a0",
+      "identicalTo80a3": true,
+      "a820Object": "c6c222d120af1cee17e743720175954f665da2a0",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "public/parallax/sc02/models/brass-compass.glb",
+      "kind": "blob",
+      "baselineObject": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+      "committedObject": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+      "identicalTo80a3": true,
+      "a820Object": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "public/parallax/sc02/models/treasure-chest.glb",
+      "kind": "blob",
+      "baselineObject": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+      "committedObject": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+      "identicalTo80a3": true,
+      "a820Object": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+      "kind": "blob",
+      "baselineObject": "448bba68585527f2b53db02966a579084610a30b",
+      "committedObject": "448bba68585527f2b53db02966a579084610a30b",
+      "identicalTo80a3": true,
+      "a820Object": "448bba68585527f2b53db02966a579084610a30b",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+      "kind": "blob",
+      "baselineObject": "448bba68585527f2b53db02966a579084610a30b",
+      "committedObject": "448bba68585527f2b53db02966a579084610a30b",
+      "identicalTo80a3": true,
+      "a820Object": "448bba68585527f2b53db02966a579084610a30b",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+      "kind": "blob",
+      "baselineObject": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+      "committedObject": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+      "identicalTo80a3": true,
+      "a820Object": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+      "identicalToA820": true,
+      "a820ComparisonRequired": true
+    }
+  ],
+  "selectedConsumerInputs": [
+    {
+      "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "gitBlob": "4def6bcd8094233afe90a63afe843441153a2221",
+      "byteLength": 17128,
+      "sha256": "c05e517d79d0fb88304ed52a4ba19eeb37d80c4064fccf81556a6094504bb98b",
+      "identicalTo80a3AndA820": true
+    },
+    {
+      "path": "tests/e2e/fixtures/ncl01-experience.ts",
+      "gitBlob": "c6c222d120af1cee17e743720175954f665da2a0",
+      "byteLength": 8921,
+      "sha256": "df50153965ba3ffc066b191609bb85bc5947fa6cc5ceb71c2e70ef8a59802798",
+      "identicalTo80a3AndA820": true
+    }
+  ],
+  "originalAssetBindings": [
+    {
+      "path": "public/parallax/sc02/models/brass-compass.glb",
+      "gitBlob": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+      "byteLength": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "originalExpectedDigestMatches": true,
+      "identicalTo80a3AndA820": true
+    },
+    {
+      "path": "public/parallax/sc02/models/treasure-chest.glb",
+      "gitBlob": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+      "byteLength": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "originalExpectedDigestMatches": true,
+      "identicalTo80a3AndA820": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+      "gitBlob": "448bba68585527f2b53db02966a579084610a30b",
+      "byteLength": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+      "originalExpectedDigestMatches": true,
+      "identicalTo80a3AndA820": true
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+      "gitBlob": "448bba68585527f2b53db02966a579084610a30b",
+      "byteLength": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+      "originalExpectedDigestMatches": true,
+      "identicalTo80a3AndA820": true
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+      "gitBlob": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+      "byteLength": 2719555,
+      "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+      "originalExpectedDigestMatches": true,
+      "identicalTo80a3AndA820": true
+    }
+  ],
+  "scopeMeaning": "The entire 80a3-to-merge change is the 38 accepted generated inventory records. Source inputs for retained native/runtime/assets and the selected consumer test/fixture are unchanged; this does not execute them or adapt consumer authority.",
+  "limits": {
+    "testsOrBuildsExecuted": false,
+    "gpuOrNativeSuitesRerun": false,
+    "browserOrExperienceCaptureExecuted": false,
+    "realCredentialsOrPrivateOwnerContentRead": false,
+    "appleRequestsMade": false,
+    "servicesOrProcessesMutated": false,
+    "repositorySourceOrRefsMutated": false,
+    "policyOrAuthorityAdaptedByThisMerge": false,
+    "testPassOrAggregateAcceptanceClaimed": false,
+    "physicalOrProtectedAcceptanceClaimed": false,
+    "meaning": "Retained evidence keeps its original source, environment, failure, cleanup and capacity-control limits. Equality is source applicability only; no new runtime success, signing result, acceptance, or deployment is inferred."
+  }
+}

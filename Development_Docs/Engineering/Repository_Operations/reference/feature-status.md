@@ -14,12 +14,15 @@ The [post-Crossdeck NCL-01 candidate](../../../Projects/Project_Parallax/NCL01_P
 consumes the accepted continuity interfaces without changing domain authority.
 Fresh native, original-model input and joined checks retain their exact source
 scopes, including Android's successful `39e28ff` replay. The corrected consumer
-workflow at `846ef70e` passed guarded production execution and cleanup; its exact
+workflow at `80a3f2ff` passed guarded production execution and cleanup; its exact
 executed count is unpublished. Earlier hosted and separate Windows failures
 remain preserved. Their bounded corrections address Profile accessibility and
 new test-selector/readiness defects without removing identity, accessibility,
-return or authorization obligations. Accepted Sounding Line repair787 is also
-consumed; current combined experience qualification remains pending.
+return or authorization obligations. Accepted Sounding Line repair787 and
+inventory publication786 are consumed. The corrected local journey passes
+seven cases; its capacity-control failure remains separate. Hosted read-only
+Apple readiness passes without publishing a beta. Current combined experience
+qualification remains pending.
 This is scoped development evidence, not combined experience, protected-main,
 physical or owner acceptance. Internal beta 7 remains unchanged; Feature Catalog
 promotion remains deferred.

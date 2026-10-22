@@ -16,7 +16,9 @@ Original brief/addendum and failed receipts remain in the engineering ledger.
 
 Preserved candidate347a401ca8e1cb2086c51a8db95be687d124412c is reconciled by a
 normal merge of accepted721/main aaff919428ef9ab421579415ce3409949724760d,
-then accepted787/main fc5855f465314fa2c80c3a8966f8b6ce405f010a.
+then accepted787/main fc5855f465314fa2c80c3a8966f8b6ce405f010a and
+accepted786/main8e49351e62e1f32340109566557a824bfa74e14d. The last merge,
+d989e47192ba24b136099f150545ec915ac425ea, adds only38 accepted inventory rows.
 Use this owned worktree and existing PR741; no force-push, successor PR or other
 project takeover. PR781 remains the separate documentation owner. Future
 NCL02/03 are proposals, not this implementation's authority.
@@ -44,8 +46,16 @@ its exact executed count/report digest are unpublished. Separate Windows846,
 d806 and7c runs each pass6/fail1, revealing route-readiness, exact-destination
 and edition-locator test defects respectively. Their receipts remain distinct;
 do not assign local findings or counts to either hosted run. Candidatea8208aa0
-includes the real named Exact Edition witness and accepted787. Resource-safe
-current execution must verify the previously unreached Player assertions.
+includes the real named Exact Edition witness and accepted787. Its actual
+Windows report passes7/7 without retries/skips, including all late Player
+assertions and Owner return; cleanup passes. It is NOT a capacity-compliant or
+cancelled run: execution continued after the capacity stop directive. Preserve
+that control failure and original evidence. Further heavy checks are hosted;
+run39717629819 passes guarded preparation/execution/cleanup at80a3 against
+protected8e using actualNode24.19. Manifest9f3a2aea is published; executed count
+and report digest remain unpublished, so seven stays source-declared. The obsolete7c/aaff local
+planner was cancelled by one verified Node signal; parent/Git children exited
+naturally, with no plan qualification. Current capture must plan afresh.
 Shared Lens/Journal custody still requires its current actual-app capture and
 independent review. Do not repeat unchanged full31 merely because main advanced.
 No admitted live metric browser engine exists; preserve truthful Guided use,
@@ -64,6 +74,14 @@ stable HTTPS and separately deployed older preview47ff42e4. No silent preview
 replacement, external tester, App Store submission, key rotation, new paid
 resource or security weakening. Future internal beta must match qualified app
 and web identities and existing distribution policy.
+
+Governed read-only preflight39716299971 passes at80a3: matching local material,
+team/bundle and app/internal-group API reads; private cleanup passes. Certificate
+and profile expire2027-10-20T02:32:22Z. Only preflight executed; no archive,
+upload, attachment, tester, preview or keychain search-list change. Configured
+secrets stayed in the existing hosted environment. This does not prove upload
+permission, revocation, agreements or a reserved future build number. Preserve
+the exact original-byte source binding and public receipt; beta7 stays unchanged.
 
 Use task-owned temporary roots and disposable accounts/databases. Preserve
 other worktrees/services; never include secrets, cookies or private media in

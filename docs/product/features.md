@@ -16,8 +16,11 @@ input and joined development evidence within its recorded source scopes. The
 corrected consumer browser workflow passes guarded production execution and
 cleanup within its recorded scope. Earlier failures remain preserved; separate
 local checks prompted Profile accessibility and test-readiness corrections.
-The candidate also consumes accepted Sounding Line repair787. Combined current
-experience qualification remains pending.
+The candidate also consumes accepted Sounding Line repair787 and accepted
+inventory publication786. The corrected local journey passes all seven cases;
+its capacity-control failure is retained separately. The secure read-only Apple
+preflight passes without publishing a beta. Combined current experience
+qualification remains pending.
 This does not establish combined experience or protected
 acceptance, and the installed internal beta 7 has not changed. Browser Lens
 remains Guided where no admitted metric-spatial provider is available.
