@@ -95,7 +95,7 @@ async function main() {
         databaseUrl,
         "--",
         ...(suite === "sextant-consumers"
-          ? ["tests/e2e/sextant-consumer-journeys.spec.ts"]
+          ? ["tests/e2e/sextant-consumer-journeys.spec.ts", "tests/e2e/sextant-contextual-entry-journeys.spec.ts"]
           : suite === "sextant-resources"
             ? ["tests/e2e/sextant-resource-journeys.spec.ts"]
             : suite === "sextant-paired-clue"

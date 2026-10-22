@@ -99,6 +99,28 @@ for (const viewport of [
         await introHeading.scrollIntoViewIfNeeded();
         await expect(introHeading).toBeInViewport();
         await page.screenshot({ path: info.outputPath("passport-overview.png") });
+        for (const [index, [label, href]] of [
+          ["Chronicle History", "/passport/history"],
+          ["Memories", "/passport/memories"],
+          ["Artifact Cabinet", "/passport/artifacts"],
+          ["Saved from Community", "/passport/saved"],
+        ].entries()) {
+          const card = page.locator(".passport-card-grid .passport-card").filter({
+            has: page.getByRole("heading", { name: label, exact: true }),
+          });
+          await expect(card).toHaveCount(1);
+          await expect(card).toHaveAttribute("href", href);
+          await card.evaluate((node) => node.scrollIntoView({ block: "center", behavior: "instant" }));
+          await expect(card).toBeInViewport({ ratio: 1 });
+          await page.screenshot({ path: info.outputPath(`passport-overview-card-${index + 1}.png`) });
+        }
+        const privacyCallout = page.locator(".harbor-callout").filter({
+          hasText: "Profile and Passport are related, but not the same.",
+        });
+        await expect(privacyCallout).toHaveCount(1);
+        await privacyCallout.evaluate((node) => node.scrollIntoView({ block: "center", behavior: "instant" }));
+        await expect(privacyCallout).toBeInViewport({ ratio: 1 });
+        await page.screenshot({ path: info.outputPath("passport-overview-privacy.png") });
         for (const [label, title, outcome] of [
           ["Your Voyages", "Your Voyages", "Your private shelf"],
           ["Timeline", "Timeline", "Your archive in time"],
