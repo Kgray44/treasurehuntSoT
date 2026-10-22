@@ -1,7 +1,8 @@
 // Inert Git repositories and fixed clocks only; no provider, campaign or private key.
 import assert from "node:assert/strict";
 import test from "node:test";
-import { execFileSync, spawnSync } from "node:child_process";
+import childProcess, { execFileSync, spawnSync } from "node:child_process";
+import { syncBuiltinESMExports } from "node:module";
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -16,7 +17,7 @@ const registryBytes = execFileSync("git", ["show", installed + ":" + registryFil
 });
 const fixed = Date.parse("2026-10-22T04:05:21Z");
 const expired = /PRODUCT_EXPERIENCE_EXCEPTION_R26_RECORD_OR_EXPIRY_CHANGED/u;
-function fixture(t, mutate = () => {}) {
+function fixture(t, mutate = () => {}, addCandidate = () => {}) {
   const temp = mkdtempSync(path.join(tmpdir(), "r26-unrelated-"));
   t.after(() => rmSync(temp, { recursive: true, force: true }));
   const root = path.join(temp, "repo");
@@ -43,6 +44,8 @@ function fixture(t, mutate = () => {}) {
   git("commit", "--quiet", "-m", "inert installed registry");
   const baseSha = git("rev-parse", "HEAD");
   writeFileSync(path.join(root, "unrelated.txt"), "synthetic unrelated maintenance\n");
+  git("add", ".");
+  addCandidate(root, registry);
   git("add", ".");
   git("commit", "--quiet", "-m", "unrelated change");
   const candidateSha = git("rev-parse", "HEAD");
@@ -98,24 +101,44 @@ function clock(t) {
   t.mock.timers.enable({ apis: ["Date"], now: fixed });
 }
 test(
-  "unrelated same-source lookup with an unchanged expired R26 record obtains no campaign binding or custody writes",
+  "unrelated changed-head and same-source lookup retain every history signal within bounded reads",
   { timeout: 30000 },
   (t) => {
     const f = fixture(t);
-    f.candidateSha = f.baseSha;
     clock(t);
     const before = f.snapshot();
-    assert.equal(bindExperienceException({ ...f, plan: {}, prNumber: 788 }), null);
-    for (const operation of ["reserve", "seal"]) {
-      const r = f.cli(operation, 788, f.candidateSha);
-      assert.equal(r.status, 0, r.stderr);
-      assert.equal(r.stdout, "");
-      assert.equal(r.stderr, "");
-      assert.equal(r.output, "SYNTHETIC_OUTPUT_PREFIX\ncampaign=false\n");
+    const nativeExec = childProcess.execFileSync,
+      reads = [];
+    t.mock.method(childProcess, "execFileSync", function (...args) {
+      if (args[0] === "git") reads.push(args[1]);
+      return Reflect.apply(nativeExec, this, args);
+    });
+    syncBuiltinESMExports();
+    t.after(() => {
+      t.mock.restoreAll();
+      syncBuiltinESMExports();
+    });
+    for (const candidateSha of [f.candidateSha, f.baseSha]) {
+      const start = reads.length;
+      assert.equal(bindExperienceException({ ...f, candidateSha, plan: {}, prNumber: 788 }), null);
+      const calls = reads.slice(start);
+      assert(calls.length <= 100, `unrelated scope exceeded 100 immutable Git reads: ${calls.length}`);
+      if (candidateSha !== f.baseSha) {
+        assert.equal(calls.filter((a) => a[0] === "ls-tree" && a[1] === "-rz" && a.length === 3).length, 2);
+        t.diagnostic(`changed-head comparison: ${calls.length} Git reads, two complete inventories`);
+      }
+      for (const operation of ["reserve", "seal"]) {
+        const r = f.cli(operation, 788, candidateSha);
+        assert.equal(r.status, 0, r.stderr);
+        assert.equal(r.stdout, "");
+        assert.equal(r.stderr, "");
+        assert.equal(r.output, "SYNTHETIC_OUTPUT_PREFIX\ncampaign=false\n");
+      }
     }
     assert.deepEqual(f.snapshot(), before);
   },
 );
+
 test(
   "recognized R26 work retains live expiry rejection with no binding, slot or output write",
   { timeout: 30000 },
@@ -170,6 +193,60 @@ test(
         assert.equal(r.stdout, "");
         assert.match(r.stderr, /PRODUCT_EXPERIENCE_EXCEPTION_R26_/u);
         assert.equal(r.output, "SYNTHETIC_OUTPUT_PREFIX\n");
+      }
+      assert.deepEqual(f.snapshot(), before);
+    }
+  },
+);
+
+test(
+  "history files and directories remain campaign signals while shared review requires its exact blob",
+  { timeout: 60000 },
+  (t) => {
+    clock(t);
+    const original = JSON.parse(registryBytes).exceptions[25];
+    const shared = "Development_Docs/Testing/Product_Experience/candidate-review.json";
+    const ordinaryPath = original.immutableHistory.find(
+      (p) => p.path !== shared && p.path.startsWith("Development_Docs/"),
+    ).path;
+    const sharedPin = original.immutableHistory.find((p) => p.path === shared);
+    assert(sharedPin);
+    function add(root, file, bytes, directory = false) {
+      const target = path.resolve(root, file);
+      assert(target.startsWith(root + path.sep));
+      mkdirSync(path.dirname(target), { recursive: true });
+      if (directory) {
+        mkdirSync(target);
+        writeFileSync(path.join(target, "synthetic.txt"), "owned inert directory marker");
+      } else writeFileSync(target, bytes);
+    }
+    const exact = execFileSync("git", ["cat-file", "blob", sharedPin.blob], {
+      cwd: sourceRoot,
+      maxBuffer: 16 * 1024 * 1024,
+      timeout: 5000,
+    });
+    for (const [file, bytes, directory, related] of [
+      [ordinaryPath, "synthetic history file", false, true],
+      [ordinaryPath, "", true, true],
+      [shared, exact, false, true],
+      [shared, "synthetic unrelated review", false, false],
+    ]) {
+      const f = fixture(
+          t,
+          () => {},
+          (root) => add(root, file, bytes, directory),
+        ),
+        before = f.snapshot();
+      const bind = () => bindExperienceException({ ...f, plan: {}, prNumber: 788 });
+      if (related) assert.throws(bind, expired);
+      else assert.equal(bind(), null);
+      for (const operation of ["reserve", "seal"]) {
+        const r = f.cli(operation, 788);
+        assert.equal(r.status, related ? 1 : 0, r.stderr);
+        assert.equal(r.stdout, "");
+        if (related) assert.match(r.stderr, expired);
+        else assert.equal(r.stderr, "");
+        assert.equal(r.output, related ? "SYNTHETIC_OUTPUT_PREFIX\n" : "SYNTHETIC_OUTPUT_PREFIX\ncampaign=false\n");
       }
       assert.deepEqual(f.snapshot(), before);
     }

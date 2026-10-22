@@ -35,6 +35,16 @@ to the original campaign and every registry row. Only a fully validated unrelate
 lookup returns no records. A recognized campaign continues through the original
 wall-clock trusted reader and every downstream live gate.
 
+Independent review of first candidate `c86a1791` requested changes because a
+changed-head comparison could repeat more than 26,000 historical presence checks
+through Git subprocesses. That review and source remain immutable. The correction
+uses two complete leaf inventories with directory markers per comparison and
+per-invocation memoization of immutable identity, contract and ancestry reads.
+The original signal algorithm evaluates every historical row; no record or
+obligation is removed, and no state is reused between invocations. The public
+campaign helper retains its native reader. Targeted changed-head proof enforces
+a 100-read bound and exactly two complete inventories.
+
 The adapter exposes no clock override, record, binding, slot, qualifier or execution
 allowance. It does not catch an expiry exception, discard a malformed registry,
 reactivate predecessors, change the R26 module, or edit any registry, deadline,
@@ -44,10 +54,13 @@ callers retain their original behavior.
 ## Focused proof and installation boundary
 
 A fixed-clock same-source unrelated lookup reproduces the original failure in
-2.3 seconds. With only the routing correction, three targeted cases pass:
-unrelated binding and both custody operations return no campaign; recognized
+2.3 seconds. The targeted cases cover:
+both changed-head and same-source unrelated binding and custody operations
+returning no campaign; recognized
 R26 work still fails expiry without writing output or refs; five malformed-record
-variants fail closed for binding, reserve and seal. Every case checks unchanged
+variants failing closed for binding, reserve and seal; historical file/directory
+markers retaining campaign status and shared publication matching only its exact
+frozen blob. Every case checks unchanged
 Git refs and registry bytes. The source test fixes both parent and child clocks,
 and bounds Git calls, child processes and the outer runner.
 

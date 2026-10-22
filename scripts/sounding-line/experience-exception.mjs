@@ -751,59 +751,110 @@ export const trustedExceptions = (root, baseSha) => {
 // Historical validation supplies no live record, binding, slot or execution authority.
 // Only an unrelated lookup may stop here; every recognized campaign still uses
 // the original wall-clock validator and all downstream live gates.
-function applicableTrustedExceptions({ root, baseSha, candidateSha, prNumber }) {
+function applicableTrustedExceptions({ root, baseSha }, related) {
   if (!present(root, baseSha, "scripts/sounding-line/experience-current-r26.mjs"))
     return trustedExceptions(root, baseSha);
   const registry = exceptionRegistry(root, baseSha);
   validateCurrentAdmissionRegistry(registry, new Date(CURRENT_R26.ownerApproval.executionDeadlineUtc), {
     requiredVersion: 26,
   });
-  if (
-    ![CROSSDECK_CAMPAIGN, ...registry.exceptions].some((record) =>
-      campaignRelated({ root, baseSha, candidateSha, record, prNumber }),
-    )
-  )
-    return [];
+  if (![CROSSDECK_CAMPAIGN, ...registry.exceptions].some(related)) return [];
   return trustedExceptions(root, baseSha);
 }
-export function campaignRelated({ root, baseSha, candidateSha, record, prNumber }) {
-  if (Number(prNumber) === record.pullRequest) return true;
-  // Every remaining signal compares additions between two revisions. An exact
-  // same-source checkout probe cannot add campaign history or product content.
-  if (baseSha === candidateSha) return false;
-  if (r3FamilyRelated(root, candidateSha) && !r3FamilyRelated(root, baseSha)) return true;
-  if (
-    record.frozenTrees?.src &&
-    present(root, candidateSha, "src") &&
-    identity(root, candidateSha, "src") === record.frozenTrees.src &&
-    (!present(root, baseSha, "src") || identity(root, baseSha, "src") !== record.frozenTrees.src)
-  )
-    return true;
-  const refitIds = ["crossdeck.refit.companion", "crossdeck.refit.published-lens"];
-  const contractIds = (revision) =>
-    present(root, revision, "testing/contracts.json")
-      ? (json(root, revision, "testing/contracts.json").contracts ?? []).map((value) => value.id)
-      : [];
-  const proposed = contractIds(candidateSha),
-    baseline = contractIds(baseSha);
-  if (refitIds.some((id) => proposed.includes(id) && !baseline.includes(id))) return true;
-  const ancestor = (revision) => {
+const directCampaignSource = {
+  present,
+  identity,
+  json,
+  r3FamilyRelated,
+  ancestor(root, ancestor, revision) {
     try {
-      git(root, "merge-base", "--is-ancestor", record.frozenReferenceSha, revision);
+      git(root, "merge-base", "--is-ancestor", ancestor, revision);
       return true;
     } catch {
       return false;
     }
+  },
+};
+export function campaignRelated(options) {
+  return campaignRelatedWithSource(options, directCampaignSource);
+}
+// One comparison owns immutable metadata for its two exact revisions. Nothing is
+// cached between calls, and every original history row/signal is still evaluated.
+function campaignComparison(options) {
+  const inventories = new Map(),
+    paths = new Map(),
+    identities = new Map(),
+    documents = new Map(),
+    ancestors = new Map();
+  const inventory = (root, revision) => {
+    if (!inventories.has(revision)) {
+      const value = entries(root, revision);
+      inventories.set(revision, value);
+      paths.set(revision, treePaths(value));
+    }
+    return inventories.get(revision);
   };
+  const memo = (map, key, read) => {
+    if (!map.has(key)) map.set(key, read());
+    return map.get(key);
+  };
+  const source = {
+    present(root, revision, file) {
+      inventory(root, revision);
+      return paths.get(revision).has(file);
+    },
+    identity(root, revision, file) {
+      const metadata = inventory(root, revision).get(file);
+      if (metadata) return metadata.split(" ").at(-1);
+      return memo(identities, revision + "\0" + file, () => identity(root, revision, file));
+    },
+    json(root, revision, file) {
+      return memo(documents, revision + "\0" + file, () => json(root, revision, file));
+    },
+    r3FamilyRelated(root, revision) {
+      try {
+        return r3SourceFingerprint([...inventory(root, revision)]) === CROSSDECK_R3.maskedSrcDigest;
+      } catch {
+        return false;
+      }
+    },
+    ancestor(root, ancestor, revision) {
+      return memo(ancestors, ancestor + "\0" + revision, () => directCampaignSource.ancestor(root, ancestor, revision));
+    },
+  };
+  return (record) => campaignRelatedWithSource({ ...options, record }, source);
+}
+function campaignRelatedWithSource({ root, baseSha, candidateSha, record, prNumber }, source) {
+  if (Number(prNumber) === record.pullRequest) return true;
+  // Every remaining signal compares additions between two revisions. An exact
+  // same-source checkout probe cannot add campaign history or product content.
+  if (baseSha === candidateSha) return false;
+  if (source.r3FamilyRelated(root, candidateSha) && !source.r3FamilyRelated(root, baseSha)) return true;
+  if (
+    record.frozenTrees?.src &&
+    source.present(root, candidateSha, "src") &&
+    source.identity(root, candidateSha, "src") === record.frozenTrees.src &&
+    (!source.present(root, baseSha, "src") || source.identity(root, baseSha, "src") !== record.frozenTrees.src)
+  )
+    return true;
+  const refitIds = ["crossdeck.refit.companion", "crossdeck.refit.published-lens"];
+  const contractIds = (revision) =>
+    source.present(root, revision, "testing/contracts.json")
+      ? (source.json(root, revision, "testing/contracts.json").contracts ?? []).map((value) => value.id)
+      : [];
+  const proposed = contractIds(candidateSha),
+    baseline = contractIds(baseSha);
+  if (refitIds.some((id) => proposed.includes(id) && !baseline.includes(id))) return true;
+  const ancestor = (revision) => source.ancestor(root, record.frozenReferenceSha, revision);
   return (
     (ancestor(candidateSha) && !ancestor(baseSha)) ||
     record.immutableHistory.some(
       ({ path: file, blob }) =>
-        present(root, candidateSha, file) &&
+        source.present(root, candidateSha, file) &&
         (file === sharedCandidateReviewPath
-          ? identity(root, candidateSha, file) === blob &&
-            (!present(root, baseSha, file) || identity(root, baseSha, file) !== blob)
-          : !present(root, baseSha, file)),
+          ? source.identity(root, candidateSha, file) === blob &&
+            (!source.present(root, baseSha, file) || source.identity(root, baseSha, file) !== blob)
+          : !source.present(root, baseSha, file)),
     )
   );
 }
@@ -890,15 +941,11 @@ export function validateExceptionRecord(record, now = new Date()) {
   if (!Number.isFinite(Date.parse(record.expiresAt)) || now.getTime() >= Date.parse(record.expiresAt)) fail("EXPIRED");
 }
 export function bindExperienceException({ root, baseSha, candidateSha, plan, prNumber, now }) {
-  const trusted = applicableTrustedExceptions({ root, baseSha, candidateSha, prNumber });
-  if (
-    [CROSSDECK_CAMPAIGN, ...exceptionRecords(root, baseSha)].some((record) =>
-      campaignRelated({ root, baseSha, candidateSha, record, prNumber }),
-    ) &&
-    !trusted.some((record) => campaignRelated({ root, baseSha, candidateSha, record, prNumber }))
-  )
+  const related = campaignComparison({ root, baseSha, candidateSha, prNumber });
+  const trusted = applicableTrustedExceptions({ root, baseSha }, related);
+  if ([CROSSDECK_CAMPAIGN, ...exceptionRecords(root, baseSha)].some(related) && !trusted.some(related))
     fail("APPROVAL_MISSING_OR_INACTIVE");
-  const records = trusted.filter((record) => campaignRelated({ root, baseSha, candidateSha, record, prNumber }));
+  const records = trusted.filter(related);
   if (!records.length) return null;
   if (records.length !== 1) fail("AMBIGUOUS_CAMPAIGN");
   const record = records[0];
@@ -2932,9 +2979,8 @@ async function main() {
   const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
   const prNumber = event.pull_request?.number ?? event.inputs?.pr_number;
   const installedBase = process.env.GITHUB_SHA;
-  const record = applicableTrustedExceptions({ root, baseSha: installedBase, candidateSha, prNumber }).find((value) =>
-    campaignRelated({ root, baseSha: installedBase, candidateSha, record: value, prNumber }),
-  );
+  const related = campaignComparison({ root, baseSha: installedBase, candidateSha, prNumber });
+  const record = applicableTrustedExceptions({ root, baseSha: installedBase }, related).find(related);
   const output = (value) => {
     if (process.env.GITHUB_OUTPUT) writeFileSync(process.env.GITHUB_OUTPUT, value, { flag: "a" });
   };
