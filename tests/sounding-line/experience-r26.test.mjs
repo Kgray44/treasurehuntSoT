@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import nodeTest from "node:test";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from "node:fs";
@@ -25,6 +25,15 @@ import {
   trustedExceptions,
   validateCampaignHistoryInventory,
 } from "../../scripts/sounding-line/experience-exception.mjs";
+// Valid historical records use their original authorized window. Each test still
+// exercises its explicit before-floor and after-deadline/expiry denials. This
+// wrapper affects only this module's cases, including when its fixture is imported.
+function test(name, body) {
+  return nodeTest(name, (t) => {
+    t.mock.timers.enable({ apis: ["Date"], now: Date.parse(r.ownerApproval.executionNotBeforeUtc) });
+    return body(t);
+  });
+}
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const git = (...args) => execFileSync("git", args, { cwd: root, encoding: "utf8", maxBuffer: 128 * 1024 * 1024 });
 const registry = JSON.parse(git("show", `${r.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`));
@@ -257,7 +266,7 @@ test("installed R26 reader denies missing, retired, invalid and expired rows wit
     assert.throws(() => trustedExceptions(owned, write(value)), /PRODUCT_EXPERIENCE_EXCEPTION_/u);
   }
   const final = write(full);
-  t.mock.timers.enable({ apis: ["Date"], now: new Date(Date.parse(full.exceptions[25].expiresAt) + 1) });
+  t.mock.timers.setTime(Date.parse(full.exceptions[25].expiresAt) + 1);
   assert.throws(() => trustedExceptions(owned, final), /PRODUCT_EXPERIENCE_CURRENT_ADMISSION_RECORD_INVALID/u);
 });
 

@@ -8,7 +8,7 @@ version: 1.0
 document_id: VW-PARALLAX-NCL-CHARTER-1.0
 repository_baseline: e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab
 integration_reference: aaff919428ef9ab421579415ce3409949724760d
-qualification_baseline: 408f37389e6dd358b1ab005d91f3f588405f61db
+qualification_baseline: 90bff6ec281d79a6788c8270a8a3d67fd8257010
 ---
 
 # Native Chronicle Lens Series Program Charter v1.0
@@ -32,7 +32,7 @@ qualification_baseline: 408f37389e6dd358b1ab005d91f3f588405f61db
 
 This charter establishes one discoverable program beneath existing owners. It does not replace a governing constitution, reopen a closed project, authorize an implementation phase, or accept an unmerged candidate. Requirements describe the intended native experience; the linked status record describes what was actually implemented and demonstrated. A requirement written here is not an implementation claim.
 
-**October 22 reconciliation preparation:** Crossdeck #721 remains landed at `aaff919428ef9ab421579415ce3409949724760d`. This local governance preparation adopts accepted main `408f37389e6dd358b1ab005d91f3f588405f61db`, retaining #787's verification repairs, all #786 media inventory rows and #789's accepted development-diagnostic retention documentation. Published #781 remains at `716931965e60e527dcd407ea3a4c36835f87ef86`; its protected run failed when the shared classifier reached R26's expired execution window. This preparation invokes no campaign admission, capture, review, seal or protected run. Publication awaits an accepted shared-guard repair and exact-source review; the user's Studio-next product merge order remains separate. This charter's original source/subset snapshot below remains dated October 20; the [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) records the dated qualification failure and separate Studio/native lanes. No native product acceptance or future-increment ratification follows from this documentation preparation.
+**October 22 qualification refresh:** this governance candidate adopts accepted main `90bff6ec281d79a6788c8270a8a3d67fd8257010`, including the accepted #790 unrelated-expired-R26 routing repair. The original #781 failed run remains failed; the repair preserves the registry, fixed execution deadline and every related-campaign gate. #790's protected merge exception applied only to #790 and supplies no exception or finite grant to this charter. NCL governance requires its own exact-source review and normal protected qualification; actual merge also requires current authorization, head/base freshness and the user's Studio-next product merge order. The [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) records current PR observations and the accepted dependency chain. This charter's original source/subset snapshot below remains dated October 20; no native product acceptance or future-increment ratification follows from this documentation source adoption.
 
 MUST and MUST NOT are mandatory within the accepted increment's scope. SHOULD requires an explained disposition. MAY describes an optional supported capability. Future increment proposals and proposed numerical qualification profiles remain inactive until their stated owner decisions are recorded. Existing higher-authority gates remain effective throughout.
 
@@ -477,8 +477,9 @@ This is the sole NCL series charter topic. The status record is its factual comp
 
 Changing increment ownership or a mandatory acceptance requirement needs an explicit owner decision and reconciliation with parent authority. Routine updates must not rewrite preserved Parallax constitutions, reassign One Voyage progression, alter historical receipts or promote a partial feature in the Feature Catalog. Documentation acceptance authorizes only this governance deliverable; implementation and deployment need their own bounded task and current acceptance process.
 
-| Version               | Date       | Change                                                                                                                                                                                       |
-| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.0                   | 2026-10-20 | Establish subordinate NCL program governance, evidence tiers, initial-milestone boundary and explicitly proposed future increment contracts; no product behavior changed                     |
-| 1.0 review candidate  | 2026-10-21 | Record landed Crossdeck prerequisite and separate pending Studio/native lanes; preserve original source/evidence snapshot and unratified increment boundaries                                |
-| 1.0 local preparation | 2026-10-22 | Reconcile accepted #789 documentation additively; preserve the original failed #781 run and expired-window diagnosis; await accepted guard repair and exact-source review before publication |
+| Version                     | Date       | Change                                                                                                                                                                                            |
+| --------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.0                         | 2026-10-20 | Establish subordinate NCL program governance, evidence tiers, initial-milestone boundary and explicitly proposed future increment contracts; no product behavior changed                          |
+| 1.0 review candidate        | 2026-10-21 | Record landed Crossdeck prerequisite and separate pending Studio/native lanes; preserve original source/evidence snapshot and unratified increment boundaries                                     |
+| 1.0 local preparation       | 2026-10-22 | Reconcile accepted #789 documentation additively; preserve the original failed #781 run and expired-window diagnosis; await accepted guard repair and exact-source review before publication      |
+| 1.0 qualification candidate | 2026-10-22 | Adopt accepted #790 unrelated-expiry routing, preserve original failed-run authority and all accepted records, and require own current-source ordinary qualification without inherited exceptions |
