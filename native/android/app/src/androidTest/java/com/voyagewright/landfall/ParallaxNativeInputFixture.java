@@ -9,6 +9,7 @@ import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Gravity;
 import android.view.ContextThemeWrapper;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -18,6 +19,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.*;
 import java.util.function.*;
 import org.json.*;
@@ -51,10 +54,76 @@ final class ParallaxNativeInputFixture {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
   private static void tap(View view) { tap(view, view.getWidth() / 2f, view.getHeight() / 2f); }
+  private static JSONObject returnReadiness(View escape, boolean preDrawObserved, long elapsedMs) {
+    View root = escape.getRootView(); Rect visible = new Rect(), window = new Rect();
+    boolean shown = escape.getGlobalVisibleRect(visible), windowShown = root.getGlobalVisibleRect(window);
+    boolean fullyVisible = shown && visible.width() == escape.getWidth() && visible.height() == escape.getHeight();
+    boolean attached = escape.isAttachedToWindow(), laidOut = escape.isLaidOut();
+    boolean focused = escape.hasWindowFocus(), layoutPending = escape.isLayoutRequested() || root.isLayoutRequested();
+    boolean centerInsideWindow = windowShown && window.contains(visible.centerX(), visible.centerY());
+    boolean ready = preDrawObserved && attached && laidOut && focused && !layoutPending && escape.isShown()
+        && escape.isEnabled() && escape.isClickable() && escape.getWidth() > 0 && escape.getHeight() > 0
+        && fullyVisible && centerInsideWindow;
+    try {
+      return new JSONObject().put("ready", ready).put("elapsedMs", elapsedMs)
+          .put("preDrawObserved", preDrawObserved).put("attached", attached).put("laidOut", laidOut)
+          .put("windowFocused", focused).put("layoutPending", layoutPending).put("shown", escape.isShown())
+          .put("enabled", escape.isEnabled()).put("clickable", escape.isClickable())
+          .put("buttonWidth", escape.getWidth()).put("buttonHeight", escape.getHeight())
+          .put("visibleWidth", visible.width()).put("visibleHeight", visible.height())
+          .put("windowWidth", window.width()).put("windowHeight", window.height())
+          .put("centerInsideWindow", centerInsideWindow).put("fullyVisible", fullyVisible);
+    } catch (JSONException failure) { throw new AssertionError(failure); }
+  }
+  private static void awaitTouchableReturn(View escape, long startedAt) {
+    // Main-queue idle does not establish a newly shown Dialog's first layout/focus.
+    // This is a new setup-only bound; the existing GPU/input deadlines and gesture/assertions stay unchanged.
+    long deadline = startedAt + 10000;
+    CountDownLatch ready = new CountDownLatch(1); AtomicLong completedAt = new AtomicLong();
+    AtomicBoolean preDrawObserved = new AtomicBoolean();
+    AtomicReference<JSONObject> initial = new AtomicReference<>(), observed = new AtomicReference<>();
+    AtomicReference<ViewTreeObserver> observer = new AtomicReference<>();
+    Runnable check = () -> {
+      JSONObject sample = returnReadiness(escape, preDrawObserved.get(), SystemClock.elapsedRealtime() - startedAt);
+      observed.set(sample);
+      if (sample.optBoolean("ready") && completedAt.compareAndSet(0, SystemClock.elapsedRealtime())) ready.countDown();
+    };
+    ViewTreeObserver.OnPreDrawListener draw = () -> { preDrawObserved.set(true); check.run(); return true; };
+    ViewTreeObserver.OnWindowFocusChangeListener focus = hasFocus -> check.run();
+    boolean signaled = false;
+    try {
+      onMain(() -> {
+        initial.set(returnReadiness(escape, false, SystemClock.elapsedRealtime() - startedAt));
+        ViewTreeObserver owned = escape.getRootView().getViewTreeObserver(); observer.set(owned);
+        owned.addOnPreDrawListener(draw); owned.addOnWindowFocusChangeListener(focus);
+        escape.getRootView().postInvalidateOnAnimation();
+      });
+      long remaining = deadline - SystemClock.elapsedRealtime();
+      if (remaining > 0) signaled = ready.await(remaining, TimeUnit.MILLISECONDS);
+    } catch (InterruptedException interrupted) {
+      Thread.currentThread().interrupt(); throw new AssertionError("Return readiness interrupted", interrupted);
+    } finally {
+      onMain(() -> {
+        ViewTreeObserver owned = observer.get();
+        if (owned != null && !owned.isAlive()) owned = escape.getRootView().getViewTreeObserver();
+        if (owned != null && owned.isAlive()) { owned.removeOnPreDrawListener(draw); owned.removeOnWindowFocusChangeListener(focus); }
+        observed.set(returnReadiness(escape, preDrawObserved.get(), SystemClock.elapsedRealtime() - startedAt));
+        try {
+          android.util.Log.i("NCL01Filament", "SOFTWARE_PROVIDER_RETURN_READINESS:" + new JSONObject()
+              .put("schemaVersion", 1).put("readinessBudgetMs", 10000).put("initial", initial.get())
+              .put("final", observed.get()).put("completionElapsedMs", completedAt.get() == 0 ? -1 : completedAt.get() - startedAt));
+        } catch (JSONException failure) { throw new AssertionError(failure); }
+      });
+    }
+    assertTrue("Actual Return is laid out, focused and fully visible within its setup deadline", signaled);
+    assertTrue("Return readiness completed before the single setup deadline", completedAt.get() <= deadline);
+    assertTrue("Return is still touchable immediately before the one gesture", observed.get().optBoolean("ready"));
+  }
   static void verifySoftwareProvider(Activity activity) {
     AtomicReference<ParallaxLocalRuntime> owner = new AtomicReference<>();
     AtomicReference<android.app.Dialog> dialog = new AtomicReference<>();
     AtomicInteger terminated = new AtomicInteger(); List<JSONObject> events = new ArrayList<>();
+    long readinessStartedAt = SystemClock.elapsedRealtime();
     try {
       onMain(() -> {
         try {
@@ -74,7 +143,9 @@ final class ParallaxNativeInputFixture {
       InstrumentationRegistry.getInstrumentation().waitForIdleSync();
       View root = dialog.get().getWindow().getDecorView();
       assertNotNull(text(root, "Device Lab: camera-free software fixture. No AR tracking or physical proof."));
-      View escape = text(root, "Return to Guided View"); assertNotNull(escape); tap(escape);
+      View escape = text(root, "Return to Guided View"); assertNotNull(escape);
+      awaitTouchableReturn(escape, readinessStartedAt);
+      tap(escape);
       assertFalse("Actual Return dismisses the camera-free controller", dialog.get().isShowing());
       assertEquals(1, terminated.get());
       assertTrue("Software frames never publish world tracking or measured capabilities", events.stream().allMatch(event ->
