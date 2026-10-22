@@ -3,7 +3,7 @@ title: Parallax protected integration continuation
 audience: automation
 status: active
 canonical_for: parallax-protected-integration-continuation-20261021
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Existing owner continuation
@@ -49,3 +49,34 @@ contains the conflict/ownership queue, current verification state and source-bou
 receipts. Complete fresh affected verification and independent rendered review;
 then normal protected qualification/merge and landed-tree smoke if all mandatory
 requirements pass. Only human owner acceptance can grant PRODUCT_ACCEPTED.
+
+## Instrumented development checkpoint
+
+Exact reviewed diagnostic test SHA-256
+`399e882bf639631c70a2a2dc267bd24f4ed0b03ccfc49c764bdbfdd8e91f07ca` is applied
+and committed in `2e1ea05caa88e790f9b6f4f7a36981efed5826a3`. Only that test file
+changed; original assertions, fixtures, timeouts and cleanup behavior remain.
+Formatting, lint and whole-candidate TypeScript passed. Accepted retention #789
+is installed at main `408f37389e6dd358b1ab005d91f3f588405f61db`; its exact
+workflow/controller and landed smoke are verified separately from this consumer.
+
+The one coordinated DEVELOPMENT_ONLY selector attempt `39721702762/1` has run
+on that exact consumer/controller pair. Preparation passed; browser execution
+failed; cleanup and encrypted upload passed. Artifact `12401793016` matches
+provider size/hash, archive CRC and ciphertext metadata. The collector reports
+COMPLETE retention with 14 members and no collection issues. Preserve the
+original ZIP, cipher, metadata and public logs under the owned D: intake.
+Do not repeat the unchanged run or infer a product cause from PRODUCT_FAILURE.
+
+The maintenance owner cannot privately inspect the report because no approved
+decryption route is available in that session. The documented same-key
+cloud-owner custody process is a non-secret identity lead, not proof of current
+access. Coordinate identification through the existing root owner; do not search
+for credentials or publish private keys, raw errors, cookies or media. Keep UI
+cause and actual case counts UNKNOWN until authenticated private inspection.
+Repair only a confirmed cause within the existing integration objective.
+
+Reader/Windows-junction repair #788 is still unlanded. Final main reconciliation,
+complete planning, capture, independent review and ordinary protection remain
+pending. Earlier source-bound local results and failed run `39696321296` retain
+their original identities; no #721 authority or protected consumer stage is used.

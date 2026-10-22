@@ -1,0 +1,29 @@
+{
+  "kind": "PRIVATE_DIAGNOSTIC_ACCESS_OBSERVATION",
+  "qualification": false,
+  "timeUtc": "2026-10-22T04:40:09.1110329Z",
+  "run": 39721702762,
+  "artifactId": 12401793016,
+  "ciphertextSHA256": "e3984e2af41e8d324bd6faf06c2a0b286ba51eee2fa90a71bab22e03b19277fe",
+  "publicKeyId": "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc",
+  "reportingOwner": "01a13d1d-9489-73f3-94df-1122ba234d14",
+  "reportedAccess": "NO_APPROVED_DECRYPTION_ROUTE_IN_MAINTENANCE_SESSION",
+  "actualPrivateMembersVerified": false,
+  "currentCause": "UNKNOWN",
+  "documentedCustodyLead": {
+    "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Ordinary6_Posttechnical_Diagnostic_20261017.md",
+    "lines": [
+      208,
+      225
+    ],
+    "samePublicKeyIdentity": true,
+    "process": "Owner-held key outside Git; cloud owner authenticates and privately decrypts",
+    "currentCustodianIdentityVerified": false
+  },
+  "coordinationRoute": "Existing human-authorized #722 root owner",
+  "credentialSearch": false,
+  "privateKeyAccess": false,
+  "decryptAttempt": false,
+  "newBrowserRun": false,
+  "productRepair": false
+}

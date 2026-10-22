@@ -1,9 +1,9 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: local-software-pass-browser-preparation-blocked
+status: development-browser-failed-diagnostics-retained
 canonical_for: parallax-protected-integration-20261021
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Accepted-main reconciliation
@@ -132,6 +132,70 @@ hash-verifies 37 exact copied originals, including the earlier missing-filename
 preflight that stopped before Vitest with zero cases. The original running
 checkpoint and paused-path selection retain their historical statuses; the
 current checkpoint records the completed results and remaining blockers.
+
+## Hosted development diagnosis
+
+The original hosted development attempt on delivery source
+`d4a8975200dfdc91ea1b92cbf3b53df6f08da3e0`, run `39696321296/1`, passed Linux
+preparation and failed the selected Crossdeck browser worker. Cleanup passed.
+Its encrypted artifact contains only one 360-byte status manifest and reports
+INCOMPLETE retention. The custodian confirmed that the original private report
+and worker output are unavailable. That original failure and its UNKNOWN cause
+remain unchanged.
+
+The independently reviewed diagnostic successor changes only
+`tests/e2e/crossdeck-experience-refit.spec.ts`. It attaches bounded failure media
+and context after finalization, preserving the original assertions, fixtures,
+timeouts and cleanup error. Exact reviewed file SHA-256
+`399e882bf639631c70a2a2dc267bd24f4ed0b03ccfc49c764bdbfdd8e91f07ca` is committed
+as blob `5b38e628378047b14f4ba4ab66cfd773a71697bf` in producer
+`2e1ea05caa88e790f9b6f4f7a36981efed5826a3`. Formatting, lint and whole-candidate
+TypeScript passed on these bytes. Documentation and catalog checks passed;
+unrelated generated maintenance inventory rows and a date-only change were
+preserved separately and restored. Production source remains unchanged from
+the reconciled `871431cd` producer.
+
+Retention repair #789 landed at protected main
+`408f37389e6dd358b1ab005d91f3f588405f61db`, tree
+`c1b234b905b04fd56f045dcd6f9ea0e646bb8a60`, equal to qualified head
+`cd1ece3a43acc71b65f4b58e3f2979bd00f1e335`. Protected run `39717626457/1` and
+the required Mainline Decision passed. Independent installed-source and landed
+smoke readback verified four passing checks and all eight original output
+hashes. The Windows smoke has five passes and ten POSIX-only skips; protected
+Linux coverage remains separate. This establishes maintenance installation,
+not consumer acceptance.
+
+One coordinated DEVELOPMENT_ONLY diagnostic, [run 39721702762/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39721702762),
+used that installed controller with exact consumer `2e1ea05c` and the single
+`crossdeck-experience-refit.spec.ts` selector. Linux preparation passed; the
+browser worker exited 1 with PRODUCT_FAILURE. Browser and server cleanup passed
+with trees reaped and streams closed; the proxy closed. Encrypted artifact
+`12401793016` matches the provider's 25,128,132-byte ZIP and SHA-256, passes ZIP
+CRC checks, and matches the retained ciphertext digest and source binding.
+The collector reports COMPLETE retention: 14 members, 18,760,953 raw bytes and
+no collection issues. Actual private member/report inspection is blocked:
+the existing maintenance owner has no approved decryption route. The older
+Sounding Line diagnostic documentation identifies an owner-held key and private
+cloud-owner inspection process for the same public key identity, but current
+custodian identity and access remain unverified. That non-secret custody lead
+is being coordinated through the root owner. The UI cause and actual case
+counts are not inferred from the public failure code or collection status.
+No repeat run or speculative product repair followed.
+
+The [diagnostic intake](evidence/protected-integration-20261021/diagnostic-2e1ea05c/intake.json)
+preserves exact copies of public metadata and source-validation records.
+The [terminal disposition](evidence/protected-integration-20261021/diagnostic-2e1ea05c/hosted-crossdeck-development-02/failure-disposition.json)
+separates test failure, supervised cleanup, upload, reported completeness and
+the outstanding causal inspection. Encrypted originals and provider log ZIPs
+remain privately retained on D:; private runtime payloads are not published here.
+
+The complete-reader/Windows-junction repair #788 remains unlanded at this
+checkpoint. Reconcile the accepted maintenance bundle once before the final
+source freeze, fresh complete plan, governed capture and independent experience
+review. No protected capture, authenticated review or qualification has been
+consumed by these development attempts. The diagnostic correction changes no
+major feature availability; the combined integration's catalog decision remains
+subject to its own completed criteria.
 
 Physical iPhone alignment and browser tracker reliability remain unqualified.
 Plane prototypes return no admitted planes/hit tests. The unchanged root's 30

@@ -1,0 +1,252 @@
+{
+  "kind": "PARALLAX_DIAGNOSTIC_PUBLIC_METADATA_INTAKE",
+  "qualification": false,
+  "timeUtc": "2026-10-22T04:36:15.2684209Z",
+  "source": "2e1ea05caa88e790f9b6f4f7a36981efed5826a3",
+  "run": 39721702762,
+  "count": 34,
+  "bytes": 85529,
+  "originals": [
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\application.json",
+      "relative": "diagnostic-application-20261022/application.json",
+      "bytes": 691,
+      "sha256": "f50f40accca9692be8852dc7634644d09e42d30df2b79b75624a3e5e862d3b44",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\committed-source.json",
+      "relative": "diagnostic-application-20261022/committed-source.json",
+      "bytes": 549,
+      "sha256": "3fb4f8be35ed5b0152eccac4539f0c67796a38c3253eaee19f84241ed74efa64",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\style-checks.json",
+      "relative": "diagnostic-application-20261022/style-checks.json",
+      "bytes": 170,
+      "sha256": "b7f90c944ddc68c70d6468b2c450cdef57fff38e28060d0b7701c0d4a8b9f230",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\format.original.log",
+      "relative": "diagnostic-application-20261022/format.original.log",
+      "bytes": 68,
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\lint.original.log",
+      "relative": "diagnostic-application-20261022/lint.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\typecheck.original.log",
+      "relative": "diagnostic-application-20261022/typecheck.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\typecheck-result.json",
+      "relative": "diagnostic-application-20261022/typecheck-result.json",
+      "bytes": 135,
+      "sha256": "5fba7280c13e1624320e356f7c3966a552d6be87574e2ed12baac1aef8428bf0",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\documentation-catalog-checks.json",
+      "relative": "diagnostic-application-20261022/documentation-catalog-checks.json",
+      "bytes": 651,
+      "sha256": "9dbc9b1cfb5d94d62ce2fe90cf1d80e89fae8bdb3efea2a45927946434da8ea4",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\catalog-disposition.json",
+      "relative": "diagnostic-application-20261022/catalog-disposition.json",
+      "bytes": 436,
+      "sha256": "249fa38025f7262b82764690be9a384f86386f2e9153f36080f6430a3f1de6a4",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\generator-incidental.original.patch",
+      "relative": "diagnostic-application-20261022/generator-incidental.original.patch",
+      "bytes": 6450,
+      "sha256": "97aba85e382e9edcfdc46e6994c91aea5d8508aca117ae78c4f032888982a5fd",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\resume-readiness-02\\independent-source-review04.observation.json",
+      "relative": "resume-readiness-02/independent-source-review04.observation.json",
+      "bytes": 1033,
+      "sha256": "4ab74aafa1405d490c3626ae9453d697f7823786f2b3d50479c65478ec8ff17f",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-test-patch-04\\review-manifest.json",
+      "relative": "diagnostic-test-patch-04/review-manifest.json",
+      "bytes": 1445,
+      "sha256": "9af6da32f43a684d6f8400b19cbaf4dacdf5dd9a3b1805e57180abdc7ff78561",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-test-patch-04\\bounded-context-check.json",
+      "relative": "diagnostic-test-patch-04/bounded-context-check.json",
+      "bytes": 982,
+      "sha256": "d27667357dc1514006471c12dd7ce8c1696d411ff9adf533693db5794ca548c4",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\retention-installation-20261022\\installation-proof.json",
+      "relative": "retention-installation-20261022/installation-proof.json",
+      "bytes": 2684,
+      "sha256": "0f31f9a29d51a15cf5543f181ef59366ac76e95801fb2d8a64fba9184cd2346c",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\retention-landed.original.json",
+      "relative": "hosted-crossdeck-development-02/retention-landed.original.json",
+      "bytes": 4123,
+      "sha256": "490a5ec23e827814ac2e869b6ceb754cc4a74e81340dded68441cdba88744476",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\dispatch-request.json",
+      "relative": "hosted-crossdeck-development-02/dispatch-request.json",
+      "bytes": 793,
+      "sha256": "4707d1b167e09ae351b061ef0ae8dfe84749ce3da5f1690f146c3863a48dbb63",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\dispatch-result.json",
+      "relative": "hosted-crossdeck-development-02/dispatch-result.json",
+      "bytes": 129,
+      "sha256": "b2dd605bdea39e2495bce705c6d9c80061835677763c3c0daeef9fe4fbbe0f75",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\run-binding.json",
+      "relative": "hosted-crossdeck-development-02/run-binding.json",
+      "bytes": 617,
+      "sha256": "c4dca74f77875a7ac4146b2d86351ab211a4f7aa785b4ca0df952c2c6a3b241f",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\validation-custody.json",
+      "relative": "diagnostic-application-20261022/validation-custody.json",
+      "bytes": 6564,
+      "sha256": "d9c52cee48eb5ac6bdf325090f47787c5634de66d9da7fedb356032eaa43dd11",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\retention-installation-20261022\\landed-smoke-readback.json",
+      "relative": "retention-installation-20261022/landed-smoke-readback.json",
+      "bytes": 2166,
+      "sha256": "cee11abf6f7ce5c4e78711a0056a271f08cda8cfa672e89cae9d65033f2b188a",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\retention-installation-20261022\\mainline-check.original.json",
+      "relative": "retention-installation-20261022/mainline-check.original.json",
+      "bytes": 3095,
+      "sha256": "4201a0f38a7593cf3215c50e015e67e54b8194c7b0f277b14ffd8f4086d24059",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-01\\run.original.json",
+      "relative": "hosted-crossdeck-development-01/run.original.json",
+      "bytes": 14114,
+      "sha256": "63578f00fe39201cc522c537fe55e28dc1b60a4137706c2926d09c67802e654f",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-01\\jobs.original.json",
+      "relative": "hosted-crossdeck-development-01/jobs.original.json",
+      "bytes": 4992,
+      "sha256": "cbdacd08fd9dfac532a2bd2d6fc35736e141abaa528512a81c5a9f7f5922a9b2",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-01\\artifacts.original.json",
+      "relative": "hosted-crossdeck-development-01/artifacts.original.json",
+      "bytes": 928,
+      "sha256": "5dfded9f958ca716143cd1f88f2ac3a0926ad1ac1921e6b308da2c124a77d1cc",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-01\\download-custody.json",
+      "relative": "hosted-crossdeck-development-01/download-custody.json",
+      "bytes": 1054,
+      "sha256": "06fd7f6367b3ce0400ce56f8bba8ce816eb568e75b0ccfcf6d7e40f346e4d634",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-01\\failure-disposition.json",
+      "relative": "hosted-crossdeck-development-01/failure-disposition.json",
+      "bytes": 2586,
+      "sha256": "e1c85d3114e5768b3b9d3b47de5f64df7ba158bca936f014d1ce46721eeea9a4",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-01\\artifact\\retention.json",
+      "relative": "hosted-crossdeck-development-01/artifact/retention.json",
+      "bytes": 966,
+      "sha256": "4bc7e0ee96ab9d8a7906ca678f43e766e684fd1a65d026cccbb8b160362c32e4",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\run.original.json",
+      "relative": "hosted-crossdeck-development-02/run.original.json",
+      "bytes": 12811,
+      "sha256": "f2edf942cdb3294bc343f96a1ffa18160a47cd1e10f0251023e603b8127aef2b",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\jobs.original.json",
+      "relative": "hosted-crossdeck-development-02/jobs.original.json",
+      "bytes": 3502,
+      "sha256": "416805bde73f824d6c8152426023638b10fa0da8d8fd01c67bd8e35fda1867b1",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\artifacts.original.json",
+      "relative": "hosted-crossdeck-development-02/artifacts.original.json",
+      "bytes": 756,
+      "sha256": "cedcf37351765659cfe566e574eee84711e1b0a5c2ed2b4c0550926df414fee0",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\download-custody.json",
+      "relative": "hosted-crossdeck-development-02/download-custody.json",
+      "bytes": 4898,
+      "sha256": "26feb24fece4f50eb85d4f78c918ad8cef7b4fe624c9659ed62e63001baa065b",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\failure-disposition.json",
+      "relative": "hosted-crossdeck-development-02/failure-disposition.json",
+      "bytes": 4134,
+      "sha256": "15e742d19e9ef30591443fae3cb3af7ff4e8e73a4f74f16b18d74ebeb619fc2e",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\artifact\\retention.json",
+      "relative": "hosted-crossdeck-development-02/artifact/retention.json",
+      "bytes": 840,
+      "sha256": "55595be765d7657c1b78df2e5d8dff526dc50cb99c390740aabb2c7b5b4a624a",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\custody-access.original.json",
+      "relative": "hosted-crossdeck-development-02/custody-access.original.json",
+      "bytes": 1167,
+      "sha256": "ff2a6a24cb715021ffe24c97555a82ad2694815c4cead68c93f21ebb7d4652c9",
+      "copiedByteEqual": true
+    }
+  ],
+  "privatePayloadsCopied": false,
+  "providerLogZIPsCopied": false,
+  "encryptedOriginalsRetainedAt": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02"
+}

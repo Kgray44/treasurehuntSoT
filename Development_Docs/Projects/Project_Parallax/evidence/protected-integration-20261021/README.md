@@ -1,14 +1,14 @@
 ---
 title: Parallax accepted-main reconciliation evidence
 audience: product-engineering
-status: local-software-pass-browser-preparation-blocked
+status: development-browser-failed-diagnostics-retained
 canonical_for: parallax-protected-integration-evidence-20261021
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Accepted-main reconciliation
 
-This is local preparation, with `qualification:false`. The accepted base is
+This is development preparation, with `qualification:false`. The accepted base is
 `aaff919428ef9ab421579415ce3409949724760d`; the prior prepared candidate is
 `6119eb58ae06a50236c396d4a6d27f9d9ae36f7c`. Earlier proof retains its original
 producing source. Fresh protected qualification is pending.
@@ -38,6 +38,19 @@ producing source. Fresh protected qualification is pending.
   under `checks-871431`, including failed/empty outputs, complete redacted setup
   logs and their actual source identities. The earlier running checkpoint and
   paused selection remain historical; `checkpoint.json` is the current result.
+
+- [Diagnostic metadata intake](diagnostic-2e1ea05c/intake.json) preserves
+  byte-verified original copies, classified as engineering validation evidence.
+  Source validation binds to the reviewed test-only producer `2e1ea05c`, with
+  unchanged production source from `871431cd`. Original failed run `39696321296`
+  remains incomplete and causally UNKNOWN. Its instrumented successor
+  `39721702762/1` passed preparation, failed the selected browser worker and
+  passed supervised cleanup. Encrypted upload and archive/ciphertext checks
+  passed; the collector reports COMPLETE retention with 14 members. Private
+  report inspection and the actual cause remain blocked on an identified
+  approved decryption route. No private runtime payload or log ZIP is included.
+- [Terminal development disposition](diagnostic-2e1ea05c/hosted-crossdeck-development-02/failure-disposition.json)
+  records the exact consumer/controller pair, separate outcomes and proof limits.
 
 Phone alignment, unavailable plane detection, browser tracker resets, native
 installation, physical AR, live-provider and owner acceptance remain unqualified.

@@ -1,0 +1,127 @@
+{
+  "kind": "PARALLAX_DIAGNOSTIC_APPLICATION_VALIDATION_CUSTODY",
+  "qualification": false,
+  "timeUtc": "2026-10-22T04:25:42.0298809Z",
+  "producer": "2e1ea05caa88e790f9b6f4f7a36981efed5826a3",
+  "parent": "d4a8975200dfdc91ea1b92cbf3b53df6f08da3e0",
+  "productionSourceProducer": "871431cd0827d42551c8a8b9d2d7fde5e16c1f77",
+  "controller": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "developmentRun": 39721702762,
+  "originalFailureRun": 39696321296,
+  "originals": [
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\application.json",
+      "relative": "diagnostic-application-20261022/application.json",
+      "bytes": 691,
+      "sha256": "f50f40accca9692be8852dc7634644d09e42d30df2b79b75624a3e5e862d3b44"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\committed-source.json",
+      "relative": "diagnostic-application-20261022/committed-source.json",
+      "bytes": 549,
+      "sha256": "3fb4f8be35ed5b0152eccac4539f0c67796a38c3253eaee19f84241ed74efa64"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\style-checks.json",
+      "relative": "diagnostic-application-20261022/style-checks.json",
+      "bytes": 170,
+      "sha256": "b7f90c944ddc68c70d6468b2c450cdef57fff38e28060d0b7701c0d4a8b9f230"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\format.original.log",
+      "relative": "diagnostic-application-20261022/format.original.log",
+      "bytes": 68,
+      "sha256": "f20510a9da4717c51c4cffee6d0dd88d6c9a723d0a83711d01216f5b48961283"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\lint.original.log",
+      "relative": "diagnostic-application-20261022/lint.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\typecheck.original.log",
+      "relative": "diagnostic-application-20261022/typecheck.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\typecheck-result.json",
+      "relative": "diagnostic-application-20261022/typecheck-result.json",
+      "bytes": 135,
+      "sha256": "5fba7280c13e1624320e356f7c3966a552d6be87574e2ed12baac1aef8428bf0"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\documentation-catalog-checks.json",
+      "relative": "diagnostic-application-20261022/documentation-catalog-checks.json",
+      "bytes": 651,
+      "sha256": "9dbc9b1cfb5d94d62ce2fe90cf1d80e89fae8bdb3efea2a45927946434da8ea4"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\catalog-disposition.json",
+      "relative": "diagnostic-application-20261022/catalog-disposition.json",
+      "bytes": 436,
+      "sha256": "249fa38025f7262b82764690be9a384f86386f2e9153f36080f6430a3f1de6a4"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-application-20261022\\generator-incidental.original.patch",
+      "relative": "diagnostic-application-20261022/generator-incidental.original.patch",
+      "bytes": 6450,
+      "sha256": "97aba85e382e9edcfdc46e6994c91aea5d8508aca117ae78c4f032888982a5fd"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\resume-readiness-02\\independent-source-review04.observation.json",
+      "relative": "resume-readiness-02/independent-source-review04.observation.json",
+      "bytes": 1033,
+      "sha256": "4ab74aafa1405d490c3626ae9453d697f7823786f2b3d50479c65478ec8ff17f"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-test-patch-04\\review-manifest.json",
+      "relative": "diagnostic-test-patch-04/review-manifest.json",
+      "bytes": 1445,
+      "sha256": "9af6da32f43a684d6f8400b19cbaf4dacdf5dd9a3b1805e57180abdc7ff78561"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\diagnostic-test-patch-04\\bounded-context-check.json",
+      "relative": "diagnostic-test-patch-04/bounded-context-check.json",
+      "bytes": 982,
+      "sha256": "d27667357dc1514006471c12dd7ce8c1696d411ff9adf533693db5794ca548c4"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\retention-installation-20261022\\installation-proof.json",
+      "relative": "retention-installation-20261022/installation-proof.json",
+      "bytes": 2684,
+      "sha256": "0f31f9a29d51a15cf5543f181ef59366ac76e95801fb2d8a64fba9184cd2346c"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\retention-landed.original.json",
+      "relative": "hosted-crossdeck-development-02/retention-landed.original.json",
+      "bytes": 4123,
+      "sha256": "490a5ec23e827814ac2e869b6ceb754cc4a74e81340dded68441cdba88744476"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\dispatch-request.json",
+      "relative": "hosted-crossdeck-development-02/dispatch-request.json",
+      "bytes": 793,
+      "sha256": "4707d1b167e09ae351b061ef0ae8dfe84749ce3da5f1690f146c3863a48dbb63"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\dispatch-result.json",
+      "relative": "hosted-crossdeck-development-02/dispatch-result.json",
+      "bytes": 129,
+      "sha256": "b2dd605bdea39e2495bce705c6d9c80061835677763c3c0daeef9fe4fbbe0f75"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-02\\run-binding.json",
+      "relative": "hosted-crossdeck-development-02/run-binding.json",
+      "bytes": 617,
+      "sha256": "c4dca74f77875a7ac4146b2d86351ab211a4f7aa785b4ca0df952c2c6a3b241f"
+    }
+  ],
+  "limits": [
+    "review and local source validation are not browser runtime proof",
+    "hosted diagnostic still running",
+    "no protected capture review qualifier or merge",
+    "original UI cause remains UNKNOWN pending causal evidence"
+  ]
+}
