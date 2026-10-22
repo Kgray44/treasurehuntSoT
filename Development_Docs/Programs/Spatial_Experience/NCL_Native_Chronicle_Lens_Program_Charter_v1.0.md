@@ -8,7 +8,7 @@ version: 1.0
 document_id: VW-PARALLAX-NCL-CHARTER-1.0
 repository_baseline: e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab
 integration_reference: aaff919428ef9ab421579415ce3409949724760d
-qualification_baseline: 90bff6ec281d79a6788c8270a8a3d67fd8257010
+qualification_baseline: 39b706ad3c9a2b8e1d589f71db909cf6c32c468b
 ---
 
 # Native Chronicle Lens Series Program Charter v1.0
@@ -32,7 +32,7 @@ qualification_baseline: 90bff6ec281d79a6788c8270a8a3d67fd8257010
 
 This charter establishes one discoverable program beneath existing owners. It does not replace a governing constitution, reopen a closed project, authorize an implementation phase, or accept an unmerged candidate. Requirements describe the intended native experience; the linked status record describes what was actually implemented and demonstrated. A requirement written here is not an implementation claim.
 
-**October 22 qualification refresh:** this governance candidate adopts accepted main `90bff6ec281d79a6788c8270a8a3d67fd8257010`, including the accepted #790 unrelated-expired-R26 routing repair. The original #781 failed run remains failed; the repair preserves the registry, fixed execution deadline and every related-campaign gate. #790's protected merge exception applied only to #790 and supplies no exception or finite grant to this charter. NCL governance requires its own exact-source review and normal protected qualification; actual merge also requires current authorization, head/base freshness and the user's Studio-next product merge order. The [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) records current PR observations and the accepted dependency chain. This charter's original source/subset snapshot below remains dated October 20; no native product acceptance or future-increment ratification follows from this documentation source adoption.
+**October 22 qualification refresh:** this governance candidate adopts accepted main `39b706ad3c9a2b8e1d589f71db909cf6c32c468b`, including #788's bounded-source/Windows-build-link repair and #790's unrelated-expiry repair. Prior NCL head `0c332757aa591e7c4f77066a7a3b17c4fb00fbfd` passed normal [run 39783320141/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39783320141) on base `90bff6ec`; that success remains bound to its older source/base because main advanced during qualification. The original #781 failed run remains failed. #790's protected merge exception applied only to #790 and supplies no exception or finite grant to this charter. This refreshed source requires its own exact-source review and normal protected qualification; actual merge also requires current authorization, head/base freshness and the user's Studio-next product merge order. The [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) records dated PR observations and the accepted dependency chain. This charter's original source/subset snapshot below remains dated October 20; no native product acceptance or future-increment ratification follows from documentation source adoption.
 
 MUST and MUST NOT are mandatory within the accepted increment's scope. SHOULD requires an explained disposition. MAY describes an optional supported capability. Future increment proposals and proposed numerical qualification profiles remain inactive until their stated owner decisions are recorded. Existing higher-authority gates remain effective throughout.
 
@@ -483,3 +483,4 @@ Changing increment ownership or a mandatory acceptance requirement needs an expl
 | 1.0 review candidate        | 2026-10-21 | Record landed Crossdeck prerequisite and separate pending Studio/native lanes; preserve original source/evidence snapshot and unratified increment boundaries                                     |
 | 1.0 local preparation       | 2026-10-22 | Reconcile accepted #789 documentation additively; preserve the original failed #781 run and expired-window diagnosis; await accepted guard repair and exact-source review before publication      |
 | 1.0 qualification candidate | 2026-10-22 | Adopt accepted #790 unrelated-expiry routing, preserve original failed-run authority and all accepted records, and require own current-source ordinary qualification without inherited exceptions |
+| 1.0 post-#788 candidate     | 2026-10-22 | Preserve successful NCL qualification on the prior #790 base; adopt accepted #788 additively and require fresh source/base review and ordinary qualification                                      |

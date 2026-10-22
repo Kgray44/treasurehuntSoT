@@ -741,6 +741,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sounding_Line_Source_Snapshot_And_Windows_Build_Links_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
       "record_type": "archive-index",
       "status": "preserved",
