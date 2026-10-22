@@ -10,6 +10,55 @@ concurrency:
   group: landfall-device-lab-${{ github.ref_name }}
   cancel-in-progress: false
 jobs:
+  darwin-audit-signal:
+    if: __RUN_DARWIN_AUDIT_SIGNAL__
+    name: Host / Darwin audit-token signal feasibility (development only)
+    runs-on: macos-15
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: .agents/scripts/darwin-audit-signal-primitives.c
+          sparse-checkout-cone-mode: false
+      - name: Observe generation-bound signals only for finite owned direct children
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = __CANDIDATE_SHA__
+          umask 077
+          output=artifacts/sounding-line/darwin-audit-signal
+          mkdir -p "$output"
+          shasum -a 256 .agents/scripts/darwin-audit-signal-primitives.c > "$output/source.sha256"
+          sw_vers > "$output/host-version.txt"
+          clang -Wall -Wextra -Werror .agents/scripts/darwin-audit-signal-primitives.c -o "$RUNNER_TEMP/darwin-audit-signal-build" -lbsm -lproc
+          owned_probe=$(sudo -n mktemp -d /private/tmp/vw-darwin-audit-signal.XXXXXXXX)
+          case "$owned_probe" in /private/tmp/vw-darwin-audit-signal.*) ;; *) exit 1 ;; esac
+          cleanup_probe() {
+            original_status=$?
+            trap - EXIT
+            binary_removed=false
+            directory_removed=false
+            if sudo -n rm -f -- "$owned_probe/probe" && sudo -n test ! -e "$owned_probe/probe"; then binary_removed=true; fi
+            if sudo -n rmdir -- "$owned_probe" && sudo -n test ! -e "$owned_probe"; then directory_removed=true; fi
+            printf '{"binaryRemoved":%s,"privateDirectoryRemoved":%s,"probeExitCode":%s}\n' "$binary_removed" "$directory_removed" "$original_status" > "$output/install-cleanup.json"
+            if test "$binary_removed" != true || test "$directory_removed" != true; then exit 1; fi
+            exit "$original_status"
+          }
+          trap cleanup_probe EXIT
+          sudo -n install -m 700 "$RUNNER_TEMP/darwin-audit-signal-build" "$owned_probe/probe"
+          sudo -n env GITHUB_ACTIONS=true RUNNER_ENVIRONMENT=github-hosted "$owned_probe/probe" __CANDIDATE_SHA__ > "$output/observations.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: darwin-audit-signal-__CANDIDATE_SHA__
+          path: artifacts/sounding-line/darwin-audit-signal
+          if-no-files-found: error
+          retention-days: 14
   darwin-primitives:
     if: __RUN_DARWIN_PRIMITIVES__
     name: Host / Darwin task-port feasibility (development only)

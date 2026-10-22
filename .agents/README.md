@@ -15,6 +15,7 @@ not authorize restarting a completed phase.
 
 - [Focused development and final verification](testing-workflow.md)
 - [Darwin process primitive feasibility](darwin-process-primitives.md)
+- [Darwin audit-token signal primitive feasibility](darwin-audit-signal-primitives.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)

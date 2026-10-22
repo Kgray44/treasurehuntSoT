@@ -3,7 +3,7 @@ title: Repository operations records
 audience: engineering
 status: current
 canonical_for: repository-operations-records
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # Repository operations records
@@ -18,3 +18,6 @@ This internal collection contains development, deployment, configuration, testin
 
 The [owned HTTP redirect repair](developer/Sounding_Line_Loopback_Redirect_Repair_20261020.md)
 records a focused canonical runtime correction and its retained qualification limits.
+
+The [Darwin audit-token signal investigation](developer/Sounding_Line_Darwin_Audit_Signal_Feasibility_20261021.md)
+records a separate bounded host primitive prerequisite and its unaccepted ownership boundary.

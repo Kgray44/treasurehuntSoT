@@ -22,6 +22,7 @@ export async function dispatchLandfallHostedLab(
       "all",
       "provider",
       "darwin-primitives",
+      "darwin-audit-signal",
       "browser",
       "android",
       "android-radio",
@@ -38,6 +39,11 @@ export async function dispatchLandfallHostedLab(
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
     throw new Error("LANDFALL_HOSTED_DARWIN_PRIMITIVES_SCOPE_INVALID");
+  if (
+    target === "darwin-audit-signal" &&
+    (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
+  )
+    throw new Error("LANDFALL_HOSTED_DARWIN_AUDIT_SIGNAL_SCOPE_INVALID");
   if (
     target === "android-journal" &&
     selectedScenarios !== undefined &&
@@ -90,6 +96,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
     .replaceAll("__RUN_DARWIN_PRIMITIVES__", String(target === "darwin-primitives"))
+    .replaceAll("__RUN_DARWIN_AUDIT_SIGNAL__", String(target === "darwin-audit-signal"))
     .replaceAll("__RUN_BROWSER__", String(target === "all" || target === "browser"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll(
