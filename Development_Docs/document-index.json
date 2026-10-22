@@ -6405,6 +6405,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Bounded_Consumers_20261022.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Implementation_Record.md",
       "record_type": "engineering-record",
       "status": "current",

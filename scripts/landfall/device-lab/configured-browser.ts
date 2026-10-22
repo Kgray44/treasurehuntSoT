@@ -5,13 +5,16 @@ import { deviceLabSourceIdentity } from "./source";
 import { labTool } from "./host";
 import { createSyntheticPrivateStorage } from "./private-content-storage";
 import { createBrowserDiagnosticSession } from "../../sounding-line/browser-diagnostics.mjs";
+import { sextantConsumerPartition } from "./consumer-partitions";
 
 /** Ephemeral synthetic signing configuration, never a deployment key or saved artifact. */
 async function main() {
   const candidate = process.argv[2],
     databaseUrl = process.argv[3];
   const suite = process.argv[4] ?? "landfall";
+  const consumerPartition = sextantConsumerPartition(suite);
   if (
+    !consumerPartition &&
     ![
       "landfall",
       "sextant-consumers",
@@ -94,43 +97,44 @@ async function main() {
         "--database-url",
         databaseUrl,
         "--",
-        ...(suite === "sextant-consumers"
-          ? ["tests/e2e/sextant-consumer-journeys.spec.ts", "tests/e2e/sextant-contextual-entry-journeys.spec.ts"]
-          : suite === "sextant-resources"
-            ? ["tests/e2e/sextant-resource-journeys.spec.ts"]
-            : suite === "sextant-paired-clue"
-              ? ["tests/e2e/sextant-parallax-paired-journeys.spec.ts"]
-              : suite === "sextant-community"
-                ? ["tests/e2e/sextant-community-journeys.spec.ts"]
-                : suite === "sextant-authoring-resources"
-                  ? ["tests/e2e/sextant-authoring-resource-journeys.spec.ts"]
-                  : suite === "sextant-history"
-                    ? ["tests/e2e/sextant-history-journeys.spec.ts"]
-                    : suite === "sextant-catalog"
-                      ? ["tests/e2e/sextant-catalog-journeys.spec.ts"]
-                      : suite === "sextant-creator-entry"
-                        ? ["tests/e2e/sextant-creator-entry-journeys.spec.ts"]
-                        : suite === "sextant-admiralty"
-                          ? ["tests/e2e/sextant-admiralty-journeys.spec.ts"]
-                          : suite === "sextant-private-content"
-                            ? ["tests/e2e/sextant-private-content-journeys.spec.ts"]
-                            : suite === "sextant-account-recovery"
-                              ? ["tests/e2e/sextant-account-recovery-journeys.spec.ts"]
-                              : suite === "sextant-invitation"
-                                ? ["tests/e2e/sextant-invitation-journeys.spec.ts"]
-                                : suite === "sextant-landfall"
-                                  ? ["tests/e2e/sextant-landfall-journeys.spec.ts"]
-                                  : suite === "sextant-entry"
-                                    ? ["tests/e2e/sextant-entry-journeys.spec.ts"]
-                                    : [
-                                        "tests/e2e/landfall-phase1-live-position.spec.ts",
-                                        "tests/e2e/landfall-phase2.spec.ts",
-                                        "tests/e2e/landfall-closure.spec.ts",
-                                        "tests/e2e/landfall-phase3.spec.ts",
-                                        "tests/e2e/landfall-phase3-creator.spec.ts",
-                                        "tests/e2e/landfall-phase4.spec.ts",
-                                        "tests/e2e/landfall-offline-region.spec.ts",
-                                      ]),
+        ...(consumerPartition?.tests ??
+          (suite === "sextant-consumers"
+            ? ["tests/e2e/sextant-consumer-journeys.spec.ts", "tests/e2e/sextant-contextual-entry-journeys.spec.ts"]
+            : suite === "sextant-resources"
+              ? ["tests/e2e/sextant-resource-journeys.spec.ts"]
+              : suite === "sextant-paired-clue"
+                ? ["tests/e2e/sextant-parallax-paired-journeys.spec.ts"]
+                : suite === "sextant-community"
+                  ? ["tests/e2e/sextant-community-journeys.spec.ts"]
+                  : suite === "sextant-authoring-resources"
+                    ? ["tests/e2e/sextant-authoring-resource-journeys.spec.ts"]
+                    : suite === "sextant-history"
+                      ? ["tests/e2e/sextant-history-journeys.spec.ts"]
+                      : suite === "sextant-catalog"
+                        ? ["tests/e2e/sextant-catalog-journeys.spec.ts"]
+                        : suite === "sextant-creator-entry"
+                          ? ["tests/e2e/sextant-creator-entry-journeys.spec.ts"]
+                          : suite === "sextant-admiralty"
+                            ? ["tests/e2e/sextant-admiralty-journeys.spec.ts"]
+                            : suite === "sextant-private-content"
+                              ? ["tests/e2e/sextant-private-content-journeys.spec.ts"]
+                              : suite === "sextant-account-recovery"
+                                ? ["tests/e2e/sextant-account-recovery-journeys.spec.ts"]
+                                : suite === "sextant-invitation"
+                                  ? ["tests/e2e/sextant-invitation-journeys.spec.ts"]
+                                  : suite === "sextant-landfall"
+                                    ? ["tests/e2e/sextant-landfall-journeys.spec.ts"]
+                                    : suite === "sextant-entry"
+                                      ? ["tests/e2e/sextant-entry-journeys.spec.ts"]
+                                      : [
+                                          "tests/e2e/landfall-phase1-live-position.spec.ts",
+                                          "tests/e2e/landfall-phase2.spec.ts",
+                                          "tests/e2e/landfall-closure.spec.ts",
+                                          "tests/e2e/landfall-phase3.spec.ts",
+                                          "tests/e2e/landfall-phase3-creator.spec.ts",
+                                          "tests/e2e/landfall-phase4.spec.ts",
+                                          "tests/e2e/landfall-offline-region.spec.ts",
+                                        ])),
       ],
       {
         windowsHide: true,

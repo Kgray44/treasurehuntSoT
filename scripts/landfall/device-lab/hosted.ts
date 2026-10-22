@@ -5,6 +5,7 @@ import path from "node:path";
 import { labTool } from "./host";
 import { hostedDeviceLabProfiles, hostedDeviceLabScenarios } from "../../../src/landfall/device-lab/hosted-selection";
 import { androidDeviceLabProvisioning } from "../../../src/landfall/device-lab/device-profile";
+import { sextantConsumerPartition } from "./consumer-partitions";
 
 const execute = promisify(execFile);
 /** Ephemeral CI transport only. It never mutates the checkout, default branch, or protected testing authority. */
@@ -17,7 +18,9 @@ export async function dispatchLandfallHostedLab(
   selectedProfiles?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
+  const consumerPartition = sextantConsumerPartition(target);
   if (
+    !consumerPartition &&
     ![
       "all",
       "provider",
@@ -74,22 +77,23 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
   if (
-    [
-      "sextant-consumers",
-      "sextant-resources",
-      "sextant-paired-clue",
-      "sextant-community",
-      "sextant-authoring-resources",
-      "sextant-history",
-      "sextant-catalog",
-      "sextant-creator-entry",
-      "sextant-admiralty",
-      "sextant-private-content",
-      "sextant-account-recovery",
-      "sextant-invitation",
-      "sextant-landfall",
-      "sextant-entry",
-    ].includes(target) &&
+    (consumerPartition ||
+      [
+        "sextant-consumers",
+        "sextant-resources",
+        "sextant-paired-clue",
+        "sextant-community",
+        "sextant-authoring-resources",
+        "sextant-history",
+        "sextant-catalog",
+        "sextant-creator-entry",
+        "sextant-admiralty",
+        "sextant-private-content",
+        "sextant-account-recovery",
+        "sextant-invitation",
+        "sextant-landfall",
+        "sextant-entry",
+      ].includes(target)) &&
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
     throw new Error("LANDFALL_HOSTED_SEXTANT_CONSUMERS_SCOPE_INVALID");
@@ -140,9 +144,64 @@ export async function dispatchLandfallHostedLab(
     .replaceAll(
       "__RUN_BROWSER__",
       String(
+        !!consumerPartition ||
+          [
+            "all",
+            "browser",
+            "sextant-consumers",
+            "sextant-resources",
+            "sextant-paired-clue",
+            "sextant-community",
+            "sextant-authoring-resources",
+            "sextant-history",
+            "sextant-catalog",
+            "sextant-creator-entry",
+            "sextant-admiralty",
+            "sextant-private-content",
+            "sextant-account-recovery",
+            "sextant-invitation",
+            "sextant-landfall",
+            "sextant-entry",
+          ].includes(target),
+      ),
+    )
+    .replaceAll(
+      "__BROWSER_JOB_NAME__",
+      consumerPartition?.jobName ??
+        (target === "sextant-consumers"
+          ? "Sextant ordinary consumer journeys (development)"
+          : target === "sextant-resources"
+            ? "Sextant Captain and Creator resources (development)"
+            : target === "sextant-paired-clue"
+              ? "Sextant distinct Creator and Crew clue comparison (development)"
+              : target === "sextant-community"
+                ? "Sextant ordinary public Community journeys (development)"
+                : target === "sextant-authoring-resources"
+                  ? "Sextant owned Creator authoring resources (development)"
+                  : target === "sextant-history"
+                    ? "Sextant completed historical Passport journeys (development)"
+                    : target === "sextant-catalog"
+                      ? "Sextant public catalog, editions and compatibility preparation (development)"
+                      : target === "sextant-creator-entry"
+                        ? "Sextant ordinary Creator new Chronicle entry (development)"
+                        : target === "sextant-admiralty"
+                          ? "Sextant ordinary Admiralty dossier and ungranted support (development)"
+                          : target === "sextant-private-content"
+                            ? "Sextant synthetic private package import and verified export (development)"
+                            : target === "sextant-account-recovery"
+                              ? "Sextant synthetic account verification, recovery and reversible lifecycle (development)"
+                              : target === "sextant-invitation"
+                                ? "Sextant issued invitations and synthetic guest claim/merge (development)"
+                                : target === "sextant-landfall"
+                                  ? "Sextant populated physical and virtual Landfall consumers (development)"
+                                  : target === "sextant-entry"
+                                    ? "Sextant existing Display and unprepared pilot entry (development)"
+                                    : "optimized first-party Phase 4"),
+    )
+    .replaceAll(
+      "__BROWSER_SUITE__",
+      consumerPartition ||
         [
-          "all",
-          "browser",
           "sextant-consumers",
           "sextant-resources",
           "sextant-paired-clue",
@@ -157,59 +216,7 @@ export async function dispatchLandfallHostedLab(
           "sextant-invitation",
           "sextant-landfall",
           "sextant-entry",
-        ].includes(target),
-      ),
-    )
-    .replaceAll(
-      "__BROWSER_JOB_NAME__",
-      target === "sextant-consumers"
-        ? "Sextant ordinary consumer journeys (development)"
-        : target === "sextant-resources"
-          ? "Sextant Captain and Creator resources (development)"
-          : target === "sextant-paired-clue"
-            ? "Sextant distinct Creator and Crew clue comparison (development)"
-            : target === "sextant-community"
-              ? "Sextant ordinary public Community journeys (development)"
-              : target === "sextant-authoring-resources"
-                ? "Sextant owned Creator authoring resources (development)"
-                : target === "sextant-history"
-                  ? "Sextant completed historical Passport journeys (development)"
-                  : target === "sextant-catalog"
-                    ? "Sextant public catalog, editions and compatibility preparation (development)"
-                    : target === "sextant-creator-entry"
-                      ? "Sextant ordinary Creator new Chronicle entry (development)"
-                      : target === "sextant-admiralty"
-                        ? "Sextant ordinary Admiralty dossier and ungranted support (development)"
-                        : target === "sextant-private-content"
-                          ? "Sextant synthetic private package import and verified export (development)"
-                          : target === "sextant-account-recovery"
-                            ? "Sextant synthetic account verification, recovery and reversible lifecycle (development)"
-                            : target === "sextant-invitation"
-                              ? "Sextant issued invitations and synthetic guest claim/merge (development)"
-                              : target === "sextant-landfall"
-                                ? "Sextant populated physical and virtual Landfall consumers (development)"
-                                : target === "sextant-entry"
-                                  ? "Sextant existing Display and unprepared pilot entry (development)"
-                                  : "optimized first-party Phase 4",
-    )
-    .replaceAll(
-      "__BROWSER_SUITE__",
-      [
-        "sextant-consumers",
-        "sextant-resources",
-        "sextant-paired-clue",
-        "sextant-community",
-        "sextant-authoring-resources",
-        "sextant-history",
-        "sextant-catalog",
-        "sextant-creator-entry",
-        "sextant-admiralty",
-        "sextant-private-content",
-        "sextant-account-recovery",
-        "sextant-invitation",
-        "sextant-landfall",
-        "sextant-entry",
-      ].includes(target)
+        ].includes(target)
         ? target
         : "landfall",
     )
@@ -251,7 +258,8 @@ export async function dispatchLandfallHostedLab(
   const scenarios = {
     appleDevices: target === "ios-devices" ? ["sextant-native-apple-devices"] : [],
     browser:
-      target === "sextant-consumers"
+      consumerPartition?.scenarios ??
+      (target === "sextant-consumers"
         ? ["sextant-consumer-journeys", "sextant-contextual-entry-journeys"]
         : target === "sextant-resources"
           ? ["sextant-resource-journeys"]
@@ -281,7 +289,7 @@ export async function dispatchLandfallHostedLab(
                                   ? ["sextant-entry-journeys"]
                                   : target === "browser" || target === "all"
                                     ? ["first-party-phase4-web"]
-                                    : [],
+                                    : []),
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"

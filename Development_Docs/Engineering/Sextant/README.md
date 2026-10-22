@@ -8,6 +8,11 @@ last_reviewed: 2026-10-22
 
 # Sextant — Device Context
 
+The [bounded consumer source preparation](Project_Sextant_Phase_4_Bounded_Consumers_20261022.md)
+adds two fixed whole-spec development targets while retaining the original
+combined selector and every case/assertion/watchdog. Execution and acceptance
+remain separate; this source preparation grants no protected custody.
+
 The [retired recognition experiment](Phase4_Recognition_Immutable_Reads_20261022.md)
 retains three watchdog-cancelled hosted attempts and isolates repeated immutable
 Git reads before setup. It records limited focused proof and the subsequent
@@ -19,7 +24,8 @@ reconciles the existing draft with current main, inventories every Phase 4 gate,
 and records focused provider corrections and new source-bound virtual work.
 Its Display/pilot entry source checkpoint has 179 affected surfaces; 5 still lack experience
 registration. The historical 141-path mapping remains intact. Reach diagnostics
-are now protected-accepted; Crossdeck #721 remains unmerged. Earlier counts
+are protected-accepted. Crossdeck #721 has since merged at `aaff919428ef9ab421579415ce3409949724760d`,
+an ancestor of current accepted base `1a7653c3`. Earlier counts
 and failed campaigns remain historical evidence, not current acceptance.
 The [Display/pilot entry source reconciliation](phase4-source-reconciliation-consumer-repairs-20261020.json)
 binds that count to `91cffab32a`; it grants no capture or acceptance credit.
@@ -42,7 +48,8 @@ historical paths still require final-source acceptance. The
 [installed selector correction](phase4-password-selector-correction-r1.json)
 refutes the earlier password-role blocker without changing the helper. Reach's
 observability predecessor is now accepted on protected main. Crossdeck's
-conditional retry remains unmerged.
+conditional retry was unmerged at that historical R1 checkpoint; current main
+includes the later #721 landing.
 The separate R1 ledger now counts a second pre-review declaration repair for
 protected reference binding, with zero recaptures. Accepted Reach PR716 is merged
 additively; its pairing declaration accounts for the one-path difference from the
