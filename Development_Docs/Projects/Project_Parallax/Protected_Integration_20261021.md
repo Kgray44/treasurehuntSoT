@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: repairing-visible-assistant-label
+status: validating-workspace-preferences
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -58,6 +58,54 @@ Current-run supervisor, browser, server and proxy cleanup passed with ports
 released; encrypted retention is complete. Encrypted payloads remain opaque.
 These facts do not establish a complete capture, review, qualification, or cleanup
 of the older canceled d16f run. Rendered review 3 remains unperformed.
+
+## Workspace startup repair and preparation hold
+
+Published label correction `0c0f7fbee465640938a1128101671c809f0164f5` has an
+independent committed-source identity and preservation review. Hosted development
+[39881765636/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39881765636)
+failed during runtime preparation; the selected browser case never ran. The
+public log exposes no underlying setup/build diagnostic and the artifacts API
+returns zero artifacts. The installed workflow only publishes failures from the
+later browser-execution phase. The existing maintenance owner is addressing that
+separate preparation-retention gap. The original cause, build result and private
+cleanup remain unknown; a later retention repair cannot reconstruct this run.
+There is no unchanged retry or new governed capture on this source.
+
+A public-hook regression independently established another product defect:
+opening the Library before account preferences finish loading is overwritten by
+the stored closed state. The same probe confirms that the stored width loads,
+so preserving the action cannot be satisfied by skipping preference restoration.
+The working repair preserves changed presentation fields while restoring other
+same-account preferences, cancels old-account restoration, and retains explicit
+reset and narrow-screen defaults. Review also found a return from a fully loaded
+account through another account's pending load. Clearing the completed-account
+marker during that transition prevents the pending layout from persisting into
+the returning account. Eight focused cases pass at the retained checkpoint; the
+initial missing-media-query fixture error and the subsequent failed reset
+persistence check remain original failures. The first account-return probe did
+not reach assertions before its deadline and is not called a red result. Full Studio consumer verification
+and independent source review remain separate gates.
+
+The Studio component test also awaits the actual Assistant mount before its
+original synchronous visibility assertion. Original assertions, actions, fixture
+safeguards and default/whole-test deadlines are retained. Unsuccessful Library
+wait experiments and temporary observations are removed from current source.
+Earlier 32-pass/five-fail and selected-case failures remain nonaccepting. A
+standalone instrumented Exclusion journey passed without proving the cause of
+the earlier failures. Neither that result nor the hook regression is promoted
+to complete Studio acceptance.
+
+The exact-0c installed-controller planning attempt reached its owned deadline
+without output; classification is incomplete and the older 25a plan is not
+rebound. The subsequent bounded cached TypeScript attempt likewise emitted no
+diagnostics before its deadline. Original receipts and source identities remain
+preserved. Protected qualification, rendered review 3, native/physical evidence
+and human owner acceptance are still pending.
+
+The [retained repair checkpoints](evidence/protected-integration-20261021/workspace-hydration-20261022/manifest.original.json)
+bind the observed results to their producing files and preserve removed
+experiments, incomplete attempts and the failed hosted preparation separately.
 
 Crossdeck #721 landed through normal protection at
 `aaff919428ef9ab421579415ce3409949724760d`. Its tree equals qualified head

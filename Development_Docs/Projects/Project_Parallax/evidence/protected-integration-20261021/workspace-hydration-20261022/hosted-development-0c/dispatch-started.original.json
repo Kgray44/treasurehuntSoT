@@ -1,0 +1,23 @@
+{
+  "tree": "542da90a6f09c4b81a28bc4f5e240e2b7a2b886c",
+  "selector": "tests/e2e/parallax-workstation.spec.ts:21",
+  "workflowId": 323936468,
+  "candidate": "0c0f7fbee465640938a1128101671c809f0164f5",
+  "authority": "1c516d27fca521157732fca4cbba773d1542f1b2",
+  "retry": false,
+  "role": "DEVELOPMENT_ONLY",
+  "independentCommittedSourceReview": "PASS root/domain review received",
+  "reserve": {
+    "utc": "2026-10-23T01:03:03.8323136Z",
+    "allowed": true,
+    "floorBytesEach": 32212254720,
+    "cFreeBytes": 37300641792,
+    "dFreeBytes": 117352251392,
+    "estimatedCBytes": 0,
+    "estimatedDBytes": 2097152,
+    "reason": "Both drives remain above reserve after estimated writes"
+  },
+  "postCalls": 1,
+  "qualification": false,
+  "at": "2026-10-23T01:03:09.3075349Z"
+}

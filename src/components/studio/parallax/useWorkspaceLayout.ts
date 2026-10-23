@@ -1,13 +1,36 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { readWorkspaceLayout, workspacePreset, type WorkspaceLayout } from "@/parallax/workspace-layout";
 
 /** Account-scoped browser presentation preferences, independent of every authored draft and release. */
 export function useWorkspaceLayout(scope?: string) {
-  const [layout, setLayout] = useState<WorkspaceLayout>(() => workspacePreset("SPATIAL"));
+  const [layout, setLayoutState] = useState<WorkspaceLayout>(() => workspacePreset("SPATIAL"));
+  const currentLayout = useRef(layout);
+  const pendingEdits = useRef<{ scope: string; changes: Partial<WorkspaceLayout> } | null>(null);
+  const replacementScope = useRef<string | null>(null);
   const hydratedScope = useRef<string | null>(null);
+  const setLayout = useCallback<Dispatch<SetStateAction<WorkspaceLayout>>>(
+    (action) => {
+      const previous = currentLayout.current;
+      const next = typeof action === "function" ? action(previous) : action;
+      currentLayout.current = next;
+      if (scope && hydratedScope.current !== scope) {
+        if (typeof action !== "function") replacementScope.current = scope;
+        const changes = pendingEdits.current?.scope === scope ? pendingEdits.current.changes : {};
+        const keys = new Set([...Object.keys(previous), ...Object.keys(next)] as (keyof WorkspaceLayout)[]);
+        for (const key of keys) {
+          if (typeof action !== "function" || JSON.stringify(previous[key]) !== JSON.stringify(next[key]))
+            Object.assign(changes, { [key]: next[key] });
+        }
+        pendingEdits.current = { scope, changes };
+      }
+      setLayoutState(next);
+    },
+    [scope],
+  );
   useEffect(() => {
     if (!scope || hydratedScope.current === scope) return;
+    hydratedScope.current = null;
     let active = true;
     queueMicrotask(() => {
       if (!active) return;
@@ -17,9 +40,16 @@ export function useWorkspaceLayout(scope?: string) {
       } catch {}
       hydratedScope.current = scope;
       const restored = readWorkspaceLayout(raw);
-      setLayout(
-        innerWidth < 1100 ? { ...restored, libraryOpen: false, inspectorOpen: false, bottomOpen: false } : restored,
-      );
+      const initial =
+        innerWidth < 1100 ? { ...restored, libraryOpen: false, inspectorOpen: false, bottomOpen: false } : restored;
+      const next =
+        replacementScope.current === scope
+          ? { ...currentLayout.current }
+          : { ...initial, ...(pendingEdits.current?.scope === scope ? pendingEdits.current.changes : {}) };
+      pendingEdits.current = null;
+      replacementScope.current = null;
+      currentLayout.current = next;
+      setLayoutState(next);
     });
     return () => {
       active = false;
@@ -32,7 +62,7 @@ export function useWorkspaceLayout(scope?: string) {
     };
     narrow.addEventListener("change", collapse);
     return () => narrow.removeEventListener("change", collapse);
-  }, []);
+  }, [setLayout]);
   useEffect(() => {
     if (!scope || hydratedScope.current !== scope) return;
     try {

@@ -19,6 +19,11 @@ the Scene. **Float assistance** returns it to a movable window. Both actions
 have visible labels; the controls wrap when the header needs more room. This
 correction is in the integration candidate and awaits protected acceptance.
 
+The current candidate also keeps your first workspace actions while saved account
+preferences load. Other saved settings remain, and **Reset Workspace Layout**
+still restores the defaults. This startup correction awaits complete integration
+verification and protected acceptance.
+
 An expanded Timeline sits below the Scene. Scroll the centre pane to reach its
 controls; the canvas keeps room for its tools and selected-item card. Collapsing
 the Inspector returns keyboard focus to its open Properties, Spatial context or

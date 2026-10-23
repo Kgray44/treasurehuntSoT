@@ -16,6 +16,11 @@ Capture `39875668380/1` on reconciled source `25a9150146d9a6b7e9925b5f7e2ce8c1e4
 failed a visible Assistant docking outcome. A narrow correction restores the
 original visible action label; new source-bound verification and acceptance
 remain pending. The original failed capture and cleanup receipts are retained.
+The working follow-up preserves early workspace actions while account preferences
+load; focused hook checks pass. Hosted development `39881765636/1` failed before
+the browser case and published no preparation diagnostic. Its cause and private
+cleanup remain unknown; separate retention maintenance and current-candidate
+verification are pending.
 Crossdeck #721 completed normal protected R26 qualification and independent landed
 smoke; that acceptance does not qualify the combined Studio candidate. The
 [current integration checkpoint](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)

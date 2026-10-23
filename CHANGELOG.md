@@ -32,6 +32,11 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Preserve early Library and docking actions while account workspace preferences
+  load, retaining other saved settings, account isolation, mobile defaults and
+  explicit reset. Focused hook checks pass in the integration candidate; complete
+  Studio and protected verification remain pending.
+
 - Restore the Spatial Assistant's visible **Dock assistance** and **Float assistance**
   labels in the Studio integration candidate, with a wrapping header for narrow
   panels. The original failed capture is preserved; responsive browser checks

@@ -399,6 +399,7 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
   expect(screen.queryByLabelText("Position x")).toBeNull();
   expect(screen.getByText(/AI unavailable · phrase rules/)).toBeVisible();
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
+  await screen.findByLabelText("Spatial Assistant", { exact: true });
   expect(screen.getByLabelText("Spatial Assistant", { exact: true })).toBeVisible();
   expect(
     within(await screen.findByLabelText("Spatial Assistant", { exact: true })).getByText(

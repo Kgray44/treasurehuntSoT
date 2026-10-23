@@ -8,6 +8,24 @@ last_reviewed: 2026-10-22
 
 # Existing owner continuation
 
+The published label fix is `0c0f7fbee465640938a1128101671c809f0164f5`.
+Hosted development `39881765636/1` failed in preparation before the selected
+browser case; zero artifacts were published and underlying cause/private cleanup
+remain unknown. Do not rerun unchanged or treat a key custodian as a retrieval
+route for an unpublished payload. The existing maintenance owner handles the
+separate trusted preparation-retention repair. Preserve the original failure;
+reconcile only the accepted installed repair when appropriate.
+
+Current working source additionally repairs a proved same-account preference
+hydration overwrite of an early Library action. Preserve the public-hook red,
+first green, failed reset check and seven-case green with their own source
+identities. Obtain frozen repair review and full relevant consumer checks before
+publication. The only retained Studio-test change awaits actual Assistant mount
+before the original assertion; all original criteria and time budgets remain.
+Old component, planner and TypeScript failures do not become passes. No new
+governed capture or rendered review 3 is authorized by local cleanup or source
+review alone.
+
 Current source correction follows failed capture `39875668380/1` on exact
 `25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88`. Preserve that failed run and all four
 authenticated archives. Restore protected main's visible Dock/Float assistance

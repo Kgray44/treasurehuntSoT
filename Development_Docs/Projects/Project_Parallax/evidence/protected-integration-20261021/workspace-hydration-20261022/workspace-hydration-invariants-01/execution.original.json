@@ -1,0 +1,39 @@
+{
+  "name": "workspace-hydration-invariants-01",
+  "at": "2026-10-23T01:35:11.511Z",
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 6,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37299937280,
+  "minimumD": 111797153792,
+  "monitorSamples": 7,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 431,
+      "sha256": "6e57569e2553daf58978c5f94bac428a86c10259751e5f76d26436bff0314205"
+    },
+    "stderr": {
+      "bytes": 1743,
+      "sha256": "f78b3a67297dc4bb69599ed9a9f4e0c70da1b096ad29af8a786e12aed8a336e3"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

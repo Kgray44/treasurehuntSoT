@@ -28345,6 +28345,348 @@
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/assistant-label-failed-cases-isolated-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/assistant-label-failed-cases-isolated-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/assistant-label-pre-final-commit.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/exclusion-panel-observation-run-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/exclusion-panel-observation-run-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/admitted-run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/artifacts-terminal.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/dispatch-disposition.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/dispatch-payload.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/dispatch-response.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/dispatch-started.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/preparation-job-log.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/terminal-jobs.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/hosted-development-0c/terminal-run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/independent-published-source-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/independent-workspace-source-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/main1c-installed-plan-0c-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/main1c-installed-plan-0c-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/manifest.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/account-return-tests.original.test.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/invariant-tests.original.test.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/production-account-return-guard.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/production-after-first-green.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/production-before-account-return.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/production-before-reset-persistence-fix.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/production-before.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/regression-before.original.test.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/source-checkpoints/tests-before-account-return.original.test.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/studio-unit-active-readiness-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/studio-unit-active-readiness-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/studio-unit-observation-run-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/studio-unit-observation-run-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/studio-unit-readiness-correction-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/studio-unit-readiness-correction-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/studio-working-incremental-typecheck-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/studio-working-incremental-typecheck-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-account-return-before-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-account-return-before-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-account-return-guard-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-account-return-guard-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-after-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-after-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-before-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-before-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-before-02/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-before-02/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-format-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-format-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-format-lint-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-format-lint-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-invariants-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-invariants-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-invariants-02/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-invariants-02/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-studio-suite-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-hydration-studio-suite-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/workspace-post-format-source.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
     }
   ]
 }
