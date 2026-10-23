@@ -1,0 +1,39 @@
+{
+  "name": "bootstrap-scope-green-01",
+  "at": "2026-10-23T02:51:39.909Z",
+  "exit": {
+    "code": 0,
+    "signal": null,
+    "guardianExitCode": 0
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 0,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 0,
+    "elapsedMs": 15,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37278527488,
+  "minimumD": 111689039872,
+  "monitorSamples": 5,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 236,
+      "sha256": "90b0006cd873b9276ded446d0f97704ebd126b64b2941a54964843cf4353136b"
+    },
+    "stderr": {
+      "bytes": 375,
+      "sha256": "b4acd4f819050212c4fe3b3ed8416421330f7ff8c72cb9bb667c335f3e24a94e"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

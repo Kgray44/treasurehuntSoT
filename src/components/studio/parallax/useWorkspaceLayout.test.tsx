@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import { workspacePreset } from "@/parallax/workspace-layout";
 import { useWorkspaceLayout } from "./useWorkspaceLayout";
 
@@ -180,4 +180,54 @@ it("preserves early intent through Strict Mode effect cleanup and replay", async
   act(() => result.current.setLayout((previous) => ({ ...previous, libraryOpen: true })));
   await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
   expect(result.current.layout.libraryOpen).toBe(true);
+});
+
+it("does not restart a bootstrap consumer when its account scope is learned", async () => {
+  const first = "synthetic-bootstrap-first";
+  const second = "synthetic-bootstrap-second";
+  const bootstrap = vi.fn();
+  for (const [scope, libraryWidth] of [
+    [first, 333],
+    [second, 389],
+  ] as const)
+    localStorage.setItem(
+      `parallax.workspace.v1:${scope}`,
+      JSON.stringify({ ...workspacePreset("SPATIAL"), libraryWidth, libraryOpen: false }),
+    );
+  const { result, rerender } = renderHook(
+    ({ scope }) => {
+      const workspace = useWorkspaceLayout(scope);
+      useEffect(() => {
+        bootstrap();
+      }, [workspace.setLayout]);
+      return workspace;
+    },
+    { initialProps: { scope: undefined as string | undefined } },
+  );
+  const retainedSetter = result.current.setLayout;
+  expect(bootstrap).toHaveBeenCalledTimes(1);
+  rerender({ scope: first });
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
+  expect(bootstrap).toHaveBeenCalledTimes(1);
+
+  rerender({ scope: second });
+  act(() => retainedSetter((previous) => ({ ...previous, libraryOpen: true })));
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(389));
+  expect(result.current.layout.libraryOpen).toBe(true);
+  expect(JSON.parse(localStorage.getItem(`parallax.workspace.v1:${first}`)!).libraryOpen).toBe(false);
+  await waitFor(() =>
+    expect(JSON.parse(localStorage.getItem(`parallax.workspace.v1:${second}`)!).libraryOpen).toBe(true),
+  );
+
+  rerender({ scope: first });
+  act(() => retainedSetter((previous) => ({ ...previous, assistantDocked: true })));
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
+  expect(result.current.layout.libraryOpen).toBe(false);
+  expect(result.current.layout.assistantDocked).toBe(true);
+  expect(JSON.parse(localStorage.getItem(`parallax.workspace.v1:${second}`)!).libraryWidth).toBe(389);
+  expect(JSON.parse(localStorage.getItem(`parallax.workspace.v1:${second}`)!).libraryOpen).toBe(true);
+  await waitFor(() =>
+    expect(JSON.parse(localStorage.getItem(`parallax.workspace.v1:${first}`)!).assistantDocked).toBe(true),
+  );
+  expect(bootstrap).toHaveBeenCalledTimes(1);
 });

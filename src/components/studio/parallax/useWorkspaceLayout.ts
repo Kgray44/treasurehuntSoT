@@ -1,33 +1,35 @@
 "use client";
-import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 import { readWorkspaceLayout, workspacePreset, type WorkspaceLayout } from "@/parallax/workspace-layout";
 
 /** Account-scoped browser presentation preferences, independent of every authored draft and release. */
 export function useWorkspaceLayout(scope?: string) {
   const [layout, setLayoutState] = useState<WorkspaceLayout>(() => workspacePreset("SPATIAL"));
   const currentLayout = useRef(layout);
+  const currentScope = useRef(scope);
+  useLayoutEffect(() => {
+    currentScope.current = scope;
+  }, [scope]);
   const pendingEdits = useRef<{ scope: string; changes: Partial<WorkspaceLayout> } | null>(null);
   const replacementScope = useRef<string | null>(null);
   const hydratedScope = useRef<string | null>(null);
-  const setLayout = useCallback<Dispatch<SetStateAction<WorkspaceLayout>>>(
-    (action) => {
-      const previous = currentLayout.current;
-      const next = typeof action === "function" ? action(previous) : action;
-      currentLayout.current = next;
-      if (scope && hydratedScope.current !== scope) {
-        if (typeof action !== "function") replacementScope.current = scope;
-        const changes = pendingEdits.current?.scope === scope ? pendingEdits.current.changes : {};
-        const keys = new Set([...Object.keys(previous), ...Object.keys(next)] as (keyof WorkspaceLayout)[]);
-        for (const key of keys) {
-          if (typeof action !== "function" || JSON.stringify(previous[key]) !== JSON.stringify(next[key]))
-            Object.assign(changes, { [key]: next[key] });
-        }
-        pendingEdits.current = { scope, changes };
+  const setLayout = useCallback<Dispatch<SetStateAction<WorkspaceLayout>>>((action) => {
+    const scope = currentScope.current;
+    const previous = currentLayout.current;
+    const next = typeof action === "function" ? action(previous) : action;
+    currentLayout.current = next;
+    if (scope && hydratedScope.current !== scope) {
+      if (typeof action !== "function") replacementScope.current = scope;
+      const changes = pendingEdits.current?.scope === scope ? pendingEdits.current.changes : {};
+      const keys = new Set([...Object.keys(previous), ...Object.keys(next)] as (keyof WorkspaceLayout)[]);
+      for (const key of keys) {
+        if (typeof action !== "function" || JSON.stringify(previous[key]) !== JSON.stringify(next[key]))
+          Object.assign(changes, { [key]: next[key] });
       }
-      setLayoutState(next);
-    },
-    [scope],
-  );
+      pendingEdits.current = { scope, changes };
+    }
+    setLayoutState(next);
+  }, []);
   useEffect(() => {
     if (!scope || hydratedScope.current === scope) return;
     hydratedScope.current = null;

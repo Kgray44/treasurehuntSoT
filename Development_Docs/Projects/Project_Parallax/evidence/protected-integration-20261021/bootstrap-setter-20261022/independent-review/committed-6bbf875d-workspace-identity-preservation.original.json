@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "kind": "INDEPENDENT_COMMITTED_WORKSPACE_SOURCE_AND_EVIDENCE_IDENTITY_REVIEW",
+  "recordedAt": "2026-10-23T02:00:03.6476282Z",
+  "reviewerThread": "01a12c32-ea0a-70d3-a918-5f9f735fa107",
+  "repository": "Kgray44/treasurehuntSoT",
+  "pr": 776,
+  "status": "PASS_COMMITTED_IDENTITY_AND_PRESERVATION_ONLY",
+  "source": {
+    "head": "6bbf875d31457103b6d2881bacde6631cbfa0923",
+    "livePrState": "OPEN",
+    "localGitAndProviderCommitApiAgree": true,
+    "livePrDraft": true,
+    "ownedWorktreeClean": true,
+    "soleParent": "0c0f7fbee465640938a1128101671c809f0164f5",
+    "tree": "6eb2599bbcc6e4268b48028a887ba058bef2a846",
+    "livePrHeadMatches": true,
+    "livePrMergeable": true,
+    "livePrBase": "1c516d27fca521157732fca4cbba773d1542f1b2"
+  },
+  "reviewedFiles": [
+    {
+      "path": "src/components/studio/parallax/useWorkspaceLayout.ts",
+      "sha256": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d"
+    },
+    {
+      "path": "src/components/studio/parallax/useWorkspaceLayout.test.tsx",
+      "sha256": "197c43d99aa982b1cacbc3d00d095676277038f170f1af89813c4d10651e9ac5"
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.test.tsx",
+      "sha256": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c"
+    }
+  ],
+  "sourceBinding": {
+    "sourceDiscrepancies": [],
+    "onlySrcOrTestChanges": [
+      "src/components/studio/parallax/useWorkspaceLayout.ts",
+      "src/components/studio/parallax/useWorkspaceLayout.test.tsx",
+      "src/components/studio/parallax/SpatialStudio.test.tsx"
+    ],
+    "allThreeCommittedBlobsMatchIndependentPostFormatReview": true,
+    "originalVerdictCopyMatchesExactly": true,
+    "priorFrozenReviewCommittedCopy": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/workspace-hydration-20261022/independent-workspace-source-review.original.json",
+    "priorFrozenReviewSha256": "2a9ce2c100e9fcab5701422ad54abedd72a0d3f73606dac7ec8b138947e3b6ba"
+  },
+  "evidence": {
+    "manifestItselfIncludedIn91": true,
+    "bytes": 330974,
+    "knownProducerOriginalHashesRetained": [
+      "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "71d8f256fe2066e86e6cb4af1f2ba53f8dc81449f9d4706c8be5083b67a606f6",
+      "4c66db39d2120801791b3276700b25fd3bcc9a800c13ee78dd471e814d028b7c",
+      "9ec134d2a07f683b3fc5210e67521b190aad17aa9c178c10864741057c4f48c7",
+      "2a9ce2c100e9fcab5701422ad54abedd72a0d3f73606dac7ec8b138947e3b6ba"
+    ],
+    "committedManifestSha256": "72ae0aa233aff5bcd1201a47889a633fd638086b00f179ce4daa8bc51deb00e7",
+    "manifestRecords": 90,
+    "previousCaptureOriginals": 49,
+    "previousCaptureEvidenceUnchanged": true,
+    "batchGitBlobHashOrSizeMismatches": 0,
+    "precommitReadbackSha256": "f33e13d464a754ccede964c37c2d9f5665ba106018f9d92f7f0d7d2e95ce4d6e",
+    "newOriginalFiles": 91,
+    "precommitReadback": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\workspace-precommit-readback.original.json",
+    "allCommittedOriginalsEqualWorkingCopies": true
+  },
+  "documentation": {
+    "ownedCsvAppendRows": 91,
+    "descriptiveDocsPreservePendingAndUnknownBoundaries": true,
+    "existingHumanOrAutomationDocsChanged": 6,
+    "ownedIndexAdditions": 57,
+    "allHistoricalIndexRecordsRetainedExactly": true,
+    "newIndexRecords": 4781,
+    "generatedInventoriesChanged": 2,
+    "automationGuidanceDoesNotGrantAcceptanceWaiver": true,
+    "priorCsvDataRows": 18601,
+    "priorIndexRecords": 4724,
+    "priorCsvBytePrefixExact": true,
+    "duplicateAppendedRows": 0,
+    "currentCsvDataRows": 18692,
+    "allAppendsInOwnedEvidenceSubtree": true
+  },
+  "protectedPreservation": {
+    "unexpectedProductOrTestChanges": [],
+    "unchangedFromParent": [
+      ".github",
+      "scripts and controllers",
+      "testing contracts and assertions",
+      "Prisma",
+      "package and lockfiles",
+      "Feature Catalog and fragments",
+      ".gitattributes",
+      ".gitignore",
+      "previous failed25a capture evidence"
+    ]
+  },
+  "testEvidenceBoundaries": {
+    "lint": "Current targeted deadline with zero diagnostics remains INCOMPLETE",
+    "originalEarlyOpenActualRedRetained": true,
+    "actualEightPass": {
+      "notReboundToFormatted197cBytes": true,
+      "hookSha256": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d",
+      "passed": 8,
+      "run": "workspace-account-return-guard-01",
+      "producingTestSha256": "9ec134d2a07f683b3fc5210e67521b190aad17aa9c178c10864741057c4f48c7"
+    },
+    "wholeStudio21Plus7": "INCOMPLETE safety deadline without case totals",
+    "accountReturnBeforeAttempt": "INCOMPLETE safety deadline; no reported assertion, not observed red",
+    "typecheck": "Nonincremental and cached deadlines remain INCOMPLETE",
+    "hostedDevelopment": {
+      "underlyingCause": "UNKNOWN_UNPUBLISHED",
+      "candidate": "0c0f7fbee465640938a1128101671c809f0164f5",
+      "preparation": "FAIL",
+      "attempt": 1,
+      "run": 39881765636,
+      "artifacts": 0,
+      "browser": "NOT_RUN",
+      "privateCleanup": "UNKNOWN"
+    },
+    "installedPlan": "Exact0c attempt INCOMPLETE; old25a plan not rebound",
+    "originalBroad32Pass5Fail": "NONACCEPTING incomplete"
+  },
+  "limits": {
+    "sourceAndEvidenceReviewOnly": true,
+    "noCriticOrCapture": true,
+    "protectedMerge": false,
+    "ownerAcceptance": false,
+    "physicalArAcceptance": false,
+    "newCiRetryHold": "Accepted preparation-retention repair and cause-evidence disposition required; this review authorizes no retry or dispatch",
+    "renderedReview3": "UNPERFORMED",
+    "noRootTestsRuntimeBuildOrNewPlanner": true,
+    "qualification": false,
+    "noKeySearchOrDecryption": true,
+    "previousReceiptsUnchanged": true,
+    "noSourceEdits": true
+  }
+}

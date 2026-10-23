@@ -8,7 +8,8 @@ last_reviewed: 2026-10-22
 
 # Existing owner continuation
 
-The published label fix is `0c0f7fbee465640938a1128101671c809f0164f5`.
+The published preference checkpoint is `6bbf875d31457103b6d2881bacde6631cbfa0923`,
+following label fix `0c0f7fbee465640938a1128101671c809f0164f5`.
 Hosted development `39881765636/1` failed in preparation before the selected
 browser case; zero artifacts were published and underlying cause/private cleanup
 remain unknown. Do not rerun unchanged or treat a key custodian as a retrieval
@@ -25,6 +26,23 @@ before the original assertion; all original criteria and time budgets remain.
 Old component, planner and TypeScript failures do not become passes. No new
 governed capture or rendered review 3 is authorized by local cleanup or source
 review alone.
+
+The stable-setter follow-up repairs a source-reviewed bootstrap re-entry: changing
+the setter on account-scope arrival reran Studio's bootstrap before its initialized
+check. Preserve original c1/new-regression red (expected one bootstrap, received
+two), corrected nine-case green and unchanged original Exclusion consumer pass
+as separate producing-source results. All eight existing hook cases and original
+Studio actions/assertions/time limits remain. The temporary e27 observer was
+restored to original Studio802 after terminal cleanup; its post-outcome aborted
+signal is not proof of a sole cancellation cause. The immutable bootstrap intake
+retains all failures, source snapshots and independent readbacks.
+
+Coordinate any further heavy local work with the existing maintenance lane.
+Fresh dual-drive reserve, RAM, owned-process and exact-source checks remain;
+CPU is recorded for interpretation, not an invented percentage gate. Current
+focused recovery grants no automatic hosted retry, capture, rendered review or
+protected acceptance. Reconcile the preparation-retention repair once it is
+accepted and installed, then create the exact current-source plan.
 
 Current source correction follows failed capture `39875668380/1` on exact
 `25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88`. Preserve that failed run and all four

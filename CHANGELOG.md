@@ -32,6 +32,10 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Avoid restarting Studio loading when saved account workspace preferences
+  arrive. Nine focused hook cases and the unchanged exclusion-zone Library
+  interaction pass with the correction; integrated qualification remains pending.
+
 - Preserve early Library and docking actions while account workspace preferences
   load, retaining other saved settings, account isolation, mobile defaults and
   explicit reset. Focused hook checks pass in the integration candidate; complete

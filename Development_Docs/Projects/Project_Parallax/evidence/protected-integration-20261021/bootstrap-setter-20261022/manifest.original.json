@@ -1,0 +1,328 @@
+{
+  "documentClass": "engineering-evidence",
+  "kind": "STABLE_WORKSPACE_SETTER_BOOTSTRAP_REPAIR",
+  "createdAt": "2026-10-23T02:57:40.322Z",
+  "repository": "Kgray44/treasurehuntSoT",
+  "pr": 776,
+  "publishedBeforeRepair": "6bbf875d31457103b6d2881bacde6631cbfa0923",
+  "acceptedRehearsalBase": "1c516d27fca521157732fca4cbba773d1542f1b2",
+  "producingSource": {
+    "originalHook": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d",
+    "repairedHook": "d966fb24361a3e33b8d5ae724a772ffad89d6ef58882a4045c2bec1de9bf830f",
+    "nineCaseTest": "c12173fcf9a87f8ff8c5ec158585442f09187d64167f195e51fbfbf898a32f55",
+    "unchangedStudioTest": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c"
+  },
+  "originalConsumer": {
+    "run": "6bb-exclusion-consumer-01",
+    "failed": 1,
+    "skipped": 20,
+    "cleanup": "PASS",
+    "qualification": false
+  },
+  "diagnostic": {
+    "run": "6bb-exclusion-observation-01",
+    "failed": 1,
+    "skipped": 20,
+    "observation": "Post-outcome Library open/Assets visible/loading/no Inspect buttons; one schema-valid 35-item catalog includes Exclusion Zone",
+    "signal": "Abort measured only post-outcome; exact failure-time generation and sole cancellation cause unproved",
+    "wholeWrapperElapsedMsOwnerReportedInToolOutput": 20401,
+    "instrumentedOutcomeNotAcceptance": true,
+    "cleanup": "PASS",
+    "originalTestRestored": true
+  },
+  "bootstrapRed": {
+    "run": "bootstrap-scope-red-01",
+    "failed": 1,
+    "skipped": 8,
+    "expectedBootstrapCalls": 1,
+    "actualBootstrapCalls": 2,
+    "caseMs": 304,
+    "cleanup": "PASS",
+    "repairedHookRestored": true
+  },
+  "bootstrapGreen": {
+    "run": "bootstrap-scope-green-01",
+    "passed": 9,
+    "testSeconds": 1.04,
+    "cleanup": "PASS"
+  },
+  "originalConsumerRecovery": {
+    "run": "bootstrap-exclusion-consumer-01",
+    "passed": 1,
+    "skipped": 20,
+    "testSeconds": 6.96,
+    "helperInvocationElapsedMs": 23280,
+    "originalAssertionsActionsAndTimeLimitsUnchanged": true,
+    "instrumentation": false,
+    "cleanup": "PASS"
+  },
+  "sourceFinding": "Scope-dependent setter identity restarted bootstrap before its initialized check; stable setter reads current committed scope and preserves scoped hydration, pending edits and reset guards",
+  "limits": [
+    "Historical whole-Studio/component/TypeScript/lint/planning failures remain nonaccepting and source-bound",
+    "CPU is recorded as timing interpretation, not a new hard cutoff",
+    "Storage guards/monitoring do not control external writers or impose an operating-system quota",
+    "A prelaunch CPU hold occurred before copying or testing; it is not a product test result",
+    "Any later formatting requires a separate exact-source binding; producing test bytes above remain literal",
+    "Review 3 unperformed; current hosted/browser, protected merge, physical AR and human acceptance remain pending"
+  ],
+  "featureCatalog": "NO_CHANGE_REQUIRED_ORDINARY_BUG_FIX",
+  "qualification": false,
+  "protectedAcceptance": false,
+  "records": [
+    {
+      "path": "6bb-exclusion-consumer-01/request.original.json",
+      "bytes": 786,
+      "sha256": "73e9aacfc8d78a68c1d3bbfcb7af1d4fc1d83bc2b962825e93abe39a623c7fa2"
+    },
+    {
+      "path": "6bb-exclusion-consumer-01/execution.original.json",
+      "bytes": 922,
+      "sha256": "83e225ab1f46802f58738f12f19ec76205e20d5fa37fb336bd709aaed565a5c9"
+    },
+    {
+      "path": "6bb-exclusion-consumer-01/stdout.original.log",
+      "bytes": 464,
+      "sha256": "64718ee3a32cce6d513e785795dd89155f036cca9eb8c7a44978548b399346e6"
+    },
+    {
+      "path": "6bb-exclusion-consumer-01/stderr.original.log",
+      "bytes": 15544,
+      "sha256": "201fe197cd69102a4f9b72c20a233ce3018da9aefe9aebbef34e2c1771fa43c1"
+    },
+    {
+      "path": "6bb-exclusion-observation-01/request.original.json",
+      "bytes": 786,
+      "sha256": "18281e8efeef44b3132a8a24a3591e09f27dd8e358c8391eb52fdf4efb0c0c08"
+    },
+    {
+      "path": "6bb-exclusion-observation-01/execution.original.json",
+      "bytes": 923,
+      "sha256": "08e1a14fb1cf699a8930c268adff48fdeeb1f88afd3cce95613dc18afad7c6d7"
+    },
+    {
+      "path": "6bb-exclusion-observation-01/stdout.original.log",
+      "bytes": 461,
+      "sha256": "83ce8461150e2215471abbf02743b30817e907d77336de928e5ce9920ebce563"
+    },
+    {
+      "path": "6bb-exclusion-observation-01/stderr.original.log",
+      "bytes": 15544,
+      "sha256": "70a1b8318986d0b5b57730ce4fec22545a42c7a199c2af30def7813aacc7afce"
+    },
+    {
+      "path": "bootstrap-scope-red-01/request.original.json",
+      "bytes": 766,
+      "sha256": "35d4354bb6b12efa3c4cabba6b9ffc09e42fcc0f7367da16138d04f943ed4f44"
+    },
+    {
+      "path": "bootstrap-scope-red-01/execution.original.json",
+      "bytes": 917,
+      "sha256": "4ba52d4fa8a3e9661cc9921dfd7bcc115bc2f72212b6b73b0b7c4215660636ea"
+    },
+    {
+      "path": "bootstrap-scope-red-01/stdout.original.log",
+      "bytes": 435,
+      "sha256": "651702b445fb772fae8a16d8859b34ab6c6272508a5a95c4dd31b5770e7d2fc5"
+    },
+    {
+      "path": "bootstrap-scope-red-01/stderr.original.log",
+      "bytes": 1060,
+      "sha256": "1e0a3bbe5854e162b0ce1cdeb5cb3c5b6ce9922d1f3d92d53628a8bdaac0547f"
+    },
+    {
+      "path": "bootstrap-scope-green-01/request.original.json",
+      "bytes": 677,
+      "sha256": "869543e89c951bbb5e577eaba8becb45b7bd134e2cca21180b3a5a266b011805"
+    },
+    {
+      "path": "bootstrap-scope-green-01/execution.original.json",
+      "bytes": 918,
+      "sha256": "a63a23c982dee6fb5e282771a73549d074c9964e390d742d1af400c9391be4be"
+    },
+    {
+      "path": "bootstrap-scope-green-01/stdout.original.log",
+      "bytes": 236,
+      "sha256": "90b0006cd873b9276ded446d0f97704ebd126b64b2941a54964843cf4353136b"
+    },
+    {
+      "path": "bootstrap-scope-green-01/stderr.original.log",
+      "bytes": 375,
+      "sha256": "b4acd4f819050212c4fe3b3ed8416421330f7ff8c72cb9bb667c335f3e24a94e"
+    },
+    {
+      "path": "bootstrap-exclusion-consumer-01/request.original.json",
+      "bytes": 786,
+      "sha256": "dae9bbd3fe06fbce808a3178669c0b833cb7de0b3830bff03d50b56a8de4616d"
+    },
+    {
+      "path": "bootstrap-exclusion-consumer-01/execution.original.json",
+      "bytes": 924,
+      "sha256": "969c1910d043e86a6a4d1b87646751a7f9fce304f9caa71e3ae634ff89dbcb42"
+    },
+    {
+      "path": "bootstrap-exclusion-consumer-01/stdout.original.log",
+      "bytes": 251,
+      "sha256": "fa70e5fe9c998867746518e9a1b89edd01a6a2aa7777ebcd71f149e92fe3646d"
+    },
+    {
+      "path": "bootstrap-exclusion-consumer-01/stderr.original.log",
+      "bytes": 375,
+      "sha256": "b4acd4f819050212c4fe3b3ed8416421330f7ff8c72cb9bb667c335f3e24a94e"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-01/instrumented-source.test.tsx.txt",
+      "bytes": 44684,
+      "sha256": "d56b218b1bb2e2a6bc3714b10987005e5ab935648a4fd80a0bfe54b433af420b"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-01/preparation-binding.original.json",
+      "bytes": 906,
+      "sha256": "0a5aaa7c5f3a15fed2d499f50d5180597c7aabd97c192784477dd41e9e1b7820"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-02/instrumented-source.test.tsx.txt",
+      "bytes": 46003,
+      "sha256": "e27c41a5c556856e97bc504fd629cdcdb57172eae11f5dfaef2155063f4fe243"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-02/original-source.test.tsx.txt",
+      "bytes": 39487,
+      "sha256": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-02/preparation-binding.original.json",
+      "bytes": 1365,
+      "sha256": "5a2efeac38d4326344def7c10f28d269203bdbee8a4023184485f5a329feefdc"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-02/launch-hold-01.original.json",
+      "bytes": 563,
+      "sha256": "a947619266b60d9e93abb27adaf1148379753c6beedde53646d263aa0ad1a135"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-02/runtime-admission.original.json",
+      "bytes": 1453,
+      "sha256": "43f6f9b7688d9806dbdeea5d6fbe0f7b6d6f3bdb72052677591ecdc322319d0f"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-02/installation.original.json",
+      "bytes": 234,
+      "sha256": "c1a70453b1dcb702e84234b467b5c7bfa15362a772a20b58d1590f2b33a00a54"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-02/outcome-observation.original.json",
+      "bytes": 5890,
+      "sha256": "1a0f523a4284407a8bf726a1a36390c87e844ce448b2b4554fcf7519828d06c8"
+    },
+    {
+      "path": "6bb-exclusion-observation-prep-02/restoration.original.json",
+      "bytes": 548,
+      "sha256": "0235077a5080a44fc3e6083eae764b2de1f48ccbde7ae7baf794190f67330c2f"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/hook-before.original.ts.txt",
+      "bytes": 3542,
+      "sha256": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/test-before.original.tsx.txt",
+      "bytes": 7590,
+      "sha256": "197c43d99aa982b1cacbc3d00d095676277038f170f1af89813c4d10651e9ac5"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/hook-proposed.original.ts.txt",
+      "bytes": 3709,
+      "sha256": "e015019af66b257e39ccda9bda571aad33c3ef3b18d13e6653d61f8a206c1acb"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/hook-proposed-02.original.ts.txt",
+      "bytes": 3724,
+      "sha256": "d966fb24361a3e33b8d5ae724a772ffad89d6ef58882a4045c2bec1de9bf830f"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/test-proposed.original.tsx.txt",
+      "bytes": 9784,
+      "sha256": "c12173fcf9a87f8ff8c5ec158585442f09187d64167f195e51fbfbf898a32f55"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/red-admission.original.json",
+      "bytes": 872,
+      "sha256": "c43620b8ae458ab16c5214c791e29f9b794a4e4a028aadf085a94b8cfb22c293"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/red-installation.original.json",
+      "bytes": 252,
+      "sha256": "da78faabddd09a19b41f3a1ac436cd6a7c46cd2869db11bba9813a8ccd102c02"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/red-restoration.original.json",
+      "bytes": 589,
+      "sha256": "40f67cf4427ffdb82cedb2f386cdaa161f4fe40cf2834a8d34cbc325a9574a77"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/green-admission.original.json",
+      "bytes": 654,
+      "sha256": "229611919fcc28ef86cbcf853af9573cbe51466f6484fe16c2890bfaa105e896"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/green-terminal-source.original.json",
+      "bytes": 448,
+      "sha256": "a4a40b97b288c75cf72f3969fbae8af62f8362a740a7c91ea43a9529b6285d92"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/consumer-admission.original.json",
+      "bytes": 909,
+      "sha256": "19fb4a004967fd9b7b355e6010084741a16b1c68a0e5b422f4baee522d85d014"
+    },
+    {
+      "path": "bootstrap-stable-setter-prep-01/consumer-terminal-source.original.json",
+      "bytes": 743,
+      "sha256": "9cd649455716b4ead4291e651c318a0d66dad93267ab62842cf9515243e7496d"
+    },
+    {
+      "path": "runner-source/run-reviewed-exclusion-observer.mjs.txt",
+      "bytes": 7569,
+      "sha256": "4e884f51f24ccaf57b4449717e4a7590841f9128cb118b0bd00d70acf0f6cdb1"
+    },
+    {
+      "path": "runner-source/owned-d-command.mjs.txt",
+      "bytes": 4200,
+      "sha256": "dc28f3bee98753f501794bb4942acef0ada6b02f60ec5410647fcc1c652b424e"
+    },
+    {
+      "path": "independent-review/committed-6bbf875d-workspace-identity-preservation.original.json",
+      "bytes": 5947,
+      "sha256": "c55194ccd7da990b2017789ad83261fa5d906972f47cae70bff7375d8fcc396f"
+    },
+    {
+      "path": "independent-review/exclusion-observer-e27-source-review.original.json",
+      "bytes": 5299,
+      "sha256": "93e19a131dc2e54d6d895007e7347deec55c508aca691a1ee9da6c735b42d8ae"
+    },
+    {
+      "path": "independent-review/exclusion-wrapper-4e884f51-source-review.original.json",
+      "bytes": 2790,
+      "sha256": "fdc0e6e5c69b43637e516dc8d89540c7c6dbca69acc3acb510f27d1de34b3ad5"
+    },
+    {
+      "path": "independent-review/exclusion-diagnostic-01-terminal-readback.original.json",
+      "bytes": 3899,
+      "sha256": "8af5750f72e3bc7b92be486f0e2327e4c6d7c92e9723e7552ff76c8f10771a7a"
+    },
+    {
+      "path": "independent-review/stable-setter-d966-c121-source-review.original.json",
+      "bytes": 2681,
+      "sha256": "d0a20092f592ff646f4fa4e83d82f75595b21fd1b017700d9f25b94e0e268134"
+    },
+    {
+      "path": "independent-review/stable-setter-red-green-terminal-readback.original.json",
+      "bytes": 5341,
+      "sha256": "e468b86c4f98faba3eb6b645f75db3b98855c863d03701726d705c4b7f111813"
+    },
+    {
+      "path": "independent-review/stable-setter-original-exclusion-pass-readback.original.json",
+      "bytes": 3152,
+      "sha256": "01c5d5fdb949337da1672f6eaf0afc716e5b49eac7b52f385601bc01e6af6f40"
+    }
+  ]
+}

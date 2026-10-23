@@ -107,6 +107,47 @@ The [retained repair checkpoints](evidence/protected-integration-20261021/worksp
 bind the observed results to their producing files and preserve removed
 experiments, incomplete attempts and the failed hosted preparation separately.
 
+## Stable setter and Library consumer recovery
+
+The published preference checkpoint `6bbf875d31457103b6d2881bacde6631cbfa0923`
+still failed the original Exclusion Zone Library case: one failure and 20 skipped
+cases. A separately reviewed, single diagnostic reproduced that failure. Its
+post-outcome snapshot showed the Library open on Assets, an empty search and
+**Loading Library results…**, with no Inspect buttons. The recorded catalog was
+schema-valid and included Exclusion Zone among 35 items. Its abort signal was
+read only after the outcome; this does not identify the exact failing generation
+or establish cancellation as the sole cause. Original and instrumented failures
+remain distinct, and the original test was restored after verified cleanup.
+
+Independent source review found a concrete regression in the preference repair:
+the public layout setter changed identity when the loaded account scope arrived.
+Studio's bootstrap effect depends on that setter and invokes its load before
+checking whether initialization completed. That restarts bootstrap and invalidates
+the catalog. The correction keeps the public setter stable while reading the
+current committed account scope; hydration, pending actions, account isolation,
+reset and catalog cancellation guards remain intact.
+
+The new public-consumer regression failed on the original hook with two bootstrap
+calls instead of one. With the correction, all nine hook cases pass, including
+the original eight cases and retained-setter actions across account changes.
+The unchanged original Exclusion case then passed separately: one pass and
+20 skipped cases, including insertion, shared editing controls and saved-result
+assertions. Its original 30-second case limit, 120-second outer bound, assertions
+and actions were preserved. Each run has owned cleanup PASS and exact source
+bindings. These are focused development results, not whole-Studio, browser or
+protected acceptance.
+
+The [immutable bootstrap intake](evidence/protected-integration-20261021/bootstrap-setter-20261022/manifest.original.json)
+preserves original files, including the original failure, bounded diagnostic, source
+snapshots, expected red, nine-case green, original consumer recovery and independent
+reviews, with a separate formatter binding for the final source bytes. A prelaunch
+CPU hold occurred before any source copy or test start;
+later CPU measurements are interpretation limits rather than a new hard cutoff.
+Dual-drive storage guards and monitoring cover this owned work, not external
+writers or an operating-system quota. The failed hosted preparation, incomplete
+TypeScript/lint/planning attempts, fresh experience evidence, review 3 and normal
+protected qualification remain separate outstanding gates.
+
 Crossdeck #721 landed through normal protection at
 `aaff919428ef9ab421579415ce3409949724760d`. Its tree equals qualified head
 `6168c3668cfd2c590ea89bb2e5c01813835e56d8`; R26 run `39656414105` and its required

@@ -17,7 +17,11 @@ failed a visible Assistant docking outcome. A narrow correction restores the
 original visible action label; new source-bound verification and acceptance
 remain pending. The original failed capture and cleanup receipts are retained.
 The working follow-up preserves early workspace actions while account preferences
-load; focused hook checks pass. Hosted development `39881765636/1` failed before
+load. A follow-up keeps startup stable as the account scope arrives: its original
+bootstrap regression fails before the correction, all nine hook cases pass after
+it, and the unchanged exclusion-zone Library consumer passes separately. These
+focused results do not establish whole-Studio or browser acceptance.
+Hosted development `39881765636/1` failed before
 the browser case and published no preparation diagnostic. Its cause and private
 cleanup remain unknown; separate retention maintenance and current-candidate
 verification are pending.
