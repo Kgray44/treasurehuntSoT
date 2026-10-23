@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-23T00:49:56.262Z",
+  "root": "D:/CodexWorktrees/parallax-776-final39-20261022",
+  "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+  "args": [
+    "--max-old-space-size=3072",
+    "node_modules/typescript/bin/tsc",
+    "--noEmit",
+    "--incremental",
+    "false"
+  ],
+  "cFree": 56121323520,
+  "dFree": 117406216192,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "qualification": false,
+  "protectedCapture": false
+}

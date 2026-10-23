@@ -3573,6 +3573,7 @@ export function SpatialStudio({
                     </span>
                     <button
                       type="button"
+                      className={styles.assistantDockToggle}
                       title={layout.assistantDocked ? "Float assistance" : "Dock assistance"}
                       aria-label={layout.assistantDocked ? "Float assistance" : "Dock assistance"}
                       aria-pressed={layout.assistantDocked}
@@ -3581,6 +3582,7 @@ export function SpatialStudio({
                       }
                     >
                       <StudioIcon name={layout.assistantDocked ? "copy" : "inspect"} />
+                      <span>{layout.assistantDocked ? "Float assistance" : "Dock assistance"}</span>
                     </button>
                     <button
                       type="button"

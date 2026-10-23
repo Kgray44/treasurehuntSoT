@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-22",
+  "generated_at": "2026-10-23",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -28168,6 +28168,180 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main1c-20261022/intake.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/admitted-run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/archive-central-directory-sized.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/archive-central-directory.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/artifacts-terminal.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-component-suite-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-component-suite-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-format-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-format-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-lint-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-lint-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-regression-after-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-regression-after-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-regression-before-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-regression-before-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-regression-before-threads-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-regression-before-threads-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-typecheck-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-typecheck-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-workstation-format-01/execution.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/assistant-label-workstation-format-01/request.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/dispatch-disposition.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/dispatch-payload.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/failure-disposition.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/independent-regression-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/observation-012.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/preparation-job-log.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/retained-archive-download.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/safe-extraction.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/capture-25a-20261022/terminal-run.original.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

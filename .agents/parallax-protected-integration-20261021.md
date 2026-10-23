@@ -8,6 +8,17 @@ last_reviewed: 2026-10-22
 
 # Existing owner continuation
 
+Current source correction follows failed capture `39875668380/1` on exact
+`25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88`. Preserve that failed run and all four
+authenticated archives. Restore protected main's visible Dock/Float assistance
+label, keeping the contract, original assertions, timeouts and safeguards intact.
+The focused threads regression reached assertions and reproduced empty Float
+assistance text; the default-forks worker-start failure is separate. Freeze and
+independently review the correction before source-bound development browser
+verification and any new governed capture. Review 3 remains unperformed until
+complete current media and its bounded authenticated packet are available.
+Maintain separate 30 GiB reserves on both C: and D: under the latest host rule.
+
 Integration / UNATTENDED_CONTINUATION. Continue the directly authorized complete
 Parallax objective after accepted Crossdeck landing. Use the existing owned
 `codex/parallax-integration-prep-20261019` branch and PR #776. The current accepted

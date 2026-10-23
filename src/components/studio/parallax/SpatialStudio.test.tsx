@@ -408,6 +408,20 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
   expect(screen.queryByText("Guided placement controls")).not.toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Edit room features" })).toBeVisible();
 }, 30000);
+it("keeps the docked assistance return action visibly named", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
+  const workspace = within(screen.getByRole("region", { name: "Ask Parallax workspace", exact: true }));
+  const dock = workspace.getByRole("button", { name: "Dock assistance", exact: true });
+  expect(dock).toHaveTextContent("Dock assistance");
+  fireEvent.click(dock);
+  const float = workspace.getByRole("button", { name: "Float assistance", exact: true });
+  expect(float).toBeVisible();
+  expect(float).toHaveTextContent("Float assistance");
+  fireEvent.click(float);
+  expect(workspace.getByRole("button", { name: "Dock assistance", exact: true })).toBeVisible();
+});
 it("records manual transforms as reversible edits and serializes autosave", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });

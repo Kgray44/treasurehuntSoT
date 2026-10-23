@@ -3,15 +3,19 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
 
-Parallax's combined Studio candidate is reconciled locally with the accepted
-Crossdeck landing `aaff919428ef9ab421579415ce3409949724760d` in PR #776.
+Parallax's sole combined Studio candidate, PR #776, includes the accepted
+Crossdeck landing and maintenance through `1c516d27fca521157732fca4cbba773d1542f1b2`.
+Capture `39875668380/1` on reconciled source `25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88`
+failed a visible Assistant docking outcome. A narrow correction restores the
+original visible action label; new source-bound verification and acceptance
+remain pending. The original failed capture and cleanup receipts are retained.
 Crossdeck #721 completed normal protected R26 qualification and independent landed
 smoke; that acceptance does not qualify the combined Studio candidate. The
 [current integration checkpoint](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)

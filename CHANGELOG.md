@@ -32,6 +32,12 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 
 ## Unreleased
 
+- Restore the Spatial Assistant's visible **Dock assistance** and **Float assistance**
+  labels in the Studio integration candidate, with a wrapping header for narrow
+  panels. The original failed capture is preserved; responsive browser checks
+  retain existing criteria and add label/clipping/hit-target coverage. Fresh
+  candidate verification and protected acceptance remain pending.
+
 - Prepared distinct shared-consumer compatibility contracts and synthetic browser
   journeys for the Studio integration planning gate. All 501 original contract
   IDs remain plus one explicit pilot-availability boundary; product and Prisma

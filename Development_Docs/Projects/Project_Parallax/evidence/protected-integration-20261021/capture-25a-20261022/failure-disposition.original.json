@@ -1,0 +1,193 @@
+{
+  "documentClass": "engineering-evidence",
+  "kind": "FAILED_GOVERNED_CAPTURE_AND_NARROW_PRODUCT_REGRESSION",
+  "createdAt": "2026-10-23T00:46:08.213Z",
+  "repository": "Kgray44/treasurehuntSoT",
+  "pr": 776,
+  "runId": 39875668380,
+  "attempt": 1,
+  "producerHead": "25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88",
+  "producerTree": "27b84bb36ae7f5d587185b7d29f79a572de4032a",
+  "acceptedBase": "1c516d27fca521157732fca4cbba773d1542f1b2",
+  "sourceDigest": "5b6ec5fce41cc7346c364be69955e95d473ec614d5054c5e2a3c9f65f0c99cfe",
+  "contractDigest": "e69bab5d61e76b85c59cfd40a9fe4c4a47cc6ffe98ef302f6b2a185886fbe089",
+  "captureStatus": "FAIL",
+  "error": "PRODUCT_EXPERIENCE_USER_OUTCOME_FAILED",
+  "journey": "spatial-pilot.experience/creator-assistance-and-return/DESKTOP/CREATOR/NORMAL",
+  "retainedStates": [
+    "EDITOR_READY",
+    "ASSISTANT_READY"
+  ],
+  "unreachedScreenshot": "ASSISTANT_DOCKED",
+  "causalEvidence": {
+    "protectedContractUnchanged": true,
+    "protectedMainVisibleLabel": "Float assistance",
+    "candidateButtonChildren": "StudioIcon only; accessible name and title retained",
+    "executorWitness": "USER_OUTCOME_FAILED is emitted by step.text guard; screenshots follow all assertions",
+    "encryptedTrace": "OPAQUE_NOT_DECRYPTED",
+    "independentDomainCorroboration": "independent-regression-review.original.json"
+  },
+  "localRegression": {
+    "defaultForks": "NONACCEPTING_WORKER_START_FAILED_NO_ASSERTIONS",
+    "threadsBefore": "ONE_ASSERTION_TEST_FAILED_EXPECTED_FLOAT_ASSISTANCE_RECEIVED_EMPTY",
+    "threadsAfter": "ONE_ASSERTION_TEST_PASSED_AFTER_VISIBLE_LABEL_FIX",
+    "suiteClaim": "Focused single-test results only; skipped siblings are not passes; full suites and browser remain separate",
+    "workingSource": "Test added to immutable25a product before fix; uncommitted correction after failure; not whole-commit qualification"
+  },
+  "cleanup": {
+    "scope": "THIS_25A_RUN_ONLY",
+    "supervisor": "PASS",
+    "browser": "PASS",
+    "server": "PASS",
+    "proxy": "PASS",
+    "portsReleased": true,
+    "encryptedRetention": "COMPLETE_HASH_VERIFIED",
+    "oldD16fCapture": "UNKNOWN_UNCHANGED"
+  },
+  "completeCapture": false,
+  "renderedReview3": "UNPERFORMED",
+  "qualification": false,
+  "protectedAcceptance": false,
+  "originalFiles": [
+    {
+      "path": "12467794954.original.zip",
+      "bytes": 7948,
+      "sha256": "f51d8fa847d83ba18b50b34623964ccf7af6617ae099126f95a5e873f12aa58d"
+    },
+    {
+      "path": "12468538553.original.zip",
+      "bytes": 640534,
+      "sha256": "cb62bc27774af675ad1d0d97015bbf42cb99a42f43570067acc7ee617017c51e"
+    },
+    {
+      "path": "12468608168.original.zip",
+      "bytes": 993612,
+      "sha256": "5d03a84f19683da04c8791c43caed3216e2d99d97e97a51a7043bba76e221a53"
+    },
+    {
+      "path": "12469265727.original.zip",
+      "bytes": 150463,
+      "sha256": "e522bcc5cc8975dc557116220096f7dbb4dd83db3c15160dd5ac3f98739cbad2"
+    },
+    {
+      "path": "admitted-run.original.json",
+      "bytes": 559,
+      "sha256": "0c8a838e804d5491ac83fc1956d6f1d309449707cbfaa3708aaaef7803aaf3e9"
+    },
+    {
+      "path": "archive-central-directory-sized.original.json",
+      "bytes": 6568,
+      "sha256": "f41c27dfa9c554c18c5f5802f41a9d493996552bf9c84c9552aa4d9ff9a21dd2"
+    },
+    {
+      "path": "archive-central-directory.original.json",
+      "bytes": 6364,
+      "sha256": "3cf963c1aa527c6764fae0c174cab9d30baaf5ad53dd63c8300d31e5892b193b"
+    },
+    {
+      "path": "artifacts-terminal.original.json",
+      "bytes": 1053,
+      "sha256": "b72e7a6cbd2c34b11920e957abdf93c6c337a224a2874c58ad6226e395c2137e"
+    },
+    {
+      "path": "assistant-label-regression-after-01/execution.original.json",
+      "bytes": 930,
+      "sha256": "483e4396ce60361ba765b20048ef764fc3b10448c8e2b82299b8c320931e6481"
+    },
+    {
+      "path": "assistant-label-regression-after-01/request.original.json",
+      "bytes": 687,
+      "sha256": "2f26906920228918deb61b41b2398d1c8908b54294c379f671d40b7ceb5b3eb5"
+    },
+    {
+      "path": "assistant-label-regression-after-01/stderr.original.log",
+      "bytes": 375,
+      "sha256": "b4acd4f819050212c4fe3b3ed8416421330f7ff8c72cb9bb667c335f3e24a94e"
+    },
+    {
+      "path": "assistant-label-regression-after-01/stdout.original.log",
+      "bytes": 251,
+      "sha256": "5d39c1f6cdbe2618a44b13ad347c9bf5c736e901f0bca8f101d0e377ce060310"
+    },
+    {
+      "path": "assistant-label-regression-before-01/execution.original.json",
+      "bytes": 932,
+      "sha256": "59e0aa9db260e01a2df88dbb611d751363a7d70822d0e4b3bf1e957b028c58bb"
+    },
+    {
+      "path": "assistant-label-regression-before-01/request.original.json",
+      "bytes": 658,
+      "sha256": "e882b40b0a89c279af010750ed79db0d33acdbe9ecb26d0153efcd8eaaea6247"
+    },
+    {
+      "path": "assistant-label-regression-before-01/stderr.original.log",
+      "bytes": 1310,
+      "sha256": "7d08f404e8da09e018edffa437945c665a0d9e16ce6c0824a93782bddf256451"
+    },
+    {
+      "path": "assistant-label-regression-before-01/stdout.original.log",
+      "bytes": 240,
+      "sha256": "fa07335af98abb304dbfae6def4146e8485d049fe1d47a54d06dca5eed8d421b"
+    },
+    {
+      "path": "assistant-label-regression-before-threads-01/execution.original.json",
+      "bytes": 939,
+      "sha256": "823a035db309f9fed74881cadcc0752c52696f326977ba22273cf17fdc103d53"
+    },
+    {
+      "path": "assistant-label-regression-before-threads-01/request.original.json",
+      "bytes": 687,
+      "sha256": "a15866f0f18740dadd75a3afe0782017633dddeb507ec8c4fe53a6483e7a9257"
+    },
+    {
+      "path": "assistant-label-regression-before-threads-01/stderr.original.log",
+      "bytes": 1149,
+      "sha256": "ab46cd81485f06f177b7f30bf5b9853e9d7cde007a342494ef836ec8974fa1d2"
+    },
+    {
+      "path": "assistant-label-regression-before-threads-01/stdout.original.log",
+      "bytes": 424,
+      "sha256": "d8e1e38f19288ff8f0d0e3b15e6704326e4a301490ff110e0309c29bfead1043"
+    },
+    {
+      "path": "dispatch-disposition.original.json",
+      "bytes": 236,
+      "sha256": "d09777d1a79a651fac1411b2fce52be72e19277af5b4b718cda2314f9176e83a"
+    },
+    {
+      "path": "dispatch-payload.original.json",
+      "bytes": 333,
+      "sha256": "eca84ecbf3bd4da55eda9a66e23f1cf4aa6165bc138929c6ed9d5c51fcd8afad"
+    },
+    {
+      "path": "independent-regression-review.original.json",
+      "bytes": 6417,
+      "sha256": "a54bd28d762c5c1c37c0f31cb74431ce2bcde5375e145e6cd893d757b8822f95"
+    },
+    {
+      "path": "observation-012.original.json",
+      "bytes": 8395,
+      "sha256": "b2320eee20c8b69be8d901d7217ea21190859cc5fadca7f53a5ced9783cd859e"
+    },
+    {
+      "path": "preparation-job-log.original.txt",
+      "bytes": 221085,
+      "sha256": "27afb2bf682f5902b500b7b15938afa2e835119ec3a4b906e437dbb1cc095208"
+    },
+    {
+      "path": "retained-archive-download.original.json",
+      "bytes": 2228,
+      "sha256": "856ce76e5d8b1ac95c2e5ef43ec786fd18651ceb580409374a0420425bf5824c"
+    },
+    {
+      "path": "safe-extraction.original.json",
+      "bytes": 7259,
+      "sha256": "f0d2fb582dcad6b926c47ccb73ca3841d1e6890eaa69c3546d70037cb2da2e2e"
+    },
+    {
+      "path": "terminal-run.original.json",
+      "bytes": 562,
+      "sha256": "5f63782e07b06cc12e11181db0ac98080624e74a94f5adac1a1ac16344e3a768"
+    }
+  ]
+}

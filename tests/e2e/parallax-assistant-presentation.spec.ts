@@ -59,6 +59,9 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
           await page
             .getByRole("button", { name: docked ? "Dock assistance" : "Float assistance", exact: true })
             .click();
+        await expect(
+          host.getByRole("button", { name: docked ? "Float assistance" : "Dock assistance", exact: true }),
+        ).toHaveText(docked ? "Float assistance" : "Dock assistance");
         const name = `${viewport.name}-${mode.toLowerCase()}-${docked ? "docked" : "floating"}`;
         await capture(page, name);
         const observation = await assistant.evaluate((element, name) => {
@@ -83,6 +86,9 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
             (item) => !item.closest("details:not([open])") && item.getClientRects().length > 0,
           );
           const footer = element.querySelector("footer")!;
+          const windowControls = controls.filter((item) =>
+            ["Dock assistance", "Float assistance", "Close assistance"].includes(item.getAttribute("aria-label") ?? ""),
+          );
           return {
             name,
             panel: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
@@ -90,6 +96,29 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
             clientHeight: element.clientHeight,
             visible,
             footer: { y: footer.getBoundingClientRect().y, height: footer.getBoundingClientRect().height },
+            clippedWindowControls: windowControls
+              .filter((item) => {
+                const control = item.getBoundingClientRect();
+                const label = document.createRange();
+                label.selectNodeContents(item);
+                const text = label.getBoundingClientRect();
+                return (
+                  control.bottom > visible.bottom + 1 ||
+                  control.top < visible.top - 1 ||
+                  control.left < visible.left - 1 ||
+                  control.right > visible.right + 1 ||
+                  (item.textContent?.trim() && (text.left < control.left - 1 || text.right > control.right + 1))
+                );
+              })
+              .map((item) => item.getAttribute("aria-label")),
+            obscuredWindowControls: windowControls
+              .filter((item) => {
+                const control = item.getBoundingClientRect();
+                return !item.contains(
+                  document.elementFromPoint(control.x + control.width / 2, control.y + control.height / 2),
+                );
+              })
+              .map((item) => item.getAttribute("aria-label")),
             clippedControls: controls
               .filter((item) => {
                 const control = item.getBoundingClientRect();
@@ -115,6 +144,8 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
         }, name);
         observations.push(observation);
         await writeFile(`${artifactRoot}/viewport-observations.json`, JSON.stringify(observations, null, 2) + "\n");
+        expect(observation.clippedWindowControls, `${name} window controls and their labels fit`).toEqual([]);
+        expect(observation.obscuredWindowControls, `${name} window controls have actual hit targets`).toEqual([]);
         expect(observation.clippedControls, `${name} footer fits the viewport and every clipping ancestor`).toEqual([]);
         expect(observation.obscuredFooterControls, `${name} footer controls have actual hit targets`).toEqual([]);
         const sendReachable = await assistant

@@ -1,0 +1,39 @@
+{
+  "name": "assistant-label-regression-before-threads-01",
+  "at": "2026-10-23T00:43:15.840Z",
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 7,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 56143323136,
+  "minimumD": 117432709120,
+  "monitorSamples": 28,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 424,
+      "sha256": "d8e1e38f19288ff8f0d0e3b15e6704326e4a301490ff110e0309c29bfead1043"
+    },
+    "stderr": {
+      "bytes": 1149,
+      "sha256": "ab46cd81485f06f177b7f30bf5b9853e9d7cde007a342494ef836ec8974fa1d2"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

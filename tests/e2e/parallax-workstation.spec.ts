@@ -17,6 +17,63 @@ test.describe.configure({ mode: "serial", timeout: 180000 });
 test.use({ video: { mode: "on", size: { width: 1280, height: 800 } } });
 test.afterAll(() => db.$disconnect());
 
+test("Assistant docking labels remain visible and reachable across viewport sizes", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("PARALLAX_OWNED_BROWSER_REQUIRED");
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic Assistant docking labels");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
+  const workspace = page.getByRole("region", { name: "Ask Parallax workspace", exact: true });
+  await expect(workspace.getByRole("region", { name: "Spatial Assistant", exact: true })).toBeVisible();
+  for (const viewport of [
+    { width: 1440, height: 1000 },
+    { width: 1280, height: 800 },
+    { width: 390, height: 844 },
+    { width: 844, height: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (const docked of [true, false]) {
+      await workspace
+        .getByRole("button", { name: docked ? "Dock assistance" : "Float assistance", exact: true })
+        .click();
+      await expect(workspace).toHaveAttribute("data-docked", String(docked));
+      const label = docked ? "Float assistance" : "Dock assistance";
+      const toggle = workspace.getByRole("button", { name: label, exact: true });
+      await expect(toggle).toHaveText(label);
+      for (const control of [toggle, workspace.getByRole("button", { name: "Close assistance", exact: true })]) {
+        await expect(control).toBeInViewport({ ratio: 1 });
+        const bounds = await control.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          const text = document.createRange();
+          text.selectNodeContents(element);
+          const labelBounds = text.getBoundingClientRect();
+          return {
+            labelInside:
+              !element.textContent?.trim() ||
+              (labelBounds.left >= rect.left - 1 && labelBounds.right <= rect.right + 1),
+            hit: element.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2)),
+          };
+        });
+        expect(bounds.labelInside, `${viewport.width} px ${label}: visible control content fits`).toBe(true);
+        expect(bounds.hit, `${viewport.width} px ${label}: control can be clicked`).toBe(true);
+      }
+    }
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await workspace.getByRole("button", { name: "Close assistance", exact: true }).click();
+  await expect(workspace).toBeHidden();
+  await page.getByRole("link", { name: "← Creator Studio", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
+});
+
 test("Adaptive workspace docks reclaim viewport area and preserve editing across layouts and reload", async ({
   page,
   context,

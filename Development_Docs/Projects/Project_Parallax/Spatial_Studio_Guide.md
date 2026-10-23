@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-22
 ---
 
 # Build a spatial experience
@@ -13,6 +13,11 @@ its Studio header, or focus a header control and press Shift+F10, to choose
 **Save draft** explicitly. A successful command confirms the working save,
 including when your changes were already saved. Save to Library remains a
 separate deliberate action.
+
+Open **Ask Parallax**, then use **Dock assistance** to keep the Assistant beside
+the Scene. **Float assistance** returns it to a movable window. Both actions
+have visible labels; the controls wrap when the header needs more room. This
+correction is in the integration candidate and awaits protected acceptance.
 
 An expanded Timeline sits below the Scene. Scroll the centre pane to reach its
 controls; the canvas keeps room for its tools and selected-item card. Collapsing

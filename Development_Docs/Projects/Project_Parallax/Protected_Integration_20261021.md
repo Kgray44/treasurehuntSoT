@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: reconciled-awaiting-installed-classification
+status: repairing-visible-assistant-label
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-22
 ---
@@ -14,11 +14,50 @@ owner responsible for domain and sibling-disposition review, without a competing
 root rewrite or qualification.
 
 The current accepted maintenance bundle is installed at
-`1c516d27fca521157732fca4cbba773d1542f1b2`. The source-only reconciliation from
-preserved `d16f0c09a9374b47353ea78f9f0eed61646f8b83` has no conflicts and changes
-no product source, Prisma source, browser specs or contracts. The latest
-source-bound intake and remaining exact-candidate gates are recorded below.
+`1c516d27fca521157732fca4cbba773d1542f1b2`. Source-only reconciliation
+`25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88` preserved product source, Prisma,
+browser specs and contracts from `d16f0c09a9374b47353ea78f9f0eed61646f8b83`.
+Its installed plan and independent source review passed. Governed capture
+`39875668380/1` then failed the first Creator assistance outcome. The current
+correction restores the visible Dock/Float assistance label that protected main
+already required; the protected contract, assertions and timeouts are unchanged.
 Earlier main39 checkpoints retain their original producing identities.
+
+## Current visible-label correction
+
+The [original failed capture](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380)
+reached EDITOR_READY and ASSISTANT_READY, then emitted
+`PRODUCT_EXPERIENCE_USER_OUTCOME_FAILED`. The executor produces screenshots only
+after step assertions. The next text outcome is the docked workspace's visible
+**Float assistance** action. Protected main rendered that label; the overhaul
+retained its accessible name and title but rendered only an icon. Independent
+domain review corroborated this regression. A focused component test reproduced
+the missing text before the fix; the earlier default-worker startup failure is
+retained separately and proves no product assertion.
+
+The correction keeps the icon, accessible name, pressed state and docking action,
+adds the full visible label, and lets the Studio header wrap at narrow widths.
+Responsive browser coverage additionally checks label visibility, clipping and
+actual control hit targets while preserving all prior checks. Changed-source
+verification and fresh governed evidence remain required.
+
+The focused label test passed after the fix. A broader two-file local run
+reported 32 passes and five failures before its owned safety deadline; retained
+DOM includes unfinished validation/loading, but the causes are not established
+and the run is nonaccepting. The subsequent bounded ESLint and TypeScript
+attempts also reached their safety deadlines with no diagnostics. Cleanup passed
+for these attempts. No assertion, timeout or worker limit is relaxed, and these
+results are not promoted to a complete local validation claim. Formatting passed.
+The standard development browser selector is the new no-provider docking journey
+in `tests/e2e/parallax-workstation.spec.ts`; the presentation suite retains its
+separate unpaid-provider fixture safeguard. Neither route grants acceptance.
+
+All four provider artifacts retain their authenticated original ZIP bytes in
+[the failed-capture evidence](evidence/protected-integration-20261021/capture-25a-20261022/).
+Current-run supervisor, browser, server and proxy cleanup passed with ports
+released; encrypted retention is complete. Encrypted payloads remain opaque.
+These facts do not establish a complete capture, review, qualification, or cleanup
+of the older canceled d16f run. Rendered review 3 remains unperformed.
 
 Crossdeck #721 landed through normal protection at
 `aaff919428ef9ab421579415ce3409949724760d`. Its tree equals qualified head

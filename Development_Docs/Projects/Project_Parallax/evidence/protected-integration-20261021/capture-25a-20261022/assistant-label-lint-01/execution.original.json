@@ -1,0 +1,35 @@
+{
+  "name": "assistant-label-lint-01",
+  "at": "2026-10-23T00:51:56.631Z",
+  "failure": "OWNED_COMMAND_SAFETY_DEADLINE",
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": null,
+    "elapsedMs": 299,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 56119402496,
+  "minimumD": 117406191616,
+  "monitorSamples": 39,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}
