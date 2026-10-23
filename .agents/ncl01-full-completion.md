@@ -18,6 +18,15 @@ cleanup. No shared runner changes, nine-case runtime, hosted capture, diagnostic
 upload or protected acceptance are authorized by this delegation. Keep source
 identity separate from earlier697 collection-only evidence. A new D: verification
 checkout must own regular installed dependencies; do not mutate shared C: Prisma.
+The single87d29c7e/e7d8001f local attempt now passes six preparation commands and
+the actual three Administrator cases, no retries/skips/flaky/unexpected results.
+Report SHA2565e0c59d142103213bd5f08c4f32279bfa694bcb32bd7418075bd9d48acafe673.
+Cleanup PASS includes escalation and released ports; do not claim graceful
+server exit zero. Optional failure diagnostics remain INCOMPLETE/SETUP_FAILED,
+publication NOT_CONFIGURED, with six unexplained outer listener warnings. Keep
+those limitations distinct from the passing functional run. No rerun or shared
+retention fix is authorized by this local-only delegation. Preserve its D: local
+receipts without upload. Later documentation commits do not rename its source.
 The owner is unavailable: no questions or requests for physical participation.
 The post-Crossdeck directive supersedes the prior unmerged721 hold. It does not
 waive current protected-main, experience, privacy or physical acceptance gates.
@@ -90,7 +99,9 @@ the failed directory and prepared/unexecuted extended-path helper. Selected
 desktop/mobile People PNGs and completed desktop control trace are reviewed;
 compiledCSS retains the52rem hidden-link rule. Failed mobile trace/all-dimension
 acceptance are not claimed. The CSS correction and three Administrator cases
-are prepared; collection passes nine cases, runtime remains pending. Studio776/792
+at697 are prepared; collection passes nine cases and runtime is pending at that
+source. The later87d focused three-case local PASS is recorded above; no full
+current-source consumer or visual acceptance is inferred. Studio776/792
 has first call on shared local/CI/reviewer resources. Continue lightweight source
 and retained-evidence work; do not start another capture or seize shared resources.
 
