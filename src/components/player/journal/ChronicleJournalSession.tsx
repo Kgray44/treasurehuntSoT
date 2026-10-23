@@ -1546,7 +1546,7 @@ function ChronicleJournalSessionIdentity({
           ) : null}
         </div>
 
-        {journalReady && spatialBlocks.length > 0 && (
+        {journalReady && connection !== "revoked" && spatialBlocks.length > 0 && (
           <ParallaxJournalProvider
             sessionId={sessionId}
             csrfToken={state.csrfToken ?? ""}

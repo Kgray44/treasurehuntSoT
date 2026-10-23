@@ -1,0 +1,56 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+        "deviceName" : "landfall-owned-8613",
+        "modelName" : "iPhone 17e",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 1,
+      "passedTests" : 23,
+      "skippedTests" : 1,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "LandfallCompanion · Built with macOS 26.6.2",
+  "expectedFailures" : 0,
+  "failedTests" : 1,
+  "finishTime" : 1792118217.188,
+  "passedTests" : 23,
+  "result" : "Failed",
+  "skippedTests" : 1,
+  "startTime" : 1792117946.677,
+  "statistics" : [
+    {
+      "subtitle" : "1 test run",
+      "title" : "1 test collected performance metrics"
+    }
+  ],
+  "testFailures" : [
+    {
+      "failureText" : "XCTAssertTrue failed - LANDFALL_HOME_BACKGROUND_UNOBSERVED",
+      "targetName" : "LandfallCompanionUiTests",
+      "testIdentifier" : 25,
+      "testIdentifierString" : "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+      "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests/testUnconfiguredShellReturnsFromHome",
+      "testName" : "testUnconfiguredShellReturnsFromHome()"
+    }
+  ],
+  "title" : "Test - LandfallCompanion",
+  "topInsights" : [
+    {
+      "category" : "Longest Test Runs",
+      "impact" : "60% of duration",
+      "text" : "1 longest test run with outlier durations exceeding 1.51s (three standard deviations)"
+    }
+  ],
+  "totalTestCount" : 25
+}

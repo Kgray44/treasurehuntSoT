@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "result": "PASS",
+  "mode": "START_ABSENT_VERIFY_LIVE",
+  "knownComponentsVerified": 2,
+  "startedComponents": [
+    "production",
+    "edge"
+  ],
+  "staleCArchives": [
+    "stale-production-b1b6793003794a4c946d1b1988c1ba1c"
+  ],
+  "unknownPortsOrProcessesAccepted": false,
+  "healthyServicesRestarted": false,
+  "signalsSentByWrapper": 0,
+  "legacyDMetadataModified": false,
+  "cloudflaredServiceModified": false,
+  "neighborsCreationIdentitiesUnchanged": true,
+  "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+  "anonymousHttpOrAuthHealthQualifiedByThisCheck": false,
+  "at": "2026-10-21T23:42:45.2701549Z"
+}

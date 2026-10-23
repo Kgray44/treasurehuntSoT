@@ -14,6 +14,8 @@ Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](docu
 
 ## Current project homes
 
+- [NCL-01 native Scene vertical slice](Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) — source-bound delivery, original model identity and native validation limits.
+
 - [Spatial Chronicle Pilot](Projects/Spatial_Chronicle_Pilot/README.md) — fictional adventure, safe provisioning and consolidated Owner Sea Trials.
 - [Project Homeport](Projects/Project_Homeport/README.md) — product-reality and convergence records.
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md) — current owner-directed experience-redesign control area.

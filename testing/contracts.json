@@ -220,7 +220,9 @@
           "src/components/player/journal",
           "src/app/player/playthroughs/[playthroughId]/journal",
           "src/app/play/[taleSlug]/session/[sessionId]",
-          "src/app/player/offline-landfall"
+          "src/app/player/offline-landfall",
+          "public/parallax/sc02/manifest.json",
+          "src/landfall/device-lab/parallax-native-client.tsx"
         ],
         "projectionPaths": [
           "src/app/api/crossdeck",
@@ -251,7 +253,11 @@
           }
         ],
         "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
-        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "browserTests": [
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts",
+          "tests/e2e/parallax-native-authority.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "continuity": {
@@ -282,7 +288,8 @@
           "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope; no new authoring or native camera acceptance is claimed.",
           "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
           "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
-          "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+          "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used.",
+          "NCL adds the exact original SC02 manifest and loopback-only camera-free Device Lab Lens client as supporting consumer paths. The client is not a public product entry, measured tracking, GPU acceptance or a positive physical Inspect; its existing canonical simulation-rejection and Player-return evidence remains explicitly synthetic."
         ],
         "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
         "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
@@ -438,7 +445,172 @@
       "name": "Drydock typed Story Block authoring and compatibility contracts",
       "authority": "drydock",
       "owners": ["drydock", "one-voyage"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "A Creator reopening their canonical private Chronicle draft",
+        "objective": "Open the owned Chronicle from the existing Creator library, read its actual editor and return without changing publication or validation authority.",
+        "visibleOutcome": "The Creator sees the same private canonical draft in the editor and returns to the library with its edition and validation state preserved.",
+        "integrationOwner": "NCL-01 consumer continuity with Drydock and Shipwright authoring",
+        "systems": ["project-homeport", "drydock", "one-voyage"],
+        "sourcePaths": [
+          "src/app/studio/library/page.tsx",
+          "src/app/studio/private-content/page.tsx",
+          "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+          "src/app/studio/tales/[taleId]/assets/page.tsx",
+          "src/app/studio/tales/[taleId]/landfall/page.tsx",
+          "src/app/studio/tales/[taleId]/locations/page.tsx",
+          "src/app/studio/tales/[taleId]/page.tsx",
+          "src/app/studio/tales/[taleId]/settings/page.tsx",
+          "src/app/studio/tales/[taleId]/trials/page.tsx",
+          "src/app/studio/tales/[taleId]/versions/page.tsx",
+          "src/app/studio/tales/new/page.tsx",
+          "src/components/studio/DrydockCompatibilityPanel.tsx",
+          "src/components/studio/DrydockLaunchGate.tsx",
+          "src/components/studio/DrydockScenarioLab.tsx",
+          "src/components/studio/LandfallContextEditor.tsx",
+          "src/components/studio/LandfallFieldTestPanel.tsx",
+          "src/components/studio/LandfallInstallationPanel.tsx",
+          "src/components/studio/LandfallOnlinePlacePanel.tsx",
+          "src/components/studio/LandfallWorkspace.tsx",
+          "src/components/studio/NewTaleForm.tsx",
+          "src/components/studio/PrivateContentConsole.tsx",
+          "src/components/studio/ShipwrightPublishingReview.tsx",
+          "src/components/studio/StudioHome.tsx",
+          "src/components/studio/StudioValidationPanel.tsx",
+          "src/components/studio/TaleEditor.tsx",
+          "src/components/studio/TaleEditorSection.tsx",
+          "src/components/studio/inspector/ContractAwareInspector.tsx"
+        ],
+        "entryPoint": "/studio/library",
+        "states": ["STUDIO_READY", "EDITOR_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
+        "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
+        "navigation": "Enter through the named existing workspace or canonical account/library, use its visible task controls, and leave through the existing contextual return. No test-only route is introduced.",
+        "designTarget": "Preserve the existing task-first Studio library and actual Chronicle editor hierarchy. Draft title, validation state, content tools and contextual Studio return remain readable and keyboard operable.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["E"],
+        "browserTests": ["tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Finite NCL shared-consumer regression scope; this is a prepared design obligation, not current capture, visual acceptance or domain feature completion.",
+          "Source paths are the exact consumer set observed at0d83 against accepted aaff; any later affected surface requires explicit reconciliation.",
+          "No physical AR, live metric browser provider, real private content, owner product acceptance or signed deployment is inferred.",
+          "The synthetic fixture retains NOT_VALIDATED draft state and a separately checksummed edition. This read-only journey does not publish, pass Drydock, provision Landfall, or certify every authoring tool; those consumer tests remain separate."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "ncl01-review-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-NCL01-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Synthetic NCL01 Creator",
+              "text": "Synthetic NCL01 Creator"
+            }
+          }
+        },
+        "motion": {
+          "measurement": "Visible keyboard activation to the named useful consumer outcome in the task-owned production browser",
+          "feedbackBudgetMs": 5000,
+          "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
+        },
+        "continuity": {
+          "objective": "The same canonical synthetic account identity remains visible through the consumer task and contextual return; domain ownership and published identity remain canonical.",
+          "checks": [
+            {
+              "id": "canonical-account-label",
+              "role": "button",
+              "name": "Synthetic NCL01 Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ncl01-owned-draft-editor-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "The actual Creator library opens the owned canonical draft, rather than a parallel authoring copy, and returns without publication mutation.",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "STUDIO_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "NCL01 Consumer Chronicle",
+                "text": "NCL01 Consumer Chronicle",
+                "path": "/studio/tales/00000000-0000-4000-8000-00000000ac10",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "The visible library action opens the Creator-owned canonical draft with its actual title and authoring controls.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "drydock-scenario-contract",
@@ -543,7 +715,184 @@
       "name": "Wayfarer history projection",
       "authority": "wayfarer",
       "owners": ["wayfarer", "one-voyage"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "A Player returning to their own completed Voyage and exact Chronicle edition",
+        "objective": "Reach Chronicle Passport from Personal Harbor, find the canonical completed Voyage, and return to the same account.",
+        "visibleOutcome": "The private archive contains the synthetic Player’s projected version-pinned record and preserves contextual Personal Harbor return.",
+        "integrationOwner": "NCL-01 consumer continuity with Wayfarer and Wakebook history",
+        "systems": ["project-homeport", "wayfarer", "one-voyage"],
+        "sourcePaths": [
+          "src/app/passport/artifacts/[artifactId]/page.tsx",
+          "src/app/passport/artifacts/page.tsx",
+          "src/app/passport/atlas/page.tsx",
+          "src/app/passport/history/[recordId]/book/page.tsx",
+          "src/app/passport/history/[recordId]/page.tsx",
+          "src/app/passport/history/[recordId]/replay/page.tsx",
+          "src/app/passport/history/page.tsx",
+          "src/app/passport/memories/page.tsx",
+          "src/app/passport/page.tsx",
+          "src/app/passport/people/page.tsx",
+          "src/app/passport/saved/page.tsx",
+          "src/app/passport/statistics/page.tsx",
+          "src/app/passport/timeline/page.tsx",
+          "src/app/play/[taleSlug]/history/page.tsx",
+          "src/components/homeport/PassportSurfaces.tsx",
+          "src/components/wakebook/AuthenticatedPassportPage.tsx",
+          "src/components/wakebook/PassportLayout.tsx",
+          "src/components/wakebook/WakebookInsights.tsx",
+          "src/components/wakebook/WakebookVoyageBook.tsx",
+          "src/components/wakebook/WakebookVoyageDetail.tsx",
+          "src/components/wayfarer/ArtifactCabinet.tsx",
+          "src/components/wayfarer/ChronicleHistory.tsx",
+          "src/components/wayfarer/ChroniclePassport.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["ACCOUNT_READY", "PASSPORT_READY", "HISTORY_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
+        "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
+        "navigation": "Enter through the named existing workspace or canonical account/library, use its visible task controls, and leave through the existing contextual return. No test-only route is introduced.",
+        "designTarget": "Keep Passport as a distinct private archive with its existing record-led hierarchy, usable section navigation, readable version-pinned Voyage context and a clear Personal Harbor return.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-account", "screen-page-passport", "screen-page-passport-history"],
+        "homeportJourneyIds": ["H"],
+        "browserTests": ["tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Finite NCL shared-consumer regression scope; this is a prepared design obligation, not current capture, visual acceptance or domain feature completion.",
+          "Source paths are the exact consumer set observed at0d83 against accepted aaff; any later affected surface requires explicit reconciliation.",
+          "No physical AR, live metric browser provider, real private content, owner product acceptance or signed deployment is inferred.",
+          "The fixture creates canonical completed Voyage/membership/events; the history service materializes its own projection. No history row or completion/progression receipt is invented. Private detail authorization and unavailable-record recovery are required focused tests."
+        ],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "ncl01-review-player@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-NCL01-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Synthetic NCL01 Player",
+              "text": "Synthetic NCL01 Player"
+            }
+          }
+        },
+        "motion": {
+          "measurement": "Visible keyboard activation to the named useful consumer outcome in the task-owned production browser",
+          "feedbackBudgetMs": 5000,
+          "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
+        },
+        "continuity": {
+          "objective": "The same canonical synthetic account identity remains visible through the consumer task and contextual return; domain ownership and published identity remain canonical.",
+          "checks": [
+            {
+              "id": "canonical-account-label",
+              "role": "button",
+              "name": "Synthetic NCL01 Player",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ncl01-private-history-and-account-return",
+            "roles": ["PLAYER"],
+            "outcome": "A visible Passport entry reveals the actual Player-owned completed canonical Voyage and returns to the same Personal Harbor.",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "ACCOUNT_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Chronicle Passport",
+                "text": "Chronicle Passport",
+                "path": "/passport",
+                "state": "PASSPORT_READY",
+                "kind": "outcome",
+                "meaning": "Personal Harbor opens the real private archive destination rather than an account-settings substitute.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Your Voyages"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "NCL01 Consumer Chronicle",
+                "path": "/passport/history",
+                "state": "HISTORY_READY",
+                "kind": "outcome",
+                "meaning": "The archive projects the completed authorized Voyage from the canonical immutable edition; a non-owner record remains unavailable.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "artifact-grant-projection",
@@ -557,7 +906,166 @@
       "name": "Community public projection",
       "authority": "harborlight",
       "owners": ["harborlight", "wayfarer"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "A public visitor searching only eligible Community Chronicles",
+        "objective": "Search for the private NCL Chronicle, understand the truthful no-match state, clear the search using the real form, and return to Harbor Home.",
+        "visibleOutcome": "The private title is absent from public results; the no-match explanation, search recovery and Harbor return work through actual public projections.",
+        "integrationOwner": "NCL-01 consumer continuity with Harborlight public projection",
+        "systems": ["project-homeport", "harborlight", "wayfarer"],
+        "sourcePaths": [
+          "src/app/community/[slug]/page.tsx",
+          "src/app/community/artifacts/page.tsx",
+          "src/app/community/audio/page.tsx",
+          "src/app/community/chronicles/page.tsx",
+          "src/app/community/collections/[slug]/page.tsx",
+          "src/app/community/collections/page.tsx",
+          "src/app/community/creators/[handle]/page.tsx",
+          "src/app/community/creators/page.tsx",
+          "src/app/community/featured/page.tsx",
+          "src/app/community/guides/page.tsx",
+          "src/app/community/maps/page.tsx",
+          "src/app/community/page.tsx",
+          "src/app/community/templates/page.tsx",
+          "src/app/community/voyage-logs/page.tsx",
+          "src/components/community/CommunityCardGrid.tsx",
+          "src/components/community/CommunityCommentThread.tsx",
+          "src/components/community/CommunityDiscoveryBrowser.tsx",
+          "src/components/community/PublicCommunitySection.tsx"
+        ],
+        "entryPoint": "/community/chronicles",
+        "states": ["DISTRICT_READY", "EMPTY_RESULTS", "SEARCH_RECOVERED", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
+        "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
+        "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
+        "navigation": "Enter through the named existing workspace or canonical account/library, use its visible task controls, and leave through the existing contextual return. No test-only route is introduced.",
+        "designTarget": "Preserve content-first Community district hierarchy, labeled public search, a truthful empty result with usable recovery and a discoverable Harbor Home return; no private Voyage becomes a public listing.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-community", "screen-page-community-chronicles"],
+        "homeportJourneyIds": ["F", "N"],
+        "browserTests": ["tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Finite NCL shared-consumer regression scope; this is a prepared design obligation, not current capture, visual acceptance or domain feature completion.",
+          "Source paths are the exact consumer set observed at0d83 against accepted aaff; any later affected surface requires explicit reconciliation.",
+          "No physical AR, live metric browser provider, real private content, owner product acceptance or signed deployment is inferred.",
+          "The generic published Chronicle is not fabricated into a CommunityListing. A genuinely empty Community district is distinct from the populated public Chronicle Library. Private-title absence must be asserted against actual results, not inferred from a heading."
+        ],
+        "motion": {
+          "measurement": "Visible keyboard activation to the named useful consumer outcome in the task-owned production browser",
+          "feedbackBudgetMs": 5000,
+          "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
+        },
+        "continuity": {
+          "objective": "The public projection remains unauthenticated and exposes only the authorized public catalog, with a stable existing Homeport return.",
+          "checks": [
+            {
+              "id": "canonical-home-return",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ncl01-private-public-search-and-recovery",
+            "roles": ["ANONYMOUS"],
+            "outcome": "The actual public search excludes the private Chronicle and recovers to the district before returning to the existing Harbor.",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Chronicles",
+                "text": "Chronicles",
+                "path": "/community/chronicles",
+                "state": "DISTRICT_READY"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search public Community Harbor",
+                "value": "NCL01 Consumer Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Search Community Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "No public charts match these criteria",
+                "text": "No public charts match these criteria",
+                "path": "/community/chronicles",
+                "state": "EMPTY_RESULTS",
+                "kind": "outcome",
+                "meaning": "A real anonymous public search gives a truthful empty result for the private Chronicle without revealing its records.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search public Community Harbor",
+                "value": ""
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Search Community Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "The Harbor shelves below are ready to browse without a search.",
+                "path": "/community/chronicles",
+                "state": "SEARCH_RECOVERED",
+                "kind": "outcome",
+                "meaning": "Clearing the real search query restores the unfiltered district rather than trapping the visitor in a no-match result.",
+                "feedbackBoundary": true,
+                "absentRole": {
+                  "role": "heading",
+                  "name": "No public charts match these criteria"
+                }
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Harbor Home"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Find your next bearing",
+                "text": "Find your next bearing",
+                "path": "/community",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "sealed-hold-private-delivery",
@@ -627,7 +1135,141 @@
       "name": "Public privacy projection",
       "authority": "wayfarer",
       "owners": ["wayfarer", "harborlight", "sealed-hold"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "A visitor choosing an eligible published Chronicle",
+        "objective": "Read the public Chronicle Library, see a truthful empty filter for the private NCL title, recover the published list and return Home.",
+        "visibleOutcome": "The actual public catalog excludes the private NCL draft and offers working filter recovery and existing Home navigation.",
+        "integrationOwner": "NCL-01 consumer continuity with Wayfarer public catalog",
+        "systems": ["one-voyage", "wayfarer", "harborlight"],
+        "sourcePaths": [
+          "src/app/chronicles/[taleSlug]/compare/page.tsx",
+          "src/app/chronicles/[taleSlug]/page.tsx",
+          "src/app/tales/page.tsx",
+          "src/components/tales/PublishedBlockView.tsx",
+          "src/components/tales/TaleCatalog.tsx",
+          "src/components/tales/TaleStart.tsx",
+          "src/components/tideglass/TideglassPassage.tsx"
+        ],
+        "entryPoint": "/tales",
+        "states": ["CATALOG_READY", "EMPTY_RESULTS", "CATALOG_RECOVERED", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
+        "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
+        "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
+        "navigation": "Enter through the named existing workspace or canonical account/library, use its visible task controls, and leave through the existing contextual return. No test-only route is introduced.",
+        "designTarget": "Keep the existing published Chronicle cards and practical filter hierarchy, distinguish no matching filters from no published content, and preserve clear recovery and Home return.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-tales"],
+        "homeportJourneyIds": ["F", "N"],
+        "browserTests": ["tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Finite NCL shared-consumer regression scope; this is a prepared design obligation, not current capture, visual acceptance or domain feature completion.",
+          "Source paths are the exact consumer set observed at0d83 against accepted aaff; any later affected surface requires explicit reconciliation.",
+          "No physical AR, live metric browser provider, real private content, owner product acceptance or signed deployment is inferred.",
+          "Public catalog and CommunityListing projections are reviewed separately. Private-title absence, authorized publication checksums and no private record disclosure require focused service/browser assertions."
+        ],
+        "motion": {
+          "measurement": "Visible keyboard activation to the named useful consumer outcome in the task-owned production browser",
+          "feedbackBudgetMs": 5000,
+          "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
+        },
+        "continuity": {
+          "objective": "The public projection remains unauthenticated and exposes only the authorized public catalog, with a stable existing Homeport return.",
+          "checks": [
+            {
+              "id": "canonical-home-return",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ncl01-private-catalog-filter-and-return",
+            "roles": ["ANONYMOUS"],
+            "outcome": "The visible public filter cannot expose the private NCL Chronicle; its actual recovery restores the public catalog before Home return.",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Choose a Chronicle",
+                "text": "Choose a Chronicle",
+                "path": "/tales",
+                "state": "CATALOG_READY"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search",
+                "value": "NCL01 Consumer Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "No Chronicles match these filters",
+                "text": "No Chronicles match these filters",
+                "path": "/tales",
+                "state": "EMPTY_RESULTS"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Clear Filters"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Choose a Chronicle",
+                "path": "/tales",
+                "state": "CATALOG_RECOVERED",
+                "kind": "outcome",
+                "meaning": "The actual empty-filter recovery restores eligible published Chronicles while the private NCL title remains outside this public projection.",
+                "feedbackBoundary": true,
+                "absentRole": {
+                  "role": "heading",
+                  "name": "No Chronicles match these filters"
+                }
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Voyagewright home"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Choose your role in Voyagewright",
+                "text": "Choose your role in Voyagewright",
+                "path": "/",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "completion-provider",
@@ -1929,14 +2571,345 @@
       "name": "Project Homeport Phase7 Account Canonical Lifecycle",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated Player using the existing account and Profile controls",
+        "objective": "Read the same canonical account, open its actual Profile editor, and leave safely without changing identity or exposing credentials.",
+        "visibleOutcome": "Canonical identity and editable public projection remain readable; shared session/schema changes do not strand the account task or submit secrets in a URL.",
+        "integrationOwner": "NCL-01 consumer continuity with Homeport account integration",
+        "systems": ["project-homeport", "wayfarer"],
+        "sourcePaths": [
+          "src/app/account/accessibility/page.tsx",
+          "src/app/account/cancel-deletion/page.tsx",
+          "src/app/account/claim/page.tsx",
+          "src/app/account/data/page.tsx",
+          "src/app/account/email-change/page.tsx",
+          "src/app/account/linked-identities/page.tsx",
+          "src/app/account/merge/page.tsx",
+          "src/app/account/notifications/page.tsx",
+          "src/app/account/page.tsx",
+          "src/app/account/personal-information/page.tsx",
+          "src/app/account/preferences/page.tsx",
+          "src/app/account/privacy/page.tsx",
+          "src/app/account/profile/page.tsx",
+          "src/app/account/reactivate/page.tsx",
+          "src/app/account/roles/page.tsx",
+          "src/app/account/security/page.tsx",
+          "src/app/account/sessions/page.tsx",
+          "src/app/account/support-access/page.tsx",
+          "src/app/page.tsx",
+          "src/components/auth/CurrentUserProvider.tsx",
+          "src/components/auth/SignOutButton.tsx",
+          "src/components/homeport/AccountSurfaces.tsx",
+          "src/components/homeport/AuthenticatedHarborPage.tsx",
+          "src/components/homeport/PersonalHarborLayout.tsx",
+          "src/components/homeport/PreferenceRuntimeBridge.tsx",
+          "src/components/landing/HarborLanding.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["ACCOUNT_READY", "PROFILE_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
+        "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
+        "navigation": "Enter through the named existing workspace or canonical account/library, use its visible task controls, and leave through the existing contextual return. No test-only route is introduced.",
+        "designTarget": "Preserve the existing Personal Harbor hero, account-wide display name, task-first Profile form and contextual Home return. Existing empty, authentication and security errors stay explicit; no account surface is redesigned.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-account", "screen-page-account-profile"],
+        "homeportJourneyIds": ["B", "G"],
+        "browserTests": [
+          "tests/e2e/ncl01-consumer-continuity.spec.ts",
+          "tests/e2e/ncl01-admiralty-account-return.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Finite NCL shared-consumer regression scope; this is a prepared design obligation, not current capture, visual acceptance or domain feature completion.",
+          "Source paths are the exact consumer set observed at0d83 against accepted aaff; any later affected surface requires explicit reconciliation.",
+          "No physical AR, live metric browser provider, real private content, owner product acceptance or signed deployment is inferred.",
+          "The isolated fixture uses ACTIVE/VERIFIED accounts. Tokenized verification/reset/deletion flows retain their existing security tests and truthful states; this journey does not claim delivery or every account mutation."
+        ],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "ncl01-review-player@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-NCL01-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Synthetic NCL01 Player",
+              "text": "Synthetic NCL01 Player"
+            }
+          }
+        },
+        "motion": {
+          "measurement": "Visible keyboard activation to the named useful consumer outcome in the task-owned production browser",
+          "feedbackBudgetMs": 5000,
+          "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
+        },
+        "continuity": {
+          "objective": "The same canonical synthetic account identity remains visible through the consumer task and contextual return; domain ownership and published identity remain canonical.",
+          "checks": [
+            {
+              "id": "canonical-account-label",
+              "role": "button",
+              "name": "Synthetic NCL01 Player",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ncl01-account-profile-safe-return",
+            "roles": ["PLAYER"],
+            "outcome": "The actual authorized account opens its server-enforced public Profile task and returns to the existing Home gateway without mutation.",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic NCL01 Player",
+                "text": "Synthetic NCL01 Player",
+                "path": "/account",
+                "state": "ACCOUNT_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Public Profile"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Public Profile content",
+                "text": "Edit public Profile",
+                "path": "/account/profile",
+                "state": "PROFILE_READY",
+                "kind": "outcome",
+                "meaning": "The visible action opens the real account-scoped Profile fields and their server-enforced public projection, rather than merely showing a persisted role.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Home"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Choose your role in Voyagewright",
+                "text": "Choose your role in Voyagewright",
+                "path": "/",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "homeport.phase7.account.cross-workspace-session",
       "name": "Project Homeport Phase7 Account Cross Workspace Session",
       "authority": "project-homeport",
       "owners": ["project-homeport"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "A Captain reading governed published editions without joining or advancing a Voyage",
+        "objective": "Read the authorized Captain workspace, open its real published Chronicle tab, and return to the existing empty Voyage workspace.",
+        "visibleOutcome": "The actual Captain workspace exposes eligible published editions while preserving one account and its unchanged empty Voyage state.",
+        "integrationOwner": "NCL-01 consumer continuity with Homeport and canonical Captain participation",
+        "systems": ["project-homeport", "one-voyage", "project-helm"],
+        "sourcePaths": [
+          "src/app/captain/library/page.tsx",
+          "src/app/captain/sessions/[sessionId]/page.tsx",
+          "src/app/captain/tales/[taleId]/page.tsx",
+          "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+          "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+          "src/app/play/[taleSlug]/page.tsx",
+          "src/app/player/invitation/page.tsx",
+          "src/app/player/landfall-return/page.tsx",
+          "src/app/player/playthroughs/[playthroughId]/page.tsx",
+          "src/components/captain/CaptainCommandConsole.tsx",
+          "src/components/captain/CaptainDashboard.tsx",
+          "src/components/captain/CaptainMusterRoom.tsx",
+          "src/components/captain/CaptainOperationalPanel.tsx",
+          "src/components/captain/CaptainSessionControl.tsx",
+          "src/components/gm/Quartermaster.tsx",
+          "src/components/homeport/WorkspaceCapabilityDashboard.tsx",
+          "src/components/muster/CrewChat.tsx",
+          "src/components/muster/MusterRoom.tsx",
+          "src/components/platform/CaptainLibrary.tsx",
+          "src/components/platform/InvitationCeremony.tsx",
+          "src/components/platform/PlayerSafePreview.tsx",
+          "src/components/platform/PlayerVoyageRoom.tsx",
+          "src/components/platform/StaffSignIn.tsx"
+        ],
+        "entryPoint": "/captain/library",
+        "states": ["CAPTAIN_READY", "PUBLISHED_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CAPTAIN"],
+        "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
+        "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
+        "navigation": "Enter through the named existing workspace or canonical account/library, use its visible task controls, and leave through the existing contextual return. No test-only route is introduced.",
+        "designTarget": "Keep Captain’s Console task hierarchy and published-versus-active separation, expose the real edition task, and retain an immediate operable return without implicitly adding Player membership or progression.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-captain-library"],
+        "homeportJourneyIds": ["D", "K"],
+        "browserTests": [
+          "tests/e2e/ncl01-consumer-continuity.spec.ts",
+          "tests/e2e/ncl01-admiralty-account-return.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Finite NCL shared-consumer regression scope; this is a prepared design obligation, not current capture, visual acceptance or domain feature completion.",
+          "Source paths are the exact consumer set observed at0d83 against accepted aaff; any later affected surface requires explicit reconciliation.",
+          "No physical AR, live metric browser provider, real private content, owner product acceptance or signed deployment is inferred.",
+          "The dedicated Captain has no active Voyage or Player participation. This journey reads the existing generic public edition and returns; it does not create invitations, claim Captain control from labels, change capability, or advance progression."
+        ],
+        "roleSetup": {
+          "CAPTAIN": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "ncl01-review-captain@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-NCL01-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Synthetic NCL01 Captain",
+              "text": "Synthetic NCL01 Captain"
+            }
+          }
+        },
+        "motion": {
+          "measurement": "Visible keyboard activation to the named useful consumer outcome in the task-owned production browser",
+          "feedbackBudgetMs": 5000,
+          "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
+        },
+        "continuity": {
+          "objective": "The same canonical synthetic account identity remains visible through the consumer task and contextual return; domain ownership and published identity remain canonical.",
+          "checks": [
+            {
+              "id": "canonical-account-label",
+              "role": "button",
+              "name": "Synthetic NCL01 Captain",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ncl01-captain-edition-and-safe-return",
+            "roles": ["CAPTAIN"],
+            "outcome": "A real authorized Captain can read the existing published edition and return to the same empty Voyage task without creating or advancing a Voyage.",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "No Captain Voyages yet",
+                "text": "No Captain Voyages yet",
+                "path": "/captain/library",
+                "state": "CAPTAIN_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Published Chronicles"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "The Forever Treasure — Studio Development Voyage",
+                "text": "The Forever Treasure — Studio Development Voyage",
+                "path": "/captain/library",
+                "state": "PUBLISHED_READY",
+                "kind": "outcome",
+                "meaning": "The existing canonical published Chronicle appears in the actual Captain edition workspace, independently of any role label.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Voyages"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "No Captain Voyages yet",
+                "text": "No Captain Voyages yet",
+                "path": "/captain/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "homeport.phase7.profile.persistence",
@@ -3410,11 +4383,14 @@
           "src/components/wayfarer/AccountFlow.tsx",
           "src/app/sign-in",
           "src/app/forgot-password",
-          "src/homeport/return-to.ts"
+          "src/homeport/return-to.ts",
+          "src/app/register/page.tsx",
+          "src/app/reset-password/page.tsx",
+          "src/app/verify-email/page.tsx"
         ],
         "projectionPaths": ["src/app/api/auth", "src/wayfarer/password-policy.ts"],
         "entryPoint": "/",
-        "states": ["SIGN_IN_READY", "RECOVERY_READY", "RETURNED"],
+        "states": ["SIGN_IN_READY", "RECOVERY_READY", "RETURNED", "REGISTRATION_READY"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ANONYMOUS"],
         "accessibility": "Tab navigation reaches every account action; visible focus and reduced-motion presentation preserve meaning.",
@@ -3441,7 +4417,11 @@
         ],
         "homeportScreenIds": ["screen-page-sign-in", "screen-page-forgot-password"],
         "homeportJourneyIds": ["C"],
-        "browserTests": ["tests/e2e/homeport-phase2.spec.ts"],
+        "browserTests": [
+          "tests/e2e/homeport-phase2.spec.ts",
+          "tests/e2e/ncl01-consumer-continuity.spec.ts",
+          "tests/e2e/ncl01-admiralty-account-return.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -3505,6 +4485,48 @@
                 "path": "/sign-in",
                 "returnPath": true,
                 "state": "RETURNED"
+              }
+            ]
+          },
+          {
+            "id": "ncl01-account-registration-and-safe-return",
+            "roles": ["ANONYMOUS"],
+            "outcome": "The credential-safe shared account form still opens registration through visible account controls and returns to canonical sign-in without creating or exposing an account.",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Account"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Create Account"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Create your account",
+                "text": "Create your account",
+                "path": "/register",
+                "state": "REGISTRATION_READY",
+                "kind": "outcome",
+                "meaning": "The natural account action opens the actual canonical registration form; its credentials use the existing POST form.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Already have an account? Sign in"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "text": "Sign in",
+                "path": "/sign-in",
+                "state": "RETURNED",
+                "returnPath": true
               }
             ]
           }
@@ -3937,7 +4959,174 @@
       "name": "Account dossier and consented Support Access integration",
       "authority": "project-admiralty",
       "owners": ["project-admiralty"],
-      "critical": true
+      "critical": true,
+      "experience": {
+        "persona": "An authorized Administrator using the existing account-observation workspace",
+        "objective": "Open the real governed People search, understand its non-enumerating empty state and return to the same canonical account.",
+        "visibleOutcome": "The actual authorized Admiralty search remains scoped and truthful, with a readable account return and no consent or support authority change.",
+        "integrationOwner": "NCL-01 consumer continuity with Admiralty account observation",
+        "systems": ["project-admiralty", "project-homeport", "wayfarer"],
+        "sourcePaths": [
+          "src/app/admin/layout.tsx",
+          "src/components/admiralty/AdmiraltyConsole.tsx",
+          "src/components/admiralty/AdmiraltyShell.tsx",
+          "src/components/admiralty/DossierSupportPanel.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["ACCOUNT_READY", "ADMIN_READY", "PEOPLE_EMPTY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ADMINISTRATOR"],
+        "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
+        "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
+        "navigation": "Enter through the named existing workspace or canonical account/library, use its visible task controls, and leave through the existing contextual return. No test-only route is introduced.",
+        "designTarget": "Preserve the existing Chartroom hierarchy, current operator identity, practical search task and non-enumerating empty explanation. Keep consented Support Access and observation authority separate from mere navigation.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-admin"],
+        "homeportJourneyIds": ["K", "N"],
+        "browserTests": ["tests/e2e/ncl01-admiralty-account-return.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Finite NCL shared-consumer regression scope; this is a prepared design obligation, not current capture, visual acceptance or domain feature completion.",
+          "Source paths are the exact consumer set observed at0d83 against accepted aaff; any later affected surface requires explicit reconciliation.",
+          "No physical AR, live metric browser provider, real private content, owner product acceptance or signed deployment is inferred.",
+          "This generic fixture exercises the existing authorized workspace and known-clue empty state only. It does not claim dedicated Admiralty support/AI/provider qualification, enumerate real accounts, grant support consent, or invoke privileged mutations."
+        ],
+        "roleSetup": {
+          "ADMINISTRATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "ncl01-review-administrator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-NCL01-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Synthetic NCL01 Administrator",
+              "text": "Synthetic NCL01 Administrator"
+            }
+          }
+        },
+        "motion": {
+          "measurement": "Visible keyboard activation to the named useful consumer outcome in the task-owned production browser",
+          "feedbackBudgetMs": 5000,
+          "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
+        },
+        "continuity": {
+          "objective": "Navigation only: the existing Voyagewright Home link preserves its destination through account entry, Admiralty and account return. Canonical account authority is separately retained by real UI sign-in and exact account-label witnesses at entry and return; the href does not identify an account.",
+          "checks": [
+            {
+              "id": "navigation-home-destination",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ncl01-admiralty-empty-search-and-account-return",
+            "roles": ["ADMINISTRATOR"],
+            "outcome": "An authorized operator opens the actual non-enumerating People search and returns to the same canonical account without privileged mutation.",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic NCL01 Administrator",
+                "text": "Synthetic NCL01 Administrator",
+                "path": "/account",
+                "state": "ACCOUNT_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic NCL01 Administrator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Admiralty"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Platform Overview",
+                "text": "Platform Overview",
+                "path": "/admin",
+                "state": "ADMIN_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "People"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Start with a known clue",
+                "path": "/admin/people",
+                "state": "PEOPLE_EMPTY",
+                "kind": "outcome",
+                "meaning": "The actual account-observation port supplies a truthful known-clue search instead of enumerating or fabricating people.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to account"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic NCL01 Administrator",
+                "text": "Synthetic NCL01 Administrator",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "admiralty.phase2.chronicle-voyage-inspection",
@@ -6144,6 +7333,170 @@
                 "name": "Voyagewright Studio",
                 "text": "Voyagewright Studio",
                 "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.ncl01.owner-sea-trials",
+      "name": "NCL-01 private synthetic owner-trial entry and truthful library return",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-landfall"],
+      "critical": true,
+      "experience": {
+        "persona": "The fixed synthetic pilot account in the already nonce-isolated generic development fixture",
+        "objective": "Read the existing private trial preparation and its pending-physical-acceptance boundary, reach the real Player library and return to the same canonical account.",
+        "visibleOutcome": "The gated synthetic preparation remains honest about unperformed physical trials and offers the real canonical Player library, Home and Personal Harbor return without claiming an owner judgment.",
+        "integrationOwner": "NCL-01 private trial continuity with Spatial Pilot",
+        "systems": ["one-voyage", "project-parallax", "project-landfall"],
+        "sourcePaths": ["src/app/dev/spatial-pilot/page.tsx", "src/spatial-pilot/OwnerSeaTrials.tsx"],
+        "entryPoint": "/dev/spatial-pilot",
+        "states": ["TRIAL_UNPROVISIONED", "LIBRARY_EMPTY", "HOME_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["OWNER"],
+        "accessibility": "Actual named controls must be keyboard reachable with visible focus; text, truthful empty/error states and ordinary return remain usable on the constrained viewport and in reduced motion.",
+        "fallback": "Authentication, unavailable records and missing capabilities keep the existing truthful denied/empty/recovery experience; no fixture grants camera, native tracking, progression or domain authority.",
+        "navigation": "Enter the existing server-authorized private trial URL directly after real account sign-in; no visible Sea Trials entry from Personal Harbor is claimed. Use the actual Player Library, Home and account-menu returns. No test-only route is introduced.",
+        "designTarget": "Keep the existing private preparation hierarchy and explicit pending owner/physical status. Preparation, synthetic library access and feedback controls must never imply measured tracking, a reconstructed-room registration or completed owner acceptance.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted Homeport task hierarchy and mobile contextual return guide this finite consumer regression design; these references do not accept the current implementation.",
+            "preserve": "Readable task hierarchy, visible recovery and return, usable keyboard and constrained mobile controls."
+          }
+        ],
+        "homeportScreenIds": [],
+        "homeportJourneyIds": [],
+        "browserTests": ["tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Finite NCL shared-consumer regression scope; this is a prepared design obligation, not current capture, visual acceptance or domain feature completion.",
+          "Source paths are the exact consumer set observed at0d83 against accepted aaff; any later affected surface requires explicit reconciliation.",
+          "No physical AR, live metric browser provider, real private content, owner product acceptance or signed deployment is inferred.",
+          "OWNER names only the server-authorized fixed synthetic pilot fixture; it is not the human owner and grants no product acceptance.",
+          "The fixture does not pre-provision a pilot or invent a physical report. This bounded journey does not press Prepare, Replay, Record feedback or a physical trial action.",
+          "The internal camera-free native harness is supporting evidence under published-Lens scope and is not a released route."
+        ],
+        "roleSetup": {
+          "OWNER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "ncl01-review-owner@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-NCL01-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Synthetic NCL01 Owner",
+              "text": "Synthetic NCL01 Owner"
+            }
+          }
+        },
+        "motion": {
+          "measurement": "Visible keyboard activation to the named useful consumer outcome in the task-owned production browser",
+          "feedbackBudgetMs": 5000,
+          "justification": "Retain the existing published-consumer five-second feedback envelope for actual loopback task transitions; this does not measure physical hardware or extend any native/test deadline."
+        },
+        "continuity": {
+          "objective": "Navigation only: the existing Voyagewright Home link preserves its destination through private trial entry, Player Library, Home and account return. Canonical account authority is separately retained by real UI sign-in and exact account-label witnesses at setup and return; the href does not identify an account.",
+          "checks": [
+            {
+              "id": "navigation-home-destination",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ncl01-private-trial-library-and-safe-return",
+            "roles": ["OWNER"],
+            "outcome": "The actual gated preparation exposes its pending physical boundary, opens the empty canonical Player library, and returns through Home to the same canonical account without provisioning or recording a judgment.",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "OWNER_PHYSICAL_ACCEPTANCE_PENDING",
+                "path": "/dev/spatial-pilot",
+                "state": "TRIAL_UNPROVISIONED"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Player Library"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "No Chronicles yet",
+                "text": "No Chronicles yet",
+                "path": "/player/library",
+                "state": "LIBRARY_EMPTY",
+                "kind": "outcome",
+                "meaning": "The preparation opens the real authorized empty Player library, without fabricating a prepared Voyage or physical result.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Voyagewright home"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Choose your role in Voyagewright",
+                "text": "Choose your role in Voyagewright",
+                "path": "/",
+                "state": "HOME_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic NCL01 Owner"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic NCL01 Owner",
+                "text": "Synthetic NCL01 Owner",
+                "path": "/account",
                 "state": "RETURNED",
                 "returnPath": true
               }

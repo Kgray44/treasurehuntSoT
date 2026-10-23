@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "role": "LOCAL_DEVELOPMENT_WORKTREE_INPUT_OBSERVATION",
+  "qualification": false,
+  "observedAt": "2026-10-22T00:40:21.4522946Z",
+  "parentCommit": "39e28ffdea15171f8373bb6fdf752a118c20dccd",
+  "sourceBinding": "EXACT_INPUT_HASHES_BEFORE_COHERENT_COMMIT",
+  "typedAndRegistryInputs": [
+    {
+      "Path": "prisma/seed.ts",
+      "Sha256": "5527241b4abb5ca4468d26c67afd342334d93cc83b8a450f9402e51e17454c76"
+    },
+    {
+      "Path": "testing/contracts.json",
+      "Sha256": "b66c062cd650f7e99bff0be2dad6a085ada7ca07991a23cd3ab27e732f8446c0"
+    },
+    {
+      "Path": "tests/e2e/fixtures/ncl01-experience.ts",
+      "Sha256": "df50153965ba3ffc066b191609bb85bc5947fa6cc5ceb71c2e70ef8a59802798"
+    },
+    {
+      "Path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "Sha256": "2b4db1e299032171d397d2c6fea99ab2a4cdba628bd891477f50ad778cec72a1"
+    },
+    {
+      "Path": "src/parallax/ncl01-experience-fixture.test.ts",
+      "Sha256": "a7179b3f54b0025ca2045403e708cc5e6a32ab1f9b2b2fb5c3ebe5d1692d034a"
+    }
+  ],
+  "typescript": {
+    "ExitCode": 0,
+    "InputsUnchanged": true,
+    "LogSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "nativeRuntimeSourceChanged": false,
+  "genericFixtureSeedExpanded": true,
+  "officialExperiencePlan": "NOT_RUN_FOR_NEW_REGISTRY",
+  "browserAndDatabaseExecution": "NOT_RUN_FOR_NEW_FIXTURE",
+  "limits": [
+    "Local development observation; no authenticated Mainline Decision.",
+    "Publication commit must preserve these exact input hashes.",
+    "Earlier0d83/e66 native/browser results retain their own source and fixture scope; expanded generic bootstrap requires its affected fresh consumer runtime."
+  ]
+}

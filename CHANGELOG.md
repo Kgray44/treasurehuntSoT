@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-22
 ---
 
 # Changelog
@@ -14,16 +14,118 @@ last_reviewed: 2026-10-18
 
 ### Engineering
 
+- Restored Admiralty's visible account return on mobile. The header now places
+  its wrapping account/sign-out controls below the brand instead of hiding the
+  return link. The real People-to-account regression retains its desktop case
+  and adds mobile normal/Reduced Motion, keyboard, unobscured-control and
+  overflow checks. The original failed capture and qualification boundaries
+  remain in the NCL-01 post-Crossdeck record.
+
+- NCL-01's [post-Crossdeck candidate](Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
+  consumes the accepted continuity interfaces. Fresh iOS native/joined evidence
+  and Android `39e28ff`'s 16-test original-model/input, joined and permission
+  replay retain their exact scopes. Current consumer workflow `39717629819`
+  passes guarded production execution and cleanup; exact case counts remain
+  unpublished. Earlier hosted and separate Windows failures remain preserved.
+  Bounded corrections address Profile accessibility and test-selector/readiness
+  defects, retaining identity, accessibility, return and authorization checks.
+  The candidate also consumes accepted Sounding Line repair787 and inventory
+  publication786. The corrected local journey passes seven cases, with its
+  capacity-control failure retained separately. A secure hosted read-only Apple
+  preflight passes without an archive, upload or group change. Historical
+  ordinary capture39719820417 stopped
+  before planning/media when protected authority validated an expired Crossdeck
+  execution window before NCL applicability. No reservation was reached by
+  source order; no capture, review or Mainline Decision occurred. Accepted
+  retention repair789 is reconciled normally and leaves that guard unchanged.
+  Accepted classification repair790 is now reconciled normally and removes the
+  unrelated-expiry block. Current39/be9 planning succeeds with eighteen
+  contracts and74 planned contexts. Capture39788400044 is cancelled without
+  media after an unobservable preparation interval; its cause and hosted
+  application cleanup remain unproved. Independent review remains pending;
+  all original failures and cancellation evidence are preserved. One bounded
+  noncapturing probe observes repeated Git reads without proving the hosted
+  cause; no capture retry or protected-framework change follows.
+  Accepted reader repair788 is also reconciled normally; its changed producer
+  fingerprints do not refresh old NCL evidence. The preserved older preview was
+  restored through its reviewed wrapper and passes bounded loopback checks;
+  current public/phone reachability remains unverified.
+  No combined experience, protected-main, physical or owner acceptance is claimed. Internal beta 7 and
+  its official artwork remain unchanged.
+
+- NCL-01's October 21 candidate reconciles current main and the approved
+  TestFlight descendants, makes native Inspect await canonical Player handling,
+  preserves eligible mesh selection across redraws, adds accessible native
+  loading/tracking guidance and rejects stale or revoked Scene interactions.
+  Source-bound shared, Android, iOS native/joined and unsigned Release development
+  checks at the pre-integration checkpoint retain the scopes recorded in the
+  [completion ledger](Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
+  Independent iOS presentation passes 31/0/1 on the supported ARM profile;
+  failed and cancelled historical runs remain preserved without causal closure.
+  Crossdeck PR #721 has landed at `aaff9194`; fresh combined NCL integration
+  qualification remains pending. Admitted browser metric-spatial capability,
+  physical and protected-main acceptance remain separate gates. Existing beta 7
+  and its artwork are preserved.
+
 - Reach review can continue at cumulative iteration four only through a source-bound policy installed on protected main for existing PR #766. The blocked third review, full product evidence and ordinary protected integration requirements remain intact. [Continuation and review gap](Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md).
 - Ordinary verification starts completed-evidence intake without awaiting its own command module. A cold command regression checks that failures reach the canonical decision writer. [Startup behavior](Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md) preserves the evidence and qualification requirements.
+- Corrected the official VoyageWright logo and iOS icon to the owner's approved
+  direct crop/resize of the original dark brass compass. Both use the exact same
+  1024-pixel PNG; the unchanged original and its 800-pixel crop are retained.
+  Build 0.1.0 (7) passed signed archive/export/upload and Apple processing and is
+  available in the existing internal TestFlight group. Both actual packaged icons
+  were verified and visually inspected. No generative editing or color changes
+  are included; AR behavior is unchanged. Exact-build phone installation and
+  appearance remain unverified.
+
+- Build 0.1.0 (6) used a generatively edited tighter compass. The owner later
+  rejected its artwork/color changes; that revision is superseded and is no
+  longer the official logo or icon.
+  The original owner artwork and build-5 receipts are retained alongside the
+  edited revision's source and independent measurements. Build 0.1.0 (6)
+  passed signed archive/export/upload and Apple processing and is available in
+  the existing internal TestFlight group. Both packaged icons were verified and
+  visually inspected. AR behavior is unchanged; exact-build
+  phone installation and appearance remain unverified.
+
+- Replaced the iOS companion app icon with the owner-supplied official dark brass
+  compass, preserving its full artwork and retaining the original source. Build 0.1.0 (5)
+  reached internal TestFlight at the same stable address. Both packaged
+  icon resources were verified and visually inspected; phone appearance remains
+  an owner check after updating.
+
+- Prepared an isolated NCL-01 iOS development-beta path with explicit app versions,
+  an existing-artwork app icon, required-reason privacy metadata and a separate
+  hosted archive/sign/export/upload workflow. [The deployment record](Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
+  retains signed-build evidence and current NFC entitlement compatibility. Private
+  beta 0.1.0 (2) reached internal TestFlight. The owner reports installation,
+  native sign-in and camera display of the original models. Build 0.1.0 (3) was
+  uploaded for the classroom network; its separate
+  classroom Chronicle passed publication, authenticated assets and accessible
+  browser checks. The owner reports classroom objects appearing when panning the
+  native camera after an initially empty view, but authored appearance/placement
+  is not accepted. Exact phone build, all three objects and measured interactions
+  remain unverified; full authored Scene/room-registration integration is unfinished.
+  Build 0.1.0 (4) reached internal TestFlight using an owner-approved
+  stable Cloudflare address and isolated production runtime. Repaired CSS/JS
+  routing and cached errors; normal public TLS/auth/Journal/static checks and
+  desktop sign-in presentation pass. Exact build 4 phone behavior is unverified.
+
+- NCL-01 begins a native Scene candidate with negotiated v2 delivery, exact SC02 chest/compass assets, authorized integrity-checked loading and native object selection through the existing Chronicle observation path. [The implementation record](Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) separates contract/build evidence from pending browser integration, physical devices and owner acceptance.
+
+- Candidate iOS builds explain local-network access for laptop-hosted clues and wait within the existing activation limit while permission is granted. HTTPS trust remains required.
+
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected
 
-- Crossdeck refit candidate adds contextual QR/code connection from the active Chronicle, supported companion purposes, distinct browser Guided Lens/Chart/Journal/artifact/crew views, natural send/receive controls and recoverable continuation. Original protected capture, seven-contract/119-judgment independent review and authenticated submission passed for the historical source. The [R11 source record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md) and [consumed ordinary5 failure](Development_Docs/Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) remain preserved. Later [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) also failed. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft and unqualified; current combined-source Product Experience evidence, whole qualification, protected merge and landed smoke are pending. Earlier consumed failures, including [ordinary4](Development_Docs/Projects/Project_Crossdeck/Ordinary4_Disposition_20261016.md), remain unchanged. Physical/native and owner acceptance remain separate.
+- Crossdeck refit is integrated through [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) at `aaff9194`, after [pre-merge Sounding Line PASS](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105). Contextual QR/code connection, supported companion purposes, browser Guided Lens/Chart/Journal/artifact/crew views, acknowledged handoff and recovery preserve the authorized Voyage. The [R11 source record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), original seven-contract/119-judgment review and historical capture remain source-bound. [Ordinary5](Development_Docs/Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md), [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) and [ordinary4](Development_Docs/Projects/Project_Crossdeck/Ordinary4_Disposition_20261016.md) remain consumed failures. Fresh combined NCL integration qualification is pending; browser-provider, physical/native and owner acceptance remain separate.
 
 - Device connections has a primary page heading in both account states. Reach guidance and the pointing area expose meaningful semantic structure while preserving their controls and focus behavior. Full-page accessibility regressions retain all violation severities and distinguish incomplete checks from passes.
 - Reach setup requests remain operable by keyboard and touch during brief tracking changes. Activation checks current readiness and responds with polite guidance instead of losing the request; existing setup guards remain in force, and no automatic start is queued. The default return to device connections restores the page top so the laboratory entry stays clear of the header.
+- Account forms use POST for early native submission before JavaScript hydration, keeping entered passwords and codes out of submitted query strings. The normal client authentication flow is unchanged.
+- Guided Lens parchment cards retain dark, readable headings and clue text when embedded in the Player Journal. Its Close control stays visible while scrolling on a phone.
+
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
 
@@ -49,7 +151,7 @@ last_reviewed: 2026-10-18
 
 - Parallax A1 integrates reviewed Spatial Assistant proposals, bounded private follow-up context, shared Windows server credential support and durable Admiralty AI controls through protected PR #710 at `ee8caa83`. Per-user policy uses the existing People dossier. Real canvas preview, atomic saved Apply and ordinary history preserve adaptive ownership; the unmetered legacy network path is retired. Ordinary Sounding Line, five production-browser journeys, six bounded live calls and 118 landed smoke checks pass their recorded software boundaries. Assistance remains disabled by default, and owner visual/full-corpus/physical acceptance remain separate; see the [implementation record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
-- Added the gated synthetic Lost Navigator’s Chart pilot: canonical spatial publication and fictional Living Chart, replay-preserving Voyage provisioning, optional Sextant compass, real Crossdeck controls and one Reach/Pilot owner feedback session. Software qualification and owner/physical acceptance remain separate; see the [pilot record](Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md).
+- Added the gated synthetic Lost NavigatorÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s Chart pilot: canonical spatial publication and fictional Living Chart, replay-preserving Voyage provisioning, optional Sextant compass, real Crossdeck controls and one Reach/Pilot owner feedback session. Software qualification and owner/physical acceptance remain separate; see the [pilot record](Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md).
 - Sextant Phase 3 local candidate adds calibrated field semantics, relative pressure/step context, media capability lifecycle, optional bounded BLE/NFC, authenticated peer/ranging contracts, safe magnetic reference controls and Drydock requirements. The [implementation receipt](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) distinguishes D0/D1 software proof from native/physical/owner and protected-mainline gates.
 - Crossdeck Phase 2 candidate adds durable presentation synchronization, explicit
   manual Send to and destination acknowledgement, focus/custody and companion

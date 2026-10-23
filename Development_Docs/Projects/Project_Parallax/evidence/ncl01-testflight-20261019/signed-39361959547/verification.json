@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "kind": "SIGNED_ARCHIVE_AND_IPA_EXPORT_PASSED_APPLE_VALIDATION_COMMAND_FAILED",
+  "runId": 39361959547,
+  "candidateSha": "6608961356252381a2c1d53a92d460377f1f743b",
+  "deviceArchiveValidated": true,
+  "appStoreExportSucceeded": true,
+  "ipaBytes": 1975041,
+  "ipaSha256": "f7ba1697b248fd52f3efbe2fe64178c1de5af760b0a391d60a43ad695a8487df",
+  "ipaRetainedInOwnedArtifactDirectory": true,
+  "credentialCleanup": "PASS",
+  "uploadAccepted": false,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "files": [
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "appstore-export.original.log",
+      "bytes": 373,
+      "sha256": "23aaf6550de96da54e8e10ca4a14c2df49a27817d7456a1214231029241508c9"
+    },
+    {
+      "path": "device-archive.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 560,
+      "sha256": "a1f9cd5c4c4b311d222ca445028db1014292af7b2baeb96d51f0e2d64f9b6376"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 273,
+      "sha256": "5b4907958a89c11ac7e8a1902531d554fbbee81c75401f312c24ff097e682835"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "receipt.original.json",
+      "bytes": 1085,
+      "sha256": "de78eb44c40cad8ae6f62d9389fb91013bea02d75bb1d89a28b4f5d02a150b7b"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 189,
+      "sha256": "f700cfedbd0eec3bdc35aca0e8bc4c47e8560607e8a67d5936e62b089a8470d4"
+    }
+  ]
+}

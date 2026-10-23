@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "scenarioId": "permission-denied-native",
+  "scenarioVersion": 1,
+  "seed": 1729,
+  "sourceSha": "b328c49a69b7179c54b0dd0608aba65ded6c368d",
+  "sourceTree": "0d17d423305ab8487c8bf9c037380d8a5a235f3f",
+  "sourceFingerprint": "8658ba7eac5e16418847ed1ffab3f5787fc899266a42c7d341aa67f629e29315",
+  "dirty": false,
+  "target": "ios-simulator",
+  "hostPlatform": "darwin",
+  "environment": "native-platform-and-origin-bound-webview",
+  "deviceProfile": "primary-phone",
+  "deviceConfiguration": {
+    "platform": "IOS",
+    "virtual": true,
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-17e"
+  },
+  "osVersion": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+  "runtimeVersion": "Xcode 26.6\nBuild version 17F113",
+  "providerVersions": {
+    "LOCATION": "landfall-contract-v1"
+  },
+  "publishedFixture": "landfall-device-lab-v1",
+  "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+  "timing": "WALL_CLOCK",
+  "toleranceMs": 2000,
+  "startedAt": "2026-10-15T21:46:30.286Z",
+  "endedAt": "2026-10-15T21:51:49.703Z",
+  "evidenceClass": "SIMULATOR_PROVEN",
+  "result": "PASS",
+  "steps": [
+    {
+      "index": 0,
+      "action": "PERMISSION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_PERMISSION_CONTROL",
+        "limitation": "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external."
+      }
+    },
+    {
+      "index": 1,
+      "action": "LOCATION",
+      "state": "PASS",
+      "reason": "OS_PERMISSION_PREVENTED_ACQUISITION",
+      "translation": {
+        "method": "OS_PERMISSION_CONTROL",
+        "limitation": "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external."
+      }
+    },
+    {
+      "index": 2,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 3,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 4,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    }
+  ],
+  "canonicalProgressionEvents": 0,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+  "artifacts": [
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-final.png",
+      "sha256": "ba69c88ca86ea701ce1f0d840dba8058042fec2348c4b772d4d47a2770e7e1bd",
+      "kind": "SCREENSHOT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-action-performance.json",
+      "sha256": "beca2737b66917822a705f19cc31b04718f1d573ec71fdea402fcdf046cced7c",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-client-readiness.json",
+      "sha256": "1c49a0b91d9524501543c9fdf74b05edf9a7bb18b4d383c9cf5000dee53224ff",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-location-controls.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-location-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-startups.json",
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/authority-command-diagnostics.json",
+      "sha256": "664574856550738a95b350b719a7214e0520fd9405ebb6cce884da75cbaee553",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T214620403Z-27347/permission-denied-native/native-steps.json",
+      "sha256": "6d112fe9b1d42ed4b767f8a1a77a77efaa8d6ab83f6eb669fe35a9d26e5a8556",
+      "kind": "TEST_RESULT"
+    }
+  ],
+  "externalRequirements": [],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "E3382CEC-72E4-4D00-BB31-B10412DDFBA1"
+    ],
+    "remainingResources": []
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "evidenceClass": "ACTUAL_ANDROID_BUILD_AND_SYNTHETIC_DIAGNOSTIC_PROTOCOL_ONLY",
+  "result": "PASS",
+  "sourceFiles": [
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "sha256": "a509f98d8907e8e849013e50745da3a11e3f8ef2f6e3c531bf9fe246beb52a4f"
+    },
+    {
+      "path": "scripts/landfall/device-lab/android-test.ts",
+      "sha256": "cff84259f7986c4d953e1fcc7220c66bfd2d9b6ba9482ae9d661b8ddca35b7fc"
+    }
+  ],
+  "appApkSha256": "933d69b81d17dc714a3dd787b023944857403563adb04289b80041ef58dc1dd6",
+  "testApkSha256": "ff0c9683d816cc7ffc168539b3b632948fa7da35b8e2f3c218cbff47906813b9",
+  "gradleBuild": "assembleDebug assembleDebugAndroidTest PASS119tasks11s",
+  "gradleVersion": "8.11.1",
+  "compileSdk": 36,
+  "log": "D:\\CodexTemp\\ncl01-evidence\\android-filament-stage-final-build.log",
+  "focusedTypescript": "PASS",
+  "eslintZeroWarnings": "PASS",
+  "prettier": "PASS",
+  "diffWhitespace": "PASS",
+  "continuousStageProtocol": {
+    "schemaVersion": 1,
+    "evidenceClass": "CONTINUOUS_STAGE_CAPTURE_SYNTHETIC_PROTOCOL_TEST",
+    "result": "PASS",
+    "exactSerialPortAndTagArgumentsVerified": true,
+    "outputPersistedBeforeChildExit": true,
+    "originalOutputSurvivesNonzero255Exit": true,
+    "boundedPrefixAndDigestsVerified": true,
+    "onlyOwnedLoggerStopped": true,
+    "idempotentStopVerified": true,
+    "physicalSerialRejected": true,
+    "emulatorExecutionProven": false
+  },
+  "productionSourceChanged": false,
+  "instrumentationAssertionsChanged": false,
+  "instrumentationTestCount": 16,
+  "emulatorExecutionProvenByThisBuild": false,
+  "physicalTrackingProven": false
+}

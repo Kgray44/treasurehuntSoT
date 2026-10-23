@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "evidenceClass": "INDEPENDENT_SOURCE_REVIEW_ONLY",
+  "builderContext": "/root",
+  "reviewerContext": "/root/ncl01_review",
+  "sourceManifest": "reviewed-source-manifest.json",
+  "disposition": "NO_REMAINING_ACTIONABLE_FINDINGS_IN_REVIEWED_SCOPE",
+  "findings": [
+    {
+      "id": "NCL-STATE-01",
+      "issue": "Android extra discovery fields rejected strict shared parser",
+      "status": "REPAIRED_AND_REVIEWED"
+    },
+    {
+      "id": "NCL-FRAME-01",
+      "issue": "Physical model changed shared surface reference frame for sibling text",
+      "status": "REPAIRED_AND_REVIEWED"
+    },
+    {
+      "id": "NCL-ABORT-01",
+      "issue": "ABORT did not cancel already-committed native asset staging",
+      "status": "REPAIRED_AND_REVIEWED"
+    }
+  ],
+  "additionalChecks": [
+    "Unsupported HIGHLIGHT is an explicit capability fallback",
+    "Serialized render queue catches up elapsed visibility and isolates old runtime epochs"
+  ],
+  "nonblockingObservation": "Android could reject a second BEGIN during staging more strictly; generation checks prevent a demonstrated stale activation and shared transfers serialize.",
+  "visualAcceptance": false,
+  "physicalAcceptance": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

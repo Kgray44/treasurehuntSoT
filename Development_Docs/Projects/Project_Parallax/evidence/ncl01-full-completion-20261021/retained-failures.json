@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "entries": [
+    {
+      "source": "42a970b40ec8c50fd828a2c9cf8977d64939ebcf",
+      "runId": "39554652785",
+      "platform": "IOS_SIMULATOR",
+      "result": "FAIL",
+      "passed": 27,
+      "failed": 2,
+      "skipped": 1,
+      "failingTests": [
+        "ParallaxSceneDeliveryTests/testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput()",
+        "ParallaxSceneDeliveryTests/testProductionControllerMeshInputAndInspectOnlyEmitIntent()"
+      ],
+      "original": {
+        "original": "ios-39554652785/apple-build/test-summary.json",
+        "bytes": 2784,
+        "sha256": "598fcb4f6e3b99129544ec1d7c4ca9ff8fd6b12742fc06ec718718bf618d5e31"
+      },
+      "independentJoinedResult": "PASS",
+      "joinedEvidenceClass": "SIMULATOR_NATIVE_INPUT_CANONICAL_REJECTION_ONLY",
+      "physicalTrackingProven": false,
+      "disposition": "Two new test fixtures lacked an attached rendered viewport; 26da4135 adds an owned visible window and render callback before unchanged hit assertions. Original aggregate failure remains immutable. Historical Home/background failure 38840109053 remains unexplained."
+    },
+    {
+      "source": "42a970b40ec8c50fd828a2c9cf8977d64939ebcf",
+      "platform": "WINDOWS_BROWSER_PREPARATION",
+      "result": "FAIL",
+      "code": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "productionBuildCompiled": true,
+      "disposition": "Original private preparation records retained; build-link guard unchanged. Supported protected-source Linux focused runner used as an independent environment."
+    },
+    {
+      "source": "42a970b40ec8c50fd828a2c9cf8977d64939ebcf",
+      "runId": "39555492351",
+      "platform": "LINUX_FOCUSED_BROWSER",
+      "result": "FAIL",
+      "retention": "INCOMPLETE_MISSING_VIDEO",
+      "encryptedOriginal": {
+        "original": "browser-39555492351-encrypted/failure.encrypted",
+        "bytes": 2638278,
+        "sha256": "02e2a98f5176057a7a18bc2ee89c04ccd543adf0f66ac35b4caec780ad253005"
+      },
+      "disposition": "Encrypted diagnostics remain preserved and unavailable for decryption. A source-confirmed START-payload tracking fixture defect was corrected at 26da4135; fresh focused execution 39607851877 passed. This does not decrypt or identify every cause of the earlier failure."
+    }
+  ],
+  "privacy": "Only bounded synthetic test names, hashes and results are published. Raw xcresult, Simulator identifiers, screenshots and original private diagnostic files stay outside Git."
+}

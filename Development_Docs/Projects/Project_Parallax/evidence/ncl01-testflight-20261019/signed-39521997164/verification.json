@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "kind": "UPLOAD_ACCEPTED_PROCESSING_VALID_INTERNAL_GROUP_ATTACHED_APPROVED_ORIGINAL_LOGO_ICON_COMPILED",
+  "runId": 39521997164,
+  "candidateSha": "5c79701f027a7e035a1a486f96db182e24f25942",
+  "transportSha": "40c4eb387d257050018a39683e3acb1e1925edc1",
+  "origin": "https://ncl01.absoluterelativesystems.com",
+  "version": "0.1.0",
+  "build": "7",
+  "deviceArchiveValidated": true,
+  "appTargetSigningSettingsValidated": true,
+  "appStoreExportSucceeded": true,
+  "ipaBytes": 5580705,
+  "ipaSha256": "06e75e85cd84718b9972e06637891f7519b5c75b7b63d2f6ad7a618ef9e0af55",
+  "ipaRetainedInOwnedArtifactDirectory": true,
+  "exportedIpaMetadataResourceChecksPassed": 13,
+  "credentialCleanup": "PASS",
+  "appleValidatePassed": true,
+  "appleUploadPassed": true,
+  "uploadAccepted": true,
+  "appleProcessing": "VALID",
+  "appleBuildId": "f01afddd-2c41-492d-beb7-d974d1d47206",
+  "pipelineResult": "PASS",
+  "internalGroupAttached": true,
+  "internalBuildState": "IN_BETA_TESTING",
+  "usesNonExemptEncryption": false,
+  "retainedOriginalSourcePngSha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+  "approvedCropSourcePngSha256": "0351edb99b3dfcc14508e78c60926e87eb1d1840205ebd754e6000731107bd96",
+  "officialApprovedOriginalLogoPngSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "preparedAppIconPngSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "officialLogoAndPreparedAppIconAreSameBytes": true,
+  "compiledAssetsCarSha256": "908e83055e2d34e18d987a32504676bee7ac15716a0936c89141b6d12b346cfb",
+  "compiledIconResourcesComparedWithBuild6": 2,
+  "allCompiledIconsChangedFromBuild6": true,
+  "rootVisuallyReviewed": true,
+  "rootVisualReviewOfBothCompiledPreviews": "PASS_REPORTED_BY_ROOT",
+  "rootVisualReviewOfApprovedOriginalColours": "PASS_REPORTED_BY_ROOT",
+  "compiledIconViewingCopiesDecodedWithoutResizeOrRedraw": true,
+  "supersedesBuild6ArtworkSelection": true,
+  "publicOriginReadOnlyHealthPassed": true,
+  "publicOriginReferencedAssetsPassed": 25,
+  "publicOriginHealthAuthSessionsCreated": 0,
+  "publicOriginHealthDatabaseProgressionRequests": 0,
+  "transportCleanup": "PASS_EXACT_SHA_LEASE_AND_REF_ABSENT",
+  "physicalHomeScreenIconVerified": false,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "privacyScan": "PASS_NO_PRIVATE_KEY_CERTIFICATE_JWT_OR_RAW_KEY_BODY_FOUND",
+  "emailScan": "PASS_NO_EMAIL_OUTSIDE_OFFICIAL_TOOL_HELP_OR_KNOWN_COMPILED_ICON_FILENAMES",
+  "files": [
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "apple-readback.original.json",
+      "bytes": 490,
+      "sha256": "fa2eb06f0887d8ad89f8ef0d6fed9b2c2c37ef242d03f030c0ed38ccabccd59a"
+    },
+    {
+      "path": "appstore-export.original.log",
+      "bytes": 373,
+      "sha256": "541c0c83e28b8224feb590f25183a381752d09e32bb3fc94dd5ee2c4558c0eba"
+    },
+    {
+      "path": "asc-upload.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "asc-validate.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "compiled-icon-verification.json",
+      "bytes": 2497,
+      "sha256": "36e29d4da76c3348c742293350c923cba43f2a69dce0bc12ef6734100674bf43"
+    },
+    {
+      "path": "compiled-icons/AppIcon60x60@2x.png",
+      "bytes": 21570,
+      "sha256": "60de95a4782ac64b3d3545aa4436cd0d777bd4fec71c8bfbf468cbe91a467cfb"
+    },
+    {
+      "path": "compiled-icons/AppIcon60x60@2x.png.preview.png",
+      "bytes": 20791,
+      "sha256": "5b588a3543051ef5c77e286423dbffa4dae3caf52ba550402e680143d20ca1a6"
+    },
+    {
+      "path": "compiled-icons/AppIcon76x76@2x~ipad.png",
+      "bytes": 33720,
+      "sha256": "f7ba24a3aa6e9fc0e23ec92978a5d15cf9420e98d5d6c8d128597779e8164b0b"
+    },
+    {
+      "path": "compiled-icons/AppIcon76x76@2x~ipad.png.preview.png",
+      "bytes": 32641,
+      "sha256": "6abc57995d064f3b12b1035c8f7797b3a9d3825ba26ba51935062cb837f21dff"
+    },
+    {
+      "path": "device-archive.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 576,
+      "sha256": "d0591f004d0bd05a535f36706bf677705070757f7b60623f31d7dc63c4bf24d0"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 270,
+      "sha256": "f43c0e854d258a323b7eb7d63ec7386eb47f2d744ccf9fae670497da4be8ecd7"
+    },
+    {
+      "path": "ipa-metadata-verification.json",
+      "bytes": 787,
+      "sha256": "1992ec0075aecf79d1c3fec86abcaae6e1e7a2cfd6901ff9072960a15066c806"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "public-health.original.json",
+      "bytes": 7095,
+      "sha256": "f1d6479ed6d90643c35591508f1fc400dbaa08dfb6c35f4a199cb631b693e764"
+    },
+    {
+      "path": "receipt.original.json",
+      "bytes": 1215,
+      "sha256": "55e587c990677923fe63625f7764ebfc9225c00d3d0ebb4f4374bf337cdcf419"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 600,
+      "sha256": "60f66be52cb3ccdc4aca1fe67ef15216dca0152190c24bba1b14ff893fc8600c"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "scenarioId": "permission-denied-native",
+  "scenarioVersion": 1,
+  "seed": 1729,
+  "sourceSha": "46a20fc1940d7c1fd01275dd8e7163281a42e998",
+  "sourceTree": "ee4b38da175647182716e35d1e77cecf286ff47d",
+  "sourceFingerprint": "8e85bfde78f7e7671d5e56e6dd735b0f76516b7a4269cb34d470e91dce540693",
+  "dirty": false,
+  "target": "android-emulator",
+  "hostPlatform": "linux",
+  "environment": "native-platform-and-origin-bound-webview",
+  "deviceProfile": "primary-phone",
+  "deviceConfiguration": {
+    "platform": "ANDROID",
+    "virtual": true,
+    "api": 36,
+    "model": "sdk_gphone64_x86_64",
+    "memoryKiB": 3048392,
+    "widthPixels": 1080,
+    "heightPixels": 2400,
+    "densityDpi": 420
+  },
+  "osVersion": "16",
+  "runtimeVersion": "Android API 36; null",
+  "providerVersions": {
+    "LOCATION": "landfall-contract-v1"
+  },
+  "publishedFixture": "landfall-device-lab-v1",
+  "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+  "timing": "WALL_CLOCK",
+  "toleranceMs": 2000,
+  "startedAt": "2026-10-15T21:57:16.389Z",
+  "endedAt": "2026-10-15T21:57:33.462Z",
+  "evidenceClass": "EMULATOR_PROVEN",
+  "result": "PASS",
+  "steps": [
+    {
+      "index": 0,
+      "action": "PERMISSION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_PERMISSION_CONTROL",
+        "limitation": "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external."
+      }
+    },
+    {
+      "index": 1,
+      "action": "LOCATION",
+      "state": "PASS",
+      "reason": "OS_PERMISSION_PREVENTED_ACQUISITION",
+      "translation": {
+        "method": "OS_PERMISSION_CONTROL",
+        "limitation": "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external."
+      }
+    },
+    {
+      "index": 2,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 3,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 4,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    }
+  ],
+  "canonicalProgressionEvents": 0,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+  "artifacts": [
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-final.png",
+      "sha256": "eb0b75021d366484dd811f14a1f27a647809b9f24312aec4ee578c04b4d0bcc9",
+      "kind": "SCREENSHOT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-action-performance.json",
+      "sha256": "349e1d18e29eb10e10da07ead90bc1acedfae294213b157569f806344f04b5bc",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-client-readiness.json",
+      "sha256": "82feb1bffbbce1d6027f141c6af999fa704635f1cecd01163576f2c56d8f0dca",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-location-controls.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-location-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-startups.json",
+      "sha256": "caaa3e0043ce50d8711eadd6684db0f8c25831cefd20b8dd9cdcdac501bef1f9",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/authority-command-diagnostics.json",
+      "sha256": "617418275a4bd1adb87c8b401173adb05abd2a4f7680b3d5abac2970dd8c576b",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261015T215715983Z-3465/permission-denied-native/native-steps.json",
+      "sha256": "d2fdbc0f1bb477e7b19d04dcb97732cb83bf4f1eb6d59a7234cb6d2a830ceed1",
+      "kind": "TEST_RESULT"
+    }
+  ],
+  "externalRequirements": [],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "native-app-process",
+      "native-app-private-data",
+      "owned-adb-reverse"
+    ],
+    "remainingResources": []
+  }
+}

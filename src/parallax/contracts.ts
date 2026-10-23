@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { studioContentSchema, type StudioContent } from "./studio-contracts";
 import { adaptiveContentSchema, placementPolicies, type AdaptiveContent } from "./adaptive-contracts";
+import { spatialElementSchema } from "./element-contracts";
+import { environmentReferenceSchema, type EnvironmentReference } from "./environment-reference";
 
 export const spatialId = z
   .string()
@@ -69,6 +71,7 @@ export const entitySchema = z.strictObject({
   id: spatialId,
   name: copy(160),
   kind: z.enum(["PARCHMENT", "MARKER", "TEXT"]),
+  element: spatialElementSchema.optional(),
   parentEntityId: spatialId.optional(),
   anchorId: spatialId,
   coordinateSpace: z.enum(["LOCAL_SESSION", "SURFACE_RELATIVE", "WORLDSPACE", "DEVICE", "ENTITY_RELATIVE"]),
@@ -101,6 +104,7 @@ export const versionContentSchema = z
     entities: z.array(entitySchema).min(1).max(32),
     placementPolicy: z.enum(placementPolicies),
     adaptive: adaptiveContentSchema.optional(),
+    environment: environmentReferenceSchema.optional(),
     privacyClass: z.literal("LOCAL_EPHEMERAL"),
     fallback: z.strictObject({ mode: z.literal("GUIDED"), narrative: copy(4000), preservesMeaning: z.literal(true) }),
     accessibility: z.strictObject({
@@ -231,6 +235,7 @@ export type SpatialVersion = {
   title: string;
   studio?: StudioContent;
   adaptive?: AdaptiveContent;
+  environment?: EnvironmentReference;
   anchors: Anchor[];
   entities: SpatialEntity[];
   placementPolicy: (typeof placementPolicies)[number];
@@ -282,7 +287,7 @@ export const receiptSchema = z
     anchorId: spatialId,
     anchorVersion: z.number().int().positive(),
     observedAt: z.string().datetime(),
-    mode: z.enum(["GUIDED", "NATIVE", "SIMULATED"]),
+    mode: z.enum(["GUIDED", "NATIVE", "BROWSER", "SIMULATED"]),
     providerId: spatialId,
     synthetic: z.boolean(),
     authority: z.literal("NONAUTHORITATIVE"),
@@ -290,5 +295,7 @@ export const receiptSchema = z
   .superRefine((r, ctx) => {
     if (r.synthetic !== (r.mode === "SIMULATED"))
       ctx.addIssue({ code: "custom", message: "PARALLAX_SYNTHETIC_PROVENANCE_INVALID" });
+    if (r.mode === "BROWSER" && !r.providerId.startsWith("parallax.browser."))
+      ctx.addIssue({ code: "custom", message: "PARALLAX_BROWSER_PROVENANCE_INVALID" });
   });
 export type InteractionReceipt = z.infer<typeof receiptSchema>;

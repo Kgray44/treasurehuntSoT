@@ -929,13 +929,13 @@
 
 @media (max-width: 52rem) {
   .chartroom-masthead {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr);
   }
   .chartroom-operator {
     display: none;
   }
-  .chartroom-actions > a {
-    display: none;
+  .chartroom-actions {
+    flex-wrap: wrap;
   }
   .chartroom-heading {
     align-items: start;

@@ -1,4 +1,5 @@
 import { receiptSchema, spatialMomentSchema, type InstanceBinding } from "./contracts";
+import { isRuntimeInteractionEligible } from "./behavior";
 
 /** Receiving owner checks identity/freshness. User-reported interactions never certify physical accuracy. */
 export function evaluateSpatialEvidence(input: unknown, momentInput: unknown, binding: InstanceBinding, now: Date) {
@@ -15,6 +16,7 @@ export function evaluateSpatialEvidence(input: unknown, momentInput: unknown, bi
   const entity = moment.version.entities.find((e) => e.id === receipt.entityId);
   if (!entity || !entity.interactions.includes(receipt.interactionType) || entity.anchorId !== receipt.anchorId)
     throw new Error("PARALLAX_EVIDENCE_ENTITY_MISMATCH");
+  if (!isRuntimeInteractionEligible(moment.version, entity.id)) throw new Error("PARALLAX_EVIDENCE_ENTITY_INELIGIBLE");
   const age = now.getTime() - Date.parse(receipt.observedAt);
   if (age > 120000 || age < -5000) throw new Error("PARALLAX_EVIDENCE_STALE");
   if (receipt.synthetic) throw new Error("PARALLAX_SIMULATION_FORBIDDEN");

@@ -1,0 +1,89 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName" : "landfall-owned-13253",
+        "exportedFileName" : "66BBAC82-CCAE-4BEF-AC69-B3898797631B.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "installation-framework-capabilities-and-inactive-guards_0_A9FF5482-5B54-49E2-84E2-E509C85D231E.json",
+        "timestamp" : 1792103714.533
+      }
+    ],
+    "testIdentifier" : "InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName" : "landfall-owned-13253",
+        "exportedFileName" : "8720486C-1579-4E6F-911F-44E6D31ED469.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "nearby-interaction-framework-capability_0_68925AB1-DC49-4411-9558-3C122E18D767.json",
+        "timestamp" : 1792103717.34
+      }
+    ],
+    "testIdentifier" : "NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName" : "landfall-owned-13253",
+        "exportedFileName" : "D99ECC01-8894-4B0C-AA78-7B507FD6BACA.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "ncl01-scenekit-catalog_0_6BF47A75-D58B-4AAE-9E77-306E431770B6.json",
+        "timestamp" : 1792103722.839
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName" : "landfall-owned-13253",
+        "exportedFileName" : "A7723320-B125-48D8-A758-1ADC2E2C7B3F.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-removed_0_76A7171C-2968-477F-A161-EBA220EAE9C2.png",
+        "timestamp" : 1792103722.833
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName" : "landfall-owned-13253",
+        "exportedFileName" : "E10A444C-41A8-447F-977D-7C055625974D.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-populated_0_AFA588A4-8126-4E78-82B7-BD52C5E36F03.png",
+        "timestamp" : 1792103722.832
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName" : "landfall-owned-13253",
+        "exportedFileName" : "EF340C86-D139-4EFC-9D6B-B09F1B43399B.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-empty_0_31C02ED7-BFE6-4889-BC1E-76D9C178A15B.png",
+        "timestamp" : 1792103722.832
+      }
+    ],
+    "testIdentifier" : "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+        "deviceName" : "landfall-owned-13253",
+        "exportedFileName" : "9192A6EE-23DC-4A7F-BFD5-3CEA694F154E.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "native-lease-performance_0_69ED4619-DE7B-4782-81E3-7BE055EC8BE1.json",
+        "timestamp" : 1792103756.466
+      }
+    ],
+    "testIdentifier" : "PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance"
+  }
+]

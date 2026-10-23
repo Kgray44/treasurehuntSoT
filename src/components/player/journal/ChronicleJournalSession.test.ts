@@ -566,6 +566,10 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     };
     const state = {
       ...sessionState(syntheticBinding.sessionId),
+      session: {
+        ...sessionState(syntheticBinding.sessionId).session,
+        versionId: syntheticBinding.chronicleVersionId,
+      },
       journal: {
         mode: "active",
         currentChapterId: block.chapterId,
@@ -631,6 +635,17 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(screen.getAllByRole("region", { name: "Voyage context" })).toHaveLength(1);
     expect(screen.getByRole("region", { name: "Voyage context" })).toBe(headerContext);
     expect(headerContext.closest('[aria-hidden="true"],[inert]')).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Open Chronicle Lens" }));
+    await act(flushMicrotasks);
+    expect(view.container.querySelector("dialog[open]")).not.toBeNull();
+    await act(async () => {
+      ControlledEventSource.instances.at(-1)!.dispatchEvent(new Event("access-revoked"));
+      await flushMicrotasks();
+    });
+    expect(view.container.querySelector('dialog[aria-labelledby="chronicle-lens-title"]')).toBeNull();
+    expect(view.container.querySelector("dialog[open]")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Open Chronicle Lens" })).toBeNull();
+    expect(screen.getByText("Access revoked")).toBeVisible();
     view.unmount();
   });
 

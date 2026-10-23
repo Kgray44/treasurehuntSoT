@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "role": "PUBLIC_ANONYMOUS_PREVIEW_STATIC_DELIVERY_HEALTH",
+  "qualification": false,
+  "checkedAtUtc": "2026-10-21T17:02:46.025624+00:00",
+  "result": "FAIL",
+  "origin": "https://ncl01.absoluterelativesystems.com",
+  "entryPath": "/sign-in",
+  "ownerIdentifiedPreservedPreviewSourcePrefix": "47ff",
+  "currentCandidate2f8BuildOrDeploymentProven": false,
+  "assetCount": 0,
+  "requestCount": 1,
+  "passedRequests": 0,
+  "contentTypesCorrect": false,
+  "tls": {
+    "defaultTrustStore": true,
+    "hostnameVerification": true,
+    "certificateVerificationRequired": true,
+    "bypass": false
+  },
+  "requestBounds": {
+    "sameOriginOnly": true,
+    "redirectsFollowed": false,
+    "automaticRetries": 0,
+    "requestTimeoutSeconds": 12,
+    "totalBudgetSeconds": 55,
+    "maximumAssets": 40,
+    "maximumHtmlBytes": 524288,
+    "maximumAssetBytes": 4194304,
+    "concurrency": 4
+  },
+  "requestMetadataSha256": "88988602ec1b591761f0aa1f3cb89d0fbb8ac0ad1043b75df9e655a807ad0629",
+  "requests": [
+    {
+      "url": "https://ncl01.absoluterelativesystems.com/sign-in",
+      "kind": "HTML",
+      "method": "GET",
+      "status": 403,
+      "contentType": null,
+      "bodyBytes": 0,
+      "sha256": null,
+      "result": "FAIL",
+      "errorCode": "HTTP_STATUS_NOT_200",
+      "elapsedMs": 578.0
+    }
+  ],
+  "elapsedMs": 578.0,
+  "loginPerformed": false,
+  "cookieJarUsed": false,
+  "authorizationOrCookieHeadersSent": false,
+  "responseCookiesRetained": false,
+  "serviceOrDatabaseActions": false,
+  "limits": [
+    "Anonymous public sign-in and HTML-linked same-origin Next CSS/JS only. No login, authenticated Journal, private assets/database health, dynamic route or ownership/lifecycle availability is established.",
+    "The historical preview is owner-identified as source47ff. Public HTTP alone does not independently identify its source or establish deployment of candidate2f8.",
+    "No third-party URLs, redirects, TLS bypass, retries or broader crawl were used. Bodies were bounded and hashed in memory; no response body, cookies, accounts or environment values were retained."
+  ]
+}

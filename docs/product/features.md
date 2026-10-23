@@ -3,12 +3,45 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-22
 ---
 
 # Voyagewright features
 
-The Crossdeck refit candidate connects a phone from the active Chronicle and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact and restricted crew views. Contextual pairing, acknowledged handoff, continuation and recovery retain the authorized Voyage. The [R11 source record](../../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md) binds accepted authority #754, the original 38-context capture, seven-contract/119-judgment independent review and unchanged product source. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft, unqualified and unmerged pending its single finite ordinary5, current replay, protected merge and landed smoke. Earlier failures remain consumed and preserved. Unsupported dedicated purposes explain their limits; physical/native, field, assistive-technology and product-owner acceptance remain separate.
+NCL-01 is an implementation candidate for shared 3D Scene delivery in the existing native companions. It reuses the original SC02 chest and compass assets; protected integration, complete browser AR integration, physical tracking and owner acceptance remain pending. See the [native Scene evidence record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md).
+
+The [post-Crossdeck candidate](../../Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
+consumes the accepted continuity interfaces and retains fresh native model,
+input and joined development evidence within its recorded source scopes. The
+corrected consumer browser workflow passes guarded production execution and
+cleanup within its recorded scope. Earlier failures remain preserved; separate
+local checks prompted Profile accessibility and test-readiness corrections.
+The candidate also consumes accepted Sounding Line repair787 and accepted
+inventory publication786. The corrected local journey passes all seven cases;
+its capacity-control failure is retained separately. The secure read-only Apple
+preflight passes without publishing a beta. Accepted shared classification
+repair790 removes the earlier unrelated-expiry block. The current protected
+plan succeeds with eighteen contracts and74 planned contexts. Capture39788400044
+is cancelled without media after an unobservable preparation interval;
+independent review and protected qualification remain pending. The
+implementation record preserves both original attempts;
+this candidate has not been merged.
+This does not establish combined experience or protected
+acceptance, and the installed internal beta 7 has not changed. Browser Lens
+remains Guided where no admitted metric-spatial provider is available.
+
+The earlier [October 21 completion candidate](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
+reconciles the earlier main baseline with the later internal TestFlight source and approved
+official artwork. It adds native placement guidance, canonical Inspect outcome
+presentation, an accessible center-selection control, stricter entity eligibility
+and session cleanup. Focused host, Android emulator, iOS native/joined Simulator
+and unsigned Release archive checks retain their recorded pre-integration scopes. The
+independent iOS presentation profile passes 31 tests with one expected driver skip;
+cancelled partial runs remain preserved. These
+changes do not establish measured room
+alignment, physical acceptance, browser-provider availability or a new beta.
+
+The Crossdeck refit is integrated on protected main through [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) at `aaff9194`, after [pre-merge Sounding Line PASS](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105). It connects a phone from the active Chronicle and provides browser Guided Lens, Voyage Chart, Journal, released artifact and restricted crew views. Contextual pairing, acknowledged handoff, continuation and recovery retain the authorized Voyage. The [R11 source record](../../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), original 38-context capture and seven-contract/119-judgment independent review remain historical source-bound evidence. [Ordinary5](../../Development_Docs/Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) and [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) remain consumed failures. Fresh combined NCL integration qualification is pending. Unsupported companion purposes explain their limits; admitted browser metric-spatial capability, physical/native, field, assistive-technology and owner acceptance remain separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

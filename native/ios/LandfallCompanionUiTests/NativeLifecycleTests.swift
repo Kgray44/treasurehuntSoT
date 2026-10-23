@@ -3,13 +3,35 @@ import Foundation
 import UIKit
 
 final class NativeLifecycleTests: XCTestCase {
+    @MainActor private func revealLensTarget(_ target:XCUIElement,in app:XCUIApplication) -> Bool {
+        guard target.waitForExistence(timeout:10) else {return false}
+        // The real dialog footer may be below the phone viewport. Scroll only
+        // toward this exact observed target, with one original three-swipe cap.
+        for index in 0...3 {
+            if target.isHittable {return true}
+            guard index < 3,app.webViews.count == 1,app.webViews.firstMatch.isHittable else {return false}
+            let web=app.webViews.firstMatch
+            if !target.frame.isEmpty,target.frame.maxY <= web.frame.minY {web.swipeDown()} else {web.swipeUp()}
+        }
+        return false
+    }
     @MainActor private func keepNoticeUi(_ springboard:XCUIApplication,_ name:String) {
         let screenshot=XCTAttachment(screenshot:springboard.screenshot());screenshot.name=name;screenshot.lifetime = .keepAlways;add(screenshot)
         let hierarchy=XCTAttachment(string:springboard.debugDescription);hierarchy.name=name+" hierarchy";hierarchy.lifetime = .keepAlways;add(hierarchy)
     }
     @MainActor private func observedBackground(_ app: XCUIApplication) -> Bool {
-        let eitherState=NSPredicate { _, _ in app.state == .runningBackground || app.state == .runningBackgroundSuspended }
-        return XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:eitherState,object:app)],timeout:15) == .completed
+        let started=ProcessInfo.processInfo.systemUptime
+        var states:[[String:Any]]=[];var previous:Int?
+        let eitherState=NSPredicate { _, _ in
+            let state=Int(app.state.rawValue)
+            if state != previous {states.append(["state":state,"elapsedMs":Int((ProcessInfo.processInfo.systemUptime-started)*1000)]);previous=state}
+            return app.state == .runningBackground || app.state == .runningBackgroundSuspended
+        }
+        let observed=XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:eitherState,object:app)],timeout:15) == .completed
+        if let bytes=try? JSONSerialization.data(withJSONObject:["observedBackground":observed,"states":states,"finalState":app.state.rawValue],options:[.sortedKeys]) {
+            let attachment=XCTAttachment(data:bytes,uniformTypeIdentifier:"public.json");attachment.name="Owned Home background state observations";attachment.lifetime = .keepAlways;add(attachment)
+        }
+        return observed
     }
     @MainActor func testUnconfiguredShellReturnsFromHome() throws {
         let app = XCUIApplication()
@@ -104,9 +126,18 @@ final class NativeLifecycleTests: XCTestCase {
         if !wasEnabled {toggle.coordinate(withNormalizedOffset:CGVector(dx:0.9,dy:0.5)).tap()}
         let enabled=NSPredicate {_,_ in toggle.value as? String == "1"}
         guard XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:enabled,object:toggle)],timeout:10) == .completed else {XCTFail("LANDFALL_REDUCED_MOTION_NOT_ENABLED");return}
+        // Use the ordinary Home-screen entry after changing the real system
+        // setting. The retained direct Settings-to-app launch showed no Window;
+        // this is one explicit foreground path, never a relaunch after failure.
+        XCUIDevice.shared.press(.home)
         let app=XCUIApplication();app.launch()
         let shell=app.staticTexts.containing(NSPredicate(format:"label CONTAINS %@","Landfall companion is not configured")).firstMatch
-        XCTAssertTrue(shell.waitForExistence(timeout:10) && shell.isHittable,"LANDFALL_REDUCED_MOTION_FALLBACK_UNREADABLE")
+        let readable=NSPredicate {_,_ in app.state == .runningForeground && shell.exists && shell.isHittable}
+        let observed=XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:readable,object:app)],timeout:10) == .completed
+        let state=XCTAttachment(data:try JSONSerialization.data(withJSONObject:["foregroundObserved":app.state == .runningForeground,"windowCount":app.windows.count,"readableFallback":observed]),uniformTypeIdentifier:"public.json")
+        state.name="Owned reduced-motion foreground presentation";state.lifetime = .keepAlways;add(state)
+        let hierarchy=XCTAttachment(string:app.debugDescription);hierarchy.name="Owned reduced-motion actual hierarchy";hierarchy.lifetime = .keepAlways;add(hierarchy)
+        XCTAssertTrue(observed,"LANDFALL_REDUCED_MOTION_FALLBACK_UNREADABLE")
         let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name="Owned reduced-motion fallback";attachment.lifetime = .keepAlways;add(attachment);app.terminate()
         settings.activate()
         if !wasEnabled && toggle.waitForExistence(timeout:10) && toggle.value as? String == "1" {toggle.coordinate(withNormalizedOffset:CGVector(dx:0.9,dy:0.5)).tap()}
@@ -114,7 +145,7 @@ final class NativeLifecycleTests: XCTestCase {
         XCTAssertEqual(XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:restored,object:toggle)],timeout:10),.completed,"LANDFALL_REDUCED_MOTION_NOT_RESTORED")
     }
 
-    /** Translates only canonical lifecycle actions from the owned loopback lab. */
+    /** Translates bounded OS/UI actions from the existing owned loopback lab. */
     @MainActor func testCanonicalScenarioOperations() async throws {
         guard let raw = ProcessInfo.processInfo.environment["LANDFALL_LAB_ORIGIN"],
               let origin = URL(string: raw), origin.scheme == "http", origin.host == "127.0.0.1", origin.port != nil,
@@ -122,6 +153,8 @@ final class NativeLifecycleTests: XCTestCase {
         else { throw XCTSkip("Canonical lab endpoint is not configured for this build test.") }
         let app = XCUIApplication()
         app.launchArguments = ["--landfall-lab-origin=\(raw)"]
+        let cameraFree=ProcessInfo.processInfo.environment["LANDFALL_LAB_CAMERA_FREE"] == "1"
+        if cameraFree {app.launchArguments.append("--landfall-lab-camera-free")}
         app.launch()
         try await post(origin, "/lab/os/ready", [:])
         let deadline = Date().addingTimeInterval(2100)
@@ -132,7 +165,52 @@ final class NativeLifecycleTests: XCTestCase {
             let message = try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
             if message["stop"] as? Bool == true { app.terminate(); return }
             guard let index = message["index"] as? Int, let action = message["action"] as? [String: Any],
-                  let type=action["type"] as? String, ["LIFECYCLE","NOTIFICATION"].contains(type) else { throw NSError(domain: "LandfallLab", code: 1) }
+                  let type=action["type"] as? String, ["LIFECYCLE","NOTIFICATION","LENS_UI"].contains(type) else { throw NSError(domain: "LandfallLab", code: 1) }
+            if type == "LENS_UI" {
+                guard cameraFree,let operation=action["operation"] as? String,["OPEN","TAP","INSPECT","RETURN","CLOSE"].contains(operation) else {throw NSError(domain:"LandfallLab",code:4)}
+                var result="FAIL"
+                if operation == "OPEN" {
+                    let button=app.buttons.matching(identifier:"Open camera-free Lens")
+                    if button.firstMatch.waitForExistence(timeout:10),button.count == 1,button.firstMatch.isHittable {
+                        button.firstMatch.tap()
+                        let start=app.buttons.matching(identifier:"Open camera-free Device Lab")
+                        if start.firstMatch.waitForExistence(timeout:10),start.count == 1,revealLensTarget(start.firstMatch,in:app),start.firstMatch.isEnabled {start.firstMatch.tap();result="PASS"}
+                    }
+                } else if operation == "TAP" {
+                    guard let x=action["x"] as? Double,let y=action["y"] as? Double,x.isFinite,y.isFinite,(0...1).contains(x),(0...1).contains(y) else {throw NSError(domain:"LandfallLab",code:5)}
+                    let viewport=app.otherElements["parallax.native.scene"]
+                    let status=app.staticTexts["parallax.native.status"]
+                    let loaded=NSPredicate {_,_ in viewport.exists && viewport.isHittable && status.exists && status.label.contains("objects loaded")}
+                    if XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:loaded,object:app)],timeout:20) == .completed {viewport.coordinate(withNormalizedOffset:CGVector(dx:x,dy:y)).tap();result="PASS"}
+                } else if operation == "CLOSE" {
+                    let close=app.buttons["Close Chronicle Lens"]
+                    if close.waitForExistence(timeout:10),close.isHittable {
+                        close.tap()
+                        let heading=app.staticTexts["Synthetic Device Lab Voyage"]
+                        let returned=NSPredicate {_,_ in heading.exists && heading.isHittable && !close.exists}
+                        if XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:returned,object:app)],timeout:10) == .completed {result="PASS"}
+                    }
+                } else {
+                    let identifier=operation == "INSPECT" ? "parallax.native.inspect" : "parallax.native.return"
+                    let button=app.buttons[identifier]
+                    let enabled=NSPredicate {_,_ in button.exists && button.isHittable && button.isEnabled}
+                    if XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:enabled,object:app)],timeout:10) == .completed {
+                        button.tap()
+                        let nativeReturn=app.buttons["parallax.native.return"]
+                        let rejection=app.staticTexts.matching(NSPredicate(format:"label CONTAINS %@","Camera-free simulation cannot record a real native observation"))
+                        let returned=NSPredicate {_,_ in
+                            !nativeReturn.exists && (operation != "INSPECT" || rejection.count == 1)
+                        }
+                        if XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:returned,object:app)],timeout:20) == .completed,
+                           operation != "INSPECT" || revealLensTarget(rejection.firstMatch,in:app) {result="PASS"}
+                    }
+                }
+                // This proves only public UIKit/SceneKit input. The independent
+                // canonical observation must still reject its SIMULATED receipt.
+                let screenshot=XCTAttachment(screenshot:app.screenshot());screenshot.name="Camera-free Lens \(operation)";screenshot.lifetime = .keepAlways;add(screenshot)
+                try await post(origin,"/lab/os/result",["index":index,"state":result,"nativeInputOnly":true,"fidelity":"SCENEKIT_CAMERA_FREE_V1","operation":operation])
+                continue
+            }
             if type == "NOTIFICATION" {
                 let springboard=XCUIApplication(bundleIdentifier:"com.apple.springboard")
                 var result="FAIL"

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "role": "PRE_FREEZE_RUNTIME_AND_MOTION_DEVELOPMENT_CHECKS",
+  "qualification": false,
+  "baselineCommit": "539206b304a0f125e09f882323ea7d31837fd366",
+  "dirty": true,
+  "sourceFiles": [
+    {
+      "path": "native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift",
+      "gitBlob": "d8662d6baabb838163f454e0ce0c5cfbd2c41778",
+      "sha256": "5edf5e10d5d2320fe92d8695b5f261c082b4ba144936657b32437b3600f38cdf"
+    },
+    {
+      "path": "scripts/landfall/device-lab/apple-build.ts",
+      "gitBlob": "05f61ac80cc75191e6a4116016bdafd0867ea30f",
+      "sha256": "a87402ddad0b9d87416836f891a6471abf02a1b39b7f48b88132c314f88741aa"
+    },
+    {
+      "path": "scripts/landfall/device-lab/parallax-native-run.ts",
+      "gitBlob": "a056393bfa0a1bb3c3af7bb7fb5bbd023ca98920",
+      "sha256": "dc1ff83548cdedb7022602daa612e0bd8492ad386c5529db9684baa3efb150bb"
+    },
+    {
+      "path": "src/device-lab/apple-runtime.ts",
+      "gitBlob": "55371cf861918728d2d1d2a5b2aee594f5966b0b",
+      "sha256": "2e0a496ff26ab0a73672121d8525b5c05e38451b817de39fd39ae38268772a2b"
+    },
+    {
+      "path": "src/device-lab/apple-runtime.test.ts",
+      "gitBlob": "d3ae871970ba6549fcd0ebac145afcf38030de4a",
+      "sha256": "063ea9d6f6103adabaa91ac80e627472a36236d1407a14334fd55904fa910b3c"
+    },
+    {
+      "path": "src/landfall/device-lab/apple-test-summary.ts",
+      "gitBlob": "9b25794f6e41fb6556c6770955c6a476d717d099",
+      "sha256": "f1336c03aa732b2830cc36bf9ee9d0170e17331260a7122f0683311d62b4bfb5"
+    },
+    {
+      "path": "src/landfall/device-lab/apple-test-summary.test.ts",
+      "gitBlob": "0defd2a0f92b9b540e82cf5d4e63d98981a2fef1",
+      "sha256": "5302a40e5db8957d47f973b314b17cae6e8ef588fabd38b626bccba4837a955f"
+    }
+  ],
+  "checks": {
+    "typeScript": {
+      "result": "PASS",
+      "exitCode": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "targetedEslint": {
+      "result": "PASS",
+      "exitCode": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "focusedRegression": {
+      "result": "PASS",
+      "passed": 30,
+      "files": 4,
+      "reportSha256": "3d10112e4b47acc9867f3ae6d67c5b493fc2df9c631a7994760972f900001190",
+      "logSha256": "6de2ebd6880bbcb7496cb80af4bf41e6bb366affe2132b5bd10ae8272296be9b"
+    }
+  },
+  "independentReview": "READY_NO_BLOCKING_FINDINGS",
+  "changes": [
+    "Joined runner uses existing latest-supported source-floor policy; original boot/test bounds unchanged.",
+    "One actual Home-screen launch after actual Reduce Motion toggle; same ten-second readable/foreground assertion, no relaunch after failure.",
+    "Strict original component counts30+1 with failed/partial/invalid/extra-skipped component rejection."
+  ],
+  "limits": [
+    "Host regression checks are not fresh Simulator, physical device, archive, TestFlight or mainline acceptance.",
+    "The prior direct Settings-to-app blank launch remains unexplained.",
+    "Focused tests overlap retained earlier guards and are not added into a new aggregate all-scope count."
+  ]
+}
