@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import nodeTest from "node:test";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -26,6 +26,13 @@ import {
 } from "../../scripts/sounding-line/experience-exception.mjs";
 const root = fileURLToPath(new URL("../..", import.meta.url)),
   r = CURRENT_R24;
+// Historical policy fixtures use their recorded approval, never today's clock.
+function test(name, body) {
+  return nodeTest(name, (t) => {
+    t.mock.timers.enable({ apis: ["Date"], now: Date.parse(r.ownerApproval.approvedAtUtc) });
+    return body(t);
+  });
+}
 const git = (...args) => execFileSync("git", args, { cwd: root, encoding: "utf8", maxBuffer: 128 * 1024 * 1024 });
 const registry = JSON.parse(git("show", `${r.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`)),
   old = registry.exceptions.at(-1);
@@ -33,6 +40,14 @@ const evidence = JSON.parse(
   git("show", `${r.frozenReferenceSha}:Development_Docs/Testing/Product_Experience/candidate-review.json`),
 );
 const hash = (x) => createHash("sha256").update(JSON.stringify(x)).digest("hex");
+test("R24 historical fixtures preserve live approval-floor and expiry rejection", (t) => {
+  const value = record();
+  assert.doesNotThrow(() => validateR24Record(value));
+  for (const instant of [Date.parse(r.ownerApproval.approvedAtUtc) - 1, Date.parse(value.expiresAt)]) {
+    t.mock.timers.setTime(instant);
+    assert.throws(() => validateR24Record(value), /AUTHORIZATION_OR_EXPIRY/u);
+  }
+});
 export function record() {
   const record = structuredClone(old),
     a = record.currentSourceAdmission;

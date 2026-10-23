@@ -8,14 +8,25 @@ last_reviewed: 2026-10-22
 
 # Existing owner continuation
 
-The published preference checkpoint is `6bbf875d31457103b6d2881bacde6631cbfa0923`,
-following label fix `0c0f7fbee465640938a1128101671c809f0164f5`.
+The published stable-setter checkpoint is `6f874181d0afd6b497f0d743c1a0db89b86a373b`,
+following preference checkpoint `6bbf875d31457103b6d2881bacde6631cbfa0923` and
+label fix `0c0f7fbee465640938a1128101671c809f0164f5`.
 Hosted development `39881765636/1` failed in preparation before the selected
 browser case; zero artifacts were published and underlying cause/private cleanup
 remain unknown. Do not rerun unchanged or treat a key custodian as a retrieval
-route for an unpublished payload. The existing maintenance owner handles the
-separate trusted preparation-retention repair. Preserve the original failure;
-reconcile only the accepted installed repair when appropriate.
+route for an unpublished payload. The separate trusted preparation-retention
+repair #793 is accepted at main `b2d901af5646ce76b3b2bd5a88e1ad8563c2db57`,
+tree `2de39c85baf0c12fbf28975ee6093f29db953480`, with independent five-case
+landed smoke and cleanup proof. One bounded reconciliation preserves Studio's
+`274ceb72…`/`6caf779f…`/`802043a0…` source and all earlier evidence. This grants
+no consumer acceptance. Freeze and independently review the merge before a fresh
+installed-controller nonconsuming plan or further scoped runtime.
+
+For read-only Git checks, set `GIT_NO_LAZY_FETCH=1` and `GIT_OPTIONAL_LOCKS=0`.
+An earlier promisor existence read triggered an unintended unadmitted download;
+its natural completion, unknown allocation and cleanup limitations are preserved.
+Do not delete shared objects or assign that acquisition to another owner's failed
+fetch. Explicit acquisitions require a fresh bounded dual-drive storage admission.
 
 Current working source additionally repairs a proved same-account preference
 hydration overwrite of an early Library action. Preserve the public-hook red,

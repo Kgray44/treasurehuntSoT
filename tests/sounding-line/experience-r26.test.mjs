@@ -18,6 +18,7 @@ import {
 } from "../../scripts/sounding-line/experience-current-r26.mjs";
 import { CURRENT_R25 } from "../../scripts/sounding-line/experience-current-r25.mjs";
 import { currentAdmissionBinding } from "../../scripts/sounding-line/experience-current-admission.mjs";
+import { historicalAdmissionBinding } from "./fixtures/historical-admission-binding.mjs";
 import {
   selectTrustedExceptions,
   reserveExceptionStage,
@@ -38,7 +39,7 @@ const root = fileURLToPath(new URL("../..", import.meta.url));
 const git = (...args) => execFileSync("git", args, { cwd: root, encoding: "utf8", maxBuffer: 128 * 1024 * 1024 });
 const registry = JSON.parse(git("show", `${r.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`));
 const old = registry.exceptions.at(-1),
-  oldException = currentAdmissionBinding(old);
+  oldException = historicalAdmissionBinding(old);
 const evidence = JSON.parse(
   // Validate the original reviewed publication, never a current replay substitute.
   git("show", `${r.retained.publishedCandidateSha}:Development_Docs/Testing/Product_Experience/candidate-review.json`),

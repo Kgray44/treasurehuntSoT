@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-23T03:26:41.022Z",
+  "args": [
+    "merge",
+    "--no-commit",
+    "--no-ff",
+    "b2d901af5646ce76b3b2bd5a88e1ad8563c2db57"
+  ],
+  "elapsedMs": 4113,
+  "status": 0,
+  "signal": null,
+  "error": null,
+  "stdout": {
+    "bytes": 193,
+    "sha256": "aaba2ff828b484e6ea5e63347c15dea8a6538beb41126a506dfa5256fdceb32f"
+  },
+  "stderr": {
+    "bytes": 66,
+    "sha256": "96bb6a194a796153cbd0c640642866371219451832063763d544b942a8d97c4e"
+  }
+}

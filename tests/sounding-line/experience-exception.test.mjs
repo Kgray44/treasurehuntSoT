@@ -1074,6 +1074,7 @@ test("custody transport leaves an ambiguously created ref consumed without retry
 test("custody invocation shares retry budget through nested trusted attestation without changing artifact loading", async (t) => {
   const f = fixture(t),
     api = apiFixture(f.record, f.plan);
+  t.mock.timers.enable({ apis: ["Date"], now: f.now });
   const plan = { ...f.plan, applicable: true, attestationPolicy: { required: true } };
   const prepareRun = runIdentity(plan),
     reviewRun = runIdentity(plan, 20, "workflow_dispatch", "review");
@@ -1579,6 +1580,14 @@ test("one review3 is exactly the seven contracts and one reviewer context", () =
 
 test("copied product trees and refit identities cannot evade direct execution guards", async (t) => {
   const f = fixture(t);
+  t.mock.timers.enable({ apis: ["Date"], now: f.now });
+  const historicalClock = path.join(f.root, ".git", "historical-fixture-clock.mjs");
+  const expiredClock = path.join(f.root, ".git", "expired-fixture-clock.mjs");
+  for (const [file, instant] of [
+    [historicalClock, f.now.getTime()],
+    [expiredClock, Date.parse(f.record.expiresAt)],
+  ])
+    writeFileSync(file, `import { mock } from "node:test"; mock.timers.enable({ apis: ["Date"], now: ${instant} });\n`);
   f.git("checkout", "-qb", "copied", f.baseSha);
   f.git("checkout", f.frozen, "--", "src", "tests/e2e");
   let candidateSha = f.commit();
@@ -1601,6 +1610,8 @@ test("copied product trees and refit identities cannot evade direct execution gu
     const suite = spawnSync(
       process.execPath,
       [
+        "--import",
+        pathToFileURL(historicalClock).href,
         path.join(repo, "scripts/sounding-line/run-browser-suite.mjs"),
         "--workspace",
         f.root,
@@ -1639,6 +1650,48 @@ test("copied product trees and refit identities cannot evade direct execution gu
       candidateSha = f.commit();
     }
   }
+  t.mock.timers.setTime(Date.parse(f.record.expiresAt));
+  await assert.rejects(
+    () =>
+      captureProductExperience({
+        root: f.root,
+        plan: { ...f.plan, candidateSha },
+        baseURL: "http://127.0.0.1:1",
+        outputDirectory: "artifacts/forbidden",
+      }),
+    /EXPIRED/u,
+  );
+  const expiredTrace = path.join(f.root, "guard-expired.trace");
+  const expired = spawnSync(
+    process.execPath,
+    [
+      "--import",
+      pathToFileURL(expiredClock).href,
+      path.join(repo, "scripts/sounding-line/run-browser-suite.mjs"),
+      "--workspace",
+      f.root,
+      "--candidate",
+      candidateSha,
+      "--profile",
+      "generic",
+      "--database-url",
+      "file:isolated.db",
+      "--",
+      "tests/e2e/crossdeck.spec.ts",
+    ],
+    {
+      encoding: "utf8",
+      timeout: 20000,
+      env: { ...process.env, SOUNDING_LINE_BASE_SHA: f.baseSha, GIT_TRACE: expiredTrace.replaceAll("\\", "/") },
+    },
+  );
+  assert.ifError(expired.error);
+  assert.notEqual(expired.status, 0);
+  assert.match(expired.stderr, /EXPIRED/u);
+  const expiredGitCalls = existsSync(expiredTrace)
+    ? (readFileSync(expiredTrace, "utf8").match(/built-in: git /gu) ?? []).length
+    : 0;
+  assert(expiredGitCalls <= 120, `expired direct guard must stay bounded; observed ${expiredGitCalls}`);
   assert.equal(existsSync(path.join(f.root, "artifacts/forbidden")), false);
 });
 
@@ -5073,6 +5126,7 @@ for (const record of [r4Template, r5Template, r6Template, r7Template, r8Template
     }
     if (record.version >= 6) {
       const api = await (record.version === 8 ? r8ApiFixture : record.version === 7 ? r7ApiFixture : r6ApiFixture)(t);
+      t.mock.timers.enable({ apis: ["Date"], now: api.now });
       const guardedPlan = { ...plan, baseSha, candidateSha, exception: recordBinding(record) };
       const current = {
         ...api.current,

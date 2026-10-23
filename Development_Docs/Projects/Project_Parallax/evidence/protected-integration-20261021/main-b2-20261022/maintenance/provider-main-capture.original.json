@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "createdAt": "2026-10-23T03:13:21.053Z",
+  "status": "PASS_BOUNDED_PROVIDER_CAPTURE",
+  "run": 39891293849,
+  "attempt": 1,
+  "mode": "main",
+  "endpoint": "commits/main",
+  "bytes": 117387,
+  "sha256": "ad2e3f2df2ed0773d35af22f2410aee07bb0893586d5423ea6f516529cc00dbc",
+  "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-landed-main.original.json",
+  "expectedProviderDigest": null,
+  "requests": 1,
+  "maximumBytes": 1048576,
+  "outerMs": 30000,
+  "elapsedMsIncludingCleanup": 11679,
+  "result": {
+    "code": 0,
+    "signal": null,
+    "guardianExitCode": 0
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 0,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": false,
+    "payloadExitCode": 0,
+    "elapsedMs": 18,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "overflow": false,
+  "stderrBytes": 0,
+  "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "representation": "provider JSON emitted by gh api"
+}

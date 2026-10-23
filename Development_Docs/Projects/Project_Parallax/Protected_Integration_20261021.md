@@ -14,7 +14,8 @@ owner responsible for domain and sibling-disposition review, without a competing
 root rewrite or qualification.
 
 The current accepted maintenance bundle is installed at
-`1c516d27fca521157732fca4cbba773d1542f1b2`. Source-only reconciliation
+`b2d901af5646ce76b3b2bd5a88e1ad8563c2db57` through #793, following
+`1c516d27fca521157732fca4cbba773d1542f1b2`. Historical source-only reconciliation
 `25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88` preserved product source, Prisma,
 browser specs and contracts from `d16f0c09a9374b47353ea78f9f0eed61646f8b83`.
 Its installed plan and independent source review passed. Governed capture
@@ -66,9 +67,10 @@ independent committed-source identity and preservation review. Hosted developmen
 [39881765636/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39881765636)
 failed during runtime preparation; the selected browser case never ran. The
 public log exposes no underlying setup/build diagnostic and the artifacts API
-returns zero artifacts. The installed workflow only publishes failures from the
-later browser-execution phase. The existing maintenance owner is addressing that
-separate preparation-retention gap. The original cause, build result and private
+returns zero artifacts. The workflow installed for that run only published failures
+from the later browser-execution phase. The separate preparation-retention repair
+is now accepted on protected main; the reconciliation below preserves its exact
+installed controller. The original cause, build result and private
 cleanup remain unknown; a later retention repair cannot reconstruct this run.
 There is no unchanged retry or new governed capture on this source.
 
@@ -147,6 +149,38 @@ Dual-drive storage guards and monitoring cover this owned work, not external
 writers or an operating-system quota. The failed hosted preparation, incomplete
 TypeScript/lint/planning attempts, fresh experience evidence, review 3 and normal
 protected qualification remain separate outstanding gates.
+
+## Accepted preparation-retention base
+
+The [accepted-main intake](evidence/protected-integration-20261021/main-b2-20261022/manifest.original.json)
+binds #793 merge `b2d901af5646ce76b3b2bd5a88e1ad8563c2db57`, tree
+`2de39c85baf0c12fbf28975ee6093f29db953480`, to ordered parents
+`1c516d27fca521157732fca4cbba773d1542f1b2` and
+`bb496b533a49c4c06c58d11319e11c2eca793ad5`. Normal protected run
+`39891293849/1` passed with 920 canonical passes, one expected skip and 13 rendered
+fixtures; the required app-15368 Mainline Decision passed. Independent landed
+verification accepted five smoke passes with proved owned cleanup and an unchanged
+qualified-to-landed tree. This is infrastructure acceptance only.
+
+One admitted local copy and merge reconciles published Studio checkpoint
+`6f874181d0afd6b497f0d743c1a0db89b86a373b` with that accepted base. It required
+no source conflict resolution. App source, Prisma, browser specifications and old
+Parallax evidence remain unchanged; the reviewed hook, hook tests and Studio test
+retain hashes `274ceb72…`, `6caf779f…` and `802043a0…`. Shared documentation
+inventories retain records from both parents. The dependency adds preparation
+failure retention and its tests; it does not establish a successful application
+preparation or recover the original unpublished failure payload.
+
+The incoming local object set was measured before the admitted copy: 46 complete
+objects, 4,571,665 raw bytes, within a separately guarded 80 MiB D allocation.
+An earlier existence read accidentally triggered a promisor download without a
+fresh writer admission. It exited naturally before the stop attempt; allocated
+bytes are unknown, no files were removed, and no supervised cleanup PASS is
+invented. Its original incident receipt and subsequent reserve readings are
+retained. The admitted operation disabled lazy fetching and optional Git locks,
+and finished with owned process-tree/stream cleanup PASS. Current-source planning,
+broader Studio checks and fresh browser/experience evidence remain pending after
+the new freeze; no older result is rebound to this merge.
 
 Crossdeck #721 landed through normal protection at
 `aaff919428ef9ab421579415ce3409949724760d`. Its tree equals qualified head

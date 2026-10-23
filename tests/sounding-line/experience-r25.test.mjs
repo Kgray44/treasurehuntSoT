@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import nodeTest from "node:test";
+import { historicalAdmissionBinding } from "./fixtures/historical-admission-binding.mjs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from "node:fs";
@@ -26,14 +27,29 @@ import {
   validateCampaignHistoryInventory,
 } from "../../scripts/sounding-line/experience-exception.mjs";
 const root = fileURLToPath(new URL("../..", import.meta.url));
+function test(name, body) {
+  return nodeTest(name, (t) => {
+    t.mock.timers.enable({ apis: ["Date"], now: Date.parse(r.ownerApproval.approvedAtUtc) });
+    return body(t);
+  });
+}
 const git = (...args) => execFileSync("git", args, { cwd: root, encoding: "utf8", maxBuffer: 128 * 1024 * 1024 });
 const registry = JSON.parse(git("show", `${r.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`));
 const old = registry.exceptions.at(-1),
-  oldException = currentAdmissionBinding(old);
+  oldException = historicalAdmissionBinding(old);
 const evidence = JSON.parse(
   git("show", `${r.frozenReferenceSha}:Development_Docs/Testing/Product_Experience/candidate-review.json`),
 );
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
+nodeTest("historical predecessor fixture restores the exact ambient Date after success and denial", () => {
+  const ambientDate = Object.getOwnPropertyDescriptor(globalThis, "Date");
+  assert.doesNotThrow(() => historicalAdmissionBinding(old));
+  assert.deepEqual(Object.getOwnPropertyDescriptor(globalThis, "Date"), ambientDate);
+  const invalid = structuredClone(old);
+  invalid.id = "invalid-historical-fixture";
+  assert.throws(() => historicalAdmissionBinding(invalid), /PRODUCT_EXPERIENCE_/u);
+  assert.deepEqual(Object.getOwnPropertyDescriptor(globalThis, "Date"), ambientDate);
+});
 export function record() {
   const value = structuredClone(old),
     a = value.currentSourceAdmission;
@@ -205,7 +221,7 @@ test("installed R25 reader denies missing, retired, invalid and expired rows wit
     assert.throws(() => trustedExceptions(owned, write(value)), /PRODUCT_EXPERIENCE_EXCEPTION_/u);
   }
   const final = write(full);
-  t.mock.timers.enable({ apis: ["Date"], now: new Date(Date.parse(full.exceptions[24].expiresAt) + 1) });
+  t.mock.timers.setTime(Date.parse(full.exceptions[24].expiresAt) + 1);
   assert.throws(() => trustedExceptions(owned, final), /PRODUCT_EXPERIENCE_CURRENT_ADMISSION_RECORD_INVALID/u);
 });
 

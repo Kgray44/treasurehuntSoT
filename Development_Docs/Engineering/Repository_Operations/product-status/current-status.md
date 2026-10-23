@@ -9,7 +9,7 @@ last_reviewed: 2026-10-22
 # Current status
 
 Parallax's sole combined Studio candidate, PR #776, includes the accepted
-Crossdeck landing and maintenance through `1c516d27fca521157732fca4cbba773d1542f1b2`.
+Crossdeck landing and maintenance through `b2d901af5646ce76b3b2bd5a88e1ad8563c2db57`.
 Capture `39875668380/1` on reconciled source `25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88`
 failed a visible Assistant docking outcome. A narrow correction restores the
 original visible action label; new source-bound verification and acceptance
@@ -21,8 +21,10 @@ it, and the unchanged exclusion-zone Library consumer passes separately. These
 focused results do not establish whole-Studio or browser acceptance.
 Hosted development `39881765636/1` failed before
 the browser case and published no preparation diagnostic. Its cause and private
-cleanup remain unknown; separate retention maintenance and current-candidate
-verification are pending.
+cleanup remain unknown. The separate retention repair #793 passed normal protected
+qualification and independent five-case landed smoke. Its accepted base is now
+reconciled without changing Parallax app source; fresh current-candidate planning
+and verification remain pending.
 Crossdeck #721 completed normal protected R26 qualification and independent landed
 smoke; that acceptance does not qualify the combined Studio candidate. The
 [current integration checkpoint](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)
