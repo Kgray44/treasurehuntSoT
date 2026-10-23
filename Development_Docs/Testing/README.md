@@ -22,6 +22,7 @@ This directory defines the testing-system architecture; it does not replace `scr
 - [Database and fixtures](Database_and_Fixture_Strategy.md)
 - [Failure evidence](Failure_Classification_and_Evidence.md), [flake policy](Flake_and_Quarantine_Policy.md), and [Codex obligations](Codex_Testing_Obligations.md)
 - [Focused development preparation failure retention](../Programs/Sounding_Line/Project_Sounding_Line_Preparation_Failure_Retention_Record.md)
+- [Development preparation postbuild timing candidate](../Programs/Sounding_Line/Project_Sounding_Line_Postbuild_Timing_20261023.md)
 - [Release policy](Release_Validation_Policy.md), [security/privacy](Testing_Security_and_Privacy.md), and [budgets](Testing_Performance_Budgets.md)
 - [Implementation roadmap](Sounding_Line_Implementation_Roadmap.md), [integration manifest](Sounding_Line_Integration_Manifest.md), and [validation report](Sounding_Line_Documentation_Validation_Report.md)
 

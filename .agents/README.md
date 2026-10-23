@@ -20,6 +20,7 @@ not authorize restarting a completed phase.
 - [Nonapplicable experience replay admission repair](nonapplicable-experience-replay-repair.md)
 - [Development report and producer output retention repair](development-failure-retention-repair.md)
 - [Development preparation failure retention repair](development-preparation-retention-repair.md)
+- [Bounded postbuild preparation timing](preparation-postbuild-timing.md)
 - [Source snapshot and Windows development build link repair](source-snapshot-build-links-repair.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
