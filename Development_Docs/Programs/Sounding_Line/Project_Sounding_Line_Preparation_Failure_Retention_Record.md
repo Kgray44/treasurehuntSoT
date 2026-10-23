@@ -55,3 +55,21 @@ landed-source verification remain required before installation is claimed.
 The browser retention route, protected consumer contracts, #721 finite authority,
 original failed receipts and product acceptance remain unchanged. A downstream
 consumer retry requires its owner's separate source-bound decision.
+
+## Historical fixture clock correction
+
+The first normal protected qualification, [39887104918/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39887104918),
+failed at candidate `53383782701d1717e8bc73462d2eae3298210215`. After the
+recorded October 22 expiry, historical admission fixtures incorrectly used
+ambient time. The R25 predecessor import aborted the current-admission module;
+five older exception cases reached expiry instead of their existing guard
+assertions. The failed run, candidate, logs and reviews remain preserved.
+
+The correction is test-only: individual cases use their original approval time
+(or the existing R26 execution floor). Synchronous predecessor fixture creation
+restores the exact Date descriptor immediately on success or failure. Direct
+execution children receive a disposable test preload through a file URL.
+Production validators, grants, deadlines, counters, original guard assertions,
+the 20-second child limit and the 120-Git-operation limit are unchanged. Explicit
+parent and child expiry rejection remains required. A new exact candidate needs
+independent review and a new normal qualification; the failed run is not retried.

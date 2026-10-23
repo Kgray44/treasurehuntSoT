@@ -32,3 +32,8 @@ source-bound acceptance path.
 Keep writes and temporary files in owned D paths. Check both host reserve floors
 with bounded estimates before writers and at least every five minutes during
 long writers. The separately owned storage monitor is not an OS quota.
+
+The preserved first candidate `53383782701d1717e8bc73462d2eae3298210215` failed
+normal qualification `39887104918/1` after historical fixture expiry. Correct
+only scoped test clocks, keep all production authority and original denials,
+and independently review the new exact candidate before normal qualification.
