@@ -13,6 +13,9 @@ import { createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
 import { createBrowserFailurePublicationOutput } from "./private-browser-failure-output.mjs";
 import { processExit, spawnOwnedProcess, stopOwnedProcess } from "./owned-process.mjs";
 import { createDevelopmentFailureEvidence, readDevelopmentFailureReport } from "./development-failure-evidence.mjs";
+import { createPreparationCapture, preparationPrivateError } from "./development-preparation-evidence.mjs";
+import { createPreparationFailurePublisher } from "./preparation-failure-publication.mjs";
+import { createPreparationFailurePublicationOutput } from "./preparation-failure-output.mjs";
 
 const ROLE = "DEVELOPMENT_ONLY";
 const DIST = ".next";
@@ -528,6 +531,7 @@ function privateLauncher(output, secret) {
 }
 export { privateLauncher as createDevelopmentPrivateLauncher };
 async function setupCommand(plan, env, launcher, step, receipts) {
+  if (launcher.runPreparationStep) return launcher.runPreparationStep(plan, env, step, receipts);
   const args = step.args.map((arg) => (arg === "<owned-database-url>" ? env.DATABASE_URL : arg));
   const child = launcher.launch(process.execPath, args, { root: plan.workspace, env });
   let timer, exit, error, cleanup;
@@ -555,35 +559,100 @@ async function setupCommand(plan, env, launcher, step, receipts) {
     `DEVELOPMENT_SETUP_FAILED:${step.label}`,
   );
 }
+export { setupCommand as runDevelopmentSetupCommand, fixtureEnvironment as developmentFixtureEnvironment };
+function preparationSession(plan) {
+  const authorityRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+  const controllerSha = git(authorityRoot, ["rev-parse", "HEAD"]);
+  const hosted = process.env.GITHUB_ACTIONS === "true";
+  if (hosted)
+    requireValue(
+      process.env.GITHUB_SHA === controllerSha &&
+        process.env.CANDIDATE_SHA === plan.candidateSha &&
+        process.env.TEST_SELECTOR === plan.test &&
+        process.env.GITHUB_REF === "refs/heads/main" &&
+        process.env.GITHUB_WORKFLOW_REF ===
+          "Kgray44/treasurehuntSoT/.github/workflows/sounding-line-focused-repair.yml@refs/heads/main",
+      "DEVELOPMENT_PREPARATION_TRUSTED_CONTROLLER_REQUIRED",
+    );
+  else requireValue(!process.env.GITHUB_OUTPUT, "DEVELOPMENT_PREPARATION_HOSTED_OUTPUT_REQUIRED");
+  const binding = {
+    version: 1,
+    sessionId: randomUUID(),
+    controllerSha,
+    candidateSha: plan.candidateSha,
+    selectorDigest: hash(plan.test),
+    provider: hosted
+      ? {
+          repository: process.env.GITHUB_REPOSITORY,
+          runId: process.env.GITHUB_RUN_ID,
+          attempt: Number(process.env.GITHUB_RUN_ATTEMPT),
+          workflowSha: process.env.GITHUB_SHA,
+        }
+      : null,
+  };
+  const output = createPreparationFailurePublicationOutput({
+    outputFile: process.env.GITHUB_OUTPUT,
+    nonce: process.env.SOUNDING_LINE_PREPARATION_FAILURE_PUBLICATION_NONCE,
+    binding,
+  });
+  requireValue(output.initialized, "DEVELOPMENT_PREPARATION_OUTPUT_INITIALIZATION_FAILED");
+  const capture = createPreparationCapture(binding, plan.outputDirectory);
+  const publisher = createPreparationFailurePublisher({ binding, authorityRoot, onPublication: output.capture });
+  return {
+    capture,
+    finish(receipt, error) {
+      let publication;
+      try {
+        const token = capture.complete(receipt, error);
+        publication = hosted ? publisher.complete(token) : { status: "NOT_CONFIGURED", qualification: false };
+      } catch {
+        publication = { status: "NOT_PUBLISHED", code: "COLLECTION_FAILED", qualification: false };
+      }
+      return { publication, output: output.finish({ failed: !receipt.status.startsWith("PASS_") }) };
+    },
+  };
+}
 async function execute(mode, plan, options) {
   requireValue(["prepare", "run"].includes(mode), "DEVELOPMENT_PREPARE_OR_RUN_REQUIRED");
-  requireValue(
-    (await lstat(path.join(plan.workspace, ".git"))).isFile() &&
-      git(plan.workspace, ["branch", "--show-current"]) !== "main" &&
-      (await realpath(plan.workspace)) === plan.workspace,
-    "DEVELOPMENT_DEDICATED_WORKTREE_REQUIRED",
-  );
-  for (const file of [".env", ".env.local", ".env.production", ".env.production.local"])
-    requireValue(await missing(path.join(plan.workspace, file)), "DEVELOPMENT_UNOWNED_ENVIRONMENT_FILE_REFUSED");
-  await ownedDirectory(path.dirname(plan.outputDirectory));
-  await ownedDirectory(plan.outputDirectory, true);
-  const outputStartedAt = Math.floor((await lstat(plan.outputDirectory)).ctimeMs);
-  for (const artifacts of [
-    path.join(plan.workspace, "artifacts"),
-    path.join(plan.workspace, "artifacts", "sounding-line"),
-  ]) {
-    if (await missing(artifacts)) await ownedDirectory(artifacts, true);
-    else await ownedDirectory(artifacts);
-  }
-  if (await missing(plan.stateDirectory)) await ownedDirectory(plan.stateDirectory, true);
-  else await ownedDirectory(plan.stateDirectory);
-  const lockFile = path.join(plan.stateDirectory, "active.lock");
-  let lock, launcher, diagnosticSession;
+  const preparation = mode === "prepare" ? preparationSession(plan) : null;
   const receipt = { version: 1, role: ROLE, qualification: false, status: "FAIL", mode, test: plan.test, commands: [] };
+  let lockFile,
+    lock,
+    launcher,
+    diagnosticSession,
+    outputStartedAt,
+    outputReady = false,
+    originalError;
   try {
+    requireValue(
+      (await lstat(path.join(plan.workspace, ".git"))).isFile() &&
+        git(plan.workspace, ["branch", "--show-current"]) !== "main" &&
+        (await realpath(plan.workspace)) === plan.workspace,
+      "DEVELOPMENT_DEDICATED_WORKTREE_REQUIRED",
+    );
+    for (const file of [".env", ".env.local", ".env.production", ".env.production.local"])
+      requireValue(await missing(path.join(plan.workspace, file)), "DEVELOPMENT_UNOWNED_ENVIRONMENT_FILE_REFUSED");
+    await ownedDirectory(path.dirname(plan.outputDirectory));
+    await ownedDirectory(plan.outputDirectory, true);
+    outputReady = true;
+    outputStartedAt = Math.floor((await lstat(plan.outputDirectory)).ctimeMs);
+    for (const artifacts of [
+      path.join(plan.workspace, "artifacts"),
+      path.join(plan.workspace, "artifacts", "sounding-line"),
+    ]) {
+      if (await missing(artifacts)) await ownedDirectory(artifacts, true);
+      else await ownedDirectory(artifacts);
+    }
+    if (await missing(plan.stateDirectory)) await ownedDirectory(plan.stateDirectory, true);
+    else await ownedDirectory(plan.stateDirectory);
+    lockFile = path.join(plan.stateDirectory, "active.lock");
+    preparation?.capture.phase("LOCK");
     lock = await open(lockFile, "wx", 0o600);
+    preparation?.capture.phase("SOURCE_FINGERPRINT");
     const source = await developmentSourceFingerprint(plan.workspace);
     if (mode === "prepare") {
+      preparation.capture.source(source);
+      preparation.capture.phase("CONTEXT");
       const preparedDirectory = path.join(plan.stateDirectory, `prepared-${randomUUID()}`);
       await ownedDirectory(preparedDirectory, true);
       await freshContext(plan);
@@ -591,7 +660,8 @@ async function execute(mode, plan, options) {
       const databaseName = `validation-isolated-${stamp.slice(0, 8)}-${stamp.slice(8, 17)}-${randomBytes(16).toString("hex")}.db`;
       const secret = `synthetic-${randomBytes(24).toString("base64url")}`;
       const environment = fixtureEnvironment(plan, databaseName, secret, source.digest);
-      launcher = privateLauncher(plan.outputDirectory, secret);
+      launcher = preparation.capture;
+      preparation.capture.phase("DEPENDENCIES");
       await dependencyFingerprint(plan.workspace);
       for (const step of plan.setup) await setupCommand(plan, environment, launcher, step, receipt.commands);
       if (!(await missing(plan.distDirectory))) {
@@ -605,18 +675,22 @@ async function execute(mode, plan, options) {
         { label: "next-build", args: ["node_modules/next/dist/bin/next", "build"] },
         receipt.commands,
       );
+      preparation.capture.phase("VERIFY_SOURCE");
       requireValue(
         (await developmentSourceFingerprint(plan.workspace)).digest === source.digest,
         "DEVELOPMENT_SOURCE_CHANGED_DURING_PREPARE",
       );
       const buildDirectory = path.join(preparedDirectory, "immutable-build");
+      preparation.capture.phase("FREEZE_BUILD");
       await rename(plan.distDirectory, buildDirectory);
       await immutable(buildDirectory, plan.workspace);
+      preparation.capture.phase("SNAPSHOT_DATABASE");
       const database = await regularBytes(path.join(plan.activeRuntimeDirectory, databaseName));
       await privateWrite(path.join(preparedDirectory, databaseName), database);
       const secretFile = await privateWrite(path.join(preparedDirectory, "fixture-credential.private.json"), {
         secret,
       });
+      preparation.capture.phase("MANIFEST");
       const prepared = {
         version: 1,
         role: ROLE,
@@ -763,30 +837,57 @@ async function execute(mode, plan, options) {
       receipt.buildReusedWithoutRebuild = true;
     }
   } catch (error) {
+    originalError = error;
+    if (preparation) receipt.privateError = preparationPrivateError(error);
     receipt.error = {
       name: error.name,
       messageSHA256: hash(String(error.message)),
       code: /^DEVELOPMENT_[A-Z0-9_:.\/-]+$/u.test(error.message) ? error.message : "DEVELOPMENT_OPERATION_FAILED",
     };
   } finally {
+    if (preparation) receipt.operationStatus = receipt.status;
     diagnosticSession?.clearScope();
     try {
-      if (launcher) receipt.logs = await launcher.close();
-    } catch {
+      if (launcher?.close) receipt.logs = await launcher.close();
+    } catch (error) {
       receipt.status = "FAIL";
       receipt.logEvidenceIncomplete = true;
+      if (preparation) {
+        receipt.logFinalizationError = preparationPrivateError(error);
+        if (!originalError) preparation.capture.phase("FINALIZATION");
+        originalError ??= error;
+      }
     }
     try {
-      await privateWrite(path.join(plan.outputDirectory, "development-result.private.json"), receipt);
+      if (outputReady) {
+        try {
+          await privateWrite(path.join(plan.outputDirectory, "development-result.private.json"), receipt);
+        } catch (error) {
+          if (!preparation) throw error;
+          receipt.status = "FAIL";
+          receipt.privateReceiptPersistence = { status: "FAIL", error: preparationPrivateError(error) };
+          originalError ??= error;
+        }
+      } else receipt.privateReceiptPersistence = { status: "NOT_CREATED" };
     } finally {
-      if (lock) {
-        await lock.close();
-        await unlink(lockFile);
+      try {
+        if (lock) {
+          await lock.close();
+          await unlink(lockFile);
+        }
+      } catch (error) {
+        if (!preparation) throw error;
+        receipt.status = "FAIL";
+        receipt.lockRelease = { status: "FAIL", error: preparationPrivateError(error) };
+        originalError ??= error;
+      } finally {
+        if (preparation) receipt.preparationRetention = preparation.finish(receipt, originalError);
       }
     }
   }
   return receipt;
 }
+export { execute as executeDevelopmentBrowserSuite };
 function optionsFrom(argv) {
   const result = {};
   const allowed = new Set(["workspace", "test", "output", "prepared", "manifest-sha256"]);
@@ -816,7 +917,13 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     });
     const receipt = await execute(process.argv[2], plan, options);
     process.stdout.write(
-      JSON.stringify({ status: receipt.status, role: ROLE, qualification: false, output: plan.outputDirectory }) + "\n",
+      JSON.stringify({
+        status: receipt.status,
+        role: ROLE,
+        qualification: false,
+        output: plan.outputDirectory,
+        ...(receipt.preparationRetention ? { preparationRetention: receipt.preparationRetention } : {}),
+      }) + "\n",
     );
     if (!receipt.status.startsWith("PASS_")) process.exitCode = 1;
   } catch (error) {
