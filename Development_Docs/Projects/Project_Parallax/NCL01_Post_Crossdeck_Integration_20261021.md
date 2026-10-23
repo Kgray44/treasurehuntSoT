@@ -3,7 +3,7 @@ title: NCL-01 post-Crossdeck integration and acceptance
 audience: engineering
 status: implementation-candidate
 canonical_for: ncl01-post-crossdeck-integration-20261021
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-23
 ---
 
 # NCL-01 post-Crossdeck integration and acceptance
@@ -13,6 +13,37 @@ without replacing its original ten requirements, source identities, failed
 receipts or physical acceptance boundaries. The owner's new directive releases
 the dependency hold for actually accepted Crossdeck interfaces. It grants no
 simulated-to-physical or browser-metric equivalence.
+
+## October23 focused local selection
+
+Frozen candidate`697ef9c6270a471a19ae35f77c78b37c8866e5d1`, tree
+`dc4401a200b4b8ea9d4b8e7d41a7cb47c721a18a`, has no executed mobile-return
+runtime receipt. Its canonical development runner requires exactly one case
+for a line selector, while line229 declares all three Administrator scenarios.
+Accepted main`b2d901af5646ce76b3b2bd5a88e1ad8563c2db57` retains that rule;
+its API export adds no title/grep or expected-count selection facility.
+
+The bounded test-only correction moves those three unchanged scenario bodies
+to`tests/e2e/ncl01-admiralty-account-return.spec.ts`, leaving the other six
+consumer cases unchanged. Both files explicitly register the original isolated
+database lifecycle through a shared helper with a per-call database closure.
+The moved block's normalized-LF SHA256 is
+`f5a44b08d74ab2c7e226ce65251c2d10a498a49af35e139808c389b40a6c9b33`.
+Independent static review confirms the original assertions, timing, viewport,
+motion and input requirements remain intact. Collection finds three cases in
+the focused file and six in the original file; collection is not execution.
+Only four existing contracts' browser-file lists change to retain coverage.
+The declared union becomes eleven browser files, not a newly executed plan.
+No application, native, shared runner, configuration or signing input changes.
+
+The coordinator permits one bounded local focused runtime after capacity and
+worker admission. Hosted capture, diagnostic upload and protected acceptance
+remain held. Preparation must use a separate verification checkout with its
+own installed dependencies: the existing C: dependency tree has other consumers
+and cannot safely receive Prisma generation. Workspace and private output must
+both use D: to preserve same-volume build renames. Measured historical sizes
+inform allocation estimates only; they do not authorize preparation reuse.
+Runtime, cleanup and source-bound results remain pending until actually run.
 
 ## Reconciled source and ownership
 

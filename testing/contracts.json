@@ -2634,7 +2634,10 @@
         ],
         "homeportScreenIds": ["screen-page-account", "screen-page-account-profile"],
         "homeportJourneyIds": ["B", "G"],
-        "browserTests": ["tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "browserTests": [
+          "tests/e2e/ncl01-consumer-continuity.spec.ts",
+          "tests/e2e/ncl01-admiralty-account-return.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -2802,7 +2805,10 @@
         ],
         "homeportScreenIds": ["screen-page-captain-library"],
         "homeportJourneyIds": ["D", "K"],
-        "browserTests": ["tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "browserTests": [
+          "tests/e2e/ncl01-consumer-continuity.spec.ts",
+          "tests/e2e/ncl01-admiralty-account-return.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -4411,7 +4417,11 @@
         ],
         "homeportScreenIds": ["screen-page-sign-in", "screen-page-forgot-password"],
         "homeportJourneyIds": ["C"],
-        "browserTests": ["tests/e2e/homeport-phase2.spec.ts", "tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "browserTests": [
+          "tests/e2e/homeport-phase2.spec.ts",
+          "tests/e2e/ncl01-consumer-continuity.spec.ts",
+          "tests/e2e/ncl01-admiralty-account-return.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -4990,7 +5000,7 @@
         ],
         "homeportScreenIds": ["screen-page-admin"],
         "homeportJourneyIds": ["K", "N"],
-        "browserTests": ["tests/e2e/ncl01-consumer-continuity.spec.ts"],
+        "browserTests": ["tests/e2e/ncl01-admiralty-account-return.spec.ts"],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [

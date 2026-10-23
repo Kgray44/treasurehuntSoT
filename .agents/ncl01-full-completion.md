@@ -3,12 +3,21 @@ title: NCL-01 post-Crossdeck execution context
 audience: automation
 status: current
 canonical_for: ncl01-full-completion-task-context
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-23
 ---
 
 # NCL-01 post-Crossdeck continuation
 
 Project Trim adaptation; integration/product-phase; UNATTENDED_CONTINUATION.
+The October23 local-only delegation permits a minimal test-only selector repair
+and one bounded run of the three Administrator scenarios. They now occupy
+`tests/e2e/ncl01-admiralty-account-return.spec.ts`; the original file retains
+six cases. Both explicitly register unchanged guards through the shared fixture.
+Use the canonical full-file selector, unchanged assertions/timeouts and owned
+cleanup. No shared runner changes, nine-case runtime, hosted capture, diagnostic
+upload or protected acceptance are authorized by this delegation. Keep source
+identity separate from earlier697 collection-only evidence. A new D: verification
+checkout must own regular installed dependencies; do not mutate shared C: Prisma.
 The owner is unavailable: no questions or requests for physical participation.
 The post-Crossdeck directive supersedes the prior unmerged721 hold. It does not
 waive current protected-main, experience, privacy or physical acceptance gates.
