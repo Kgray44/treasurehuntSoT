@@ -3,10 +3,17 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-23
 ---
 
 # Changelog
+
+- Parallax candidate #776 preserves close-before-navigation when creating an
+  independent Environment and keeps mobile Library details scrolling tied to
+  selection changes. Unsupported test query options are removed without changing
+  matching criteria. [The source-bound verification record](Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md)
+  retains the earlier failures, 53 focused passes and passing TypeScript/strict
+  lint; capture authorization, rendered review and protected acceptance remain open.
 
 The October 19 [complete Parallax integration preparation](Development_Docs/Projects/Project_Parallax/Integration_Preparation_20261019.md) consolidates the adopted
 Studio overhaul on current protected main, preserves historical source and

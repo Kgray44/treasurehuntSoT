@@ -3,10 +3,22 @@ title: Parallax protected integration continuation
 audience: automation
 status: active
 canonical_for: parallax-protected-integration-continuation-20261021
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-23
 ---
 
 # Existing owner continuation
+
+The latest source correction is frozen by `1e8fdba87ed5527a8bbfa29d2e9d70b9bf780018847981201249f7c85106835e`
+relative to published checkpoint `aee0cd823fc105ff3efc14363ce8f1f98b3e3876`.
+Independent source review passed. All four affected test files pass (53 cases),
+standard TypeScript passes, and the same 364 selected lint paths pass with zero
+warnings allowed. Preserve the earlier actual TypeScript and strict-lint failures
+separately. Do not repeat these unchanged checks. Publish one reviewed correction,
+then obtain its exact installed-controller plan. Capture remains held: automatic
+approval review rejected authorization lacking the exact uploaded payload and
+public GitHub Actions destination. The existing coordinator owns the single
+approval question after source and privacy inventory are complete; do not ask a
+duplicate question or reserve, dispatch or upload capture as a workaround.
 
 The published stable-setter checkpoint is `6f874181d0afd6b497f0d743c1a0db89b86a373b`,
 following preference checkpoint `6bbf875d31457103b6d2881bacde6631cbfa0923` and

@@ -3,12 +3,21 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-23
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+PR #776's latest reviewed correction passes 53 focused component checks,
+standard TypeScript and strict lint with zero warnings allowed. It preserves
+Environment close-before-navigation ordering and selection-driven Library
+scrolling. Earlier failed checks remain preserved with their producing source.
+[Current verification and limits](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)
+keep capture authorization and trace privacy review, fresh rendered evidence,
+protected qualification and physical/owner acceptance open. These corrections
+do not change cataloged feature availability.
 
 Parallax's sole combined Studio candidate, PR #776, includes the accepted
 Crossdeck landing and maintenance through `b2d901af5646ce76b3b2bd5a88e1ad8563c2db57`.

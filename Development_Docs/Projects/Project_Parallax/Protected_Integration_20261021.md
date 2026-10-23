@@ -1,12 +1,45 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: validating-workspace-preferences
+status: awaiting-capture-authorization
 canonical_for: parallax-protected-integration-20261021
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-23
 ---
 
 # Accepted-main reconciliation
+
+The [static verification intake](evidence/protected-integration-20261021/static-verification-20261023/manifest.original.json)
+preserves the actual failures on reconciled checkpoint
+`aee0cd823fc105ff3efc14363ce8f1f98b3e3876` and the separately reviewed correction.
+The installed accepted-main planner passed on that checkpoint, and its original
+Studio/workspace run passed 30 cases. Standard TypeScript then reported four
+unsupported test query options; strict lint reported two warnings with zero
+warnings allowed. These are actual failed checks, not safety deadlines.
+
+The correction removes only those four unsupported role-query properties,
+retaining names, clicks, assertions and the valid label-query option. Internal
+Environment navigation now uses the existing Next router after awaiting workspace
+close, with the same encoded destination. The Library's mobile details scroll
+depends on the selected ID, preserving its behavior during metadata refreshes.
+Independent review binds the seven-file freeze `1e8fdba8…`; all four affected test
+files pass (53 cases), standard `tsc --noEmit` passes, and the same 364 selected
+lint files pass with `--max-warnings=0`. Every check exited normally with owned
+cleanup PASS and unchanged inner limits. The new tests exercise actual Save As
+navigation ordering and selection-driven scrolling; they establish component
+behavior, not real-browser or physical-device acceptance.
+
+Capture remains held. Automatic approval review rejected authorization that did
+not specify the exact uploaded payload and destination. The current path can
+publish selected screenshots, videos, trace ZIPs and JSON without encryption to
+Actions artifacts in the public repository, separate from encrypted raw
+diagnostics, with 90-day retention. No enforceable selected-media or aggregate
+byte ceiling has been verified. Authentication/session privacy remains under
+read-only review; synthetic fixtures do not establish that every trace is free
+of reusable credentials. The existing coordinator owns the single consent
+question after the corrected committed source and payload inventory are ready.
+No new capture, rendered review 3, protected qualification, merge or owner
+acceptance is established by these local passes. All historical failed receipts
+and unknown preparation/cleanup boundaries remain unchanged.
 
 PR #776 is the sole combined Studio integration and protected qualification
 candidate. The directly approved ownership agreement leaves #722's root/domain

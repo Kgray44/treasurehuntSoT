@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { createSpatialDraft } from "@/parallax/authoring";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
@@ -100,6 +100,46 @@ it("retains one Library search and selection across compact and expanded present
   view.rerender(<SpatialContentLibrary {...shared} />);
   expect(screen.getByRole("searchbox", { name: "Search assets" })).toHaveValue("Writing desk");
   expect(screen.getByLabelText("Writing desk details")).toBeVisible();
+});
+
+it("scrolls mobile details for a changed selection without scrolling again for a metadata refresh", () => {
+  const frames: FrameRequestCallback[] = [];
+  const schedule = vi.fn((callback: FrameRequestCallback) => frames.push(callback));
+  const cancel = vi.fn();
+  vi.stubGlobal("requestAnimationFrame", schedule);
+  vi.stubGlobal("cancelAnimationFrame", cancel);
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn(() => ({ matches: true })),
+  );
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => Response.json({ licenses: [], listings: [] })),
+  );
+  const first = record(7);
+  const second = record(8);
+  const shared = { ...props(), catalogMode: "FULL" as const, expanded: true };
+  const view = render(<SpatialContentLibrary {...shared} items={[first, second]} />);
+  expect(schedule).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Inspect Owned Scene 007" }));
+  const details = screen.getByLabelText("Owned Scene 007 details");
+  const scroll = vi.fn();
+  details.scrollIntoView = scroll;
+  expect(schedule).toHaveBeenCalledOnce();
+  act(() => frames[0](0));
+  expect(scroll).toHaveBeenCalledWith({ block: "start" });
+  view.rerender(<SpatialContentLibrary {...shared} items={[{ ...first, revision: 2 }, second]} />);
+  expect(schedule).toHaveBeenCalledOnce();
+  expect(scroll).toHaveBeenCalledOnce();
+  fireEvent.click(screen.getByRole("button", { name: "Inspect Owned Scene 008" }));
+  expect(cancel).toHaveBeenCalledWith(1);
+  expect(schedule).toHaveBeenCalledTimes(2);
+  const nextScroll = vi.fn();
+  screen.getByLabelText("Owned Scene 008 details").scrollIntoView = nextScroll;
+  act(() => frames[1](0));
+  expect(nextScroll).toHaveBeenCalledWith({ block: "start" });
+  view.unmount();
+  expect(cancel).toHaveBeenLastCalledWith(2);
 });
 
 it("moves category focus and selection together with standard tab keys", () => {

@@ -451,11 +451,12 @@ export function SpatialContentLibrary(props: Props) {
     const projected = buildSpatialContentCatalog([], [environment]).find((item) => item.id === selectedId);
     return { ...projected, ...contextFields(projected), environment } as SpatialContentEntry;
   }, [entries, selectedId, kind, paged, exactSelection, selectionContext, props.environments]);
+  const selectedDetailsId = selected?.id;
   useEffect(() => {
-    if (!props.expanded || !selected || !window.matchMedia?.("(max-width: 760px)").matches) return;
+    if (!props.expanded || !selectedDetailsId || !window.matchMedia?.("(max-width: 760px)").matches) return;
     const frame = requestAnimationFrame(() => selectedDetailsRef.current?.scrollIntoView?.({ block: "start" }));
     return () => cancelAnimationFrame(frame);
-  }, [props.expanded, selected?.id]);
+  }, [props.expanded, selectedDetailsId]);
   const selectedModelId = selected?.preset?.startsWith("sc02:") ? selected.preset.slice(5) : null;
   const inspectableModelId =
     selectedModelId && modelIds.includes(selectedModelId as ModelId) ? (selectedModelId as ModelId) : null;

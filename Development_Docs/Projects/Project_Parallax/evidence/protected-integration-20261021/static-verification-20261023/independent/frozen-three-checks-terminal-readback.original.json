@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "kind": "INDEPENDENT_FROZEN_LINT_PRODUCT_FIX_FOCUSED_TYPESCRIPT_STRICT_LINT_TERMINAL_REVIEW",
+  "at": "2026-10-23T04:28:50.1057009Z",
+  "status": "PASS_ACTUAL_FOCUSED_TYPESCRIPT_AND_ZERO_WARNING_LINT_ONLY",
+  "publishedParent": "aee0cd823fc105ff3efc14363ce8f1f98b3e3876",
+  "sourceFreeze": {
+    "sha256": "1e8fdba87ed5527a8bbfa29d2e9d70b9bf780018847981201249f7c85106835e",
+    "pinnedFiles": 7,
+    "actualCurrentMismatches": [],
+    "changesUncommittedAtProduction": true,
+    "productSourceReviewSha256": "9d345f2e2b440f267bf9d3ad2e47d52dfd3bc8a57e6671f499c6d01149a6c224",
+    "fourRoleOptionReviewSha256": "c13591a281be558a12ef5b7e5d071527e668ba988ca64f4788890100dba8c8aa"
+  },
+  "focused": {
+    "filesPassed": 4,
+    "casesPassed": 53,
+    "failed": 0,
+    "skipped": 0,
+    "testsSeconds": 21.15,
+    "vitestSeconds": 26.82,
+    "exit": 0,
+    "payloadExit": 0,
+    "cleanup": "PASS",
+    "cleanupMs": 2,
+    "deadline": false,
+    "stderr": "Existing Vite config warning only"
+  },
+  "typescript": {
+    "command": "node node_modules/typescript/bin/tsc --noEmit",
+    "exit": 0,
+    "payloadExit": 0,
+    "cleanup": "PASS",
+    "cleanupMs": 2,
+    "deadline": false,
+    "stdout": "Pinned wrapper declaration only; no TypeScript diagnostics",
+    "stderrBytes": 0
+  },
+  "lint": {
+    "command": "node node_modules/eslint/bin/eslint.js --max-warnings=0 [prior364selectedpaths]",
+    "selectedFiles": 364,
+    "maximumWarnings": 0,
+    "priorPlanSha256": "7ac850a10c253e1aefbd8de1543ac70929718b38c53e45b4bf16315fb0c3907f",
+    "selectionRecordSha256": "60b9cae251714d5d978d07d8e2b38f86595bc93030ebef39e0a027ae4bddb73e",
+    "exit": 0,
+    "payloadExit": 0,
+    "cleanup": "PASS",
+    "cleanupMs": 2,
+    "deadline": false,
+    "errors": 0,
+    "warnings": 0,
+    "stdout": "Pinned wrapper declaration only",
+    "stderrBytes": 0
+  },
+  "records": [
+    {
+      "run": "lint-product-focused-01",
+      "name": "execution.original.json",
+      "bytes": 916,
+      "sha256": "ee8de34a85691d3e31dbe0c9f2513da9b5c5aedd458819e7470aa167952eae2a"
+    },
+    {
+      "run": "lint-product-focused-01",
+      "name": "request.original.json",
+      "bytes": 578,
+      "sha256": "82407beffdf401f500a64fa1f51b832b512ebd1567db1467003f5f8d718b93e6"
+    },
+    {
+      "run": "lint-product-focused-01",
+      "name": "stdout.original.log",
+      "bytes": 465,
+      "sha256": "be6a9feeef97e0d99c5862224bcda930fbb974e0d6c18ae2a797e6c93b06b896"
+    },
+    {
+      "run": "lint-product-focused-01",
+      "name": "stderr.original.log",
+      "bytes": 375,
+      "sha256": "b4acd4f819050212c4fe3b3ed8416421330f7ff8c72cb9bb667c335f3e24a94e"
+    },
+    {
+      "run": "lint-product-typecheck-01",
+      "name": "execution.original.json",
+      "bytes": 916,
+      "sha256": "87fae31a7f6115ce6527aa42a0f6cd499963a4f7e71e2db39580f819ef202bf5"
+    },
+    {
+      "run": "lint-product-typecheck-01",
+      "name": "request.original.json",
+      "bytes": 580,
+      "sha256": "3280317c66bc1307f9414c37747f6c2a0bcae60359dda1e31eb545d45bbf49e9"
+    },
+    {
+      "run": "lint-product-typecheck-01",
+      "name": "stdout.original.log",
+      "bytes": 227,
+      "sha256": "9f1ffbf72b4ca1f2be9f0254d35c622c8b0f9a445b274a27cec379998c4cfb5a"
+    },
+    {
+      "run": "lint-product-typecheck-01",
+      "name": "stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "run": "lint-product-strict-lint-01",
+      "name": "execution.original.json",
+      "bytes": 918,
+      "sha256": "0214e6a51dd57dcca24328a3b7ec1319edef18f9d11c9d7b6fc4edc598e2c540"
+    },
+    {
+      "run": "lint-product-strict-lint-01",
+      "name": "request.original.json",
+      "bytes": 575,
+      "sha256": "41c80bd056f38199df60a4c373cb40f1b493b8568ca6ffb474e0630d7c02562f"
+    },
+    {
+      "run": "lint-product-strict-lint-01",
+      "name": "stdout.original.log",
+      "bytes": 222,
+      "sha256": "3d2ea99343fce488637802878e93373f42d294ab1e7e856573861409c72f8a5e"
+    },
+    {
+      "run": "lint-product-strict-lint-01",
+      "name": "stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limits": [
+    "These are actual changed-source results tied to frozen uncommitted source1e8 at aeeHEAD, not literal originalaee or a future commit identity.",
+    "Earlier aeeTypeScript4errors and strictlint2warnings remain immutable; no thresholds, diagnostics or time limits weakened.",
+    "Each existing owned run was separately fresh-guarded/sequential; root independently read originals and7source pins but executed no product checks.",
+    "No browser rendering/capture, no reservation/upload/decryption/liveprovider call, no renderedreview3/protected or physical AR acceptance.",
+    "Capture remainsheld by automaticapproval rejection; privacy source assessment is separate and pending."
+  ],
+  "qualification": false,
+  "rootRuntimeExecuted": false,
+  "captureAuthorized": false
+}

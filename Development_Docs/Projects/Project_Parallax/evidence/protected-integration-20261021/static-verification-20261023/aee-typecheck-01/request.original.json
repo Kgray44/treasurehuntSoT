@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-23T04:03:12.493Z",
+  "root": "D:/CodexWorktrees/parallax-776-final39-20261022",
+  "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+  "args": [
+    "C:/Users/kkids/AppData/Local/Microsoft/WinGet/Packages/OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe/node-v24.18.0-win-x64/node_modules/npm/bin/npm-cli.js",
+    "run",
+    "typecheck"
+  ],
+  "cFree": 56058458112,
+  "dFree": 111534473216,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "qualification": false,
+  "protectedCapture": false
+}

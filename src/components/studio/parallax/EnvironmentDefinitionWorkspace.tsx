@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import {
@@ -33,6 +34,7 @@ export function EnvironmentDefinitionWorkspace({
   onRefresh: () => Promise<EnvironmentLibraryRecord[]>;
   environments?: EnvironmentLibraryRecord[];
 }) {
+  const router = useRouter();
   const [viewRevision, setViewRevision] = useState(record.revision);
   const [historyCounts, setHistoryCounts] = useState({ past: 0, future: 0 });
   const [document, setDocument] = useState(record.draft),
@@ -169,7 +171,7 @@ export function EnvironmentDefinitionWorkspace({
       setRecord(found);
     } else if (id) {
       await onClose();
-      window.location.assign(`/studio/parallax?environment=${encodeURIComponent(id)}`);
+      router.push(`/studio/parallax?environment=${encodeURIComponent(id)}`);
     }
   };
   const entry = libraryEntries([], [{ ...currentRecord, draft: document, revision: viewRevision }])[0];

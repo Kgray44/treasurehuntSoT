@@ -1,0 +1,39 @@
+{
+  "name": "aee-typecheck-01",
+  "at": "2026-10-23T04:04:52.101Z",
+  "exit": {
+    "code": 2,
+    "signal": null,
+    "guardianExitCode": 2
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 2,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 2,
+    "elapsedMs": 1,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 56056635392,
+  "minimumD": 111532593152,
+  "monitorSamples": 33,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 2322,
+      "sha256": "69204ef3bdfa8bc7401ec80f8802c67fcb3239ad21c6f251499f370618858446"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

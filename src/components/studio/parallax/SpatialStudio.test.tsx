@@ -413,15 +413,15 @@ it("keeps the docked assistance return action visibly named", async () => {
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
-  const workspace = within(screen.getByRole("region", { name: "Ask Parallax workspace", exact: true }));
-  const dock = workspace.getByRole("button", { name: "Dock assistance", exact: true });
+  const workspace = within(screen.getByRole("region", { name: "Ask Parallax workspace" }));
+  const dock = workspace.getByRole("button", { name: "Dock assistance" });
   expect(dock).toHaveTextContent("Dock assistance");
   fireEvent.click(dock);
-  const float = workspace.getByRole("button", { name: "Float assistance", exact: true });
+  const float = workspace.getByRole("button", { name: "Float assistance" });
   expect(float).toBeVisible();
   expect(float).toHaveTextContent("Float assistance");
   fireEvent.click(float);
-  expect(workspace.getByRole("button", { name: "Dock assistance", exact: true })).toBeVisible();
+  expect(workspace.getByRole("button", { name: "Dock assistance" })).toBeVisible();
 });
 it("records manual transforms as reversible edits and serializes autosave", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" />);

@@ -1,0 +1,39 @@
+{
+  "name": "aee-strict-lint-01",
+  "at": "2026-10-23T04:09:46.008Z",
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 2,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 56055554048,
+  "minimumD": 111525253120,
+  "monitorSamples": 21,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 914,
+      "sha256": "9c1f0ac138f448e047f9a4cff0d395de82503e9a2a933ea815622059d759cbd2"
+    },
+    "stderr": {
+      "bytes": 45,
+      "sha256": "99a3dfa8107e1f53d2ffb780a3dfb2d79c4ec1f2ba90a4173dc91308d07b536b"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}
