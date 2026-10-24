@@ -3,7 +3,7 @@ title: Repository automation guidance
 audience: automation
 status: current
 canonical_for: repository-automation-guidance
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-24
 ---
 
 # Repository automation guidance
@@ -67,6 +67,7 @@ not authorize restarting a completed phase.
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
+- [Sextant synthetic experience fixture preparation](scripts/sextant-experience-fixture.ts)
 - [Parallax Phase 3 owned implementation and workstation correction context](parallax-phase3.md)
 
 - [Spatial baseline review and Crossdeck realtime context](spatial-review-crossdeck-realtime.md)

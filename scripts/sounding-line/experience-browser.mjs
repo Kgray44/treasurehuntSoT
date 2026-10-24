@@ -130,12 +130,19 @@ function experienceDiagnostic(startedAt, event, context, { stepIndex, actionKind
 }
 
 function sc02JourneyContext(contract, journey, device, motionMode) {
+  const authoredAsset =
+    contract.id === "parallax.authored-library-and-simulation.experience" &&
+    journey.id === "creator-reusable-definition-and-scene-copy";
+  if (authoredAsset && journey.steps.some((step) => ["devices", "when"].some((key) => Object.hasOwn(step, key))))
+    fail("JOURNEY_NAVIGATION_CONDITION_INVALID");
   const optedIn = journey.steps.some((step) =>
     ["devices", "contextValue", "contextName"].some((key) => Object.hasOwn(step, key)),
   );
   if (!optedIn)
     return { steps: journey.steps.map((step, index) => ({ step, index, applicable: true })), evidence: null };
-  const name = `SC02 synthetic composition ${device} ${motionMode}`;
+  const name = authoredAsset
+    ? `Reusable review clue ${device} ${motionMode}`
+    : `SC02 synthetic composition ${device} ${motionMode}`;
   const applicability = [];
   const substitutions = [];
   const steps = journey.steps.map((source, index) => {
@@ -157,8 +164,8 @@ function sc02JourneyContext(contract, journey, device, motionMode) {
     const contextual = ["devices", "contextValue", "contextName"].some((key) => Object.hasOwn(step, key));
     if (!contextual) return { step, index, applicable: true };
     if (
-      contract.id !== "spatial-pilot.experience" ||
-      journey.id !== "sc02-assets-and-reusable-composition" ||
+      (!authoredAsset &&
+        (contract.id !== "spatial-pilot.experience" || journey.id !== "sc02-assets-and-reusable-composition")) ||
       !["DESKTOP", "MOBILE"].includes(device) ||
       !["NORMAL", "REDUCED"].includes(motionMode)
     )
@@ -196,27 +203,47 @@ function sc02JourneyContext(contract, journey, device, motionMode) {
     }
     if (Object.hasOwn(step, "contextValue")) {
       if (
-        step.contextValue !== "SC02_COMPOSITION_NAME" ||
+        step.contextValue !== (authoredAsset ? "PARALLAX_REUSABLE_ASSET_NAME" : "SC02_COMPOSITION_NAME") ||
         step.action !== "fill" ||
         Object.hasOwn(step, "value") ||
-        !(
-          (step.role === "textbox" && step.name === "Object name") ||
-          (step.role === "searchbox" && step.name === "Search compositions")
-        )
+        !(authoredAsset
+          ? (step.role === "textbox" && step.name === "Asset name") ||
+            (step.role === "searchbox" && step.name === "Search assets")
+          : (step.role === "textbox" && step.name === "Object name") ||
+            (step.role === "searchbox" && step.name === "Search compositions"))
       )
         fail("JOURNEY_SYNTHETIC_NAME_INVALID");
       step.value = name;
       substitutions.push({ step: index, field: "value", token: step.contextValue, value: name });
     }
     if (Object.hasOwn(step, "contextName")) {
-      if (
-        step.contextName !== "SC02_COMPOSITION_INSPECT_NAME" ||
-        step.role !== "button" ||
-        step.action !== "click" ||
-        step.name !== "Inspect SC02_COMPOSITION_NAME"
-      )
-        fail("JOURNEY_SYNTHETIC_NAME_INVALID");
-      step.name = "Inspect " + name;
+      if (authoredAsset) {
+        if (
+          step.contextName === "PARALLAX_REUSABLE_ASSET_INSPECT_NAME" &&
+          step.role === "button" &&
+          step.action === "click" &&
+          step.name === "Inspect PARALLAX_REUSABLE_ASSET_NAME"
+        )
+          step.name = "Inspect " + name;
+        else if (
+          step.contextName === "PARALLAX_REUSABLE_ASSET_DETAILS_NAME" &&
+          step.role === "complementary" &&
+          step.action === "assert" &&
+          step.kind === "outcome" &&
+          step.name === "PARALLAX_REUSABLE_ASSET_NAME details"
+        )
+          step.name = name + " details";
+        else fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      } else {
+        if (
+          step.contextName !== "SC02_COMPOSITION_INSPECT_NAME" ||
+          step.role !== "button" ||
+          step.action !== "click" ||
+          step.name !== "Inspect SC02_COMPOSITION_NAME"
+        )
+          fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+        step.name = "Inspect " + name;
+      }
       substitutions.push({ step: index, field: "name", token: step.contextName, value: step.name });
     }
     return { step, index, applicable };
