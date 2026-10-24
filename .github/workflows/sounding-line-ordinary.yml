@@ -127,7 +127,7 @@ jobs:
     name: Sounding Line / Experience preparation (no mainline decision)
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.experience_mode != 'ordinary' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: ${{ inputs.experience_mode == 'capture' && 70 || 40 }}
     permissions:
       contents: read
       pull-requests: read

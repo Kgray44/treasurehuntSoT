@@ -1,6 +1,11 @@
 import { createHash, randomBytes } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
-import { emitPreparationPhase, PREPARATION_CHANNEL, PREPARATION_PROFILE } from "./preparation-phases.mjs";
+import {
+  emitPreparationPhase,
+  PREPARATION_CHANNEL,
+  PREPARATION_PHASES,
+  PREPARATION_PROFILE,
+} from "./preparation-phases.mjs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -744,6 +749,7 @@ async function main() {
     if (!profile || profile.dedicatedRunner) fail("PROFILE_ADAPTER_REQUIRED");
     const receipt = await runBrowserAuthority({
       root,
+      executionTimeoutMs: PREPARATION_PHASES.CAPTURE,
       browserArguments: [],
       browserScriptArguments: [fileURLToPath(import.meta.url), "--workspace", root, "--replay", options["run-server"]],
       fixtureArguments: profile.fixtureArguments ?? [],
