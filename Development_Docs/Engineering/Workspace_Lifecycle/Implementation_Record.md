@@ -44,12 +44,18 @@ standing cleanup authorization does not bypass it.
 
 ## Host verification
 
-The 20-case focused suite passed on Windows, including real Git worktrees,
+The 34-case focused suite passed on Windows in 243 seconds, including real Git worktrees,
 normal/squash/rebase source verification, a live process hold and release,
 incoming shared junctions, and registered checkout aliases. Subsequent resource
-class and host-binding regressions extend that suite before qualification.
+class, host-binding, inherited-cwd process, actual worker-crash and automatic PR
+discovery regressions passed. Expired owners reconcile their current head and PR
+without depending on a conversation calling `finish`. Qualification runs the full
+suite; landed smoke runs eight source-bound lifecycle outcomes within the finite
+scheduled slot. A first local smoke probe passed all eight tests but failed its
+seven-outcome count assertion; its immutable failure receipt remains retained.
 Documentation validation and Feature Catalog synchronization/validation passed.
-No completed-feature claim is made by this implementation checkpoint.
+The developer capability is recorded as FT-B114 for protected integration;
+operational acceptance still requires the real post-merge retirement below.
 
 The limited per-user scheduled task executed successfully at 22:09 Eastern on
 October 23, returning zero and writing an independent worker-run receipt. Native
@@ -80,3 +86,20 @@ environments remain denied. Reusing the existing recovery worktree permits this
 implementation without creating another hydrated development checkout. Initial
 and final counts can also change through separately owned recovery work; receipts
 attribute only actions performed by this manager.
+
+The corrected physical-root scan at 03:32 UTC on October 24 counted 105 registered
+checkouts and 204,121,513,482 noncanonical logical file bytes, with no scan errors.
+It counts a registered junction alias through its verified physical root once.
+That footprint remains above the admission ceiling. The real `create` interface
+reused this task's existing registered owner before further development rather
+than allocating another checkout. Real creation, development and retirement are
+also exercised in independent synthetic Git repositories.
+
+Historical PR #658's exact clean checkout retired through the manager after its
+protected decision, squash-source equivalence and historical landed integrity
+smoke were reverified. Its 5,591 ignored diagnostic files remain in a verified
+external archive. The removed root held 3,838,714,378 logical bytes; the retirement
+window observed 3,854,458,880 additional free bytes on D:. Preservation consumed
+C: space beforehand, so that D: observation is not a net two-volume reclamation
+claim. The other independently verified historical candidates retain their own
+receipts and are subject to the same fresh checks.

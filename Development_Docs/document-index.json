@@ -921,6 +921,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Features/catalog/workspaces.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Features/Feature_Catalog_Mainline_Reconciliation_Receipt.md",
       "record_type": "archive-index",
       "status": "preserved",

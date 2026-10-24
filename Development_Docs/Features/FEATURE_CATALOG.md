@@ -2473,6 +2473,41 @@ A consented local camera laboratory distinguishes tracked joints, active-hand co
 
 ---
 
+## FT-B114 - Owned Development Workspace Lifecycle
+
+**Status:** MAINLINE
+**Program or subsystem:** Development infrastructure
+
+One external ownership registry admits finite temporary workspaces and automatically reconciles expired tasks, verified protected merges, evidence preservation, generated-resource release and recoverable checkout retirement.
+
+### Important subfeatures
+
+- Reuse before allocation, one workspace per task, finite peak budgets and a 75 GiB aggregate admission ceiling
+- Independent 30 GiB C: and D: reserve admission through the host guard
+- Protected merge and normal, squash or rebase source verification with executable landed-source smoke
+- Hash-verified external evidence custody and immutable cleanup receipts
+- Windows process and handle holds, Git-aware retirement, and junction and shared-store protection
+- Limited per-user logon and periodic reconciliation with crash recovery and automatic PR discovery
+
+### Primary surfaces
+
+`scripts/workspaces/cli.mjs`, `scripts/workspaces/install.ps1`, `.agents/workspace-lifecycle.md`
+
+### Meaningful limitations
+
+- Unknown legacy ownership, unfinished source, active usage and platform denials remain exact tracked blockers until their dependency clears.
+- Codex lifecycle hook definitions require platform trust review; Windows scheduling operates independently.
+- Admission rules do not impose an OS quota on external applications, cloud jobs or existing uninstrumented writers.
+- Legacy storage above the aggregate ceiling blocks new environments; suitable registered workspace reuse remains available.
+
+### Evidence
+
+- path: `scripts/workspaces/lifecycle.mjs`
+- test: `tests/workspaces/lifecycle.test.mjs`
+- completion-record: `Development_Docs/Engineering/Workspace_Lifecycle/Implementation_Record.md`
+
+---
+
 # Completed Branch Features Not Yet Available on Main
 
 # Deliberately Excluded Until Complete
