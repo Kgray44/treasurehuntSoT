@@ -46,6 +46,12 @@ paths, content drift and platform denial fail closed with an exact receipt.
 Never force a denied operation, erase a failed receipt, reset finite evidence
 authority, or silently substitute another deletion mechanism.
 
+For historical adopted checkouts merged before registry creation, the original
+successful protected decision remains the functional qualification authority.
+Their new landed-source integrity smoke verifies source custody and parses the
+landed manifests; its receipt explicitly records `functionalProductRetest: false`.
+New environments run the executable lifecycle smoke from their actual merge.
+
 `adopt` requires an exact path, task, resource class and custody reason. It is for
 audited legacy resources, not arbitrary path cleanup. Standalone clones and
 unowned directories are held until their distinct Git/data custody is established.

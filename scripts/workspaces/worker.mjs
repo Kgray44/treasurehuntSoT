@@ -22,7 +22,7 @@ console.error = (...args) => {
   observations.push(args.map(String).join(" ").slice(0, 32768));
   originalError(...args);
 };
-process.argv = [process.execPath, cli, "sweep", "--state", state, "--limit", "4"];
+process.argv = [process.execPath, cli, "sweep", "--state", state, "--limit", "1"];
 try {
   await import(pathToFileURL(cli).href);
 } catch (e) {

@@ -32,6 +32,15 @@ const hashFile = (file) => {
 };
 const json = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
 const now = () => new Date().toISOString();
+const literalExists = (p) => {
+  try {
+    fs.lstatSync(p);
+    return true;
+  } catch (e) {
+    if (e.code === "ENOENT") return false;
+    throw e;
+  }
+};
 function fail(code) {
   throw new Error(code);
 }
@@ -41,17 +50,36 @@ function atomic(file, value) {
   fs.renameSync(tmp, file);
 }
 export function run(command, args, cwd, options = {}) {
+  const environment = {
+    ...process.env,
+    ...options.env,
+    GIT_NO_LAZY_FETCH: "1",
+    GIT_OPTIONAL_LOCKS: "0",
+    GIT_TERMINAL_PROMPT: "0",
+  };
+  if (command === "git")
+    for (const name of [
+      "GIT_DIR",
+      "GIT_COMMON_DIR",
+      "GIT_WORK_TREE",
+      "GIT_INDEX_FILE",
+      "GIT_OBJECT_DIRECTORY",
+      "GIT_NAMESPACE",
+      "GIT_PREFIX",
+    ])
+      if (environment[name]) fail(`GIT_CONTEXT_OVERRIDE_DENIED:${name}`);
   return execFileSync(command, args, {
     cwd,
     encoding: "utf8",
     windowsHide: true,
     timeout: 120000,
     maxBuffer: 64 * 1024 ** 2,
-    env: { ...process.env, GIT_NO_LAZY_FETCH: "1", GIT_OPTIONAL_LOCKS: "0", GIT_TERMINAL_PROMPT: "0" },
     ...options,
+    env: environment,
   });
 }
-export const git = (cwd, args) => run("git", ["-c", "core.fsmonitor=false", "-C", cwd, ...args], undefined).trim();
+export const git = (cwd, args) =>
+  run("git", ["-c", "core.fsmonitor=false", "-c", "core.longpaths=true", "-C", cwd, ...args], undefined).trim();
 const branchOf = (cwd) => {
   try {
     return git(cwd, ["symbolic-ref", "--short", "-q", "HEAD"]);
@@ -80,7 +108,7 @@ export function physical(p) {
   let current = path.parse(path.resolve(p)).root;
   for (const part of path.resolve(p).slice(current.length).split(path.sep).filter(Boolean)) {
     current = path.join(current, part);
-    if (fs.existsSync(current) && fs.lstatSync(current).isSymbolicLink()) fail(`REPARSE_ANCESTOR:${current}`);
+    if (literalExists(current) && fs.lstatSync(current).isSymbolicLink()) fail(`REPARSE_ANCESTOR:${current}`);
   }
   return fs.existsSync(p) ? fs.realpathSync.native(p) : path.resolve(p);
 }
@@ -174,6 +202,7 @@ export function scanLinks(root) {
 // always go through git worktree remove. Directory links are unlinked, never walked.
 export function removeOwnedTree(root, target) {
   if (!same(root, target) && !within(root, target)) fail("DELETE_OUTSIDE_OWNER");
+  physical(path.dirname(target));
   let s;
   try {
     s = fs.lstatSync(target);
@@ -238,7 +267,7 @@ export function windowsProcesses(root, registered = []) {
     parent = all.find((p) => p.ProcessId === parent)?.ParentProcessId;
   }
   const needle = key(root);
-  return all
+  const result = all
     .filter(
       (p) =>
         registered.some((r) => r.pid === p.ProcessId && (!r.creationDate || r.creationDate === p.CreationDate)) ||
@@ -250,9 +279,31 @@ export function windowsProcesses(root, registered = []) {
       creationDate: p.CreationDate,
       name: path.basename(p.ExecutablePath ?? "unknown"),
     }));
+  if (path.isAbsolute(root)) {
+    const probeScript = `
+$ErrorActionPreference='Stop'
+Add-Type -Namespace Voyagewright -Name RootHandle -MemberDefinition @'
+[System.Runtime.InteropServices.DllImport("kernel32.dll", CharSet=System.Runtime.InteropServices.CharSet.Unicode, SetLastError=true)]
+public static extern System.IntPtr CreateFileW(string name, uint access, uint share, System.IntPtr security, uint disposition, uint flags, System.IntPtr template);
+[System.Runtime.InteropServices.DllImport("kernel32.dll")] public static extern bool CloseHandle(System.IntPtr handle);
+'@
+$handle=[Voyagewright.RootHandle]::CreateFileW($env:VOYAGEWRIGHT_PROBE_ROOT,2147483648,0,[IntPtr]::Zero,3,35651584,[IntPtr]::Zero)
+$code=if($handle.ToInt64() -eq -1){[System.Runtime.InteropServices.Marshal]::GetLastWin32Error()}else{[void][Voyagewright.RootHandle]::CloseHandle($handle);0}
+@{win32Error=$code}|ConvertTo-Json -Compress
+`;
+    const probe = JSON.parse(
+      run("powershell.exe", ["-NoProfile", "-Command", probeScript], undefined, {
+        env: { ...process.env, VOYAGEWRIGHT_PROBE_ROOT: root },
+      }),
+    );
+    if ([32, 33].includes(probe.win32Error))
+      result.push({ pid: `ROOT_HANDLE_BUSY_WIN32_${probe.win32Error}`, kind: "native-directory-handle" });
+    else if (probe.win32Error) fail(`ROOT_HANDLE_PREFLIGHT_FAILED_WIN32_${probe.win32Error}`);
+  }
+  return result;
 }
 function patchId(canonical, revisionArgs) {
-  const diff = run("git", ["-C", canonical, "diff", "--binary", "--no-ext-diff", ...revisionArgs]);
+  const diff = run("git", ["-C", canonical, "diff", "--full-index", "--no-ext-diff", "--no-textconv", ...revisionArgs]);
   return run("git", ["patch-id", "--stable"], canonical, { input: diff }).trim().split(" ")[0];
 }
 export function sourceLanded(canonical, head, merge, commits = [], verifiedMain = "refs/remotes/origin/main") {
@@ -260,6 +311,10 @@ export function sourceLanded(canonical, head, merge, commits = [], verifiedMain 
   if (succeeds(canonical, ["merge-base", "--is-ancestor", head, merge])) return "normal";
   if (!succeeds(canonical, ["rev-parse", "--verify", `${merge}^`])) fail("LANDED_SOURCE_MISMATCH");
   const base = git(canonical, ["merge-base", head, `${merge}^`]);
+  const raw = (from, to) =>
+    run("git", ["-C", canonical, "diff", "--raw", "-z", "--no-abbrev", "--no-renames", from, to]);
+  const candidateDelta = raw(base, head);
+  if (candidateDelta && candidateDelta === raw(`${merge}^`, merge)) return "squash";
   const original = patchId(canonical, [base, head]);
   if (original && original === patchId(canonical, [`${merge}^`, merge])) return "squash";
   if (commits.length && commits.length <= 500) {
@@ -338,7 +393,9 @@ export class GitHubAuthority {
     if (!decision || decision.conclusion !== "success") fail("REQUIRED_PROTECTED_DECISION_MISSING");
     const commits = this.api(`repos/${repo}/pulls/${record.pr}/commits?per_page=100`).map((c) => c.sha);
     if (pr.commits > commits.length) fail("PR_COMMIT_PAGINATION_REQUIRED");
-    const comparison = this.api(`repos/${repo}/compare/${pr.merge_commit_sha}...${branch.commit.sha}`);
+    const comparison = succeeds(canonical, ["merge-base", "--is-ancestor", pr.merge_commit_sha, branch.commit.sha])
+      ? { status: "ahead", proof: "LOCAL_ANCESTRY_AGAINST_AUTHENTICATED_MAIN" }
+      : this.api(`repos/${repo}/compare/${pr.merge_commit_sha}...${branch.commit.sha}`);
     if (!["identical", "ahead"].includes(comparison.status)) fail("MERGE_NOT_ON_PROTECTED_MAIN");
     this.ensureCommit(canonical, pr.merge_commit_sha);
     return {
@@ -349,7 +406,12 @@ export class GitHubAuthority {
       decisionId: decision.id,
       appId: decision.app.id,
       method: sourceLanded(canonical, record.head, pr.merge_commit_sha, commits, pr.merge_commit_sha),
-      mainlineProof: { head: branch.commit.sha, comparison: comparison.status, strict: true },
+      mainlineProof: {
+        head: branch.commit.sha,
+        comparison: comparison.status,
+        proof: comparison.proof ?? "GITHUB_COMPARE",
+        strict: true,
+      },
       checkedAt: now(),
     };
   }
@@ -398,7 +460,9 @@ export class Lifecycle {
   }
   transaction(fn) {
     if (!this.config) fail("REGISTRY_NOT_INITIALIZED");
-    this.guard(this.estimate(this.root, 1024 ** 2));
+    const stateWrites = this.estimate(this.root, 8 * 1024 ** 2);
+    const gitWrites = this.estimate(this.config.commonDir, 8 * 1024 ** 2);
+    this.guard({ C: stateWrites.C + gitWrites.C, D: stateWrites.D + gitWrites.D });
     const lock = path.join(this.root, "registry.lock");
     try {
       fs.mkdirSync(lock);
@@ -423,6 +487,11 @@ export class Lifecycle {
   }
   save() {
     atomic(this.file, this.db);
+  }
+  registryPath(p) {
+    const target = this.config.physicalRegistryRoot ?? this.root;
+    const alias = [this.root, ...(this.config.registryAliases ?? [])].find((a) => same(a, p) || within(a, p));
+    return alias ? path.join(target, path.relative(alias, p)) : p;
   }
   bindHost(physicalRoot) {
     return this.transaction(() => {
@@ -486,6 +555,8 @@ export class Lifecycle {
       fail("OWNERSHIP_MARKER_INVALID");
     if (r.kind === "worktree") {
       if (!fs.lstatSync(path.join(r.path, ".git")).isFile()) fail("LINKED_WORKTREE_REQUIRED");
+      if (!same(fs.realpathSync.native(git(r.path, ["rev-parse", "--show-toplevel"])), fs.realpathSync.native(r.path)))
+        fail("WORKTREE_TOPLEVEL_CHANGED");
       const w = worktrees(this.config.canonical).find((x) => same(x.path, r.path));
       if (!w || w.locked || w.prunable) fail("WORKTREE_REGISTRATION_UNSAFE");
       if (
@@ -627,9 +698,10 @@ export class Lifecycle {
       const inventory = this.inventory();
       if (!inventory.complete) fail("STORAGE_SCAN_INCOMPLETE");
       const estimate = this.estimate(p, options.peakBytes);
-      const stateEstimate = this.estimate(this.root, 1024 ** 2);
-      estimate.C += stateEstimate.C;
-      estimate.D += stateEstimate.D;
+      const stateEstimate = this.estimate(this.root, 8 * 1024 ** 2);
+      const gitEstimate = this.estimate(this.config.commonDir, 8 * 1024 ** 2);
+      estimate.C += stateEstimate.C + gitEstimate.C;
+      estimate.D += stateEstimate.D + gitEstimate.D;
       const free = this.guard(estimate);
       checkBudget({
         policy: this.config.policy,
@@ -822,7 +894,29 @@ export class Lifecycle {
     const evidence = audit.storage.entries.filter((e) => !excluded(e.path) && !tracked.has(e.path));
     const bytes = evidence.reduce((sum, e) => sum + (e.bytes ?? 0), 0);
     this.guard(this.estimate(this.root, bytes + evidence.length * 2048 + 1024 ** 2));
-    const archive = path.join(this.root, "preserved", r.id, randomUUID());
+    if (r.evidence) {
+      this.verifyPreserved(r);
+      const saved = json(path.join(this.registryPath(r.evidence.archive), "manifest.json"));
+      const prior = new Map(saved.manifest.map((e) => [e.path, e]));
+      if (
+        evidence.every((e) => {
+          const old = prior.get(e.path);
+          return (
+            old &&
+            old.kind === e.kind &&
+            (e.kind === "link"
+              ? old.target === e.target
+              : old.bytes === e.bytes && old.sha256 === hashFile(path.join(r.path, e.path)))
+          );
+        })
+      ) {
+        this.receipt(r, "PRESERVATION_REUSED", { archive: r.evidence.archive, sha256: r.evidence.sha256 });
+        return;
+      }
+      r.evidenceHistory ??= [];
+      r.evidenceHistory.push(r.evidence);
+    }
+    const archive = this.registryPath(path.join(this.root, "preserved", r.id, randomUUID()));
     fs.mkdirSync(archive, { recursive: true });
     const manifest = [];
     for (const entry of evidence) {
@@ -848,11 +942,14 @@ export class Lifecycle {
   }
   verifyPreserved(r) {
     if (!r.evidence) fail("PRESERVATION_MISSING");
-    const info = json(path.join(r.evidence.archive, "manifest.json"));
-    if (info.sha256 !== r.evidence.sha256 || sha256(JSON.stringify(info.manifest)) !== info.sha256)
-      fail("PRESERVATION_IDENTITY_CHANGED");
-    for (const e of info.manifest)
-      if (e.kind === "file" && hashFile(path.join(info.archive, e.path)) !== e.sha256) fail("PRESERVATION_CORRUPT");
+    for (const pointer of [...(r.evidenceHistory ?? []), r.evidence]) {
+      const archive = this.registryPath(pointer.archive);
+      const info = json(path.join(archive, "manifest.json"));
+      if (info.sha256 !== pointer.sha256 || sha256(JSON.stringify(info.manifest)) !== info.sha256)
+        fail("PRESERVATION_IDENTITY_CHANGED");
+      for (const e of info.manifest)
+        if (e.kind === "file" && hashFile(path.join(archive, e.path)) !== e.sha256) fail("PRESERVATION_CORRUPT");
+    }
   }
   verifyExternalCustody(r) {
     if (!r.custodyManifest) return;
@@ -918,7 +1015,7 @@ export class Lifecycle {
         functionalProductRetest: false,
       });
     }
-    const dest = path.join(this.root, "smoke", randomUUID());
+    const dest = this.registryPath(path.join(this.root, "smoke", randomUUID()));
     fs.mkdirSync(dest, { recursive: true });
     const owner = { id: randomUUID(), path: dest, purpose: "landed-smoke" };
     atomic(path.join(dest, markerName), owner);
@@ -1004,6 +1101,28 @@ export class Lifecycle {
         this.verifyPreserved(r);
         return this.complete(r);
       }
+      if (
+        r.retirement?.markerReleaseRecorded &&
+        ["RETIRING", "HELD"].includes(r.state) &&
+        !literalExists(path.join(r.path, markerName))
+      ) {
+        this.assertTarget(r.path);
+        const identity = fs.statSync(r.path, { bigint: true });
+        if (
+          identity.dev.toString() !== r.retirement.rootIdentity?.dev ||
+          identity.ino.toString() !== r.retirement.rootIdentity?.ino
+        )
+          fail("RECOVERY_DIRECTORY_IDENTITY_CHANGED");
+        this.verifyPreserved(r);
+        if (r.kind === "worktree") {
+          const registration = worktrees(this.config.canonical).find((w) => same(w.path, r.path));
+          if (!registration || registration.head !== r.head) fail("RECOVERY_GIT_REGISTRATION_CHANGED");
+          if (!literalExists(path.join(r.path, ".git")))
+            fs.writeFileSync(path.join(r.path, ".git"), r.retirement.gitPointer, { flag: "wx" });
+        }
+        this.marker(r);
+        this.receipt(r, "OWNERSHIP_MARKER_RECOVERED", { rootIdentity: r.retirement.rootIdentity });
+      }
       this.assertOwner(r);
       if (r.lease && r.lease.expiresAt > this.clock()) fail("ACTIVE_LEASE");
       if (!r.outcome) {
@@ -1067,11 +1186,15 @@ export class Lifecycle {
       if (signature(final.storage) !== signature(audit.storage)) fail("CONTENT_CHANGED_DURING_PREFLIGHT");
       r.eligible = true;
       r.state = "RETIRING";
-      r.retirement = {
+      const identity = fs.statSync(r.path, { bigint: true });
+      r.retirement ??= {
         startedAt: now(),
         freeBefore: this.guard({ C: 0, D: 0 }),
         beforeLogicalBytes: audit.storage.logicalBytes,
+        rootIdentity: { dev: identity.dev.toString(), ino: identity.ino.toString() },
+        gitPointer: r.kind === "worktree" ? fs.readFileSync(path.join(r.path, ".git"), "utf8") : null,
       };
+      r.retirement.markerReleaseRecorded = true;
       this.save();
       this.generatedCleanup(r, audit);
       // Git and native unlink never traverse reparse targets.
@@ -1135,6 +1258,7 @@ export class Lifecycle {
     return this.transaction(() => this.reconcile(this.record(id)));
   }
   sweep({ limit = 4, recoverOnly = false } = {}) {
+    if (!Number.isSafeInteger(limit) || limit < 1 || limit > 20) fail("INVALID_SWEEP_LIMIT");
     return this.transaction(() => {
       for (const w of worktrees(this.config.canonical).filter((w) => !same(w.path, this.config.canonical))) {
         if (!this.db.records.some((r) => same(r.path, w.path) && r.state !== "RETIRED"))
@@ -1162,6 +1286,7 @@ export class Lifecycle {
           (!r.lease || r.lease.expiresAt <= this.clock()) &&
           (!r.hold || r.hold.nextAttemptAt <= this.clock()),
       );
+      candidates.sort((a, b) => String(a.lastCleanup?.at ?? "").localeCompare(String(b.lastCleanup?.at ?? "")));
       const results = [];
       for (const r of candidates.slice(0, Math.min(limit, 20))) {
         if (r.state === "CREATING") {

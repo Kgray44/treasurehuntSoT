@@ -2103,3 +2103,4 @@ test("generic browser credentials are ephemeral and restricted to the isolated p
     assert.deepEqual(isolatedBrowserFixtureCredentials(profile), {});
 });
 import "./experience-checkout-recovery.test.mjs";
+import "../workspaces/lifecycle.test.mjs";

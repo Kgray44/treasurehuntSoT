@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import {
   Lifecycle,
   POLICY,
@@ -439,4 +439,86 @@ test("historical source smoke reads real landed manifests without claiming a pro
   assert.equal(proof.kind, "historical-landed-source-integrity");
   assert.equal(proof.functionalProductRetest, false);
   assert.equal(proof.manifests.length, 2);
+});
+test("binary evidence in a squash merge is verified through actual Git object identities", (t) => {
+  const f = fixture(t);
+  const r = f.create();
+  fs.writeFileSync(path.join(r.path, "synthetic-evidence.bin"), Buffer.alloc(1024 ** 2));
+  git(r.path, ["add", "synthetic-evidence.bin"]);
+  git(r.path, ["commit", "-m", "synthetic binary evidence"]);
+  f.merge(r, "squash");
+  const result = f.manager.finish(r.id, "completed", 2);
+  assert.equal(result.state, "RETIRED", result.hold?.reason);
+  assert.equal(result.merge.method, "squash");
+});
+test("ambient Git context cannot redirect workspace creation into canonical main", (t) => {
+  const f = fixture(t);
+  const previous = process.env.GIT_WORK_TREE;
+  try {
+    process.env.GIT_WORK_TREE = f.main;
+    assert.throws(() => f.create("redirected"), /GIT_CONTEXT_OVERRIDE_DENIED:GIT_WORK_TREE/u);
+    assert.equal(fs.existsSync(path.join(f.root, "redirected")), false);
+    assert.equal(fs.readFileSync(path.join(f.main, "source.txt"), "utf8"), "original\n");
+  } finally {
+    if (previous === undefined) delete process.env.GIT_WORK_TREE;
+    else process.env.GIT_WORK_TREE = previous;
+  }
+});
+test("nested generated paths cannot traverse an ancestor junction", (t) => {
+  const f = fixture(t);
+  const r = f.create("nested", { generated: ["node_modules/cache"] });
+  const shared = path.join(f.root, "outside-owned-root");
+  fs.mkdirSync(shared);
+  fs.mkdirSync(path.join(shared, "cache"));
+  fs.writeFileSync(path.join(shared, "cache", "keep"), "shared target survives");
+  fs.symlinkSync(shared, path.join(r.path, "node_modules"), process.platform === "win32" ? "junction" : "dir");
+  assert.match(f.manager.finish(r.id, "completed").hold.reason, /REPARSE_ANCESTOR/u);
+  assert.equal(fs.readFileSync(path.join(shared, "cache", "keep"), "utf8"), "shared target survives");
+});
+test(
+  "a real process with only an inherited workspace cwd is protected before generated cleanup",
+  { skip: process.platform !== "win32" },
+  async (t) => {
+    const f = fixture(t, { processes: windowsProcesses });
+    const r = f.create();
+    fs.mkdirSync(path.join(r.path, "node_modules"));
+    fs.writeFileSync(path.join(r.path, "node_modules", "keep"), "active output");
+    const child = spawn(process.execPath, ["-e", "console.log('READY');setInterval(()=>{},1000)"], {
+      cwd: r.path,
+      windowsHide: true,
+      stdio: ["ignore", "pipe", "ignore"],
+    });
+    t.after(() => child.kill());
+    await new Promise((resolve) => child.stdout.once("data", resolve));
+    const result = f.manager.finish(r.id, "completed");
+    assert.match(result.hold.reason, /ROOT_HANDLE_BUSY_WIN32/u);
+    assert.equal(fs.readFileSync(path.join(r.path, "node_modules", "keep"), "utf8"), "active output");
+    const exited = new Promise((resolve) => child.once("exit", resolve));
+    child.kill();
+    await exited;
+    assert.equal(f.manager.retire(r.id).state, "RETIRED");
+  },
+);
+test("an actual worker crash after marker removal recovers the same directory and preserved evidence", (t) => {
+  const f = fixture(t);
+  const r = f.create();
+  const moduleUrl = new URL("../../scripts/workspaces/lifecycle.mjs", import.meta.url).href;
+  const script = `import {Lifecycle,GiB} from ${JSON.stringify(moduleUrl)}; const m=new Lifecycle(process.env.VW_TEST_STATE,{guard:()=>({allowed:true,cFreeBytes:100*GiB,dFreeBytes:100*GiB}),estimate:(_,bytes)=>({C:0,D:bytes}),processes:()=>[],authority:{refresh(){}},removeWorktree:()=>process.exit(23)});m.finish(process.env.VW_TEST_ID,"completed");`;
+  const worker = spawnSync(process.execPath, ["--input-type=module", "-e", script], {
+    cwd: f.root,
+    env: { ...process.env, VW_TEST_STATE: f.state, VW_TEST_ID: r.id },
+    encoding: "utf8",
+    windowsHide: true,
+    timeout: 60000,
+  });
+  assert.equal(worker.status, 23, worker.stderr);
+  assert.equal(fs.existsSync(path.join(r.path, marker)), false);
+  const restarted = new Lifecycle(f.state, f.dependencies);
+  const result = restarted.sweep({ recoverOnly: true })[0];
+  assert.equal(result.state, "RETIRED", result.hold?.reason);
+  assert.equal(fs.existsSync(r.path), false);
+});
+test("invalid sweep limits fail before resource mutation", (t) => {
+  const f = fixture(t);
+  for (const limit of [-1, 0, 21, NaN]) assert.throws(() => f.manager.sweep({ limit }), /INVALID_SWEEP_LIMIT/u);
 });
