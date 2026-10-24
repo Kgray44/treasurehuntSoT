@@ -331,9 +331,9 @@ function communityJourneyContext(contract, journey, device, motionMode, role) {
     return { step, index, applicable: true };
   });
   if (
-    substitutions.length !== 3 ||
+    ![3, 4].includes(substitutions.length) ||
     substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_NAME").length !== 1 ||
-    substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME").length !== 1 ||
+    ![1, 2].includes(substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME").length) ||
     substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME").length !== 1
   )
     fail("JOURNEY_SYNTHETIC_NAME_INVALID");
