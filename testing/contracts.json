@@ -9952,8 +9952,7 @@
               {
                 "action": "click",
                 "kind": "navigation",
-                "role": "button",
-                "name": "View & audio",
+                "nativeSummary": "View & audio",
                 "devices": [
                   "MOBILE"
                 ]
@@ -10015,8 +10014,7 @@
               {
                 "action": "click",
                 "kind": "navigation",
-                "role": "button",
-                "name": "View & audio",
+                "nativeSummary": "View & audio",
                 "devices": [
                   "MOBILE"
                 ]
