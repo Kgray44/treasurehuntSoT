@@ -16,7 +16,6 @@ function studio(value: string, localizationKey: string): CopyEntry {
 export const studioCopy = {
   studioName: studio("Voyagewright Studio", "studio.product.name"),
   createChronicle: studio("Create Chronicle", "studio.action.createChronicle"),
-  createFirstChronicle: studio("Create your first Chronicle", "studio.action.createFirstChronicle"),
   editChronicle: studio("Edit Chronicle", "studio.action.editChronicle"),
   duplicateChronicle: studio("Duplicate Chronicle", "studio.action.duplicateChronicle"),
   archiveChronicle: studio("Archive Chronicle", "studio.action.archiveChronicle"),

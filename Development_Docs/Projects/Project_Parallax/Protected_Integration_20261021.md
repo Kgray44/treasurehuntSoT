@@ -93,14 +93,20 @@ server trees and streams, proxy, and ports completed owned cleanup. The failed
 capture and its two small provider-hash-verified diagnostic archives are retained
 as nonaccepting evidence; no independent rendered review was performed.
 
-The empty-state shortcut now reads `Create your first Chronicle` through the
-canonical Studio copy registry. The existing navigation action and both creation
+The empty-state shortcut now reads `Create your first Chronicle` alongside its
+existing contextual heading and detail. The canonical navigation action and both creation
 destinations are preserved. A real-component negative control reproduced the
 two-link ambiguity on the old source; the corrected empty and populated library
 checks and existing copy checks pass (four tests). The governed contract, journey
 steps, outcomes, privacy checks, unsaved-draft return, and motion requirements
 remain unchanged. This narrow proof did not rebuild the application or rebind an
 old prepared manifest. Fresh whole-capture and protected acceptance remain open.
+
+The first planning attempt for this repair on `adf281ed` rejected an unregistered
+`StudioStatusHeader` surface: adding a shared Studio copy-registry entry broadened
+the transitive consumer scope. The shortcut text is therefore local to its
+existing empty-state component, and the shared copy registry remains unchanged.
+The failed plan is preserved; no contract or required surface was suppressed.
 
 # Accepted-main reconciliation
 
