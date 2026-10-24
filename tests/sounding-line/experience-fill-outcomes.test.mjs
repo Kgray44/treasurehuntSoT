@@ -40,8 +40,17 @@ test(
       byId('home-link').onclick=event=>{event.preventDefault();window.returnedDraft={display:byId('display').value};show('home','/');};
       </script></body></html>`);
     });
+    let browser;
+    t.after(async () => {
+      try {
+        await browser?.close();
+      } finally {
+        server.closeAllConnections();
+        if (server.listening) await new Promise((resolve) => server.close(resolve));
+      }
+    });
     await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
-    const browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true });
     const base = `http://127.0.0.1:${server.address().port}`;
     const navigation = {
       id: "workspace-creation-draft-return",
@@ -109,58 +118,52 @@ test(
         await context.close();
       }
     };
-    try {
-      for (const device of ["DESKTOP", "MOBILE"]) {
-        for (const motionMode of ["NORMAL", "REDUCED"]) {
-          await t.test(`navigation and consecutive fills ${device} ${motionMode}`, async () => {
-            const observed = await run(navigation, "/studio/library", device, motionMode);
-            assert.equal(observed.result.result.status, "PASS");
-            assert.equal(observed.result.result.returnPathVerified, true);
-            assert.equal(observed.result.captures.length, 1);
-            assert.deepEqual(observed.draft, {
-              title: "Unsaved compatibility draft",
-              description: "A second local field",
-            });
+    for (const device of ["DESKTOP", "MOBILE"]) {
+      for (const motionMode of ["NORMAL", "REDUCED"]) {
+        await t.test(`navigation and consecutive fills ${device} ${motionMode}`, async () => {
+          const observed = await run(navigation, "/studio/library", device, motionMode);
+          assert.equal(observed.result.result.status, "PASS");
+          assert.equal(observed.result.result.returnPathVerified, true);
+          assert.equal(observed.result.captures.length, 1);
+          assert.deepEqual(observed.draft, {
+            title: "Unsaved compatibility draft",
+            description: "A second local field",
           });
-          await t.test(`fill-only feedback ${device} ${motionMode}`, async () => {
-            const observed = await run(typing, "/account/personal-information", device, motionMode);
-            assert.equal(observed.result.result.status, "PASS");
-            assert.equal(observed.result.result.returnPathVerified, true);
-            assert.equal(observed.result.captures.length, 1);
-            assert.deepEqual(observed.draft, { display: "Unsaved motion compatibility draft" });
-          });
-        }
+        });
+        await t.test(`fill-only feedback ${device} ${motionMode}`, async () => {
+          const observed = await run(typing, "/account/personal-information", device, motionMode);
+          assert.equal(observed.result.result.status, "PASS");
+          assert.equal(observed.result.result.returnPathVerified, true);
+          assert.equal(observed.result.captures.length, 1);
+          assert.deepEqual(observed.draft, { display: "Unsaved motion compatibility draft" });
+        });
       }
-      await t.test("pre-existing navigation outcome remains rejected through fills", async () => {
-        await assert.rejects(
-          () => run(navigation, "/studio/library?mode=already-form"),
-          /ACTION_OUTCOME_NOT_OBSERVED.*before-true:after-true/u,
-        );
-      });
-      await t.test("pre-existing typing feedback remains rejected", async () => {
-        await assert.rejects(
-          () => run(typing, "/account/personal-information?mode=already-feedback"),
-          /ACTION_OUTCOME_NOT_OBSERVED.*before-true:after-true/u,
-        );
-      });
-      await t.test("a later click starts its own causal group", async () => {
-        const changed = structuredClone(navigation);
-        changed.steps.splice(3, 0, { action: "click", role: "link", name: "Keep form" });
-        await assert.rejects(
-          () => run(changed, "/studio/library"),
-          /ACTION_OUTCOME_NOT_OBSERVED.*before-true:after-true/u,
-        );
-      });
-      await t.test("typing without promised feedback remains rejected", async () => {
-        await assert.rejects(
-          () => run(typing, "/account/personal-information?mode=missing-feedback"),
-          /ACTION_OUTCOME_NOT_OBSERVED.*after-false/u,
-        );
-      });
-    } finally {
-      await browser.close();
-      server.closeAllConnections();
-      await new Promise((resolve) => server.close(resolve));
     }
+    await t.test("pre-existing navigation outcome remains rejected through fills", async () => {
+      await assert.rejects(
+        () => run(navigation, "/studio/library?mode=already-form"),
+        /ACTION_OUTCOME_NOT_OBSERVED.*before-true:after-true/u,
+      );
+    });
+    await t.test("pre-existing typing feedback remains rejected", async () => {
+      await assert.rejects(
+        () => run(typing, "/account/personal-information?mode=already-feedback"),
+        /ACTION_OUTCOME_NOT_OBSERVED.*before-true:after-true/u,
+      );
+    });
+    await t.test("a later click starts its own causal group", async () => {
+      const changed = structuredClone(navigation);
+      changed.steps.splice(3, 0, { action: "click", role: "link", name: "Keep form" });
+      await assert.rejects(
+        () => run(changed, "/studio/library"),
+        /ACTION_OUTCOME_NOT_OBSERVED.*before-true:after-true/u,
+      );
+    });
+    await t.test("typing without promised feedback remains rejected", async () => {
+      await assert.rejects(
+        () => run(typing, "/account/personal-information?mode=missing-feedback"),
+        /ACTION_OUTCOME_NOT_OBSERVED.*after-false/u,
+      );
+    });
   },
 );
