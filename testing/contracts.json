@@ -9955,20 +9955,20 @@
                 "name": "Edit room features"
               },
               {
+                "action": "click",
+                "role": "button",
+                "name": "Open spatial context"
+              },
+              {
                 "action": "assert",
                 "role": "region",
-                "name": "Room feature editor",
+                "name": "Room spatial context",
                 "text": "Editable authoring geometry",
                 "path": "/studio/parallax",
                 "state": "ROOM_EDIT_READY",
                 "kind": "outcome",
                 "meaning": "Editable authoring geometry",
                 "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Add room features"
               },
               {
                 "action": "click",
