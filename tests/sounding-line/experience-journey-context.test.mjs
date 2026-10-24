@@ -2855,3 +2855,103 @@ test("ROOM native disclosure preserves no-op Save, already-true Save and lost ge
     assert.equal(f.reloads.length, 1);
   }
 });
+
+// Pure resolver models: the second inspection represents return-to-source
+// reinspection. These models do not prove Profile UI, native DOM or capture.
+test("Community permits one bounded reinspection of the same per-context saved Scene", async () => {
+  const journey = structuredClone(communityJourney);
+  journey.steps.splice(13, 0, structuredClone(journey.steps[11]));
+  const retained = structuredClone(journey);
+  const catalog = [];
+  for (const device of ["DESKTOP", "MOBILE"]) {
+    const f = communityFixture(catalog, device);
+    const result = await runExperienceJourney({
+      page: f.page,
+      contract: communityContract,
+      journey,
+      device,
+      motionMode: "REDUCED",
+      role: "CREATOR",
+    });
+    const expected = "Community review Scene " + device + " REDUCED";
+    const substitutions = result.result.stepContext.substitutions;
+    assert.equal(result.result.status, "PASS");
+    assert.equal(substitutions.length, 4);
+    assert.deepEqual(
+      substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME"),
+      [11, 13].map((step) => ({
+        step,
+        field: "name",
+        token: "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME",
+        value: "Inspect " + expected,
+      })),
+    );
+    assert.equal(f.state.selected, expected);
+    assert.equal(catalog.filter((row) => row.name === expected).length, 1);
+    assert.equal(f.state.path, "/studio/library");
+    assert.equal(f.state.publishing, false);
+  }
+  assert.deepEqual(journey, retained);
+});
+
+test("Community bounded reinspection rejects missing or third inspection and malformed scope before UI", async () => {
+  const valid = structuredClone(communityJourney);
+  valid.steps.splice(13, 0, structuredClone(valid.steps[11]));
+  const mutations = [
+    (x) => {
+      x.journey.steps = x.journey.steps.filter((step) => step.contextName !== "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME");
+    },
+    (x) => {
+      x.journey.steps.splice(14, 0, structuredClone(x.journey.steps[11]));
+    },
+    (x) => {
+      x.journey.steps[13].name = "Inspect another Scene";
+    },
+    (x) => {
+      x.journey.steps[13].role = "link";
+    },
+    (x) => {
+      x.journey.steps[13].action = "assert";
+    },
+    (x) => {
+      x.journey.steps[13].contextName = "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME";
+    },
+    (x) => {
+      x.journey.steps[13].contextText = "PARALLAX_COMMUNITY_SCENE_NAME";
+    },
+    (x) => {
+      x.journey.steps[13].devices = ["MOBILE"];
+    },
+    (x) => {
+      x.contract.id = "unrelated";
+    },
+    (x) => {
+      x.journey.id = "unrelated";
+    },
+    (x) => {
+      x.role = "PLAYER";
+    },
+    (x) => {
+      x.device = "TABLET";
+    },
+    (x) => {
+      x.motionMode = "NORMAL";
+    },
+  ];
+  for (const mutation of mutations) {
+    const input = {
+      contract: structuredClone(communityContract),
+      journey: structuredClone(valid),
+      role: "CREATOR",
+      device: "DESKTOP",
+      motionMode: "REDUCED",
+    };
+    mutation(input);
+    const f = communityFixture([], "DESKTOP");
+    await assert.rejects(
+      runExperienceJourney({ page: f.page, ...input }),
+      /JOURNEY_CONTEXT|JOURNEY_NAVIGATION_CONDITION|JOURNEY_SYNTHETIC_NAME/u,
+    );
+    assert.deepEqual(f.calls, []);
+  }
+});
