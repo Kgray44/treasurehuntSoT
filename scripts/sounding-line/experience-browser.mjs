@@ -291,15 +291,21 @@ export async function runExperienceJourney({
     } else {
       const target = page.getByRole(step.role, { name: step.name, exact: true });
       await target.waitFor({ state: "visible" });
-      if (step.action === "click") {
-        actionPredicates = new Map();
+      if (step.action === "click" || step.action === "fill") {
+        // A navigation followed by typing is one declared action group. Keep
+        // its pre-navigation predicates through consecutive fills, while a
+        // fill without a preceding click records its own before-state.
+        if (step.action === "click") actionPredicates = new Map();
         for (let following = index + 1; following < contextual.steps.length; following++) {
           const entry = contextual.steps[following];
           if (!entry.applicable) continue;
           const predicate = entry.step;
-          if (predicate.action === "click" || predicate.action === "fill") break;
-          if (predicate.action === "assert") actionPredicates.set(following, await predicateSatisfied(predicate));
+          if (predicate.action === "click") break;
+          if (predicate.action === "assert" && !actionPredicates.has(following))
+            actionPredicates.set(following, await predicateSatisfied(predicate));
         }
+      }
+      if (step.action === "click") {
         let reachable = await target.evaluate((element) => element === document.activeElement);
         for (let attempt = 0; attempt < 128 && !reachable; attempt++) {
           await page.keyboard.press("Tab");
