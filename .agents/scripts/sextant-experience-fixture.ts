@@ -87,8 +87,7 @@ async function main() {
   await seedSextantExperience();
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-resource-consumers-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-resource-consumers-v1",
     )
   ) {
     const { seedSextantResourceExperiences } = await import("./sextant-resource-fixtures");
@@ -96,8 +95,7 @@ async function main() {
   }
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-community-consumers-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-community-consumers-v1",
     )
   ) {
     const { seedSextantCommunityExperience } = await import("./sextant-community-fixture");
@@ -105,8 +103,7 @@ async function main() {
   }
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-history-consumers-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-history-consumers-v1",
     )
   ) {
     const { seedSextantHistoryPresentation } = await import("./sextant-history-fixture");
@@ -114,8 +111,7 @@ async function main() {
   }
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-creator-entry-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-creator-entry-v1",
     )
   ) {
     const { seedSextantResourceExperiences } = await import("./sextant-resource-fixtures");
@@ -123,8 +119,7 @@ async function main() {
   }
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-catalog-consumers-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-catalog-consumers-v1",
     )
   ) {
     const { seedSextantCatalogExperience } = await import("./sextant-catalog-fixture");
@@ -132,8 +127,7 @@ async function main() {
   }
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-admiralty-consumers-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-admiralty-consumers-v1",
     )
   ) {
     const { seedSextantAdmiraltyExperience } = await import("./sextant-admiralty-fixture");
@@ -159,8 +153,7 @@ async function main() {
   }
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-invitation-consumers-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-invitation-consumers-v1",
     )
   ) {
     const { seedSextantInvitationBase } = await import("./sextant-invitation-fixture");
@@ -168,8 +161,7 @@ async function main() {
   }
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-landfall-consumers-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-landfall-consumers-v1",
     )
   ) {
     const { seedSextantLandfallExperience } = await import("./sextant-landfall-fixture");
@@ -177,8 +169,7 @@ async function main() {
   }
   if (
     plan.contracts.some(
-      (entry: { experience?: { fixture?: string } }) =>
-        entry.experience?.fixture === "sextant-display-pilot-entry-v1",
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-display-pilot-entry-v1",
     )
   ) {
     const { seedSextantEntryExperience } = await import("./sextant-entry-fixture");
@@ -251,11 +242,7 @@ export async function seedSextantExperience() {
       createHash("sha256").update(version.contentSnapshot).digest("hex") !== version.checksum
     )
       throw new Error("SEXTANT_EXISTING_FIXTURE_IDENTITY_MISMATCH");
-    await verifyOnlyChronicle(
-      accountId,
-      { voyageId: voyage.id, taleId: tale.id, versionId: version.id },
-      now,
-    );
+    await verifyOnlyChronicle(accountId, { voyageId: voyage.id, taleId: tale.id, versionId: version.id }, now);
     return {
       accountId,
       voyageId: voyage.id,
@@ -353,11 +340,7 @@ export async function seedSextantExperience() {
   );
   const persisted = await db.chronicle.findUniqueOrThrow({ where: { id: voyage.taleId } });
   if (persisted.slug !== snapshot.tale.slug) throw new Error("SEXTANT_SYNTHETIC_ROUTE_IDENTITY_MISMATCH");
-  await verifyOnlyChronicle(
-    accountId,
-    { voyageId: voyage.id, taleId: voyage.taleId, versionId: version.id },
-    now,
-  );
+  await verifyOnlyChronicle(accountId, { voyageId: voyage.id, taleId: voyage.taleId, versionId: version.id }, now);
   process.stdout.write("SEXTANT_SYNTHETIC_EXPERIENCE_FIXTURE_READY\n");
   return {
     accountId,
@@ -373,9 +356,7 @@ if (
 )
   main()
     .catch((error: unknown) => {
-      process.stderr.write(
-        `${error instanceof Error ? error.message : "Synthetic fixture preparation failed"}\n`,
-      );
+      process.stderr.write(`${error instanceof Error ? error.message : "Synthetic fixture preparation failed"}\n`);
       process.exitCode = 1;
     })
     .finally(() => db.$disconnect());
