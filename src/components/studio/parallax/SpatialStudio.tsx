@@ -4811,7 +4811,7 @@ export function SpatialStudio({
           </section>
           <section hidden={activeInspectorView !== "SCENE"} aria-label="Library, reuse & publication">
             <details key={`scene-library-${mode}`} className={styles.inspectorSection} open={mode !== "GUIDED"}>
-              <summary>Library, reuse &amp; publication</summary>
+              <summary role="button">Library, reuse &amp; publication</summary>
               {currentEntity && !groupActive && !selectedRoomFeature && !roomEditing && (
                 <SaveSpatialAsset
                   key={currentEntity.id}

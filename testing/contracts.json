@@ -9716,14 +9716,19 @@
               },
               {
                 "action": "click",
-                "role": "group",
+                "role": "button",
+                "name": "Open scene settings"
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "Library, reuse & publication"
               },
               {
                 "action": "fill",
                 "role": "textbox",
                 "name": "Asset name",
-                "value": "Reusable review clue"
+                "contextValue": "PARALLAX_REUSABLE_ASSET_NAME"
               },
               {
                 "action": "click",
@@ -9755,17 +9760,19 @@
                 "action": "fill",
                 "role": "searchbox",
                 "name": "Search assets",
-                "value": "Reusable review clue"
+                "contextValue": "PARALLAX_REUSABLE_ASSET_NAME"
               },
               {
                 "action": "click",
                 "role": "button",
-                "name": "Inspect Reusable review clue"
+                "name": "Inspect PARALLAX_REUSABLE_ASSET_NAME",
+                "contextName": "PARALLAX_REUSABLE_ASSET_INSPECT_NAME"
               },
               {
                 "action": "assert",
                 "role": "complementary",
-                "name": "Reusable review clue details",
+                "name": "PARALLAX_REUSABLE_ASSET_NAME details",
+                "contextName": "PARALLAX_REUSABLE_ASSET_DETAILS_NAME",
                 "text": "Private Library",
                 "state": "LIBRARY_READY",
                 "path": "/studio/parallax",

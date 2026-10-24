@@ -453,6 +453,10 @@ it("keeps selection and scene truth while the three Inspector destinations chang
   expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
   expect(inspector.getByRole("heading", { name: "Guided fallback" })).toBeVisible();
   const library = inspector.getByRole("region", { name: "Library, reuse & publication" });
+  const disclosure = within(library).getByRole("button", { name: "Library, reuse & publication" });
+  expect(disclosure.tagName).toBe("SUMMARY");
+  disclosure.focus();
+  expect(disclosure).toHaveFocus();
   expect(library.querySelector("details")).not.toHaveAttribute("open");
   expect(inspector.getByRole("textbox", { name: "Experience title" })).toBeVisible();
   fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
