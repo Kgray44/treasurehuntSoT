@@ -16,6 +16,7 @@ last_reviewed: 2026-10-21
 - [Programs](Programs/) — grouped project and program records.
 - [Architecture decisions](Architecture_Decisions/) — durable technical decisions.
 - [Engineering](Engineering/) — repository operations, documentation guidance, and current status references.
+- [Workspace lifecycle](Engineering/Workspace_Lifecycle/Implementation_Record.md) — storage admission, preservation, retirement, and host reconciliation evidence.
 - [Testing](Testing/) and [Validation](Validation/) — test plans, ledgers, audits, and validation evidence.
 - [Migrations](Migrations/) — migration, rollback, and compatibility records.
 - [Completion receipts](Completion_Receipts/) — accepted implementation receipts.
