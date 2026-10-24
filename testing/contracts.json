@@ -10043,7 +10043,7 @@
               },
               {
                 "action": "assert",
-                "role": "main",
+                "role": "status",
                 "name": "",
                 "text": "Working draft saved",
                 "path": "/studio/parallax",
