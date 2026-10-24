@@ -1,10 +1,45 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: awaiting-capture-authorization
+status: current
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-23
 ---
+
+# Current emergency continuation
+
+The ordinary protected capture [40056411611](https://github.com/Kgray44/treasurehuntSoT/actions/runs/40056411611)
+ran candidate `213aa59c2a25af3e2dffd52394fd395f1f544b10` against accepted main
+`db7f17666e49a126d794252587aab1c0207af8e5`. Its authoritative plan retained
+32 contracts and 118 contexts, including six paired contexts. The cloud plan
+matches the frozen local plan byte for byte (SHA-256
+`4c269d0495ad6626db52707a550624475abfeec8029e2f5ef08f2634a767881c`).
+All four SC02 desktop/mobile, normal/reduced contexts passed in that run.
+
+The whole capture failed during the initial identity-continuity observation for
+`homeport.community.quarantine`, Desktop Administrator Reduced. The contract
+expected the account-menu button used by Homeport. Admin intentionally renders
+its own canonical operator identity and no such button; its responsive CSS also
+hid that operator identity below 52rem. This failure is separate from the repaired
+SC02 journey and from preparation failures. Browser execution took 594,726 ms;
+browser/server trees, streams, proxy and ports completed cleanup successfully.
+The original failed run and its provider archives remain nonaccepting evidence.
+Only the two small JSON diagnostic archives were downloaded for this diagnosis.
+
+The scoped repair names the existing identity containers in both shells as
+noninteractive groups using their canonical account labels and keeps the Admin
+operator visible in a wrapping mobile masthead row. It changes the five affected
+continuity selectors to those identity groups and registers the actual shared
+Admin stylesheet with the six existing Admin experience contracts. Existing
+account-menu actions, all journey steps and outcomes, return paths, continuity
+values and motion checks remain required. An exact ten-context focused consumer
+will replay the five affected journeys on desktop and mobile before a new full
+capture. This paragraph records implementation scope, not a browser pass.
+
+Independent rendered review 3 remains unperformed. A fresh source-bound capture,
+media review, authenticated submission, ordinary protected qualification, normal
+merge and landed product smoke are still required. The earlier entries below
+retain their original producing identities and authorization history.
 
 # Accepted-main reconciliation
 

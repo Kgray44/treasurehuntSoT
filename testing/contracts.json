@@ -1378,7 +1378,7 @@
         "designTarget": "Preserve current Admiralty/Community task composition and the accepted shared Homeport identity and return frame.",
         "entryPoint": "/admin/community/parallax-compat-moderation-listing",
         "systems": ["project-admiralty", "harborlight"],
-        "sourcePaths": ["src/components/admiralty/ModerationActionPanel.tsx"],
+        "sourcePaths": ["src/components/admiralty/ModerationActionPanel.tsx", "src/styles/admiralty.css"],
         "projectionPaths": [
           "src/admiralty/projections.ts",
           "src/admiralty/investigation.ts",
@@ -1519,7 +1519,7 @@
           "checks": [
             {
               "id": "visible-account-identity",
-              "role": "button",
+              "role": "group",
               "name": "Synthetic Parallax Operator",
               "attribute": "aria-label"
             }
@@ -5430,7 +5430,8 @@
           "src/components/admiralty/AIQuotaUserPanel.tsx",
           "src/app/admin/ai-usage",
           "src/app/admin/people",
-          "src/components/admiralty/AIQuotaOverrides.tsx"
+          "src/components/admiralty/AIQuotaOverrides.tsx",
+          "src/styles/admiralty.css"
         ],
         "projectionPaths": ["src/parallax/ai-quota-projections.ts"],
         "entryPoint": "/admin/ai-usage",
@@ -5732,7 +5733,8 @@
           "src/app/admin/providers/page.tsx",
           "src/app/admin/releases/page.tsx",
           "src/app/admin/investigate/page.tsx",
-          "src/components/admiralty/AdmiraltyShell.tsx"
+          "src/components/admiralty/AdmiraltyShell.tsx",
+          "src/styles/admiralty.css"
         ],
         "projectionPaths": [
           "src/admiralty/projections.ts",
@@ -5923,7 +5925,7 @@
           "checks": [
             {
               "id": "visible-account-identity",
-              "role": "button",
+              "role": "group",
               "name": "Synthetic Parallax Operator",
               "attribute": "aria-label"
             }
@@ -5951,7 +5953,8 @@
         "sourcePaths": [
           "src/app/admin/people/page.tsx",
           "src/components/admiralty/DossierSupportPanel.tsx",
-          "src/components/admiralty/AdmiraltyConsole.tsx"
+          "src/components/admiralty/AdmiraltyConsole.tsx",
+          "src/styles/admiralty.css"
         ],
         "projectionPaths": [
           "src/admiralty/projections.ts",
@@ -6111,7 +6114,7 @@
           "checks": [
             {
               "id": "visible-account-identity",
-              "role": "button",
+              "role": "group",
               "name": "Synthetic Parallax Operator",
               "attribute": "aria-label"
             }
@@ -6145,7 +6148,8 @@
         "systems": ["project-admiralty", "harborlight"],
         "sourcePaths": [
           "src/app/admin/operations/page.tsx",
-          "src/components/admiralty/CommunityOutboxLeaseRecoveryPanel.tsx"
+          "src/components/admiralty/CommunityOutboxLeaseRecoveryPanel.tsx",
+          "src/styles/admiralty.css"
         ],
         "projectionPaths": [
           "src/admiralty/projections.ts",
@@ -6264,7 +6268,7 @@
           "checks": [
             {
               "id": "visible-account-identity",
-              "role": "button",
+              "role": "group",
               "name": "Synthetic Parallax Operator",
               "attribute": "aria-label"
             }
@@ -6298,7 +6302,8 @@
         "systems": ["project-admiralty", "harborlight"],
         "sourcePaths": [
           "src/app/admin/configuration/page.tsx",
-          "src/components/admiralty/CommunityOutboxRuntimePolicyPanel.tsx"
+          "src/components/admiralty/CommunityOutboxRuntimePolicyPanel.tsx",
+          "src/styles/admiralty.css"
         ],
         "projectionPaths": [
           "src/admiralty/projections.ts",
@@ -6423,7 +6428,7 @@
           "checks": [
             {
               "id": "visible-account-identity",
-              "role": "button",
+              "role": "group",
               "name": "Synthetic Parallax Operator",
               "attribute": "aria-label"
             }
