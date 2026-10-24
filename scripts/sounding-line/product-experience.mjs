@@ -239,6 +239,84 @@ function matches(file, prefixes) {
   return prefixes.some((prefix) => file === prefix || file.startsWith(prefix.endsWith("/") ? prefix : prefix + "/"));
 }
 
+// Reload is a single saved-Scene proof step, not a general navigation action.
+export function validateRoomReloadJourney(contract, journey) {
+  const reloads = journey.steps.flatMap((step, index) => (step.action === "reload" ? [index] : []));
+  if (!reloads.length) return null;
+  const experience = contract.experience;
+  if (
+    contract.id !== "parallax.parametric-room-correction.experience" ||
+    journey.id !== "creator-adds-generic-room-feature-and-saves" ||
+    experience.roles?.length !== 1 ||
+    experience.roles[0] !== "CREATOR" ||
+    journey.roles?.length !== 1 ||
+    journey.roles[0] !== "CREATOR" ||
+    experience.devices?.length !== 2 ||
+    !["DESKTOP", "MOBILE"].every((device) => experience.devices.includes(device)) ||
+    !experience.motion
+  )
+    fail("JOURNEY_RELOAD_SCOPE_INVALID");
+  if (reloads.length !== 1 || Object.keys(journey.steps[reloads[0]]).length !== 1) fail("JOURNEY_RELOAD_STEP_INVALID");
+  const containsTemplate = (value) =>
+    typeof value === "string"
+      ? /\{\{|\}\}/u.test(value)
+      : value && typeof value === "object"
+        ? Object.values(value).some(containsTemplate)
+        : false;
+  if (
+    journey.steps.some(
+      (step) =>
+        Object.keys(step).some((key) => ["devices", "when"].includes(key) || key.startsWith("context")) ||
+        containsTemplate(step),
+    )
+  )
+    fail("JOURNEY_RELOAD_STEP_INVALID");
+  return { index: reloads[0] };
+}
+
+// Confirmation is the existing Scene Manager Save outcome, not a general status selector.
+export function validateSceneSavedConfirmation(contract, journey) {
+  const containsConfirmation = (value) =>
+    value &&
+    typeof value === "object" &&
+    (Object.hasOwn(value, "confirmation") || Object.values(value).some(containsConfirmation));
+  const reserved = journey.steps.flatMap((step, index) => (containsConfirmation(step) ? [index] : []));
+  if (!reserved.length) return null;
+  const experience = contract.experience;
+  if (
+    contract.id !== "parallax.scene-manager.experience" ||
+    journey.id !== "creator-shared-environment-independent-scenes" ||
+    experience.roles?.length !== 1 ||
+    experience.roles[0] !== "CREATOR" ||
+    journey.roles?.length !== 1 ||
+    journey.roles[0] !== "CREATOR" ||
+    experience.devices?.length !== 2 ||
+    !["DESKTOP", "MOBILE"].every((device) => experience.devices.includes(device)) ||
+    !experience.motion
+  )
+    fail("SCENE_SAVE_CONFIRMATION_SCOPE_INVALID");
+  const expected = {
+    action: "assert",
+    role: "region",
+    name: "Active Scene information",
+    text: "The Letter Study",
+    path: "/studio/parallax",
+    state: "RENAMED",
+    kind: "outcome",
+    meaning: "The renamed Scene saves independently.",
+    feedbackBoundary: true,
+    confirmation: "Scene saved.",
+  };
+  const step = journey.steps[reserved[0]];
+  if (
+    reserved.length !== 1 ||
+    Object.keys(step).length !== Object.keys(expected).length ||
+    Object.entries(expected).some(([key, value]) => !Object.hasOwn(step, key) || step[key] !== value)
+  )
+    fail("SCENE_SAVE_CONFIRMATION_STEP_INVALID");
+  return { index: reserved[0] };
+}
+
 export function validateExperienceContract(contract) {
   const experience = contract.experience;
   if (!experience || typeof experience !== "object") fail("CONTRACT_MISSING", contract.id);
@@ -270,10 +348,13 @@ export function validateExperienceContract(contract) {
       fail("CONTRACT_FIELD_INVALID", `${contract.id}.${key}`);
   for (const journey of experience.journeys) {
     if (!journey.id || !meaningful(journey.outcome) || !list(journey.steps)) fail("JOURNEY_INVALID", contract.id);
+    validateRoomReloadJourney(contract, journey);
+    validateSceneSavedConfirmation(contract, journey);
     if (!journey.steps.some((step) => step.action === "click")) fail("NATURAL_JOURNEY_REQUIRED", journey.id);
     if (!journey.steps.some((step) => step.action === "assert" && step.kind === "outcome"))
       fail("SEMANTIC_OUTCOME_REQUIRED", journey.id);
     for (const step of journey.steps) {
+      if (step.action === "reload") continue;
       if (!new Set(["click", "fill", "assert", "keyboard"]).has(step.action))
         fail("JOURNEY_ACTION_INVALID", journey.id);
       if (step.action !== "keyboard" && (!step.role || typeof step.name !== "string"))
