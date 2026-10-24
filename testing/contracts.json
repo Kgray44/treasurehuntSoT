@@ -331,7 +331,11 @@
               },
               {
                 "action": "keyboard",
-                "key": "b"
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
               },
               {
                 "action": "keyboard",
@@ -421,7 +425,15 @@
               },
               {
                 "action": "keyboard",
-                "key": "m"
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
               },
               {
                 "action": "keyboard",

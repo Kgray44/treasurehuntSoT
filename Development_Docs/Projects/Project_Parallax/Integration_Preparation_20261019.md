@@ -1,15 +1,29 @@
 ---
 title: Complete Parallax integration preparation
 audience: product-engineering
-status: integration-preparation-complete
+status: integration-in-progress
 canonical_for: parallax-complete-integration-preparation-20261019
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-23
 ---
 
 # Complete integration candidate
 
-**PARALLAX INTEGRATION CANDIDATE READY.** Local integrated preparation is complete;
-Crossdeck acceptance and normal protected qualification remain required.
+Focused SC02 proof now passes all four desktop/mobile and normal/reduced-motion
+contexts on development source `2133c53b2c874cbcb49b7cddf6902062a3472d37`.
+The [source-bound receipt](evidence/integration-preparation-20261019/receipts/sc02-focused-four-context-20261023.json)
+records the actual browser result, unchanged prepared-build reuse, final source
+and dependency integrity, and owned process/port cleanup. The test verifies a new
+saved four-child composition and an independently editable reused Scene instance,
+including canonical persistence, independent entity IDs and the original outcomes.
+There were no retries, skips or flaky cases. This is development proof; current
+protected capture, independent review and ordinary qualification remain required.
+
+The subsequent registered Source-filter correction uses public Home/arrow keys
+instead of platform-dependent letter matching. All eight current outcome
+assertions remain unchanged. The producing receipt and prepared manifest retain
+their original source identity; neither is rebound to this later registry change.
+Mandatory final-source browser qualification must prove the portable correction.
+The integration records below retain their historical producing commits.
 
 The authoritative owned branch is `codex/parallax-integration-prep-20261019`.
 Initial merge `5e3bf97f243b37ef8a3bfded919887b532d67079` joins protected main
