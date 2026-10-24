@@ -124,6 +124,107 @@ function experienceDiagnostic(startedAt, event, context, { stepIndex, actionKind
   }
 }
 
+function sc02JourneyContext(contract, journey, device, motionMode) {
+  const optedIn = journey.steps.some((step) =>
+    ["devices", "contextValue", "contextName"].some((key) => Object.hasOwn(step, key)),
+  );
+  if (!optedIn)
+    return { steps: journey.steps.map((step, index) => ({ step, index, applicable: true })), evidence: null };
+  const name = `SC02 synthetic composition ${device} ${motionMode}`;
+  const applicability = [];
+  const substitutions = [];
+  const steps = journey.steps.map((source, index) => {
+    const step = { ...source };
+    if (
+      Object.hasOwn(step, "when") ||
+      [
+        step.name,
+        step.value,
+        step.role,
+        step.path,
+        step.text,
+        step.key,
+        step.absentRole?.name,
+        step.expectFocus?.name,
+      ].some((value) => typeof value === "string" && /\{\{|\}\}/u.test(value))
+    )
+      fail("JOURNEY_CONTEXT_FIELD_UNSUPPORTED");
+    const contextual = ["devices", "contextValue", "contextName"].some((key) => Object.hasOwn(step, key));
+    if (!contextual) return { step, index, applicable: true };
+    if (
+      contract.id !== "spatial-pilot.experience" ||
+      journey.id !== "sc02-assets-and-reusable-composition" ||
+      !["DESKTOP", "MOBILE"].includes(device) ||
+      !["NORMAL", "REDUCED"].includes(motionMode)
+    )
+      fail("JOURNEY_CONTEXT_INVALID");
+    let applicable = true;
+    if (Object.hasOwn(step, "devices")) {
+      const navigationName =
+        step.name === "Open object properties" ||
+        /^Filters & view(?: Source, status, sort| [1-6] active)?$/u.test(step.name ?? "");
+      if (
+        step.action !== "click" ||
+        step.role !== "button" ||
+        !navigationName ||
+        !Array.isArray(step.devices) ||
+        step.devices.length < 1 ||
+        step.devices.length > 2 ||
+        new Set(step.devices).size !== step.devices.length ||
+        step.devices.some((d) => !["DESKTOP", "MOBILE"].includes(d)) ||
+        [
+          "state",
+          "feedbackBoundary",
+          "returnPath",
+          "meaning",
+          "path",
+          "text",
+          "absentRole",
+          "contextValue",
+          "contextName",
+        ].some((key) => Object.hasOwn(step, key)) ||
+        (Object.hasOwn(step, "kind") && step.kind !== "navigation")
+      )
+        fail("JOURNEY_NAVIGATION_CONDITION_INVALID");
+      applicable = step.devices.includes(device);
+      applicability.push({ step: index, devices: [...step.devices], applicable });
+    }
+    if (Object.hasOwn(step, "contextValue")) {
+      if (
+        step.contextValue !== "SC02_COMPOSITION_NAME" ||
+        step.action !== "fill" ||
+        Object.hasOwn(step, "value") ||
+        !(
+          (step.role === "textbox" && step.name === "Object name") ||
+          (step.role === "searchbox" && step.name === "Search compositions")
+        )
+      )
+        fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      step.value = name;
+      substitutions.push({ step: index, field: "value", token: step.contextValue, value: name });
+    }
+    if (Object.hasOwn(step, "contextName")) {
+      if (
+        step.contextName !== "SC02_COMPOSITION_INSPECT_NAME" ||
+        step.role !== "button" ||
+        step.action !== "click" ||
+        step.name !== "Inspect SC02_COMPOSITION_NAME"
+      )
+        fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      step.name = "Inspect " + name;
+      substitutions.push({ step: index, field: "name", token: step.contextName, value: step.name });
+    }
+    return { step, index, applicable };
+  });
+  return {
+    steps,
+    evidence:
+      applicability.length || substitutions.length
+        ? { version: 1, device, motionMode, applicability, substitutions }
+        : null,
+  };
+}
+
 // Use semantic visible controls. API setup may provision identities/data; it
 // cannot replace entry, action, destination, or return-path proof.
 export async function runExperienceJourney({
@@ -137,6 +238,9 @@ export async function runExperienceJourney({
   motionMode = "REDUCED",
   accessibilityCheck,
 }) {
+  // Resolve once before any browser interaction. Both loops consume the same
+  // applicability and literals while evidence retains original step indices.
+  const contextual = sc02JourneyContext(contract, journey, device, motionMode);
   const captures = [];
   const observations = [];
   const stateAccessibility = [];
@@ -171,7 +275,8 @@ export async function runExperienceJourney({
     );
   const beforeContinuity = await readContinuity();
   const unobscuredActions = [];
-  for (const [index, step] of journey.steps.entries()) {
+  for (const { index, step, applicable } of contextual.steps) {
+    if (!applicable) continue;
     if (step.action === "keyboard") {
       await page.keyboard.press(step.key);
       if (step.expectFocus) {
@@ -183,8 +288,10 @@ export async function runExperienceJourney({
       await target.waitFor({ state: "visible" });
       if (step.action === "click") {
         actionPredicates = new Map();
-        for (let following = index + 1; following < journey.steps.length; following++) {
-          const predicate = journey.steps[following];
+        for (let following = index + 1; following < contextual.steps.length; following++) {
+          const entry = contextual.steps[following];
+          if (!entry.applicable) continue;
+          const predicate = entry.step;
           if (predicate.action === "click" || predicate.action === "fill") break;
           if (predicate.action === "assert") actionPredicates.set(following, await predicateSatisfied(predicate));
         }
@@ -330,6 +437,7 @@ export async function runExperienceJourney({
       outcome: journey.outcome,
       observations,
       visibleActions,
+      ...(contextual.evidence ? { stepContext: contextual.evidence } : {}),
       ...(unobscuredActions.length ? { unobscuredActions } : {}),
       returnPathVerified,
       status: "PASS",
