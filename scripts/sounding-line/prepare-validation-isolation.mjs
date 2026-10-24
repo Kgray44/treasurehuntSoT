@@ -3,6 +3,7 @@
 import { PrismaClient } from "@prisma/client";
 import path from "node:path";
 import process from "node:process";
+import { execFileSync } from "node:child_process";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
 
 const databaseUrl = process.env.DATABASE_URL ?? "";
@@ -44,3 +45,9 @@ try {
 } finally {
   await prisma.$disconnect();
 }
+
+if (profile === "generic")
+  execFileSync(process.execPath, ["node_modules/tsx/dist/cli.mjs", ".agents/scripts/sextant-experience-fixture.ts"], {
+    stdio: "inherit",
+    windowsHide: true,
+  });
