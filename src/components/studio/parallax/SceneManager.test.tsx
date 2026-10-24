@@ -207,3 +207,27 @@ it("requires deliberate Library membership for a new Environment source while al
   fireEvent.change(dialog.getByRole("combobox", { name: "Scene source" }), { target: { value: "other" } });
   expect(dialog.getByRole("button", { name: "Duplicate Scene" })).toBeEnabled();
 });
+
+it("keeps a keyboard scroll entry while Scene creation disables its controls", async () => {
+  const { props } = setup();
+  let finish!: () => void;
+  const pending = new Promise<void>((resolve) => {
+    finish = resolve;
+  });
+  props.createScene.mockImplementationOnce(() => pending);
+  render(<SceneManager {...props} />);
+  const dialog = manager();
+  fireEvent.change(dialog.getByRole("textbox", { name: "Scene name" }), { target: { value: "Keyboard Scene" } });
+  fireEvent.click(dialog.getByRole("button", { name: "Create Scene from baseline" }));
+  await waitFor(() => expect(props.createScene).toHaveBeenCalledTimes(1));
+  expect(dialog.getByRole("button", { name: "Close Scene Manager" })).toBeDisabled();
+  expect(dialog.getByRole("textbox", { name: "Scene name" })).toBeDisabled();
+  const context = dialog.getByRole("region", { name: "Scene editing context" });
+  expect(context).toHaveAttribute("tabindex", "0");
+  expect(context.tabIndex).toBe(0);
+  context.focus();
+  expect(context).toHaveFocus();
+  expect(context).toHaveTextContent("Editing Scene · independent content");
+  finish();
+  await waitFor(() => expect(dialog.getByRole("button", { name: "Close Scene Manager" })).toBeEnabled());
+});

@@ -2425,6 +2425,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
 
 .wakebook-notice {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
   border: 1px solid rgb(224 184 96 / 42%);
@@ -2435,7 +2436,7 @@ html[data-motion-preference="reduced"] .passport-shell *::after {
 }
 
 .wakebook-notice strong {
-  flex: none;
+  flex: 0 1 auto;
   color: var(--brass-100);
 }
 

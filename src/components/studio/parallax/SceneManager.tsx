@@ -279,7 +279,7 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
           {notice}
         </p>
       )}
-      <div className={styles.mode}>
+      <div className={styles.mode} role="region" aria-label="Scene editing context" tabIndex={0}>
         <strong>Editing Scene · independent content</strong>
         <span>
           Scene objects, transforms, lighting overrides and behaviors save independently. Environment edits open their
