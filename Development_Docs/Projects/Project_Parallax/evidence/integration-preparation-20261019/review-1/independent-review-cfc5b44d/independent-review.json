@@ -1,0 +1,550 @@
+{
+  "schemaVersion": 1,
+  "kind": "LOCAL_INDEPENDENT_PRODUCT_EXPERIENCE_REVIEW",
+  "qualification": false,
+  "candidate": "cfc5b44d031f27a9878febc44d61a6dcebb11f63",
+  "base": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "packetPath": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-cfc5b44d\\packet.json",
+  "packetSha256": "32fa1145d98ca3ba258dc9e3a012f66251aa7fd5d0221e59ac71140f7e75eabb",
+  "reviewerContext": "/root/integrated_experience_review",
+  "builderContext": "/root",
+  "independentContext": true,
+  "inputMethod": "Frozen bounded packet, objective, contracts, accepted reference images and media. No builder rationale used. Experience/media inspected before frozen implementation excerpts. Working-source changes after cfc5b44d were excluded.",
+  "overallDecision": "LOCAL_INTEGRATED_EXPERIENCE_NOT_ACCEPTED",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "blockingFindingIds": [
+    "PX-CFC5-001",
+    "PX-CFC5-002"
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "outcomes": {
+    "tests": 58,
+    "passed": 50,
+    "failed": 8,
+    "failedFile": "tests/e2e/parallax-groups.spec.ts",
+    "source": "Frozen packet outcomes; not a reviewer-run test receipt"
+  },
+  "mediaVerification": {
+    "png": 187,
+    "webm": 65,
+    "total": 252,
+    "sha256Mismatches": 0,
+    "inventory": "inventory.json",
+    "allStillsContactReviewed": true,
+    "nativeStillsInspected": [
+      "M008",
+      "M217",
+      "M125",
+      "M229",
+      "M026",
+      "M128",
+      "M129",
+      "M133",
+      "M134",
+      "M140",
+      "M145",
+      "M155",
+      "M001",
+      "M002",
+      "M003",
+      "M004",
+      "M005",
+      "M170",
+      "M202",
+      "M206",
+      "M158",
+      "M163",
+      "M169",
+      "M183",
+      "M194",
+      "M209",
+      "M228",
+      "M232",
+      "M245",
+      "M239",
+      "M240",
+      "M241",
+      "M114",
+      "M021",
+      "M022",
+      "M110",
+      "M112",
+      "M238"
+    ],
+    "sampledRecordings": [
+      "M030",
+      "M031",
+      "M033",
+      "M038",
+      "M046",
+      "M055",
+      "M057",
+      "M064",
+      "M066",
+      "M067",
+      "M070",
+      "M074",
+      "M075",
+      "M085",
+      "M087",
+      "M088",
+      "M091",
+      "M097",
+      "M098",
+      "M100",
+      "M090",
+      "M092",
+      "M093",
+      "M094",
+      "M095",
+      "M101",
+      "M102"
+    ],
+    "decodedFrameCount": 233,
+    "recordingMethod": "Native WebM decoded successfully with Playwright ffmpeg-1011. Reviewed time-sampled sequential frames and selected native frames, not continuous real-time playback. Eight duration-fraction samples per selected recording plus targeted additional frames are listed in sampled-recordings.json."
+  },
+  "references": [
+    {
+      "id": "REF-DESKTOP",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "packetSourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "inspected": "Extracted from frozen candidate; accepted reference is historical hierarchy/navigation guidance, not an editor-layout specification or current product acceptance."
+    },
+    {
+      "id": "REF-PHONE",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "packetSourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "inspected": "Extracted from frozen candidate; preserves readable hierarchy, destination/account access and narrow-screen continuity."
+    }
+  ],
+  "coverage": [
+    {
+      "area": "Scenes and shared Environments",
+      "observation": "Native Scene Manager phone, explicit version/impact/save-recovery stills and M085 sequences distinguish independent content from shared geometry. Native Environment editor retains its own history/save/return. Local reuse/pin semantics are supported by packet outcomes; immutable server behavior was not independently replayed.",
+      "media": [
+        "M021",
+        "M022",
+        "M125",
+        "M128",
+        "M129",
+        "M155",
+        "M085"
+      ]
+    },
+    {
+      "area": "Inspector depths, selection and recovery",
+      "observation": "Contact review spans every supplied entity/depth family, including parchment, furniture, light, ambient context, interaction region, support surface, room feature, exclusion and visual effects. Native samples and M064/M067 show identity/actions and selection/recovery changing coherently. Missing objects/features offer actionable Undo and alternative selection; no generic blank Inspector.",
+      "media": [
+        "M158",
+        "M163",
+        "M169",
+        "M170",
+        "M183",
+        "M194",
+        "M202",
+        "M206",
+        "M209",
+        "M064",
+        "M067"
+      ]
+    },
+    {
+      "area": "Library and placement",
+      "observation": "Expanded Library shows typed categories, real thumbnails, metadata/source filters, search, context menu and explicit placement. Phone filter/context captures remain bounded. M070 distinguishes selected placed asset and saved version; M238 exposes pointer and keyboard support selection. No-fit message is truthful but has mismatched follow-up actions. This review does not independently prove large-corpus paging performance or current catalog/provider readiness.",
+      "media": [
+        "M228",
+        "M229",
+        "M232",
+        "M245",
+        "M238",
+        "M239",
+        "M240",
+        "M241",
+        "M070",
+        "M074",
+        "M075",
+        "M114"
+      ]
+    },
+    {
+      "area": "Assistant and history",
+      "observation": "M087 shows pending, proposal preview, saved Apply and the authored note returning to ordinary controls. M088 shows clarification/cancel/failure/preference continuity; native composer/pending/failure stills retain scene context. M155 and M057 disclose immutable versions and recover concurrent environment edits. No paid provider was invoked by this reviewer. Group Assistant Apply and general follow-up removal remain unexercised.",
+      "media": [
+        "M133",
+        "M134",
+        "M140",
+        "M145",
+        "M155",
+        "M057",
+        "M087",
+        "M088",
+        "M038",
+        "M040"
+      ]
+    },
+    {
+      "area": "Timeline and simulation",
+      "observation": "Timeline stills identify the selected property/pose and continuous playhead, provide time-window controls and explicit playback actions, and preserve phone controls through vertical scrolling. M030/M031 sample trigger/reset and renderer-failure journeys, but this is not a full continuous playback/audio/smoothness review. Expanded desktop Timeline has the confirmed toolbar defect.",
+      "media": [
+        "M001",
+        "M002",
+        "M003",
+        "M005",
+        "M030",
+        "M031"
+      ]
+    },
+    {
+      "area": "Publishing and rights",
+      "observation": "M090/M094 show Review with named source, content, credits, acknowledgement and moderation wording; M101 native frame at 3.32 seconds lists effect, behavior and opacity track and retains a collapsed sanitized-package disclosure. M097 exposes Profile prerequisite above phone footer and return to source. M092 shows a failed submission retaining the source/retry intent; M098 samples the rights refusal journey. Packet reports those tests passed; media inspection does not independently establish sanitization, scanner decisions, backend package immutability or public installation safety.",
+      "media": [
+        "M090",
+        "M092",
+        "M093",
+        "M094",
+        "M095",
+        "M097",
+        "M098",
+        "M100",
+        "M101",
+        "M102"
+      ]
+    },
+    {
+      "area": "Devices, appearance and adverse/recovery",
+      "observation": "Native desktop/laptop, 390-pixel phone, light/dark and reduced-motion-marked states support bounded layout judgments. Renderer loss/retry, missing selection/room feature, save failure/retry, catalog error, Assistant cancellation/unavailability and concurrent-edit recovery are visible. No physical touch, native provider/AR, Safari, live production provider or owner walkthrough was conducted.",
+      "media": [
+        "M008",
+        "M021",
+        "M022",
+        "M026",
+        "M110",
+        "M112",
+        "M128",
+        "M129",
+        "M145",
+        "M202",
+        "M206",
+        "M229",
+        "M232",
+        "M245",
+        "M074"
+      ]
+    }
+  ],
+  "dimensions": {
+    "composition": {
+      "judgment": "OBSERVED_WITH_BLOCKING_FINDING",
+      "observation": "The dark desktop three-part workstation gives the renderer a clear center, with the Library and identity-led Inspector as distinct adjacent tasks. Expanded Library and publishing dialogs are composed as focused work areas. Expanding Timeline compresses the central canvas until the lower vertical tools overlap status and the Surfaces control is cut off (PX-CFC5-002).",
+      "media": [
+        "M008",
+        "M228",
+        "M001",
+        "M005",
+        "M101@3.32"
+      ]
+    },
+    "hierarchy": {
+      "judgment": "BOUNDED_POSITIVE",
+      "observation": "Shared Environment and Editing Scene are separately labeled above the canvas; Scene Manager states that content is independent and identifies explicit Environment versions. Object identity and immediate Frame/Hide/Lock/Duplicate/Delete actions precede common edits. The generic unassociated state could be worded more literally, but no semantic data-loss conclusion follows from that wording.",
+      "media": [
+        "M008",
+        "M125",
+        "M129",
+        "M169"
+      ]
+    },
+    "typography": {
+      "judgment": "BOUNDED_POSITIVE",
+      "observation": "Titles, section labels, body copy and helper text are visibly differentiated. Scene Manager and the 390-pixel Inspector wrap long names into readable lines. Dense technical metadata and the canvas footer are small; I did not measure text-size/zoom accessibility. Publication recording text is limited by native 800x450 recording resolution, so full phone typography acceptance is not claimed.",
+      "media": [
+        "M125",
+        "M217",
+        "M229",
+        "M100@8.00"
+      ]
+    },
+    "spacing": {
+      "judgment": "OBSERVED_WITH_BLOCKING_FINDING",
+      "observation": "Cards, grouped fields and Inspector sections generally have deliberate padding and separators; the narrow Library filters stack with room for their labels. The expanded Timeline state does not reserve sufficient vertical space for all tools and status layers; this is the same bounded defect as PX-CFC5-002, not a separate speculative redesign.",
+      "media": [
+        "M229",
+        "M232",
+        "M209",
+        "M001",
+        "M005"
+      ]
+    },
+    "controls": {
+      "judgment": "OBSERVED_WITH_BLOCKING_FINDING",
+      "observation": "Library uses real model thumbnails and an explicit Place in Scene action. The placement preview offers Floor and Cancel placement, and property fields offer ordinary edits instead of forcing drag. The toolbar clipping blocks visual completeness of the expanded Timeline state. A no-fit placement banner also exposes unrelated persistence recovery buttons (PX-CFC5-003).",
+      "media": [
+        "M228",
+        "M238",
+        "M245",
+        "M114",
+        "M001"
+      ]
+    },
+    "contrast": {
+      "judgment": "BOUNDED_POSITIVE",
+      "observation": "Light mode changes shell, panels, fields and canvas surroundings coherently. Selected rows and visible focus use blue fills plus outlines; adverse status includes text rather than color alone. Native images show readable principal labels in both palettes; no numeric contrast audit, forced-colors review or screen-reader acceptance was performed.",
+      "media": [
+        "M026",
+        "M183",
+        "M194",
+        "M229",
+        "M245",
+        "M128"
+      ]
+    },
+    "consistency": {
+      "judgment": "BOUNDED_POSITIVE",
+      "observation": "Scene/Environment editing, expanded Library, Assistant and publishing retain recognizable identity, borders, controls and return actions. Guided/Standard/Engineering samples keep identity and common actions in the same order while precision is disclosed by depth. Publication deliberately returns to the canonical Profile surface and back to the saved source.",
+      "media": [
+        "M008",
+        "M021",
+        "M163",
+        "M169",
+        "M194",
+        "M091",
+        "M097"
+      ]
+    },
+    "states": {
+      "judgment": "OBSERVED_WITH_EVIDENCE_GAP",
+      "observation": "The packet contains populated and empty selection, missing asset/room feature, renderer loss/recovery, Assistant pending/clarification/cancel/unavailable, save failure/retry, catalog failure and concurrent-edit recovery. These are meaningful visible states rather than generic blank panes. All eight group journeys stop at the initial editor, so their downstream states remain unreviewed (PX-CFC5-001).",
+      "media": [
+        "M158",
+        "M202",
+        "M206",
+        "M110",
+        "M112",
+        "M128",
+        "M129",
+        "M140",
+        "M145",
+        "M074",
+        "M057",
+        "M038",
+        "M046"
+      ]
+    },
+    "responsive": {
+      "judgment": "OBSERVED_WITH_BLOCKING_FINDING",
+      "observation": "At 390 pixels, the main Inspector takes a focused column with visible side rails; library categories become a horizontally indicated strip and filters stack in a disclosure. The independent Environment editor retains its vertical tools and fields in a tall phone layout. Phone viewport tools become a horizontal row. Desktop with expanded Timeline is a separate responsive failure (PX-CFC5-002).",
+      "media": [
+        "M002",
+        "M003",
+        "M217",
+        "M022",
+        "M232",
+        "M245",
+        "M001",
+        "M005"
+      ]
+    },
+    "keyboard": {
+      "judgment": "PARTIALLY_OBSERVED",
+      "observation": "Visible focus appears on the Environment feature picker, expanded Library category/search and phone context-menu action. Placement exposes a keyboard-selectable Floor action, and phone return is represented in M066. This supports intentional keyboard affordances; media review alone does not prove complete keyboard operation, event order, modal trap or screen-reader semantics. The extensive keyboard grouping journey did not execute beyond its initial state.",
+      "media": [
+        "M163",
+        "M228",
+        "M229",
+        "M245",
+        "M238",
+        "M066",
+        "M048"
+      ]
+    },
+    "focus": {
+      "judgment": "PARTIALLY_OBSERVED",
+      "observation": "Focus rings are conspicuous in dark and light captures and remain inside the focused Library dialog/context menu. Inspector destinations show a visible active rail control. I did not run a new live focus traversal, so restoration/trapping is supported by the reported passed journeys and visible checkpoints, not independently re-proven as complete in this review.",
+      "media": [
+        "M163",
+        "M217",
+        "M228",
+        "M229",
+        "M245",
+        "M075"
+      ]
+    },
+    "feedback": {
+      "judgment": "OBSERVED_WITH_MINOR_FINDING",
+      "observation": "Save errors explicitly say work is retained and name a retry; recovery changes to Working draft saved. Assistant pending has Cancel request, cancellation reports an unchanged scene, Apply reports the changes saved, and publication separates submitted-for-moderation from public visibility. The placement refusal correctly says no item was inserted but its Retry save/Review saved revision controls are unrelated to the refused action (PX-CFC5-003). Exact input-to-feedback budgets were not independently measured.",
+      "media": [
+        "M128",
+        "M129",
+        "M140",
+        "M134",
+        "M088",
+        "M090",
+        "M114"
+      ]
+    },
+    "motion": {
+      "judgment": "PARTIALLY_OBSERVED",
+      "observation": "Decoded recording sequences show meaningful transitions among ready/loading, selected/proposed/applied, cancellation, and return. Timeline stills show separate clip/pose rows and a connected current-time line and handle; phone moves view options into a disclosure. Light/reduced-motion library and Assistant checkpoints retain task meaning. Time-sampling cannot establish continuous frame pacing, interpolation smoothness, audio output or all three-second feedback budgets.",
+      "media": [
+        "M030",
+        "M031",
+        "M087",
+        "M088",
+        "M001",
+        "M002",
+        "M005",
+        "M074",
+        "M148"
+      ]
+    },
+    "continuity": {
+      "judgment": "BOUNDED_POSITIVE_WITH_GROUP_GAP",
+      "observation": "Scene switching preserves separately named content with a shared Environment; impact review lists each affected Scene, while Environment definition editing has its own Back to scene and history actions. Version preview explicitly distinguishes working edits from immutable versions. Assistant applied changes remain ordinary editor data, and Profile return restores the saved source. Group cancellation/reload/membership continuity is not established by the failed group suite.",
+      "media": [
+        "M085",
+        "M125",
+        "M129",
+        "M021",
+        "M155",
+        "M057",
+        "M087",
+        "M097",
+        "M046",
+        "M048"
+      ]
+    },
+    "complexity": {
+      "judgment": "BOUNDED_POSITIVE",
+      "observation": "The Inspector separates Properties, Spatial context and Scene settings; Guided exposes recognizable human edits, Standard adds placement controls, and Engineering adds coordinates. Collapsed technical/rights/package disclosures reduce initial reading load. Scene Manager is long on phone but sections remain labeled; no overhaul is warranted by these captures.",
+      "media": [
+        "M169",
+        "M163",
+        "M170",
+        "M194",
+        "M209",
+        "M125",
+        "M101@3.32"
+      ]
+    },
+    "role-outcomes": {
+      "judgment": "NOT_COMPLETE",
+      "observation": "The synthetic Creator can visibly discover and place a model, inspect its properties, author an Assistant-proposed note, manage independent Scenes and share a reviewed immutable spatial release for moderation. This is useful local Creator evidence. The combined grouping objective remains unfulfilled in evidence; this packet cannot establish complete integrated Creator journey acceptance. It contains no physical Player/native AR proof or owner product acceptance.",
+      "media": [
+        "M008",
+        "M228",
+        "M238",
+        "M087",
+        "M085",
+        "M090",
+        "M100",
+        "M038",
+        "M046"
+      ]
+    },
+    "fallbacks": {
+      "judgment": "BOUNDED_POSITIVE_WITH_LIMITS",
+      "observation": "Renderer failure retains hierarchy/Inspector and offers Retry 3D renderer; missing selection offers Undo, Scene settings and remaining items. Assistant unavailability preserves ordinary controls; no-fit placement says nothing was inserted; rights refusal and network retry remain within a private-source/review flow. Physical/native fallback behavior and protected-photo processing/withdrawal were not exercised in this media review.",
+      "media": [
+        "M110",
+        "M112",
+        "M202",
+        "M206",
+        "M145",
+        "M114",
+        "M098",
+        "M092"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "PX-CFC5-001",
+      "classification": "EVIDENCE_INSUFFICIENT",
+      "blocking": true,
+      "status": "OPEN",
+      "title": "Eight group journeys never reach their promised interactions",
+      "contractIds": [
+        "parallax.authored-library-and-simulation.experience"
+      ],
+      "observation": "All eight parallax-groups.spec.ts outcomes fail. Their failure stills show the initial Desk Map/bedroom workspace. M038 and M046 decoded sequences remain at that initial state for the sampled interval through 27 seconds of approximately 31-second recordings. This cannot prove creation/rename, keyboard selection, live transform/cancel, mixed membership, atomic whole-group floor placement, graph reorder, Assistant group review/Apply or follow-up removal. SC00B group/mixed-selection stills establish only their own fixture-based Inspector presentation.",
+      "media": [
+        "M035",
+        "M037",
+        "M039",
+        "M041",
+        "M043",
+        "M045",
+        "M047",
+        "M049",
+        "M038",
+        "M046",
+        "M170",
+        "M185",
+        "M186",
+        "M187"
+      ],
+      "sourceIds": [
+        "tests/e2e/parallax-groups.spec.ts@cfc5b44d"
+      ],
+      "requiredRepair": "Find and repair the entry/control/harness mismatch as warranted by current source; do not infer an implementation defect from the timeout alone. Rerun all eight through the existing natural visible controls and supply fresh exact-candidate media proving the named outcomes, cancellation/history/reload and mixed-member invariants. Preserve the failed checkpoint.",
+      "recaptureAcceptance": "All eight outcomes execute, and independent native media review can see grouping, membership, transform/reorder/placement, cancellation/reload and Assistant group/follow-up outcomes. No test or experience promise is weakened."
+    },
+    {
+      "id": "PX-CFC5-002",
+      "classification": "VISUAL_NONCONFORMITY",
+      "blocking": true,
+      "status": "OPEN",
+      "title": "Expanded Timeline cuts off the bottom of the desktop editing toolbar",
+      "contractIds": [
+        "spatial-pilot.experience",
+        "parallax.authored-library-and-simulation.experience",
+        "parallax.rooms-and-surfaces.experience"
+      ],
+      "observation": "At native 1440x1000 in animation-end.png and animation-reloaded-zoom.png, the canvas shrinks while the seven-button editing toolbar remains vertical. The Surfaces icon is partially cut by the canvas bottom and its label is absent; Clamp and the lower toolbar overlap the canvas footer/hint. The ordinary desktop editor keeps all seven controls visible (M008). This is a visible composition/control regression in the expanded Timeline state; I did not perform a live click and do not claim the control is wholly noninteractive.",
+      "media": [
+        "M001",
+        "M005",
+        "M008"
+      ],
+      "sourceIds": [
+        "src/components/studio/parallax/SpatialStudio.module.css@cfc5b44d:1443",
+        "src/components/studio/parallax/SpatialStudio.module.css@cfc5b44d:1489",
+        "src/components/studio/parallax/SpatialStudio.module.css@cfc5b44d:1574",
+        "src/components/studio/parallax/SpatialStudio.module.css@cfc5b44d:2404",
+        "src/components/studio/parallax/SpatialCanvas.tsx@cfc5b44d:782",
+        "src/components/studio/parallax/SpatialCanvas.tsx@cfc5b44d:828"
+      ],
+      "requiredRepair": "Preserve an adequate canvas/control region or adapt the toolbar when the bottom dock reduces available height. Keep every ordinary control and its label visible, with the footer/hint separate; do not hide controls or remove Timeline functionality.",
+      "recaptureAcceptance": "Reproduce the same desktop expanded-Timeline state at 1440x1000 and a shorter laptop height. Capture all seven controls fully visible and show Surfaces can be activated by pointer and keyboard without overlapping status. Retain phone toolbar behavior."
+    },
+    {
+      "id": "PX-CFC5-003",
+      "classification": "MINOR_POLISH",
+      "blocking": false,
+      "status": "OPEN",
+      "title": "Placement refusal exposes save-recovery actions",
+      "contractIds": [
+        "spatial-pilot.experience",
+        "parallax.authored-library-and-simulation.experience"
+      ],
+      "observation": "room-aware-no-fit-recovery.png says no clear floor support fits Wardrobe and no item was inserted, but the accompanying buttons are Retry save and Review saved revision. The frozen shared error banner wires Retry save to persist. Those actions do not retry or explain the refused placement, even though ordinary Environment/manual controls remain available.",
+      "media": [
+        "M114"
+      ],
+      "sourceIds": [
+        "src/components/studio/parallax/SpatialStudio.tsx@cfc5b44d:2754"
+      ],
+      "requiredRepair": "Scope the follow-up actions to the failed operation: offer a placement recovery or dismiss action and reserve persistence retries for persistence failures. Keep the truthful no-insertion message.",
+      "recaptureAcceptance": "A no-fit refusal presents recovery actions matching placement; a genuine save failure still presents the existing save retry."
+    }
+  ],
+  "limitations": [
+    "This is local synthetic production Chromium evidence and an independent media review only. It is not authenticated protected Product Experience submission, ordinary Sounding Line acceptance, merge/landed verification, physical AR/native acceptance or owner product acceptance.",
+    "No continuous real-time video/audio playback, browser re-execution, screen-reader journey, numeric contrast audit, forced-colors/200-percent text audit or input-to-feedback performance measurement was performed. Time-sampled videos cannot establish frame pacing or every motion/timing contract.",
+    "Failed group media is not proof that the group implementation itself is broken; it proves the eight promised journeys were not successfully exercised at this checkpoint. Fixture-based Inspector group coverage is not a substitute.",
+    "Protected-photo import/consent/inference/withdrawal, ten-room visual comparison, native opacity negotiation and Player Lens/physical placement are present in broader contract promises but were not established by the reviewed integrated subset. This report does not accept those wider contracts wholesale.",
+    "All 252 packet/media bindings were verified locally against packet SHA-256 values. This checks bytes, not trusted capture provenance or cryptographic reviewer identity.",
+    "No product, tests, repository documents, shared runtime, independent task thread or immutable packet/media was changed by this reviewer. All original review files and aids are under the permitted independent-review directory."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED - read-only independent review; repository catalog validation is owned by the integrating task."
+}

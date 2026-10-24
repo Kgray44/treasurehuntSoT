@@ -1,0 +1,34 @@
+{
+  "kind": "BEFORE_COPY_ADMISSION",
+  "at": "2026-10-23T02:42:03.642Z",
+  "head": "6bbf875d31457103b6d2881bacde6631cbfa0923",
+  "originalHash": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c",
+  "instrumentedHash": "e27c41a5c556856e97bc504fd629cdcdb57172eae11f5dfaef2155063f4fe243",
+  "windowAck": "Coordinator01a13dd0 latest FINAL GO for one diagnostic; invocationUTC=2026-10-23T02:41:56.8396606Z",
+  "resource": {
+    "utc": "2026-10-23T02:42:00.417Z",
+    "cFreeBytes": 37279059968,
+    "dFreeBytes": 111717765120,
+    "freePhysicalBytes": 5635215360,
+    "cpuBusyPercent": 67.29377713458756,
+    "cpuSampleMs": 1000,
+    "cpuIsInterpretationLimitOnly": true,
+    "finalCapacityBeforeCopy": {
+      "utc": "2026-10-23T02:42:03.642Z",
+      "cFreeBytes": 37279031296,
+      "dFreeBytes": 111717765120,
+      "freePhysicalBytes": 5654032384
+    }
+  },
+  "processReadComplete": true,
+  "competingOwnedNodes": [],
+  "guardOutput": "{\"utc\":\"2026-10-23T02:41:58.7354512Z\",\"allowed\":true,\"floorBytesEach\":32212254720,\"cFreeBytes\":37279199232,\"dFreeBytes\":111717765120,\"estimatedCBytes\":0,\"estimatedDBytes\":134217728,\"reason\":\"Both drives remain above reserve after estimated writes\"}",
+  "cpuNotHardGate": true,
+  "originalCaseSeconds": 30,
+  "outerSeconds": 120,
+  "maxWorkers": 1,
+  "observationMaxBytes": 131072,
+  "allocationEstimateCBytes": 0,
+  "allocationEstimateDBytes": 134217728,
+  "qualification": false
+}

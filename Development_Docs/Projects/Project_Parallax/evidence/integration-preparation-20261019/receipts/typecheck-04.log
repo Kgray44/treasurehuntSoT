@@ -1,0 +1,65 @@
+
+> forever-treasure-companion@0.2.0 typecheck
+> tsc --noEmit
+
+tests/e2e/parallax-groups.spec.ts(1,31): error TS2459: Module '"./fixtures/parallax-current-library"' declares 'expect' locally, but it is not exported.
+tests/e2e/parallax-groups.spec.ts(1,64): error TS2305: Module '"./fixtures/parallax-current-library"' has no exported member 'test'.
+tests/e2e/parallax-groups.spec.ts(18,21): error TS2304: Cannot find name 'db'.
+tests/e2e/parallax-groups.spec.ts(20,30): error TS2304: Cannot find name 'Page'.
+tests/e2e/parallax-groups.spec.ts(21,9): error TS2304: Cannot find name 'mkdir'.
+tests/e2e/parallax-groups.spec.ts(26,3): error TS7031: Binding element 'page' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(27,3): error TS7031: Binding element 'context' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(28,3): error TS7031: Binding element 'baseURL' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(30,3): error TS2304: Cannot find name 'ensureGenericSoundingLineIsolation'.
+tests/e2e/parallax-groups.spec.ts(31,25): error TS2304: Cannot find name 'closureAccount'.
+tests/e2e/parallax-groups.spec.ts(46,9): error TS2304: Cannot find name 'authenticateClosure'.
+tests/e2e/parallax-groups.spec.ts(97,27): error TS2304: Cannot find name 'Page'.
+tests/e2e/parallax-groups.spec.ts(101,9): error TS2304: Cannot find name 'openOwnedSceneFromCurrentLibrary'.
+tests/e2e/parallax-groups.spec.ts(107,30): error TS2304: Cannot find name 'Page'.
+tests/e2e/parallax-groups.spec.ts(111,32): error TS2304: Cannot find name 'Page'.
+tests/e2e/parallax-groups.spec.ts(117,29): error TS2304: Cannot find name 'Page'.
+tests/e2e/parallax-groups.spec.ts(128,3): error TS7031: Binding element 'page' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(129,3): error TS7031: Binding element 'context' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(130,3): error TS7031: Binding element 'baseURL' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(132,3): error TS2304: Cannot find name 'ensureGenericSoundingLineIsolation'.
+tests/e2e/parallax-groups.spec.ts(133,25): error TS2304: Cannot find name 'closureAccount'.
+tests/e2e/parallax-groups.spec.ts(139,9): error TS2304: Cannot find name 'db'.
+tests/e2e/parallax-groups.spec.ts(144,9): error TS2304: Cannot find name 'authenticateClosure'.
+tests/e2e/parallax-groups.spec.ts(220,3): error TS7031: Binding element 'page' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(221,3): error TS7031: Binding element 'context' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(222,3): error TS7031: Binding element 'baseURL' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(224,3): error TS2304: Cannot find name 'ensureGenericSoundingLineIsolation'.
+tests/e2e/parallax-groups.spec.ts(225,25): error TS2304: Cannot find name 'closureAccount'.
+tests/e2e/parallax-groups.spec.ts(231,9): error TS2304: Cannot find name 'authenticateClosure'.
+tests/e2e/parallax-groups.spec.ts(277,3): error TS7031: Binding element 'page' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(278,3): error TS7031: Binding element 'context' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(279,3): error TS7031: Binding element 'baseURL' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(281,3): error TS2304: Cannot find name 'ensureGenericSoundingLineIsolation'.
+tests/e2e/parallax-groups.spec.ts(282,25): error TS2304: Cannot find name 'closureAccount'.
+tests/e2e/parallax-groups.spec.ts(301,9): error TS2304: Cannot find name 'authenticateClosure'.
+tests/e2e/parallax-groups.spec.ts(371,3): error TS7031: Binding element 'page' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(372,3): error TS7031: Binding element 'context' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(373,3): error TS7031: Binding element 'baseURL' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(375,3): error TS2304: Cannot find name 'ensureGenericSoundingLineIsolation'.
+tests/e2e/parallax-groups.spec.ts(377,25): error TS2304: Cannot find name 'closureAccount'.
+tests/e2e/parallax-groups.spec.ts(382,9): error TS2304: Cannot find name 'db'.
+tests/e2e/parallax-groups.spec.ts(387,9): error TS2304: Cannot find name 'authenticateClosure'.
+tests/e2e/parallax-groups.spec.ts(430,3): error TS7031: Binding element 'page' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(431,3): error TS7031: Binding element 'context' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(432,3): error TS7031: Binding element 'baseURL' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(434,3): error TS2304: Cannot find name 'ensureGenericSoundingLineIsolation'.
+tests/e2e/parallax-groups.spec.ts(435,25): error TS2304: Cannot find name 'closureAccount'.
+tests/e2e/parallax-groups.spec.ts(444,9): error TS2304: Cannot find name 'authenticateClosure'.
+tests/e2e/parallax-groups.spec.ts(582,3): error TS7031: Binding element 'page' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(583,3): error TS7031: Binding element 'context' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(584,3): error TS7031: Binding element 'baseURL' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(586,3): error TS2304: Cannot find name 'ensureGenericSoundingLineIsolation'.
+tests/e2e/parallax-groups.spec.ts(587,25): error TS2304: Cannot find name 'closureAccount'.
+tests/e2e/parallax-groups.spec.ts(598,9): error TS2304: Cannot find name 'authenticateClosure'.
+tests/e2e/parallax-groups.spec.ts(634,3): error TS7031: Binding element 'page' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(635,3): error TS7031: Binding element 'context' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(636,3): error TS7031: Binding element 'baseURL' implicitly has an 'any' type.
+tests/e2e/parallax-groups.spec.ts(638,3): error TS2304: Cannot find name 'ensureGenericSoundingLineIsolation'.
+tests/e2e/parallax-groups.spec.ts(639,25): error TS2304: Cannot find name 'closureAccount'.
+tests/e2e/parallax-groups.spec.ts(643,9): error TS2304: Cannot find name 'db'.
+tests/e2e/parallax-groups.spec.ts(649,9): error TS2304: Cannot find name 'authenticateClosure'.

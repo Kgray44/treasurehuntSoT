@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+    "--grep",
+    "expanded Library adapts",
+    "--project=chromium",
+    "--reporter=line",
+    "--output",
+    "D:\\CodexWorktrees\\parallax-root-browser-qualification\\artifacts\\root-phone-filters-1f62befd2f74"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

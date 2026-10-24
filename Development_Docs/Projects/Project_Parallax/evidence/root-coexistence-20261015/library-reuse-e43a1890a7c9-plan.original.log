@@ -1,0 +1,223 @@
+node:internal/child_process:1143
+    result.error = new ErrnoException(result.error, 'spawnSync ' + options.file);
+                   ^
+
+<ref *1> Error: spawnSync git ENOBUFS
+    at Object.spawnSync (node:internal/child_process:1143:20)
+    at spawnSync (node:child_process:911:24)
+    at execFileSync (node:child_process:954:15)
+    at main (file:///C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:542:24)
+    at async file:///C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:654:90 {
+  errno: -4060,
+  code: 'ENOBUFS',
+  syscall: 'spawnSync git',
+  path: 'git',
+  spawnargs: [
+    'diff',
+    '--name-only',
+    '--no-renames',
+    'aaef39a57d2c89ca57136dce327d337c5cb0ef7f',
+    'e43a1890a7c984ea98a7580d58957df05b549f61'
+  ],
+  error: [Circular *1],
+  status: null,
+  signal: 'SIGTERM',
+  output: [
+    null,
+    '.agents/README.md\n' +
+      '.agents/parallax-library-lifecycle.md\n' +
+      '.agents/parallax-studio-overhaul.md\n' +
+      '.gitattributes\n' +
+      'CHANGELOG.md\n' +
+      'Development_Docs/Engineering/Repository_Operations/product-status/current-status.md\n' +
+      'Development_Docs/Engineering/Repository_Operations/reference/feature-status.md\n' +
+      'Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv\n' +
+      'Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md\n' +
+      'Development_Docs/Projects/Project_Parallax/AI_Model_Routing_and_Overrides_20261014.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Assistant_Placement_Graph_Review_20261013.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Browser_AR_Evaluation_20261013.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Environment_Setup_Review_20261013.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Exclusion_Library_Rename_Review_20261014.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Exclusion_Zones_Review_20261013.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Fresh_Two_Photo_Check_20261014.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Named_Groups_Review_20261013.md\n' +
+      'Development_Docs/Projects/Project_Parallax/OpenAI_Request_Response_Examples.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Owner_Photo_Preview_Recovery_20261014.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Parallax_A1_Local_OpenAI_Configuration.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Parallax_A1_Quota_Operator_Guide.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Photo_Popup_Review_20261014.md\n' +
+      'Development_Docs/Projects/Project_Parallax/README.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Room_Reconstruction_Orientation_Audit_20261013.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Root_Coexistence_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC00B_Property_Capability_Matrix.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC01_Root_Integration_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC02_Assets_and_Effects.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC02_Root_Integration.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC_00C_Legacy_Working_Projection_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC_00C_Paged_Library_Handoff_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC_00_Integration_Handoff_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC_01_Compatibility_Review_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Scene_Cost_Estimate_20261013.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Spatial_Library_Lifecycle_20261014.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Construction_20261012.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Foundation_Review_20261012.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Room_Library_Simulation_Review_20261012.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Spatial_Studio_User_Development_Overview.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md\n' +
+      'Development_Docs/Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/assistant-follow-up-advanced-20261013.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/assistant-room-placement-20261013.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/assistant-scope-20261013.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser-runtime.original.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser-suite-profile.original.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser.log\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/2000-scenes-desktop.png\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/2000-scenes-narrow-panel.png\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/2000-scenes-phone.png\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/2000-scenes-wide-panel.png\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/browser-scale.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/video.webm\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/context.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/transition-attempt1-failed.log\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/transition-attempt2-failed.log\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/transition-attempt3-19-passed.log\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/transition-types-before-test-option-repair.log\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/experience-plan.original.log\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/independent-review.original.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/manifest.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/pre-source-visual-notes.original.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/engineering-source-review.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/service-observations.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-ar-license-inventory-20261013.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/README.md\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/artifact-manifest.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/browser-runtime.original.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/browser-suite-profile.original.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/browser.log\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/run-result.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/run-start.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/test-results/.last-run.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/test-results/parallax-tracking-recovery-52a25--startup-failure-on-desktop-chromium/trace.zip\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/test-results/parallax-tracking-recovery-5dcb8-er-startup-failure-on-phone-chromium/trace.zip\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/browser-runtime.original.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/browser-suite-profile.original.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/browser.log\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/desktop-entry.png\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/desktop-recovery.png\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/desktop-result.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/phone-entry.png\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/phone-recovery.png\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/phone-result.json\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/recordings/333610f90d2e17b1149ed7c846787ac9.webm\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/recordings/d349ca805248a3a3a3aaa1b253805e52.webm\n' +
+      'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/independent-review.original.json\n' +
+      'Development_Docs/Projects/Proje'... 1046768 more characters,
+    ''
+  ],
+  pid: 59192,
+  stdout: '.agents/README.md\n' +
+    '.agents/parallax-library-lifecycle.md\n' +
+    '.agents/parallax-studio-overhaul.md\n' +
+    '.gitattributes\n' +
+    'CHANGELOG.md\n' +
+    'Development_Docs/Engineering/Repository_Operations/product-status/current-status.md\n' +
+    'Development_Docs/Engineering/Repository_Operations/reference/feature-status.md\n' +
+    'Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv\n' +
+    'Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md\n' +
+    'Development_Docs/Projects/Project_Parallax/AI_Model_Routing_and_Overrides_20261014.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Assistant_Placement_Graph_Review_20261013.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Browser_AR_Evaluation_20261013.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Environment_Setup_Review_20261013.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Exclusion_Library_Rename_Review_20261014.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Exclusion_Zones_Review_20261013.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Fresh_Two_Photo_Check_20261014.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Named_Groups_Review_20261013.md\n' +
+    'Development_Docs/Projects/Project_Parallax/OpenAI_Request_Response_Examples.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Owner_Photo_Preview_Recovery_20261014.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Parallax_A1_Local_OpenAI_Configuration.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Parallax_A1_Quota_Operator_Guide.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Photo_Popup_Review_20261014.md\n' +
+    'Development_Docs/Projects/Project_Parallax/README.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Room_Reconstruction_Orientation_Audit_20261013.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Root_Coexistence_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC00B_Property_Capability_Matrix.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC01_Root_Integration_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC02_Assets_and_Effects.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC02_Root_Integration.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC_00C_Legacy_Working_Projection_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC_00C_Paged_Library_Handoff_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC_00_Integration_Handoff_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC_01_Compatibility_Review_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Scene_Cost_Estimate_20261013.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Spatial_Library_Lifecycle_20261014.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Construction_20261012.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Foundation_Review_20261012.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Spatial_Studio_Room_Library_Simulation_Review_20261012.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Spatial_Studio_User_Development_Overview.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md\n' +
+    'Development_Docs/Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/assistant-follow-up-advanced-20261013.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/assistant-room-placement-20261013.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/assistant-scope-20261013.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser-runtime.original.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser-suite-profile.original.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser.log\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/2000-scenes-desktop.png\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/2000-scenes-narrow-panel.png\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/2000-scenes-phone.png\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/2000-scenes-wide-panel.png\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/browser-scale.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/captures/video.webm\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/context.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/transition-attempt1-failed.log\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/transition-attempt2-failed.log\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/transition-attempt3-19-passed.log\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/transition-types-before-test-option-repair.log\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/experience-plan.original.log\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/independent-review.original.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/manifest.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/pre-source-visual-notes.original.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/engineering-source-review.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/service-observations.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-ar-license-inventory-20261013.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/README.md\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/artifact-manifest.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/browser-runtime.original.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/browser-suite-profile.original.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/browser.log\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/run-result.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/run-start.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/test-results/.last-run.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/test-results/parallax-tracking-recovery-52a25--startup-failure-on-desktop-chromium/trace.zip\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/test-results/parallax-tracking-recovery-5dcb8-er-startup-failure-on-phone-chromium/trace.zip\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/browser-runtime.original.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/browser-suite-profile.original.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/browser.log\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/desktop-entry.png\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/desktop-recovery.png\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/desktop-result.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/phone-entry.png\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/phone-recovery.png\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/phone-result.json\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/recordings/333610f90d2e17b1149ed7c846787ac9.webm\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/captures/recordings/d349ca805248a3a3a3aaa1b253805e52.webm\n' +
+    'Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/independent-review.original.json\n' +
+    'Development_Docs/Projects/Proje'... 1046768 more characters,
+  stderr: ''
+}
+
+Node.js v24.18.0

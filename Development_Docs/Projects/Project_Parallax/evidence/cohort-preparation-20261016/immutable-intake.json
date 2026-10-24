@@ -1,0 +1,1009 @@
+{
+  "kind": "IMMUTABLE_SOURCE_INTAKE_ONLY",
+  "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+  "rehearsal": "352c4546d3b93341b074eed2f9fcf5acefb743a1",
+  "files": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/browser-runtime.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 1316,
+      "sha256": "e8efb71cad92671e9ab15bb77706e68b21de6b9192f7b8915e939fda0a0f64a7",
+      "blob": "a5712d93e854eb62e580bba7d3edf58f3847eb1e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/browser-suite-profile.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 266,
+      "sha256": "e193feba9072a243266ad923f308d84984167aeaa7bdfdd2d212cb33f03e2f25",
+      "blob": "4785401b619fb34cbe83529e56d29254d421e16c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/ambient-context-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 305271,
+      "sha256": "49ca34750feaea6cd2cf419f18661847e799b9d1a3a2f7ce4aa80731bc38934e",
+      "blob": "9b1d8a8f5c166b4e74a8afb32e031c132a48dcfd"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 11113,
+      "sha256": "f774e641dffc42340610141158af7495fd6066ac067f9c7adfb21220d2a8517d",
+      "blob": "9537ffc2a96261c74f198d950ad36e298466b678"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/effects-observations.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 2029,
+      "sha256": "8fbbec5950e7fbd22311562182b7c66250a3868d0f486a8a4d4ad6141f85ec87",
+      "blob": "252fd935c195cb47a71d43fdbc3896fc7135a143"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/empty-selection-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 316996,
+      "sha256": "f016442c4595aa99f665e33d98a6488cba603d644d732e1df630ec7a3114363c",
+      "blob": "7c292c46a04860a791db133ac6c5773915c2110f"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/empty-selection-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 300103,
+      "sha256": "2fcc0f5dac5d30e1e5a3fbe262d7ebcc7aaae060b49499fc9c939d65e5f0b32e",
+      "blob": "7424eb233487f3e97f58103e1c6a6bda18d4d538"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/empty-selection-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 301436,
+      "sha256": "2d98be2b0d3cd645b705dcaa6a8c4a790de19be16141fa572507dea1538d394b",
+      "blob": "8da15579ec3fa6bfc6f09b8a264e0bc7292763be"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/environment-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 311147,
+      "sha256": "16da8a4cb886d4e7b622abc7806cc02a0d85251650f967a45f678a4ea01e9113",
+      "blob": "5e2b1dbadb9db285a672521248420800e5927ed1"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/environment-from-asset-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 296561,
+      "sha256": "f3da673c06a0c28fbffa64c88a8c8334d6183bf2ea489933fda3a83a89caa03b",
+      "blob": "46b2b24ec37115786e655e4e155657e7038cb3cd"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/environment-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 296570,
+      "sha256": "c01beafc072a776ab2dd0bdb962f86a3aea099a60202b5662e1b1e4fa5125f28",
+      "blob": "17eca62d080862c5fdb0e5cb1922c6f59f91cdbd"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/environment-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 297701,
+      "sha256": "3e4a140737e14bfbaaefb670259ef43f2cb313040c157aa0e0a86a45098f27a7",
+      "blob": "982b5195565e85f85163f9fdc928edf151ef3e80"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/exclusion-zone-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 322753,
+      "sha256": "bdc4d24273246d8bfa1276e82464d2e64405b4aea6c770038f5cfa185e98c036",
+      "blob": "1bb76fb4ca4a7c726df013fabad25a581a8d41eb"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/exclusion-zone-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 308633,
+      "sha256": "56948171e0eb39027d9aafd276d143942754b4e68a37721e649c68be22918676",
+      "blob": "6117d041e1c0e0cdc991153194ad5255275059e4"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/exclusion-zone-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 309094,
+      "sha256": "66ad56c5b7cb53c6a23e2b1ee7f0287db2b6dcfd0fca3a398e06df6138dac3ac",
+      "blob": "35de08a40eb9f4138d56b52907d7bad2a971db6f"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/furniture-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 336115,
+      "sha256": "a659c7cf29c63bc798257cf955d347246ada99fc65a884430249b8a6b318c170",
+      "blob": "90017b88fc9dab7b8abbd2a5c26b90e2b7f9791f"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/furniture-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 313459,
+      "sha256": "ffcb49b99f83befe7caac8e650aa6370868ab07fe9eb63cf3327c2fcde738921",
+      "blob": "545f2b0fb36a47dc54ec69443c62aacbe228d540"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/furniture-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 314560,
+      "sha256": "b7a5f0b055db5d5a53fd44aed0ee249473bef90fc810717527b2fc05c71d7f9e",
+      "blob": "0c1d5d09b25330045e30e1ce689854003a931ea4"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/group-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 311364,
+      "sha256": "b862d3081f43376920d234e239fa69a52272f4a81a9bebd4afa225910473c289",
+      "blob": "a2cf0d92f59c9b52207c2f745c1db175f1da185e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/group-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 291853,
+      "sha256": "df41e350ae2953b9c686da5b6499be52619e6e92ff0f987ae9c4132018258aa1",
+      "blob": "ef26d8f5d6ed4e0ed7132547707239f7a87ecde3"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/group-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 296960,
+      "sha256": "88965c26ba5306f1d50224602251f3249652cf1f99109d182824801a4629f9b3",
+      "blob": "df2031a60bd81037069957f571d5aa16974d4021"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/interaction-trigger-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 328931,
+      "sha256": "1b141708873da72f25169b9a1c2d4aa288d80cf9e5fee339d12c765ce3656f67",
+      "blob": "42e670907bf89a026d9589724033a5e515eaadb6"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/interaction-trigger-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 308307,
+      "sha256": "f55d7e5ef65c583e70565dd5a32fec0bc04c0d589d8121ffbc689bdd9bc66219",
+      "blob": "8e7f117f0862169978a0d298852331f3bf951f35"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/interaction-trigger-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 309355,
+      "sha256": "487d122248ea6d12d00064dc7ba51f7f353ae9a5421742398f7aae92075b2e70",
+      "blob": "320c62dd48a57cc7f6ab977a1f081aa5a8136fcb"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/library-return-desktop.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 304834,
+      "sha256": "b021ba60b9ff2ae0b6566a8d0a659d58e192521dea45fb5852947aa59aabda53",
+      "blob": "716e82cf042ec17f7dfc6d9a91217d4532f5e110"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/library-return-phone.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 119615,
+      "sha256": "64659098e7555129c0a5ec3172266d3762d965e6abec2f84d7acfa6f7ad708af",
+      "blob": "f53c3cd452bf9feb9c0bb733086d721983cde560"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/light-engineering-scrolled-resized.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 316883,
+      "sha256": "88481b4d6085567954f0855d73c2462ecb2c4404ed8112607de185b32308aff2",
+      "blob": "68bd72c70f84ab60c9116215901b952b0e495a7c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/light-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 322659,
+      "sha256": "850dea2ff90de5635f8c0967268aad61a6f43d96bc6774179473d29ac7a40b77",
+      "blob": "f46a459585928875ac54363d9b872e4b3b9d8708"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/light-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 305984,
+      "sha256": "25329009b9d2a6e0dd76853657eb5544e1f45d7f23041472ffa2e5d9c3f80680",
+      "blob": "fbb2c9fa78e15ceb90bd938e64e736d4726235d4"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/light-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 307046,
+      "sha256": "6dcb8e82ac3565c2c7807afeda4315f53947c8cca41455175769bfbdf28ed6e4",
+      "blob": "9a71aabe9031d424bd6177df0bd72bf425267b2d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mist-engineering-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 330075,
+      "sha256": "b4846d335dbe70444f1c40dda567a38a1bcc88d4765e55d2f6e95ad0d3505a2f",
+      "blob": "a49df63c072dcb3427567493ab2cf0b64d7a269a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mist-guided-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 317031,
+      "sha256": "51cf462af5f3a20aae3ebab23bc59d7a0e52bf559a0bf1726747d71812f9fba7",
+      "blob": "e89062deef80b561db3faf11f0bdd399e0147fd7"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mist-standard-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 318051,
+      "sha256": "05ca4ad2a4e29ac68e5911c0c1fea5a0c9d78804b9ea01d09c5ce2bbc0414374",
+      "blob": "4bd6a4c5c57f097413f3f66f026d6a399c3fce69"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mixed-selection-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 308942,
+      "sha256": "a66bf79465e82944c6f7d554658d1471134f48e251ca50e7ef03c78a36aa39b4",
+      "blob": "a0b9a7aa19ca030196a6d7418d2960be6a366037"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mixed-selection-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 292619,
+      "sha256": "2d5b6f9a73e66c84013d585efe5610f5d14c28f9ea19df540aa6e8991f2d16d7",
+      "blob": "ffd013926d600884f9aefcb0433892eb15a6a854"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mixed-selection-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 297592,
+      "sha256": "92cf4d8244eee680b263d2c3c4b243d342c2c6e766c691f18d2ac90f69ffd076",
+      "blob": "95405f43d45d715c9979674a120939f1f4f7e083"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/observations.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 6372,
+      "sha256": "25adbe5a90388d8cde78e746525e7434b8592c3fcedc736bc7d4604e951273d5",
+      "blob": "45f0df0bb5df1180f157e24e6b6bbc5872bece3e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/parchment-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 328944,
+      "sha256": "3534b516a54c4bfc1333aa0fe71475e378f1c5151e32b6360f40bddee93b6be1",
+      "blob": "087b8eda7450000e34ea472bd53115bc26c3b497"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/parchment-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 310577,
+      "sha256": "b4be36d9028b96ac157122bf86e957309a47b2cb2b0d42dcac7b0b7cefddd9d5",
+      "blob": "8816418c38513e97084d55e3e0b7b16cc6214a36"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/parchment-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 312227,
+      "sha256": "ed295f4347820baf662500778926d29992fa96c3b5aa04094e0c1763064c9353",
+      "blob": "611426cfe6a042a5af7d34d2809133b1dad680aa"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/particles-engineering-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 324989,
+      "sha256": "540fa6e2bed947ee0b01c3ebd9c59f677817dee6269b497b6553259b56c276f4",
+      "blob": "f3bd0cd05906a739a93e6d753ea23dff5180c773"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/particles-guided-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 312372,
+      "sha256": "36976ce9114beb19b3ddfe8a2730ec951d166c2a757be8e4724d5569dd596312",
+      "blob": "2a3a7cf5362bd477c2024da05ef4aea51dc02c04"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/particles-standard-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 313452,
+      "sha256": "5142cb3bbfc5d3e1016797f09d23041c57c06da94c08d1dfb55c01f1480c6a12",
+      "blob": "602e1dd0c7df29819dfed443aa101a7cb5e54310"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/phenomenon-engineering-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 328074,
+      "sha256": "02c091c3e0f576c087870fd12d2fb10e37d76bbbd90b6de7ea2895425c70e1ec",
+      "blob": "735ca8e9c1eeeea257de22f6268e334c0dd9e869"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/phenomenon-guided-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 315834,
+      "sha256": "3c79d612e00b0cde3adc90b104846f0193a183c44f3033d594d7ba4098e8aebb",
+      "blob": "94f1c346414d76bef3a4df1e15bf3090b5ed8175"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/phenomenon-standard-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 314838,
+      "sha256": "787be885b424c19c5753d369feea8b3cf8f24a1d989361834c1560caed34e1e7",
+      "blob": "bf22f588a67a9b040b2421274d9cc9f12beece57"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/phone-edit-return.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 119675,
+      "sha256": "b8eff0c6622dac8ea2460dffe735dfa52ef4942384875fc64a61e4140e6f7053",
+      "blob": "4b883828c217f1b5abc423de5566ea2045a21939"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/projection-engineering-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 329692,
+      "sha256": "b1b71b28620e51ea8147defde76c64f276d91594c6378ac67165cfc7f058ec9b",
+      "blob": "bc0e9025d41c6eb32cafd5de3f6454ab6353a490"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/projection-guided-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 314037,
+      "sha256": "1d5037891a847525e8a349bbc1f2b5aeba4b19535261eb4deb8e119b7f2393c8",
+      "blob": "a8988f3e2add10a6b8ef48f5bb8f515319cdef8f"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/projection-standard-light.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 315139,
+      "sha256": "9fa19aba7addcdbb376a2cb6c33e8f1d7e64ab6bb05c1c6faa3eec640ebff594",
+      "blob": "07f5bd4deebc01ae80bc5c473342ae3114f176e0"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-room-feature-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 320319,
+      "sha256": "028f0a0f5db6e070f61c086f5921b8e0dbbc4f6b471a3e8789981b4da6ac97df",
+      "blob": "497ca84347faa9d03320b697ee02500d8613686c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-room-feature-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 304722,
+      "sha256": "be7807cfaba8c1dffd6961e35cd5b665278972b8b55fd14497904e54ee771dc1",
+      "blob": "9c040f7da2907fbc64abe27a24156afad2af8cf5"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-room-feature-scene.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 323036,
+      "sha256": "5394dfc3921b961335c307d3d0eac1dc3f6e406397e3ac8e9ea971783e24170b",
+      "blob": "b0b002f844b3181fd1d271ebf2c52eba753cfd7a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-room-feature-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 305837,
+      "sha256": "31fd7c2958ca4ed42fc84ca45620cbd1a182aedbabe93220560c91afad5fea91",
+      "blob": "d044c65dc798d57787434b0f59026525cf8e2bc2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-selection-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 287900,
+      "sha256": "c1c64ff354baab07323be0398a1af234289a12514f86cdccaf70fc62c916ee08",
+      "blob": "7fd5ae87257a0ecba25c51940ff0cf8e9a9256bb"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-selection-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 275561,
+      "sha256": "c9a4cf0bda8f796b7021bc186c2116fbe29eed5e7f195aa5dc856844d2144c88",
+      "blob": "3de71be96f4232830d51deadca341b5e3c6d3efd"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-selection-scene.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 286816,
+      "sha256": "70e11db595ca565cde6c662f34af632a6416cfba99e54b86ba199c6baf2d427a",
+      "blob": "27936faf325101ac455bbf6db79112d3b183729c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-selection-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 276206,
+      "sha256": "eb7b5f847e2d4b531bac9d698907af8795afafede9479a1dbbd862f4d06a369c",
+      "blob": "1deb238698a5a210f3c9378a58926964ff9f8ba2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-context-dimensions-guided-scrolled.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 314130,
+      "sha256": "d33ac64b81a8ebdc5e276be7f91daec94c0c4aee3807e9f1bffbd7a3ab4815ea",
+      "blob": "2fe34431bda75e212c0da44f48000006c5aef76e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-context-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 315462,
+      "sha256": "82d3e486fdd90cd95c4dfd9f7ede3ebb29f8618155195a25721a593e32883871",
+      "blob": "14506088387c23d1f26862cf25b8473628f20ca2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 324979,
+      "sha256": "fbf615897b91fe406726ea3db5d99d21e4ed003be54c317116ad04124dab2836",
+      "blob": "52c314a484e6403b3072a9893b41a240cea6e93b"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 309436,
+      "sha256": "10f242f2627f9b9b82ba25bb453ca397e59f9e2dae0e6d1a0da36edbda12da3c",
+      "blob": "051a17208d001c6271e37c5d700ee72f96deaddb"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 311506,
+      "sha256": "6468a1aa03b013c479d4ef087438b4a8f8f0fda6632fe7e2bd6e1d181d90646f",
+      "blob": "1202c6d59bd5de17141fe8bafd8e9c5f5c4ef99f"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scale-live-preview.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 272936,
+      "sha256": "c7ce1d472b255ee8303e5add3fef16df70d9165ac6baa670d53e5b4d038ac884",
+      "blob": "610e3637fafcf864235aefe6f2e9805700bdbed4"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scene-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 321406,
+      "sha256": "25ac3a9a2fe10472fb99fcae270930538ae24d6373db6eda3faf2e199392b89e",
+      "blob": "c142dc724004b8a3255d88f4ef14a409297f21e5"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scene-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 298244,
+      "sha256": "bdbbfc3b9f90c5582289a09c90d28e2ffdd7fb38ab23d1babeb3d7aa644690ca",
+      "blob": "3d0b0d8ce402244e704b7ade76f06fcbae65401c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scene-phone.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 94873,
+      "sha256": "0838b0169c52f1d0b23b4130fa4ebd21ba8b7964e84acfd7f8cdc1ac03f24d52",
+      "blob": "99ac9887ff1b5dda776ebd83af6ea32f53ac36ec"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scene-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 304859,
+      "sha256": "8a414c7674b7a6239455a50aff63cf6d80060b2145d198dc51b37e3f6e9f8042",
+      "blob": "eedcd5cf93074a89ae72551f59ec027ab6735a35"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/selection-edges-observations.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 1103,
+      "sha256": "776488c45eb3e3b0a7c9483de075b6f089a8e6712ee439a5ee89793ca0360815",
+      "blob": "50f4a9513a3b4194bcde306685fd73114b986018"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/spot-direction-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 307073,
+      "sha256": "4a7161b93a3a3224f1e3759ce42355912be6801531b533b0e5192954c93b2b62",
+      "blob": "f6ed1d9559bb28863891be88a1b6dbf7e1c63440"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/support-surface-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 322201,
+      "sha256": "7973cf5f797ff78a197e3a3d52ffffe8b390c2f3e9daff4770044f5a8562567d",
+      "blob": "5f1088440a667c038d159f763e2830e47c591e5f"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/support-surface-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 307046,
+      "sha256": "c0a1caf4267c0f730f72a3e62099ff27d904e5cd8dbbf1b20ceae105e75e84b0",
+      "blob": "45319fb07764e8d8299863d69c634f8cb0ec154a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/support-surface-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 309025,
+      "sha256": "4927e4b6a034adf7e141e9453fbd94bd3b9542d986caf55175ec801fe451be91",
+      "blob": "12eabe36ef8d0b6625b0b05e52821d2bb3070670"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/timeline-audio-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 319911,
+      "sha256": "467e08fc23625eb065465f2ae777a4bf3d0375bd37f6f262c1bcc304d181e105",
+      "blob": "ebbd1e0a8866e82b0015ee2719eaa0c160cc5313"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/timeline-audio-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 306361,
+      "sha256": "c05386c68a81f49652386e4fca834c13feb2f43485025b3ff38f9e779760d342",
+      "blob": "8dce957b54de72cc891f86723633713e996212ad"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/timeline-audio-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 304655,
+      "sha256": "5a7de59c883907d2392f1552261eee2bdc56c84cf908e745a23b9d3b05b5823d",
+      "blob": "7363aed280e95116070cf7ad957494d057a82e10"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video-1.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 1202,
+      "sha256": "9caa0fd8000d1a586308c4a8908e437129f8d94a6babde1f626cf87cc3bf7318",
+      "blob": "9a8d8d251dadbe5108eb27b6b105b2fc1eb63cbc"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 350042,
+      "sha256": "61b363ee072ad1fe4e39487f11719b32bc8b16e46c9ddc1b95378b3e1d3bf765",
+      "blob": "3ee4a3289b76dc6bbad3e0ed0ed6d0ce33a25c34"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-320d1-s-before-one-history-commit-chromium-video.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 80154,
+      "sha256": "3b7de8ef685c11bd160f705f819e885ceb4b2609d95a3c3a12c741c08e6d335f",
+      "blob": "bda55dfdb98bec3516058639bddb964dcf0dca7b"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video-1.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 1202,
+      "sha256": "4b6c7cdcaa99291bb67cd56d6076779aaa15bc698439959cc56c573421ac644a",
+      "blob": "52f5fadbb214834b178ba2d5e1a2933df3a739d2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 1112761,
+      "sha256": "c9cf69fba5f45ab22dcdeb7f18e45cf82b6a1ab493023f772f3e8624799af47d",
+      "blob": "6208472667d200a9a3ebee621a8498a19a25b6f6"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium-video.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 191805,
+      "sha256": "7bc42516d296e5b22fc7b46c961c6654467653002730a335fc70e15d1c48ef0d",
+      "blob": "e3d4bd15b0a7d69a28292deeb2ffde41d8924d16"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium-video.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 346631,
+      "sha256": "ef8969bdd7e96dbc6516e1765a85d21e9950df11226471d245a279cb00a74a20",
+      "blob": "3c5cdf4ae48dd5c08dc97e976f2bbc547469c1ba"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium-video.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 471603,
+      "sha256": "f75806bbc57943a26620877294e68e473dec1dea63acaa1564366ba96305f1a5",
+      "blob": "7bfcf0bd4ede9bf63146646c2f6e77473837c82c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-d36c9-Inspector-return-on-desktop-chromium-video.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 391036,
+      "sha256": "88661fefba70eb8c282f203b1ac5e3d2e3d0dfbb991a6abd2936db919a5414ff",
+      "blob": "7c13da4af10e7e8824b1480d2a1c8f4b6159717b"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 2166,
+      "sha256": "429a99550d6ab111bd3a2fb529f01bce46fcb6d1aab76ae0d729e4ef4ed6fad7",
+      "blob": "e36d671e466d77a9979a0388bc31e707304872db"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 645362,
+      "sha256": "3ae52ee595113bb1590163272540d8ac75aef83fe26b2324715538c2fc219f56",
+      "blob": "5beb926c9f5f135a6a335f52620de6c0041841f6"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/run.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 610,
+      "sha256": "fc658beec27fb3da7028bfb88ed333e72218a8d9e40d113cbdb9794f4ed83df5",
+      "blob": "e881551d8c06044093c9bff8e773e748795c6614"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-applied-renderer-confirmation.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 238452,
+      "sha256": "b83df440a1acec4ac9a73d868e1491f06182172b5d2b63918c0d8ed3de6bf0e7",
+      "blob": "17d6a2cc07b9aab281908323d5d833dc85e01580"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-assistant-preview-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 270860,
+      "sha256": "b0284a702757ee742bce9c0c8eb28e1af09bbbcdf60087f108c8bf43071c059c",
+      "blob": "1428b544ee6fd83fb22bea5f2d70935381cbc298"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-assistant-preview-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 253486,
+      "sha256": "728ea5410c8d5f9384c2790c4fdf9092140d12e84fe7abda76f918421af13268",
+      "blob": "26c5bc82d26a67d6c33cb93b6654285644dc4db6"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-assistant-preview-returned.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 271308,
+      "sha256": "01e30af3bd83c164e615d658d65c6a70933a638a5d98e7694b69a79a2ac7a301",
+      "blob": "7ab2f6e74aebbfceb06f7343d15bf47af304b17c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-assistant-preview-scene.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 285550,
+      "sha256": "bdb38fe0ca610fb95d9fc18aa1be270563888ec5f29b1c1236fce7e2ea779f32",
+      "blob": "f1784c3b282bc11cd83e84d71f827c372914679e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-assistant-preview-standard.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 255297,
+      "sha256": "7474b0885121bc273ef5f97dfd853c0b3cf6b88d78721a7e415cd62ada68f1c5",
+      "blob": "21d4c4bdab47fd4302a1f50cb01f726bf2774eb8"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-interpreting.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 218352,
+      "sha256": "f7db8314068907eb8adc7677ee1c5676fde6b07fefa35f30a7ce24e4ce524b34",
+      "blob": "247e7d8a3c2dd28e26856b4ada9f15960ea746ef"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-placement-proof.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 1848,
+      "sha256": "64eb02d569313210e24c80f6d37e2b91576046c087376605f0e8a2b89c63ad48",
+      "blob": "b9b198319cbd1232874d0ba7a48480d4f018ee0f"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-proposed-note-in-view.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 329109,
+      "sha256": "c59a6ffa1fe00d36623b3336b39069c4411d9c3747e1c7b78d512445300ae5cf",
+      "blob": "1999dbba3d4dd1fcd31febacd4a1e0d922083558"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-selected-detailed.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 316328,
+      "sha256": "63056ce9dcf9139356a46420faa9c0e95503cadc751775d34384735a53efb4e2",
+      "blob": "6e70275188a937019bccc0434ee3a3fd7339442d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-selected-engineering.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 318136,
+      "sha256": "ea656a915cdfb9de154186e56d6bdd283cf2075d186df98f01edea31cbc9cc9b",
+      "blob": "4d727b8b2b8d30503294c2d08b798a15f6785e24"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/semantic-selected-guided.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 314488,
+      "sha256": "4fc0abb2c66c9a8120345d0f1c96d26dce42c19e8d7d56437acb7fa0dfe5e5b5",
+      "blob": "5b2cdf949a536a73544cdb35fc4840d48793818a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/4fa127e1f6ce18221d7ca1ab4f0ec779.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 947377,
+      "sha256": "0ee0b68b8aae0c0c88b61e33fba4a29ebaf432bf66efedb6a9dabe36d34f87fa",
+      "blob": "baec1050b3443236b2a21797227df9da1edfdb90"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/60a04c10d697a25792ff07bc178131cd.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 797176,
+      "sha256": "650dfae1aa705773c181bd5d6a2fc28d97560098d5e87d8872892c00039cac68",
+      "blob": "e355e38f373d73608338d8038644384069de4253"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/aa423fc728ad61ff67a1fa8a9425b98d.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 855122,
+      "sha256": "32df1c6aa8e5ba716ba4d12f9b12f7b0972f2906e2c5ade885cf5368d9c6a253",
+      "blob": "98d7ca4ef102f8e20b5f457be56d5779cc3126a3"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/b17be095c87c90d21ddebae7e7e53c1a.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 809241,
+      "sha256": "872a29b2abf3d2143bf8759724307202c53ef24a13abafbd95e726d0f410c8bd",
+      "blob": "ded117dcde10fada26ccfcf9f1338dc3e280437e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/browser-runtime.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 1316,
+      "sha256": "91c4f1b847b1f8be0450c0a35514e32e94ca7b1d554ddcd4d466d4a9e68fcd64",
+      "blob": "6bf540b967beaa3461db985321361c30c0429ce7"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/browser-suite-profile.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 135,
+      "sha256": "cd10aab12e28e7a7bf000c0a0ec297e246575147ce366180854f469a7815ea33",
+      "blob": "011843b90e4534c053353a89338ee6a9b9ed123b"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/c77d1204982f6068af594366a59dde0f.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 723242,
+      "sha256": "287bc0996f74bb0747be33001476001392c61905ae2ab8b3c58f180444648356",
+      "blob": "8888bec505a54da81c3b4e9f5b4ada8eb09c40f5"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/d9706b02cf73930438322d58726911c8.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 757214,
+      "sha256": "b1ae0cc268bac099f264ec54bd24d2fb5f0897c8e72846934b945e94eab2637e",
+      "blob": "7ee585b40b5a70d87da5d4be6ab1ea708ff0de4c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/e07f6e4cb027b7e4201a35f643d61334.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 812375,
+      "sha256": "d325c3e47173f960d4829919cb7c324289ba6e739ab7d54cd027071f0a437b87",
+      "blob": "ad61f89ae2168e0caf8efdb1cc5f5f88ffc9d9e1"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/f0f52bd817d6e37653e6f6bfbc9c115c.webm",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 759713,
+      "sha256": "41629247f3175be261fad77103d8b4e757b0365fdffdadb6779816394182fc10",
+      "blob": "16782a6d6e842f84626b071f0fcc6e63e7d3d7c6"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 40363,
+      "sha256": "b4fa418c380ed8293baebb5ec8b66faf309cfb50b96df2f5e4e4c3cdf9c10d2b",
+      "blob": "b45d6687f75243e528b21523be2314a99e67cbea"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-CONTEXT-8.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 267929,
+      "sha256": "3d3d391c2010a1e9a9dffcebe0213bcb57ea070ef475c166fb60adb0797750f9",
+      "blob": "3a0e7e24a0372d6a953002446c41ab200a2381bd"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-PROPERTIES-6.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 259896,
+      "sha256": "3cb66eff385352643540dfc47c188cc032d3dbed5c75494905e3b466fc02c166",
+      "blob": "21ed03effa7f8016c2044c426977f07d3dac2505"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-10.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 291838,
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc",
+      "blob": "6faebf31f4e21a8c50b76ed71d4c4d5e2b80f2ed"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-SCENE-4.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 258764,
+      "sha256": "6ccf5aa1c765daea4d82dd8453fba07cd67594ae001e26ae1b6fc9dc9b4e80fd",
+      "blob": "08bfab62f168fa9edc0d50beb0dc9ab998a8e24d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-CONTEXT-8.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 268081,
+      "sha256": "3600e24d8af03f89b0c97881b95f2eb941cfa37fae7e9f507466844684ed11ab",
+      "blob": "b7d5c31964a2994ffa673c362118df2b1ebbf633"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-PROPERTIES-6.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 260003,
+      "sha256": "350991b5b044e756d1e24288dff044f4f2c68bd37b8054c9f12612441fe85908",
+      "blob": "4bbcd9b6b6108b0ec0ed0a97ac1b5855f1480d9d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-10.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 291838,
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc",
+      "blob": "6faebf31f4e21a8c50b76ed71d4c4d5e2b80f2ed"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-SCENE-4.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 258346,
+      "sha256": "f5e1fe46c5fd8c08f2d6567f5a48362dfc9db27ed04aef6dc5597034d172a288",
+      "blob": "73a8ada2d3050acdc729875ac88415a1e83b3ac3"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-CONTEXT-8.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 93920,
+      "sha256": "d42a6cb809b88981a9fab0f68ee08838ca5dd3bccbd8f924445cba3cef26b5f4",
+      "blob": "471180d730976d2c2fe863195f2d01052da490ad"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-PROPERTIES-6.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 88531,
+      "sha256": "603c4903b24b496a7129b5cb75ed06f868e8d71f0e283bc76899fda6a4c89031",
+      "blob": "2b5eb41b4ffb87bf16e1b4d86538daa73074bc10"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-RETURNED-10.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 119253,
+      "sha256": "5ad13c4fb61bb07ad606fc03a680b128ec4e63d4f9043c6900625bc61b9ea966",
+      "blob": "bd5a3dc3cba366486218e04393bde4cc695fbc47"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-SCENE-4.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 89425,
+      "sha256": "9dcbdec72aa1f3cf5eece0e7a570bbe12c511df55489e05713ccfa74ccf77238",
+      "blob": "4b2a802194c6a3dd9fc9e430c930738fb15f5b6d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-CONTEXT-8.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 93920,
+      "sha256": "d42a6cb809b88981a9fab0f68ee08838ca5dd3bccbd8f924445cba3cef26b5f4",
+      "blob": "471180d730976d2c2fe863195f2d01052da490ad"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-PROPERTIES-6.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 88531,
+      "sha256": "603c4903b24b496a7129b5cb75ed06f868e8d71f0e283bc76899fda6a4c89031",
+      "blob": "2b5eb41b4ffb87bf16e1b4d86538daa73074bc10"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-RETURNED-10.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 119382,
+      "sha256": "792b0fe2a9fcc715f79410d2069ba79194aa37528b26cca12012ced8d961fe62",
+      "blob": "86fd1236d7047df83b7525b7e02ace9696e67e55"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-SCENE-4.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 89364,
+      "sha256": "655a2b5e0477970caf79dd0741a48fdbec7fbfac376e8a28866b99475305c3ae",
+      "blob": "eddcc0a50ca85a9d6f06be95fb1fa4986345e4a7"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-INVALID_SELECTION-6.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 253338,
+      "sha256": "8f8d53b6663dada3b9a3a993e58f075a299790a1deab8ffbeae8131b87bfd0db",
+      "blob": "583d4cbe3e51284a6b5bd1960c4d897529c5abd7"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-RESTORED_SELECTION-8.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 261737,
+      "sha256": "7bb6c016d9a811a2bc435898cb944b2277c7c6c983bee8206c5f9346a6703c3c",
+      "blob": "1b10fe3f436130a65a00520ba1df8054eb0e9a65"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-10.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 291838,
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc",
+      "blob": "6faebf31f4e21a8c50b76ed71d4c4d5e2b80f2ed"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-INVALID_SELECTION-6.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 253075,
+      "sha256": "836faac693e9fdc733c934bcb467f4b196ef18603258eec072239c8b8f1b2e42",
+      "blob": "e965b1431dbbe6d6912f1d82c2b6b0afa89f0a52"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-RESTORED_SELECTION-8.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 261630,
+      "sha256": "02c4acdd457e3255fb7ae8f7b1363f9b31576446adc748421819a026cb786d6b",
+      "blob": "8654c8a3bb8b285835b336a9996dc562add5dec3"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-10.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 291838,
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc",
+      "blob": "6faebf31f4e21a8c50b76ed71d4c4d5e2b80f2ed"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-INVALID_SELECTION-6.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 87811,
+      "sha256": "36123190e4fba39b584eb1b0da0ae857dc703f9ecb378b981ae1d6d3f210a37a",
+      "blob": "f973c1cd6a60e449d0091ca717e8304e8d77876c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-RESTORED_SELECTION-8.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 86884,
+      "sha256": "b9a4e1857affe513337f696d594f313092e84de3a9f581c20baa1aca83fdefa8",
+      "blob": "f1bfa889f60c502b2cf38eeff2b55f5e8ccb55b9"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-RETURNED-10.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 119382,
+      "sha256": "792b0fe2a9fcc715f79410d2069ba79194aa37528b26cca12012ced8d961fe62",
+      "blob": "86fd1236d7047df83b7525b7e02ace9696e67e55"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-INVALID_SELECTION-6.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 87812,
+      "sha256": "c876e1fa1bf644b8a5852698fd95cb84e9c8e469b3ecb90946ac81583c5e736b",
+      "blob": "123c60c1861468717215cf14171445337225b8b7"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-RESTORED_SELECTION-8.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 86885,
+      "sha256": "1230948c4c5a89af303d38519e80d0dd5dce4ba63c13fce9a876922db4fb387b",
+      "blob": "928bf10b54d9baf2529da521acc6e74fd7810597"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-RETURNED-10.png",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 119436,
+      "sha256": "1c3b29c8eddcb886f659bf2024d953d08e274d5ae83a501175357ca0be5d9922",
+      "blob": "56cb2bcecee3b74452b903d4c1154b60113f7693"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 47684,
+      "sha256": "dfd024229ebef6bd4eb2b48af8698c1d01adb64ad67d9a6253580bad20861331",
+      "blob": "85bc167abb6bb9f2fe00c09eb66087110a82fdb2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/SC00B_Property_Capability_Matrix.md",
+      "source": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "bytes": 24581,
+      "sha256": "ef1dab9004f4ad2d81b6042380528d7261e38823c539a6f4dccf49324f14862b",
+      "blob": "fec78f16cbc97bad32e326bcdd3da7ac9eb38d14"
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+      "source": "352c4546d3b93341b074eed2f9fcf5acefb743a1",
+      "bytes": 34940,
+      "sha256": "43dc7c022aa41463a4015cc811e4cfbb605fdc0849a807eb343f1d56f189a73c",
+      "blob": "d796f375bfc2d5c1aa07dd10e4b410a3d97c34f5"
+    },
+    {
+      "path": "tests/e2e/parallax-spatial-community.spec.ts",
+      "source": "352c4546d3b93341b074eed2f9fcf5acefb743a1",
+      "bytes": 62112,
+      "sha256": "66096e9e8ee8d9d5b33d64201d3a1e07b13633a94d20ce3267e29682892842c8",
+      "blob": "feed9d8f972f7d884d2a8f0727e218edc3b164eb"
+    }
+  ],
+  "newRuntimeProof": false
+}

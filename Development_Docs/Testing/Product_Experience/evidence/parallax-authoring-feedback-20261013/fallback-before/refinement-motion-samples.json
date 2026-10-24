@@ -1,0 +1,161 @@
+{
+  "classification": "engineering-evidence",
+  "runtime": "DEVELOPMENT",
+  "samples": [
+    {
+      "elapsedMs": 137.59999999403954,
+      "x": 0.6496687499988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.7999999821186066,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 310.80000001192093,
+      "x": 0.6538374999988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.3999999761581421,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 428.40000000596046,
+      "x": 0.6684124999988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5999999940395355,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 530.3000000119209,
+      "x": 0.6767499999988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 639.3000000119209,
+      "x": 0.6840374999988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 746,
+      "x": 0.6902937499988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.6000000238418579,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 848.3000000119209,
+      "x": 0.6965374999988825,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.9000000059604645,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 957.3000000119209,
+      "x": 0.7038312499988825,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.7000000178813934,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 1065.4000000059605,
+      "x": 0.7100812499988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.4000000059604645,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 1218.300000011921,
+      "x": 0.7142499999988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.3999999761581421,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 1354.800000011921,
+      "x": 0.7215374999988824,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.29999998211860657,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    }
+  ],
+  "limits": "Current software-rendered submission samples; no before/after or hardware FPS claim."
+}

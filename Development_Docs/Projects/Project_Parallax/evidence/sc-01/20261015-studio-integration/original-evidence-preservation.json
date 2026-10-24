@@ -1,0 +1,393 @@
+{
+  "sourceCommit": "401f29bb65b2be55d1d9bd124425ba359db1bddb",
+  "files": 64,
+  "bytes": 4196454,
+  "copied": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-comparison-contracts/.gitattributes",
+      "size": 13,
+      "sha256": "b4b62d881a4e1535ca0cf2267f5778d2f5742259ba1eb72bb4e4998f1578a4e8",
+      "gitBlob": "b4b948321e14c07b36f1a639a6795b6973ae34a2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-comparison-contracts/focused-comparison.log",
+      "size": 806,
+      "sha256": "13359473c1fc803ef2f025a4fe4008bfdefdc54ef8af0f865e7ce0498c314807",
+      "gitBlob": "e784947f58774d419777579451dec2b4daf1f7f7"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-comparison-contracts/run.json",
+      "size": 1911,
+      "sha256": "d3420b60d239373924b647d1118056e3df6fd0ac35bcc8e50412927d8afb7427",
+      "gitBlob": "215d77c1292ad2595598f7242690b36f569f25fe"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/.gitattributes",
+      "size": 13,
+      "sha256": "b4b62d881a4e1535ca0cf2267f5778d2f5742259ba1eb72bb4e4998f1578a4e8",
+      "gitBlob": "b4b948321e14c07b36f1a639a6795b6973ae34a2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/focused-component.log",
+      "size": 609,
+      "sha256": "2568750a420585b42ebbffbf4921d5e559f5708880e0895715fd32d1ac82edb4",
+      "gitBlob": "b9392bb3f22e364f1f92d507c4215486f251de31"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/independent-review.json",
+      "size": 24460,
+      "sha256": "b6cd1dc489a79369fb1012f054bb46aba9ab965c28a1be5fa9176b507043ea5b",
+      "gitBlob": "11a56f3fbe5adad6009b3c57a4de9fb07e07c1d0"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/production-browser.log",
+      "size": 39019,
+      "sha256": "68306eed91b4a9fe4c8e0d5d778bf368851631a152454495f77d23d9f52a9804",
+      "gitBlob": "b44636ba26d1ec7438c67c2e97303e52a64e18f8"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/review-packet.json",
+      "size": 25748,
+      "sha256": "d4d34b78e26ae390e2897a625c34bfbb31f4404d4ea5215867a387719d66e03d",
+      "gitBlob": "619233a83ca475ad9ea7ba2269d0be0cb50e3bd0"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-comparison.png",
+      "size": 74667,
+      "sha256": "f9e7a9fe493e5483d0a3bffcc60306c9b505cfd0d72dd999310fd32180a0a6c6",
+      "gitBlob": "0ceb117194fcb8cf9f2961837302c0da81ae1770"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-environment-impact.png",
+      "size": 74721,
+      "sha256": "9d8830e78afdbcaaea72981d747d26782d443f84e364ef1ada3bf4419a51de16",
+      "gitBlob": "09f65ef3e9c8e0b356f69603132254b5cffba142"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-gallery-mobile.png",
+      "size": 54478,
+      "sha256": "644315c2f319ad8ecffefde94b878ee04f92e41906d3064b5dbd14a8f5035982",
+      "gitBlob": "47184e2bec5a0a5c360f92450b3e5835ae4c1cce"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-haunting-canvas.png",
+      "size": 176799,
+      "sha256": "adf5e72cc4b835303e632c012f8b15489819b73cbe4a68faba68c26ab24562df",
+      "gitBlob": "b2fb645715a556bbec87728e226c0de95668d3e8"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-hidden-letter-canvas.png",
+      "size": 183224,
+      "sha256": "42e41f1a6d8a6f24cf0f30c0be3692b24814cf488f7bf4bc253ec0b78a67eff9",
+      "gitBlob": "a4a683883b583e9ea9f49e5d0ada49a9eb1d7740"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-invalid-geometry.png",
+      "size": 71680,
+      "sha256": "eb758d15117f0933378a997d2d2407d705baf20ca7eb85ebea6b89fe9ddf5c0a",
+      "gitBlob": "b0695210401769252235cf083b011afd2f278ec4"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-manager-mobile.png",
+      "size": 46509,
+      "sha256": "5480814c87ea4b3754354e039dab9c63f58fc81f90766ab2c888051198b1c000",
+      "gitBlob": "b3f69e5aaa44c558f252fcb46ad7667af5792a6a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-ordinary-room-canvas.png",
+      "size": 302264,
+      "sha256": "c4cada11aa3fd7167f71d5f37aad4237cdf43894690b8aa238b5ca686764122b",
+      "gitBlob": "9d654ace5be216ae596df7692038c7ba800fe217"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-reconstructed-environment.png",
+      "size": 72679,
+      "sha256": "de55ce8ef2a923c07cee214abe004957b3cc7b10ad840859b80dd59d94f7f4e4",
+      "gitBlob": "9c7b601ce4ff2c8d6d74f823b61c2b994f7927c2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-scene-information.png",
+      "size": 74622,
+      "sha256": "f79d7e9946ff206ef065fac74e1238a8b67c9d108131c77fc1480f7f6c5d111b",
+      "gitBlob": "f200550da574ed058be22edc30e37d6b1c21a062"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-disclosures/sc01-three-scenes.png",
+      "size": 123830,
+      "sha256": "591529315300a943cd586d4b00b6bf95521a99b01ca9dcf94fa7af0f68587b85",
+      "gitBlob": "460465d97284cbc981ad79c83cfbc8d35c7aa67d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-environment-sources/.gitattributes",
+      "size": 13,
+      "sha256": "b4b62d881a4e1535ca0cf2267f5778d2f5742259ba1eb72bb4e4998f1578a4e8",
+      "gitBlob": "b4b948321e14c07b36f1a639a6795b6973ae34a2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-environment-sources/production-browser.log",
+      "size": 38811,
+      "sha256": "24948077c1ebd77e4788d0e6be4dda7715fd0cafc5f222e35c4e1af09d8a2c7a",
+      "gitBlob": "1d43d2acb40d519389a111e21c880ee3b4c7017e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-environment-sources/run.json",
+      "size": 1368,
+      "sha256": "aa57dd6c0d3d578db727c13ea2c73ff5e9e71e1b49dd1733f81b84c3dc5b84ac",
+      "gitBlob": "a3c2ab9c066066bda656c05165878872e0841aea"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-environment-sources/sc01-reconstructed-environment.png",
+      "size": 72679,
+      "sha256": "de55ce8ef2a923c07cee214abe004957b3cc7b10ad840859b80dd59d94f7f4e4",
+      "gitBlob": "9c7b601ce4ff2c8d6d74f823b61c2b994f7927c2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-environment-sources/sc01-scene-information.png",
+      "size": 74271,
+      "sha256": "4a2dcb52d4fe8b7460ad3ee391e478c341b7a09dc1194fc19ada18e4373643cd",
+      "gitBlob": "7448ae147a47ea5e87912e6be8c5f83c9188c7f2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/.gitattributes",
+      "size": 13,
+      "sha256": "b4b62d881a4e1535ca0cf2267f5778d2f5742259ba1eb72bb4e4998f1578a4e8",
+      "gitBlob": "b4b948321e14c07b36f1a639a6795b6973ae34a2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/focused-tests.log",
+      "size": 807,
+      "sha256": "74b6d8ec6aca3860e8a004e85300df070b8d18080eba843560ca933978e09d4e",
+      "gitBlob": "56e1bd4e28b46ff6625e4f9d43ae2092d8fdc8f0"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/independent-review.json",
+      "size": 27152,
+      "sha256": "b0480f821cf5c04f88318103dcbbd3bdd2b42a5821fa8009f6a82632fbe62d33",
+      "gitBlob": "6f7e64ad28206dd0683a5fcc3a7d1d1440c0aec8"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/production-browser.log",
+      "size": 38163,
+      "sha256": "213d5168d1375837542431d9bb0e149ddf330d717ea1af8a816e75324840c0ea",
+      "gitBlob": "a8885762e4dfff96e8c029d40f2688f1cf38a2b6"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/protected-plan.log",
+      "size": 776,
+      "sha256": "839d855f41a6dc87c8b7dfaae541ee9431f1e558a6bad56aa3a94e47d92197b4",
+      "gitBlob": "3bb23e1dbcbec92d3a636dfae4cc91fdd6b7cf68"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/regression-tests.log",
+      "size": 613,
+      "sha256": "63b59ea373e5767538bca9d678e2bf3817fbc7bb934877fee1c9a498bc029f4f",
+      "gitBlob": "4ae89a2dc794d2275a71c66e432765bfef944089"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/review-packet.json",
+      "size": 24315,
+      "sha256": "c30b31e3a93527563755c4d526aa3c3f6d8d6a1d18b7ba88b17c5a0fb2a69d27",
+      "gitBlob": "887b1b923537663e3ba393b78be3f4ad12ec7186"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-comparison.png",
+      "size": 74495,
+      "sha256": "d7284c3faac66af1a436737b9f82edb897a7723677d9c1438e7b0a0c8b372bc1",
+      "gitBlob": "bbd9a1a8c59768789222d1ef09818d0b9f2f74c9"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-environment-impact.png",
+      "size": 74519,
+      "sha256": "a13d3716fe93f5db749a08baa938c2ea2dc08b4c47b8525814d048fcb022d759",
+      "gitBlob": "33c17c4b046e717875764ab650de2c373d149528"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-gallery-mobile.png",
+      "size": 54478,
+      "sha256": "644315c2f319ad8ecffefde94b878ee04f92e41906d3064b5dbd14a8f5035982",
+      "gitBlob": "47184e2bec5a0a5c360f92450b3e5835ae4c1cce"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-haunting-canvas.png",
+      "size": 177814,
+      "sha256": "cc4cc3c7c0a408e42e05a00d63b252f56137675e1372d75a69311affb588a682",
+      "gitBlob": "f56c4d2a9da0f92acbc4575edb0e2b017bd28936"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-hidden-letter-canvas.png",
+      "size": 185811,
+      "sha256": "25d27febb752fe68abb3448855cf99926782990c34ca2d53d9315da57709fc82",
+      "gitBlob": "b37800c04e20a59fd050cf670a5bbeb32050ecfa"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-invalid-geometry.png",
+      "size": 71284,
+      "sha256": "b2a7faacfa01b7b01b2751acb9d0e2f900b41dd5e81444c909c421537c088b81",
+      "gitBlob": "6fdeb491cb3dd68e0fbfc8b9c751a05f4d9b6fb3"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-manager-mobile.png",
+      "size": 46509,
+      "sha256": "5480814c87ea4b3754354e039dab9c63f58fc81f90766ab2c888051198b1c000",
+      "gitBlob": "b3f69e5aaa44c558f252fcb46ad7667af5792a6a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-ordinary-room-canvas.png",
+      "size": 267125,
+      "sha256": "6d77389c84d769ceeb80a2591ed3851308f54b910d3a88bd6e46ffcb3dfbe2be",
+      "gitBlob": "92131194bb7527b34d0f4ec710082440ad80c91f"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-local/sc01-three-scenes.png",
+      "size": 123566,
+      "sha256": "9ac7e69c969e8a990f0cf34ae585b4b6a2c68471f63caf7f41a4c3cea2ce578c",
+      "gitBlob": "226728b4291eb16828e83c334883866eb0810e07"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-main99a2/.gitattributes",
+      "size": 13,
+      "sha256": "b4b62d881a4e1535ca0cf2267f5778d2f5742259ba1eb72bb4e4998f1578a4e8",
+      "gitBlob": "b4b948321e14c07b36f1a639a6795b6973ae34a2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-main99a2/plan-audit.log",
+      "size": 154,
+      "sha256": "f0fd5ea74a83b21929f525a995227f943adbdd1a7828693b75f9c6494cf0a9dd",
+      "gitBlob": "d9a643b30d1a20b37e8478b74cd33172479fdcf5"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-main99a2/run.json",
+      "size": 1370,
+      "sha256": "0ed7d76da65e6c82517c8aafab0f082b114373bcc4faf3bb4c99a9d8bb6b6001",
+      "gitBlob": "69c76fcdaac4b35d60bbb5ad8ff48512358612db"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/.gitattributes",
+      "size": 13,
+      "sha256": "b4b62d881a4e1535ca0cf2267f5778d2f5742259ba1eb72bb4e4998f1578a4e8",
+      "gitBlob": "b4b948321e14c07b36f1a639a6795b6973ae34a2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/affected-design-audit.json",
+      "size": 325,
+      "sha256": "a6f7c6063909c0b5b7d0d719317760f526f9f35e2f193fee418019a439745930",
+      "gitBlob": "98898e71aa475ea9943f41cb76eeb5c76cb14726"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/chronicle-scene-reference-example.json",
+      "size": 873,
+      "sha256": "3f57ad20b0bc265aeede179687100cf07312181563f788d4423f6cca375b2500",
+      "gitBlob": "6cb3349d32821d5cb9884ea3f197b20aedeeae9b"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/failed-browser-r9.log",
+      "size": 41708,
+      "sha256": "1260107f4a4aa7872984f4a6360135c2164d64c99800ab41327c2e1869f84ae1",
+      "gitBlob": "a1fc74cefa8e67b807cebfa67750ab53a08f582d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/focused-tests.log",
+      "size": 810,
+      "sha256": "55f777842ed3c7bea113dd738f92fcb03621b7f2309c45ff82ae13ae6895b4fa",
+      "gitBlob": "74f47e9e9a2a0a3905f80764b3ad623e4a26e1d0"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/independent-review.json",
+      "size": 21667,
+      "sha256": "d9023649b3dc340f557246c3fc5fa9ce87b2fc7f55b2e6bb9fadd3aa942df123",
+      "gitBlob": "b363d15093c6ea048139c0ed6fd5f38c921df709"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/production-browser.log",
+      "size": 38128,
+      "sha256": "56c948e94322c3c527c9f3aba093e3345ac68e220c72486e1db5b95852775807",
+      "gitBlob": "57e5e7ab0713691624d67d345b579af2a0d3d62a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/regression-tests.log",
+      "size": 614,
+      "sha256": "e2e11a24d4d54d56feb271ff760fe736d9c053e964a66e8489ac2258bc417cbb",
+      "gitBlob": "80acbf92828a61a51a8bc4d220a12bfe23c9ac96"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/review-packet.json",
+      "size": 25802,
+      "sha256": "8f229fd3de2cf4482e612a6b2f0f4fc1b10302c485541893fe6672e5772adfa9",
+      "gitBlob": "0912dc64cfa96fc624f7c6f37925ff68c81db014"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-comparison.png",
+      "size": 74295,
+      "sha256": "090114f44332e45fb45ee67bb412096e1dd5fd59678228c876b34b889c06bb90",
+      "gitBlob": "17b900f3c10d037783d898858b12e14ea32f902b"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-environment-impact.png",
+      "size": 74721,
+      "sha256": "9d8830e78afdbcaaea72981d747d26782d443f84e364ef1ada3bf4419a51de16",
+      "gitBlob": "09f65ef3e9c8e0b356f69603132254b5cffba142"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-gallery-mobile.png",
+      "size": 54478,
+      "sha256": "644315c2f319ad8ecffefde94b878ee04f92e41906d3064b5dbd14a8f5035982",
+      "gitBlob": "47184e2bec5a0a5c360f92450b3e5835ae4c1cce"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-haunting-canvas.png",
+      "size": 176804,
+      "sha256": "8e850b024d1d97c758c7a2fad443396ffd02bb3116d57e8d70695e05bc74c6b5",
+      "gitBlob": "4c797ca8095be76fc4d46091660744fa1d865f00"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-hidden-letter-canvas.png",
+      "size": 183233,
+      "sha256": "bba2e18c8085bbc8c63eb8a79de83154d24c12d55016e2a51812604897cf7bd9",
+      "gitBlob": "e0433df9c8a00c7a04c2d064d20054ce57e64369"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-invalid-geometry.png",
+      "size": 71579,
+      "sha256": "5a30db31d2798f8ce0d1c35c2ca9016d9f7f41cf6bc746d46d33f7f961a28645",
+      "gitBlob": "54072ab5c6d6ce874dbad11ff61c3eb66dfb6bc1"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-manager-mobile.png",
+      "size": 46509,
+      "sha256": "5480814c87ea4b3754354e039dab9c63f58fc81f90766ab2c888051198b1c000",
+      "gitBlob": "b3f69e5aaa44c558f252fcb46ad7667af5792a6a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-ordinary-room-canvas.png",
+      "size": 302264,
+      "sha256": "c4cada11aa3fd7167f71d5f37aad4237cdf43894690b8aa238b5ca686764122b",
+      "gitBlob": "9d654ace5be216ae596df7692038c7ba800fe217"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/20261015-repair1/sc01-three-scenes.png",
+      "size": 123826,
+      "sha256": "87db902cb1244a23958df6e750dcb63252a5426dc7fd233779dd9bac3664ec4c",
+      "gitBlob": "75ab053e4d568b2eac36815d7bd2c588866f6c95"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/protected-capture-38681713940/.gitattributes",
+      "size": 13,
+      "sha256": "b4b62d881a4e1535ca0cf2267f5778d2f5742259ba1eb72bb4e4998f1578a4e8",
+      "gitBlob": "b4b948321e14c07b36f1a639a6795b6973ae34a2"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/protected-capture-38681713940/failure.log",
+      "size": 253228,
+      "sha256": "0cac22801ca4286a4ee4fbb3d1393aa20245032dbc6db179737eb78a1ccca657",
+      "gitBlob": "4d193861dafeec1475734fd39f4eeba861253780"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-01/protected-capture-38681713940/run.json",
+      "size": 1393,
+      "sha256": "fa266b7e085ee1213e8d25912591482ec7e519bc15ee68a34a8b2fbb37057a59",
+      "gitBlob": "cff11d0bff3d1782b344e2f1e6982c14325e04e5"
+    }
+  ],
+  "alreadyIdentical": [],
+  "conflicts": []
+}

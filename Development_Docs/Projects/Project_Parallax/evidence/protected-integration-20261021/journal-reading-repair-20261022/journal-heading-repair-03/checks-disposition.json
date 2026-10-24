@@ -1,0 +1,13 @@
+{
+  "kind": "LOCAL_REPAIR_CHECK_DISPOSITION_03",
+  "timeUtc": "2026-10-22T05:22:26.4957086Z",
+  "unitPassed": 40,
+  "unitFailed": 2,
+  "firstKeyRegressionPredicatePassed": true,
+  "remainingFailure": "New reopen selector matched primary compact control plus valid older-history control",
+  "resolution": "Scope only new reopen query by primary accessible description; all original assertions and stale-dialog predicate unchanged",
+  "wholeTypeScript": "PASS",
+  "strictLint": "PASS_ZERO_WARNINGS",
+  "sourceRuntime": "UNPROVEN",
+  "rerunBrowser": false
+}

@@ -1,0 +1,33 @@
+{
+  "documentClass": "engineering-evidence",
+  "at": "2026-10-23T03:26:26.531Z",
+  "parent": "6f874181d0afd6b497f0d743c1a0db89b86a373b",
+  "accepted": "b2d901af5646ce76b3b2bd5a88e1ad8563c2db57",
+  "acceptedTree": "2de39c85baf0c12fbf28975ee6093f29db953480",
+  "acceptedReceiptSha256": "c6cf75a7a30ed3c4d68e2414c0f5e944256d4f1b09900e34e7f3c9f786298be9",
+  "source": [
+    {
+      "path": "src/components/studio/parallax/useWorkspaceLayout.ts",
+      "sha256": "274ceb72d933c3434d244819a6b3388f4105853de97351c31205bba3f9520258"
+    },
+    {
+      "path": "src/components/studio/parallax/useWorkspaceLayout.test.tsx",
+      "sha256": "6caf779f12094a857546774ff5048308d1a15c2c18efdef6efb88440f00eaf3e"
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.test.tsx",
+      "sha256": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c"
+    }
+  ],
+  "environment": {
+    "GIT_NO_LAZY_FETCH": "1",
+    "GIT_OPTIONAL_LOCKS": "0"
+  },
+  "measuredIncomingObjects": 46,
+  "measuredIncomingRawBytes": 4571665,
+  "estimatedCBytes": 0,
+  "estimatedDBytes": 83886080,
+  "noNewCloneOrAlternate": true,
+  "noProductRuntime": true,
+  "qualification": false
+}

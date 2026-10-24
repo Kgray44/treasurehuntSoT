@@ -1,0 +1,58 @@
+{
+  "kind": "JOURNAL_ROW_REUSE_LOCAL_CHECK_SUMMARY",
+  "parent": "933102dbc2b5d3702814ab8cee4f5285e880dcfe",
+  "at": "2026-10-22T06:35:53.179489+00:00",
+  "qualification": false,
+  "unitCounts": {
+    "numTotalTests": 42,
+    "numPassedTests": 42,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "success": true
+  },
+  "typeScript": "PASS_FULL_NO_EMIT",
+  "lint": "PASS_MAX_WARNINGS_0",
+  "sourceStableDuringChecks": true,
+  "cleanup": {
+    "unit": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": 0,
+      "elapsedMs": 2,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "type": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false,
+      "payloadExitCode": 0,
+      "elapsedMs": 1,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "lint": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": 0,
+      "elapsedMs": 1,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    }
+  },
+  "unitReportBytes": 16908,
+  "unitReportSHA256": "fa096bb3902a3b6569adf47e53a06a8637bca9714fef6147ee1b2dff7372db23",
+  "checksSHA256": "adeca7df8fb38b5f28830cd0922f09aa31bba8e745f712b582495cb8fc04b74d",
+  "runtimeProved": false
+}

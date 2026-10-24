@@ -1,0 +1,346 @@
+{
+  "kind": "PARALLAX_SINGLE_ACCEPTED_MAIN39_RECONCILIATION_INTAKE",
+  "classification": "ENGINEERING_SOURCE_AND_VALIDATION_EVIDENCE_NOT_PRODUCT_ACCEPTANCE",
+  "at": "2026-10-22T13:33:04.726887+00:00",
+  "acceptedMain": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "priorCandidate": "720e45753e1a7504b116c1f2e3c5a93e69ad75f1",
+  "initialReconciledTree": "6349d21553648b77bf7523e789e2e732f836f690",
+  "qualification": false,
+  "copyCount": 51,
+  "copiedBytes": 421669,
+  "originals": [
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-788-accepted-main-39b706ad-handoff.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-handoff.original.json",
+      "bytes": 6904,
+      "sha256": "12d0d0787be714b8f48fbf231c35dee33dd072028588042c95803e43ba4768af"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-smoke.original.json",
+      "bytes": 15563,
+      "sha256": "e96508e4adf2e2aa7c03e2bd4f90a5586c75b16eb65d620e7188c565674875ac"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\independent-reader-788-landed-review-39b706ad.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-independent-review.original.json",
+      "bytes": 21378,
+      "sha256": "27858313eb222c762b12f2eec49475fadd34e3aa32f708e5251977925abfd871"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-788-run39780857222-original-success.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-qualification.original.json",
+      "bytes": 175091,
+      "sha256": "4164e699aa819e259b4b91ef0dc24241a7e79e4515a94bfc660e48f2d2ac166b"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-788-confirmed-normal-merge-39b706ad.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-merge.original.json",
+      "bytes": 99198,
+      "sha256": "dfa2adb807e38dc82cea3249731ef5c1e7f59a6c649bd62f4322e8ecde379bc5"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\guard-790-accepted-main-90bff6ec-handoff.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-handoff.original.json",
+      "bytes": 2953,
+      "sha256": "f6b788a7912969d2934189d69f1022293faf3350b0f7026d9ecfb5c2fb0f9369"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-smoke.original.json",
+      "bytes": 11674,
+      "sha256": "83dda97ff1de487abe046ff87918a2a980ab6964cdd28077102f2c4e2d90154d"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\independent-790-exception-landed-review-90bff6ec.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-independent-review.original.json",
+      "bytes": 23646,
+      "sha256": "612a1526d615c69e54e6bf7af6d8073d5ba2243df13dcdc4c843962949180f4c"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.reader-native-links.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/reader-native-links.stdout.original.bin",
+      "bytes": 1665,
+      "sha256": "f83a2dd35e9fc84ecef8ce7788b51d6a9618214e149136484ee172090a4b07ef"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.reader-native-links.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/reader-native-links.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.exact-diagnostic-shape.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/exact-diagnostic-shape.stdout.original.bin",
+      "bytes": 207,
+      "sha256": "df89a32df9c6142b331acb1004aab2d8724a4880552951e0ec3cd4342f78639d"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.exact-diagnostic-shape.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/exact-diagnostic-shape.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.portable-retention.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/portable-retention.stdout.original.bin",
+      "bytes": 1692,
+      "sha256": "301bd5c0000b03884cabb2806cb3334b953dad371ed923c3f9883068ce016937"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.portable-retention.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/portable-retention.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.accepted-unrelated-routing.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/accepted-unrelated-routing.stdout.original.bin",
+      "bytes": 624,
+      "sha256": "9b7b08ff3f56438b754d34e3317549dc75e7ef6f013b7bbae7558f428ff24612"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.accepted-unrelated-routing.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/accepted-unrelated-routing.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.original-r3-admission.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/original-r3-admission.stdout.original.bin",
+      "bytes": 219,
+      "sha256": "15eab1d44a573c8dfa98a72343d863098f993349896b491511ea698bbad52705"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.original-r3-admission.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/original-r3-admission.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.docs-validate.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/docs-validate.stdout.original.bin",
+      "bytes": 33,
+      "sha256": "a577c20ffd716a727eff6829bca7a41e2cbfc01a44de0198134499fdbac40f0a"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.docs-validate.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/docs-validate.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.features-sync.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/features-sync.stdout.original.bin",
+      "bytes": 52,
+      "sha256": "73bc23fe4ed449303d9c74cfae30926bc07330e87a7f7336d3bcb2278a2d9c30"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.features-sync.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/features-sync.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.features-validate.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/features-validate.stdout.original.bin",
+      "bytes": 35,
+      "sha256": "13a02cc6d2aca9c30371dcae2929505862456f13cd6783b1bd6c98ad7348ba88"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.features-validate.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/788-streams/features-validate.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.unrelated-routing.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/unrelated-routing.stdout.original.bin",
+      "bytes": 623,
+      "sha256": "2c2ea9926a51fcda06f0979e7782c475334a20b4e2d720f4ddac686bd378bf66"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.unrelated-routing.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/unrelated-routing.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.custody-scope-and-expiry.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/custody-scope-and-expiry.stdout.original.bin",
+      "bytes": 214,
+      "sha256": "ca843b673f98c86a5d12608c713796b6d421db5a5c54b3088436c5f662e41569"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.custody-scope-and-expiry.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/custody-scope-and-expiry.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.original-r3-admission.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/original-r3-admission.stdout.original.bin",
+      "bytes": 219,
+      "sha256": "4f54af693141e99b5229d7c15d56ea264b0f3e0a08cd191ea8fe49db25731ae2"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.original-r3-admission.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/original-r3-admission.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.docs-validate.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/docs-validate.stdout.original.bin",
+      "bytes": 33,
+      "sha256": "a577c20ffd716a727eff6829bca7a41e2cbfc01a44de0198134499fdbac40f0a"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.docs-validate.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/docs-validate.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.features-sync.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/features-sync.stdout.original.bin",
+      "bytes": 52,
+      "sha256": "73bc23fe4ed449303d9c74cfae30926bc07330e87a7f7336d3bcb2278a2d9c30"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.features-sync.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/features-sync.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.features-validate.stdout.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/features-validate.stdout.original.bin",
+      "bytes": 35,
+      "sha256": "13a02cc6d2aca9c30371dcae2929505862456f13cd6783b1bd6c98ad7348ba88"
+    },
+    {
+      "source": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\expiry-routing-landed-90bff6ec-01.features-validate.stderr.original.bin",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/790-streams/features-validate.stderr.original.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-root-accepted39-review-20261022-01a12c32\\source-dispositions-pre-reconcile.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/root-source-dispositions-pre-reconcile.original.json",
+      "bytes": 27255,
+      "sha256": "937e62e9b103dd8592f63b081c185f9c01b9aabac6050cedce25099492aae888"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-root-accepted39-review-20261022-01a12c32\\source-dispositions-pre-reconcile.addendum.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/root-source-dispositions-pre-reconcile.addendum.original.json",
+      "bytes": 2191,
+      "sha256": "f7833c84e1af30fcbc84449c0a9ef93c6dc826026a73fdd1272b8aa12dd2d9bb"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\maintenance-bundle-39b706ad-preflight-01\\provider-preflight.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/provider-preflight.json",
+      "bytes": 1261,
+      "sha256": "48cc8c01517d0e052bff76e3199e73a359ca862d12effefc5efe3d2c451d7e7f"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\maintenance-bundle-39b706ad-preflight-01\\reconciliation-prep.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/reconciliation-prep.json",
+      "bytes": 843,
+      "sha256": "7ec60c923dd451fa2f4a31b43cfd7f11150621a90728e79d4cf015d90ed06662"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\maintenance-bundle-39b706ad-preflight-01\\actual-merge-staged.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/actual-merge-staged.json",
+      "bytes": 634,
+      "sha256": "9e956d8c9e2e440f36eb578f43ee7da407924e78c727c9146189ae478e14221d"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\check.mjs",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/check.mjs",
+      "bytes": 4149,
+      "sha256": "bedf27f5376588708d93d63499f95f7cdaad6adddf5ddd5e863409ec2c3296c8"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\input.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/input.json",
+      "bytes": 1968,
+      "sha256": "83844eea13cd14666053ac89ea188ea6af231bb7de00622a48a4bce7df0feb51"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\checks.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/checks.json",
+      "bytes": 3670,
+      "sha256": "e84f70c8364066c066dcdc83d41d6b10a0339f07079231cc63d0ec2495fbb2d5"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\unit-report.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/unit-report.json",
+      "bytes": 16898,
+      "sha256": "dd1647882196c637fe9908756e0a39a65904912929ad05208a42d7263c8f1d58"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\unit.stdout.original.log",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/unit.stdout.original.log",
+      "bytes": 119,
+      "sha256": "84d0c11b2ffd1e8079cde428adf634825cb712e7df3ffbe5b57dfdd0367d2122"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\unit.stderr.original.log",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/unit.stderr.original.log",
+      "bytes": 571,
+      "sha256": "930b692c3f36da26c3f967e17dbf0c7c193b1149b830fab667c8c0339df15535"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\type.stdout.original.log",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/type.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\type.stderr.original.log",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/type.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\lint.stdout.original.log",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/lint.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main39-reconciliation-checks-01\\lint.stderr.original.log",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/main39-20261022/checks/lint.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "allCopiesRehashed": true,
+  "productSrcPrismaBrowserTestsUnchanged": true,
+  "freshLocalChecks": {
+    "componentPassed": 42,
+    "failed": 0,
+    "pending": 0,
+    "fullNoEmitTypeScript": "PASS",
+    "strictOwnLintMaxWarnings0": "PASS",
+    "allOwnedProcessCleanup": "PASS_actual_escalation_flags_retained"
+  },
+  "historicalDevelopmentProducer": "b617b6825688d2d3d89a34284588ce456701aa8f",
+  "historicalDevelopmentRun": 39735856149,
+  "historicalFailedRuns": [
+    39696321296,
+    39721702762,
+    39730281230
+  ],
+  "receiptsRebound": false,
+  "remaining": "Exact committed candidate complete non-consuming plan; fresh governed capture/review; ordinary protected qualification/merge/landed smoke",
+  "localProductionBuild": "Not admitted by measured C reserve; use measured owned/hosted routes",
+  "documentationClassification": {
+    "intakeAndCopies": "engineering evidence under Development_Docs; machine records retain exact bytes",
+    "currentHumanCheckpointAndNavigation": "valid frontmatter",
+    "activeExecutionGuidance": ".agents only",
+    "productStatusFeaturesFeatureStatus": "reviewed; links and pending acceptance remain accurate"
+  },
+  "catalogDecision": "NO_CHANGE_REQUIRED_ORDINARY_RECONCILIATION_UNACCEPTED_INTEGRATION"
+}

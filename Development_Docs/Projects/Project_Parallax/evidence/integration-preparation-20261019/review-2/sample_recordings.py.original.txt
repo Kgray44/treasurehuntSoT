@@ -1,0 +1,18 @@
+import json,subprocess
+from pathlib import Path
+from PIL import Image,ImageDraw
+out=Path(r'D:\CodexTemp\parallax-integration-20261019-01a15554\independent-review-final');vids=json.loads((out/'recordings.json').read_text());ff=r'C:\Users\kkids\AppData\Local\ms-playwright\ffmpeg-1011\ffmpeg-win64.exe'
+ids=['F0001','F0008','F0009','F0010','F0011','F0012','F0013','F0014','F0015','F0016','F0023','F0026','F0118','F0119','F0120','F0126','F0127','F0131','F0133','F0135','F0143','F0148','F0150','F0154','F0158','F0163','F0169','F0171','F0172','F0173','F0573','F0574','F0578','F0579','F0580','F0581','F0601','F0603','F0605','F0608','F0612','F0613','F0614','F0616','F0618','F0620','F0621','F0623','F0624','F0626','F0627','F0628','F0679','F0680','F0688','F0689','F0730']
+meta=[]
+for v in vids:
+ if v['id'] not in ids:continue
+ dest=out/'frames'/v['id'];dest.mkdir(parents=True,exist_ok=True);frames=[]
+ for k in range(8):
+  t=max(0,min(v['duration']*k/8,v['duration']-0.04));f=dest/f'{k:02}-{t:.2f}.png';r=subprocess.run([ff,'-loglevel','error','-ss',str(t),'-i',v['file'],'-frames:v','1','-y',str(f)],capture_output=True,text=True)
+  if r.returncode or not f.exists():raise RuntimeError(r.stderr)
+  frames.append({'time':round(t,3),'file':str(f)})
+ sheet=Image.new('RGB',(2000,820),'#e7eaf0');d=ImageDraw.Draw(sheet)
+ for k,fr in enumerate(frames):
+  im=Image.open(fr['file']).convert('RGB');im.thumbnail((496,375));x=k%4*500;y=k//4*410;sheet.paste(im,(x+(500-im.width)//2,y));d.text((x+7,y+379),f"{v['id']} t={fr['time']:.2f}s",fill='black')
+ sheet.save(out/f"video-{v['id']}.jpg",quality=93);meta.append({**v,'sampling':'Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.','frames':frames})
+(out/'sampled-recordings.json').write_text(json.dumps(meta,indent=2));print(json.dumps({'recordings':len(meta),'frames':sum(len(v['frames']) for v in meta),'totalAudioStreams':sum(v['audioStreamPresent'] for v in vids)}))

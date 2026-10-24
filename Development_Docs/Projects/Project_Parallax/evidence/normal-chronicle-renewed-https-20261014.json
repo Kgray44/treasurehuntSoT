@@ -1,0 +1,47 @@
+{
+  "documentClassification": "engineering-evidence",
+  "observedAtUtc": "2026-10-14",
+  "sourceCommit": "9c4470cf22cd99204b67e22be8d92870e9a0e64d",
+  "status": "TRUSTED_HTTPS_PAIRING_AND_LENS_ENTRY_PASS_DEVICE_ACCEPTANCE_PENDING",
+  "runtime": "OWNED_WINDOWS_LOCAL_SERVER_WITH_EXISTING_ISOLATED_DATABASE",
+  "transport": {
+    "temporaryProvider": "CLOUDFLARE_QUICK_TUNNEL",
+    "installedHelperVersion": "2026.7.2",
+    "helperInstalledOrUpgradedByTask": false,
+    "automaticUpdates": false,
+    "systemServiceInstalled": false,
+    "tunnelAccountCredentialsUsed": false,
+    "normalTlsValidation": true,
+    "systemDns": true,
+    "hostResolverOverride": false,
+    "sseSupportedByQuickTunnel": false,
+    "existingHttpRecoveryPreserved": true,
+    "productTransportChanged": false,
+    "permanentUptimeGuaranteed": false,
+    "documentation": "https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/#limitations"
+  },
+  "actualBrowserChecks": {
+    "twoAuthenticatedBrowserContexts": true,
+    "secureContext": true,
+    "normalCrossdeckPairingClaim": "PASS",
+    "desktopPrimaryStoryAndPhoneChronicleLensRoles": "PASS",
+    "normalContinueVoyage": "PASS",
+    "normalBeginVoyageEntryPrompt": "COMPLETED",
+    "activeChronicleLensAutomaticallyOpened": "PASS",
+    "browserArStartControlVisible": "PASS",
+    "twoOwnedProbeRegistrationsRemovedThroughNormalControls": true
+  },
+  "priorHarnessObservation": "The first continuation check mistook the normal Begin Voyage entry dialog for Chronicle Lens; the corrected test completes that entry action before checking Lens controls.",
+  "boundaries": {
+    "actualIPhoneSafari": "NOT_TESTED",
+    "phoneCameraMotionAndAlignment": "NOT_TESTED",
+    "physicalAnchoring": "NOT_TESTED",
+    "trackingReleaseClearance": "NOT_CLAIMED",
+    "ownerAcceptance": "PENDING",
+    "protectedQualification": "NOT_CLAIMED"
+  },
+  "phoneProvider": "EXPLICITLY_PERMITTED_TINYVIO_LOCAL_PROTOTYPE_ONLY",
+  "publicSourceExperimentalProviderAutomaticallySubstituted": false,
+  "paidCalls": 0,
+  "authStatePairingCodesAndPasswordsPublished": false
+}

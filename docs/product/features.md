@@ -3,12 +3,33 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-21
 ---
 
 # Voyagewright features
 
-The Crossdeck refit candidate connects a phone from the active Chronicle and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact and restricted crew views. Contextual pairing, acknowledged handoff, continuation and recovery retain the authorized Voyage. The [R11 source record](../../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md) binds accepted authority #754, the original 38-context capture, seven-contract/119-judgment independent review and unchanged product source. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft, unqualified and unmerged pending its single finite ordinary5, current replay, protected merge and landed smoke. Earlier failures remain consumed and preserved. Unsupported dedicated purposes explain their limits; physical/native, field, assistive-technology and product-owner acceptance remain separate.
+The Spatial Studio overhaul candidate combines independent Scenes, reusable
+versioned Environments, Guided/Standard/Engineering inspection, a paged Library,
+premium models and effects, reviewed surface placement, groups and exclusions,
+Assistant proposals with deliberate Apply, Undo/Redo and animation. Working saves
+remain distinct from deliberate Library membership. Community package review
+preserves licensing, source rights and read-only installation. See the
+[Spatial Studio guide](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Guide.md)
+and [integration status](../../Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md).
+Fresh protected qualification remains pending. Physical browser AR, plane detection,
+native delivery and owner acceptance retain their separate evidence limits.
+
+The software-qualified Crossdeck refit connects a phone from the active Chronicle
+and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact
+and restricted crew views. Contextual pairing, acknowledged handoff, continuation
+and recovery retain the authorized Voyage. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721)
+landed normally on protected main at `aaff9194` after successful
+[R26 qualification](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105)
+and independent landed documentation, Feature Catalog and evidence smoke. The
+[R11 source record](../../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md),
+original captures/reviews and consumed failures remain historical, source-bound
+evidence. Unsupported dedicated purposes explain their limits. Physical/native,
+field, assistive-technology and product-owner acceptance remain separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

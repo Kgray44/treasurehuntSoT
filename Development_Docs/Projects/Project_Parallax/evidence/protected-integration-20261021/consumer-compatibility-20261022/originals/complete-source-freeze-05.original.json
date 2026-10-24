@@ -1,0 +1,108 @@
+{
+  "kind": "COMPLETE_CONSUMER_SOURCE_FREEZE_05_DRAFT_RETURN_CORRECTED",
+  "at": "2026-10-22T18:01:42.127Z",
+  "head": "28ece6275ad51a23008e1301964a3eb8a9c0ab8d",
+  "previousFreeze": {
+    "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/coverage-repair-01/complete-source-freeze-04.original.json",
+    "sha256": "a841d2b0bee71844de31fff82ab570c756e4a86792b38cbafa729ddd6f1b545c"
+  },
+  "firstCombinedOutcome": {
+    "passed": 21,
+    "failed": 18,
+    "retries": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "cleanup": "PASS",
+    "result": "FAILED"
+  },
+  "originalIDsPreserved": 501,
+  "totalContracts": 502,
+  "experienceContractsSchemaPass": 32,
+  "declaredNewBrowserCases": 39,
+  "files": {
+    "testing/contracts.json": "70cf68f9c4f71eb669826100b84534e8bbe25e489b549b78880f5ab05522b897",
+    "tests/e2e/parallax-shared-consumers.spec.ts": "c0ee51bb0128d783fcf24fed6d35a9a88fed4c37c6e21b2097d2618b7189de27",
+    "tests/e2e/parallax-passport-compatibility.spec.ts": "3fcb0d79021920febb5b32755ad7277b7ddf0dba0f6d77885954fc0bd517e700",
+    "tests/e2e/parallax-community-compatibility.spec.ts": "fa9bd952431d1e78fdef4ac1bd7fc53c71a420f492f5984019dd695888905404",
+    "tests/e2e/parallax-workspace-compatibility.spec.ts": "b992f9f46935af6a56da2d39651f2884958022930137dc8ec587a5fef4fd9ea4",
+    "tests/e2e/parallax-access-availability.spec.ts": "b27586f311dbb37e1d961bb38ea88dc218c4d986753529d418f1e4cf981cba99",
+    "tests/e2e/parallax-admiralty-compatibility.spec.ts": "34a8c3b16e39202a0e7b8c121a1abf7ad70d55422987ef3c0805ea2f11a64185",
+    "tests/e2e/fixtures/parallax-experience.ts": "7b74548262c9357b8bf7c141dfcab5dedd323d192bfd6ef7be436deef3aa71fe",
+    "tests/e2e/fixtures/parallax-compatibility-archive.ts": "b01514a8d196e521feff1712c4b73ae98cfdda7176c5299517f7dbcaf8f8ebf0",
+    "tests/e2e/fixtures/parallax-compatibility-governance.ts": "e39eab4f61a323b27ddd2ebb7f76d96ca5e7cdbd808e6690b534a1a18c368600",
+    "tests/e2e/fixtures/parallax-unavailable-html.ts": "82a52efcb5443db916b9e7e2fb6b5579d021143ce979488e898ffb8448bb1a56"
+  },
+  "checks": {
+    "compatibility-corrections-format-01": {
+      "sha256": "ca5a6d51140887f963fa977fdcf99102e6eabfd7ed1869f84e90a23736d01812",
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/compatibility-corrections-format-01/execution.original.json"
+    },
+    "compatibility-corrections-typecheck-01": {
+      "sha256": "d40f4226f01e701a05efdc96fa72f6b7aeda13af69e038e24184ca513c4093ef",
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/compatibility-corrections-typecheck-01/execution.original.json"
+    },
+    "compatibility-corrections-lint-01": {
+      "sha256": "0a0cb3eaa8e956249dfaf09b44e4f92af3d92cdf88fa1844d3feb0c85b0e8e1b",
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/compatibility-corrections-lint-01/execution.original.json"
+    },
+    "compatibility-corrections-list-01": {
+      "sha256": "130a0ee464dbdf2ebdd6ee03f480e588fb374289e4cef127bd21b41cbbd00aa1",
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/compatibility-corrections-list-01/execution.original.json"
+    },
+    "compatibility-pilot-return-format-01": {
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/compatibility-pilot-return-format-01/execution.original.json",
+      "sha256": "a31324f4c8a6ffcbf7c800397717d9f11f45be39a7fac49526c58f5ec216fdcd"
+    },
+    "compatibility-pilot-return-typecheck-01": {
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/compatibility-pilot-return-typecheck-01/execution.original.json",
+      "sha256": "1df896bcea95889c1c4177ce6519b7c947b441f15b606df13b373132d2a02fcc"
+    },
+    "compatibility-pilot-return-lint-01": {
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/compatibility-pilot-return-lint-01/execution.original.json",
+      "sha256": "bc8b08fd029c554aca61dda33588a40e0fe05fcfb6deefc61f70a4338e84e012"
+    },
+    "narrow-draft-return-format-01": {
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/narrow-draft-return-format-01/execution.original.json",
+      "sha256": "050a1e86ceddf8b72f9ff4cb5ba732449a5f57817e51eeb3813b94cccf650666"
+    },
+    "narrow-draft-return-typecheck-01": {
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/narrow-draft-return-typecheck-01/execution.original.json",
+      "sha256": "4aead1627c0587a7a364778bdfac510818f4487f98b1c5cb187114a5d58f9f1f"
+    },
+    "narrow-draft-return-lint-01": {
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/narrow-draft-return-lint-01/execution.original.json",
+      "sha256": "82ee0fa7963efa722d71cda47d12b969e1b84258761eebfdfcb1314acffe4533"
+    }
+  },
+  "audit": {
+    "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/coverage-repair-01/corrected-schema-obligations-03.original.json",
+    "sha256": "77a60963f061b2eeb666e7b13573c2bedf8eaf9baf47ee6315e6aaabaf27ec35"
+  },
+  "productAndPrismaDelta": [],
+  "runtimeOnThisFreeze": false,
+  "qualification": false,
+  "protectedCapture": false,
+  "rootChangelogSHA256": "cbaeb660f9b022028074a7733bc2b786a4a9d46baad1e5ffa2afae41fb1aeabc",
+  "resolvedSourceFinding": {
+    "previousReview": "D:/CodexTemp/parallax-root-accepted39-review-20261022-01a12c32/consumer-compatibility-freeze03-source-review.original.json",
+    "sha256": "a9c24b2d1c0f10884962e0d7cedcedb1a788964c21308267a64ef1a3e97cb86b",
+    "finding": "Pilot DEVELOPMENT route has no account button; use existing visible Return to Home before ordinary account/Harbor recovery.",
+    "productSourceChanged": false
+  },
+  "sourceReview": {
+    "path": "D:/CodexTemp/parallax-root-accepted39-review-20261022-01a12c32/consumer-community-post-run02-source-review.original.json",
+    "sha256": "70ca7d4f44718d2f28234ca4c988fb4c697ec5fb5c1ebbd2fa1e7dec80e38792"
+  },
+  "priorRun02": {
+    "declared": 39,
+    "executed": 27,
+    "rawPassed": 25,
+    "testFailed": 2,
+    "notRun": 12,
+    "wholeResult": "FAIL_INCOMPLETE",
+    "availabilityProducerReceipt": "MISSING",
+    "availabilityGroup": "FAIL_C_PROACTIVE_RESERVE_STOP",
+    "minimumC": 12353642496
+  },
+  "nextGate": "No new local runtime while C capacity is unstable; source/documentation publication and supported hosted-focused development require exact reviewed source identity and fresh admission."
+}

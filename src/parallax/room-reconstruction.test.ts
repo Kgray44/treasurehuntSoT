@@ -1,0 +1,1022 @@
+import { expect, it } from "vitest";
+import { roomObservationSchema, type RoomObservation } from "@/watchglass/room-observation";
+import { reconstructRoomFromObservation } from "./room-reconstruction";
+import { scaleRoomFromMeasurement } from "./parametric-room";
+import { discoverRoomSurfaces, syntheticRoomGeometry } from "./room-geometry";
+import { createSpatialDraft, previewEntityTransform } from "./authoring";
+import { placeOnRoomFeature } from "./room-placement";
+
+const observation = (): RoomObservation => ({
+  status: "OBSERVED",
+  explanation: "Approximate synthetic room with a desk beside a window.",
+  clarification: null,
+  alignment: "INITIAL_ROOM",
+  sharedFeatureId: null,
+  roomDimensions: [6, 3, 5],
+  dimensionBasis: "ESTIMATED",
+  uncertainties: ["Hidden geometry is inferred."],
+  features: [
+    {
+      matchedFeatureId: null,
+      classification: "DESK",
+      name: "Writing desk",
+      position: { x: 1, y: 0.4, z: -1 },
+      dimensions: [1.4, 0.8, 0.8],
+      yawDegrees: 0,
+      basis: "DIRECTLY_OBSERVED",
+      confidence: 0.8,
+    },
+    {
+      matchedFeatureId: null,
+      classification: "WINDOW",
+      name: "Desk window",
+      position: { x: 1, y: 1.8, z: -2.5 },
+      dimensions: [1.2, 1.1, 0.08],
+      yawDegrees: 0,
+      basis: "DIRECTLY_OBSERVED",
+      confidence: 0.8,
+    },
+  ],
+});
+const propose = (obs = observation()) => {
+  const result = reconstructRoomFromObservation({
+    observation: obs,
+    roomId: "photo-room",
+    sourceMediaIds: ["media-one"],
+  });
+  if (result.status !== "PROPOSED") throw new Error("Expected editable room proposal");
+  return result;
+};
+it("preserves a thin floor covering and rejects inconsistent thickness without changing its evidence", () => {
+  const obs = observation();
+  obs.features = [
+    {
+      ...obs.features[0],
+      classification: "OTHER",
+      name: "Floor covering",
+      position: { x: 0, y: 0.005, z: 0 },
+      dimensions: [2, 0.01, 2],
+      attachment: "FLOOR",
+    },
+  ];
+  const result = propose(obs);
+  const covering = result.room.features.find((feature) => feature.name === "Floor covering")!;
+  expect(covering.dimensions).toEqual([2, 0.01, 2]);
+  expect(covering.position.y).toBe(0.005);
+  obs.features[0].dimensions[1] = 0.3;
+  const original = structuredClone(obs);
+  expect(() => propose(obs)).toThrow(/inconsistent estimated height.*bottom is -0.145 m/);
+  expect(obs).toEqual(original);
+});
+it("discloses a bounded fit for estimated floor solids, preserving dimensions, heading and original evidence", () => {
+  const obs = observation();
+  obs.features = [0, 0.96].map((x, index) => ({
+    ...obs.features[0],
+    classification: "OTHER",
+    name: `Floor furnishing ${index}`,
+    position: { x, y: 0.5, z: 0 },
+    dimensions: [1, 1, 1],
+    attachment: "FLOOR",
+  }));
+  const original = structuredClone(obs);
+  const result = propose(obs);
+  const fitted = result.room.features.find((feature) => feature.name === "Floor furnishing 0")!;
+  expect(Math.hypot(fitted.position.x, fitted.position.z)).toBeLessThanOrEqual(0.1);
+  expect(fitted.dimensions).toEqual([1, 1, 1]);
+  expect(fitted.yawDegrees).toBe(0);
+  expect(fitted.provenance).toMatchObject({ basis: "INFERRED", confidence: 0.6 });
+  expect(result.warnings[0]).toMatch(/Fitted estimated.*Review this fitted placement/);
+  expect(obs).toEqual(original);
+  const existing = structuredClone(result.room);
+  const observed = existing.features.filter((feature) => feature.name.startsWith("Floor furnishing"));
+  const refinement: RoomObservation = {
+    ...obs,
+    alignment: "EXISTING_ROOM_FRAME",
+    sharedFeatureId: observed[0].id,
+    features: obs.features.map((feature, index) => ({ ...feature, matchedFeatureId: observed[index].id })),
+  };
+  expect(
+    reconstructRoomFromObservation({
+      observation: refinement,
+      existing,
+      roomId: existing.id,
+      sharedFeatureId: observed[0].id,
+      sourceMediaIds: ["media-one"],
+    }).status,
+  ).toBe("CLARIFICATION");
+  expect(existing).toEqual(result.room);
+  for (const feature of obs.features) feature.confidence = 1;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "confident", sourceMediaIds: ["media-one"] }).status,
+  ).toBe("CLARIFICATION");
+  // A support-height adjustment lowers derived confidence; it must not make
+  // originally confident image evidence eligible for horizontal fitting.
+  for (const feature of obs.features) feature.position.y += 0.005;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "confident-height-fit", sourceMediaIds: ["media-one"] })
+      .status,
+  ).toBe("CLARIFICATION");
+  for (const feature of obs.features) feature.position.y = 0.5;
+  for (const feature of obs.features) feature.confidence = 0.8;
+  obs.features[1].position.x = 0.6;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "deep-overlap", sourceMediaIds: ["media-one"] }).status,
+  ).toBe("CLARIFICATION");
+});
+it.each([0, 90, -90, 180])("keeps observed cabinet fronts in all room directions (%s)", (yawDegrees) => {
+  const obs = observation();
+  obs.features = [
+    {
+      ...obs.features[0],
+      classification: "CABINET",
+      dimensions: [1, 1.8, 0.5],
+      position: { x: 0, y: 0.9, z: 0 },
+      yawDegrees,
+      facingEvidence: [
+        {
+          imageIndex: 0,
+          frontDirection:
+            yawDegrees === 0 ? "FRONT" : yawDegrees === 90 ? "RIGHT" : yawDegrees === -90 ? "LEFT" : "BACK",
+          confidence: 0.9,
+          cues: "Handles mark the front plane; the visible side establishes depth against the floor junction.",
+        },
+      ],
+    },
+  ];
+  expect(propose(obs).room.features.find((feature) => feature.classification === "CABINET")!.yawDegrees).toBe(
+    yawDegrees,
+  );
+  obs.features[0].yawDegrees = yawDegrees === 0 ? 90 : 0;
+  expect(() => propose(obs)).toThrow(/conflicting front-face evidence/);
+});
+it("keeps an ambiguous cabinet heading editable but never promotes missing facing evidence", () => {
+  const obs = observation();
+  obs.features = [
+    {
+      ...obs.features[0],
+      classification: "CABINET",
+      dimensions: [1, 1.8, 0.5],
+      position: { x: 0, y: 0.9, z: 0 },
+      confidence: 0.95,
+    },
+  ];
+  const result = propose(obs);
+  expect(result.room.features.find((feature) => feature.classification === "CABINET")!.provenance.confidence).toBe(0.6);
+  expect(result.warnings.join(" ")).toContain("front-facing direction is uncertain");
+});
+it("rejects confident orientation contradictions without silently rotating a table, and exposes ambiguous estimates", () => {
+  const obs = observation();
+  obs.features[0].orientationEvidence = [
+    {
+      imageIndex: 0,
+      widthAxisRelation: "PERPENDICULAR_BACK_WALL",
+      confidence: 0.9,
+      cues: "Long edges follow the return-wall direction.",
+    },
+  ];
+  expect(() => propose(obs)).toThrow("conflicting edge evidence and rotation");
+  expect(obs.features[0].yawDegrees).toBe(0);
+  obs.features[0].orientationEvidence[0] = {
+    imageIndex: 0,
+    widthAxisRelation: "UNRESOLVED",
+    confidence: 0.4,
+    cues: "Only one cropped edge is visible.",
+  };
+  const result = propose(obs);
+  const desk = result.room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.yawDegrees).toBe(0);
+  expect(desk.provenance.confidence).toBe(0.4);
+  expect(result.warnings.join(" ")).toContain("orientation is uncertain");
+  obs.features[0].orientationEvidence[0].imageIndex = 1;
+  expect(() => propose(obs)).toThrow("distinct supplied photographs");
+});
+it.each([undefined, null])(
+  "keeps missing orientation evidence uncertain without inventing a rotation (%s)",
+  (orientationEvidence) => {
+    const obs = observation();
+    obs.features[0].confidence = 0.95;
+    obs.features[0].yawDegrees = 37;
+    obs.features[0].orientationEvidence = orientationEvidence;
+    const result = propose(obs);
+    const desk = result.room.features.find((feature) => feature.classification === "DESK")!;
+    expect(desk.provenance.confidence).toBe(0.6);
+    expect(desk.yawDegrees).toBe(37);
+    expect(desk.dimensions).toEqual(obs.features[0].dimensions);
+    expect(result.warnings.join(" ")).toContain("orientation is uncertain");
+  },
+);
+it("does not treat high confidence in an unresolved view as high confidence in the guessed orientation", () => {
+  const obs = observation();
+  obs.features[0].confidence = 0.95;
+  obs.features[0].orientationEvidence = [
+    { imageIndex: 0, widthAxisRelation: "UNRESOLVED", confidence: 0.98, cues: "Square top is almost fully occluded." },
+  ];
+  const result = propose(obs);
+  const desk = result.room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.provenance.confidence).toBe(0.6);
+  expect(desk.yawDegrees).toBe(0);
+  expect(result.warnings.join(" ")).toContain("orientation is uncertain");
+});
+it.each([0, 90, 37])("retains supported parallel, perpendicular and oblique rotations (%s degrees)", (yawDegrees) => {
+  const obs = observation();
+  obs.features[0].yawDegrees = yawDegrees;
+  obs.features[0].orientationEvidence = [
+    {
+      imageIndex: 0,
+      widthAxisRelation:
+        yawDegrees === 0 ? "PARALLEL_BACK_WALL" : yawDegrees === 90 ? "PERPENDICULAR_BACK_WALL" : "OBLIQUE",
+      confidence: 0.9,
+      cues: "Two pairs of tabletop edges establish the width axis against the wall directions.",
+    },
+  ];
+  const desk = propose(obs).room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.provenance.confidence).toBe(0.8);
+  expect(desk.yawDegrees).toBe(yawDegrees);
+});
+it("lets a clearer second photograph resolve a cropped first view without changing observed yaw", () => {
+  const obs = observation();
+  obs.features[0].orientationEvidence = [
+    { imageIndex: 0, widthAxisRelation: "UNRESOLVED", confidence: 0.3, cues: "The tabletop is cropped." },
+    {
+      imageIndex: 1,
+      widthAxisRelation: "PARALLEL_BACK_WALL",
+      confidence: 0.9,
+      cues: "Both long edges and all four legs are visible.",
+    },
+  ];
+  const result = reconstructRoomFromObservation({
+    observation: obs,
+    roomId: "two-view-room",
+    sourceMediaIds: ["photo-a", "photo-b"],
+  });
+  if (result.status !== "PROPOSED") throw new Error("Expected proposal");
+  const desk = result.room.features.find((feature) => feature.classification === "DESK")!;
+  expect(desk.provenance.confidence).toBe(0.8);
+  expect(desk.yawDegrees).toBe(0);
+  expect(result.warnings.join(" ")).not.toContain("orientation is uncertain");
+  obs.features[0].orientationEvidence[1].widthAxisRelation = "OBLIQUE";
+  expect(() =>
+    reconstructRoomFromObservation({
+      observation: obs,
+      roomId: "two-view-room",
+      sourceMediaIds: ["photo-a", "photo-b"],
+    }),
+  ).toThrow("conflicting edge evidence and rotation");
+});
+it("preserves explicit perpendicular wall assignments and refuses contradictory wall coordinates", () => {
+  const obs = observation();
+  const base = obs.features[1];
+  obs.features = [
+    {
+      ...base,
+      classification: "OTHER",
+      name: "Teaching board",
+      dimensions: [2, 1, 0.08],
+      position: { x: 0, y: 1.6, z: -2.4 },
+      attachment: "WALL",
+      wallFace: "BACK",
+    },
+    {
+      ...base,
+      classification: "OTHER",
+      name: "Equipment panel",
+      dimensions: [1.4, 1, 0.08],
+      position: { x: 2.9, y: 1.6, z: -0.6 },
+      yawDegrees: -90,
+      attachment: "WALL",
+      wallFace: "RIGHT",
+    },
+  ];
+  const room = propose(obs).room;
+  const panel = room.features.find((feature) => feature.name === "Equipment panel")!;
+  const relation = room.construction!.relationships.find((entry) => entry.featureId === panel.id)!;
+  expect(relation.targetFeatureId).toBe("photo-room:right-wall");
+  expect(panel.yawDegrees).toBe(-90);
+  obs.features[1].wallFace = "BACK";
+  expect(() => propose(obs)).toThrow();
+});
+it.each(["BACK", "FRONT", "LEFT", "RIGHT"] as const)(
+  "recognizes open, closed and uncertain doorway geometry on the %s wall, including near a corner",
+  (wallFace) => {
+    for (const openingState of ["OPEN", "CLOSED", "UNKNOWN"] as const) {
+      const obs = observation();
+      const side = wallFace === "LEFT" || wallFace === "RIGHT";
+      obs.features = [
+        {
+          ...obs.features[1],
+          classification: "DOOR",
+          name: "Observed doorway",
+          attachment: "WALL",
+          wallFace,
+          openingState,
+          position: side
+            ? { x: wallFace === "LEFT" ? -3 : 3, y: 1.05, z: -1.75 }
+            : { x: 2.25, y: 1.05, z: wallFace === "BACK" ? -2.5 : 2.5 },
+          dimensions: [0.9, 2.1, 0.1],
+          yawDegrees: side ? 90 : 0,
+        },
+      ];
+      const room = propose(obs).room;
+      const door = room.features.find((feature) => feature.classification === "DOOR")!;
+      expect(door.openingState).toBe(openingState);
+      expect(door.parts.some((part) => part.id.endsWith(":panel"))).toBe(openingState !== "OPEN");
+      const geometry = syntheticRoomGeometry({ ...room, horizontal: true, vertical: true });
+      expect(geometry.some((part) => part.classification === "WALL" && (part.openings?.length ?? 0) > 0)).toBe(true);
+      expect(
+        discoverRoomSurfaces(geometry, { tracking: true, clutter: 0 }).filter((surface) => surface.surface === "FLOOR"),
+      ).toHaveLength(1);
+    }
+  },
+);
+it.each([0, 90, -90, 180, 35])(
+  "retains independently observed table yaw %s rather than aligning furniture to a nearby wall",
+  (yawDegrees) => {
+    const obs = observation();
+    obs.features = [
+      {
+        ...obs.features[0],
+        classification: "TABLE",
+        attachment: "FLOOR",
+        position: { x: 0, y: 0.4, z: 0 },
+        dimensions: [1.8, 0.8, 0.9],
+        yawDegrees,
+      },
+    ];
+    const room = propose(obs).room;
+    expect(room.features.find((feature) => feature.classification === "TABLE")!.yawDegrees).toBe(yawDegrees);
+  },
+);
+it.each(["TABLE", "DESK", "CHAIR", "CABINET"] as const)(
+  "resolves a small initial %s floor-support estimate without changing its layout",
+  (classification) => {
+    const obs = observation();
+    obs.features = [
+      {
+        ...obs.features[0],
+        classification,
+        attachment: "FLOOR",
+        position: { x: 0.7, y: 0.44, z: 0.6 },
+        yawDegrees: 35,
+      },
+    ];
+    const result = propose(obs);
+    const feature = result.room.features.find((item) => item.classification === classification)!;
+    expect(feature.position).toEqual({ x: 0.7, y: 0.4, z: 0.6 });
+    expect(feature.yawDegrees).toBe(35);
+    expect(feature.dimensions).toEqual(obs.features[0].dimensions);
+    expect(feature.provenance.basis).toBe("INFERRED");
+    expect(feature.provenance.confidence).toBeLessThanOrEqual(0.6);
+    expect(result.warnings.join(" ")).toContain("Review this fitted height");
+    obs.features[0].position.y = 0.6;
+    expect(() => propose(obs)).toThrow("too far from the floor");
+  },
+);
+it("retains observed ceiling x/z independently of cabinet geometry and back-wall proximity", () => {
+  const obs = observation();
+  obs.features = [
+    {
+      ...obs.features[0],
+      classification: "APPLIANCE",
+      name: "Ceiling device",
+      applianceShape: "PROJECTOR",
+      attachment: "CEILING",
+      position: { x: 0.7, y: 2.65, z: 1.4 },
+      dimensions: [0.45, 0.7, 0.45],
+    },
+  ];
+  const room = propose(obs).room;
+  const projector = room.features.find((feature) => feature.applianceShape === "PROJECTOR")!;
+  expect(projector.position).toEqual({ x: 0.7, y: 2.65, z: 1.4 });
+  expect(
+    room.construction!.relationships.find((relation) => relation.featureId === projector.id)!.targetFeatureId,
+  ).toBe("photo-room:ceiling");
+});
+const refinement = () => {
+  const room = propose().room;
+  const desk = room.features.find((f) => f.classification === "DESK")!;
+  const obs = observation();
+  obs.alignment = "EXISTING_ROOM_FRAME";
+  obs.sharedFeatureId = desk.id;
+  obs.features = [
+    { ...obs.features[0], matchedFeatureId: desk.id, position: { x: 0.5, y: 0.5, z: -1 }, dimensions: [1.5, 1, 0.8] },
+  ];
+  return {
+    room,
+    desk,
+    input: {
+      observation: obs,
+      roomId: room.id,
+      sourceMediaIds: ["media-two"],
+      existing: room,
+      sharedFeatureId: desk.id,
+    },
+  };
+};
+
+it("maps perception into one editable whole floor, complete inferred walls and real generic support geometry", () => {
+  const { room, warnings } = propose();
+  expect(room.origin).toBe("PHOTO_RECONSTRUCTION");
+  expect(room.features.filter((f) => f.classification === "FLOOR")).toHaveLength(1);
+  expect(room.features.filter((f) => f.classification === "WALL")).toHaveLength(4);
+  expect(room.features.filter((f) => f.classification === "CEILING")).toHaveLength(1);
+  expect(room.features.every((f) => f.provenance.sourceMediaIds[0] === "media-one")).toBe(true);
+  expect(
+    room.features
+      .filter((f) => ["FLOOR", "WALL", "CEILING"].includes(f.classification))
+      .every((f) => f.provenance.basis === "INFERRED"),
+  ).toBe(true);
+  const surfaces = discoverRoomSurfaces(syntheticRoomGeometry({ ...room, horizontal: true, vertical: true }), {
+    tracking: true,
+    clutter: 0,
+  });
+  expect(surfaces.filter((s) => s.surface === "FLOOR")).toHaveLength(1);
+  expect(surfaces.filter((s) => s.surface === "WALL")).toHaveLength(4);
+  expect(warnings.join(" ")).toMatch(/estimates/);
+});
+
+it("refines the same support identity and preserves bound clue correspondence without rescaling the edited room", () => {
+  const { room, desk, input } = refinement();
+  let draft = createSpatialDraft("photo-clue");
+  draft.content.studio!.environment = room;
+  draft = placeOnRoomFeature(draft, draft.content.entities[0].id, {
+    classification: "DESK",
+    targetFeatureId: desk.id,
+    nearFeatureId: null,
+  });
+  input.observation.roomDimensions = [10, 8, 10];
+  const result = reconstructRoomFromObservation(input);
+  if (result.status !== "PROPOSED") throw new Error("Expected same room refinement");
+  expect([result.room.width, result.room.height, result.room.depth]).toEqual([6, 3, 5]);
+  const refined = result.room.features.find((f) => f.id === desk.id)!;
+  expect(refined.parts).toEqual(desk.parts);
+  expect(refined.provenance.sourceMediaIds).toEqual(["media-one", "media-two"]);
+  draft.content.studio!.environment = result.room;
+  const pose = previewEntityTransform(draft.content, draft.content.entities[0].id, room.id, {
+    ...result.room,
+    horizontal: true,
+    vertical: true,
+  });
+  expect(pose.position.x).toBeCloseTo(0.5);
+  expect(pose.position.y).toBeCloseTo(1.01);
+  expect(room.features.find((f) => f.id === desk.id)).toEqual(desk);
+});
+
+it.each(["ABSTAINED", "ALIGNMENT_UNCERTAIN"] as const)(
+  "returns useful clarification for %s without materializing a room",
+  (status) => {
+    const obs = observation();
+    obs.status = status;
+    obs.clarification = "Show the desk and window in the same view.";
+    expect(reconstructRoomFromObservation({ observation: obs, roomId: "room", sourceMediaIds: ["media-one"] })).toEqual(
+      { status: "CLARIFICATION", message: obs.clarification },
+    );
+  },
+);
+
+it("requires explicit shared-feature evidence before combining views", () => {
+  const { input, room } = refinement();
+  const before = structuredClone(room);
+  input.observation.alignment = "UNKNOWN";
+  expect(reconstructRoomFromObservation(input).status).toBe("CLARIFICATION");
+  input.observation.alignment = "EXISTING_ROOM_FRAME";
+  input.observation.features[0].confidence = 0.59;
+  expect(reconstructRoomFromObservation(input).status).toBe("CLARIFICATION");
+  expect(room).toEqual(before);
+  expect(() => reconstructRoomFromObservation({ ...input, roomId: "other-room" })).toThrow(/same owned room/);
+});
+
+it("preserves Creator-confirmed geometry and known measurements when additional evidence disagrees", () => {
+  const { input, room, desk } = refinement();
+  const confirmed = structuredClone(room);
+  confirmed.features.find((f) => f.id === desk.id)!.provenance.basis = "CREATOR_CONFIRMED";
+  for (const existing of [confirmed, scaleRoomFromMeasurement(room, desk.id, "WIDTH", 2.1)]) {
+    const result = reconstructRoomFromObservation({ ...input, existing });
+    if (result.status !== "PROPOSED") throw new Error("Expected preserved refinement");
+    expect(result.room.features.find((f) => f.id === desk.id)).toEqual(existing.features.find((f) => f.id === desk.id));
+    expect(result.room.scaleReference).toEqual(existing.scaleReference);
+    expect(result.warnings.join(" ")).toMatch(/Kept your confirmed/);
+  }
+});
+
+it("rejects unknown, duplicate and conflicting matches instead of creating duplicate room identity", () => {
+  const { input } = refinement();
+  input.observation.features.push({ ...input.observation.features[0] });
+  expect(() => reconstructRoomFromObservation(input)).toThrow(/repeated/);
+  input.observation.features[1].matchedFeatureId = "unknown-feature";
+  expect(() => reconstructRoomFromObservation(input)).toThrow(/unknown/);
+  input.observation.features.pop();
+  input.observation.features[0].classification = "TABLE";
+  expect(() => reconstructRoomFromObservation(input)).toThrow(/different type/);
+});
+
+it.each(["DESK", "WINDOW"] as const)(
+  "rejects %s geometry extending outside the room even when its center is inside",
+  (classification) => {
+    const obs = observation();
+    obs.features = [
+      { ...obs.features[0], classification, dimensions: [7, 0.8, 0.8], position: { x: 0, y: 0.4, z: 0 } },
+    ];
+    expect(() => propose(obs)).toThrow(/outside the room/);
+  },
+);
+
+it("ignores model-supplied shell fragments and labels an empty reconstruction as inferred", () => {
+  const obs = observation();
+  obs.features = [{ ...obs.features[0], classification: "FLOOR" }];
+  const result = propose(obs);
+  expect(result.room.features).toHaveLength(6);
+  expect(result.warnings.join(" ")).toMatch(/Only an inferred room shell/);
+});
+
+it("accepts only bounded opaque source references and evidence fields", () => {
+  expect(() =>
+    reconstructRoomFromObservation({ observation: observation(), roomId: "photo-room", sourceMediaIds: [] }),
+  ).toThrow(/authorized/);
+  expect(() =>
+    reconstructRoomFromObservation({
+      observation: observation(),
+      roomId: "photo-room",
+      sourceMediaIds: ["https://private.test/image"],
+    }),
+  ).toThrow();
+  expect(roomObservationSchema.safeParse({ ...observation(), imageUrl: "https://private.test/image" }).success).toBe(
+    false,
+  );
+  const obs = observation();
+  obs.features = Array.from({ length: 49 }, () => ({ ...obs.features[0] }));
+  expect(roomObservationSchema.safeParse(obs).success).toBe(false);
+});
+it("asks for geometric correction for confident floating furniture or detached openings", () => {
+  for (const classification of ["DESK", "WINDOW"] as const) {
+    const obs = observation();
+    const item = obs.features.find((f) => f.classification === classification)!;
+    if (classification === "DESK") item.position.y += 0.3;
+    else item.position.z += 0.1;
+    item.confidence = 1;
+    const result = reconstructRoomFromObservation({
+      observation: obs,
+      roomId: "photo-room",
+      sourceMediaIds: ["media-one"],
+    });
+    expect(result).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("geometric correction") });
+  }
+});
+
+it("constructs explicitly observed wall attachments and a ceiling assembly without inventing furniture", () => {
+  const obs = observation();
+  obs.features = obs.features.filter((f) => f.classification !== "WINDOW");
+  obs.features.push({
+    matchedFeatureId: null,
+    classification: "OTHER",
+    name: "Teaching board",
+    position: { x: 0, y: 1.6, z: -2.42 },
+    yawDegrees: 0,
+    dimensions: [1.2, 0.8, 0.06],
+    basis: "DIRECTLY_OBSERVED",
+    confidence: 0.8,
+    attachment: "WALL",
+  });
+  obs.features.push({
+    matchedFeatureId: null,
+    classification: "APPLIANCE",
+    name: "Projector assembly",
+    position: { x: 0, y: 2.7, z: 0 },
+    yawDegrees: 0,
+    dimensions: [0.4, 0.6, 0.3],
+    basis: "DIRECTLY_OBSERVED",
+    confidence: 0.8,
+    attachment: "CEILING",
+  });
+  const result = propose(obs);
+  expect(result.room.construction!.relationships).toHaveLength(2);
+  expect(result.room.features.filter((f) => f.classification === "OTHER")).toHaveLength(1);
+  expect(result.warnings.join(" ")).toContain("declared wall attachment");
+});
+it.each(["BACK", "FRONT", "LEFT", "RIGHT"] as const)(
+  "validates a deep wall-mounted object's face, not its center (%s)",
+  (wallFace) => {
+    const obs = observation();
+    const offset = 0.46; // 0.8 m object plus the 0.12 m wall.
+    const horizontal = wallFace === "LEFT" || wallFace === "RIGHT";
+    const sign = wallFace === "BACK" || wallFace === "LEFT" ? -1 : 1;
+    obs.features = [
+      {
+        ...obs.features[0],
+        classification: "APPLIANCE",
+        name: "Mounted equipment",
+        applianceShape: "WALL_PANEL",
+        attachment: "WALL",
+        wallFace,
+        dimensions: [0.6, 0.6, 0.8],
+        yawDegrees: horizontal ? -sign * 90 : sign === -1 ? 0 : 180,
+        position: { x: horizontal ? sign * (3 - offset) : 0, y: 1.5, z: horizontal ? 0 : sign * (2.5 - offset) },
+      },
+    ];
+    expect(propose(obs).room.construction!.relationships).toHaveLength(1);
+    obs.features[0].position[horizontal ? "x" : "z"] -= sign * 0.5;
+    expect(() => propose(obs)).toThrow(/too far from a modeled wall/);
+  },
+);
+
+it("resolves supported observations in any output order while retaining canonical support identities", () => {
+  const obs = observation();
+  const desk = obs.features[0];
+  const equipment = {
+    ...desk,
+    classification: "APPLIANCE" as const,
+    name: "Monitor",
+    position: { x: desk.position.x, y: 0.8 + 0.2, z: desk.position.z },
+    dimensions: [0.3, 0.4, 0.2] as [number, number, number],
+    attachment: "FURNITURE" as const,
+  };
+  obs.features = [equipment, desk];
+  const result = propose(obs);
+  const monitor = result.room.features.find((f) => f.name === "Monitor")!;
+  expect(result.room.construction!.relationships).toContainEqual({
+    featureId: monitor.id,
+    targetFeatureId: result.room.features.find((f) => f.name === "Writing desk")!.id,
+    type: "SUPPORTED_BY",
+  });
+});
+
+it("checks an appliance footprint in its rotated supporting table frame", () => {
+  const obs = observation(),
+    desk = obs.features[0];
+  desk.yawDegrees = 90;
+  desk.dimensions = [2, 0.8, 1];
+  desk.position = { x: 1, y: 0.4, z: 0 };
+  obs.features = [
+    {
+      ...desk,
+      classification: "APPLIANCE",
+      name: "Side monitor",
+      position: { x: 1.2, y: 1.1, z: -0.65 },
+      dimensions: [0.55, 0.6, 0.25],
+      attachment: "FURNITURE",
+    },
+    desk,
+  ];
+  expect(propose(obs).room.construction!.relationships[0].type).toBe("SUPPORTED_BY");
+});
+
+it("constructs an explicitly observed layered screen without flattening it into its board", () => {
+  const obs = observation(),
+    exemplar = obs.features[0];
+  obs.features = [
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Projection screen",
+      position: { x: 0, y: 1.6, z: -2.34 },
+      dimensions: [1.5, 1.4, 0.08],
+      yawDegrees: 0,
+      attachment: "WALL",
+      attachmentTargetIndex: 1,
+    },
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Whiteboard",
+      position: { x: 0, y: 1.6, z: -2.44 },
+      dimensions: [3, 1.15, 0.06],
+      yawDegrees: 0,
+      attachment: "WALL",
+      attachmentTargetIndex: null,
+    },
+  ];
+  const result = propose(obs);
+  const screen = result.room.features.find((f) => f.name === "Projection screen")!;
+  const board = result.room.features.find((f) => f.name === "Whiteboard")!;
+  expect(screen.position.z - screen.dimensions[2] / 2).toBeCloseTo(board.position.z + board.dimensions[2] / 2);
+  expect(result.room.construction!.relationships).toContainEqual({
+    featureId: screen.id,
+    targetFeatureId: board.id,
+    type: "MOUNTED_ON",
+  });
+  expect(result.room.features.filter((f) => f.classification === "OTHER")).toHaveLength(2);
+  // Absence of explicit observed topology must not turn arbitrary overlap into fabricated support.
+  delete obs.features[0].attachmentTargetIndex;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION" });
+});
+
+it("rejects cyclic, missing and disjoint declared wall attachments", () => {
+  const obs = observation(),
+    exemplar = obs.features[0];
+  obs.features = [
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Panel",
+      position: { x: -1.5, y: 1.5, z: -2.4 },
+      dimensions: [0.5, 0.5, 0.06],
+      attachment: "WALL",
+      attachmentTargetIndex: 1,
+    },
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Board",
+      position: { x: 1.5, y: 1.5, z: -2.4 },
+      dimensions: [0.5, 0.5, 0.06],
+      attachment: "WALL",
+      attachmentTargetIndex: 0,
+    },
+  ];
+  expect(() => propose(obs)).toThrow(/cycle/);
+  obs.features[1].attachmentTargetIndex = null;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("no ground or modeled support") });
+  obs.features[0].attachmentTargetIndex = 23;
+  expect(() => propose(obs)).toThrow(/invalid observed attachment/);
+});
+
+it("normalizes a near-wall mounted estimate before checking its constructed containment", () => {
+  const obs = observation(),
+    exemplar = obs.features[0];
+  obs.features = [
+    {
+      ...exemplar,
+      classification: "OTHER",
+      name: "Wall display",
+      position: { x: 0, y: 1.6, z: -2.54 },
+      dimensions: [2, 1, 0.08],
+      yawDegrees: 0,
+      attachment: "WALL",
+    },
+  ];
+  expect(propose(obs).room.features.find((f) => f.name === "Wall display")!.position.z).toBeCloseTo(-2.4);
+  obs.features[0].dimensions[0] = 9;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("extends outside") });
+});
+
+it("uses observed chair-facing topology without moving its estimated position or removing collision checks", () => {
+  const obs = observation(),
+    desk = obs.features[0];
+  obs.features = [
+    desk,
+    {
+      ...desk,
+      classification: "CHAIR",
+      name: "Facing chair",
+      dimensions: [0.5, 0.95, 0.55],
+      position: { x: desk.position.x, y: 0.475, z: desk.position.z + 1.2 },
+      yawDegrees: 0,
+      facesFeatureIndex: 0,
+    },
+  ];
+  const room = propose(obs).room,
+    chair = room.features.find((f) => f.name === "Facing chair")!;
+  expect(chair.yawDegrees).toBe(180);
+  expect(chair.position).toEqual(obs.features[1].position);
+  obs.features[1].position.z = desk.position.z;
+  expect(() => propose(obs)).toThrow(/distinct furnishing/);
+  obs.features[1].facesFeatureIndex = 1;
+  expect(() => propose(obs)).toThrow(/invalid observed facing/);
+});
+
+it.each([0, 45, 90, 180, -90])(
+  "preserves a chair facing an off-center part of an oriented table (%s degrees)",
+  (yawDegrees) => {
+    const obs = observation(),
+      desk = obs.features[0];
+    const angle = (yawDegrees * Math.PI) / 180;
+    const local = { x: 0.35, z: 1.2 };
+    obs.features = [
+      { ...desk, position: { x: 0, y: 0.4, z: 0 }, yawDegrees },
+      {
+        ...desk,
+        name: "Offset chair",
+        classification: "CHAIR",
+        position: {
+          x: Math.cos(angle) * local.x + Math.sin(angle) * local.z,
+          y: 0.475,
+          z: -Math.sin(angle) * local.x + Math.cos(angle) * local.z,
+        },
+        dimensions: [0.5, 0.95, 0.55],
+        yawDegrees: ((yawDegrees + 360) % 360) - 180,
+        facesFeatureIndex: 0,
+      },
+    ];
+    const result = propose(obs);
+    const chair = result.room.features.find((feature) => feature.classification === "CHAIR")!;
+    expect(chair.yawDegrees).toBe(obs.features[1].yawDegrees);
+    expect(chair.position).toEqual(obs.features[1].position);
+    expect(result.warnings.join(" ")).toContain("Kept the observed heading");
+  },
+);
+it("keeps a valid side chair near a wall instead of swiveling it out of the room toward a table center", () => {
+  const obs = observation(),
+    desk = obs.features[0];
+  obs.features = [
+    { ...desk, position: { x: 1.8, y: 0.4, z: 0 }, dimensions: [2.2, 0.8, 1], yawDegrees: 90 },
+    {
+      ...desk,
+      name: "Wall-side chair",
+      classification: "CHAIR",
+      position: { x: 2.69, y: 0.5, z: 0.6 },
+      dimensions: [0.6, 1, 0.6],
+      yawDegrees: -90,
+      facesFeatureIndex: 0,
+    },
+  ];
+  const result = propose(obs);
+  const chair = result.room.features.find((feature) => feature.classification === "CHAIR")!;
+  expect(chair.yawDegrees).toBe(-90);
+  expect(chair.position).toEqual(obs.features[1].position);
+  // An actually invalid observed chair still cannot be admitted.
+  obs.features[1].position.x = 3;
+  expect(() => propose(obs)).toThrow("outside the room");
+});
+it("fits a small observed chair/table leg contact with explicit estimated-placement feedback", () => {
+  const obs = observation(),
+    desk = obs.features[0];
+  desk.dimensions = [1.2, 0.8, 0.8];
+  desk.position = { x: 0, y: 0.4, z: 0 };
+  obs.features = [
+    desk,
+    {
+      ...desk,
+      classification: "CHAIR",
+      name: "Side chair",
+      dimensions: [0.75, 0.95, 0.55],
+      position: { x: 0.725, y: 0.475, z: 0 },
+      yawDegrees: -90,
+      facesFeatureIndex: 0,
+    },
+  ];
+  // Saturate the bounded review with uncertainties and other seating cues.
+  // A geometry adjustment must stay visible rather than falling beyond warning 24.
+  obs.uncertainties = Array.from({ length: 16 }, (_, index) => `Synthetic occlusion note ${index + 1}`);
+  obs.features.push(
+    ...[
+      [-2.2, 1.3],
+      [1.9, -1.5],
+      [-1.7, -1.2],
+    ].map(([x, z], index) => ({
+      ...obs.features[1],
+      name: `Other seat ${index + 1}`,
+      dimensions: [0.5, 0.95, 0.55] as [number, number, number],
+      position: { x, y: 0.475, z },
+    })),
+  );
+  const before = structuredClone(obs),
+    result = propose(obs);
+  const chair = result.room.features.find((feature) => feature.name === "Side chair")!;
+  expect(chair.position.x).toBeGreaterThan(0.725);
+  expect(chair.position.x - 0.725).toBeLessThanOrEqual(0.11);
+  expect(chair.dimensions).toEqual(obs.features[1].dimensions);
+  expect(chair.provenance.basis).toBe("INFERRED");
+  expect(result.warnings.join(" ")).toContain("Review this fitted placement");
+  expect(result.warnings).toHaveLength(24);
+  expect(result.warnings[0]).toContain("Moved estimated Side chair");
+  expect(obs).toEqual(before);
+  // A substantial intrusion remains rejected; no replacement geometry or larger search is allowed.
+  obs.features[1].position.x = 0.3;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION" });
+});
+it("keeps a chair tucked under the tabletop when its actual solids have clearance", () => {
+  const obs = observation(),
+    base = obs.features[0];
+  obs.features = [
+    { ...base, name: "Broad table", position: { x: 0, y: 0.4, z: 0 }, dimensions: [2.4, 0.8, 1.2] },
+    {
+      ...base,
+      name: "Tucked chair",
+      classification: "CHAIR",
+      position: { x: 0, y: 0.475, z: 0.4 },
+      dimensions: [0.5, 0.95, 0.55],
+      yawDegrees: 180,
+      facesFeatureIndex: 0,
+      chairSideEvidence: [
+        {
+          imageIndex: 0,
+          tableSide: "DEPTH_POSITIVE",
+          confidence: 0.9,
+          cues: "Near backrest is outside the top; its seat and front feet are partly hidden underneath.",
+        },
+      ],
+    },
+  ];
+  const result = propose(obs);
+  const chair = result.room.features.find((feature) => feature.name === "Tucked chair")!;
+  expect(chair.position).toEqual(obs.features[1].position);
+  expect(chair.provenance.basis).toBe("DIRECTLY_OBSERVED");
+  expect(result.warnings.join(" ")).not.toContain("Moved estimated");
+  // Moving the back through the solid tabletop is a genuine collision, not tuck.
+  obs.features[1].position.z = 0.2;
+  expect(
+    reconstructRoomFromObservation({ observation: obs, roomId: "photo-room", sourceMediaIds: ["media-one"] }),
+  ).toMatchObject({ status: "CLARIFICATION", message: expect.stringContaining("interpenetrate") });
+});
+it.each([0, 45, 90, 180, -90])(
+  "checks independent seating-side evidence in the table frame (%s degrees)",
+  (yawDegrees) => {
+    const obs = observation(),
+      base = obs.features[0];
+    const angle = (yawDegrees * Math.PI) / 180;
+    obs.features = [
+      { ...base, position: { x: 0, y: 0.4, z: 0 }, yawDegrees },
+      {
+        ...base,
+        name: "Observed chair",
+        classification: "CHAIR",
+        dimensions: [0.5, 0.95, 0.55],
+        position: { x: Math.sin(angle), y: 0.475, z: Math.cos(angle) },
+        yawDegrees: ((yawDegrees + 360) % 360) - 180,
+        facesFeatureIndex: 0,
+        chairSideEvidence: [
+          {
+            imageIndex: 0,
+            tableSide: "DEPTH_POSITIVE",
+            confidence: 0.9,
+            cues: "Visible backrest and feet sit beside the positive depth side of this table.",
+          },
+        ],
+      },
+    ];
+    expect(propose(obs).room.features.find((feature) => feature.classification === "CHAIR")!.position).toEqual(
+      obs.features[1].position,
+    );
+    obs.features[1].chairSideEvidence![0].tableSide = "DEPTH_NEGATIVE";
+    expect(() => propose(obs)).toThrow("conflicting chair-side evidence and position");
+    expect(obs.features[1].position.z).toBeCloseTo(Math.cos(angle));
+  },
+);
+it("does not promote an unresolved seating side or accept duplicate image evidence", () => {
+  const obs = observation(),
+    base = obs.features[0];
+  obs.features = [
+    base,
+    {
+      ...base,
+      classification: "CHAIR",
+      name: "Uncertain seat",
+      position: { x: 1, y: 0.475, z: 0.2 },
+      dimensions: [0.5, 0.95, 0.55],
+      yawDegrees: 180,
+      facesFeatureIndex: 0,
+      chairSideEvidence: [
+        {
+          imageIndex: 0,
+          tableSide: "UNRESOLVED",
+          confidence: 0.99,
+          cues: "Seat is fully occluded; the table side cannot be observed.",
+        },
+      ],
+    },
+  ];
+  const result = propose(obs);
+  expect(result.room.features.find((feature) => feature.classification === "CHAIR")!.provenance.confidence).toBe(0.6);
+  expect(result.warnings.join(" ")).toContain("seating side is uncertain");
+  obs.features[1].chairSideEvidence!.push(obs.features[1].chairSideEvidence![0]);
+  expect(() => propose(obs)).toThrow("distinct supplied photographs");
+});
+it("builds an explicitly observed support stack using real top parts in any observation order", () => {
+  const obs = observation(),
+    base = obs.features[0];
+  const table = {
+    ...base,
+    name: "Support table",
+    position: { x: 0, y: 0.4, z: 0 },
+    dimensions: [1.6, 0.8, 1.6] as [number, number, number],
+  };
+  const lower = {
+    ...base,
+    name: "Lower instrument",
+    classification: "APPLIANCE" as const,
+    applianceShape: "GENERIC_BOX" as const,
+    dimensions: [0.7, 0.3, 0.7] as [number, number, number],
+    position: { x: 0, y: 0.95, z: 0 },
+    attachment: "FURNITURE" as const,
+    attachmentTargetIndex: 2,
+  };
+  const upper = {
+    ...lower,
+    name: "Upper instrument",
+    dimensions: [0.5, 0.2, 0.5] as [number, number, number],
+    position: { x: 0, y: 1.2, z: 0 },
+    attachmentTargetIndex: 1,
+  };
+  obs.features = [upper, lower, table];
+  const result = propose(obs);
+  const upperBuilt = result.room.features.find((feature) => feature.name === "Upper instrument")!;
+  const lowerBuilt = result.room.features.find((feature) => feature.name === "Lower instrument")!;
+  expect(upperBuilt.position.x).toBe(upper.position.x);
+  expect(upperBuilt.position.y).toBeCloseTo(upper.position.y, 10);
+  expect(upperBuilt.position.z).toBe(upper.position.z);
+  expect(result.room.construction!.relationships).toContainEqual({
+    featureId: upperBuilt.id,
+    targetFeatureId: lowerBuilt.id,
+    type: "SUPPORTED_BY",
+  });
+  // A floating or overlapping box does not become a legitimate stack.
+  obs.features[0].position.y += 0.3;
+  expect(() => propose(obs)).toThrow("no matching observed furniture support");
+});

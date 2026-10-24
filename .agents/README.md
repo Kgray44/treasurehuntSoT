@@ -13,6 +13,8 @@ evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
+- [Parallax protected integration continuation](parallax-protected-integration-20261021.md)
+- [Complete Parallax integration preparation](parallax-integration-preparation-20261019.md)
 - [Focused development and final verification](testing-workflow.md)
 - [Workspace admission, retirement and recovery](workspace-lifecycle.md)
 - [Immutable recognition read reuse repair](immutable-recognition-read-repair.md)
@@ -25,6 +27,8 @@ not authorize restarting a completed phase.
 - [SC02 journey context repair](sc02-journey-context.md)
 - [Source snapshot and Windows development build link repair](source-snapshot-build-links-repair.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
+- [Working drafts and unified Library continuation](parallax-library-lifecycle.md)
+- [Spatial Studio complete overhaul contract](parallax-studio-overhaul.md)
 - [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)

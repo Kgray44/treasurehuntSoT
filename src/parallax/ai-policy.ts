@@ -10,6 +10,7 @@ export const USD_NANO = 1_000_000_000;
 export const creatorAIUsageSchema = z.object({
   enabled: z.boolean(),
   advancedEnabled: z.boolean(),
+  roomModel: z.enum(aiModelIds).optional(),
   allowance: z.number().int().nonnegative(),
   used: z.number().int().nonnegative(),
   remaining: z.number().int().nonnegative(),
@@ -24,6 +25,7 @@ export const aiGlobalPolicySchema = z
     provider: z.literal("OPENAI"),
     standardModel: z.enum(aiModelIds),
     advancedModel: z.enum(aiModelIds),
+    roomModel: z.enum(aiModelIds).optional(),
     advancedEnabled: z.boolean(),
     standardReasoning: z.enum(["low", "medium"]),
     advancedReasoning: z.enum(["low", "medium"]),
@@ -38,7 +40,7 @@ export const aiGlobalPolicySchema = z
     globalConcurrency: integer(1, 20),
     maximumInputTokens: integer(1000, 32000),
     maximumOutputTokens: integer(256, 16000),
-    timeoutMs: integer(1000, 60000),
+    timeoutMs: integer(1000, 180000),
     maximumRequestSpendNano: money,
     retentionDays: integer(1, 90),
     allowedModels: z.array(z.enum(aiModelIds)).min(1).max(2),
@@ -46,6 +48,7 @@ export const aiGlobalPolicySchema = z
   .superRefine((policy, ctx) => {
     if (
       !policy.allowedModels.includes(policy.standardModel) ||
+      (policy.roomModel !== undefined && !policy.allowedModels.includes(policy.roomModel)) ||
       (policy.advancedEnabled && !policy.allowedModels.includes(policy.advancedModel))
     )
       ctx.addIssue({ code: "custom", message: "Every active model must be allowed." });
@@ -65,6 +68,7 @@ export const defaultAIGlobalPolicy: Readonly<AIGlobalPolicy> = Object.freeze<AIG
   provider: "OPENAI",
   standardModel: "gpt-6-luna",
   advancedModel: "gpt-6.1-sol",
+  roomModel: "gpt-6.1-sol",
   advancedEnabled: false,
   standardReasoning: "low",
   advancedReasoning: "low",
@@ -85,6 +89,9 @@ export const defaultAIGlobalPolicy: Readonly<AIGlobalPolicy> = Object.freeze<AIG
   allowedModels: ["gpt-6-luna", "gpt-6.1-sol"],
 });
 export const aiUserPolicySchema = z.strictObject({
+  standardModel: z.enum(aiModelIds).nullable().optional(),
+  advancedModel: z.enum(aiModelIds).nullable().optional(),
+  roomModel: z.enum(aiModelIds).nullable().optional(),
   monthlyRequests: integer(0, 1_000_000).nullable(),
   monthlySpendNano: money.nullable(),
   advancedEnabled: z.boolean().nullable(),
@@ -97,6 +104,9 @@ export function effectiveAIUserPolicy(global: AIGlobalPolicy, override: AIUserPo
   const active = override && (!override.expiresAt || Date.parse(override.expiresAt) > now.getTime()) ? override : null;
   return {
     source: active ? ("OVERRIDE" as const) : ("INHERITED" as const),
+    standardModel: active?.standardModel ?? global.standardModel,
+    advancedModel: active?.advancedModel ?? global.advancedModel,
+    roomModel: active?.roomModel ?? global.roomModel ?? "gpt-6.1-sol",
     monthlyRequests: Math.min(active?.monthlyRequests ?? global.defaultUserRequests, global.monthlyRequests),
     monthlySpendNano: Math.min(
       active?.monthlySpendNano ?? global.defaultUserSpendNano ?? global.monthlySpendNano,
@@ -123,6 +133,8 @@ export type AIModelPricing = {
   model: AIModelId;
   effectiveAt: string;
   serviceTier: "default";
+  // Absent on historical reservations; preserve their original settlement/replay arithmetic.
+  inputAccounting?: "DISJOINT_CACHE_CATEGORIES";
   inputNanoPerToken: number;
   cachedInputNanoPerToken: number;
   cacheWriteNanoPerToken: number;
@@ -131,10 +143,11 @@ export type AIModelPricing = {
 };
 export const aiPricing: Readonly<Record<AIModelId, AIModelPricing>> = Object.freeze({
   "gpt-6-luna": {
-    revision: "openai-standard-text-2026-10-11-v1",
+    revision: "openai-standard-text-2026-10-13-v2",
     model: "gpt-6-luna",
-    effectiveAt: "2026-10-11T00:00:00.000Z",
+    effectiveAt: "2026-10-13T00:00:00.000Z",
     serviceTier: "default",
+    inputAccounting: "DISJOINT_CACHE_CATEGORIES",
     inputNanoPerToken: 100,
     cachedInputNanoPerToken: 10,
     cacheWriteNanoPerToken: 125,
@@ -142,10 +155,11 @@ export const aiPricing: Readonly<Record<AIModelId, AIModelPricing>> = Object.fre
     source: "https://developers.openai.com/api/docs/pricing",
   },
   "gpt-6.1-sol": {
-    revision: "openai-standard-text-2026-10-11-v1",
+    revision: "openai-standard-text-2026-10-13-v2",
     model: "gpt-6.1-sol",
-    effectiveAt: "2026-10-11T00:00:00.000Z",
+    effectiveAt: "2026-10-13T00:00:00.000Z",
     serviceTier: "default",
+    inputAccounting: "DISJOINT_CACHE_CATEGORIES",
     inputNanoPerToken: 2000,
     cachedInputNanoPerToken: 100,
     cacheWriteNanoPerToken: 2500,
@@ -165,6 +179,7 @@ export const aiUsageSchema = z
     if (
       usage.cachedInputTokens > usage.inputTokens ||
       usage.cacheWriteTokens > usage.inputTokens ||
+      usage.cachedInputTokens + usage.cacheWriteTokens > usage.inputTokens ||
       usage.reasoningTokens > usage.outputTokens
     )
       ctx.addIssue({ code: "custom", message: "Provider usage is inconsistent." });
@@ -172,24 +187,30 @@ export const aiUsageSchema = z
 export type AIUsage = z.infer<typeof aiUsageSchema>;
 export function aiUsageCostNano(price: AIModelPricing, raw: unknown): bigint {
   const usage = aiUsageSchema.parse(raw);
-  // Reasoning is part of billed output, never charged twice. Cache-write exposure is additional conservatively.
+  // Reasoning is included in output. Cache-written input uses its own rate, not an additional input charge.
+  const ordinaryInput =
+    usage.inputTokens -
+    usage.cachedInputTokens -
+    (price.inputAccounting === "DISJOINT_CACHE_CATEGORIES" ? usage.cacheWriteTokens : 0);
   return (
-    BigInt(usage.inputTokens - usage.cachedInputTokens) * BigInt(price.inputNanoPerToken) +
+    BigInt(ordinaryInput) * BigInt(price.inputNanoPerToken) +
     BigInt(usage.cachedInputTokens) * BigInt(price.cachedInputNanoPerToken) +
     BigInt(usage.cacheWriteTokens) * BigInt(price.cacheWriteNanoPerToken) +
     BigInt(usage.outputTokens) * BigInt(price.outputNanoPerToken)
   );
 }
 export function aiMaximumExposureNano(price: AIModelPricing, inputTokens: number, outputTokens: number) {
-  return (
-    BigInt(inputTokens) * BigInt(price.inputNanoPerToken + price.cacheWriteNanoPerToken) +
-    BigInt(outputTokens) * BigInt(price.outputNanoPerToken)
-  );
+  const maximumInputRate =
+    price.inputAccounting === "DISJOINT_CACHE_CATEGORIES"
+      ? Math.max(price.inputNanoPerToken, price.cacheWriteNanoPerToken, price.cachedInputNanoPerToken)
+      : price.inputNanoPerToken + price.cacheWriteNanoPerToken;
+  return BigInt(inputTokens) * BigInt(maximumInputRate) + BigInt(outputTokens) * BigInt(price.outputNanoPerToken);
 }
 export function chooseAIModel(
   global: AIGlobalPolicy,
   effective: ReturnType<typeof effectiveAIUserPolicy>,
   mode: "STANDARD" | "ADVANCED",
+  operationCategory?: string,
 ) {
   if (!global.enabled)
     throw new SpatialAssistantError(
@@ -203,13 +224,18 @@ export function chooseAIModel(
       "Spatial Assistant access is paused for your account. Manual editing remains available.",
       403,
     );
-  if (mode === "ADVANCED" && !effective.advancedEnabled)
+  if (operationCategory !== "ROOM_RECONSTRUCTION" && mode === "ADVANCED" && !effective.advancedEnabled)
     throw new SpatialAssistantError(
       "ADVANCED_UNAVAILABLE",
       "Advanced assistance is unavailable for this account.",
       403,
     );
-  const model = mode === "ADVANCED" ? global.advancedModel : global.standardModel;
+  const model =
+    operationCategory === "ROOM_RECONSTRUCTION"
+      ? effective.roomModel
+      : mode === "ADVANCED"
+        ? effective.advancedModel
+        : effective.standardModel;
   if (!global.allowedModels.includes(model))
     throw new SpatialAssistantError("MODEL_UNAVAILABLE", "The configured assistance model is unavailable.", 503);
   return model;

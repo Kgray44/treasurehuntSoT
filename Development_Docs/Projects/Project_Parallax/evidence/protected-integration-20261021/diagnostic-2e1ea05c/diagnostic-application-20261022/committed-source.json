@@ -1,0 +1,14 @@
+{
+  "kind": "PARALLAX_INSTRUMENTED_DEVELOPMENT_SOURCE",
+  "qualification": false,
+  "head": "2e1ea05caa88e790f9b6f4f7a36981efed5826a3",
+  "tree": "4c820ba6c7e4190bfb1986a87a3a0f7ec8d7f276",
+  "parent": "d4a8975200dfdc91ea1b92cbf3b53df6f08da3e0",
+  "testBlob": "5b38e628378047b14f4ba4ab66cfd773a71697bf",
+  "testSha256": "399e882bf639631c70a2a2dc267bd24f4ed0b03ccfc49c764bdbfdd8e91f07ca",
+  "formatExit": 0,
+  "lintExit": 0,
+  "wholeCandidateTypecheckExit": 0,
+  "freeCAfter": 33363345408,
+  "timeUtc": "2026-10-22T04:15:30.9916103Z"
+}

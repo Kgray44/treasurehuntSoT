@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "status": "MATCHED_BASELINE_WINDOWS_LIMITATION",
+  "candidate": "961b1a82a1e2a7a33cc35f11c6e02e53027658e4",
+  "protectedMain": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+  "baselineWorktree": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-r20-baseline-20261019",
+  "environment": {
+    "node": "v24.18.0",
+    "platform": "win32",
+    "dependencies": "Same locked dependency installation, read-only junction in baseline; no mutable database/browser shared."
+  },
+  "matchedFailedTests": [
+    {
+      "name": "normal current seal requires its own reservation, real current cipher and complete canonical groups exactly once",
+      "reason": "process.getuid unavailable on Windows"
+    },
+    {
+      "name": "current observer encrypts fixed private members with current record-bound AAD and rejects tampering",
+      "reason": "process.getuid unavailable on Windows"
+    },
+    {
+      "name": "broken dependency links and malformed probe JSON preserve terminal UNKNOWN and permit bounded repair",
+      "reason": "EPERM creating a symlink without available privilege"
+    },
+    {
+      "name": "fixed OS metadata records the standard release symlink while dependency links stay contained",
+      "reason": "EPERM creating a symlink without available privilege"
+    }
+  ],
+  "sourceBlobsEqual": [
+    {
+      "file": "tests/sounding-line/experience-current-admission.test.mjs",
+      "blob": "85607151174f70a1ff7950772c015b5fad81d1cc"
+    },
+    {
+      "file": "tests/sounding-line/experience-dependency-readiness.test.mjs",
+      "blob": "7d33544650ee2c62e1f9a3328f67fe1ff0335aa6"
+    },
+    {
+      "file": "scripts/sounding-line/experience-current-observability.mjs",
+      "blob": "132f602ca02b4d1cb22f04628aaf93cd7669189f"
+    },
+    {
+      "file": "scripts/sounding-line/experience-dependency-readiness.mjs",
+      "blob": "889a93661df09349f2aa3529f2dcf165f571d349"
+    }
+  ],
+  "broadRun": {
+    "status": "INCOMPLETE",
+    "knownFailures": 4,
+    "stopReceipt": "r20-broad-run-stop-receipt.json",
+    "limitation": "Quiet output does not prove a hang. The extra broad run was deliberately stopped with a Git descendant still active; no full-suite pass, timeout or root cause is claimed. Recorded task-owned descendants were verified exited."
+  },
+  "disposition": "Preserve failures and trusted policy. Fresh R20 seven-case checks and normal generic replay are separate. Full ordinary protected Ubuntu verification remains mandatory after Crossdeck acceptance."
+}

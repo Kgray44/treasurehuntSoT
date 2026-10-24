@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "candidate": "ce13ff5d394d42a1c3a8c3172584d2454933390b",
+  "tree": "27063f8c3514808b3095614f83a0e84e3c5a774b",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T01:12:30.198Z",
+  "finishedAt": "2026-10-13T01:16:49.388Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "21ef3c5155f265819fc61693aeeb3716934f1a50bd14eae9764b92c91eaed887"
+    },
+    {
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "df5e4f567893ba877e28cfa5588b4aa29a6c9ce05de51f2c797fa07025cdb3a1"
+    },
+    {
+      "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video.webm",
+      "sha256": "a611b30dd3316374d5d393deb18ad23ac8fe02e3023866041a5a792c888de51b"
+    },
+    {
+      "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "c84f716277a928f8e6e7c41775acf74cc343542ff2b830f15384d1dba48d2ec9"
+    },
+    {
+      "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "sha256": "b728ca34df9c756f0420f11627a60fd6330eeb75e81822f65cdec95a5ae80e29"
+    },
+    {
+      "file": "parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm",
+      "sha256": "5782fb80206c5afa52e5cd40b717fa29739b9b1ff5a68e9980208c335ea1b716"
+    },
+    {
+      "file": "parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm",
+      "sha256": "ee905ba28d1eab6cf3220139d9a670fba0da9936da8db5df4755645fd288df17"
+    },
+    {
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video.webm",
+      "sha256": "4e405bf4a8fe77d9a132c498ee2846947693f0919e878105c8bb63009a7d2cfb"
+    },
+    {
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+      "sha256": "a61c90c87847cc4f207243e7f314d53ace5bece98520dbfd9431577b4b87ec08"
+    }
+  ]
+}

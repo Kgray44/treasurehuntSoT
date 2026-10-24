@@ -1,0 +1,59 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt
+
+ ❯ src/parallax/phase1.test.ts (15 tests | 1 failed) 35ms
+     × uses Guided meaning for extended elements instead of sending unsupported marker stand-ins to a renderer 6ms
+ ❯ src/parallax/elements.test.ts (117 tests | 1 failed) 1634ms
+     × keeps a physical model upright on the existing horizontal placement frame 24ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/parallax/elements.test.ts > canonical element persistence and simulation > keeps a physical model upright on the existing horizontal placement frame
+AssertionError: expected { x: +0, y: +0, z: +0, …(1) } to deeply equal { x: +0, y: +0, z: +0, w: 1 }
+
+- Expected
++ Received
+
+  {
+-   "w": 1,
++   "w": 1.0000000000000002,
+    "x": 0,
+    "y": 0,
+    "z": 0,
+  }
+
+ ❯ src/parallax/elements.test.ts:118:72
+
+    116|     const draft = insertSpatialElement(createSpatialDraft("surface"), …
+    117|     const placed = editSpatialDraft(draft, { type: "PLACEMENT", entity…
+    118|     expect(previewEntityTransform(placed.content, "lantern").rotation)…
+       |                                                                        ^
+    119|     expect(previewEntityTransform(placed.content, "lantern").position.…
+    120|   });
+ Test Files  2 failed | 3 passed (5)
+      Tests  2 failed | 152 passed (154)
+   Start at  02:55:15
+   Duration  9.61s (transform 3.34s, setup 1.75s, import 8.72s, tests 2.10s, environment 3.37s)
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/parallax/phase1.test.ts > Parallax actual runtime and evidence seam > uses Guided meaning for extended elements instead of sending unsupported marker stand-ins to a renderer
+AssertionError: expected 'SIMULATED' to be 'GUIDED' // Object.is equality
+
+Expected: "GUIDED"
+Received: "SIMULATED"
+
+ ❯ src/parallax/phase1.test.ts:122:33
+    120|     const { runtime, adapter } = lab(moment);
+    121|     await runtime.open(adapter);
+    122|     expect(runtime.read().mode).toBe("GUIDED");
+       |                                 ^
+    123|     expect(adapter.active).toBe(false);
+    124|     expect(adapter.renders).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+

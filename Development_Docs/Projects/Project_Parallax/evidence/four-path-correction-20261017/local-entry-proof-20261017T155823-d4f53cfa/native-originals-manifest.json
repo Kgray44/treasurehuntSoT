@@ -1,0 +1,244 @@
+{
+  "kind": "NATIVE_LOCAL_FOCUSED_PROOF_ORIGINALS",
+  "candidate": "43171b3a6bdd0e863cb56f6dd52b55161429aaa3",
+  "tree": "f0f86ca57e64e7320160666ab36fde1b4178a00d",
+  "finishedAt": "2026-10-17T16:00:52.287Z",
+  "exitCode": 1,
+  "sourceHeadUnchanged": true,
+  "workingTreeClean": true,
+  "files": [
+    {
+      "path": "run-artifacts/construction-scale-review-phone.png",
+      "bytes": 64546,
+      "sha256": "9d8c8024f4c5b6cf8cf648a94c898efe824c7254cf96c3b678267980e69d4aa4"
+    },
+    {
+      "path": "run-artifacts/construction-wall-and-scale-findings.png",
+      "bytes": 283894,
+      "sha256": "4ecd70eac8066fbb77fb8e6cca4bdecf5991b896541ab51b60afce216b21ced8"
+    },
+    {
+      "path": "run-artifacts/direct-clamp-held-preview.png",
+      "bytes": 397989,
+      "sha256": "1e2de682fddea6eca6d49155d458e8c25e62998f0911735fc16ccc505776381d"
+    },
+    {
+      "path": "run-artifacts/direct-clamped-release.png",
+      "bytes": 408988,
+      "sha256": "4a4d28b09d11cf5f8c989d84ff43288520628b79ffbea4a612ecf3dbd08eb366"
+    },
+    {
+      "path": "run-artifacts/direct-free-held-preview.png",
+      "bytes": 407161,
+      "sha256": "aca2c779ed1747463a75bc1947775fbc5b89484add60a6e2055e2feb8deea182"
+    },
+    {
+      "path": "run-artifacts/direct-free-release.png",
+      "bytes": 406652,
+      "sha256": "f5f28612677f369be862cce98fc9df99a75b700bf891c6165b95f467b9e3b072"
+    },
+    {
+      "path": "run-artifacts/direct-placement-proof.json",
+      "bytes": 1885,
+      "sha256": "44c5bd5c5c8739f8d4c3ba24e83557cdf7b5b47691fbbc2773050fd2b7899199"
+    },
+    {
+      "path": "run-artifacts/direct-pointer-cancel-restored.png",
+      "bytes": 407492,
+      "sha256": "d017cde8c5b23712cda3b93d138274e11e7b242196d4407b496ce8a8d21f75f0"
+    },
+    {
+      "path": "run-artifacts/direct-viewport-selection.png",
+      "bytes": 407798,
+      "sha256": "747994d14e745f6b8d5c6322441cdb8236bc315cdf75e1d046b7e0d56401928c"
+    },
+    {
+      "path": "run-artifacts/exclusion-automatic.png",
+      "bytes": 343166,
+      "sha256": "b61c501ebce619bfc76daf6db7180b015bb9db29b07562024f5a7c3489bbaa48"
+    },
+    {
+      "path": "run-artifacts/exclusion-deleted.png",
+      "bytes": 325148,
+      "sha256": "66c4db5a92e8f69625979e23b6b36a517e8f63a9c9e18d8945f4a4435dfd763a"
+    },
+    {
+      "path": "run-artifacts/exclusion-edited.png",
+      "bytes": 327094,
+      "sha256": "8e9164931cd168b5d0aa024e1c4aedf18ffb2aef3a35bdff995a340957040d53"
+    },
+    {
+      "path": "run-artifacts/exclusion-light-reduced-motion.png",
+      "bytes": 345443,
+      "sha256": "9fac9fb8cc5bdaefdc80411ab43c1bd28d091b33bcfabb340d4366e56f7570dc"
+    },
+    {
+      "path": "run-artifacts/exclusion-live-move.png",
+      "bytes": 325093,
+      "sha256": "d73960248cf40046b0a063ee8f98ef6480711400a4ec19747cd8f16dd0a2a8e6"
+    },
+    {
+      "path": "run-artifacts/exclusion-normal-scene.png",
+      "bytes": 340858,
+      "sha256": "32e9cd5bed8fad13309b481cf1d64dae9137710d736021203469a6d339a1949c"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-error-context.md",
+      "bytes": 15479,
+      "sha256": "77a50c2457d9b040a3d9ee985b746a68f56dff89f8b60e274ac7c806c83f8cad"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-test-failed-1.png",
+      "bytes": 97108,
+      "sha256": "71618ce6cee89ddfd710befebf32eb9e5588482b8b3a70d4e8b5c4c48ed6e8cd"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "bytes": 702650,
+      "sha256": "92beec37e4063c01adf9414c13fac848aac95c4a0ba390f4e002b4fe70c9c09c"
+    },
+    {
+      "path": "run-artifacts/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "bytes": 561603,
+      "sha256": "5097aaa3bb63c306bd86e898c2a70390950d08fc43ee4af44e3480aee601081a"
+    },
+    {
+      "path": "run-artifacts/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-error-context.md",
+      "bytes": 13638,
+      "sha256": "d40221cfc363b7deb313970d7abe4e828192eb58fac02d02a9a2a6987610040f"
+    },
+    {
+      "path": "run-artifacts/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-test-failed-1.png",
+      "bytes": 92747,
+      "sha256": "365c04f0df6ada5eac63b9193475e61cf0476e86afb6a17995829eb43b0067de"
+    },
+    {
+      "path": "run-artifacts/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "bytes": 1162465,
+      "sha256": "4b695fa199f21b3f3163fb3a3b600957df63056adf6f49bdd5fbdde662fed137"
+    },
+    {
+      "path": "run-artifacts/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-video.webm",
+      "bytes": 741477,
+      "sha256": "def30cea9531e2d625ce72a4571a61ee2ea59a63344431bd7f026f8e35ec50d7"
+    },
+    {
+      "path": "run-artifacts/parametric-bound-rebuild-protected.png",
+      "bytes": 297247,
+      "sha256": "c187349becf39a9c00fc92ab9c08aabaf39b5650b9606907ce2be70eee70b0ef"
+    },
+    {
+      "path": "run-artifacts/parametric-bound-support-protected.png",
+      "bytes": 297161,
+      "sha256": "be13a6e19942b62fbd7ebf9746084e05e306f0d976dc13aa8f21fffecfd49cc5"
+    },
+    {
+      "path": "run-artifacts/parametric-known-measurement.png",
+      "bytes": 382644,
+      "sha256": "dcd3285d241b127cfd1383a9c2ff50d2e51fd7ffd823a397fcfc8acd1f20c01d"
+    },
+    {
+      "path": "run-artifacts/parametric-phone-feature.png",
+      "bytes": 92936,
+      "sha256": "5809ad971e5fe3ea9c4c75b1311798574bc2e674dabdb917146d138dc999d281"
+    },
+    {
+      "path": "run-artifacts/parametric-phone-reloaded.png",
+      "bytes": 94478,
+      "sha256": "0d9cb2fc1c0fcc56c5edf9f02e9e8c710cc923f43e1e4c649e19ae3ec9e88a59"
+    },
+    {
+      "path": "run-artifacts/parametric-rebuilt-sofa.png",
+      "bytes": 298318,
+      "sha256": "65e97032bd53f3c82f80b9c2f20a4b142f11259885fdba567912d0bfae1dac9b"
+    },
+    {
+      "path": "run-artifacts/parametric-restored-room.png",
+      "bytes": 253210,
+      "sha256": "2ee7b1654c496211baf200dd04859863ecb648df7bd40c83f78e7bacc7c8fea5"
+    },
+    {
+      "path": "run-artifacts/run.json",
+      "bytes": 1192,
+      "sha256": "5ee15faf523fce72ed0fbf92dca76c107bf26938a4ec85c898369716d831f58b"
+    },
+    {
+      "path": "test-results/.last-run.json",
+      "bytes": 145,
+      "sha256": "9808849a6202554aef0e8f35e33201054b7b1715b389c80fb37b2f1a72f3e169"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/error-context.md",
+      "bytes": 15479,
+      "sha256": "77a50c2457d9b040a3d9ee985b746a68f56dff89f8b60e274ac7c806c83f8cad"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/header-menu-events.json",
+      "bytes": 1106,
+      "sha256": "00f8871ec3a51f1dbe21408602ec682a1400707214f2998379d8bb002110db0a"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/test-failed-1.png",
+      "bytes": 97108,
+      "sha256": "71618ce6cee89ddfd710befebf32eb9e5588482b8b3a70d4e8b5c4c48ed6e8cd"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/trace.zip",
+      "bytes": 4657881,
+      "sha256": "ba7bc7fa8f4d0263766b1ab60d503fdb90aaf922900e9610b34cf12b677b37ba"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/video.webm",
+      "bytes": 702650,
+      "sha256": "92beec37e4063c01adf9414c13fac848aac95c4a0ba390f4e002b4fe70c9c09c"
+    },
+    {
+      "path": "test-results/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium/video.webm",
+      "bytes": 561603,
+      "sha256": "5097aaa3bb63c306bd86e898c2a70390950d08fc43ee4af44e3480aee601081a"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/error-context.md",
+      "bytes": 13638,
+      "sha256": "d40221cfc363b7deb313970d7abe4e828192eb58fac02d02a9a2a6987610040f"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/header-menu-events.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/test-failed-1.png",
+      "bytes": 92747,
+      "sha256": "365c04f0df6ada5eac63b9193475e61cf0476e86afb6a17995829eb43b0067de"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/trace.zip",
+      "bytes": 12153395,
+      "sha256": "f836288a04d2f057a2a48c7513abd99d68ff91350d7857586f87cfbadbd013a6"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/video.webm",
+      "bytes": 1162465,
+      "sha256": "4b695fa199f21b3f3163fb3a3b600957df63056adf6f49bdd5fbdde662fed137"
+    },
+    {
+      "path": "test-results/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium/video.webm",
+      "bytes": 741477,
+      "sha256": "def30cea9531e2d625ce72a4571a61ee2ea59a63344431bd7f026f8e35ec50d7"
+    },
+    {
+      "path": "browser-runtime.json",
+      "bytes": 1383,
+      "sha256": "4fa411a57b8010b2566461f2a676d81390536bf2c900b9d6bf68c22947c6f9c3"
+    },
+    {
+      "path": "browser-suite-profile.json",
+      "bytes": 626,
+      "sha256": "9326c30f9d4101e1e3437877b24646235498c461e0a41dbdce09263964d71eae"
+    }
+  ],
+  "protectedQualification": false,
+  "crossdeckExecution": false,
+  "physicalAcceptance": false
+}

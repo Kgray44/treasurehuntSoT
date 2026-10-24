@@ -6,6 +6,7 @@ import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
+import { listSpatialItems } from "../../src/parallax/library-service";
 import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
 
 test.use({ actionTimeout: 30000, video: "on" });
@@ -38,7 +39,7 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/parallax");
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   await expect(assistant).toBeVisible();
@@ -58,33 +59,102 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
           await page
             .getByRole("button", { name: docked ? "Dock assistance" : "Float assistance", exact: true })
             .click();
+        await expect(
+          host.getByRole("button", { name: docked ? "Float assistance" : "Dock assistance", exact: true }),
+        ).toHaveText(docked ? "Float assistance" : "Dock assistance");
         const name = `${viewport.name}-${mode.toLowerCase()}-${docked ? "docked" : "floating"}`;
         await capture(page, name);
-        observations.push(
-          await assistant.evaluate((element, name) => {
+        const observation = await assistant.evaluate((element, name) => {
+          const rect = element.getBoundingClientRect();
+          const visible = { top: 0, left: 0, right: innerWidth, bottom: innerHeight };
+          for (let ancestor: Element | null = element; ancestor; ancestor = ancestor.parentElement) {
+            const style = getComputedStyle(ancestor);
+            const bounds = ancestor.getBoundingClientRect();
+            if (/hidden|auto|scroll|clip/.test(style.overflowX)) {
+              visible.left = Math.max(visible.left, bounds.left + ancestor.clientLeft);
+              visible.right = Math.min(visible.right, bounds.left + ancestor.clientLeft + ancestor.clientWidth);
+            }
+            if (/hidden|auto|scroll|clip/.test(style.overflowY)) {
+              visible.top = Math.max(visible.top, bounds.top + ancestor.clientTop);
+              visible.bottom = Math.min(visible.bottom, bounds.top + ancestor.clientTop + ancestor.clientHeight);
+            }
+            // A fixed window escapes overflow on the Studio's ordinary ancestors.
+            // Its own clipping and viewport still constrain every footer control.
+            if (style.position === "fixed") break;
+          }
+          const controls = Array.from(element.querySelectorAll("textarea,button")).filter(
+            (item) => !item.closest("details:not([open])") && item.getClientRects().length > 0,
+          );
+          const footer = element.querySelector("footer")!;
+          const windowControls = controls.filter((item) =>
+            ["Dock assistance", "Float assistance", "Close assistance"].includes(item.getAttribute("aria-label") ?? ""),
+          );
+          return {
+            name,
+            panel: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+            scrollHeight: element.scrollHeight,
+            clientHeight: element.clientHeight,
+            visible,
+            footer: { y: footer.getBoundingClientRect().y, height: footer.getBoundingClientRect().height },
+            clippedWindowControls: windowControls
+              .filter((item) => {
+                const control = item.getBoundingClientRect();
+                const label = document.createRange();
+                label.selectNodeContents(item);
+                const text = label.getBoundingClientRect();
+                return (
+                  control.bottom > visible.bottom + 1 ||
+                  control.top < visible.top - 1 ||
+                  control.left < visible.left - 1 ||
+                  control.right > visible.right + 1 ||
+                  (item.textContent?.trim() && (text.left < control.left - 1 || text.right > control.right + 1))
+                );
+              })
+              .map((item) => item.getAttribute("aria-label")),
+            obscuredWindowControls: windowControls
+              .filter((item) => {
+                const control = item.getBoundingClientRect();
+                return !item.contains(
+                  document.elementFromPoint(control.x + control.width / 2, control.y + control.height / 2),
+                );
+              })
+              .map((item) => item.getAttribute("aria-label")),
+            clippedControls: controls
+              .filter((item) => {
+                const control = item.getBoundingClientRect();
+                return (
+                  item.closest("footer") &&
+                  (control.bottom > visible.bottom + 1 ||
+                    control.top < visible.top - 1 ||
+                    control.left < visible.left - 1 ||
+                    control.right > visible.right + 1)
+                );
+              })
+              .map((item) => item.getAttribute("aria-label") ?? item.textContent?.trim()),
+            obscuredFooterControls: controls
+              .filter((item) => {
+                if (!item.closest("footer")) return false;
+                const control = item.getBoundingClientRect();
+                return !item.contains(
+                  document.elementFromPoint(control.x + control.width / 2, control.y + control.height / 2),
+                );
+              })
+              .map((item) => item.getAttribute("aria-label") ?? item.textContent?.trim()),
+          };
+        }, name);
+        observations.push(observation);
+        await writeFile(`${artifactRoot}/viewport-observations.json`, JSON.stringify(observations, null, 2) + "\n");
+        expect(observation.clippedWindowControls, `${name} window controls and their labels fit`).toEqual([]);
+        expect(observation.obscuredWindowControls, `${name} window controls have actual hit targets`).toEqual([]);
+        expect(observation.clippedControls, `${name} footer fits the viewport and every clipping ancestor`).toEqual([]);
+        expect(observation.obscuredFooterControls, `${name} footer controls have actual hit targets`).toEqual([]);
+        const sendReachable = await assistant
+          .getByRole("button", { name: "Send idea", exact: true })
+          .evaluate((element) => {
             const rect = element.getBoundingClientRect();
-            const controls = Array.from(element.querySelectorAll("textarea,button")).filter(
-              (item) => !item.closest("details:not([open])"),
-            );
-            const footer = element.querySelector("footer")!;
-            return {
-              name,
-              panel: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
-              scrollHeight: element.scrollHeight,
-              clientHeight: element.clientHeight,
-              footer: { y: footer.getBoundingClientRect().y, height: footer.getBoundingClientRect().height },
-              clippedControls: controls
-                .filter((item) => {
-                  const control = item.getBoundingClientRect();
-                  return (
-                    item.closest("footer") &&
-                    (control.bottom > rect.bottom + 1 || control.left < rect.left - 1 || control.right > rect.right + 1)
-                  );
-                })
-                .map((item) => item.getAttribute("aria-label") ?? item.textContent?.trim()),
-            };
-          }, name),
-        );
+            return element.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+          });
+        expect(sendReachable, `${name} Send idea is reachable without scrolling`).toBe(true);
         const composer = assistant.getByLabel("Describe your spatial idea");
         await composer.scrollIntoViewIfNeeded();
         await composer.click();
@@ -95,6 +165,20 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
         });
         expect(reachable, `${name} composer is reachable through the panel scroll`).toBe(true);
         await capture(page, `${name}-composer`);
+        if (viewport.name === "laptop" && docked) {
+          await composer.fill("Synthetic provider failure for recovery review.");
+          const response = page.waitForResponse(
+            (response) =>
+              response.url().endsWith("/api/studio/parallax") &&
+              response.request().postDataJSON()?.kind === "ASSISTANT",
+          );
+          await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+          await response;
+          await expect(assistant).toContainText(/unchanged|could not|unavailable/i);
+          await capture(page, "laptop-guided-docked-send-recovery");
+          await assistant.getByRole("button", { name: "Start new task", exact: true }).click();
+          await expect(assistant.getByRole("heading", { name: /What would you like/ })).toBeVisible();
+        }
       }
     }
   }
@@ -232,4 +316,91 @@ test("visible Assistant viewport, docking, authoring modes and reduced motion re
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("button", { name: /Ask Parallax/ })).toBeFocused();
+});
+
+test("Creator reads and scrolls a populated landscape proposal while keeping the composer and actions reachable", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  ensureGenericSoundingLineIsolation();
+  const account = await closureAccount("Synthetic landscape response Creator");
+  await activateWorkspaceCapability(account.id, "CREATOR");
+  await authenticateClosure(context, account, baseURL!);
+  await db.aIQuotaControl.upsert({
+    where: { id: AI_CONTROL_ID },
+    create: {
+      id: AI_CONTROL_ID,
+      policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, defaultUserRequests: 12 }),
+    },
+    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true, defaultUserRequests: 12 }) },
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/studio/library");
+  await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
+  await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
+  await assistant
+    .getByLabel("Describe your spatial idea")
+    .fill("Create a pirate map on a desk with a readable clue and a guided alternative.");
+  await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+  await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toBeVisible();
+  const before = (await listSpatialItems(account.id))[0].draft;
+  const measurements = [];
+  await page.setViewportSize({ width: 844, height: 390 });
+  for (const docked of [false, true]) {
+    const host = page.locator("#parallax-assistance");
+    if ((await host.getAttribute("data-docked")) !== String(docked))
+      await page.getByRole("button", { name: docked ? "Dock assistance" : "Float assistance", exact: true }).click();
+    const body = assistant.getByRole("region", { name: "Assistance response", exact: true });
+    await body.focus();
+    await body.press("Home");
+    await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBe(0);
+    const height = (await body.boundingBox())!.height;
+    expect(height).toBeGreaterThan(100);
+    await capture(page, `landscape-populated-${docked ? "docked" : "floating"}-top`);
+    await body.hover();
+    await page.mouse.wheel(0, 700);
+    await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+    const scrollTop = await body.evaluate((element) => element.scrollTop);
+    for (const name of ["Send idea", "Start new task"]) {
+      const button = assistant.getByRole("button", { name, exact: true });
+      await expect(button).toBeInViewport({ ratio: 1 });
+      expect(
+        await button.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          return element.contains(document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2));
+        }),
+      ).toBe(true);
+    }
+    await expect(assistant.getByRole("button", { name: "Apply all changes", exact: true })).toBeInViewport({
+      ratio: 1,
+    });
+    await capture(page, `landscape-populated-${docked ? "docked" : "floating"}-scrolled`);
+    await body.focus();
+    await body.press("PageUp");
+    await expect.poll(() => body.evaluate((element) => element.scrollTop)).toBeLessThan(scrollTop);
+    const composer = assistant.getByLabel("Describe your spatial idea");
+    await composer.fill("Unsent landscape follow-up");
+    await expect(composer).toBeFocused();
+    await expect(composer).toBeInViewport({ ratio: 1 });
+    measurements.push({ docked, responseHeight: height, scrollTop });
+  }
+  expect((await listSpatialItems(account.id))[0].draft).toEqual(before);
+  await writeFile(
+    `${artifactRoot}/landscape-response-proof.json`,
+    JSON.stringify(
+      {
+        source: process.env.PARALLAX_A1_SOURCE_SHA,
+        runtime: process.env.PARALLAX_BROWSER_RUNTIME ?? "UNSPECIFIED",
+        provider: "SYNTHETIC_UNPAID",
+        measurements,
+        unchangedDefinition: before.content.definitionId,
+        automaticPaidCalls: 0,
+      },
+      null,
+      2,
+    ) + "\n",
+  );
 });

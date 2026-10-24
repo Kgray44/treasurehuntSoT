@@ -1,0 +1,84 @@
+{
+  "reviewerContext": "owner_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "phase": "FROZEN_BEFORE_CURRENT_SOURCE_AND_RECEIPT_INSPECTION",
+  "sourceCommitDeclaredByPacket": "265de11ba6c1a0201b300737b34f8c6e4497114a",
+  "media": [
+    {
+      "file": "run.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\run.json",
+      "bytes": 610,
+      "sha256": "e56cf4520dc3a009347a5de275df6ec003c06755d1b6ee7e609b64de02a68f71"
+    },
+    {
+      "file": "exclusion-automatic.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\exclusion-automatic.png",
+      "bytes": 316130,
+      "sha256": "4514b38df7c9e224361b57b6c4bfe555ea0a664af2decf309019996a3fb616ad"
+    },
+    {
+      "file": "exclusion-deleted.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\exclusion-deleted.png",
+      "bytes": 317482,
+      "sha256": "094ffbcd59ae36d7938dacf137ca8918eca0c08d7fe89ffca9dca57b34c2b7c5"
+    },
+    {
+      "file": "exclusion-edited.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\exclusion-edited.png",
+      "bytes": 316854,
+      "sha256": "0f8da1102f1829795875fc8f03cdf41291775a554779b151e6613ce112a19c6a"
+    },
+    {
+      "file": "exclusion-light-reduced-motion.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\exclusion-light-reduced-motion.png",
+      "bytes": 334584,
+      "sha256": "73595fbf108a08990241d06294d512a39b056b2a8ca797b111154f25b48bad71"
+    },
+    {
+      "file": "exclusion-live-move.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\exclusion-live-move.png",
+      "bytes": 314204,
+      "sha256": "d58f2017f52444d01aed8364d39bee2c9b9c0f33b8140ff1dbad51b531b47f43"
+    },
+    {
+      "file": "exclusion-normal-scene.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\exclusion-normal-scene.png",
+      "bytes": 292515,
+      "sha256": "8273e1b8cc57e5f82fc88e45989f4c7130eab4ab48eb44f2e753af24bfdd74a9"
+    },
+    {
+      "file": "exclusion-phone-edited.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\exclusion-phone-edited.png",
+      "bytes": 67965,
+      "sha256": "ad03a3ea5bd219496789c7df722e8fdd06ad63ab14474e1ddb2db05b571848e9"
+    },
+    {
+      "file": "parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\artifacts\\parallax-a1\\browser\\265de11ba6c1\\parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "bytes": 816606,
+      "sha256": "fda1faefbc0e35084944912b7a380e1379c480d73cfd525e308ee73c3949b74a"
+    }
+  ],
+  "inspection": {
+    "screenshots": "All seven original PNGs inspected at original dimensions; desktop 1600x1100 and phone390x844.",
+    "recording": {
+      "file": "parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "sha256": "fda1faefbc0e35084944912b7a380e1379c480d73cfd525e308ee73c3949b74a",
+      "durationSeconds": 12.48,
+      "coverage": "Complete temporal span .01 through12.47seconds; 51 decoded samples at .25second spacing plus final endpoint, four timestamped sheets. This is temporally complete sampled inspection, not frame-by-frame continuous playback.",
+      "manifestSha256": "c8dd36b14916bb759d10f77dc601cdee8654b9662260458df813b4937ad352e2"
+    }
+  },
+  "observations": [
+    "Automatic desktop view preserves blue workstation, Parallax left and centered scene identity, Saved Library left, useful room center and Inspector right. Exclusion zones count3 plus Find surface blockers/Add exclusion zone are readable. Unselected boxes are not distinctly discernible around the ordinary table/cube in this frame; do not credit visibility of all3 from count.",
+    "Selected Reserved workspace is a transparent blue outlined box with colored Move gizmo. Classification is disabled exclusion zone; Reserved surface Work table and explanatory safety paragraph separate zone from modeled furniture. Pointer-held frame has x-.6 committed field while rendered box is displaced; source/test must distinguish preview from commit.",
+    "Edited desktop box is visibly wider and rotated: numeric x.15,y.95,z0,width.7,height.3,depth.5,yaw35. Ordinary table/cube unchanged. This proves numeric yaw/size supplied frame, not a dragged rotation/scale gesture.",
+    "Deleted view says Removed Instrument exclusion. Undo restores it. Remaining zone count3/table/cube retained; this is one deletion, not deletion of every zone.",
+    "Finish environment editing removes zone box/gizmo/instruction bar while retaining table/cube and scene paper. Generic prior room-feature status remains in manual-placement footer; no data-loss inference.",
+    "Light reduced-motion original is a genuine light shell, panels and scene with blue zone outline and visible focused feature select. Still does not establish animation behavior; recording shows appearance change around11seconds.",
+    "Phone Light Inspector shows Reserved workspace fields and numeric width.8 with yaw35. Single-pane scroll and truncated centered scene title fit390px. No touch gizmo/phone room-framing claim.",
+    "Recording0-.51blank startup; .76-2.51gateway/loading/defaultroom;2.76-5.51synthetic room/environment controls and numeric fields;5.76-7.76selected box/gizmo/edit progression;8.01-8.26exit normal scene;8.51reload through9.01room restore;9.26-10.26zone reselection/deletion;10.51reload through10.76;11.01-11.51appearance transition/light zone view;11.76-12.47phone Inspector fields. Wide encoded800x450 recording is lower detail than originals.",
+    "No visible failed authoring or clipped critical action established. Automatic fitting avoidance, exact persistence identity, keyboard shortcuts, validation errors, Undo restoration and rendering performance require corroboration or must remain unclaimed."
+  ]
+}

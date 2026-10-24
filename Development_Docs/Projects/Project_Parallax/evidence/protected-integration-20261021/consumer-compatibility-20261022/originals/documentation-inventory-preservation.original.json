@@ -1,0 +1,10 @@
+{
+  "kind": "HISTORICAL_DOCUMENT_INVENTORY_PRESERVATION",
+  "at": "2026-10-22T15:49:23.200982+00:00",
+  "allOriginalMatrixRowsPreserved": 18480,
+  "newOwnedRows": 1,
+  "unrelatedGeneratorChurnRestored": true,
+  "original": "9c7ecadcc713a8e8d9c5bfe73ed61ce559c03870c37bb6f5e882dbadf392659d",
+  "generatedBeforeUnion": "fefc0bc65615c40ae57174d45b3e9ab7c3b051892831725721cef735b390ec10",
+  "final": "236eb31d931090d89f1e872141237411a80893c46489c4739c064c4f25fb49cc"
+}

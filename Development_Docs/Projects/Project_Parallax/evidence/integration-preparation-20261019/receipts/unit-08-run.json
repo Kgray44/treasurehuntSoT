@@ -1,0 +1,23 @@
+{
+  "candidate": "b6dec33f3aded5d82634107e389cfb40770095e4",
+  "tree": "8e14c48a6924d8475c4fb25ceded265078de0c03",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "startedAt": "2026-10-19T20:00:35.470Z",
+  "finishedAt": "2026-10-19T20:02:52.706Z",
+  "database": "file:C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/validation-isolated-sc07a-unit-08-ea47443a-08c2-496a-baf4-307d430fe07a.db",
+  "scanner": "synthetic-test",
+  "nonceHash": "55ec1cc93cba140f9e7412ca6c21940ed537770e6595d3799df9c899efee698c",
+  "node": "v24.18.0",
+  "tests": [
+    "src/parallax",
+    "src/components/studio/parallax",
+    "src/components/player/parallax",
+    "src/app/api/studio/parallax",
+    "src/community/spatial",
+    "src/community/scanner.test.ts",
+    "src/app/api/community/spatial",
+    "tests/private-content"
+  ],
+  "exitCode": 0,
+  "sourceBinding": "VALID"
+}

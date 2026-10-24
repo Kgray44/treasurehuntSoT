@@ -1,0 +1,145 @@
+{
+  "source": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+  "navigation": [
+    {
+      "target": "Spatial Studio entry",
+      "tabs": 11
+    },
+    {
+      "target": "Open Library",
+      "tabs": 12
+    },
+    {
+      "target": "Current Library category",
+      "tabs": 5
+    },
+    {
+      "target": "Search Library",
+      "tabs": 1
+    },
+    {
+      "target": "Current Library category",
+      "tabs": 76
+    },
+    {
+      "target": "Search Library",
+      "tabs": 1
+    },
+    {
+      "target": "Inspect Treasure chest",
+      "tabs": 6
+    },
+    {
+      "target": "Add Treasure chest to active Scene",
+      "tabs": 80
+    },
+    {
+      "target": "Keyboard spatial selection: Treasure chest",
+      "tabs": 25
+    },
+    {
+      "target": "Current Library category",
+      "tabs": 53
+    },
+    {
+      "target": "Search Library",
+      "tabs": 1
+    },
+    {
+      "target": "Inspect Point light",
+      "tabs": 6
+    },
+    {
+      "target": "Add Point light to active Scene",
+      "tabs": 85
+    },
+    {
+      "target": "Light intensity",
+      "tabs": 49
+    },
+    {
+      "target": "Current Library category",
+      "tabs": 33
+    },
+    {
+      "target": "Search Library",
+      "tabs": 1
+    },
+    {
+      "target": "Inspect Ghostly Presence",
+      "tabs": 6
+    },
+    {
+      "target": "Add Ghostly Presence to active Scene",
+      "tabs": 89
+    },
+    {
+      "target": "Open spatial context",
+      "tabs": 60
+    },
+    {
+      "target": "Save selected composition",
+      "tabs": 82
+    },
+    {
+      "target": "Current Library category",
+      "tabs": 34
+    },
+    {
+      "target": "Search Library",
+      "tabs": 1
+    },
+    {
+      "target": "Saved composition source",
+      "tabs": 1
+    },
+    {
+      "target": "Inspect saved composition",
+      "tabs": 5
+    },
+    {
+      "target": "Insert saved composition",
+      "tabs": 93
+    },
+    {
+      "target": "Scene header actions",
+      "tabs": 85
+    },
+    {
+      "target": "Save draft",
+      "tabs": 0
+    },
+    {
+      "target": "Frame scene",
+      "tabs": 39
+    },
+    {
+      "target": "Return to Creator Studio",
+      "tabs": 34
+    }
+  ],
+  "focus": {
+    "name": "Treasure chest. Staved arched lid, iron bands, corner nails, hasp and recessed chest interior.",
+    "outline": "rgb(143, 189, 255) solid 2px",
+    "boxShadow": "rgb(3, 11, 14) 0px 0px 0px 3px, rgb(157, 216, 208) 0px 0px 0px 6px"
+  },
+  "inspectorFeedbackMs": 629,
+  "beforeAssistance": {
+    "x": 309,
+    "y": 330.5,
+    "width": 782,
+    "height": 485
+  },
+  "withAssistance": {
+    "x": 309,
+    "y": 330.5,
+    "width": 782,
+    "height": 485
+  },
+  "definitionId": "ff28efd3-8ea3-4139-a31a-0d8b01e402ac",
+  "persistedEntities": 13,
+  "proof": "Native Tab, Enter, arrows, text entry, slash and Escape; no locator focus or mouse calls in this journey",
+  "limits": [
+    "Synthetic authenticated desktop Chromium; no assistive technology or physical device acceptance"
+  ]
+}

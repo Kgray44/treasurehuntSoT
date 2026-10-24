@@ -1,0 +1,90 @@
+{
+  "source": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "targetFeatureId": "window-table:top",
+  "pose": {
+    "position": {
+      "x": 0,
+      "y": 0.76,
+      "z": -1.1425000000000003
+    },
+    "rotation": {
+      "x": -0.7071067811865477,
+      "y": 0,
+      "z": 0,
+      "w": 0.7071067811865477
+    },
+    "scale": 1
+  },
+  "rendered": {
+    "id": "synthetic-window-note",
+    "status": "IN_VIEW",
+    "materialOpacities": [
+      1,
+      1
+    ],
+    "position": [
+      0,
+      0.76,
+      -1.1425000000000003
+    ],
+    "rotation": [
+      -0.7071067811865477,
+      0,
+      0,
+      0.7071067811865477
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "bounds": {
+      "min": [
+        -0.10999999940395355,
+        0.76,
+        -1.2250000032782558
+      ],
+      "max": [
+        0.10999999940395355,
+        0.777343332991004,
+        -1.0599999967217448
+      ]
+    }
+  },
+  "observed": [
+    {
+      "elapsedMs": 0.20000001788139343,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 339.40000000596046,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 342.7000000178814,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 1791.5,
+      "text": "Proposal ready for your review",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 5069.700000017881,
+      "text": "Applying and saving reviewed changes…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 5233,
+      "text": "Your changes are saved",
+      "working": "false"
+    }
+  ],
+  "errors": [],
+  "limits": "Real application/backend/renderer and persisted synthetic geometry; not live model interpretation or physical room accuracy."
+}

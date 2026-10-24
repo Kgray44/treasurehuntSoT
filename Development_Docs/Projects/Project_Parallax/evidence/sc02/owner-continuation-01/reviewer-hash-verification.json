@@ -1,0 +1,1907 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 ordinal-5 independent reviewer hash verification",
+  "productSource": "d5a1dde3e5af12d17fee322f6758c1464a09ec41",
+  "priorSource": "2f31fb5fc49588c42ab6165d61033112e2b41532",
+  "glbs": [
+    {
+      "assetId": "writing-desk",
+      "path": "public/parallax/sc02/models/writing-desk.glb",
+      "bytes": 688356,
+      "sha256": "28b2a08a37efb8294a2243b5ff7a476731554f169c6b1fdeadba49f579f7ae45",
+      "manifestSha256": "28b2a08a37efb8294a2243b5ff7a476731554f169c6b1fdeadba49f579f7ae45",
+      "candidateCommittedSha256": "28b2a08a37efb8294a2243b5ff7a476731554f169c6b1fdeadba49f579f7ae45",
+      "priorManifestSha256": "28b2a08a37efb8294a2243b5ff7a476731554f169c6b1fdeadba49f579f7ae45",
+      "priorCommittedSha256": "28b2a08a37efb8294a2243b5ff7a476731554f169c6b1fdeadba49f579f7ae45",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "dining-table",
+      "path": "public/parallax/sc02/models/dining-table.glb",
+      "bytes": 321392,
+      "sha256": "cf6c3b265ccbbe5d809fcf18f808dd3c5ab2005d40a1ad063d576ce1b0fda585",
+      "manifestSha256": "cf6c3b265ccbbe5d809fcf18f808dd3c5ab2005d40a1ad063d576ce1b0fda585",
+      "candidateCommittedSha256": "cf6c3b265ccbbe5d809fcf18f808dd3c5ab2005d40a1ad063d576ce1b0fda585",
+      "priorManifestSha256": "cf6c3b265ccbbe5d809fcf18f808dd3c5ab2005d40a1ad063d576ce1b0fda585",
+      "priorCommittedSha256": "cf6c3b265ccbbe5d809fcf18f808dd3c5ab2005d40a1ad063d576ce1b0fda585",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "upholstered-chair",
+      "path": "public/parallax/sc02/models/upholstered-chair.glb",
+      "bytes": 701808,
+      "sha256": "af44548cb2b74078a074d61e998bb97d2882b242c4638b1162a5fc8b20d6c79c",
+      "manifestSha256": "af44548cb2b74078a074d61e998bb97d2882b242c4638b1162a5fc8b20d6c79c",
+      "candidateCommittedSha256": "af44548cb2b74078a074d61e998bb97d2882b242c4638b1162a5fc8b20d6c79c",
+      "priorManifestSha256": "af44548cb2b74078a074d61e998bb97d2882b242c4638b1162a5fc8b20d6c79c",
+      "priorCommittedSha256": "af44548cb2b74078a074d61e998bb97d2882b242c4638b1162a5fc8b20d6c79c",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "sofa",
+      "path": "public/parallax/sc02/models/sofa.glb",
+      "bytes": 707796,
+      "sha256": "6b88d26f2536869ae9a8ba4b147516b201ba9369613b62a35c25e9c3dba86e0f",
+      "manifestSha256": "6b88d26f2536869ae9a8ba4b147516b201ba9369613b62a35c25e9c3dba86e0f",
+      "candidateCommittedSha256": "6b88d26f2536869ae9a8ba4b147516b201ba9369613b62a35c25e9c3dba86e0f",
+      "priorManifestSha256": "6b88d26f2536869ae9a8ba4b147516b201ba9369613b62a35c25e9c3dba86e0f",
+      "priorCommittedSha256": "6b88d26f2536869ae9a8ba4b147516b201ba9369613b62a35c25e9c3dba86e0f",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "bookshelf",
+      "path": "public/parallax/sc02/models/bookshelf.glb",
+      "bytes": 1552460,
+      "sha256": "3ef4c9239b55c985e06d17daf83536c34a01aad1791da882f4ad72df007e0d5d",
+      "manifestSha256": "3ef4c9239b55c985e06d17daf83536c34a01aad1791da882f4ad72df007e0d5d",
+      "candidateCommittedSha256": "3ef4c9239b55c985e06d17daf83536c34a01aad1791da882f4ad72df007e0d5d",
+      "priorManifestSha256": "3ef4c9239b55c985e06d17daf83536c34a01aad1791da882f4ad72df007e0d5d",
+      "priorCommittedSha256": "3ef4c9239b55c985e06d17daf83536c34a01aad1791da882f4ad72df007e0d5d",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "wardrobe",
+      "path": "public/parallax/sc02/models/wardrobe.glb",
+      "bytes": 570740,
+      "sha256": "908f633a13ddc6317424ed2bc3624a40c1bd5026d12fc90b671e7869da8257e4",
+      "manifestSha256": "908f633a13ddc6317424ed2bc3624a40c1bd5026d12fc90b671e7869da8257e4",
+      "candidateCommittedSha256": "908f633a13ddc6317424ed2bc3624a40c1bd5026d12fc90b671e7869da8257e4",
+      "priorManifestSha256": "908f633a13ddc6317424ed2bc3624a40c1bd5026d12fc90b671e7869da8257e4",
+      "priorCommittedSha256": "908f633a13ddc6317424ed2bc3624a40c1bd5026d12fc90b671e7869da8257e4",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "dresser",
+      "path": "public/parallax/sc02/models/dresser.glb",
+      "bytes": 569236,
+      "sha256": "2000921775ae3fc3eec8ecdf760e388f759a7e5403c2db8b1f42f5b07856f04b",
+      "manifestSha256": "2000921775ae3fc3eec8ecdf760e388f759a7e5403c2db8b1f42f5b07856f04b",
+      "candidateCommittedSha256": "2000921775ae3fc3eec8ecdf760e388f759a7e5403c2db8b1f42f5b07856f04b",
+      "priorManifestSha256": "2000921775ae3fc3eec8ecdf760e388f759a7e5403c2db8b1f42f5b07856f04b",
+      "priorCommittedSha256": "2000921775ae3fc3eec8ecdf760e388f759a7e5403c2db8b1f42f5b07856f04b",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "cabinet",
+      "path": "public/parallax/sc02/models/cabinet.glb",
+      "bytes": 403784,
+      "sha256": "2e8ccdac97241de2d38db82a499a62b19a344fe7bcae395c6456ceef284c8078",
+      "manifestSha256": "2e8ccdac97241de2d38db82a499a62b19a344fe7bcae395c6456ceef284c8078",
+      "candidateCommittedSha256": "2e8ccdac97241de2d38db82a499a62b19a344fe7bcae395c6456ceef284c8078",
+      "priorManifestSha256": "2e8ccdac97241de2d38db82a499a62b19a344fe7bcae395c6456ceef284c8078",
+      "priorCommittedSha256": "2e8ccdac97241de2d38db82a499a62b19a344fe7bcae395c6456ceef284c8078",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "travel-trunk",
+      "path": "public/parallax/sc02/models/travel-trunk.glb",
+      "bytes": 601292,
+      "sha256": "2d56b391faf8cb9c679d18b3c3f4012fe5e001fae2f763dca55ba1345bd4fb12",
+      "manifestSha256": "2d56b391faf8cb9c679d18b3c3f4012fe5e001fae2f763dca55ba1345bd4fb12",
+      "candidateCommittedSha256": "2d56b391faf8cb9c679d18b3c3f4012fe5e001fae2f763dca55ba1345bd4fb12",
+      "priorManifestSha256": "2d56b391faf8cb9c679d18b3c3f4012fe5e001fae2f763dca55ba1345bd4fb12",
+      "priorCommittedSha256": "2d56b391faf8cb9c679d18b3c3f4012fe5e001fae2f763dca55ba1345bd4fb12",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "treasure-chest",
+      "path": "public/parallax/sc02/models/treasure-chest.glb",
+      "bytes": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "manifestSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "candidateCommittedSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "priorManifestSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "priorCommittedSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "brass-compass",
+      "path": "public/parallax/sc02/models/brass-compass.glb",
+      "bytes": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "manifestSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "candidateCommittedSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "priorManifestSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "priorCommittedSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "lantern",
+      "path": "public/parallax/sc02/models/lantern.glb",
+      "bytes": 91076,
+      "sha256": "27a67edaf8838198cb090e98408ae0190099619fb70be3f44f7d7b9813010f75",
+      "manifestSha256": "27a67edaf8838198cb090e98408ae0190099619fb70be3f44f7d7b9813010f75",
+      "candidateCommittedSha256": "27a67edaf8838198cb090e98408ae0190099619fb70be3f44f7d7b9813010f75",
+      "priorManifestSha256": "27a67edaf8838198cb090e98408ae0190099619fb70be3f44f7d7b9813010f75",
+      "priorCommittedSha256": "27a67edaf8838198cb090e98408ae0190099619fb70be3f44f7d7b9813010f75",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "treasure-map",
+      "path": "public/parallax/sc02/models/treasure-map.glb",
+      "bytes": 649960,
+      "sha256": "c1e2481015973c30e0f234de769e8100f5cb32845b603213e6fc7da607890d15",
+      "manifestSha256": "c1e2481015973c30e0f234de769e8100f5cb32845b603213e6fc7da607890d15",
+      "candidateCommittedSha256": "c1e2481015973c30e0f234de769e8100f5cb32845b603213e6fc7da607890d15",
+      "priorManifestSha256": "c1e2481015973c30e0f234de769e8100f5cb32845b603213e6fc7da607890d15",
+      "priorCommittedSha256": "c1e2481015973c30e0f234de769e8100f5cb32845b603213e6fc7da607890d15",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "nautical-chart",
+      "path": "public/parallax/sc02/models/nautical-chart.glb",
+      "bytes": 777812,
+      "sha256": "52dfa4ef453e0adb95b376d00ee05b22ada6449a6a62a38abe8723e1185b52d0",
+      "manifestSha256": "52dfa4ef453e0adb95b376d00ee05b22ada6449a6a62a38abe8723e1185b52d0",
+      "candidateCommittedSha256": "52dfa4ef453e0adb95b376d00ee05b22ada6449a6a62a38abe8723e1185b52d0",
+      "priorManifestSha256": "52dfa4ef453e0adb95b376d00ee05b22ada6449a6a62a38abe8723e1185b52d0",
+      "priorCommittedSha256": "52dfa4ef453e0adb95b376d00ee05b22ada6449a6a62a38abe8723e1185b52d0",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "spyglass",
+      "path": "public/parallax/sc02/models/spyglass.glb",
+      "bytes": 230840,
+      "sha256": "6995c7be40132d076865990a430bea20f212ef7b1b4541adb27cfb7a6707fa0a",
+      "manifestSha256": "6995c7be40132d076865990a430bea20f212ef7b1b4541adb27cfb7a6707fa0a",
+      "candidateCommittedSha256": "6995c7be40132d076865990a430bea20f212ef7b1b4541adb27cfb7a6707fa0a",
+      "priorManifestSha256": "6995c7be40132d076865990a430bea20f212ef7b1b4541adb27cfb7a6707fa0a",
+      "priorCommittedSha256": "6995c7be40132d076865990a430bea20f212ef7b1b4541adb27cfb7a6707fa0a",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "parchment-note",
+      "path": "public/parallax/sc02/models/parchment-note.glb",
+      "bytes": 418532,
+      "sha256": "35a5cfa6076208f8188668755ec70e67d66f83c05fb57670bde285db126c813c",
+      "manifestSha256": "35a5cfa6076208f8188668755ec70e67d66f83c05fb57670bde285db126c813c",
+      "candidateCommittedSha256": "35a5cfa6076208f8188668755ec70e67d66f83c05fb57670bde285db126c813c",
+      "priorManifestSha256": "35a5cfa6076208f8188668755ec70e67d66f83c05fb57670bde285db126c813c",
+      "priorCommittedSha256": "35a5cfa6076208f8188668755ec70e67d66f83c05fb57670bde285db126c813c",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "sealed-letter",
+      "path": "public/parallax/sc02/models/sealed-letter.glb",
+      "bytes": 211780,
+      "sha256": "18c5ec616a8b7a037e410e126cfed43991c515c65787b06e3a1b402fc2a9eded",
+      "manifestSha256": "18c5ec616a8b7a037e410e126cfed43991c515c65787b06e3a1b402fc2a9eded",
+      "candidateCommittedSha256": "18c5ec616a8b7a037e410e126cfed43991c515c65787b06e3a1b402fc2a9eded",
+      "priorManifestSha256": "18c5ec616a8b7a037e410e126cfed43991c515c65787b06e3a1b402fc2a9eded",
+      "priorCommittedSha256": "18c5ec616a8b7a037e410e126cfed43991c515c65787b06e3a1b402fc2a9eded",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "antique-book",
+      "path": "public/parallax/sc02/models/antique-book.glb",
+      "bytes": 538124,
+      "sha256": "8796a34910658eb3b7b4e37d0b0eae5458d912439cbb84d0af6f8a09e30618de",
+      "manifestSha256": "8796a34910658eb3b7b4e37d0b0eae5458d912439cbb84d0af6f8a09e30618de",
+      "candidateCommittedSha256": "8796a34910658eb3b7b4e37d0b0eae5458d912439cbb84d0af6f8a09e30618de",
+      "priorManifestSha256": "8796a34910658eb3b7b4e37d0b0eae5458d912439cbb84d0af6f8a09e30618de",
+      "priorCommittedSha256": "8796a34910658eb3b7b4e37d0b0eae5458d912439cbb84d0af6f8a09e30618de",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "ornate-key",
+      "path": "public/parallax/sc02/models/ornate-key.glb",
+      "bytes": 88164,
+      "sha256": "cbebd14cd06d2021a4c5b4894da0417f28c55ded79af6d909ef634447e5f16de",
+      "manifestSha256": "cbebd14cd06d2021a4c5b4894da0417f28c55ded79af6d909ef634447e5f16de",
+      "candidateCommittedSha256": "cbebd14cd06d2021a4c5b4894da0417f28c55ded79af6d909ef634447e5f16de",
+      "priorManifestSha256": "cbebd14cd06d2021a4c5b4894da0417f28c55ded79af6d909ef634447e5f16de",
+      "priorCommittedSha256": "cbebd14cd06d2021a4c5b4894da0417f28c55ded79af6d909ef634447e5f16de",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "puzzle-box",
+      "path": "public/parallax/sc02/models/puzzle-box.glb",
+      "bytes": 732144,
+      "sha256": "d29ba5b6130bc76fc654b7588ef8982e22d5273d8e6290d026bf8adb7d504182",
+      "manifestSha256": "d29ba5b6130bc76fc654b7588ef8982e22d5273d8e6290d026bf8adb7d504182",
+      "candidateCommittedSha256": "d29ba5b6130bc76fc654b7588ef8982e22d5273d8e6290d026bf8adb7d504182",
+      "priorManifestSha256": "d29ba5b6130bc76fc654b7588ef8982e22d5273d8e6290d026bf8adb7d504182",
+      "priorCommittedSha256": "d29ba5b6130bc76fc654b7588ef8982e22d5273d8e6290d026bf8adb7d504182",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "candelabra",
+      "path": "public/parallax/sc02/models/candelabra.glb",
+      "bytes": 214340,
+      "sha256": "62c6b4678ad5d614d28a146d6cbfc71038316346ec6dee8a4f0aefc450c762d8",
+      "manifestSha256": "62c6b4678ad5d614d28a146d6cbfc71038316346ec6dee8a4f0aefc450c762d8",
+      "candidateCommittedSha256": "62c6b4678ad5d614d28a146d6cbfc71038316346ec6dee8a4f0aefc450c762d8",
+      "priorManifestSha256": "62c6b4678ad5d614d28a146d6cbfc71038316346ec6dee8a4f0aefc450c762d8",
+      "priorCommittedSha256": "62c6b4678ad5d614d28a146d6cbfc71038316346ec6dee8a4f0aefc450c762d8",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "framed-painting",
+      "path": "public/parallax/sc02/models/framed-painting.glb",
+      "bytes": 755244,
+      "sha256": "fb89165a38460424309df4c0a6a77e0ad016cea95efbbd18899f09c5b88ea02d",
+      "manifestSha256": "fb89165a38460424309df4c0a6a77e0ad016cea95efbbd18899f09c5b88ea02d",
+      "candidateCommittedSha256": "fb89165a38460424309df4c0a6a77e0ad016cea95efbbd18899f09c5b88ea02d",
+      "priorManifestSha256": "fb89165a38460424309df4c0a6a77e0ad016cea95efbbd18899f09c5b88ea02d",
+      "priorCommittedSha256": "fb89165a38460424309df4c0a6a77e0ad016cea95efbbd18899f09c5b88ea02d",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "rug",
+      "path": "public/parallax/sc02/models/rug.glb",
+      "bytes": 820428,
+      "sha256": "7f4501d1ddc22691e75878b15b7738ca0367e6314b0ca12dc83783103da509f9",
+      "manifestSha256": "7f4501d1ddc22691e75878b15b7738ca0367e6314b0ca12dc83783103da509f9",
+      "candidateCommittedSha256": "7f4501d1ddc22691e75878b15b7738ca0367e6314b0ca12dc83783103da509f9",
+      "priorManifestSha256": "7f4501d1ddc22691e75878b15b7738ca0367e6314b0ca12dc83783103da509f9",
+      "priorCommittedSha256": "7f4501d1ddc22691e75878b15b7738ca0367e6314b0ca12dc83783103da509f9",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "curtains",
+      "path": "public/parallax/sc02/models/curtains.glb",
+      "bytes": 320372,
+      "sha256": "7fe6daa39165b6588e3c036b1c34cc0a7da602be1d06d03844262c80fbfdd10a",
+      "manifestSha256": "7fe6daa39165b6588e3c036b1c34cc0a7da602be1d06d03844262c80fbfdd10a",
+      "candidateCommittedSha256": "7fe6daa39165b6588e3c036b1c34cc0a7da602be1d06d03844262c80fbfdd10a",
+      "priorManifestSha256": "7fe6daa39165b6588e3c036b1c34cc0a7da602be1d06d03844262c80fbfdd10a",
+      "priorCommittedSha256": "7fe6daa39165b6588e3c036b1c34cc0a7da602be1d06d03844262c80fbfdd10a",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "decorative-vase",
+      "path": "public/parallax/sc02/models/decorative-vase.glb",
+      "bytes": 484128,
+      "sha256": "47670e5f5c1b15a9f0e6723368d9d5b56b6632997f2614a6fb9c8888298503db",
+      "manifestSha256": "47670e5f5c1b15a9f0e6723368d9d5b56b6632997f2614a6fb9c8888298503db",
+      "candidateCommittedSha256": "47670e5f5c1b15a9f0e6723368d9d5b56b6632997f2614a6fb9c8888298503db",
+      "priorManifestSha256": "e3461e429b715f4da45807c38711432f4108ecf48210d029c51c15611dc5f3f1",
+      "priorCommittedSha256": "e3461e429b715f4da45807c38711432f4108ecf48210d029c51c15611dc5f3f1",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": true
+    },
+    {
+      "assetId": "hinged-door",
+      "path": "public/parallax/sc02/models/hinged-door.glb",
+      "bytes": 469648,
+      "sha256": "453bd2b7e614e6500b19a05a818e2c3630ba15017ae9609d118b9dd110ccbff4",
+      "manifestSha256": "453bd2b7e614e6500b19a05a818e2c3630ba15017ae9609d118b9dd110ccbff4",
+      "candidateCommittedSha256": "453bd2b7e614e6500b19a05a818e2c3630ba15017ae9609d118b9dd110ccbff4",
+      "priorManifestSha256": "453bd2b7e614e6500b19a05a818e2c3630ba15017ae9609d118b9dd110ccbff4",
+      "priorCommittedSha256": "453bd2b7e614e6500b19a05a818e2c3630ba15017ae9609d118b9dd110ccbff4",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "opening-drawer",
+      "path": "public/parallax/sc02/models/opening-drawer.glb",
+      "bytes": 404776,
+      "sha256": "ab1fad762b90b206d8d865d174902035238439ca987b9e292743b4950ad9ef09",
+      "manifestSha256": "ab1fad762b90b206d8d865d174902035238439ca987b9e292743b4950ad9ef09",
+      "candidateCommittedSha256": "ab1fad762b90b206d8d865d174902035238439ca987b9e292743b4950ad9ef09",
+      "priorManifestSha256": "ab1fad762b90b206d8d865d174902035238439ca987b9e292743b4950ad9ef09",
+      "priorCommittedSha256": "ab1fad762b90b206d8d865d174902035238439ca987b9e292743b4950ad9ef09",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "articulated-chest",
+      "path": "public/parallax/sc02/models/articulated-chest.glb",
+      "bytes": 784728,
+      "sha256": "7724530685c067e3ecc549f865212e8aaeecdd40d0e89df5a867588e4f2893a8",
+      "manifestSha256": "7724530685c067e3ecc549f865212e8aaeecdd40d0e89df5a867588e4f2893a8",
+      "candidateCommittedSha256": "7724530685c067e3ecc549f865212e8aaeecdd40d0e89df5a867588e4f2893a8",
+      "priorManifestSha256": "7724530685c067e3ecc549f865212e8aaeecdd40d0e89df5a867588e4f2893a8",
+      "priorCommittedSha256": "7724530685c067e3ecc549f865212e8aaeecdd40d0e89df5a867588e4f2893a8",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "hanging-banner",
+      "path": "public/parallax/sc02/models/hanging-banner.glb",
+      "bytes": 449692,
+      "sha256": "395647603664824c0c7654320a3001f718860910b6956130d8a7a0c18f649fe5",
+      "manifestSha256": "395647603664824c0c7654320a3001f718860910b6956130d8a7a0c18f649fe5",
+      "candidateCommittedSha256": "395647603664824c0c7654320a3001f718860910b6956130d8a7a0c18f649fe5",
+      "priorManifestSha256": "395647603664824c0c7654320a3001f718860910b6956130d8a7a0c18f649fe5",
+      "priorCommittedSha256": "395647603664824c0c7654320a3001f718860910b6956130d8a7a0c18f649fe5",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    },
+    {
+      "assetId": "wall-sign",
+      "path": "public/parallax/sc02/models/wall-sign.glb",
+      "bytes": 512676,
+      "sha256": "cdc700a7f8a882059614a5e1a08a9f77f92bc45731421848b10634543b869e1a",
+      "manifestSha256": "cdc700a7f8a882059614a5e1a08a9f77f92bc45731421848b10634543b869e1a",
+      "candidateCommittedSha256": "cdc700a7f8a882059614a5e1a08a9f77f92bc45731421848b10634543b869e1a",
+      "priorManifestSha256": "cdc700a7f8a882059614a5e1a08a9f77f92bc45731421848b10634543b869e1a",
+      "priorCommittedSha256": "cdc700a7f8a882059614a5e1a08a9f77f92bc45731421848b10634543b869e1a",
+      "matchesManifest": true,
+      "matchesExactCandidate": true,
+      "priorManifestMatchesPriorCommit": true,
+      "changedFromPrior": false
+    }
+  ],
+  "images": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/antique-book.png",
+      "sha256": "13844be446a64237e42b8c2f81f365259e61d9ce3806662bb8ab55a94a20ff90",
+      "bytes": 23242,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/antique-book.png",
+      "priorSha256": "13844be446a64237e42b8c2f81f365259e61d9ce3806662bb8ab55a94a20ff90",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/articulated-chest.png",
+      "sha256": "cab5f08fda3c08b6923626ec4a91ebfd43153d1f971a01c75fc48d47e866a231",
+      "bytes": 39804,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/articulated-chest.png",
+      "priorSha256": "cab5f08fda3c08b6923626ec4a91ebfd43153d1f971a01c75fc48d47e866a231",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/bookshelf.png",
+      "sha256": "5890505d16c71cdf6f159069bb467013f5d706a0b13854ecf1174e56db900e3c",
+      "bytes": 27222,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/bookshelf.png",
+      "priorSha256": "5890505d16c71cdf6f159069bb467013f5d706a0b13854ecf1174e56db900e3c",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/brass-compass.png",
+      "sha256": "6fcb9833dff68909651c28a6148cc0ba69ff703c570ba2eb4cfd4c289b7170a2",
+      "bytes": 16833,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/brass-compass.png",
+      "priorSha256": "6fcb9833dff68909651c28a6148cc0ba69ff703c570ba2eb4cfd4c289b7170a2",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/cabinet.png",
+      "sha256": "370d913f2f4916a614bf9d78221b32565cefc8d5dd9d811f291cec24c007984c",
+      "bytes": 23295,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/cabinet.png",
+      "priorSha256": "370d913f2f4916a614bf9d78221b32565cefc8d5dd9d811f291cec24c007984c",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/candelabra.png",
+      "sha256": "0741c2a0f739489dd90c1c4ea646254fd11042eeded1804d59d6e981c658ce57",
+      "bytes": 19573,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/candelabra.png",
+      "priorSha256": "0741c2a0f739489dd90c1c4ea646254fd11042eeded1804d59d6e981c658ce57",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/curtains.png",
+      "sha256": "b669b402ab2a4a89e92e4da43c5acce0489098ae646e1c5f59d270b70af04ec3",
+      "bytes": 22558,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/curtains.png",
+      "priorSha256": "b669b402ab2a4a89e92e4da43c5acce0489098ae646e1c5f59d270b70af04ec3",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/decorative-vase.png",
+      "sha256": "439f4c9210c12a1f4b5086e43ef6b62edf90c3e87604ca498192a9d039d98a51",
+      "bytes": 21377,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/decorative-vase.png",
+      "priorSha256": "f6018cdc379ecf9474e0aeafe302f643c44b528b7ee6ff08908016f729dd403e",
+      "changedFromPrior": true,
+      "inspectionThisPass": "DIRECT_IMAGE_INSPECTION"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/dining-table.png",
+      "sha256": "96ff88579d4e91fc610380bb641c6afa87bbe384407313c95db16a6842033a3b",
+      "bytes": 16393,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/dining-table.png",
+      "priorSha256": "96ff88579d4e91fc610380bb641c6afa87bbe384407313c95db16a6842033a3b",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/dresser.png",
+      "sha256": "f1f31d90f4696c9e6d1f45bef6d639c8a10981702578304819ac90610068c55c",
+      "bytes": 43501,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/dresser.png",
+      "priorSha256": "f1f31d90f4696c9e6d1f45bef6d639c8a10981702578304819ac90610068c55c",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/framed-painting.png",
+      "sha256": "6e2bae1850bd7e064647f92fe07ba1df6fc4555014d4f5657936386b62563266",
+      "bytes": 28113,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/framed-painting.png",
+      "priorSha256": "4ece4ac0334a4f45f4e0356ac2299713bfc366a2e7763f3c65ac63cab30cde0d",
+      "changedFromPrior": true,
+      "inspectionThisPass": "DIRECT_IMAGE_INSPECTION"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/hanging-banner.png",
+      "sha256": "7039c0caa1b6ca664a0b00e2ce471b0751134a5d8299e7d55e3537704600ccf0",
+      "bytes": 13927,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/hanging-banner.png",
+      "priorSha256": "7039c0caa1b6ca664a0b00e2ce471b0751134a5d8299e7d55e3537704600ccf0",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/hinged-door.png",
+      "sha256": "df86a1fba560086e61f2efc52569f1acadb1f61db4fa071176e413f05a457700",
+      "bytes": 15050,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/hinged-door.png",
+      "priorSha256": "df86a1fba560086e61f2efc52569f1acadb1f61db4fa071176e413f05a457700",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/lantern.png",
+      "sha256": "26cfefe46654feeec9a30f5964059d3382e30314b3c394cc94ae5d91bca7ab76",
+      "bytes": 16522,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/lantern.png",
+      "priorSha256": "26cfefe46654feeec9a30f5964059d3382e30314b3c394cc94ae5d91bca7ab76",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/nautical-chart.png",
+      "sha256": "f6dc43b5890fc19ffb9583c26f04f9865a72bbc7aadc95ba9bda0a4de71b5c54",
+      "bytes": 21232,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/nautical-chart.png",
+      "priorSha256": "f6dc43b5890fc19ffb9583c26f04f9865a72bbc7aadc95ba9bda0a4de71b5c54",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/opening-drawer.png",
+      "sha256": "16a7398312d6eb92363b79607978da95e0db42f44c87e0b9ac727ecde5b550da",
+      "bytes": 41245,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/opening-drawer.png",
+      "priorSha256": "16a7398312d6eb92363b79607978da95e0db42f44c87e0b9ac727ecde5b550da",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/ornate-key.png",
+      "sha256": "14f7e3d60956bfe219f774c73621221583bfd559df014c235683bd043ca043f2",
+      "bytes": 8324,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/ornate-key.png",
+      "priorSha256": "14f7e3d60956bfe219f774c73621221583bfd559df014c235683bd043ca043f2",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/parchment-note.png",
+      "sha256": "5f386049a4f5a8c73be17b1280f03e11c3e2bc12a415998af8ef6419ddf579a3",
+      "bytes": 13539,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/parchment-note.png",
+      "priorSha256": "5f386049a4f5a8c73be17b1280f03e11c3e2bc12a415998af8ef6419ddf579a3",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/puzzle-box.png",
+      "sha256": "0cfff2fc30b4144cdc98b8f86e324b0cc7c2542946f49ce4529de2687477ab18",
+      "bytes": 49513,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/puzzle-box.png",
+      "priorSha256": "0cfff2fc30b4144cdc98b8f86e324b0cc7c2542946f49ce4529de2687477ab18",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/rug.png",
+      "sha256": "799b923181fd3cfb9836b06e0d9f1c1644b97ffba54b6d59de64ee423a3efbb5",
+      "bytes": 19123,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/rug.png",
+      "priorSha256": "799b923181fd3cfb9836b06e0d9f1c1644b97ffba54b6d59de64ee423a3efbb5",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/sealed-letter.png",
+      "sha256": "debd38b510c132e4a8c7029648c1f44f1b85f66e112d981b0c75a43a424ba4c6",
+      "bytes": 11076,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/sealed-letter.png",
+      "priorSha256": "debd38b510c132e4a8c7029648c1f44f1b85f66e112d981b0c75a43a424ba4c6",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/sofa.png",
+      "sha256": "44169c21397ad0a7ff3b046def652ae9e666c9ef0f6f9d084bf1fe3c1c8f8c56",
+      "bytes": 21869,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/sofa.png",
+      "priorSha256": "44169c21397ad0a7ff3b046def652ae9e666c9ef0f6f9d084bf1fe3c1c8f8c56",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/spyglass.png",
+      "sha256": "4a7927aed3c36c10cc6567c374636096b0825336da948b47182fe2fccacbcbe7",
+      "bytes": 11064,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/spyglass.png",
+      "priorSha256": "4a7927aed3c36c10cc6567c374636096b0825336da948b47182fe2fccacbcbe7",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/travel-trunk.png",
+      "sha256": "1e7c45bdce636d1a1f1449a1f17f606c6545e7968d41fd21188f7c69da4545c9",
+      "bytes": 34400,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/travel-trunk.png",
+      "priorSha256": "1e7c45bdce636d1a1f1449a1f17f606c6545e7968d41fd21188f7c69da4545c9",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/treasure-chest.png",
+      "sha256": "592f224b1a68178a0c1327bfef5de87bae628bc67f1891241f71bf24a6088be9",
+      "bytes": 37877,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/treasure-chest.png",
+      "priorSha256": "592f224b1a68178a0c1327bfef5de87bae628bc67f1891241f71bf24a6088be9",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/treasure-map.png",
+      "sha256": "5ad63243879181d560e88d77d1a31e23bdb91b38ff4a1b2744583bda2efe06e0",
+      "bytes": 15118,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/treasure-map.png",
+      "priorSha256": "5210c4b6abc8f68f9ef81550deacdebd9e7edaaa83760008eaed1dc612d06261",
+      "changedFromPrior": true,
+      "inspectionThisPass": "DIRECT_IMAGE_INSPECTION"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/upholstered-chair.png",
+      "sha256": "cef1ed0a94996352178e62136f877ef5bec4291947e526156940916f28b8692d",
+      "bytes": 23370,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/upholstered-chair.png",
+      "priorSha256": "cef1ed0a94996352178e62136f877ef5bec4291947e526156940916f28b8692d",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/wall-sign.png",
+      "sha256": "b3b524c7801341db79f7a54ffc7935c5d4fab1a59c29a39429c279f237656377",
+      "bytes": 27324,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/wall-sign.png",
+      "priorSha256": "b3b524c7801341db79f7a54ffc7935c5d4fab1a59c29a39429c279f237656377",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/wardrobe.png",
+      "sha256": "720d1b0bf3d90f6a7caee601b31ad9d8b8c8397a452fd2fa75d6ae3f35e6d9e9",
+      "bytes": 23854,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/wardrobe.png",
+      "priorSha256": "720d1b0bf3d90f6a7caee601b31ad9d8b8c8397a452fd2fa75d6ae3f35e6d9e9",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/writing-desk.png",
+      "sha256": "2707aaa99da12935f3d690d8f29a87db6ab07d607060605ee531686fb755295a",
+      "bytes": 20451,
+      "dimensionsPixels": [
+        480,
+        320
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/thumbnails/writing-desk.png",
+      "priorSha256": "2707aaa99da12935f3d690d8f29a87db6ab07d607060605ee531686fb755295a",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/antique-book-side.png",
+      "sha256": "281d1f7a8256b47b60ae98215c5a194dbd53c507f274c364668ae136ca1c7376",
+      "bytes": 79249,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/antique-book-side.png",
+      "priorSha256": "281d1f7a8256b47b60ae98215c5a194dbd53c507f274c364668ae136ca1c7376",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/articulated-chest-open.png",
+      "sha256": "c8a1602289f7c946f26cee4cd7d31374b75ff1fff0f90318817284b59de59809",
+      "bytes": 133190,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/articulated-chest-open.png",
+      "priorSha256": "c8a1602289f7c946f26cee4cd7d31374b75ff1fff0f90318817284b59de59809",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/articulated-chest-side.png",
+      "sha256": "84ff20a21dc08b603252456bc1dd6c14061ff76db7cbb6db804f3bfa401c467e",
+      "bytes": 163127,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/articulated-chest-side.png",
+      "priorSha256": "84ff20a21dc08b603252456bc1dd6c14061ff76db7cbb6db804f3bfa401c467e",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/bookshelf-side.png",
+      "sha256": "90abaf4ed8decfe43c7f5a95265b201676eef62048ade82e16e4295da64a8484",
+      "bytes": 85536,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/bookshelf-side.png",
+      "priorSha256": "90abaf4ed8decfe43c7f5a95265b201676eef62048ade82e16e4295da64a8484",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/brass-compass-side.png",
+      "sha256": "71f68b8037a83296752be9947630d0a7935fc700570b9a35088da20d7d58c680",
+      "bytes": 53686,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/brass-compass-side.png",
+      "priorSha256": "71f68b8037a83296752be9947630d0a7935fc700570b9a35088da20d7d58c680",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/cabinet-side.png",
+      "sha256": "7ae34bd19f6a150b63a19cd399614cf24d355906e0b4cfb208ea8a4348f1b674",
+      "bytes": 92465,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/cabinet-side.png",
+      "priorSha256": "7ae34bd19f6a150b63a19cd399614cf24d355906e0b4cfb208ea8a4348f1b674",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/candelabra-side.png",
+      "sha256": "a19241b80b5a23f44feed5b06df4060096ef27683f5cc60814af561d259bc97b",
+      "bytes": 53001,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/candelabra-side.png",
+      "priorSha256": "a19241b80b5a23f44feed5b06df4060096ef27683f5cc60814af561d259bc97b",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/curtains-side.png",
+      "sha256": "5d7f8442405eec23193ce6f4f3b793e2c3221347d7183878f107d6350ea6fc19",
+      "bytes": 63097,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/curtains-side.png",
+      "priorSha256": "5d7f8442405eec23193ce6f4f3b793e2c3221347d7183878f107d6350ea6fc19",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/decorative-vase-side.png",
+      "sha256": "b9cc475630a8a039ffe0df7711c3014a9509bd67c65e7df0ff39037d8e067c51",
+      "bytes": 74414,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/decorative-vase-side.png",
+      "priorSha256": "d41e521eab648e0f3c4ebcdeb7dac55c5adf69f851a02c7730da43299fef0cc0",
+      "changedFromPrior": true,
+      "inspectionThisPass": "DIRECT_IMAGE_INSPECTION"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/dining-table-side.png",
+      "sha256": "e9be5bc2339aa654991ca06768024c499d238f0f9710b5a88618201e95766ae9",
+      "bytes": 71422,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/dining-table-side.png",
+      "priorSha256": "e9be5bc2339aa654991ca06768024c499d238f0f9710b5a88618201e95766ae9",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/dresser-side.png",
+      "sha256": "bc6dd77d73bd48a7c7cbdd644846a93ad4f68095340cffe7a8ec8094cc3f96cd",
+      "bytes": 174790,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/dresser-side.png",
+      "priorSha256": "bc6dd77d73bd48a7c7cbdd644846a93ad4f68095340cffe7a8ec8094cc3f96cd",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/framed-painting-side.png",
+      "sha256": "2837b98b166b34966d4a291ebb2da481f35a2b1e7d3e50939cac3e8972eaa5c8",
+      "bytes": 76730,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/framed-painting-side.png",
+      "priorSha256": "2837b98b166b34966d4a291ebb2da481f35a2b1e7d3e50939cac3e8972eaa5c8",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/hanging-banner-side.png",
+      "sha256": "55634486c62bc3537815adc9edf13212e0deea4426e0a391545455e9a49def31",
+      "bytes": 35736,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/hanging-banner-side.png",
+      "priorSha256": "55634486c62bc3537815adc9edf13212e0deea4426e0a391545455e9a49def31",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/hinged-door-open.png",
+      "sha256": "62882b1e30602581723d09539dd8b3c70c2c5f9d93453184fdc5fe0e9b02678a",
+      "bytes": 31493,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/hinged-door-open.png",
+      "priorSha256": "62882b1e30602581723d09539dd8b3c70c2c5f9d93453184fdc5fe0e9b02678a",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/hinged-door-side.png",
+      "sha256": "bc7ec69b80be6170c82308e3bd8fb3b585e3383b1d7be0d4e0499fa54d02d9c8",
+      "bytes": 43922,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/hinged-door-side.png",
+      "priorSha256": "bc7ec69b80be6170c82308e3bd8fb3b585e3383b1d7be0d4e0499fa54d02d9c8",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/lantern-side.png",
+      "sha256": "b9bf1c7b960ee5ca1980c6ef850c620524d3b77592c81fb92be752ed8d5aad16",
+      "bytes": 51661,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/lantern-side.png",
+      "priorSha256": "b9bf1c7b960ee5ca1980c6ef850c620524d3b77592c81fb92be752ed8d5aad16",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/nautical-chart-side.png",
+      "sha256": "fc5e244405549956600e899fece027a8050050103642ac18702d2cb3bf6c2ce1",
+      "bytes": 87668,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/nautical-chart-side.png",
+      "priorSha256": "fc5e244405549956600e899fece027a8050050103642ac18702d2cb3bf6c2ce1",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/opening-drawer-open.png",
+      "sha256": "dc43e94966fb3ccd4be695e0f41b9398db42f5ce3cf4c2b52ea91c49fd88635a",
+      "bytes": 120000,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/opening-drawer-open.png",
+      "priorSha256": "dc43e94966fb3ccd4be695e0f41b9398db42f5ce3cf4c2b52ea91c49fd88635a",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/opening-drawer-side.png",
+      "sha256": "d990e9682890d22877bc0fd7f3a90d7c3ae4573577bcbf9d6a65f4863e4e4ca5",
+      "bytes": 175172,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/opening-drawer-side.png",
+      "priorSha256": "d990e9682890d22877bc0fd7f3a90d7c3ae4573577bcbf9d6a65f4863e4e4ca5",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/ornate-key-side.png",
+      "sha256": "4765a94069c3fb74bbc1a79fbab7de948f2c165901cc6ec43f5a80d46a122a7f",
+      "bytes": 29575,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/ornate-key-side.png",
+      "priorSha256": "4765a94069c3fb74bbc1a79fbab7de948f2c165901cc6ec43f5a80d46a122a7f",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/parchment-note-side.png",
+      "sha256": "8bb8f99155262dc1d3c1ea86967fc05b429136c13f63b2b9e3fb3b48d5428568",
+      "bytes": 54042,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/parchment-note-side.png",
+      "priorSha256": "8bb8f99155262dc1d3c1ea86967fc05b429136c13f63b2b9e3fb3b48d5428568",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/puzzle-box-side.png",
+      "sha256": "c94111ddfc4867cfac455dfe34697cd780a9807b5b21b9495a4c23b90c55eb51",
+      "bytes": 209739,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/puzzle-box-side.png",
+      "priorSha256": "c94111ddfc4867cfac455dfe34697cd780a9807b5b21b9495a4c23b90c55eb51",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/rug-side.png",
+      "sha256": "a154d026c557dbd7c73dfe857f54f546d91cc51061ad5063f99108d98db08898",
+      "bytes": 76309,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/rug-side.png",
+      "priorSha256": "a154d026c557dbd7c73dfe857f54f546d91cc51061ad5063f99108d98db08898",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/sealed-letter-side.png",
+      "sha256": "87ca9e4b105162105a555339fea2c08a7d355d952d878de793c6c5ae004c4b36",
+      "bytes": 49492,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/sealed-letter-side.png",
+      "priorSha256": "87ca9e4b105162105a555339fea2c08a7d355d952d878de793c6c5ae004c4b36",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/sofa-side.png",
+      "sha256": "13373ebf8886e3a56772d4c7726197891790d29b6024290a4fad744b536a7477",
+      "bytes": 99217,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/sofa-side.png",
+      "priorSha256": "b61b0faf77949c476ec3879f6f5948c20d23fb012acbe36adb052732c46f7420",
+      "changedFromPrior": true,
+      "inspectionThisPass": "DIRECT_IMAGE_INSPECTION"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/spyglass-side.png",
+      "sha256": "a980070397b82dd53c53ddeab72ad7f7d7929100c47d66059fd7a1c574ed5e15",
+      "bytes": 29623,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/spyglass-side.png",
+      "priorSha256": "a980070397b82dd53c53ddeab72ad7f7d7929100c47d66059fd7a1c574ed5e15",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/travel-trunk-side.png",
+      "sha256": "eec7364faf46e7a123e0b3f33927d7c92e205a4a9ecf5f573b4e51a79999bb2e",
+      "bytes": 147201,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/travel-trunk-side.png",
+      "priorSha256": "d0454fd8ca2e1fc73752b9c107c9926ed3c08c5b363f10ca48c80e7ad6665d92",
+      "changedFromPrior": true,
+      "inspectionThisPass": "DIRECT_IMAGE_INSPECTION"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/treasure-chest-side.png",
+      "sha256": "7f716f33d0c2d925980645da1652562e82ae0f8cff59b7d2e975738379653ad6",
+      "bytes": 159177,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/treasure-chest-side.png",
+      "priorSha256": "7f716f33d0c2d925980645da1652562e82ae0f8cff59b7d2e975738379653ad6",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/treasure-map-side.png",
+      "sha256": "7b3661cc06338346b9a56a9018105a6a7b477f9c26ff3bd20f47606fc1b4905d",
+      "bytes": 64457,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/treasure-map-side.png",
+      "priorSha256": "7b3661cc06338346b9a56a9018105a6a7b477f9c26ff3bd20f47606fc1b4905d",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/upholstered-chair-side.png",
+      "sha256": "58207ff7128602dca5fbf318e40241ce384af11c2f06867c3b9346bfb278625b",
+      "bytes": 108676,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/upholstered-chair-side.png",
+      "priorSha256": "58207ff7128602dca5fbf318e40241ce384af11c2f06867c3b9346bfb278625b",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/wall-sign-open.png",
+      "sha256": "e9bc31ee66a8a5bba95f407bcf448255e167b1bff3bece313e287d32366bbe84",
+      "bytes": 82463,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/wall-sign-open.png",
+      "priorSha256": "e9bc31ee66a8a5bba95f407bcf448255e167b1bff3bece313e287d32366bbe84",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/wall-sign-side.png",
+      "sha256": "266a8061bd3a1a991f2da9ad19faf5059efb59a8b622862f1f0b6296096400ea",
+      "bytes": 84433,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/wall-sign-side.png",
+      "priorSha256": "266a8061bd3a1a991f2da9ad19faf5059efb59a8b622862f1f0b6296096400ea",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/wardrobe-side.png",
+      "sha256": "1e5e82e34c0052dd48cabb5fb086786a6c3e85f0e2c9a370ca885da2f35b4889",
+      "bytes": 86847,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/wardrobe-side.png",
+      "priorSha256": "1e5e82e34c0052dd48cabb5fb086786a6c3e85f0e2c9a370ca885da2f35b4889",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/writing-desk-side.png",
+      "sha256": "bca6b4e1aadeb290d8f74c48fb456eb234d7a060bb472e40265c8266626e7cff",
+      "bytes": 80557,
+      "dimensionsPixels": [
+        960,
+        640
+      ],
+      "priorEvidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/details/writing-desk-side.png",
+      "priorSha256": "bca6b4e1aadeb290d8f74c48fb456eb234d7a060bb472e40265c8266626e7cff",
+      "changedFromPrior": false,
+      "inspectionThisPass": "CARRIED_FROM_PRIOR_INDEPENDENT_PIXEL_REVIEW_BY_EXACT_BYTE_IDENTITY"
+    }
+  ],
+  "actualStudioVase": {
+    "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/actual-studio-decorative-vase.png",
+    "sha256": "69f9462aab0029a091d97742bc07c27d2fd3c637492951bd40f67f7a989b64cc",
+    "bytes": 628853,
+    "dimensionsPixels": [
+      1440,
+      900
+    ]
+  },
+  "packetArtifacts": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/actual-studio-decorative-vase.png",
+      "sha256": "69f9462aab0029a091d97742bc07c27d2fd3c637492951bd40f67f7a989b64cc",
+      "bytes": 628853,
+      "dimensionsPixels": [
+        1440,
+        900
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/asset-render-metrics.json",
+      "sha256": "9bb75edfc7650962c97cbd48ac526fc88a0a359dfd8876b8cbcdf1e0470cc339",
+      "bytes": 24688
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/antique-book-side.png",
+      "sha256": "281d1f7a8256b47b60ae98215c5a194dbd53c507f274c364668ae136ca1c7376",
+      "bytes": 79249,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/articulated-chest-open.png",
+      "sha256": "c8a1602289f7c946f26cee4cd7d31374b75ff1fff0f90318817284b59de59809",
+      "bytes": 133190,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/articulated-chest-side.png",
+      "sha256": "84ff20a21dc08b603252456bc1dd6c14061ff76db7cbb6db804f3bfa401c467e",
+      "bytes": 163127,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/bookshelf-side.png",
+      "sha256": "90abaf4ed8decfe43c7f5a95265b201676eef62048ade82e16e4295da64a8484",
+      "bytes": 85536,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/brass-compass-side.png",
+      "sha256": "71f68b8037a83296752be9947630d0a7935fc700570b9a35088da20d7d58c680",
+      "bytes": 53686,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/cabinet-side.png",
+      "sha256": "7ae34bd19f6a150b63a19cd399614cf24d355906e0b4cfb208ea8a4348f1b674",
+      "bytes": 92465,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/candelabra-side.png",
+      "sha256": "a19241b80b5a23f44feed5b06df4060096ef27683f5cc60814af561d259bc97b",
+      "bytes": 53001,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/curtains-side.png",
+      "sha256": "5d7f8442405eec23193ce6f4f3b793e2c3221347d7183878f107d6350ea6fc19",
+      "bytes": 63097,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/decorative-vase-side.png",
+      "sha256": "b9cc475630a8a039ffe0df7711c3014a9509bd67c65e7df0ff39037d8e067c51",
+      "bytes": 74414,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/dining-table-side.png",
+      "sha256": "e9be5bc2339aa654991ca06768024c499d238f0f9710b5a88618201e95766ae9",
+      "bytes": 71422,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/dresser-side.png",
+      "sha256": "bc6dd77d73bd48a7c7cbdd644846a93ad4f68095340cffe7a8ec8094cc3f96cd",
+      "bytes": 174790,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/framed-painting-side.png",
+      "sha256": "2837b98b166b34966d4a291ebb2da481f35a2b1e7d3e50939cac3e8972eaa5c8",
+      "bytes": 76730,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/hanging-banner-side.png",
+      "sha256": "55634486c62bc3537815adc9edf13212e0deea4426e0a391545455e9a49def31",
+      "bytes": 35736,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/hinged-door-open.png",
+      "sha256": "62882b1e30602581723d09539dd8b3c70c2c5f9d93453184fdc5fe0e9b02678a",
+      "bytes": 31493,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/hinged-door-side.png",
+      "sha256": "bc7ec69b80be6170c82308e3bd8fb3b585e3383b1d7be0d4e0499fa54d02d9c8",
+      "bytes": 43922,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/lantern-side.png",
+      "sha256": "b9bf1c7b960ee5ca1980c6ef850c620524d3b77592c81fb92be752ed8d5aad16",
+      "bytes": 51661,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/nautical-chart-side.png",
+      "sha256": "fc5e244405549956600e899fece027a8050050103642ac18702d2cb3bf6c2ce1",
+      "bytes": 87668,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/opening-drawer-open.png",
+      "sha256": "dc43e94966fb3ccd4be695e0f41b9398db42f5ce3cf4c2b52ea91c49fd88635a",
+      "bytes": 120000,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/opening-drawer-side.png",
+      "sha256": "d990e9682890d22877bc0fd7f3a90d7c3ae4573577bcbf9d6a65f4863e4e4ca5",
+      "bytes": 175172,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/ornate-key-side.png",
+      "sha256": "4765a94069c3fb74bbc1a79fbab7de948f2c165901cc6ec43f5a80d46a122a7f",
+      "bytes": 29575,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/parchment-note-side.png",
+      "sha256": "8bb8f99155262dc1d3c1ea86967fc05b429136c13f63b2b9e3fb3b48d5428568",
+      "bytes": 54042,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/puzzle-box-side.png",
+      "sha256": "c94111ddfc4867cfac455dfe34697cd780a9807b5b21b9495a4c23b90c55eb51",
+      "bytes": 209739,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/rug-side.png",
+      "sha256": "a154d026c557dbd7c73dfe857f54f546d91cc51061ad5063f99108d98db08898",
+      "bytes": 76309,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/sealed-letter-side.png",
+      "sha256": "87ca9e4b105162105a555339fea2c08a7d355d952d878de793c6c5ae004c4b36",
+      "bytes": 49492,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/sofa-side.png",
+      "sha256": "13373ebf8886e3a56772d4c7726197891790d29b6024290a4fad744b536a7477",
+      "bytes": 99217,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/spyglass-side.png",
+      "sha256": "a980070397b82dd53c53ddeab72ad7f7d7929100c47d66059fd7a1c574ed5e15",
+      "bytes": 29623,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/travel-trunk-side.png",
+      "sha256": "eec7364faf46e7a123e0b3f33927d7c92e205a4a9ecf5f573b4e51a79999bb2e",
+      "bytes": 147201,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/treasure-chest-side.png",
+      "sha256": "7f716f33d0c2d925980645da1652562e82ae0f8cff59b7d2e975738379653ad6",
+      "bytes": 159177,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/treasure-map-side.png",
+      "sha256": "7b3661cc06338346b9a56a9018105a6a7b477f9c26ff3bd20f47606fc1b4905d",
+      "bytes": 64457,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/upholstered-chair-side.png",
+      "sha256": "58207ff7128602dca5fbf318e40241ce384af11c2f06867c3b9346bfb278625b",
+      "bytes": 108676,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/wall-sign-open.png",
+      "sha256": "e9bc31ee66a8a5bba95f407bcf448255e167b1bff3bece313e287d32366bbe84",
+      "bytes": 82463,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/wall-sign-side.png",
+      "sha256": "266a8061bd3a1a991f2da9ad19faf5059efb59a8b622862f1f0b6296096400ea",
+      "bytes": 84433,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/wardrobe-side.png",
+      "sha256": "1e5e82e34c0052dd48cabb5fb086786a6c3e85f0e2c9a370ca885da2f35b4889",
+      "bytes": 86847,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/details/writing-desk-side.png",
+      "sha256": "bca6b4e1aadeb290d8f74c48fb456eb234d7a060bb472e40265c8266626e7cff",
+      "bytes": 80557,
+      "dimensionsPixels": [
+        960,
+        640
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/manifest.json",
+      "sha256": "f2619636a2e8eac09b43e209754fc455880b2eb4c6bbffcb146dce440a21dbbb",
+      "bytes": 22077
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/packet.json",
+      "sha256": "489ffa6b48c56dbe89cff8449d8b9d11f7350e7925515a24b09bb8731f22a31e",
+      "bytes": 836
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/antique-book.png",
+      "sha256": "13844be446a64237e42b8c2f81f365259e61d9ce3806662bb8ab55a94a20ff90",
+      "bytes": 23242,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/articulated-chest.png",
+      "sha256": "cab5f08fda3c08b6923626ec4a91ebfd43153d1f971a01c75fc48d47e866a231",
+      "bytes": 39804,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/bookshelf.png",
+      "sha256": "5890505d16c71cdf6f159069bb467013f5d706a0b13854ecf1174e56db900e3c",
+      "bytes": 27222,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/brass-compass.png",
+      "sha256": "6fcb9833dff68909651c28a6148cc0ba69ff703c570ba2eb4cfd4c289b7170a2",
+      "bytes": 16833,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/cabinet.png",
+      "sha256": "370d913f2f4916a614bf9d78221b32565cefc8d5dd9d811f291cec24c007984c",
+      "bytes": 23295,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/candelabra.png",
+      "sha256": "0741c2a0f739489dd90c1c4ea646254fd11042eeded1804d59d6e981c658ce57",
+      "bytes": 19573,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/curtains.png",
+      "sha256": "b669b402ab2a4a89e92e4da43c5acce0489098ae646e1c5f59d270b70af04ec3",
+      "bytes": 22558,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/decorative-vase.png",
+      "sha256": "439f4c9210c12a1f4b5086e43ef6b62edf90c3e87604ca498192a9d039d98a51",
+      "bytes": 21377,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/dining-table.png",
+      "sha256": "96ff88579d4e91fc610380bb641c6afa87bbe384407313c95db16a6842033a3b",
+      "bytes": 16393,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/dresser.png",
+      "sha256": "f1f31d90f4696c9e6d1f45bef6d639c8a10981702578304819ac90610068c55c",
+      "bytes": 43501,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/framed-painting.png",
+      "sha256": "6e2bae1850bd7e064647f92fe07ba1df6fc4555014d4f5657936386b62563266",
+      "bytes": 28113,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/hanging-banner.png",
+      "sha256": "7039c0caa1b6ca664a0b00e2ce471b0751134a5d8299e7d55e3537704600ccf0",
+      "bytes": 13927,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/hinged-door.png",
+      "sha256": "df86a1fba560086e61f2efc52569f1acadb1f61db4fa071176e413f05a457700",
+      "bytes": 15050,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/lantern.png",
+      "sha256": "26cfefe46654feeec9a30f5964059d3382e30314b3c394cc94ae5d91bca7ab76",
+      "bytes": 16522,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/nautical-chart.png",
+      "sha256": "f6dc43b5890fc19ffb9583c26f04f9865a72bbc7aadc95ba9bda0a4de71b5c54",
+      "bytes": 21232,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/opening-drawer.png",
+      "sha256": "16a7398312d6eb92363b79607978da95e0db42f44c87e0b9ac727ecde5b550da",
+      "bytes": 41245,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/ornate-key.png",
+      "sha256": "14f7e3d60956bfe219f774c73621221583bfd559df014c235683bd043ca043f2",
+      "bytes": 8324,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/parchment-note.png",
+      "sha256": "5f386049a4f5a8c73be17b1280f03e11c3e2bc12a415998af8ef6419ddf579a3",
+      "bytes": 13539,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/puzzle-box.png",
+      "sha256": "0cfff2fc30b4144cdc98b8f86e324b0cc7c2542946f49ce4529de2687477ab18",
+      "bytes": 49513,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/rug.png",
+      "sha256": "799b923181fd3cfb9836b06e0d9f1c1644b97ffba54b6d59de64ee423a3efbb5",
+      "bytes": 19123,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/sealed-letter.png",
+      "sha256": "debd38b510c132e4a8c7029648c1f44f1b85f66e112d981b0c75a43a424ba4c6",
+      "bytes": 11076,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/sofa.png",
+      "sha256": "44169c21397ad0a7ff3b046def652ae9e666c9ef0f6f9d084bf1fe3c1c8f8c56",
+      "bytes": 21869,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/spyglass.png",
+      "sha256": "4a7927aed3c36c10cc6567c374636096b0825336da948b47182fe2fccacbcbe7",
+      "bytes": 11064,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/travel-trunk.png",
+      "sha256": "1e7c45bdce636d1a1f1449a1f17f606c6545e7968d41fd21188f7c69da4545c9",
+      "bytes": 34400,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/treasure-chest.png",
+      "sha256": "592f224b1a68178a0c1327bfef5de87bae628bc67f1891241f71bf24a6088be9",
+      "bytes": 37877,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/treasure-map.png",
+      "sha256": "5ad63243879181d560e88d77d1a31e23bdb91b38ff4a1b2744583bda2efe06e0",
+      "bytes": 15118,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/upholstered-chair.png",
+      "sha256": "cef1ed0a94996352178e62136f877ef5bec4291947e526156940916f28b8692d",
+      "bytes": 23370,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/wall-sign.png",
+      "sha256": "b3b524c7801341db79f7a54ffc7935c5d4fab1a59c29a39429c279f237656377",
+      "bytes": 27324,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/wardrobe.png",
+      "sha256": "720d1b0bf3d90f6a7caee601b31ad9d8b8c8397a452fd2fa75d6ae3f35e6d9e9",
+      "bytes": 23854,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/owner-continuation-01/pipeline/thumbnails/writing-desk.png",
+      "sha256": "2707aaa99da12935f3d690d8f29a87db6ab07d607060605ee531686fb755295a",
+      "bytes": 20451,
+      "dimensionsPixels": [
+        480,
+        320
+      ]
+    }
+  ],
+  "packetDigestSha256": "36068bf71fa07ec6f7fd6ca51f0c1c4e7a41a1232f0b5a836e084a481fca47f0",
+  "packetDigestAlgorithm": "SHA256 of UTF-8 LF-joined repository-relative path, TAB, lowercase SHA256, sorted by path, no trailing LF",
+  "historicalReviews": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/asset-independent-review.json",
+      "sha256": "d92d5928d7e91cfa0bac5629e1c3ed606f247b8b7b1c0e8024b837adac04ed78",
+      "bytes": 60627,
+      "historicalDecision": "BLOCKED",
+      "historicalRepairDisposition": "REPAIR_AND_RECAPTURE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass2/asset-independent-review.json",
+      "sha256": "a0aa231d922d4d9f6a7e7073230c099e10461f2a71fc300ba7a9eebd46d25b71",
+      "bytes": 63069,
+      "historicalDecision": "BLOCKED_ON_ASSET_QUALITY_AND_ACCEPTANCE_EVIDENCE",
+      "historicalRepairDisposition": "REPAIR_AND_RECAPTURE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass3/asset-independent-review.json",
+      "sha256": "65f4faaf2ab8a6556561a95b3e1bcab34c0ff5685293e7662cb5d0c9cc421d46",
+      "bytes": 80093,
+      "historicalDecision": "REPAIR_REQUIRED",
+      "historicalRepairDisposition": "REPAIR_AND_RECAPTURE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-pass4/asset-independent-review.json",
+      "sha256": "d740ec4a7c39e8594c9e5151f01cac494647735bab69eb897a28d4abf66a4486",
+      "bytes": 84876,
+      "historicalDecision": "BLOCKED_WITH_EVIDENCE_ON_ONE_ASSET",
+      "historicalRepairDisposition": "BLOCK_WITH_EVIDENCE"
+    }
+  ],
+  "newReviewDoesNotModifyHistoricalRecords": true
+}

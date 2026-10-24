@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "kind": "STABLE_WORKSPACE_SETTER_FROZEN_SOURCE_REVIEW",
+  "at": "2026-10-23T02:47:43.2951978Z",
+  "status": "SOURCE_AND_TEST_READY_ONLY_NO_RUNTIME_ACK",
+  "candidate": "6bbf875d31457103b6d2881bacde6631cbfa0923",
+  "beforeHookSha256": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d",
+  "proposedHook": {
+    "bytes": 3724,
+    "sha256": "d966fb24361a3e33b8d5ae724a772ffad89d6ef58882a4045c2bec1de9bf830f"
+  },
+  "proposedTests": {
+    "bytes": 9784,
+    "sha256": "c12173fcf9a87f8ff8c5ec158585442f09187d64167f195e51fbfbf898a32f55"
+  },
+  "preservation": {
+    "originalEightCasesBytePreservedExceptReactImport": true,
+    "newCases": 9,
+    "workingBytesMatchFrozen": true,
+    "originalStudioConsumerSha256": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c",
+    "bootstrapAndCatalogGuardsUnchanged": true
+  },
+  "sourceReasoning": [
+    "Empty dependency list retains public setter identity for this hook lifetime.",
+    "currentScope ref starts from initial scope and updates in layout effect on committed scope change before passive hydration and normal UI events.",
+    "Setter reads current committed scope on invocation rather than capturing the first account.",
+    "Existing scope hydration cancellation, pending edits, replacement reset, narrow collapse, and persistence guards remain unchanged."
+  ],
+  "testReasoning": [
+    "New public consumer effect depends on setter, mirroring the Studio bootstrap dependency shape.",
+    "Undefined to account A should not produce a second consumer bootstrap; old c1 is predicted to fail count1 assertion, not observed red yet.",
+    "The initially retained setter is invoked before hydration for B and returning A, checking current-account early edits and preserving other account storage.",
+    "Original eight cases retain pending A to B to A, reset, rapid actions, narrow behavior, and Strict Mode coverage."
+  ],
+  "requiredEvidence": [
+    "One separately coordinated bounded RED run with original c1 and exact c121.",
+    "Separately coordinated GREEN on d966 and exact c121 with all9 cases.",
+    "Unchanged original Exclusion consumer802 on the repaired hook, with terminal cleanup and exact source/restoration receipts."
+  ],
+  "limits": [
+    "Source review does not prove red, green, consumer recovery, sole cancellation cause, browser behavior, or phone AR acceptance.",
+    "Formatting or further source changes require fresh hash binding and review.",
+    "No test, build, format, CI, capture, provider call, or source edit executed by root."
+  ],
+  "qualification": false,
+  "rootRuntimeExecuted": false
+}

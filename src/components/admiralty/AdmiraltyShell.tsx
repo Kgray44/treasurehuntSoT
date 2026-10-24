@@ -100,7 +100,7 @@ export function AdmiraltyShell({
             <small>Open the Chartroom</small>
           </span>
         </Link>
-        <div className="chartroom-operator">
+        <div className="chartroom-operator" role="group" aria-label={operator.displayName}>
           <span>{operator.displayName}</span>
           <small>{operator.roles.join(" · ")}</small>
         </div>

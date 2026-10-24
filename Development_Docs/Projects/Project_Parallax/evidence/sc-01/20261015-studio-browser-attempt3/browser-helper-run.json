@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "candidate": "67984bd988c0dae68b149fc478986590674a19d9",
+  "tree": "28a976fffa93b6904a966c73e679c714de6f3d2f",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T08:50:14.230Z",
+  "finishedAt": "2026-10-15T08:52:50.786Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-scene-manager-a-r-8c509-es-without-changing-its-pin-chromium-video.webm",
+      "sha256": "ae215162662c6f0027f2408ff29aa684fa58d6ba43ce497b10c58e563aba7156"
+    },
+    {
+      "file": "parallax-scene-manager-bui-fe8d0-ore-independent-Scene-reuse-chromium-video.webm",
+      "sha256": "1145419ce61d44fbcd2b63980207a0d0eae79764e7fd49f1e31d9513c854f870"
+    },
+    {
+      "file": "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video.webm",
+      "sha256": "a1c489beff317d596a63d1072a81e79a20d817dbaedbae4bb513e266df454bbc"
+    }
+  ]
+}

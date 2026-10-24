@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { canonicalJson } from "@/drydock/canonical";
+import { canonicalJson, canonicalChecksum } from "@/drydock/canonical";
 import { sanitizedIssueProjection, type DrydockIssue } from "@/drydock/issues";
 
 export type DrydockProofCompleteness = "COMPLETE" | "INCOMPLETE_PROOF";
@@ -51,7 +51,10 @@ const count = (issues: readonly DrydockIssue[], predicate: (issue: DrydockIssue)
  * in the draft and is never copied into this durable summary.
  */
 export function createDrydockValidationReport(input: CreateDrydockValidationReportInput): DrydockValidationReport {
-  const sourceChecksum = sha256(input.source);
+  // A validated Chronicle can contain many bounded blocks and embedded spatial rooms.
+  // Hash its whole source through the shared checksum path; the 32 KiB guard still
+  // applies to individual expressions and the minimized report payloads below.
+  const sourceChecksum = canonicalChecksum(input.source);
   const issues = [...input.issues].sort((left, right) => left.id.localeCompare(right.id, "en"));
   const completedAt = input.completedAt ?? input.generatedAt ?? new Date().toISOString();
   const startedAt = input.startedAt ?? completedAt;

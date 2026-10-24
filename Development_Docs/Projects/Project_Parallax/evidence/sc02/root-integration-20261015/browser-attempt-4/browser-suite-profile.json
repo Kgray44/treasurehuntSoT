@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc02-integration.spec.ts",
+    "--workers=1",
+    "--reporter=line",
+    "--output",
+    "D:/Codex_Parallax_Task_Cache/px-production-qualification/sc02-root-browser-attempt-4-eab394b0/test-results"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+}

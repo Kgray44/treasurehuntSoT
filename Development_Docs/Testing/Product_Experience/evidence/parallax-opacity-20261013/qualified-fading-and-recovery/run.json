@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "candidate": "540b86e71078c229701dade20e45c0424ba2dc11",
+  "tree": "4d7d2b2eaa527e1cdd77b5fcd11e3379d9f4609f",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T09:27:09.414Z",
+  "finishedAt": "2026-10-13T09:28:45.942Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "b9cb42a52fc2362a0dec8fce24d345f3cc627f5e204a1950cba8629ae70ede63"
+    },
+    {
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "7533614ca207b0338e675785aa08bc69f908feee883011991d5fa15a1f63ffa6"
+    },
+    {
+      "file": "parallax-asset-quality-Cre-b583d-ck-without-rebuilding-props-chromium-video.webm",
+      "sha256": "b044bf4baa0c8fcefc9fc7eb3ad6c67523e8cfd57b44b8f8075da636856006dc"
+    },
+    {
+      "file": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+      "sha256": "b90e5842987b9bb4fe3462eb3663eaea269d27a339f84e049c8a5fdc8d488b0b"
+    },
+    {
+      "file": "parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium-video.webm",
+      "sha256": "5c18f0a947369cad56fdce183a9742835aaec311c99759f03c17d97a3d2e45ce"
+    },
+    {
+      "file": "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+      "sha256": "3f127993cf5a68885f2c3ec73acc81511d187777e5063cbcf4cfe6e6d7b6c61d"
+    },
+    {
+      "file": "parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+      "sha256": "a5e5b73a3b19a4141279aad04c34bbf9ba1199ae35c023787453a2cc77f508f2"
+    },
+    {
+      "file": "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+      "sha256": "c79e19592de45c0a0a82f47d9bc8734c844fb8012949eaa7e1478acd7d7ec2a9"
+    },
+    {
+      "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "sha256": "5c897a56bda6d6450bf3aa93e0fee82590e44160ef436c442041d0a26be05ff8"
+    }
+  ]
+}

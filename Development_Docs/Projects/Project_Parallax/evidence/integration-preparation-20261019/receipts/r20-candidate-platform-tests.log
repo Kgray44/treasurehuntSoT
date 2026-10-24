@@ -1,0 +1,89 @@
+TAP version 13
+# Subtest: normal current seal requires its own reservation, real current cipher and complete canonical groups exactly once
+not ok 1 - normal current seal requires its own reservation, real current cipher and complete canonical groups exactly once
+  ---
+  duration_ms: 593.9606
+  type: 'test'
+  location: 'C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\sounding-line\\experience-current-admission.test.mjs:1925:1'
+  failureType: 'testCodeFailure'
+  error: 'process.getuid is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    privateDirectory (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/experience-current-observability.mjs:81:28)
+    createCurrentAdmissionObservation (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/experience-current-observability.mjs:234:3)
+    TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/sounding-line/experience-current-admission.test.mjs:1928:23)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1325:25)
+    Test.start (node:internal/test_runner/test:1191:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+  ...
+# Subtest: current observer encrypts fixed private members with current record-bound AAD and rejects tampering
+not ok 2 - current observer encrypts fixed private members with current record-bound AAD and rejects tampering
+  ---
+  duration_ms: 485.5929
+  type: 'test'
+  location: 'C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\sounding-line\\experience-current-admission.test.mjs:2079:1'
+  failureType: 'testCodeFailure'
+  error: 'process.getuid is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    privateDirectory (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/experience-current-observability.mjs:81:28)
+    createCurrentAdmissionObservation (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/experience-current-observability.mjs:234:3)
+    TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/sounding-line/experience-current-admission.test.mjs:2082:23)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1325:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+    Test.postRun (node:internal/test_runner/test:1465:19)
+    node:internal/test_runner/test:1228:31
+    node:internal/process/task_queues:151:7
+    AsyncResource.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: broken dependency links and malformed probe JSON preserve terminal UNKNOWN and permit bounded repair
+not ok 3 - broken dependency links and malformed probe JSON preserve terminal UNKNOWN and permit bounded repair
+  ---
+  duration_ms: 669.9875
+  type: 'test'
+  location: 'C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\sounding-line\\experience-dependency-readiness.test.mjs:341:1'
+  failureType: 'testCodeFailure'
+  error: "EPERM: operation not permitted, symlink '.\\does-not-exist' -> 'C:\\Users\\kkids\\AppData\\Local\\Temp\\readiness-inert-OXXOOo\\node_modules\\broken-link'"
+  code: 'EPERM'
+  stack: |-
+    symlinkSync (node:fs:1877:11)
+    TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/sounding-line/experience-dependency-readiness.test.mjs:344:3)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1325:25)
+    Test.start (node:internal/test_runner/test:1191:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+  ...
+# Subtest: fixed OS metadata records the standard release symlink while dependency links stay contained
+not ok 4 - fixed OS metadata records the standard release symlink while dependency links stay contained
+  ---
+  duration_ms: 361.5804
+  type: 'test'
+  location: 'C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\sounding-line\\experience-dependency-readiness.test.mjs:561:1'
+  failureType: 'testCodeFailure'
+  error: "EPERM: operation not permitted, symlink '..\\outside-node-modules.txt' -> 'C:\\Users\\kkids\\AppData\\Local\\Temp\\readiness-inert-6WgR6N\\node_modules\\external-link'"
+  code: 'EPERM'
+  stack: |-
+    symlinkSync (node:fs:1877:11)
+    TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/sounding-line/experience-dependency-readiness.test.mjs:576:3)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1325:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+    Test.postRun (node:internal/test_runner/test:1465:19)
+    node:internal/test_runner/test:1228:31
+    node:internal/process/task_queues:151:7
+    AsyncResource.runInAsyncScope (node:async_hooks:227:14)
+    AsyncResource.runMicrotask (node:internal/process/task_queues:148:8)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 0
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3202.7527

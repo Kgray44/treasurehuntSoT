@@ -1,0 +1,56 @@
+{
+  "kind": "PARALLAX_CURRENT_LOCAL_VERIFICATION_CHECKPOINT_1",
+  "createdAtUtc": "2026-10-21T23:48:00.192Z",
+  "source": "871431cd0827d42551c8a8b9d2d7fde5e16c1f77",
+  "tree": "9ecab6da7aab2626061767c2d358cdfd346c9ac4",
+  "qualification": false,
+  "tests": {
+    "passed": 215,
+    "failed": 0,
+    "pending": 0,
+    "uniqueAssertionIdentityVerified": true,
+    "componentRuntime": 145,
+    "crossdeckDomain": 70,
+    "actualTestFiles": 22
+  },
+  "typecheck": {
+    "exitCode": 0,
+    "diagnostics": 0,
+    "noEmit": true,
+    "incremental": false
+  },
+  "setup": {
+    "prismaGenerate": "PASS",
+    "isolatedSqliteBootstrap": "PASS",
+    "syntheticSeed": "PASS",
+    "legacyCompanionMigration": "PASS",
+    "fixtureIsolation": "PASS"
+  },
+  "productionBuild": {
+    "exitCode": 0,
+    "cleanup": "PASS",
+    "compiledSeconds": 36,
+    "typecheckSeconds": 72,
+    "staticPages": 162
+  },
+  "wholeBrowserPreparation": {
+    "status": "FAIL",
+    "error": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+    "generatedWindowsJunctions": 3,
+    "allTargetsInsideOwnedNodeModules": true,
+    "originalFailurePreserved": true
+  },
+  "browserCasesExecuted": 0,
+  "experiencePlan": {
+    "status": "FAILED_BEFORE_PLAN",
+    "error": "ENOBUFS",
+    "originalFailurePreserved": true
+  },
+  "captureExecuted": false,
+  "protectedQualificationExecuted": false,
+  "failedBuildPreserved": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\artifacts\\sounding-line\\browser-development\\prepared-7a349fde-ce9e-4daf-9251-40f49ad48008\\immutable-build",
+  "oldBuildPreserved": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\previous-runtime-build",
+  "freeC": 34085195776,
+  "freeD": 200248762368,
+  "sourceMutationSinceChecks": "Only additive engineering evidence/context documentation is being prepared; actual producers remain source871431."
+}

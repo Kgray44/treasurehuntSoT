@@ -1,0 +1,376 @@
+{
+  "config": {
+    "configFile": "D:\\CodexWorktrees\\parallax-root-integration\\playwright.config.ts",
+    "rootDir": "D:/CodexWorktrees/parallax-root-integration/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T160140-dbffe535",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "phase3-readonly-setup",
+        "name": "phase3-readonly-setup",
+        "testDir": "D:/CodexWorktrees/parallax-root-integration/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/phase3-readonly-setup\\.setup\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T160140-dbffe535",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/CodexWorktrees/parallax-root-integration/tests/e2e",
+        "testIgnore": [
+          "/phase3-readonly-setup\\.setup\\.ts/u",
+          "/harborlight-phase2\\.spec\\.ts/u",
+          "/harborlight-phase3\\.spec\\.ts/u",
+          "/harborlight-phase4\\.spec\\.ts/u",
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T160140-dbffe535",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "admiralty-phase1",
+        "name": "admiralty-phase1",
+        "testDir": "D:/CodexWorktrees/parallax-root-integration/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T160140-dbffe535",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase2",
+        "name": "harborlight-phase2",
+        "testDir": "D:/CodexWorktrees/parallax-root-integration/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase2\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T160140-dbffe535",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase3",
+        "name": "harborlight-phase3",
+        "testDir": "D:/CodexWorktrees/parallax-root-integration/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase3\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T160140-dbffe535",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase4",
+        "name": "harborlight-phase4",
+        "testDir": "D:/CodexWorktrees/parallax-root-integration/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase4\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T160140-dbffe535",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit-mobile",
+        "name": "webkit-mobile",
+        "testDir": "D:/CodexWorktrees/parallax-root-integration/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "parallax-construction-checks.spec.ts",
+      "file": "parallax-construction-checks.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator follows exact construction findings, corrects wall orientation and reviews miniature scale through save and reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7478,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-17T16:02:20.581Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "D:\\CodexWorktrees\\parallax-root-integration\\artifacts\\entry-migration-local\\local-entry-proof-20261017T160140-dbffe535\\parallax-construction-chec-501d6-ale-through-save-and-reload-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5c9b78bd41d374497381-b949492e3a0b4c456bda",
+          "file": "parallax-construction-checks.spec.ts",
+          "line": 17,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-direct-placement.spec.ts",
+      "file": "parallax-direct-placement.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator sees a receiving surface during real dragging, clamps on release, freely positions with clamping off and selects directly in the viewport",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8171,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-17T16:02:28.193Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "D:\\CodexWorktrees\\parallax-root-integration\\artifacts\\entry-migration-local\\local-entry-proof-20261017T160140-dbffe535\\parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "554e0583746ac3db5804-103e056d8cc4decd7238",
+          "file": "parallax-direct-placement.spec.ts",
+          "line": 21,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-exclusion-zones.spec.ts",
+      "file": "parallax-exclusion-zones.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Environment zones use real gizmos, retain edits and deletion, and disappear from ordinary scene rendering",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8886,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-17T16:02:36.386Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "D:\\CodexWorktrees\\parallax-root-integration\\artifacts\\entry-migration-local\\local-entry-proof-20261017T160140-dbffe535\\parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1b8fb9fc17e2866a65b6-9997937386791d9eb1c0",
+          "file": "parallax-exclusion-zones.spec.ts",
+          "line": 16,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-parametric-room.spec.ts",
+      "file": "parallax-parametric-room.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator adds and rebuilds actual furniture, protects a bound desk, corrects scale and retains the room through reload and phone edits",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9148,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-17T16:02:45.290Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "D:\\CodexWorktrees\\parallax-root-integration\\artifacts\\entry-migration-local\\local-entry-proof-20261017T160140-dbffe535\\parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "1a750f04fa5110ee0c11-bc897d6369ccaefab09f",
+          "file": "parallax-parametric-room.spec.ts",
+          "line": 19,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-17T16:02:19.422Z",
+    "duration": 35142.651,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

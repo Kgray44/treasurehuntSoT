@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-adaptive.spec.ts",
+    "tests/e2e/parallax-studio.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=list,json,html",
+    "--output",
+    "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-03-results"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+}

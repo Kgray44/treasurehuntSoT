@@ -1,0 +1,19 @@
+{
+  "kind": "LOCAL_REPAIR_CHECK_DISPOSITION_01",
+  "timeUtc": "2026-10-22T05:13:45.7451841Z",
+  "unit": {
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0
+  },
+  "wholeTypeScript": "PASS",
+  "sourceHashes": "See immutable input.json",
+  "lint": {
+    "exit": 0,
+    "errors": 0,
+    "warnings": 1,
+    "rule": "jsx-a11y/role-supports-aria-props"
+  },
+  "disposition": "NOT_ZERO_WARNING_ACCEPTANCE_SOURCE_CORRECTED_IN_DRAFT02",
+  "originalChecksPreserved": true
+}

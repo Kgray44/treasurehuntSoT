@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "status": "FAIL",
+  "mode": "prepare",
+  "test": "tests/e2e/crossdeck-experience-refit.spec.ts",
+  "commands": [
+    {
+      "label": "prisma-generate",
+      "exit": {
+        "code": 0,
+        "signal": null,
+        "guardianExitCode": 0
+      },
+      "cleanup": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 3,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      }
+    },
+    {
+      "label": "sqlite-bootstrap",
+      "exit": {
+        "code": 0,
+        "signal": null,
+        "guardianExitCode": 0
+      },
+      "cleanup": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 1,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      }
+    },
+    {
+      "label": "generic-seed",
+      "exit": {
+        "code": 0,
+        "signal": null,
+        "guardianExitCode": 0
+      },
+      "cleanup": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 1,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      }
+    },
+    {
+      "label": "scripts/migrate-legacy-companion.ts",
+      "exit": {
+        "code": 0,
+        "signal": null,
+        "guardianExitCode": 0
+      },
+      "cleanup": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 1,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      }
+    },
+    {
+      "label": "scripts/sounding-line/prepare-validation-isolation.mjs",
+      "exit": {
+        "code": 0,
+        "signal": null,
+        "guardianExitCode": 0
+      },
+      "cleanup": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 1,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      }
+    },
+    {
+      "label": "next-build",
+      "exit": {
+        "code": 0,
+        "signal": null,
+        "guardianExitCode": 0
+      },
+      "cleanup": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 1,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      }
+    }
+  ],
+  "error": {
+    "name": "Error",
+    "messageSHA256": "9f9952e2b34aad0422a10205a0f0c94e38b8a49cd7bb5f9af6584cd1ed42360c",
+    "code": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES"
+  },
+  "logs": [
+    {
+      "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+      "args": [
+        "node_modules/prisma/build/index.js",
+        "generate",
+        "--schema",
+        "prisma/schema.sqlite.prisma"
+      ],
+      "streams": {
+        "stdout": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-1-stdout.redacted.log",
+          "sha256": "39b0471579734202b350254f88d12b8b8bec81c30b3dcbe3601191073f6e5d70",
+          "originalBytes": 292,
+          "originalStreamSHA256": "39b0471579734202b350254f88d12b8b8bec81c30b3dcbe3601191073f6e5d70",
+          "complete": true
+        },
+        "stderr": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-1-stderr.redacted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalBytes": 0,
+          "originalStreamSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "complete": true
+        }
+      }
+    },
+    {
+      "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+      "args": [
+        "scripts/sounding-line/sqlite-bootstrap.mjs",
+        "--database-url",
+        "file:C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\artifacts\\sounding-line\\generic-871431cd0827\\validation-isolated-20261021-233454382-c9a07555dd52b1e9fb572e0a05baacef.db"
+      ],
+      "streams": {
+        "stdout": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-2-stdout.redacted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalBytes": 0,
+          "originalStreamSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "complete": true
+        },
+        "stderr": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-2-stderr.redacted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalBytes": 0,
+          "originalStreamSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "complete": true
+        }
+      }
+    },
+    {
+      "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+      "args": [
+        "node_modules/tsx/dist/cli.mjs",
+        "prisma/seed.ts"
+      ],
+      "streams": {
+        "stdout": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-3-stdout.redacted.log",
+          "sha256": "6cdfc2621bf884b3d044773b1e147ef17c866dcd47088fdd2fbe74ea2b08fa70",
+          "originalBytes": 147,
+          "originalStreamSHA256": "6cdfc2621bf884b3d044773b1e147ef17c866dcd47088fdd2fbe74ea2b08fa70",
+          "complete": true
+        },
+        "stderr": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-3-stderr.redacted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalBytes": 0,
+          "originalStreamSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "complete": true
+        }
+      }
+    },
+    {
+      "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+      "args": [
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/migrate-legacy-companion.ts"
+      ],
+      "streams": {
+        "stdout": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-4-stdout.redacted.log",
+          "sha256": "bdd090280088c3c8eeaf44d6c95d83a1f90cd83d90e399fe4aecc031f7575ca2",
+          "originalBytes": 543,
+          "originalStreamSHA256": "bdd090280088c3c8eeaf44d6c95d83a1f90cd83d90e399fe4aecc031f7575ca2",
+          "complete": true
+        },
+        "stderr": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-4-stderr.redacted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalBytes": 0,
+          "originalStreamSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "complete": true
+        }
+      }
+    },
+    {
+      "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+      "args": [
+        "scripts/sounding-line/prepare-validation-isolation.mjs"
+      ],
+      "streams": {
+        "stdout": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-5-stdout.redacted.log",
+          "sha256": "a0a09f2debf9ac906ca8728289a942ded46b86338f67c799809a2549cc3f0521",
+          "originalBytes": 69,
+          "originalStreamSHA256": "a0a09f2debf9ac906ca8728289a942ded46b86338f67c799809a2549cc3f0521",
+          "complete": true
+        },
+        "stderr": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-5-stderr.redacted.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "originalBytes": 0,
+          "originalStreamSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "complete": true
+        }
+      }
+    },
+    {
+      "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+      "args": [
+        "node_modules/next/dist/bin/next",
+        "build"
+      ],
+      "streams": {
+        "stdout": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-6-stdout.redacted.log",
+          "sha256": "f601681204b2a980623372fec192925fc8d139d8bcc7ff06b24ee91ab1b972cd",
+          "originalBytes": 18067,
+          "originalStreamSHA256": "f601681204b2a980623372fec192925fc8d139d8bcc7ff06b24ee91ab1b972cd",
+          "complete": true
+        },
+        "stderr": {
+          "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\browser-prepare-01\\child-6-stderr.redacted.log",
+          "sha256": "738b5f7a7323929c8c676e016a49a5fdf1c9c005a5cb861f090a90d875d3ecdb",
+          "originalBytes": 23252,
+          "originalStreamSHA256": "738b5f7a7323929c8c676e016a49a5fdf1c9c005a5cb861f090a90d875d3ecdb",
+          "complete": true
+        }
+      }
+    }
+  ]
+}

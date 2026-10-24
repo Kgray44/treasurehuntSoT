@@ -1,0 +1,22 @@
+Checking formatting...
+[warn] .agents/parallax-studio-overhaul.md
+[warn] scripts/parallax/run-owner-room-photo-browser.mjs
+[warn] src/community/spatial-publication.integration.test.ts
+[warn] src/components/studio/parallax/BehaviorTracks.tsx
+[warn] src/components/studio/parallax/RoomEnvironmentEditor.tsx
+[warn] src/components/studio/parallax/SceneGroups.tsx
+[warn] src/components/studio/parallax/SpatialCommunityPublisher.tsx
+[warn] src/components/studio/parallax/SpatialContentLibrary.test.tsx
+[warn] src/components/studio/parallax/SpatialContentLibrary.tsx
+[warn] src/components/studio/parallax/SpatialElementInspector.tsx
+[warn] src/components/studio/parallax/SpatialStudio.tsx
+[warn] src/parallax/group-surface-placement.test.ts
+[warn] src/parallax/group-surface-placement.ts
+[warn] src/parallax/spatial-catalog-page-service.test.ts
+[warn] src/parallax/spatial-catalog-page-service.ts
+[warn] src/parallax/surface-placement.test.ts
+[warn] tests/e2e/parallax-sc00b-combined.spec.ts
+[warn] tests/e2e/parallax-sc00c-drop-placement.spec.ts
+[warn] tests/e2e/parallax-sc00c-expanded-library.spec.ts
+[warn] tests/e2e/parallax-spatial-community.spec.ts
+[warn] Code style issues found in 20 files. Run Prettier with --write to fix.

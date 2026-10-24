@@ -1,0 +1,72 @@
+{
+  "classification": "ACCEPTED_NEUTRAL_ROUTING_REPAIR_UNDER_EXPLICIT_SINGLE_PR_EXCEPTION",
+  "pr": 790,
+  "url": "https://github.com/Kgray44/treasurehuntSoT/pull/790",
+  "acceptedMain": "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+  "reviewedCandidate": "e1b50367cb7ff5c97e2ab4b945c976f9b41d6c2f",
+  "tree": "54669bc7d6723bdb61067017d2b29844046d92f3",
+  "orderedParents": [
+    "408f37389e6dd358b1ab005d91f3f588405f61db",
+    "e1b50367cb7ff5c97e2ab4b945c976f9b41d6c2f"
+  ],
+  "mergedAt": "2026-10-22T12:27:05Z",
+  "humanException": {
+    "scope": "exact PR790 only",
+    "authorizationReceipt": "exception-790-human-authorization-and-preflight-20261022-1223.original.json",
+    "executionReceipt": "exception-790-confirmed-merge-90bff6ec.original.json",
+    "attempts": 1,
+    "retries": 0,
+    "permanentProtectionChange": false,
+    "statusRewrittenOrDeleted": false,
+    "expiredGrantExtended": false,
+    "otherPRException": false
+  },
+  "linuxTechnicalQualification": {
+    "run": 39726981190,
+    "attempt": 1,
+    "check": 119653023349,
+    "suite": 107664506445,
+    "app": 15368,
+    "tests": {
+      "pass": 859,
+      "fail": 0,
+      "skip": 0
+    },
+    "otherSteps": "typecheck; installed narrow lint; privacy scan; docs; nine feature tests PASS",
+    "coverage": "existing control-plane scope excludes ordinary rendered13 and broad Sounding Line lint",
+    "requiredStatusSatisfaction": false,
+    "ordinaryOriginalRun39726262997": "REMAINS_FAILED"
+  },
+  "actualLandedSmoke": {
+    "receipt": "expiry-routing-landed-90bff6ec-01.original.json",
+    "sha256": "83dda97ff1de487abe046ff87918a2a980ab6964cdd28077102f2c4e2d90154d",
+    "commands": 6,
+    "allPassed": true,
+    "unitCases": {
+      "pass": 6,
+      "fail": 0,
+      "skip": 0
+    },
+    "scope": "four unrelated routing cases; retained custody scope/expiry; original R3positive/three negatives; docs; feature sync/validation",
+    "source": "all per-check pre/post and final exact HEAD/tree/parents/clean snapshots; immutable registry/modules/workflows retained"
+  },
+  "independentLandedReview": {
+    "receipt": "independent-790-exception-landed-review-90bff6ec.original.json",
+    "bytes": 23646,
+    "sha256": "612a1526d615c69e54e6bf7af6d8073d5ba2243df13dcdc4c843962949180f4c",
+    "disposition": "PASS_LANDED_UNDER_EXPLICIT_ONE_TIME_EXCEPTION"
+  },
+  "sourceCustody": {
+    "localFrozenCandidateRefRetained": true,
+    "acceptedMergeRetainsCandidateAsParent": true,
+    "remoteCandidateRef404Observed": true,
+    "remoteDeletionActorOrCause": "UNVERIFIED"
+  },
+  "downstream": {
+    "reader788": "owned draft reconciliation onto accepted90bff underway; fresh source review, ordinary protected qualification, normal merge and actual landed proof required",
+    "consumerExecutionPerformedByMaintenance": false,
+    "consumerGrants": "UNCHANGED; no new capture/review/replay/retry/counter authority",
+    "productAcceptance": false
+  },
+  "at": "2026-10-22 12:38:51 UTC"
+}

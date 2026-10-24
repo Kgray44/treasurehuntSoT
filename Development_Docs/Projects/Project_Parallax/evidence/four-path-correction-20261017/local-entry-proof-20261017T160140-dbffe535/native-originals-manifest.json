@@ -1,0 +1,194 @@
+{
+  "kind": "NATIVE_LOCAL_FOCUSED_PROOF_ORIGINALS",
+  "candidate": "3dedbb9cd10e548d10d58bddef6d48c1823f54e5",
+  "tree": "447cd42aaa723daa0d58e45c52c5bb721526b209",
+  "finishedAt": "2026-10-17T16:02:55.195Z",
+  "exitCode": 0,
+  "sourceHeadUnchanged": true,
+  "workingTreeClean": true,
+  "files": [
+    {
+      "path": "run-artifacts/construction-corrected-reloaded-phone.png",
+      "bytes": 73249,
+      "sha256": "5e442f4b60e4d1f01639adc166f22aa2c8c3f2645e310faff514eee171117ac6"
+    },
+    {
+      "path": "run-artifacts/construction-scale-review-phone.png",
+      "bytes": 64546,
+      "sha256": "9d8c8024f4c5b6cf8cf648a94c898efe824c7254cf96c3b678267980e69d4aa4"
+    },
+    {
+      "path": "run-artifacts/construction-wall-and-scale-findings.png",
+      "bytes": 283894,
+      "sha256": "4ecd70eac8066fbb77fb8e6cca4bdecf5991b896541ab51b60afce216b21ced8"
+    },
+    {
+      "path": "run-artifacts/direct-clamp-held-preview.png",
+      "bytes": 397989,
+      "sha256": "1e2de682fddea6eca6d49155d458e8c25e62998f0911735fc16ccc505776381d"
+    },
+    {
+      "path": "run-artifacts/direct-clamped-release.png",
+      "bytes": 408988,
+      "sha256": "4a4d28b09d11cf5f8c989d84ff43288520628b79ffbea4a612ecf3dbd08eb366"
+    },
+    {
+      "path": "run-artifacts/direct-free-held-preview.png",
+      "bytes": 407161,
+      "sha256": "aca2c779ed1747463a75bc1947775fbc5b89484add60a6e2055e2feb8deea182"
+    },
+    {
+      "path": "run-artifacts/direct-free-release.png",
+      "bytes": 406652,
+      "sha256": "f5f28612677f369be862cce98fc9df99a75b700bf891c6165b95f467b9e3b072"
+    },
+    {
+      "path": "run-artifacts/direct-placement-proof.json",
+      "bytes": 1885,
+      "sha256": "708dbbdab2c7050d9e5a3c9c28b30811bde90fcee4930578c673bb1505b41289"
+    },
+    {
+      "path": "run-artifacts/direct-pointer-cancel-restored.png",
+      "bytes": 407492,
+      "sha256": "d017cde8c5b23712cda3b93d138274e11e7b242196d4407b496ce8a8d21f75f0"
+    },
+    {
+      "path": "run-artifacts/direct-viewport-selection.png",
+      "bytes": 407798,
+      "sha256": "747994d14e745f6b8d5c6322441cdb8236bc315cdf75e1d046b7e0d56401928c"
+    },
+    {
+      "path": "run-artifacts/exclusion-automatic.png",
+      "bytes": 343119,
+      "sha256": "718cfcc2991537cdde6ecfde3eb83d2b5a73d442ac500d54e2f454d539bbe21d"
+    },
+    {
+      "path": "run-artifacts/exclusion-deleted.png",
+      "bytes": 325136,
+      "sha256": "7bda070a9a149022e1f247eade1a00e5edb0f90bc62cc33182d8920f69bc0071"
+    },
+    {
+      "path": "run-artifacts/exclusion-edited.png",
+      "bytes": 327012,
+      "sha256": "da28eba521a3c48d37df63d4a4312ca74591f5a5e89b5daa4cbb3ac41563b9da"
+    },
+    {
+      "path": "run-artifacts/exclusion-light-reduced-motion.png",
+      "bytes": 345421,
+      "sha256": "f13c776e1f87de0f771f944d387f688d706d85e14017f5593f3f367c7dcd730d"
+    },
+    {
+      "path": "run-artifacts/exclusion-live-move.png",
+      "bytes": 325012,
+      "sha256": "57019a9dbeac74886a2bfae5bc8a32a3ba971ab2855054a95012760d0ebd36ec"
+    },
+    {
+      "path": "run-artifacts/exclusion-normal-scene.png",
+      "bytes": 340858,
+      "sha256": "d8557d7d0d8399f2cdf5a825a9e5ae6062f737e1d780b114a4a6cea9281a7ee8"
+    },
+    {
+      "path": "run-artifacts/exclusion-phone-edited.png",
+      "bytes": 93328,
+      "sha256": "92f26fb55b4787bed433ed604efb8455ec06630df8b7e5ab6e7d680ada983277"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "bytes": 590243,
+      "sha256": "9aec4089ade269f9d29bfcae53a110862eb7ecbf8865eff766f524419e55fde3"
+    },
+    {
+      "path": "run-artifacts/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "bytes": 524758,
+      "sha256": "e378114139395fe97ccfc44c2263f91f4570c21d411bc8e7314418e5f124097d"
+    },
+    {
+      "path": "run-artifacts/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "bytes": 823967,
+      "sha256": "22bc983ad19b4f83422a98d3a967d89328adc71677f39c754251d242511ff730"
+    },
+    {
+      "path": "run-artifacts/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-video.webm",
+      "bytes": 724944,
+      "sha256": "8ce3b3ec55f3adc2e39d133bcb44d52d482f4b37ac43031433a26e4716a0caf1"
+    },
+    {
+      "path": "run-artifacts/parametric-bound-rebuild-protected.png",
+      "bytes": 297247,
+      "sha256": "c187349becf39a9c00fc92ab9c08aabaf39b5650b9606907ce2be70eee70b0ef"
+    },
+    {
+      "path": "run-artifacts/parametric-bound-support-protected.png",
+      "bytes": 297161,
+      "sha256": "be13a6e19942b62fbd7ebf9746084e05e306f0d976dc13aa8f21fffecfd49cc5"
+    },
+    {
+      "path": "run-artifacts/parametric-known-measurement.png",
+      "bytes": 382644,
+      "sha256": "dcd3285d241b127cfd1383a9c2ff50d2e51fd7ffd823a397fcfc8acd1f20c01d"
+    },
+    {
+      "path": "run-artifacts/parametric-phone-feature.png",
+      "bytes": 92936,
+      "sha256": "5809ad971e5fe3ea9c4c75b1311798574bc2e674dabdb917146d138dc999d281"
+    },
+    {
+      "path": "run-artifacts/parametric-phone-reloaded.png",
+      "bytes": 94478,
+      "sha256": "0d9cb2fc1c0fcc56c5edf9f02e9e8c710cc923f43e1e4c649e19ae3ec9e88a59"
+    },
+    {
+      "path": "run-artifacts/parametric-rebuilt-sofa.png",
+      "bytes": 298318,
+      "sha256": "65e97032bd53f3c82f80b9c2f20a4b142f11259885fdba567912d0bfae1dac9b"
+    },
+    {
+      "path": "run-artifacts/parametric-restored-room.png",
+      "bytes": 253210,
+      "sha256": "2ee7b1654c496211baf200dd04859863ecb648df7bd40c83f78e7bacc7c8fea5"
+    },
+    {
+      "path": "run-artifacts/run.json",
+      "bytes": 1192,
+      "sha256": "fd4b1fadc2348b1f35de025d51e5af4203c423fec0776e671e88edbafef8bd18"
+    },
+    {
+      "path": "test-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/video.webm",
+      "bytes": 590243,
+      "sha256": "9aec4089ade269f9d29bfcae53a110862eb7ecbf8865eff766f524419e55fde3"
+    },
+    {
+      "path": "test-results/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium/video.webm",
+      "bytes": 524758,
+      "sha256": "e378114139395fe97ccfc44c2263f91f4570c21d411bc8e7314418e5f124097d"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/video.webm",
+      "bytes": 823967,
+      "sha256": "22bc983ad19b4f83422a98d3a967d89328adc71677f39c754251d242511ff730"
+    },
+    {
+      "path": "test-results/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium/video.webm",
+      "bytes": 724944,
+      "sha256": "8ce3b3ec55f3adc2e39d133bcb44d52d482f4b37ac43031433a26e4716a0caf1"
+    },
+    {
+      "path": "browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "ef0a22fd99570cff5d636d3a7ac9b4596dbd5be8de57fa46a0e1ab6bad6018d6"
+    },
+    {
+      "path": "browser-suite-profile.json",
+      "bytes": 560,
+      "sha256": "30ddb6becded5bd94f12acb5991b97ef90d38a81476d9088a471460ef730164d"
+    }
+  ],
+  "protectedQualification": false,
+  "crossdeckExecution": false,
+  "physicalAcceptance": false
+}

@@ -10,9 +10,193 @@ import {
 } from "@/parallax/spatial-assistant";
 import type { SpatialDraft } from "@/parallax/authoring";
 import { SpatialStudio } from "./SpatialStudio";
+import { createRoomEnvironment } from "@/parallax/environment-authoring";
+import { simulationEnvironments } from "@/parallax/studio-validation";
+import * as sceneChecks from "@/parallax/studio-validation";
 import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
+import { materializeSpatialVersion } from "@/parallax/publication";
+import {
+  buildSpatialContentCatalog,
+  filterSpatialContentCatalog,
+  type SpatialContentKind,
+} from "@/parallax/spatial-content-catalog";
+import { spatialElementCatalogEntries } from "@/parallax/spatial-element-catalog-provider";
 let calls: Record<string, unknown>[];
+
+it.each(["original asset", "retry fallback"])(
+  "hydrates version history when opening a different %s",
+  async (path) => {
+    const originalFetch = globalThis.fetch;
+    const source = createSpatialDraft("original-asset", "Original note");
+    source.library = { type: "ASSET", description: "Synthetic original" };
+    const version = materializeSpatialVersion({ ...source.content, id: "original-asset:v1", semanticVersion: "1.0.0" });
+    const indexed = {
+      id: source.content.definitionId,
+      revision: 3,
+      draft: source,
+      releases: [],
+      releasesState: "INDEX_ONLY",
+      usageCount: 1,
+      updatedAt: "2026-10-15T12:00:00.000Z",
+      releaseIndex: [
+        {
+          id: version.id,
+          semanticVersion: version.semanticVersion,
+          checksum: version.checksum,
+          createdAt: "2026-10-15T12:00:00.000Z",
+          notes: "Synthetic snapshot",
+          usageCount: 1,
+        },
+      ],
+    };
+    let fail = path === "retry fallback";
+    const exactReads: string[] = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url, options) => {
+        const parsed = new URL(String(url), "http://localhost");
+        if (!options?.method && parsed.searchParams.get("view") === "library-item") {
+          exactReads.push(parsed.searchParams.get("entryId")!);
+          return Response.json({
+            kind: "SPATIAL",
+            record: { ...indexed, releasesState: "LOADED", releases: [version] },
+          });
+        }
+        if (!options?.method && !parsed.searchParams.has("view")) {
+          if (fail) {
+            fail = false;
+            return Response.json({ error: "Synthetic bootstrap failure" }, { status: 503 });
+          }
+          const data = await (await originalFetch(url, options)).json();
+          data.items[0].draft.content.studio.assetInstances = [
+            {
+              id: "placed-copy",
+              definitionId: indexed.id,
+              versionId: version.id,
+              checksum: version.checksum,
+              entityIds: [data.items[0].draft.content.entities[0].id],
+            },
+          ];
+          data.items = path === "retry fallback" ? [indexed] : [...data.items, indexed];
+          return Response.json(data);
+        }
+        return originalFetch(url, options);
+      }),
+    );
+    render(<SpatialStudio definitionId={path === "retry fallback" ? "unavailable-scene" : "owned"} />);
+    if (path === "retry fallback") fireEvent.click(await screen.findByRole("button", { name: "Try again" }));
+    await screen.findByRole("heading", { name: "Parallax" });
+    fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
+    if (path === "original asset") {
+      fireEvent.click(screen.getByRole("button", { name: "Edit original asset" }));
+      await screen.findByTitle("Original note");
+      fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
+    }
+    fireEvent.click(screen.getByText("Library, reuse & publication", { selector: "summary" }));
+    expect(await screen.findByRole("button", { name: "v1.0.0 · 1 objects" })).toBeVisible();
+    expect(exactReads).toEqual(["saved:original-asset"]);
+    expect(calls.some((call) => call.action === "SAVE")).toBe(false);
+  },
+  30000,
+);
+
+function catalogRead(input: unknown, draft: SpatialDraft, revision = 1) {
+  const url = new URL(String(input), "http://localhost");
+  const record = { id: "owned", revision, draft, releases: [], usageCount: 0, updatedAt: "2026-10-15T00:00:00Z" };
+  if (url.searchParams.get("view") === "library-item") return Response.json({ kind: "SPATIAL", record });
+  if (url.searchParams.get("view") !== "library-catalog") return null;
+  const entries = buildSpatialContentCatalog([record], [], spatialElementCatalogEntries);
+  const matching = filterSpatialContentCatalog(entries, {
+    kind: url.searchParams.get("kind") as SpatialContentKind,
+    search: url.searchParams.get("search") ?? "",
+    origin: "ALL",
+    state: "ACTIVE",
+    sort: "NAME",
+  });
+  return Response.json({
+    items: matching.map(({ scene: _scene, environment: _environment, ...entry }) => {
+      void _scene;
+      void _environment;
+      return entry;
+    }),
+    total: matching.length,
+    nextCursor: null,
+    availableKinds: [...new Set(entries.map((entry) => entry.kind))],
+    availableOrigins: ["BUILT_IN", "MY_CREATIONS"],
+    availableCollections: [],
+  });
+}
+
+it("offers an explicit Environment copy before editing a pinned Scene room", async () => {
+  Object.defineProperties(HTMLDialogElement.prototype, {
+    showModal: {
+      configurable: true,
+      value() {
+        this.open = true;
+      },
+    },
+    close: {
+      configurable: true,
+      value() {
+        this.open = false;
+      },
+    },
+  });
+  const originalFetch = globalThis.fetch;
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (url, options) => {
+      const response = await originalFetch(url, options);
+      if (options?.method || new URL(String(url), "http://localhost").searchParams.has("view")) return response;
+      const data = await response.json();
+      const scene = data.items[0].draft as SpatialDraft;
+      scene.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+      scene.content.environment = {
+        environmentId: "released-room",
+        versionId: "released-room:v1",
+        revision: 1,
+        checksum: "a".repeat(64),
+      };
+      return Response.json(data);
+    }),
+  );
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByRole("button", { name: "Edit room features" }));
+  const dialog = await screen.findByRole("dialog");
+  expect(within(dialog).getByText(/This Scene keeps its released Environment unchanged/)).toBeVisible();
+  expect(within(dialog).getByRole("combobox", { name: "Type" })).toHaveValue("ENVIRONMENT");
+  expect(screen.queryByRole("button", { name: "Finish environment editing" })).toBeNull();
+  expect(calls.some((call) => call.action === "SAVE_AS" || call.action === "SAVE")).toBe(false);
+});
 const render = (ui: ReactElement) => renderUI(ui, { wrapper: AnimationProvider });
+
+it("returns from expanded Library to a staged surface placement and preserves browsing context", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  if (!screen.queryByRole("button", { name: "Expand Spatial Library" }))
+    fireEvent.click(screen.getByRole("button", { name: "Open Library" }));
+  const expand = await screen.findByRole("button", { name: "Expand Spatial Library" });
+  fireEvent.click(expand);
+  const library = screen.getByRole("dialog", { name: "Expanded Spatial Library" });
+  fireEvent.change(within(library).getByRole("searchbox", { name: "Search assets" }), {
+    target: { value: "Writing desk" },
+  });
+  fireEvent.click(await within(library).findByRole("button", { name: "Inspect Writing desk" }));
+  fireEvent.click(
+    within(within(library).getByLabelText("Writing desk details")).getByRole("button", { name: "Place in Scene" }),
+  );
+  expect(screen.queryByRole("dialog", { name: "Expanded Spatial Library" })).not.toBeInTheDocument();
+  const placement = screen.getByLabelText("Place Writing desk in Scene");
+  expect(within(placement).getByText(/Point to a clear floor surface/)).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Writing desk. Walnut writing desk" })).not.toBeInTheDocument();
+  fireEvent.click(within(placement).getByRole("button", { name: "Cancel placement" }));
+  expect(screen.queryByLabelText("Place Writing desk in Scene")).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Expand Spatial Library" }));
+  const reopened = screen.getByRole("dialog", { name: "Expanded Spatial Library" });
+  expect(within(reopened).getByRole("searchbox", { name: "Search assets" })).toHaveValue("Writing desk");
+  expect(within(reopened).getByLabelText("Writing desk details")).toBeVisible();
+});
 beforeEach(() => {
   window.history.replaceState(null, "", "/");
   calls = [];
@@ -28,6 +212,10 @@ beforeEach(() => {
   vi.stubGlobal(
     "fetch",
     vi.fn(async (_url, options) => {
+      if (!options?.method) {
+        const catalog = catalogRead(_url, draft);
+        if (catalog) return catalog;
+      }
       if (!options?.method)
         return new Response(
           JSON.stringify({
@@ -58,6 +246,7 @@ beforeEach(() => {
         );
       const body = JSON.parse(options.body);
       calls.push(body);
+      if (body.action === "ENVIRONMENT_CATALOG") return Response.json({ catalog: [] });
       return new Response(JSON.stringify(body.action === "SAVE" ? { revision: 2 } : { findings: [] }));
     }),
   );
@@ -65,6 +254,8 @@ beforeEach(() => {
 function assistantHTTPFixture(defer = false, create = false) {
   let saved = createSpatialDraft("owned"),
     revision = 1;
+  saved.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+  saved = draftSchema.parse(saved);
   let release!: () => void;
   const gate = new Promise<void>((resolve) => {
     release = resolve;
@@ -83,6 +274,10 @@ function assistantHTTPFixture(defer = false, create = false) {
   vi.stubGlobal(
     "fetch",
     vi.fn(async (_url, options) => {
+      if (!options?.method) {
+        const catalog = catalogRead(_url, saved, revision);
+        if (catalog) return catalog;
+      }
       if (!options?.method)
         return new Response(
           JSON.stringify({
@@ -99,6 +294,7 @@ function assistantHTTPFixture(defer = false, create = false) {
         );
       const body = JSON.parse(options.body);
       calls.push(body);
+      if (body.action === "ENVIRONMENT_CATALOG") return Response.json({ catalog: [] });
       if (body.action === "SAVE") {
         if (body.revision !== revision)
           return new Response(JSON.stringify({ error: "Synthetic stale revision", code: "DRAFT_CONFLICT" }), {
@@ -142,6 +338,16 @@ function assistantHTTPFixture(defer = false, create = false) {
                   explanation: "Add a supported readable note.",
                   dependsOn: [],
                 },
+                {
+                  id: "room-placement",
+                  type: "ROOM_PLACEMENT",
+                  entityId: "proposed-note",
+                  classification: "DESK",
+                  targetFeatureId: "reference-desk",
+                  nearFeatureId: null,
+                  explanation: "Use a clear fitting area on the authored desk.",
+                  dependsOn: ["create-note"],
+                },
               ]
             : [
                 {
@@ -176,10 +382,12 @@ afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
 });
+// Full workstation integration cases include multiple renders and async edit acknowledgements.
+// Actual user-facing latency remains qualified by the production browser contracts.
 it("opens Guided mode with canvas/library/timeline and keeps mode changes out of stored truth", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" blockId="block" />);
-  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  expect(screen.getByRole("region", { name: "Spatial canvas" })).toBeVisible();
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  expect(screen.getByLabelText("Spatial canvas", { exact: true })).toBeVisible();
   expect(screen.getByRole("region", { name: "Bottom workstation dock" })).toBeVisible();
   fireEvent.click(screen.getByRole("tab", { name: "Timeline" }));
   expect(screen.getByRole("tabpanel", { name: "Timeline" })).toBeVisible();
@@ -190,61 +398,128 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
   fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "GUIDED" } });
   expect(screen.queryByLabelText("Position x")).toBeNull();
   expect(screen.getByText(/AI unavailable · phrase rules/)).toBeVisible();
-  fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
-  expect(screen.getByRole("region", { name: "Spatial Assistant" })).toBeVisible();
+  fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
+  await screen.findByLabelText("Spatial Assistant", { exact: true });
+  expect(screen.getByLabelText("Spatial Assistant", { exact: true })).toBeVisible();
   expect(
-    within(screen.getByRole("region", { name: "Spatial Assistant" })).getByText(/Spatial Assistant is unavailable/),
+    within(await screen.findByLabelText("Spatial Assistant", { exact: true })).getByText(
+      /Spatial Assistant is unavailable/,
+    ),
   ).toBeVisible();
-  fireEvent.click(screen.getByText("Guided placement controls"));
-  expect(screen.getByRole("region", { name: "Contextual spatial assistance" })).toBeVisible();
+  expect(screen.queryByText("Guided placement controls")).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Edit room features" })).toBeVisible();
+}, 30000);
+it("keeps the docked assistance return action visibly named", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
+  const workspace = within(screen.getByRole("region", { name: "Ask Parallax workspace" }));
+  const dock = workspace.getByRole("button", { name: "Dock assistance" });
+  expect(dock).toHaveTextContent("Dock assistance");
+  fireEvent.click(dock);
+  const float = workspace.getByRole("button", { name: "Float assistance" });
+  expect(float).toBeVisible();
+  expect(float).toHaveTextContent("Float assistance");
+  fireEvent.click(float);
+  expect(workspace.getByRole("button", { name: "Dock assistance" })).toBeVisible();
 });
 it("records manual transforms as reversible edits and serializes autosave", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" />);
-  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  expect(screen.getByRole("heading", { name: "Shape & orientation" })).toBeVisible();
   fireEvent.change(screen.getByLabelText("Object width in meters"), { target: { value: "0.6" } });
-  fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
-  await waitFor(() => expect(calls.some((c) => c.action === "SAVE")).toBe(true));
+  fireEvent.blur(screen.getByLabelText("Object width in meters"));
+  await waitFor(() => expect(calls.some((c) => c.action === "SAVE")).toBe(true), { timeout: 3000 });
   expect(
     (calls.find((c) => c.action === "SAVE")!.draft as ReturnType<typeof createSpatialDraft>).content.entities[0]
       .widthMeters,
   ).toBe(0.6);
-  fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+  fireEvent.click(screen.getByLabelText("Undo", { selector: "button", exact: true }));
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.5);
-  fireEvent.click(screen.getByRole("button", { name: "Redo" }));
+  fireEvent.click(screen.getByLabelText("Redo", { selector: "button", exact: true }));
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.6);
-});
+}, 30000);
+it("keeps selection and scene truth while the three Inspector destinations change", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  const inspector = within(screen.getByRole("complementary", { name: "Spatial inspector" }));
+  const rail = within(screen.getByRole("navigation", { name: "Inspector dock" }));
+  expect(inspector.getByRole("heading", { name: "Properties" })).toBeVisible();
+  expect(rail.getByRole("button", { name: "Open object properties" })).toHaveAttribute("aria-pressed", "true");
+  fireEvent.click(rail.getByRole("button", { name: "Open spatial context" }));
+  expect(inspector.getByRole("heading", { name: "Spatial context" })).toBeVisible();
+  expect(inspector.getByRole("heading", { name: "Placement & relationships" })).toBeVisible();
+  fireEvent.click(rail.getByRole("button", { name: "Open scene settings" }));
+  expect(inspector.getByRole("heading", { name: "Scene settings" })).toBeVisible();
+  expect(inspector.getByRole("heading", { name: "Guided fallback" })).toBeVisible();
+  const library = inspector.getByRole("region", { name: "Library, reuse & publication" });
+  const disclosure = within(library).getByRole("button", { name: "Library, reuse & publication" });
+  expect(disclosure.tagName).toBe("SUMMARY");
+  disclosure.focus();
+  expect(disclosure).toHaveFocus();
+  expect(library.querySelector("details")).not.toHaveAttribute("open");
+  expect(inspector.getByRole("textbox", { name: "Experience title" })).toBeVisible();
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  expect(library.querySelector("details")).toHaveAttribute("open");
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "ENGINEERING" } });
+  expect(inspector.getByText(/Working definition: owned/)).toBeVisible();
+  fireEvent.click(rail.getByRole("button", { name: "Open object properties" }));
+  expect(inspector.getByLabelText("Object width in meters")).toHaveValue(0.5);
+  expect(calls.filter((call) => call.action !== "ENVIRONMENT_CATALOG")).toEqual([]);
+}, 30000);
+it("previews intermediate scale samples and commits one reversible edit on release", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  const slider = screen.getByRole("slider", { name: "Object scale" });
+  const undoButton = screen.getByRole("button", { name: "Undo" });
+  expect(undoButton).toBeDisabled();
+  fireEvent.pointerDown(slider);
+  fireEvent.change(slider, { target: { value: "1.5" } });
+  fireEvent.change(slider, { target: { value: "1.75" } });
+  expect(screen.getByLabelText("Object scale numeric value")).toHaveValue(1.75);
+  expect(undoButton).toBeDisabled();
+  fireEvent.pointerUp(slider);
+  expect(undoButton).toBeEnabled();
+  fireEvent.click(undoButton);
+  expect(slider).toHaveValue("1");
+  expect(undoButton).toBeDisabled();
+}, 30000);
 it("keeps layout switches and panel preferences out of canonical edits and retains tab state", async () => {
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByRole("button", { name: "Open asset Library" }));
-  fireEvent.change(screen.getByLabelText("Search spatial assets"), { target: { value: "Letter" } });
-  fireEvent.click(screen.getByRole("tab", { name: "Hierarchy" }));
-  fireEvent.click(screen.getByRole("tab", { name: "Library" }));
-  expect(screen.getByLabelText("Search spatial assets")).toHaveValue("Letter");
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
+  fireEvent.change(screen.getByLabelText("Search assets"), { target: { value: "Letter" } });
+  fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
+  fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
+  expect(screen.getByLabelText("Search assets")).toHaveValue("Letter");
+  fireEvent.click(screen.getByRole("tab", { name: "Environments" }));
+  fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
+  fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
+  expect(screen.getByRole("tab", { name: "Environments" })).toHaveAttribute("aria-selected", "true");
   fireEvent.change(screen.getByLabelText("Workspace layout"), { target: { value: "FOCUS" } });
   expect(screen.queryByRole("complementary", { name: "Spatial Library" })).toBeNull();
   expect(screen.queryByRole("complementary", { name: "Spatial inspector" })).toBeNull();
   fireEvent.change(screen.getByLabelText("Workspace layout"), { target: { value: "BEHAVIOR" } });
   expect(screen.getByRole("tabpanel", { name: "Timeline" })).toBeVisible();
-  fireEvent.click(screen.getByRole("button", { name: "Reset Workspace Layout" }));
+  fireEvent.click(screen.getByLabelText("Reset Workspace Layout", { selector: "button", exact: true }));
   expect(screen.getByLabelText("Workspace layout")).toHaveValue("SPATIAL");
-  expect(calls).toEqual([]);
+  expect(calls.filter((call) => call.action !== "ENVIRONMENT_CATALOG")).toEqual([]);
   await waitFor(() =>
     expect(localStorage.getItem("parallax.workspace.v1:synthetic-creator")).toContain('"preset":"SPATIAL"'),
   );
-});
+}, 30000);
 it("presents truthful fallback and all ten synthetic environment results", async () => {
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.change(screen.getByLabelText("Preview", { exact: true }), { target: { value: "FALLBACK" } });
   expect(
-    within(screen.getByRole("region", { name: "Spatial canvas" })).getByText(/Read and inspect the same clue here/),
+    within(screen.getByLabelText("Spatial canvas", { exact: true })).getByText(/Read and inspect the same clue here/),
   ).toBeVisible();
-  fireEvent.click(screen.getByRole("button", { name: "Test in 10 environments" }));
+  fireEvent.click(screen.getByText("Test in 10 environments", { selector: "button", exact: true }));
   expect(screen.getByText(/Synthetic previews and physical\/owner acceptance/)).toBeVisible();
   expect(screen.getByRole("button", { name: /Outdoor trail.*GUIDED FALLBACK/ })).toBeVisible();
-});
+}, 30000);
 it("keeps a newly saved scene in the URL without losing Chronicle, Passage or history state", async () => {
   window.history.replaceState(
     { syntheticNavigation: "preserved" },
@@ -252,9 +527,8 @@ it("keeps a newly saved scene in the URL without losing Chronicle, Passage or hi
     "/studio/parallax?chronicle=chronicle&block=block#inspector",
   );
   render(<SpatialStudio chronicleId="chronicle" blockId="block" />);
-  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
-  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true));
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true), { timeout: 3000 });
   const saved = calls.find((call) => call.action === "SAVE")!;
   const savedDraft = draftSchema.parse(saved.draft);
   await waitFor(() =>
@@ -265,20 +539,20 @@ it("keeps a newly saved scene in the URL without losing Chronicle, Passage or hi
   expect(url.searchParams.get("block")).toBe("block");
   expect(url.hash).toBe("#inspector");
   expect(window.history.state).toEqual({ syntheticNavigation: "preserved" });
-});
+}, 30000);
 it("mounts the real port, previews without saving, installs one acknowledged history change and avoids duplicate autosave", async () => {
   const fixture = assistantHTTPFixture();
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
-  fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
-  const panel = within(screen.getByRole("region", { name: "Spatial Assistant" }));
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  expect(screen.getByRole("heading", { name: "Shape & orientation" })).toBeVisible();
+  fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
+  const panel = within(await screen.findByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), {
     target: { value: "Make the map smaller without changing its clue." },
   });
-  expect(calls).toEqual([]);
+  expect(calls.filter((call) => call.action !== "ENVIRONMENT_CATALOG")).toEqual([]);
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
-  await panel.findByRole("button", { name: "Apply all changes" });
+  await panel.findByRole("button", { name: "Apply all changes" }, { timeout: 5000 });
   expect(calls.filter((call) => call.action === "AI")).toHaveLength(1);
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.5);
   fireEvent.click(panel.getByRole("button", { name: "Proposed scene" }));
@@ -286,7 +560,7 @@ it("mounts the real port, previews without saving, installs one acknowledged his
   expect(fixture.readSaved().revision).toBe(1);
   expect(calls.some((call) => call.action === "SAVE" || call.action === "ASSISTANT_APPLY")).toBe(false);
   fireEvent.click(panel.getByRole("button", { name: "Apply all changes" }));
-  await panel.findByText(/Reviewed changes are saved/);
+  await panel.findByText(/Reviewed changes are saved/, {}, { timeout: 5000 });
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.3);
   expect(fixture.readSaved().revision).toBe(2);
   expect(calls.filter((call) => call.action === "ASSISTANT_APPLY")).toHaveLength(1);
@@ -297,19 +571,20 @@ it("mounts the real port, previews without saving, installs one acknowledged his
   fireEvent.click(panel.getByRole("button", { name: "Redo" }));
   await waitFor(() => expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.3));
   expect(calls.filter((call) => call.action === "ASSISTANT_APPLY")).toHaveLength(1);
-});
+}, 30000);
 it("rejects a mounted late response after a manual edit and byte-identical undo", async () => {
   const fixture = assistantHTTPFixture(true);
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
-  fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
-  const panel = within(screen.getByRole("region", { name: "Spatial Assistant" }));
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  expect(screen.getByRole("heading", { name: "Shape & orientation" })).toBeVisible();
+  fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
+  const panel = within(await screen.findByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Make the map smaller." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await waitFor(() => expect(calls.some((call) => call.action === "AI")).toBe(true));
   const submitted = calls.find((call) => call.action === "AI")!;
   fireEvent.change(screen.getByLabelText("Object width in meters"), { target: { value: "0.6" } });
+  fireEvent.blur(screen.getByLabelText("Object width in meters"));
   fireEvent.click(screen.getAllByRole("button", { name: "Undo" })[0]);
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.5);
   fixture.release();
@@ -317,33 +592,313 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
   expect(panel.queryByRole("button", { name: "Apply all changes" })).toBeNull();
   expect(calls.some((call) => call.action === "ASSISTANT_APPLY")).toBe(false);
   expect(fixture.readSaved().draft).toEqual(submitted.draft as SpatialDraft);
+  fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Make the map smaller." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
-  await panel.findByRole("button", { name: "Apply all changes" });
+  await panel.findByRole("button", { name: "Apply all changes" }, { timeout: 5000 });
   expect(Number(calls.filter((call) => call.action === "AI")[1].editorGeneration)).toBeGreaterThan(
     Number(submitted.editorGeneration),
   );
-});
+}, 30000);
 it("locates a proposed object in the real preview without erasing it on selection", async () => {
   const fixture = assistantHTTPFixture(false, true);
   render(<SpatialStudio definitionId="owned" />);
-  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
-  const panel = within(screen.getByRole("region", { name: "Spatial Assistant" }));
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
+  const panel = within(await screen.findByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Add a readable note." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
-  await panel.findByRole("button", { name: "Apply all changes" });
-  fireEvent.click(panel.getByRole("button", { name: "Locate object" }));
-  const canvas = within(screen.getByRole("region", { name: "Spatial canvas" }));
+  await panel.findByRole("button", { name: "Apply all changes" }, { timeout: 5000 });
+  fireEvent.click(panel.getAllByRole("button", { name: "Locate object" })[0]);
+  const canvas = within(screen.getByLabelText("Spatial canvas", { exact: true }));
   await canvas.findByRole("button", { name: /^Proposed note\./ });
   expect(fixture.readSaved().draft.content.entities).toHaveLength(1);
-  expect(screen.getByText(/Review placement preview/)).toBeVisible();
+  expect(screen.getByRole("button", { name: "Review placement preview" })).toBeVisible();
   fireEvent.click(panel.getByRole("button", { name: "View canvas" }));
-  await waitFor(() => expect(screen.getByRole("button", { name: /Ask Parallax/ })).toHaveFocus());
+  await waitFor(() => expect(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true })).toHaveFocus());
   expect(screen.queryByRole("region", { name: "Spatial Assistant" })).not.toBeInTheDocument();
   expect(canvas.getByRole("button", { name: /^Proposed note\./ })).toBeVisible();
-  fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
+  fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
   fireEvent.click(panel.getByRole("button", { name: "Apply all changes" }));
-  await panel.findByText(/Reviewed changes are saved/);
+  await panel.findByText(/Reviewed changes are saved/, {}, { timeout: 5000 });
   expect(fixture.readSaved().draft.content.entities).toHaveLength(2);
   expect(screen.getByText(/Reviewed Assistant changes saved/)).toBeVisible();
-});
+}, 30000);
+it("keeps graph rows asset-only with one duplication and lock toolbar", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
+  const graph = screen.getByLabelText("Scene graph", { exact: true });
+  const rows = graph.querySelectorAll("li");
+  expect(rows).toHaveLength(1);
+  expect(within(rows[0]).getAllByRole("button")).toHaveLength(1);
+  fireEvent.click(within(rows[0]).getByRole("button"));
+  const toolbar = within(graph).getByRole("toolbar", { name: "Scene graph object actions" });
+  expect(within(toolbar).getByLabelText("Remove object", { exact: true })).toBeDisabled();
+  fireEvent.click(within(toolbar).getByLabelText("Duplicate object", { exact: true }));
+  expect(graph.querySelectorAll("li")).toHaveLength(2);
+  fireEvent.click(within(toolbar).getByLabelText("Lock object", { exact: true }));
+  expect(within(toolbar).getByLabelText("Duplicate object", { exact: true })).toBeDisabled();
+  expect(screen.getByLabelText("Accessible description")).toBeDisabled();
+  fireEvent.click(within(toolbar).getByLabelText("Unlock object", { exact: true }));
+  expect(within(toolbar).getByLabelText("Duplicate object", { exact: true })).toBeEnabled();
+  expect(screen.getByLabelText("Accessible description")).toBeEnabled();
+}, 30000);
+
+it("restores focus and history after graph keyboard hide and toolbar removal", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
+  const undo = screen.getByLabelText("Undo", { selector: "button", exact: true });
+  const graph = screen.getByLabelText("Scene graph", { exact: true });
+  fireEvent.click(within(graph.querySelectorAll("li")[0]).getByRole("button"));
+  const toolbar = within(graph).getByRole("toolbar", { name: "Scene graph object actions" });
+  fireEvent.click(within(toolbar).getByLabelText("Duplicate object", { exact: true }));
+  const row = within(graph.querySelectorAll("li")[1]).getByRole("button");
+  row.focus();
+  fireEvent.keyDown(row, { key: "F10", shiftKey: true });
+  const menu = screen.getByLabelText("Desk Map copy actions", { exact: true });
+  expect(menu).toBeVisible();
+  fireEvent.click(within(menu).getByText("Hide object", { exact: true }));
+  expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+  expect(row).toHaveFocus();
+  expect(within(toolbar).getByLabelText("Show object", { exact: true })).toBeEnabled();
+  fireEvent.click(undo);
+  expect(within(toolbar).getByLabelText("Hide object", { exact: true })).toBeEnabled();
+  fireEvent.click(within(toolbar).getByLabelText("Remove object", { exact: true }));
+  expect(graph.querySelectorAll("li")).toHaveLength(1);
+  fireEvent.click(undo);
+  expect(graph.querySelectorAll("li")).toHaveLength(2);
+}, 30000);
+
+it("flushes edits before Drydock validation and keeps the completed feedback", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.change(screen.getByLabelText("Object name"), { target: { value: "Reviewed map" } });
+  fireEvent.click(screen.getByText("Scene actions", { exact: true }));
+  fireEvent.click(screen.getByText("Validate in Drydock", { selector: "button", exact: true }));
+  await screen.findByText(/Drydock spatial checks complete/);
+  expect(
+    calls.filter((call) => call.action === "SAVE" || call.action === "VALIDATE").map((call) => call.action),
+  ).toEqual(["SAVE", "VALIDATE"]);
+  expect((calls.find((call) => call.action === "VALIDATE")!.draft as SpatialDraft).content.entities[0].name).toBe(
+    "Reviewed map",
+  );
+}, 30000);
+
+it("renames a graph asset with F2 as one undoable edit and cancels with Escape", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Open Scene Hierarchy", { selector: "button", exact: true }));
+  const graph = screen.getByLabelText("Scene graph", { exact: true });
+  const row = within(graph.querySelector("li")!).getByRole("button");
+  fireEvent.keyDown(row, { key: "F2" });
+  const input = within(graph).getByRole("textbox", { name: "Rename Desk Map" });
+  fireEvent.change(input, { target: { value: "North clue" } });
+  fireEvent.keyDown(input, { key: "Enter" });
+  expect(within(graph).getByText("North clue")).toBeVisible();
+  fireEvent.click(screen.getByLabelText("Undo", { selector: "button", exact: true }));
+  expect(within(graph).getByText("Desk Map", { exact: true })).toBeVisible();
+  fireEvent.keyDown(within(graph.querySelector("li")!).getByRole("button"), { key: "F2" });
+  fireEvent.change(within(graph).getByRole("textbox", { name: "Rename Desk Map" }), { target: { value: "Discarded" } });
+  fireEvent.keyDown(within(graph).getByRole("textbox", { name: "Rename Desk Map" }), { key: "Escape" });
+  expect(within(graph).getByText("Desk Map", { exact: true })).toBeVisible();
+}, 30000);
+
+it("does not rerun the ten-room diagnostic preview when changing workstation controls", async () => {
+  const simulate = vi.spyOn(sceneChecks, "simulateSpatialEnvironments");
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  const initial = simulate.mock.calls.length;
+  fireEvent.click(screen.getByRole("tab", { name: "Diagnostics" }));
+  expect(simulate.mock.calls.length).toBe(initial + 1);
+  fireEvent.click(screen.getByRole("tab", { name: "Timeline" }));
+  fireEvent.change(screen.getByRole("combobox", { name: "Authoring mode" }), {
+    target: { value: "ENGINEERING" },
+  });
+  fireEvent.click(screen.getByRole("tab", { name: "Simulation" }));
+  expect(simulate.mock.calls.length).toBe(initial + 1);
+  simulate.mockRestore();
+}, 30000);
+
+it("adds a Library exclusion tool to the visible environment and selects its shared editing controls", async () => {
+  HTMLElement.prototype.scrollIntoView = vi.fn();
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByLabelText("Open Library", { selector: "button", exact: true }));
+  fireEvent.click(await screen.findByRole("button", { name: "Inspect Exclusion Zone" }));
+  fireEvent.click(screen.getByRole("button", { name: "Add to active Scene" }));
+  expect(screen.getByRole("button", { name: "Finish environment editing" })).toBeVisible();
+  const editor = screen.getByRole("region", { name: "Room feature editor" });
+  expect((within(editor).getByRole("combobox", { name: "Room feature" }) as HTMLSelectElement).value).toMatch(/^zone-/);
+  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true), { timeout: 3000 });
+  const saved = calls.find((call) => call.action === "SAVE")!.draft as SpatialDraft;
+  expect(saved.content.studio!.environment!.features.some((f) => f.classification === "EXCLUSION_ZONE")).toBe(true);
+  expect(saved.content.entities).toHaveLength(1);
+}, 30000);
+
+it("saves a reusable definition and places its immutable copy while preserving the source Scene", async () => {
+  const { createReusableSpatialAsset, insertReusableSpatialAsset } = await import("@/parallax/reusable-assets");
+  const name = "Reusable review clue DESKTOP NORMAL";
+  let scene = createSpatialDraft("owned", "Desk Map", "chronicle");
+  scene.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+  scene = draftSchema.parse(scene);
+  const originalScene = structuredClone(scene);
+  let revision = 1;
+  const records: import("@/parallax/library-service").SpatialLibraryRecord[] = [
+    {
+      id: "owned",
+      revision,
+      draft: scene,
+      releases: [],
+      usageCount: 0,
+      updatedAt: "2026-10-24T00:00:00.000Z",
+    },
+  ];
+  const originalFetch = globalThis.fetch;
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input, options) => {
+      const url = new URL(String(input), "http://localhost");
+      if (url.pathname !== "/api/studio/parallax") return originalFetch(input, options);
+      if (!options?.method) {
+        if (url.searchParams.get("view") === "library-item") {
+          const id = (url.searchParams.get("entryId") ?? "").replace(/^saved:/, "");
+          const record = records.find((entry) => entry.id === id);
+          if (!record) return Response.json({ error: "Synthetic missing definition" }, { status: 404 });
+          return Response.json({ kind: "SPATIAL", record });
+        }
+        if (url.searchParams.get("view") === "library-catalog") {
+          const catalog = buildSpatialContentCatalog(records, [], spatialElementCatalogEntries);
+          const matching = filterSpatialContentCatalog(catalog, {
+            kind: url.searchParams.get("kind") as SpatialContentKind,
+            search: url.searchParams.get("search") ?? "",
+            origin: "ALL",
+            state: "ACTIVE",
+            sort: "NAME",
+          });
+          return Response.json({
+            items: matching.map(({ scene: _scene, environment: _environment, ...entry }) => {
+              void _scene;
+              void _environment;
+              return entry;
+            }),
+            total: matching.length,
+            nextCursor: null,
+            availableKinds: [...new Set(catalog.map((entry) => entry.kind))],
+            availableOrigins: ["BUILT_IN", "MY_CREATIONS"],
+            availableCollections: [],
+          });
+        }
+        const bootstrap = await (await originalFetch(input, options)).json();
+        return Response.json({ ...bootstrap, items: records });
+      }
+      const body = JSON.parse(String(options.body));
+      calls.push(structuredClone(body));
+      if (body.action === "ENVIRONMENT_CATALOG") return Response.json({ catalog: [] });
+      if (body.action === "SAVE") {
+        if (body.revision !== revision)
+          return Response.json({ error: "Synthetic stale revision", code: "DRAFT_CONFLICT" }, { status: 409 });
+        scene = draftSchema.parse(body.draft);
+        revision += 1;
+        records[0] = { ...records[0], draft: scene, revision };
+        return Response.json({ revision });
+      }
+      if (body.action === "ASSET_SAVE") {
+        expect(body.revision).toBe(revision);
+        const asset = createReusableSpatialAsset(
+          draftSchema.parse(body.draft),
+          body.rootId,
+          body.operation.newId,
+          body.metadata,
+          simulationEnvironments[0],
+        );
+        const release = materializeSpatialVersion({
+          ...asset.content,
+          id: `${asset.content.definitionId}:v1`,
+          semanticVersion: "1.0.0",
+        });
+        records.push({
+          id: asset.content.definitionId,
+          revision: 1,
+          draft: asset,
+          releases: [release],
+          usageCount: 0,
+          updatedAt: "2026-10-24T00:00:00.000Z",
+          saveState: "SAVED",
+        });
+        return Response.json({ definitionId: asset.content.definitionId, versionId: release.id });
+      }
+      if (body.action === "ASSET_INSERT") {
+        const definition = records.find((entry) => entry.id === body.definitionId);
+        const release = definition?.releases.find((entry) => entry.id === body.versionId);
+        if (!release) return Response.json({ error: "Synthetic missing immutable release" }, { status: 404 });
+        expect(body.revision).toBe(revision);
+        return Response.json({
+          draft: insertReusableSpatialAsset(draftSchema.parse(body.draft), release, "synthetic-reusable-copy"),
+        });
+      }
+      throw new Error(`Unexpected integrated fixture action: ${String(body.action)}`);
+    }),
+  );
+
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
+  fireEvent.click(screen.getByRole("button", { name: "Library, reuse & publication" }));
+  const form = await screen.findByRole("form", { name: "Save reusable asset" });
+  fireEvent.change(within(form).getByRole("textbox", { name: "Asset name" }), { target: { value: name } });
+  fireEvent.click(within(form).getByRole("button", { name: "Save selected object as reusable asset" }));
+  await screen.findByText("Reusable asset definition and immutable version saved; source scene unchanged");
+  expect(scene).toEqual(originalScene);
+  const definitions = records.filter((entry) => entry.draft.library?.type === "ASSET");
+  expect(definitions).toHaveLength(1);
+  const definition = definitions[0];
+  expect(definition.id).not.toBe(originalScene.content.definitionId);
+  expect(definition.draft.content.title).toBe(name);
+  expect(definition.releases).toHaveLength(1);
+  const immutableDefinition = structuredClone(definition.draft);
+  const immutableRelease = structuredClone(definition.releases[0]);
+  expect(immutableRelease.definitionId).toBe(definition.id);
+
+  fireEvent.click(screen.getByRole("button", { name: "Expand Spatial Library" }));
+  const expanded = await screen.findByRole("dialog", { name: "Expanded Spatial Library" });
+  const library = within(expanded);
+  const scenes = library.getByRole("tab", { name: "Scenes" });
+  expect(scenes).toHaveAttribute("aria-selected", "true");
+  scenes.focus();
+  fireEvent.keyDown(scenes, { key: "Home" });
+  const assets = library.getByRole("tab", { name: "Assets" });
+  expect(assets).toHaveFocus();
+  expect(assets).toHaveAttribute("aria-selected", "true");
+  fireEvent.click(assets);
+  fireEvent.change(library.getByRole("searchbox", { name: "Search assets" }), { target: { value: name } });
+  fireEvent.click(await library.findByRole("button", { name: `Inspect ${name}` }));
+  const details = await library.findByRole("complementary", { name: `${name} details` });
+  expect(details).toHaveTextContent("Private Library");
+  fireEvent.click(within(details).getByRole("button", { name: "Place in Scene" }));
+  await screen.findByRole("button", { name: "Cancel placement" });
+  expect(scene).toEqual(originalScene);
+  expect(calls.filter((call) => call.action === "ASSET_INSERT")).toHaveLength(0);
+
+  fireEvent.click(screen.getByRole("button", { name: "Floor" }));
+  await screen.findByText("Independent released copy added");
+  await waitFor(() => expect(scene.content.studio?.assetInstances).toHaveLength(1));
+  expect(scene.content.definitionId).toBe(originalScene.content.definitionId);
+  const instance = scene.content.studio!.assetInstances![0];
+  expect(instance.definitionId).toBe(definition.id);
+  expect(instance.versionId).toBe(immutableRelease.id);
+  expect(instance.checksum).toBe(immutableRelease.checksum);
+  expect(instance.entityIds).toHaveLength(immutableRelease.entities.length);
+  expect(scene.content.entities).toHaveLength(originalScene.content.entities.length + instance.entityIds.length);
+  for (const entity of originalScene.content.entities)
+    expect(scene.content.entities.find((current) => current.id === entity.id)).toEqual(entity);
+  const definitionEntities = new Set(immutableDefinition.content.entities.map((entity) => entity.id));
+  for (const id of instance.entityIds) {
+    expect(definitionEntities.has(id)).toBe(false);
+    expect(scene.content.entities.some((entity) => entity.id === id)).toBe(true);
+  }
+  expect(definition.draft).toEqual(immutableDefinition);
+  expect(definition.releases).toEqual([immutableRelease]);
+  expect(calls.filter((call) => call.action === "ASSET_SAVE")).toHaveLength(1);
+  expect(calls.filter((call) => call.action === "ASSET_INSERT")).toHaveLength(1);
+}, 30000);

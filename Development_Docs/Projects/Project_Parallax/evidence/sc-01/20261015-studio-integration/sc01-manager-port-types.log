@@ -1,0 +1,6 @@
+src/components/studio/parallax/SceneManager.test.tsx(138,51): error TS2493: Tuple type '[]' of length '0' has no element at index '0'.
+src/components/studio/parallax/SceneManager.test.tsx(139,10): error TS18048: 'created' is possibly 'undefined'.
+src/components/studio/parallax/SceneManager.test.tsx(140,10): error TS18048: 'created' is possibly 'undefined'.
+src/components/studio/parallax/SceneManager.test.tsx(141,10): error TS18048: 'created' is possibly 'undefined'.
+src/parallax/scene-environment-authoring.test.ts(121,35): error TS2339: Property 'alignment' does not exist on type '{ id: string; kind: "LOCAL_WORLD"; frameId: string; transform: { position: { x: number; y: number; z: number; }; rotation: { x: number; y: number; z: number; w: number; }; scale: number; }; } | { id: string; kind: "SURFACE_RELATIVE"; frameId: string; alignment: "HORIZONTAL" | "VERTICAL"; transform: { ...; }; } | { ....'.
+  Property 'alignment' does not exist on type '{ id: string; kind: "LOCAL_WORLD"; frameId: string; transform: { position: { x: number; y: number; z: number; }; rotation: { x: number; y: number; z: number; w: number; }; scale: number; }; }'.

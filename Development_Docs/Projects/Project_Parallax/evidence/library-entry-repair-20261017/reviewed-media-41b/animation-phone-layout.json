@@ -1,0 +1,27 @@
+{
+  "source": "41b066803cef62256bc37dde44f7e303579d7778",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "canvas": {
+    "x": 51,
+    "y": 65,
+    "width": 294,
+    "height": 370
+  },
+  "selectionCard": {
+    "x": 51,
+    "y": 438,
+    "width": 294,
+    "height": 48.5
+  },
+  "horizontalOverflow": 0,
+  "sceneScrollers": [
+    {
+      "height": 932,
+      "contentHeight": 932,
+      "scrollTop": 0
+    }
+  ]
+}

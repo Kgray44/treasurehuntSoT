@@ -1,0 +1,116 @@
+{
+  "qualification": false,
+  "inputs": [
+    {
+      "file": "src/components/player/journal/ChronicleJournalSession.tsx",
+      "sha256": "bde31636e6733be2f8e09e1461f982995fdee3e2b8d58abbecf0207a11a45074"
+    },
+    {
+      "file": "src/components/player/journal/ChronicleJournalSession.test.ts",
+      "sha256": "97d657b351c35cbd74c87fce6ce3e3a24dd1be7730b0cb6a0883ad246bf2f8e1"
+    },
+    {
+      "file": "src/components/player/parallax/ChronicleLens.tsx",
+      "sha256": "90f128e4e59654ec8b0f64913e5ff388790976109cceb314d8f539cb69266401"
+    },
+    {
+      "file": "src/components/player/parallax/ChronicleLens.module.css",
+      "sha256": "647c974d332a5ed7c3b2e4d25b002182e730cd00961de588363889d58c148334"
+    },
+    {
+      "file": "src/styles/chronicle.css",
+      "sha256": "6ec8f2b7665c55a92a7b302992a48d344ed3bf999d1eba4a7009c9e9f671769e"
+    },
+    {
+      "file": "tests/e2e/crossdeck-experience-refit.spec.ts",
+      "sha256": "399e882bf639631c70a2a2dc267bd24f4ed0b03ccfc49c764bdbfdd8e91f07ca"
+    },
+    {
+      "file": "tests/e2e/fixtures/journal-layout.ts",
+      "sha256": "c357f82adc02231936f180f72a03951bb973de514373821a00a1ebf068a49be2"
+    },
+    {
+      "file": "package-lock.json",
+      "sha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373"
+    },
+    {
+      "file": "vitest.config.ts",
+      "sha256": "2e5ebb6291f36060d58b2937c95e1a7155d60564f4935d3a72f2cf8de3f4bfbe"
+    }
+  ],
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "unit",
+        "exit": {
+          "code": 0,
+          "signal": null,
+          "guardianExitCode": 0
+        },
+        "cleanup": {
+          "status": "PASS",
+          "directExitObserved": true,
+          "exitCode": 0,
+          "signal": null,
+          "treeReaped": true,
+          "streamsClosed": true,
+          "escalated": true,
+          "payloadExitCode": 0,
+          "elapsedMs": 2,
+          "ownership": "WINDOWS_JOB_OBJECT"
+        },
+        "pass": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "type",
+        "exit": {
+          "code": 0,
+          "signal": null,
+          "guardianExitCode": 0
+        },
+        "cleanup": {
+          "status": "PASS",
+          "directExitObserved": true,
+          "exitCode": 0,
+          "signal": null,
+          "treeReaped": true,
+          "streamsClosed": true,
+          "escalated": false,
+          "payloadExitCode": 0,
+          "elapsedMs": 1,
+          "ownership": "WINDOWS_JOB_OBJECT"
+        },
+        "pass": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "name": "lint",
+        "exit": {
+          "code": 0,
+          "signal": null,
+          "guardianExitCode": 0
+        },
+        "cleanup": {
+          "status": "PASS",
+          "directExitObserved": true,
+          "exitCode": 0,
+          "signal": null,
+          "treeReaped": true,
+          "streamsClosed": true,
+          "escalated": true,
+          "payloadExitCode": 0,
+          "elapsedMs": 1,
+          "ownership": "WINDOWS_JOB_OBJECT"
+        },
+        "pass": true
+      }
+    }
+  ],
+  "completedAtUtc": "2026-10-22T06:35:01.911Z"
+}

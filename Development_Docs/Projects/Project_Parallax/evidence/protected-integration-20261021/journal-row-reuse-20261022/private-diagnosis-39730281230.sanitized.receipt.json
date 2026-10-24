@@ -1,0 +1,95 @@
+{
+  "kind": "STUDIO776_SANITIZED_DEVELOPMENT_DIAGNOSIS",
+  "status": "AUTHENTICATED_FIRST_FAILURE_CONFIRMED",
+  "at": "2026-10-22T06:14:30.212501+00:00",
+  "runId": 39730281230,
+  "runAttempt": 1,
+  "artifactId": 12405323679,
+  "candidate": "933102dbc2b5d3702814ab8cee4f5285e880dcfe",
+  "authority": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "selector": "tests/e2e/crossdeck-experience-refit.spec.ts",
+  "zipBytes": 41422654,
+  "zipSHA256": "5ad188f97eb9a6376fb8dfc7be917a852259ad724968dbc51504da03c26bf897",
+  "cipherSHA256": "77c1289fa2d40c60300a62e23f94f04f63f1f4e7357edab5f6c58d36e6460d92",
+  "membersVerified": 14,
+  "rawBytes": 30930317,
+  "providerAndSourceBindingVerified": true,
+  "reportBytes": 16258,
+  "reportSHA256": "b7bd50ffeae6528936b85f96563af36dabc4d3a6ab1e422e4d2ae1a66efa43a1",
+  "caseCounts": {
+    "passed": 1,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "retries": 0
+  },
+  "cases": [
+    {
+      "motion": "no-preference",
+      "status": "passed",
+      "durationMs": 35562
+    },
+    {
+      "motion": "reduce",
+      "status": "failed",
+      "durationMs": 50589
+    }
+  ],
+  "firstFailure": {
+    "assertion": "tests/e2e/fixtures/journal-layout.ts:225:3",
+    "callsite": "tests/e2e/crossdeck-experience-refit.spec.ts:598:7",
+    "motion": "reduce",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "pollTimeoutMs": 10000,
+    "reportedFailure": "Insufficient unobscured first-viewport reading area",
+    "finalSampleReadingArea": {
+      "left": 22.024765014648438,
+      "top": 512.4755859375,
+      "right": 367.9752655029297,
+      "bottom": 721.609375,
+      "width": 345.95050048828125,
+      "height": 209.1337890625
+    },
+    "minimumReadingArea": {
+      "width": 280,
+      "height": 211
+    },
+    "heightDeficit": 1.8662109375,
+    "headingIntersectionReportedInFinalSample": false,
+    "headingOrBandHitFailureReportedInFinalSample": false
+  },
+  "retainedProgress": {
+    "returnClickCompleted": "call@1147",
+    "chartsCloseCompleted": "call@1157",
+    "closeControlHiddenPassed": "call@1159",
+    "journalReadyPassed": "call@1163",
+    "scrollToZeroCompleted": "call@1167",
+    "bookClass": "page-flip-book reduced-page-book main-journal-book",
+    "shellMotionMode": "reduced",
+    "toolsAriaHidden": "false",
+    "workspaceAriaHidden": "false",
+    "phoneTraceSHA256": "5a1e7f049ec6fd0eb83d0d5a11ced7d5b6e7a1d8e4ae0edc185b0ab1ec44fe87"
+  },
+  "comparison": {
+    "priorRunId": 39721702762,
+    "priorReceiptSHA256": "6ee58f3fffb526da278056a76943b56bbeab2df567a15eed102da79e054d021a",
+    "specAndGeometryHelperUnchanged": true,
+    "normalPredicatePassed": "Proved by complete passing normal-motion test and unconditional call at line598",
+    "reducedPredicatePassed": false,
+    "reducedFailureMovedToLaterAssertion": false,
+    "difference": "Prior normal case reported heading obstruction and no qualifying band; current normal case passes, current reduced final sample reports only height shortfall"
+  },
+  "limits": [
+    "Underlying CSS/state cause remains unproved",
+    "Final sample is not proof of geometry throughout the whole polling interval",
+    "Full main/heading/tools/dock/leaf/book rectangles and numeric scroll offsets not established",
+    "Font-loading completion and settled-layout measurements not established",
+    "No raw private diagnostics, media, key material or credential locations disclosed"
+  ],
+  "originalsPreserved": true,
+  "newWorkflowOrQualification": false,
+  "sourceMutation": false
+}

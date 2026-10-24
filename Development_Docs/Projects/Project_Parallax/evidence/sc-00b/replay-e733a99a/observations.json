@@ -1,0 +1,172 @@
+{
+  "captures": [
+    {
+      "selection": "parchment",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/parchment-guided.png"
+    },
+    {
+      "selection": "parchment",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/parchment-standard.png"
+    },
+    {
+      "selection": "parchment",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/parchment-engineering.png"
+    },
+    {
+      "selection": "furniture",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/furniture-guided.png"
+    },
+    {
+      "selection": "furniture",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/furniture-standard.png"
+    },
+    {
+      "selection": "furniture",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/furniture-engineering.png"
+    },
+    {
+      "selection": "light",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/light-guided.png"
+    },
+    {
+      "selection": "light",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/light-standard.png"
+    },
+    {
+      "selection": "light",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/light-engineering.png"
+    },
+    {
+      "selection": "timeline-audio",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/timeline-audio-guided.png"
+    },
+    {
+      "selection": "timeline-audio",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/timeline-audio-standard.png"
+    },
+    {
+      "selection": "timeline-audio",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/timeline-audio-engineering.png"
+    },
+    {
+      "selection": "interaction-trigger",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/interaction-trigger-guided.png"
+    },
+    {
+      "selection": "interaction-trigger",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/interaction-trigger-standard.png"
+    },
+    {
+      "selection": "interaction-trigger",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/interaction-trigger-engineering.png"
+    },
+    {
+      "selection": "environment",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/environment-guided.png"
+    },
+    {
+      "selection": "environment",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/environment-standard.png"
+    },
+    {
+      "selection": "environment",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/environment-engineering.png"
+    },
+    {
+      "selection": "room-feature",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/room-feature-guided.png"
+    },
+    {
+      "selection": "room-feature",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/room-feature-standard.png"
+    },
+    {
+      "selection": "room-feature",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/room-feature-engineering.png"
+    },
+    {
+      "selection": "exclusion-zone",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/exclusion-zone-guided.png"
+    },
+    {
+      "selection": "exclusion-zone",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/exclusion-zone-standard.png"
+    },
+    {
+      "selection": "exclusion-zone",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/exclusion-zone-engineering.png"
+    },
+    {
+      "selection": "group",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/group-guided.png"
+    },
+    {
+      "selection": "group",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/group-standard.png"
+    },
+    {
+      "selection": "group",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/group-engineering.png"
+    },
+    {
+      "selection": "scene",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/scene-guided.png"
+    },
+    {
+      "selection": "scene",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/scene-standard.png"
+    },
+    {
+      "selection": "scene",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/scene-engineering.png"
+    },
+    {
+      "selection": "empty-selection",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/empty-selection-guided.png"
+    },
+    {
+      "selection": "empty-selection",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/empty-selection-standard.png"
+    },
+    {
+      "selection": "empty-selection",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/empty-selection-engineering.png"
+    }
+  ],
+  "errors": [],
+  "synthetic": true,
+  "ownerAccepted": false
+}

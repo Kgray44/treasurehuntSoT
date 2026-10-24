@@ -1,0 +1,21 @@
+{
+  "kind": "PARALLAX_SINGLE_RECONCILIATION_REVERSIBLE_PREP",
+  "at": "2026-10-22T13:20:29.914455+00:00",
+  "candidate": "720e45753e1a7504b116c1f2e3c5a93e69ad75f1",
+  "mainFetchedAsImmutableObjectOnly": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "mainTree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+  "mainOrderedParents": [
+    "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+    "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+  ],
+  "fetchUpdatedBranchOrFetchHead": false,
+  "virtualMergeExitCode": 0,
+  "virtualTree": "6349d21553648b77bf7523e789e2e732f836f690",
+  "virtualConflictPaths": [],
+  "sourceBranchMoved": false,
+  "workingTreeClean": true,
+  "freeCBefore": 32937312256,
+  "freeCAfter": 32672362496,
+  "captureReviewOrQualification": false,
+  "actualMainReconciliation": "HELD_FOR_ACCEPTED_788_LANDED_HANDOFF"
+}

@@ -1,0 +1,104 @@
+[WebServer] (node:48860) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:36212) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36212) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:24:5 › Creator searches, previews and inserts a built-in asset with immediate selection (14.3s)
+(node:9764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:54:5 › Creator follows a saved Environment to two Scenes, opens one, returns and renames it (13.6s)
+
+
+  1) [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:24:5 › Creator searches, previews and inserts a built-in asset with immediate selection
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('region', { name: 'Spatial element properties' })
+    Expected substring: [32m"Peeking Letter"[39m
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('region', { name: 'Spatial element properties' })[22m
+
+
+      46 |   await page.screenshot({ path: `${evidence}/built-in-asset-preview.png`, fullPage: true });
+      47 |   await library.getByRole("button", { name: "Add to active Scene", exact: true }).click();
+    > 48 |   await expect(page.getByRole("region", { name: "Spatial element properties" })).toContainText("Peeking Letter");
+         |                                                                                  ^
+      49 |   await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+      50 |   await expect(page.getByRole("region", { name: "Scene graph" })).toContainText("Peeking Letter");
+      51 |   await page.screenshot({ path: `${evidence}/built-in-asset-selected.png`, fullPage: true });
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-sc00c-library-journeys.spec.ts:48:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\parallax-sc00c-library-jou-1ed15-et-with-immediate-selection-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\parallax-sc00c-library-jou-1ed15-et-with-immediate-selection-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\parallax-sc00c-library-jou-1ed15-et-with-immediate-selection-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-sc00c-library-jou-1ed15-et-with-immediate-selection-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-sc00c-library-jou-1ed15-et-with-immediate-selection-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:54:5 › Creator follows a saved Environment to two Scenes, opens one, returns and renames it
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('complementary', { name: 'Library Scene Beta details' })
+    Expected substring: [32m"Library Shared Room"[39m
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('complementary', { name: 'Library Scene Beta details' })[22m
+    [2m    11 × locator resolved to <aside aria-label="Library Scene Beta details" class="SpatialContentLibrary-module__G4PjfW__details">…</aside>[22m
+    [2m       - unexpected value "Library Scene Beta×Creator-owned spatial Scene.My Creations · Saved SceneUsed by 0 definitionsEnvironment unavailable · 1 objects · working revision 3 · 0 immutable versions · Private LibraryOpen originalCreate independent copyView EnvironmentOrganize / renameVersion historyArchive…"[22m
+
+
+       98 |   await expect(library.getByRole("article")).toHaveCount(2);
+       99 |   await library.getByRole("button", { name: "Inspect Library Scene Beta", exact: true }).click();
+    > 100 |   await expect(library.getByRole("complementary", { name: "Library Scene Beta details" })).toContainText(
+          |                                                                                            ^
+      101 |     environment.name,
+      102 |   );
+      103 |   await page.screenshot({ path: `${evidence}/associated-scenes.png`, fullPage: true });
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-sc00c-library-journeys.spec.ts:100:92
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\parallax-sc00c-library-jou-775be--one-returns-and-renames-it-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\parallax-sc00c-library-jou-775be--one-returns-and-renames-it-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\parallax-sc00c-library-jou-775be--one-returns-and-renames-it-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-sc00c-library-jou-775be--one-returns-and-renames-it-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-sc00c-library-jou-775be--one-returns-and-renames-it-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:24:5 › Creator searches, previews and inserts a built-in asset with immediate selection
+    [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:54:5 › Creator follows a saved Environment to two Scenes, opens one, returns and renames it

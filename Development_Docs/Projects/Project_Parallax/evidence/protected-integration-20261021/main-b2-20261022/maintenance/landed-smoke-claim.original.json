@@ -1,0 +1,115 @@
+{
+  "createdAt": "2026-10-23T03:18:40.030Z",
+  "recipe": {
+    "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\landed-preparation-smoke-02.recipe.original.json",
+    "bytes": 1598,
+    "sha256": "e78b7a27923a8e3b6739527ab12c347fe010c8179eca6062ee2315a958af902e"
+  },
+  "sources": [
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\.agents\\README.md",
+      "bytes": 5519,
+      "sha256": "cae3cb7d0d234071a8bffc237ff852db276017904a539684b4600bbcf2713687"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\.agents\\development-preparation-retention-repair.md",
+      "bytes": 2124,
+      "sha256": "b90f7737f56a419fefc7f60151f56551449be27042981d6889058ba89f41df0d"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\.github\\workflows\\sounding-line-focused-repair.yml",
+      "bytes": 6772,
+      "sha256": "a8c5e5d349952328989498a6eea2234a3ef04d97dee5bd07b524dc5888fc98d1"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\Development_Docs\\Programs\\Other\\Ledgerlight\\Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "bytes": 3440194,
+      "sha256": "74e5dc4eaf5c51e4d8ccd8d201304dc929c921647e4e075183ac0b4de7decaeb"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\Development_Docs\\Programs\\Sounding_Line\\Project_Sounding_Line_Preparation_Failure_Retention_Record.md",
+      "bytes": 4474,
+      "sha256": "ac748a5a4618e4f681a46413dee99d1d9356bc985b2e2ec5640f583a53b267b7"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\Development_Docs\\Testing\\README.md",
+      "bytes": 2013,
+      "sha256": "23940a6cbdeecc56d7b8d70a13a09b0998fca0352c3ba3ceca8f0e43489617d0"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\Development_Docs\\document-index.json",
+      "bytes": 546882,
+      "sha256": "d17b51210b3be8f52adbac6d8471974d981212ad0fd5704ccec2ae3edad426e2"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\package.json",
+      "bytes": 31609,
+      "sha256": "5c943f2a48fb7bdc832e2fa6e3042be660e94860940332a578b67f3aaf0ea341"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\scripts\\sounding-line\\develop-browser-suite.mjs",
+      "bytes": 39236,
+      "sha256": "fe6bd3a5445a38249e83cbb9038bb6935aedbf6f6f13f51630f4824c7bb529da"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\scripts\\sounding-line\\development-preparation-evidence.mjs",
+      "bytes": 12038,
+      "sha256": "9d31a61623c28fc98ee803d036e0a83f536707332fcfede0746114ea35cb5300"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\scripts\\sounding-line\\preparation-failure-output.mjs",
+      "bytes": 6591,
+      "sha256": "5bda627a4544370236cff875035a3791d542b1658bcf87290b2718dce388d494"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\scripts\\sounding-line\\preparation-failure-publication.mjs",
+      "bytes": 9697,
+      "sha256": "1996128a7ee0847f5a0277737bc45541a2acc34d25df699454641817b2ca9e9c"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\tests\\sounding-line\\experience-current-admission.test.mjs",
+      "bytes": 102550,
+      "sha256": "2a0c9b8bd0fe1d31d41b5ab97f3ce701691aa769e938a0b056ee6801dd647135"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\tests\\sounding-line\\experience-exception.test.mjs",
+      "bytes": 217951,
+      "sha256": "af3f8124540a4cd03c31530239c68f84edb7f898e9d62698ad6902cf449bf41c"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\tests\\sounding-line\\experience-r24.test.mjs",
+      "bytes": 14408,
+      "sha256": "878aa1b49276d86673e2cb8614b786de28c40172b9e54f355c4d0d74fd987e48"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\tests\\sounding-line\\experience-r25.test.mjs",
+      "bytes": 17471,
+      "sha256": "2489c536d9b6190caa1311d5f2897a760f450dbf70402aa789ceb61e007a74b1"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\tests\\sounding-line\\experience-r26.test.mjs",
+      "bytes": 20833,
+      "sha256": "399ad2fdb238c613fd7f9436e3fb6e10e51bf6b3436133e290333c0109347db8"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\tests\\sounding-line\\preparation-failure-retention.test.mjs",
+      "bytes": 24694,
+      "sha256": "8afa357ce32fba9b8c5136f16317f963b6ab55cdc4b3fe8e5835508cda12d8bd"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\tests\\sounding-line\\fixtures\\historical-admission-binding.mjs",
+      "bytes": 1097,
+      "sha256": "b9555acaff43fa1534d992b43d403d858eac05aa44cb0162532318b6b7376b75"
+    },
+    {
+      "path": "D:\\CodexWorktrees\\sounding-line-preparation-retention-landed-bb496b53-20261022\\scripts\\sounding-line\\owned-process.mjs",
+      "bytes": 7087,
+      "sha256": "28266ddb98360512d8196ae4a71ceb92a447c98128b0b5156b95f5aaab9d18df"
+    },
+    {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\run-landed-check-bound.mjs",
+      "bytes": 5103,
+      "sha256": "957044f1ff1fb94f5e0b1c7cbe8a7c4375baddb2974e79822b212e2638d8f885"
+    }
+  ]
+}

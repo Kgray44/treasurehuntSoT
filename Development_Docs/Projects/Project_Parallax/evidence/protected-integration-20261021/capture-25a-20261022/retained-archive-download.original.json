@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-23T00:25:50.157Z",
+  "runId": 39875668380,
+  "attempt": 1,
+  "records": [
+    {
+      "id": 12467794954,
+      "name": "preparation-progress-25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88-39875668380-1",
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/governed-capture-25a-01/retained-artifacts/12467794954.original.zip",
+      "bytes": 7948,
+      "expectedBytes": 7948,
+      "sha256": "f51d8fa847d83ba18b50b34623964ccf7af6617ae099126f95a5e873f12aa58d",
+      "providerDigest": "sha256:f51d8fa847d83ba18b50b34623964ccf7af6617ae099126f95a5e873f12aa58d",
+      "verified": true
+    },
+    {
+      "id": 12469265727,
+      "name": "product-experience-lifecycle-25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88-39875668380",
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/governed-capture-25a-01/retained-artifacts/12469265727.original.zip",
+      "bytes": 150463,
+      "expectedBytes": 150463,
+      "sha256": "e522bcc5cc8975dc557116220096f7dbb4dd83db3c15160dd5ac3f98739cbad2",
+      "providerDigest": "sha256:e522bcc5cc8975dc557116220096f7dbb4dd83db3c15160dd5ac3f98739cbad2",
+      "verified": true
+    },
+    {
+      "id": 12468538553,
+      "name": "product-experience-capture-5b6ec5fce41cc734",
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/governed-capture-25a-01/retained-artifacts/12468538553.original.zip",
+      "bytes": 640534,
+      "expectedBytes": 640534,
+      "sha256": "cb62bc27774af675ad1d0d97015bbf42cb99a42f43570067acc7ee617017c51e",
+      "providerDigest": "sha256:cb62bc27774af675ad1d0d97015bbf42cb99a42f43570067acc7ee617017c51e",
+      "verified": true
+    },
+    {
+      "id": 12468608168,
+      "name": "product-experience-raw-25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88-39875668380",
+      "path": "D:/CodexTemp/parallax-resume-20261021-01a15554/governed-capture-25a-01/retained-artifacts/12468608168.original.zip",
+      "bytes": 993612,
+      "expectedBytes": 993612,
+      "sha256": "5d03a84f19683da04c8791c43caed3216e2d99d97e97a51a7043bba76e221a53",
+      "providerDigest": "sha256:5d03a84f19683da04c8791c43caed3216e2d99d97e97a51a7043bba76e221a53",
+      "verified": true
+    }
+  ],
+  "complete": true,
+  "decrypted": false,
+  "qualification": false
+}

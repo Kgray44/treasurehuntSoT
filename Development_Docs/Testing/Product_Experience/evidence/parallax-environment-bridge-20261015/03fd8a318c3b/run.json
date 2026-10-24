@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "candidate": "03fd8a318c3b79d6ada0472deb234fe5b7113009",
+  "tree": "39dce77aa91ca3e98fd9a6998b0e7d86931f6424",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T05:24:13.603Z",
+  "finishedAt": "2026-10-15T05:29:10.711Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-environment-libra-07741-erves-the-Scene-release-pin-chromium-video.webm",
+      "sha256": "8e76fccb52c13fbb52eb3e936ec4112f0c321daf6cfb5c18e595edabed7ee62b"
+    },
+    {
+      "file": "parallax-environment-libra-e13e5--preserving-scene-snapshots-chromium-video.webm",
+      "sha256": "cc0eeb7a8358ed55c3cb37c8f3a085f9c270275e6ee2cc0a6714435ad7c61507"
+    }
+  ]
+}

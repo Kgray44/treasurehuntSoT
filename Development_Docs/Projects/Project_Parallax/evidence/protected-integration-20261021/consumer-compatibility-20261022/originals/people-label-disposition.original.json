@@ -1,0 +1,10 @@
+{
+  "kind": "PEOPLE_LABEL_FALSE_PREMISE_CORRECTED",
+  "at": "2026-10-22T15:34:02.360089+00:00",
+  "finding": "The claimed existing Search People selector was wrong. Protected/current experience requires Search; default SearchForm already matches.",
+  "unnecessaryProductEditRestored": true,
+  "productPageMatchesHead": true,
+  "existingJourneyUntouched": true,
+  "newTestUsesActualSearch": true,
+  "runtimeExecuted": false
+}

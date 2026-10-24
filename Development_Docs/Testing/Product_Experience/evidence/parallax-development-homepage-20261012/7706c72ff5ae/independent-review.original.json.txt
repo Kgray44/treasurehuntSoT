@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "engineering-evidence",
+  "reviewer": {
+    "agent": "/root/studio_foundation_review",
+    "role": "independent Product Experience reviewer",
+    "authority": ".agents/product-experience-workflow.md section 5; parent requested separate visual-first development homepage lifecycle review",
+    "mutations": "Only this evidence JSON was added. No application source, runtime, private content or provider calls were changed."
+  },
+  "candidate": "7706c72ff5aeff328dd417cf9e8e24a800c214cc",
+  "tree": "f59ff5cc679dd5bec6a2956baaf6a33635d33f56",
+  "scope": "Development homepage hydration, synthetic account sign-in through visible form, Creator Studio to Spatial Studio, READY rendered scene and editable Assistant composer, homepage return/reload.",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "summary": "The prior hydrated-homepage crash is visibly reproduced before repair and absent through the complete fresh bounded route. The verified repair renders an actual bedroom and selected Desk Map, admits Assistant text entry, and survives homepage return and reload. No blocking defect is confirmed within this supplied single-desktop route.",
+  "evidenceRoot": "Development_Docs/Testing/Product_Experience/evidence/parallax-development-homepage-20261012/7706c72ff5ae",
+  "identifiers": {
+    "B": "before-repair/5bcd8944a36c6e084962471407c47d5b.webm",
+    "H": "harness-failure/5fef9a3d0759803b9d0e83741852fd24.webm",
+    "V": "verified-repair/3b6db619f709192aa35bffc75d1365bc.webm",
+    "BP": "before-repair/homepage.png",
+    "HP": "harness-failure/homepage.png",
+    "HS": "harness-failure/studio-assistant.png",
+    "VP": "verified-repair/homepage.png",
+    "VS": "verified-repair/studio-assistant.png"
+  },
+  "method": {
+    "visualFirst": true,
+    "imagesInspected": 5,
+    "recordingsInspected": 3,
+    "chronology": "Complete start-to-end decoded chronology of all three supplied recordings at 2 frames/second. Ten before-repair frames, 115 harness-failure frames and 41 verified-repair frames were inspected as labeled actual-frame contact sheets, together with all five supplied PNGs at full image size, before frozen source.",
+    "limits": "Sampled chronology, not continuous native-player inspection of every encoded frame. Sub-half-second transients and subjective smoothness remain unqualified.",
+    "sourceAccess": "git show 7706c72ff5aeff328dd417cf9e8e24a800c214cc:<path> only",
+    "builderRationaleExcluded": true
+  },
+  "finding": {
+    "id": "PX-DEV-HOME-01",
+    "previousSeverity": "owner-blocking hydrated homepage crash",
+    "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+    "before": "B at approximately 1.5-2.0s briefly renders homepage, then approximately 2.5s changes to Scene host registry is destroyed overlay. BP identifies registerHost and the SceneHost attach/ref chain. Before readiness records zero hosts and a client error. HTTP/static render alone missed the fault.",
+    "after": "V shows a hydrated homepage, ordinary synthetic sign-in, Creator Studio navigation, actual READY room geometry, usable typed composer and a homepage return/reload ending in resolved signed-in role state without the overlay.",
+    "evidence": [
+      "B",
+      "BP",
+      "V",
+      "VP",
+      "VS",
+      "before-repair/readiness.json",
+      "verified-repair/readiness.json"
+    ],
+    "bound": "This is one development desktop reduced-motion route, not production homepage, all routes, live inference, native or complete protected qualification."
+  },
+  "runDisposition": {
+    "beforeRepair": "FAIL: genuine client hydration error; preserved as failing reproduction.",
+    "harnessFailure": "FAIL and sourceBinding FAILED: after observed UI steps, diagnostic receipt reports Assignment to constant variable. Its screenshots and chronology can be observed, but neither is treated as a passing validation run. The parent identifies script constant shadowing; this review did not inspect that harness implementation.",
+    "verifiedRepair": "PASS, sourceBinding VALID, DEVELOPMENT, CONFIGURED_NO_INFERENCE. Readiness reports no pageErrors for homepage, READY Spatial Studio, aiConfigured/aiAvailable true, and no pageErrors after homepage return/reload.",
+    "inference": "automaticPaidCalls 0; provider configuration and availability do not prove successful inference. Composer text is explicitly Synthetic preview readiness only; this text is not sent.",
+    "metadata": "Original JSON capture bytes retained in *.original.json.txt; formatted readiness copies decode identically. The derived publication manifest references retained original receipt hashes. Media and captured application source remain unchanged."
+  },
+  "chronology": [
+    {
+      "recording": "B",
+      "span": "0-4.5s sampled",
+      "observed": "Initial blank loading, homepage appears with Checking account, then full Runtime Error overlay replaces it and remains to recording end."
+    },
+    {
+      "recording": "H",
+      "span": "0-57s sampled",
+      "observed": "Homepage resolves after longer development loading; account menu Sign in, filled synthetic email/password, Working and signed-in state; Creator Studio through menu; development compile/loading and Studio Preparing state; actual room at approximately 47s; typed floating Assistant at approximately 51s; homepage return and reload resolve signed-in role cards. No visible registry overlay, but run remains FAIL due diagnostic harness error."
+    },
+    {
+      "recording": "V",
+      "span": "0-20s sampled",
+      "observed": "Homepage appears approximately 1s and account resolves around 2.5s; Account menu Sign in around 5s; visible populated sign-in form with Working around 6s; signed-in homepage then Creator Studio menu around 7s; Studio shell around 8s; Preparing room 9-13s; rendered bedroom/Desk Map around 13.5s; saved status and Assistant typing by 15.5s; homepage return around 16s, reload around 17.5s, signed-in role state resolves 18.5-20s."
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Hydrated landing has centered role cards and visible account menu; Studio keeps blue viewport/Inspector structure, and floating Assistant fits inside desktop viewport with footer visible.",
+      "evidence": [
+        "VP",
+        "VS",
+        "V"
+      ],
+      "limit": "No broader design or alternate device acceptance."
+    },
+    {
+      "dimension": "hierarchy",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Homepage role choice, account Sign in, Creator Studio and Spatial Studio are distinguishable stages. Assistant composer and Send remain identifiable after the rendered scene appears.",
+      "evidence": [
+        "V around 5-8s",
+        "VS"
+      ],
+      "limit": "Not all role actions are invoked."
+    },
+    {
+      "dimension": "typography",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Homepage heading, role labels and Studio/Assistant text are readable at supplied 1440x1000 resolution. Typed composer text is fully visible.",
+      "evidence": [
+        "VP",
+        "VS"
+      ],
+      "limit": "No zoom, text enlargement, low-vision or font variation test."
+    },
+    {
+      "dimension": "spacing",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Desktop role buttons and sign-in form have separated fields; floating Assistant textarea, Start new task and Send fit without clipping.",
+      "evidence": [
+        "VS",
+        "V around 6s and 15.5s"
+      ],
+      "limit": "No mobile or constrained-height repair claim."
+    },
+    {
+      "dimension": "controls",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Account menu opens, visible Sign in form accepts credentials and submits, Creator Studio menu navigation works, Spatial Studio opens, and Assistant textarea admits text.",
+      "evidence": [
+        "V around 5-8s",
+        "VS"
+      ],
+      "limit": "Send is visible and enabled-looking but intentionally unclicked; no inference or Send hit-test is established by these pixels."
+    },
+    {
+      "dimension": "contrast",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Cream/gold landing text and actions contrast with dark background; blue Studio Assistant footer and focused textarea are distinguishable.",
+      "evidence": [
+        "VP",
+        "VS"
+      ],
+      "limit": "No measured contrast or light-theme audit."
+    },
+    {
+      "dimension": "consistency",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Brand/account identity persists across landing, sign-in, Creator shell and blue Spatial Studio. Homepage return resolves the same synthetic Creator identity.",
+      "evidence": [
+        "V"
+      ],
+      "limit": "Prior 5ad design review and owner UI acceptance are separate receipts."
+    },
+    {
+      "dimension": "states",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Recorded Checking account, sign-in Working, Studio Opening/Preparing, rendered room, saving/saved and resolved signed-in states progress without prior registry error.",
+      "evidence": [
+        "B",
+        "BP",
+        "V",
+        "verified-repair/readiness.json"
+      ],
+      "limit": "Harness failure remains failed; not a comprehensive adverse-state matrix."
+    },
+    {
+      "dimension": "responsive",
+      "judgment": "NOT_QUALIFIED_OUTSIDE_SINGLE_DESKTOP",
+      "observation": "Supplied desktop content and floating composer fit the 1440x1000 viewport.",
+      "evidence": [
+        "VP",
+        "VS"
+      ],
+      "limit": "No phone, tablet, laptop, landscape, physical safe-area or IME evidence."
+    },
+    {
+      "dimension": "keyboard",
+      "judgment": "PARTIAL_BOUNDED",
+      "observation": "Text can be entered in the ordinary sign-in fields and Assistant composer; the textarea displays Enter/Shift+Enter guidance.",
+      "evidence": [
+        "V",
+        "VS"
+      ],
+      "limit": "No keyboard-only navigation, shortcut execution or screen-reader journey observed."
+    },
+    {
+      "dimension": "focus",
+      "judgment": "PARTIAL_BOUNDED",
+      "observation": "Assistant textarea has a clear highlighted focus boundary and accepts the typed string. Earlier harness recording also shows focused password entry.",
+      "evidence": [
+        "VS",
+        "HS",
+        "H around 17s"
+      ],
+      "limit": "No complete tab order, focus return or modal trapping qualification."
+    },
+    {
+      "dimension": "feedback",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Busy sign-in and room Preparing messages precede actual success; selected Desk Map in-view label accompanies rendered geometry; Provider configured appears without presenting a completed inference.",
+      "evidence": [
+        "V around 6s and 9-15.5s",
+        "VS",
+        "verified-repair/readiness.json"
+      ],
+      "limit": "No request/review/Apply feedback is exercised. Development startup timing is not a performance SLA."
+    },
+    {
+      "dimension": "motion",
+      "judgment": "NOT_QUALIFIED_OUTSIDE_REDUCED_CONTEXT",
+      "observation": "Reduced-motion control is visible after preference resolution; pages remain usable through staged loading and scene appearance. The error does not recur at hydration replay.",
+      "evidence": [
+        "VP",
+        "V"
+      ],
+      "limit": "Early pre-preference frames briefly show full motion label. No ordinary-motion animation playback, smoothness, scene clock or cross-policy matrix is qualified."
+    },
+    {
+      "dimension": "continuity",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Synthetic account identity resolves after sign-in, Creator/Spatial navigation and homepage return/reload. Actual room appears before the Assistant opens; final homepage remains rendered after reload.",
+      "evidence": [
+        "V around 6.5-20s",
+        "verified-repair/readiness.json"
+      ],
+      "limit": "No edited draft, animation, library or inference save/reload continuity is tested here."
+    },
+    {
+      "dimension": "complexity",
+      "judgment": "PASS_BOUNDED",
+      "observation": "The narrow entry path reaches an editable scene and composer through ordinary account/Creator navigation without an error-overlay dead end. Layered loading states resolve in the fresh recording.",
+      "evidence": [
+        "V"
+      ],
+      "limit": "Broader Studio task complexity and full authoring outcomes remain covered only by their separate packets."
+    },
+    {
+      "dimension": "role-outcomes",
+      "judgment": "PASS_BOUNDED",
+      "observation": "A synthetic Creator enters Studio and reaches a real rendered bedroom with selected Desk Map plus editable Assistant input. Registry/renderer readiness is corroborated by capture receipt.",
+      "evidence": [
+        "VS",
+        "V",
+        "verified-repair/readiness.json"
+      ],
+      "limit": "No Player/Captain role outcome, real owner account, private content or inference outcome."
+    },
+    {
+      "dimension": "fallbacks",
+      "judgment": "PARTIAL_BOUNDED",
+      "observation": "Before repair the runtime error has no usable product recovery. Fresh repair avoids it through hydration/navigation/reload. Sign-in provider cards identify Google/GitHub unavailable and show ordinary credential alternative.",
+      "evidence": [
+        "BP",
+        "V around 6s",
+        "verified-repair/readiness.json"
+      ],
+      "limit": "No forced post-repair registry failure, auth rejection, renderer Retry or offline fallback exercise."
+    }
+  ],
+  "frozenSourceCorroboration": [
+    {
+      "path": "src/animation/director/AnimationProvider.tsx",
+      "scope": "ProviderLifetime increments a generation on mount; cleanup schedules microtask disposal, cancelled by synchronous replay mount. Final unchanged generation kills director and destroys hosts. Root motion ownership prevents an earlier provider cleanup removing a later provider attribute."
+    },
+    {
+      "path": "src/animation/director/AnimationProvider.test.tsx",
+      "scope": "Resolved motion authority tests include media subscription cleanup and preserving a later provider's root attribute."
+    },
+    {
+      "path": "src/animation/hosts/SceneHost.tsx",
+      "scope": "PhysicalSceneHostLease connects attach/registerHost and detach/release; ref setup uses that authority, matching the pre-repair visible call stack."
+    },
+    {
+      "path": "src/animation/hosts/SceneHost.test.tsx",
+      "scope": "Root StrictMode provider regression requires one registered host/target/claim, no kill/destroy during replay, exactly one kill/destroy after final unmount, zero registrations/claims, and rejection of later host registration on destroyed registry. Read after actual visual evidence."
+    }
+  ],
+  "engineeringLimit": "Manifest reports 65 tests in four focused files, changed ESLint PASS and TypeScriptNoEmit PASS. This reviewer inspected relevant frozen regression source and capture receipts; did not rerun tests or treat them as native/physical proof.",
+  "remainingLimits": [
+    "Single desktop dark/reduced-motion development browser context",
+    "CONFIGURED_NO_INFERENCE proves availability only",
+    "No live provider, paid calls or private owner input",
+    "No production homepage qualification",
+    "No normal-motion/responsive/native/physical/full protected matrix",
+    "No broader design or whole-overhaul acceptance",
+    "Prior 5ad independent review and owner UI acceptance remain separate",
+    "Sampled full chronology does not qualify every encoded frame"
+  ],
+  "smallestFurtherRequiredRepair": "None confirmed for the bounded supplied repair. Further excluded claims require their own evidence rather than reusing this receipt.",
+  "featureCatalog": "NO CHANGE REQUIRED: independent evidence review only. Parent owns repository documentation navigation and feature-generator checks.",
+  "manifestInventory": [
+    {
+      "file": "before-repair/5bcd8944a36c6e084962471407c47d5b.webm",
+      "sha256": "e3b748874e50d67ef54fe4d879e06d117efbcd10aefdf3ff86bec0aa991420f3",
+      "independentlyVerified": true
+    },
+    {
+      "file": "before-repair/homepage.png",
+      "sha256": "4374fce25a69fa60bba2cbac874badfe9258f6053bfae4f5a5bd48c78b75acfd",
+      "independentlyVerified": true
+    },
+    {
+      "file": "before-repair/readiness.original.json.txt",
+      "sha256": "c30c3724fd65f41a72476795f1d132592b1c8d23cbc389c76346b077443c49b0",
+      "independentlyVerified": true
+    },
+    {
+      "file": "harness-failure/5fef9a3d0759803b9d0e83741852fd24.webm",
+      "sha256": "dd4f8502ace00c34f3f1a680b115a67d7aef9f8d559af0c33b7e7027975e986a",
+      "independentlyVerified": true
+    },
+    {
+      "file": "harness-failure/homepage.png",
+      "sha256": "799c0b1abc0ba7f9f5b0956b32d9caac96c65970c3a7e68899abbbe52460b9c7",
+      "independentlyVerified": true
+    },
+    {
+      "file": "harness-failure/readiness.original.json.txt",
+      "sha256": "98f82f224e2d5430eb20af9619a442e3776c903dec18e35dbd491779a8d2394a",
+      "independentlyVerified": true
+    },
+    {
+      "file": "harness-failure/studio-assistant.png",
+      "sha256": "95f9171845cc8b1d8e70359428149f70e883a8f15fb57595195be041bd18118c",
+      "independentlyVerified": true
+    },
+    {
+      "file": "verified-repair/3b6db619f709192aa35bffc75d1365bc.webm",
+      "sha256": "503135c9fdb427ce6a4aa7165b5b73b8e555a0887756686c65414e2294fa3229",
+      "independentlyVerified": true
+    },
+    {
+      "file": "verified-repair/homepage.png",
+      "sha256": "799c0b1abc0ba7f9f5b0956b32d9caac96c65970c3a7e68899abbbe52460b9c7",
+      "independentlyVerified": true
+    },
+    {
+      "file": "verified-repair/readiness.original.json.txt",
+      "sha256": "d55bae3b04304cb4c8347b93ec4074e0ab694770cc04c7dd717b97d0de9643b1",
+      "independentlyVerified": true
+    },
+    {
+      "file": "verified-repair/studio-assistant.png",
+      "sha256": "95f9171845cc8b1d8e70359428149f70e883a8f15fb57595195be041bd18118c",
+      "independentlyVerified": true
+    }
+  ],
+  "manifestSha256": "f7e24cc1371733e728d010c666e829624ea704b05910e5ca3ee957cc30b88a40",
+  "mediaAggregate": {
+    "files": 8,
+    "png": 5,
+    "webm": 3,
+    "algorithm": "SHA256 of UTF-8 sorted relative filename + space + file SHA256 + newline",
+    "sha256": "a7005137418c4c7f0cecc75874b44e6e2ad26ec357d21b081f621bc165608b1d"
+  },
+  "metadataNormalizationChecks": [
+    {
+      "file": "before-repair/readiness.json",
+      "sha256": "2334855046ff656ccfc90c78b9fa3fc3109552e0fe3051ae97e2df50da59fcf3",
+      "originalFile": "before-repair/readiness.original.json.txt",
+      "originalSha256": "c30c3724fd65f41a72476795f1d132592b1c8d23cbc389c76346b077443c49b0",
+      "decodedEqual": true
+    },
+    {
+      "file": "harness-failure/readiness.json",
+      "sha256": "98f82f224e2d5430eb20af9619a442e3776c903dec18e35dbd491779a8d2394a",
+      "originalFile": "harness-failure/readiness.original.json.txt",
+      "originalSha256": "98f82f224e2d5430eb20af9619a442e3776c903dec18e35dbd491779a8d2394a",
+      "decodedEqual": true
+    },
+    {
+      "file": "verified-repair/readiness.json",
+      "sha256": "d55bae3b04304cb4c8347b93ec4074e0ab694770cc04c7dd717b97d0de9643b1",
+      "originalFile": "verified-repair/readiness.original.json.txt",
+      "originalSha256": "d55bae3b04304cb4c8347b93ec4074e0ab694770cc04c7dd717b97d0de9643b1",
+      "decodedEqual": true
+    }
+  ],
+  "originalManifestSha256": "47f8b71c02024a416fb57e1aa6f458e3a8c8ef2aab1204555d8c4b77872de68f",
+  "sampledRecordingFrames": [
+    {
+      "recording": "before-repair",
+      "fps": 2,
+      "frames": 10
+    },
+    {
+      "recording": "harness-failure",
+      "fps": 2,
+      "frames": 115
+    },
+    {
+      "recording": "verified-repair",
+      "fps": 2,
+      "frames": 41
+    }
+  ]
+}

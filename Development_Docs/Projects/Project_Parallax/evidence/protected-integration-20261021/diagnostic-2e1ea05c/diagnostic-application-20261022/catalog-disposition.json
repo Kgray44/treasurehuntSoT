@@ -1,0 +1,13 @@
+{
+  "timeUtc": "2026-10-22T04:17:52.6363710Z",
+  "head": "2e1ea05caa88e790f9b6f4f7a36981efed5826a3",
+  "allFourChecksExitZero": true,
+  "disposition": "NO_CHANGE_REQUIRED_DIAGNOSTIC_TEST_ONLY",
+  "incidentalChangesRestored": [
+    "two unrelated maintenance Ledgerlight rows",
+    "generated date only"
+  ],
+  "originalDiff": "generator-incidental.original.patch",
+  "noCatalogFragmentChange": true,
+  "cleanAfter": true
+}

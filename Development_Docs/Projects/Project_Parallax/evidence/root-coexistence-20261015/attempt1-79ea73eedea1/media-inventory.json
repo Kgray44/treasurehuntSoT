@@ -1,0 +1,162 @@
+{
+  "pngCount": 79,
+  "pngSheets": 27,
+  "coverage": [
+    {
+      "id": "r002.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium/video-1.webm",
+      "nativeFrames": 2,
+      "durationSeconds": 0.08,
+      "samples": 2,
+      "span": [
+        0,
+        0.04
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 1
+    },
+    {
+      "id": "r003.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium/video.webm",
+      "nativeFrames": 164,
+      "durationSeconds": 6.56,
+      "samples": 29,
+      "span": [
+        0,
+        6.52
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 2
+    },
+    {
+      "id": "r005.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-320d1-s-before-one-history-commit-chromium/video.webm",
+      "nativeFrames": 53,
+      "durationSeconds": 2.12,
+      "samples": 10,
+      "span": [
+        0,
+        2.08
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 1
+    },
+    {
+      "id": "r007.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium/video-1.webm",
+      "nativeFrames": 2,
+      "durationSeconds": 0.08,
+      "samples": 2,
+      "span": [
+        0,
+        0.04
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 1
+    },
+    {
+      "id": "r008.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium/video.webm",
+      "nativeFrames": 478,
+      "durationSeconds": 19.12,
+      "samples": 81,
+      "span": [
+        0,
+        19.08
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 6
+    },
+    {
+      "id": "r010.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium/video.webm",
+      "nativeFrames": 119,
+      "durationSeconds": 4.76,
+      "samples": 21,
+      "span": [
+        0,
+        4.72
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 2
+    },
+    {
+      "id": "r012.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium/video.webm",
+      "nativeFrames": 126,
+      "durationSeconds": 5.04,
+      "samples": 22,
+      "span": [
+        0,
+        5.0
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 2
+    },
+    {
+      "id": "r014.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium/video.webm",
+      "nativeFrames": 226,
+      "durationSeconds": 9.04,
+      "samples": 39,
+      "span": [
+        0,
+        9.0
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 3
+    },
+    {
+      "id": "r016.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00b-combined-SC-d36c9-Inspector-return-on-desktop-chromium/video.webm",
+      "nativeFrames": 120,
+      "durationSeconds": 4.8,
+      "samples": 21,
+      "span": [
+        0,
+        4.76
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 2
+    },
+    {
+      "id": "r018.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00c-expanded-li-71774-returns-to-the-same-content-chromium/video.webm",
+      "nativeFrames": 94,
+      "durationSeconds": 3.76,
+      "samples": 17,
+      "span": [
+        0,
+        3.72
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 2
+    },
+    {
+      "id": "r020.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00c-expanded-li-c3284-d-sources-and-Scene-Manager-chromium/video.webm",
+      "nativeFrames": 120,
+      "durationSeconds": 4.8,
+      "samples": 21,
+      "span": [
+        0,
+        4.76
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 2
+    },
+    {
+      "id": "r022.webm",
+      "originalPath": "artifacts/root-combined-79ea73eedea1/parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium/video.webm",
+      "nativeFrames": 105,
+      "durationSeconds": 4.2,
+      "samples": 19,
+      "span": [
+        0,
+        4.16
+      ],
+      "maxGapSeconds": 0.24,
+      "sheets": 2
+    }
+  ]
+}

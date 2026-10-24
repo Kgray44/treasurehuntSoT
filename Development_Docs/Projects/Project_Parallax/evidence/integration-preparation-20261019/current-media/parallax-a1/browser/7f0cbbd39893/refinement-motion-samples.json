@@ -1,0 +1,202 @@
+{
+  "classification": "engineering-evidence",
+  "runtime": "PRODUCTION",
+  "samples": [
+    {
+      "elapsedMs": 103.90000000596046,
+      "x": 0.24826875000074505,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.6000000238418579,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 205.90000000596046,
+      "x": 0.25451875000074503,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 306.30000001192093,
+      "x": 0.26077500000074505,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 406.60000002384186,
+      "x": 0.2670250000007451,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 510.30000001192093,
+      "x": 0.27327500000074506,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 610.4000000059605,
+      "x": 0.2795250000007451,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.7000000178813934,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 713.5,
+      "x": 0.28576875000074503,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.7999999821186066,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 815.5,
+      "x": 0.29201875000074506,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 927.6000000238419,
+      "x": 0.29931250000074505,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 1027.800000011921,
+      "x": 0.30556250000074503,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.6000000238418579,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 1128.9000000059605,
+      "x": 0.311812500000745,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5999999940395355,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 1230.6000000238419,
+      "x": 0.31805625000074506,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5999999940395355,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    },
+    {
+      "elapsedMs": 1340.6000000238419,
+      "x": 0.32535000000074504,
+      "costs": {
+        "quality": "MEDIUM",
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.4000000059604645,
+        "pixelRatio": 1,
+        "width": 1034,
+        "height": 448
+      }
+    }
+  ],
+  "limits": "Current software-rendered submission samples; no before/after or hardware FPS claim."
+}

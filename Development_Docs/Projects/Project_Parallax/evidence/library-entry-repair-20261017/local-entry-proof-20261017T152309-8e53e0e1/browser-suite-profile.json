@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-click-surface.spec.ts",
+    "tests/e2e/parallax-direct-placement.spec.ts",
+    "tests/e2e/parallax-exclusion-zones.spec.ts",
+    "tests/e2e/parallax-opacity.spec.ts",
+    "tests/e2e/parallax-parametric-room.spec.ts",
+    "tests/e2e/parallax-simulation.spec.ts",
+    "--workers=1",
+    "--max-failures=0",
+    "--reporter=line,json",
+    "--output",
+    "D:\\CodexWorktrees\\parallax-root-integration\\artifacts\\entry-migration-local\\local-entry-proof-20261017T152309-8e53e0e1"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+}

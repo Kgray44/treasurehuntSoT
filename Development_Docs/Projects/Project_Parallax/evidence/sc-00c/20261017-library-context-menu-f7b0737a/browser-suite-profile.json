@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00c-library-context-menu.spec.ts",
+    "--workers=1"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

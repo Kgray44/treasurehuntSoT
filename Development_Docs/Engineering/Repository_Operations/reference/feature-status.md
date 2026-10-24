@@ -3,14 +3,52 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-24
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
 
-The Crossdeck refit candidate connects a phone from the active Chronicle and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact and restricted crew views. Contextual pairing, acknowledged handoff, continuation and recovery retain the authorized Voyage. The [R11 source record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), original 38-context capture and seven-contract/119-judgment independent review remain historical source-bound evidence. [Ordinary5](../../../Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) and later [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) are consumed failures. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft, unqualified and unmerged. Its continuation with accepted Reach changes requires fresh combined-source experience evidence, current whole qualification and exact qualified seal, protected merge and landed smoke. Earlier outcomes remain preserved; unsupported dedicated purposes explain their limits. Physical/native, field, assistive-technology and product-owner acceptance remain separate.
+PR #776 remains the sole combined Studio integration candidate. Its tested source
+`abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096` includes accepted main
+`bbdd5412b842e1984c131398f23b6a3ccacb01ff`. All four desktop/mobile,
+normal/reduced SC02 contexts passed in hosted capture `40056411611`; that whole
+capture subsequently failed at Admin identity continuity. The scoped correction
+keeps the canonical operator visible on mobile and fits moderation controls and
+consequence previews to the screen. A fresh production build and ten focused
+Admin contexts pass with zero failures, skips or flaky results, retaining the
+original outcomes, account return, motion and accessibility requirements.
+
+Full capture `40064951146` on documentation descendant `f5221fe8` completed
+62 contexts before an empty-library workspace journey found two exact
+`Create Chronicle` links. Its owned cleanup passed; the failure was not a timeout.
+The empty-state shortcut now says `Create your first Chronicle`, preserving the
+standard navigation action and both destinations. A component negative control
+reproduced the ambiguity; four focused component/copy tests pass after the
+correction. All governed journey and outcome requirements remain unchanged.
+
+The authoritative plan still requires 32 contracts and 118 contexts. Fresh full
+capture, independent rendered review 3, ordinary protected qualification, normal
+merge and landed product smoke remain pending. Existing component, Studio and
+Crossdeck evidence retains its producing source and limits. The
+[current verification record](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)
+preserves every original failed capture and diagnostic, including the corrected
+harness's six-pass/four-rate-limit-failure predecessor. These local corrections
+do not promote feature availability, physical/browser AR accuracy, native delivery,
+field reliability or owner acceptance.
+
+The software-qualified Crossdeck refit connects a phone from the active Chronicle
+and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact
+and restricted crew views. Contextual pairing, acknowledged handoff, continuation
+and recovery retain the authorized Voyage. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721)
+landed normally on protected main at `aaff9194` after successful
+[R26 qualification](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105)
+and independent landed documentation, Feature Catalog and evidence smoke. The
+[R11 source record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md),
+original captures/reviews and consumed failures remain historical, source-bound
+evidence. Unsupported dedicated purposes explain their limits. Physical/native,
+field, assistive-technology and product-owner acceptance remain separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

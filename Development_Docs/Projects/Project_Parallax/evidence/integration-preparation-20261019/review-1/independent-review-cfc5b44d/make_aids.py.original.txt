@@ -1,0 +1,25 @@
+import json, hashlib
+from pathlib import Path
+from PIL import Image, ImageOps, ImageDraw
+root=Path(r'D:\CodexTemp\parallax-integration-20261019-01a15554\review-cfc5b44d')
+out=Path(r'D:\CodexTemp\parallax-integration-20261019-01a15554\independent-review-cfc5b44d')
+p=json.loads((root/'packet.json').read_text(encoding='utf-8-sig'))
+rows=[]; failures=[]; png=[]
+for i,m in enumerate(p['media'],1):
+ f=Path(m['file']); actual=hashlib.sha256(f.read_bytes()).hexdigest(); ok=actual==m['sha256']
+ if not ok: failures.append(m['relative'])
+ row={'id':f'M{i:03}', 'relative':m['relative'], 'sha256':actual,'bindingValid':ok,'bytes':f.stat().st_size}
+ if f.suffix.lower()=='.png':
+  im=Image.open(f); row['size']=im.size; png.append((row,f))
+ rows.append(row)
+(out/'inventory.json').write_text(json.dumps({'packetSha256':hashlib.sha256((root/'packet.json').read_bytes()).hexdigest(),'media':rows,'mismatches':failures},indent=2))
+for start in range(0,len(png),16):
+ sheet=Image.new('RGB',(1920,1320),'#e7eaf0'); d=ImageDraw.Draw(sheet)
+ for j,(row,f) in enumerate(png[start:start+16]):
+  x=(j%4)*480; y=(j//4)*330
+  im=Image.open(f).convert('RGB'); im.thumbnail((468,285)); sheet.paste(im,(x+(480-im.width)//2,y))
+  name=f.name
+  d.text((x+7,y+288),row['id']+' '+name[:60],fill='black')
+  if len(name)>60: d.text((x+7,y+304),name[60:120],fill='black')
+ sheet.save(out/f'contact-{start//16+1:02}.jpg',quality=90)
+print(json.dumps({'media':len(rows),'png':len(png),'webm':sum(x['relative'].endswith('.webm') for x in rows),'mismatches':failures,'contactSheets':(len(png)+15)//16}))

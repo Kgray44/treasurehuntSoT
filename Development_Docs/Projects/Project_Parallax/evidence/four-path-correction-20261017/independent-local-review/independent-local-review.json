@@ -1,0 +1,965 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent-local-rendered-experience-review",
+  "reviewerContext": "isolated subagent /root/isolated_phone_review; new finite four-path review",
+  "source": "3dedbb9cd10e548d10d58bddef6d48c1823f54e5",
+  "createdAt": "2026-10-17T16:05:12.831265+00:00",
+  "objective": "Creator completes existing construction, direct-placement, exclusion, and parametric-room journeys through current Properties and Spatial context with readable selected-item headings, reachable phone controls, and Save draft; preserve viewport geometry, cancellation, Undo, saved reload, active selection, and existing visual design.",
+  "scope": "Only the four archived current-source journeys in this packet. Prior 41b phone and 673 Library reviews remain separate continuity references and are not rebound. The independent eleven-case batch is excluded.",
+  "reviewOrder": "Inspected all 23 PNGs and complete-duration samples of all four videos before reading run/direct-placement receipts or test results. No implementation source or builder rationale was inspected.",
+  "result": "NO_ACTIONABLE_FINDING_WITHIN_FINITE_REVIEW_SCOPE",
+  "actionableFindings": [],
+  "inspectedMedia": [
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\construction-corrected-reloaded-phone.png",
+      "sha256": "5e442f4b60e4d1f01639adc166f22aa2c8c3f2645e310faff514eee171117ac6"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\construction-scale-review-phone.png",
+      "sha256": "9d8c8024f4c5b6cf8cf648a94c898efe824c7254cf96c3b678267980e69d4aa4"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\construction-wall-and-scale-findings.png",
+      "sha256": "4ecd70eac8066fbb77fb8e6cca4bdecf5991b896541ab51b60afce216b21ced8"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\direct-clamp-held-preview.png",
+      "sha256": "1e2de682fddea6eca6d49155d458e8c25e62998f0911735fc16ccc505776381d"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\direct-clamped-release.png",
+      "sha256": "4a4d28b09d11cf5f8c989d84ff43288520628b79ffbea4a612ecf3dbd08eb366"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\direct-free-held-preview.png",
+      "sha256": "aca2c779ed1747463a75bc1947775fbc5b89484add60a6e2055e2feb8deea182"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\direct-free-release.png",
+      "sha256": "f5f28612677f369be862cce98fc9df99a75b700bf891c6165b95f467b9e3b072"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\direct-pointer-cancel-restored.png",
+      "sha256": "d017cde8c5b23712cda3b93d138274e11e7b242196d4407b496ce8a8d21f75f0"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\direct-viewport-selection.png",
+      "sha256": "747994d14e745f6b8d5c6322441cdb8236bc315cdf75e1d046b7e0d56401928c"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\exclusion-automatic.png",
+      "sha256": "718cfcc2991537cdde6ecfde3eb83d2b5a73d442ac500d54e2f454d539bbe21d"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\exclusion-deleted.png",
+      "sha256": "7bda070a9a149022e1f247eade1a00e5edb0f90bc62cc33182d8920f69bc0071"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\exclusion-edited.png",
+      "sha256": "da28eba521a3c48d37df63d4a4312ca74591f5a5e89b5daa4cbb3ac41563b9da"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\exclusion-light-reduced-motion.png",
+      "sha256": "f13c776e1f87de0f771f944d387f688d706d85e14017f5593f3f367c7dcd730d"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\exclusion-live-move.png",
+      "sha256": "57019a9dbeac74886a2bfae5bc8a32a3ba971ab2855054a95012760d0ebd36ec"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\exclusion-normal-scene.png",
+      "sha256": "d8557d7d0d8399f2cdf5a825a9e5ae6062f737e1d780b114a4a6cea9281a7ee8"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\exclusion-phone-edited.png",
+      "sha256": "92f26fb55b4787bed433ed604efb8455ec06630df8b7e5ab6e7d680ada983277"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parametric-bound-rebuild-protected.png",
+      "sha256": "c187349becf39a9c00fc92ab9c08aabaf39b5650b9606907ce2be70eee70b0ef"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parametric-bound-support-protected.png",
+      "sha256": "be13a6e19942b62fbd7ebf9746084e05e306f0d976dc13aa8f21fffecfd49cc5"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parametric-known-measurement.png",
+      "sha256": "dcd3285d241b127cfd1383a9c2ff50d2e51fd7ffd823a397fcfc8acd1f20c01d"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parametric-phone-feature.png",
+      "sha256": "5809ad971e5fe3ea9c4c75b1311798574bc2e674dabdb917146d138dc999d281"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parametric-phone-reloaded.png",
+      "sha256": "0d9cb2fc1c0fcc56c5edf9f02e9e8c710cc923f43e1e4c649e19ae3ec9e88a59"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parametric-rebuilt-sofa.png",
+      "sha256": "65e97032bd53f3c82f80b9c2f20a4b142f11259885fdba567912d0bfae1dac9b"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parametric-restored-room.png",
+      "sha256": "2ee7b1654c496211baf200dd04859863ecb648df7bd40c83f78e7bacc7c8fea5"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "sha256": "9aec4089ade269f9d29bfcae53a110862eb7ecbf8865eff766f524419e55fde3"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "sha256": "e378114139395fe97ccfc44c2263f91f4570c21d411bc8e7314418e5f124097d"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "sha256": "22bc983ad19b4f83422a98d3a967d89328adc71677f39c754251d242511ff730"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-video.webm",
+      "sha256": "8ce3b3ec55f3adc2e39d133bcb44d52d482f4b37ac43031433a26e4716a0caf1"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\direct-placement-proof.json",
+      "sha256": "708dbbdab2c7050d9e5a3c9c28b30811bde90fcee4930578c673bb1505b41289"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\originals\\run-artifacts\\run.json",
+      "sha256": "fd4b1fadc2348b1f35de025d51e5af4203c423fec0776e671e88edbafef8bd18"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160140-dbffe535\\playwright-results.json",
+      "sha256": "3b5d9fce8b163499f4c9ee759716a7feb711684dbb089de1de5cf5a7a52495f3"
+    }
+  ],
+  "samplingCoverage": [
+    {
+      "video": 1,
+      "fps": 25,
+      "durationSeconds": 8.48,
+      "decodedFrames": 212,
+      "sampledFrames": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51,
+        56,
+        61,
+        66,
+        71,
+        76,
+        81,
+        86,
+        91,
+        96,
+        101,
+        106,
+        111,
+        116,
+        121,
+        126,
+        131,
+        136,
+        141,
+        146,
+        151,
+        156,
+        161,
+        166,
+        171,
+        176,
+        181,
+        186,
+        191,
+        196,
+        201,
+        206,
+        211,
+        212
+      ],
+      "sampledTimesSeconds": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0,
+        1.2,
+        1.4,
+        1.6,
+        1.8,
+        2.0,
+        2.2,
+        2.4,
+        2.6,
+        2.8,
+        3.0,
+        3.2,
+        3.4,
+        3.6,
+        3.8,
+        4.0,
+        4.2,
+        4.4,
+        4.6,
+        4.8,
+        5.0,
+        5.2,
+        5.4,
+        5.6,
+        5.8,
+        6.0,
+        6.2,
+        6.4,
+        6.6,
+        6.8,
+        7.0,
+        7.2,
+        7.4,
+        7.6,
+        7.8,
+        8.0,
+        8.2,
+        8.4,
+        8.44
+      ],
+      "cadenceSeconds": 0.2,
+      "sampleCount": 44
+    },
+    {
+      "video": 2,
+      "fps": 25,
+      "durationSeconds": 8.56,
+      "decodedFrames": 214,
+      "sampledFrames": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51,
+        56,
+        61,
+        66,
+        71,
+        76,
+        81,
+        86,
+        91,
+        96,
+        101,
+        106,
+        111,
+        116,
+        121,
+        126,
+        131,
+        136,
+        141,
+        146,
+        151,
+        156,
+        161,
+        166,
+        171,
+        176,
+        181,
+        186,
+        191,
+        196,
+        201,
+        206,
+        211,
+        214
+      ],
+      "sampledTimesSeconds": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0,
+        1.2,
+        1.4,
+        1.6,
+        1.8,
+        2.0,
+        2.2,
+        2.4,
+        2.6,
+        2.8,
+        3.0,
+        3.2,
+        3.4,
+        3.6,
+        3.8,
+        4.0,
+        4.2,
+        4.4,
+        4.6,
+        4.8,
+        5.0,
+        5.2,
+        5.4,
+        5.6,
+        5.8,
+        6.0,
+        6.2,
+        6.4,
+        6.6,
+        6.8,
+        7.0,
+        7.2,
+        7.4,
+        7.6,
+        7.8,
+        8.0,
+        8.2,
+        8.4,
+        8.52
+      ],
+      "cadenceSeconds": 0.2,
+      "sampleCount": 44
+    },
+    {
+      "video": 3,
+      "fps": 25,
+      "durationSeconds": 11.56,
+      "decodedFrames": 289,
+      "sampledFrames": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51,
+        56,
+        61,
+        66,
+        71,
+        76,
+        81,
+        86,
+        91,
+        96,
+        101,
+        106,
+        111,
+        116,
+        121,
+        126,
+        131,
+        136,
+        141,
+        146,
+        151,
+        156,
+        161,
+        166,
+        171,
+        176,
+        181,
+        186,
+        191,
+        196,
+        201,
+        206,
+        211,
+        216,
+        221,
+        226,
+        231,
+        236,
+        241,
+        246,
+        251,
+        256,
+        261,
+        266,
+        271,
+        276,
+        281,
+        286,
+        289
+      ],
+      "sampledTimesSeconds": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0,
+        1.2,
+        1.4,
+        1.6,
+        1.8,
+        2.0,
+        2.2,
+        2.4,
+        2.6,
+        2.8,
+        3.0,
+        3.2,
+        3.4,
+        3.6,
+        3.8,
+        4.0,
+        4.2,
+        4.4,
+        4.6,
+        4.8,
+        5.0,
+        5.2,
+        5.4,
+        5.6,
+        5.8,
+        6.0,
+        6.2,
+        6.4,
+        6.6,
+        6.8,
+        7.0,
+        7.2,
+        7.4,
+        7.6,
+        7.8,
+        8.0,
+        8.2,
+        8.4,
+        8.6,
+        8.8,
+        9.0,
+        9.2,
+        9.4,
+        9.6,
+        9.8,
+        10.0,
+        10.2,
+        10.4,
+        10.6,
+        10.8,
+        11.0,
+        11.2,
+        11.4,
+        11.52
+      ],
+      "cadenceSeconds": 0.2,
+      "sampleCount": 59
+    },
+    {
+      "video": 4,
+      "fps": 25,
+      "durationSeconds": 10.52,
+      "decodedFrames": 263,
+      "sampledFrames": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        31,
+        36,
+        41,
+        46,
+        51,
+        56,
+        61,
+        66,
+        71,
+        76,
+        81,
+        86,
+        91,
+        96,
+        101,
+        106,
+        111,
+        116,
+        121,
+        126,
+        131,
+        136,
+        141,
+        146,
+        151,
+        156,
+        161,
+        166,
+        171,
+        176,
+        181,
+        186,
+        191,
+        196,
+        201,
+        206,
+        211,
+        216,
+        221,
+        226,
+        231,
+        236,
+        241,
+        246,
+        251,
+        256,
+        261,
+        263
+      ],
+      "sampledTimesSeconds": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0,
+        1.2,
+        1.4,
+        1.6,
+        1.8,
+        2.0,
+        2.2,
+        2.4,
+        2.6,
+        2.8,
+        3.0,
+        3.2,
+        3.4,
+        3.6,
+        3.8,
+        4.0,
+        4.2,
+        4.4,
+        4.6,
+        4.8,
+        5.0,
+        5.2,
+        5.4,
+        5.6,
+        5.8,
+        6.0,
+        6.2,
+        6.4,
+        6.6,
+        6.8,
+        7.0,
+        7.2,
+        7.4,
+        7.6,
+        7.8,
+        8.0,
+        8.2,
+        8.4,
+        8.6,
+        8.8,
+        9.0,
+        9.2,
+        9.4,
+        9.6,
+        9.8,
+        10.0,
+        10.2,
+        10.4,
+        10.48
+      ],
+      "cadenceSeconds": 0.2,
+      "sampleCount": 54
+    }
+  ],
+  "sampleCount": 201,
+  "samplingMethod": "Decoded all 978 frames of the four 25fps recordings. Visually inspected every fifth frame at 0.2s cadence plus each final frame, including initial loading, actual geometry edits, pointer feedback/cancellation, selection, form edits, Save draft, reload, Light/reduced-motion, phone resize/scroll, and restored final states. Durations 8.48s, 8.56s, 11.56s, 10.52s; total 39.12s.",
+  "dimensionObservations": [
+    {
+      "dimension": "composition",
+      "observation": "The existing desktop composition remains a broad rendered Scene with tool rail and Properties/Spatial context sidebar. Phone editing uses the available central column between compact rails; construction, exclusion, and parametric fields stack without visible horizontal document spill. The direct-placement preview and selected-object strip remain within the canvas.",
+      "evidence": [
+        "direct-clamp-held-preview.png",
+        "construction-corrected-reloaded-phone.png",
+        "exclusion-phone-edited.png",
+        "parametric-phone-feature.png"
+      ],
+      "unobserved": "No whole-Studio or arbitrary simultaneous-panel-layout audit.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "hierarchy",
+      "observation": "Properties identifies the selected item as Table clue, Second clue, reference desk, or Reading seat; Spatial context identifies the room before construction tools. On phone the Room feature classification, Reading seat/Window reading sofa heading, selector, and name field agree. Construction headings distinguish correction, review, and zero findings.",
+      "evidence": [
+        "direct-viewport-selection.png",
+        "parametric-bound-support-protected.png",
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "construction-wall-and-scale-findings.png",
+        "construction-corrected-reloaded-phone.png"
+      ],
+      "unobserved": "Names under unusually long content or localization are unobserved.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "typography",
+      "observation": "Current native-size phone PNGs show readable selected-feature headings and field values. The renamed Window reading sofa fits on one heading line and remains readable in its selector/name field. Construction finding copy wraps within its card, including numeric units. Desktop selected-item names and protection instructions are legible.",
+      "evidence": [
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "construction-scale-review-phone.png",
+        "parametric-bound-rebuild-protected.png"
+      ],
+      "unobserved": "No text zoom, alternate font load, translation, or quantitative readability assessment.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "spacing",
+      "observation": "Phone Properties leaves clear gaps between labels, fields, rebuild/remove actions, and explanatory copy. The Spatial context construction card is padded and its reference-desk action stays inside it. Desktop canvas overlays remain away from the main selected object in the supplied views.",
+      "evidence": [
+        "exclusion-phone-edited.png",
+        "parametric-phone-feature.png",
+        "construction-scale-review-phone.png",
+        "direct-clamped-release.png"
+      ],
+      "unobserved": "Touch comfort, large font settings, and every scroll position were not tested.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "controls",
+      "observation": "The supplied journeys visibly reach room-feature selection, numeric fields, rebuild/remove, scale measurement, and Scene actions/Save draft. Direct manipulation uses a highlighted receiving surface/outline while held, clamped release, free release, pointer cancellation, and a directly selected second clue. Phone editing reaches Properties fields and current Spatial context construction checks.",
+      "evidence": [
+        "direct-clamp-held-preview.png",
+        "direct-clamped-release.png",
+        "direct-free-release.png",
+        "direct-pointer-cancel-restored.png",
+        "direct-viewport-selection.png",
+        "parametric-known-measurement.png",
+        "video1-sheet2.jpg",
+        "video3-sheet3.jpg",
+        "video4-sheet2.jpg",
+        "video4-sheet3.jpg"
+      ],
+      "unobserved": "Command internals, every disabled-control event path, all touch targets, and full keyboard completion are not independently qualified.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "contrast",
+      "observation": "Dark and Light screenshots retain distinguishable text, field borders, selected blue outlines, and active tool states. Phone focused name fields show a prominent pale-blue outline. Exclusion-zone wireframes and selected gizmos remain visible over room geometry in the supplied editing views.",
+      "evidence": [
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "exclusion-light-reduced-motion.png",
+        "exclusion-edited.png"
+      ],
+      "unobserved": "No numeric contrast test or color-vision/brightness simulation. Existing small preview-quality label has limited visual contrast over pale geometry, but it is unchanged contextual debt outside the bounded correction and no blocked required action is observed.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "consistency",
+      "observation": "Properties, Spatial context, phone rails, field forms, and Scene identity banners retain the existing dark/Light Studio language. Room-feature naming is consistent across heading, selector, live form, and post-reload phone state. Direct placement uses the same selected-object outline and Properties structure as other editing.",
+      "evidence": [
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "direct-viewport-selection.png",
+        "construction-corrected-reloaded-phone.png",
+        "exclusion-light-reduced-motion.png"
+      ],
+      "unobserved": "Preservation is judged from supplied current media and earlier continuity references only, not a pixel-matched source baseline.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "states",
+      "observation": "Current media include unsaved edits, saved revisions, construction correction/review/passed findings, held placement preview, completed placement, restored cancellation, missing selection after deletion, protected attached support, ordinary scene without exclusion boxes, and reload preparation/restoration. These states are explicitly described rather than silently hidden.",
+      "evidence": [
+        "construction-wall-and-scale-findings.png",
+        "construction-corrected-reloaded-phone.png",
+        "direct-clamp-held-preview.png",
+        "direct-pointer-cancel-restored.png",
+        "exclusion-deleted.png",
+        "exclusion-normal-scene.png",
+        "parametric-bound-support-protected.png",
+        "parametric-restored-room.png"
+      ],
+      "unobserved": "Network/save failure, auth expiry, invalid numeric input, empty room-feature sets, and renderer failure recovery are not covered by this packet.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "responsive",
+      "observation": "Phone forms fit between the rails with reachable numeric/name fields, selected-item headings, Scene actions, and construction checks. The current recordings show the viewport returning to rendered geometry after phone resize/panel closure. No visible horizontal spill or collapsed-preview regression appears in the supplied phone views.",
+      "evidence": [
+        "construction-corrected-reloaded-phone.png",
+        "exclusion-phone-edited.png",
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "video1-sheet2.jpg",
+        "video1-sheet3.jpg",
+        "video3-sheet3.jpg",
+        "video4-sheet3.jpg"
+      ],
+      "unobserved": "Exact 370px canvas height is not freshly measured in this packet: no current layout receipt is present, and old 41b measurement is not rebound. Only supplied Chromium phone size is observed, without physical Safari, dynamic chrome, keyboard inset, landscape, or broad breakpoint coverage.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "keyboard",
+      "observation": "The phone recordings show fields being edited and the focused field state, while the desktop Scene graph includes selection shortcut guidance. Numeric/text input controls are visibly available. These pixels do not establish the input mechanism or keyboard traversal success.",
+      "evidence": [
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "direct-viewport-selection.png",
+        "video1-sheet2.jpg",
+        "video3-sheet3.jpg"
+      ],
+      "unobserved": "Tab/arrow order, activation shortcuts, Escape semantics, screen-reader names, focus traps, and all-keyboard completion are unobserved.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "focus",
+      "observation": "Phone feature-name fields have a strong focus outline before and after rename/reload; exclusion room-feature selector and numeric fields also show distinct focused states in the recorded sequence. This makes the active edit location visible when sampled.",
+      "evidence": [
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "exclusion-light-reduced-motion.png",
+        "video3-sheet2.jpg",
+        "video3-sheet3.jpg"
+      ],
+      "unobserved": "Focus arrival, keyboard-only visibility, restoration after Save draft or panel changes, and programmatic focus semantics are not proven.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "feedback",
+      "observation": "Direct placement footer text differentiates held preview, snapped/aligned release, free placement, and transform edited with Undo available. Construction copy clearly separates correction from scale review and preserves physical/visual review obligations even at zero findings. The bound-desk warning explains why objects must move before rebuild/removal. Save/reload is reflected in visible revision/name states.",
+      "evidence": [
+        "direct-clamp-held-preview.png",
+        "direct-clamped-release.png",
+        "direct-free-held-preview.png",
+        "direct-free-release.png",
+        "construction-wall-and-scale-findings.png",
+        "construction-corrected-reloaded-phone.png",
+        "parametric-bound-rebuild-protected.png",
+        "parametric-phone-reloaded.png"
+      ],
+      "unobserved": "Live announcements, failure latency, transient toast timing, and every disabled action explanation are unobserved.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "motion",
+      "observation": "All four complete recordings were inspected at 0.2s cadence plus final frames (201 samples spanning 39.12s). Receiving-surface feedback changes during drag, then settles on release; cancellation clears the temporary preview. Exclusion transform/edit/delete and Light reduced-motion phone transition retain visible geometry. Reload preparation returns to rendered rooms and phone panels without an observed persistent blank or displaced layout.",
+      "evidence": [
+        "video1-sheet1.jpg",
+        "video1-sheet2.jpg",
+        "video1-sheet3.jpg",
+        "video2-sheet1.jpg",
+        "video2-sheet2.jpg",
+        "video2-sheet3.jpg",
+        "video3-sheet1.jpg",
+        "video3-sheet2.jpg",
+        "video3-sheet3.jpg",
+        "video4-sheet1.jpg",
+        "video4-sheet2.jpg",
+        "video4-sheet3.jpg",
+        "exclusion-light-reduced-motion.png"
+      ],
+      "unobserved": "5Hz sampling cannot exclude sub-200ms artifacts or measure frame rate, continuous smoothness, OS reduced-motion response, or physical-device motion comfort.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "continuity",
+      "observation": "Construction correction survives save/reload and returns to zero findings. Direct placement preserves selected object identity through held/free/cancelled states and the second clue becomes selected through viewport interaction. Parametric room keeps its sofa and attached desk through reload; Reading seat becomes Window reading sofa and remains the active feature after a subsequent phone reload. Exclusion edits persist while ordinary rendering removes editing-only boxes.",
+      "evidence": [
+        "construction-corrected-reloaded-phone.png",
+        "direct-pointer-cancel-restored.png",
+        "direct-viewport-selection.png",
+        "parametric-restored-room.png",
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "exclusion-normal-scene.png",
+        "video3-sheet3.jpg"
+      ],
+      "unobserved": "Concurrent edits, multi-session persistence, offline continuity, and all undo history boundaries remain untested by the reviewer.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "complexity",
+      "observation": "Properties now presents the selected object/room-feature identity before editing controls; Spatial context contains room-level construction checks. Numeric coordinates are shown in Engineering mode. The supplied forms remain long but are grouped and scrollable, and the observed journeys reach their controls without introducing a parallel workflow.",
+      "evidence": [
+        "parametric-phone-feature.png",
+        "parametric-phone-reloaded.png",
+        "construction-corrected-reloaded-phone.png",
+        "direct-viewport-selection.png",
+        "exclusion-light-reduced-motion.png"
+      ],
+      "unobserved": "This is not a novice usability study, whole-Studio simplification audit, or all-modes certification.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "role-outcomes",
+      "observation": "The four bounded synthetic Creator journeys are represented end-to-end: construction correction/review/save/reload; direct clamp/free/cancel/select; exclusion manipulation/deletion/ordinary rendering; and parametric rebuild/protected support/scale/save/reload/phone rename. Readable phone selected-item headings and reachable controls are visible. Supporting local results report four expected passes with no skipped case.",
+      "evidence": [
+        "construction-corrected-reloaded-phone.png",
+        "direct-viewport-selection.png",
+        "exclusion-phone-edited.png",
+        "exclusion-normal-scene.png",
+        "parametric-phone-reloaded.png",
+        "video1-sheet3.jpg",
+        "video2-sheet3.jpg",
+        "video3-sheet3.jpg",
+        "video4-sheet3.jpg",
+        "playwright-results.json"
+      ],
+      "unobserved": "Local rendered critique and local test pass do not confer physical tracking, protected qualification, trusted capture, whole-Studio readiness, or owner acceptance. Exact current viewport height needs its own metric evidence.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "fallbacks",
+      "observation": "Deletion exposes a missing-selection explanation with Undo last edit and alternate selection paths. Bound-support copy tells the Creator to move an attached object before rebuilding/removing its support. Pointer cancellation returns the clue to the prior visible pose and clears preview. Construction results explicitly retain physical/visual review work after software checks pass.",
+      "evidence": [
+        "exclusion-deleted.png",
+        "parametric-bound-support-protected.png",
+        "direct-pointer-cancel-restored.png",
+        "construction-corrected-reloaded-phone.png",
+        "direct-placement-proof.json"
+      ],
+      "unobserved": "No save failure, unavailable renderer, empty fallback, screen-reader fallback, no safe placement surface, or retry failure was supplied.",
+      "actionableFinding": false
+    }
+  ],
+  "supportingTestOutcomes": [
+    {
+      "title": "Creator follows exact construction findings, corrects wall orientation and reviews miniature scale through save and reload",
+      "file": "parallax-construction-checks.spec.ts",
+      "ok": true,
+      "tests": [
+        {
+          "expectedStatus": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 7478,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Creator sees a receiving surface during real dragging, clamps on release, freely positions with clamping off and selects directly in the viewport",
+      "file": "parallax-direct-placement.spec.ts",
+      "ok": true,
+      "tests": [
+        {
+          "expectedStatus": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 8171,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Environment zones use real gizmos, retain edits and deletion, and disappear from ordinary scene rendering",
+      "file": "parallax-exclusion-zones.spec.ts",
+      "ok": true,
+      "tests": [
+        {
+          "expectedStatus": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 8886,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Creator adds and rebuilds actual furniture, protects a bound desk, corrects scale and retains the room through reload and phone edits",
+      "file": "parallax-parametric-room.spec.ts",
+      "ok": true,
+      "tests": [
+        {
+          "expectedStatus": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 9148,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "runReceipt": {
+    "schemaVersion": 1,
+    "candidate": "3dedbb9cd10e548d10d58bddef6d48c1823f54e5",
+    "tree": "447cd42aaa723daa0d58e45c52c5bb721526b209",
+    "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+    "provider": "SYNTHETIC_UNPAID",
+    "startedAt": "2026-10-17T16:01:41.197Z",
+    "finishedAt": "2026-10-17T16:02:54.803Z",
+    "exitCode": 0,
+    "sourceBinding": "VALID",
+    "recordings": [
+      {
+        "file": "parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+        "sha256": "9aec4089ade269f9d29bfcae53a110862eb7ecbf8865eff766f524419e55fde3"
+      },
+      {
+        "file": "parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+        "sha256": "e378114139395fe97ccfc44c2263f91f4570c21d411bc8e7314418e5f124097d"
+      },
+      {
+        "file": "parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+        "sha256": "22bc983ad19b4f83422a98d3a967d89328adc71677f39c754251d242511ff730"
+      },
+      {
+        "file": "parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-video.webm",
+        "sha256": "8ce3b3ec55f3adc2e39d133bcb44d52d482f4b37ac43031433a26e4716a0caf1"
+      }
+    ]
+  },
+  "limitations": [
+    "Supporting independent LOCAL critique only, not trusted/formal Sounding Line capture or qualification, protected integration, whole-Studio acceptance, owner acceptance, or physical validation.",
+    "No fresh exact 370px height measurement in current packet; old 41b metric is not source-bound to this review. Current phone recordings visually preserve a substantial rendered preview.",
+    "Screenshots/sampled video cannot prove keyboard, assistive-technology, physical iPhone/Safari, AR tracking, GPU, or human usability outcomes.",
+    "Run receipt says sourceBinding VALID and hashes are recorded; this reviewer did not build or independently attest the production source.",
+    "Owned cleanup/source-clean PASS were supplied by the parent as supporting outcomes; cleanup internals were not independently inspected.",
+    "No repository modification, server launch, protected workflow, or native-chat contact.",
+    "No before/after pixel baseline; existing design preservation is assessed through current media and remembered continuity references only."
+  ],
+  "reviewArtifacts": [
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video1-sheet1.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video1-sheet2.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video1-sheet3.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video2-sheet1.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video2-sheet2.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video2-sheet3.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video3-sheet1.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video3-sheet2.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video3-sheet3.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video4-sheet1.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video4-sheet2.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\video4-sheet3.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\four-path-review-3ded\\sampling.json"
+  ]
+}

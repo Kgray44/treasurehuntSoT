@@ -48,6 +48,742 @@
   padding: 24px;
   font-family: Arial, Helvetica, sans-serif;
 }
+.groupDialog {
+  width: min(720px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 18px;
+  color: var(--studio-text);
+  background: var(--studio-panel);
+  box-shadow: 0 20px 70px var(--studio-shadow);
+}
+.libraryFilters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.savedDefinitionTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.versionList {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0;
+}
+.versionList article {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--studio-border);
+  border-radius: 14px;
+  background: var(--studio-raised);
+}
+.versionPreview {
+  height: 440px;
+}
+.environmentWorkspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(270px, 340px);
+  gap: 16px;
+  min-height: 70vh;
+}
+.environmentWorkspace > aside {
+  max-height: 75vh;
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--studio-border);
+  border-radius: 16px;
+}
+.environmentWorkspace > section {
+  height: max(580px, calc(100dvh - 240px));
+  min-width: 0;
+}
+.environmentWorkspace .canvas {
+  height: 100%;
+  min-height: 0;
+}
+@media (max-width: 780px) {
+  .environmentWorkspace {
+    grid-template-columns: 1fr;
+  }
+  .environmentWorkspace > section {
+    height: 520px;
+    min-height: 520px;
+  }
+  .environmentWorkspace > aside {
+    max-height: none;
+  }
+  .libraryFilters {
+    grid-template-columns: 1fr;
+  }
+  .versionPreview {
+    height: 320px;
+  }
+}
+.environmentLibraryHeader,
+.environmentDialog header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.environmentLibraryHeader h3 {
+  margin: 12px 0;
+}
+.environmentDialog {
+  width: min(880px, calc(100vw - 24px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 22px;
+  padding: 24px;
+  background: var(--studio-panel);
+  color: var(--studio-text);
+  box-shadow: 0 24px 80px var(--studio-shadow);
+}
+.environmentDialog::backdrop {
+  background: #051023b8;
+  backdrop-filter: blur(4px);
+}
+.environmentDialog header {
+  margin-bottom: 24px;
+  position: sticky;
+  top: -24px;
+  padding: 12px 0;
+  background: var(--studio-panel);
+  z-index: 5;
+}
+.environmentDialog h2 {
+  margin: 6px 0 0;
+  font-size: 24px;
+}
+.environmentDialog small {
+  color: var(--studio-muted);
+}
+.environmentChoices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.environmentChoices > button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  text-align: left;
+  padding: 24px 18px;
+  min-height: 185px;
+  border-radius: 16px;
+  background: var(--studio-raised);
+}
+.environmentChoices svg {
+  width: 26px;
+  height: 26px;
+  color: var(--studio-accent);
+}
+.environmentChoices span {
+  color: var(--studio-muted);
+  line-height: 1.6;
+}
+.environmentPicker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+.environmentPicker > button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  padding: 16px;
+  border-radius: 14px;
+}
+.environmentPicker span {
+  display: grid;
+  gap: 6px;
+}
+.photoSteps {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+  color: var(--studio-accent);
+  font-size: 12px;
+}
+.photoWizard {
+  display: grid;
+  gap: 14px;
+  line-height: 1.6;
+}
+.photoWizard p {
+  margin: 0;
+}
+.photoWizard fieldset {
+  border: 1px solid var(--studio-border);
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.photoWizard label {
+  display: block;
+}
+.photoWizard input[type="file"] {
+  display: block;
+  margin-top: 10px;
+  padding: 20px 12px;
+  border: 1px dashed var(--studio-border-strong);
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.photoThumbnails {
+  display: flex;
+  gap: 12px;
+}
+.photoThumbnails figure {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+.photoThumbnails img {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: var(--studio-background);
+}
+.photoThumbFrame {
+  position: relative;
+  height: 130px;
+}
+.photoThumbnails figcaption {
+  font-size: 12px;
+  color: var(--studio-muted);
+}
+.photoProgress {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--studio-raised);
+}
+.photoProgress button {
+  margin-left: auto;
+}
+.photoSpinner {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  border: 2px solid var(--studio-border-strong);
+  border-top-color: var(--studio-accent);
+  border-radius: 50%;
+  animation: photoThinking 1s linear infinite;
+}
+@keyframes photoThinking {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.roomDemo {
+  margin: 16px 0 24px;
+}
+.roomDemo > section {
+  height: 360px;
+  min-height: 0;
+}
+.roomDemo h3 {
+  margin: 0 0 8px;
+}
+.roomDemo p {
+  color: var(--studio-muted);
+  font-size: 12px;
+}
+.roomPreviewCanvas .viewportTools,
+.roomPreviewCanvas .selectionInstrument,
+.roomPreviewCanvas .viewportFooter,
+.roomPreviewCanvas .canvasHint,
+.roomPreviewCanvas .keyboardObjects,
+.roomPreviewCanvas .viewportBadge {
+  display: none;
+}
+.photoWizard > section[aria-label="Proposed room"] {
+  display: grid;
+  gap: 14px;
+}
+.photoWizard > section[aria-label="Proposed room"] h3 {
+  margin: 0;
+}
+.photoWizard > section[aria-label="Proposed room"] details {
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  padding: 12px;
+}
+.studio .environmentDialog {
+  width: min(760px, calc(100vw - 32px));
+  padding: 28px;
+}
+.studio .environmentDialog header {
+  margin-bottom: 18px;
+  padding: 0 0 18px;
+  top: -28px;
+  border-bottom: 1px solid var(--studio-border);
+}
+.studio .environmentDialog header h2 {
+  font-size: 25px;
+  letter-spacing: -0.035em;
+  margin: 6px 0 0;
+  font-weight: 650;
+}
+.studio .environmentDialog header > button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  flex: none;
+}
+.photoSteps {
+  margin: 0 0 24px;
+  gap: 0;
+}
+.photoSteps li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--studio-muted);
+  flex: 1;
+}
+.photoSteps li:not(:last-child)::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  margin: 0 12px;
+  background: var(--studio-border);
+}
+.photoSteps li > span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--studio-border);
+  border-radius: 50%;
+  flex: none;
+}
+.photoSteps li[aria-current="step"] {
+  color: var(--studio-text);
+}
+.photoSteps li[aria-current="step"] > span {
+  background: var(--studio-primary);
+  color: var(--studio-on-accent);
+  border-color: transparent;
+}
+.photoWizard .photoIntro {
+  color: var(--studio-muted);
+  font-size: 14px;
+  max-width: 52ch;
+  margin-bottom: 18px;
+}
+.photoWizard .photoUpload {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  gap: 18px;
+}
+.photoVisuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.photoWizard .photoPicker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 100px;
+  border: 1px dashed var(--studio-border-strong);
+  border-radius: 16px;
+  background: var(--studio-raised);
+  color: var(--studio-accent);
+  cursor: pointer;
+}
+.photoPicker small {
+  font-size: 12px;
+}
+.photoWizard .photoPickerCompact {
+  min-height: 64px;
+}
+.photoPicker:has(input:focus-visible) {
+  outline: 2px solid var(--studio-focus);
+  outline-offset: 3px;
+}
+.photoWizard input.photoFileInput {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.photoThumbnails {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.photoThumbFrame {
+  height: 168px;
+  aspect-ratio: auto;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--studio-border);
+  background: var(--studio-background);
+}
+.photoThumbnails img {
+  height: 100%;
+  object-fit: contain;
+}
+.photoThumbnails figcaption {
+  padding-top: 6px;
+}
+.photoWizard .photoConsent {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+  color: var(--studio-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.photoConsent input {
+  margin: 4px 0 0;
+  accent-color: var(--studio-primary);
+}
+.photoPrivacy,
+.photoPermissions {
+  color: var(--studio-muted);
+  font-size: 12px;
+}
+.photoPrivacy summary,
+.photoPermissions summary {
+  cursor: pointer;
+  padding: 4px 0;
+}
+.photoPrivacy p,
+.photoPermissions p {
+  margin: 10px 0;
+}
+.studio .photoPrimary {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--studio-primary);
+  color: var(--studio-on-accent);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.studio .photoPrimary:disabled {
+  background: var(--studio-raised);
+  color: var(--studio-muted);
+}
+.photoFeedback {
+  display: flex;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--studio-warning);
+  border-radius: 16px;
+  background: var(--studio-raised);
+  animation: photoAppear 180ms ease-out;
+  overflow-wrap: anywhere;
+}
+.photoFeedback[data-outcome="CANCELLED"] {
+  border-color: var(--studio-border-strong);
+}
+.photoFeedbackIcon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--studio-warning-surface);
+  color: var(--studio-warning);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.studio .photoFeedback h3,
+.studio .photoBuilding h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  color: var(--studio-text);
+}
+.photoFeedback p {
+  font-size: 13px;
+  color: var(--studio-muted);
+}
+.photoFeedback details {
+  margin-top: 10px;
+  font-size: 12px;
+}
+.photoFeedback button {
+  margin-top: 12px;
+}
+.photoBuilding {
+  min-height: 285px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+  padding: 28px 18px;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at top, var(--studio-selected), var(--studio-panel) 70%);
+  animation: photoAppear 200ms ease-out;
+}
+.photoBuilding p,
+.photoBuilding small {
+  color: var(--studio-muted);
+  font-size: 12px;
+}
+.photoBuildTiming {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 20px;
+  padding: 10px 14px;
+  border: 1px solid var(--studio-border);
+  border-radius: 14px;
+  background: var(--studio-selected);
+  color: var(--studio-text);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.photoBuildTiming strong {
+  color: var(--studio-accent);
+  font-size: 15px;
+}
+.photoRoomThinking {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+}
+.photoRoomThinking span {
+  grid-area: 1 / 1;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--studio-accent);
+  border-radius: 8px;
+  transform: rotate(-30deg) skewY(16deg);
+  animation: photoRoomScan 2.4s ease-in-out infinite;
+}
+.photoRoomThinking span:nth-child(2) {
+  width: 64px;
+  height: 64px;
+  opacity: 0.5;
+  animation-delay: -0.8s;
+}
+.photoRoomThinking span:nth-child(3) {
+  width: 80px;
+  height: 80px;
+  opacity: 0.2;
+  animation-delay: -1.6s;
+}
+@keyframes photoRoomScan {
+  0%,
+  100% {
+    translate: 0 5px;
+  }
+  50% {
+    translate: 0 -5px;
+  }
+}
+@keyframes photoAppear {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photoSpinner,
+  .photoRoomThinking span,
+  .photoBuilding,
+  .photoFeedback {
+    animation: none;
+  }
+}
+@media (max-width: 700px) {
+  .environmentDialog {
+    padding: 16px;
+  }
+  .studio .environmentDialog {
+    width: calc(100vw - 24px);
+    padding: 18px;
+  }
+  .studio .environmentDialog header {
+    top: -18px;
+  }
+  .studio .environmentDialog header h2 {
+    font-size: 21px;
+  }
+  .photoThumbFrame {
+    height: 112px;
+  }
+  .environmentDialog header {
+    top: -16px;
+  }
+  .environmentChoices,
+  .environmentPicker {
+    grid-template-columns: 1fr;
+  }
+  .environmentChoices > button {
+    min-height: 0;
+    padding: 18px;
+    gap: 10px;
+  }
+  .environmentDialog h2 {
+    font-size: 20px;
+  }
+  .roomDemo > section {
+    height: 280px;
+  }
+}
+.groupDialog::backdrop {
+  background: #051023a8;
+  backdrop-filter: blur(3px);
+}
+.groupDialog form {
+  display: grid;
+  gap: 12px;
+}
+.groupDialog h2,
+.groupDialog p {
+  margin: 0;
+}
+.groupMemberLists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-height: 48dvh;
+  overflow: auto;
+}
+.groupMemberLists fieldset {
+  min-width: 0;
+  border: 1px solid var(--studio-border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.groupMemberLists label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+.groupMemberLists input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+.groupDialog footer,
+.groupActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.groupRows {
+  padding: 0;
+  list-style: none;
+}
+.graphReorderGrip {
+  cursor: grab;
+  touch-action: none;
+  opacity: 0.5;
+  margin-left: auto;
+}
+.graphReorderGrip svg {
+  width: 14px;
+  height: 14px;
+}
+.studio button[data-graph-dragging="true"] {
+  opacity: 0.35;
+  outline: 2px solid var(--studio-accent);
+}
+.graphDragGhost {
+  position: fixed;
+  z-index: 10000;
+  box-sizing: border-box;
+  pointer-events: none;
+  padding: 12px;
+  border: 1px solid #7cb5f5;
+  border-radius: 12px;
+  background: #163655;
+  color: #f0f7ff;
+  box-shadow: 0 8px 24px #0005;
+}
+.groupRows > li > button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  text-align: left;
+}
+.selectionHint {
+  color: var(--studio-muted);
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+.groupInspector {
+  padding: 12px;
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  margin: 12px 0;
+}
+.groupInspector fieldset {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  margin: 12px 0;
+}
+.groupVector {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.groupInspector .groupVector input {
+  min-width: 0;
+  width: 100%;
+}
+@media (max-width: 700px) {
+  .groupMemberLists {
+    grid-template-columns: 1fr;
+  }
+  .groupDialog {
+    padding: 16px;
+  }
+}
 .adaptive {
   border-bottom: 1px solid var(--line);
   padding-bottom: 16px;
@@ -720,6 +1456,7 @@
 .viewport canvas {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: 100%;
   touch-action: none;
   outline-offset: -3px !important;
@@ -847,6 +1584,32 @@
   border-top: 1px solid var(--studio-border-strong);
   font-size: 9px;
   color: var(--studio-muted);
+}
+.environmentEditing {
+  position: absolute;
+  left: 78px;
+  right: 14px;
+  bottom: 84px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 12px;
+  background: var(--studio-panel);
+  color: var(--studio-text);
+  font-size: 11px;
+}
+.environmentEditing select {
+  max-width: 220px;
+}
+@media (max-width: 700px) {
+  .environmentEditing {
+    flex-direction: column;
+    align-items: stretch;
+    font-size: 10px;
+  }
 }
 .canvasHint {
   position: absolute;
@@ -987,6 +1750,29 @@
 }
 .libraryItem {
   background: var(--studio-raised);
+}
+.savedDefinition {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  margin: 12px 0;
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 8px;
+  background: var(--studio-panel);
+  overflow-wrap: anywhere;
+}
+.savedDefinition .libraryItem {
+  width: 100%;
+  margin: 0;
+  gap: 5px;
+}
+.savedDefinition p {
+  margin: 0;
+  font-size: 12px;
+}
+.savedDefinition small {
+  line-height: 1.5;
 }
 .thumbnail {
   color: var(--studio-accent);
@@ -1132,13 +1918,48 @@
   margin: 12px 0;
   min-width: 0;
 }
+.animationEditor {
+  display: grid;
+  gap: 10px;
+  margin-block: 12px;
+}
+.animationEditor fieldset {
+  min-width: 0;
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.animationEditor legend {
+  text-transform: capitalize;
+  padding-inline: 6px;
+}
+.keyframeFields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: end;
+  margin-block: 10px;
+}
+.keyframeFields label {
+  width: 82px;
+  min-width: 0;
+}
+.keyframeFields input {
+  width: 100%;
+}
+.keyframeError {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--studio-danger);
+  font-size: 12px;
+}
 .trackRuler,
 .trackRow {
   display: grid;
   grid-template-columns: 115px minmax(0, 1fr);
 }
 .trackRuler {
-  height: 25px;
+  height: 42px;
 }
 .trackRuler > span {
   font-size: 8px;
@@ -1148,6 +1969,8 @@
 .trackRuler > div {
   position: relative;
   margin: 0 18px;
+  touch-action: none;
+  cursor: ew-resize;
 }
 .trackRuler button {
   position: absolute;
@@ -1157,6 +1980,76 @@
   font-size: 8px;
   min-height: 20px;
   transform: translateX(-50%);
+  top: 22px;
+}
+.timelineTrackGrid {
+  position: relative;
+}
+.timelineScannerLane {
+  position: absolute;
+  inset: 0 18px 0 133px;
+  pointer-events: none;
+  z-index: 4;
+}
+.timelineScannerLane .playhead {
+  top: 18px;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--studio-accent);
+  opacity: 0.85;
+}
+.studio .trackRuler .timelineScannerHandle {
+  top: 0;
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  z-index: 5;
+  color: var(--studio-accent);
+  background: transparent;
+  cursor: ew-resize;
+  touch-action: none;
+  border-radius: 5px;
+}
+.timelineScannerHandle::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 14px;
+  background: var(--studio-accent);
+  clip-path: polygon(8% 0, 92% 0, 100% 12%, 100% 45%, 50% 100%, 0 45%, 0 12%);
+}
+.timelineScannerHandle::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: var(--studio-accent);
+}
+.timelineScannerHandle:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 2px;
+}
+.studio .trackRuler button:active:not(:disabled) {
+  transform: translateX(-50%);
+}
+.timelineScrubHint {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block: 8px;
+}
+.timelineScrubHint [role="timer"] {
+  color: var(--studio-accent);
+  font: 11px monospace;
+  min-width: 58px;
 }
 .trackRow {
   border-top: 1px solid var(--studio-border);
@@ -1174,6 +2067,7 @@
 }
 .trackLane {
   position: relative;
+  overflow: hidden;
   margin: 0 18px;
   background: repeating-linear-gradient(90deg, var(--studio-hover) 0 1px, transparent 1px 16.667%);
 }
@@ -1205,6 +2099,48 @@
   background: var(--studio-hover);
   border-color: var(--studio-border-strong);
   color: var(--studio-text);
+}
+.studio .animationClip {
+  position: absolute;
+  top: 7px;
+  height: 20px;
+  min-width: 12px;
+  border-radius: 6px;
+  background: var(--studio-selected);
+  border: 1px solid var(--studio-accent);
+}
+.studio .animationClip > button {
+  position: absolute;
+  inset: 0;
+  min-height: 18px;
+  padding: 0 8px;
+  background: transparent;
+  border: 0;
+  color: var(--studio-text);
+  font-size: 9px;
+  cursor: grab;
+  touch-action: none;
+}
+.studio .animationClip > .clipStart,
+.studio .animationClip > .clipEnd {
+  width: 8px;
+  padding: 0;
+  right: auto;
+  cursor: ew-resize;
+  background: var(--studio-accent);
+  border-radius: 4px;
+  z-index: 3;
+}
+.studio .animationClip > .clipEnd {
+  left: auto;
+  right: 0;
+}
+.studio .trackEvent {
+  z-index: 2;
+}
+.studio .graph li > input {
+  width: 100%;
+  min-width: 0;
 }
 .behavior {
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1529,7 +2465,6 @@
     top: -16px;
   }
 }
-
 /* Adaptive docks are presentation only. Their released area belongs to the existing renderer. */
 .sceneActions {
   position: relative;
@@ -1574,6 +2509,63 @@
 .adaptiveWorkspace .header {
   padding: 3px 4px 10px;
   gap: 12px;
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(120px, 1fr) auto;
+  align-items: center;
+}
+.sceneIdentity {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+.sceneIdentity > span {
+  color: var(--studio-muted);
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+.sceneIdentity > strong {
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.environmentEntries {
+  display: grid;
+  gap: 12px;
+  padding: 6px 0;
+}
+.environmentEntries article {
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  padding: 10px;
+  background: var(--studio-panel);
+}
+.environmentArt {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+}
+.environmentCommands {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+}
+.adaptiveWorkspace .environmentCommands button {
+  padding: 5px;
+}
+.environmentCommands button:first-child {
+  flex: 1;
+}
+.adaptiveWorkspace .environmentName {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border-color: transparent;
+  padding: 6px 0;
+  font-weight: 600;
 }
 .adaptiveWorkspace .header > div:first-child {
   display: grid;
@@ -1593,7 +2585,7 @@
   line-height: 1.5;
 }
 .adaptiveWorkspace .toolbar {
-  max-width: 76%;
+  max-width: 100%;
 }
 .adaptiveWorkspace .toolbar button {
   min-height: 30px;
@@ -1625,7 +2617,7 @@
 .adaptiveWorkspace .dockedWorkspace[data-library][data-inspector] {
   display: grid;
   grid-template-rows: minmax(0, 1fr);
-  grid-template-columns: 38px var(--left-space) minmax(0, 1fr) var(--right-space) 30px;
+  grid-template-columns: 38px var(--left-space) minmax(0, 1fr) var(--right-space) 38px;
   gap: 4px;
   position: relative;
   min-width: 0;
@@ -1641,8 +2633,8 @@
   grid-row: 1;
 }
 .adaptiveWorkspace .dockRail button {
-  width: 30px;
-  min-height: 32px;
+  width: 38px;
+  min-height: 38px;
   padding: 4px;
   border: 1px solid transparent;
   background: transparent;
@@ -1810,8 +2802,8 @@
   font-size: 11px;
 }
 .adaptiveWorkspace .inspector .inline button {
-  font-size: 9px;
-  min-height: 28px;
+  font-size: 12px;
+  min-height: 38px;
 }
 .adaptiveWorkspace .canvas {
   min-height: 0;
@@ -1889,7 +2881,12 @@
 .assistantWorkspace[data-docked="true"] {
   position: absolute;
   width: min(440px, calc(100% - 32px));
+  height: min(720px, calc(100% - 70px));
   max-height: calc(100% - 70px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   min-height: 0;
   flex: none;
   left: auto;
@@ -1908,8 +2905,15 @@
   resize: none;
 }
 .assistantWorkspace[data-docked="true"] > aside {
-  height: min(650px, calc(100dvh - 270px));
+  flex: 1;
+  height: auto;
   min-height: 0;
+  overflow: hidden;
+}
+.assistantWorkspace[data-docked="true"] > details {
+  flex: none;
+  max-height: 30%;
+  overflow: auto;
 }
 .assistantWorkspace[data-floating-placed="true"] {
   position: fixed;
@@ -2043,10 +3047,23 @@
     width: min(560px, calc(100% - 16px));
     max-height: none;
     min-height: 0;
+    height: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+  .assistantWorkspace > .dockTitle {
+    padding-bottom: 4px;
+  }
+  .assistantWorkspace > details {
+    flex: none;
+    max-height: 30%;
+    overflow: auto;
   }
   .assistantWorkspace > aside,
   .assistantWorkspace[data-docked="true"] > aside {
-    height: calc(100dvh - var(--studio-top, 76px) - 76px);
+    flex: 1;
+    height: auto;
     min-height: 0;
   }
 }
@@ -2133,6 +3150,39 @@
   font-size: 11px;
   color: var(--studio-muted);
 }
+.simulationEvidence {
+  line-height: 1.5;
+}
+.simulationEvidence h3 {
+  font-size: 12px;
+  margin: 14px 0 6px;
+}
+.simulationEvidence ol,
+.simulationEvidence ul {
+  padding-left: 20px;
+}
+.simulationEvidence li {
+  margin: 6px 0;
+}
+.simulationEvidence label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+.simulationEvidence input[type="range"] {
+  flex: 1;
+  min-width: 80px;
+}
+.simulationObjects li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.simulationObjects small {
+  flex-basis: 100%;
+}
 .srOnly {
   position: absolute;
   width: 1px;
@@ -2178,6 +3228,9 @@
   .adaptiveWorkspace .library,
   .adaptiveWorkspace .inspector {
     position: absolute;
+    /* The overlay spans the grid, rather than using its collapsed dock track
+       as the containing block for percentage widths. */
+    grid-column: 1 / -1;
     top: 0;
     bottom: 0;
     width: min(360px, calc(100% - 70px));
@@ -2197,10 +3250,45 @@
 @media (max-width: 700px) {
   .adaptiveWorkspace {
     padding: 4px;
+    height: auto;
+    overflow: visible;
+    min-height: calc(100dvh - var(--studio-top, 76px));
+  }
+  .adaptiveWorkspace .workspace {
+    flex: none;
+    min-height: 440px;
+  }
+  .adaptiveWorkspace .canvas {
+    min-height: 380px;
+    flex: none;
+  }
+  .adaptiveWorkspace .viewportTools {
+    top: 102px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    max-width: calc(100% - 16px);
+    padding: 3px;
+    gap: 3px;
+  }
+  .adaptiveWorkspace .viewportTools button {
+    min-width: 35px;
+    min-height: 42px;
+    padding: 3px;
+    flex: none;
+  }
+  .adaptiveWorkspace .viewportTools button small {
+    font-size: 8px;
   }
   .adaptiveWorkspace .header {
     flex-wrap: wrap;
     gap: 8px;
+    grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr);
+  }
+  .adaptiveWorkspace .header .toolbar {
+    grid-column: 1 / -1;
   }
   .adaptiveWorkspace .header > div:first-child {
     width: 100%;
@@ -2297,18 +3385,33 @@
     bottom: 8px;
     width: calc(100% - 16px);
     max-height: none;
+    height: auto;
   }
   .assistantWorkspace > aside,
   .assistantWorkspace[data-docked="true"] > aside {
-    height: calc(100dvh - var(--studio-top, 76px) - 76px);
+    flex: 1;
+    height: auto;
     min-height: 0;
   }
   .adaptiveWorkspace .selectionInstrument {
     right: 8px;
-    max-width: 65%;
+    left: 8px;
+    max-width: none;
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px 8px;
+    padding: 5px 8px;
+  }
+  .adaptiveWorkspace .selectionInstrument small {
+    font-size: 9px;
+  }
+  .adaptiveWorkspace .selectionInstrument > span {
+    display: none;
   }
 }
-
 :global(html[data-voyage-theme="light"]) .studio {
   --studio-background: #edf3fa;
   --studio-panel: #ffffff;
@@ -2350,4 +3453,1077 @@
   --studio-primary-hover: #ffffff;
   --studio-on-accent: #000000;
   color-scheme: dark;
+}
+.surfacePicker {
+  position: absolute;
+  z-index: 4;
+  top: 5rem;
+  right: 0.75rem;
+  width: min(18rem, calc(100% - 5rem));
+  max-height: 45%;
+  overflow: auto;
+  padding: 0.65rem;
+  border: 1px solid var(--studio-border);
+  border-radius: 0.6rem;
+  background: var(--studio-panel);
+}
+.surfacePicker summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding-right: 2rem;
+}
+.surfacePickerClose {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  min-width: 2rem;
+  min-height: 2rem;
+}
+.surfacePicker small {
+  display: block;
+  margin: 0.5rem 0;
+}
+.surfacePicker > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+/* Short viewports keep an editable scene; the document scrolls instead of crushing its tools. */
+@media (max-width: 700px), (max-height: 520px) {
+  .surfacePicker {
+    position: fixed;
+    top: auto;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-height: 45dvh;
+    z-index: 25;
+    overflow: hidden;
+  }
+  .surfacePicker > div {
+    max-height: calc(45dvh - 96px);
+    overflow: auto;
+  }
+}
+@media (max-height: 520px) {
+  .adaptiveWorkspace {
+    height: auto;
+    min-height: calc(100dvh - var(--studio-top, 76px));
+    overflow: visible;
+  }
+  .adaptiveWorkspace .workspace {
+    flex: none;
+    min-height: 440px;
+  }
+  .adaptiveWorkspace .canvas {
+    min-height: 380px;
+    flex: none;
+  }
+}
+
+/* Quiet command hierarchy and asset-focused graph; all commands retain accessible names. */
+.studio button {
+  border-radius: 9px;
+}
+.studio input,
+.studio select,
+.studio textarea {
+  border-radius: 8px;
+}
+.adaptiveWorkspace .library,
+.adaptiveWorkspace .inspector,
+.adaptiveWorkspace .bottomDock {
+  border-radius: 12px;
+}
+.adaptiveWorkspace .library,
+.adaptiveWorkspace .inspector {
+  background: var(--studio-panel);
+}
+.adaptiveWorkspace .dockTitle {
+  border-bottom: 1px solid var(--studio-border);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+.adaptiveWorkspace .dockTitle h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.adaptiveWorkspace .inspector > .dockTitle {
+  background: var(--studio-panel);
+}
+.inspectorIdentity {
+  min-width: 0;
+  flex: 1;
+}
+.inspectorIdentity > small {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--studio-muted);
+}
+.inspectorIdentity > span {
+  display: block;
+  color: var(--studio-muted);
+  font-size: 11px;
+  margin-top: 5px;
+}
+.inspectorHero {
+  padding: 15px 0 14px;
+  border-bottom: 1px solid var(--studio-border);
+}
+.inspectorEyebrow {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--studio-accent);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.inspectorHero > h3 {
+  display: block;
+  margin: 0;
+  font-family: inherit;
+  font-weight: 700;
+  color: var(--studio-text);
+  font-size: 17px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.inspectorHero > p {
+  color: var(--studio-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 7px 0 0;
+}
+.inspectorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 11px;
+}
+.adaptiveWorkspace .inspectorActions button {
+  min-height: 38px;
+  padding: 7px 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 6px;
+  background: var(--studio-raised);
+  color: var(--studio-text);
+  font-size: 12px;
+  line-height: 1.15;
+}
+.adaptiveWorkspace .inspectorActions button:hover:not(:disabled),
+.adaptiveWorkspace .inspectorActions button[aria-pressed="true"] {
+  border-color: var(--studio-accent);
+  color: var(--studio-accent);
+}
+.adaptiveWorkspace .inspectorActions button:focus-visible,
+.adaptiveWorkspace .rightRail button:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 2px;
+}
+.adaptiveWorkspace .rightRail button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+.inspectorSection {
+  border-bottom: 1px solid var(--studio-border);
+  padding: 8px 0 16px;
+  margin: 0;
+}
+.inspectorSection > h3 {
+  color: var(--studio-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin: 6px 0 10px;
+}
+.inspectorSection > p,
+.inspectorSection > small {
+  color: var(--studio-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.inspectorSection > button {
+  margin: 4px 6px 4px 0;
+  min-height: 38px;
+  padding: 7px 10px;
+  font-size: 12px;
+}
+.adaptiveWorkspace .inspector input[type="range"] {
+  min-height: 0;
+  padding: 0;
+}
+.inspectorGroupLabel {
+  color: var(--studio-muted);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 20px 0 7px;
+}
+.inspectorSection > summary {
+  display: list-item;
+  border-radius: 8px;
+  padding: 12px 8px;
+}
+.inspectorSection[open] > summary {
+  background: var(--studio-raised);
+  margin-bottom: 10px;
+}
+.adaptiveWorkspace .inspector label {
+  font-size: 12px;
+  margin: 10px 0;
+}
+.adaptiveWorkspace .inspector input:not([type="checkbox"]),
+.adaptiveWorkspace .inspector select {
+  font-size: 13px;
+  min-height: 40px;
+}
+.graph {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.graphHeader {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--studio-panel);
+  padding: 2px 0 10px;
+}
+.graphHeader h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin: 0 0 10px;
+}
+.graphHeader h2 span {
+  border-radius: 20px;
+  padding: 3px 8px;
+  background: var(--studio-raised);
+  color: var(--studio-muted);
+  font-size: 11px;
+}
+.graphToolbar {
+  display: flex;
+  gap: 5px;
+}
+.graphToolbar button,
+.studio .savedMenuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  min-width: 34px;
+  min-height: 34px;
+  background: transparent;
+  border-color: var(--studio-border);
+}
+.graphToolbar button[data-danger] {
+  margin-left: auto;
+  color: var(--studio-danger);
+}
+.graph ul {
+  padding: 0;
+  margin: 12px 0;
+  list-style: none;
+}
+.graph li {
+  display: block;
+  margin-bottom: 4px;
+}
+.graph li > button:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 12px;
+  text-align: left;
+  white-space: normal;
+}
+.graph li > button:hover {
+  background: var(--studio-hover);
+}
+.graph li > button[aria-pressed="true"] {
+  background: var(--studio-selected);
+  border-color: var(--studio-border-strong);
+  color: var(--studio-text);
+}
+.graphAssetIcon {
+  display: flex;
+  color: var(--studio-accent);
+  flex: none;
+}
+.graphAssetName {
+  display: block;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  flex: 1;
+}
+.graphAssetName small {
+  display: block;
+  font-size: 10px;
+  margin-top: 3px;
+}
+.graphAssetState {
+  display: flex;
+  gap: 5px;
+  color: var(--studio-muted);
+}
+.graphAssetState svg {
+  width: 14px;
+}
+.savedDefinition {
+  position: relative;
+  border-radius: 12px;
+}
+.studio .savedMenuButton {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: var(--studio-panel);
+}
+.libraryHelp {
+  margin-top: 14px;
+  border-top: 1px solid var(--studio-border);
+  padding-top: 10px;
+}
+.libraryHelp summary {
+  color: var(--studio-muted);
+  cursor: pointer;
+}
+.contextMenu {
+  position: fixed;
+  z-index: 10000;
+  width: 236px;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 16px);
+  overflow: auto;
+  background: var(--studio-panel);
+  color: var(--studio-text);
+  border: 1px solid var(--studio-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 36px var(--studio-shadow);
+  padding: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+.contextTitle {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 9px 10px;
+  margin-bottom: 3px;
+  color: var(--studio-muted);
+  border-bottom: 1px solid var(--studio-border);
+  overflow-wrap: anywhere;
+}
+.contextMenu button[role="menuitem"] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 36px;
+  text-align: left;
+  padding: 8px 10px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.contextMenu button[role="menuitem"]:hover:not(:disabled),
+.contextMenu button[role="menuitem"]:focus-visible {
+  background: var(--studio-hover);
+  color: inherit;
+}
+.contextMenu button[role="menuitem"]:focus-visible {
+  outline: 2px solid var(--studio-focus);
+  outline-offset: -2px;
+}
+.contextMenu button[role="menuitem"]:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.contextMenu button[role="menuitem"][data-danger],
+.contextMenu button[role="menuitem"][data-danger]:hover:not(:disabled) {
+  color: var(--studio-danger);
+  border-top: 1px solid var(--studio-border);
+  margin-top: 4px;
+}
+.contextMenu svg {
+  flex: none;
+}
+@media (pointer: coarse) {
+  .contextMenu button[role="menuitem"],
+  .graphToolbar button {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio button {
+    transition: none;
+  }
+}
+
+.adaptiveWorkspace .workstationNavigation button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+}
+.adaptiveWorkspace .toolbar > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.adaptiveWorkspace .viewInstrument button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+}
+.canvasHint > strong {
+  white-space: nowrap;
+  color: var(--studio-accent);
+  font-size: 10px;
+  font-weight: 600;
+  padding-right: 10px;
+}
+.canvasHint > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.navigationHelp {
+  margin-left: auto;
+  flex: none;
+}
+.navigationHelp summary {
+  cursor: pointer;
+  font-size: 10px;
+  color: var(--studio-muted);
+}
+.navigationHelp p {
+  position: absolute;
+  z-index: 6;
+  right: 8px;
+  bottom: 42px;
+  width: min(320px, calc(100% - 16px));
+  padding: 14px;
+  border: 1px solid var(--studio-border);
+  background: var(--studio-panel);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px var(--studio-shadow);
+  color: var(--studio-text);
+}
+@media (max-width: 700px), (max-height: 520px) {
+  .adaptiveWorkspace .viewportTools {
+    right: auto;
+    width: max-content;
+    max-width: calc(100% - 16px);
+    border-radius: 12px;
+  }
+  .adaptiveWorkspace .viewportTools button {
+    min-height: 34px;
+    min-width: 34px;
+  }
+  .adaptiveWorkspace .viewportTools button small {
+    display: none;
+  }
+  .canvasHint > span {
+    max-width: 44%;
+  }
+}
+
+/* Keep camera and editing controls in one measured stack on narrow screens. */
+.viewportControlStack {
+  display: contents;
+}
+@media (max-width: 700px) {
+  .adaptiveWorkspace .viewportControlStack {
+    position: absolute;
+    z-index: 2;
+    top: 42px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .adaptiveWorkspace .viewportControlStack > .viewInstrument {
+    position: static;
+    align-self: flex-end;
+    max-width: 100%;
+    pointer-events: auto;
+  }
+  .adaptiveWorkspace .viewportControlStack > .viewportTools {
+    position: static;
+    pointer-events: auto;
+  }
+}
+
+.expandedLibraryBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(11, 17, 25, 0.62);
+  backdrop-filter: blur(9px);
+}
+.adaptiveWorkspace .expandedLibrary {
+  position: fixed;
+  inset: clamp(12px, 3vh, 36px) clamp(12px, 3vw, 48px);
+  z-index: 71;
+  width: auto;
+  max-width: 1680px;
+  max-height: none;
+  margin: auto;
+  padding: clamp(16px, 2vw, 30px);
+  border: 1px solid var(--studio-border-strong);
+  border-radius: 24px;
+  background: var(--studio-panel);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
+  overflow: hidden;
+  animation: spatialLibraryEnter 180ms ease-out both;
+}
+.adaptiveWorkspace .expandedLibrary .dockHandle,
+.adaptiveWorkspace .expandedLibrary .dockTitle {
+  display: none;
+}
+.adaptiveWorkspace .expandedLibrary .leftPane {
+  overflow: auto;
+  padding: 0;
+}
+@keyframes spatialLibraryEnter {
+  from {
+    opacity: 0;
+    transform: translateY(9px) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.catalogPlacementLayer {
+  position: absolute;
+  inset: 0 0 42px;
+  z-index: 4;
+  cursor: crosshair;
+  background: rgba(4, 10, 18, 0.035);
+}
+.catalogPlacementPrompt {
+  position: absolute;
+  top: 72px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(245px, calc(100% - 30px));
+  padding: 12px;
+  border: 1px solid var(--studio-accent);
+  border-radius: 12px;
+  background: var(--studio-panel);
+  color: var(--studio-text);
+  box-shadow: 0 12px 36px var(--studio-shadow);
+  cursor: auto;
+}
+.catalogPlacementPrompt span {
+  color: var(--studio-muted);
+  font-size: 11px;
+}
+.catalogPlacementPrompt button {
+  align-self: flex-start;
+}
+.catalogPlacementChoices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: 110px;
+  overflow-y: auto;
+}
+.catalogPlacementChoices button {
+  min-height: 28px;
+  font-size: 10px;
+}
+@media (max-width: 700px) {
+  .adaptiveWorkspace .expandedLibrary {
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    padding: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .adaptiveWorkspace .expandedLibrary {
+    animation: none;
+  }
+}
+
+/* Markers and duration handles occupy separate rows; neither steals the other's pointer. */
+.timelineWorkspace {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 0.8fr);
+  gap: 16px;
+  align-items: start;
+}
+.timelineWorkspace > .tracks,
+.timelineWorkspace > .animationEditor {
+  max-height: 330px;
+  overflow: auto;
+  margin: 0;
+}
+.timelineWorkspace > .animationEditor {
+  padding: 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 10px;
+}
+.timelineWorkspace .trackRow:has(.animationClip) {
+  height: 56px;
+}
+.studio .animationClip {
+  top: 31px;
+}
+.studio .animationClip > .clipStart,
+.studio .animationClip > .clipEnd {
+  width: 12px;
+}
+.studio .animationClip > button:first-child {
+  padding-inline: 14px;
+}
+.keyframeFields[data-selected] {
+  outline: 1px solid var(--studio-accent);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+.graphAssetName > span {
+  cursor: text;
+}
+.graphAssetName > span:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .timelineWorkspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .timelineWorkspace > .tracks,
+  .timelineWorkspace > .animationEditor {
+    max-height: 250px;
+  }
+}
+
+/* A single Assistant frame owns the visible window. */
+.studio .assistantWorkspace {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  transition: opacity var(--motion-standard) var(--ease-out);
+}
+.studio .assistantWorkspace[data-closing="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+.assistantWindowControls {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.studio .assistantWindowControls button {
+  width: 34px;
+  min-height: 34px;
+  padding: 7px;
+  display: grid;
+  place-items: center;
+}
+.studio .assistantWindowControls .assistantDockToggle {
+  width: auto;
+  display: inline-flex;
+  gap: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.studio .assistantWorkspace header {
+  flex-wrap: wrap;
+}
+.assistantWorkspace header[data-floating-gesture="move"] {
+  cursor: grab;
+  touch-action: none;
+}
+.assistantWorkspace header[data-floating-gesture="move"]:active {
+  cursor: grabbing;
+}
+.elementArt {
+  display: grid;
+  place-items: center;
+  height: 105px;
+  color: var(--studio-accent, #92bfff);
+  font-size: 48px;
+  background: radial-gradient(ellipse, #4272a538, transparent 70%);
+}
+.assetCard img {
+  width: 100%;
+  height: 105px;
+  object-fit: contain;
+}
+.elementProperties {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid var(--studio-border, #56739755);
+}
+.elementProperties > h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.015em;
+}
+.elementLead {
+  margin: 0 0 4px;
+  color: var(--studio-muted, #a8bbd1);
+  font-size: 0.78rem;
+}
+.elementProperties small {
+  display: block;
+  line-height: 1.5;
+}
+.roomEditorShell {
+  border-bottom: 1px solid var(--studio-border);
+  padding: 10px 0 18px;
+}
+.roomEditorShell > summary {
+  padding: 9px 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  background: var(--studio-raised);
+  color: var(--studio-text);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.roomEditor {
+  padding: 10px 2px 0;
+}
+.roomContextTools {
+  display: grid;
+  gap: 9px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--studio-border);
+}
+.roomContextTools > h3,
+.roomContextTools > section > h3 {
+  margin: 2px 0 5px;
+  color: var(--studio-text);
+  font-size: 13px;
+}
+.roomContextTools > p,
+.roomContextTools > section > p {
+  margin: 0;
+  color: var(--studio-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.roomContextTools > section {
+  display: grid;
+  gap: 6px;
+  padding: 9px 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  background: var(--studio-raised);
+}
+.roomContextTools > details {
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  background: var(--studio-raised);
+}
+.roomContextTools > details > summary {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.roomContextTools > details[open] > :not(summary) {
+  margin: 8px 10px;
+}
+.roomEditor > fieldset {
+  display: grid;
+  gap: 5px;
+}
+.roomEditor > fieldset > p {
+  margin: 6px 0;
+  color: var(--studio-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.roomEditor > fieldset > details {
+  margin: 5px 0;
+  border: 1px solid var(--studio-border);
+  border-radius: 8px;
+  background: var(--studio-raised);
+}
+.roomEditor > fieldset > details > summary {
+  padding: 9px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+}
+.roomEditor > fieldset > details[open] {
+  padding-bottom: 10px;
+}
+.roomEditor > fieldset > details[open] > :not(summary) {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.viewInstrument > summary {
+  display: none;
+}
+.viewControlBody {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 3px;
+}
+
+@media (max-width: 700px) {
+  .adaptiveWorkspace {
+    height: calc(100dvh - var(--studio-top, 76px));
+    min-height: 0;
+    overflow: hidden;
+  }
+  .adaptiveWorkspace .header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 240px);
+    gap: 4px;
+    padding: 3px 4px 6px;
+  }
+  .adaptiveWorkspace .header > div:first-child {
+    width: auto;
+    min-width: 0;
+    gap: 3px;
+  }
+  .adaptiveWorkspace .toolbar {
+    width: auto;
+    gap: 3px;
+    padding: 0;
+  }
+  .adaptiveWorkspace .toolbar label {
+    flex: 0 0 94px;
+    min-width: 0;
+  }
+  .adaptiveWorkspace .toolbar label select {
+    min-height: 26px;
+    padding: 4px;
+    font-size: 9px;
+  }
+  .adaptiveWorkspace .toolbar > button,
+  .adaptiveWorkspace .sceneActions > summary {
+    min-height: 28px;
+    padding: 4px 5px;
+    font-size: 9px;
+  }
+  .adaptiveWorkspace .toolbar,
+  .adaptiveWorkspace .workstationNavigation,
+  .adaptiveWorkspace .workstationNavigation > div {
+    flex-wrap: wrap;
+    overflow: visible;
+    min-width: 0;
+  }
+  .adaptiveWorkspace .workstationNavigation {
+    gap: 4px;
+    padding: 4px 3px;
+  }
+  .adaptiveWorkspace .workstationNavigation button {
+    min-height: 28px;
+  }
+  .adaptiveWorkspace .previewControls select {
+    max-width: 85px;
+  }
+  .adaptiveWorkspace .previewControls {
+    gap: 4px;
+  }
+  .adaptiveWorkspace .center {
+    overflow: auto;
+  }
+  /* Keep the editing viewport usable; its center scrolls instead of shrinking the scene. */
+  .adaptiveWorkspace .canvas:not(.roomPreviewCanvas) {
+    grid-template-rows: auto auto auto minmax(370px, 1fr) auto auto auto;
+    flex: 1 0 auto;
+  }
+  .adaptiveWorkspace .canvas {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto auto;
+    height: auto;
+    flex: 1;
+    gap: 3px;
+    padding: 4px;
+  }
+  .adaptiveWorkspace .selectionInstrument > span {
+    display: none;
+  }
+  .adaptiveWorkspace .selectionInstrument > strong {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .adaptiveWorkspace .selectionInstrument .fixedPlacementCaption {
+    display: none;
+  }
+  .adaptiveWorkspace .selectionInstrument > code {
+    flex: none;
+    font-size: 8px;
+    white-space: nowrap;
+  }
+  .adaptiveWorkspace .viewportBadge,
+  .adaptiveWorkspace .viewInstrument,
+  .adaptiveWorkspace .viewportTools,
+  .adaptiveWorkspace .selectionInstrument,
+  .adaptiveWorkspace .viewportFooter,
+  .adaptiveWorkspace .canvasHint {
+    position: static;
+    max-width: none;
+    min-width: 0;
+    grid-column: 1 / -1;
+  }
+  .adaptiveWorkspace .viewportBadge {
+    grid-row: 1;
+  }
+  .adaptiveWorkspace .viewInstrument {
+    position: relative;
+    inset: auto;
+    grid-row: 2;
+    display: block;
+  }
+  .adaptiveWorkspace .viewInstrument > summary {
+    display: list-item;
+    cursor: pointer;
+    min-height: 28px;
+    padding: 5px 8px;
+    font-size: 10px;
+    color: var(--studio-accent);
+    background: var(--studio-raised);
+    border: 1px solid var(--studio-border-strong);
+    border-radius: 5px;
+    list-style-position: inside;
+  }
+  .adaptiveWorkspace .viewControlBody {
+    position: absolute;
+    z-index: 8;
+    top: 100%;
+    left: 0;
+    right: 0;
+    justify-content: flex-start;
+    max-height: 200px;
+    overflow: auto;
+    padding: 8px;
+    background: var(--studio-raised);
+    border: 1px solid var(--studio-border-strong);
+    box-shadow: 0 8px 20px var(--studio-shadow);
+  }
+  .adaptiveWorkspace .viewportTools {
+    grid-column: 1;
+    grid-row: 3;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 3px;
+  }
+  .adaptiveWorkspace .viewportTools button {
+    min-width: 38px;
+    min-height: 32px;
+    padding: 3px;
+  }
+  .adaptiveWorkspace .viewport {
+    position: relative;
+    inset: auto;
+    grid-column: 1;
+    grid-row: 4;
+    height: auto;
+    min-width: 0;
+  }
+  .adaptiveWorkspace .guidedPreview {
+    grid-column: 1;
+    grid-row: 4;
+    height: auto;
+    min-height: 0;
+    overflow: auto;
+    padding: 8px;
+  }
+  .adaptiveWorkspace .selectionInstrument {
+    grid-row: 5;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    padding: 4px;
+  }
+  .adaptiveWorkspace .viewportFooter {
+    grid-row: 6;
+    padding: 2px 0;
+    gap: 2px;
+  }
+  .adaptiveWorkspace .viewportFooter > span:last-child,
+  .adaptiveWorkspace .canvasHint .pointerHint {
+    display: none;
+  }
+  .adaptiveWorkspace .canvasHint {
+    grid-row: 7;
+    height: auto;
+    padding: 2px 0;
+  }
+  .adaptiveWorkspace .canvasHint > span {
+    margin-left: 0;
+  }
+}
+
+/* Root controls retain their wrapper while participating in the seven-row phone canvas. */
+@media (max-width: 700px) {
+  .adaptiveWorkspace .viewportControlStack {
+    display: contents;
+  }
+  .adaptiveWorkspace .viewportControlStack > .viewInstrument {
+    position: relative;
+    align-self: stretch;
+    z-index: 3;
+  }
+}
+
+/* Keep desktop editing controls and the selected-item card inside a usable Scene. */
+@media (min-width: 701px) {
+  .adaptiveWorkspace .center {
+    overflow-y: auto;
+  }
+  .adaptiveWorkspace .canvas {
+    min-height: 450px;
+  }
+}
+
+/* Mid-width and landscape windows keep every Scene command inside the header. */
+@media (min-width: 701px) and (max-width: 1279px) {
+  .adaptiveWorkspace .header {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .adaptiveWorkspace .header > div:first-child {
+    min-width: 0;
+  }
+  .adaptiveWorkspace .toolbar {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
 }
