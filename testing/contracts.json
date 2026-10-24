@@ -4008,7 +4008,8 @@
           "src/components/wakebook/WakebookVoyageDetail.tsx",
           "src/components/wayfarer/ArtifactCabinet.tsx",
           "src/components/wayfarer/ChronicleHistory.tsx",
-          "src/components/wayfarer/ChroniclePassport.tsx"
+          "src/components/wayfarer/ChroniclePassport.tsx",
+          "src/styles/personal-harbor.css"
         ],
         "projectionPaths": [
           "src/wakebook/archive-query.ts",
@@ -7693,7 +7694,8 @@
           "src/app/devices/display",
           "src/app/player/library/page.tsx",
           "src/components/platform/PlayerLibrary.tsx",
-          "src/styles/platform.css"
+          "src/styles/platform.css",
+          "src/styles/personal-harbor.css"
         ],
         "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
         "devices": ["DESKTOP"],
@@ -7896,7 +7898,8 @@
           "src/app/devices/display",
           "src/app/player/library/page.tsx",
           "src/components/platform/PlayerLibrary.tsx",
-          "src/styles/platform.css"
+          "src/styles/platform.css",
+          "src/styles/personal-harbor.css"
         ],
         "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
         "devices": ["MOBILE"],
