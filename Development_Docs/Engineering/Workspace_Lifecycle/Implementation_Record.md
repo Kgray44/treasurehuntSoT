@@ -44,15 +44,20 @@ standing cleanup authorization does not bypass it.
 
 ## Host verification
 
-The 34-case focused suite passed on Windows in 243 seconds, including real Git worktrees,
+The 35-case focused suite passed on Windows in 252 seconds, including real Git worktrees,
 normal/squash/rebase source verification, a live process hold and release,
 incoming shared junctions, and registered checkout aliases. Subsequent resource
-class, host-binding, inherited-cwd process, actual worker-crash and automatic PR
-discovery regressions passed. Expired owners reconcile their current head and PR
+class, host-binding, inherited-cwd process, actual worker-crash, continuing lease
+renewal and automatic PR discovery regressions passed. Explicitly completed tasks
+cannot renew a lease to evade retirement. Expired owners reconcile their current head and PR
 without depending on a conversation calling `finish`. Qualification runs the full
-suite; landed smoke runs eight source-bound lifecycle outcomes within the finite
+suite; landed smoke runs nine source-bound lifecycle outcomes within the finite
 scheduled slot. A first local smoke probe passed all eight tests but failed its
 seven-outcome count assertion; its immutable failure receipt remains retained.
+An earlier protected candidate failed the unchanged generated-ancestor assertion
+because POSIX Git reported the parent link as dirty before the traversal check.
+The ancestor preflight now runs before Git status on both platforms; its original
+failure remains retained and no deletion or source-preservation gate is weakened.
 Documentation validation and Feature Catalog synchronization/validation passed.
 The developer capability is recorded as FT-B114 for protected integration;
 operational acceptance still requires the real post-merge retirement below.

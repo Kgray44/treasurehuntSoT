@@ -833,7 +833,11 @@ export class Lifecycle {
     return this.transaction(() => {
       const r = this.record(id);
       this.assertOwner(r);
-      if (r.state !== "ACTIVE") fail("TERMINAL_TASK_CANNOT_RENEW");
+      if (r.state !== "ACTIVE" && !(r.state === "HELD" && !r.retirement && (!r.outcome || r.outcome === "expired")))
+        fail("TERMINAL_TASK_CANNOT_RENEW");
+      r.state = "ACTIVE";
+      r.outcome = null;
+      r.hold = null;
       r.lease = { expiresAt: this.clock() + POLICY.leaseMs };
       r.lastActiveAt = now();
       if (pid) {
@@ -847,6 +851,9 @@ export class Lifecycle {
   }
   auditRecord(r) {
     this.assertOwner(r);
+    // Check generated ancestors before Git status: POSIX symlinks and Windows
+    // junctions have different ignore semantics, but both must reject traversal.
+    for (const relative of r.generated) physical(path.dirname(path.join(r.path, relative)));
     const storage = scan(r.path, { entries: true });
     if (storage.errors.length) fail(`SCAN_FAILED:${storage.errors[0]}`);
     const processes = this.processes(r.path, r.processOwners);
@@ -1050,10 +1057,10 @@ export class Lifecycle {
       blobs.push({ file, sha256: sha256(bytes) });
     }
     let output;
-    // Qualification runs the complete suite. The landed smoke checks these eight
+    // Qualification runs the complete suite. The landed smoke checks these nine
     // source-bound lifecycle outcomes within the scheduled worker's finite slot.
     const selection =
-      "real CREATE DEVELOP MERGE VERIFY RETIRE|squash merge is verified|rebase merge preserves|aggregate, finite task budget|actual worker crash|expired owner discovers|real process with only";
+      "real CREATE DEVELOP MERGE VERIFY RETIRE|squash merge is verified|rebase merge preserves|aggregate, finite task budget|actual worker crash|expired owner discovers|real process with only|continuing owners renew";
     try {
       output = run(
         process.execPath,
@@ -1064,7 +1071,7 @@ export class Lifecycle {
           env: { ...process.env, TMP: dest, TEMP: dest },
         },
       );
-      const expected = process.platform === "win32" ? 8 : 7;
+      const expected = process.platform === "win32" ? 9 : 8;
       if (!new RegExp(`^# pass ${expected}$`, "mu").test(output) || !/^# fail 0$/mu.test(output))
         fail("LANDED_SMOKE_OUTCOMES_MISSING");
     } catch (e) {

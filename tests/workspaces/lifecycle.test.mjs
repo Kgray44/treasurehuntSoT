@@ -114,6 +114,23 @@ test("active lease and live process prevent retirement", (t) => {
   assert.match(f.manager.finish(r.id, "completed").hold.reason, /ACTIVE_PROCESS/u);
   assert.ok(fs.existsSync(r.path));
 });
+test("continuing owners renew a temporary or expired hold but completed tasks cannot renew", (t) => {
+  let clock = Date.now();
+  const f = fixture(t, { clock: () => clock });
+  const r = f.create();
+  assert.equal(f.manager.retire(r.id).hold.reason, "ACTIVE_LEASE");
+  assert.equal(f.manager.lease(r.id).state, "ACTIVE");
+  clock += POLICY.leaseMs + 1;
+  fs.writeFileSync(path.join(r.path, "source.txt"), "unfinished task source");
+  assert.match(f.manager.sweep()[0].hold.reason, /DIRTY_UNIQUE_WORK/u);
+  const renewed = f.manager.lease(r.id);
+  assert.equal(renewed.state, "ACTIVE");
+  assert.equal(renewed.outcome, null);
+  assert.equal(renewed.hold, null);
+  f.manager.finish(r.id, "completed");
+  assert.throws(() => f.manager.lease(r.id), /TERMINAL_TASK_CANNOT_RENEW/u);
+  assert.equal(fs.readFileSync(path.join(r.path, "source.txt"), "utf8"), "unfinished task source");
+});
 test("canonical checkout, aliases, invalid marker, .git directory fail closed", (t) => {
   const f = fixture(t);
   assert.throws(
