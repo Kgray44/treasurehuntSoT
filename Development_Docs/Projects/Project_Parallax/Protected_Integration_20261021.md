@@ -80,6 +80,28 @@ media review, authenticated submission, ordinary protected qualification, normal
 merge and landed product smoke are still required. The earlier entries below
 retain their original producing identities and authorization history.
 
+The subsequent full hosted capture
+[40064951146](https://github.com/Kgray44/treasurehuntSoT/actions/runs/40064951146)
+used documentation descendant `f5221fe8e65ed1baf158389b6b9882026b69ff2c`
+against accepted main `bbdd5412b842e1984c131398f23b6a3ccacb01ff`.
+It completed 62 contexts, then failed in the Desktop Creator Reduced workspace
+creation-and-return journey: the empty Chronicle library rendered both its
+navigation action and empty-state shortcut as exact `Create Chronicle` links.
+The strict selector correctly rejected the two matches. Browser execution was
+820,089 ms; this was a selector ambiguity, not an execution timeout. Browser and
+server trees and streams, proxy, and ports completed owned cleanup. The failed
+capture and its two small provider-hash-verified diagnostic archives are retained
+as nonaccepting evidence; no independent rendered review was performed.
+
+The empty-state shortcut now reads `Create your first Chronicle` through the
+canonical Studio copy registry. The existing navigation action and both creation
+destinations are preserved. A real-component negative control reproduced the
+two-link ambiguity on the old source; the corrected empty and populated library
+checks and existing copy checks pass (four tests). The governed contract, journey
+steps, outcomes, privacy checks, unsaved-draft return, and motion requirements
+remain unchanged. This narrow proof did not rebuild the application or rebind an
+old prepared manifest. Fresh whole-capture and protected acceptance remain open.
+
 # Accepted-main reconciliation
 
 The [static verification intake](evidence/protected-integration-20261021/static-verification-20261023/manifest.original.json)

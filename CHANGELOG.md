@@ -8,6 +8,13 @@ last_reviewed: 2026-10-24
 
 # Changelog
 
+- Candidate #776 distinguishes the empty Studio library's `Create your first
+Chronicle` shortcut from its standard `Create Chronicle` navigation action.
+  Both keep the same creation destination. The retained full-capture failure and
+  passing narrow component checks are recorded in the
+  [current verification record](Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md);
+  fresh capture and protected acceptance remain pending.
+
 - Candidate #776 keeps the canonical Admiralty operator identity visible on
   mobile and fits moderation controls and consequence previews to narrow screens.
   Ten focused production-browser contexts pass with the original outcomes,

@@ -20,6 +20,14 @@ consequence previews to the screen. A fresh production build and ten focused
 Admin contexts pass with zero failures, skips or flaky results, retaining the
 original outcomes, account return, motion and accessibility requirements.
 
+Full capture `40064951146` on documentation descendant `f5221fe8` completed
+62 contexts before an empty-library workspace journey found two exact
+`Create Chronicle` links. Its owned cleanup passed; the failure was not a timeout.
+The empty-state shortcut now says `Create your first Chronicle`, preserving the
+standard navigation action and both destinations. A component negative control
+reproduced the ambiguity; four focused component/copy tests pass after the
+correction. All governed journey and outcome requirements remain unchanged.
+
 The authoritative plan still requires 32 contracts and 118 contexts. Fresh full
 capture, independent rendered review 3, ordinary protected qualification, normal
 merge and landed product smoke remain pending. Existing component, Studio and
