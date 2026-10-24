@@ -9953,9 +9953,7 @@
                 "action": "click",
                 "kind": "navigation",
                 "nativeSummary": "View & audio",
-                "devices": [
-                  "MOBILE"
-                ]
+                "devices": ["MOBILE"]
               },
               {
                 "action": "click",
@@ -10015,9 +10013,7 @@
                 "action": "click",
                 "kind": "navigation",
                 "nativeSummary": "View & audio",
-                "devices": [
-                  "MOBILE"
-                ]
+                "devices": ["MOBILE"]
               },
               {
                 "action": "click",
@@ -11049,7 +11045,7 @@
                 "action": "assert",
                 "role": "dialog",
                 "name": "Publish to Community",
-                "text": "The server resolves the saved revision",
+                "text": "The server checks the saved revision and every required Environment reference during package review.",
                 "path": "/studio/parallax",
                 "state": "INCLUDED_CONTENT",
                 "kind": "outcome",
