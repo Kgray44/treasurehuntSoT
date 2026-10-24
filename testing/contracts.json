@@ -9987,8 +9987,58 @@
                 "feedbackBoundary": true
               },
               {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Working draft saved",
+                "path": "/studio/parallax"
+              },
+              {
+                "action": "reload"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Working draft opened",
+                "path": "/studio/parallax"
+              },
+              {
                 "action": "click",
                 "role": "button",
+                "name": "Edit room features"
+              },
+              {
+                "action": "assert",
+                "role": "combobox",
+                "name": "Room feature",
+                "text": "New desk",
+                "path": "/studio/parallax"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Authoring mode"
+              },
+              {
+                "action": "keyboard",
+                "key": "Escape",
+                "expectFocus": {
+                  "role": "combobox",
+                  "name": "Authoring mode"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "Shift+F10",
+                "expectFocus": {
+                  "role": "menuitem",
+                  "name": "Save draft"
+                }
+              },
+              {
+                "action": "click",
+                "role": "menuitem",
                 "name": "Save draft"
               },
               {
@@ -10597,6 +10647,7 @@
                 "text": "The Letter Study",
                 "path": "/studio/parallax",
                 "state": "RENAMED",
+                "confirmation": "Scene saved.",
                 "kind": "outcome",
                 "meaning": "The renamed Scene saves independently.",
                 "feedbackBoundary": true
@@ -10876,6 +10927,17 @@
               {
                 "action": "click",
                 "role": "button",
+                "name": "Open scene settings"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Experience title",
+                "contextValue": "PARALLAX_COMMUNITY_SCENE_NAME"
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "Save to Library"
               },
               {
@@ -10922,12 +10984,14 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Inspect Desk Map"
+                "name": "Inspect PARALLAX_COMMUNITY_SCENE_NAME",
+                "contextName": "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME"
               },
               {
                 "action": "assert",
                 "role": "complementary",
-                "name": "Desk Map details",
+                "name": "PARALLAX_COMMUNITY_SCENE_NAME details",
+                "contextName": "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME",
                 "text": "Private Library",
                 "path": "/studio/parallax",
                 "state": "SOURCE_DISCOVERED",
