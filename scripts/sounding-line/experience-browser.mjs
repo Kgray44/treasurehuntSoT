@@ -40,6 +40,8 @@ import {
   planProductExperience,
   REVIEW_DIMENSIONS,
   validateExperienceEvidence,
+  validateRoomReloadJourney,
+  validateSceneSavedConfirmation,
   validateExperienceArtifacts,
   artifactBytes,
   revisionJson,
@@ -257,6 +259,106 @@ function sc02JourneyContext(contract, journey, device, motionMode) {
   };
 }
 
+function communityJourneyContext(contract, journey, device, motionMode, role) {
+  if (
+    contract.id !== "parallax.spatial-community-publishing.experience" ||
+    journey.id !== "creator-saved-scene-community-package-review" ||
+    role !== "CREATOR" ||
+    !["DESKTOP", "MOBILE"].includes(device) ||
+    motionMode !== "REDUCED"
+  )
+    fail("JOURNEY_CONTEXT_INVALID");
+  const name = "Community review Scene " + device + " " + motionMode;
+  const substitutions = [];
+  const steps = journey.steps.map((source, index) => {
+    const step = { ...source };
+    if (
+      Object.keys(step).some((key) => key.startsWith("context") && !["contextValue", "contextName"].includes(key)) ||
+      Object.entries(step).some(
+        ([key, value]) =>
+          JSON.stringify(value)?.includes("PARALLAX_COMMUNITY_SCENE_") &&
+          !(["contextValue", "contextName"].includes(key) || (key === "name" && Object.hasOwn(step, "contextName"))),
+      )
+    )
+      fail("JOURNEY_CONTEXT_FIELD_UNSUPPORTED");
+    if (["devices", "when"].some((key) => Object.hasOwn(step, key))) fail("JOURNEY_NAVIGATION_CONDITION_INVALID");
+    if (
+      [
+        step.name,
+        step.value,
+        step.role,
+        step.path,
+        step.text,
+        step.key,
+        step.absentRole?.name,
+        step.expectFocus?.name,
+      ].some((value) => typeof value === "string" && /\{\{|\}\}/u.test(value))
+    )
+      fail("JOURNEY_CONTEXT_FIELD_UNSUPPORTED");
+    if (Object.hasOwn(step, "contextValue")) {
+      if (
+        step.contextValue !== "PARALLAX_COMMUNITY_SCENE_NAME" ||
+        step.action !== "fill" ||
+        step.role !== "textbox" ||
+        step.name !== "Experience title" ||
+        Object.hasOwn(step, "value") ||
+        Object.hasOwn(step, "contextName")
+      )
+        fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      step.value = name;
+      substitutions.push({ step: index, field: "value", token: step.contextValue, value: name });
+    }
+    if (Object.hasOwn(step, "contextName")) {
+      if (
+        step.contextName === "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME" &&
+        step.action === "click" &&
+        step.role === "button" &&
+        step.name === "Inspect PARALLAX_COMMUNITY_SCENE_NAME"
+      )
+        step.name = "Inspect " + name;
+      else if (
+        step.contextName === "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME" &&
+        step.action === "assert" &&
+        step.role === "complementary" &&
+        step.kind === "outcome" &&
+        step.name === "PARALLAX_COMMUNITY_SCENE_NAME details"
+      )
+        step.name = name + " details";
+      else fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      substitutions.push({ step: index, field: "name", token: step.contextName, value: step.name });
+    }
+    return { step, index, applicable: true };
+  });
+  if (
+    substitutions.length !== 3 ||
+    substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_NAME").length !== 1 ||
+    substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME").length !== 1 ||
+    substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME").length !== 1
+  )
+    fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+  return { steps, evidence: { version: 1, device, motionMode, applicability: [], substitutions } };
+}
+
+function savedRoomReloadURL(page, origin) {
+  const value = page.url();
+  let saved;
+  try {
+    saved = new URL(value);
+  } catch {
+    fail("JOURNEY_RELOAD_URL_INVALID");
+  }
+  const definitions = saved.searchParams.getAll("definition");
+  if (
+    saved.origin !== origin ||
+    saved.pathname !== "/studio/parallax" ||
+    definitions.length !== 1 ||
+    !definitions[0].trim() ||
+    ["library", "libraryKind", "libraryVersion"].some((key) => saved.searchParams.has(key))
+  )
+    fail("JOURNEY_RELOAD_URL_INVALID");
+  return value;
+}
+
 // Use semantic visible controls. API setup may provision identities/data; it
 // cannot replace entry, action, destination, or return-path proof.
 export async function runExperienceJourney({
@@ -268,11 +370,36 @@ export async function runExperienceJourney({
   root,
   role = "ANONYMOUS",
   motionMode = "REDUCED",
+  baseURL,
   accessibilityCheck,
 }) {
+  const confirmation = validateSceneSavedConfirmation(contract, journey);
+  if (
+    confirmation &&
+    (role !== "CREATOR" || !["DESKTOP", "MOBILE"].includes(device) || !["NORMAL", "REDUCED"].includes(motionMode))
+  )
+    fail("SCENE_SAVE_CONFIRMATION_SCOPE_INVALID");
+  const reload = validateRoomReloadJourney(contract, journey);
+  let reloadOrigin;
+  if (reload) {
+    if (role !== "CREATOR" || !["DESKTOP", "MOBILE"].includes(device) || !["NORMAL", "REDUCED"].includes(motionMode))
+      fail("JOURNEY_RELOAD_SCOPE_INVALID");
+    try {
+      if (typeof baseURL !== "string") fail("JOURNEY_RELOAD_BASE_REQUIRED");
+      const base = new URL(baseURL);
+      if (!["http:", "https:"].includes(base.protocol) || new URL(page.url()).origin !== base.origin)
+        fail("JOURNEY_RELOAD_BASE_REQUIRED");
+      reloadOrigin = base.origin;
+    } catch {
+      fail("JOURNEY_RELOAD_BASE_REQUIRED");
+    }
+  }
+  const savedSceneReloads = [];
   // Resolve once before any browser interaction. Both loops consume the same
   // applicability and literals while evidence retains original step indices.
-  const contextual = sc02JourneyContext(contract, journey, device, motionMode);
+  const contextual = journey.steps.some((step) => JSON.stringify(step).includes("PARALLAX_COMMUNITY_SCENE_"))
+    ? communityJourneyContext(contract, journey, device, motionMode, role)
+    : sc02JourneyContext(contract, journey, device, motionMode);
   const captures = [];
   const observations = [];
   const stateAccessibility = [];
@@ -282,6 +409,8 @@ export async function runExperienceJourney({
   let returnPathVerified = false;
   let observedDeparture = false;
   let actionPredicates = new Map();
+  const sceneSavedStatus = () =>
+    page.getByRole("dialog", { name: "Environments & Scenes", exact: true }).getByRole("status");
   const predicateSatisfied = async (step) => {
     const target = page.getByRole(step.role, { name: step.name, exact: true });
     if (!(await target.isVisible()) || (step.path && new URL(page.url()).pathname !== step.path)) return false;
@@ -291,6 +420,15 @@ export async function runExperienceJourney({
       (await page.getByRole(step.absentRole.role, { name: step.absentRole.name, exact: true }).isVisible())
     )
       return false;
+    if (step.confirmation) {
+      const status = sceneSavedStatus();
+      if (
+        (await status.count()) !== 1 ||
+        !(await status.isVisible()) ||
+        (await status.innerText()).trim() !== step.confirmation
+      )
+        return false;
+    }
     return true;
   };
   let actionStarted = null;
@@ -309,7 +447,18 @@ export async function runExperienceJourney({
   const unobscuredActions = [];
   for (const { index, step, applicable } of contextual.steps) {
     if (!applicable) continue;
-    if (step.action === "keyboard") {
+    if (step.action === "reload") {
+      const savedURL = savedRoomReloadURL(page, reloadOrigin);
+      await page.reload({ waitUntil: "domcontentloaded", timeout: 30000 });
+      if (page.url() !== savedURL) fail("JOURNEY_RELOAD_DESTINATION_CHANGED");
+      actionPredicates = new Map();
+      savedSceneReloads.push({
+        step: index,
+        urlSHA256: digest(Buffer.from(savedURL)),
+        sameFullURL: true,
+        timeoutMs: 30000,
+      });
+    } else if (step.action === "keyboard") {
       await page.keyboard.press(step.key);
       if (step.expectFocus) {
         const target = page.getByRole(step.expectFocus.role, { name: step.expectFocus.name, exact: true });
@@ -327,7 +476,7 @@ export async function runExperienceJourney({
           const entry = contextual.steps[following];
           if (!entry.applicable) continue;
           const predicate = entry.step;
-          if (predicate.action === "click") break;
+          if (predicate.action === "click" || predicate.action === "reload") break;
           if (predicate.action === "assert" && !actionPredicates.has(following))
             actionPredicates.set(following, await predicateSatisfied(predicate));
         }
@@ -386,7 +535,16 @@ export async function runExperienceJourney({
         }
         if (step.text) {
           try {
-            await target.filter({ hasText: step.text }).waitFor({ state: "visible", timeout: 5000 });
+            if (step.confirmation) {
+              await Promise.all([
+                target.filter({ hasText: step.text }).waitFor({ state: "visible", timeout: 5000 }),
+                sceneSavedStatus()
+                  .filter({ hasText: /^Scene saved\.$/u })
+                  .waitFor({ state: "visible", timeout: 5000 }),
+              ]);
+            } else {
+              await target.filter({ hasText: step.text }).waitFor({ state: "visible", timeout: 5000 });
+            }
           } catch {
             fail("USER_OUTCOME_FAILED");
           }
@@ -475,6 +633,7 @@ export async function runExperienceJourney({
       outcome: journey.outcome,
       observations,
       visibleActions,
+      ...(savedSceneReloads.length ? { savedSceneReloads } : {}),
       ...(contextual.evidence ? { stepContext: contextual.evidence } : {}),
       ...(unobscuredActions.length ? { unobscuredActions } : {}),
       returnPathVerified,
@@ -650,6 +809,7 @@ export async function captureProductExperience({
                 progress("operation.result", { actionKind: "navigate-journey-entry" });
                 const observed = await runExperienceJourney({
                   page,
+                  baseURL,
                   contract,
                   journey,
                   device,
