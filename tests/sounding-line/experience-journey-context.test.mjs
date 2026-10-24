@@ -575,3 +575,1917 @@ test("authored contextual names reject invalid scopes, controls, tokens, interpo
     assert.deepEqual(f.calls, []);
   }
 });
+
+// Deterministic UI/dataflow models of the actual registered Community steps.
+// They execute no browser, server, database, screenshots or axe.
+const communityToken = "PARALLAX_COMMUNITY_SCENE_NAME";
+// Inline source-bound model: no candidate registry or production fixture import.
+const communityContract = {
+  id: "parallax.spatial-community-publishing.experience",
+  experience: {
+    entryPoint: "/studio/library",
+  },
+};
+const communityJourney = {
+  id: "creator-saved-scene-community-package-review",
+  outcome:
+    "The Creator saves a private spatial definition, reviews the actual Community package and rights, and returns without publishing",
+  steps: [
+    {
+      action: "click",
+      role: "link",
+      name: "Spatial Studio",
+    },
+    {
+      action: "assert",
+      role: "main",
+      name: "",
+      text: "Save to Library",
+      path: "/studio/parallax",
+      kind: "outcome",
+      meaning: "The natural entry opens canonical Spatial Studio.",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Open scene settings",
+    },
+    {
+      action: "fill",
+      role: "textbox",
+      name: "Experience title",
+      contextValue: "PARALLAX_COMMUNITY_SCENE_NAME",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Save to Library",
+    },
+    {
+      action: "assert",
+      role: "main",
+      name: "",
+      text: "Saved to Library · one definition",
+      path: "/studio/parallax",
+      kind: "outcome",
+      meaning: "Save retains a private reusable source without Community publication.",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Open Library",
+    },
+    {
+      action: "click",
+      role: "tab",
+      name: "Assets",
+    },
+    {
+      action: "keyboard",
+      key: "ArrowDown",
+      expectFocus: {
+        role: "tab",
+        name: "Environments",
+      },
+    },
+    {
+      action: "keyboard",
+      key: "ArrowDown",
+      expectFocus: {
+        role: "tab",
+        name: "Scenes",
+      },
+    },
+    {
+      action: "click",
+      role: "tab",
+      name: "Scenes",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Inspect PARALLAX_COMMUNITY_SCENE_NAME",
+      contextName: "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME",
+    },
+    {
+      action: "assert",
+      role: "complementary",
+      name: "PARALLAX_COMMUNITY_SCENE_NAME details",
+      text: "Private Library",
+      path: "/studio/parallax",
+      kind: "outcome",
+      meaning: "Saved Scene details expose its private state and contextual action.",
+      contextName: "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Publish to Community…",
+    },
+    {
+      action: "assert",
+      role: "dialog",
+      name: "Publish to Community",
+      text: "This is your private saved source",
+      path: "/studio/parallax",
+      kind: "outcome",
+      meaning: "One wizard distinguishes the saved source from a Community release.",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Continue",
+    },
+    {
+      action: "fill",
+      role: "textbox",
+      name: "Description",
+      value: "A synthetic tabletop Scene for other Creators.",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Continue",
+    },
+    {
+      action: "assert",
+      role: "dialog",
+      name: "Publish to Community",
+      text: "The server resolves the saved revision",
+      path: "/studio/parallax",
+      kind: "outcome",
+      meaning: "Included content explains the resolved dependency boundary.",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Continue",
+    },
+    {
+      action: "assert",
+      role: "dialog",
+      name: "Publish to Community",
+      text: "Visibility: Community after approval",
+      path: "/studio/parallax",
+      kind: "outcome",
+      meaning: "Sharing explains moderation and requires license and rights review.",
+    },
+    {
+      action: "click",
+      role: "checkbox",
+      name: "I own or have permission to redistribute every included element and reviewed its credits.",
+    },
+    {
+      action: "keyboard",
+      key: "Space",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Review package",
+    },
+    {
+      action: "assert",
+      role: "dialog",
+      name: "Publish to Community",
+      text: "SERVER-VERIFIED PACKAGE",
+      path: "/studio/parallax",
+      kind: "outcome",
+      meaning: "The server returns sanitized contents and attribution before submission.",
+    },
+    {
+      action: "click",
+      role: "button",
+      name: "Close publishing",
+    },
+    {
+      action: "click",
+      role: "link",
+      name: "← Creator Studio",
+    },
+    {
+      action: "assert",
+      role: "heading",
+      name: "Voyagewright Studio",
+      text: "Voyagewright Studio",
+      path: "/studio/library",
+      returnPath: true,
+    },
+  ],
+};
+
+function communityFixture(
+  catalog,
+  device,
+  {
+    noOpTitle = false,
+    noOpSave = false,
+    noOpInspect = false,
+    preexistingSaved = false,
+    preexistingDetails = null,
+  } = {},
+) {
+  const state = {
+    title: "Desk Map",
+    path: "/studio/library",
+    settings: false,
+    library: false,
+    saved: preexistingSaved,
+    selected: preexistingDetails,
+    publishing: false,
+    stage: 0,
+    rights: false,
+    description: "",
+  };
+  const calls = [];
+  const dialogTexts = [
+    "This is your private saved source",
+    "Description",
+    "The server resolves the saved revision",
+    "Visibility: Community after approval",
+    "SERVER-VERIFIED PACKAGE",
+  ];
+  const text = (role) =>
+    role === "main"
+      ? state.path === "/studio/parallax"
+        ? "Save to Library" + (state.saved ? " Saved to Library · one definition" : "")
+        : "Library home"
+      : role === "dialog"
+        ? dialogTexts[state.stage]
+        : role === "complementary"
+          ? "Private Library"
+          : "Voyagewright Studio";
+  const count = (role, name) => {
+    if (role === "main") return 1;
+    if (role === "heading") return Number(name === "Voyagewright Studio" && state.path === "/studio/library");
+    if (role === "textbox" && name === "Experience title") return Number(state.settings);
+    if (role === "button" && name.startsWith("Inspect "))
+      return state.library ? catalog.filter((item) => "Inspect " + item.name === name).length : 0;
+    if (role === "complementary") return Number(state.library && name === state.selected + " details");
+    if (role === "dialog") return Number(state.publishing && name === "Publish to Community");
+    if (role === "tab") return Number(state.library);
+    return 1;
+  };
+  const page = {
+    url: () => "https://fixture.invalid" + state.path,
+    keyboard: {
+      press: async (key) => {
+        if (key === "Space") state.rights = !state.rights;
+      },
+    },
+    waitForURL: async (predicate) => assert(predicate(new URL(page.url()))),
+    evaluate: async (fn) => String(fn).includes("matchMedia"),
+    getByRole: (role, { name, exact }) => {
+      calls.push({ role, name });
+      assert.equal(exact, true);
+      assert(!String(name).includes(communityToken), "tokens must resolve in lookahead and execution");
+      const visible = () => {
+        const matches = count(role, name);
+        assert(matches < 2, "STRICT_DUPLICATE:" + role + ":" + name);
+        return matches === 1;
+      };
+      const target = {
+        isVisible: async () => visible(),
+        innerText: async () => text(role),
+        getAttribute: async () => "model-community-creator",
+        evaluate: async () => true,
+        waitFor: async () => assert(visible(), "CONTROL_MISSING:" + role + ":" + name),
+        filter: ({ hasText }) => ({
+          waitFor: async () =>
+            assert(visible() && text(role).includes(hasText), "CONTROL_MISSING:" + role + ":" + name + ":" + hasText),
+        }),
+        fill: async (value) => {
+          if (role === "textbox" && name === "Experience title") {
+            if (!noOpTitle) state.title = value;
+          } else if (role === "textbox" && name === "Description") state.description = value;
+          else assert.fail("Unexpected Community fill");
+        },
+        press: async (key) => {
+          assert.equal(key, "Enter");
+          if (name === "Spatial Studio") state.path = "/studio/parallax";
+          if (name === "Open scene settings") state.settings = true;
+          if (name === "Save to Library" && !noOpSave) {
+            catalog.push({ id: "community-definition-" + catalog.length, name: state.title });
+            state.saved = true;
+          }
+          if (name === "Open Library") {
+            state.library = true;
+            if (device === "MOBILE") state.settings = false;
+          }
+          if (name.startsWith("Inspect ") && !noOpInspect) state.selected = name.slice("Inspect ".length);
+          if (name === "Publish to Community…") {
+            state.publishing = true;
+            state.stage = 0;
+          }
+          if (name === "Continue") state.stage++;
+          if (name === "Review package") {
+            assert(state.rights);
+            state.stage = 4;
+          }
+          if (name === "Close publishing") state.publishing = false;
+          if (name === "← Creator Studio") state.path = "/studio/library";
+        },
+      };
+      return target;
+    },
+  };
+  return { page, state, calls };
+}
+
+test("Community finite names preserve two distinct sources and exact discovery in one shared Creator catalog", async () => {
+  const catalog = [];
+  const original = structuredClone(communityJourney);
+  for (const device of ["DESKTOP", "MOBILE"]) {
+    const f = communityFixture(catalog, device);
+    const result = await runExperienceJourney({
+      page: f.page,
+      contract: communityContract,
+      journey: communityJourney,
+      device,
+      motionMode: "REDUCED",
+      role: "CREATOR",
+    });
+    const expected = "Community review Scene " + device + " REDUCED";
+    assert.equal(result.result.status, "PASS");
+    assert.equal(f.state.title, expected);
+    assert.equal(f.state.selected, expected);
+    assert.equal(f.state.path, "/studio/library");
+    assert.equal(f.state.publishing, false, "review closes without publication");
+    assert.deepEqual(result.result.stepContext.applicability, []);
+    assert.deepEqual(
+      result.result.stepContext.substitutions.map(({ step, field, value }) => ({ step, field, value })),
+      [
+        { step: 3, field: "value", value: expected },
+        { step: 11, field: "name", value: "Inspect " + expected },
+        { step: 12, field: "name", value: expected + " details" },
+      ],
+    );
+    assert.deepEqual(
+      result.result.observations,
+      communityJourney.steps.flatMap((step, index) =>
+        step.action === "assert" && step.kind === "outcome"
+          ? [
+              {
+                step: index,
+                meaning: step.meaning,
+                role: step.role,
+                name: step.contextName ? expected + " details" : step.name,
+                text: step.text ?? null,
+              },
+            ]
+          : [],
+      ),
+    );
+  }
+  assert.equal(new Set(catalog.map((item) => item.id)).size, 2);
+  assert.equal(new Set(catalog.map((item) => item.name)).size, 2);
+  assert.deepEqual(communityJourney, original);
+});
+
+test("Community repeated constant titles still fail strict second-context discovery", async () => {
+  const literal = structuredClone(communityJourney);
+  for (const step of literal.steps) {
+    if (step.contextValue) step.value = "Desk Map";
+    if (step.contextName) step.name = step.name.replace(communityToken, "Desk Map");
+    delete step.contextValue;
+    delete step.contextName;
+  }
+  const catalog = [];
+  const first = communityFixture(catalog, "DESKTOP");
+  assert.equal(
+    (
+      await runExperienceJourney({
+        page: first.page,
+        contract: communityContract,
+        journey: literal,
+        device: "DESKTOP",
+        motionMode: "REDUCED",
+        role: "CREATOR",
+      })
+    ).result.status,
+    "PASS",
+  );
+  const second = communityFixture(catalog, "MOBILE");
+  await assert.rejects(
+    runExperienceJourney({
+      page: second.page,
+      contract: communityContract,
+      journey: literal,
+      device: "MOBILE",
+      motionMode: "REDUCED",
+      role: "CREATOR",
+    }),
+    /STRICT_DUPLICATE:button:Inspect Desk Map/u,
+  );
+  assert.equal(catalog.length, 2);
+});
+
+test("Community title, save and inspection no-ops and already-true predicates remain failures", async () => {
+  for (const [options, expected] of [
+    [{ noOpTitle: true }, /CONTROL_MISSING/u],
+    [{ noOpSave: true }, /USER_OUTCOME_FAILED/u],
+    [{ noOpInspect: true }, /CONTROL_MISSING/u],
+    [{ noOpSave: true, preexistingSaved: true }, /ACTION_OUTCOME_NOT_OBSERVED/u],
+    [
+      { noOpInspect: true, preexistingDetails: "Community review Scene DESKTOP REDUCED" },
+      /ACTION_OUTCOME_NOT_OBSERVED/u,
+    ],
+  ]) {
+    const f = communityFixture([], "DESKTOP", options);
+    await assert.rejects(
+      runExperienceJourney({
+        page: f.page,
+        contract: communityContract,
+        journey: communityJourney,
+        device: "DESKTOP",
+        motionMode: "REDUCED",
+        role: "CREATOR",
+      }),
+      expected,
+    );
+  }
+});
+
+test("Community existing exact contextual title does not permit duplicate suppression", async () => {
+  const catalog = [{ id: "retained-distinct-source", name: "Community review Scene DESKTOP REDUCED" }];
+  const f = communityFixture(catalog, "DESKTOP");
+  await assert.rejects(
+    runExperienceJourney({
+      page: f.page,
+      contract: communityContract,
+      journey: communityJourney,
+      device: "DESKTOP",
+      motionMode: "REDUCED",
+      role: "CREATOR",
+    }),
+    /STRICT_DUPLICATE:button:Inspect Community review Scene/u,
+  );
+  assert.equal(catalog.length, 2);
+  assert.equal(catalog[0].id, "retained-distinct-source");
+});
+
+test("Community rejects wrong scope, role, device, motion, token and all navigation skips before UI use", async () => {
+  const mutations = [
+    (x) => {
+      x.contract.id = "unrelated";
+    },
+    (x) => {
+      x.journey.id = "unrelated";
+    },
+    (x) => {
+      x.device = "TABLET";
+    },
+    (x) => {
+      x.role = "PLAYER";
+    },
+    (x) => {
+      x.motionMode = "NORMAL";
+    },
+    (x) => {
+      x.motionMode = "FAST";
+    },
+    (x) => {
+      x.journey.steps[3].contextValue = "SC02_COMPOSITION_NAME";
+    },
+    (x) => {
+      x.journey.steps[3].contextValue = "PARALLAX_REUSABLE_ASSET_NAME";
+    },
+    (x) => {
+      x.journey.steps[3].contextValue = "process.env.SECRET";
+    },
+    (x) => {
+      x.journey.steps[3].value = "literal";
+    },
+    (x) => {
+      x.journey.steps[3].name = "Object name";
+    },
+    (x) => {
+      x.journey.steps[3].role = "searchbox";
+    },
+    (x) => {
+      x.journey.steps[3].action = "click";
+    },
+    (x) => {
+      x.journey.steps[11].contextName = "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME";
+    },
+    (x) => {
+      x.journey.steps[11].name = "Inspect arbitrary";
+    },
+    (x) => {
+      x.journey.steps[11].action = "assert";
+    },
+    (x) => {
+      x.journey.steps[12].role = "region";
+    },
+    (x) => {
+      x.journey.steps[12].kind = "navigation";
+    },
+    (x) => {
+      x.journey.steps[12].name = "arbitrary details";
+    },
+    (x) => {
+      delete x.journey.steps[11].contextName;
+    },
+    (x) => {
+      x.journey.steps[0].devices = ["MOBILE"];
+    },
+    (x) => {
+      x.journey.steps[0].when = { device: "MOBILE" };
+    },
+    (x) => {
+      x.journey.steps[12].text = "{{DEVICE}}";
+    },
+    (x) => {
+      x.journey.steps[12].text = "PARALLAX_COMMUNITY_SCENE_NAME";
+    },
+    (x) => {
+      x.journey.steps[12].meaning = "PARALLAX_COMMUNITY_SCENE_NAME";
+    },
+    (x) => {
+      x.journey.steps[12].contextText = "unsupported";
+    },
+    (x) => {
+      x.journey.steps[1].path = "/PARALLAX_COMMUNITY_SCENE_NAME";
+    },
+    (x) => {
+      x.journey.steps[0].name = "PARALLAX_COMMUNITY_SCENE_NAME";
+    },
+  ];
+  for (const mutation of mutations) {
+    const input = {
+      contract: structuredClone(communityContract),
+      journey: structuredClone(communityJourney),
+      device: "DESKTOP",
+      motionMode: "REDUCED",
+      role: "CREATOR",
+    };
+    mutation(input);
+    const f = communityFixture([], "DESKTOP");
+    await assert.rejects(
+      runExperienceJourney({ page: f.page, ...input }),
+      /JOURNEY_CONTEXT|JOURNEY_NAVIGATION_CONDITION|JOURNEY_SYNTHETIC_NAME/u,
+    );
+    assert.deepEqual(f.calls, []);
+  }
+});
+
+test("Community reserved tokens in unrelated literal or unsupported fields fail before UI use", async () => {
+  for (const step of [
+    { action: "assert", role: "heading", name: "Any", text: "PARALLAX_COMMUNITY_SCENE_NAME" },
+    { action: "fill", role: "textbox", name: "Any", value: "PARALLAX_COMMUNITY_SCENE_NAME" },
+    { action: "click", role: "button", name: "PARALLAX_COMMUNITY_SCENE_NAME" },
+    { action: "assert", role: "heading", name: "Any", path: "/PARALLAX_COMMUNITY_SCENE_NAME" },
+    { action: "click", role: "button", name: "Any", contextText: "PARALLAX_COMMUNITY_SCENE_NAME" },
+    { action: "click", role: "button", name: "Any", unknown: { token: "PARALLAX_COMMUNITY_SCENE_NAME" } },
+  ]) {
+    const f = communityFixture([], "DESKTOP");
+    await assert.rejects(
+      runExperienceJourney({
+        page: f.page,
+        contract: { id: "unrelated", experience: {} },
+        journey: { id: "literal-outside-scope", steps: [step] },
+        device: "DESKTOP",
+        motionMode: "REDUCED",
+        role: "CREATOR",
+      }),
+      /JOURNEY_CONTEXT_INVALID/u,
+    );
+    assert.deepEqual(f.calls, []);
+  }
+});
+
+const roomReloadContract = {
+  id: "parallax.parametric-room-correction.experience",
+  name: "Editable generic room features and known-measurement correction",
+  authority: "one-voyage",
+  owners: ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+  critical: true,
+  experience: {
+    persona: "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+    objective: "Correct a room's actual furniture and approximate scale using ordinary Creator controls",
+    visibleOutcome:
+      "New editable generic geometry appears, attached supports remain protected, known measurement scales the same room, and saved corrections survive reload",
+    integrationOwner: "Parallax parametric room correction",
+    systems: ["project-parallax", "project-crossdeck", "one-voyage"],
+    sourcePaths: ["src/components/studio/parallax", "src/app/studio/parallax"],
+    projectionPaths: ["src/parallax"],
+    entryPoint: "/studio/library",
+    states: ["ROOM_EDIT_READY", "ROOM_FEATURE_ADDED", "ROOM_SAVED", "RETURNED"],
+    devices: ["DESKTOP", "MOBILE"],
+    roles: ["CREATOR"],
+    accessibility:
+      "Labeled feature, type and measurement controls support keyboard input; native disclosure summaries expose grouped corrections; phone preserves a usable contextual Inspector and access to the canvas. Themes and reduced motion retain meaning.",
+    fallback:
+      "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+    navigation:
+      "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+    designTarget:
+      "Preserve the blue workstation and Room feature selector. Add room features creates explicitly generic placeholders. Classification edits labels; Rebuild changes the actual model while retaining the chosen name, footprint and pose. Remove and Rebuild reject attached supports with recovery guidance; the whole floor stays singular. A known feature width/height/depth uniformly scales approximate room geometry, keeps only that reference measured, and preserves clue sizes and normal history/save. Results must be observable in the actual renderer and correction fields must remain accessible on phone.",
+    references: [
+      {
+        family: "Gateway / public entry",
+        path: "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+        sourceSha: "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+        maturity: "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+        reason: "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+        preserve:
+          "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent.",
+      },
+      {
+        family: "Gateway / public entry",
+        path: "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+        sourceSha: "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+        maturity: "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+        reason: "Accepted constrained gateway keeps the same destinations and account access.",
+        preserve: "Mobile task hierarchy, readable controls and contextual navigation.",
+      },
+    ],
+    homeportScreenIds: ["screen-page-studio-library", "screen-page-studio"],
+    homeportJourneyIds: ["B"],
+    browserTests: [
+      "tests/e2e/parallax-parametric-room.spec.ts",
+      "tests/e2e/parallax-room-features.spec.ts",
+      "tests/e2e/parallax-rooms.spec.ts",
+      "tests/e2e/parallax-construction-checks.spec.ts",
+    ],
+    fixtureProfile: "generic",
+    recordingRequired: true,
+    limitations: [
+      "This increment provides generic editable geometry and an approximate scale reference. Door/window models do not cut openings or simulate opening. It does not establish photograph perception, native calibration, full overhaul, physical readiness or owner acceptance.",
+    ],
+    roleSetup: {
+      CREATOR: {
+        entryPoint: "/sign-in?returnTo=%2Fstudio%2Flibrary",
+        steps: [
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Email or Player name",
+            value: "parallax-review-rooms-creator@example.test",
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Password",
+            value: "Synthetic-Parallax-Review-2026!",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Sign in",
+          },
+        ],
+        witness: {
+          role: "heading",
+          name: "Voyagewright Studio",
+          text: "Voyagewright Studio",
+        },
+      },
+    },
+    continuity: {
+      objective:
+        "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+      checks: [
+        {
+          id: "creator-identity",
+          role: "button",
+          name: "Synthetic Parallax Rooms Creator",
+          attribute: "aria-label",
+        },
+      ],
+    },
+    motion: {
+      measurement: "Visible keyboard action to rendered editor or assistance feedback",
+      feedbackBudgetMs: 3000,
+    },
+    journeys: [
+      {
+        id: "creator-adds-generic-room-feature-and-saves",
+        roles: ["CREATOR"],
+        outcome:
+          "New editable generic geometry appears, attached supports remain protected, known measurement scales the same room, and saved corrections survive reload",
+        steps: [
+          {
+            action: "click",
+            role: "link",
+            name: "Spatial Studio",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Edit room features",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Open spatial context",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Room spatial context",
+            text: "Editable authoring geometry",
+            path: "/studio/parallax",
+            state: "ROOM_EDIT_READY",
+            kind: "outcome",
+            meaning: "Editable authoring geometry",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Add room feature",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Room feature editor",
+            text: "Added a generic desk",
+            path: "/studio/parallax",
+            state: "ROOM_FEATURE_ADDED",
+            kind: "outcome",
+            meaning: "Added a generic desk",
+            feedbackBoundary: true,
+          },
+          {
+            action: "assert",
+            role: "main",
+            name: "",
+            text: "Working draft saved",
+            path: "/studio/parallax",
+          },
+          {
+            action: "reload",
+          },
+          {
+            action: "assert",
+            role: "main",
+            name: "",
+            text: "Working draft opened",
+            path: "/studio/parallax",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Edit room features",
+          },
+          {
+            action: "assert",
+            role: "combobox",
+            name: "Room feature",
+            text: "New desk",
+            path: "/studio/parallax",
+          },
+          {
+            action: "click",
+            role: "combobox",
+            name: "Authoring mode",
+          },
+          {
+            action: "keyboard",
+            key: "Escape",
+            expectFocus: {
+              role: "combobox",
+              name: "Authoring mode",
+            },
+          },
+          {
+            action: "keyboard",
+            key: "Shift+F10",
+            expectFocus: {
+              role: "menuitem",
+              name: "Save draft",
+            },
+          },
+          {
+            action: "click",
+            role: "menuitem",
+            name: "Save draft",
+          },
+          {
+            action: "assert",
+            role: "main",
+            name: "",
+            text: "Working draft saved",
+            path: "/studio/parallax",
+            state: "ROOM_SAVED",
+            kind: "outcome",
+            meaning: "The normal Creator Save retains the editable room",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "link",
+            name: "\u2190 Creator Studio",
+          },
+          {
+            action: "assert",
+            role: "main",
+            name: "",
+            text: "Voyagewright Studio",
+            path: "/studio/library",
+            state: "RETURNED",
+            kind: "return",
+            meaning: "Creator returns to the canonical Library",
+            feedbackBoundary: true,
+            returnPath: true,
+          },
+        ],
+      },
+    ],
+  },
+};
+
+import {
+  validateExperienceContract,
+  validateRoomReloadJourney,
+} from "../../scripts/sounding-line/product-experience.mjs";
+
+function roomReloadInput() {
+  const contract = structuredClone(roomReloadContract);
+  const journey = contract.experience.journeys[0];
+  // Pure resolver/action model: retain all predicates but do not pretend to capture application media.
+  for (const step of journey.steps) delete step.state;
+  return { contract, journey };
+}
+
+function roomReloadModel(device = "DESKTOP", motionMode = "REDUCED", options = {}) {
+  const state = {
+    url: options.initialURL ?? "https://fixture.invalid/studio/library",
+    spatial: false,
+    feature: false,
+    featureRetained: true,
+    editing: false,
+    status: "Working draft opened",
+    menu: false,
+    focus: null,
+    tabTarget: null,
+  };
+  const calls = [],
+    reloads = [],
+    keys = [];
+  const text = (role, name) => {
+    if (role === "main")
+      return new URL(state.url).pathname === "/studio/library" ? "Voyagewright Studio" : state.status;
+    if (name === "Room spatial context") return "Editable authoring geometry";
+    if (name === "Room feature editor") return "Added a generic desk";
+    if (name === "Room feature") return state.featureRetained ? "New desk" : "Original wall";
+    return name;
+  };
+  const visible = (name) =>
+    name === "Room spatial context"
+      ? state.spatial
+      : name === "Room feature editor"
+        ? state.feature
+        : name === "Save draft"
+          ? state.menu
+          : true;
+  const page = {
+    url: () => state.url,
+    reload: async (config) => {
+      reloads.push({ url: state.url, config });
+      if (options.reloadError) throw options.reloadError;
+      if (!options.noOpReload) {
+        state.spatial = false;
+        state.editing = false;
+        state.status = options.preexistingSavedAfterReload ? "Working draft saved" : "Working draft opened";
+        state.featureRetained = !options.lostGeometry;
+      }
+      if (options.redirectAfterReload) state.url = options.redirectAfterReload;
+    },
+    keyboard: {
+      press: async (key) => {
+        keys.push(key);
+        if (key === "Tab") state.focus = state.tabTarget;
+        if (key === "Escape") assert.equal(state.focus, "Authoring mode");
+        if (key === "Shift+F10") {
+          assert.equal(state.focus, "Authoring mode");
+          state.menu = true;
+          if (!options.badMenuFocus) state.focus = "Save draft";
+        }
+      },
+    },
+    waitForURL: async (predicate) => assert(predicate(new URL(state.url))),
+    evaluate: async (fn) => (String(fn).includes("matchMedia") ? motionMode === "REDUCED" : false),
+    getByRole: (role, { name, exact }) => {
+      calls.push({ role, name });
+      assert.equal(exact, true);
+      const target = {
+        isVisible: async () => visible(name),
+        innerText: async () => text(role, name),
+        getAttribute: async () => "stable-synthetic-room-continuity",
+        waitFor: async () => assert(visible(name), "MODEL_CONTROL_MISSING:" + name),
+        filter: ({ hasText }) => ({
+          waitFor: async () => assert(text(role, name).includes(hasText), "MODEL_TEXT_MISSING:" + hasText),
+        }),
+        evaluate: async () => {
+          state.tabTarget = name;
+          return state.focus === name;
+        },
+        press: async (key) => {
+          assert.equal(key, "Enter");
+          assert(visible(name));
+          if (name === "Spatial Studio") state.url = "https://fixture.invalid/studio/parallax";
+          if (name === "Edit room features") state.editing = true;
+          if (name === "Open spatial context") state.spatial = true;
+          if (name === "Add room feature") {
+            state.feature = true;
+            state.status = "Working draft saved";
+            state.url = "https://fixture.invalid/studio/parallax?definition=synthetic-room&view=room#authoring";
+          }
+          if (name === "Save draft") {
+            assert.equal(state.menu, true);
+            if (!options.noOpSave) state.status = "Working draft saved";
+            state.menu = false;
+          }
+          if (name === "← Creator Studio") state.url = "https://fixture.invalid/studio/library";
+        },
+      };
+      return target;
+    },
+  };
+  return { state, page, calls, reloads, keys, device, motionMode };
+}
+
+const runRoomReload = (f, input = roomReloadInput(), overrides = {}) =>
+  runExperienceJourney({
+    page: f.page,
+    contract: input.contract,
+    journey: input.journey,
+    device: f.device,
+    motionMode: f.motionMode,
+    role: "CREATOR",
+    baseURL: "https://fixture.invalid",
+    ...overrides,
+  });
+
+test("ROOM exact four-context reload admission and schema keep the original outcome predicates", async () => {
+  assert.doesNotThrow(() => validateExperienceContract(roomReloadContract));
+  for (const device of ["DESKTOP", "MOBILE"])
+    for (const motionMode of ["NORMAL", "REDUCED"]) {
+      const f = roomReloadModel(device, motionMode);
+      const input = roomReloadInput();
+      const result = await runRoomReload(f, input);
+      assert.equal(result.result.status, "PASS");
+      assert.equal(result.result.returnPathVerified, true);
+      assert.equal(f.reloads.length, 1);
+      assert.deepEqual(f.reloads[0].config, { waitUntil: "domcontentloaded", timeout: 30000 });
+      assert.equal(
+        f.reloads[0].url,
+        "https://fixture.invalid/studio/parallax?definition=synthetic-room&view=room#authoring",
+      );
+      assert.equal(result.result.savedSceneReloads.length, 1);
+      assert.equal(result.result.savedSceneReloads[0].sameFullURL, true);
+      assert.equal(result.result.savedSceneReloads[0].timeoutMs, 30000);
+      assert.equal(result.result.savedSceneReloads[0].step, 7);
+      assert.deepEqual(
+        f.keys.filter((key) => key !== "Tab"),
+        ["Escape", "Shift+F10"],
+      );
+      assert.deepEqual(
+        result.result.observations,
+        input.journey.steps.flatMap((step, index) =>
+          step.kind === "outcome"
+            ? [{ step: index, meaning: step.meaning, role: step.role, name: step.name, text: step.text }]
+            : [],
+        ),
+      );
+    }
+});
+
+test("ROOM reload rejects wrong declared scope, duplicate reload and undeclared step data before UI", async () => {
+  const changes = [
+    (x) => {
+      x.contract.id = "unrelated";
+    },
+    (x) => {
+      x.journey.id = "unrelated";
+    },
+    (x) => {
+      x.contract.experience.roles = ["PLAYER"];
+    },
+    (x) => {
+      x.journey.roles = ["PLAYER"];
+    },
+    (x) => {
+      x.contract.experience.devices = ["DESKTOP", "DESKTOP"];
+    },
+    (x) => {
+      delete x.contract.experience.motion;
+    },
+    (x) => {
+      x.journey.steps.push({ action: "reload" });
+    },
+    ...["url", "path", "value", "name", "role", "timeout", "state", "when", "devices", "contextName", "unknown"].map(
+      (key) => (x) => {
+        x.journey.steps[7][key] = key === "url" ? "https://other.invalid" : "{{not-supported}}";
+      },
+    ),
+    (x) => {
+      x.journey.steps[0].when = { device: "MOBILE" };
+    },
+    (x) => {
+      x.journey.steps[0].name = "{{template}}";
+    },
+    (x) => {
+      x.journey.steps[12].expectFocus.name = "{{nested-template}}";
+    },
+  ];
+  for (const change of changes) {
+    const x = roomReloadInput();
+    change(x);
+    assert.throws(() => validateRoomReloadJourney(x.contract, x.journey), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    assert.throws(() => validateExperienceContract(x.contract), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    const f = roomReloadModel();
+    await assert.rejects(runRoomReload(f, x), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    assert.equal(f.calls.length, 0);
+    assert.equal(f.reloads.length, 0);
+  }
+});
+
+test("ROOM reload rejects unsupported runtime roles, devices, motion and base authority before UI", async () => {
+  for (const overrides of [
+    { role: "ANONYMOUS" },
+    { role: "PLAYER" },
+    { device: "TABLET" },
+    { motionMode: "AUTO" },
+    { baseURL: undefined },
+    { baseURL: "not-an-absolute-url" },
+    { baseURL: "file:///untrusted" },
+    { baseURL: "https://other.invalid" },
+  ]) {
+    const f = roomReloadModel();
+    await assert.rejects(
+      runRoomReload(f, roomReloadInput(), overrides),
+      /JOURNEY_RELOAD_(SCOPE_INVALID|BASE_REQUIRED)/,
+    );
+    assert.equal(f.calls.length, 0);
+    assert.equal(f.reloads.length, 0);
+  }
+});
+
+test("ROOM saved URL rejects wrong path, absent empty or duplicate definition and Library selectors before reload", async () => {
+  for (const initialURL of [
+    "https://fixture.invalid/studio/library?definition=one",
+    "https://fixture.invalid/studio/parallax",
+    "https://fixture.invalid/studio/parallax?definition=",
+    "https://fixture.invalid/studio/parallax?definition=%20",
+    "https://fixture.invalid/studio/parallax?definition=one&definition=two",
+    ...["library", "libraryKind", "libraryVersion"].map(
+      (key) => "https://fixture.invalid/studio/parallax?definition=one&" + key + "=selected",
+    ),
+    "https://foreign.invalid/studio/parallax?definition=one",
+  ]) {
+    const f = roomReloadModel("DESKTOP", "REDUCED", { initialURL });
+    const x = roomReloadInput();
+    x.journey.steps = [{ action: "reload" }];
+    await assert.rejects(runRoomReload(f, x), /JOURNEY_RELOAD_(URL_INVALID|BASE_REQUIRED)/);
+    assert.equal(f.keys.length, 0);
+    assert.equal(f.reloads.length, 0);
+  }
+});
+
+test("ROOM reload requires the exact full saved URL afterward and never retries timeout", async () => {
+  for (const redirectAfterReload of [
+    "https://fixture.invalid/studio/parallax?definition=different",
+    "https://fixture.invalid/studio/parallax?definition=synthetic-room&view=room#different",
+    "https://fixture.invalid/studio/parallax?view=room&definition=synthetic-room#authoring",
+    "https://foreign.invalid/studio/parallax?definition=synthetic-room&view=room#authoring",
+  ]) {
+    const f = roomReloadModel("DESKTOP", "REDUCED", { redirectAfterReload });
+    await assert.rejects(runRoomReload(f), /JOURNEY_RELOAD_DESTINATION_CHANGED/);
+    assert.equal(f.reloads.length, 1);
+  }
+  const timeout = new Error("SYNTHETIC_RELOAD_TIMEOUT");
+  const f = roomReloadModel("DESKTOP", "REDUCED", { reloadError: timeout });
+  await assert.rejects(runRoomReload(f), (error) => error === timeout);
+  assert.equal(f.reloads.length, 1);
+});
+
+test("ROOM reload no-op, lost geometry, bad focus and no-op explicit Save remain failed", async () => {
+  for (const options of [{ noOpReload: true }, { lostGeometry: true }, { noOpSave: true }, { badMenuFocus: true }]) {
+    const f = roomReloadModel("DESKTOP", "REDUCED", options);
+    await assert.rejects(runRoomReload(f), /USER_OUTCOME_FAILED|KEYBOARD_FOCUS_FAILED|ACTION_OUTCOME_NOT_OBSERVED/);
+    assert.equal(f.reloads.length, 1);
+  }
+});
+
+test("ROOM reload cannot credit its own outcome or a pre-existing true Save predicate", async () => {
+  const f = roomReloadModel("DESKTOP", "REDUCED", {
+    initialURL: "https://fixture.invalid/studio/parallax?definition=one",
+  });
+  const x = roomReloadInput();
+  x.journey.steps = [
+    { action: "click", role: "button", name: "Add room feature" },
+    { action: "reload" },
+    {
+      action: "assert",
+      kind: "outcome",
+      role: "main",
+      name: "",
+      text: "Working draft opened",
+      path: "/studio/parallax",
+      meaning: "Reload cannot replace the original Save outcome",
+    },
+  ];
+  await assert.rejects(runRoomReload(f, x), /ACTION_OUTCOME_NOT_OBSERVED/);
+  const saved = roomReloadInput();
+  saved.journey.steps = saved.journey.steps.filter(
+    (step) => !(step.action === "assert" && step.text === "Working draft opened"),
+  );
+  const already = roomReloadModel("DESKTOP", "REDUCED", { preexistingSavedAfterReload: true });
+  await assert.rejects(runRoomReload(already, saved), /ACTION_OUTCOME_NOT_OBSERVED/);
+});
+
+test("ROOM reload alone provides no semantic PASS or visible-action credit", async () => {
+  const f = roomReloadModel("DESKTOP", "REDUCED", {
+    initialURL: "https://fixture.invalid/studio/parallax?definition=one",
+  });
+  const x = roomReloadInput();
+  x.journey.steps = [{ action: "reload" }];
+  await assert.rejects(runRoomReload(f, x), /SEMANTIC_JOURNEY_FAILED/);
+  assert.equal(f.reloads.length, 1);
+  assert.equal(f.keys.length, 0);
+});
+
+// These tests model the Save predicate/action only. The valid state stops before
+// screenshot capture; no synthetic file is labelled ACTUAL_APPLICATION evidence.
+import { validateSceneSavedConfirmation } from "../../scripts/sounding-line/product-experience.mjs";
+const sceneSavedContract = {
+  id: "parallax.scene-manager.experience",
+  name: "Reusable Environments and independent Scene management",
+  authority: "one-voyage",
+  owners: ["project-parallax"],
+  critical: true,
+  experience: {
+    persona: "A Creator authoring multiple independent Scenes in a reusable Environment",
+    objective:
+      "Understand shared Environment structure and manage independent Scene content without accidental cross-Scene changes",
+    visibleOutcome:
+      "A Creator creates The Haunted Bedroom, authors three independent Scenes, switches, duplicates, renames, saves and reviews explicit Environment revision impacts",
+    integrationOwner: "Parallax SC-01 Environment and Scene Manager",
+    systems: ["project-parallax"],
+    sourcePaths: [
+      "src/components/studio/parallax/SceneManager.tsx",
+      "src/components/studio/parallax/SceneManager.module.css",
+      "src/components/studio/parallax/LegacyEnvironmentWorkspace.tsx",
+      "src/components/studio/parallax/EnvironmentDefinitionWorkspace.tsx",
+      "src/components/studio/parallax/EnvironmentCreateDialog.tsx",
+    ],
+    projectionPaths: [
+      "src/parallax/scene-environment-authoring.ts",
+      "src/parallax/legacy-environment-service.ts",
+      "src/parallax/environment-library-compatibility.ts",
+      "src/parallax/environment-version-resolution.ts",
+      "src/parallax/library-lifecycle-service.ts",
+      "src/parallax/environment-authoring.ts",
+      "src/parallax/legacy-environment-preview.ts",
+      "src/parallax/scene-comparison.ts",
+    ],
+    entryPoint: "/studio/library",
+    states: [
+      "EDITOR_READY",
+      "MANAGER_READY",
+      "ENVIRONMENT_EDITING",
+      "ENVIRONMENT_SAVED",
+      "FIRST_SCENE",
+      "SECOND_SCENE",
+      "THIRD_SCENE",
+      "DUPLICATED",
+      "RENAMED",
+      "RETURNED",
+      "ENVIRONMENT_IMPACT",
+      "SCENE_REVALIDATED",
+      "COMPARED",
+    ],
+    devices: ["DESKTOP", "MOBILE"],
+    roles: ["CREATOR"],
+    accessibility:
+      "Native dialog focus containment, explicit labels, visible focus, keyboard entry/Escape and responsive layout preserve the full creation and review workflow.",
+    fallback:
+      "When 3D rendering is unavailable, the canonical Scene hierarchy, inspector, content-derived gallery and Guided preview remain available.",
+    navigation:
+      "Creator Library opens Spatial Studio. Manage Scenes opens one contextual gallery. Closing returns to the same active Scene and canvas; Creator Studio returns to the Library.",
+    designTarget:
+      "Keep the shared Environment and active Scene visible once in a compact context above the canvas. One focused modal manages independent Scenes with content-derived thumbnails, descriptions, save state and explicit immutable version selection. Shared edits open the existing Environment workspace for that same owned definition; built-ins create an owned copy. Working autosave, explicit Library membership and immutable release remain distinct. Revision impact is reviewed per Scene, preserves Undo, identifies changed supports or semantic references, and never rewrites a released Scene. Preserve the blue Studio palette, native modal focus containment, usable narrow controls, reduced motion and natural return to the same Scene.",
+    references: [
+      {
+        family: "Gateway / public entry",
+        path: "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+        sourceSha: "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+        maturity: "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+        reason: "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+        preserve:
+          "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent.",
+      },
+      {
+        family: "Gateway / public entry",
+        path: "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+        sourceSha: "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+        maturity: "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+        reason: "Accepted constrained gateway keeps the same destinations and account access.",
+        preserve: "Mobile task hierarchy, readable controls and contextual navigation.",
+      },
+    ],
+    homeportScreenIds: ["screen-page-studio-library", "screen-page-studio"],
+    homeportJourneyIds: ["B"],
+    browserTests: ["tests/e2e/parallax-scene-manager.spec.ts"],
+    fixtureProfile: "generic",
+    recordingRequired: true,
+    limitations: [
+      "Synthetic geometry and browser evidence do not establish physical reconstruction accuracy, native AR rendering or owner product acceptance. Existing SC-02 element consumers retain their own qualification; SC-03 Chronicle editor integration is outside this task.",
+    ],
+    roleSetup: {
+      CREATOR: {
+        entryPoint: "/sign-in?returnTo=%2Fstudio%2Flibrary",
+        steps: [
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Email or Player name",
+            value: "parallax-review-floating-creator@example.test",
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Password",
+            value: "Synthetic-Parallax-Review-2026!",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Sign in",
+          },
+        ],
+        witness: {
+          role: "heading",
+          name: "Voyagewright Studio",
+          text: "Voyagewright Studio",
+        },
+      },
+    },
+    continuity: {
+      objective:
+        "The same authenticated Creator identity survives Library entry, independent Scene creation and return to the canonical Creator Library.",
+      checks: [
+        {
+          id: "creator-identity",
+          role: "button",
+          name: "Synthetic Parallax Floating Creator",
+          attribute: "aria-label",
+        },
+      ],
+    },
+    motion: {
+      measurement: "Visible keyboard activation to rendered Scene Manager action feedback",
+      feedbackBudgetMs: 3000,
+      justification:
+        "Give useful visible feedback within three seconds on the isolated production browser; this is a browser interaction budget.",
+    },
+    journeys: [
+      {
+        id: "creator-shared-environment-independent-scenes",
+        roles: ["CREATOR"],
+        outcome:
+          "A Creator creates The Haunted Bedroom, authors three independent Scenes, switches, duplicates, renames, saves and reviews explicit Environment revision impacts",
+        steps: [
+          {
+            action: "click",
+            role: "link",
+            name: "Spatial Studio",
+          },
+          {
+            action: "assert",
+            role: "main",
+            name: "",
+            text: "Manage Scenes",
+            path: "/studio/parallax",
+            state: "EDITOR_READY",
+            kind: "outcome",
+            meaning: "Creator Library opens the canonical Scene workspace.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Manage Scenes",
+          },
+          {
+            action: "assert",
+            role: "dialog",
+            name: "Environments & Scenes",
+            text: "Build the room once.",
+            path: "/studio/parallax",
+            state: "MANAGER_READY",
+            kind: "outcome",
+            meaning: "One Manager separates shared structure from independent Scene content.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "New Environment",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Existing environment Choose a saved room or preset. Edit a separate copy.",
+          },
+          {
+            action: "fill",
+            role: "searchbox",
+            name: "Find existing environment",
+            value: "Bedroom",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Start from Bedroom",
+          },
+          {
+            action: "assert",
+            role: "main",
+            name: "",
+            text: "Parallax / Environment definition",
+            path: "/studio/parallax",
+            state: "ENVIRONMENT_EDITING",
+            kind: "outcome",
+            meaning: "Shared structure opens in its distinct canonical working workspace.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Name",
+            value: "The Haunted Bedroom",
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Environment description",
+            value: "An invented bedroom shared by three independent Scenes.",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Save to Library",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Versions",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Create immutable version",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Back to scene",
+          },
+          {
+            action: "assert",
+            role: "heading",
+            name: "Scenes in The Haunted Bedroom",
+            text: "Scenes in The Haunted Bedroom",
+            path: "/studio/parallax",
+            state: "ENVIRONMENT_SAVED",
+            kind: "outcome",
+            meaning: "The owned released Environment is available as an explicit Scene source.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Scene name",
+            value: "Ordinary Room",
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Scene description",
+            value: "The room without supernatural content.",
+          },
+          {
+            action: "click",
+            role: "combobox",
+            name: "Scene starting content",
+          },
+          {
+            action: "keyboard",
+            key: "Home",
+          },
+          {
+            action: "keyboard",
+            key: "Enter",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Create Scene from baseline",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Scene gallery",
+            text: "Ordinary Room",
+            path: "/studio/parallax",
+            state: "FIRST_SCENE",
+            kind: "outcome",
+            meaning: "An independently saved Scene appears in the same Environment gallery.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Scene name",
+            value: "The Haunting",
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Scene description",
+            value: "Spectral footsteps cross the shared bedroom.",
+          },
+          {
+            action: "click",
+            role: "combobox",
+            name: "Scene starting content",
+          },
+          {
+            action: "keyboard",
+            key: "Home",
+          },
+          {
+            action: "keyboard",
+            key: "ArrowDown",
+          },
+          {
+            action: "keyboard",
+            key: "Enter",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Create Scene from baseline",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Scene gallery",
+            text: "The Haunting",
+            path: "/studio/parallax",
+            state: "SECOND_SCENE",
+            kind: "outcome",
+            meaning: "An independently saved Scene appears in the same Environment gallery.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Scene name",
+            value: "The Hidden Letter",
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Scene description",
+            value: "An independent letter contains the hidden clue.",
+          },
+          {
+            action: "click",
+            role: "combobox",
+            name: "Scene starting content",
+          },
+          {
+            action: "keyboard",
+            key: "Home",
+          },
+          {
+            action: "keyboard",
+            key: "ArrowDown",
+          },
+          {
+            action: "keyboard",
+            key: "ArrowDown",
+          },
+          {
+            action: "keyboard",
+            key: "Enter",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Create Scene from baseline",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Scene gallery",
+            text: "The Hidden Letter",
+            path: "/studio/parallax",
+            state: "THIRD_SCENE",
+            kind: "outcome",
+            meaning: "An independently saved Scene appears in the same Environment gallery.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Duplicate active Scene",
+          },
+          {
+            action: "assert",
+            role: "dialog",
+            name: "Environments & Scenes",
+            text: "Independent Scene copy created",
+            path: "/studio/parallax",
+            state: "DUPLICATED",
+            kind: "outcome",
+            meaning: "The copy has an independent definition and retains its immutable Environment pin.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "fill",
+            role: "textbox",
+            name: "Rename active Scene",
+            value: "The Letter Study",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Rename Scene",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Save Scene",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Active Scene information",
+            text: "The Letter Study",
+            path: "/studio/parallax",
+            state: "RENAMED",
+            confirmation: "Scene saved.",
+            kind: "outcome",
+            meaning: "The renamed Scene saves independently.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Edit shared Environment",
+          },
+          {
+            action: "click",
+            role: "combobox",
+            name: "Base preview lighting",
+          },
+          {
+            action: "keyboard",
+            key: "Home",
+          },
+          {
+            action: "keyboard",
+            key: "ArrowDown",
+          },
+          {
+            action: "keyboard",
+            key: "Enter",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Versions",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Create immutable version",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Back to scene",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Review Environment impact",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Environment impact review",
+            text: "REVIEW REQUIRED",
+            path: "/studio/parallax",
+            state: "ENVIRONMENT_IMPACT",
+            kind: "outcome",
+            meaning: "Existing Scenes remain pinned while the Creator reviews the explicit Environment version change.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Update and revalidate Ordinary Room",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Active Scene information",
+            text: "Ordinary Room",
+            path: "/studio/parallax",
+            state: "SCENE_REVALIDATED",
+            kind: "outcome",
+            meaning:
+              "Only the selected working Scene adopts the reviewed version, with its own history and conflict revision.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "combobox",
+            name: "Compare active Scene with",
+          },
+          {
+            action: "keyboard",
+            key: "Home",
+          },
+          {
+            action: "keyboard",
+            key: "ArrowDown",
+          },
+          {
+            action: "keyboard",
+            key: "Enter",
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Compare Scenes",
+          },
+          {
+            action: "assert",
+            role: "region",
+            name: "Scene comparison results",
+            text: "ENVIRONMENT REFERENCE",
+            path: "/studio/parallax",
+            state: "COMPARED",
+            kind: "outcome",
+            meaning: "The existing Tideglass projection identifies differing immutable Environment references.",
+            feedbackBoundary: true,
+          },
+          {
+            action: "click",
+            role: "button",
+            name: "Close Scene Manager",
+          },
+          {
+            action: "click",
+            role: "link",
+            name: "← Creator Studio",
+          },
+          {
+            action: "assert",
+            role: "heading",
+            name: "Voyagewright Studio",
+            text: "Voyagewright Studio",
+            path: "/studio/library",
+            state: "RETURNED",
+            returnPath: true,
+          },
+        ],
+      },
+    ],
+  },
+};
+const sceneMediaBoundary = new Error("PURE_MODEL_STOP_BEFORE_APPLICATION_SCREENSHOT");
+function sceneSavedInput() {
+  const contract = structuredClone(sceneSavedContract);
+  const journey = contract.experience.journeys[0];
+  const predicate = journey.steps.find((step) => step.state === "RENAMED");
+  journey.steps = [{ action: "click", role: "button", name: "Save Scene" }, predicate];
+  return { contract, journey };
+}
+function sceneSavedModel(options = {}) {
+  const state = {
+    title: "The Letter Study",
+    notice: options.preexistingSaved ? "Scene saved." : "Scene renamed. Save or use Undo to restore its name.",
+  };
+  const calls = [],
+    waits = [],
+    saves = [],
+    captures = [];
+  let filteredWaitStarts = 0;
+  const filtered = (kind, hasText) => ({
+    waitFor: async (config) => {
+      filteredWaitStarts++;
+      waits.push({ kind, config });
+      await Promise.resolve();
+      assert.equal(filteredWaitStarts, 2, "Both predicates start within the same original five-second wait");
+      assert.deepEqual(config, { state: "visible", timeout: 5000 });
+      const text = kind === "title" ? state.title : state.notice;
+      assert(kind !== "status" || !options.hiddenStatus, "MODEL_STATUS_HIDDEN");
+      assert(typeof hasText === "string" ? text.includes(hasText) : hasText.test(text), "MODEL_PREDICATE_FALSE");
+    },
+  });
+  const status = {
+    count: async () => options.statusCount ?? 1,
+    isVisible: async () => !options.hiddenStatus,
+    innerText: async () => state.notice,
+    filter: ({ hasText }) => filtered("status", hasText),
+  };
+  const page = {
+    url: () => "https://fixture.invalid/studio/parallax?definition=synthetic-scene",
+    keyboard: {
+      press: async () => {
+        throw Error("UNEXPECTED_KEYBOARD");
+      },
+    },
+    waitForURL: async (predicate) => assert(predicate(new URL(page.url()))),
+    screenshot: async () => {
+      captures.push("stopped-before-file-write");
+      throw sceneMediaBoundary;
+    },
+    getByRole: (role, selector) => {
+      calls.push({ role, ...selector });
+      if (role === "button" && selector.name === "Synthetic Parallax Floating Creator") {
+        assert.equal(selector.exact, true);
+        return {
+          getAttribute: async (attribute) => {
+            assert.equal(attribute, "aria-label");
+            return "stable-synthetic-scene-creator";
+          },
+        };
+      }
+      if (role === "dialog") {
+        assert.deepEqual(selector, { name: "Environments & Scenes", exact: true });
+        return {
+          getByRole: (childRole) => {
+            assert.equal(childRole, "status");
+            return status;
+          },
+        };
+      }
+      assert.equal(selector.exact, true);
+      assert(["Save Scene", "Active Scene information"].includes(selector.name));
+      return {
+        waitFor: async () => {},
+        isVisible: async () => true,
+        innerText: async () => state.title,
+        evaluate: async () => true,
+        filter: ({ hasText }) => filtered("title", hasText),
+        press: async (key) => {
+          assert.equal(key, "Enter");
+          saves.push(selector.name);
+          if (!options.noOpSave) state.notice = "Scene saved.";
+          if (options.falseTitleAfter) state.title = "Old title";
+          if (options.falseStatusAfter) state.notice = "Scene renamed. Save or use Undo to restore its name.";
+        },
+      };
+    },
+  };
+  return { state, calls, waits, saves, captures, page };
+}
+const runSceneSaved = (model, input = sceneSavedInput(), overrides = {}) =>
+  runExperienceJourney({
+    page: model.page,
+    contract: input.contract,
+    journey: input.journey,
+    artifactRoot: process.cwd(),
+    root: process.cwd(),
+    device: "DESKTOP",
+    role: "CREATOR",
+    motionMode: "NORMAL",
+    ...overrides,
+  });
+
+test("Scene Save confirmation admits four exact contexts and passes the causal guard before media capture", async () => {
+  assert.doesNotThrow(() => validateExperienceContract(sceneSavedContract));
+  for (const device of ["DESKTOP", "MOBILE"])
+    for (const motionMode of ["NORMAL", "REDUCED"]) {
+      const model = sceneSavedModel();
+      await assert.rejects(
+        runSceneSaved(model, sceneSavedInput(), { device, motionMode }),
+        (error) => error === sceneMediaBoundary,
+      );
+      assert.deepEqual(model.saves, ["Save Scene"]);
+      assert.deepEqual(model.captures, ["stopped-before-file-write"]);
+      assert.deepEqual(
+        model.waits.map((x) => x.kind),
+        ["title", "status"],
+      );
+    }
+});
+
+test("Scene Save rejects no-op Save after Rename, pre-existing true confirmation and false after predicates", async () => {
+  for (const options of [
+    { noOpSave: true },
+    { preexistingSaved: true },
+    { falseTitleAfter: true },
+    { falseStatusAfter: true },
+  ]) {
+    const model = sceneSavedModel(options);
+    await assert.rejects(runSceneSaved(model), /USER_OUTCOME_FAILED|ACTION_OUTCOME_NOT_OBSERVED/);
+    assert.equal(model.captures.length, 0);
+    assert.equal(model.saves.length, 1);
+  }
+});
+
+test("Scene Save requires one visible exact status within the exact Scene Manager dialog", async () => {
+  for (const options of [{ hiddenStatus: true }, { statusCount: 0 }, { statusCount: 2 }]) {
+    const model = sceneSavedModel(options);
+    await assert.rejects(runSceneSaved(model), /USER_OUTCOME_FAILED|ACTION_OUTCOME_NOT_OBSERVED/);
+    assert.equal(model.captures.length, 0);
+  }
+  // A global or other-dialog status is never queried; every status call is scoped above.
+});
+
+test("Scene Save rejects wrong contract, journey, declared role, device or motion before UI", async () => {
+  for (const change of [
+    (x) => {
+      x.contract.id = "unrelated";
+    },
+    (x) => {
+      x.journey.id = "unrelated";
+    },
+    (x) => {
+      x.contract.experience.roles = ["PLAYER"];
+    },
+    (x) => {
+      x.journey.roles = ["PLAYER"];
+    },
+    (x) => {
+      x.contract.experience.devices = ["DESKTOP", "DESKTOP"];
+    },
+    (x) => {
+      x.contract.experience.motion = false;
+    },
+  ]) {
+    const input = sceneSavedInput();
+    change(input);
+    assert.throws(
+      () => validateSceneSavedConfirmation(input.contract, input.journey),
+      /SCENE_SAVE_CONFIRMATION_SCOPE_INVALID/,
+    );
+    assert.throws(() => validateExperienceContract(input.contract), /SCENE_SAVE_CONFIRMATION_SCOPE_INVALID/);
+    const model = sceneSavedModel();
+    await assert.rejects(runSceneSaved(model, input), /SCENE_SAVE_CONFIRMATION_SCOPE_INVALID/);
+    assert.equal(model.calls.length, 0);
+  }
+});
+
+test("Scene Save rejects unsupported runtime contexts before UI", async () => {
+  for (const overrides of [{ role: "ANONYMOUS" }, { role: "PLAYER" }, { device: "TABLET" }, { motionMode: "AUTO" }]) {
+    const model = sceneSavedModel();
+    await assert.rejects(runSceneSaved(model, sceneSavedInput(), overrides), /SCENE_SAVE_CONFIRMATION_SCOPE_INVALID/);
+    assert.equal(model.calls.length, 0);
+  }
+});
+
+test("Scene Save rejects every changed original predicate, extra keys, unsupported values and nested confirmation before UI", async () => {
+  const changes = Object.keys(sceneSavedInput().journey.steps[1]).map((key) => (x) => {
+    x.journey.steps[1][key] = key === "feedbackBoundary" ? false : "wrong";
+  });
+  changes.push(
+    (x) => {
+      x.journey.steps.push(structuredClone(x.journey.steps[1]));
+    },
+    ...["url", "timeout", "when", "devices", "contextName", "unknown"].map((key) => (x) => {
+      x.journey.steps[1][key] = true;
+    }),
+    ...[null, {}, "{{Scene saved.}}", "Scene saved", "scene saved."].map((value) => (x) => {
+      x.journey.steps[1].confirmation = value;
+    }),
+    (x) => {
+      delete x.journey.steps[1].confirmation;
+      x.journey.steps[0].nested = { confirmation: "Scene saved." };
+    },
+    (x) => {
+      delete x.journey.steps[1].confirmation;
+      x.journey.steps[0].confirmation = "Scene saved.";
+    },
+  );
+  for (const change of changes) {
+    const input = sceneSavedInput();
+    change(input);
+    assert.throws(
+      () => validateSceneSavedConfirmation(input.contract, input.journey),
+      /SCENE_SAVE_CONFIRMATION_STEP_INVALID/,
+    );
+    const model = sceneSavedModel();
+    await assert.rejects(runSceneSaved(model, input), /SCENE_SAVE_CONFIRMATION_STEP_INVALID/);
+    assert.equal(model.calls.length, 0);
+  }
+});
+
+test("Scene confirmation has no behavior when absent and preserves legacy journey admission", () => {
+  const input = sceneSavedInput();
+  delete input.journey.steps[1].confirmation;
+  assert.equal(validateSceneSavedConfirmation(input.contract, input.journey), null);
+  input.contract.id = "unrelated";
+  assert.equal(validateSceneSavedConfirmation(input.contract, input.journey), null);
+});
