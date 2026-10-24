@@ -410,6 +410,20 @@ async function dependencyFingerprint(root) {
     browsers,
   };
 }
+export async function writeDevelopmentPreparedManifest(prepared, capture) {
+  const manifest = {
+    ...prepared,
+    build: await capture.measurePostbuild("BUILD_TREE_FINGERPRINT", () =>
+      treeFingerprint(prepared.buildDirectory, prepared.workspace),
+    ),
+    dependencies: await capture.measurePostbuild("FINAL_DEPENDENCY_FINGERPRINT", () =>
+      dependencyFingerprint(prepared.workspace),
+    ),
+  };
+  return capture.measurePostbuild("MANIFEST_WRITE", () =>
+    privateWrite(path.join(prepared.preparedDirectory, "prepared.private.json"), manifest),
+  );
+}
 async function freshContext(plan) {
   if (!(await missing(plan.activeRuntimeDirectory))) {
     await ownedDirectory(plan.activeRuntimeDirectory);
@@ -702,13 +716,11 @@ async function execute(mode, plan, options) {
         activeRuntimeDirectory: plan.activeRuntimeDirectory,
         preparedDirectory,
         buildDirectory,
-        build: await treeFingerprint(buildDirectory, plan.workspace),
         databaseName,
         databaseSHA256: hash(database),
         secretFile,
-        dependencies: await dependencyFingerprint(plan.workspace),
       };
-      receipt.preparedManifest = await privateWrite(path.join(preparedDirectory, "prepared.private.json"), prepared);
+      receipt.preparedManifest = await writeDevelopmentPreparedManifest(prepared, preparation.capture);
       receipt.status = "PASS_DEVELOPMENT_PREPARED_NOT_ACCEPTANCE";
     } else {
       requireValue(

@@ -2742,6 +2742,13 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "scripts/sounding-line/experience-current-r22.mjs",
     "scripts/sounding-line/experience-current-r21.mjs",
   ]);
+  // Model R3's frozen package rather than importing later, unlisted scripts
+  // from the ambient checkout. Only its recorded protected-base scripts vary.
+  const historicalPackage = JSON.parse(run(["show", `${r3Template.frozenReferenceSha}:package.json`]));
+  const protectedBasePackage = JSON.parse(run(["show", `${baseInput}:package.json`]));
+  for (const name of r3Template.allowedProtectedBasePackageScriptNames)
+    historicalPackage.scripts[name] = protectedBasePackage.scripts[name];
+  put("package.json", JSON.stringify(historicalPackage));
   const baseSha = commit(baseInput);
   const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));
   const contracts = structuredClone(original);
@@ -2786,6 +2793,11 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
       now: new Date("2026-10-15T19:00:00Z"),
     });
   assert.equal(bind(candidateSha).independentReviewOrdinal, 4);
+  run(["read-tree", candidateSha]);
+  const changedPackage = structuredClone(historicalPackage);
+  changedPackage.scripts["experience:test:browser"] = "node --test unlisted-package-fixture-change.mjs";
+  put("package.json", JSON.stringify(changedPackage));
+  assert.throws(() => bind(commit(baseSha)), /FROZEN_PACKAGE_CHANGED/u);
   run(["read-tree", candidateSha]);
   put("src/app/layout.tsx", "unrelated product change");
   assert.throws(() => bind(commit(baseSha)), /RUNTIME_BINDING_CHANGED/u);

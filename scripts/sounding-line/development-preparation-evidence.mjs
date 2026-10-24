@@ -14,6 +14,7 @@ export const PREPARATION_LIMITS = Object.freeze({
   errorBytes: 64 * 1024,
 });
 const captures = new WeakMap();
+const postbuildPhases = ["BUILD_TREE_FINGERPRINT", "FINAL_DEPENDENCY_FINGERPRINT", "MANIFEST_WRITE"];
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const need = (value) => {
   if (!value) throw Error("DEVELOPMENT_PREPARATION_EVIDENCE_INVALID");
@@ -72,6 +73,8 @@ export function createPreparationCapture(binding, privateDirectory) {
   need(binding && typeof binding === "object");
   const context = JSON.parse(JSON.stringify(binding));
   const attempts = [];
+  const postbuildVerification = [];
+  let verificationOrdinal = 0;
   let retained = 0,
     phase = "PREFLIGHT",
     source = null,
@@ -86,6 +89,64 @@ export function createPreparationCapture(binding, privateDirectory) {
     source(value) {
       need(!completed && value?.head === context.candidateSha && /^[a-f0-9]{64}$/u.test(value?.digest ?? ""));
       source = { head: value.head, digest: value.digest };
+    },
+    async measurePostbuild(value, operation) {
+      need(
+        !completed &&
+          !active &&
+          phase === "MANIFEST" &&
+          verificationOrdinal < postbuildPhases.length &&
+          value === postbuildPhases[verificationOrdinal],
+      );
+      need(typeof operation === "function" && typeof privateDirectory === "string");
+      verificationOrdinal++;
+      active = true;
+      const started = performance.now();
+      const persist = async (event, outcome = null) => {
+        const record = {
+          version: 1,
+          role: "DEVELOPMENT_ONLY",
+          qualification: false,
+          sequence: 2 * verificationOrdinal - (event === "START" ? 1 : 0),
+          phase: value,
+          event,
+          atUtc: new Date().toISOString(),
+          elapsedMs: event === "START" ? null : Math.round(performance.now() - started),
+          outcome,
+        };
+        const bytes = Buffer.from(JSON.stringify(record) + "\n");
+        need(bytes.length <= 512);
+        const handle = await open(
+          path.join(privateDirectory, `postbuild-verification-${record.sequence}.private.json`),
+          constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | constants.O_NOFOLLOW,
+          0o600,
+        );
+        try {
+          await handle.writeFile(bytes);
+          await handle.sync();
+        } finally {
+          await handle.close();
+        }
+        postbuildVerification.push(record);
+      };
+      try {
+        // The start is durable before opaque work begins; no finalizer is needed.
+        await persist("START");
+        let result;
+        try {
+          result = await operation();
+        } catch (error) {
+          // A secondary observation failure must preserve the original failure.
+          try {
+            await persist("END", "FAIL");
+          } catch {}
+          throw error;
+        }
+        await persist("END", "PASS");
+        return result;
+      } finally {
+        active = false;
+      }
     },
     async runPreparationStep(plan, env, step, receipts) {
       need(!completed && !active && attempts.length < PREPARATION_LIMITS.producers);
@@ -272,6 +333,7 @@ export function createPreparationCapture(binding, privateDirectory) {
           source,
           sourceUnavailable: source === null,
           phase,
+          postbuildVerification,
           originalResult: receipt,
           error: privateError,
           producers,
