@@ -9754,6 +9754,16 @@
               {
                 "action": "click",
                 "role": "tab",
+                "name": "Scenes"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home",
+                "expectFocus": { "role": "tab", "name": "Assets" }
+              },
+              {
+                "action": "click",
+                "role": "tab",
                 "name": "Assets"
               },
               {
