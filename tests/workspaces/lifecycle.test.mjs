@@ -502,6 +502,8 @@ test(
 test("an actual worker crash after marker removal recovers the same directory and preserved evidence", (t) => {
   const f = fixture(t);
   const r = f.create();
+  fs.mkdirSync(path.join(r.path, "evidence"));
+  fs.writeFileSync(path.join(r.path, "evidence", "receipt.json"), "immutable crash evidence");
   const moduleUrl = new URL("../../scripts/workspaces/lifecycle.mjs", import.meta.url).href;
   const script = `import {Lifecycle,GiB} from ${JSON.stringify(moduleUrl)}; const m=new Lifecycle(process.env.VW_TEST_STATE,{guard:()=>({allowed:true,cFreeBytes:100*GiB,dFreeBytes:100*GiB}),estimate:(_,bytes)=>({C:0,D:bytes}),processes:()=>[],authority:{refresh(){}},removeWorktree:()=>process.exit(23)});m.finish(process.env.VW_TEST_ID,"completed");`;
   const worker = spawnSync(process.execPath, ["--input-type=module", "-e", script], {
@@ -517,6 +519,52 @@ test("an actual worker crash after marker removal recovers the same directory an
   const result = restarted.sweep({ recoverOnly: true })[0];
   assert.equal(result.state, "RETIRED", result.hold?.reason);
   assert.equal(fs.existsSync(r.path), false);
+  assert.equal(
+    fs.readFileSync(path.join(result.evidence.archive, "evidence", "receipt.json"), "utf8"),
+    "immutable crash evidence",
+  );
+});
+
+test("expired owner discovers its developed merged PR and retires without finish", (t) => {
+  let clock = Date.now();
+  const f = fixture(t, { clock: () => clock });
+  const r = f.create();
+  f.merge(r, "squash");
+  const developedHead = git(r.path, ["rev-parse", "HEAD"]);
+  let discovered = 0;
+  f.manager.authority.find = (record) => {
+    assert.equal(record.head, developedHead);
+    discovered++;
+    return 42;
+  };
+  assert.deepEqual(f.manager.sweep(), []);
+  assert.equal(discovered, 0);
+  clock += POLICY.leaseMs + 1;
+  const result = f.manager.sweep()[0];
+  assert.equal(result.state, "RETIRED", result.hold?.reason);
+  assert.equal(result.pr, 42);
+  assert.equal(result.merge.method, "squash");
+  assert.equal(discovered, 1);
+  assert.equal(fs.existsSync(r.path), false);
+  assert.deepEqual(f.manager.sweep(), []);
+});
+
+test("PR discovery is exact and ambiguous or incomplete remote results fail closed", () => {
+  const a = new GitHubAuthority({ repository: "synthetic/test" });
+  const record = { head: "a".repeat(40), branch: "codex/example" };
+  const pr = {
+    number: 42,
+    head: { sha: record.head, repo: { full_name: "synthetic/test" } },
+    base: { ref: "main", repo: { full_name: "synthetic/test" } },
+  };
+  a.api = () => [pr];
+  assert.equal(a.find(record), 42);
+  a.api = () => [{ ...pr, head: { ...pr.head, sha: "b".repeat(40) } }];
+  assert.equal(a.find(record), null);
+  a.api = () => [pr, pr];
+  assert.throws(() => a.find(record), /PR_DISCOVERY_AMBIGUOUS/u);
+  a.api = () => Array(100).fill(pr);
+  assert.throws(() => a.find(record), /PR_DISCOVERY_PAGINATION_REQUIRED/u);
 });
 test("invalid sweep limits fail before resource mutation", (t) => {
   const f = fixture(t);

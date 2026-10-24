@@ -336,6 +336,24 @@ export class GitHubAuthority {
   api(endpoint) {
     return JSON.parse(run("gh", ["api", endpoint]));
   }
+  find(record) {
+    const repo = this.config.repository;
+    if (!/^[-\w.]+\/[-\w.]+$/u.test(repo)) fail("INVALID_REPOSITORY");
+    const endpoint = record.branch
+      ? `repos/${repo}/pulls?state=all&head=${encodeURIComponent(`${repo.split("/")[0]}:${record.branch}`)}&per_page=100`
+      : `repos/${repo}/commits/${record.head}/pulls?per_page=100`;
+    const results = this.api(endpoint);
+    if (results.length >= 100) fail("PR_DISCOVERY_PAGINATION_REQUIRED");
+    const matches = results.filter(
+      (p) =>
+        p.head.sha === record.head &&
+        p.base.ref === "main" &&
+        p.base.repo.full_name.toLowerCase() === repo.toLowerCase() &&
+        p.head.repo?.full_name.toLowerCase() === repo.toLowerCase(),
+    );
+    if (matches.length > 1) fail("PR_DISCOVERY_AMBIGUOUS");
+    return matches[0]?.number ?? null;
+  }
   ensureCommit(canonical, revision) {
     if (!/^[a-f0-9]{40}$/u.test(revision)) fail("INVALID_REMOTE_COMMIT");
     if (succeeds(canonical, ["cat-file", "-e", `${revision}^{commit}`])) return;
@@ -1032,16 +1050,31 @@ export class Lifecycle {
       blobs.push({ file, sha256: sha256(bytes) });
     }
     let output;
+    // Qualification runs the complete suite. The landed smoke checks these seven
+    // source-bound lifecycle outcomes within the scheduled worker's finite slot.
+    const selection =
+      "real CREATE DEVELOP MERGE VERIFY RETIRE|squash merge is verified|rebase merge preserves|aggregate, finite task budget|actual worker crash|expired owner discovers|real process with only";
     try {
-      output = run(process.execPath, ["--test", "tests/workspaces/lifecycle.test.mjs"], dest, {
-        timeout: 300000,
-        env: { ...process.env, TMP: dest, TEMP: dest },
-      });
+      output = run(
+        process.execPath,
+        ["--test", "--test-reporter=tap", "--test-name-pattern", selection, "tests/workspaces/lifecycle.test.mjs"],
+        dest,
+        {
+          timeout: 300000,
+          env: { ...process.env, TMP: dest, TEMP: dest },
+        },
+      );
+      const expected = process.platform === "win32" ? 7 : 6;
+      if (!new RegExp(`^# pass ${expected}$`, "mu").test(output) || !/^# fail 0$/mu.test(output))
+        fail("LANDED_SMOKE_OUTCOMES_MISSING");
     } catch (e) {
-      this.receipt(r, "LANDED_SMOKE_FAILED", { error: e.message, output: String(e.stdout ?? "").slice(-100000) });
+      this.receipt(r, "LANDED_SMOKE_FAILED", {
+        error: e.message,
+        output: String(e.stdout ?? output ?? "").slice(-100000),
+      });
       throw e;
     }
-    const proof = this.receipt(r, "LANDED_SMOKE_PASSED", { merge: r.merge.merge, blobs, output });
+    const proof = this.receipt(r, "LANDED_SMOKE_PASSED", { merge: r.merge.merge, blobs, selection, output });
     if (json(path.join(dest, markerName)).id !== owner.id) fail("SMOKE_OWNER_CHANGED");
     removeOwnedTree(dest, dest);
     return proof;
@@ -1292,6 +1325,31 @@ export class Lifecycle {
         if (r.state === "CREATING") {
           results.push(this.blocked(r, new Error("INTERRUPTED_CREATION_REQUIRES_AUDIT")));
           continue;
+        }
+        // Reconcile an expired owner without relying on its conversation to call
+        // finish. Only owned roots are inspected; retirement recovery retains its
+        // original frozen identity. One candidate means at most one discovery API
+        // request per scheduled invocation, with the existing bounded hold.
+        if (r.kind === "worktree" && !r.retirement && typeof this.authority.find === "function") {
+          try {
+            this.assertOwner(r);
+            const head = git(r.path, ["rev-parse", "HEAD"]);
+            const branch = branchOf(r.path);
+            if (head !== r.head || branch !== r.branch) {
+              this.receipt(r, "SOURCE_RECONCILED", { previousHead: r.head, head, previousPr: r.pr });
+              r.head = head;
+              r.branch = branch;
+              r.pr = null;
+              r.merge = null;
+              r.smoke = null;
+            }
+            r.pr ??= this.authority.find(r);
+            r.prDiscoveryAt = now();
+            this.save();
+          } catch (e) {
+            results.push(this.blocked(r, e));
+            continue;
+          }
         }
         results.push(this.reconcile(r));
       }

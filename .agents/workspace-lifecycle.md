@@ -35,6 +35,11 @@ Renew active leases during continuing work, particularly work exceeding eight
 hours. A live process still blocks cleanup after lease expiry. Do not stage the
 ownership marker `.voyagewright-workspace.json`.
 
+If a task omits `finish`, the periodic worker reconciles the expired owned root's
+current commit and discovers its exact PR before source verification. It attempts
+one eligible owner per scheduled run, retains exact blockers for automatic retry,
+and never assigns ownership to an unknown legacy checkout from PR metadata alone.
+
 Retirement verifies the actual merged PR, protected-main check identity, source
 landing for normal/squash/rebase merges, and an executable landed-source smoke.
 Unique dirty source is retained. Ignored evidence is copied to a hash-verified
