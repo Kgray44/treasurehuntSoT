@@ -2489,3 +2489,223 @@ test("Scene confirmation has no behavior when absent and preserves legacy journe
   input.contract.id = "unrelated";
   assert.equal(validateSceneSavedConfirmation(input.contract, input.journey), null);
 });
+
+// Pure model of the native compact disclosure. This is not a browser/product result.
+function roomMobileDisclosureInput() {
+  const input = roomReloadInput();
+  input.journey.steps = input.journey.steps.flatMap((step) =>
+    step.action === "click" && step.role === "button" && step.name === "Edit room features"
+      ? [{ action: "click", kind: "navigation", role: "button", name: "View & audio", devices: ["MOBILE"] }, step]
+      : [step],
+  );
+  input.journey.steps.find((step) => step.kind === "outcome" && step.text === "Working draft saved").role = "status";
+  return input;
+}
+function roomMobileDisclosureModel(device, motionMode, options = {}) {
+  const f = roomReloadModel(device, motionMode, options);
+  let open = device === "DESKTOP";
+  f.disclosureOpens = 0;
+  const get = f.page.getByRole,
+    reload = f.page.reload;
+  f.page.reload = async (settings) => {
+    await reload(settings);
+    open = device === "DESKTOP";
+  };
+  f.page.getByRole = (role, selector) => {
+    const target = get(role, selector),
+      name = selector.name;
+    if (role === "status") {
+      target.innerText = async () => f.state.status;
+      target.filter = ({ hasText }) => ({
+        waitFor: async () => assert(f.state.status.includes(hasText), "MODEL_TEXT_MISSING:" + hasText),
+      });
+    }
+    if (name !== "View & audio" && name !== "Edit room features") return target;
+    const press = target.press,
+      evaluate = target.evaluate;
+    const visible = () => (name === "View & audio" ? device === "MOBILE" : open);
+    target.isVisible = async () => visible();
+    target.waitFor = async () => assert(visible(), "MODEL_DISCLOSURE_CONTROL_HIDDEN:" + name);
+    target.evaluate = async (...args) => {
+      assert(visible(), "MODEL_DISCLOSURE_CONTROL_HIDDEN:" + name);
+      return evaluate(...args);
+    };
+    target.press = async (key) => {
+      assert(visible(), "MODEL_DISCLOSURE_CONTROL_HIDDEN:" + name);
+      if (name === "View & audio") {
+        f.disclosureOpens++;
+        if (!options.noOpDisclosure) open = true;
+      }
+      return press(key);
+    };
+    return target;
+  };
+  return f;
+}
+test("ROOM mobile disclosure opens exactly twice and desktop skips both without changing outcomes", async () => {
+  for (const device of ["DESKTOP", "MOBILE"])
+    for (const motion of ["NORMAL", "REDUCED"]) {
+      const input = roomMobileDisclosureInput(),
+        f = roomMobileDisclosureModel(device, motion);
+      assert.doesNotThrow(() => validateExperienceContract(input.contract));
+      const result = await runRoomReload(f, input);
+      assert.equal(result.result.status, "PASS");
+      assert.equal(f.disclosureOpens, device === "MOBILE" ? 2 : 0);
+      assert.equal(f.calls.filter((x) => x.name === "View & audio").length > 0, device === "MOBILE");
+      assert.equal(f.reloads.length, 1);
+      assert.deepEqual(
+        result.result.stepContext.applicability,
+        input.journey.steps.flatMap((step, index) =>
+          step.devices ? [{ step: index, devices: ["MOBILE"], applicable: device === "MOBILE" }] : [],
+        ),
+      );
+      assert.deepEqual(
+        result.result.observations,
+        input.journey.steps.flatMap((step, index) =>
+          step.kind === "outcome"
+            ? [{ step: index, meaning: step.meaning, role: step.role, name: step.name, text: step.text }]
+            : [],
+        ),
+      );
+    }
+});
+test("ROOM compact disclosure omission and no-op disclosure remain failures", async () => {
+  const omitted = roomReloadInput(),
+    mobile = roomMobileDisclosureModel("MOBILE", "NORMAL");
+  await assert.rejects(runRoomReload(mobile, omitted), /MODEL_DISCLOSURE_CONTROL_HIDDEN/);
+  const noop = roomMobileDisclosureModel("MOBILE", "REDUCED", { noOpDisclosure: true });
+  await assert.rejects(runRoomReload(noop, roomMobileDisclosureInput()), /MODEL_DISCLOSURE_CONTROL_HIDDEN/);
+});
+test("ROOM rejects every malformed disclosure declaration and nonadjacent or extra device navigation before UI", async () => {
+  const mutations = [
+    (x, d) => {
+      d[0].action = "assert";
+    },
+    (x, d) => {
+      d[0].role = "menuitem";
+    },
+    (x, d) => {
+      d[0].name = "Other disclosure";
+    },
+    (x, d) => {
+      d[0].kind = "outcome";
+    },
+    (x, d) => {
+      d[0].devices = ["DESKTOP"];
+    },
+    (x, d) => {
+      d[0].devices = ["MOBILE", "DESKTOP"];
+    },
+    (x, d) => {
+      d[0].devices = ["MOBILE", "MOBILE"];
+    },
+    (x, d) => {
+      d[0].devices = "MOBILE";
+    },
+    (x, d) => {
+      d[0].devices = [];
+    },
+    (x, d) => {
+      d[0].devices = ["TABLET"];
+    },
+    (x, d) => {
+      delete d[0].devices;
+    },
+    (x, d) => {
+      d[0].when = { device: "MOBILE" };
+    },
+    (x, d) => {
+      d[0].contextName = "anything";
+    },
+    (x, d) => {
+      d[0].timeout = 30000;
+    },
+    (x, d) => {
+      d[0].path = "/studio/parallax";
+    },
+    (x, d) => {
+      d[0].state = "ROOM_EDIT_READY";
+    },
+    (x, d) => {
+      x.journey.steps.splice(x.journey.steps.indexOf(d[0]), 1);
+    },
+    (x, d) => {
+      x.journey.steps.splice(x.journey.steps.indexOf(d[1]), 1);
+    },
+    (x, d) => {
+      x.journey.steps.splice(0, 0, structuredClone(d[0]));
+    },
+    (x) => {
+      x.journey.steps[0].devices = ["MOBILE"];
+    },
+    (x, d) => {
+      const i = x.journey.steps.indexOf(d[0]);
+      [x.journey.steps[i], x.journey.steps[i + 1]] = [x.journey.steps[i + 1], x.journey.steps[i]];
+    },
+  ];
+  for (const mutate of mutations) {
+    const x = roomMobileDisclosureInput(),
+      d = x.journey.steps.filter((s) => s.devices);
+    mutate(x, d);
+    assert.throws(() => validateRoomReloadJourney(x.contract, x.journey), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    assert.throws(() => validateExperienceContract(x.contract), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    const f = roomMobileDisclosureModel("MOBILE", "NORMAL");
+    await assert.rejects(runRoomReload(f, x), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    assert.equal(f.calls.length, 0);
+  }
+});
+test("ROOM disclosure rejects other contracts and unsupported declared or runtime contexts before UI", async () => {
+  for (const mutate of [
+    (x) => {
+      x.contract.id = "spatial-pilot.experience";
+    },
+    (x) => {
+      x.journey.id = "other";
+    },
+    (x) => {
+      x.contract.experience.roles = ["PLAYER"];
+    },
+    (x) => {
+      x.journey.roles = ["PLAYER"];
+    },
+    (x) => {
+      x.contract.experience.devices = ["DESKTOP", "DESKTOP"];
+    },
+    (x) => {
+      delete x.contract.experience.motion;
+    },
+  ]) {
+    const x = roomMobileDisclosureInput();
+    mutate(x);
+    assert.throws(() => validateExperienceContract(x.contract), /JOURNEY_RELOAD_SCOPE_INVALID/);
+    const f = roomMobileDisclosureModel("MOBILE", "NORMAL");
+    await assert.rejects(runRoomReload(f, x), /JOURNEY_RELOAD_SCOPE_INVALID/);
+    assert.equal(f.calls.length, 0);
+  }
+  for (const override of [{ role: "PLAYER" }, { device: "TABLET" }, { motionMode: "OTHER" }]) {
+    const f = roomMobileDisclosureModel("MOBILE", "NORMAL");
+    await assert.rejects(runRoomReload(f, roomMobileDisclosureInput(), override), /JOURNEY_RELOAD_SCOPE_INVALID/);
+    assert.equal(f.calls.length, 0);
+  }
+  const reserved = roomMobileDisclosureInput();
+  reserved.journey.steps[0].name = "PARALLAX_COMMUNITY_SCENE_NAME";
+  const fixture = roomMobileDisclosureModel("MOBILE", "NORMAL");
+  await assert.rejects(runRoomReload(fixture, reserved), /JOURNEY_CONTEXT_INVALID/);
+  assert.equal(fixture.calls.length, 0);
+});
+test("ROOM mobile disclosure does not waive no-op Save, pre-existing true Save or lost geometry guards", async () => {
+  for (const [options, error] of [
+    [{ noOpSave: true }, /USER_OUTCOME_FAILED/],
+    [{ preexistingSavedAfterReload: true }, /ACTION_OUTCOME_NOT_OBSERVED:.*before-true:after-true/],
+    [{ lostGeometry: true }, /USER_OUTCOME_FAILED/],
+  ]) {
+    const f = roomMobileDisclosureModel("MOBILE", "NORMAL", options),
+      input = roomMobileDisclosureInput();
+    if (options.preexistingSavedAfterReload)
+      input.journey.steps = input.journey.steps.filter(
+        (step) => !(step.action === "assert" && step.text === "Working draft opened"),
+      );
+    await assert.rejects(runRoomReload(f, input), error);
+    assert.equal(f.reloads.length, 1);
+  }
+});

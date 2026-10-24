@@ -242,7 +242,10 @@ function matches(file, prefixes) {
 // Reload is a single saved-Scene proof step, not a general navigation action.
 export function validateRoomReloadJourney(contract, journey) {
   const reloads = journey.steps.flatMap((step, index) => (step.action === "reload" ? [index] : []));
-  if (!reloads.length) return null;
+  const mobileDisclosures = journey.steps.flatMap((step, index) =>
+    Object.hasOwn(step, "devices") && step.name === "View & audio" ? [index] : [],
+  );
+  if (!reloads.length && !mobileDisclosures.length) return null;
   const experience = contract.experience;
   if (
     contract.id !== "parallax.parametric-room-correction.experience" ||
@@ -257,6 +260,33 @@ export function validateRoomReloadJourney(contract, journey) {
   )
     fail("JOURNEY_RELOAD_SCOPE_INVALID");
   if (reloads.length !== 1 || Object.keys(journey.steps[reloads[0]]).length !== 1) fail("JOURNEY_RELOAD_STEP_INVALID");
+  const deviceSteps = journey.steps.flatMap((step, index) => (Object.hasOwn(step, "devices") ? [index] : []));
+  if (deviceSteps.length) {
+    const edits = journey.steps.flatMap((step, index) =>
+      step.action === "click" && step.role === "button" && step.name === "Edit room features" ? [index] : [],
+    );
+    if (
+      mobileDisclosures.length !== 2 ||
+      deviceSteps.length !== 2 ||
+      edits.length !== 2 ||
+      !(edits[0] < reloads[0] && reloads[0] < edits[1]) ||
+      !deviceSteps.every((index, offset) => index === edits[offset] - 1) ||
+      deviceSteps.some((index) => {
+        const step = journey.steps[index];
+        return (
+          Object.keys(step).sort().join(",") !== "action,devices,kind,name,role" ||
+          step.action !== "click" ||
+          step.kind !== "navigation" ||
+          step.role !== "button" ||
+          step.name !== "View & audio" ||
+          !Array.isArray(step.devices) ||
+          step.devices.length !== 1 ||
+          step.devices[0] !== "MOBILE"
+        );
+      })
+    )
+      fail("JOURNEY_RELOAD_STEP_INVALID");
+  }
   const containsTemplate = (value) =>
     typeof value === "string"
       ? /\{\{|\}\}/u.test(value)
@@ -265,13 +295,15 @@ export function validateRoomReloadJourney(contract, journey) {
         : false;
   if (
     journey.steps.some(
-      (step) =>
-        Object.keys(step).some((key) => ["devices", "when"].includes(key) || key.startsWith("context")) ||
-        containsTemplate(step),
+      (step, index) =>
+        Object.keys(step).some(
+          (key) =>
+            key === "when" || (key === "devices" && !mobileDisclosures.includes(index)) || key.startsWith("context"),
+        ) || containsTemplate(step),
     )
   )
     fail("JOURNEY_RELOAD_STEP_INVALID");
-  return { index: reloads[0] };
+  return { index: reloads[0], ...(mobileDisclosures.length ? { mobileDisclosureIndices: mobileDisclosures } : {}) };
 }
 
 // Confirmation is the existing Scene Manager Save outcome, not a general status selector.
