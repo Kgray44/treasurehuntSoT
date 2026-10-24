@@ -14,10 +14,11 @@ cannot interpret devices, contextValue or contextName. A successful application
 build therefore cannot establish that this fixture can execute its journey.
 
 This candidate resumes the existing Core03 correction from protected main
-649a0bf2b2d5a0cc2437ac18c5e89e7bdfaab7cd. Its runner and two focused tests retain
-the previously reviewed bytes; the earlier source packets and failed receipts
-remain preserved. No product source, registry, central validator or outcome
-assertion changes here.
+649a0bf2b2d5a0cc2437ac18c5e89e7bdfaab7cd. Its runner and context-resolution test
+retain the previously reviewed bytes. The native-select probe has the narrow
+platform keyboard correction recorded below; earlier source packets and failed
+receipts remain preserved. No product source, registry, central validator or
+outcome assertion changes here.
 
 ## Fixed representation
 
@@ -68,6 +69,18 @@ the original runtime, type and contract rejection assertions remain, with an
 explicit additional unlisted-script rejection. That focused case passed after
 the fixture correction. No production guard, grant, outcome or deadline changed,
 and the repaired candidate requires a new normal protected qualification.
+
+The second normal protected run, 40051801552/1, remains failed. Its full focused
+regression passed 929 of 930 tests with one Windows-only skip, and typechecking
+passed. Rendered browser fixtures passed 13 of 14 tests; the native Source probe
+retained a built-in asset after the literal m key on Linux Chromium, correctly
+failing the existing absent-role guard. The unchanged native-only probe passed
+all four contexts on Windows. Its public keyboard sequence now uses Home,
+ArrowDown, ArrowDown and Enter to choose the same personal Source explicitly;
+all outcome, focus, return, motion and no-capture assertions and the original
+deadline remain. That changed native-only probe passed locally on Windows.
+The production runner and guards are unchanged, and Linux qualification of this
+changed candidate remains pending.
 
 Synthetic native-select proof establishes control semantics only. Actual Studio
 DESKTOP/MOBILE by NORMAL/REDUCED journeys, fresh governed capture, independent

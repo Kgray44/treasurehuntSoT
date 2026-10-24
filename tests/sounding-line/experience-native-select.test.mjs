@@ -50,7 +50,10 @@ test(
                 outcome: "Choose personal Source through public keyboard controls and return",
                 steps: [
                   { action: "click", role: "combobox", name: "Source" },
-                  { action: "keyboard", key: "m", expectFocus: { role: "combobox", name: "Source" } },
+                  // Native popup letter typeahead differs across Chromium host platforms.
+                  { action: "keyboard", key: "Home", expectFocus: { role: "combobox", name: "Source" } },
+                  { action: "keyboard", key: "ArrowDown", expectFocus: { role: "combobox", name: "Source" } },
+                  { action: "keyboard", key: "ArrowDown", expectFocus: { role: "combobox", name: "Source" } },
                   { action: "keyboard", key: "Enter", expectFocus: { role: "combobox", name: "Source" } },
                   {
                     action: "assert",
