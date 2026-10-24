@@ -59,8 +59,21 @@ reproduced 15 clipped bounds at both 320px and 390px, and zero after this
 correction at 320px, 390px, 820px and 1440px. It is supporting layout evidence,
 not product acceptance. The focused consumer additionally checks actual
 moderation control bounds and readable preview width. The corrected combined
-source still requires a new production preparation and the full ten-case run;
-the old source-bound preparation will not be rebound to changed tests or CSS.
+source `abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096`, including accepted main
+`bbdd5412b842e1984c131398f23b6a3ccacb01ff`, passed a new production preparation
+and all ten focused cases with zero unexpected results, skips or flaky cases.
+The prepared manifest SHA-256 is
+`ad39d3b7106339ffe25ea550dafae88e3fdc77bd689a782329305bd04c92008d`;
+the original Playwright report SHA-256 is
+`56a61441429f1d6d620999356118b9e3fb598ca35dd594d598314d85f8dad477`.
+All twelve producer logs were independently rehashed. Source, build and dependency
+integrity, real account-menu return, all original journey outcomes, and owned
+browser/server/tree/stream/proxy/port cleanup passed. The actual mobile screenshot
+also shows the moderation controls and consequences within the viewport.
+The earlier manifest and six-pass/four-failure run remain unchanged. The optional
+private failure collector still reports `SETUP_FAILED`; the server closed through
+the owned Job with exit 1. These retained diagnostic limitations do not change the
+ten passing browser results or establish protected acceptance.
 
 Independent rendered review 3 remains unperformed. A fresh source-bound capture,
 media review, authenticated submission, ordinary protected qualification, normal

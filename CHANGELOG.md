@@ -3,17 +3,24 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-23
+last_reviewed: 2026-10-24
 ---
 
 # Changelog
+
+- Candidate #776 keeps the canonical Admiralty operator identity visible on
+  mobile and fits moderation controls and consequence previews to narrow screens.
+  Ten focused production-browser contexts pass with the original outcomes,
+  account return and accessibility checks retained. Fresh full capture,
+  independent rendered review and protected acceptance remain pending; see the
+  [current verification record](Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md).
 
 - Parallax candidate #776 preserves close-before-navigation when creating an
   independent Environment and keeps mobile Library details scrolling tied to
   selection changes. Unsupported test query options are removed without changing
   matching criteria. [The source-bound verification record](Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md)
   retains the earlier failures, 53 focused passes and passing TypeScript/strict
-  lint; capture authorization, rendered review and protected acceptance remain open.
+  lint; fresh capture, rendered review and protected acceptance remain open.
 
 The October 19 [complete Parallax integration preparation](Development_Docs/Projects/Project_Parallax/Integration_Preparation_20261019.md) consolidates the adopted
 Studio overhaul on current protected main, preserves historical source and

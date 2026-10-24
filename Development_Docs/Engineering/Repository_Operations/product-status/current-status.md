@@ -3,45 +3,30 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-23
+last_reviewed: 2026-10-24
 ---
 
 # Current status
 
-PR #776's latest reviewed correction passes 53 focused component checks,
-standard TypeScript and strict lint with zero warnings allowed. It preserves
-Environment close-before-navigation ordering and selection-driven Library
-scrolling. Earlier failed checks remain preserved with their producing source.
-[Current verification and limits](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)
-keep capture authorization and trace privacy review, fresh rendered evidence,
-protected qualification and physical/owner acceptance open.
+PR #776 remains the sole combined Studio integration candidate. Its tested source
+`abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096` includes accepted main
+`bbdd5412b842e1984c131398f23b6a3ccacb01ff`. All four desktop/mobile,
+normal/reduced SC02 contexts passed in hosted capture `40056411611`; that whole
+capture subsequently failed at Admin identity continuity. The scoped correction
+keeps the canonical operator visible on mobile and fits moderation controls and
+consequence previews to the screen. A fresh production build and ten focused
+Admin contexts pass with zero failures, skips or flaky results, retaining the
+original outcomes, account return, motion and accessibility requirements.
 
-Parallax's sole combined Studio candidate, PR #776, includes the accepted
-Crossdeck landing and maintenance through `b2d901af5646ce76b3b2bd5a88e1ad8563c2db57`.
-Capture `39875668380/1` on reconciled source `25a9150146d9a6b7e9925b5f7e2ce8c1e48fca88`
-failed a visible Assistant docking outcome. A narrow correction restores the
-original visible action label; new source-bound verification and acceptance
-remain pending. The original failed capture and cleanup receipts are retained.
-The working follow-up preserves early workspace actions while account preferences
-load. A follow-up keeps startup stable as the account scope arrives: its original
-bootstrap regression fails before the correction, all nine hook cases pass after
-it, and the unchanged exclusion-zone Library consumer passes separately. These
-focused results do not establish whole-Studio or browser acceptance.
-Hosted development `39881765636/1` failed before
-the browser case and published no preparation diagnostic. Its cause and private
-cleanup remain unknown. The separate retention repair #793 passed normal protected
-qualification and independent five-case landed smoke. Its accepted base is now
-reconciled without changing Parallax app source; fresh current-candidate planning
-and verification remain pending.
-Crossdeck #721 completed normal protected R26 qualification and independent landed
-smoke; that acceptance does not qualify the combined Studio candidate. The
-[current integration checkpoint](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)
-records its exact source and pending gates.
-The October 19 integrated preparation remains historical, source-bound local
-proof; fresh exact-candidate experience and protected qualification are pending.
-This does not promote browser AR alignment, plane detection, physical/iPhone
-reliability, native delivery or owner acceptance. The original branch status
-snapshots and all development receipts are retained as engineering evidence.
+The authoritative plan still requires 32 contracts and 118 contexts. Fresh full
+capture, independent rendered review 3, ordinary protected qualification, normal
+merge and landed product smoke remain pending. Existing component, Studio and
+Crossdeck evidence retains its producing source and limits. The
+[current verification record](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)
+preserves every original failed capture and diagnostic, including the corrected
+harness's six-pass/four-rate-limit-failure predecessor. These local corrections
+do not promote feature availability, physical/browser AR accuracy, native delivery,
+field reliability or owner acceptance.
 
 The software-qualified Crossdeck refit connects a phone from the active Chronicle
 and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact
