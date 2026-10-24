@@ -1,12 +1,14 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type BrowserContext, type Page } from "@playwright/test";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import AxeBuilder from "@axe-core/playwright";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { db } from "../../src/lib/db";
 
-test.use({ actionTimeout: 30000, video: "on" });
+test.use({ actionTimeout: 30000, video: "on", storageState: { cookies: [], origins: [] } });
 test.afterAll(() => db.$disconnect());
+
+const authenticatedStates = new Map<string, Awaited<ReturnType<BrowserContext["storageState"]>>>();
 
 const contractIds = [
   "homeport.community.quarantine",
@@ -44,10 +46,11 @@ for (const contractId of contractIds) {
   for (const device of devices) {
     test(`${contractId} ${device}/ADMINISTRATOR/REDUCED preserves canonical identity and real return`, async ({
       page,
+      baseURL,
     }, info) => {
       expect(process.env.SOUNDING_LINE_SUITE_PROFILE).toBe("generic");
       ensureGenericSoundingLineIsolation();
-      const { EXPERIENCE_VIEWPORTS, runExperienceJourney } = await import(
+      const { EXPERIENCE_VIEWPORTS, roleSetupAuthenticationResume, runExperienceJourney } = await import(
         "../../scripts/sounding-line/experience-browser.mjs"
       );
       await page.setViewportSize(EXPERIENCE_VIEWPORTS[device]);
@@ -77,8 +80,28 @@ for (const contractId of contractIds) {
       });
       expect(account.profile?.displayName).toBe(continuity.name);
       const setup = contract.experience.roleSetup.ADMINISTRATOR;
-      await page.goto(setup.entryPoint);
-      for (const step of setup.steps) {
+      const authenticationResume = roleSetupAuthenticationResume(setup);
+      if (!authenticationResume || !baseURL) throw new Error("Registered canonical authentication setup is required");
+      const authenticationKey = createHash("sha256")
+        .update(JSON.stringify({ role: "ADMINISTRATOR", entryPoint: setup.entryPoint, steps: setup.steps }))
+        .digest("hex");
+      const authenticatedState = authenticatedStates.get(authenticationKey);
+      const expectedOrigin = new URL(baseURL).origin;
+      const expectAuthenticatedDestination = () => {
+        const destination = new URL(page.url());
+        expect(destination.origin).toBe(expectedOrigin);
+        expect(`${destination.pathname}${destination.search}${destination.hash}`).toBe(authenticationResume.entryPoint);
+      };
+      if (authenticatedState) {
+        expect(authenticatedState.origins).toEqual([]);
+        await page.context().addCookies(authenticatedState.cookies);
+        await page.goto(authenticationResume.entryPoint);
+        expectAuthenticatedDestination();
+      } else {
+        await page.goto(setup.entryPoint);
+      }
+      for (let index = authenticatedState ? authenticationResume.stepCount : 0; index < setup.steps.length; index++) {
+        const step = setup.steps[index];
         const target = page.getByRole(step.role as Parameters<Page["getByRole"]>[0], {
           name: step.name,
           exact: true,
@@ -87,11 +110,24 @@ for (const contractId of contractIds) {
         if (step.action === "fill") await target.fill(step.value);
         else if (step.action === "click") await target.click();
         else throw new Error("Unsupported registered role setup action");
+        if (!authenticatedState && index === authenticationResume.stepCount - 1) {
+          await page.waitForURL(
+            (destination) =>
+              destination.origin === expectedOrigin && !["/sign-in", "/player/sign-in"].includes(destination.pathname),
+            { waitUntil: "domcontentloaded", timeout: 30000 },
+          );
+          expectAuthenticatedDestination();
+        }
       }
       const witness = page.getByRole(setup.witness.role, { name: setup.witness.name, exact: true });
       await (setup.witness.text ? witness.filter({ hasText: setup.witness.text }) : witness).waitFor({
         state: "visible",
       });
+      if (!authenticatedState) {
+        const state = await page.context().storageState();
+        // Match governed replay: reuse only authenticated cookies, never UI layout state.
+        authenticatedStates.set(authenticationKey, { cookies: state.cookies, origins: [] });
+      }
       await page.goto(contract.experience.entryPoint);
       await expectCanonicalAccount(page, continuity.name);
       await expectIdentity(page, continuity.name);
@@ -108,6 +144,41 @@ for (const contractId of contractIds) {
         motionMode: "REDUCED",
         accessibilityCheck: async () => {
           await expectIdentity(page, continuity.name);
+          const moderation = page.locator('section[aria-labelledby="moderation-action-title"]');
+          if (await moderation.count()) {
+            await expect(moderation).toHaveCount(1);
+            await expect(moderation).toBeVisible();
+            const bounds = await moderation.evaluate((section) => {
+              const visible = (element: Element) => {
+                const box = element.getBoundingClientRect();
+                const style = getComputedStyle(element);
+                return box.width > 0 && box.height > 0 && style.display !== "none" && style.visibility === "visible";
+              };
+              const targets = new Set([
+                ...Array.from(section.children),
+                ...Array.from(section.querySelectorAll("input, select, textarea, button")),
+              ]);
+              const boxes = [...targets].filter(visible).map((element, index) => {
+                const box = element.getBoundingClientRect();
+                return { index, tag: element.tagName, left: box.left, right: box.right, width: box.width };
+              });
+              const previews = Array.from(section.querySelectorAll<HTMLElement>(":scope > .chartroom-projection"));
+              return {
+                checked: boxes.length,
+                clipped: boxes.filter((box) => box.left < -1 || box.right > window.innerWidth + 1),
+                overflowingPreviews: previews
+                  .filter(visible)
+                  .flatMap((preview) =>
+                    preview.scrollWidth > preview.clientWidth + 1
+                      ? [{ clientWidth: preview.clientWidth, scrollWidth: preview.scrollWidth }]
+                      : [],
+                  ),
+              };
+            });
+            expect(bounds.checked).toBeGreaterThan(0);
+            expect(bounds.clipped).toEqual([]);
+            expect(bounds.overflowingPreviews).toEqual([]);
+          }
           const a11y = await new AxeBuilder({ page }).analyze();
           return {
             axeSerious: a11y.violations

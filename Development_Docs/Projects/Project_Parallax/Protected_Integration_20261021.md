@@ -3,7 +3,7 @@ title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
 status: current
 canonical_for: parallax-protected-integration-20261021
-last_reviewed: 2026-10-23
+last_reviewed: 2026-10-24
 ---
 
 # Current emergency continuation
@@ -34,7 +34,33 @@ Admin stylesheet with the six existing Admin experience contracts. Existing
 account-menu actions, all journey steps and outcomes, return paths, continuity
 values and motion checks remain required. An exact ten-context focused consumer
 will replay the five affected journeys on desktop and mobile before a new full
-capture. This paragraph records implementation scope, not a browser pass.
+capture.
+
+The first focused run used repair commit
+`0f4f406888ec7527aea7abc3a86816a2cca55c31` and a newly prepared production
+build. It passed both quarantine, read-projection and account-dossier contexts
+(six passes). The four Operations and Configuration contexts failed before
+their journeys because this new diagnostic attempted ten separate UI sign-ins
+and correctly reached the existing six-attempt authentication rate limit. All
+four failures retain their HTTP 429 traces. Production authentication limits,
+registered controls and journey assertions were not changed. The diagnostic now
+uses the governed runner's canonical authentication-resume helper and setup key,
+with cookies only in fresh browser contexts and the complete destination and
+role witnesses retained. Static analysis proves four real sign-in prefixes and
+six cookie resumes across the ten cases; that is not a browser pass. The failed
+run's source/build/dependency integrity and owned cleanup checks passed.
+
+Inspection of its actual mobile quarantine screenshot also found moderation
+controls and consequence text clipped at the screen edge, despite a passing
+document-overflow check. The scoped stylesheet correction lets the existing
+support grid, labels and native controls shrink to the available width. A
+synthetic layout fixture using the real component and production styles
+reproduced 15 clipped bounds at both 320px and 390px, and zero after this
+correction at 320px, 390px, 820px and 1440px. It is supporting layout evidence,
+not product acceptance. The focused consumer additionally checks actual
+moderation control bounds and readable preview width. The corrected combined
+source still requires a new production preparation and the full ten-case run;
+the old source-bound preparation will not be rebound to changed tests or CSS.
 
 Independent rendered review 3 remains unperformed. A fresh source-bound capture,
 media review, authenticated submission, ordinary protected qualification, normal
