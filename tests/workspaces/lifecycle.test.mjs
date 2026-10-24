@@ -402,3 +402,41 @@ test("bounded commit retrieval denies missing trees before any allocation or fet
   );
   assert.equal(admitted, false);
 });
+test("explicit ordinary untracked generated output retires while unique siblings remain protected", (t) => {
+  const f = fixture(t);
+  const r = f.create("generated", { generated: ["partial-dependencies"] });
+  fs.mkdirSync(path.join(r.path, "partial-dependencies"));
+  fs.writeFileSync(path.join(r.path, "partial-dependencies", "package.txt"), "reproducible dependency");
+  fs.writeFileSync(path.join(r.path, "unique.txt"), "unfinished source");
+  assert.match(f.manager.finish(r.id, "completed").hold.reason, /DIRTY_UNIQUE_WORK/u);
+  assert.ok(fs.existsSync(path.join(r.path, "unique.txt")));
+  fs.unlinkSync(path.join(r.path, "unique.txt"));
+  assert.equal(f.manager.finish(r.id, "completed").state, "RETIRED");
+});
+test("assume-unchanged source is protected even when ordinary Git status is clean", (t) => {
+  const f = fixture(t);
+  const r = f.create();
+  git(r.path, ["update-index", "--assume-unchanged", "source.txt"]);
+  fs.writeFileSync(path.join(r.path, "source.txt"), "hidden unique source");
+  assert.match(f.manager.finish(r.id, "completed").hold.reason, /MASKED_TRACKED_SOURCE/u);
+  assert.equal(fs.readFileSync(path.join(r.path, "source.txt"), "utf8"), "hidden unique source");
+});
+test("historical source smoke reads real landed manifests without claiming a product retest", (t) => {
+  const f = fixture(t);
+  for (const file of ["package.json", "package-lock.json"])
+    fs.writeFileSync(path.join(f.main, file), JSON.stringify({ name: "synthetic", version: "1.0.0" }));
+  git(f.main, ["add", "package.json", "package-lock.json"]);
+  git(f.main, ["commit", "-m", "historical manifests"]);
+  const proof = f.manager.landedSmoke({
+    id: "historical",
+    adoptedReason: "Audited historical merged checkout",
+    merge: {
+      merge: git(f.main, ["rev-parse", "HEAD"]),
+      mergedAt: new Date(Date.now() - 3600000).toISOString(),
+      decisionId: 42,
+    },
+  });
+  assert.equal(proof.kind, "historical-landed-source-integrity");
+  assert.equal(proof.functionalProductRetest, false);
+  assert.equal(proof.manifests.length, 2);
+});

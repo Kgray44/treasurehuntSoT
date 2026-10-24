@@ -763,6 +763,19 @@ export class Lifecycle {
     let dirty = [];
     if (r.kind === "worktree") {
       if (git(r.path, ["rev-parse", "HEAD"]) !== r.head) fail("HEAD_CHANGED_REQUIRES_FINISH");
+      const flagged = run("git", ["-C", r.path, "ls-files", "-v", "-z"]).split("\0").filter(Boolean);
+      for (const entry of flagged) {
+        if (/^[a-z]/u.test(entry)) fail(`MASKED_TRACKED_SOURCE:${entry.slice(2)}`);
+        if (entry.startsWith("S ")) {
+          try {
+            fs.lstatSync(path.join(r.path, entry.slice(2)));
+          } catch (e) {
+            if (e.code === "ENOENT") continue;
+            throw e;
+          }
+          fail(`SKIPPED_TRACKED_SOURCE_PRESENT:${entry.slice(2)}`);
+        }
+      }
       const status = run("git", [
         "-c",
         "core.fsmonitor=false",
@@ -773,7 +786,14 @@ export class Lifecycle {
         "--untracked-files=all",
         "-z",
       ]);
-      dirty = status.split("\0").filter((line) => line && line !== `?? ${markerName}`);
+      dirty = status.split("\0").filter((line) => {
+        if (!line || line === `?? ${markerName}`) return false;
+        if (!line.startsWith("?? ")) return true;
+        const relative = line.slice(3).replaceAll("\\", "/");
+        // Explicit generated roots can contain ordinary untracked dependency or
+        // build output. Tracked source is independently rejected before cleanup.
+        return !r.generated.some((g) => relative === g || relative.startsWith(`${g}/`));
+      });
       if (fs.existsSync(git(r.path, ["rev-parse", "--path-format=absolute", "--git-path", "index.lock"])))
         fail("GIT_OPERATION_IN_PROGRESS");
     }
@@ -873,6 +893,31 @@ export class Lifecycle {
     this.save();
   }
   landedSmoke(r) {
+    const merge = r.merge.merge;
+    if (!succeeds(this.config.canonical, ["cat-file", "-e", `${merge}:scripts/workspaces/lifecycle.mjs`])) {
+      if (!r.adoptedReason || !r.merge.mergedAt || Date.parse(r.merge.mergedAt) >= Date.parse(this.db.createdAt))
+        fail("HISTORICAL_SMOKE_NOT_ELIGIBLE");
+      // Historical checkouts predate this manager. Their existing protected
+      // functional decision remains the authority; this new smoke checks landed
+      // source custody and parseable manifests, without claiming a product retest.
+      const tree = git(this.config.canonical, ["rev-parse", `${merge}^{tree}`]);
+      const manifests = [];
+      for (const file of ["package.json", "package-lock.json"]) {
+        const bytes = run("git", ["-C", this.config.canonical, "show", `${merge}:${file}`]);
+        if (Buffer.byteLength(bytes) > 16 * 1024 ** 2) fail("HISTORICAL_MANIFEST_BUDGET_EXCEEDED");
+        const parsed = JSON.parse(bytes);
+        if (!parsed.name || !parsed.version) fail("HISTORICAL_MANIFEST_INVALID");
+        manifests.push({ file, sha256: sha256(bytes) });
+      }
+      return this.receipt(r, "LANDED_SMOKE_PASSED", {
+        kind: "historical-landed-source-integrity",
+        merge,
+        tree,
+        manifests,
+        protectedDecisionId: r.merge.decisionId,
+        functionalProductRetest: false,
+      });
+    }
     const dest = path.join(this.root, "smoke", randomUUID());
     fs.mkdirSync(dest, { recursive: true });
     const owner = { id: randomUUID(), path: dest, purpose: "landed-smoke" };
