@@ -2489,3 +2489,369 @@ test("Scene confirmation has no behavior when absent and preserves legacy journe
   input.contract.id = "unrelated";
   assert.equal(validateSceneSavedConfirmation(input.contract, input.journey), null);
 });
+
+// Pure native-summary selector/action model; this is not a browser/product result.
+import { validateRoomNativeDisclosures } from "../../scripts/sounding-line/product-experience.mjs";
+function roomMobileDisclosureInput() {
+  const input = roomReloadInput();
+  input.journey.steps = input.journey.steps.flatMap((step) =>
+    step.action === "click" && step.role === "button" && step.name === "Edit room features"
+      ? [{ action: "click", kind: "navigation", nativeSummary: "View & audio", devices: ["MOBILE"] }, step]
+      : [step],
+  );
+  input.journey.steps.find((step) => step.kind === "outcome" && step.text === "Working draft saved").role = "status";
+  return input;
+}
+function roomMobileDisclosureModel(device, motionMode, options = {}) {
+  const f = roomReloadModel(device, motionMode, options);
+  let open = device === "DESKTOP" || !!options.hydrationInitiallyOpen || !!options.alwaysOpen;
+  f.disclosureOpens = 0;
+  f.nativeSelections = [];
+  f.hydrationClosures = 0;
+  const get = f.page.getByRole,
+    reload = f.page.reload;
+  f.page.reload = async (settings) => {
+    await reload(settings);
+    open = device === "DESKTOP" || !!options.hydrationInitiallyOpen || !!options.alwaysOpen;
+  };
+  f.page.getByRole = (role, selector) => {
+    assert.notEqual(selector.name, "View & audio", "MODEL_NATIVE_SUMMARY_HAS_NO_ARIA_ROLE");
+    const target = get(role, selector),
+      name = selector.name;
+    if (role === "status") {
+      target.innerText = async () => f.state.status;
+      target.filter = ({ hasText }) => ({
+        waitFor: async () => assert(f.state.status.includes(hasText), "MODEL_TEXT_MISSING:" + hasText),
+      });
+    }
+    if (name !== "Edit room features") return target;
+    const evaluate = target.evaluate;
+    target.isVisible = async () => open;
+    target.waitFor = async () => assert(open, "MODEL_DISCLOSURE_CONTROL_HIDDEN");
+    target.evaluate = async (...args) => {
+      assert(open, "MODEL_DISCLOSURE_CONTROL_HIDDEN");
+      return evaluate(...args);
+    };
+    return target;
+  };
+  const summary = { tagName: options.wrongTag ? "DIV" : "SUMMARY", textContent: "View & audio" };
+  const details = {
+    tagName: options.wrongParent ? "DIV" : "DETAILS",
+    firstElementChild: options.notFirst ? {} : summary,
+    get open() {
+      return open;
+    },
+  };
+  summary.parentElement = details;
+  f.page.locator = (selector) => {
+    assert(["details > summary", "details:not([open]) > summary"].includes(selector));
+    const closed = selector.includes(":not");
+    return {
+      filter: ({ hasText }) => {
+        assert.equal(hasText.source, "^View & audio$");
+        assert.equal(hasText.flags, "u");
+        f.nativeSelections.push(selector);
+        return {
+          count: async () => options.summaryCount ?? 1,
+          waitFor: async (config) => {
+            assert.deepEqual(config, { state: "visible", timeout: 30000 });
+            assert.equal(device, "MOBILE");
+            assert(!options.hiddenNative, "MODEL_NATIVE_SUMMARY_HIDDEN");
+            if (closed && open && options.hydrationInitiallyOpen) {
+              open = false;
+              f.hydrationClosures++;
+            }
+            assert(!closed || !open, "MODEL_NATIVE_SUMMARY_CLOSED_WAIT");
+          },
+          click: async (config) => {
+            assert.deepEqual(config, { trial: true, timeout: 5000 });
+            assert(!options.obscuredNative, "MODEL_NATIVE_SUMMARY_OBSCURED");
+          },
+          evaluate: async (fn) => {
+            if (String(fn).includes("document.activeElement")) {
+              f.state.tabTarget = "View & audio";
+              return f.state.focus === "View & audio";
+            }
+            return fn(summary);
+          },
+          press: async (key) => {
+            assert.equal(key, "Enter");
+            assert.equal(f.state.focus, "View & audio");
+            f.disclosureOpens++;
+            if (!options.noOpDisclosure) open = true;
+          },
+        };
+      },
+    };
+  };
+  return f;
+}
+test("ROOM mobile native disclosure opens exactly twice and desktop skips both without changing outcomes", async () => {
+  for (const device of ["DESKTOP", "MOBILE"])
+    for (const motion of ["NORMAL", "REDUCED"]) {
+      const input = roomMobileDisclosureInput(),
+        f = roomMobileDisclosureModel(device, motion);
+      assert.doesNotThrow(() => validateExperienceContract(input.contract));
+      const result = await runRoomReload(f, input);
+      assert.equal(result.result.status, "PASS");
+      assert.equal(f.disclosureOpens, device === "MOBILE" ? 2 : 0);
+      assert.doesNotThrow(() =>
+        validateRoomNativeDisclosures(input.contract, input.journey, JSON.parse(JSON.stringify(result.result)), device),
+      );
+      assert.equal(f.nativeSelections.length > 0, device === "MOBILE");
+      assert.equal(f.reloads.length, 1);
+      assert.deepEqual(
+        result.result.stepContext.applicability,
+        input.journey.steps.flatMap((step, index) =>
+          step.devices ? [{ step: index, devices: ["MOBILE"], applicable: device === "MOBILE" }] : [],
+        ),
+      );
+      assert.deepEqual(
+        result.result.observations,
+        input.journey.steps.flatMap((step, index) =>
+          step.kind === "outcome"
+            ? [{ step: index, meaning: step.meaning, role: step.role, name: step.name, text: step.text }]
+            : [],
+        ),
+      );
+      assert.equal(result.result.nativeDisclosures?.length ?? 0, device === "MOBILE" ? 2 : 0);
+      for (const observed of result.result.nativeDisclosures ?? []) {
+        assert.deepEqual(observed.before, {
+          tagName: "SUMMARY",
+          parentTagName: "DETAILS",
+          firstChild: true,
+          text: "View & audio",
+          open: false,
+        });
+        assert.deepEqual(observed.after, { ...observed.before, open: true });
+        assert.equal(observed.keyboard, "Enter");
+        assert(!Object.hasOwn(observed, "role"));
+      }
+    }
+  const hydrated = roomMobileDisclosureModel("MOBILE", "NORMAL", { hydrationInitiallyOpen: true });
+  await runRoomReload(hydrated, roomMobileDisclosureInput());
+  assert.equal(hydrated.hydrationClosures, 2);
+  assert.equal(hydrated.disclosureOpens, 2);
+});
+test("ROOM native disclosure omission, no-op, malformed identity, obscuration and never-closed parents remain failures", async () => {
+  const mobile = roomMobileDisclosureModel("MOBILE", "NORMAL");
+  await assert.rejects(runRoomReload(mobile, roomReloadInput()), /MODEL_DISCLOSURE_CONTROL_HIDDEN/);
+  for (const [options, error] of [
+    [{ noOpDisclosure: true }, /NATIVE_DISCLOSURE_NOT_OPENED/],
+    [{ summaryCount: 2 }, /NATIVE_DISCLOSURE_IDENTITY_INVALID/],
+    [{ summaryCount: 0 }, /NATIVE_DISCLOSURE_IDENTITY_INVALID/],
+    [{ wrongTag: true }, /NATIVE_DISCLOSURE_IDENTITY_INVALID/],
+    [{ wrongParent: true }, /NATIVE_DISCLOSURE_IDENTITY_INVALID/],
+    [{ notFirst: true }, /NATIVE_DISCLOSURE_IDENTITY_INVALID/],
+    [{ hiddenNative: true }, /MODEL_NATIVE_SUMMARY_HIDDEN/],
+    [{ obscuredNative: true }, /MODEL_NATIVE_SUMMARY_OBSCURED/],
+    [{ alwaysOpen: true }, /MODEL_NATIVE_SUMMARY_CLOSED_WAIT/],
+  ]) {
+    const f = roomMobileDisclosureModel("MOBILE", "REDUCED", options);
+    await assert.rejects(runRoomReload(f, roomMobileDisclosureInput()), error);
+    assert.equal(f.disclosureOpens, options.noOpDisclosure ? 1 : 0);
+  }
+  const input = roomMobileDisclosureInput(),
+    fixture = roomMobileDisclosureModel("MOBILE", "NORMAL");
+  const actual = (await runRoomReload(fixture, input)).result;
+  for (const mutate of [
+    (r) => {
+      delete r.nativeDisclosures;
+    },
+    (r) => {
+      r.nativeDisclosures.pop();
+    },
+    (r) => {
+      r.nativeDisclosures.push(structuredClone(r.nativeDisclosures[0]));
+    },
+    (r) => {
+      r.nativeDisclosures[0].step++;
+    },
+    (r) => {
+      r.nativeDisclosures[0].role = "button";
+    },
+    (r) => {
+      r.nativeDisclosures[0].nativeSummary = "Other";
+    },
+    (r) => {
+      r.nativeDisclosures[0].keyboard = "Space";
+    },
+    (r) => {
+      r.nativeDisclosures[0].before.open = true;
+    },
+    (r) => {
+      r.nativeDisclosures[0].after.open = false;
+    },
+    (r) => {
+      r.nativeDisclosures[0].before.tagName = "BUTTON";
+    },
+    (r) => {
+      r.nativeDisclosures[0].after.parentTagName = "DIV";
+    },
+    (r) => {
+      r.nativeDisclosures[0].before.firstChild = false;
+    },
+    (r) => {
+      r.nativeDisclosures[0].after.text = "Other";
+    },
+  ]) {
+    const bad = structuredClone(actual);
+    mutate(bad);
+    assert.throws(
+      () => validateRoomNativeDisclosures(input.contract, input.journey, bad, "MOBILE"),
+      /NATIVE_DISCLOSURE_EVIDENCE_INVALID/,
+    );
+  }
+  assert.throws(
+    () => validateRoomNativeDisclosures(input.contract, input.journey, actual, "DESKTOP"),
+    /NATIVE_DISCLOSURE_EVIDENCE_INVALID/,
+  );
+});
+test("ROOM rejects malformed native declarations, old fake-role declarations and nonadjacent or extra navigation before UI", async () => {
+  const mutations = [
+    (x, d) => {
+      d[0].action = "assert";
+    },
+    (x, d) => {
+      d[0].role = "button";
+    },
+    (x, d) => {
+      d[0].name = "View & audio";
+    },
+    (x, d) => {
+      d[0].nativeSummary = "Other";
+    },
+    (x, d) => {
+      d[0].kind = "outcome";
+    },
+    (x, d) => {
+      delete d[0].nativeSummary;
+      d[0].role = "button";
+      d[0].name = "View & audio";
+    },
+    (x, d) => {
+      d[0].devices = ["DESKTOP"];
+    },
+    (x, d) => {
+      d[0].devices = ["MOBILE", "DESKTOP"];
+    },
+    (x, d) => {
+      d[0].devices = ["MOBILE", "MOBILE"];
+    },
+    (x, d) => {
+      d[0].devices = "MOBILE";
+    },
+    (x, d) => {
+      d[0].devices = [];
+    },
+    (x, d) => {
+      d[0].devices = ["TABLET"];
+    },
+    (x, d) => {
+      delete d[0].devices;
+    },
+    (x, d) => {
+      d[0].when = { device: "MOBILE" };
+    },
+    (x, d) => {
+      d[0].contextName = "anything";
+    },
+    (x, d) => {
+      d[0].timeout = 30000;
+    },
+    (x, d) => {
+      d[0].path = "/studio/parallax";
+    },
+    (x, d) => {
+      d[0].state = "ROOM_EDIT_READY";
+    },
+    (x, d) => {
+      x.journey.steps.splice(x.journey.steps.indexOf(d[0]), 1);
+    },
+    (x, d) => {
+      x.journey.steps.splice(x.journey.steps.indexOf(d[1]), 1);
+    },
+    (x, d) => {
+      x.journey.steps.unshift(structuredClone(d[0]));
+    },
+    (x) => {
+      x.journey.steps[0].devices = ["MOBILE"];
+    },
+    (x, d) => {
+      const i = x.journey.steps.indexOf(d[0]);
+      [x.journey.steps[i], x.journey.steps[i + 1]] = [x.journey.steps[i + 1], x.journey.steps[i]];
+    },
+    (x) => {
+      x.journey.steps[0].unsupported = { nativeSummary: "View & audio" };
+    },
+  ];
+  for (const mutate of mutations) {
+    const x = roomMobileDisclosureInput(),
+      d = x.journey.steps.filter((s) => s.devices);
+    mutate(x, d);
+    assert.throws(() => validateRoomReloadJourney(x.contract, x.journey), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    assert.throws(() => validateExperienceContract(x.contract), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    const f = roomMobileDisclosureModel("MOBILE", "NORMAL");
+    await assert.rejects(runRoomReload(f, x), /JOURNEY_RELOAD_(SCOPE|STEP)_INVALID/);
+    assert.equal(f.calls.length, 0);
+  }
+});
+test("ROOM native disclosure rejects unsupported scopes, native fields elsewhere and Community reserved tokens before UI", async () => {
+  for (const mutate of [
+    (x) => {
+      x.contract.id = "spatial-pilot.experience";
+    },
+    (x) => {
+      x.journey.id = "other";
+    },
+    (x) => {
+      x.contract.experience.roles = ["PLAYER"];
+    },
+    (x) => {
+      x.journey.roles = ["PLAYER"];
+    },
+    (x) => {
+      x.contract.experience.devices = ["DESKTOP", "DESKTOP"];
+    },
+    (x) => {
+      delete x.contract.experience.motion;
+    },
+  ]) {
+    const x = roomMobileDisclosureInput();
+    mutate(x);
+    assert.throws(() => validateExperienceContract(x.contract), /JOURNEY_RELOAD_SCOPE_INVALID/);
+    const f = roomMobileDisclosureModel("MOBILE", "NORMAL");
+    await assert.rejects(runRoomReload(f, x), /JOURNEY_RELOAD_SCOPE_INVALID/);
+    assert.equal(f.calls.length, 0);
+  }
+  for (const override of [{ role: "PLAYER" }, { device: "TABLET" }, { motionMode: "OTHER" }]) {
+    const f = roomMobileDisclosureModel("MOBILE", "NORMAL");
+    await assert.rejects(runRoomReload(f, roomMobileDisclosureInput(), override), /JOURNEY_RELOAD_SCOPE_INVALID/);
+    assert.equal(f.calls.length, 0);
+  }
+  const unrelated = roomMobileDisclosureInput();
+  unrelated.journey.steps = unrelated.journey.steps.filter((s) => s.action !== "reload");
+  unrelated.contract.id = "unrelated";
+  assert.throws(() => validateExperienceContract(unrelated.contract), /JOURNEY_RELOAD_SCOPE_INVALID/);
+  const reserved = roomMobileDisclosureInput();
+  reserved.journey.steps[0].name = "PARALLAX_COMMUNITY_SCENE_NAME";
+  const f = roomMobileDisclosureModel("MOBILE", "NORMAL");
+  await assert.rejects(runRoomReload(f, reserved), /JOURNEY_CONTEXT_INVALID/);
+  assert.equal(f.calls.length, 0);
+});
+test("ROOM native disclosure preserves no-op Save, already-true Save and lost geometry causal failures", async () => {
+  for (const [options, error] of [
+    [{ noOpSave: true }, /USER_OUTCOME_FAILED/],
+    [{ preexistingSavedAfterReload: true }, /ACTION_OUTCOME_NOT_OBSERVED:.*before-true:after-true/],
+    [{ lostGeometry: true }, /USER_OUTCOME_FAILED/],
+  ]) {
+    const f = roomMobileDisclosureModel("MOBILE", "NORMAL", options),
+      input = roomMobileDisclosureInput();
+    if (options.preexistingSavedAfterReload)
+      input.journey.steps = input.journey.steps.filter(
+        (s) => !(s.action === "assert" && s.text === "Working draft opened"),
+      );
+    await assert.rejects(runRoomReload(f, input), error);
+    assert.equal(f.reloads.length, 1);
+  }
+});

@@ -41,6 +41,7 @@ import {
   REVIEW_DIMENSIONS,
   validateExperienceEvidence,
   validateRoomReloadJourney,
+  validateRoomNativeDisclosures,
   validateSceneSavedConfirmation,
   validateExperienceArtifacts,
   artifactBytes,
@@ -395,11 +396,31 @@ export async function runExperienceJourney({
     }
   }
   const savedSceneReloads = [];
+  const nativeDisclosures = [];
   // Resolve once before any browser interaction. Both loops consume the same
   // applicability and literals while evidence retains original step indices.
   const contextual = journey.steps.some((step) => JSON.stringify(step).includes("PARALLAX_COMMUNITY_SCENE_"))
     ? communityJourneyContext(contract, journey, device, motionMode, role)
-    : sc02JourneyContext(contract, journey, device, motionMode);
+    : reload?.mobileDisclosureIndices
+      ? {
+          steps: journey.steps.map((step, index) => ({
+            step,
+            index,
+            applicable: !reload.mobileDisclosureIndices.includes(index) || device === "MOBILE",
+          })),
+          evidence: {
+            version: 1,
+            device,
+            motionMode,
+            applicability: reload.mobileDisclosureIndices.map((step) => ({
+              step,
+              devices: ["MOBILE"],
+              applicable: device === "MOBILE",
+            })),
+            substitutions: [],
+          },
+        }
+      : sc02JourneyContext(contract, journey, device, motionMode);
   const captures = [];
   const observations = [];
   const stateAccessibility = [];
@@ -411,6 +432,14 @@ export async function runExperienceJourney({
   let actionPredicates = new Map();
   const sceneSavedStatus = () =>
     page.getByRole("dialog", { name: "Environments & Scenes", exact: true }).getByRole("status");
+  const readNativeSummary = (target) =>
+    target.evaluate((element) => ({
+      tagName: element.tagName,
+      parentTagName: element.parentElement?.tagName,
+      firstChild: element.parentElement?.firstElementChild === element,
+      text: element.textContent?.trim(),
+      open: element.parentElement?.open,
+    }));
   const predicateSatisfied = async (step) => {
     const target = page.getByRole(step.role, { name: step.name, exact: true });
     if (!(await target.isVisible()) || (step.path && new URL(page.url()).pathname !== step.path)) return false;
@@ -465,8 +494,18 @@ export async function runExperienceJourney({
         if (!(await target.evaluate((element) => element === document.activeElement))) fail("KEYBOARD_FOCUS_FAILED");
       }
     } else {
-      const target = page.getByRole(step.role, { name: step.name, exact: true });
-      await target.waitFor({ state: "visible" });
+      const nativeSummary = Object.hasOwn(step, "nativeSummary");
+      const target = nativeSummary
+        ? page.locator("details > summary").filter({ hasText: /^View & audio$/u })
+        : page.getByRole(step.role, { name: step.name, exact: true });
+      if (nativeSummary) {
+        await page
+          .locator("details:not([open]) > summary")
+          .filter({ hasText: /^View & audio$/u })
+          .waitFor({ state: "visible", timeout: 30000 });
+        if ((await target.count()) !== 1) fail("NATIVE_DISCLOSURE_IDENTITY_INVALID");
+        await target.click({ trial: true, timeout: 5000 });
+      } else await target.waitFor({ state: "visible" });
       if (step.action === "click" || step.action === "fill") {
         // A navigation followed by typing is one declared action group. Keep
         // its pre-navigation predicates through consecutive fills, while a
@@ -489,8 +528,38 @@ export async function runExperienceJourney({
         }
         if (!reachable) fail("KEYBOARD_REACHABILITY_FAILED");
         // Keyboard activation proves the ordinary action is not pointer-only.
+        let nativeBefore;
+        if (nativeSummary) {
+          nativeBefore = await readNativeSummary(target);
+          if (
+            nativeBefore.tagName !== "SUMMARY" ||
+            nativeBefore.parentTagName !== "DETAILS" ||
+            !nativeBefore.firstChild ||
+            nativeBefore.text !== "View & audio"
+          )
+            fail("NATIVE_DISCLOSURE_IDENTITY_INVALID");
+          if (nativeBefore.open !== false) fail("NATIVE_DISCLOSURE_NOT_CLOSED");
+        }
         actionStarted = performance.now();
         await target.press("Enter");
+        if (nativeSummary) {
+          const after = await readNativeSummary(target);
+          if (
+            after.tagName !== "SUMMARY" ||
+            after.parentTagName !== "DETAILS" ||
+            !after.firstChild ||
+            after.text !== "View & audio" ||
+            after.open !== true
+          )
+            fail("NATIVE_DISCLOSURE_NOT_OPENED");
+          nativeDisclosures.push({
+            step: index,
+            nativeSummary: "View & audio",
+            before: nativeBefore,
+            after,
+            keyboard: "Enter",
+          });
+        }
         visibleActions++;
       } else if (step.action === "fill") {
         await target.fill(step.value);
@@ -603,6 +672,7 @@ export async function runExperienceJourney({
       });
     }
   }
+  validateRoomNativeDisclosures(contract, journey, { nativeDisclosures }, device);
   if (!observations.length || !returnPathVerified || !visibleActions) fail("SEMANTIC_JOURNEY_FAILED");
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   const afterContinuity = await readContinuity();
@@ -634,6 +704,7 @@ export async function runExperienceJourney({
       observations,
       visibleActions,
       ...(savedSceneReloads.length ? { savedSceneReloads } : {}),
+      ...(nativeDisclosures.length ? { nativeDisclosures } : {}),
       ...(contextual.evidence ? { stepContext: contextual.evidence } : {}),
       ...(unobscuredActions.length ? { unobscuredActions } : {}),
       returnPathVerified,

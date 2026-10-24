@@ -242,7 +242,12 @@ function matches(file, prefixes) {
 // Reload is a single saved-Scene proof step, not a general navigation action.
 export function validateRoomReloadJourney(contract, journey) {
   const reloads = journey.steps.flatMap((step, index) => (step.action === "reload" ? [index] : []));
-  if (!reloads.length) return null;
+  const containsNativeSummary = (value) =>
+    value &&
+    typeof value === "object" &&
+    (Object.hasOwn(value, "nativeSummary") || Object.values(value).some(containsNativeSummary));
+  const mobileDisclosures = journey.steps.flatMap((step, index) => (containsNativeSummary(step) ? [index] : []));
+  if (!reloads.length && !mobileDisclosures.length) return null;
   const experience = contract.experience;
   if (
     contract.id !== "parallax.parametric-room-correction.experience" ||
@@ -257,6 +262,32 @@ export function validateRoomReloadJourney(contract, journey) {
   )
     fail("JOURNEY_RELOAD_SCOPE_INVALID");
   if (reloads.length !== 1 || Object.keys(journey.steps[reloads[0]]).length !== 1) fail("JOURNEY_RELOAD_STEP_INVALID");
+  const deviceSteps = journey.steps.flatMap((step, index) => (Object.hasOwn(step, "devices") ? [index] : []));
+  if (deviceSteps.length || mobileDisclosures.length) {
+    const edits = journey.steps.flatMap((step, index) =>
+      step.action === "click" && step.role === "button" && step.name === "Edit room features" ? [index] : [],
+    );
+    if (
+      mobileDisclosures.length !== 2 ||
+      deviceSteps.length !== 2 ||
+      edits.length !== 2 ||
+      !(edits[0] < reloads[0] && reloads[0] < edits[1]) ||
+      !deviceSteps.every((index, offset) => index === edits[offset] - 1) ||
+      deviceSteps.some((index) => {
+        const step = journey.steps[index];
+        return (
+          Object.keys(step).sort().join(",") !== "action,devices,kind,nativeSummary" ||
+          step.action !== "click" ||
+          step.kind !== "navigation" ||
+          step.nativeSummary !== "View & audio" ||
+          !Array.isArray(step.devices) ||
+          step.devices.length !== 1 ||
+          step.devices[0] !== "MOBILE"
+        );
+      })
+    )
+      fail("JOURNEY_RELOAD_STEP_INVALID");
+  }
   const containsTemplate = (value) =>
     typeof value === "string"
       ? /\{\{|\}\}/u.test(value)
@@ -265,13 +296,46 @@ export function validateRoomReloadJourney(contract, journey) {
         : false;
   if (
     journey.steps.some(
-      (step) =>
-        Object.keys(step).some((key) => ["devices", "when"].includes(key) || key.startsWith("context")) ||
-        containsTemplate(step),
+      (step, index) =>
+        Object.keys(step).some(
+          (key) =>
+            key === "when" || (key === "devices" && !mobileDisclosures.includes(index)) || key.startsWith("context"),
+        ) || containsTemplate(step),
     )
   )
     fail("JOURNEY_RELOAD_STEP_INVALID");
-  return { index: reloads[0] };
+  return { index: reloads[0], ...(mobileDisclosures.length ? { mobileDisclosureIndices: mobileDisclosures } : {}) };
+}
+
+// Native disclosure evidence belongs only to the two finite ROOM navigation declarations.
+export function validateRoomNativeDisclosures(contract, journey, run, device) {
+  const scope = validateRoomReloadJourney(contract, journey);
+  if (!scope?.mobileDisclosureIndices) return;
+  const expected = device === "MOBILE" ? scope.mobileDisclosureIndices : [];
+  const observed = run.nativeDisclosures ?? [];
+  const identity = (value, open) =>
+    value &&
+    Object.keys(value).sort().join(",") === "firstChild,open,parentTagName,tagName,text" &&
+    value.tagName === "SUMMARY" &&
+    value.parentTagName === "DETAILS" &&
+    value.firstChild === true &&
+    value.text === "View & audio" &&
+    value.open === open;
+  if (
+    !Array.isArray(observed) ||
+    observed.length !== expected.length ||
+    observed.some(
+      (row, index) =>
+        !row ||
+        Object.keys(row).sort().join(",") !== "after,before,keyboard,nativeSummary,step" ||
+        row.step !== expected[index] ||
+        row.nativeSummary !== "View & audio" ||
+        row.keyboard !== "Enter" ||
+        !identity(row.before, false) ||
+        !identity(row.after, true),
+    )
+  )
+    fail("NATIVE_DISCLOSURE_EVIDENCE_INVALID");
 }
 
 // Confirmation is the existing Scene Manager Save outcome, not a general status selector.
@@ -357,7 +421,11 @@ export function validateExperienceContract(contract) {
       if (step.action === "reload") continue;
       if (!new Set(["click", "fill", "assert", "keyboard"]).has(step.action))
         fail("JOURNEY_ACTION_INVALID", journey.id);
-      if (step.action !== "keyboard" && (!step.role || typeof step.name !== "string"))
+      if (
+        step.action !== "keyboard" &&
+        !Object.hasOwn(step, "nativeSummary") &&
+        (!step.role || typeof step.name !== "string")
+      )
         fail("VISIBLE_CONTROL_REQUIRED", journey.id);
       if (
         step.action === "assert" &&
@@ -882,6 +950,7 @@ export function validateExperienceEvidence({
             const run = observed.find(
               (entry) => entry.device === device && entry.role === role && entry.motionMode === motionMode,
             );
+            if (run) validateRoomNativeDisclosures(contract, journey, run, device);
             if (
               !run ||
               run.status !== "PASS" ||
