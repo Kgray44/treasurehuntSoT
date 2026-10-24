@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-24
 ---
 
 # Project Parallax
@@ -15,6 +15,11 @@ Project Parallax is Voyagewright's canonical owner for spatial Chronicle entitie
 Its governing promise is simple even though the machinery behind it is emphatically not:
 
 > **Creators author spatial intent. Parallax solves spatial implementation.**
+
+> **Candidate #776 bounded delivery:** Library/simulation and unavailable-photo recovery
+> have a bounded software acceptance scope. Forty-eight expanded states remain pending;
+> Community Profile prerequisite/recovery remains required. Fresh qualification and
+> product acceptance are still open. See the [scope and pending-coverage record](PR776_Bounded_Software_Acceptance_and_Pending_Coverage.md).
 
 - [Original October 11 owner-review baseline](Spatial_Studio_Visual_Review_20261011.md) preserves its original product source and pending owner-review status; its inactive producers remain evidence only.
 - [Protected integration after Crossdeck landing](Protected_Integration_20261021.md) records the sole #776 ownership agreement, accepted-main reconciliation and fresh qualification gates.

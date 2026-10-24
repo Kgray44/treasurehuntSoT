@@ -8,6 +8,11 @@ last_reviewed: 2026-10-24
 
 # Changelog
 
+- Candidate #776 now has an owner-authorized bounded software-delivery scope, with
+  48 expanded Library/photo states explicitly pending. Community Profile recovery
+  remains required; fresh qualification and product acceptance remain open. See the
+  [scope and pending-coverage record](Development_Docs/Projects/Project_Parallax/PR776_Bounded_Software_Acceptance_and_Pending_Coverage.md).
+
 - Candidate #776 keeps the Community publishing panel keyboard reachable while
   preview and review are loading, and reads the Environment catalog through its
   authenticated read route so catalog refreshes preserve the Studio write budget.

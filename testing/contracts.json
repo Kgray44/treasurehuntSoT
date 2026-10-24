@@ -9487,46 +9487,7 @@
           "INSTANCE_SAVED",
           "SIMULATION_READY",
           "SIMULATION_RESET",
-          "RETURNED",
-          "ASSISTANT_PROPOSAL",
-          "ASSISTANT_CLARIFICATION",
-          "ASSISTANT_CANCELLED",
-          "ASSISTANT_UNAVAILABLE",
-          "PREFERENCE_CONTINUITY",
-          "OPACITY_PREVIEW",
-          "TRANSPARENT_RECOVERY",
-          "NATIVE_OPACITY_UNSUPPORTED",
-          "CINEMATIC_TAKE",
-          "TIMELINE_POSE_SELECTED",
-          "ROOM_EDITOR_OPEN",
-          "GROUPS_EMPTY",
-          "GROUP_MEMBERS_SELECTED",
-          "GROUP_NAMED",
-          "GROUP_LIVE_TRANSFORM",
-          "GROUP_CANCELLED",
-          "GROUP_LOCKED",
-          "GROUP_MEMBERS_EDITED",
-          "GROUP_RELOADED",
-          "ASSISTANT_GROUP_PROPOSAL",
-          "EXCLUSIONS_DISCOVERED",
-          "EXCLUSION_LIVE_EDIT",
-          "EXCLUSION_RELOADED",
-          "EXCLUSION_DELETED",
-          "EXCLUSION_EDITING_FINISHED",
-          "INDIVIDUAL_GROUP_MEMBER",
-          "GRAPH_ORDER_PREVIEW",
-          "GROUP_SURFACE_PLACEMENT",
-          "ASSISTANT_THINKING",
-          "ASSISTANT_CLARIFICATION_CHAT",
-          "WORKING_IDENTITY_STABLE",
-          "EXPLICIT_LIBRARY_MEMBERSHIP",
-          "NAMED_SAVE_AS",
-          "INDEPENDENT_ENVIRONMENT_DEFINITION",
-          "LIBRARY_COLLECTION_FILTER",
-          "IMMUTABLE_VERSION_PREVIEW",
-          "PENDING_WORK_RECOVERY",
-          "STALE_ENVIRONMENT_RECOVERY",
-          "VERSION_COPY_RETRY_INTENT"
+          "RETURNED"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
@@ -10107,19 +10068,7 @@
           "src/app/api/studio/parallax/room-photo"
         ],
         "entryPoint": "/studio/library",
-        "states": [
-          "PHOTO_READY",
-          "PHOTO_UNAVAILABLE",
-          "PHOTO_PERMISSION",
-          "PHOTO_PROCESSING",
-          "PHOTO_PROPOSED",
-          "PHOTO_CLARIFICATION",
-          "PHOTO_FAILED",
-          "PHOTO_CANCELLED",
-          "ROOM_SAVED",
-          "PHOTO_WITHDRAWN",
-          "RETURNED"
-        ],
+        "states": ["PHOTO_UNAVAILABLE", "RETURNED"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
         "accessibility": "Labeled feature, type and measurement controls support keyboard input; native disclosure summaries expose grouped corrections; phone preserves a usable contextual Inspector and access to the canvas. Themes and reduced motion retain meaning.",
@@ -10146,7 +10095,7 @@
         ],
         "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
         "homeportJourneyIds": ["B"],
-        "browserTests": ["tests/e2e/parallax-room-features.spec.ts", "tests/e2e/parallax-room-photo.spec.ts"],
+        "browserTests": ["tests/e2e/parallax-room-features.spec.ts"],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -10923,6 +10872,56 @@
             "steps": [
               {
                 "action": "click",
+                "role": "button",
+                "name": "Synthetic Parallax Community Creator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Public Profile"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Handle Lowercase letters, numbers, and internal hyphens.",
+                "value": ""
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save Profile"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Profile saved and public preview refreshed.",
+                "path": "/account/profile"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Parallax Community Creator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library"
+              },
+              {
+                "action": "click",
                 "role": "link",
                 "name": "Spatial Studio"
               },
@@ -11024,6 +11023,111 @@
                 "state": "PUBLISHING_OPEN",
                 "kind": "outcome",
                 "meaning": "One wizard distinguishes the saved source from a Community release."
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Continue",
+                "text": "Continue",
+                "path": "/studio/parallax"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "Community publishing needs a public Profile with a handle.",
+                "path": "/studio/parallax",
+                "state": "PROFILE_REQUIRED",
+                "kind": "outcome",
+                "meaning": "The same Creator sees the real public Profile prerequisite after clearing the owned handle through Profile UI."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Set up public Profile"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Handle Lowercase letters, numbers, and internal hyphens.",
+                "value": "community-review-creator"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Default visibility"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save Profile"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Working draft opened",
+                "path": "/studio/parallax"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Scene Hierarchy"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Scenes"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect PARALLAX_COMMUNITY_SCENE_NAME",
+                "contextName": "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Publish to Community…"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Publish to Community",
+                "text": "This is your private saved source",
+                "path": "/studio/parallax",
+                "state": "PROFILE_READY",
+                "kind": "outcome",
+                "meaning": "Public Profile setup returns to the same saved definition; exact contextual reinspection reopens its publishing dialog without the prerequisite warning.",
+                "absentRole": {
+                  "role": "link",
+                  "name": "Set up public Profile"
+                }
               },
               {
                 "action": "click",

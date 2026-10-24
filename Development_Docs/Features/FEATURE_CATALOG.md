@@ -2248,6 +2248,7 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 - Spatial Assistant requires server-side OpenAI configuration and enabled administrator policy; its bounded model study and accepted owner presentation are documented in A1, while representative-device and universal live quality remain unqualified.
 - Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.
 - Unsupported imported renderer assets block release; richer rendering, recognition, shared physical anchors and Reach manipulation remain governed by their owning phases.
+- Candidate #776 has a bounded software acceptance scope: 39 expanded authored-Library states and nine photo-reconstruction states remain pending acceptance. Community Profile prerequisite/recovery remains required; see Development_Docs/Projects/Project_Parallax/PR776_Bounded_Software_Acceptance_and_Pending_Coverage.md. Existing implementation and development tests remain available; fresh qualification and product acceptance remain open.
 
 ### Evidence
 
