@@ -735,3 +735,170 @@ it("adds a Library exclusion tool to the visible environment and selects its sha
   expect(saved.content.studio!.environment!.features.some((f) => f.classification === "EXCLUSION_ZONE")).toBe(true);
   expect(saved.content.entities).toHaveLength(1);
 }, 30000);
+
+it("saves a reusable definition and places its immutable copy while preserving the source Scene", async () => {
+  const { createReusableSpatialAsset, insertReusableSpatialAsset } = await import("@/parallax/reusable-assets");
+  const name = "Reusable review clue DESKTOP NORMAL";
+  let scene = createSpatialDraft("owned", "Desk Map", "chronicle");
+  scene.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+  scene = draftSchema.parse(scene);
+  const originalScene = structuredClone(scene);
+  let revision = 1;
+  const records: import("@/parallax/library-service").SpatialLibraryRecord[] = [
+    {
+      id: "owned",
+      revision,
+      draft: scene,
+      releases: [],
+      usageCount: 0,
+      updatedAt: "2026-10-24T00:00:00.000Z",
+    },
+  ];
+  const originalFetch = globalThis.fetch;
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input, options) => {
+      const url = new URL(String(input), "http://localhost");
+      if (url.pathname !== "/api/studio/parallax") return originalFetch(input, options);
+      if (!options?.method) {
+        if (url.searchParams.get("view") === "library-item") {
+          const id = (url.searchParams.get("entryId") ?? "").replace(/^saved:/, "");
+          const record = records.find((entry) => entry.id === id);
+          if (!record) return Response.json({ error: "Synthetic missing definition" }, { status: 404 });
+          return Response.json({ kind: "SPATIAL", record });
+        }
+        if (url.searchParams.get("view") === "library-catalog") {
+          const catalog = buildSpatialContentCatalog(records, [], spatialElementCatalogEntries);
+          const matching = filterSpatialContentCatalog(catalog, {
+            kind: url.searchParams.get("kind") as SpatialContentKind,
+            search: url.searchParams.get("search") ?? "",
+            origin: "ALL",
+            state: "ACTIVE",
+            sort: "NAME",
+          });
+          return Response.json({
+            items: matching.map(({ scene: _scene, environment: _environment, ...entry }) => {
+              void _scene;
+              void _environment;
+              return entry;
+            }),
+            total: matching.length,
+            nextCursor: null,
+            availableKinds: [...new Set(catalog.map((entry) => entry.kind))],
+            availableOrigins: ["BUILT_IN", "MY_CREATIONS"],
+            availableCollections: [],
+          });
+        }
+        const bootstrap = await (await originalFetch(input, options)).json();
+        return Response.json({ ...bootstrap, items: records });
+      }
+      const body = JSON.parse(String(options.body));
+      calls.push(structuredClone(body));
+      if (body.action === "ENVIRONMENT_CATALOG") return Response.json({ catalog: [] });
+      if (body.action === "SAVE") {
+        if (body.revision !== revision)
+          return Response.json({ error: "Synthetic stale revision", code: "DRAFT_CONFLICT" }, { status: 409 });
+        scene = draftSchema.parse(body.draft);
+        revision += 1;
+        records[0] = { ...records[0], draft: scene, revision };
+        return Response.json({ revision });
+      }
+      if (body.action === "ASSET_SAVE") {
+        expect(body.revision).toBe(revision);
+        const asset = createReusableSpatialAsset(
+          draftSchema.parse(body.draft),
+          body.rootId,
+          body.operation.newId,
+          body.metadata,
+          simulationEnvironments[0],
+        );
+        const release = materializeSpatialVersion({
+          ...asset.content,
+          id: `${asset.content.definitionId}:v1`,
+          semanticVersion: "1.0.0",
+        });
+        records.push({
+          id: asset.content.definitionId,
+          revision: 1,
+          draft: asset,
+          releases: [release],
+          usageCount: 0,
+          updatedAt: "2026-10-24T00:00:00.000Z",
+          saveState: "SAVED",
+        });
+        return Response.json({ definitionId: asset.content.definitionId, versionId: release.id });
+      }
+      if (body.action === "ASSET_INSERT") {
+        const definition = records.find((entry) => entry.id === body.definitionId);
+        const release = definition?.releases.find((entry) => entry.id === body.versionId);
+        if (!release) return Response.json({ error: "Synthetic missing immutable release" }, { status: 404 });
+        expect(body.revision).toBe(revision);
+        return Response.json({
+          draft: insertReusableSpatialAsset(draftSchema.parse(body.draft), release, "synthetic-reusable-copy"),
+        });
+      }
+      throw new Error(`Unexpected integrated fixture action: ${String(body.action)}`);
+    }),
+  );
+
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
+  fireEvent.click(screen.getByRole("button", { name: "Library, reuse & publication" }));
+  const form = await screen.findByRole("form", { name: "Save reusable asset" });
+  fireEvent.change(within(form).getByRole("textbox", { name: "Asset name" }), { target: { value: name } });
+  fireEvent.click(within(form).getByRole("button", { name: "Save selected object as reusable asset" }));
+  await screen.findByText("Reusable asset definition and immutable version saved; source scene unchanged");
+  expect(scene).toEqual(originalScene);
+  const definitions = records.filter((entry) => entry.draft.library?.type === "ASSET");
+  expect(definitions).toHaveLength(1);
+  const definition = definitions[0];
+  expect(definition.id).not.toBe(originalScene.content.definitionId);
+  expect(definition.draft.content.title).toBe(name);
+  expect(definition.releases).toHaveLength(1);
+  const immutableDefinition = structuredClone(definition.draft);
+  const immutableRelease = structuredClone(definition.releases[0]);
+  expect(immutableRelease.definitionId).toBe(definition.id);
+
+  fireEvent.click(screen.getByRole("button", { name: "Expand Spatial Library" }));
+  const expanded = await screen.findByRole("dialog", { name: "Expanded Spatial Library" });
+  const library = within(expanded);
+  const scenes = library.getByRole("tab", { name: "Scenes" });
+  expect(scenes).toHaveAttribute("aria-selected", "true");
+  scenes.focus();
+  fireEvent.keyDown(scenes, { key: "Home" });
+  const assets = library.getByRole("tab", { name: "Assets" });
+  expect(assets).toHaveFocus();
+  expect(assets).toHaveAttribute("aria-selected", "true");
+  fireEvent.click(assets);
+  fireEvent.change(library.getByRole("searchbox", { name: "Search assets" }), { target: { value: name } });
+  fireEvent.click(await library.findByRole("button", { name: `Inspect ${name}` }));
+  const details = await library.findByRole("complementary", { name: `${name} details` });
+  expect(details).toHaveTextContent("Private Library");
+  fireEvent.click(within(details).getByRole("button", { name: "Place in Scene" }));
+  await screen.findByRole("button", { name: "Cancel placement" });
+  expect(scene).toEqual(originalScene);
+  expect(calls.filter((call) => call.action === "ASSET_INSERT")).toHaveLength(0);
+
+  fireEvent.click(screen.getByRole("button", { name: "Floor" }));
+  await screen.findByText("Independent released copy added");
+  await waitFor(() => expect(scene.content.studio?.assetInstances).toHaveLength(1));
+  expect(scene.content.definitionId).toBe(originalScene.content.definitionId);
+  const instance = scene.content.studio!.assetInstances![0];
+  expect(instance.definitionId).toBe(definition.id);
+  expect(instance.versionId).toBe(immutableRelease.id);
+  expect(instance.checksum).toBe(immutableRelease.checksum);
+  expect(instance.entityIds).toHaveLength(immutableRelease.entities.length);
+  expect(scene.content.entities).toHaveLength(originalScene.content.entities.length + instance.entityIds.length);
+  for (const entity of originalScene.content.entities)
+    expect(scene.content.entities.find((current) => current.id === entity.id)).toEqual(entity);
+  const definitionEntities = new Set(immutableDefinition.content.entities.map((entity) => entity.id));
+  for (const id of instance.entityIds) {
+    expect(definitionEntities.has(id)).toBe(false);
+    expect(scene.content.entities.some((entity) => entity.id === id)).toBe(true);
+  }
+  expect(definition.draft).toEqual(immutableDefinition);
+  expect(definition.releases).toEqual([immutableRelease]);
+  expect(calls.filter((call) => call.action === "ASSET_SAVE")).toHaveLength(1);
+  expect(calls.filter((call) => call.action === "ASSET_INSERT")).toHaveLength(1);
+}, 30000);

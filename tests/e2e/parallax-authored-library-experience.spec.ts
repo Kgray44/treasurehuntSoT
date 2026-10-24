@@ -1,9 +1,10 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page, type Request } from "@playwright/test";
 import { mkdir, readFile } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { db } from "../../src/lib/db";
-import { listSpatialItems } from "../../src/parallax/library-service";
+import { listSpatialItems, type SpatialLibraryRecord } from "../../src/parallax/library-service";
+import { draftSchema } from "../../src/parallax/authoring";
 
 test.use({
   actionTimeout: 30000,
@@ -58,6 +59,25 @@ for (const profile of profiles) {
     const previousDefinitions = new Set(before.map((item) => item.id));
     const artifactRoot = info.outputPath("registered-reusable-asset-experience");
     await mkdir(artifactRoot, { recursive: true });
+    const assetSaveDrafts: unknown[] = [];
+    const assetSaveCaptureErrors: string[] = [];
+    const sourceWitness: { before?: SpatialLibraryRecord } = {};
+    const captureAssetSaveSource = (request: Request) => {
+      const url = new URL(request.url());
+      if (
+        request.method() !== "POST" ||
+        url.pathname !== "/api/studio/parallax" ||
+        url.origin !== new URL(page.url()).origin
+      )
+        return;
+      try {
+        const body = request.postDataJSON() as { action?: unknown; draft?: unknown } | null;
+        if (body?.action === "ASSET_SAVE") assetSaveDrafts.push(body.draft);
+      } catch {
+        assetSaveCaptureErrors.push("The Scene request body was not readable JSON");
+      }
+    };
+    page.on("request", captureAssetSaveSource);
     const observed = await runExperienceJourney({
       page,
       contract,
@@ -68,6 +88,19 @@ for (const profile of profiles) {
       role: "CREATOR",
       motionMode: profile.motionMode,
       accessibilityCheck: async () => {
+        // The first registered boundary is ASSET_SAVED, before any placement.
+        if (!sourceWitness.before) {
+          expect(assetSaveCaptureErrors).toEqual([]);
+          expect(assetSaveDrafts).toHaveLength(1);
+          const submitted = draftSchema.parse(assetSaveDrafts[0]);
+          const persisted = (await listSpatialItems(accountId)).find(
+            (item) => item.id === submitted.content.definitionId,
+          );
+          if (!persisted) throw new Error("The source Scene was not persisted before reusable asset export");
+          expect(persisted.draft).toEqual(submitted);
+          expect(new URL(page.url()).searchParams.get("definition")).toBe(persisted.id);
+          sourceWitness.before = structuredClone(persisted);
+        }
         const a11y = await new AxeBuilder({ page }).analyze();
         return {
           axeSerious: a11y.violations
@@ -76,7 +109,11 @@ for (const profile of profiles) {
           overflow: await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1),
         };
       },
+    }).finally(() => {
+      page.off("request", captureAssetSaveSource);
     });
+    expect(assetSaveCaptureErrors).toEqual([]);
+    expect(assetSaveDrafts).toHaveLength(1);
     expect(observed.result.returnPathVerified).toBe(true);
     expect(observed.result.accessibility.motionPreferenceVerified).toBe(true);
     const after = await listSpatialItems(accountId);
@@ -108,8 +145,9 @@ for (const profile of profiles) {
       expect(definitionEntities.has(entityId)).toBe(false);
       expect(copy.item.draft.content.entities.some((entity) => entity.id === entityId)).toBe(true);
     }
-    const sourceBefore = before.find((item) => item.id === copy.item.id);
+    const sourceBefore = sourceWitness.before;
     if (!sourceBefore) throw new Error("Reuse replaced the existing Scene instead of extending it");
+    expect(copy.item.id).toBe(sourceBefore.id);
     for (const original of sourceBefore.draft.content.entities)
       expect(copy.item.draft.content.entities.find((entity) => entity.id === original.id)).toEqual(original);
     expect(copy.item.draft.content.entities.length).toBe(
