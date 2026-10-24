@@ -3,7 +3,7 @@ title: Owned workspace lifecycle
 audience: automation
 status: current
 canonical_for: owned-workspace-lifecycle
-last_reviewed: 2026-10-23
+last_reviewed: 2026-10-24
 ---
 
 # Owned workspace lifecycle
@@ -21,6 +21,12 @@ build, browser and temporary overhead in `--peak-bytes`. Do not bypass admission
 with a direct worktree, clone, mirror or copied runtime. A sparse checkout is
 available through `--sparse scripts,tests,...`. A second task workspace requires a
 concrete `--additional-reason`; its allocation still counts against the ceiling.
+Reuse matches the requested resource class. A runtime reuses only its exact path,
+so a task can own separate finite-budget capture runtimes alongside its single
+development checkout. Reuse cannot silently change the admitted peak.
+`status` and `audit` report fresh owned usage, warn at 80 percent of that peak,
+and distinguish an unavailable measurement from zero usage. These checks do not
+rescan unowned legacy checkouts or raise admission limits.
 
 ```powershell
 node scripts/workspaces/cli.mjs create --path D:\CodexWorkspaces\example --task <chat-id> --branch codex/example --peak-bytes 8589934592 --generated node_modules,.next
@@ -71,6 +77,9 @@ startup/turn/interrupt/end signals while preserving existing hooks. Codex requir
 review and trust of the exact hook definitions; never bypass that review or claim
 untrusted hooks are active. Verify the scheduled task's last result and actual
 retirement receipts, not merely its registration or a start request.
+The installer writes hook JSON as UTF-8 without a byte-order mark, including when
+run by Windows PowerShell 5.1. Check Codex's native hook listing for parse errors
+and exact-definition trust status before claiming the startup signals are active.
 
 The installer resolves native physical file paths and verifies that logical and
 physical registry aliases identify the same file. This matters when a packaged
