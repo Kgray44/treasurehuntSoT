@@ -102,6 +102,7 @@ it.each(["original asset", "retry fallback"])(
 
 function catalogRead(input: unknown, draft: SpatialDraft, revision = 1) {
   const url = new URL(String(input), "http://localhost");
+  if (url.searchParams.get("view") === "environment-catalog") return Response.json({ catalog: [] });
   const record = { id: "owned", revision, draft, releases: [], usageCount: 0, updatedAt: "2026-10-15T00:00:00Z" };
   if (url.searchParams.get("view") === "library-item") return Response.json({ kind: "SPATIAL", record });
   if (url.searchParams.get("view") !== "library-catalog") return null;
@@ -162,6 +163,12 @@ it("offers an explicit Environment copy before editing a pinned Scene room", asy
   );
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
+  await waitFor(() =>
+    expect(globalThis.fetch).toHaveBeenCalledWith("/api/studio/parallax?view=environment-catalog", {
+      cache: "no-store",
+    }),
+  );
+  expect(calls.some((call) => call.action === "ENVIRONMENT_CATALOG")).toBe(false);
   fireEvent.click(screen.getByRole("button", { name: "Edit room features" }));
   const dialog = await screen.findByRole("dialog");
   expect(within(dialog).getByText(/This Scene keeps its released Environment unchanged/)).toBeVisible();
@@ -761,6 +768,7 @@ it("saves a reusable definition and places its immutable copy while preserving t
       const url = new URL(String(input), "http://localhost");
       if (url.pathname !== "/api/studio/parallax") return originalFetch(input, options);
       if (!options?.method) {
+        if (url.searchParams.get("view") === "environment-catalog") return Response.json({ catalog: [] });
         if (url.searchParams.get("view") === "library-item") {
           const id = (url.searchParams.get("entryId") ?? "").replace(/^saved:/, "");
           const record = records.find((entry) => entry.id === id);
@@ -902,3 +910,102 @@ it("saves a reusable definition and places its immutable copy while preserving t
   expect(calls.filter((call) => call.action === "ASSET_SAVE")).toHaveLength(1);
   expect(calls.filter((call) => call.action === "ASSET_INSERT")).toHaveLength(1);
 }, 30000);
+
+it("keeps the Community scroll body in the focus loop while previewing and reviewing", async () => {
+  const { SpatialCommunityPublisher } = await import("./SpatialCommunityPublisher");
+  let resolveLicenses!: (response: Response) => void;
+  const licenses = new Promise<Response>((resolve) => {
+    resolveLicenses = resolve;
+  });
+  vi.stubGlobal(
+    "fetch",
+    vi.fn((url) => {
+      if (String(url).includes("/licenses?")) return licenses;
+      if (String(url).endsWith("/preflight")) return new Promise<Response>(() => {});
+      throw new Error(`Unexpected Community request: ${String(url)}`);
+    }),
+  );
+  const showModal = vi.spyOn(HTMLDialogElement.prototype, "showModal").mockImplementation(function (
+    this: HTMLDialogElement,
+  ) {
+    this.open = true;
+  });
+  const closeDialog = vi.spyOn(HTMLDialogElement.prototype, "close").mockImplementation(function (
+    this: HTMLDialogElement,
+  ) {
+    this.open = false;
+  });
+  // JSDOM has no layout; only controls inside the open dialog are visible here.
+  const rects = vi.spyOn(HTMLElement.prototype, "getClientRects").mockImplementation(function (this: HTMLElement) {
+    return (this.closest("dialog[open]") ? [new DOMRect(0, 0, 100, 30)] : []) as unknown as DOMRectList;
+  });
+  const view = renderUI(
+    <SpatialCommunityPublisher
+      source={{ kind: "ASSET", id: "keyboard-scroll-source", revision: 1 }}
+      title="Keyboard scroll asset"
+      detail="A synthetic saved asset for keyboard navigation."
+      category="ASSETS"
+      sourcePreview={{ summary: "One saved object", items: ["Desk"], remaining: 0 }}
+      knownLimit={null}
+      csrfToken={() => "synthetic-csrf"}
+      returnFocus={null}
+      onClose={vi.fn()}
+    />,
+  );
+  try {
+    const dialog = screen.getByRole("dialog", { name: "Publish to Community" });
+    const close = within(dialog).getByRole("button", { name: "Close publishing" });
+    const body = within(dialog)
+      .getByRole("heading", { name: "Keyboard scroll asset" })
+      .closest("section")!.parentElement!;
+    expect(within(dialog).getByRole("button", { name: "Continue" })).toBeDisabled();
+    body.focus();
+    expect(body).toHaveFocus();
+    expect(fireEvent.keyDown(body, { key: "Tab" })).toBe(false);
+    expect(close).toHaveFocus();
+    expect(fireEvent.keyDown(close, { key: "Tab", shiftKey: true })).toBe(false);
+    expect(body).toHaveFocus();
+
+    resolveLicenses(
+      Response.json({
+        profileReady: true,
+        listings: [],
+        licenses: [
+          {
+            key: "test-license",
+            name: "Synthetic reuse",
+            allowsModification: true,
+            allowsCommercialUse: false,
+            requiresAttribution: true,
+            shareAlike: false,
+          },
+        ],
+      }),
+    );
+    await waitFor(() => expect(within(dialog).getByRole("button", { name: "Continue" })).toBeEnabled());
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue" }));
+    fireEvent.change(within(dialog).getByLabelText("Description"), {
+      target: { value: "Synthetic source for keyboard-only review." },
+    });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue" }));
+    fireEvent.click(within(dialog).getByRole("button", { name: "Continue" }));
+    const rights = within(dialog).getByRole("checkbox", { name: /I own or have permission to redistribute/ });
+    fireEvent.click(rights);
+    fireEvent.click(within(dialog).getByRole("button", { name: "Review package" }));
+    expect(close).toBeDisabled();
+    expect(within(dialog).getByRole("button", { name: "Reviewing…" })).toBeDisabled();
+    // This proves trap membership/wrapping in JSDOM selector order, not native tab order.
+    const firstBusyControl = within(dialog).getByLabelText("Credit name");
+    body.focus();
+    expect(body).toHaveFocus();
+    expect(fireEvent.keyDown(body, { key: "Tab" })).toBe(false);
+    expect(firstBusyControl).toHaveFocus();
+    expect(fireEvent.keyDown(firstBusyControl, { key: "Tab", shiftKey: true })).toBe(false);
+    expect(body).toHaveFocus();
+  } finally {
+    view.unmount();
+    rects.mockRestore();
+    closeDialog.mockRestore();
+    showModal.mockRestore();
+  }
+});

@@ -950,9 +950,12 @@ export function SpatialStudio({
   const refreshEnvironmentCatalog = useCallback(async () => {
     const request = ++catalogRequest.current;
     try {
-      const response = (await api({ action: "ENVIRONMENT_CATALOG" })) as {
+      const result = await fetch("/api/studio/parallax?view=environment-catalog", { cache: "no-store" });
+      const response = (await result.json()) as {
         catalog: CompatibleEnvironmentRecord[];
+        error?: string;
       };
+      if (!result.ok) throw new Error(response.error ?? "Environment catalog is unavailable.");
       if (request !== catalogRequest.current) return response.catalog;
       setEnvironmentCatalog(projectEnvironmentCatalog(response.catalog));
       setCatalogRevision((revision) => revision + 1);
@@ -962,7 +965,7 @@ export function SpatialStudio({
       if (request !== catalogRequest.current) return;
       setEnvironmentCatalogError(cause instanceof Error ? cause.message : "Environment catalog is unavailable.");
     }
-  }, [api]);
+  }, []);
   useEffect(() => {
     if (!loaded) return;
     let active = true;

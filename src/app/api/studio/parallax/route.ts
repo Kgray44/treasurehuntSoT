@@ -265,6 +265,13 @@ export async function GET(request: Request) {
       const rate = consumeRateLimit(`parallax.catalog.read:${session.accountId}`, { limit: 120, windowMs: 60000 });
       if (!rate.allowed)
         return NextResponse.json({ error: "Please wait before browsing again." }, { status: 429, headers });
+      if (view === "environment-catalog") {
+        const inventory = await spatialLibraryInventory(session.accountId, { releaseContent: "INDEX_ONLY" });
+        return NextResponse.json(
+          { catalog: await listCompatibleEnvironments(session.accountId, undefined, inventory.environments) },
+          { headers },
+        );
+      }
       if (view === "library-catalog") {
         const query = compactCatalogQuerySchema.parse({
           kind: searchParams.get("kind"),

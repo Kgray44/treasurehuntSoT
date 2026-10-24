@@ -90,6 +90,10 @@
   overflow: auto;
   padding: 24px 32px 32px;
 }
+.body:focus-visible {
+  outline: 3px solid #f4ca70;
+  outline-offset: -3px;
+}
 .body h3,
 .result h3 {
   margin: 8px 0 12px;

@@ -209,7 +209,7 @@ describe("compact Spatial Library read views", () => {
   });
 });
 describe("canonical Studio Assistant HTTP gates", () => {
-  it("returns the compatible Environment catalog only through the Creator/CSRF port", async () => {
+  it("keeps the legacy Environment catalog POST behind Creator/CSRF checks", async () => {
     mocks.environmentCatalog.mockResolvedValue([
       { representation: "LIFECYCLE_V1", id: "owned-environment", versions: [], working: { id: "owned-environment" } },
     ]);
@@ -438,5 +438,62 @@ describe("owner-scoped Scene Manager comparison", () => {
     mocks.ownedCatalogItem.mockClear();
     expect((await POST(request({ ...body, accountId: "other-owner" }))).status).toBe(400);
     expect(mocks.ownedCatalogItem).not.toHaveBeenCalled();
+  });
+});
+
+describe("read-only Scene Manager Environment catalog", () => {
+  const url = "http://localhost/api/studio/parallax?view=environment-catalog";
+
+  it("returns the same full owner-scoped projection as the legacy POST", async () => {
+    const environments = [{ id: "owned-environment" }];
+    const catalog = [
+      { representation: "LIFECYCLE_V1", id: "owned-environment", versions: [], working: { id: "owned-environment" } },
+      {
+        representation: "SC01_SCHEMA1",
+        builtin: true,
+        versions: [environmentVersionSchema.parse(builtinEnvironments[0])],
+      },
+    ];
+    mocks.inventory.mockResolvedValue({ items: [], environments });
+    mocks.environmentCatalog.mockResolvedValue(catalog);
+    const read = await GET(new Request(url));
+    const legacy = await POST(request({ action: "ENVIRONMENT_CATALOG" }));
+    expect(read.status).toBe(200);
+    expect(await read.json()).toEqual(await legacy.json());
+    expect(read.headers.get("cache-control")).toBe("private, no-store");
+    expect(read.headers.get("vary")).toBe("Cookie");
+    expect(mocks.inventory).toHaveBeenNthCalledWith(1, "synthetic-owner", { releaseContent: "INDEX_ONLY" });
+    expect(mocks.inventory).toHaveBeenNthCalledWith(2, "synthetic-owner", { releaseContent: "INDEX_ONLY" });
+    expect(mocks.environmentCatalog).toHaveBeenNthCalledWith(1, "synthetic-owner", undefined, environments);
+    expect(mocks.environmentCatalog).toHaveBeenNthCalledWith(2, "synthetic-owner", undefined, environments);
+  });
+
+  it("rejects foreign account selectors and unauthenticated reads before projection", async () => {
+    expect((await GET(new Request(`${url}&accountId=another-person`))).status).toBe(400);
+    mocks.account.mockResolvedValue(null);
+    expect((await GET(new Request(url))).status).toBe(401);
+    expect(mocks.inventory).not.toHaveBeenCalled();
+    expect(mocks.environmentCatalog).not.toHaveBeenCalled();
+    expect(mocks.rate).not.toHaveBeenCalled();
+  });
+
+  it("keeps the existing 120-read and 60-POST budgets separate without raising either cap", async () => {
+    const { consumeRateLimit } = await vi.importActual<typeof import("@/lib/rate-limit")>("@/lib/rate-limit");
+    mocks.rate.mockImplementation(consumeRateLimit);
+    mocks.account.mockResolvedValue({
+      accountId: "synthetic-scene-catalog-quota",
+      csrfToken: "synthetic-csrf",
+      account: { roles: [] },
+    });
+    const clock = vi.spyOn(Date, "now").mockReturnValue(1792860000000);
+    try {
+      for (let read = 0; read < 120; read += 1) expect((await GET(new Request(url))).status).toBe(200);
+      expect((await GET(new Request(url))).status).toBe(429);
+      for (let post = 0; post < 60; post += 1)
+        expect((await POST(request({ action: "ENVIRONMENT_CATALOG" }))).status).toBe(200);
+      expect((await POST(request({ action: "ENVIRONMENT_CATALOG" }))).status).toBe(429);
+    } finally {
+      clock.mockRestore();
+    }
   });
 });

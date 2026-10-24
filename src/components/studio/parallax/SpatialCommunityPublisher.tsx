@@ -305,7 +305,7 @@ export function SpatialCommunityPublisher({
         if (event.key === "Tab") {
           const controls = [
             ...event.currentTarget.querySelectorAll<HTMLElement>(
-              "a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, pre[tabindex]",
+              "a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, pre[tabindex], div[tabindex='0']",
             ),
           ].filter((control) => control.getClientRects().length > 0);
           const first = controls[0];
@@ -376,7 +376,7 @@ export function SpatialCommunityPublisher({
                 </li>
               ))}
             </ol>
-            <div className={styles.body}>
+            <div className={styles.body} tabIndex={0}>
               {stage === 0 && (
                 <section>
                   {profileReady === false && (
