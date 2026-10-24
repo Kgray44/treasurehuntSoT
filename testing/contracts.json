@@ -53,7 +53,10 @@
           "SC02_MODEL_PLACED",
           "SC02_COMPOSITION_READY",
           "SC02_PREFAB_SAVED",
-          "SC02_PREFAB_REUSED"
+          "SC02_PREFAB_REUSED",
+          "SC02_MODEL_METADATA",
+          "SC02_MODEL_IN_GRAPH",
+          "SC02_COMPOSITION_IN_GRAPH"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
@@ -86,7 +89,8 @@
           "tests/e2e/parallax-assistant-presentation.spec.ts",
           "tests/e2e/parallax-spatial-assistant.spec.ts",
           "tests/e2e/parallax-workstation.spec.ts",
-          "tests/e2e/parallax-sc02.spec.ts"
+          "tests/e2e/parallax-sc02.spec.ts",
+          "tests/e2e/parallax-sc02-experience.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
@@ -240,6 +244,16 @@
                 "name": "Inspect Treasure chest"
               },
               {
+                "action": "assert",
+                "role": "complementary",
+                "name": "Treasure chest details",
+                "text": "0.80 × 0.61 × 0.50 m · floor support",
+                "path": "/studio/parallax",
+                "state": "SC02_MODEL_METADATA",
+                "kind": "outcome",
+                "meaning": "The modeled chest exposes its authored width, depth, height and floor-support metadata before insertion; this is semantic asset evidence, not physical AR qualification."
+              },
+              {
                 "action": "click",
                 "role": "button",
                 "name": "Add to active Scene"
@@ -247,7 +261,8 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Open contextual Inspector"
+                "name": "Open object properties",
+                "devices": ["MOBILE"]
               },
               {
                 "action": "assert",
@@ -263,12 +278,64 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Open contextual Inspector"
+                "name": "Collapse Inspector"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Scene Hierarchy"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Scene graph",
+                "text": "Treasure chest",
+                "path": "/studio/parallax",
+                "state": "SC02_MODEL_IN_GRAPH",
+                "kind": "outcome",
+                "meaning": "The actual modeled chest remains in the authored Scene graph when the Creator returns from its properties to the Library."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Assets"
+              },
+              {
+                "action": "keyboard",
+                "key": "End",
+                "expectFocus": {
+                  "role": "tab",
+                  "name": "Compositions"
+                }
               },
               {
                 "action": "click",
                 "role": "tab",
                 "name": "Compositions"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Filters & view Source, status, sort",
+                "devices": ["MOBILE"]
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Source"
+              },
+              {
+                "action": "keyboard",
+                "key": "b"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
               },
               {
                 "action": "fill",
@@ -289,7 +356,7 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Open contextual Inspector"
+                "name": "Open object properties"
               },
               {
                 "action": "assert",
@@ -302,6 +369,17 @@
                 "meaning": "A composition root and individually editable light, mist, particles and audio children have been inserted in the canonical scene."
               },
               {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Object name",
+                "contextValue": "SC02_COMPOSITION_NAME"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open spatial context"
+              },
+              {
                 "action": "click",
                 "role": "button",
                 "name": "Save selected composition"
@@ -309,7 +387,22 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Open contextual Inspector"
+                "name": "Collapse Inspector"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Scene Hierarchy"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Scene graph",
+                "text": "SC02 synthetic composition",
+                "path": "/studio/parallax",
+                "state": "SC02_COMPOSITION_IN_GRAPH",
+                "kind": "outcome",
+                "meaning": "The authored composition root and its individually editable light, mist, particles and audio children remain in the Scene graph after saving a reusable definition."
               },
               {
                 "action": "click",
@@ -322,15 +415,29 @@
                 "name": "Compositions"
               },
               {
+                "action": "click",
+                "role": "combobox",
+                "name": "Source"
+              },
+              {
+                "action": "keyboard",
+                "key": "m"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
                 "action": "fill",
                 "role": "searchbox",
                 "name": "Search compositions",
-                "value": "Ghostly Presence"
+                "contextValue": "SC02_COMPOSITION_NAME"
               },
               {
                 "action": "click",
                 "role": "button",
-                "name": "Inspect Ghostly Presence"
+                "name": "Inspect SC02_COMPOSITION_NAME",
+                "contextName": "SC02_COMPOSITION_INSPECT_NAME"
               },
               {
                 "action": "assert",
@@ -350,7 +457,7 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Open contextual Inspector"
+                "name": "Open object properties"
               },
               {
                 "action": "assert",
@@ -363,8 +470,27 @@
                 "meaning": "The saved composition inserts an independently editable instance without replacing the authored Scene."
               },
               {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Object name",
+                "value": "Independently edited Ghostly Presence"
+              },
+              {
                 "action": "click",
-                "role": "button",
+                "role": "combobox",
+                "name": "Authoring mode"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "keyboard",
+                "key": "Shift+F10"
+              },
+              {
+                "action": "click",
+                "role": "menuitem",
                 "name": "Save draft"
               },
               {
