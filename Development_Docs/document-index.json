@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-23",
+  "generated_at": "2026-10-24",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -4528,6 +4528,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.3_Root_Maintenance_Lane_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Experience/NCL_Native_Chronicle_Lens_Program_Charter_v1.0.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -12022,6 +12028,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/repaired-local-901538cb/viewport-observations.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
