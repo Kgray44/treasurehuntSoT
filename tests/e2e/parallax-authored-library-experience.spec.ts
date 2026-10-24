@@ -23,6 +23,7 @@ const profiles = [
 for (const profile of profiles) {
   test(`Reusable asset ${profile.device}/${profile.motionMode} saves a separate definition and places its released Scene copy`, async ({
     page,
+    baseURL,
   }, info) => {
     expect(process.env.SOUNDING_LINE_SUITE_PROFILE).toBe("generic");
     ensureGenericSoundingLineIsolation();
@@ -80,6 +81,7 @@ for (const profile of profiles) {
     page.on("request", captureAssetSaveSource);
     const observed = await runExperienceJourney({
       page,
+      baseURL,
       contract,
       journey,
       device: profile.device,

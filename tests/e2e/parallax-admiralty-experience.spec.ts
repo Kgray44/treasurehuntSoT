@@ -135,6 +135,7 @@ for (const contractId of contractIds) {
       await mkdir(artifactRoot, { recursive: true });
       const observed = await runExperienceJourney({
         page,
+        baseURL,
         contract,
         journey,
         device,

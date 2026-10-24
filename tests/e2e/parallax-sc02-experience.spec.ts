@@ -23,6 +23,7 @@ const profiles = [
 for (const profile of profiles) {
   test(`SC02 ${profile.device}/${profile.motionMode} saves and independently edits a reused composition`, async ({
     page,
+    baseURL,
   }, info) => {
     expect(process.env.SOUNDING_LINE_SUITE_PROFILE).toBe("generic");
     ensureGenericSoundingLineIsolation();
@@ -65,6 +66,7 @@ for (const profile of profiles) {
     try {
       const observed = await runExperienceJourney({
         page,
+        baseURL,
         contract,
         journey,
         device: profile.device,
