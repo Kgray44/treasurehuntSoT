@@ -399,7 +399,26 @@ export async function runExperienceJourney({
   // applicability and literals while evidence retains original step indices.
   const contextual = journey.steps.some((step) => JSON.stringify(step).includes("PARALLAX_COMMUNITY_SCENE_"))
     ? communityJourneyContext(contract, journey, device, motionMode, role)
-    : sc02JourneyContext(contract, journey, device, motionMode);
+    : reload?.mobileDisclosureIndices
+      ? {
+          steps: journey.steps.map((step, index) => ({
+            step,
+            index,
+            applicable: !reload.mobileDisclosureIndices.includes(index) || device === "MOBILE",
+          })),
+          evidence: {
+            version: 1,
+            device,
+            motionMode,
+            applicability: reload.mobileDisclosureIndices.map((step) => ({
+              step,
+              devices: ["MOBILE"],
+              applicable: device === "MOBILE",
+            })),
+            substitutions: [],
+          },
+        }
+      : sc02JourneyContext(contract, journey, device, motionMode);
   const captures = [];
   const observations = [];
   const stateAccessibility = [];

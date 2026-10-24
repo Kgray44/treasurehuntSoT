@@ -9951,6 +9951,15 @@
               },
               {
                 "action": "click",
+                "kind": "navigation",
+                "role": "button",
+                "name": "View & audio",
+                "devices": [
+                  "MOBILE"
+                ]
+              },
+              {
+                "action": "click",
                 "role": "button",
                 "name": "Edit room features"
               },
@@ -10002,6 +10011,15 @@
                 "name": "",
                 "text": "Working draft opened",
                 "path": "/studio/parallax"
+              },
+              {
+                "action": "click",
+                "kind": "navigation",
+                "role": "button",
+                "name": "View & audio",
+                "devices": [
+                  "MOBILE"
+                ]
               },
               {
                 "action": "click",
