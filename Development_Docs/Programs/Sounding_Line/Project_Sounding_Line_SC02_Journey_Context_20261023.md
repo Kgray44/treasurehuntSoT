@@ -58,6 +58,17 @@ fetching Git objects or expanding the whole documentation tree. Unmodified
 documentation and feature validation then passed. No application build or
 dependency install ran; normal protected Linux qualification remains required.
 
+The first normal protected run, 40049618012/1, remains failed: 928 of 930 tests
+passed, one failed and one Windows-only case was skipped. The historical R3 Git
+admission fixture inherited the newly registered browser test script from its
+ambient checkout, correctly triggering the unchanged frozen-package guard.
+The exact failing case reproduced locally. Its fixture now seeds the recorded
+historical package and inherits only the recorded protected-base script names;
+the original runtime, type and contract rejection assertions remain, with an
+explicit additional unlisted-script rejection. That focused case passed after
+the fixture correction. No production guard, grant, outcome or deadline changed,
+and the repaired candidate requires a new normal protected qualification.
+
 Synthetic native-select proof establishes control semantics only. Actual Studio
 DESKTOP/MOBILE by NORMAL/REDUCED journeys, fresh governed capture, independent
 media-first review, authenticated submission and ordinary product qualification
