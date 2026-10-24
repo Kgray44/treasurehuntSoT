@@ -36,7 +36,9 @@ if (mode === "descendant") {
   ignore();
   writeFileSync(process.argv[3], JSON.stringify({ pid: process.pid }) + "\n", { flag: "wx" });
   setInterval(() => {}, 1000);
-} else if (["advance", "hosted-advance", "silent", "hosted-silent", "duplicate", "wrong-source"].includes(mode)) {
+} else if (
+  ["advance", "hosted-advance", "silent", "hosted-silent", "duplicate", "wrong-source", "capture-window"].includes(mode)
+) {
   const channel = process.env[PREPARATION_CHANNEL];
   const directory = path.join(path.dirname(channel), "probe");
   mkdirSync(directory);
@@ -61,7 +63,16 @@ if (mode === "descendant") {
       contractDigest: "2".repeat(64),
       planDigest: "3".repeat(64),
     });
-    if (mode === "silent" || mode === "hosted-silent") {
+    if (mode === "capture-window") {
+      process.env[PREPARATION_PROFILE] = "1";
+      emitPreparationPhase("FIXTURE_PRISMA");
+      emitPreparationPhase("CAPTURE");
+      await pause(100);
+      process.env[PREPARATION_PROFILE] = "0";
+      emitPreparationPhase("VALIDATION");
+      await pause(delay);
+      emitPreparationPhase("COMPLETE");
+    } else if (mode === "silent" || mode === "hosted-silent") {
       process.env[PREPARATION_PROFILE] = "1";
       emitPreparationPhase("FIXTURE_PRISMA");
       ignore();

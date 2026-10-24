@@ -8,6 +8,8 @@ import {
   PREPARATION_ROOT,
   PREPARATION_CHANNEL,
   PREPARATION_PROFILE,
+  PREPARATION_JOB_MS,
+  PREPARATION_TAIL_MS,
   emitPreparationPhase,
   preparationProductEnvironment,
 } from "../../scripts/sounding-line/preparation-phases.mjs";
@@ -269,17 +271,36 @@ test("remaining execution budget debits the existing job age and preserves its t
     request,
     now: () => Date.parse("2026-10-22T00:10:00Z"),
   });
-  assert.equal(budget, 28 * 60000);
+  assert.equal(budget, 58 * 60000);
   await assert.rejects(
     () =>
       preparationJobBudget({
         binding,
         token: "synthetic",
         request,
-        now: () => Date.parse("2026-10-22T00:39:00Z"),
+        now: () => Date.parse("2026-10-22T01:09:00Z"),
       }),
     /BUDGET_EXHAUSTED/u,
   );
+});
+
+test("aggregate capture can exceed fifteen minutes and still stops at its finite phase boundary", async () => {
+  for (const minutes of [16, 40]) {
+    const session = await sessionFor();
+    let clock = 0;
+    const receipt = await run(session, "capture-window", {
+      absoluteMs: PREPARATION_JOB_MS - PREPARATION_TAIL_MS,
+      now: () => clock,
+      publish: async (record) => {
+        if (record.phase === "CAPTURE") clock = minutes * 60000;
+      },
+    });
+    assert.equal(receipt.status, minutes === 16 ? "PASS" : "FAIL");
+    assert.equal(receipt.reason, minutes === 16 ? null : "PHASE_TIMEOUT");
+    assert.equal(receipt.cleanup.status, "PASS");
+    assert.equal(receipt.cleanup.treeReaped, true);
+    assert.equal(receipt.cleanup.streamsClosed, true);
+  }
 });
 
 test("transport growth and replacement are rejected using a bounded same-handle read", async () => {

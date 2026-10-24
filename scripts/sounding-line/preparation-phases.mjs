@@ -24,7 +24,7 @@ export const PREPARATION_PHASES = Object.freeze({
   PRODUCTION_BUILD: 900000,
   BROWSER_STARTUP: 120000,
   BROWSER_FIXTURE: 900000,
-  CAPTURE: 900000,
+  CAPTURE: 40 * 60000,
   CLEANUP: 120000,
   PROFILE_RESULT: 120000,
   VALIDATION: 120000,
@@ -35,7 +35,7 @@ export const PREPARATION_PHASES = Object.freeze({
 export const PREPARATION_PHASE_ORDER = Object.freeze(Object.keys(PREPARATION_PHASES));
 export const PREPARATION_MAX_EVENTS = 256;
 export const PREPARATION_EVENT_BYTES = 4096;
-export const PREPARATION_JOB_MS = 40 * 60000;
+export const PREPARATION_JOB_MS = 70 * 60000;
 export const PREPARATION_TAIL_MS = 120000;
 export const PREPARATION_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 export const PREPARATION_DIRECTORY = "artifacts/sounding-line/preparation-supervision";
