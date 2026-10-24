@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
+import { emitPreparationPhase, PREPARATION_CHANNEL, PREPARATION_PROFILE } from "./preparation-phases.mjs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -772,7 +773,7 @@ export async function runTrustedExperienceReplay({
     reviews: [],
   };
   const isolatedFixtures = [];
-  for (const profile of profiles) {
+  for (const [profileIndex, profile] of profiles.entries()) {
     const diagnosticEnvironment = diagnostics?.beginScope();
     if (diagnosticEnvironment && onDiagnosticScope)
       await onDiagnosticScope(browserReceiptPaths(root, diagnosticEnvironment));
@@ -808,6 +809,7 @@ export async function runTrustedExperienceReplay({
           cwd: root,
           env: {
             ...isolatedEnvironment,
+            ...(isolatedEnvironment[PREPARATION_CHANNEL] ? { [PREPARATION_PROFILE]: String(profileIndex + 1) } : {}),
             ...diagnosticEnvironment,
             ...(isolatedEnvironment[EXPERIENCE_RAW_OUTPUT]
               ? { [EXPERIENCE_RAW_OUTPUT]: `${isolatedEnvironment[EXPERIENCE_RAW_OUTPUT]}/${profile}` }
@@ -860,6 +862,7 @@ export async function runTrustedExperienceReplay({
   );
   // Capture preparation deliberately omits human review validation. Paired case
   // completeness and terminal cleanup are still mandatory before publication.
+  emitPreparationPhase("VALIDATION");
   if (plan.paired) {
     await withVerificationStage("REPLAY_PAIRED_VALIDATE", () => {
       validateExperienceArtifacts({ root, plan, evidence: combined });

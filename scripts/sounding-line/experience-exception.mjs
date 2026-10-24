@@ -1,3 +1,4 @@
+import { recognitionGitRead, withImmutableRecognitionReads } from "./immutable-recognition-reads.mjs";
 import { CURRENT_R24, assertR24Mode, validateR24Custody } from "./experience-current-r24.mjs";
 import { CURRENT_R25, assertR25Mode } from "./experience-current-r25.mjs";
 import { CURRENT_R26, assertR26Mode } from "./experience-current-r26.mjs";
@@ -265,8 +266,9 @@ const digest = (value) =>
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_EXCEPTION_${code}`);
 };
+const diagnosticGit = (_command, args, options) => sourceDiagnosticGit("EXPERIENCE_EXCEPTION", args, options);
 const git = (root, ...args) =>
-  sourceDiagnosticGit("EXPERIENCE_EXCEPTION", args, {
+  recognitionGitRead(diagnosticGit, args, {
     cwd: root,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "ignore"],
@@ -2479,7 +2481,10 @@ export function requireExceptionPhase({ root, phase, plan, environment = process
   }
   return value;
 }
-export function recognizeExceptionExecution({ root, baseSha, candidateSha, environment = process.env }) {
+export function recognizeExceptionExecution(options) {
+  return withImmutableRecognitionReads(() => recognizeExceptionSource(options));
+}
+function recognizeExceptionSource({ root, baseSha, candidateSha, environment = process.env }) {
   const installed = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
   const installedHead = git(installed, "rev-parse", "HEAD");
   const records = [

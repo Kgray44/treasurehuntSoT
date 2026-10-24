@@ -3,12 +3,12 @@ title: Native Chronicle Lens Series Program Charter v1.0
 audience: product-engineering
 status: proposed-governing-charter-awaiting-protected-review
 canonical_for: native-chronicle-lens-series-program-charter
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-23
 version: 1.0
 document_id: VW-PARALLAX-NCL-CHARTER-1.0
 repository_baseline: e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab
 integration_reference: aaff919428ef9ab421579415ce3409949724760d
-qualification_baseline: 39b706ad3c9a2b8e1d589f71db909cf6c32c468b
+qualification_baseline: 649a0bf2b2d5a0cc2437ac18c5e89e7bdfaab7cd
 ---
 
 # Native Chronicle Lens Series Program Charter v1.0
@@ -32,7 +32,7 @@ qualification_baseline: 39b706ad3c9a2b8e1d589f71db909cf6c32c468b
 
 This charter establishes one discoverable program beneath existing owners. It does not replace a governing constitution, reopen a closed project, authorize an implementation phase, or accept an unmerged candidate. Requirements describe the intended native experience; the linked status record describes what was actually implemented and demonstrated. A requirement written here is not an implementation claim.
 
-**October 22 qualification refresh:** this governance candidate adopts accepted main `39b706ad3c9a2b8e1d589f71db909cf6c32c468b`, including #788's bounded-source/Windows-build-link repair and #790's unrelated-expiry repair. Prior NCL head `0c332757aa591e7c4f77066a7a3b17c4fb00fbfd` passed normal [run 39783320141/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39783320141) on base `90bff6ec`; that success remains bound to its older source/base because main advanced during qualification. The original #781 failed run remains failed. #790's protected merge exception applied only to #790 and supplies no exception or finite grant to this charter. This refreshed source requires its own exact-source review and normal protected qualification; actual merge also requires current authorization, head/base freshness and the user's Studio-next product merge order. The [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) records dated PR observations and the accepted dependency chain. This charter's original source/subset snapshot below remains dated October 20; no native product acceptance or future-increment ratification follows from documentation source adoption.
+**October 23 qualification refresh:** this documentation candidate adopts accepted main `649a0bf2b2d5a0cc2437ac18c5e89e7bdfaab7cd`, including the landed #791–#794 verification and preparation repairs. Published NCL head `b6dd6f54b722c56c5a3fd163ff92733351643de5` passed normal [run 39787666426/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39787666426) on base `39b706ad`; that result and all earlier successes and failures remain bound to their original sources. This refreshed source requires independent review and its own normal protected qualification. The current recovery direction permits independent documentation integration when no actual source dependency requires waiting for Studio; Parallax retains first execution priority. No installed rule requires #776 as an ancestor of this charter. Actual merge still requires current authorization, exact head/base freshness and legitimate protection. #790's one-time exception and expired product grants supply no authority here. The [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) preserves dated PR observations and the accepted dependency chain. The original component snapshot remains dated October 20; documentation adoption grants no native product acceptance or future-increment ratification.
 
 MUST and MUST NOT are mandatory within the accepted increment's scope. SHOULD requires an explained disposition. MAY describes an optional supported capability. Future increment proposals and proposed numerical qualification profiles remain inactive until their stated owner decisions are recorded. Existing higher-authority gates remain effective throughout.
 
