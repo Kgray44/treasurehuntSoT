@@ -1050,7 +1050,7 @@ export class Lifecycle {
       blobs.push({ file, sha256: sha256(bytes) });
     }
     let output;
-    // Qualification runs the complete suite. The landed smoke checks these seven
+    // Qualification runs the complete suite. The landed smoke checks these eight
     // source-bound lifecycle outcomes within the scheduled worker's finite slot.
     const selection =
       "real CREATE DEVELOP MERGE VERIFY RETIRE|squash merge is verified|rebase merge preserves|aggregate, finite task budget|actual worker crash|expired owner discovers|real process with only";
@@ -1064,14 +1064,23 @@ export class Lifecycle {
           env: { ...process.env, TMP: dest, TEMP: dest },
         },
       );
-      const expected = process.platform === "win32" ? 7 : 6;
+      const expected = process.platform === "win32" ? 8 : 7;
       if (!new RegExp(`^# pass ${expected}$`, "mu").test(output) || !/^# fail 0$/mu.test(output))
         fail("LANDED_SMOKE_OUTCOMES_MISSING");
     } catch (e) {
       this.receipt(r, "LANDED_SMOKE_FAILED", {
+        merge: r.merge.merge,
+        blobs,
+        selection,
         error: e.message,
         output: String(e.stdout ?? output ?? "").slice(-100000),
       });
+      try {
+        if (json(path.join(dest, markerName)).id !== owner.id) fail("SMOKE_OWNER_CHANGED");
+        removeOwnedTree(dest, dest);
+      } catch (cleanupError) {
+        this.receipt(r, "SMOKE_RUNTIME_HELD", { path: dest, reason: cleanupError.message });
+      }
       throw e;
     }
     const proof = this.receipt(r, "LANDED_SMOKE_PASSED", { merge: r.merge.merge, blobs, selection, output });
