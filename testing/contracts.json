@@ -10148,6 +10148,11 @@
               {
                 "action": "click",
                 "role": "button",
+                "name": "Open scene settings"
+              },
+              {
+                "action": "click",
+                "role": "button",
                 "name": "Room photograph reconstruction"
               },
               {
@@ -10887,6 +10892,27 @@
                 "action": "click",
                 "role": "button",
                 "name": "Open Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Assets"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown",
+                "expectFocus": {
+                  "role": "tab",
+                  "name": "Environments"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown",
+                "expectFocus": {
+                  "role": "tab",
+                  "name": "Scenes"
+                }
               },
               {
                 "action": "click",
