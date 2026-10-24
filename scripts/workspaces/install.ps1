@@ -3,6 +3,11 @@ param(
   [switch]$InstallHooks
 )
 $ErrorActionPreference = 'Stop'
+function Write-HooksConfig([string]$Path, $Configuration) {
+  # Windows PowerShell's Set-Content -Encoding UTF8 adds a BOM that Codex rejects.
+  $text = ($Configuration | ConvertTo-Json -Depth 30) + [Environment]::NewLine
+  [System.IO.File]::WriteAllText($Path, $text, (New-Object System.Text.UTF8Encoding -ArgumentList $false))
+}
 $StateRoot = [System.IO.Path]::GetFullPath($StateRoot)
 $sourceRoot = $PSScriptRoot
 $guard = Join-Path $env:LOCALAPPDATA 'AeroStorageWatch\ReserveGuard.ps1'
@@ -91,7 +96,7 @@ if ($InstallHooks) {
     $entry = [pscustomobject]@{ hooks = @([pscustomobject]@{ type = 'command'; command = $command; timeout = 3; statusMessage = 'Reconciling Voyagewright workspaces' }) }
     $hooks.hooks | Add-Member -MemberType NoteProperty -Name $eventName -Value @($existingEntries + $entry) -Force
   }
-  $hooks | ConvertTo-Json -Depth 30 | Set-Content -LiteralPath $hooksPath -Encoding UTF8
+  Write-HooksConfig -Path $hooksPath -Configuration $hooks
   $result.hooks = 'INSTALLED_REQUIRES_CODEX_TRUST_REVIEW'
   $result.hooksPath = $hooksPath
 }

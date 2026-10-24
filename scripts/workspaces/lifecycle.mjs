@@ -12,6 +12,32 @@ export const POLICY = Object.freeze({
   leaseMs: 8 * 3600000,
   holdMs: 15 * 60000,
 });
+export function workspaceBudget(storage, peakBytes) {
+  const warningBytes = Math.floor(peakBytes * 0.8);
+  const measuredBytes = storage?.allocationBoundBytes;
+  const available =
+    Number.isSafeInteger(peakBytes) &&
+    peakBytes > 0 &&
+    Number.isSafeInteger(measuredBytes) &&
+    measuredBytes >= 0 &&
+    !storage?.errors?.length;
+  const state = !available
+    ? "UNAVAILABLE"
+    : measuredBytes >= peakBytes
+      ? "AT_OR_OVER_LIMIT"
+      : measuredBytes >= warningBytes
+        ? "APPROACHING_LIMIT"
+        : "WITHIN_LIMIT";
+  return {
+    state,
+    peakBytes,
+    warningBytes,
+    measuredAllocationBoundBytes: available ? measuredBytes : null,
+    remainingBytes: available ? peakBytes - measuredBytes : null,
+    warnings: state === "WITHIN_LIMIT" ? [] : [`WORKSPACE_BUDGET_${state}`],
+    errors: storage?.errors ?? [],
+  };
+}
 const markerName = ".voyagewright-workspace.json";
 const terminal = new Set(["completed", "failed", "cancelled"]);
 const key = (p) => path.resolve(p).replaceAll("\\", "/").toLowerCase();
@@ -704,14 +730,35 @@ export class Lifecycle {
   }
   create(options) {
     return this.transaction(() => {
+      const kind = options.kind ?? "worktree";
+      if (!["worktree", "runtime"].includes(kind)) fail("RESOURCE_CLASS_NOT_RETIRABLE");
+      if (
+        options.peakBytes !== undefined &&
+        (!Number.isSafeInteger(options.peakBytes) ||
+          options.peakBytes <= 0 ||
+          options.peakBytes > this.config.policy.workspaceBytes)
+      )
+        fail("WORKSPACE_BUDGET_INVALID");
       const p = this.assertTarget(options.path);
       const reusable = this.db.records.find(
-        (r) => r.task === options.task && r.state === "ACTIVE" && fs.existsSync(r.path),
+        (r) =>
+          r.task === options.task &&
+          r.kind === kind &&
+          r.state === "ACTIVE" &&
+          fs.existsSync(r.path) &&
+          (kind === "worktree" || same(r.path, p)),
       );
       if (reusable && !options.additionalReason) {
         this.assertOwner(reusable);
-        return { reused: true, record: reusable };
+        if (options.peakBytes !== undefined && options.peakBytes !== reusable.peakBytes)
+          fail("REUSE_PEAK_CHANGE_REQUIRES_REVIEW");
+        const storage = scan(reusable.path);
+        const budget = workspaceBudget(storage, reusable.peakBytes);
+        if (budget.state === "UNAVAILABLE") fail("STORAGE_SCAN_INCOMPLETE");
+        if (storage.allocationBoundBytes > reusable.peakBytes) fail("REUSE_EXCEEDS_ADMITTED_BUDGET");
+        return { reused: true, record: reusable, storage, budget };
       }
+      if (options.peakBytes === undefined) fail("WORKSPACE_BUDGET_INVALID");
       if (fs.existsSync(p)) fail("CREATE_TARGET_EXISTS");
       const inventory = this.inventory();
       if (!inventory.complete) fail("STORAGE_SCAN_INCOMPLETE");
@@ -727,9 +774,11 @@ export class Lifecycle {
         estimates: estimate,
         footprint: inventory.admissionFootprint,
         peak: options.peakBytes,
-        taskCount: this.db.records.filter(
-          (r) => r.task === options.task && r.kind === "worktree" && r.state !== "RETIRED",
-        ).length,
+        taskCount:
+          kind === "worktree"
+            ? this.db.records.filter((r) => r.task === options.task && r.kind === "worktree" && r.state !== "RETIRED")
+                .length
+            : 0,
         additionalReason: options.additionalReason,
       });
       if ((options.kind ?? "worktree") === "worktree" && !options.branch?.startsWith("codex/"))
@@ -795,7 +844,7 @@ export class Lifecycle {
           storage: r.storage,
           admission: { footprint: inventory.admissionFootprint, peakBytes: options.peakBytes },
         });
-        return { reused: false, record: r };
+        return { reused: false, record: r, budget: workspaceBudget(r.storage, r.peakBytes) };
       } catch (e) {
         pending.lastCleanup = { at: now(), error: e.message };
         this.save();
@@ -895,7 +944,7 @@ export class Lifecycle {
         fail("GIT_OPERATION_IN_PROGRESS");
     }
     // Evidence directories may be preserved, but unique dirty source is never discarded.
-    return { storage, processes, dirty };
+    return { storage, processes, dirty, budget: workspaceBudget(storage, r.peakBytes) };
   }
   blocked(r, error) {
     r.state = "HELD";
@@ -1378,6 +1427,18 @@ export class Lifecycle {
     });
   }
   status() {
-    return { config: this.config, records: this.db.records, free: this.guard({ C: 0, D: 0 }) };
+    const budgets = this.db.records
+      .filter((r) => !["RETIRED", "UNOWNED"].includes(r.state))
+      .map((r) => {
+        let storage;
+        try {
+          this.assertOwner(r);
+          storage = scan(r.path);
+        } catch (e) {
+          storage = { errors: [e.message] };
+        }
+        return { id: r.id, path: r.path, kind: r.kind, ...workspaceBudget(storage, r.peakBytes) };
+      });
+    return { config: this.config, records: this.db.records, budgets, free: this.guard({ C: 0, D: 0 }) };
   }
 }

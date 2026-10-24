@@ -9,6 +9,7 @@ import {
   POLICY,
   GiB,
   checkBudget,
+  workspaceBudget,
   git,
   sourceLanded,
   scan,
@@ -269,6 +270,97 @@ test("create reuses owned workspace; excessive creation leaves no checkout", (t)
   assert.equal(f.manager.create({ path: path.join(f.root, "other"), task: r.task }).record.id, r.id);
   assert.throws(() => f.create("huge", { peakBytes: 13 * GiB }), /WORKSPACE_BUDGET/u);
   assert.equal(fs.existsSync(path.join(f.root, "huge")), false);
+});
+
+test("same task owns one development checkout and distinct disposable runtimes", (t) => {
+  const f = fixture(t);
+  const worktree = f.create();
+  const input = { task: worktree.task, kind: "runtime", peakBytes: 1024 ** 2 };
+  const first = f.manager.create({ ...input, path: path.join(f.root, "capture-a") });
+  const second = f.manager.create({ ...input, path: path.join(f.root, "capture-b") });
+  assert.equal(first.reused, false);
+  assert.equal(second.reused, false);
+  assert.equal(first.record.kind, "runtime");
+  assert.notEqual(first.record.id, second.record.id);
+  assert.equal(f.manager.create({ ...input, path: first.record.path }).record.id, first.record.id);
+  assert.equal(f.manager.create({ path: path.join(f.root, "other"), task: worktree.task }).record.id, worktree.id);
+  assert.throws(() => f.manager.create({ ...input, path: worktree.path }), /CREATE_TARGET_EXISTS/u);
+  assert.equal(f.manager.finish(first.record.id, "completed").state, "RETIRED");
+  assert.equal(f.manager.finish(second.record.id, "failed").state, "RETIRED");
+  assert.ok(fs.existsSync(worktree.path));
+  assert.equal(f.manager.record(worktree.id).state, "ACTIVE");
+});
+
+test("reuse validates resource class and cannot silently change its finite peak", (t) => {
+  const f = fixture(t);
+  const r = f.create();
+  const input = { path: r.path, task: r.task };
+  for (const peakBytes of [Infinity, NaN, 0, -1])
+    assert.throws(() => f.manager.create({ ...input, peakBytes }), /WORKSPACE_BUDGET_INVALID/u);
+  assert.throws(() => f.manager.create({ ...input, kind: "clone" }), /RESOURCE_CLASS/u);
+  assert.throws(() => f.manager.create({ ...input, peakBytes: r.peakBytes + 1 }), /REUSE_PEAK_CHANGE/u);
+  fs.writeFileSync(path.join(r.path, "oversized-output"), Buffer.alloc(r.peakBytes));
+  assert.throws(() => f.manager.create(input), /REUSE_EXCEEDS_ADMITTED_BUDGET/u);
+  assert.ok(fs.existsSync(path.join(r.path, "oversized-output")));
+});
+
+test("budget warnings use measured allocation and never hide unavailable scans", () => {
+  const usage = (n) => workspaceBudget({ allocationBoundBytes: n, errors: [] }, 1000);
+  assert.equal(usage(799).state, "WITHIN_LIMIT");
+  assert.deepEqual(usage(800).warnings, ["WORKSPACE_BUDGET_APPROACHING_LIMIT"]);
+  assert.equal(usage(1000).state, "AT_OR_OVER_LIMIT");
+  assert.equal(usage(1001).remainingBytes, -1);
+  const unavailable = workspaceBudget({ allocationBoundBytes: 0, errors: ["ACCESS_DENIED"] }, 1000);
+  assert.equal(unavailable.state, "UNAVAILABLE");
+  assert.equal(unavailable.measuredAllocationBoundBytes, null);
+  assert.equal(workspaceBudget(null, 1000).state, "UNAVAILABLE");
+});
+
+test("status and audit warn on fresh owned usage without trusting stale records", (t) => {
+  const f = fixture(t);
+  const created = f.manager.create({
+    path: path.join(f.root, "budgeted"),
+    task: "budgeted",
+    kind: "runtime",
+    peakBytes: 1024 ** 2,
+  });
+  assert.equal(created.budget.state, "WITHIN_LIMIT");
+  fs.writeFileSync(path.join(created.record.path, "output"), Buffer.alloc(850 * 1024));
+  const status = f.manager.status();
+  assert.equal(status.budgets[0].state, "APPROACHING_LIMIT");
+  assert.equal(f.manager.auditRecord(created.record).budget.state, "APPROACHING_LIMIT");
+  fs.unlinkSync(path.join(created.record.path, marker));
+  assert.equal(f.manager.status().budgets[0].state, "UNAVAILABLE");
+  assert.match(f.manager.status().budgets[0].errors[0], /OWNERSHIP_MARKER_MISSING/u);
+});
+
+test("Windows installer writes hook JSON that native Codex can parse", { skip: process.platform !== "win32" }, (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "vw-hooks-encoding-"));
+  const file = path.join(root, "hooks.json");
+  t.after(() => {
+    fs.unlinkSync(file);
+    fs.rmdirSync(root);
+  });
+  const installer = path.resolve(import.meta.dirname, "../../scripts/workspaces/install.ps1");
+  const script = `
+$ast=[System.Management.Automation.Language.Parser]::ParseFile($env:VW_TEST_INSTALLER,[ref]$null,[ref]$null)
+$function=$ast.Find({param($node) $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Write-HooksConfig'},$false)
+if(-not $function){throw 'HOOK_WRITER_MISSING'}
+. ([scriptblock]::Create($function.Extent.Text))
+Write-HooksConfig -Path $env:VW_TEST_HOOKS -Configuration @{hooks=@{Stop=@(@{hooks=@(@{type='command';command='synthetic';statusMessage='Reconciling Voyagewright workspaces'})})};preserved='existing'}
+`;
+  const result = spawnSync("powershell.exe", ["-NoProfile", "-Command", script], {
+    env: { ...process.env, VW_TEST_INSTALLER: installer, VW_TEST_HOOKS: file },
+    encoding: "utf8",
+    windowsHide: true,
+    timeout: 30000,
+  });
+  assert.equal(result.status, 0, result.stderr);
+  const bytes = fs.readFileSync(file);
+  assert.notDeepEqual([...bytes.subarray(0, 3)], [239, 187, 191]);
+  const parsed = JSON.parse(bytes.toString("utf8"));
+  assert.equal(parsed.preserved, "existing");
+  assert.equal(parsed.hooks.Stop[0].hooks[0].command, "synthetic");
 });
 test("nested Git stores and tracked generated roots are protected", (t) => {
   const f = fixture(t);
