@@ -75,7 +75,7 @@ jobs:
           show-progress: true
           persist-credentials: false
       - uses: actions/checkout@v4
-        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         timeout-minutes: 10
         with:
           ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
@@ -84,7 +84,7 @@ jobs:
           show-progress: true
           persist-credentials: false
       - name: Set up protected checkout runtime
-        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
         uses: actions/setup-node@v4
         with:
           node-version-file: authority/.nvmrc
@@ -95,6 +95,13 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
         run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
+      - name: Checkout PR776 complete history and explicit reader closure
+        if: ${{ github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --pr 776
       - uses: actions/checkout@v4
         if: inputs.experience_mode == 'review' || inputs.experience_mode == 'verify'
         timeout-minutes: 10
@@ -149,7 +156,7 @@ jobs:
         id: candidate-checkout
         uses: actions/checkout@v4
         timeout-minutes: 10
-        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         with:
           ref: ${{ inputs.candidate_sha }}
           path: candidate
@@ -157,7 +164,7 @@ jobs:
           show-progress: true
           persist-credentials: false
       - name: Set up protected checkout runtime
-        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
         uses: actions/setup-node@v4
         with:
           node-version-file: authority/.nvmrc
@@ -168,6 +175,13 @@ jobs:
           BASE_SHA: ${{ inputs.base_sha }}
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
         run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
+      - name: Checkout PR776 complete history and explicit reader closure
+        if: ${{ github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --pr 776
       - name: Checkout review evidence
         id: evidence-checkout
         uses: actions/checkout@v4
@@ -299,7 +313,7 @@ jobs:
           fetch-tags: false
           show-progress: true
       - uses: actions/checkout@v4
-        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         timeout-minutes: 10
         with:
           repository: ${{ steps.source.outputs.repository }}
@@ -308,7 +322,7 @@ jobs:
           fetch-depth: 0
           show-progress: true
       - name: Set up protected checkout runtime
-        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
         uses: actions/setup-node@v4
         with:
           node-version-file: authority/.nvmrc
@@ -319,6 +333,13 @@ jobs:
           BASE_SHA: ${{ steps.source.outputs.base }}
           CANDIDATE_SHA: ${{ steps.source.outputs.candidate }}
         run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
+      - name: Checkout PR776 complete history and explicit reader closure
+        if: ${{ github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ steps.source.outputs.base }}
+          CANDIDATE_SHA: ${{ steps.source.outputs.candidate }}
+        run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --pr 776
       - uses: actions/setup-node@v4
         with:
           node-version-file: authority/.nvmrc
@@ -478,7 +499,7 @@ jobs:
           show-progress: true
           persist-credentials: false
       - uses: actions/checkout@v4
-        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         timeout-minutes: 10
         with:
           ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
@@ -487,7 +508,7 @@ jobs:
           show-progress: true
           persist-credentials: false
       - name: Set up protected checkout runtime
-        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && (github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && (github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         uses: actions/setup-node@v4
         with:
           node-version-file: authority/.nvmrc
@@ -498,6 +519,13 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
         run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
+      - name: Checkout PR776 complete history and explicit reader closure
+        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && (github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --pr 776
       - uses: actions/setup-node@v4
         if: needs.campaign-custody.outputs.campaign == 'true'
         with:
