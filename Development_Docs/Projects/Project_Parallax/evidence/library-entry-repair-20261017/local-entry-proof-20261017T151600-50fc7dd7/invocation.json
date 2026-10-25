@@ -1,9 +1,0 @@
-{
-  "protectedQualification": false,
-  "results": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T151600-50fc7dd7",
-  "attemptRoot": "D:/CodexTemp/parallax-cohort-prep-20261016/local-entry-proof-20261017T151600-50fc7dd7",
-  "crossdeckExecution": false,
-  "scope": "three exact-finding specs / four cases; one worker; stop after three failures",
-  "kind": "LOCAL_FOCUSED_SYNTHETIC_UNPAID",
-  "candidate": "9adeb9715011de4b38885ab88b53050632599257"
-}

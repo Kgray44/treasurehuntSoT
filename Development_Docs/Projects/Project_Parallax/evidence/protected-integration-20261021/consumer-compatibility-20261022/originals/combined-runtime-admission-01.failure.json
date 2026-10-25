@@ -1,8 +1,0 @@
-{
-  "kind": "BUILD_ALLOCATION_ADMISSION_FAILURE",
-  "at": "2026-10-22T15:51:38.978343+00:00",
-  "stage": "Reading long Windows build paths without extended-length prefix",
-  "observed": "WinError3 at >260-character build path; no build/runtime started",
-  "sourceOrPolicyChanged": false,
-  "correction": "Use native extended-length Windows path for metadata walk; preserve physical containment and reparse exclusions."
-}

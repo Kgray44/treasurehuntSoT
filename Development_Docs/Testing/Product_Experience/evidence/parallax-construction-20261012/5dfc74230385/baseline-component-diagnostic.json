@@ -1,8 +1,0 @@
-{
-  "classification": "DIFFERENTIAL_LOCAL_COMPONENT_DIAGNOSTIC",
-  "baseCandidate": "5dfc742303850055ea79debb833bbe9ae26d2abd",
-  "workingChangesRestored": true,
-  "scope": "Committed baseline Canvas, CSS and component test; isolated graph case with 30-second diagnostic limit",
-  "exitCode": 0,
-  "elapsedSeconds": 48.88
-}

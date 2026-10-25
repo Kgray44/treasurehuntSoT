@@ -1,5 +1,0 @@
-{
-  "candidate": "e770e0a2e235cc95a87e4d6fe4ef518b3fe28ce2",
-  "sourceBinding": "INVALIDATED",
-  "reason": "SpatialCanvas.tsx, SpatialStudio.module.css and parallax-surfaces.spec.ts were edited while this production browser run was active. Preserve the failed run as diagnostics; do not use it for exact-candidate acceptance. The owned runner cleaned up its server and proxy."
-}

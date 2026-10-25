@@ -1,5 +1,0 @@
-
-> forever-treasure-companion@0.2.0 private-content:staged-diff-scan
-> tsx scripts/private-content/staged-diff-scan.ts
-
-Private-content staged-diff scan passed.

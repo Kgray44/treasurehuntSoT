@@ -1,5 +1,0 @@
-Voyagewright Proprietary License 1.0
-Copyright 2026 Kato Gray. All rights reserved.
-AI-assisted original mesh recipes. No third-party source models or textures.
-See repository LICENSE.md for complete terms. Redistribution requires owner authorization.
-Three.js is used as a build/runtime library under its own MIT license; see THIRD_PARTY_NOTICES.md.

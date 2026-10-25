@@ -1,9 +1,0 @@
-
- RUN  v4.1.11 D:/CodexWorktrees/parallax-776-final39-20261022
-
-
- Test Files  1 passed (1)
-      Tests  1 passed | 20 skipped (21)
-   Start at  22:54:44
-   Duration  14.10s (transform 2.45s, setup 415ms, import 4.75s, tests 6.96s, environment 1.61s)
-

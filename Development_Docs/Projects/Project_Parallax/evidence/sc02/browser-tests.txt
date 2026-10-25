@@ -1,4 +1,0 @@
-  ok 1 [chromium] › tests\e2e\parallax-sc02.spec.ts:19:5 › SC-02 Creator places real assets, edits a light, saves and reuses a composition, then reloads the same Scene (22.4s)
-  ok 2 [chromium] › tests\e2e\parallax-sc02.spec.ts:161:5 › SC-02 actual Studio renders every model family and three composed scenes with finite instrumentation (21.2s)
-  ok 3 [chromium] › tests\e2e\parallax-sc02.spec.ts:215:5 › SC-02 Studio visibly executes projected effects, a portal and additional light types (8.1s)
-  3 passed (56.7s)

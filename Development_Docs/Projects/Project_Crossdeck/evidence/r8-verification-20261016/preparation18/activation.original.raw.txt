@@ -1,8 +1,0 @@
-{
-  "sourceSha": "3415165ed9c4c11f2512d99aea0947f62696146a",
-  "diagnostic": false,
-  "missingEvidenceRejected": true,
-  "backendOnlyExempt": true,
-  "realBrowserReplay": "PASS",
-  "ownerAcceptance": "NOT_CLAIMED"
-}

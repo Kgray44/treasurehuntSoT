@@ -1,6 +1,0 @@
-
-C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\src\components\player\parallax\ChronicleLens.tsx
-  89:7  warning  The attribute aria-description is not supported by the role button. This role is implicit on the element button  jsx-a11y/role-supports-aria-props
-
-✖ 1 problem (0 errors, 1 warning)
-

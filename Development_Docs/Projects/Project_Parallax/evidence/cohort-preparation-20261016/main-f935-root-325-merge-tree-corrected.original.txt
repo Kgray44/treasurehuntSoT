@@ -1,8 +1,0 @@
-7914c833d73a2164c2e52b7d4935a134f7140534
-.gitattributes
-
-Auto-merging .agents/README.md
-Auto-merging .gitattributes
-CONFLICT (content): Merge conflict in .gitattributes
-Auto-merging Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv
-Auto-merging Development_Docs/document-index.json

@@ -1,9 +1,0 @@
-:global(.auth-mode-panel) .accountPanel p,
-:global(.auth-mode-panel) .accountPanel a:not(:global(.brass-button)) {
-  color: var(--parchment-ink);
-}
-
-:global(.auth-mode-panel) .accountPanel a:not(:global(.brass-button)) {
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-}

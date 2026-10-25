@@ -1,2 +1,0 @@
-import base from "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/vitest.config.ts";
-export default {...base, cacheDir: "D:/CodexTemp/parallax-resume-20261021-01a15554/focused-unit-01/vite-cache", test: {...base.test, cache: false}};

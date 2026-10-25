@@ -1,1 +1,0 @@
-import { PublicCommunitySection } from "@/components/community/PublicCommunitySection"; export const dynamic = "force-dynamic"; export default function Page(){ return <PublicCommunitySection section="artifacts"/>; }

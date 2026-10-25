@@ -1,9 +1,0 @@
-file:///C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/scripts/sounding-line/run-browser-suite.mjs:242
-    throw new Error(`SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:${profileId}:DATABASE_PATH`);
-          ^
-
-Error: SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:generic:DATABASE_PATH
-    at clearOwnedIsolationDatabase (file:///C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/scripts/sounding-line/run-browser-suite.mjs:242:11)
-    at file:///C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt/scripts/sounding-line/run-browser-suite.mjs:48:11
-
-Node.js v24.18.0

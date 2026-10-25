@@ -1,5 +1,0 @@
-*.xcodeproj/
-build/
-DerivedData/
-LandfallCompanion/Info.plist
-LandfallCompanionUiTests/Info.plist

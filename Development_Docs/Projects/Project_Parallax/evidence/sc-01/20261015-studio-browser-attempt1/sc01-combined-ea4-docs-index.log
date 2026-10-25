@@ -1,5 +1,0 @@
-
-> forever-treasure-companion@0.2.0 docs:index
-> node scripts/generate-document-index.mjs
-
-Indexed 2597 engineering records and inventoried 8366 documentation paths.

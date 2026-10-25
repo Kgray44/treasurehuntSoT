@@ -1,9 +1,0 @@
-{
-  "source": "bdf2a9356709945b3181fbf20e97a54074dfe60f",
-  "runtime": "PRODUCTION",
-  "reducedThenFullConfirmed": true,
-  "retainedDOMNode": true,
-  "value": "synthetic-motion-switch@example.test",
-  "focusRetained": true,
-  "limits": "One public sign-in form and the Studio fixture; no full product-route matrix acceptance."
-}

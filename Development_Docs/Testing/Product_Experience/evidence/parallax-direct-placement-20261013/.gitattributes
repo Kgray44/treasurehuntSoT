@@ -1,2 +1,0 @@
-**/*.original.json.txt -text -diff
-**/*.original.txt -text -diff

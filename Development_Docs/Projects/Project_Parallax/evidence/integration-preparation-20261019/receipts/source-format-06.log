@@ -1,7 +1,0 @@
-src/components/studio/parallax/SpatialContentLibrary.tsx 534ms
-src/components/studio/parallax/SpatialStudio.module.css 566ms
-tests/e2e/parallax-animation.spec.ts 73ms
-tests/e2e/parallax-asset-quality.spec.ts 79ms
-tests/e2e/parallax-reusable-assets.spec.ts 51ms
-tests/e2e/parallax-room-features.spec.ts 88ms
-tests/e2e/parallax-spatial-assistant.spec.ts 47ms
