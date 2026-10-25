@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 
-// Two finite protected controller merges preserve one spent review; neither grants another pass.
+// Three finite protected controller merges preserve one spent review; none grants another pass.
 export const PR776_CONTROLLER = Object.freeze({
   kind: "PR776_CONTROLLER_BASE_RECONCILIATION_1",
   id: "pr776-attestation-buffer-reconciliation-20261025",
@@ -29,6 +29,19 @@ export const PR776_TRANSPORT_PREDECESSOR = Object.freeze({
   candidateTree: "e36b5d79f5067680d7376a83d9b41104d497796b",
   sourceDigest: "36cd7941da620b2fe417dcc99d74f6c13719dde9d6dea500777a75737f677c6f",
 });
+export const PR776_OBSERVABILITY_PREDECESSOR = Object.freeze({
+  base: "e60d7db3b95c48c32306dd7682d4a132f3e54b3d",
+  baseParents: Object.freeze(["cbc3e643cc11c172983fb8f6f43036abda590182", "8762a4fe31e78d00d3b09d8f4c411c81203cf379"]),
+  baseTree: "e8870c4279956e63cf95608de077f1a368ac7e2b",
+  candidate: "5669b2484ba44f38d0a96ce3895f98bb61fb9d1d",
+  candidateParents: Object.freeze(["094331fc2defc8dabf4c0b4ba21ef0df7625b0e3"]),
+  candidateTree: "cdfe106d91d6a7b8e12ad17f6b3b89f3f523a528",
+  sourceDigest: "4f3baf77bb7a1d1b425da372f645527248b2f757adad9844c82c0e02d2465bda",
+  canonicalSha256: "46e3f544db3f8472986b00d229f2662e901b7f6faf72ec38414c26847b4b80b0",
+  canonicalBytes: 1451427,
+  canonicalBlob: "14ad1d87c0b03064470896ff9a9d2b4ba90d4d2f",
+  reviewArtifactId: 12593074243,
+});
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
 const INDEX = "Development_Docs/document-index.json";
@@ -55,6 +68,11 @@ export const PR776_CONTROLLER_PATHS = Object.freeze([
   "scripts/sounding-line/experience-pr776-checkout-profile.mjs",
   ".github/workflows/sounding-line-ordinary.yml",
   "tests/sounding-line/experience-pr776-checkout.test.mjs",
+  "scripts/sounding-line/ordinary.mjs",
+  "scripts/sounding-line/verification-diagnostics.mjs",
+  "tests/sounding-line/browser-diagnostics.test.mjs",
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
   ...originals,
   PR776_RECORD_PATH,
   INDEX,
@@ -69,6 +87,24 @@ export const PR776_TRANSPORT_REPAIR_PATHS = Object.freeze([
   "scripts/sounding-line/experience-pr776-checkout-profile.mjs",
   ".github/workflows/sounding-line-ordinary.yml",
   "tests/sounding-line/experience-pr776-checkout.test.mjs",
+]);
+export const PR776_OBSERVABILITY_ADDED_PATHS = Object.freeze([
+  "scripts/sounding-line/ordinary.mjs",
+  "scripts/sounding-line/verification-diagnostics.mjs",
+  "tests/sounding-line/browser-diagnostics.test.mjs",
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
+]);
+export const PR776_OBSERVABILITY_REPAIR_PATHS = Object.freeze([
+  "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
+  "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
+  "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/controller-reconciliation.json",
+  "scripts/sounding-line/ordinary.mjs",
+  "scripts/sounding-line/verification-diagnostics.mjs",
+  "scripts/sounding-line/experience-attestation.mjs",
+  "tests/sounding-line/browser-diagnostics.test.mjs",
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
 ]);
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
@@ -110,8 +146,9 @@ function inspect({ root, plan, readGit = git }) {
     read = readGit;
   need(plan.baseSha !== p.oldBase && plan.contractDigest === p.contractDigest, "SOURCE_IDENTITY");
   const parents = text(read, root, ["show", "-s", "--format=%P", plan.baseSha]).split(" ");
-  const predecessor = PR776_TRANSPORT_PREDECESSOR;
-  need(parents.length === 2 && parents[0] === predecessor.base, "ONE_NEXT_NORMAL_TRANSPORT_MERGE_REQUIRED");
+  const predecessor = PR776_TRANSPORT_PREDECESSOR,
+    observed = PR776_OBSERVABILITY_PREDECESSOR;
+  need(parents.length === 2 && parents[0] === observed.base, "ONE_NEXT_NORMAL_OBSERVABILITY_MERGE_REQUIRED");
   need(
     same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
       text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
@@ -125,6 +162,23 @@ function inspect({ root, plan, readGit = git }) {
     ) && text(read, root, ["rev-parse", predecessor.candidate + "^{tree}"]) === predecessor.candidateTree,
     "FROZEN_CANDIDATE_PREDECESSOR_CHANGED",
   );
+
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", observed.base]).split(" "), observed.baseParents) &&
+      text(read, root, ["rev-parse", observed.base + "^{tree}"]) === observed.baseTree &&
+      text(read, root, ["rev-parse", observed.baseParents[1] + "^{tree}"]) === observed.baseTree &&
+      exactPaths(paths(read, root, predecessor.base, observed.base), PR776_TRANSPORT_REPAIR_PATHS) &&
+      exactPaths(
+        paths(read, root, p.oldBase, observed.base),
+        PR776_CONTROLLER_PATHS.filter((file) => !PR776_OBSERVABILITY_ADDED_PATHS.includes(file)),
+      ),
+    "FROZEN_TRANSPORT_PREDECESSOR_CHANGED",
+  );
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", observed.candidate]).split(" "), observed.candidateParents) &&
+      text(read, root, ["rev-parse", observed.candidate + "^{tree}"]) === observed.candidateTree,
+    "FROZEN_OBSERVABILITY_CANDIDATE_CHANGED",
+  );
   need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
       text(read, root, ["rev-parse", `${parents[1]}^{tree}`]),
@@ -132,11 +186,12 @@ function inspect({ root, plan, readGit = git }) {
   );
   read(root, ["merge-base", "--is-ancestor", p.ancestor, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", predecessor.candidate, plan.candidateSha]);
+  read(root, ["merge-base", "--is-ancestor", observed.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", plan.baseSha, plan.candidateSha]);
   need(exactPaths(paths(read, root, p.oldBase, plan.baseSha), PR776_CONTROLLER_PATHS), "CONTROLLER_CHANGED_PATHS");
   need(
-    exactPaths(paths(read, root, predecessor.base, plan.baseSha), PR776_TRANSPORT_REPAIR_PATHS),
-    "TRANSPORT_REPAIR_CHANGED_PATHS",
+    exactPaths(paths(read, root, observed.base, plan.baseSha), PR776_OBSERVABILITY_REPAIR_PATHS),
+    "OBSERVABILITY_REPAIR_CHANGED_PATHS",
   );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),
     record = JSON.parse(recordBytes);
@@ -147,7 +202,8 @@ function inspect({ root, plan, readGit = git }) {
       record.prNumber === 776 &&
       record.additionalIndependentPasses === 0 &&
       same(record.originalIdentity, p) &&
-      same(record.transportPredecessor, predecessor),
+      same(record.transportPredecessor, predecessor) &&
+      same(record.observabilityPredecessor, observed),
     "FINITE_PROTECTED_RECORD",
   );
   need(
@@ -254,6 +310,20 @@ function inspect({ root, plan, readGit = git }) {
       ),
     "MATRIX_ADDITIONS_ONLY",
   );
+
+  const predecessorCanonicalBytes = Buffer.from(
+    JSON.stringify({ ...canonical, reviewArtifactId: observed.reviewArtifactId }, null, 2) + "\n",
+  );
+  need(
+    tree(read, root, observed.candidate).get(C) === `100644 blob ${observed.canonicalBlob}` &&
+      predecessorCanonicalBytes.length === observed.canonicalBytes &&
+      sha256(predecessorCanonicalBytes) === observed.canonicalSha256,
+    "FROZEN_PUBLISHED_CANONICAL_CHANGED",
+  );
+  const predecessorCanonical = JSON.parse(predecessorCanonicalBytes);
+  need(predecessorCanonical.reviewArtifactId === observed.reviewArtifactId, "FROZEN_PUBLISHED_REVIEW_ID_CHANGED");
+  delete predecessorCanonical.reviewArtifactId;
+  need(same(predecessorCanonical, canonical), "FROZEN_PUBLISHED_CANONICAL_DATA_CHANGED");
   const publishedCanonical = JSON.parse(readRevision(read, root, plan.candidateSha, C));
   const publishedReviewArtifactId = publishedCanonical.reviewArtifactId;
   need(

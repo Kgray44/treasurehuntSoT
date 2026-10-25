@@ -171,15 +171,13 @@ test("R25 extends only the authorized Crossdeck final-check ceiling to 90 minute
   assert.equal(jobs.filter((job) => job.includes("&& 90 || 45")).length, 1);
   assert.equal(record().currentSourceAdmission.precommandRecovery.jobLimitMinutes, 90);
   assert.equal(record().currentSourceAdmission.precommandRecovery.otherPullRequestsJobLimitMinutes, 45);
+  // This historical admission freezes its original candidate engines, not unrelated later repairs.
   for (const file of [
     "scripts/sounding-line/ordinary.mjs",
     "scripts/sounding-line/authenticated-completed-evidence.mjs",
     "scripts/sounding-line/verification-diagnostics.mjs",
   ])
-    assert.equal(
-      readFileSync(new URL("../../" + file, import.meta.url), "utf8"),
-      git("show", `${r.protectedBaseAncestorSha}:${file}`),
-    );
+    assert.equal(git("show", `${r.frozenReferenceSha}:${file}`), git("show", `${r.protectedBaseAncestorSha}:${file}`));
 });
 
 test("installed R25 reader denies missing, retired, invalid and expired rows without falling back", (t) => {
