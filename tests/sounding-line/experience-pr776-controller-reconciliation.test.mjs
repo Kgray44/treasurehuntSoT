@@ -643,9 +643,9 @@ test("frozen M6 and ID-only5669 retain exact source, canonical and spent review 
   assert.equal(O.canonicalSha256, "46e3f544db3f8472986b00d229f2662e901b7f6faf72ec38414c26847b4b80b0");
   assert.equal(O.reviewArtifactId, 12593074243);
   assert.equal(O.canonicalBlob, "14ad1d87c0b03064470896ff9a9d2b4ba90d4d2f");
-  assert.equal(PR776_CONTROLLER_PATHS.length, 24);
-  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 21);
-  assert.equal(PR776_OBSERVABILITY_REPAIR_PATHS.length, 7);
+  assert.equal(PR776_CONTROLLER_PATHS.length, 26);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 23);
+  assert.equal(PR776_OBSERVABILITY_REPAIR_PATHS.length, 9);
   assert.deepEqual(f.record.originalIdentity, P);
   assert.deepEqual(f.record.transportPredecessor, T);
   assert.deepEqual(f.record.observabilityPredecessor, O);
@@ -758,4 +758,25 @@ test("frozen5669 canonical proof reads only historical tree metadata and never i
     () => f.git("pure-fixture", ["show", O.candidate + ":" + C]),
     /FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ/u,
   );
+});
+
+test("historical M6 guard excludes all five future-only observability and fixture paths", () => {
+  assert.deepEqual(
+    [...PR776_OBSERVABILITY_ADDED_PATHS].sort(),
+    [
+      "scripts/sounding-line/ordinary.mjs",
+      "scripts/sounding-line/verification-diagnostics.mjs",
+      "tests/sounding-line/browser-diagnostics.test.mjs",
+      "tests/sounding-line/experience-r25.test.mjs",
+      "tests/sounding-line/experience-r26.test.mjs",
+    ].sort(),
+  );
+  for (const file of ["tests/sounding-line/experience-r25.test.mjs", "tests/sounding-line/experience-r26.test.mjs"]) {
+    const f = fixture();
+    assert(!f.frozenControllerChanges.includes(file));
+    assert.equal(f.frozenControllerChanges.length, 21);
+    assert.equal(f.validate(), true);
+    f.frozenControllerChanges.push(file);
+    assert.throws(f.validate, /FROZEN_TRANSPORT_PREDECESSOR_CHANGED/u);
+  }
 });

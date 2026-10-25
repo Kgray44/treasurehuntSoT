@@ -71,6 +71,8 @@ export const PR776_CONTROLLER_PATHS = Object.freeze([
   "scripts/sounding-line/ordinary.mjs",
   "scripts/sounding-line/verification-diagnostics.mjs",
   "tests/sounding-line/browser-diagnostics.test.mjs",
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
   ...originals,
   PR776_RECORD_PATH,
   INDEX,
@@ -90,6 +92,8 @@ export const PR776_OBSERVABILITY_ADDED_PATHS = Object.freeze([
   "scripts/sounding-line/ordinary.mjs",
   "scripts/sounding-line/verification-diagnostics.mjs",
   "tests/sounding-line/browser-diagnostics.test.mjs",
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
 ]);
 export const PR776_OBSERVABILITY_REPAIR_PATHS = Object.freeze([
   "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
@@ -99,6 +103,8 @@ export const PR776_OBSERVABILITY_REPAIR_PATHS = Object.freeze([
   "scripts/sounding-line/verification-diagnostics.mjs",
   "scripts/sounding-line/experience-attestation.mjs",
   "tests/sounding-line/browser-diagnostics.test.mjs",
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
 ]);
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
