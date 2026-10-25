@@ -8,6 +8,11 @@ last_reviewed: 2026-10-24
 
 # Changelog
 
+- Candidate #776 restores Chronicle creation text contrast on parchment and aligns
+  the Rooms journey with mobile overlay auto-close. All 13 Rooms outcome states
+  remain required; fresh capture, independent review and protected acceptance
+  remain pending.
+
 - Candidate #776 now has an owner-authorized bounded software-delivery scope, with
   48 expanded Library/photo states explicitly pending. Community Profile recovery
   remains required; fresh qualification and product acceptance remain open. See the

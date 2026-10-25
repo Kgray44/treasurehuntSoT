@@ -13,6 +13,7 @@ evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
+- [PR776 one final protected continuation](pr776-final-continuation-20261025.md)
 - [Parallax protected integration continuation](parallax-protected-integration-20261021.md)
 - [Complete Parallax integration preparation](parallax-integration-preparation-20261019.md)
 - [Focused development and final verification](testing-workflow.md)
