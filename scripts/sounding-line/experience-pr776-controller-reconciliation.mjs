@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 
-// Seven finite protected controller merges preserve one spent review; none grants another pass.
+// Eight finite protected controller merges preserve one spent review; none grants another pass.
 export const PR776_CONTROLLER = Object.freeze({
   kind: "PR776_CONTROLLER_BASE_RECONCILIATION_1",
   id: "pr776-attestation-buffer-reconciliation-20261025",
@@ -93,6 +93,19 @@ export const PR776_READER_PREDECESSOR = Object.freeze({
   canonicalBytes: 1451427,
   canonicalBlob: "3d09aa5ce1340742d9486ec0a7df925ad4ae888e",
   reviewArtifactId: 12611315114,
+});
+export const PR776_FINAL_BUDGET_PREDECESSOR = Object.freeze({
+  base: "1229d4c549160ed72d159c0b708a11352e2f0599",
+  baseParents: Object.freeze(["85815909abb922c13cdf2a729f21a30e5b58ee9b", "ab178e3aa844afdfa9f782d446aaebc08a6eaabd"]),
+  baseTree: "183d5193ea3d649cb2d1c53be09b3d4fbe5b4d81",
+  candidate: "1faf8e5586fec56c6c7073768ba7cc5132776b93",
+  candidateParents: Object.freeze(["aae3f42868829a7637bbf3fedc342964e0f21a08"]),
+  candidateTree: "d4b0db03d8109aa71e6c5ceeb93862d9ab90e1d3",
+  sourceDigest: "72471cfc3b11bd8c27894c0169d237465658ad7c90212b8907ffb3b00e7449c1",
+  canonicalSha256: "c1d3b5dde0983a8e74dd2f0bb70aac8ecf8e51063bcf6563f99cecb77c946479",
+  canonicalBytes: 1451427,
+  canonicalBlob: "e3ec035e84b7512ab7f54bc791a356105e428524",
+  reviewArtifactId: 12614235180,
 });
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
@@ -198,6 +211,13 @@ export const PR776_READER_REPAIR_PATHS = Object.freeze([
   "scripts/sounding-line/experience-pr776-checkout-profile.mjs",
   "tests/sounding-line/experience-pr776-checkout.test.mjs",
 ]);
+export const PR776_FINAL_BUDGET_REPAIR_PATHS = Object.freeze([
+  "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
+  "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
+  PR776_RECORD_PATH,
+  ".github/workflows/sounding-line-ordinary.yml",
+  "tests/sounding-line/experience-pr776-checkout.test.mjs",
+]);
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
   JSON.stringify(value, (_, item) =>
@@ -243,8 +263,9 @@ function inspect({ root, plan, readGit = git }) {
     intake = PR776_INTAKE_PREDECESSOR,
     checked = PR776_PATH_CHECK_PREDECESSOR,
     sqlite = PR776_SQLITE_PREDECESSOR,
-    reader = PR776_READER_PREDECESSOR;
-  need(parents.length === 2 && parents[0] === reader.base, "ONE_NEXT_NORMAL_READER_MERGE_REQUIRED");
+    reader = PR776_READER_PREDECESSOR,
+    budget = PR776_FINAL_BUDGET_PREDECESSOR;
+  need(parents.length === 2 && parents[0] === budget.base, "ONE_NEXT_NORMAL_FINAL_BUDGET_MERGE_REQUIRED");
   need(
     same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
       text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
@@ -350,6 +371,19 @@ function inspect({ root, plan, readGit = git }) {
     "FROZEN_READER_CANDIDATE_CHANGED",
   );
   need(
+    same(text(read, root, ["show", "-s", "--format=%P", budget.base]).split(" "), budget.baseParents) &&
+      text(read, root, ["rev-parse", budget.base + "^{tree}"]) === budget.baseTree &&
+      text(read, root, ["rev-parse", budget.baseParents[1] + "^{tree}"]) === budget.baseTree &&
+      exactPaths(paths(read, root, reader.base, budget.base), PR776_READER_REPAIR_PATHS) &&
+      exactPaths(paths(read, root, p.oldBase, budget.base), PR776_CONTROLLER_PATHS),
+    "FROZEN_READER_PREDECESSOR_CHANGED",
+  );
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", budget.candidate]).split(" "), budget.candidateParents) &&
+      text(read, root, ["rev-parse", budget.candidate + "^{tree}"]) === budget.candidateTree,
+    "FROZEN_FINAL_BUDGET_CANDIDATE_CHANGED",
+  );
+  need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
       text(read, root, ["rev-parse", `${parents[1]}^{tree}`]),
     "QUALIFIED_HEAD_TREE_REQUIRED",
@@ -361,11 +395,12 @@ function inspect({ root, plan, readGit = git }) {
   read(root, ["merge-base", "--is-ancestor", checked.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", sqlite.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", reader.candidate, plan.candidateSha]);
+  read(root, ["merge-base", "--is-ancestor", budget.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", plan.baseSha, plan.candidateSha]);
   need(exactPaths(paths(read, root, p.oldBase, plan.baseSha), PR776_CONTROLLER_PATHS), "CONTROLLER_CHANGED_PATHS");
   need(
-    exactPaths(paths(read, root, reader.base, plan.baseSha), PR776_READER_REPAIR_PATHS),
-    "READER_REPAIR_CHANGED_PATHS",
+    exactPaths(paths(read, root, budget.base, plan.baseSha), PR776_FINAL_BUDGET_REPAIR_PATHS),
+    "FINAL_BUDGET_REPAIR_CHANGED_PATHS",
   );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),
     record = JSON.parse(recordBytes);
@@ -381,7 +416,8 @@ function inspect({ root, plan, readGit = git }) {
       same(record.intakePredecessor, intake) &&
       same(record.pathCheckPredecessor, checked) &&
       same(record.sqliteBootstrapPredecessor, sqlite) &&
-      same(record.checkoutReaderPredecessor, reader),
+      same(record.checkoutReaderPredecessor, reader) &&
+      same(record.finalBudgetPredecessor, budget),
     "FINITE_PROTECTED_RECORD",
   );
   need(
@@ -554,6 +590,19 @@ function inspect({ root, plan, readGit = git }) {
   need(readerCanonical.reviewArtifactId === reader.reviewArtifactId, "FROZEN_READER_REVIEW_ID_CHANGED");
   delete readerCanonical.reviewArtifactId;
   need(same(readerCanonical, canonical), "FROZEN_READER_CANONICAL_DATA_CHANGED");
+  const budgetCanonicalBytes = Buffer.from(
+    JSON.stringify({ ...canonical, reviewArtifactId: budget.reviewArtifactId }, null, 2) + "\n",
+  );
+  need(
+    tree(read, root, budget.candidate).get(C) === `100644 blob ${budget.canonicalBlob}` &&
+      budgetCanonicalBytes.length === budget.canonicalBytes &&
+      sha256(budgetCanonicalBytes) === budget.canonicalSha256,
+    "FROZEN_FINAL_BUDGET_CANONICAL_CHANGED",
+  );
+  const budgetCanonical = JSON.parse(budgetCanonicalBytes);
+  need(budgetCanonical.reviewArtifactId === budget.reviewArtifactId, "FROZEN_FINAL_BUDGET_REVIEW_ID_CHANGED");
+  delete budgetCanonical.reviewArtifactId;
+  need(same(budgetCanonical, canonical), "FROZEN_FINAL_BUDGET_CANONICAL_DATA_CHANGED");
   const publishedCanonical = JSON.parse(readRevision(read, root, plan.candidateSha, C));
   const publishedReviewArtifactId = publishedCanonical.reviewArtifactId;
   need(
