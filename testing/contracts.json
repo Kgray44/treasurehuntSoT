@@ -9043,7 +9043,9 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Toggle spatial overlays"
+                "name": "Toggle spatial overlays",
+                "devices": ["DESKTOP"],
+                "kind": "navigation"
               },
               {
                 "action": "click",
