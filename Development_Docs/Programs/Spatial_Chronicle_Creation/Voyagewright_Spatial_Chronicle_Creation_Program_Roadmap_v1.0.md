@@ -88,7 +88,7 @@ The intended four-document family is:
 
 1. **This document:** SC-00–SC-11 overall product map, ownership, dependencies, milestones, risks and integration gates.
 2. **Project Chronicle Architect Governing Document v1.0:** the detailed SC-05 AI-assisted whole-Chronicle orchestration specification, co-authored in the same documentation PR.
-3. **Chronicle Puzzle Composition Governing Document:** **RESERVED / NOT YET AUTHORED**. Its behavior, puzzle taxonomy, state ownership, authoring UX, verification and phase plan require a separate substantive owner design discussion. The brief SC-04 roadmap boundary here is not its specification.
+3. **[Chronicle Puzzle Composition Governing Document](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md):** **DETAILED PROPOSED SPECIFICATION WRITTEN / AWAITING RATIFICATION.** Owner discussion of mechanisms, crew modes, variations, 2D access, outcomes, hints, analytics and Playtest has been captured. This document requires independent owner/governing review before implementation or authority claims.
 4. **Story Adaptation Governing Document:** **RESERVED / NOT YET AUTHORED**. Its source handling, fidelity controls, transformation workflows, author attribution/rights, privacy and detailed acceptance remain intentionally open for owner discussion. The SC-06 roadmap boundary here is not its specification.
 
 Do not create speculative substitutes for Documents 3 and 4 merely to make the set appear complete. After owner discussion, add them through separate reviewed commits/PRs with precise traceability.
@@ -106,7 +106,7 @@ This series is **subordinate to** global product governance and current accepted
 | **SC-01** | Environment and Scene Manager | Parallax | Reuse one versioned environment across multiple editable, independently versioned scenes; stable edition pins |
 | **SC-02** | Premium Asset and Spatial Effects Library | Parallax + Lanternwake contracts | Curated original assets and authored light/mist/particles/audio/interaction effects, resource budgets and provenance |
 | **SC-03** | Chronicle-to-Scene Integration | Shipwright + Parallax + One Voyage | Typed block/scene binding, triggers, state, transition and immutable reference without duplicate progression |
-| **SC-04** | Chronicle Puzzle Composition | Shipwright/Creator authoring + One Voyage + Drydock | Governed reusable puzzle authoring layer; **detailed product semantics reserved for owner review** |
+| **SC-04** | Chronicle Puzzle Composition | Shipwright/Creator authoring + One Voyage + Drydock | **[Detailed proposed Puzzle Workshop constitution](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md)** covers 2D mechanisms, composition, seeded variation, crew/Captain roles, outcomes, analytics and Playtest; not yet accepted or implemented by this document |
 | **SC-05** | AI Chronicle Architect | Shipwright / Chronicle Creator orchestration | AI proposes and applies a real, editable, governed whole-Chronicle draft; detailed adjacent governing document |
 | **SC-06** | Story Import and Adaptation | Chronicle Creator + Sealed Hold + Drydock | Source-to-interactive Chronicle pipeline; **detailed fidelity and transformation semantics reserved** |
 | **SC-07** | Community publishing and reuse | Harborlight + relevant domain owners | Versioned, scanned, moderated, rights-aware templates/assets/scenes/Chronicles without draft leakage |
@@ -226,7 +226,7 @@ SC-05 must read the separate [Chronicle Architect governing document](./Project_
 
 Architect is a **high-level orchestration assistant**; the Parallax Spatial Assistant remains a specialized spatial editor. The two may hand off work through canonical operations, never through hidden chat-to-chat state. Neither can override Creator edits, destroy drafts or publish automatically.
 
-Future SC-04 Puzzle Composer and SC-06 Story Adaptation documents should specify their own hard requirements and tested edges **after** owner discussion; this roadmap preserves their integration slots without deciding sensitive creative questions on the owner's behalf.
+SC-04 now has a **proposed detailed constitution** based on the October 24–25 owner discussion, linked above, while its implementation still requires domain reconciliation and ratification. SC-06 Story Adaptation still requires its own future owner discussion and separate document. The [cross-project Creator Experience amendment](./Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md) and [requirements ledger](./SC_Requirements_Traceability_Ledger_v1.0.md) preserve features that should not be mis-owned by the Puzzle Workshop.
 
 ## 12. Proposed delivery and quality gates for later approval
 
@@ -261,7 +261,7 @@ G-14 by itself is insufficient if unrelated required branches, devices or condit
 - **Overengineering:** every Chronicle receives unnecessary AR and assets. Remedy: capability selection based on Creator intent and Player posture.
 - **Verification theater:** synthetic preview is mistaken for real AR/phone acceptance. Remedy: fidelity-labelled evidence and owner device review.
 - **Visual incoherence:** beautiful separate tools feel like different products. Remedy: continuous user journeys and reference-quality design protection.
-- **Premature governance freeze:** Puzzle/Adaptation creativity is locked down before user discussion. Remedy: explicit reserved docs with no detailed implementations authorized.
+- **Premature governance or implementation:** the drafted SC-04 specification is mistaken for approved source or SC-06 Story Adaptation semantics are invented without owner discussion. Remedy: keep SC-04 proposed pending independent acceptance, and SC-06 explicitly reserved without a detailed constitution.
 
 ## 14. Golden Chronicle definition (SC-11)
 
@@ -286,7 +286,7 @@ This is a **target scenario**, not a claim that five chapters/six puzzles or eve
 
 On owner acceptance of this roadmap, establish a machine-readable SC ledger referencing: increment, owner, governing source, exact accepted base/head, status, dependencies, PR, risk, protected decision, owner approval, next action. Do not use an informal green emoji as release authority. Record adjustments in additive amendments, not by overwriting historical accepted reports.
 
-No automatic implementation follows the documentation PR. No outstanding SC or existing Parallax/Crossdeck work is merged or modified by this record. The immediate next authoring work is **owner discussion, then separately detailed Puzzle Composition and Story Adaptation governing documents**.
+No automatic implementation follows the documentation PR. No outstanding SC or existing Parallax/Crossdeck work is merged or modified by this record. The SC-04 detailed specification is now proposed for review; the outstanding separate document-design discussion is **SC-06 Story Adaptation**, which remains reserved.
 
 ## 16. Source and references
 
@@ -301,6 +301,9 @@ No automatic implementation follows the documentation PR. No outstanding SC or e
 - [Current Shipwright project records](../../Projects/Project%20Shipwright/)
 - [Drydock governing records](../../Projects/Project%20Drydock/)
 - [Spatial Chronicle Pilot](../../Projects/Spatial_Chronicle_Pilot/README.md) — integrated test experience, **not** this SC implementation roadmap
+- [SC-04 Puzzle Workshop proposed governing document](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md)
+- [Creator Experience cross-project amendment](./Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md)
+- [Cross-project requirements traceability ledger](./SC_Requirements_Traceability_Ledger_v1.0.md)
 - PR pointers above for SC-00A/B/C, SC-01, SC-02 and SC-07A implementation candidates.
 
-**Explicitly deferred:** detailed Puzzle Composition and Story Adaptation normative definitions remain unwritten until further owner discussion. This silence must never be construed as approval for Codex to invent them.
+**Document-family status as of October 25, 2026:** SC-04's detailed proposed governing document, the cross-project Creator Tools/Playtest amendment and the traceability ledger are present in this draft branch and awaiting ratification. SC-06 Story Adaptation remains intentionally unwritten; nothing authorizes Codex to invent its detailed semantics. No proposed document is evidence of implementation.
