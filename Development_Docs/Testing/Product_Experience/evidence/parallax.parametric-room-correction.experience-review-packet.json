@@ -1,0 +1,588 @@
+{
+  "objective": "Correct a room's actual furniture and approximate scale using ordinary Creator controls",
+  "contract": {
+    "id": "parallax.parametric-room-correction.experience",
+    "name": "Editable generic room features and known-measurement correction",
+    "authority": "one-voyage",
+    "owners": [
+      "spatial-pilot",
+      "one-voyage",
+      "project-crossdeck",
+      "reach"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+      "objective": "Correct a room's actual furniture and approximate scale using ordinary Creator controls",
+      "visibleOutcome": "New editable generic geometry appears, attached supports remain protected, known measurement scales the same room, and saved corrections survive reload",
+      "integrationOwner": "Parallax parametric room correction",
+      "systems": [
+        "project-parallax",
+        "project-crossdeck",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/components/studio/parallax",
+        "src/app/studio/parallax"
+      ],
+      "projectionPaths": [
+        "src/parallax"
+      ],
+      "entryPoint": "/studio/library",
+      "states": [
+        "ROOM_EDIT_READY",
+        "ROOM_FEATURE_ADDED",
+        "ROOM_SAVED",
+        "RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "accessibility": "Labeled feature, type and measurement controls support keyboard input; native disclosure summaries expose grouped corrections; phone preserves a usable contextual Inspector and access to the canvas. Themes and reduced motion retain meaning.",
+      "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+      "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+      "designTarget": "Preserve the blue workstation and Room feature selector. Add room features creates explicitly generic placeholders. Classification edits labels; Rebuild changes the actual model while retaining the chosen name, footprint and pose. Remove and Rebuild reject attached supports with recovery guidance; the whole floor stays singular. A known feature width/height/depth uniformly scales approximate room geometry, keeps only that reference measured, and preserves clue sizes and normal history/save. Results must be observable in the actual renderer and correction fields must remain accessible on phone.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+          "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+          "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-studio-library",
+        "screen-page-studio"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-parametric-room.spec.ts",
+        "tests/e2e/parallax-room-features.spec.ts",
+        "tests/e2e/parallax-rooms.spec.ts",
+        "tests/e2e/parallax-construction-checks.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "limitations": [
+        "This increment provides generic editable geometry and an approximate scale reference. Door/window models do not cut openings or simulate opening. It does not establish photograph perception, native calibration, full overhaul, physical readiness or owner acceptance."
+      ],
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-rooms-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "text": "Voyagewright Studio"
+          }
+        }
+      },
+      "continuity": {
+        "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+        "checks": [
+          {
+            "id": "creator-identity",
+            "role": "button",
+            "name": "Synthetic Parallax Rooms Creator",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+        "feedbackBudgetMs": 3000
+      },
+      "journeys": [
+        {
+          "id": "creator-adds-generic-room-feature-and-saves",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "New editable generic geometry appears, attached supports remain protected, known measurement scales the same room, and saved corrections survive reload",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Spatial Studio"
+            },
+            {
+              "action": "click",
+              "kind": "navigation",
+              "nativeSummary": "View & audio",
+              "devices": [
+                "MOBILE"
+              ]
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Edit room features"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open spatial context"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Room spatial context",
+              "text": "Editable authoring geometry",
+              "path": "/studio/parallax",
+              "state": "ROOM_EDIT_READY",
+              "kind": "outcome",
+              "meaning": "Editable authoring geometry",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Add room feature"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Room feature editor",
+              "text": "Added a generic desk",
+              "path": "/studio/parallax",
+              "state": "ROOM_FEATURE_ADDED",
+              "kind": "outcome",
+              "meaning": "Added a generic desk",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Working draft saved",
+              "path": "/studio/parallax"
+            },
+            {
+              "action": "reload"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Working draft opened",
+              "path": "/studio/parallax"
+            },
+            {
+              "action": "click",
+              "kind": "navigation",
+              "nativeSummary": "View & audio",
+              "devices": [
+                "MOBILE"
+              ]
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Edit room features"
+            },
+            {
+              "action": "assert",
+              "role": "combobox",
+              "name": "Room feature",
+              "text": "New desk",
+              "path": "/studio/parallax"
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Authoring mode"
+            },
+            {
+              "action": "keyboard",
+              "key": "Escape",
+              "expectFocus": {
+                "role": "combobox",
+                "name": "Authoring mode"
+              }
+            },
+            {
+              "action": "keyboard",
+              "key": "Shift+F10",
+              "expectFocus": {
+                "role": "menuitem",
+                "name": "Save draft"
+              }
+            },
+            {
+              "action": "click",
+              "role": "menuitem",
+              "name": "Save draft"
+            },
+            {
+              "action": "assert",
+              "role": "status",
+              "name": "",
+              "text": "Working draft saved",
+              "path": "/studio/parallax",
+              "state": "ROOM_SAVED",
+              "kind": "outcome",
+              "meaning": "The normal Creator Save retains the editable room",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "RETURNED",
+              "kind": "return",
+              "meaning": "Creator returns to the canonical Library",
+              "feedbackBoundary": true,
+              "returnPath": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-ROOM_EDIT_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-ROOM_EDIT_READY-4.png",
+      "sha256": "5c3be592c4221b0eda2f3d8fa0df39c8d0f093222e1c4f79e317d8689e51932f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_EDIT_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-ROOM_FEATURE_ADDED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-ROOM_FEATURE_ADDED-6.png",
+      "sha256": "a7908a6c6e1e6a3b0882c208b4d93416e6ccbaa1bfe0b90d16d70b0447676382",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_FEATURE_ADDED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-ROOM_SAVED-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-ROOM_SAVED-17.png",
+      "sha256": "e5666027f3b00b55aed584c624284f093ebe3b32fb0721c63886a180dea642b1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-RETURNED-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-RETURNED-19.png",
+      "sha256": "087500683dc9693d7e9e3c3a6bdce60f59760f93b2180c7d510d62e3a2315e6d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "80f2265bf603bd80ad46cc8ce669bb276a3c3923eac02ffbf89d4ceca09e79d9",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fbff7610b5a8e6076113b0f3e46567f5.webm",
+      "sha256": "a2a60ba8679855283deb1921e06d42a17e7802a284ab96b3b9ec7658bbb705bf",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-ROOM_EDIT_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-ROOM_EDIT_READY-4.png",
+      "sha256": "596fe07dea52fb44e53fc59171892ee2f4cce702a12c99df99d050289423d795",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_EDIT_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-ROOM_FEATURE_ADDED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-ROOM_FEATURE_ADDED-6.png",
+      "sha256": "e626898335e7d57b1948be91914f599161e37a22b2575a404ae539b1899792af",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_FEATURE_ADDED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-ROOM_SAVED-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-ROOM_SAVED-17.png",
+      "sha256": "55e3a238e5a667ab88d636bdb3d35903346fa2b466e5cbb9cce9a122b575d4a0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-RETURNED-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-RETURNED-19.png",
+      "sha256": "087500683dc9693d7e9e3c3a6bdce60f59760f93b2180c7d510d62e3a2315e6d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "9a1c6e0da9d77bb9996190a47242448d5d70a222b45ab6de498cd8231e26a28e",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c9d922d01454058c4e8c2c3713b60e6c.webm",
+      "sha256": "441ea1f3ff829d0051a80cc3ec917d0ff1c86ee8c568f4a16d189d04affb165f",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-ROOM_EDIT_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-ROOM_EDIT_READY-4.png",
+      "sha256": "bda62875ba40d0ff6ed8735d0c7f08a2f4eeb00311f78a2501cabe80eb64eb96",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_EDIT_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-ROOM_FEATURE_ADDED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-ROOM_FEATURE_ADDED-6.png",
+      "sha256": "e7812443f950fc86302e7a0d10c130043a22cac98a9853f29f792408390d7dcd",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_FEATURE_ADDED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-ROOM_SAVED-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-ROOM_SAVED-17.png",
+      "sha256": "436a46a0e44838c332645b5a11ac43b778e39c500a6a44fff3dab4801b5fa837",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-RETURNED-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-RETURNED-19.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "9f58d1caacc64a69eb33f1c883333a556b255f3bb544b7e222f0ebdd1ca6f991",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3431beb1a9f1d997285bac5335f12a38.webm",
+      "sha256": "b4dfcd601a708b51bc99862e9175eb6df383ef6fe807446455f3a32074b580da",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-ROOM_EDIT_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-ROOM_EDIT_READY-4.png",
+      "sha256": "457ae2399b97e7f6ad88246d38afc6b3bf655b2f7583fcfd3923235abdd85ccb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_EDIT_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-ROOM_FEATURE_ADDED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-ROOM_FEATURE_ADDED-6.png",
+      "sha256": "e7812443f950fc86302e7a0d10c130043a22cac98a9853f29f792408390d7dcd",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_FEATURE_ADDED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-ROOM_SAVED-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-ROOM_SAVED-17.png",
+      "sha256": "d383abbd539a314827c845fdc9c9bd251c2975913311dec92accb00562a33c16",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "ROOM_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-RETURNED-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-RETURNED-19.png",
+      "sha256": "a90bdb84034e8d44fcbcf52d574ad675590469d0232c71f79284dec24d6bd834",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "ac315bda66cd0ff7c72bb9a3a9cf93c18392e460a0a7b760cfd99727eeb85dac",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.parametric-room-correction.experience-creator-adds-generic-room-feature-and-saves-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c2d4a50ffc644c2fd930615c6845cb2d.webm",
+      "sha256": "edf825eefb9c819206a1ed38bbc1971dc28db3fb2129a3ec298759fa5095b13c",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.parametric-room-correction.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "ea6e3de9158c0a7649662148003b0e28ab418ff0fa51eb6d93f3cd87bcc27458",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

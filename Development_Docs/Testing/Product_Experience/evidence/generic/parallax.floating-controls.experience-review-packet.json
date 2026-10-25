@@ -4,16 +4,30 @@
     "id": "parallax.floating-controls.experience",
     "name": "Floating Spatial Assistant controls and Creator continuity",
     "authority": "one-voyage",
-    "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+    "owners": [
+      "spatial-pilot",
+      "one-voyage",
+      "project-crossdeck",
+      "reach"
+    ],
     "critical": true,
     "experience": {
       "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
       "objective": "Move and resize floating assistance while retaining a full-sized spatial scene and reachable bottom composer",
       "visibleOutcome": "A Creator moves and resizes floating assistance, sees confirmed window feedback, docks it and returns to the same Creator Library",
       "integrationOwner": "Parallax floating assistance experience integration",
-      "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
-      "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
-      "projectionPaths": ["src/parallax"],
+      "systems": [
+        "project-parallax",
+        "project-crossdeck",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/components/studio/parallax",
+        "src/app/studio/parallax"
+      ],
+      "projectionPaths": [
+        "src/parallax"
+      ],
       "entryPoint": "/studio/library",
       "states": [
         "EDITOR_READY",
@@ -23,8 +37,13 @@
         "ASSISTANT_DOCKED",
         "RETURNED"
       ],
-      "devices": ["DESKTOP", "MOBILE"],
-      "roles": ["CREATOR"],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
       "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
       "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
       "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
@@ -47,8 +66,13 @@
           "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
         }
       ],
-      "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
-      "homeportJourneyIds": ["B"],
+      "homeportScreenIds": [
+        "screen-page-studio-library",
+        "screen-page-studio"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
       "browserTests": [
         "tests/e2e/parallax-owner-refinements.spec.ts",
         "tests/e2e/parallax-assistant-presentation.spec.ts",
@@ -107,7 +131,9 @@
       "journeys": [
         {
           "id": "creator-floating-window-controls-and-return",
-          "roles": ["CREATOR"],
+          "roles": [
+            "CREATOR"
+          ],
           "outcome": "A Creator moves and resizes floating assistance through accessible handles, docks it, and returns to the same library.",
           "steps": [
             {
@@ -222,12 +248,12 @@
       ]
     }
   },
-  "sourceDigest": "09b96928fd15f7a2f10a8b4dac2e40a91896e80d73aa963c8c132e686a48833b",
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
   "artifacts": [
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1.png",
-      "sha256": "380477deb6e1820113787af50358fd4b35e65f824ef0b504728b92383dadd786",
+      "sha256": "99114a5304fc62c062e947f46bb3f5fe6eb3174b378f18797b83cdfb39cb9b03",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -239,7 +265,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3.png",
-      "sha256": "4e4d35800701a3d418bc9ca9455bdc14a5baf0ea9268341724ee0b99dc447ba6",
+      "sha256": "8d18302b802e9a269eab895dfcb02205efb28614600d2af224a7898ae98c1f3e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -251,7 +277,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_RESIZED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_RESIZED-6.png",
-      "sha256": "c24be7f2ed9d8994880ecd2b600e6a199b8add9e40cde27db2641d9b02cf669b",
+      "sha256": "55caae0d9d6d3855e16f7253aaa9dce6ded74ff1fe90584d75f7e55e1bf02e0b",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -263,7 +289,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_MOVED-9",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_MOVED-9.png",
-      "sha256": "37c124dc92e82c2937f1256952f91576f0da3ed331c348533f5df096140725ae",
+      "sha256": "b3332a8eac4a96afa259f7a15ca918a69580119a343e4fd9cd8f45dcada89ae4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -275,7 +301,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-11",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-11.png",
-      "sha256": "c867a3719e97da95a30580c97cc7b721e6aa3c8504eb5e086cbd83bce7e82fbc",
+      "sha256": "b8a891281730101e8ef6c048512d1998cbc6af57f01f3c92e4920f629e661e6f",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -287,7 +313,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-14",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-14.png",
-      "sha256": "0dd1ec4e33bb3d728f3898b5d332b1db077b24f40f6324451ea0a37185ba7990",
+      "sha256": "1109a062dd6aab6104809d19a96b6ac6de761d205837f8631bbd6a9f3d20848b",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -299,7 +325,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL.trace.zip",
-      "sha256": "4efe83b1e766a4f82157e2456a0ca5c8cc34989e3abb6ba605affd1310acdfba",
+      "sha256": "461a5802286db7f08121a81f6749f0c2a040b00a6f1378f28e36c0b8c098df67",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -309,8 +335,8 @@
     },
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/81d99aa7bec27c4726d7cd3387bb30ba.webm",
-      "sha256": "2123aed9c400ee540dd57c7ae10be8313887e37d3b174ca67072de29d74ac6df",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/e7161d05c1f7f17a75029c5410fc61fd.webm",
+      "sha256": "d9e2dfd7fff83a31b261ab8f4237c7f44e23fdbf52727b5f4f9610dfa5166c50",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -321,7 +347,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1.png",
-      "sha256": "9907a1a154db5b8269fdcb7f5079fb6a763840b05ee091b6db0fd7bae7b89af2",
+      "sha256": "5bfec1a8194cdb72ba46d74df89b1026fbd7822124c6ba47d96405199e40123d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -333,7 +359,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3.png",
-      "sha256": "25f1351cc38b9bb747a9fe8756f2826c68ebeb5be5d4ed438f67343bd5116cb8",
+      "sha256": "680c5e5c5a57caeecb7494f69dd96e3db126eb888f0e1e9d8a34def55d51b974",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -345,7 +371,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_RESIZED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_RESIZED-6.png",
-      "sha256": "30ccc0bd99c108650c20abc98a8fe1835521ebb7356855fdd03fe369ab0d005f",
+      "sha256": "fa4edceb8930cd98fa3b484a494edb8c22a15a76a73a12f2c282f5c910437eab",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -357,7 +383,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_MOVED-9",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_MOVED-9.png",
-      "sha256": "aa2286d014e90e7b37fc79aae31619e08baf22aaf8821526ce01f0a972002b37",
+      "sha256": "d004b697fad105ad2a5bfe3f3e73845be389f48397ce1551f72b178b1cc5821c",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -369,7 +395,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-11",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-11.png",
-      "sha256": "154ded1e6f802ed2c528d6b2c780365396e527336b59cf2d0ddb440af2747d05",
+      "sha256": "7da80ebb58e2d859009f990c37c389caa3d7864d8575cbef7ef39c98fbd3888e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -381,7 +407,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-14",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-14.png",
-      "sha256": "0dd1ec4e33bb3d728f3898b5d332b1db077b24f40f6324451ea0a37185ba7990",
+      "sha256": "1109a062dd6aab6104809d19a96b6ac6de761d205837f8631bbd6a9f3d20848b",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -393,7 +419,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "247768d03b7a9cd191114e12159c7cec5bfc253bb641403b8b08ec01420279eb",
+      "sha256": "bc5950ef28af7f1c1a650a28db180e4a76246a88d0cdad57a548117507461373",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -403,8 +429,8 @@
     },
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/8da3d22d8bd37e11d0b25ea575de9072.webm",
-      "sha256": "ab0db51f8f281c305d9689e7e281e3bf070cbdcdd76f92cd3f63d18631f1bda7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/8c24859ac326ef1e59a0a57dc7e7c83a.webm",
+      "sha256": "b88853dd87404d5c58f729d108a5acbf10f0fd75bde30bbfb0b1a626c0f375da",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -415,7 +441,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1.png",
-      "sha256": "2befba903d0936272dd3a40f7bd4fd51dfe130399f3493dca90d9fc7c16759bb",
+      "sha256": "f1f36d6534c28ab5c5054f391b2fa35f499565e0d898601b90bcb097277e912a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -427,7 +453,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3.png",
-      "sha256": "d48bd04a52ae9b74b4a045bc2dfbbc03b0a2a1f32e7be3e12be29de6510084b2",
+      "sha256": "1941de3f3beee4b5f6e2a5b7bbc8a6230c047e9170959e4e6b3202b12ab4ff69",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -439,7 +465,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_RESIZED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_RESIZED-6.png",
-      "sha256": "efaf2d4b415bebf5084319291335089ba13a45df484493bf42b14e31b58c1869",
+      "sha256": "85d9474e3f427a53c75dc4cab200d8f1447fb3ed56c9c6a7b1d75b0b1e3556de",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -451,7 +477,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_MOVED-9",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_MOVED-9.png",
-      "sha256": "5bec6e4c3dfd7c60c7391e22555368cc0407a487c2b33328abe5853bb61a54d4",
+      "sha256": "1e0c4dc67604622490d05d4e112d4d85736ef62c679546bb83da32bfedfdee06",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -463,7 +489,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-11",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-11.png",
-      "sha256": "bf19608702af8f1029c3a6cb1198c0664eeb636141c9cf015820bedc3a28a3f8",
+      "sha256": "fc795cdb1db19efe03af8ab749cafedfc747eac73ac79527960b48d551a8a675",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -475,7 +501,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-RETURNED-14",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-RETURNED-14.png",
-      "sha256": "9135cfcb3d05d6bcd08be7337c8fd71e9c35465eaf9bbec7862d3f2c7d80328d",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -487,7 +513,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL.trace.zip",
-      "sha256": "654ac9d42a1828ee8838929f7c21ddc769ab2bac758c99770e384553cd0446a1",
+      "sha256": "fcd29efe1f2f39958f361b7976d97c12a5376e4e2ad0ce1bcc03cb54798c730b",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -497,8 +523,8 @@
     },
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/aba8bc0e7f886d3ce1e59a94c1a6eed0.webm",
-      "sha256": "5568a0a62506e14b31ec2889623f8ff16d5e1461cb02ffaac6f615abce85b7f2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/20e07243793c8bd2bc3df8de7c4fc842.webm",
+      "sha256": "0c06075fbf37f2577a93c1e6b2802823401952cd4c68f1344256f288b9224a6d",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -509,7 +535,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1.png",
-      "sha256": "061b2e8c2af4cdf3604192ce9f09d96bc3341ee8492a79b5548fe7c65d8bd845",
+      "sha256": "9166823758e43b1a4c10bf90057490ad684557076b3b08e580a8f19ab4882d34",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -521,7 +547,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3.png",
-      "sha256": "dbba65ea69653719e85a11fe605c0cb063f7790ce3219fa91118a21ea01b1850",
+      "sha256": "1941de3f3beee4b5f6e2a5b7bbc8a6230c047e9170959e4e6b3202b12ab4ff69",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -533,7 +559,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_RESIZED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_RESIZED-6.png",
-      "sha256": "8c8f1c7e0ee6d1f5cdec1101078768e4e1de333e17637d8057655205128b9a20",
+      "sha256": "85d9474e3f427a53c75dc4cab200d8f1447fb3ed56c9c6a7b1d75b0b1e3556de",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -545,7 +571,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_MOVED-9",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_MOVED-9.png",
-      "sha256": "e3388c136a24477fb9aa97d2fcf73bc15d2b25e92f47f9d285ee8361115485ef",
+      "sha256": "1e0c4dc67604622490d05d4e112d4d85736ef62c679546bb83da32bfedfdee06",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -557,7 +583,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-11",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-11.png",
-      "sha256": "c431627613801214cde083064cd6fc2641359e5d84febc045dfb2037d0906c89",
+      "sha256": "fc795cdb1db19efe03af8ab749cafedfc747eac73ac79527960b48d551a8a675",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -569,7 +595,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-RETURNED-14",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-RETURNED-14.png",
-      "sha256": "9135cfcb3d05d6bcd08be7337c8fd71e9c35465eaf9bbec7862d3f2c7d80328d",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -581,7 +607,7 @@
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "7c36d1aa34f1e852c0ce855022aaca5c24dba9a8f4cd7e580187f5d29607d9b8",
+      "sha256": "7298e20ada1eb7853d83a9fd1854fa9cc0cb00f8bab382311630f24a92ab311d",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -591,8 +617,8 @@
     },
     {
       "id": "parallax.floating-controls.experience-creator-floating-window-controls-and-return-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/296317dab1c678e3d4ba0aed917530c5.webm",
-      "sha256": "151ccad539ac35bd69b582a003905b5c948aac154912150d38e50d953fa73701",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a6fec500af71bb6212bc4788e723249c.webm",
+      "sha256": "f93a2cbcf863c3513cb16866daef23fc168fd40b6133dfcbc7fb4b7473506a52",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "parallax.floating-controls.experience",
@@ -601,7 +627,7 @@
       "motionMode": "REDUCED"
     }
   ],
-  "packetDigest": "33b467e544b47c01041f19af71f9d0a0ff3eb4b904992c839e6047b1c2b42232",
+  "packetDigest": "432240441cd32d8643fc361ea9d38a377fdc1e42c39dbce27958c88741a8bf6c",
   "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
   "reviewDimensions": [
     "composition",

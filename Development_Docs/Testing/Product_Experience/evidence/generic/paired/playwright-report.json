@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-        "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-        "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+        "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/819c992fb15ef0b87299ddaaed143427bd00a13d",
+        "commitHash": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+        "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/40155440070"
       },
       "gitCommit": {
-        "shortHash": "f5e0cddde",
-        "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
-        "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
-        "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+        "shortHash": "f265f0627",
+        "hash": "f265f062767d40618df9152aa8900eaf17bfa92d",
+        "subject": "test(studio): register Chronicle stylesheet ownership",
+        "body": "test(studio): register Chronicle stylesheet ownership\n",
         "author": {
-          "name": "Codex",
-          "email": "codex@openai.com",
-          "time": 1792541275000
+          "name": "Kgray44",
+          "email": "kkidsgray@icloud.com",
+          "time": 1792895935000
         },
         "committer": {
-          "name": "Codex",
-          "email": "codex@openai.com",
-          "time": 1792541275000
+          "name": "Kgray44",
+          "email": "kkidsgray@icloud.com",
+          "time": 1792895935000
         },
         "branch": "HEAD"
       },
@@ -53,24 +53,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "commitHash": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/40155440070"
           },
           "gitCommit": {
-            "shortHash": "f5e0cddde",
-            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
-            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
-            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "shortHash": "f265f0627",
+            "hash": "f265f062767d40618df9152aa8900eaf17bfa92d",
+            "subject": "test(studio): register Chronicle stylesheet ownership",
+            "body": "test(studio): register Chronicle stylesheet ownership\n",
             "author": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "committer": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "branch": "HEAD"
           },
@@ -91,24 +91,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "commitHash": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/40155440070"
           },
           "gitCommit": {
-            "shortHash": "f5e0cddde",
-            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
-            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
-            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "shortHash": "f265f0627",
+            "hash": "f265f062767d40618df9152aa8900eaf17bfa92d",
+            "subject": "test(studio): register Chronicle stylesheet ownership",
+            "body": "test(studio): register Chronicle stylesheet ownership\n",
             "author": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "committer": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "branch": "HEAD"
           },
@@ -135,24 +135,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "commitHash": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/40155440070"
           },
           "gitCommit": {
-            "shortHash": "f5e0cddde",
-            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
-            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
-            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "shortHash": "f265f0627",
+            "hash": "f265f062767d40618df9152aa8900eaf17bfa92d",
+            "subject": "test(studio): register Chronicle stylesheet ownership",
+            "body": "test(studio): register Chronicle stylesheet ownership\n",
             "author": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "committer": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "branch": "HEAD"
           },
@@ -173,24 +173,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "commitHash": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/40155440070"
           },
           "gitCommit": {
-            "shortHash": "f5e0cddde",
-            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
-            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
-            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "shortHash": "f265f0627",
+            "hash": "f265f062767d40618df9152aa8900eaf17bfa92d",
+            "subject": "test(studio): register Chronicle stylesheet ownership",
+            "body": "test(studio): register Chronicle stylesheet ownership\n",
             "author": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "committer": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "branch": "HEAD"
           },
@@ -211,24 +211,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "commitHash": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/40155440070"
           },
           "gitCommit": {
-            "shortHash": "f5e0cddde",
-            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
-            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
-            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "shortHash": "f265f0627",
+            "hash": "f265f062767d40618df9152aa8900eaf17bfa92d",
+            "subject": "test(studio): register Chronicle stylesheet ownership",
+            "body": "test(studio): register Chronicle stylesheet ownership\n",
             "author": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "committer": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "branch": "HEAD"
           },
@@ -249,24 +249,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "commitHash": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/40155440070"
           },
           "gitCommit": {
-            "shortHash": "f5e0cddde",
-            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
-            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
-            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "shortHash": "f265f0627",
+            "hash": "f265f062767d40618df9152aa8900eaf17bfa92d",
+            "subject": "test(studio): register Chronicle stylesheet ownership",
+            "body": "test(studio): register Chronicle stylesheet ownership\n",
             "author": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "committer": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "branch": "HEAD"
           },
@@ -287,24 +287,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "commitHash": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/40155440070"
           },
           "gitCommit": {
-            "shortHash": "f5e0cddde",
-            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
-            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
-            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "shortHash": "f265f0627",
+            "hash": "f265f062767d40618df9152aa8900eaf17bfa92d",
+            "subject": "test(studio): register Chronicle stylesheet ownership",
+            "body": "test(studio): register Chronicle stylesheet ownership\n",
             "author": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "committer": {
-              "name": "Codex",
-              "email": "codex@openai.com",
-              "time": 1792541275000
+              "name": "Kgray44",
+              "email": "kkidsgray@icloud.com",
+              "time": 1792895935000
             },
             "branch": "HEAD"
           },
@@ -350,7 +350,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 38714,
+                  "duration": 40775,
                   "errors": [],
                   "stdout": [
                     {
@@ -359,7 +359,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T00:41:30.489Z",
+                  "startTime": "2026-10-25T03:29:14.571Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -369,7 +369,7 @@
           ],
           "id": "eaee6e498f685fa0f405-39e31452bc8424cc89fa",
           "file": "crossdeck-experience-refit.spec.ts",
-          "line": 52,
+          "line": 297,
           "column": 7
         },
         {
@@ -388,7 +388,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 40974,
+                  "duration": 47807,
                   "errors": [],
                   "stdout": [
                     {
@@ -397,7 +397,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T00:42:09.332Z",
+                  "startTime": "2026-10-25T03:29:55.491Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -407,7 +407,7 @@
           ],
           "id": "eaee6e498f685fa0f405-a651dbc18c2d72534e8f",
           "file": "crossdeck-experience-refit.spec.ts",
-          "line": 52,
+          "line": 297,
           "column": 7
         }
       ]
@@ -434,7 +434,7 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 30317,
+                  "duration": 32554,
                   "errors": [],
                   "stdout": [
                     {
@@ -446,10 +446,10 @@
                   "steps": [
                     {
                       "title": "Author only this synthetic edition’s Map for crew visibility",
-                      "duration": 6
+                      "duration": 5
                     }
                   ],
-                  "startTime": "2026-10-21T00:42:50.336Z",
+                  "startTime": "2026-10-25T03:30:43.333Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -467,8 +467,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-21T00:41:27.160Z",
-    "duration": 113644.773,
+    "startTime": "2026-10-25T03:29:10.920Z",
+    "duration": 125116.51000000001,
     "expected": 3,
     "skipped": 0,
     "unexpected": 0,

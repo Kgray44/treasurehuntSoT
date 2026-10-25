@@ -1,0 +1,835 @@
+{
+  "objective": "Save a private spatial definition, inspect the contextual Community publishing steps and server package, then return without accidental publication",
+  "contract": {
+    "id": "parallax.spatial-community-publishing.experience",
+    "name": "Creator spatial Community publishing",
+    "authority": "one-voyage",
+    "owners": [
+      "project-parallax",
+      "harborlight",
+      "project-homeport"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A Creator saving and sharing an owned spatial definition",
+      "objective": "Save a private spatial definition, inspect the contextual Community publishing steps and server package, then return without accidental publication",
+      "visibleOutcome": "One Studio wizard identifies the exact saved source, offers public Profile setup with a return to the same item and Environment version when required, shows included content, license and rights, and presents a server verified package with readable effect, behavior and animation definitions before explicit submission. An approved installed Asset or Composition with modification rights offers a credited copy into a separate private Scene while its pinned Library release stays read-only",
+      "integrationOwner": "Parallax SC-07A direct spatial Community publishing",
+      "systems": [
+        "project-parallax",
+        "harborlight",
+        "project-homeport"
+      ],
+      "sourcePaths": [
+        "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+        "src/components/studio/parallax/SpatialContentLibrary.tsx",
+        "src/components/studio/parallax/SpatialStudio.tsx",
+        "src/app/account/profile/page.tsx",
+        "src/app/studio/parallax/page.tsx",
+        "src/app/admin/community/[listingId]/page.tsx",
+        "src/app/community/[slug]/page.tsx",
+        "src/components/admiralty/SpatialPublicationReviewPanel.tsx",
+        "src/components/community/CommunityReviewList.tsx",
+        "src/components/community/SpatialCommunityInstall.tsx"
+      ],
+      "projectionPaths": [
+        "src/parallax/spatial-catalog-page-service.ts",
+        "src/parallax/spatial-catalog-read-projection.ts",
+        "src/parallax/spatial-catalog-response.ts",
+        "src/parallax/spatial-installed-catalog-adapter.ts",
+        "src/parallax/library-service.ts",
+        "src/parallax/element-authoring.ts",
+        "src/parallax/reusable-assets.ts",
+        "src/community/spatial-publication.ts",
+        "src/community/spatial-package.ts",
+        "src/community/spatial-installation.ts",
+        "src/community/spatial-reuse-rights.ts",
+        "src/community/public-profile.ts",
+        "src/app/api/studio/parallax/route.ts",
+        "src/app/api/community/spatial-publication/licenses/route.ts"
+      ],
+      "entryPoint": "/studio/library",
+      "states": [
+        "EDITOR_READY",
+        "SOURCE_SAVED",
+        "SOURCE_DISCOVERED",
+        "PUBLISHING_OPEN",
+        "PROFILE_REQUIRED",
+        "PROFILE_READY",
+        "INCLUDED_CONTENT",
+        "RIGHTS_REVIEW",
+        "PACKAGE_REVIEWED",
+        "RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "accessibility": "Labeled controls, native modal focus, keyboard steps, visible errors, Escape recovery and narrow layout support the complete review. A missing public Profile shows an actionable link above the narrow-screen footer.",
+      "fallback": "A missing public Profile blocks the first publishing step, offers direct Profile setup and returns to the same private saved source and selected immutable Environment version after a valid public handle is saved. Other failed Community preflights leave that source intact with a specific correction or retry.",
+      "navigation": "Creator Library opens Studio; saved asset, Effect, Composition, Scene and Environment details open one Community wizard; Profile setup returns to that saved definition or selected Environment version; close restores Studio and the Creator Studio link returns to Library. An approved installed Asset or Composition returns to pinned Library inspection, and licensed credited reuse targets a separate private Scene.",
+      "designTarget": "Keep the saved source and revision first, with a visible Profile prerequisite above the narrow-screen footer when needed, then a compact five step Content, Description, Included content, Sharing and rights, Review sequence. Show real server reviewed contents and credits before submission, retain the blue Studio hierarchy, and preserve keyboard and mobile usability.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted entry establishes clear Creator destinations and account access.",
+          "preserve": "Account continuity and readable hierarchy."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted narrow entry keeps destinations and account access.",
+          "preserve": "Readable narrow controls and contextual navigation."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-studio-library",
+        "screen-page-studio",
+        "screen-page-account-profile"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-spatial-community.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "limitations": [
+        "The unassociated default Scene appears in the Scenes Library but its Community export is classified as a spatial asset because it has no pinned Environment. The repeatable semantic journey uses a public-profile Creator and stops before duplicate submission; separate browser cases exercise private-profile prerequisites, same-source and selected Environment-version return, and mobile visibility. Other SC-07A browser cases exercise actual Effect, Composition, Scene and Environment submission, moderation, listing, installation, immutable updates, refusal and recovery. Validated local animation tracks remain in the package; placed reusable assets without verified source licenses and pinned package dependencies are refused. Installed Asset and Composition Scene copies require modification rights on the exact pinned release; a saved Asset without a generated reusable marker is accepted only after server verification of its Library classification, source checksum and self-contained content. Private Composition extraction retains reuse lineage and self-contained Asset export refuses placed-source content. Browser evidence does not establish owner acceptance or real room safety."
+      ],
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-community-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "text": "Voyagewright Studio"
+          }
+        }
+      },
+      "continuity": {
+        "objective": "The authenticated Creator remains the same across saved Studio source, Homeport Profile setup, and Parallax and Harborlight package review.",
+        "checks": [
+          {
+            "id": "creator-identity",
+            "role": "button",
+            "name": "Synthetic Parallax Community Creator",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "journeys": [
+        {
+          "id": "creator-saved-scene-community-package-review",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "The Creator saves a private spatial definition, reviews the actual Community package and rights, and returns without publishing",
+          "steps": [
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Synthetic Parallax Community Creator"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Personal Harbor"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Edit Public Profile"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Handle Lowercase letters, numbers, and internal hyphens.",
+              "value": ""
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Save Profile"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Profile saved and public preview refreshed.",
+              "path": "/account/profile"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Synthetic Parallax Community Creator"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Spatial Studio"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Save to Library",
+              "path": "/studio/parallax",
+              "state": "EDITOR_READY",
+              "kind": "outcome",
+              "meaning": "The natural entry opens canonical Spatial Studio."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open scene settings"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Experience title",
+              "contextValue": "PARALLAX_COMMUNITY_SCENE_NAME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Save to Library"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Saved to Library · one definition",
+              "path": "/studio/parallax",
+              "state": "SOURCE_SAVED",
+              "kind": "outcome",
+              "meaning": "Save retains a private reusable source without Community publication."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Library"
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Assets"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown",
+              "expectFocus": {
+                "role": "tab",
+                "name": "Environments"
+              }
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown",
+              "expectFocus": {
+                "role": "tab",
+                "name": "Scenes"
+              }
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Scenes"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Inspect PARALLAX_COMMUNITY_SCENE_NAME",
+              "contextName": "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME"
+            },
+            {
+              "action": "assert",
+              "role": "complementary",
+              "name": "PARALLAX_COMMUNITY_SCENE_NAME details",
+              "contextName": "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME",
+              "text": "Private Library",
+              "path": "/studio/parallax",
+              "state": "SOURCE_DISCOVERED",
+              "kind": "outcome",
+              "meaning": "Saved Scene details expose its private state and contextual action."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Publish to Community…"
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "Publish to Community",
+              "text": "This is your private saved source",
+              "path": "/studio/parallax",
+              "state": "PUBLISHING_OPEN",
+              "kind": "outcome",
+              "meaning": "One wizard distinguishes the saved source from a Community release."
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Continue",
+              "text": "Continue",
+              "path": "/studio/parallax"
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "Publish to Community",
+              "text": "Community publishing needs a public Profile with a handle.",
+              "path": "/studio/parallax",
+              "state": "PROFILE_REQUIRED",
+              "kind": "outcome",
+              "meaning": "The same Creator sees the real public Profile prerequisite after clearing the owned handle through Profile UI."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Set up public Profile"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Handle Lowercase letters, numbers, and internal hyphens.",
+              "value": "community-review-creator"
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Default visibility"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Save Profile"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Working draft opened",
+              "path": "/studio/parallax"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Scene Hierarchy"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Library"
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Assets"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown",
+              "expectFocus": {
+                "role": "tab",
+                "name": "Environments"
+              }
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown",
+              "expectFocus": {
+                "role": "tab",
+                "name": "Scenes"
+              }
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Scenes"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Inspect PARALLAX_COMMUNITY_SCENE_NAME",
+              "contextName": "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Publish to Community…"
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "Publish to Community",
+              "text": "This is your private saved source",
+              "path": "/studio/parallax",
+              "state": "PROFILE_READY",
+              "kind": "outcome",
+              "meaning": "Public Profile setup returns to the same saved definition; exact contextual reinspection reopens its publishing dialog without the prerequisite warning.",
+              "absentRole": {
+                "role": "link",
+                "name": "Set up public Profile"
+              }
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Continue"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Description",
+              "value": "A synthetic tabletop Scene for other Creators."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Continue"
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "Publish to Community",
+              "text": "The server checks the saved revision and every required Environment reference during package review.",
+              "path": "/studio/parallax",
+              "state": "INCLUDED_CONTENT",
+              "kind": "outcome",
+              "meaning": "Included content explains the resolved dependency boundary."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Continue"
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "Publish to Community",
+              "text": "Visibility: Community after approval",
+              "path": "/studio/parallax",
+              "state": "RIGHTS_REVIEW",
+              "kind": "outcome",
+              "meaning": "Sharing explains moderation and requires license and rights review."
+            },
+            {
+              "action": "click",
+              "role": "checkbox",
+              "name": "I own or have permission to redistribute every included element and reviewed its credits."
+            },
+            {
+              "action": "keyboard",
+              "key": "Space"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Review package"
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "Publish to Community",
+              "text": "SERVER-VERIFIED PACKAGE",
+              "path": "/studio/parallax",
+              "state": "PACKAGE_REVIEWED",
+              "kind": "outcome",
+              "meaning": "The server returns sanitized contents and attribution before submission."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Close publishing"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "RETURNED",
+              "returnPath": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-EDITOR_READY-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-EDITOR_READY-10.png",
+      "sha256": "c726425ea49df4667d42105fa0826e4796037f12d8b24123c679c51dea0da2f3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-SOURCE_SAVED-14",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-SOURCE_SAVED-14.png",
+      "sha256": "3ce5cb489a2108b9b6693ff56585f55312887c6a336bd4eef20b30888ed018b1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "SOURCE_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-SOURCE_DISCOVERED-21",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-SOURCE_DISCOVERED-21.png",
+      "sha256": "77389643512d44c4eae7227cdbc2dfeacd5a23496bcc00f836887bbba78e521c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "SOURCE_DISCOVERED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-PUBLISHING_OPEN-23",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-PUBLISHING_OPEN-23.png",
+      "sha256": "f7fdff71eaa948e68c016dc7f8d45418bcf36324ec1fc998c90e5dfc5c5d1534",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "PUBLISHING_OPEN",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-PROFILE_REQUIRED-25",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-PROFILE_REQUIRED-25.png",
+      "sha256": "f7fdff71eaa948e68c016dc7f8d45418bcf36324ec1fc998c90e5dfc5c5d1534",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "PROFILE_REQUIRED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-PROFILE_READY-44",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-PROFILE_READY-44.png",
+      "sha256": "e4df286a9f7eb8c32ee7cd8518c2e596ba9b869eba9c3f926dddfdd4bfca7374",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "PROFILE_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-INCLUDED_CONTENT-48",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-INCLUDED_CONTENT-48.png",
+      "sha256": "5f1d36e8002c995374c7a129e74b9dba00713948771116f3e0565665d1725619",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "INCLUDED_CONTENT",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-RIGHTS_REVIEW-50",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-RIGHTS_REVIEW-50.png",
+      "sha256": "8a65b319f06959203014716da8aa2d33c6a19414a27ff5fd2899efd7321d3c07",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "RIGHTS_REVIEW",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-PACKAGE_REVIEWED-54",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-PACKAGE_REVIEWED-54.png",
+      "sha256": "2104160373b8935bcffe4c6883a077d94872c70b419af20825b99752da8bc33c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "PACKAGE_REVIEWED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-RETURNED-57",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-RETURNED-57.png",
+      "sha256": "81cbe7813ad3fb662a295e281b7d4dc5edf47d67762067e72902467919873a38",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "96d95345450697890b02101fa784173c59fc261d2b02ea8f84762530834fc8a2",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/228d1a97fb70599fba0fd40a3f68f22e.webm",
+      "sha256": "4ee9762708a2e0b481091b140d0bccacf3ab59d825e1c1126d6d1d698cac8374",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-EDITOR_READY-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-EDITOR_READY-10.png",
+      "sha256": "9166823758e43b1a4c10bf90057490ad684557076b3b08e580a8f19ab4882d34",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-SOURCE_SAVED-14",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-SOURCE_SAVED-14.png",
+      "sha256": "35ebfeb8d27faab9bb604fc6df1bba428969b42781e51ac6eb72af1a954857d8",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "SOURCE_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-SOURCE_DISCOVERED-21",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-SOURCE_DISCOVERED-21.png",
+      "sha256": "966681097eef44be43951d8920104f11e00497742a18f29fa95e4dffaf153ddf",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "SOURCE_DISCOVERED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-PUBLISHING_OPEN-23",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-PUBLISHING_OPEN-23.png",
+      "sha256": "9db6f87ced7124ee67498f89236a7710e11e2f6293439912a7bd201cf70a3178",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "PUBLISHING_OPEN",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-PROFILE_REQUIRED-25",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-PROFILE_REQUIRED-25.png",
+      "sha256": "9db6f87ced7124ee67498f89236a7710e11e2f6293439912a7bd201cf70a3178",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "PROFILE_REQUIRED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-PROFILE_READY-44",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-PROFILE_READY-44.png",
+      "sha256": "83936caea11832198dd6d5b3abf1f07c0afe10bb4e5538ca26b529c377d4d0ea",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "PROFILE_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-INCLUDED_CONTENT-48",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-INCLUDED_CONTENT-48.png",
+      "sha256": "828b2f7d2bf58fb28930a82fe9c88fd007f274ff299158d87dada23c305653dc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "INCLUDED_CONTENT",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-RIGHTS_REVIEW-50",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-RIGHTS_REVIEW-50.png",
+      "sha256": "d386f0408ab60d9a025c8ad00b51f494b3bc4fdf10d179c098c11d344862deb1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "RIGHTS_REVIEW",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-PACKAGE_REVIEWED-54",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-PACKAGE_REVIEWED-54.png",
+      "sha256": "96125e295e9d123064dcdf4757c1aaaa6b161ea9f5eb3f89857680d03c1f1cb6",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "PACKAGE_REVIEWED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-RETURNED-57",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-RETURNED-57.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "73532890ec620539ba7537df8374b07478bc0d6445ad664ee8c68424907704f3",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.spatial-community-publishing.experience-creator-saved-scene-community-package-review-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2bf36afa49836f8677c5871333ab7a95.webm",
+      "sha256": "6e871a25d155d5d92294d03f74ad89bcc4538d5c3dbc24122d7fef337f9e989d",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "eec7977931c77bf9a69e21f85811217282c0602231f8eb07644fac8a397e095e",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}
