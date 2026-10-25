@@ -1527,7 +1527,7 @@ test("frozen M11 and F14 retain exact source, canonical and spent review without
   assert.deepEqual(f.record.finalBudgetPredecessor, V);
   assert.equal(PR776_CONTROLLER_PATHS.length, 30);
   assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 27);
-  assert.equal(PR776_FINAL_BUDGET_REPAIR_PATHS.length, 5);
+  assert.equal(PR776_FINAL_BUDGET_REPAIR_PATHS.length, 7);
   assert.equal(f.budgetControllerChanges.length, 30);
   assert.equal(f.validate(), true);
   assert.equal(f.historicalCanonicalBlobReads, 0);
@@ -1661,3 +1661,16 @@ test("the spent F14 machine artifact cannot authenticate the successor final bud
   oldMachineReview.run.head_sha = V.base;
   assert.throws(() => validateAttestationProvenance(oldMachineReview), /ATTESTATION_PROVENANCE_INVALID/u);
 });
+
+for (const file of ["tests/sounding-line/experience-r25.test.mjs", "tests/sounding-line/experience-r26.test.mjs"]) {
+  test("missing historical deadline assertion repair " + file + " fails the finite M11 bridge", () => {
+    const f = fixture();
+    f.budgetChanges = f.budgetChanges.filter((value) => value !== file);
+    assert.throws(f.validate, /FINAL_BUDGET_REPAIR_CHANGED_PATHS/u);
+  });
+  test("changed historical deadline assertion blob " + file + " fails the finite M11 bridge", () => {
+    const f = fixture();
+    f.candidateTree.set(file, "100644 blob " + "a".repeat(40));
+    assert.throws(f.validate, /REPAIR_BLOB_CHANGED/u);
+  });
+}

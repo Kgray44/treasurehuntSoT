@@ -212,6 +212,8 @@ export const PR776_READER_REPAIR_PATHS = Object.freeze([
   "tests/sounding-line/experience-pr776-checkout.test.mjs",
 ]);
 export const PR776_FINAL_BUDGET_REPAIR_PATHS = Object.freeze([
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
   "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
   "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
   PR776_RECORD_PATH,
