@@ -17,6 +17,9 @@ import {
   PR776_PATH_CHECK_PREDECESSOR as K,
   PR776_PATH_CHECK_ADDED_PATHS,
   PR776_PATH_CHECK_REPAIR_PATHS,
+  PR776_SQLITE_PREDECESSOR as S,
+  PR776_SQLITE_ADDED_PATHS,
+  PR776_SQLITE_REPAIR_PATHS,
   PR776_RECORD_PATH,
   bindPR776ControllerReconciliation,
   validatePR776ReviewedIdentity,
@@ -63,7 +66,7 @@ function fixture() {
     },
     evidence: structuredClone(original),
     record: { ...structuredClone(template), status: "ACTIVE", expectedCurrentSourceDigest: CURRENT_SOURCE },
-    parents: [K.base, POLICY_HEAD],
+    parents: [S.base, POLICY_HEAD],
     predecessorParents: [...T.baseParents],
     predecessorTree: T.baseTree,
     predecessorHeadTree: T.baseTree,
@@ -88,6 +91,13 @@ function fixture() {
     pathCheckCarrierParents: [...K.candidateParents],
     pathCheckCarrierTree: K.candidateTree,
     pathCheckCarrierAncestry: true,
+    sqliteParents: [...S.baseParents],
+    sqliteTree: S.baseTree,
+    sqliteHeadTree: S.baseTree,
+    sqliteCarrierParents: [...S.candidateParents],
+    sqliteCarrierTree: S.candidateTree,
+    sqliteCarrierAncestry: true,
+    sqliteCanonicalTree: new Map([[C, `100644 blob ${S.canonicalBlob}`]]),
     pathCheckCanonicalTree: new Map([[C, `100644 blob ${K.canonicalBlob}`]]),
     intakeCanonicalTree: new Map([[C, `100644 blob ${N.canonicalBlob}`]]),
     frozenCanonicalTree: new Map([[C, `100644 blob ${O.canonicalBlob}`]]),
@@ -97,13 +107,21 @@ function fixture() {
       (file) =>
         !PR776_OBSERVABILITY_ADDED_PATHS.includes(file) &&
         !PR776_INTAKE_ADDED_PATHS.includes(file) &&
-        !PR776_PATH_CHECK_ADDED_PATHS.includes(file),
+        !PR776_PATH_CHECK_ADDED_PATHS.includes(file) &&
+        !PR776_SQLITE_ADDED_PATHS.includes(file),
     ),
     observedControllerChanges: PR776_CONTROLLER_PATHS.filter(
-      (file) => !PR776_INTAKE_ADDED_PATHS.includes(file) && !PR776_PATH_CHECK_ADDED_PATHS.includes(file),
+      (file) =>
+        !PR776_INTAKE_ADDED_PATHS.includes(file) &&
+        !PR776_PATH_CHECK_ADDED_PATHS.includes(file) &&
+        !PR776_SQLITE_ADDED_PATHS.includes(file),
     ),
-    intakeControllerChanges: PR776_CONTROLLER_PATHS.filter((file) => !PR776_PATH_CHECK_ADDED_PATHS.includes(file)),
+    intakeControllerChanges: PR776_CONTROLLER_PATHS.filter(
+      (file) => !PR776_PATH_CHECK_ADDED_PATHS.includes(file) && !PR776_SQLITE_ADDED_PATHS.includes(file),
+    ),
     pathCheckChanges: [...PR776_PATH_CHECK_REPAIR_PATHS],
+    sqliteControllerChanges: PR776_CONTROLLER_PATHS.filter((file) => !PR776_SQLITE_ADDED_PATHS.includes(file)),
+    sqliteChanges: [...PR776_SQLITE_REPAIR_PATHS],
     intakeChanges: [...PR776_INTAKE_REPAIR_PATHS],
     repairChanges: [...PR776_OBSERVABILITY_REPAIR_PATHS],
     baseChanges: [...PR776_CONTROLLER_PATHS],
@@ -149,7 +167,11 @@ function fixture() {
                       ? f.pathCheckParents
                       : args[3] === K.candidate
                         ? f.pathCheckCarrierParents
-                        : f.parents
+                        : args[3] === S.base
+                          ? f.sqliteParents
+                          : args[3] === S.candidate
+                            ? f.sqliteCarrierParents
+                            : f.parents
         ).join(" "),
       );
     if (args[0] === "rev-parse")
@@ -178,7 +200,13 @@ function fixture() {
                               ? f.pathCheckHeadTree
                               : args[1] === K.candidate + "^{tree}"
                                 ? f.pathCheckCarrierTree
-                                : TREE,
+                                : args[1] === S.base + "^{tree}"
+                                  ? f.sqliteTree
+                                  : args[1] === S.baseParents[1] + "^{tree}"
+                                    ? f.sqliteHeadTree
+                                    : args[1] === S.candidate + "^{tree}"
+                                      ? f.sqliteCarrierTree
+                                      : TREE,
       );
     if (args[0] === "merge-base") {
       assert.equal(f.ancestry, true, "ANCESTRY_REJECTED");
@@ -186,6 +214,7 @@ function fixture() {
       if (args[2] === O.candidate) assert.equal(f.observedCarrierAncestry, true, "5669_ANCESTRY_REJECTED");
       if (args[2] === N.candidate) assert.equal(f.intakeCarrierAncestry, true, "F_ANCESTRY_REJECTED");
       if (args[2] === K.candidate) assert.equal(f.pathCheckCarrierAncestry, true, "F10_ANCESTRY_REJECTED");
+      if (args[2] === S.candidate) assert.equal(f.sqliteCarrierAncestry, true, "F12_ANCESTRY_REJECTED");
       return Buffer.alloc(0);
     }
     if (args[0] === "diff")
@@ -197,33 +226,39 @@ function fixture() {
               ? f.observedControllerChanges
               : args[4] === K.base
                 ? f.intakeControllerChanges
-                : f.baseChanges
+                : args[4] === S.base
+                  ? f.sqliteControllerChanges
+                  : f.baseChanges
           : args[3] === T.base && args[4] === O.base
             ? f.transportChanges
             : args[3] === O.base && args[4] === N.base
               ? f.repairChanges
               : args[3] === N.base && args[4] === K.base
                 ? f.intakeChanges
-                : args[3] === K.base && args[4] === BASE
+                : args[3] === K.base && args[4] === S.base
                   ? f.pathCheckChanges
-                  : f.candidateChanges
+                  : args[3] === S.base && args[4] === BASE
+                    ? f.sqliteChanges
+                    : f.candidateChanges
         ).join("\n"),
       );
     if (args[0] === "ls-tree" && args[1] === "-z")
       return f.recordPresent ? Buffer.from("record exists") : Buffer.alloc(0);
     if (args[0] === "ls-tree") {
       const map =
-        args[2] === K.candidate
-          ? f.pathCheckCanonicalTree
-          : args[2] === N.candidate
-            ? f.intakeCanonicalTree
-            : args[2] === O.candidate
-              ? f.frozenCanonicalTree
-              : args[2] === P.ancestor
-                ? f.oldTree
-                : args[2] === BASE
-                  ? f.baseTree
-                  : f.candidateTree;
+        args[2] === S.candidate
+          ? f.sqliteCanonicalTree
+          : args[2] === K.candidate
+            ? f.pathCheckCanonicalTree
+            : args[2] === N.candidate
+              ? f.intakeCanonicalTree
+              : args[2] === O.candidate
+                ? f.frozenCanonicalTree
+                : args[2] === P.ancestor
+                  ? f.oldTree
+                  : args[2] === BASE
+                    ? f.baseTree
+                    : f.candidateTree;
       return Buffer.from([...map].map(([file, meta]) => `${meta}\t${file}\0`).join(""));
     }
     if (args[0] === "show") {
@@ -232,7 +267,12 @@ function fixture() {
         file = args[1].slice(i + 1);
       if (file === PR776_RECORD_PATH) return json(f.record);
       if (file === C) {
-        if (revision === O.candidate || revision === N.candidate || revision === K.candidate) {
+        if (
+          revision === O.candidate ||
+          revision === N.candidate ||
+          revision === K.candidate ||
+          revision === S.candidate
+        ) {
           f.historicalCanonicalBlobReads += 1;
           throw Error("FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ");
         }
@@ -250,7 +290,7 @@ function fixture() {
   f.validate = () => validatePR776ReviewedIdentity(f.bind(), f.evidence, { root: "pure-fixture", readGit: f.git });
   return f;
 }
-test("finite fifth controller merge retains the exact spent32-row review with zero new passes", () => {
+test("finite sixth controller merge retains the exact spent32-row review with zero new passes", () => {
   const f = fixture(),
     current = f.bind(),
     old = pr776HistoricalReviewedPlan(current);
@@ -630,7 +670,7 @@ for (const [name, mutate] of [
     },
   ],
   [
-    "sixth controller merge",
+    "seventh controller merge",
     (f) => {
       f.parents[0] = BASE;
     },
@@ -690,7 +730,7 @@ for (const [name, mutate] of [
     },
   ],
 ])
-  test(name + " remains rejected by the finite fifth controller bridge", () => {
+  test(name + " remains rejected by the finite sixth controller bridge", () => {
     const f = fixture();
     mutate(f);
     assert.throws(f.validate);
@@ -708,8 +748,8 @@ test("frozen M6 and ID-only5669 retain exact source, canonical and spent review 
   assert.equal(O.canonicalSha256, "46e3f544db3f8472986b00d229f2662e901b7f6faf72ec38414c26847b4b80b0");
   assert.equal(O.reviewArtifactId, 12593074243);
   assert.equal(O.canonicalBlob, "14ad1d87c0b03064470896ff9a9d2b4ba90d4d2f");
-  assert.equal(PR776_CONTROLLER_PATHS.length, 29);
-  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 26);
+  assert.equal(PR776_CONTROLLER_PATHS.length, 30);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 27);
   assert.equal(PR776_OBSERVABILITY_REPAIR_PATHS.length, 9);
   assert.deepEqual(f.record.originalIdentity, P);
   assert.deepEqual(f.record.transportPredecessor, T);
@@ -1102,5 +1142,157 @@ test("all historical path guards exclude only the future ordinary test whitelist
 test("the spent F10 machine artifact cannot authenticate the successor path check tuple", () => {
   const oldMachineReview = provenance(fixture().bind(), "review");
   oldMachineReview.run.head_sha = K.base;
+  assert.throws(() => validateAttestationProvenance(oldMachineReview), /ATTESTATION_PROVENANCE_INVALID/u);
+});
+
+test("frozen M9 and F12 retain exact source, canonical and spent review without historical blob reads", () => {
+  const f = fixture();
+  assert.equal(S.base, "696ecec0fd89293074b271ab33d9256709158700");
+  assert.deepEqual(S.baseParents, [K.base, "148d9e4064706ad52c52ee3c9b218fe6af87f122"]);
+  assert.equal(S.baseTree, "5a1c6a629969753d736ca9d23bbf900b53bdd85f");
+  assert.equal(S.candidate, "e321c2465b9b0c166cbdbc6e9a88f57c89c7ff1a");
+  assert.deepEqual(S.candidateParents, ["44c62f08bc801f480dfa6765701aeb4106155649"]);
+  assert.equal(S.candidateTree, "75352e35df8f1c3b516ac33a0d729a62a3ea5097");
+  assert.equal(S.sourceDigest, "c96093f63889b4c0a33c6d7580d895e8f00b6c1de7a15d6dc6036dacc5b504ad");
+  assert.equal(S.canonicalSha256, "1015945c5520605fe3271a03f2e4e03b557ba30795b540d82a8d1372f7310d9b");
+  assert.equal(S.canonicalBlob, "b705d68d183335dbf5f8e7d2292eb900a14e3e10");
+  assert.equal(S.reviewArtifactId, 12606664876);
+  assert.deepEqual(f.record.sqliteBootstrapPredecessor, S);
+  assert.equal(PR776_CONTROLLER_PATHS.length, 30);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 27);
+  assert.equal(PR776_SQLITE_REPAIR_PATHS.length, 5);
+  assert.equal(f.sqliteControllerChanges.length, 29);
+  assert.equal(f.intakeControllerChanges.length, 28);
+  assert.equal(f.observedControllerChanges.length, 26);
+  assert.equal(f.frozenControllerChanges.length, 21);
+  assert.equal(f.validate(), true);
+  assert.equal(f.historicalCanonicalBlobReads, 0);
+  assert.throws(
+    () => f.git("pure-fixture", ["show", S.candidate + ":" + C]),
+    /FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ/u,
+  );
+});
+for (const [name, mutate] of [
+  [
+    "M9 itself rather than one next normal merge",
+    (f) => {
+      f.plan.baseSha = S.base;
+      f.parents = [...S.baseParents];
+    },
+  ],
+  [
+    "changed M9 parents",
+    (f) => {
+      f.sqliteParents[1] = POLICY_HEAD;
+    },
+  ],
+  [
+    "changed M9 tree",
+    (f) => {
+      f.sqliteTree = TREE;
+    },
+  ],
+  [
+    "changed M9 qualified head tree",
+    (f) => {
+      f.sqliteHeadTree = TREE;
+    },
+  ],
+  [
+    "changed F12 parent",
+    (f) => {
+      f.sqliteCarrierParents[0] = POLICY_HEAD;
+    },
+  ],
+  [
+    "changed F12 tree",
+    (f) => {
+      f.sqliteCarrierTree = TREE;
+    },
+  ],
+  [
+    "lost F12 ancestry",
+    (f) => {
+      f.sqliteCarrierAncestry = false;
+    },
+  ],
+  [
+    "changed F12 canonical leaf",
+    (f) => {
+      f.sqliteCanonicalTree.set(C, "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "changed F12 canonical mode",
+    (f) => {
+      f.sqliteCanonicalTree.set(C, "100755 blob " + S.canonicalBlob);
+    },
+  ],
+  [
+    "changed M9 cumulative29",
+    (f) => {
+      f.sqliteControllerChanges.push("src/unrelated.ts");
+    },
+  ],
+  [
+    "missing SQLite repair path",
+    (f) => {
+      f.sqliteChanges = f.sqliteChanges.filter((file) => file !== "scripts/sounding-line/sqlite-bootstrap.mjs");
+    },
+  ],
+  [
+    "unrelated SQLite repair path",
+    (f) => {
+      f.sqliteChanges.push("scripts/sounding-line/unrelated-bootstrap.mjs");
+    },
+  ],
+  [
+    "missing required SQLite blob",
+    (f) => {
+      delete f.record.requiredRepairBlobs["scripts/sounding-line/sqlite-bootstrap.mjs"];
+    },
+  ],
+  [
+    "wrong SQLite base blob",
+    (f) => {
+      f.baseTree.set("scripts/sounding-line/sqlite-bootstrap.mjs", "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "wrong SQLite candidate blob",
+    (f) => {
+      f.candidateTree.set("scripts/sounding-line/sqlite-bootstrap.mjs", "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "changed SQLite predecessor record",
+    (f) => {
+      f.record.sqliteBootstrapPredecessor.reviewArtifactId = 1;
+    },
+  ],
+])
+  test(name + " fails the finite M9 SQLite bridge", () => {
+    const f = fixture();
+    mutate(f);
+    assert.throws(f.validate);
+  });
+test("every historical path guard excludes only the future SQLite bootstrap addition", () => {
+  assert.deepEqual([...PR776_SQLITE_ADDED_PATHS], ["scripts/sounding-line/sqlite-bootstrap.mjs"]);
+  const f = fixture(),
+    file = PR776_SQLITE_ADDED_PATHS[0];
+  for (const paths of [
+    f.frozenControllerChanges,
+    f.observedControllerChanges,
+    f.intakeControllerChanges,
+    f.sqliteControllerChanges,
+  ])
+    assert(!paths.includes(file));
+  assert.equal(f.validate(), true);
+  f.sqliteControllerChanges.push(file);
+  assert.throws(f.validate, /FROZEN_PATH_CHECK_PREDECESSOR_CHANGED/u);
+});
+test("the spent F12 machine artifact cannot authenticate the successor SQLite tuple", () => {
+  const oldMachineReview = provenance(fixture().bind(), "review");
+  oldMachineReview.run.head_sha = S.base;
   assert.throws(() => validateAttestationProvenance(oldMachineReview), /ATTESTATION_PROVENANCE_INVALID/u);
 });
