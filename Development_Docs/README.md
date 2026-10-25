@@ -16,7 +16,10 @@ Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](docu
 
 - [SC-00–SC-11 master roadmap](Programs/Spatial_Chronicle_Creation/Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md) — proposed integrated Creator/Spatial Studio roadmap, ownership, dependencies and acceptance gates.
 - [SC-05 Chronicle Architect governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Architect_Governing_Document_v1.0.md) — proposed AI-assisted whole-Chronicle planning, governed operations, cost/privacy controls and validation.
-- SC-04 Puzzle Composition and SC-06 Story Adaptation governing documents are deliberately **reserved for later owner design discussions**; their full specifications do not exist in this PR.
+- [SC-04 Puzzle Composition governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md) — detailed proposed Puzzle Workshop, universal 2D baseline, alternative variants, crew/Captain logic and analytics.
+- [Creator Experience cross-project amendment](Programs/Spatial_Chronicle_Creation/Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md) — equal-standing tools, named branch editing, contextual navigation and universal Playtest.
+- [Cross-project requirements traceability ledger](Programs/Spatial_Chronicle_Creation/SC_Requirements_Traceability_Ledger_v1.0.md) — 76 individually tracked proposed requirements, owners, contributors, dependencies and acceptance evidence.
+- **SC-06 Story Adaptation** remains intentionally reserved for future owner design discussion. All new SC documents are proposed, not integrated functionality.
 
 ## Current project homes
 
