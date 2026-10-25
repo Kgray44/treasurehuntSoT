@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 
-// Four finite protected controller merges preserve one spent review; none grants another pass.
+// Five finite protected controller merges preserve one spent review; none grants another pass.
 export const PR776_CONTROLLER = Object.freeze({
   kind: "PR776_CONTROLLER_BASE_RECONCILIATION_1",
   id: "pr776-attestation-buffer-reconciliation-20261025",
@@ -55,6 +55,19 @@ export const PR776_INTAKE_PREDECESSOR = Object.freeze({
   canonicalBlob: "2d07e6d486f36eaa6d3552e0db0da881b25806d7",
   reviewArtifactId: 12596534629,
 });
+export const PR776_PATH_CHECK_PREDECESSOR = Object.freeze({
+  base: "c99ba71580b7950f64e9b7cb3a4a5ea4005c165c",
+  baseParents: Object.freeze(["dfc5887b42058acc396ab291a2cd5dca430b0d80", "3b1a6d727a957d2e535a8757a8173e237772f368"]),
+  baseTree: "515768341a62aceffdd3f8a2528745e4c6922b8f",
+  candidate: "f91e7b8dfd2e62d7e511be49e7980e6d6e674b60",
+  candidateParents: Object.freeze(["1ea929a86d5a6af852a2bad16afbaf0daa39b4ab"]),
+  candidateTree: "2b6391e7dd8c0080be128b6049bdb9b39919186f",
+  sourceDigest: "3d7e6a64a56a560f3a9b1bd8f376da0bde01381d4d984bb32129615152b5c3a1",
+  canonicalSha256: "76d5923178e17dd509521945d5498c89c299d28e879773b698a8fdeeb4e01e1f",
+  canonicalBytes: 1451427,
+  canonicalBlob: "8c93b89036d697145f183b815749cc49b8ef060f",
+  reviewArtifactId: 12601724319,
+});
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
 const INDEX = "Development_Docs/document-index.json";
@@ -88,6 +101,7 @@ export const PR776_CONTROLLER_PATHS = Object.freeze([
   "tests/sounding-line/experience-r26.test.mjs",
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
   "tests/sounding-line/authenticated-completed-evidence.test.mjs",
+  "tests/sounding-line/ordinary.test.mjs",
   ...originals,
   PR776_RECORD_PATH,
   INDEX,
@@ -134,6 +148,14 @@ export const PR776_INTAKE_REPAIR_PATHS = Object.freeze([
   "scripts/sounding-line/verification-diagnostics.mjs",
   "tests/sounding-line/authenticated-completed-evidence.test.mjs",
 ]);
+export const PR776_PATH_CHECK_ADDED_PATHS = Object.freeze(["tests/sounding-line/ordinary.test.mjs"]);
+export const PR776_PATH_CHECK_REPAIR_PATHS = Object.freeze([
+  "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
+  "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
+  "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/controller-reconciliation.json",
+  "scripts/sounding-line/ordinary.mjs",
+  "tests/sounding-line/ordinary.test.mjs",
+]);
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
   JSON.stringify(value, (_, item) =>
@@ -176,8 +198,9 @@ function inspect({ root, plan, readGit = git }) {
   const parents = text(read, root, ["show", "-s", "--format=%P", plan.baseSha]).split(" ");
   const predecessor = PR776_TRANSPORT_PREDECESSOR,
     observed = PR776_OBSERVABILITY_PREDECESSOR,
-    intake = PR776_INTAKE_PREDECESSOR;
-  need(parents.length === 2 && parents[0] === intake.base, "ONE_NEXT_NORMAL_INTAKE_MERGE_REQUIRED");
+    intake = PR776_INTAKE_PREDECESSOR,
+    checked = PR776_PATH_CHECK_PREDECESSOR;
+  need(parents.length === 2 && parents[0] === checked.base, "ONE_NEXT_NORMAL_PATH_CHECK_MERGE_REQUIRED");
   need(
     same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
       text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
@@ -200,7 +223,10 @@ function inspect({ root, plan, readGit = git }) {
       exactPaths(
         paths(read, root, p.oldBase, observed.base),
         PR776_CONTROLLER_PATHS.filter(
-          (file) => !PR776_OBSERVABILITY_ADDED_PATHS.includes(file) && !PR776_INTAKE_ADDED_PATHS.includes(file),
+          (file) =>
+            !PR776_OBSERVABILITY_ADDED_PATHS.includes(file) &&
+            !PR776_INTAKE_ADDED_PATHS.includes(file) &&
+            !PR776_PATH_CHECK_ADDED_PATHS.includes(file),
         ),
       ),
     "FROZEN_TRANSPORT_PREDECESSOR_CHANGED",
@@ -217,7 +243,9 @@ function inspect({ root, plan, readGit = git }) {
       exactPaths(paths(read, root, observed.base, intake.base), PR776_OBSERVABILITY_REPAIR_PATHS) &&
       exactPaths(
         paths(read, root, p.oldBase, intake.base),
-        PR776_CONTROLLER_PATHS.filter((file) => !PR776_INTAKE_ADDED_PATHS.includes(file)),
+        PR776_CONTROLLER_PATHS.filter(
+          (file) => !PR776_INTAKE_ADDED_PATHS.includes(file) && !PR776_PATH_CHECK_ADDED_PATHS.includes(file),
+        ),
       ),
     "FROZEN_OBSERVABILITY_PREDECESSOR_CHANGED",
   );
@@ -225,6 +253,22 @@ function inspect({ root, plan, readGit = git }) {
     same(text(read, root, ["show", "-s", "--format=%P", intake.candidate]).split(" "), intake.candidateParents) &&
       text(read, root, ["rev-parse", intake.candidate + "^{tree}"]) === intake.candidateTree,
     "FROZEN_INTAKE_CANDIDATE_CHANGED",
+  );
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", checked.base]).split(" "), checked.baseParents) &&
+      text(read, root, ["rev-parse", checked.base + "^{tree}"]) === checked.baseTree &&
+      text(read, root, ["rev-parse", checked.baseParents[1] + "^{tree}"]) === checked.baseTree &&
+      exactPaths(paths(read, root, intake.base, checked.base), PR776_INTAKE_REPAIR_PATHS) &&
+      exactPaths(
+        paths(read, root, p.oldBase, checked.base),
+        PR776_CONTROLLER_PATHS.filter((file) => !PR776_PATH_CHECK_ADDED_PATHS.includes(file)),
+      ),
+    "FROZEN_INTAKE_PREDECESSOR_CHANGED",
+  );
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", checked.candidate]).split(" "), checked.candidateParents) &&
+      text(read, root, ["rev-parse", checked.candidate + "^{tree}"]) === checked.candidateTree,
+    "FROZEN_PATH_CHECK_CANDIDATE_CHANGED",
   );
   need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
@@ -235,11 +279,12 @@ function inspect({ root, plan, readGit = git }) {
   read(root, ["merge-base", "--is-ancestor", predecessor.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", observed.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", intake.candidate, plan.candidateSha]);
+  read(root, ["merge-base", "--is-ancestor", checked.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", plan.baseSha, plan.candidateSha]);
   need(exactPaths(paths(read, root, p.oldBase, plan.baseSha), PR776_CONTROLLER_PATHS), "CONTROLLER_CHANGED_PATHS");
   need(
-    exactPaths(paths(read, root, intake.base, plan.baseSha), PR776_INTAKE_REPAIR_PATHS),
-    "INTAKE_REPAIR_CHANGED_PATHS",
+    exactPaths(paths(read, root, checked.base, plan.baseSha), PR776_PATH_CHECK_REPAIR_PATHS),
+    "PATH_CHECK_REPAIR_CHANGED_PATHS",
   );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),
     record = JSON.parse(recordBytes);
@@ -252,7 +297,8 @@ function inspect({ root, plan, readGit = git }) {
       same(record.originalIdentity, p) &&
       same(record.transportPredecessor, predecessor) &&
       same(record.observabilityPredecessor, observed) &&
-      same(record.intakePredecessor, intake),
+      same(record.intakePredecessor, intake) &&
+      same(record.pathCheckPredecessor, checked),
     "FINITE_PROTECTED_RECORD",
   );
   need(
@@ -386,6 +432,19 @@ function inspect({ root, plan, readGit = git }) {
   need(intakeCanonical.reviewArtifactId === intake.reviewArtifactId, "FROZEN_INTAKE_REVIEW_ID_CHANGED");
   delete intakeCanonical.reviewArtifactId;
   need(same(intakeCanonical, canonical), "FROZEN_INTAKE_CANONICAL_DATA_CHANGED");
+  const checkedCanonicalBytes = Buffer.from(
+    JSON.stringify({ ...canonical, reviewArtifactId: checked.reviewArtifactId }, null, 2) + "\n",
+  );
+  need(
+    tree(read, root, checked.candidate).get(C) === `100644 blob ${checked.canonicalBlob}` &&
+      checkedCanonicalBytes.length === checked.canonicalBytes &&
+      sha256(checkedCanonicalBytes) === checked.canonicalSha256,
+    "FROZEN_PATH_CHECK_CANONICAL_CHANGED",
+  );
+  const checkedCanonical = JSON.parse(checkedCanonicalBytes);
+  need(checkedCanonical.reviewArtifactId === checked.reviewArtifactId, "FROZEN_PATH_CHECK_REVIEW_ID_CHANGED");
+  delete checkedCanonical.reviewArtifactId;
+  need(same(checkedCanonical, canonical), "FROZEN_PATH_CHECK_CANONICAL_DATA_CHANGED");
   const publishedCanonical = JSON.parse(readRevision(read, root, plan.candidateSha, C));
   const publishedReviewArtifactId = publishedCanonical.reviewArtifactId;
   need(
