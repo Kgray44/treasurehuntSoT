@@ -368,6 +368,53 @@ export function boundedVitestCommands(unitTests) {
   return commands;
 }
 
+// Bound npx's downstream shell command on both Windows and Linux. Preserve the
+// complete ordered path selection; all batches remain one check obligation.
+export const WINDOWS_SAFE_PATH_COMMAND_BYTES = 6_000;
+
+function boundedPathCheckCommands(prefix, paths) {
+  const commands = [];
+  let argumentsList = [...prefix];
+  // Shell quoting can expand apostrophes, backslashes and cmd metacharacters.
+  // Eightfold UTF-8 plus delimiters also bounds npm's double cmd escaping.
+  const escapedBytes = (arg) =>
+    !arg.length
+      ? 2
+      : /[\s"'#$&()*;<>?\\\x60|~!%^]/u.test(arg)
+        ? 8 * Buffer.byteLength(arg, "utf8") + 8
+        : Buffer.byteLength(arg, "utf8");
+  const bytes = (args) =>
+    Math.max(
+      Buffer.byteLength(JSON.stringify(["npx", ...args]), "utf8"),
+      ["npx", ...args].reduce((sum, arg) => sum + escapedBytes(arg) + 1, 0),
+    );
+  for (const file of paths) {
+    if (argumentsList.length > prefix.length && bytes([...argumentsList, file]) > WINDOWS_SAFE_PATH_COMMAND_BYTES) {
+      commands.push(["npx", argumentsList]);
+      argumentsList = [...prefix];
+    }
+    argumentsList.push(file);
+    if (bytes(argumentsList) > WINDOWS_SAFE_PATH_COMMAND_BYTES)
+      throw new Error("SOUNDING_LINE_PATH_CHECK_EXCEEDS_COMMAND_LIMIT:" + file);
+  }
+  if (argumentsList.length > prefix.length) commands.push(["npx", argumentsList]);
+  return commands;
+}
+
+export function boundedFormatterCommands(paths) {
+  return boundedPathCheckCommands(["--no-install", "prettier", "--check"], paths);
+}
+
+export function boundedLintCommands(paths) {
+  return boundedPathCheckCommands(["--no-install", "eslint"], paths);
+}
+
+function pathCheckTool(command, args) {
+  if (command !== "npx" || args[0] !== "--no-install") return null;
+  if (args[1] === "prettier" && args[2] === "--check") return "prettier";
+  return args[1] === "eslint" ? "eslint" : null;
+}
+
 function normalizedCommand(plan, command, argumentsList) {
   const databases = new Map([
     [plan.databaseUrl, "file:./.sounding-line-CANDIDATE.sqlite"],
@@ -442,14 +489,25 @@ function requiresCurrentPolicyVerification(group) {
 
 export function verificationObligationGroups(plan) {
   const commands = verificationCommands(plan);
-  const browserCommands = commands.filter(([command, argumentsList]) => browserEvidenceCommand(command, argumentsList));
+  // Transport batches retain the classification of the complete original command.
+  const originalArguments = (command, args) => {
+    const tool = pathCheckTool(command, args);
+    if (!tool) return args;
+    const paths = plan.mode === "release" ? ["."] : tool === "prettier" ? plan.safetyPaths : plan.lintPaths;
+    return [...args.slice(0, tool === "prettier" ? 3 : 2), ...paths];
+  };
+  const browserCommands = commands.filter(([command, args]) =>
+    browserEvidenceCommand(command, originalArguments(command, args)),
+  );
   const browserRequired = browserCommands.length > 0;
   const groups = [];
   let browserGroup = [];
   let unitGroup = [];
   for (const [command, argumentsList] of commands) {
+    const pathTool = pathCheckTool(command, argumentsList);
+    const classificationArguments = originalArguments(command, argumentsList);
     const build = command === "npm" && argumentsList.join(" ") === "run build";
-    if (browserEvidenceCommand(command, argumentsList) || (browserRequired && build)) {
+    if (browserEvidenceCommand(command, classificationArguments) || (browserRequired && build)) {
       if (unitGroup.length) {
         groups.push({ kind: "unit", commands: unitGroup });
         unitGroup = [];
@@ -458,10 +516,10 @@ export function verificationObligationGroups(plan) {
       continue;
     }
     const kind =
-      command === "npx" && argumentsList.includes("vitest")
+      command === "npx" && classificationArguments.includes("vitest")
         ? "unit"
-        : argumentsList.includes("prisma") ||
-            argumentsList.some((argument) => /migration|migrate|rehearse/iu.test(argument))
+        : classificationArguments.includes("prisma") ||
+            classificationArguments.some((argument) => /migration|migrate|rehearse/iu.test(argument))
           ? "migration"
           : build
             ? "build"
@@ -474,7 +532,14 @@ export function verificationObligationGroups(plan) {
       groups.push({ kind: "unit", commands: unitGroup });
       unitGroup = [];
     }
-    groups.push({ kind, commands: [[command, argumentsList]] });
+    const prior = groups.at(-1);
+    if (
+      pathTool &&
+      prior?.kind === kind &&
+      prior.commands.every(([name, args]) => pathCheckTool(name, args) === pathTool)
+    )
+      prior.commands.push([command, argumentsList]);
+    else groups.push({ kind, commands: [[command, argumentsList]] });
   }
   if (unitGroup.length) groups.push({ kind: "unit", commands: unitGroup });
   if (browserGroup.length) groups.push({ kind: "browser", commands: browserGroup });
@@ -621,7 +686,9 @@ function testPathsFor(group, plan) {
   if (group.kind === "preflight") {
     const [[command, argumentsList]] = group.commands;
     if (command === "npx" && (argumentsList.includes("prettier") || argumentsList.includes("eslint")))
-      return argumentsList.filter((argument) => /\.(?:[cm]?[jt]sx?|md|json|ya?ml|css)$/u.test(argument));
+      return group.commands.flatMap(([, args]) =>
+        args.filter((argument) => /\.(?:[cm]?[jt]sx?|md|json|ya?ml|css)$/u.test(argument)),
+      );
     if (command === process.execPath && argumentsList[0] === "--test")
       return argumentsList.filter((argument) => /\.test\.(?:[cm]?[jt]sx?)$/u.test(argument));
   }
@@ -1572,8 +1639,7 @@ export function verificationCommands(plan) {
   ];
   const formatPaths = plan.mode === "release" ? ["."] : plan.safetyPaths;
   const lintPaths = plan.mode === "release" ? ["."] : plan.lintPaths;
-  if (formatPaths.length) commands.unshift(["npx", ["--no-install", "prettier", "--check", ...formatPaths]]);
-  if (lintPaths.length) commands.splice(1, 0, ["npx", ["--no-install", "eslint", ...lintPaths]]);
+  commands.unshift(...boundedFormatterCommands(formatPaths), ...boundedLintCommands(lintPaths));
   if (plan.selected.unitTests.length) commands.push(...boundedVitestCommands(plan.selected.unitTests));
   if (plan.mode === "ordinary" && plan.registrationValidationRequired)
     commands.push([process.execPath, ["--test", "tests/sounding-line/ordinary.test.mjs"]]);
