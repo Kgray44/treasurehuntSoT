@@ -1,3 +1,4 @@
+import { withVerificationStage } from "./verification-diagnostics.mjs";
 import {
   isPR776ControllerReconciliation,
   validatePR776TrustedCapture,
@@ -105,28 +106,52 @@ export async function loadTrustedExperienceArtifact({ root, plan, artifactId, ki
       if (!response.ok) fail(`ATTESTATION_ACCESS_FAILED_${response.status}`);
       return binary ? Buffer.from(await response.arrayBuffer()) : response.json();
     });
-  const artifact = await api(`actions/artifacts/${artifactId}`);
-  const run = await api(`actions/runs/${artifact.workflow_run?.id}`);
-  const workflow = await api(`actions/workflows/${run.workflow_id}`);
-  validateAttestationProvenance({
-    artifact,
-    run,
-    workflow,
-    plan,
-    kind,
-    repository,
-    actors: policy.trustedReviewActors,
-  });
-  const archive = await api(`actions/artifacts/${artifactId}/zip`, true);
-  if (attestationArchiveDigest(archive) !== artifact.digest) fail("ATTESTATION_ARCHIVE_DIGEST_MISMATCH");
-  const manifest = artifactJson(archive, `${kind}.json`);
-  if (
-    manifest.baseSha !== plan.baseSha ||
-    manifest.sourceDigest !== plan.sourceDigest ||
-    manifest.contractDigest !== plan.contractDigest ||
-    (plan.exception && experienceDigest(manifest.exception) !== experienceDigest(plan.exception))
-  )
-    fail("ATTESTATION_SOURCE_MISMATCH");
+  const { artifact, run } = await withVerificationStage(
+    "TRUSTED_ATTESTATION_METADATA",
+    async () => {
+      const artifact = await api(`actions/artifacts/${artifactId}`);
+      const run = await api(`actions/runs/${artifact.workflow_run?.id}`);
+      const workflow = await api(`actions/workflows/${run.workflow_id}`);
+      validateAttestationProvenance({
+        artifact,
+        run,
+        workflow,
+        plan,
+        kind,
+        repository,
+        actors: policy.trustedReviewActors,
+      });
+      return { artifact, run };
+    },
+    { observeFailure: false },
+  );
+  const archive = await withVerificationStage(
+    "TRUSTED_ATTESTATION_DOWNLOAD",
+    () => api(`actions/artifacts/${artifactId}/zip`, true),
+    { observeFailure: false },
+  );
+  await withVerificationStage(
+    "TRUSTED_ATTESTATION_HASH",
+    () => {
+      if (attestationArchiveDigest(archive) !== artifact.digest) fail("ATTESTATION_ARCHIVE_DIGEST_MISMATCH");
+    },
+    { observeFailure: false },
+  );
+  const manifest = await withVerificationStage(
+    "TRUSTED_ATTESTATION_MANIFEST",
+    () => {
+      const manifest = artifactJson(archive, `${kind}.json`);
+      if (
+        manifest.baseSha !== plan.baseSha ||
+        manifest.sourceDigest !== plan.sourceDigest ||
+        manifest.contractDigest !== plan.contractDigest ||
+        (plan.exception && experienceDigest(manifest.exception) !== experienceDigest(plan.exception))
+      )
+        fail("ATTESTATION_SOURCE_MISMATCH");
+      return manifest;
+    },
+    { observeFailure: false },
+  );
   return {
     ...manifest,
     trustedArtifact: { id: artifact.id, digest: artifact.digest, runId: run.id, runAttempt: run.run_attempt },

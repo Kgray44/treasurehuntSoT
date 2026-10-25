@@ -3069,3 +3069,158 @@ test("mandatory media validation needs all fixed outputs and six distinct contai
     false,
   );
 });
+
+async function captureProtectedPhaseProgress(purpose, operation, brokenOutput = false) {
+  const previous = process.env.SOUNDING_LINE_EVIDENCE_PURPOSE;
+  const write = process.stdout.write;
+  const rows = [];
+  if (purpose === undefined) delete process.env.SOUNDING_LINE_EVIDENCE_PURPOSE;
+  else process.env.SOUNDING_LINE_EVIDENCE_PURPOSE = purpose;
+  process.stdout.write = function (bytes, ...args) {
+    const line = String(bytes);
+    if (line.startsWith('{"namespace":"SOUNDING_LINE_VERIFICATION_PROGRESS"')) {
+      if (brokenOutput) throw new Error("private-output-failure");
+      rows.push(JSON.parse(line));
+      return true;
+    }
+    return write.call(this, bytes, ...args);
+  };
+  try {
+    return await operation(rows);
+  } finally {
+    process.stdout.write = write;
+    if (previous === undefined) delete process.env.SOUNDING_LINE_EVIDENCE_PURPOSE;
+    else process.env.SOUNDING_LINE_EVIDENCE_PURPOSE = previous;
+  }
+}
+
+test("protected phase progress starts before awaiting the operation and preserves its exact result", async () => {
+  await captureProtectedPhaseProgress("PROTECTED_FINAL_VERIFICATION", async (rows) => {
+    const value = Object.freeze({ accepted: false });
+    let finish;
+    const pending = withVerificationStage("EXPERIENCE_PLAN", () => {
+      assert.equal(rows.length, 1);
+      assert.equal(rows[0].event, "START");
+      return new Promise((resolve) => {
+        finish = resolve;
+      });
+    });
+    assert.equal(rows.length, 1);
+    finish(value);
+    assert.equal(await pending, value);
+    assert.deepEqual(
+      rows.map(({ event }) => event),
+      ["START", "END"],
+    );
+    for (const row of rows) {
+      assert.deepEqual(Object.keys(row).sort(), ["elapsedMs", "event", "namespace", "stage"]);
+      assert.equal(row.namespace, "SOUNDING_LINE_VERIFICATION_PROGRESS");
+      assert.equal(row.stage, "EXPERIENCE_PLAN");
+      assert(Number.isSafeInteger(row.elapsedMs) && row.elapsedMs >= 0);
+    }
+    assert(rows[1].elapsedMs >= rows[0].elapsedMs);
+  });
+});
+
+test("protected phase progress fails with the identical frozen error and redacts arbitrary stage and data", async () => {
+  await captureProtectedPhaseProgress("PROTECTED_FINAL_VERIFICATION", async (rows) => {
+    const error = Object.freeze(
+      Object.assign(new Error("private-message-token"), {
+        argv: ["private-argv"],
+        path: "private-media-path",
+        environment: { TOKEN: "private-env" },
+      }),
+    );
+    await assert.rejects(
+      withVerificationStage("private-stage-token", () => {
+        throw error;
+      }),
+      (observed) => observed === error,
+    );
+    assert.deepEqual(
+      rows.map(({ event }) => event),
+      ["START", "FAIL"],
+    );
+    assert(rows.every((row) => row.stage === "UNCLASSIFIED"));
+    assert(!JSON.stringify(rows).includes("private"));
+    assert.equal(verificationFailureObservation(error).stage, "UNCLASSIFIED");
+  });
+});
+
+test("protected phase progress is disabled for absent or different evidence purposes", async () => {
+  for (const purpose of [
+    undefined,
+    "DEVELOPMENT_ONLY",
+    "protected_final_verification",
+    "PROTECTED_FINAL_VERIFICATION_COPY",
+  ])
+    await captureProtectedPhaseProgress(purpose, async (rows) => {
+      const value = Object.freeze({ proof: false });
+      assert.equal(await withVerificationStage("EVIDENCE_FINGERPRINTS", () => value), value);
+      const error = Object.freeze(new Error("private-disabled-error"));
+      await assert.rejects(
+        withVerificationStage("COMMITTED_EVIDENCE", () => Promise.reject(error)),
+        (observed) => observed === error,
+      );
+      assert.deepEqual(rows, []);
+    });
+});
+
+test("protected phase progress output failure cannot replace the operation result or error", async () => {
+  await captureProtectedPhaseProgress(
+    "PROTECTED_FINAL_VERIFICATION",
+    async () => {
+      const value = Object.freeze({ proof: false });
+      assert.equal(await withVerificationStage("TRUSTED_ATTESTATION_MANIFEST", () => value), value);
+      const error = Object.freeze(new Error("private-operation-error"));
+      await assert.rejects(
+        withVerificationStage("TRUSTED_ATTESTATION_DOWNLOAD", () => Promise.reject(error)),
+        (observed) => observed === error,
+      );
+    },
+    true,
+  );
+});
+
+test("protected phase progress-only nested boundary retains the original outer failure annotation", async () => {
+  await captureProtectedPhaseProgress("PROTECTED_FINAL_VERIFICATION", async (rows) => {
+    const error = Object.freeze(new Error("private-outer-classification-failure"));
+    await assert.rejects(
+      withVerificationStage("CLASSIFICATION", () =>
+        withVerificationStage("EXPERIENCE_PLAN", () => Promise.reject(error), { observeFailure: false }),
+      ),
+      (observed) => observed === error,
+    );
+    assert.equal(verificationFailureObservation(error).stage, "CLASSIFICATION");
+    assert.deepEqual(
+      rows.map(({ stage, event }) => [stage, event]),
+      [
+        ["CLASSIFICATION", "START"],
+        ["EXPERIENCE_PLAN", "START"],
+        ["EXPERIENCE_PLAN", "FAIL"],
+        ["CLASSIFICATION", "FAIL"],
+      ],
+    );
+  });
+});
+
+test("protected phase progress-only standalone boundary leaves the original error unannotated", async () => {
+  await captureProtectedPhaseProgress("PROTECTED_FINAL_VERIFICATION", async (rows) => {
+    const error = Object.freeze(new Error("private-unannotated-failure"));
+    await assert.rejects(
+      withVerificationStage(
+        "TRUSTED_ATTESTATION_HASH",
+        () => {
+          throw error;
+        },
+        { observeFailure: false },
+      ),
+      (observed) => observed === error,
+    );
+    assert.equal(verificationFailureObservation(error).stage, "UNCLASSIFIED");
+    assert.deepEqual(
+      rows.map(({ event }) => event),
+      ["START", "FAIL"],
+    );
+  });
+});

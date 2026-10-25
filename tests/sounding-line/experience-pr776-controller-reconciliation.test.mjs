@@ -8,6 +8,9 @@ import {
   PR776_CONTROLLER_PATHS,
   PR776_TRANSPORT_PREDECESSOR as T,
   PR776_TRANSPORT_REPAIR_PATHS,
+  PR776_OBSERVABILITY_PREDECESSOR as O,
+  PR776_OBSERVABILITY_ADDED_PATHS,
+  PR776_OBSERVABILITY_REPAIR_PATHS,
   PR776_RECORD_PATH,
   bindPR776ControllerReconciliation,
   validatePR776ReviewedIdentity,
@@ -54,14 +57,24 @@ function fixture() {
     },
     evidence: structuredClone(original),
     record: { ...structuredClone(template), status: "ACTIVE", expectedCurrentSourceDigest: CURRENT_SOURCE },
-    parents: [T.base, POLICY_HEAD],
+    parents: [O.base, POLICY_HEAD],
     predecessorParents: [...T.baseParents],
     predecessorTree: T.baseTree,
     predecessorHeadTree: T.baseTree,
     carrierParents: [...T.candidateParents],
     carrierTree: T.candidateTree,
     carrierAncestry: true,
-    repairChanges: [...PR776_TRANSPORT_REPAIR_PATHS],
+    observedParents: [...O.baseParents],
+    observedTree: O.baseTree,
+    observedHeadTree: O.baseTree,
+    observedCarrierParents: [...O.candidateParents],
+    observedCarrierTree: O.candidateTree,
+    observedCarrierAncestry: true,
+    frozenCanonicalTree: new Map([[C, `100644 blob ${O.canonicalBlob}`]]),
+    historicalCanonicalBlobReads: 0,
+    transportChanges: [...PR776_TRANSPORT_REPAIR_PATHS],
+    frozenControllerChanges: PR776_CONTROLLER_PATHS.filter((file) => !PR776_OBSERVABILITY_ADDED_PATHS.includes(file)),
+    repairChanges: [...PR776_OBSERVABILITY_REPAIR_PATHS],
     baseChanges: [...PR776_CONTROLLER_PATHS],
     candidateChanges: [...PR776_CONTROLLER_PATHS],
     oldTree: new Map(inventory.map((row) => [row.path, `100644 blob ${row.blob}`])),
@@ -89,7 +102,16 @@ function fixture() {
   f.git = (_, args) => {
     if (args[0] === "show" && args[1] === "-s")
       return Buffer.from(
-        (args[3] === T.base ? f.predecessorParents : args[3] === T.candidate ? f.carrierParents : f.parents).join(" "),
+        (args[3] === T.base
+          ? f.predecessorParents
+          : args[3] === T.candidate
+            ? f.carrierParents
+            : args[3] === O.base
+              ? f.observedParents
+              : args[3] === O.candidate
+                ? f.observedCarrierParents
+                : f.parents
+        ).join(" "),
       );
     if (args[0] === "rev-parse")
       return Buffer.from(
@@ -99,26 +121,44 @@ function fixture() {
             ? f.predecessorHeadTree
             : args[1] === T.candidate + "^{tree}"
               ? f.carrierTree
-              : TREE,
+              : args[1] === O.base + "^{tree}"
+                ? f.observedTree
+                : args[1] === O.baseParents[1] + "^{tree}"
+                  ? f.observedHeadTree
+                  : args[1] === O.candidate + "^{tree}"
+                    ? f.observedCarrierTree
+                    : TREE,
       );
     if (args[0] === "merge-base") {
       assert.equal(f.ancestry, true, "ANCESTRY_REJECTED");
       if (args[2] === T.candidate) assert.equal(f.carrierAncestry, true, "CFB_ANCESTRY_REJECTED");
+      if (args[2] === O.candidate) assert.equal(f.observedCarrierAncestry, true, "5669_ANCESTRY_REJECTED");
       return Buffer.alloc(0);
     }
     if (args[0] === "diff")
       return Buffer.from(
         (args[3] === P.oldBase
-          ? f.baseChanges
-          : args[3] === T.base && args[4] === BASE
-            ? f.repairChanges
-            : f.candidateChanges
+          ? args[4] === O.base
+            ? f.frozenControllerChanges
+            : f.baseChanges
+          : args[3] === T.base && args[4] === O.base
+            ? f.transportChanges
+            : args[3] === O.base && args[4] === BASE
+              ? f.repairChanges
+              : f.candidateChanges
         ).join("\n"),
       );
     if (args[0] === "ls-tree" && args[1] === "-z")
       return f.recordPresent ? Buffer.from("record exists") : Buffer.alloc(0);
     if (args[0] === "ls-tree") {
-      const map = args[2] === P.ancestor ? f.oldTree : args[2] === BASE ? f.baseTree : f.candidateTree;
+      const map =
+        args[2] === O.candidate
+          ? f.frozenCanonicalTree
+          : args[2] === P.ancestor
+            ? f.oldTree
+            : args[2] === BASE
+              ? f.baseTree
+              : f.candidateTree;
       return Buffer.from([...map].map(([file, meta]) => `${meta}\t${file}\0`).join(""));
     }
     if (args[0] === "show") {
@@ -126,7 +166,13 @@ function fixture() {
         revision = args[1].slice(0, i),
         file = args[1].slice(i + 1);
       if (file === PR776_RECORD_PATH) return json(f.record);
-      if (file === C) return json(f.canonical);
+      if (file === C) {
+        if (revision === O.candidate) {
+          f.historicalCanonicalBlobReads += 1;
+          throw Error("FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ");
+        }
+        return json(f.canonical);
+      }
       if (file === I)
         return json(revision === P.ancestor ? f.oldIndex : revision === BASE ? f.baseIndex : f.currentIndex);
       if (file === M) return Buffer.from(revision === P.ancestor ? f.oldMatrix : f.currentMatrix);
@@ -139,7 +185,7 @@ function fixture() {
   f.validate = () => validatePR776ReviewedIdentity(f.bind(), f.evidence, { root: "pure-fixture", readGit: f.git });
   return f;
 }
-test("finite second controller merge retains the exact spent32-row review with zero new passes", () => {
+test("finite third controller merge retains the exact spent32-row review with zero new passes", () => {
   const f = fixture(),
     current = f.bind(),
     old = pr776HistoricalReviewedPlan(current);
@@ -519,7 +565,7 @@ for (const [name, mutate] of [
     },
   ],
   [
-    "third controller merge",
+    "fourth controller merge",
     (f) => {
       f.parents[0] = BASE;
     },
@@ -579,8 +625,158 @@ for (const [name, mutate] of [
     },
   ],
 ])
-  test(name + " fails the finite second controller bridge", () => {
+  test(name + " remains rejected by the finite third controller bridge", () => {
     const f = fixture();
     mutate(f);
     assert.throws(f.validate);
   });
+
+test("frozen M6 and ID-only5669 retain exact source, canonical and spent review identities", () => {
+  const f = fixture();
+  assert.equal(O.base, "e60d7db3b95c48c32306dd7682d4a132f3e54b3d");
+  assert.deepEqual(O.baseParents, [T.base, "8762a4fe31e78d00d3b09d8f4c411c81203cf379"]);
+  assert.equal(O.baseTree, "e8870c4279956e63cf95608de077f1a368ac7e2b");
+  assert.equal(O.candidate, "5669b2484ba44f38d0a96ce3895f98bb61fb9d1d");
+  assert.deepEqual(O.candidateParents, ["094331fc2defc8dabf4c0b4ba21ef0df7625b0e3"]);
+  assert.equal(O.candidateTree, "cdfe106d91d6a7b8e12ad17f6b3b89f3f523a528");
+  assert.equal(O.sourceDigest, "4f3baf77bb7a1d1b425da372f645527248b2f757adad9844c82c0e02d2465bda");
+  assert.equal(O.canonicalSha256, "46e3f544db3f8472986b00d229f2662e901b7f6faf72ec38414c26847b4b80b0");
+  assert.equal(O.reviewArtifactId, 12593074243);
+  assert.equal(O.canonicalBlob, "14ad1d87c0b03064470896ff9a9d2b4ba90d4d2f");
+  assert.equal(PR776_CONTROLLER_PATHS.length, 26);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 23);
+  assert.equal(PR776_OBSERVABILITY_REPAIR_PATHS.length, 9);
+  assert.deepEqual(f.record.originalIdentity, P);
+  assert.deepEqual(f.record.transportPredecessor, T);
+  assert.deepEqual(f.record.observabilityPredecessor, O);
+  assert.equal(f.validate(), true);
+});
+for (const [name, mutate] of [
+  [
+    "M6 itself rather than one next normal merge",
+    (f) => {
+      f.plan.baseSha = O.base;
+      f.parents = [...O.baseParents];
+    },
+  ],
+  [
+    "changed M6 parents",
+    (f) => {
+      f.observedParents[1] = POLICY_HEAD;
+    },
+  ],
+  [
+    "changed M6 tree",
+    (f) => {
+      f.observedTree = TREE;
+    },
+  ],
+  [
+    "changed M6 qualified-head tree",
+    (f) => {
+      f.observedHeadTree = TREE;
+    },
+  ],
+  [
+    "changed5669 parent",
+    (f) => {
+      f.observedCarrierParents[0] = POLICY_HEAD;
+    },
+  ],
+  [
+    "changed5669 tree",
+    (f) => {
+      f.observedCarrierTree = TREE;
+    },
+  ],
+  [
+    "lost5669 ancestry",
+    (f) => {
+      f.observedCarrierAncestry = false;
+    },
+  ],
+  [
+    "changed frozen5669 canonical leaf",
+    (f) => {
+      f.frozenCanonicalTree.set(C, "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "changed frozen5669 canonical mode",
+    (f) => {
+      f.frozenCanonicalTree.set(C, `100755 blob ${O.canonicalBlob}`);
+    },
+  ],
+  [
+    "changed M6 transport delta",
+    (f) => {
+      f.transportChanges.pop();
+    },
+  ],
+  [
+    "changed M6 cumulative21 paths",
+    (f) => {
+      f.frozenControllerChanges.push("src/unrelated.ts");
+    },
+  ],
+  [
+    "changed observability predecessor record",
+    (f) => {
+      f.record.observabilityPredecessor.reviewArtifactId = 1;
+    },
+  ],
+  [
+    "unrelated next repair change",
+    (f) => {
+      f.repairChanges.push("src/unrelated.ts");
+    },
+  ],
+  [
+    "missing next repair change",
+    (f) => {
+      f.repairChanges.pop();
+    },
+  ],
+])
+  test(name + " fails the exact M6 observability bridge", () => {
+    const f = fixture();
+    mutate(f);
+    assert.throws(f.validate);
+  });
+test("the spent5669 machine artifact cannot authenticate a successor controller tuple", () => {
+  const current = fixture().bind();
+  const oldMachineReview = provenance(current, "review");
+  oldMachineReview.run.head_sha = O.base;
+  assert.throws(() => validateAttestationProvenance(oldMachineReview), /ATTESTATION_PROVENANCE_INVALID/u);
+});
+
+test("frozen5669 canonical proof reads only historical tree metadata and never its blob", () => {
+  const f = fixture();
+  assert.equal(f.validate(), true);
+  assert.equal(f.historicalCanonicalBlobReads, 0);
+  assert.throws(
+    () => f.git("pure-fixture", ["show", O.candidate + ":" + C]),
+    /FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ/u,
+  );
+});
+
+test("historical M6 guard excludes all five future-only observability and fixture paths", () => {
+  assert.deepEqual(
+    [...PR776_OBSERVABILITY_ADDED_PATHS].sort(),
+    [
+      "scripts/sounding-line/ordinary.mjs",
+      "scripts/sounding-line/verification-diagnostics.mjs",
+      "tests/sounding-line/browser-diagnostics.test.mjs",
+      "tests/sounding-line/experience-r25.test.mjs",
+      "tests/sounding-line/experience-r26.test.mjs",
+    ].sort(),
+  );
+  for (const file of ["tests/sounding-line/experience-r25.test.mjs", "tests/sounding-line/experience-r26.test.mjs"]) {
+    const f = fixture();
+    assert(!f.frozenControllerChanges.includes(file));
+    assert.equal(f.frozenControllerChanges.length, 21);
+    assert.equal(f.validate(), true);
+    f.frozenControllerChanges.push(file);
+    assert.throws(f.validate, /FROZEN_TRANSPORT_PREDECESSOR_CHANGED/u);
+  }
+});

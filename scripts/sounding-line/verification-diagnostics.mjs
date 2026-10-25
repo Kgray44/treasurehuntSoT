@@ -2,6 +2,14 @@
 import { replayAdmissionFailure, withReplayAdmissionScope } from "./source-diagnostics.mjs";
 const stages = new Set([
   "CLASSIFICATION",
+  "EXPERIENCE_PLAN",
+  "COMMITTED_EVIDENCE",
+  "TRUSTED_ATTESTATION",
+  "TRUSTED_ATTESTATION_METADATA",
+  "TRUSTED_ATTESTATION_DOWNLOAD",
+  "TRUSTED_ATTESTATION_HASH",
+  "TRUSTED_ATTESTATION_MANIFEST",
+  "EVIDENCE_FINGERPRINTS",
   "ORDINARY_ADMISSION",
   "TECHNICAL_VERIFICATION",
   "TECHNICAL_COMPLETE",
@@ -86,11 +94,32 @@ export function observeVerificationFailure(stage, error, { cause = error, phase 
   if (object(error) && !observations.has(error)) observations.set(error, observation(stage, error, cause, phase));
   return error;
 }
-export async function withVerificationStage(stage, operation) {
+export async function withVerificationStage(stage, operation, { observeFailure = true } = {}) {
+  const enabled = process.env.SOUNDING_LINE_EVIDENCE_PURPOSE === "PROTECTED_FINAL_VERIFICATION";
+  const startedAt = performance.now();
+  const progress = (event) => {
+    if (!enabled) return;
+    try {
+      process.stdout.write(
+        JSON.stringify({
+          namespace: "SOUNDING_LINE_VERIFICATION_PROGRESS",
+          stage: stages.has(stage) ? stage : "UNCLASSIFIED",
+          event,
+          elapsedMs: Math.max(0, Math.round(performance.now() - startedAt)),
+        }) + "\n",
+      );
+    } catch {
+      // Progress is observational and cannot replace the operation or its error.
+    }
+  };
+  progress("START");
   try {
-    return await (stage === "REPLAY_ADMISSION" ? withReplayAdmissionScope(operation) : operation());
+    const result = await (stage === "REPLAY_ADMISSION" ? withReplayAdmissionScope(operation) : operation());
+    progress("END");
+    return result;
   } catch (error) {
-    throw observeVerificationFailure(stage, error);
+    progress("FAIL");
+    throw observeFailure ? observeVerificationFailure(stage, error) : error;
   }
 }
 export function verificationFailureObservation(error) {

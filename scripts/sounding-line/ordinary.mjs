@@ -1002,7 +1002,9 @@ export async function runReconciledVerification(
   if (git(root, ["rev-parse", "HEAD"]) !== plan.candidateSha)
     throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_HEAD_CHANGED");
   git(root, ["diff", "--exit-code", "HEAD", "--"]);
-  const obligations = await buildEvidenceObligations(root, plan);
+  const obligations = await withVerificationStage("EVIDENCE_FINGERPRINTS", () => buildEvidenceObligations(root, plan), {
+    observeFailure: false,
+  });
   const store = new FileEvidenceStore(path.join(root, "artifacts", "sounding-line", "evidence-store"));
   const observedRoot = path.join(root, "artifacts", "sounding-line", "parent-observed-evidence");
   await mkdir(observedRoot, { recursive: true });
@@ -1464,25 +1466,39 @@ export async function buildPlan({
   );
   const browserTests = tests.filter((file) => e2eFile.test(file));
   const selection = selectAffectedTests({ changedPaths: classification.admissionPaths, unitTests, browserTests, mode });
-  const productExperience = planProductExperience({
-    root,
-    baseSha,
-    candidateSha,
-    changedPaths: classification.admissionPaths,
-    prNumber,
-  });
+  const productExperience = await withVerificationStage(
+    "EXPERIENCE_PLAN",
+    () =>
+      planProductExperience({
+        root,
+        baseSha,
+        candidateSha,
+        changedPaths: classification.admissionPaths,
+        prNumber,
+      }),
+    { observeFailure: false },
+  );
   if (productExperience.applicable) {
     for (const browserTest of productExperience.browserTests)
       if (!browserTests.includes(browserTest))
         throw new Error(`PRODUCT_EXPERIENCE_BROWSER_TEST_MISSING:${browserTest}`);
     selection.browserTests = [...new Set([...selection.browserTests, ...productExperience.browserTests])].sort();
     if (experienceEvidenceRequired) {
-      verifyProductExperience(root, candidateSha, productExperience);
-      productExperience.trustedAttestation = await verifyTrustedExperienceAttestation({
-        root,
-        plan: productExperience,
-        evidence: revisionJson(root, candidateSha, productExperience.evidencePath),
-      });
+      await withVerificationStage(
+        "COMMITTED_EVIDENCE",
+        () => verifyProductExperience(root, candidateSha, productExperience),
+        { observeFailure: false },
+      );
+      productExperience.trustedAttestation = await withVerificationStage(
+        "TRUSTED_ATTESTATION",
+        () =>
+          verifyTrustedExperienceAttestation({
+            root,
+            plan: productExperience,
+            evidence: revisionJson(root, candidateSha, productExperience.evidencePath),
+          }),
+        { observeFailure: false },
+      );
     }
   }
   const migrationScripts = classification.admissionPaths.filter((file) =>
