@@ -11105,6 +11105,27 @@
               {
                 "action": "click",
                 "role": "tab",
+                "name": "Assets"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown",
+                "expectFocus": {
+                  "role": "tab",
+                  "name": "Environments"
+                }
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown",
+                "expectFocus": {
+                  "role": "tab",
+                  "name": "Scenes"
+                }
+              },
+              {
+                "action": "click",
+                "role": "tab",
                 "name": "Scenes"
               },
               {
