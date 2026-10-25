@@ -25,6 +25,9 @@ import {
   classifyExperience,
   experienceDigest,
   planProductExperience,
+  pr776ContinuationReviewBindings,
+  validatePR776HostedReviewContext,
+  validateRoomsSurfaceNavigation,
   repairDisposition,
   REVIEW_DIMENSIONS,
   sourceSnapshot,
@@ -1174,4 +1177,215 @@ test("dynamic HTTP actions select plausible static endpoints without unrelated s
     assert.deepEqual(affectedConsumers([`src/app/api/invitations/${action}/route.ts`], [snapshot]).surfaces, [
       "src/ceremony/InvitationCeremony.tsx",
     ]);
+});
+
+// Model/source checks only; this does not consume a product review or run a browser.
+const pr776HistoryUrl = new URL(
+  "../../Development_Docs/Engineering/Product_Experience_PR776_Review3_20261025.original.json",
+  import.meta.url,
+);
+function pr776BindingsFixture() {
+  const registry = JSON.parse(readFileSync(new URL("../../testing/contracts.json", import.meta.url), "utf8"));
+  const record = registry.experiencePolicy.pr776ReviewContinuation;
+  const bytes = readFileSync(pr776HistoryUrl);
+  return { record, bytes, ids: record.reviewOrdinals.map((row) => row.contractId) };
+}
+test("PR776 fixed successor preserves all32 prior rows and requires nine fourth plus23 second reviews", () => {
+  const f = pr776BindingsFixture();
+  const binding = pr776ContinuationReviewBindings(f.record, f.bytes, f.ids);
+  assert.equal(binding.reviews.length, 32);
+  assert.equal(binding.reviews.filter((row) => row.iterations === 4).length, 9);
+  assert.equal(binding.reviews.filter((row) => row.iterations === 2).length, 23);
+  assert.equal(binding.reviews.filter((row) => row.previousStatus === "ACCEPTED").length, 30);
+  assert.deepEqual(binding.reviews.flatMap((row) => row.previousFindings.map((finding) => finding.id)).sort(), [
+    "PR776-FINAL-MOBILE-SURFACES-OBSCURE-ROOM",
+    "PR776-FINAL-WORKSPACE-CREATION-CONTRAST",
+  ]);
+});
+test("PR776 successor rejects rewritten history, fifth/reset scope and omitted/added contracts", () => {
+  const f = pr776BindingsFixture();
+  const changed = Buffer.from(f.bytes);
+  changed[changed.length - 2] ^= 1;
+  assert.throws(() => pr776ContinuationReviewBindings(f.record, changed, f.ids), /HISTORY_MISMATCH/u);
+  for (const value of [1, 3, 5]) {
+    const record = structuredClone(f.record);
+    record.reviewOrdinals[0].requiredIterations = value;
+    assert.throws(() => pr776ContinuationReviewBindings(record, f.bytes, f.ids), /CONTINUATION_INVALID/u);
+  }
+  for (const ids of [f.ids.slice(1), [...f.ids, "unrelated-contract"], [...f.ids.slice(1), f.ids[1]]])
+    assert.throws(() => pr776ContinuationReviewBindings(f.record, f.bytes, ids), /HISTORY_INVALID/u);
+});
+test("PR776 fourth/second validator keeps all17 dimensions, current packets and unresolved finding rejection", () => {
+  const history = pr776BindingsFixture();
+  const binding = pr776ContinuationReviewBindings(history.record, history.bytes, history.ids);
+  for (const row of binding.reviews) {
+    const f = experienceFixture();
+    f.contract.id = row.contractId;
+    f.plan.contractIds = [row.contractId];
+    f.plan.pr776ReviewContinuation = binding;
+    for (const entry of [...f.evidence.artifacts, ...f.evidence.journeys, ...f.evidence.reviews])
+      entry.contractId = row.contractId;
+    const review = f.evidence.reviews[0];
+    review.iterations = row.iterations;
+    review.packetDigest = experienceDigest({
+      sourceDigest: f.plan.sourceDigest,
+      contract: f.contract,
+      artifacts: f.evidence.artifacts.map(({ id, sha256 }) => ({ id, sha256 })),
+    });
+    review.continuation = {
+      id: row.id,
+      policyDigest: row.policyDigest,
+      prNumber: row.prNumber,
+      previousReviewSha256: row.previousReviewSha256,
+      iterations: row.iterations,
+      baseSha: f.plan.baseSha,
+      sourceDigest: f.plan.sourceDigest,
+    };
+    review.findings = row.previousFindings.map((finding) => ({
+      ...finding,
+      contractId: row.contractId,
+      disposition: "RESOLVED",
+      observation: "The preserved prior blocker is represented without downgrading its classification",
+      evidenceIds: ["MOBILE-READY"],
+      repairEvidenceIds: ["MOBILE-READY"],
+      resolution: "Synthetic validator fixture resolves the historical finding with current fixture evidence",
+    }));
+    assert.equal(f.validate().status, "PASS");
+    const dimension = REVIEW_DIMENSIONS[0],
+      judgment = review.dimensions[dimension];
+    delete review.dimensions[dimension];
+    assert.throws(() => f.validate(), /SUBSTANTIVE_REVIEW_MISSING/u);
+    review.dimensions[dimension] = judgment;
+    const packet = review.packetDigest;
+    review.packetDigest = "0".repeat(64);
+    assert.throws(() => f.validate(), /REVIEW_PACKET_MISMATCH/u);
+    review.packetDigest = packet;
+    for (const iterations of [1, 3, 5]) {
+      review.iterations = iterations;
+      assert.throws(() => f.validate(), /REVIEW_(?:CONTINUATION_BINDING_MISMATCH|UNRESOLVED)/u);
+    }
+    review.iterations = row.iterations;
+    if (review.findings.length) {
+      review.findings[0].disposition = "OPEN";
+      assert.throws(() => f.validate(), /BLOCKING_FINDING/u);
+    }
+    review.status = "BLOCKED";
+    assert.throws(() => f.validate());
+  }
+});
+test("Rooms fixed navigation validates only one Desktop overlay close while retaining all mobile states", () => {
+  const contract = {
+    id: "parallax.rooms-and-surfaces.experience",
+    experience: { roles: ["CREATOR"], devices: ["DESKTOP", "MOBILE"], motion: {} },
+  };
+  const journey = {
+    id: "creator-named-rooms-surface-snap-and-return",
+    roles: ["CREATOR"],
+    steps: [
+      {},
+      {},
+      {},
+      {},
+      {},
+      { action: "assert", state: "SURFACE_SNAPPED" },
+      { action: "click", role: "button", name: "Toggle spatial overlays", devices: ["DESKTOP"], kind: "navigation" },
+      { action: "click", role: "combobox", name: "Environment" },
+    ],
+  };
+  assert.deepEqual(validateRoomsSurfaceNavigation(contract, journey), { index: 6 });
+  for (const mutate of [
+    (c, j) => {
+      j.steps[6].devices = ["MOBILE"];
+    },
+    (c, j) => {
+      j.steps[6].devices = ["DESKTOP", "MOBILE"];
+    },
+    (c, j) => {
+      j.steps[6].state = "ROOM_OFFICE";
+    },
+    (c, j) => {
+      j.steps[6].when = true;
+    },
+    (c, j) => {
+      j.steps[6].name = "Arbitrary control";
+    },
+    (c, j) => {
+      j.steps[5].state = "OTHER";
+    },
+    (c, j) => {
+      j.steps[7].name = "Other";
+    },
+    (c, j) => {
+      j.steps.push({ devices: ["DESKTOP"] });
+    },
+    (c) => {
+      c.experience.roles = ["PLAYER"];
+    },
+    (c) => {
+      c.id = "other-contract";
+    },
+  ]) {
+    const c = structuredClone(contract),
+      j = structuredClone(journey);
+    mutate(c, j);
+    assert.throws(() => validateRoomsSurfaceNavigation(c, j), /ROOMS_SURFACE_NAVIGATION_INVALID/u);
+  }
+});
+
+test("legacy Reach positive and cap stay fourth even without a per-row ordinal property", (t) => {
+  const f = continuationFixture(t),
+    plan = f.planCurrent();
+  delete plan.reviewContinuation.iterations;
+  const current = f.install(plan);
+  assert.equal(current.validate().status, "PASS");
+  for (const count of [1, 3, 5]) {
+    current.evidence.reviews[0].iterations = count;
+    assert.throws(() => current.validate(), /REVIEW_(?:CONTINUATION_BINDING_MISMATCH|UNRESOLVED)/u);
+  }
+});
+test("PR776 hosted continuation rejects fork heads and wrong context while dispatch stays exact", () => {
+  const record = pr776BindingsFixture().record,
+    base = "a".repeat(40),
+    head = "b".repeat(40);
+  const env = {
+    GITHUB_EVENT_NAME: "pull_request_target",
+    GITHUB_REPOSITORY: record.repository,
+    GITHUB_SHA: base,
+    GITHUB_REF: "refs/heads/main",
+  };
+  const event = {
+    pull_request: {
+      number: 776,
+      base: { sha: base, repo: { full_name: record.repository } },
+      head: { sha: head, repo: { full_name: record.repository } },
+    },
+  };
+  assert.doesNotThrow(() => validatePR776HostedReviewContext(record, base, head, env, event));
+  for (const mutate of [
+    (e, v) => {
+      v.pull_request.head.repo.full_name = "another-owner/fork";
+    },
+    (e, v) => {
+      v.pull_request.base.repo.full_name = "another-owner/fork";
+    },
+    (e, v) => {
+      v.pull_request.head.sha = "c".repeat(40);
+    },
+    (e) => {
+      e.GITHUB_REF = "refs/heads/untrusted";
+    },
+    (e, v) => {
+      v.pull_request.number = 777;
+    },
+  ]) {
+    const e = structuredClone(env),
+      v = structuredClone(event);
+    mutate(e, v);
+    assert.throws(() => validatePR776HostedReviewContext(record, base, head, e, v), /CONTEXT_MISMATCH/u);
+  }
+  const dispatch = { ...env, GITHUB_EVENT_NAME: "workflow_dispatch" };
+  const input = { inputs: { pr_number: "776", candidate_sha: head, base_sha: base } };
+  assert.doesNotThrow(() => validatePR776HostedReviewContext(record, base, head, dispatch, input));
+  input.inputs.candidate_sha = "c".repeat(40);
+  assert.throws(() => validatePR776HostedReviewContext(record, base, head, dispatch, input), /CONTEXT_MISMATCH/u);
 });

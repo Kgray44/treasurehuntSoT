@@ -41,6 +41,7 @@ import {
   REVIEW_DIMENSIONS,
   validateExperienceEvidence,
   validateRoomReloadJourney,
+  validateRoomsSurfaceNavigation,
   validateRoomNativeDisclosures,
   validateSceneSavedConfirmation,
   validateExperienceArtifacts,
@@ -374,6 +375,12 @@ export async function runExperienceJourney({
   baseURL,
   accessibilityCheck,
 }) {
+  const roomsSurfaceNavigation = validateRoomsSurfaceNavigation(contract, journey);
+  if (
+    roomsSurfaceNavigation &&
+    (role !== "CREATOR" || !["DESKTOP", "MOBILE"].includes(device) || !["NORMAL", "REDUCED"].includes(motionMode))
+  )
+    fail("ROOMS_SURFACE_NAVIGATION_INVALID");
   const confirmation = validateSceneSavedConfirmation(contract, journey);
   if (
     confirmation &&
@@ -401,26 +408,43 @@ export async function runExperienceJourney({
   // applicability and literals while evidence retains original step indices.
   const contextual = journey.steps.some((step) => JSON.stringify(step).includes("PARALLAX_COMMUNITY_SCENE_"))
     ? communityJourneyContext(contract, journey, device, motionMode, role)
-    : reload?.mobileDisclosureIndices
+    : roomsSurfaceNavigation
       ? {
           steps: journey.steps.map((step, index) => ({
             step,
             index,
-            applicable: !reload.mobileDisclosureIndices.includes(index) || device === "MOBILE",
+            applicable: index !== roomsSurfaceNavigation.index || device === "DESKTOP",
           })),
           evidence: {
             version: 1,
             device,
             motionMode,
-            applicability: reload.mobileDisclosureIndices.map((step) => ({
-              step,
-              devices: ["MOBILE"],
-              applicable: device === "MOBILE",
-            })),
+            applicability: [
+              { step: roomsSurfaceNavigation.index, devices: ["DESKTOP"], applicable: device === "DESKTOP" },
+            ],
             substitutions: [],
           },
         }
-      : sc02JourneyContext(contract, journey, device, motionMode);
+      : reload?.mobileDisclosureIndices
+        ? {
+            steps: journey.steps.map((step, index) => ({
+              step,
+              index,
+              applicable: !reload.mobileDisclosureIndices.includes(index) || device === "MOBILE",
+            })),
+            evidence: {
+              version: 1,
+              device,
+              motionMode,
+              applicability: reload.mobileDisclosureIndices.map((step) => ({
+                step,
+                devices: ["MOBILE"],
+                applicable: device === "MOBILE",
+              })),
+              substitutions: [],
+            },
+          }
+        : sc02JourneyContext(contract, journey, device, motionMode);
   const captures = [];
   const observations = [];
   const stateAccessibility = [];

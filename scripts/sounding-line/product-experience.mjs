@@ -239,6 +239,48 @@ function matches(file, prefixes) {
   return prefixes.some((prefix) => file === prefix || file.startsWith(prefix.endsWith("/") ? prefix : prefix + "/"));
 }
 
+// Placement already closes surfaces on narrow viewports; do not reopen them.
+export function validateRoomsSurfaceNavigation(contract, journey) {
+  if (
+    contract.id !== "parallax.rooms-and-surfaces.experience" &&
+    journey.id !== "creator-named-rooms-surface-snap-and-return"
+  )
+    return null;
+  const conditional = journey.steps.flatMap((step, index) => (Object.hasOwn(step, "devices") ? [index] : []));
+  if (!conditional.length) return null;
+  const experience = contract.experience;
+  const expected = {
+    action: "click",
+    role: "button",
+    name: "Toggle spatial overlays",
+    devices: ["DESKTOP"],
+    kind: "navigation",
+  };
+  if (
+    contract.id !== "parallax.rooms-and-surfaces.experience" ||
+    journey.id !== "creator-named-rooms-surface-snap-and-return" ||
+    JSON.stringify(experience.roles) !== '["CREATOR"]' ||
+    JSON.stringify(journey.roles) !== '["CREATOR"]' ||
+    experience.devices?.length !== 2 ||
+    !["DESKTOP", "MOBILE"].every((device) => experience.devices.includes(device)) ||
+    !experience.motion ||
+    conditional.length !== 1 ||
+    conditional[0] !== 6 ||
+    Object.keys(journey.steps[6]).sort().join(",") !== Object.keys(expected).sort().join(",") ||
+    Object.entries(expected).some(
+      ([key, value]) => experienceDigest(journey.steps[6][key]) !== experienceDigest(value),
+    ) ||
+    journey.steps[5]?.action !== "assert" ||
+    journey.steps[5]?.state !== "SURFACE_SNAPPED" ||
+    journey.steps[7]?.action !== "click" ||
+    journey.steps[7]?.role !== "combobox" ||
+    journey.steps[7]?.name !== "Environment" ||
+    journey.steps.some((step) => ["when", "contextValue", "contextName"].some((key) => Object.hasOwn(step, key)))
+  )
+    fail("ROOMS_SURFACE_NAVIGATION_INVALID");
+  return { index: 6 };
+}
+
 // Reload is a single saved-Scene proof step, not a general navigation action.
 export function validateRoomReloadJourney(contract, journey) {
   const reloads = journey.steps.flatMap((step, index) => (step.action === "reload" ? [index] : []));
@@ -413,6 +455,7 @@ export function validateExperienceContract(contract) {
   for (const journey of experience.journeys) {
     if (!journey.id || !meaningful(journey.outcome) || !list(journey.steps)) fail("JOURNEY_INVALID", contract.id);
     validateRoomReloadJourney(contract, journey);
+    validateRoomsSurfaceNavigation(contract, journey);
     validateSceneSavedConfirmation(contract, journey);
     if (!journey.steps.some((step) => step.action === "click")) fail("NATURAL_JOURNEY_REQUIRED", journey.id);
     if (!journey.steps.some((step) => step.action === "assert" && step.kind === "outcome"))
@@ -715,6 +758,101 @@ function protectedReviewContinuation({ root, baseSha, candidateSha, prNumber, po
     previousFindings: previous.findings.map(({ id, classification }) => ({ id, classification })),
   };
 }
+
+// One installed PR776 successor. This grants no new capture or owner acceptance.
+export function pr776ContinuationReviewBindings(record, bytes, contractIds) {
+  if (experienceDigest(record) !== "6872d2bfbd1133216fed8dc7ed25a4f18efbff79ee8709e7b35b8a26754dcf19")
+    fail("PR776_REVIEW_CONTINUATION_INVALID");
+  if (createHash("sha256").update(bytes).digest("hex") !== record.blockedReview.sha256)
+    fail("PR776_REVIEW_CONTINUATION_HISTORY_MISMATCH");
+  const previous = JSON.parse(bytes.toString());
+  const rows = [...(previous.reviews ?? [])].sort((a, b) =>
+    a.contractId < b.contractId ? -1 : a.contractId > b.contractId ? 1 : 0,
+  );
+  if (
+    previous.status !== "BLOCKED" ||
+    previous.candidate !== record.ancestorCandidate ||
+    previous.base !== "5d7d603e9e8120d8d3f4d6c21d462523a90c7cb5" ||
+    previous.sourceDigest !== "1fad1275ae9a44edb2f3dca481c6b2ca44b2e4dbfc53e24f53b074249d73e1bf" ||
+    previous.contractDigest !== "6915ee386ab7bad948fb0b74c8d678caf00e1bcd9ad61247e45b07ee8fc62c51" ||
+    previous.captureRun !== 40147115864 ||
+    rows.length !== 32 ||
+    new Set(rows.map((row) => row.contractId)).size !== 32 ||
+    experienceDigest([...contractIds].sort()) !==
+      experienceDigest(record.reviewOrdinals.map((row) => row.contractId)) ||
+    rows.some((row, index) => {
+      const expected = record.reviewOrdinals[index];
+      return (
+        row.contractId !== expected.contractId ||
+        row.iterations !== expected.previousIterations ||
+        row.status !== expected.previousStatus ||
+        expected.requiredIterations !== row.iterations + 1 ||
+        ![2, 4].includes(expected.requiredIterations)
+      );
+    })
+  )
+    fail("PR776_REVIEW_CONTINUATION_HISTORY_INVALID");
+  return {
+    id: record.id,
+    policyDigest: experienceDigest(record),
+    prNumber: record.prNumber,
+    previousReviewSha256: record.blockedReview.sha256,
+    reviews: rows.map((row, index) => ({
+      id: record.id,
+      policyDigest: experienceDigest(record),
+      prNumber: record.prNumber,
+      contractId: row.contractId,
+      previousReviewSha256: record.blockedReview.sha256,
+      previousIterations: row.iterations,
+      previousStatus: row.status,
+      iterations: record.reviewOrdinals[index].requiredIterations,
+      previousFindings: row.findings.map(({ id, classification }) => ({ id, classification })),
+    })),
+  };
+}
+export function validatePR776HostedReviewContext(record, baseSha, candidateSha, env, event) {
+  const pull = event.pull_request;
+  const dispatched = env.GITHUB_EVENT_NAME === "workflow_dispatch";
+  if (
+    env.GITHUB_REPOSITORY !== record.repository ||
+    env.GITHUB_SHA !== baseSha ||
+    env.GITHUB_REF !== "refs/heads/main" ||
+    (dispatched
+      ? String(event.inputs?.pr_number) !== "776" ||
+        event.inputs?.candidate_sha !== candidateSha ||
+        event.inputs?.base_sha !== baseSha
+      : env.GITHUB_EVENT_NAME !== "pull_request_target" ||
+        pull?.number !== 776 ||
+        pull?.base?.repo?.full_name !== record.repository ||
+        pull?.head?.repo?.full_name !== record.repository ||
+        pull?.base?.sha !== baseSha ||
+        pull?.head?.sha !== candidateSha)
+  )
+    fail("PR776_REVIEW_CONTINUATION_CONTEXT_MISMATCH");
+}
+function protectedPR776ReviewContinuation({ root, baseSha, candidateSha, prNumber, policy, contracts }) {
+  const record = policy.pr776ReviewContinuation;
+  if (!record || String(prNumber) !== "776") return null;
+  const bytes = artifactBytes({ root, revision: baseSha, file: record.blockedReview?.path });
+  const continuation = pr776ContinuationReviewBindings(
+    record,
+    bytes,
+    contracts.map((contract) => contract.id),
+  );
+  if (!bytes.equals(artifactBytes({ root, revision: candidateSha, file: record.blockedReview.path })))
+    fail("PR776_REVIEW_CONTINUATION_HISTORY_MISMATCH");
+  git(root, ["merge-base", "--is-ancestor", record.ancestorCandidate, candidateSha]);
+  if (process.env.GITHUB_ACTIONS === "true")
+    validatePR776HostedReviewContext(
+      record,
+      baseSha,
+      candidateSha,
+      process.env,
+      JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8")),
+    );
+  return continuation;
+}
+
 function unboundProductExperiencePlan({
   root,
   baseSha,
@@ -772,6 +910,14 @@ function unboundProductExperiencePlan({
     policy,
     contracts: selected,
   });
+  const pr776ReviewContinuation = protectedPR776ReviewContinuation({
+    root,
+    baseSha,
+    candidateSha,
+    prNumber,
+    policy,
+    contracts: selected,
+  });
   for (const contract of selected) registryBindings(root, baseSha, policy, contract);
   const uncovered = consumers.surfaces.filter(
     (file) => !selected.some((contract) => matches(file, contract.experience.sourcePaths)),
@@ -781,6 +927,7 @@ function unboundProductExperiencePlan({
     ...result,
     contracts: selected,
     ...(reviewContinuation ? { reviewContinuation } : {}),
+    ...(pr776ReviewContinuation ? { pr776ReviewContinuation } : {}),
     ...(paired
       ? {
           paired,
@@ -825,7 +972,8 @@ function unboundProductExperiencePlan({
 export function planProductExperience(options) {
   const plan = unboundProductExperiencePlan(options);
   const exception = bindExperienceException({ ...options, plan });
-  if (exception && plan.reviewContinuation) fail("REVIEW_CONTINUATION_EXCEPTION_CONFLICT");
+  if (exception && (plan.reviewContinuation || plan.pr776ReviewContinuation))
+    fail("REVIEW_CONTINUATION_EXCEPTION_CONFLICT");
   return exception ? { ...plan, exception } : plan;
 }
 
@@ -1108,14 +1256,17 @@ export function validateExperienceEvidence({
         }
       } else fail("BLOCKING_FINDING", finding.id);
     }
-    const continuation = plan.reviewContinuation?.contractId === contract.id ? plan.reviewContinuation : null;
+    const legacyContinuation = plan.reviewContinuation?.contractId === contract.id ? plan.reviewContinuation : null;
+    const pr776Continuation = plan.pr776ReviewContinuation?.reviews.find((entry) => entry.contractId === contract.id);
+    const continuation = legacyContinuation ?? pr776Continuation ?? null;
+    const requiredReviewIterations = legacyContinuation ? 4 : pr776Continuation?.iterations;
     if (continuation) {
       const binding = {
         id: continuation.id,
         policyDigest: continuation.policyDigest,
         prNumber: continuation.prNumber,
         previousReviewSha256: continuation.previousReviewSha256,
-        iterations: 4,
+        iterations: requiredReviewIterations,
         baseSha: plan.baseSha,
         sourceDigest: plan.sourceDigest,
       };
@@ -1140,7 +1291,7 @@ export function validateExperienceEvidence({
         ? review.iterations !==
           (isCurrentAdmissionPlan(plan) ? plan.exception.currentSourceAdmission.requiredReviewIterations : 11)
         : continuation
-          ? review.iterations !== 4
+          ? review.iterations !== requiredReviewIterations
           : review.iterations < 1 || review.iterations > 3) ||
       review.status !== "ACCEPTED"
     )

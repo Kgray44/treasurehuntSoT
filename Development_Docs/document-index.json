@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-24",
+  "generated_at": "2026-10-25",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -454,6 +454,18 @@
     },
     {
       "path": "Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Product_Experience_PR776_Review3_20261025.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Product_Experience_PR776_Review3_20261025.original.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

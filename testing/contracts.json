@@ -6179,6 +6179,210 @@
         "sha256": "94b9aa7a35a1d2f525c23bebfde7df9b789eb8842b79ba0f187abadedbb9846f",
         "originalSha256": "e48eb72b1bcb837f6e77a32e877536fc12495515a5b617d7f751aae9709251cf"
       }
+    },
+    "pr776ReviewContinuation": {
+      "id": "parallax-pr776-one-final-pass-20261025",
+      "repository": "Kgray44/treasurehuntSoT",
+      "prNumber": 776,
+      "ancestorCandidate": "c742c1488b4e0d877cd88e6e484dcd5b0264b696",
+      "blockedReview": {
+        "path": "Development_Docs/Engineering/Product_Experience_PR776_Review3_20261025.original.json",
+        "sha256": "71664e6b9aff8813502a5c280ac234741854a63cc7e7610942f6fa4ae371e868"
+      },
+      "reviewOrdinals": [
+        {
+          "contractId": "admiralty.phase1.registry",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "admiralty.phase2.account-dossier-support",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "admiralty.phase2.community-operations-providers",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "admiralty.phase2.read-projection-redaction",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "admiralty.phase2.registry-activation",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "community-moderation-integrity",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "crossdeck.phase2.continuity",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "crossdeck.refit.companion",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "crossdeck.refit.published-lens",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.community.public-projection",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.community.quarantine",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.community.voyage-logs",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.motion.authority",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.owner-correction.round1.workspaces",
+          "previousIterations": 1,
+          "previousStatus": "BLOCKED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.passport.product-surface",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.phase7.account.canonical-lifecycle",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-access-recovery",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-companion",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.shell.crossdeck-companion-mobile",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.transition.auth-routes",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "homeport.transition.reduced-motion",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "parallax.authored-library-and-simulation.experience",
+          "previousIterations": 3,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 4
+        },
+        {
+          "contractId": "parallax.floating-controls.experience",
+          "previousIterations": 3,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 4
+        },
+        {
+          "contractId": "parallax.integration.pilot-owner-boundary",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "parallax.parametric-room-correction.experience",
+          "previousIterations": 3,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 4
+        },
+        {
+          "contractId": "parallax.protected-photo-room.experience",
+          "previousIterations": 3,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 4
+        },
+        {
+          "contractId": "parallax.rooms-and-surfaces.experience",
+          "previousIterations": 3,
+          "previousStatus": "BLOCKED",
+          "requiredIterations": 4
+        },
+        {
+          "contractId": "parallax.sc00b.inspector.experience",
+          "previousIterations": 3,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 4
+        },
+        {
+          "contractId": "parallax.scene-manager.experience",
+          "previousIterations": 3,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 4
+        },
+        {
+          "contractId": "parallax.spatial-community-publishing.experience",
+          "previousIterations": 3,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 4
+        },
+        {
+          "contractId": "reach.phase1.foundation",
+          "previousIterations": 1,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 2
+        },
+        {
+          "contractId": "spatial-pilot.experience",
+          "previousIterations": 3,
+          "previousStatus": "ACCEPTED",
+          "requiredIterations": 4
+        }
+      ]
     }
   }
 }
