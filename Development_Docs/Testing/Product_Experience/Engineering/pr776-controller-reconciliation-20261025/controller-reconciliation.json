@@ -21,15 +21,15 @@
   },
   "additionalIndependentPasses": 0,
   "existingOwnerDecisionSha256": "311b4d8ea06696f271bb32bdcfc85634e5b208673947e0897aed00ded87eeb92",
-  "activation": "Only one next normal protected-main merge with first parent c99ba71580b7950f64e9b7cb3a4a5ea4005c165c; frozen819/703, CBC/CFB, M6/5669, M7/F and M8/F10 identities, exact five-path argument transport repair and all prior review counts remain required. This controller repair adds zero independent product review passes.",
+  "activation": "Only one next normal protected-main merge with first parent 696ecec0fd89293074b271ab33d9256709158700; frozen819/703, CBC/CFB, M6/5669, M7/F, M8/F10 and M9/F12 identities, exact five-path SQLite bootstrap repair and all prior review counts remain required. This controller repair adds zero independent product review passes.",
   "requiredRepairBlobs": {
     ".prettierignore": "1a7ac7aaddc186905621e957b00e1c11591af9c5",
-    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "580989cd10302aafa83a0e59ab882c9e7e6c43f2",
+    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "0e0c1bf5f21845cfc29792acf39ea6e53a92238b",
     "scripts/sounding-line/experience-reviewed-adoption.mjs": "d8f00d95b1f5d25ef532a6597eabd35caa1cbc0d",
     "scripts/sounding-line/product-experience.mjs": "37cfb4987e1df47bb0ef11cb3aeb9513ad04a438",
     "scripts/sounding-line/experience-prepare.mjs": "e3df75622a9fc947c10d407985dd4e06accdacea",
     "scripts/sounding-line/experience-attestation.mjs": "3529c4a4bf3c4c4cd0079f0eaffac5e9ab96f6be",
-    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "d7a4958bb224075892c83589598f24a20cbad595",
+    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "f177931f6096e75189edbb7016d686003e9e917d",
     "tests/sounding-line/experience-attestation.test.mjs": "e2f4b2077e569dfacfea4008272a951d2f60e837",
     "tests/sounding-line/experience-paired.test.mjs": "df6ea6a17fbc9f09c04d8933ff298eeef159e4ca",
     "scripts/sounding-line/experience-selected-checkout.mjs": "7584473aaac3fe9f4a12762db5e5bd5bc49795ba",
@@ -44,7 +44,8 @@
     "tests/sounding-line/experience-r26.test.mjs": "3aad3daf9c4a2ca599b43e43c01f64f1cd6c1b55",
     "scripts/sounding-line/authenticated-completed-evidence.mjs": "5dfafc33d4aebaf4ccf7f267277da21746d2918c",
     "tests/sounding-line/authenticated-completed-evidence.test.mjs": "034719e33679979233319f6b9bf97e5801d36a0f",
-    "tests/sounding-line/ordinary.test.mjs": "9013d4353ea90a91349d56146b59f3cdc0768c4f",
+    "tests/sounding-line/ordinary.test.mjs": "ca92d6d7bbd76e755d41dbcd6e4b44d67d0009ea",
+    "scripts/sounding-line/sqlite-bootstrap.mjs": "fe477e2fce5414e80832c1740cabd61327323aee",
     "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/accepted-canonical.original.json": "382a5c5102fc39841e71a78c396f8db93a9f6ca4",
     "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/independent-review.original.json": "5e31fe454f2eb2d98f52b248a0911a9c0ca03f40",
     "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/captured-plan.original.json": "fdaf34acc4a3316ecc4f3ab9363117c1f08dc7c0",
@@ -56,7 +57,7 @@
   "historicalReportSetsPreserved": 8,
   "reviewOrdinals": { "fourth": 9, "second": 23 },
   "ownerAcceptance": "NOT_CLAIMED",
-  "expectedCurrentSourceDigest": "c96093f63889b4c0a33c6d7580d895e8f00b6c1de7a15d6dc6036dacc5b504ad",
+  "expectedCurrentSourceDigest": "790e837d9522c14f0cc88929267a35e9fd440e1580733b8fdb90294444827fa2",
   "transportPredecessor": {
     "base": "cbc3e643cc11c172983fb8f6f43036abda590182",
     "baseParents": ["819c992fb15ef0b87299ddaaed143427bd00a13d", "b86fe3abd41daf21e62a7dc876653982fa42bbe4"],
@@ -104,5 +105,18 @@
     "canonicalBytes": 1451427,
     "canonicalBlob": "8c93b89036d697145f183b815749cc49b8ef060f",
     "reviewArtifactId": 12601724319
+  },
+  "sqliteBootstrapPredecessor": {
+    "base": "696ecec0fd89293074b271ab33d9256709158700",
+    "baseParents": ["c99ba71580b7950f64e9b7cb3a4a5ea4005c165c", "148d9e4064706ad52c52ee3c9b218fe6af87f122"],
+    "baseTree": "5a1c6a629969753d736ca9d23bbf900b53bdd85f",
+    "candidate": "e321c2465b9b0c166cbdbc6e9a88f57c89c7ff1a",
+    "candidateParents": ["44c62f08bc801f480dfa6765701aeb4106155649"],
+    "candidateTree": "75352e35df8f1c3b516ac33a0d729a62a3ea5097",
+    "sourceDigest": "c96093f63889b4c0a33c6d7580d895e8f00b6c1de7a15d6dc6036dacc5b504ad",
+    "canonicalSha256": "1015945c5520605fe3271a03f2e4e03b557ba30795b540d82a8d1372f7310d9b",
+    "canonicalBytes": 1451427,
+    "canonicalBlob": "b705d68d183335dbf5f8e7d2292eb900a14e3e10",
+    "reviewArtifactId": 12606664876
   }
 }

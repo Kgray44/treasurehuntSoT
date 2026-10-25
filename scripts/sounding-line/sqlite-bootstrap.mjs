@@ -43,12 +43,21 @@ async function migrationFiles(root) {
     .sort();
 }
 
+export function sqliteBootstrapDatabaseUrl(databaseUrl) {
+  const [file, query = ""] = databaseUrl.split("?");
+  const parameters = new URLSearchParams(query);
+  parameters.set("connection_limit", "1");
+  return `${file}?${parameters}`;
+}
+
 async function main() {
   const optionIndex = process.argv.indexOf("--database-url");
   const databaseUrl = optionIndex >= 0 ? process.argv[optionIndex + 1] : undefined;
   if (!databaseUrl?.startsWith("file:")) throw new Error("SOUNDING_LINE_SQLITE_DATABASE_URL_REQUIRED");
   const { PrismaClient } = await import("@prisma/client");
-  const prisma = new PrismaClient({ datasources: { db: { url: databaseUrl } } });
+  // Migration PRAGMAs and schema rebuilds must share one physical connection.
+  // Another pooled connection can retain an index schema from before its DROP.
+  const prisma = new PrismaClient({ datasources: { db: { url: sqliteBootstrapDatabaseUrl(databaseUrl) } } });
   try {
     for (const file of await migrationFiles(process.cwd())) {
       for (const statement of splitMigrationStatements(await readFile(file, "utf8")))
