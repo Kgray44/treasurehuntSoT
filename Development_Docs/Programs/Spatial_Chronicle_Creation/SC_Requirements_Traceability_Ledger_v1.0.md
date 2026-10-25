@@ -1,0 +1,239 @@
+---
+title: "Spatial Chronicle Creation Cross-Project Requirements Traceability Ledger"
+subtitle: "Source-by-Source Requirements, Ownership, Dependencies, Acceptance Tests, and Actual Implementation Evidence"
+document_id: VW-SC-TRACE-001
+version: "1.0-review-candidate"
+date: "2026-10-25"
+status: "PROPOSED_LEDGER_NOT_IMPLEMENTATION_ACCEPTANCE"
+program: Spatial Chronicle Creation
+canonical_for: proposed-sc-cross-project-requirements-ledger
+audience: product-engineering
+repository: Kgray44/treasurehuntSoT
+---
+
+# Spatial Chronicle Creation Requirements Traceability Ledger
+
+> **Ledger principle:** Preserve **the human experience originally requested**, not only a vague feature title. Each item must have one accountable owner, contributing systems, governance destination, concrete acceptance behavior, and a separately verifiable integration status. A written promise is not working source.
+
+## 1. Evidence status, adoption and scope
+
+This is an **additive proposed requirements ledger** produced from October 24–25 owner design discussion. It accompanies the [SC Master Roadmap](./Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md), [Cross-Project Creator Experience Amendment](./Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md), [SC-04 Puzzle Composition Constitution](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md), and [SC-05 Chronicle Architect Constitution](./Project_Chronicle_Architect_Governing_Document_v1.0.md). SC-06 Story Adaptation remains reserved for later owner design, not silently specified here.
+
+**Status of EVERY new requirement in the register below: \`PROPOSED_REQUIREMENT / IMPLEMENTATION_NOT_VERIFIED\`.** This is a **requirements-document status**, not a claim that the capability is absent from current software. Existing narrower or related features may already be on \`main\` or PR branches. No row may be promoted to \`IMPLEMENTED\`, \`ACCEPTED_MAINLINE\`, \`OWNER_ACCEPTED\`, or \`HARDWARE_VERIFIED\` without actual source-bound, owner-governed evidence. Cross-project overlap must be reconciled before implementation. This documentation-only PR stays draft and unmerged; independent PR #776 work is left untouched.
+
+### 1.1 Source codes and what they mean
+
+| Code | Evidence origin |
+|---|---|
+| U24 | User discussion October 24, 2026: Drydock estimates, first-class equal Tools, named branches and rich branch decisions, cross-chapter puzzle placement, partial outcomes, hints, Community metrics. |
+| U25-1 | User final question #1: useful interactive 2D on every device, AR optional. |
+| U25-2 | User final question #2: flexible from-scratch no-code; advanced custom logic and possible scripts visible only in Engineering mode. |
+| U25-3 | User final question #3: playable, reproducible variations with easier adjacent alternative authoring. |
+| U25-4 | User final question #4: Captain interventions and adaptive Creator-defined assistance. |
+| U25-5 | User final question #5: cooperative shared progress OR every Player must complete, Creator configurable. |
+| U25-6 | User final question #6: extensive creator-safe observed analytics and Community performance data. |
+| U25-P | User Playtest clarification: Playtest Mode applies to every Creator tool, not only Puzzle Workshop. |
+| U25 | User's overall October 25 agreement and high-level design goals. |
+| D | Necessary proposed design/verification elaboration derived from user intent and existing canonical contracts; not itself a quoted owner requirement. |
+
+The word **Owner** in these entries means primary *implementation/domain accountability*, not the personal product owner who must still approve changes. Collaborators retain the responsibilities of their own accepted projects. "SC-04" as an owner denotes Puzzle Workshop authoring/product responsibility under the existing Creator hierarchy, not a newly empowered runtime authority.
+
+### 1.2 Status evolution and mandatory update fields
+
+When a specific feature is implemented, add exact **current branch/PR, baseline SHA, candidate SHA, changed contracts, migration link, tests/coverage, accepted Drydock/Sounding Line evidence, landed main SHA, owner walkthrough verdict and physical/provider acceptance** where applicable. Distinguish: PROPOSED → DESIGN_ACCEPTED → IMPLEMENTING → LOCAL_PROVEN → SOFTWARE_QUALIFIED → MAINLINE_INTEGRATED → OWNER_ACCEPTED, plus separate HARDWARE_FIELD_QUALIFIED and PUBLISHED_RELEASE status dimensions. Do not infer these automatically from a passing browser demo.
+
+Rows below have a stable ID. Do not reuse IDs for different meanings. Amend changed intent with a versioned update, preserve the earlier intent and link source. No deletion of owner decisions merely because a later program has not scheduled them.
+
+## 2. Detailed cross-project requirements matrix
+
+Columns: **ID** stable reference; **Origin** user decision or proposed elaboration; **Owner** primary accountable project; **Contributors** current adjacent domains; **Document** normative destination; **User value** intended observable behavior; **Acceptance** concrete evidence; **Dependencies** gate. **All entries remain proposed** as described above.
+
+
+### A. Whole-Creator Tools and navigation
+
+| ID | Origin | Owner | Contributors | Document | Required experience | Acceptance evidence | Dependencies |
+|---|---|---|---|---|---|---|---|
+| UX-001 | U24 | Shipwright | Global Product Governance, SC-04, Parallax | XP §3 | Equal-standing Story & Branches, Puzzle, Spatial, Artifacts, Worlds/Navigation, Devices, Cinematics and Drydock appear as obvious Creator Tools, with honest current availability. | Owner desktop/phone/keyboard journey locates every real tool from normal Chronicle entry without obscure menus. | Current real route/capability inventory and shell policy |
+| UX-002 | U24 | Shipwright | All Creator owners | XP §3 | Tool hub visually resembles coherent four-way new-Chronicle entry, not an unrelated administration dashboard. | Owner accepts cohesive layouts, hierarchy, typography, meaningful descriptions and responsive presentation. | Existing product design and mobile accessibility review |
+| UX-003 | U24 | Shipwright | Parallax, SC-04, Artifact owner | XP §3 | Direct tool switching works without an obligatory return to Tools hub. | Story-to-Puzzle-to-Story and Spatial-to-Artifact-to-Spatial browser journeys preserve exact context. | Shared tool switcher and identity envelopes |
+| UX-004 | U24 | Shipwright | One Voyage, Crossdeck | XP §3 | Canonical Chronicle, draft/edition, selected tool and object remain visible with navigable breadcrumbs. | Open nested branch then return to origin and Chronicle without loss of selection or ownership. | Authorized Chronicle and object IDs |
+| UX-005 | U24 | Shipwright | Domain editors | XP §3 | Unsaved state, pending writes, conflicts, focus/scroll/canvas selection and contextual return are preserved or warned about honestly. | Cross-tool navigation during pending autosave, conflict and refresh never silently loses edits. | Existing optimistic draft revision rules |
+| UX-006 | U24 | Shipwright | Global Product Governance | XP §3 | Tool cards never imply a nonexistent standalone Studio or fully functional feature. | Missing capability renders truthful limited/current/coming status with working alternative route if supported. | Runtime route and capability checks |
+| UX-007 | U24 | Shipwright | Artifact services, Parallax | XP §8 | Current Artifact editor remains accessible as a peer; proposal for deeper Artifact Studio does not duplicate artifact ownership. | Verify real per-Chronicle artifacts route, separate Player Cabinet, and safe gradual Studio expansion. | Accepted Artifact domain and current route |
+| UX-008 | U24 | Shipwright | Landfall, Sextant | XP §8 | Worlds/Navigation and Device Interactions receive discoverable peer authoring entry, with separate domain authority. | Real current features are reachable while unsupported rich editors are labeled honestly. | Actual Landfall and Sextant authoring contracts |
+| UX-009 | U24 | Shipwright | Storytide, Lanternwake | XP §8 | Cinematics/Media retain excellent visible Creator navigation without duplicating animation authority. | From chapter moment enter appropriate cinematic tool and return with a versioned reference. | Accepted presentation authoring surfaces |
+| UX-010 | U25-P | Shipwright | Drydock, One Voyage, Parallax and all tool owners | XP §6 | Playtest Mode is a universal Creator capability available contextually across all authoring tools, not Puzzle Workshop-only. | End-to-end Playtest from Story, Puzzle, Spatial, Artifact, World/Device and Cinematic surfaces with source-bound scope. | Common simulator/adapter registry and no-live-side-effect proof |
+| UX-011 | U25-P | Drydock | Shipwright, One Voyage, providers | XP §6 | Playtest can vary simulated device, viewport, reduced motion, audio, crew role, fault and offline postures with fidelity labels. | Desktop/phone/keyboard/permission-denied traces clearly distinguish simulated and physical evidence. | Drydock scenario contracts and domain adapters |
+| UX-012 | U25-P | Shipwright | Drydock and domain owners | XP §6 | Switching Edit to Playtest and back preserves editor selection and supports rewind, reset and alternate routes. | Exact puzzle/branch/Scene round-trip leaves actual draft and published Player state unchanged. | Controlled isolated test identity |
+| UX-013 | D | Shipwright | Global Product Governance | XP §§3,10 | Equal importance does not force identical controls or fake mobile parity; each tool must be comprehensible and accessible. | Keyboard, touch, assistive technology, narrow/mobile, 200% zoom and reduced motion reviewed on real entry paths. | Product experience qualification |
+
+### B. Chronicle branching and cross-tool puzzle references
+
+| ID | Origin | Owner | Contributors | Document | Required experience | Acceptance evidence | Dependencies |
+|---|---|---|---|---|---|---|---|
+| BR-001 | U24 | Shipwright | Drydock, One Voyage | XP §4 | Named clickable branches appear as navigable cards rather than raw target IDs embedded in a giant block stream. | Create Lighthouse and Caves paths from one Choice, open each independently and preserve canonical graph. | Current BlockConnection semantics |
+| BR-002 | U24 | Shipwright | One Voyage | XP §4 | Branch editor looks and works like familiar drag-and-drop Chronicle editor, but focuses on selected named path. | Insert, rearrange, duplicate, undo/redo and edit block inspectors inside branch with no parallel draft. | Existing TaleEditor/Drydock contract |
+| BR-003 | U24 | Shipwright | Drydock | XP §4 | Branch header shows named path, clickable branched-from source, parent chapter and navigable ancestry. | From third-level nested branch jump to exact parent and back; keyboard support. | Stable authoring branch scope mapping |
+| BR-004 | U24 | Shipwright | Drydock, One Voyage | XP §4 | Branch Out, Return/Merge and End are clear visual concepts, with real canonical graph links rather than duplicate engines. | Every visible marker maps to valid typed graph connection; no dangling links or shadow state. | Accepted graph migration/representation review |
+| BR-005 | U24 | Shipwright | Drydock | XP §4 | Nested and shared branches remain readable in focused view with an optional whole-graph overview. | Shared subgraph appears as shared, not silently copied; cycle and multiple-entry diagnostics operate. | DAG/cycle-aware focus policy |
+| BR-006 | U24 | Shipwright | Drydock, One Voyage | XP §4 | Branch author selects choice, condition, puzzle outcome, Captain, timed event or reproducible variation using human-readable controls. | Each eligible option exposes actual expected Player UI and verified target/fallback. | Canonical expressions/event contracts |
+| BR-007 | U24 | Drydock | Shipwright, One Voyage | XP §4 | Overlapping, unreachable, no-match and contradictory branch rules receive specific validation; no accidental first-array-element decision. | Focused fault suite catches missing targets, overlapping predicates, implicit default and impossible rejoin. | Graph scenario adapters |
+| BR-008 | U24 | One Voyage | Shipwright, Storytide | XP §4 | Rejoining common chapter preserves past route-specific clues, decisions, variables and rewards. | Two branches converge yet replay/save/history still show their differing authorized outcomes. | Canonical progression/published snapshots |
+| BR-009 | U24 | Shipwright | SC-04, Drydock | XP §5 | Add Puzzle creates one visible puzzle reference and offers contextual puzzle-related block insertions rather than dumping all blocks. | Chapter insert menu allows Introduce/Discover/Hint/Resolve selectively and links same puzzle instance. | Puzzle Instance/Moment reference contract |
+| BR-010 | U24 | Shipwright | SC-04, One Voyage | XP §5 | Single puzzle may have moments in multiple chapters with an understandable cross-reference map. | Place clue in Chapter I and resolution in Chapter V, edit shared puzzle definition in Workshop and see both refs. | Graph and instance version rules |
+| BR-011 | D | Shipwright | Drydock | XP §§4-5 | Branch UX is shared Story Editor work and must not be owned exclusively by SC-04. | Design reviews name Shipwright UI owner, Drydock graph owner and One Voyage runtime owner; no separate puzzle-only branch navigator. | Owner domain boundary approval |
+
+### C. SC-04 authoring and core puzzle composition
+
+| ID | Origin | Owner | Contributors | Document | Required experience | Acceptance evidence | Dependencies |
+|---|---|---|---|---|---|---|---|
+| PZ-001 | U24 | SC-04/Shipwright | Drydock, One Voyage | SC04 §§1-3 | Workshop is a first-class Creator Tool, not a mere riddle selector or hidden inspector. | Enter Workshop from Tools, chapter, branch and puzzle link; return to original context. | Shared Creator shell |
+| PZ-002 | U24 | SC-04/Shipwright | Drydock | SC04 §2 | Creators can start from scratch; starters/templates optional and editable. | Create meaningful puzzle without template, save/reopen and adjust every supported mechanic. | Canonical definition and instance contract |
+| PZ-003 | U24 | SC-04 | Drydock, One Voyage | SC04 §§3-4 | Puzzle model includes objectives, interactions, evidence, gates, hints, outcomes, conditions and presentation. | Persist/reload rich multistep challenge with no hidden second progression store. | Existing Story Block and connection authority |
+| PZ-004 | U24 | SC-04 | Shipwright | SC04 §2 | Guided, Detailed and Engineering show progressive capability on one same puzzle. | Switch modes across save/reload and prove no semantics or required options vanish. | Authorized authoring mode policy |
+| PZ-005 | U25-2 | SC-04 | Drydock, Shipwright | SC04 §6 | Low-level custom logic composition and any possible scripting interface are visible exclusively in Engineering mode. | Guided/Detailed expose approachable high-level controls; no raw scripting controls, with server-side invariants. | Advanced schema validation and interface permissions |
+| PZ-006 | U25-2 | SC-04 | Drydock, security owners | SC04 §6 | Creators can build original mechanics using no-code primitives; future scripting only after separate sandbox/security ratification. | Custom no-code state machine built/replayed; adversarial arbitrary code blocked from production without approved sandbox. | Execution contract/fault budgets, future-only scripts |
+| PZ-007 | U24 | SC-04 | Drydock | SC04 §4 | Multistep sequential, parallel, conditional and cross-chapter puzzles compose without limited hardcoded category silos. | Complex challenge with three clues, optional path and alternate ending reopens as same canonical instance. | Puzzle graph and references |
+| PZ-008 | U24 | SC-04 | One Voyage, Storytide | SC04 §§4,10 | Multiple valid solutions, partial success, alternative success, failure and intentional skip have real meaningful narrative outcomes. | Key, cipher and negotiation satisfy configured objective with different authorized rewards/branches. | Outcome mapping/graph contracts |
+| PZ-009 | U24 | SC-04 | Drydock, One Voyage | SC04 §4 | Intentional failure and fail-forward are first-class and distinct from runtime fault. | Expired timer changes story and may grant alternative keepsake; device failure never mislabeled as puzzle failure. | Timer and failure semantics |
+| PZ-010 | U24 | SC-04 | Shipwright, One Voyage | SC04 §4 | Puzzle references can span Chronicle chapters and named branches while remaining manageable in Workshop. | Chapter I clue and Chapter V resolution work with rejoin, save/reopen and Story Editor references. | Shared named branch authoring |
+| PZ-011 | U24 | SC-04 | Drydock | SC04 §4 | Nested/interdependent puzzles expose prerequisites and reject circular unsatisfiable requirements. | Drydock demonstrates unreachable dependent key and suggests targeted fix before publication. | Drydock graph semantics |
+| PZ-012 | U24 | SC-04 | Storytide, Lanternwake | SC04 §9 | Graduated optional hints are authored, versioned and Creator-configurable. | Player request reveals correct tier without leaking later answer or changing previous completed states. | Spoiler-safe visibility rules |
+| PZ-013 | U25-4 | SC-04 | Drydock, One Voyage | SC04 §9 | Adaptive assistance can respond to allowed observations but is Creator-directed; optional legitimate timed failure remains possible. | Stuck/attempt/elapsed inputs trigger only approved hint tier, never forced success or hallucinated live AI. | Telemetry availability and hint policy |
+| PZ-014 | U25-6 | SC-04 | One Voyage | SC04 §10 | Scores/achievements/performance are optional, narrative-supporting and not mandatory competitive assessment. | One story has no score, another uses bounded deterministic medal; fallbacks do not impose penalty. | Scoring/Artifact award contracts |
+
+### D. 2D mechanisms, optional AR and stable variations
+
+| ID | Origin | Owner | Contributors | Document | Required experience | Acceptance evidence | Dependencies |
+|---|---|---|---|---|---|---|---|
+| MECH-001 | U25-1 | SC-04 | Parallax, accessibility owners | SC04 §5 | Every core interactive puzzle has an operational simplified 2D realization on all supported Player device classes. | Same puzzle can finish on desktop/phone without camera/AR, including touch, keyboard and nonvisual equivalents. | 2D renderer/input specification |
+| MECH-002 | U25-1 | SC-04 | Parallax, One Voyage | SC04 §5 | Rich optional 3D/AR representation may improve visuals but must preserve puzzle semantics and outcomes. | 2D and spatial test same clue/solution/receipt; unsupported native adapter uses honest accessible path. | Scene intent provider + quality proof |
+| MECH-003 | U25-1 | SC-04 | Lanternwake, Parallax | SC04 §5 | Visually configurable dials, locks, wheels, clocks, tiles, switches, circuits, maps and assemblies support expressive from-scratch work. | Build two unrelated custom mechanisms using existing primitives and verify readable/operable layouts. | Versioned 2D mechanism component catalog |
+| MECH-004 | U25-3 | SC-04 | Shipwright, Drydock | SC04 §7 | Add Alternative appears beside eligible existing block as a visual sibling, not above/below as sequential content. | Creator adds optional adjacent cipher wheel variant and previews either without serial execution or graph confusion. | Variation Slot/BlockConnection mapping |
+| MECH-005 | U25-3 | SC-04 | Drydock, One Voyage | SC04 §7 | Deterministic seed/version selects stable compatible variation for whole Voyage/crew scope. | Same seed/playthrough uses same lock code after reload/offline/late join and across devices; new Voyage may select another. | Reproducible selection/identity/pinning |
+| MECH-006 | U25-3 | Drydock | SC-04, One Voyage | SC04 §7 | All authored variations must remain internally consistent, completable and version/source bound. | Mismatched clue/code and unavailable variant asset fail validation; exhaustive coverage reported only if proven. | Bounded variant combinations and scenario suites |
+| MECH-007 | U25-3 | SC-04 | Drydock | SC04 §7 | Creator can fix a variant or configure allowed weighted/random alternatives without requiring combinatorial expertise. | Guided UI adds two valid options; invalid combinations are rejected or re-authored in a small bounded family. | Selection weight and compatibility policy |
+| MECH-008 | D | SC-04 | Sextant, Landfall, Watchglass, Reach | SC04 §§5,16 | Typed, qualified device/place/perception evidence is consumed, never guessed or treated as progression on its own. | Camera denial, heading uncertainty, real/virtual mismatch produce safe alternate interaction rather than false success. | Existing provider trust/permission boundary |
+
+### E. Crew modes, Captain control and timing
+
+| ID | Origin | Owner | Contributors | Document | Required experience | Acceptance evidence | Dependencies |
+|---|---|---|---|---|---|---|---|
+| CREW-001 | U25-5 | SC-04 | One Voyage, Crossdeck | SC04 §8 | Creator can choose collective crew puzzle completion with distributed independent contributions, default where team experience intended. | Player A finds clue, Player B solves mechanism, crew receives one authorized result. | Member/actor event semantics |
+| CREW-002 | U25-5 | SC-04 | One Voyage | SC04 §8 | Creator may instead require each Player to finish the same puzzle, with clear completion tracking. | Two eligible Players must each complete; one Player does not satisfy both, and a late join uses explicit policy. | Eligibility snapshot/change rules |
+| CREW-003 | U25-5 | SC-04 | One Voyage, Crossdeck | SC04 §8 | Individual/private clues and explicit sharing are distinct from shared puzzle progression. | Hidden clue remains private until authorized reveal to intended teammates and never leaks to unrelated crew. | Visibility/spoiler policy |
+| CREW-004 | U25-5 | Crossdeck | One Voyage, SC-04 | SC04 §8 | Laptop and phone used by same person remain one Player, not independent participants. | Dual-device contribution cannot satisfy all-player-required policy twice or create second reward. | Canonical identity and handoff |
+| CREW-005 | U25-5 | SC-04 | One Voyage, Helm | SC04 §8 | Creator supports distributed roles, hybrid, and explicit Player/Captain/team branch-decision policy. | Chosen role limits interactions, simultaneous decisions resolve per declared tie/priority rules, and manual overrides are traceable. | Participant policy contracts |
+| CREW-006 | U25-5 | SC-04 | Crossdeck, One Voyage | SC04 §8 | Dropouts, crew changes, reconnect and late join have defined completion/recovery behavior. | Network partition and third Player join never create deadlock or phantom Player; unknown membership policy blocks readiness. | Runtime membership state |
+| CAP-001 | U25-4 | Helm/One Voyage | SC-04, Shipwright | SC04 §11 | Authorized Captain can deliver configured hint/reveal clue/extend timer/accept allowed alternate/manual advance under rules. | Each action reviewed in Captain UI, role and target checked, correct result auditable. | Current canonical Captain command/role policy |
+| CAP-002 | U25-4 | One Voyage | Drydock, SC-04 | SC04 §11 | Interventions distinguish ordinary solved, assisted and admin override; never falsely inflate success metrics. | Captain override produces special receipt and analytics classification; no duplicate artifact grant. | Event classification and audit |
+| CAP-003 | U25-4 | SC-04 | One Voyage, Drydock | SC04 §11 | Creator configures timing and failure based on supported clock semantics with explicit suspend/offline/recovery behavior. | Pause, reconnect, timer extension and at-expiry solve race exercise exactly declared behavior. | Authoritative clock/provider truth |
+
+### F. Drydock analysis and universal Playtest
+
+| ID | Origin | Owner | Contributors | Document | Required experience | Acceptance evidence | Dependencies |
+|---|---|---|---|---|---|---|---|
+| DD-001 | U24 | Drydock | SC-04, One Voyage | SC04 §13 / XP §7 | Report exact/bounded reachability, valid endings, solution strategies and defined path counts with explicit proof scope. | Finite DAG yields reproducible exact count, cyclic/open graph yields bounded/unknown rather than invented finite paths. | Canonical source/graph digest |
+| DD-002 | U24 | Drydock | SC-04 | SC04 §13 | Estimate wrong attempts separately from exact enumerable wrong-answer classes. | Open text input reports non-enumerability and modeled expected attempts; finite choice control reports valid classes. | Input-domain classification |
+| DD-003 | U24 | Drydock | Landfall, Storytide, SC-04 | SC04 §13 / XP §7 | Model reading, searching, reasoning, interaction, travel, wait and retry timing, not an unsupported single fixed timer. | Assumptions and factor contributions shown for representative Player routes; creator adjusts rates and recalculates. | Valid travel/motion/reading inputs |
+| DD-004 | U24 | Drydock | SC-04, Crossdeck | SC04 §13 | Show uncertainty ranges/distributions and compare solo, crew, device, hint and fallback scenarios. | Display p10/p50/p90 or clearly labeled ranges, sensitivity to assumptions and source-bound model version. | Sampling/model bounds |
+| DD-005 | U25-6 | Drydock | One Voyage, relevant private history owners | SC04 §13 / XP §7 | Actual outcomes/times/attempts/hints/abandonment are measured only from eligible privacy-approved versioned events. | Observed median/report includes sample count, cohort/source version, technical exclusions and appropriate intervals. | Consent, event provenance, privacy |
+| DD-006 | U25-6 | Drydock | SC-04 | SC04 §13 | Clue bottlenecks, common wrong-action categories, branch choice distribution and before/after changes are visible to Creator. | Creator dashboard distinguishes authored revision, playthrough context, user abandon vs provider fault and outcome branch. | Privacy-safe aggregate model |
+| DD-007 | U25-6 | Harborlight | Drydock, Sealed Hold | SC04 §§12-13 | Community puzzle stats show only safe aggregates and cannot expose answers/private individual Player information. | Small cohort suppressed; no clue text/raw wrong answers/private GPS/device media in public result. | Publication/retention threshold contract |
+| DD-008 | U25-P | Drydock | Shipwright, One Voyage, SC-04 | SC04 §14 / XP §6 | One universal Playtest infrastructure supports puzzle-focused diagnostics and all other Creator tools. | Story, puzzle, Scene, Artifact, navigation and cinematic test journeys share one isolated source-bound run ID. | Drydock Scenario/adapter owner architecture |
+| DD-009 | U25-P | Drydock | SC-04, Crossdeck, Sextant | SC04 §14 | Playtest selects success, wrong, partial, failure, alternatives, Captain, crew, variation, device fault and recovery cases. | Representative deterministic suite exercises outcomes, role classes, seeded replay, offline and failures. | Scenario v1 extension review |
+| DD-010 | D | Drydock | Sounding Line | SC04 §14 / XP §6 | Playtest and analyses never mutate real Player events, send invitations, spend uncontrolled money or certify untested hardware. | Isolated synthetic test passes with real Player history unchanged and proof-class labeling. | Exact-source test isolation and evidence tiers |
+
+### G. Reuse, publication, AI and safeguards
+
+| ID | Origin | Owner | Contributors | Document | Required experience | Acceptance evidence | Dependencies |
+|---|---|---|---|---|---|---|---|
+| LIB-001 | U24 | SC-04 | Shipwright, Harborlight | SC04 §12 | Puzzle Library supports saved definitions, instances, templates, private reuse and Community discovery. | Creator installs pattern, parameterizes it and reuses in different Chronicle without altering parent. | Definition/Instance identity and versioning |
+| LIB-002 | U24 | SC-04 | Sealed Hold, Harborlight, Parallax | SC04 §12 | Reusable puzzle packages enumerate necessary assets/Scenes/parameters/licenses/fallbacks and reject invalid dependency closure. | Foreign private Scene reference and missing required asset block public release/install. | Harborlight/Sealed Hold acceptance policy |
+| LIB-003 | U24 | Harborlight | SC-04 | SC04 §12 | Public releases, upgrade lineage and compatibility are immutable, explicit, rights/mode reviewed and spoiler-safe. | Revise installed puzzle without mutating old published Chronicle; license/attribution checked. | Canonical Community release workflow |
+| AI-001 | U24 | SC-05 Chronicle Architect | SC-04, Drydock | SC04 §15 | AI proposes full editable puzzle compositions and hints using real qualified tools and Creator approval, not chatbot-only content. | Generated plan produces canonical named puzzle instance with source receipt and opens Workshop for manual edits. | Available tool registry and SC-05 governance |
+| AI-002 | U24 | SC-05 Chronicle Architect | SC-04, Admiralty | SC04 §15 | No automatic Player-runtime improvisation of secrets, unsanctioned authoring writes or uncontrolled model spending. | Malicious model hint text cannot publish/reveal answer; cost limits and review gates enforced. | AI provider/budget policy |
+| SEC-001 | U25-2 | Security owners / Drydock | SC-04, Sounding Line | SC04 §§6,16 | Advanced scripts remain future-only pending sandbox policy and security qualification; visible only in Engineering if shipped. | Attempted network/DB/time/loop/secret access fails in sandbox; no script executor enabled before acceptance. | Separate script threat model required |
+| SEC-002 | D | One Voyage | SC-04, Crossdeck | SC04 §16 | Puzzle resolution accepts only legitimate authorized evidence; repeat/race/foreign inputs cannot duplicate rewards or spoof another Player. | Cross-account, double-submit, two-device spoof and Captain override security tests pass on exact source. | Current event/role/progression contracts |
+| SEC-003 | D | Sealed Hold | Harborlight, SC-04, Drydock | SC04 §§12,16 | Secret answers, private clues/locations, player telemetry, content/media and private prompts cannot leak into public/evidence logs. | Secret-token/search leaks rejected, redacted preview and screenshot/evidence scanning. | Accepted privacy/license policy |
+| REL-001 | D | Sounding Line | All owners | SC04 §§18-19 | Software qualification, protected-main integration and owner visual/Player acceptance are separate source-bound statuses. | Exact head, tests and approved release receipts; no merge while owner's PR #776 hold remains. | Mainline decision authority and owner instruction |
+| REL-002 | U25 | Shipwright / SC-04 | Drydock, Parallax, One Voyage | SC04 §19 | Experience quality is measured by genuine end-to-end Creator-to-Player journey, not isolated UI demos. | Owner creates, branches, varies, tests, publishes and plays compelling puzzle with supported 2D/mobile proof. | All applicable complete features integrated |
+| REL-003 | U25 | SC program owner | All domain owners | XP §12 / SC04 §21 | Cross-project ideas have clear owners and are preserved as distinct requirements rather than buried in SC-04 alone. | Ledger every design concern to one primary owner, documentary home, acceptance and source review; no orphaned item. | Owner governance adoption |
+
+## 3. Current-source anchor inventory (not SC-series completion proof)
+
+The following source records were verified from GitHub as relevant architectural **starting points**, but do not establish fulfillment of the full proposed user experience:
+
+| Existing record/path | What it supports | Boundary |
+|---|---|---|
+| [Shipwright Phase 2 design](../../Projects/Project%20Shipwright/Project_Shipwright_Phase_2_Design_Record.md) | Creator/editor controls and presentation with Drydock owning schema/connection policy | Current editor does not imply approved named Branch Editor |
+| [Drydock Phase 1 blocks](../../Projects/Project%20Drydock/Project_Drydock_Phase_1_Set_the_Blocks_Design_Record.md) | Canonical \`BlockConnection\` graph authority, migration/compatibility and typed validation | No automatic SC-04 Puzzle Definition or Variation Slot implementation claim |
+| [Drydock Phase 3 Scenario Contract](../../Projects/Project%20Drydock/Project_Drydock_Phase_3_Scenario_Contract.md) | Bounded, revision/source/seed-identified tests using virtual inputs/faults; not scripts | New interactive puzzle adapters/analytics require own schema acceptance |
+| [Master Spatial Experience Architecture](../../Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md) | Sextant, Landfall, Parallax, Crossdeck, Watchglass, One Voyage authority boundaries | Does not itself implement universal Playtest or interactive 2D puzzle models |
+| [Parallax engineering home](../../Projects/Project_Parallax/README.md) | Existing spatial editor, environment/Scene and A1 Spatial Assistant boundary | Whole-Chronicle puzzles, named branches, and AI Architect not proven |
+| [Current Chronicle Artifact route](../../../src/app/studio/tales/%5BtaleId%5D/artifacts/page.tsx) | Artifact authoring via existing TaleEditor per-Chronicle section | No standalone comprehensive Artifact Studio claimed |
+| [Deepwater route reconciliation](../../Programs/Deepwater/reports/Project_Deepwater_Phase_2_Root_Cause_Summary.md) | Feature Catalog's legacy \`/studio/artifacts\` differed from accepted per-Chronicle route | Avoid navigating to an invented root-level Artifact Studio |
+| [PR #726 Chronicle Creator entry](https://github.com/Kgray44/treasurehuntSoT/pull/726) | SC-00A related entry approach and forthcoming AI/adaptation routes | Review branch/head/main status before use |
+| [PR #776 Parallax integration](https://github.com/Kgray44/treasurehuntSoT/pull/776) | Independent active work protected from this documentation task | **No merge or interference authorized** |
+
+## 4. Owner-specific handoff and amendment map
+
+| Primary owner | Required eventual follow-up |
+|---|---|
+| **Shipwright** | Tools hub/switcher/saved context; named branch scoped editor; readable branch-choice authoring; universal Playtest entry/UI. |
+| **Drydock** | Puzzle/Variation contract analysis, source-bound scenarios, exact path reachability, behavioral model with uncertainty, Playtest coordination. |
+| **One Voyage** | Puzzle outcomes, personal/shared/crew state, authorized progression, timed failure, collaboration, correct artifact/reward event semantics. |
+| **SC-04 Puzzle Workshop** | 2D mechanisms, no-code interactions, detailed puzzle composition, per-instance hints/outcomes, variations, libraries, practical Creator UI. |
+| **Crossdeck** | Same-person multi-device equivalence, transport/rejoin/late join and policy-compatible crew handoff. |
+| **Helm / Captain operations** | Safe Captain live assistance UI and role-defined intervention, using canonical One Voyage results. |
+| **Parallax** | Optional rich spatial mechanism realization with semantic parity to 2D and honest hardware/provider fallback. |
+| **Landfall / Sextant / Watchglass / Reach** | Domain-trust inputs, navigation estimates, safe sensor/perception and physical interaction evidence. |
+| **Artifact services / Wayfarer / Wakebook** | Artifact authoring upgrade, canonical reward/custody and privacy/individual histories; no duplicate owner. |
+| **Harborlight / Sealed Hold** | Safe reusable puzzle packaging, licenses, moderation, immutable publishing, restricted Community analytics. |
+| **SC-05 Chronicle Architect** | Only capability-aware, reviewed operations using SC-04 and Shipwright tools; no generated hidden runtime engine. |
+| **Sounding Line** | Current source-bound technical test and protected mainline decision, owner product/field acceptance separate. |
+
+## 5. High-priority integrated journey bundles
+
+These journeys ensure multiple requirements are tested together instead of passing in isolation.
+
+**IJ-01: Discovery and authoring.** New Chronicle → Tools → Story Editor → named branch → Puzzle Workshop → create a two-outcome interactive mechanism → Artifact authoring → return to branch, with retained unsaved status and exact contextual navigation. Evidence for UX-001..005, BR-001..004, PZ-001..003, UX-007.
+
+**IJ-02: The two-device team.** Two actual Players share one puzzle, one contributing from both phone and desktop, the other completing a second step. Both device classes can perform an equivalent 2D interaction without AR; shared outcome occurs once and private clue remains private until shared. Evidence for CREW-001..004, MECH-001..002, SEC-002.
+
+**IJ-03: All-player completion.** All eligible Players must independently complete the same puzzle; a third joins late, another disconnects, and a Captain extends an intentional timer under exact rules. Evidence for CREW-002, CREW-006, CAP-001..003.
+
+**IJ-04: Variation safety.** Creator places an alternate *beside* the first block, configures weighted selection, tests every eligible variant including bad-clue rejection, publishes a stable snapshot, disconnects/rejoins, and replays same seed with identical answer. Evidence for MECH-004..007.
+
+**IJ-05: Universal Playtest.** Story passage → puzzle success/partial/failure → 2D and simulated spatial posture → Worldspace route and artifact reveal → cinematic preview, switch back to exact editor scope with no mutation of real Player data. Evidence for UX-010..012 and DD-008..010.
+
+**IJ-06: Honest analysis.** Finite directed-acyclic puzzle shows proven path count; cyclic open-ended puzzle shows bounded/unbounded; estimated reading/search/travel/retry time includes uncertainty; observed measured outcomes use qualifying sample/version privacy rules. Evidence for DD-001..007.
+
+**IJ-07: Community and Architect.** Save parameterized puzzle, publish sanitized release with licensing, install in second Chronicle, ask Architect to adapt hints with approved tools, keep original immutable edition stable. Evidence for LIB-001..003, AI-001..002, SEC-003.
+
+## 6. Contradictions, dependencies and design decisions requiring explicit review
+
+1. **Universal 2D versus specialized real-world challenges:** identify an accessible equivalent challenge rather than a token skip; if an interaction is physically essential, product accessibility/participation policy must be reviewed explicitly.
+2. **Named branch nesting versus general graph topology:** folder-like editing is a UX projection, not new progression authority. Shared nodes and cycles must remain visible in graph overview.
+3. **Variation randomness versus solvability:** all combinations of independently randomized slots may explode; restrict allowed combinations or prove only a bounded supported subset and refuse false global claims.
+4. **Crew cooperation versus all-player completion:** snapshot membership eligibility or define dynamic membership and dropout to avoid involuntary impossible puzzles.
+5. **Adaptive help versus deliberate failure:** assistance is Creator-controlled; platform faults are different from intentional challenge failure.
+6. **Engineering-only scripting versus server security:** hidden UI is not a sandbox; scripts cannot ship before separate accepted threat model.
+7. **Observed metrics versus privacy and source quality:** high statistical detail is possible for owned Creator only if minimized, consented, sufficiently sampled and provenance-bound.
+8. **Test-only results versus live history:** universal Playtest must not write actual Player progression, fabricate hardware qualification or create real reward/custody events.
+9. **Standalone Artifact Studio versus current supported feature:** preserve existing authoring and domain ownership until richer Studio is designed and accepted.
+10. **Mainline integration timing:** documentation discussion and commit are allowed; **do not merge this draft PR to main while the owner's PR #776 work is ongoing**.
+
+## 7. How to maintain this ledger
+
+For any future SC or contributor PR:
+
+1. Read the owner source decision and its exact documented wording.
+2. List all affected IDs, including non-SC contributors; don't silently drop requirements because a team thinks they belong elsewhere.
+3. Associate each with a concrete approved domain contract / planned implementation and a real source baseline.
+4. Record implemented/not-implemented distinctions and specific local technical/Player browser/hardware/owner acceptance.
+5. Capture positive tests, negative tests and **human product experience** results; a screenshot or green CI alone is not the entire acceptance requirement.
+6. Amend the row only through reviewed source history; don't overwrite origin or pretend a future requirement was already satisfied.
+7. Update the SC program status map and document pointers after protected-main acceptance, not simply because this ledger or a PR mentions an item.
+
+**This ledger preserves a proposed target experience. It does not command Codex to implement anything, merge a branch, create paid jobs, or supersede existing governing domains.**
