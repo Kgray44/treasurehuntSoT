@@ -23,25 +23,27 @@
   "existingOwnerDecisionSha256": "311b4d8ea06696f271bb32bdcfc85634e5b208673947e0897aed00ded87eeb92",
   "activation": "Only the reviewed next normal protected-main merge with first parent819; this D proposal is UNAPPLIED.",
   "requiredRepairBlobs": {
-    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "7c9177c2bc76f48d17e2acc6d9e885b37aa0d894",
+    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "997f8d03bf3b221c73cd1ae69ebb3625f16c2966",
     "scripts/sounding-line/experience-reviewed-adoption.mjs": "d8f00d95b1f5d25ef532a6597eabd35caa1cbc0d",
     "scripts/sounding-line/product-experience.mjs": "37cfb4987e1df47bb0ef11cb3aeb9513ad04a438",
     "scripts/sounding-line/experience-prepare.mjs": "e3df75622a9fc947c10d407985dd4e06accdacea",
     "scripts/sounding-line/experience-attestation.mjs": "bcc1b141117633e85223e056bccc2ff3f867d270",
-    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "298316ffaaaad35be5ffd180391bc8d6c6343f25",
+    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "7a26f307d055cddc81f85af6f9ebef3bd3690dff",
     "tests/sounding-line/experience-attestation.test.mjs": "e2f4b2077e569dfacfea4008272a951d2f60e837",
     "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/accepted-canonical.original.json": "382a5c5102fc39841e71a78c396f8db93a9f6ca4",
     "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/independent-review.original.json": "5e31fe454f2eb2d98f52b248a0911a9c0ca03f40",
     "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/captured-plan.original.json": "fdaf34acc4a3316ecc4f3ab9363117c1f08dc7c0",
-    "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/public-files-941.original.json": "097066bd26b1e560995f9f6fa6ad38aefe1bf005"
+    "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/public-files-941.original.json": "097066bd26b1e560995f9f6fa6ad38aefe1bf005",
+    ".prettierignore": "1a7ac7aaddc186905621e957b00e1c11591af9c5"
   },
   "public941AtAncestor": "7036562034b19a70d10bd0d87ea66d208af11d64",
-  "currentEvidenceRule": "939 evidence files immutable; canonical permits only authenticated reviewArtifactId; two indexes permit exact generated Engineering additions with old rows preserved.",
+  "currentEvidenceRule": "938 fully immutable evidence files plus canonical permitting only authenticated reviewArtifactId; two indexes permit exact generated Engineering additions with old rows preserved.",
   "pendingAuthoredPhotoStates": 48,
   "historicalReportSetsPreserved": 8,
   "reviewOrdinals": {
     "fourth": 9,
     "second": 23
   },
-  "ownerAcceptance": "NOT_CLAIMED"
+  "ownerAcceptance": "NOT_CLAIMED",
+  "expectedCurrentSourceDigest": "b8b48e1e3cd6a9a0910468e1f8ff1248f3471a9fc0570823cd3b565699791409"
 }

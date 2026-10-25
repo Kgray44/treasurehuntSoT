@@ -15,6 +15,7 @@ import {
   validatePR776ReviewSubmission,
 } from "../../scripts/sounding-line/experience-pr776-controller-reconciliation.mjs";
 import { validateAttestationProvenance } from "../../scripts/sounding-line/experience-attestation.mjs";
+import { createReviewSubmission } from "../../scripts/sounding-line/experience-prepare.mjs";
 
 // Pure source-policy fixtures: these hashes do not represent real new commits or an owner decision.
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
@@ -35,15 +36,22 @@ const added = [
   "public-files-941.original.json",
   "controller-reconciliation.json",
 ].map((file) => E + "/" + file);
+const CURRENT_SOURCE = "8".repeat(64);
 const BASE = "b".repeat(40),
   CANDIDATE = "c".repeat(40),
   POLICY_HEAD = "d".repeat(40),
   TREE = "e".repeat(40);
 function fixture() {
   const f = {
-    plan: { ...structuredClone(historical), baseSha: BASE, candidateSha: CANDIDATE, candidateTree: TREE },
+    plan: {
+      ...structuredClone(historical),
+      sourceDigest: CURRENT_SOURCE,
+      baseSha: BASE,
+      candidateSha: CANDIDATE,
+      candidateTree: TREE,
+    },
     evidence: structuredClone(original),
-    record: { ...structuredClone(template), status: "ACTIVE" },
+    record: { ...structuredClone(template), status: "ACTIVE", expectedCurrentSourceDigest: CURRENT_SOURCE },
     parents: [P.oldBase, POLICY_HEAD],
     baseChanges: [...PR776_CONTROLLER_PATHS],
     candidateChanges: [...PR776_CONTROLLER_PATHS],
@@ -107,6 +115,10 @@ test("one finite controller merge retains the exact spent32-row review with zero
     old = pr776HistoricalReviewedPlan(current);
   assert.equal(f.validate(), true);
   assert.equal(old.baseSha, P.oldBase);
+  assert.equal(old.sourceDigest, P.sourceDigest);
+  assert.equal(current.sourceDigest, CURRENT_SOURCE);
+  assert.equal(current.pr776ControllerReconciliation.originalSourceDigest, P.sourceDigest);
+  assert.equal(current.pr776ControllerReconciliation.currentSourceDigest, CURRENT_SOURCE);
   assert.equal(current.baseSha, BASE);
   assert.deepEqual(old.contracts, historical.contracts);
   assert.deepEqual(f.evidence.reviews, original.reviews);
@@ -290,7 +302,7 @@ function provenance(plan, kind) {
   return {
     artifact: {
       id: kind === "capture" ? P.captureArtifactId : 123,
-      name: `product-experience-${kind}-${P.sourceDigest.slice(0, 16)}`,
+      name: `product-experience-${kind}-${plan.sourceDigest.slice(0, 16)}`,
       expired: false,
       digest: kind === "capture" ? P.captureDigest : "sha256:" + "f".repeat(64),
       workflow_run: { id: kind === "capture" ? P.captureRunId : 456 },
@@ -415,4 +427,41 @@ test("published canonical review ID must be positive and match the authenticated
   f.canonical.reviewArtifactId = 123;
   f.evidence.reviewArtifactId = 124;
   assert.throws(f.validate);
+});
+
+test("current review header and historical capture retain their distinct source digests", () => {
+  const f = fixture(),
+    current = f.bind(),
+    old = pr776HistoricalReviewedPlan(current),
+    submission = createReviewSubmission({ baseSha: BASE, plan: current, evidence: f.evidence, submittedBy: "Kgray44" });
+  assert.equal(submission.sourceDigest, CURRENT_SOURCE);
+  assert.equal(submission.baseSha, BASE);
+  assert.equal(old.sourceDigest, P.sourceDigest);
+  assert.equal(f.evidence.sourceDigest, P.sourceDigest);
+  assert.deepEqual(submission.reviews, original.reviews);
+  assert.equal(submission.pr776ControllerReconciliation.originalSourceDigest, P.sourceDigest);
+  assert.equal(submission.pr776ControllerReconciliation.currentSourceDigest, CURRENT_SOURCE);
+});
+test("forged or missing protected current digest cannot rebind the spent review", () => {
+  const f = fixture();
+  f.record.expectedCurrentSourceDigest = "a".repeat(64);
+  assert.throws(f.validate, /CURRENT_SOURCE_IDENTITY/u);
+  delete f.record.expectedCurrentSourceDigest;
+  assert.throws(f.validate, /CURRENT_SOURCE_IDENTITY/u);
+  f.record.expectedCurrentSourceDigest = P.sourceDigest;
+  f.plan.sourceDigest = P.sourceDigest;
+  assert.throws(f.validate, /CURRENT_SOURCE_IDENTITY/u);
+});
+test("old capture cannot claim the new controller source digest", () => {
+  const current = fixture().bind();
+  assert.throws(
+    () =>
+      validatePR776TrustedCapture(current, {
+        baseSha: P.oldBase,
+        sourceDigest: CURRENT_SOURCE,
+        contractDigest: P.contractDigest,
+        trustedArtifact: { id: P.captureArtifactId, runId: P.captureRunId, runAttempt: 1, digest: P.captureDigest },
+      }),
+    /TRUSTED_CAPTURE_CHANGED/u,
+  );
 });

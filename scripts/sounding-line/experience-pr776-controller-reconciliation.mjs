@@ -29,6 +29,7 @@ const originals = [
 ].map((name) => `${E}/${name}`);
 export const PR776_RECORD_PATH = `${E}/controller-reconciliation.json`;
 export const PR776_CONTROLLER_PATHS = Object.freeze([
+  ".prettierignore",
   "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
   "scripts/sounding-line/experience-reviewed-adoption.mjs",
   "scripts/sounding-line/product-experience.mjs",
@@ -79,10 +80,7 @@ export const isPR776ControllerReconciliation = (plan) =>
 function inspect({ root, plan, readGit = git }) {
   const p = PR776_CONTROLLER,
     read = readGit;
-  need(
-    plan.baseSha !== p.oldBase && plan.sourceDigest === p.sourceDigest && plan.contractDigest === p.contractDigest,
-    "SOURCE_IDENTITY",
-  );
+  need(plan.baseSha !== p.oldBase && plan.contractDigest === p.contractDigest, "SOURCE_IDENTITY");
   const parents = text(read, root, ["show", "-s", "--format=%P", plan.baseSha]).split(" ");
   need(parents.length === 2 && parents[0] === p.oldBase, "ONE_NEXT_NORMAL_MERGE_REQUIRED");
   need(
@@ -110,6 +108,12 @@ function inspect({ root, plan, readGit = git }) {
       PR776_CONTROLLER_PATHS.filter((file) => ![PR776_RECORD_PATH, INDEX, MATRIX].includes(file)),
     ),
     "REQUIRED_REPAIR_BLOBS",
+  );
+  need(
+    /^[a-f0-9]{64}$/u.test(record.expectedCurrentSourceDigest ?? "") &&
+      record.expectedCurrentSourceDigest !== p.sourceDigest &&
+      plan.sourceDigest === record.expectedCurrentSourceDigest,
+    "CURRENT_SOURCE_IDENTITY",
   );
   const baseTree = tree(read, root, plan.baseSha),
     candidateTree = tree(read, root, plan.candidateSha),
@@ -220,7 +224,8 @@ function inspect({ root, plan, readGit = git }) {
       id: p.id,
       originalBaseSha: p.oldBase,
       currentBaseSha: plan.baseSha,
-      sourceDigest: p.sourceDigest,
+      originalSourceDigest: p.sourceDigest,
+      currentSourceDigest: plan.sourceDigest,
       contractDigest: p.contractDigest,
       recordDigest: sha256(recordBytes),
       captureArtifactId: p.captureArtifactId,
@@ -273,6 +278,7 @@ export function pr776HistoricalReviewedPlan(plan) {
   return {
     ...historical,
     baseSha: PR776_CONTROLLER.oldBase,
+    sourceDigest: PR776_CONTROLLER.sourceDigest,
     candidateSha: binding.originalCandidateSha,
     candidateTree: binding.originalCandidateTree,
   };
