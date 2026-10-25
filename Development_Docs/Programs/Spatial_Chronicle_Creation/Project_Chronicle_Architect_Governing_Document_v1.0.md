@@ -24,7 +24,7 @@ This is a **proposed, detailed SC-05 governing specification** for owner and pro
 
 It must be read alongside the proposed [SC program roadmap](./Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md) and current governing authorities. If an existing accepted contract differs from a conceptual contract below, the implementation MUST explicitly reconcile the discrepancy against current source. No schema/interface described here is an instruction to introduce duplicate Prisma models, new progression state, or shadow databases.
 
-**Related but intentionally unwritten:** SC-04 Chronicle Puzzle Composition and SC-06 Story Adaptation separate governing documents. Architect must be extensible to both, but their creative semantics, detailed behavior, fidelity, and release gates remain awaiting distinct owner discussion and approval.
+**Related document status:** SC-04 now has a [detailed proposed Puzzle Composition governing specification](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md), awaiting independent ratification and implementation. SC-06 Story Adaptation remains intentionally unwritten pending owner discussion. Architect must integrate through approved canonical capabilities, not treat either proposed document as shipped software.
 
 ## 1. Executive summary
 
@@ -202,7 +202,7 @@ An ArchitectPlan should contain at least:
 2. high-level experience pitch, audience, constraints, estimated duration range and pacing;
 3. chapters with identity, purpose, prerequisite transitions, intended emotional beat, objectives and endings;
 4. story blocks, conditions/choices, variables and graph edges through current typed authoring contracts;
-5. puzzle **intents/pattern references**; full puzzle semantics remain governed later by SC-04;
+5. puzzle **intents/pattern references**; detailed proposed semantics are described by the [SC-04 Puzzle Composition constitution](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md), but their runtime availability requires separate integration proof;
 6. spatial binding intents with exact resource availability, scene/environment refs and required authoring tasks;
 7. physical/virtual worldspace/navigation references and accessibility/privacy classifications;
 8. multisurface participation roles, optionality, provider capabilities and supported fallback;
@@ -355,7 +355,7 @@ Each meaningful branch should have explicit preconditions and reachable conseque
 
 ### 9.3 Puzzle and adaptation boundaries
 
-Architect can suggest that a spatial discovery puzzle, sequential riddle, device orientation gesture, collaborative action or visual recognition challenge would improve a narrative moment. However **SC-04 governs their complete reusable composition model, scoring/hints, attempt semantics and approval**. Until SC-04 is formally specified and accepted, Architect must use only existing valid block/progression constructs and label its proposal accordingly.
+Architect can suggest that a spatial discovery puzzle, sequential riddle, device orientation gesture, collaborative action or visual recognition challenge would improve a narrative moment. However **SC-04 governs their complete reusable composition model, scoring/hints, attempt semantics and approval**. SC-04 now has a proposed detailed specification. **Until separately accepted and implemented**, Architect must use only existing valid block/progression constructs and label unsupported proposed behavior accordingly.
 
 Similarly, Architect can accept a handoff from SC-06's eventual source-story ingestion/adaptation process. The **faithfulness hierarchy, source rights, source mapping, transformation taxonomy and adaptation review policy** belong to SC-06's future separate document, not this one. No premature implementation uses speculative adaptation policy from Architect as authority.
 
@@ -566,7 +566,7 @@ SC-05 is **not complete** until all of the following are satisfied within its fi
 16. Desktop/mobile, accessible and visually coherent Creator journey receives independent product acceptance.
 17. Sounding Line evidence and protected-main integration follow current repository authority.
 18. An independent golden end-to-end example is playable and its actual result demonstrably matches the authored draft.
-19. No claim of SC-04 or SC-06 detail completion is inferred from this document.
+19. SC-04 now has a detailed proposed specification, but no claim of SC-04 implementation or ratification is inferred; SC-06's detailed specification remains uncreated.
 20. Implementation records clearly distinguish completed functionality, provider/configured limitations, physical-device requirements, and owner acceptance.
 
 ## 18. Governance changes, reserved decisions and open questions
@@ -577,7 +577,7 @@ The following **require future owner discussion**, not silent Codex invention:
 - Whether Architect receives permission to create/generate media or only select/edit owned/library assets in its first release?
 - How much autonomy to allow in very large draft construction versus chapter-at-a-time review, and at what risk/cost boundary?
 - How detailed should AI persona/editorial voice be, and how much can creators personalize it without changing tool authority?
-- Which advanced puzzle pattern families, hint semantics, attempt policy and cooperative puzzles should SC-04 govern?
+- Which SC-04 capabilities described in its proposed Puzzle Workshop constitution will be supported in the first implementation increment, and what accepted canonical contracts must be added or reconciled?
 - Which transformation/fidelity choices, rights proof, source diff and attribution models should SC-06 govern?
 - What is the necessary physical/simulator evidence threshold for a particular AR authoring promise?
 - How should long-running jobs persist across devices and account logouts under existing job infrastructure?
@@ -604,6 +604,9 @@ The October 14–15, 2026 conversation preserved in the ChatGPT project upload *
 ### Related accepted/planned code and governance
 
 - [SC program roadmap](./Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md)
+- [SC-04 Puzzle Workshop proposed constitution](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md)
+- [Cross-project Creator Experience amendment](./Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md)
+- [SC requirements traceability ledger](./SC_Requirements_Traceability_Ledger_v1.0.md)
 - [Master spatial architecture](../../Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md)
 - [Parallax governing document](../../Governing/Project_Parallax_Spatial_Chronicle_and_Augmented_Reality_System_Governing_Document_v1.0.md)
 - [Parallax A1 Spatial Assistant](../../Governing/Project_Parallax_A1_Spatial_Assistant_Governing_Amendment.md)
@@ -615,4 +618,4 @@ The October 14–15, 2026 conversation preserved in the ChatGPT project upload *
 
 ### Final documentary rule
 
-This proposed constitution is intentionally ambitious. It freezes **what success must eventually mean**, not a claim that current code already supplies it. Its adoption does not authorize SC-05 implementation, SC-04/SC-06 detailed design, protected-main merge of product branches, real-money provider use, or changing the user's private source material. Those require their own explicit owner and current repo processes.
+This proposed constitution is intentionally ambitious. It freezes **what success must eventually mean**, not a claim that current code already supplies it. Its adoption does not authorize SC-05 implementation, SC-04 implementation or ratification, speculative SC-06 detailed design, protected-main merge of product branches, real-money provider use, or changing the user's private source material. Those require their own explicit owner and current repo processes.
