@@ -1,3 +1,9 @@
+import { historicalReviewedPlan } from "./experience-reviewed-adoption.mjs";
+import {
+  isPR776ControllerReconciliation,
+  validatePR776TrustedCapture,
+  pr776ReviewSubmissionBinding,
+} from "./experience-pr776-controller-reconciliation.mjs";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
@@ -24,6 +30,7 @@ export function createReviewSubmission({ baseSha, plan, evidence, exceptionField
     sourceDigest: plan.sourceDigest,
     contractDigest: plan.contractDigest,
     ...exceptionFields,
+    ...pr776ReviewSubmissionBinding(plan),
     captureArtifactId: evidence.captureArtifactId,
     reviews: evidence.reviews,
     ...(plan.paired ? { pairedEvidenceDigest: experienceDigest(evidence.pairedEvidence) } : {}),
@@ -182,11 +189,12 @@ async function main() {
   if (options.mode === "review") {
     const capture = await loadTrustedExperienceArtifact({
       root,
-      plan,
+      plan: isPR776ControllerReconciliation(plan) ? historicalReviewedPlan(plan) : plan,
       artifactId: evidence.captureArtifactId,
       kind: "capture",
       policy,
     });
+    validatePR776TrustedCapture(plan, capture);
     const identity = (artifacts) =>
       artifacts.map(({ id, sha256, type, contractId, state, device, role, motionMode }) => ({
         id,

@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "status": "ACTIVE",
+  "kind": "PR776_CONTROLLER_BASE_RECONCILIATION_1",
+  "id": "pr776-attestation-buffer-reconciliation-20261025",
+  "prNumber": 776,
+  "originalIdentity": {
+    "kind": "PR776_CONTROLLER_BASE_RECONCILIATION_1",
+    "id": "pr776-attestation-buffer-reconciliation-20261025",
+    "oldBase": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+    "ancestor": "7036562034b19a70d10bd0d87ea66d208af11d64",
+    "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+    "contractDigest": "7dc2911fb58ef2d1794bb7d2e28d7dd175a34fa82f89b0ff7e715ec55ddf8da3",
+    "captureArtifactId": 12585174268,
+    "captureRunId": 40155440070,
+    "captureDigest": "sha256:1a76a62659b1a0dab9d97925daaf97c88105a651c81ce6016a3ebfcb18af8216",
+    "canonicalSha256": "cc081df079b0e8a646eec071ef263f5c2261d14ea776b9185a39e5ffe4baadcb",
+    "reviewSha256": "2a689c7f2c3f404e22cb3e69418fbad41c062284a4917496b62ee2566a0e38df",
+    "planSha256": "bd0fd9565d87c050224a8c38b9f936d811884d305115f686609da0fddfa56850",
+    "inventorySha256": "215152c2e05fc3d06d950d13a0212737ff50f271a6cc826dd1ca42d455e0ee34"
+  },
+  "additionalIndependentPasses": 0,
+  "existingOwnerDecisionSha256": "311b4d8ea06696f271bb32bdcfc85634e5b208673947e0897aed00ded87eeb92",
+  "activation": "Only the reviewed next normal protected-main merge with first parent819; this D proposal is UNAPPLIED.",
+  "requiredRepairBlobs": {
+    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "14f650609a22076223c3ff61145a846056fa025a",
+    "scripts/sounding-line/experience-reviewed-adoption.mjs": "d8f00d95b1f5d25ef532a6597eabd35caa1cbc0d",
+    "scripts/sounding-line/product-experience.mjs": "37cfb4987e1df47bb0ef11cb3aeb9513ad04a438",
+    "scripts/sounding-line/experience-prepare.mjs": "e3df75622a9fc947c10d407985dd4e06accdacea",
+    "scripts/sounding-line/experience-attestation.mjs": "bcc1b141117633e85223e056bccc2ff3f867d270",
+    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "7a26f307d055cddc81f85af6f9ebef3bd3690dff",
+    "tests/sounding-line/experience-attestation.test.mjs": "e2f4b2077e569dfacfea4008272a951d2f60e837",
+    "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/accepted-canonical.original.json": "382a5c5102fc39841e71a78c396f8db93a9f6ca4",
+    "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/independent-review.original.json": "5e31fe454f2eb2d98f52b248a0911a9c0ca03f40",
+    "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/captured-plan.original.json": "fdaf34acc4a3316ecc4f3ab9363117c1f08dc7c0",
+    "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/public-files-941.original.json": "097066bd26b1e560995f9f6fa6ad38aefe1bf005",
+    ".prettierignore": "1a7ac7aaddc186905621e957b00e1c11591af9c5",
+    "tests/sounding-line/experience-paired.test.mjs": "df6ea6a17fbc9f09c04d8933ff298eeef159e4ca"
+  },
+  "public941AtAncestor": "7036562034b19a70d10bd0d87ea66d208af11d64",
+  "currentEvidenceRule": "938 fully immutable evidence files plus canonical permitting only authenticated reviewArtifactId; two indexes permit exact generated Engineering additions with old rows preserved.",
+  "pendingAuthoredPhotoStates": 48,
+  "historicalReportSetsPreserved": 8,
+  "reviewOrdinals": {
+    "fourth": 9,
+    "second": 23
+  },
+  "ownerAcceptance": "NOT_CLAIMED",
+  "expectedCurrentSourceDigest": "36cd7941da620b2fe417dcc99d74f6c13719dde9d6dea500777a75737f677c6f"
+}

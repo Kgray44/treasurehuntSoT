@@ -13257,6 +13257,36 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/accepted-canonical.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/captured-plan.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/controller-reconciliation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/independent-review.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/public-files-941.original.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/capture.json",
       "record_type": "archive-index",
       "status": "preserved",
