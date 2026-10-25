@@ -9,6 +9,10 @@ const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
 const INDEX = "Development_Docs/document-index.json";
 const MATRIX = "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv";
 const CAPTURE_CANDIDATE = "f265f062767d40618df9152aa8900eaf17bfa92d";
+// The registration suite reads both historical workflow versions after transport locks.
+const workflowReaders = ["e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab", "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5"].map(
+  (revision) => ({ revision, path: ".github/workflows/sounding-line-ordinary.yml" }),
+);
 const additions = [
   "accepted-canonical.original.json",
   "independent-review.original.json",
@@ -128,12 +132,20 @@ export function pr776CheckoutProfile({ authorityRoot, baseSha, candidateSha, env
   const inventoryBytes = read(`${E}/public-files-941.original.json`);
   need(digest(inventoryBytes) === PR776_CONTROLLER.inventorySha256, "INVENTORY_CHANGED");
   const inventory = JSON.parse(inventoryBytes);
-  const historical = [PR776_CONTROLLER.ancestor, PR776_CONTROLLER.oldBase, CAPTURE_CANDIDATE];
+  const historical = [
+    PR776_CONTROLLER.ancestor,
+    PR776_CONTROLLER.oldBase,
+    CAPTURE_CANDIDATE,
+    ...workflowReaders.map((reader) => reader.revision),
+  ];
   return {
     roots: historical,
     readerRevisions: historical,
     readerObjects: [],
-    readerPaths: [INDEX, MATRIX].map((file) => ({ revision: PR776_CONTROLLER.ancestor, path: file })),
+    readerPaths: [
+      ...[INDEX, MATRIX].map((file) => ({ revision: PR776_CONTROLLER.ancestor, path: file })),
+      ...workflowReaders,
+    ],
     budgetMs: 600000,
     stallBudgetMs: 600000,
     preservation: async ({ command }) => {

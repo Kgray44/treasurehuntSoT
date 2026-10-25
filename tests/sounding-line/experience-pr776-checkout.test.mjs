@@ -47,13 +47,22 @@ test("PR776 profile requires the exact protected repository, main base, event an
   const profile = pr776CheckoutProfile({ authorityRoot: root, baseSha, candidateSha, env });
   assert.equal(profile.budgetMs, 600000);
   assert.equal(profile.stallBudgetMs, 600000);
-  assert.equal(profile.roots.length, 3);
+  assert.deepEqual(profile.roots, [
+    "7036562034b19a70d10bd0d87ea66d208af11d64",
+    "819c992fb15ef0b87299ddaaed143427bd00a13d",
+    "f265f062767d40618df9152aa8900eaf17bfa92d",
+    "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+    "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5",
+  ]);
   assert.deepEqual(profile.readerRevisions, profile.roots);
   assert.deepEqual(profile.readerObjects, []);
-  assert.deepEqual(
-    profile.readerPaths,
-    [INDEX, MATRIX].map((file) => ({ revision: "7036562034b19a70d10bd0d87ea66d208af11d64", path: file })),
-  );
+  assert.deepEqual(profile.readerPaths, [
+    ...[INDEX, MATRIX].map((file) => ({ revision: "7036562034b19a70d10bd0d87ea66d208af11d64", path: file })),
+    ...["e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab", "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5"].map((revision) => ({
+      revision,
+      path: ".github/workflows/sounding-line-ordinary.yml",
+    })),
+  ]);
   for (const changed of [
     { GITHUB_REPOSITORY: "fork/repo" },
     { GITHUB_SHA: candidateSha },
@@ -186,4 +195,42 @@ test("all active PR776 consumers select ten-minute profile while Crossdeck keeps
     assert.match(step, /number == 721/u);
     assert(!step.includes("--pr 776"));
   }
+});
+
+test("historical workflow reader closure retains both versions while omitting unrelated historical blobs", async (t) => {
+  const dir = temporary(t);
+  const git = (args) => execFileSync("git", args, { cwd: dir, encoding: "utf8" }).trim();
+  const workflow = ".github/workflows/sounding-line-ordinary.yml";
+  git(["init", "-q"]);
+  git(["config", "user.name", "Historical workflow fixture"]);
+  git(["config", "user.email", "fixture@example.invalid"]);
+  mkdirSync(path.dirname(path.join(dir, workflow)), { recursive: true });
+  const readers = [];
+  const blobs = [];
+  for (const version of ["previous", "current"]) {
+    writeFileSync(path.join(dir, workflow), `name: synthetic ${version} workflow\n`);
+    writeFileSync(path.join(dir, "unneeded.bin"), "not a historical reader");
+    git(["add", "."]);
+    git(["commit", "-qm", version]);
+    readers.push({ revision: git(["rev-parse", "HEAD"]), path: workflow });
+    blobs.push(git(["rev-parse", `HEAD:${workflow}`]));
+  }
+  const input = {
+    operation: "compile",
+    root: dir,
+    git: "git",
+    snapshots: [],
+    readerSnapshots: readers.map((reader) => reader.revision),
+    objects: [],
+    readerPaths: readers,
+    output: path.join(dir, "workflow-closure.json"),
+  };
+  const file = path.join(dir, "input.json");
+  writeFileSync(file, JSON.stringify(input));
+  await checkoutHydration(file);
+  const closure = JSON.parse(readFileSync(input.output));
+  for (const blob of blobs) assert(closure.objects.some((object) => object.sha === blob && object.type === "blob"));
+  for (const reader of readers)
+    assert(closure.objects.some((object) => object.sha === reader.revision && object.type === "commit"));
+  assert(!closure.objects.some((object) => object.sha === git(["rev-parse", "HEAD:unneeded.bin"])));
 });
