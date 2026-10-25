@@ -9,7 +9,7 @@ import path from "node:path";
 import test from "node:test";
 import "./ordinary-consumer-policy.test.mjs";
 import "./incremental-browser-evidence.test.mjs";
-import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
+import { splitMigrationStatements, sqliteBootstrapDatabaseUrl } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBrowserAuthorityTopology,
   browserRuntimeReceipt,
@@ -1526,6 +1526,19 @@ test("SQLite bootstrap preserves quoted semicolons while ignoring migration comm
   assert.deepEqual(
     splitMigrationStatements("-- comment\nCREATE TABLE item (value TEXT);\nINSERT INTO item VALUES ('a;b');"),
     ["CREATE TABLE item (value TEXT)", "INSERT INTO item VALUES ('a;b')"],
+  );
+});
+
+test("SQLite bootstrap pins migration connection state while preserving database and other options", () => {
+  for (const database of ["file:/tmp/owned fixture.db", "file:D:/owned fixture/fixture.db", "file:./fixture.db"])
+    assert.equal(sqliteBootstrapDatabaseUrl(database), `${database}?connection_limit=1`);
+  assert.equal(
+    sqliteBootstrapDatabaseUrl("file:./fixture.db?socket_timeout=30&connection_limit=5&max_connection_lifetime=0"),
+    "file:./fixture.db?socket_timeout=30&connection_limit=1&max_connection_lifetime=0",
+  );
+  assert.equal(
+    sqliteBootstrapDatabaseUrl("file:./fixture.db?connection_limit=2&connection_limit=5&socket_timeout=30"),
+    "file:./fixture.db?connection_limit=1&socket_timeout=30",
   );
 });
 

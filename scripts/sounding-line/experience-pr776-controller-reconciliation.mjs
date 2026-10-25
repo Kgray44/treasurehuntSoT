@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 
-// Five finite protected controller merges preserve one spent review; none grants another pass.
+// Six finite protected controller merges preserve one spent review; none grants another pass.
 export const PR776_CONTROLLER = Object.freeze({
   kind: "PR776_CONTROLLER_BASE_RECONCILIATION_1",
   id: "pr776-attestation-buffer-reconciliation-20261025",
@@ -68,6 +68,19 @@ export const PR776_PATH_CHECK_PREDECESSOR = Object.freeze({
   canonicalBlob: "8c93b89036d697145f183b815749cc49b8ef060f",
   reviewArtifactId: 12601724319,
 });
+export const PR776_SQLITE_PREDECESSOR = Object.freeze({
+  base: "696ecec0fd89293074b271ab33d9256709158700",
+  baseParents: Object.freeze(["c99ba71580b7950f64e9b7cb3a4a5ea4005c165c", "148d9e4064706ad52c52ee3c9b218fe6af87f122"]),
+  baseTree: "5a1c6a629969753d736ca9d23bbf900b53bdd85f",
+  candidate: "e321c2465b9b0c166cbdbc6e9a88f57c89c7ff1a",
+  candidateParents: Object.freeze(["44c62f08bc801f480dfa6765701aeb4106155649"]),
+  candidateTree: "75352e35df8f1c3b516ac33a0d729a62a3ea5097",
+  sourceDigest: "c96093f63889b4c0a33c6d7580d895e8f00b6c1de7a15d6dc6036dacc5b504ad",
+  canonicalSha256: "1015945c5520605fe3271a03f2e4e03b557ba30795b540d82a8d1372f7310d9b",
+  canonicalBytes: 1451427,
+  canonicalBlob: "b705d68d183335dbf5f8e7d2292eb900a14e3e10",
+  reviewArtifactId: 12606664876,
+});
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
 const INDEX = "Development_Docs/document-index.json";
@@ -102,6 +115,7 @@ export const PR776_CONTROLLER_PATHS = Object.freeze([
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
   "tests/sounding-line/authenticated-completed-evidence.test.mjs",
   "tests/sounding-line/ordinary.test.mjs",
+  "scripts/sounding-line/sqlite-bootstrap.mjs",
   ...originals,
   PR776_RECORD_PATH,
   INDEX,
@@ -156,6 +170,14 @@ export const PR776_PATH_CHECK_REPAIR_PATHS = Object.freeze([
   "scripts/sounding-line/ordinary.mjs",
   "tests/sounding-line/ordinary.test.mjs",
 ]);
+export const PR776_SQLITE_ADDED_PATHS = Object.freeze(["scripts/sounding-line/sqlite-bootstrap.mjs"]);
+export const PR776_SQLITE_REPAIR_PATHS = Object.freeze([
+  "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
+  "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
+  PR776_RECORD_PATH,
+  "scripts/sounding-line/sqlite-bootstrap.mjs",
+  "tests/sounding-line/ordinary.test.mjs",
+]);
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
   JSON.stringify(value, (_, item) =>
@@ -199,8 +221,9 @@ function inspect({ root, plan, readGit = git }) {
   const predecessor = PR776_TRANSPORT_PREDECESSOR,
     observed = PR776_OBSERVABILITY_PREDECESSOR,
     intake = PR776_INTAKE_PREDECESSOR,
-    checked = PR776_PATH_CHECK_PREDECESSOR;
-  need(parents.length === 2 && parents[0] === checked.base, "ONE_NEXT_NORMAL_PATH_CHECK_MERGE_REQUIRED");
+    checked = PR776_PATH_CHECK_PREDECESSOR,
+    sqlite = PR776_SQLITE_PREDECESSOR;
+  need(parents.length === 2 && parents[0] === sqlite.base, "ONE_NEXT_NORMAL_SQLITE_MERGE_REQUIRED");
   need(
     same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
       text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
@@ -226,7 +249,8 @@ function inspect({ root, plan, readGit = git }) {
           (file) =>
             !PR776_OBSERVABILITY_ADDED_PATHS.includes(file) &&
             !PR776_INTAKE_ADDED_PATHS.includes(file) &&
-            !PR776_PATH_CHECK_ADDED_PATHS.includes(file),
+            !PR776_PATH_CHECK_ADDED_PATHS.includes(file) &&
+            !PR776_SQLITE_ADDED_PATHS.includes(file),
         ),
       ),
     "FROZEN_TRANSPORT_PREDECESSOR_CHANGED",
@@ -244,7 +268,10 @@ function inspect({ root, plan, readGit = git }) {
       exactPaths(
         paths(read, root, p.oldBase, intake.base),
         PR776_CONTROLLER_PATHS.filter(
-          (file) => !PR776_INTAKE_ADDED_PATHS.includes(file) && !PR776_PATH_CHECK_ADDED_PATHS.includes(file),
+          (file) =>
+            !PR776_INTAKE_ADDED_PATHS.includes(file) &&
+            !PR776_PATH_CHECK_ADDED_PATHS.includes(file) &&
+            !PR776_SQLITE_ADDED_PATHS.includes(file),
         ),
       ),
     "FROZEN_OBSERVABILITY_PREDECESSOR_CHANGED",
@@ -261,7 +288,9 @@ function inspect({ root, plan, readGit = git }) {
       exactPaths(paths(read, root, intake.base, checked.base), PR776_INTAKE_REPAIR_PATHS) &&
       exactPaths(
         paths(read, root, p.oldBase, checked.base),
-        PR776_CONTROLLER_PATHS.filter((file) => !PR776_PATH_CHECK_ADDED_PATHS.includes(file)),
+        PR776_CONTROLLER_PATHS.filter(
+          (file) => !PR776_PATH_CHECK_ADDED_PATHS.includes(file) && !PR776_SQLITE_ADDED_PATHS.includes(file),
+        ),
       ),
     "FROZEN_INTAKE_PREDECESSOR_CHANGED",
   );
@@ -269,6 +298,22 @@ function inspect({ root, plan, readGit = git }) {
     same(text(read, root, ["show", "-s", "--format=%P", checked.candidate]).split(" "), checked.candidateParents) &&
       text(read, root, ["rev-parse", checked.candidate + "^{tree}"]) === checked.candidateTree,
     "FROZEN_PATH_CHECK_CANDIDATE_CHANGED",
+  );
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", sqlite.base]).split(" "), sqlite.baseParents) &&
+      text(read, root, ["rev-parse", sqlite.base + "^{tree}"]) === sqlite.baseTree &&
+      text(read, root, ["rev-parse", sqlite.baseParents[1] + "^{tree}"]) === sqlite.baseTree &&
+      exactPaths(paths(read, root, checked.base, sqlite.base), PR776_PATH_CHECK_REPAIR_PATHS) &&
+      exactPaths(
+        paths(read, root, p.oldBase, sqlite.base),
+        PR776_CONTROLLER_PATHS.filter((file) => !PR776_SQLITE_ADDED_PATHS.includes(file)),
+      ),
+    "FROZEN_PATH_CHECK_PREDECESSOR_CHANGED",
+  );
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", sqlite.candidate]).split(" "), sqlite.candidateParents) &&
+      text(read, root, ["rev-parse", sqlite.candidate + "^{tree}"]) === sqlite.candidateTree,
+    "FROZEN_SQLITE_CANDIDATE_CHANGED",
   );
   need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
@@ -280,11 +325,12 @@ function inspect({ root, plan, readGit = git }) {
   read(root, ["merge-base", "--is-ancestor", observed.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", intake.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", checked.candidate, plan.candidateSha]);
+  read(root, ["merge-base", "--is-ancestor", sqlite.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", plan.baseSha, plan.candidateSha]);
   need(exactPaths(paths(read, root, p.oldBase, plan.baseSha), PR776_CONTROLLER_PATHS), "CONTROLLER_CHANGED_PATHS");
   need(
-    exactPaths(paths(read, root, checked.base, plan.baseSha), PR776_PATH_CHECK_REPAIR_PATHS),
-    "PATH_CHECK_REPAIR_CHANGED_PATHS",
+    exactPaths(paths(read, root, sqlite.base, plan.baseSha), PR776_SQLITE_REPAIR_PATHS),
+    "SQLITE_REPAIR_CHANGED_PATHS",
   );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),
     record = JSON.parse(recordBytes);
@@ -298,7 +344,8 @@ function inspect({ root, plan, readGit = git }) {
       same(record.transportPredecessor, predecessor) &&
       same(record.observabilityPredecessor, observed) &&
       same(record.intakePredecessor, intake) &&
-      same(record.pathCheckPredecessor, checked),
+      same(record.pathCheckPredecessor, checked) &&
+      same(record.sqliteBootstrapPredecessor, sqlite),
     "FINITE_PROTECTED_RECORD",
   );
   need(
@@ -445,6 +492,19 @@ function inspect({ root, plan, readGit = git }) {
   need(checkedCanonical.reviewArtifactId === checked.reviewArtifactId, "FROZEN_PATH_CHECK_REVIEW_ID_CHANGED");
   delete checkedCanonical.reviewArtifactId;
   need(same(checkedCanonical, canonical), "FROZEN_PATH_CHECK_CANONICAL_DATA_CHANGED");
+  const sqliteCanonicalBytes = Buffer.from(
+    JSON.stringify({ ...canonical, reviewArtifactId: sqlite.reviewArtifactId }, null, 2) + "\n",
+  );
+  need(
+    tree(read, root, sqlite.candidate).get(C) === `100644 blob ${sqlite.canonicalBlob}` &&
+      sqliteCanonicalBytes.length === sqlite.canonicalBytes &&
+      sha256(sqliteCanonicalBytes) === sqlite.canonicalSha256,
+    "FROZEN_SQLITE_CANONICAL_CHANGED",
+  );
+  const sqliteCanonical = JSON.parse(sqliteCanonicalBytes);
+  need(sqliteCanonical.reviewArtifactId === sqlite.reviewArtifactId, "FROZEN_SQLITE_REVIEW_ID_CHANGED");
+  delete sqliteCanonical.reviewArtifactId;
+  need(same(sqliteCanonical, canonical), "FROZEN_SQLITE_CANONICAL_DATA_CHANGED");
   const publishedCanonical = JSON.parse(readRevision(read, root, plan.candidateSha, C));
   const publishedReviewArtifactId = publishedCanonical.reviewArtifactId;
   need(
