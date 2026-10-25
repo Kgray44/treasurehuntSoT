@@ -37,6 +37,7 @@ export const PR776_CONTROLLER_PATHS = Object.freeze([
   "scripts/sounding-line/experience-attestation.mjs",
   "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
   "tests/sounding-line/experience-attestation.test.mjs",
+  "tests/sounding-line/experience-paired.test.mjs",
   ...originals,
   PR776_RECORD_PATH,
   INDEX,
