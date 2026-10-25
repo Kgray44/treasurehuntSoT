@@ -3356,7 +3356,8 @@
           "src/components/tales/PublishedBlockView.tsx",
           "src/components/tales/TaleCatalog.tsx",
           "src/components/tales/TaleStart.tsx",
-          "src/components/tideglass/TideglassPassage.tsx"
+          "src/components/tideglass/TideglassPassage.tsx",
+          "src/styles/studio.css"
         ],
         "projectionPaths": [
           "src/chronicle/types.ts",
@@ -9725,7 +9726,10 @@
               {
                 "action": "keyboard",
                 "key": "Home",
-                "expectFocus": { "role": "tab", "name": "Assets" }
+                "expectFocus": {
+                  "role": "tab",
+                  "name": "Assets"
+                }
               },
               {
                 "action": "click",
