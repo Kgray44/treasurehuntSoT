@@ -131,6 +131,8 @@ export async function selectedCheckout({
   readerRevisions = EXPERIENCE_READER_REVISIONS,
   readerObjects = EXPERIENCE_READER_OBJECTS,
   currentPublication = EXPERIENCE_CURRENT_PUBLICATION,
+  readerPaths = [],
+  preservation,
   budgetMs = 1200000,
   stallBudgetMs = 600000,
   signal,
@@ -285,6 +287,7 @@ export async function selectedCheckout({
       snapshots: [...new Set([baseSha, candidateSha])],
       readerSnapshots: [...new Set([...roots, ...readerRevisions])],
       objects: readerObjects,
+      readerPaths,
       output: closureFile,
     });
     stage("EXPLICIT_READER_CLOSURE_HYDRATION");
@@ -299,34 +302,42 @@ export async function selectedCheckout({
     stage("EXACT_CANDIDATE_CHECKOUT");
     await command(["checkout", "--progress", "--detach", candidateSha]);
     need((await command(["rev-parse", "HEAD"])) === candidateSha, "HEAD_CHANGED");
-    const registry = JSON.parse(await command(["show", `${baseSha}:testing/product-experience-exceptions.json`]));
-    const record = registry.exceptions.at(-1),
-      pins = record.immutableHistory ?? [];
-    const revision = record.currentSourceAdmission?.preservationRevision ?? record.frozenReferenceSha;
-    const inventory = new Map(
-      (await command(["ls-tree", "-rz", revision]))
-        .split("\0")
-        .filter(Boolean)
-        .map((row) => {
-          const [metadata, file] = row.split("\t");
-          return [file, metadata];
-        }),
-    );
-    const candidateInventory = new Map(
-      (await command(["ls-tree", "-rz", candidateSha]))
-        .split("\0")
-        .filter(Boolean)
-        .map((row) => {
-          const [metadata, file] = row.split("\t");
-          return [file, metadata];
-        }),
-    );
-    const historicalManifestPinsRetained = validatePreservationInventories(
-      pins,
-      inventory,
-      candidateInventory,
-      currentPublication,
-    );
+    let preservationPins, historicalManifestPinsRetained;
+    if (preservation) {
+      const preserved = await preservation({ command, baseSha, candidateSha });
+      preservationPins = preserved.preservationPins;
+      historicalManifestPinsRetained = preserved.historicalManifestPinsRetained;
+    } else {
+      const registry = JSON.parse(await command(["show", `${baseSha}:testing/product-experience-exceptions.json`]));
+      const record = registry.exceptions.at(-1),
+        pins = record.immutableHistory ?? [];
+      preservationPins = pins.length;
+      const revision = record.currentSourceAdmission?.preservationRevision ?? record.frozenReferenceSha;
+      const inventory = new Map(
+        (await command(["ls-tree", "-rz", revision]))
+          .split("\0")
+          .filter(Boolean)
+          .map((row) => {
+            const [metadata, file] = row.split("\t");
+            return [file, metadata];
+          }),
+      );
+      const candidateInventory = new Map(
+        (await command(["ls-tree", "-rz", candidateSha]))
+          .split("\0")
+          .filter(Boolean)
+          .map((row) => {
+            const [metadata, file] = row.split("\t");
+            return [file, metadata];
+          }),
+      );
+      historicalManifestPinsRetained = validatePreservationInventories(
+        pins,
+        inventory,
+        candidateInventory,
+        currentPublication,
+      );
+    }
     need(!signal?.aborted, "CANCELLED");
     clock.assertLive();
     result = {
@@ -334,8 +345,8 @@ export async function selectedCheckout({
       baseSha,
       candidateSha,
       roots: allRoots,
-      preservationPins: pins.length,
-      currentPinsUnchanged: pins.length - historicalManifestPinsRetained.length,
+      preservationPins,
+      currentPinsUnchanged: preservationPins - historicalManifestPinsRetained.length,
       historicalManifestPinsRetained,
       nonshallow: true,
       compiled,
@@ -345,7 +356,10 @@ export async function selectedCheckout({
       elapsedMs: performance.now() - began,
       budgetMs,
       stallBudgetMs,
-      cutoffSemantics: "TEN_MINUTES_WITHOUT_FORWARD_PROGRESS_AND_TWENTY_MINUTE_ABSOLUTE_CEILING",
+      cutoffSemantics:
+        budgetMs === 600000
+          ? "TEN_MINUTE_TOTAL_CEILING_INCLUDING_CLEANUP"
+          : "TEN_MINUTES_WITHOUT_FORWARD_PROGRESS_AND_TWENTY_MINUTE_ABSOLUTE_CEILING",
       progressAdvances: clock.progressAdvances,
       lastProgressElapsedMs: clock.lastProgressAt - began,
       commands,
@@ -385,9 +399,19 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   process.once("SIGTERM", cancel);
   process.once("SIGINT", cancel);
   try {
+    const profile =
+      args.pr === "776"
+        ? (await import("./experience-pr776-checkout-profile.mjs")).pr776CheckoutProfile({
+            authorityRoot: fileURLToPath(new URL("../../", import.meta.url)),
+            baseSha: args.base,
+            candidateSha: args.candidate,
+          })
+        : {};
+    need(!args.pr || args.pr === "776", "INVALID_PROFILE");
     console.log(
       JSON.stringify(
         await selectedCheckout({
+          ...profile,
           root: path.resolve(args.workspace),
           remote: "https://github.com/Kgray44/treasurehuntSoT.git",
           baseSha: args.base,

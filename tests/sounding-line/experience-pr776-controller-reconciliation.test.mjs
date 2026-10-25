@@ -6,6 +6,8 @@ import { fileURLToPath } from "node:url";
 import {
   PR776_CONTROLLER as P,
   PR776_CONTROLLER_PATHS,
+  PR776_TRANSPORT_PREDECESSOR as T,
+  PR776_TRANSPORT_REPAIR_PATHS,
   PR776_RECORD_PATH,
   bindPR776ControllerReconciliation,
   validatePR776ReviewedIdentity,
@@ -52,7 +54,14 @@ function fixture() {
     },
     evidence: structuredClone(original),
     record: { ...structuredClone(template), status: "ACTIVE", expectedCurrentSourceDigest: CURRENT_SOURCE },
-    parents: [P.oldBase, POLICY_HEAD],
+    parents: [T.base, POLICY_HEAD],
+    predecessorParents: [...T.baseParents],
+    predecessorTree: T.baseTree,
+    predecessorHeadTree: T.baseTree,
+    carrierParents: [...T.candidateParents],
+    carrierTree: T.candidateTree,
+    carrierAncestry: true,
+    repairChanges: [...PR776_TRANSPORT_REPAIR_PATHS],
     baseChanges: [...PR776_CONTROLLER_PATHS],
     candidateChanges: [...PR776_CONTROLLER_PATHS],
     oldTree: new Map(inventory.map((row) => [row.path, `100644 blob ${row.blob}`])),
@@ -78,13 +87,34 @@ function fixture() {
   f.oldMatrix = 'header\n"Development_Docs/existing.md","historical status preserved"\n';
   f.currentMatrix = f.oldMatrix + added.map((file) => `"${file}","generated migration inventory"`).join("\n") + "\n";
   f.git = (_, args) => {
-    if (args[0] === "show" && args[1] === "-s") return Buffer.from(f.parents.join(" "));
-    if (args[0] === "rev-parse") return Buffer.from(TREE);
+    if (args[0] === "show" && args[1] === "-s")
+      return Buffer.from(
+        (args[3] === T.base ? f.predecessorParents : args[3] === T.candidate ? f.carrierParents : f.parents).join(" "),
+      );
+    if (args[0] === "rev-parse")
+      return Buffer.from(
+        args[1] === T.base + "^{tree}"
+          ? f.predecessorTree
+          : args[1] === T.baseParents[1] + "^{tree}"
+            ? f.predecessorHeadTree
+            : args[1] === T.candidate + "^{tree}"
+              ? f.carrierTree
+              : TREE,
+      );
     if (args[0] === "merge-base") {
       assert.equal(f.ancestry, true, "ANCESTRY_REJECTED");
+      if (args[2] === T.candidate) assert.equal(f.carrierAncestry, true, "CFB_ANCESTRY_REJECTED");
       return Buffer.alloc(0);
     }
-    if (args[0] === "diff") return Buffer.from((args[3] === P.oldBase ? f.baseChanges : f.candidateChanges).join("\n"));
+    if (args[0] === "diff")
+      return Buffer.from(
+        (args[3] === P.oldBase
+          ? f.baseChanges
+          : args[3] === T.base && args[4] === BASE
+            ? f.repairChanges
+            : f.candidateChanges
+        ).join("\n"),
+      );
     if (args[0] === "ls-tree" && args[1] === "-z")
       return f.recordPresent ? Buffer.from("record exists") : Buffer.alloc(0);
     if (args[0] === "ls-tree") {
@@ -109,7 +139,7 @@ function fixture() {
   f.validate = () => validatePR776ReviewedIdentity(f.bind(), f.evidence, { root: "pure-fixture", readGit: f.git });
   return f;
 }
-test("one finite controller merge retains the exact spent32-row review with zero new passes", () => {
+test("finite second controller merge retains the exact spent32-row review with zero new passes", () => {
   const f = fixture(),
     current = f.bind(),
     old = pr776HistoricalReviewedPlan(current);
@@ -465,3 +495,92 @@ test("old capture cannot claim the new controller source digest", () => {
     /TRUSTED_CAPTURE_CHANGED/u,
   );
 });
+
+test("frozen first controller merge and current candidate are exact finite predecessor identities", () => {
+  const f = fixture();
+  assert.equal(T.base, "cbc3e643cc11c172983fb8f6f43036abda590182");
+  assert.deepEqual(T.baseParents, [P.oldBase, "b86fe3abd41daf21e62a7dc876653982fa42bbe4"]);
+  assert.equal(T.baseTree, "2ae61a4350de4b530fb2668974f8a7b1e65511aa");
+  assert.equal(T.candidate, "cfb1c0ef80f9244b73653c7b41dc063732262e2d");
+  assert.deepEqual(T.candidateParents, [P.ancestor, T.base]);
+  assert.equal(T.candidateTree, "e36b5d79f5067680d7376a83d9b41104d497796b");
+  assert.equal(T.sourceDigest, "36cd7941da620b2fe417dcc99d74f6c13719dde9d6dea500777a75737f677c6f");
+  assert.equal(f.validate(), true);
+  assert.deepEqual(f.record.originalIdentity, P);
+  assert.deepEqual(f.record.transportPredecessor, T);
+  assert.deepEqual(f.evidence.reviews, original.reviews);
+});
+for (const [name, mutate] of [
+  [
+    "first merge as transport base",
+    (f) => {
+      f.plan.baseSha = T.base;
+      f.parents = [...T.baseParents];
+    },
+  ],
+  [
+    "third controller merge",
+    (f) => {
+      f.parents[0] = BASE;
+    },
+  ],
+  [
+    "different first controller parents",
+    (f) => {
+      f.predecessorParents[1] = POLICY_HEAD;
+    },
+  ],
+  [
+    "different first controller tree",
+    (f) => {
+      f.predecessorTree = TREE;
+    },
+  ],
+  [
+    "different first qualified head tree",
+    (f) => {
+      f.predecessorHeadTree = TREE;
+    },
+  ],
+  [
+    "different current candidate parents",
+    (f) => {
+      f.carrierParents[0] = POLICY_HEAD;
+    },
+  ],
+  [
+    "different current candidate tree",
+    (f) => {
+      f.carrierTree = TREE;
+    },
+  ],
+  [
+    "lost current CFB ancestry",
+    (f) => {
+      f.carrierAncestry = false;
+    },
+  ],
+  [
+    "unrelated second repair change",
+    (f) => {
+      f.repairChanges.push("src/unrelated.ts");
+    },
+  ],
+  [
+    "missing second repair change",
+    (f) => {
+      f.repairChanges.pop();
+    },
+  ],
+  [
+    "changed predecessor record",
+    (f) => {
+      f.record.transportPredecessor.base = POLICY_HEAD;
+    },
+  ],
+])
+  test(name + " fails the finite second controller bridge", () => {
+    const f = fixture();
+    mutate(f);
+    assert.throws(f.validate);
+  });

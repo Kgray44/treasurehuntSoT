@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 
-// One protected controller successor; this preserves a spent review, never grants another pass.
+// Two finite protected controller merges preserve one spent review; neither grants another pass.
 export const PR776_CONTROLLER = Object.freeze({
   kind: "PR776_CONTROLLER_BASE_RECONCILIATION_1",
   id: "pr776-attestation-buffer-reconciliation-20261025",
@@ -16,6 +16,18 @@ export const PR776_CONTROLLER = Object.freeze({
   reviewSha256: "2a689c7f2c3f404e22cb3e69418fbad41c062284a4917496b62ee2566a0e38df",
   planSha256: "bd0fd9565d87c050224a8c38b9f936d811884d305115f686609da0fddfa56850",
   inventorySha256: "215152c2e05fc3d06d950d13a0212737ff50f271a6cc826dd1ca42d455e0ee34",
+});
+export const PR776_TRANSPORT_PREDECESSOR = Object.freeze({
+  base: "cbc3e643cc11c172983fb8f6f43036abda590182",
+  baseParents: Object.freeze(["819c992fb15ef0b87299ddaaed143427bd00a13d", "b86fe3abd41daf21e62a7dc876653982fa42bbe4"]),
+  baseTree: "2ae61a4350de4b530fb2668974f8a7b1e65511aa",
+  candidate: "cfb1c0ef80f9244b73653c7b41dc063732262e2d",
+  candidateParents: Object.freeze([
+    "7036562034b19a70d10bd0d87ea66d208af11d64",
+    "cbc3e643cc11c172983fb8f6f43036abda590182",
+  ]),
+  candidateTree: "e36b5d79f5067680d7376a83d9b41104d497796b",
+  sourceDigest: "36cd7941da620b2fe417dcc99d74f6c13719dde9d6dea500777a75737f677c6f",
 });
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
@@ -38,10 +50,25 @@ export const PR776_CONTROLLER_PATHS = Object.freeze([
   "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
   "tests/sounding-line/experience-attestation.test.mjs",
   "tests/sounding-line/experience-paired.test.mjs",
+  "scripts/sounding-line/experience-selected-checkout.mjs",
+  "scripts/sounding-line/experience-checkout-hydration.mjs",
+  "scripts/sounding-line/experience-pr776-checkout-profile.mjs",
+  ".github/workflows/sounding-line-ordinary.yml",
+  "tests/sounding-line/experience-pr776-checkout.test.mjs",
   ...originals,
   PR776_RECORD_PATH,
   INDEX,
   MATRIX,
+]);
+export const PR776_TRANSPORT_REPAIR_PATHS = Object.freeze([
+  "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
+  "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
+  PR776_RECORD_PATH,
+  "scripts/sounding-line/experience-selected-checkout.mjs",
+  "scripts/sounding-line/experience-checkout-hydration.mjs",
+  "scripts/sounding-line/experience-pr776-checkout-profile.mjs",
+  ".github/workflows/sounding-line-ordinary.yml",
+  "tests/sounding-line/experience-pr776-checkout.test.mjs",
 ]);
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
@@ -83,15 +110,34 @@ function inspect({ root, plan, readGit = git }) {
     read = readGit;
   need(plan.baseSha !== p.oldBase && plan.contractDigest === p.contractDigest, "SOURCE_IDENTITY");
   const parents = text(read, root, ["show", "-s", "--format=%P", plan.baseSha]).split(" ");
-  need(parents.length === 2 && parents[0] === p.oldBase, "ONE_NEXT_NORMAL_MERGE_REQUIRED");
+  const predecessor = PR776_TRANSPORT_PREDECESSOR;
+  need(parents.length === 2 && parents[0] === predecessor.base, "ONE_NEXT_NORMAL_TRANSPORT_MERGE_REQUIRED");
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
+      text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
+      text(read, root, ["rev-parse", predecessor.baseParents[1] + "^{tree}"]) === predecessor.baseTree,
+    "FROZEN_CONTROLLER_PREDECESSOR_CHANGED",
+  );
+  need(
+    same(
+      text(read, root, ["show", "-s", "--format=%P", predecessor.candidate]).split(" "),
+      predecessor.candidateParents,
+    ) && text(read, root, ["rev-parse", predecessor.candidate + "^{tree}"]) === predecessor.candidateTree,
+    "FROZEN_CANDIDATE_PREDECESSOR_CHANGED",
+  );
   need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
       text(read, root, ["rev-parse", `${parents[1]}^{tree}`]),
     "QUALIFIED_HEAD_TREE_REQUIRED",
   );
   read(root, ["merge-base", "--is-ancestor", p.ancestor, plan.candidateSha]);
+  read(root, ["merge-base", "--is-ancestor", predecessor.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", plan.baseSha, plan.candidateSha]);
   need(exactPaths(paths(read, root, p.oldBase, plan.baseSha), PR776_CONTROLLER_PATHS), "CONTROLLER_CHANGED_PATHS");
+  need(
+    exactPaths(paths(read, root, predecessor.base, plan.baseSha), PR776_TRANSPORT_REPAIR_PATHS),
+    "TRANSPORT_REPAIR_CHANGED_PATHS",
+  );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),
     record = JSON.parse(recordBytes);
   need(
@@ -100,7 +146,8 @@ function inspect({ root, plan, readGit = git }) {
       record.id === p.id &&
       record.prNumber === 776 &&
       record.additionalIndependentPasses === 0 &&
-      same(record.originalIdentity, p),
+      same(record.originalIdentity, p) &&
+      same(record.transportPredecessor, predecessor),
     "FINITE_PROTECTED_RECORD",
   );
   need(
