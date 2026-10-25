@@ -532,6 +532,28 @@ function extractModuleSpecifiers(contents) {
   return result;
 }
 
+// One immutable snapshot owns this bounded raw-success reader. Errors and derived
+// closures/fingerprints are never cached; the delegate keeps its original options.
+export function createSnapshotSourceReader(root, candidateSha, execute = execFileSync) {
+  const values = new Map();
+  let bytes = 0;
+  return (file) => {
+    const selector = `${candidateSha}:${file}`;
+    if (values.has(selector)) return values.get(selector).trim();
+    const raw = execute("git", ["show", selector], { cwd: root, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+    if (
+      sha.test(candidateSha) &&
+      typeof raw === "string" &&
+      values.size < 4096 &&
+      bytes + Buffer.byteLength(raw) <= 64 * 1024 * 1024
+    ) {
+      values.set(selector, raw);
+      bytes += Buffer.byteLength(raw);
+    }
+    return raw.trim();
+  };
+}
+
 function staticSourceClosure(snapshot, seeds) {
   const queue = [...new Set(seeds)].sort();
   const visited = new Set();
@@ -548,7 +570,7 @@ function staticSourceClosure(snapshot, seeds) {
     if (!/\.(?:[cm]?[jt]sx?|json|css)$/u.test(file)) continue;
     let contents;
     try {
-      contents = git(snapshot.root, ["show", `${snapshot.candidateSha}:${file}`]);
+      contents = snapshot.readSource(file);
     } catch {
       unknown = true;
       continue;
@@ -719,6 +741,7 @@ async function semanticSnapshot(root, candidateSha) {
   return {
     root,
     candidateSha,
+    readSource: createSnapshotSourceReader(root, candidateSha),
     entries,
     byPath: new Map(entries.map((entry) => [entry.path, entry])),
     // Pure unit execution uses the actual verifier/evidence semantic engine.
@@ -1815,7 +1838,11 @@ async function main() {
     if (completedEvidenceEnvironmentClass(plan) === "github-actions-nonbrowser-controlled") {
       const intakeStartedAt = Date.now();
       try {
-        authenticatedEvidence = await authenticateCompletedEvidence({ root, plan });
+        authenticatedEvidence = await withVerificationStage(
+          "COMPLETED_EVIDENCE_INTAKE",
+          () => authenticateCompletedEvidence({ root, plan }),
+          { observeFailure: false },
+        );
         result.completedEvidenceIntake = {
           status: authenticatedEvidence.admitted ? "AUTHENTICATED_ELIGIBLE_RECEIPTS" : "NO_ELIGIBLE_RECEIPTS_FRESH",
           admitted: authenticatedEvidence.admitted,
