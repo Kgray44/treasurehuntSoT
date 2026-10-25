@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 
-// Six finite protected controller merges preserve one spent review; none grants another pass.
+// Seven finite protected controller merges preserve one spent review; none grants another pass.
 export const PR776_CONTROLLER = Object.freeze({
   kind: "PR776_CONTROLLER_BASE_RECONCILIATION_1",
   id: "pr776-attestation-buffer-reconciliation-20261025",
@@ -80,6 +80,19 @@ export const PR776_SQLITE_PREDECESSOR = Object.freeze({
   canonicalBytes: 1451427,
   canonicalBlob: "b705d68d183335dbf5f8e7d2292eb900a14e3e10",
   reviewArtifactId: 12606664876,
+});
+export const PR776_READER_PREDECESSOR = Object.freeze({
+  base: "85815909abb922c13cdf2a729f21a30e5b58ee9b",
+  baseParents: Object.freeze(["696ecec0fd89293074b271ab33d9256709158700", "fcbbe534f7dd4c914f3c01a10d77d9c64c497d8d"]),
+  baseTree: "3917c7d7ec26a27bd3f65e2611f4df94519ff577",
+  candidate: "1bf8dbda68161d743f305db9de6d44c6b925eb93",
+  candidateParents: Object.freeze(["d2bbae32523fb464587ad46c55a234df82dba1d6"]),
+  candidateTree: "6d3a4c2f6651eddd5befbf6499d3b26f4b1412c8",
+  sourceDigest: "790e837d9522c14f0cc88929267a35e9fd440e1580733b8fdb90294444827fa2",
+  canonicalSha256: "a9c6f938d52e46e7980f50035751b5249b70458e9f11d3442a4979eada7a34eb",
+  canonicalBytes: 1451427,
+  canonicalBlob: "3d09aa5ce1340742d9486ec0a7df925ad4ae888e",
+  reviewArtifactId: 12611315114,
 });
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
@@ -178,6 +191,13 @@ export const PR776_SQLITE_REPAIR_PATHS = Object.freeze([
   "scripts/sounding-line/sqlite-bootstrap.mjs",
   "tests/sounding-line/ordinary.test.mjs",
 ]);
+export const PR776_READER_REPAIR_PATHS = Object.freeze([
+  "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
+  "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
+  PR776_RECORD_PATH,
+  "scripts/sounding-line/experience-pr776-checkout-profile.mjs",
+  "tests/sounding-line/experience-pr776-checkout.test.mjs",
+]);
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
   JSON.stringify(value, (_, item) =>
@@ -222,8 +242,9 @@ function inspect({ root, plan, readGit = git }) {
     observed = PR776_OBSERVABILITY_PREDECESSOR,
     intake = PR776_INTAKE_PREDECESSOR,
     checked = PR776_PATH_CHECK_PREDECESSOR,
-    sqlite = PR776_SQLITE_PREDECESSOR;
-  need(parents.length === 2 && parents[0] === sqlite.base, "ONE_NEXT_NORMAL_SQLITE_MERGE_REQUIRED");
+    sqlite = PR776_SQLITE_PREDECESSOR,
+    reader = PR776_READER_PREDECESSOR;
+  need(parents.length === 2 && parents[0] === reader.base, "ONE_NEXT_NORMAL_READER_MERGE_REQUIRED");
   need(
     same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
       text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
@@ -316,6 +337,19 @@ function inspect({ root, plan, readGit = git }) {
     "FROZEN_SQLITE_CANDIDATE_CHANGED",
   );
   need(
+    same(text(read, root, ["show", "-s", "--format=%P", reader.base]).split(" "), reader.baseParents) &&
+      text(read, root, ["rev-parse", reader.base + "^{tree}"]) === reader.baseTree &&
+      text(read, root, ["rev-parse", reader.baseParents[1] + "^{tree}"]) === reader.baseTree &&
+      exactPaths(paths(read, root, sqlite.base, reader.base), PR776_SQLITE_REPAIR_PATHS) &&
+      exactPaths(paths(read, root, p.oldBase, reader.base), PR776_CONTROLLER_PATHS),
+    "FROZEN_SQLITE_PREDECESSOR_CHANGED",
+  );
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", reader.candidate]).split(" "), reader.candidateParents) &&
+      text(read, root, ["rev-parse", reader.candidate + "^{tree}"]) === reader.candidateTree,
+    "FROZEN_READER_CANDIDATE_CHANGED",
+  );
+  need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
       text(read, root, ["rev-parse", `${parents[1]}^{tree}`]),
     "QUALIFIED_HEAD_TREE_REQUIRED",
@@ -326,11 +360,12 @@ function inspect({ root, plan, readGit = git }) {
   read(root, ["merge-base", "--is-ancestor", intake.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", checked.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", sqlite.candidate, plan.candidateSha]);
+  read(root, ["merge-base", "--is-ancestor", reader.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", plan.baseSha, plan.candidateSha]);
   need(exactPaths(paths(read, root, p.oldBase, plan.baseSha), PR776_CONTROLLER_PATHS), "CONTROLLER_CHANGED_PATHS");
   need(
-    exactPaths(paths(read, root, sqlite.base, plan.baseSha), PR776_SQLITE_REPAIR_PATHS),
-    "SQLITE_REPAIR_CHANGED_PATHS",
+    exactPaths(paths(read, root, reader.base, plan.baseSha), PR776_READER_REPAIR_PATHS),
+    "READER_REPAIR_CHANGED_PATHS",
   );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),
     record = JSON.parse(recordBytes);
@@ -345,7 +380,8 @@ function inspect({ root, plan, readGit = git }) {
       same(record.observabilityPredecessor, observed) &&
       same(record.intakePredecessor, intake) &&
       same(record.pathCheckPredecessor, checked) &&
-      same(record.sqliteBootstrapPredecessor, sqlite),
+      same(record.sqliteBootstrapPredecessor, sqlite) &&
+      same(record.checkoutReaderPredecessor, reader),
     "FINITE_PROTECTED_RECORD",
   );
   need(
@@ -505,6 +541,19 @@ function inspect({ root, plan, readGit = git }) {
   need(sqliteCanonical.reviewArtifactId === sqlite.reviewArtifactId, "FROZEN_SQLITE_REVIEW_ID_CHANGED");
   delete sqliteCanonical.reviewArtifactId;
   need(same(sqliteCanonical, canonical), "FROZEN_SQLITE_CANONICAL_DATA_CHANGED");
+  const readerCanonicalBytes = Buffer.from(
+    JSON.stringify({ ...canonical, reviewArtifactId: reader.reviewArtifactId }, null, 2) + "\n",
+  );
+  need(
+    tree(read, root, reader.candidate).get(C) === `100644 blob ${reader.canonicalBlob}` &&
+      readerCanonicalBytes.length === reader.canonicalBytes &&
+      sha256(readerCanonicalBytes) === reader.canonicalSha256,
+    "FROZEN_READER_CANONICAL_CHANGED",
+  );
+  const readerCanonical = JSON.parse(readerCanonicalBytes);
+  need(readerCanonical.reviewArtifactId === reader.reviewArtifactId, "FROZEN_READER_REVIEW_ID_CHANGED");
+  delete readerCanonical.reviewArtifactId;
+  need(same(readerCanonical, canonical), "FROZEN_READER_CANONICAL_DATA_CHANGED");
   const publishedCanonical = JSON.parse(readRevision(read, root, plan.candidateSha, C));
   const publishedReviewArtifactId = publishedCanonical.reviewArtifactId;
   need(
