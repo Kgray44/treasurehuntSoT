@@ -489,26 +489,25 @@ function requiresCurrentPolicyVerification(group) {
 
 export function verificationObligationGroups(plan) {
   const commands = verificationCommands(plan);
-  const browserCommands = commands.filter(([command, argumentsList]) => browserEvidenceCommand(command, argumentsList));
+  // Transport batches retain the classification of the complete original command.
+  const originalArguments = (command, args) => {
+    const tool = pathCheckTool(command, args);
+    if (!tool) return args;
+    const paths = plan.mode === "release" ? ["."] : tool === "prettier" ? plan.safetyPaths : plan.lintPaths;
+    return [...args.slice(0, tool === "prettier" ? 3 : 2), ...paths];
+  };
+  const browserCommands = commands.filter(([command, args]) =>
+    browserEvidenceCommand(command, originalArguments(command, args)),
+  );
   const browserRequired = browserCommands.length > 0;
   const groups = [];
   let browserGroup = [];
   let unitGroup = [];
   for (const [command, argumentsList] of commands) {
     const pathTool = pathCheckTool(command, argumentsList);
-    if (pathTool) {
-      if (unitGroup.length) {
-        groups.push({ kind: "unit", commands: unitGroup });
-        unitGroup = [];
-      }
-      const prior = groups.at(-1);
-      if (prior?.kind === "preflight" && prior.commands.every(([name, args]) => pathCheckTool(name, args) === pathTool))
-        prior.commands.push([command, argumentsList]);
-      else groups.push({ kind: "preflight", commands: [[command, argumentsList]] });
-      continue;
-    }
+    const classificationArguments = originalArguments(command, argumentsList);
     const build = command === "npm" && argumentsList.join(" ") === "run build";
-    if (browserEvidenceCommand(command, argumentsList) || (browserRequired && build)) {
+    if (browserEvidenceCommand(command, classificationArguments) || (browserRequired && build)) {
       if (unitGroup.length) {
         groups.push({ kind: "unit", commands: unitGroup });
         unitGroup = [];
@@ -517,10 +516,10 @@ export function verificationObligationGroups(plan) {
       continue;
     }
     const kind =
-      command === "npx" && argumentsList.includes("vitest")
+      command === "npx" && classificationArguments.includes("vitest")
         ? "unit"
-        : argumentsList.includes("prisma") ||
-            argumentsList.some((argument) => /migration|migrate|rehearse/iu.test(argument))
+        : classificationArguments.includes("prisma") ||
+            classificationArguments.some((argument) => /migration|migrate|rehearse/iu.test(argument))
           ? "migration"
           : build
             ? "build"
@@ -533,7 +532,14 @@ export function verificationObligationGroups(plan) {
       groups.push({ kind: "unit", commands: unitGroup });
       unitGroup = [];
     }
-    groups.push({ kind, commands: [[command, argumentsList]] });
+    const prior = groups.at(-1);
+    if (
+      pathTool &&
+      prior?.kind === kind &&
+      prior.commands.every(([name, args]) => pathCheckTool(name, args) === pathTool)
+    )
+      prior.commands.push([command, argumentsList]);
+    else groups.push({ kind, commands: [[command, argumentsList]] });
   }
   if (unitGroup.length) groups.push({ kind: "unit", commands: unitGroup });
   if (browserGroup.length) groups.push({ kind: "browser", commands: browserGroup });

@@ -686,6 +686,58 @@ test("bounded path checks preserve every ordered formatter and lint argument", (
   ]);
 });
 
+test("path batches retain original browser and migration obligation partitions", () => {
+  const paths = Array.from({ length: 180 }, (_, i) => `src/selected-${i}-${"x".repeat(40)}.ts`);
+  const base = {
+    mode: "ordinary",
+    candidateSha: "a".repeat(40),
+    selected: { unitTests: ["src/fixture.test.ts"], browserTests: ["tests/e2e/project-helm-phase1.spec.ts"] },
+    migrationRequired: true,
+    registrationValidationRequired: true,
+    migrationScripts: [],
+    buildRequired: true,
+  };
+  for (const index of [0, 90, paths.length]) {
+    const selected = [...paths];
+    selected.splice(index, 0, "prisma/seed.ts");
+    const plan = { ...base, safetyPaths: selected, lintPaths: selected };
+    const format = boundedFormatterCommands(selected),
+      lint = boundedLintCommands(selected);
+    assert(format.length > 1 && lint.length > 1);
+    const groups = verificationObligationGroups(plan);
+    const browser = groups.find((group) => group.kind === "browser");
+    assert.deepEqual(browser.commands.slice(0, format.length + lint.length), [...format, ...lint]);
+    assert(
+      groups
+        .filter((group) => group !== browser)
+        .every((group) => group.commands.every(([, args]) => !["prettier", "eslint"].includes(args[1]))),
+    );
+    const originalShape = verificationObligationGroups({
+      ...base,
+      safetyPaths: ["prisma/seed.ts"],
+      lintPaths: ["prisma/seed.ts"],
+    });
+    assert.deepEqual(
+      groups.map(({ kind }) => kind),
+      originalShape.map(({ kind }) => kind),
+    );
+  }
+  const migrationPaths = [...paths, "src/migration-check.ts"];
+  const migration = verificationObligationGroups({
+    ...base,
+    safetyPaths: migrationPaths,
+    lintPaths: migrationPaths,
+    selected: { unitTests: [], browserTests: [] },
+    buildRequired: false,
+    migrationRequired: false,
+    registrationValidationRequired: false,
+  });
+  assert.equal(migration[0].kind, "migration");
+  assert.equal(migration[1].kind, "migration");
+  assert.deepEqual(migration[0].commands, boundedFormatterCommands(migrationPaths));
+  assert.deepEqual(migration[1].commands, boundedLintCommands(migrationPaths));
+});
+
 test("path batches keep one whole obligation per tool and every selected closure member", async () => {
   await withEvidenceFixture(async ({ root, baseSha }) => {
     const formatPaths = Array.from(
