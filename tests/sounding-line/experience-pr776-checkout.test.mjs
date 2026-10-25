@@ -234,3 +234,18 @@ test("historical workflow reader closure retains both versions while omitting un
     assert(closure.objects.some((object) => object.sha === reader.revision && object.type === "commit"));
   assert(!closure.objects.some((object) => object.sha === git(["rev-parse", "HEAD:unneeded.bin"])));
 });
+
+test("only PR776 joins the existing ninety-minute final verification budget", () => {
+  const workflow = read(".github/workflows/sounding-line-ordinary.yml").toString();
+  const jobs = workflow.split(/\n  (?=[a-z][a-z-]*:\n)/u).filter((section) => /^[a-z][a-z-]*:\n/u.test(section));
+  const deadlines = Object.fromEntries(
+    jobs.map((section) => [section.split(":")[0], /^    timeout-minutes: (.+)$/mu.exec(`  ${section}`)?.[1]]),
+  );
+  assert.equal(deadlines["campaign-custody"], "35");
+  assert.equal(deadlines["experience-preparation"], "${{ inputs.experience_mode == 'capture' && 70 || 40 }}");
+  assert.equal(deadlines["mainline-decision"], "35");
+  const addedScope = " || github.event.pull_request.number == 776 || inputs.pr_number == '776'";
+  const previous = "${{ (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}";
+  assert.equal(deadlines["final-check"], previous.replace(") &&", `${addedScope}) &&`));
+  assert.equal(deadlines["final-check"].replace(addedScope, ""), previous);
+});
