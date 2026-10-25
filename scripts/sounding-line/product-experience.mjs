@@ -1,3 +1,4 @@
+import { bindPR776ControllerReconciliation } from "./experience-pr776-controller-reconciliation.mjs";
 import {
   isReviewedEvidenceAdoption,
   historicalReviewedPlan,
@@ -974,7 +975,11 @@ export function planProductExperience(options) {
   const exception = bindExperienceException({ ...options, plan });
   if (exception && (plan.reviewContinuation || plan.pr776ReviewContinuation))
     fail("REVIEW_CONTINUATION_EXCEPTION_CONFLICT");
-  return exception ? { ...plan, exception } : plan;
+  return bindPR776ControllerReconciliation({
+    root: options.root,
+    plan: exception ? { ...plan, exception } : plan,
+    prNumber: options.prNumber ?? process.env.SOUNDING_LINE_PR_NUMBER,
+  });
 }
 
 export function repairDisposition({ findings, iterations, previousBlockingCount, maxIterations = 3 }) {
@@ -1049,7 +1054,7 @@ export function validateExperienceEvidence({
   const currentPlan = plan;
   if (!automatedOnly) {
     if (isReviewedEvidenceAdoption(plan)) {
-      validateReviewedIdentity(plan, evidence);
+      validateReviewedIdentity(plan, evidence, { root: baselineRoot });
       plan = historicalReviewedPlan(plan);
     }
     validateR8FormatEvidenceIdentity(plan, evidence ?? {});
