@@ -12,6 +12,12 @@ This repository intentionally preserves Voyagewright's governing documents, deci
 
 Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](document-index.json) for the machine-readable inventory. Historical records retain their own claims; this index identifies their current location without rewriting them.
 
+## Spatial Chronicle Creation program (proposed)
+
+- [SC-00–SC-11 master roadmap](Programs/Spatial_Chronicle_Creation/Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md) — proposed integrated Creator/Spatial Studio roadmap, ownership, dependencies and acceptance gates.
+- [SC-05 Chronicle Architect governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Architect_Governing_Document_v1.0.md) — proposed AI-assisted whole-Chronicle planning, governed operations, cost/privacy controls and validation.
+- SC-04 Puzzle Composition and SC-06 Story Adaptation governing documents are deliberately **reserved for later owner design discussions**; their full specifications do not exist in this PR.
+
 ## Current project homes
 
 - [Spatial Chronicle Pilot](Projects/Spatial_Chronicle_Pilot/README.md) — fictional adventure, safe provisioning and consolidated Owner Sea Trials.
