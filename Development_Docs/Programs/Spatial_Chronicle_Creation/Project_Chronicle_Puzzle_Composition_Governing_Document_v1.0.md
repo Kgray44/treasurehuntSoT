@@ -13,6 +13,7 @@ repository: Kgray44/treasurehuntSoT
 ---
 
 # Project Chronicle Puzzle Composition
+
 ## A true authoring workshop for meaningful, interactive, reusable adventures
 
 > **Governing principle:** Creators design the challenge, not the implementation machinery. Voyagewright composes supported interactions, verifies their logic, preserves deliberate outcomes, and gives Players a fair, compelling way to participate. Simple puzzles should be effortless to author; ambitious puzzles should be possible without programming. Rich device/3D realizations enrich the experience, but a usable, meaningful **2D version must remain available on every supported Player device**.
@@ -21,7 +22,7 @@ repository: Kgray44/treasurehuntSoT
 
 This specification formalizes the owner's October 24–25, 2026 SC-04 design decisions after explicit clarification of six major questions. It is **proposed governance**, not evidence that SC-04 is implemented, accepted, merged, or enabled. It accompanies the [SC master roadmap](./Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md), the [cross-project Creator experience amendment](./Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md) and [traceability ledger](./SC_Requirements_Traceability_Ledger_v1.0.md). Adoption requires owner and relevant domain contract review, protected-main qualification and all normal policy gates.
 
-The project is a **Composer/Workshop inside one canonical Chronicle Creator**, not a duplicate Chronicle engine. Existing accepted Drydock Story Block contract authority, \`BlockConnection\` graph authority, One Voyage progression, Parallax spatial ownership, Crossdeck participation, Landfall navigation, Sextant sensing, Watchglass perception, Reach intent, Harborlight sharing, Sealed Hold private-content/rights, Admiralty AI/provider quotas and Sounding Line release policy remain authoritative. If a requirement calls for a new contract, obtain acceptance through the owning project rather than assuming schema existence.
+The project is a **Composer/Workshop inside one canonical Chronicle Creator**, not a duplicate Chronicle engine. Existing accepted Drydock Story Block contract authority, `BlockConnection` graph authority, One Voyage progression, Parallax spatial ownership, Crossdeck participation, Landfall navigation, Sextant sensing, Watchglass perception, Reach intent, Harborlight sharing, Sealed Hold private-content/rights, Admiralty AI/provider quotas and Sounding Line release policy remain authoritative. If a requirement calls for a new contract, obtain acceptance through the owning project rather than assuming schema existence.
 
 **PR constraint:** Documentation-only addition to an existing draft PR; no merge to main while owner's independent Parallax integration PR #776 is ongoing. No SC-04 implementation launch is authorized by this document.
 
@@ -31,7 +32,7 @@ Normative terms MUST/MUST NOT apply within an owner-ratified implementation scop
 
 ### 1.1 Product promise
 
-Puzzle Workshop lets a Creator conceive and author anything from a simple riddle to a multipart, nonlinear, cross-chapter, physically situated, multi-device, collaborative challenge with bespoke mechanisms, carefully graded hints, multiple meaningful outcomes and end-to-end replayable tests. Templates are available as optional *starting conveniences*, never the definition of what is allowed.
+Puzzle Workshop lets a Creator conceive and author anything from a simple riddle to a multipart, nonlinear, cross-chapter, physically situated, multi-device, collaborative challenge with bespoke mechanisms, carefully graded hints, multiple meaningful outcomes and end-to-end replayable tests. Templates are available as optional _starting conveniences_, never the definition of what is allowed.
 
 A real Puzzle is more than a “question with one right answer.” It may involve discovering evidence, negotiating, manipulating a 2D dial, rotating a 3D object, visiting a real or virtual destination, identifying a visual clue, collaborating across roles, making an informed decision, surviving a timer or accepting intentional failure that changes the ending. The final authored Chronicle must still feel cohesive and understandable to Players.
 
@@ -59,10 +60,10 @@ Tool switching retains canonical Chronicle identity, focused branch/chapter, puz
 
 ### 2.2 Modes are depths of control, not distinct puzzle types
 
-| Mode | Intended human experience | Tool exposure |
-|---|---|---|
-| **Guided** | State objective, choose optional template/pattern, personalize wording/media, pick participants, hints and outcomes through purpose-built controls | No graph syntax, script or intimidating raw schema |
-| **Detailed** | Compose custom objectives, clues, multiple solution routes, 2D interactions, branch outcomes, completion conditions, permissions, reusable parameters and time rules | Rich visual connections with human-readable semantics; no raw scripting surface |
+| Mode            | Intended human experience                                                                                                                                                                         | Tool exposure                                                                                          |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Guided**      | State objective, choose optional template/pattern, personalize wording/media, pick participants, hints and outcomes through purpose-built controls                                                | No graph syntax, script or intimidating raw schema                                                     |
+| **Detailed**    | Compose custom objectives, clues, multiple solution routes, 2D interactions, branch outcomes, completion conditions, permissions, reusable parameters and time rules                              | Rich visual connections with human-readable semantics; no raw scripting surface                        |
 | **Engineering** | Diagnose/author full typed graph, event/evidence policies, deterministic seeds, numeric thresholds, guarded state transitions, source-bound assertions and controlled scripting if later approved | Advanced low-level logic editor, source details, safe expression tools, possible sandbox script editor |
 
 Switching mode MUST NOT change persisted puzzle identity or rewrite its semantics. Every supported puzzle is editable through the appropriate progressive-disclosure features without hiding critical outcomes. An unsupported exotic mechanism MUST declare its requirements honestly.
@@ -70,6 +71,7 @@ Switching mode MUST NOT change persisted puzzle identity or rewrite its semantic
 ### 2.3 Workshop composition surfaces
 
 A rich desktop workspace can provide:
+
 - **Puzzle outline:** identity, story purpose, chapter placement, target audience and duration, current status, selected participation policy.
 - **Flow canvas:** objectives, gates, clues, devices, alternative evidence, hint stages, variants, outcomes and connections with overview/zoom.
 - **Interaction builder:** visual 2D mechanism editor, input mappings and spatial references.
@@ -119,6 +121,7 @@ The concept “shared progress” does not imply sharing spoilers or private clu
 ### 4.1 Structural composition
 
 A definition may combine:
+
 - sequential steps, parallel steps and prerequisite gates;
 - required versus optional clue/evidence;
 - alternative solution strategies;
@@ -149,6 +152,7 @@ The shared branch implementation belongs to Shipwright UX, Drydock graph contrac
 ### 4.4 Nested and interdependent puzzles
 
 A puzzle may depend on another puzzle, reference previously acquired evidence, or be itself a step in a greater mystery. Composer MUST show dependency relationships and validate:
+
 - impossible ordering or cycles without declared bounded/recovery behavior;
 - unintended lockout from mandatory clues;
 - duplicate global outcomes or rewards;
@@ -204,6 +208,7 @@ For advanced Creators, Engineering mode MAY offer a composable deterministic gra
 ### 6.2 Scripted extensions are future-only, security gated
 
 Advanced Creator scripts, if ever supported, are **NOT authorized by this document alone**. Before shipping, approve a separate threat model and versioned execution contract specifying:
+
 - pure or explicitly effect-bounded deterministic behavior, stable replay and seed semantics;
 - execution time, memory, recursion, state and event limits;
 - no network, filesystem, system clocks, process, eval, dynamic imports, secrets or unchecked reflection;
@@ -219,13 +224,14 @@ The initial SC-04 plateau MUST remain capable of powerful no-code puzzle constru
 
 ### 7.1 Why variation is not merely another story branch
 
-Owner intent includes configurable, easy-to-create alternate puzzle elements (e.g., a different code, hiding location, object, clue order or mechanism) that can vary across Voyages while preserving the same essential puzzle. This is not necessarily a different chapter or narrative ending. Treat **authored variation** as a controlled selection *within an interaction slot*, and use a named branch only when the **story itself diverges**.
+Owner intent includes configurable, easy-to-create alternate puzzle elements (e.g., a different code, hiding location, object, clue order or mechanism) that can vary across Voyages while preserving the same essential puzzle. This is not necessarily a different chapter or narrative ending. Treat **authored variation** as a controlled selection _within an interaction slot_, and use a named branch only when the **story itself diverges**.
 
 ### 7.2 Side-by-side authoring UX
 
 From any eligible authored block or puzzle moment, choose **Add Alternative**. The editor places a visually adjacent **Variation Sibling** beside the original, not sequentially above or below it, with a shared “one of these versions runs” parent. Users may create or duplicate a variant, rename it, change its clues/appearance/parameters and preview each option side by side.
 
 Examples:
+
 - the same lock uses a distinct pre-authored code and matching clue set;
 - three possible clue hiding places, one selected for a Voyage;
 - different room themes that all expose identical required evidence;
@@ -244,6 +250,7 @@ Once a variant is selected for a running Voyage, the choice is **stable, version
 ### 7.4 Solve-all-variants proof
 
 No randomized variant may reach publication until Drydock verifies, or explicitly refuses to certify, every required variation class and compatible path under bounded policy. It must check:
+
 - selected code corresponds to all displayed clues;
 - required artifact/Scene/route references exist for each variant;
 - 2D path works across supported devices for every mandatory variant;
@@ -262,14 +269,14 @@ A person may use phone and laptop simultaneously within the same active Voyage t
 
 ### 8.2 Creator-visible participation models
 
-| Policy | Player experience | Required semantics |
-|---|---|---|
-| **Shared / Cooperative Progress** (strong default for team Chronicles) | Crew collectively discovers clues, solves a shared puzzle and progresses one Chronicle | Contributions associated with real Players; shared objective state; explicit spoiler sharing; late join/reconnect safety |
-| **Each Player Completes** | All required Players must complete the same puzzle or specified subset | Individual completion records, eligibility set snapshot/change rules, late join and dropout policy; completion is not one anonymous crew receipt |
-| **Distributed Roles** | Different participants perform distinct roles and contribute to a common puzzle | Creator role assignment, contribution requirements, safe fallback and crew changes |
-| **Individual / Private Discovery** | A Player sees a private clue or branch until shared | Audience-scoped visibility, safe explicit share/crew relay and no accidental spoiler broadcast |
-| **Choice by Player/Captain/Crew** | Which person or authority chooses a branch/outcome is configured | Supported vote/leader/Captain/individual decision policy with exact tie, conflict and timeout handling |
-| **Hybrid** | Some objectives shared, some personal, some all-player required | Explicit composition of the above, with meaningful per-step display |
+| Policy                                                                 | Player experience                                                                      | Required semantics                                                                                                                               |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Shared / Cooperative Progress** (strong default for team Chronicles) | Crew collectively discovers clues, solves a shared puzzle and progresses one Chronicle | Contributions associated with real Players; shared objective state; explicit spoiler sharing; late join/reconnect safety                         |
+| **Each Player Completes**                                              | All required Players must complete the same puzzle or specified subset                 | Individual completion records, eligibility set snapshot/change rules, late join and dropout policy; completion is not one anonymous crew receipt |
+| **Distributed Roles**                                                  | Different participants perform distinct roles and contribute to a common puzzle        | Creator role assignment, contribution requirements, safe fallback and crew changes                                                               |
+| **Individual / Private Discovery**                                     | A Player sees a private clue or branch until shared                                    | Audience-scoped visibility, safe explicit share/crew relay and no accidental spoiler broadcast                                                   |
+| **Choice by Player/Captain/Crew**                                      | Which person or authority chooses a branch/outcome is configured                       | Supported vote/leader/Captain/individual decision policy with exact tie, conflict and timeout handling                                           |
+| **Hybrid**                                                             | Some objectives shared, some personal, some all-player required                        | Explicit composition of the above, with meaningful per-step display                                                                              |
 
 A Creator can choose that everyone contributes to the same evolving Chronicle (the expected common case), or that **every Player must perform the same relevant steps**. The UI must clearly communicate who can act, see, complete and change the puzzle. No low-level multiplayer schema expertise should be needed for standard patterns.
 
@@ -295,7 +302,7 @@ No puzzle is forced into generic hint release just because a timer elapsed. Real
 
 A legitimately failed timed challenge is an allowed authored outcome. A device permission denial, missing AR provider, untrustworthy compass or network outage is a **platform capability/fault**, not an unexplained Player failure. The Creator must configure a valid fallback or honest restriction and Playtest it; platform safeguards prevent unsalvageable unsupported experiences.
 
-The system MAY use eligible observations of repeated wrong attempts, stuck-state patterns or elapsed *active* effort to offer Creator-approved hints. It must not pretend it can diagnose human frustration or attention perfectly. A Player can continue unaided where allowed.
+The system MAY use eligible observations of repeated wrong attempts, stuck-state patterns or elapsed _active_ effort to offer Creator-approved hints. It must not pretend it can diagnose human frustration or attention perfectly. A Player can continue unaided where allowed.
 
 ### 9.3 Assistance and integrity
 
@@ -308,6 +315,7 @@ Hint usage and Captain intervention generate classified assistance evidence. A C
 Puzzle Workshop supports **Creator-named outcomes**, optionally tagged for diagnostic purposes as COMPLETE, PARTIAL, ALTERNATE, FAILED, SKIPPED/ABANDONED or ASSISTED. These tags MUST NOT hardcode mandatory story endings or assume every puzzle has exactly one correct path. A puzzling moral choice may have no globally right answer.
 
 For every outcome, Creator configures:
+
 - evidence/conditions that select it;
 - per-Player/crew authority and visibility;
 - continuation branch, rejoin target, terminal conclusion or recovery;
@@ -332,6 +340,7 @@ Creator may optionally author scores, time bonuses, optional medals, achievement
 ### 11.1 Governed Captain control surface
 
 A Captain may, within published rules and authorized role/session policy:
+
 - deliver a configured hint;
 - reveal an optional clue;
 - extend/pause/resume a puzzle timer where supported;
@@ -375,7 +384,7 @@ No Community metric may expose puzzle answer strings, private clue locations, ra
 
 ### 13.1 Three separate kinds of truth
 
-**PROVEN STRUCTURE.** Bounded/exhaustively computed results from actual source and accepted graph semantics: reachable nodes, known endings and authored alternatives, solvable transitions, invariant/counterexample evidence, cycles, reward duplication and exact path counts *only when mathematically well-defined under stated bounds*. A cyclic/unbounded graph cannot truthfully display a finite universal number of possible histories.
+**PROVEN STRUCTURE.** Bounded/exhaustively computed results from actual source and accepted graph semantics: reachable nodes, known endings and authored alternatives, solvable transitions, invariant/counterexample evidence, cycles, reward duplication and exact path counts _only when mathematically well-defined under stated bounds_. A cyclic/unbounded graph cannot truthfully display a finite universal number of possible histories.
 
 **MODELED HUMAN ESTIMATE.** Hypotheses about reading, reasoning, search, travel, interaction, retry, difficulty, wrong attempts and assistance. Disclose explicit assumptions, ranges/percentiles and calibration quality. No result becomes factual because it is shown to two decimal places.
 
@@ -386,6 +395,7 @@ Every Creator report MUST label class, source exact revision, model/version, sel
 ### 13.2 Structural count semantics
 
 Drydock should report:
+
 - reachable Story Blocks/objectives and inaccessible required steps;
 - **number of distinct defined outcomes**, classified by intent;
 - number of **distinct supported solution strategies** under declared equivalence;
@@ -402,7 +412,7 @@ For a free-text puzzle, **counting "wrong solutions" is inherently open-ended**.
 
 For route/profile r, an initial conceptual model is:
 
-\`T_r = T_read + T_search + T_reason + T_interact + T_travel + T_wait + T_retry\`.
+`T_r = T_read + T_search + T_reason + T_interact + T_travel + T_wait + T_retry`.
 
 Reading inputs can use actual localized words/media pacing. Search estimates can use authored clue visibility and number of eligible targets, learned calibration only where lawful; reasoning is probabilistic and heavily uncertain; physical/virtual travel can use legitimate Landfall distance/travel assumptions and route capability; interaction duration can reference mechanism steps, animation/timing; retry reflects attempt policy and observed priors. Cooperation adds coordination and player count effects, not merely dividing solo time by crew size.
 
@@ -417,6 +427,7 @@ Monte Carlo or stochastic search is useful when exhaustive exploration is infeas
 ### 13.5 Actual Player experience intelligence
 
 Creator-only analytics may show:
+
 - completion time histogram/median/quantiles, reading and interaction duration if meaningfully measurable;
 - attempt counts, repeated invalid interaction categories and common wrong-answer **categories without leaking actual secret answers**;
 - hint tier use, clue discoverability, missed/object-visibility bottlenecks;
@@ -435,6 +446,7 @@ Playtest Mode is **shared across all Creator tools**, as specified by the [Cross
 ### 14.1 Direct interactive test
 
 Creator selects **Play as Player**, optionally acting as solo Player, crew Player A/B/C, Captain or selected accessibility/device posture. Use real defined 2D interactions, honest spatial/device simulation and canonical isolated progression semantics. Creator can:
+
 - start at puzzle introduction, given preconditions, selected clue and selected variant;
 - test correct, wrong, partial, alternative, timer-expired, skipped, Captain-assisted and fault outcomes;
 - switch between desktop, phone and representative supported accessibility profiles;
@@ -447,6 +459,7 @@ Never modify a real Player's Voyage, grant real public artifacts, send invites o
 ### 14.2 Drydock-backed deterministic scenarios
 
 Use current Drydock scenario/source checksum/seed/fault/limit identity when available. Existing Scenario v1 is bounded and does not accept arbitrary JS, URLs, real answer text or untrusted raw device evidence; new puzzle interaction and variant scenarios need **Drydock-owned schema/adapter version review**. Tests should include:
+
 - graph reachability and ending coverage for every configured requirement class;
 - all supported alternative solution strategies and outcome branches;
 - deliberate failure and accessible recovery/fail-forward;
@@ -463,9 +476,12 @@ A generated Scenario suggestion is not itself approved executable truth until va
 
 ## 15. AI Chronicle Architect and governed authoring integration
 
+The [SC-05 single-partner design](./Project_Chronicle_Architect_Governing_Document_v1.0.md) supplies the conversation and handoff into Workshop; SC-04 retains puzzle authoring and domain contracts. The [original Puzzle visualizer](./visual_references/architect-puzzle-composition-concept.png) is a proposed Architect concept, not proof of a shipped Workshop or 3D mechanism. Its [visual manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) and [ten-image gallery](./visual_references/README.md) preserve exact source custody. The universal accessible 2D baseline, optional Parallax enhancement and all acceptance criteria below remain binding.
+
 SC-05 can plan, create or adjust a puzzle using **real SC-04 authored commands** after those capabilities are accepted, not by emitting a magic “puzzle” prose blob or direct database mutation. It can suggest templates, variations, clue placements, hint ladders, difficulty/time estimates and alternate endings from Creator intent, then show a readable impact plan.
 
 Before applying any change, Architect must:
+
 - resolve authoritative Puzzle Definition, Instance and version;
 - check eligible 2D mechanism/capability/participant options;
 - use typed Creator-authorized mutation commands and exact revision guards;
@@ -502,13 +518,13 @@ An update to a reusable Community puzzle is a new immutable release with lineage
 
 ## 18. Suggested implementation increments (future owner authorization required)
 
-| Increment | Scope | Meaningful exit evidence |
-|---|---|---|
-| **P1: Puzzle Contract & 2D Baseline** | Current-source owner inventory, canonical definition/instance/moment mapping, objective/outcome/participant model, universal 2D mechanism capability, safe authored CLI/operations | Creator can build and truly play a small puzzle across desktop and phone, including more than binary success |
-| **P2: Puzzle Workshop** | Equal-standing tool UI, Guided/Detailed/Engineering, from-scratch mechanics, hints, outcomes, cross-chapter references and branch context | Create/edit/reopen a substantial puzzle without hand-editing code; accessible flow works |
-| **P3: Variations & Crew Logic** | Variation Sibling sidecar, deterministic selection/proof, multiple contribution modes, Captain interventions and timers | Every allowed variant/role outcome tests, reconnects and replays honestly |
-| **P4: Drydock Intelligence & Universal Playtest Integration** | Structural exact/bounded counts, estimates/uncertainty, puzzle diagnostics and shared Playtest adapters; consent-based aggregates via owner interfaces | In-context testing, meaningful confidence labels, failure proof and no live-state effects |
-| **P5: Puzzle Library, Community & Polished Completion** | Definition/instance versioning, parametric starters, Harborlight release, measurements, optimized visuals/UX, SC-05 tool contracts | Publish/reuse/read-only history, full Creator-to-Player journey with owner acceptance |
+| Increment                                                     | Scope                                                                                                                                                                              | Meaningful exit evidence                                                                                     |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **P1: Puzzle Contract & 2D Baseline**                         | Current-source owner inventory, canonical definition/instance/moment mapping, objective/outcome/participant model, universal 2D mechanism capability, safe authored CLI/operations | Creator can build and truly play a small puzzle across desktop and phone, including more than binary success |
+| **P2: Puzzle Workshop**                                       | Equal-standing tool UI, Guided/Detailed/Engineering, from-scratch mechanics, hints, outcomes, cross-chapter references and branch context                                          | Create/edit/reopen a substantial puzzle without hand-editing code; accessible flow works                     |
+| **P3: Variations & Crew Logic**                               | Variation Sibling sidecar, deterministic selection/proof, multiple contribution modes, Captain interventions and timers                                                            | Every allowed variant/role outcome tests, reconnects and replays honestly                                    |
+| **P4: Drydock Intelligence & Universal Playtest Integration** | Structural exact/bounded counts, estimates/uncertainty, puzzle diagnostics and shared Playtest adapters; consent-based aggregates via owner interfaces                             | In-context testing, meaningful confidence labels, failure proof and no live-state effects                    |
+| **P5: Puzzle Library, Community & Polished Completion**       | Definition/instance versioning, parametric starters, Harborlight release, measurements, optimized visuals/UX, SC-05 tool contracts                                                 | Publish/reuse/read-only history, full Creator-to-Player journey with owner acceptance                        |
 
 These are **proposed packaging suggestions**, not a mandated order of engineering PRs. Early prototypes may use mock materials only if labeled as such; complete-feature claims require real canonical authoring and player outcome proof. Scripting is separate future architecture, never a hidden gate to finishing the initial no-code Workshop.
 
@@ -517,6 +533,7 @@ These are **proposed packaging suggestions**, not a mandated order of engineerin
 SC-04 must not be declared complete within ratified scope until all applicable checks are established:
 
 **Core Creator authoring**
+
 1. Accessible first-class Puzzle Workshop entry exists within Creator Tools and contextual Story Editor.
 2. Guided, Detailed and Engineering operate over the same persisted authored definition and instance.
 3. Puzzles can be started from scratch or optional template, and deeply edited in normal controls.
@@ -527,65 +544,40 @@ SC-04 must not be declared complete within ratified scope until all applicable c
 8. A puzzle can span chapters, named branches and multiple steps while remaining discoverable/manageable.
 9. Multiple solution strategies and Creator-defined distinct outcomes lead to the intended legitimate narrative/reward effects.
 
-**Runtime, variation and devices**
-10. Required puzzle mechanics have usable **2D equivalents on all supported Player device classes** and accessible input paths.
-11. Optional 3D/AR/spatial enhancement preserves canonical state/output and does not turn missing AR into unplayable required path.
-12. Variation Siblings are intuitive side-by-side, selectable, parameterized and source-stable with no unintended serial execution.
-13. Fixed/seeding rules are deterministic and selected once per appropriate scope; disconnect/late join preserve selection.
-14. Every published variant and eligible combination has accurate exhaustive/bounded/sampled proof label; broken variants block readiness.
-15. SHARED_CREW, EACH_PLAYER, DISTRIBUTED, INDIVIDUAL and HYBRID policy cases work with correct identity/visibility/termination semantics.
-16. One person across phone/desktop does not count twice; private discoveries are not accidentally broadcast.
-17. Captain interventions are authorized, visible, logged and never mislabeled ordinary success.
-18. Timers distinguish intentional failure from device/network/platform faults and handle reconnect and race boundaries.
+**Runtime, variation and devices** 10. Required puzzle mechanics have usable **2D equivalents on all supported Player device classes** and accessible input paths. 11. Optional 3D/AR/spatial enhancement preserves canonical state/output and does not turn missing AR into unplayable required path. 12. Variation Siblings are intuitive side-by-side, selectable, parameterized and source-stable with no unintended serial execution. 13. Fixed/seeding rules are deterministic and selected once per appropriate scope; disconnect/late join preserve selection. 14. Every published variant and eligible combination has accurate exhaustive/bounded/sampled proof label; broken variants block readiness. 15. SHARED_CREW, EACH_PLAYER, DISTRIBUTED, INDIVIDUAL and HYBRID policy cases work with correct identity/visibility/termination semantics. 16. One person across phone/desktop does not count twice; private discoveries are not accidentally broadcast. 17. Captain interventions are authorized, visible, logged and never mislabeled ordinary success. 18. Timers distinguish intentional failure from device/network/platform faults and handle reconnect and race boundaries.
 
-**Drydock, Playtest and analytics**
-19. Direct **universal** Playtest Mode can enter a puzzle from Workshop and other Creator tools, preserving editing context.
-20. Playtest can exercise success, partial, alternate, failure, hint, Captain, crew, variation and device-fault paths without live side effects.
-21. Drydock proves graph/objective reachability under source-bound conditions and refuses unjustified "all paths" completeness.
-22. Structural counts, modeled human estimates and observed aggregate statistics remain visually and semantically distinct.
-23. Time estimates consider reading, search, reasoning, interaction, travel, wait, retries, participant/devices and assumptions.
-24. Empirical feedback clearly labels source/version/sample, avoids individual exposure/spoilers and separates technical failure from difficulty.
-25. Wrong-answer counts identify finite enumerable classes separately from expected wrong attempts in open-ended puzzles.
+**Drydock, Playtest and analytics** 19. Direct **universal** Playtest Mode can enter a puzzle from Workshop and other Creator tools, preserving editing context. 20. Playtest can exercise success, partial, alternate, failure, hint, Captain, crew, variation and device-fault paths without live side effects. 21. Drydock proves graph/objective reachability under source-bound conditions and refuses unjustified "all paths" completeness. 22. Structural counts, modeled human estimates and observed aggregate statistics remain visually and semantically distinct. 23. Time estimates consider reading, search, reasoning, interaction, travel, wait, retries, participant/devices and assumptions. 24. Empirical feedback clearly labels source/version/sample, avoids individual exposure/spoilers and separates technical failure from difficulty. 25. Wrong-answer counts identify finite enumerable classes separately from expected wrong attempts in open-ended puzzles.
 
-**Community, AI, security and quality**
-26. Reusable puzzle definitions, instances and immutable versions preserve all dependent source references and do not mutate prior Chronicle editions.
-27. Community installation/publishing uses Harborlight rights/privacy/moderation/dependency contracts and safe aggregate metadata.
-28. SC-05 orchestration uses canonical governed tools and ordinary Creator review; no AI hidden writes.
-29. Private answers, identity, sensor/location data, model secrets, source prose and untrusted scripts never bypass the owning security boundary.
-30. Keyboard, touch, screen reader, reduced motion, narrow/mobile and representative 2D Player paths are tested for full story outcome equivalence.
-31. Source-bound deterministic, browser and appropriate device tests pass the accepted Sounding Line and protected-main release decision.
-32. The Product Owner approves a full creator-to-Player walkthrough showing a genuinely compelling puzzle experience.
-33. All deviations, unsupported provider tiers, unratified advanced scripting and physical qualification remain explicitly recorded.
-34. SC-04 approval does not implicitly approve its neighboring SC-03 branch-UX or SC-06 Story Adaptation future work.
+**Community, AI, security and quality** 26. Reusable puzzle definitions, instances and immutable versions preserve all dependent source references and do not mutate prior Chronicle editions. 27. Community installation/publishing uses Harborlight rights/privacy/moderation/dependency contracts and safe aggregate metadata. 28. SC-05 orchestration uses canonical governed tools and ordinary Creator review; no AI hidden writes. 29. Private answers, identity, sensor/location data, model secrets, source prose and untrusted scripts never bypass the owning security boundary. 30. Keyboard, touch, screen reader, reduced motion, narrow/mobile and representative 2D Player paths are tested for full story outcome equivalence. 31. Source-bound deterministic, browser and appropriate device tests pass the accepted Sounding Line and protected-main release decision. 32. The Product Owner approves a full creator-to-Player walkthrough showing a genuinely compelling puzzle experience. 33. All deviations, unsupported provider tiers, unratified advanced scripting and physical qualification remain explicitly recorded. 34. SC-04 approval does not implicitly approve its neighboring SC-03 branch-UX or SC-06 Story Adaptation future work.
 
 ## 20. Mandatory edge-case matrix
 
-| Scenario | Expected policy/result |
-|---|---|
-| One clue delivered twice | One canonical discovery; idempotent receipt |
-| Two Players solve simultaneously | Crew completion and reward occur once when shared |
-| One Player with two devices | Single Player identity and contribution, synchronized |
-| EACH_PLAYER and third member joins late | Explicit Creator-defined eligibility/late-join path; no silent lockout |
-| Player disconnects near timer expiry | Stable time policy and recovery; no fabricated intentional failure |
-| Camera denied or AR unavailable | Functional accessible 2D path, not false negative sensor result |
-| Inconsistent seeded clue/answer | Drydock rejects variation before publication |
+| Scenario                                                | Expected policy/result                                                                          |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| One clue delivered twice                                | One canonical discovery; idempotent receipt                                                     |
+| Two Players solve simultaneously                        | Crew completion and reward occur once when shared                                               |
+| One Player with two devices                             | Single Player identity and contribution, synchronized                                           |
+| EACH_PLAYER and third member joins late                 | Explicit Creator-defined eligibility/late-join path; no silent lockout                          |
+| Player disconnects near timer expiry                    | Stable time policy and recovery; no fabricated intentional failure                              |
+| Camera denied or AR unavailable                         | Functional accessible 2D path, not false negative sensor result                                 |
+| Inconsistent seeded clue/answer                         | Drydock rejects variation before publication                                                    |
 | Random combination count too large to exhaustively test | Bounded/unknown label, constrained generation or stronger proof; never invented exhaustive PASS |
-| Script loops/tries network/filesystem | Sandbox denies and isolates, future feature never assumed available |
-| Choice conditions overlap | Drydock detects ambiguity or explicit precedence and presents Creator correction |
-| Branch rejoin after partial prize | History/evidence and permitted award remain route-specific |
-| Private clue in shared crew | Private until authorized share or published visibility rule |
-| Captain manual override | Credited as assisted/admin, audited, no ordinary solved count |
-| Puzzle reused after Community update | Instance pins version; upgrades deliberate, no retroactive mutation |
-| Free-text input wrong-answer count | Not enumerable unless bounded input/defined categories |
-| 100 runs from one testing fixture | Not counted as 100 real Player observations |
-| 2D and AR show different answer state | Canonical puzzle semantics require parity; reject inconsistent renderers |
-| Old saved Chronicle reopens | Historical edition and replay still use old version |
-| Creator changes puzzle while another edits story | Stale source guards, explicit conflict and preservation |
-| User lacks permission to view an asset | No unauthorized preview, sensible unavailable alternative |
-| Technical error mid-puzzle | Error/fallback/retry state, not Player intelligence score |
-| Required reward depends on unowned Artifact | Authoring/validation error; no phantom prize |
-| Reusable puzzle installed without parameter mapping | Explicit missing-input prompts; reject incomplete install |
-| Physical-world puzzle estimates travel | Legitimate worldspace/route assumptions disclosed; no bogus GPS proof |
+| Script loops/tries network/filesystem                   | Sandbox denies and isolates, future feature never assumed available                             |
+| Choice conditions overlap                               | Drydock detects ambiguity or explicit precedence and presents Creator correction                |
+| Branch rejoin after partial prize                       | History/evidence and permitted award remain route-specific                                      |
+| Private clue in shared crew                             | Private until authorized share or published visibility rule                                     |
+| Captain manual override                                 | Credited as assisted/admin, audited, no ordinary solved count                                   |
+| Puzzle reused after Community update                    | Instance pins version; upgrades deliberate, no retroactive mutation                             |
+| Free-text input wrong-answer count                      | Not enumerable unless bounded input/defined categories                                          |
+| 100 runs from one testing fixture                       | Not counted as 100 real Player observations                                                     |
+| 2D and AR show different answer state                   | Canonical puzzle semantics require parity; reject inconsistent renderers                        |
+| Old saved Chronicle reopens                             | Historical edition and replay still use old version                                             |
+| Creator changes puzzle while another edits story        | Stale source guards, explicit conflict and preservation                                         |
+| User lacks permission to view an asset                  | No unauthorized preview, sensible unavailable alternative                                       |
+| Technical error mid-puzzle                              | Error/fallback/retry state, not Player intelligence score                                       |
+| Required reward depends on unowned Artifact             | Authoring/validation error; no phantom prize                                                    |
+| Reusable puzzle installed without parameter mapping     | Explicit missing-input prompts; reject incomplete install                                       |
+| Physical-world puzzle estimates travel                  | Legitimate worldspace/route assumptions disclosed; no bogus GPS proof                           |
 
 ## 21. Design decisions deliberately still open for later implementation review
 
@@ -613,6 +605,6 @@ Unresolved design details do not weaken the already explicit owner intent. Equal
 - [Spatial Experience master architecture](../../Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md).
 - [Parallax current domain identity](../../Projects/Project_Parallax/README.md).
 
-**Design provenance:** October 24–25, 2026 owner conversation discussing complete puzzle composition, flexible solutions, tiered hints, cross-chapter references, 2D mechanism baseline, Engineering-only advanced authoring, stable variants/adjacent alternative blocks, Captain intervention, per-Player versus collective puzzle progress, empirical statistics and one universal Playtest Mode. These are owner-approved *design preferences*; ratification and implementation acceptance remain separate.
+**Design provenance:** October 24–25, 2026 owner conversation discussing complete puzzle composition, flexible solutions, tiered hints, cross-chapter references, 2D mechanism baseline, Engineering-only advanced authoring, stable variants/adjacent alternative blocks, Captain intervention, per-Player versus collective puzzle progress, empirical statistics and one universal Playtest Mode. These are owner-approved _design preferences_; ratification and implementation acceptance remain separate.
 
 **Final safeguard:** Puzzles should be magical for Players and joyful for Creators. Complexity belongs in the governed internals, not in arbitrary menus, raw database IDs or inaccessible hardware dependencies. This proposed constitution freezes the intended standard of experience while allowing exact implementation to be reconciled honestly with present-day Voyagewright.

@@ -14,6 +14,7 @@ source_basis: October 14-15 2026 original Creator/Parallax discussion and curren
 ---
 
 # Project Chronicle Architect
+
 ## The AI-assisted Chronicle creation experience
 
 > **Governing promise.** A Creator may describe an adventure in ordinary language; Chronicle Architect may understand, plan, propose, construct, revise, and validate it using **real Voyagewright authoring capabilities**. Every result remains part of one canonical, owned, editable Chronicle. The AI is a design and authoring collaborator, never an independent Chronicle engine, unrestricted administrator, invisible publisher, or autonomous author of live Player history.
@@ -49,18 +50,18 @@ Architect checks the Creator's current owned resources and actually available fe
 
 **Experience owner:** Chronicle Creator in Project Shipwright/Creator Studio. **Program identity:** SC-05. **Runtime and published progression owner:** One Voyage. **Spatial editor and scene owner:** Parallax. **Existing spatial AI operation owner:** Parallax A1, retained as domain capability beneath the single Chronicle Architect interface. **Validation owner:** Drydock. **Model configuration/AI quotas owner:** Admiralty or its accepted canonical policy. **Software acceptance owner:** Sounding Line. **Protection:** Sealed Hold and the existing user/account/role/privacy systems. **Publication/distribution:** canonical Chronicle publishing and Harborlight where appropriate.
 
-Architect owns *intent interpretation, planning, tool orchestration, explanation, approval collection, mutation receipts, provenance and workflow continuity*. It does NOT own the underlying business entities, redefine ownership of other projects, operate live Voyages, or create new unversioned “AI Chronicle” data outside the normal Creator system.
+Architect owns _intent interpretation, planning, tool orchestration, explanation, approval collection, mutation receipts, provenance and workflow continuity_. It does NOT own the underlying business entities, redefine ownership of other projects, operate live Voyages, or create new unversioned “AI Chronicle” data outside the normal Creator system.
 
 ### 2.1 One Architect user experience versus preserved Parallax-domain operations
 
-| Single Creator-facing Chronicle Architect | Retained Parallax A1 domain operation layer (not another chat persona) |
-|---|---|
-| Whole Chronicle narrative and authoring coordinator | Specialized spatial scene and environment-specific authoring capability |
+| Single Creator-facing Chronicle Architect                                            | Retained Parallax A1 domain operation layer (not another chat persona)                |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Whole Chronicle narrative and authoring coordinator                                  | Specialized spatial scene and environment-specific authoring capability               |
 | Understands chapters, story flow, puzzles, audience, endings, asset/scene references | Understands surfaces, scene entities, lights, placements, animation/effect properties |
-| Selects which project operations are relevant | Provides governed Parallax-domain authoring operations |
-| Can request or reuse a particular spatial scene | Must not decide Chronicle completion or publish an entire story |
-| Verifies with Drydock and Creator approval | Produces only domain-scoped draft changes/evidence |
-| Never gives itself Parallax permissions it lacks | Never inherits broad Chronicle permissions just because an AI requested work |
+| Selects which project operations are relevant                                        | Provides governed Parallax-domain authoring operations                                |
+| Can request or reuse a particular spatial scene                                      | Must not decide Chronicle completion or publish an entire story                       |
+| Verifies with Drydock and Creator approval                                           | Produces only domain-scoped draft changes/evidence                                    |
+| Never gives itself Parallax permissions it lacks                                     | Never inherits broad Chronicle permissions just because an AI requested work          |
 
 A handoff from Architect to Parallax must be a **typed request to an owned domain operation**, with source, parameters, expected output and receipt, not an invisible second conversation/personality or a vague “other assistant, please finish this scene.” Only Architect remains the Creator-facing assistant. No new AI feature can weaken existing Parallax A1 provider/accounting/privacy controls.
 
@@ -88,7 +89,7 @@ An existing Chronicle must have contextual **Ask Architect** entry, for example 
 ### 3.1 Guided conversational flow
 
 1. **Intent intake:** ask what kind of experience, audience, duration, tone, context, intended world/device posture, key beats, mandatory ending and resources are desired. A freeform prompt is always allowed.
-2. **Essential questions only:** inquire about missing facts that materially change the plan. Prefer inferring *soft* creative defaults and clearly labelling them, not interrogating a user through 30 fields. Ask before assumptions about private participants, location permissions, publication rights or mandatory hardware.
+2. **Essential questions only:** inquire about missing facts that materially change the plan. Prefer inferring _soft_ creative defaults and clearly labelling them, not interrogating a user through 30 fields. Ask before assumptions about private participants, location permissions, publication rights or mandatory hardware.
 3. **Resource discovery:** list compatible owned scenes, environments, templates, maps, characters, media, historical Chronicle fragments, and permitted Community items subject to exact authorization and spoiler filtering.
 4. **Plan preview:** produce a coherent outline with chapters, estimated pacing, objective/puzzle patterns, scenes, devices, fallback, optional branches, validation/asset gaps, costs, assumptions and unresolved choices.
 5. **Creator decision:** approve, edit, reject or ask for alternatives. Plan approval does not itself publish anything.
@@ -99,7 +100,7 @@ An existing Chronicle must have contextual **Ask Architect** entry, for example 
 
 ### 3.2 Example human conversation contract
 
-The original October design used a bedroom/ghost/Sea of Thieves/romantic ending request. The assistant asks only whether a bedroom environment already exists, where the adventure travels, and its duration. After the Creator confirms the saved bedroom and ~45 minutes, Architect proposes five chapters, four bedroom scenes, a virtual transition, six clues and a finale. The numbers are *illustrative creative output*, not hard-coded or guaranteed.
+The original October design used a bedroom/ghost/Sea of Thieves/romantic ending request. The assistant asks only whether a bedroom environment already exists, where the adventure travels, and its duration. After the Creator confirms the saved bedroom and ~45 minutes, Architect proposes five chapters, four bedroom scenes, a virtual transition, six clues and a finale. The numbers are _illustrative creative output_, not hard-coded or guaranteed.
 
 The plan may reuse one environment with multiple separate scenes: Ordinary Evening, Haunting Begins, Hidden Letter and Revelation. That reuse must not duplicate the room mesh on every scene or quietly change one scene when another is edited. The Chronicle binds to specific Scene revisions and context.
 
@@ -111,7 +112,7 @@ The assistant should respond with a scoped proposal and **changed-object preview
 
 ## 4. Architectural layers
 
-~~~text
+```text
 Creator Studio: one owned Chronicle draft
             |
   Conversational Architect UI
@@ -135,7 +136,7 @@ Creator Studio: one owned Chronicle draft
      Creator review / handback
             |
  Canonical explicit publication gate
-~~~
+```
 
 ### 4.1 Trusted authority boundary
 
@@ -174,7 +175,7 @@ The minimum conceptual records are:
 - **Provenance:** AI-authored or revised elements, references, human edits, rights/asset lineage and meaningful intent-to-object relationships.
 - **UsageReceipt:** provider/model alias and measured/estimated token/credit cost within allowed privacy bounds, tied to Admiralty accounting as applicable.
 
-These are *logical contracts*, not obligatory one-model-per-row schema instructions. Prefer existing project identity, authoring history, outbox, evidence and AI accounting facilities when safe. Do not store user private prompts in general logs solely to reconstruct state later.
+These are _logical contracts_, not obligatory one-model-per-row schema instructions. Prefer existing project identity, authoring history, outbox, evidence and AI accounting facilities when safe. Do not store user private prompts in general logs solely to reconstruct state later.
 
 ## 5. Intent understanding and planning
 
@@ -224,7 +225,7 @@ Architect must not ingest the entire repo, every governing PDF, or every private
 
 The model must discover a **versioned, queryable, trusted capability registry** maintained through authoritative subsystem adapters rather than a giant manually copied capabilities prompt. A conceptual entry includes:
 
-~~~text
+```text
 capabilityId
 ownerSubsystem
 operationId and semantic version
@@ -239,7 +240,7 @@ cost class and maximum resource budget
 validation and simulator owner
 fallback or restriction policy
 documentation and source identity
-~~~
+```
 
 Use current actual contracts, not illustrative entries, to implement. Registry reads and snapshots must be reproducible. A registry that says “AVAILABLE” when the backing operation 404s or requires a missing provider must fail closed, be visible to operators and produce a safe Creator explanation.
 
@@ -279,7 +280,7 @@ A missing tool is not a hidden free-text escape hatch. Every call returns a serv
 
 Conceptual (adapt to existing implementation):
 
-~~~text
+```text
 ToolRequest:
   actorAccountId
   authenticatedCreatorSessionRef
@@ -302,20 +303,20 @@ ToolResult:
   sourceBoundReceipt
   warnings / diagnostics
   reversibleActionRef if supported
-~~~
+```
 
 The orchestrator may invoke tools in dependency order, parallelizing only genuinely independent operations with no unsafe shared mutation. An AI-generated “success” JSON object cannot substitute for an owning tool receipt. The browser must not hold provider API keys.
 
 ### 7.3 Mutation approval classes
 
-| Class | Representative actions | Expected approval behavior |
-|---|---|---|
-| READ_ONLY | metadata lookup, capability/readiness and safe draft summary | allowed within existing authorization; no hidden account-wide browsing |
-| PROPOSE | blueprint, diff, estimated spend, dry-run schema | no persistent Chronicle write |
-| DRAFT_SAFE | add/change scoped draft blocks or scene references | explicit approved plan or context-scoped user edit; optimistic concurrency |
-| DESTRUCTIVE | remove/replace owned content, overwrite manually authored passages | explicit impact preview and fresh confirmation for exact affected scope |
-| EXTERNAL_COST | provider generation, third-party assets, paid compute | budget reservation and spend confirmation/policy |
-| DISTRIBUTION | publish, make public, install/share/invite/start Voyage | **not an Architect autonomous tool**; independent canonical Creator-controlled workflow |
+| Class         | Representative actions                                             | Expected approval behavior                                                              |
+| ------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| READ_ONLY     | metadata lookup, capability/readiness and safe draft summary       | allowed within existing authorization; no hidden account-wide browsing                  |
+| PROPOSE       | blueprint, diff, estimated spend, dry-run schema                   | no persistent Chronicle write                                                           |
+| DRAFT_SAFE    | add/change scoped draft blocks or scene references                 | explicit approved plan or context-scoped user edit; optimistic concurrency              |
+| DESTRUCTIVE   | remove/replace owned content, overwrite manually authored passages | explicit impact preview and fresh confirmation for exact affected scope                 |
+| EXTERNAL_COST | provider generation, third-party assets, paid compute              | budget reservation and spend confirmation/policy                                        |
+| DISTRIBUTION  | publish, make public, install/share/invite/start Voyage            | **not an Architect autonomous tool**; independent canonical Creator-controlled workflow |
 
 These classes are product safety requirements; align naming with existing policy rather than creating competing approval machinery.
 
@@ -436,24 +437,24 @@ Large Chronicles may need incremental work. Each chunk uses durable progress sta
 
 ## 13. Reliability and recovery contracts
 
-| Failure | Required behavior |
-|---|---|
-| Model unavailable before plan | Explain unavailability; preserve manual editor and original input without leaking it |
-| AI returns malformed proposal | Validate/refuse; retry only under budget; never apply garbage |
-| Unauthorized resource suggestion | Drop candidate; show allowed alternatives and owner permission boundary |
-| Provider supports less than requested | Honest availability/fallback and revised plan |
-| Approver edits plan during apply | Detect plan/draft revision drift; stop affected operation and revalidate |
-| Browser refresh/reconnect | Resume durable session and exact receipts; no duplicate writes |
-| Timeout after a mutation | Query authoritative operation receipt and reconcile before retry |
-| Mid-workflow interruption | Show applied vs pending objects; offer safe resume/compensation, not blind reset |
-| Concurrent manual edits | Protect them; surface precise conflict resolution |
-| Context/input injection | Treat as data; reject instruction privilege and log only sanitized incident facts |
-| Quota exhausted | Stop paid operations; preserve current draft and unpaid manual options |
-| Drydock fails | Remain draft; link issues and proposed fixes; no fake green |
-| Spatial tool fails | Preserve storyline; offer nonspatial or later retry without corrupting object refs |
-| Publish accidentally requested via dialogue | Route to normal explicit Creator workflow; model cannot publish |
-| User cancels/denies consent | End relevant operations, preserve allowed data, respect retention/deletion |
-| Creator opens old published edition | Preserve immutable historical version, never “repair” it by changing old bytes |
+| Failure                                     | Required behavior                                                                    |
+| ------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Model unavailable before plan               | Explain unavailability; preserve manual editor and original input without leaking it |
+| AI returns malformed proposal               | Validate/refuse; retry only under budget; never apply garbage                        |
+| Unauthorized resource suggestion            | Drop candidate; show allowed alternatives and owner permission boundary              |
+| Provider supports less than requested       | Honest availability/fallback and revised plan                                        |
+| Approver edits plan during apply            | Detect plan/draft revision drift; stop affected operation and revalidate             |
+| Browser refresh/reconnect                   | Resume durable session and exact receipts; no duplicate writes                       |
+| Timeout after a mutation                    | Query authoritative operation receipt and reconcile before retry                     |
+| Mid-workflow interruption                   | Show applied vs pending objects; offer safe resume/compensation, not blind reset     |
+| Concurrent manual edits                     | Protect them; surface precise conflict resolution                                    |
+| Context/input injection                     | Treat as data; reject instruction privilege and log only sanitized incident facts    |
+| Quota exhausted                             | Stop paid operations; preserve current draft and unpaid manual options               |
+| Drydock fails                               | Remain draft; link issues and proposed fixes; no fake green                          |
+| Spatial tool fails                          | Preserve storyline; offer nonspatial or later retry without corrupting object refs   |
+| Publish accidentally requested via dialogue | Route to normal explicit Creator workflow; model cannot publish                      |
+| User cancels/denies consent                 | End relevant operations, preserve allowed data, respect retention/deletion           |
+| Creator opens old published edition         | Preserve immutable historical version, never “repair” it by changing old bytes       |
 
 Special case: an apparently completed generator response with no persisted owning-tool receipt is **not complete**. The UI should say so clearly rather than thanking the Creator for content that does not exist.
 
@@ -589,7 +590,7 @@ Answers to these questions are amendments/implementation decisions within the ow
 
 ### Original design evidence
 
-The October 14–15, 2026 conversation preserved in the ChatGPT project upload *Spatial Studio Improvements.txt* is the principal source for:
+The October 14–15, 2026 conversation preserved in the ChatGPT project upload _Spatial Studio Improvements.txt_ is the principal source for:
 
 - Environment versus Scene conceptual distinction and multiple-scenes-per-environment reuse.
 - Chronicle-level Puzzle Engine rather than independent Parallax puzzle progression.
@@ -620,10 +621,10 @@ The October 14–15, 2026 conversation preserved in the ChatGPT project upload *
 
 This proposed constitution is intentionally ambitious. It freezes **what success must eventually mean**, not a claim that current code already supplies it. Its adoption does not authorize SC-05 implementation, SC-04 implementation or ratification, speculative SC-06 detailed design, protected-main merge of product branches, real-money provider use, or changing the user's private source material. Those require their own explicit owner and current repo processes.
 
-
 ---
 
 # PART II: SC-05 INTEGRATED PRODUCT, COLLABORATION, VISUAL AND COMMERCIAL CONSTITUTION
+
 ## Owner design decisions of October 24–25, 2026
 
 > **Defining standard: Not an AI vending machine. A genuinely thoughtful collaborator.**
@@ -632,13 +633,13 @@ This proposed constitution is intentionally ambitious. It freezes **what success
 
 ### II.0 Purpose, precedence and explicit additions
 
-Part II **adds detail to and clarifies Part I**. It records design choices made after the initial SC-05 draft: the two-form full-screen/docked Architect, omnipresent presence in every tool, direct replacement of the current Parallax conversational AI interface, precise user-supplied image backgrounds, Apple Liquid Glass-inspired optical styling, Cinematic/Story Bible collaboration, creative personality and focus, insights, intelligent scoped editing, memory isolation, a tiered Free/Paid/Pro product, and comprehensive AI workload benchmarking/accounting. All Part I requirements for canonical authoring, authenticated tools, source-bound Drydock, private content, approval, no autonomous publishing, and cost limits remain binding.
+Part II **adds detail to and clarifies Part I**. The later single-partner, full/docked/ambient presentation and scoped-permission decisions govern their corresponding earlier conceptual descriptions; all underlying domain boundaries and safety requirements remain binding. It records design choices made after the initial SC-05 draft: the two-form full-screen/docked Architect, omnipresent presence in every tool, direct replacement of the current Parallax conversational AI interface, precise user-supplied image backgrounds, Apple Liquid Glass-inspired optical styling, Cinematic/Story Bible collaboration, creative personality and focus, insights, intelligent scoped editing, memory isolation, a tiered Free/Paid/Pro product, and comprehensive AI workload benchmarking/accounting. All Part I requirements for canonical authoring, authenticated tools, source-bound Drydock, private content, approval, no autonomous publishing, and cost limits remain binding.
 
 SC-04 Puzzle Workshop now has a proposed detailed governing document; SC-06 Story Adaptation **still awaits separate owner discussion and specification**. The broad SC-05 architecture must be able to orchestrate those tools once implemented, but must not pretend they already exist because a design document describes them.
 
 **Document status is PROPOSED / UNDER REVIEW.** Neither the images nor these requirements prove shipped behavior or authorize automatic implementation, model spend, pricing changes, user-data collection or release. The active SC documentation PR remains draft; no merge to main is authorized while independent PR #776 is under development.
 
-The exact ten image identities, dimensions, original-byte SHA-256 hashes and their currently outstanding GitHub binary custody are governed by [SC05 Architect Exact Visual Reference Asset Manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md). The user supplied original PNGs are contained in a separate exact-byte downloadable evidence package. **Original required home and sidebar images are real image assets, NOT text prompts for AI generation.**
+The exact ten image identities, dimensions, original-byte SHA-256 hashes and verified documentation custody are governed by [SC05 Architect Exact Visual Reference Asset Manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md). All ten original PNGs are checked into this draft branch and individually previewed in the [original visual reference gallery](./visual_references/README.md). Production use and visual/functional acceptance remain future gates. **Original required home and sidebar images are real image assets, NOT text prompts for AI generation.**
 
 ## II.1 One creative partner across all Voyagewright
 
@@ -694,6 +695,7 @@ The exact **Architect Chronicle Overview(1)**, **Architect Storyboard(1)** and *
 ### II.2.3 Work Alongside Me: docked Architect in actual tools
 
 The Creator may transition to a real authoring tool while the same Architect session stays visible in a **right-side docked glass conversation panel**, matching the supplied **Editor - Expanded Architect(1)** and **Spatial Studio - Expanded Architect(1)** concepts. It MUST:
+
 - preserve the underlying current tool's real canvas, inspectable content, controls, autosave/history, scene toolbar and Draft identity;
 - keep the current conversation/history, creative mode, selected content, task status and user preferences;
 - show a clear selected-object/focus scope, e.g., "Chapter III → Puzzle: Clockmaker's Secret" or "Spatial Studio → Bedroom → Lamp";
@@ -709,6 +711,7 @@ In Spatial Studio this docked pane replaces, not duplicates, the legacy Parallax
 When a Creator is deeply focused, Architect can collapse into a **small, elegant rounded glass capsule** at the lower corner or within the Creator toolbar, inspired by **Editor - Minimized Architect(1)** and **Spatial Studio - Minimized Architect(1)**. This is an allowed **secondary minimized state**, not the default permanent obtrusive chat box.
 
 The ambient capsule:
+
 - has unmistakable identity and current status but does not cover the viewport, timeline, Save, Publish, inspectors or keyboard focus;
 - signals important current work or a critical issue without constant moving ornaments;
 - reveals small contextual actions on focus/hover/press, and expands directly to the docked/full conversation without losing state;
@@ -720,29 +723,30 @@ Architect is present when useful and quiet when not. "Omnipresent" means **disco
 
 ### II.2.5 Screen-state matrix
 
-| Situation | Preferred form | Required continuity |
-|---|---|---|
-| Create with AI, before first message | Full welcome with centered prompt | New or resumed Architect session; right rail initially quiet |
-| Following first message | Full visualizer left/center + right conversation | Same message input transferred, same session/context |
-| Reviewing large blueprint or storyboard | Full visualizer | Graph/object IDs and creative references visible; no fake persisted data |
-| Editing a real Story Block | Docked Architect beside canonical editor | Same Chronicle, selected passage and saved revision |
-| Manipulating spatial objects | Docked or ambient Architect beside Parallax | Preserve viewport/inspector and owning-tool writes |
-| Precision-focused editing | Ambient small capsule or hidden quiet state | No chat interruption; Insights accumulate only at allowed checkpoints |
-| Changing tools | Shared-element transition, context-aware dock/full | No new assistant/chat identity, no lost draft changes |
-| Narrow/mobile viewport | Responsive focused tool with accessible chat toggle | Functional conversation, focus and return, not an unreadable quarter-width rail |
-| Model/allowance unavailable | Same UI with truthful disabled actions | Ordinary manual editing, current Story Bible and history stay accessible |
+| Situation                               | Preferred form                                      | Required continuity                                                             |
+| --------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Create with AI, before first message    | Full welcome with centered prompt                   | New or resumed Architect session; right rail initially quiet                    |
+| Following first message                 | Full visualizer left/center + right conversation    | Same message input transferred, same session/context                            |
+| Reviewing large blueprint or storyboard | Full visualizer                                     | Graph/object IDs and creative references visible; no fake persisted data        |
+| Editing a real Story Block              | Docked Architect beside canonical editor            | Same Chronicle, selected passage and saved revision                             |
+| Manipulating spatial objects            | Docked or ambient Architect beside Parallax         | Preserve viewport/inspector and owning-tool writes                              |
+| Precision-focused editing               | Ambient small capsule or hidden quiet state         | No chat interruption; Insights accumulate only at allowed checkpoints           |
+| Changing tools                          | Shared-element transition, context-aware dock/full  | No new assistant/chat identity, no lost draft changes                           |
+| Narrow/mobile viewport                  | Responsive focused tool with accessible chat toggle | Functional conversation, focus and return, not an unreadable quarter-width rail |
+| Model/allowance unavailable             | Same UI with truthful disabled actions              | Ordinary manual editing, current Story Bible and history stay accessible        |
 
 ## II.3 Exact visual identity, supplied images and Liquid Glass quality
 
 ### II.3.1 Image sources are mandatory real assets
 
-**Do not replace either supplied background with an AI-generated image.** The original **Architect Background** PNG is the actual home scene behind the initial Architect composition. The original **Architect Sidebar Background** PNG is the actual scenic layer behind the conversation rail when expanded/docked. They are separate images with different aspect ratios and placement. The source identity is fixed by original SHA-256 in the visual manifest, and image preservation must be tested after eventual binary import. Do not pretend a static screenshot of the whole interface is an operable editor.
+**Do not replace either supplied background with an AI-generated image.** The original **Architect Background** PNG is the actual home scene behind the initial Architect composition. The original **Architect Sidebar Background** PNG is the actual scenic layer behind the conversation rail when expanded/docked. They are separate images with different aspect ratios and placement. The source identity is fixed by original SHA-256 in the visual manifest, and documentation import hashes have been verified, and image preservation must be tested again through any later production asset pipeline. Do not pretend a static screenshot of the whole interface is an operable editor.
 
 Every other user-uploaded concept screenshot is a **specific layout and product-experience reference**. Use it to derive shared motion vocabulary, composition, layouts, panel hierarchy, contrast, icon rhythm and positive/negative space. Do not copy its sample account name, fabricated chapter/puzzle data, timings, unsupported features or mock statuses into real product state. Reference images are evidence of design intent, not executed feature evidence.
 
 ### II.3.2 Apple Liquid Glass-inspired design system
 
 The Creator explicitly wants the modern polished feeling of Apple Liquid Glass: **exceptionally rounded, volumetric, semiopaque yet translucent, glass-bubble surfaces**. Apply a restrained, coherent Voyagewright adaptation; do not claim Apple affiliation. Principles:
+
 - independently rendered real scenic background layers beneath UI, with adaptive contrast treatment;
 - strongly rounded pills, cards, dock and composer geometry, consistent corner radii and edge treatments;
 - convincing translucent glass with visual depth, luminous edge reflections and local highlights, not a flattened milky opaque rectangle;
@@ -759,6 +763,7 @@ Do not overuse nested glass. The content itself may use stable opaque/readable p
 ### II.3.3 Coherent visualizer/editor transitions
 
 Moving from Concept → Preview → Actual Authored Object → Domain Editor should feel like **one continuous shared creative workspace**:
+
 1. select a concept card in Architect visualizer, preserve its visual geometry and focus identity;
 2. show a legitimate approved scope and cost/action decision;
 3. the canonical owner service persists actual object and returns exact object ID/revision;
@@ -781,6 +786,7 @@ Review each of the ten supplied images with the product owner at real viewport s
 ### II.4.1 Five collaboration work styles
 
 The composer provides an obvious compact selector with the following **requested work styles**:
+
 - **Build With Me:** collaborative exploration, deliberate step-by-step co-authorship; questions at meaningful forks, not a long form.
 - **Prepare a Complete Draft:** extensive plan and review, then approved staged canonical construction with receipts and resource caps.
 - **Improve This:** focus current selected object, branch, Scene, puzzle, passage or agreed larger scope; preserve everything else.
@@ -798,6 +804,7 @@ The Creator has a personalization control for **warm/encouraging, playful/witty,
 ### II.4.3 Initiative and Creative Focus
 
 Separate **initiative** from **personality**:
+
 - **Quiet Companion:** generally waits; surfaces critical factual blockers while keeping artistic suggestions quiet.
 - **Creative Partner (default recommended):** contributes context-sensitive ideas, thoughtful critique and timely alternatives without constant interruption.
 - **Active Creative Director:** more frequently challenges structure and proactively presents creative opportunities, but never bypasses work authority or paid caps.
@@ -821,8 +828,9 @@ Insights are typed, version/scoped, deduplicated and visible in the full workspa
 ### II.4.5 Good conversational behavior
 
 Architect should:
+
 - genuinely listen to the Creator's emotional and artistic purpose, including why a final scene matters;
-- articulate when it is *interpreting* the brief versus *knowing* a fact from canonical Chronicle state;
+- articulate when it is _interpreting_ the brief versus _knowing_ a fact from canonical Chronicle state;
 - ask a focused question only when an essential decision significantly changes the plan;
 - respond directly to precise requests instead of inventing a multi-hour brainstorming process;
 - suggest competing ideas where there is a substantive creative tradeoff, with reasons and relevant source context;
@@ -838,7 +846,7 @@ Architect should:
 
 A Creator says: "Chapter III feels boring; I wanted it mysterious but it feels like a bunch of puzzles. What do you think?"
 
-The expected response is **not** generic "make suspenseful" advice or an instant total rewrite. Architect reads current canonical Chapter III, adjacent chapters, story arcs, actual Puzzle Instances, named branch choices and relevant Drydock timing. It may respond that three consecutive tasks provide activity but no revelation. It proposes **A: Slow Revelation** (preserve puzzles, add subtle mystery beat) versus **B: Unexpected Encounter** (replace middle puzzle with a character beat). It explains why it prefers A based on existing source, shows both in the visualizer and labels them **ideas**. When Creator says "A, but more subtle, don't reveal Captain's involvement yet," Architect updates the **approved creative intent**, potentially proposes a Creative Commitment, previews changes to *only* authorized Chapter III scope, applies canonically after approval/impact analysis, checks the result, and offers Playtest. It does not secretly rewrite the protected finale.
+The expected response is **not** generic "make suspenseful" advice or an instant total rewrite. Architect reads current canonical Chapter III, adjacent chapters, story arcs, actual Puzzle Instances, named branch choices and relevant Drydock timing. It may respond that three consecutive tasks provide activity but no revelation. It proposes **A: Slow Revelation** (preserve puzzles, add subtle mystery beat) versus **B: Unexpected Encounter** (replace middle puzzle with a character beat). It explains why it prefers A based on existing source, shows both in the visualizer and labels them **ideas**. When Creator says "A, but more subtle, don't reveal Captain's involvement yet," Architect updates the **approved creative intent**, potentially proposes a Creative Commitment, previews changes to _only_ authorized Chapter III scope, applies canonically after approval/impact analysis, checks the result, and offers Playtest. It does not secretly rewrite the protected finale.
 
 **This example is a required behavioral acceptance journey for SC-05.** If the system cannot do this competently, it is not yet the promised creative partner even if its provider calls return valid JSON.
 
@@ -855,6 +863,7 @@ This is separate from **Build With Me / Complete Draft / Improve This / Critique
 ### II.5.2 Intelligent Change Impact Assessment
 
 Before any consequential operation, analyze:
+
 - exact intended object and current revision, selected Chronicle and account;
 - declared hard/soft Creative Commitments and approved change scope;
 - transitive impact on story blocks, named branches, clue/answer consistency, puzzle outcomes, Artifact grants, scene bindings, device fallback and published version dependencies;
@@ -875,9 +884,10 @@ Changes must be undoable through accepted domain policy when possible. A rollbac
 ### II.5.4 Creative Commitments
 
 Creator may pin creative properties at three levels:
+
 - **PRESERVE EXACTLY:** literal dialogue, letters, ending prose, authored assets or specific identities do not change under ordinary AI operations.
 - **PROTECT THE INTENT:** facts or experience goals like "the Captain's identity remains secret until finale" survive stylistic refinements; any violation requires explicit disclosure/approval.
-- **OPEN TO EXPLORATION:** components may be freely proposed and changed *within authorized scope*.
+- **OPEN TO EXPLORATION:** components may be freely proposed and changed _within authorized scope_.
 
 A repeated emphasis may prompt "Would you like to protect that intention?" but speculative comments never become hard locks automatically. Commitments carry account/Chronicle, source statement, scope, provenance, effective revision, confirmation and supersession rules. Deleting or changing a commitment is a Creator action; an unsupported technical assertion does not override accepted schema.
 
@@ -898,12 +908,13 @@ A repeated emphasis may prompt "Would you like to protect that intention?" but s
 For an account with ten Chronicles, Architect may learn **account-wide creative preferences**, but a session editing Chronicle #8 retrieves only Chronicle #8's facts, commitments, journal and current working source unless the Creator explicitly requests cross-Chronicle reuse/import and current authorization grants access. Character identities, private endings, clues, locations, source text and media do not bleed between projects automatically.
 
 Knowledge stores/frames:
+
 1. **Creator Creative Profile:** adjustable tone, genre, collaboration preferences, response detail, favored artistic styles and consented reusable preferences. Scoped to account, not a secret global training corpus.
 2. **Chronicle Story Bible:** specific characters, roles, chronology, setting, world rules, relationships, mysteries, secret knowledge by narrative/Player branch, foreshadowing, emotional arcs, important Objects, outcomes and contradictions.
 3. **Chronicle Creative Journal:** decisions, rejected alternatives, reasons for creative choices, outstanding tasks/questions, source revisions and change history. This is not a public Voyage Journal.
 4. **Creative Commitments:** Creator-approved protected text/intent with clear scope and importance.
 5. **Current Canonical Working State:** true persisted Story Blocks, graph, Scenes, Artifacts, puzzles, Worldspaces and published edition references. This always wins for current implementation facts.
-6. **Optional Living Storybook:** a rich readable synopsis/treatment or more extensive literary narrative produced *from* current authored facts and clearly marked proposals, not an alternate engine with invented canon.
+6. **Optional Living Storybook:** a rich readable synopsis/treatment or more extensive literary narrative produced _from_ current authored facts and clearly marked proposals, not an alternate engine with invented canon.
 
 ### II.6.2 Living Storybook and deeper narrative intelligence
 
@@ -916,6 +927,7 @@ Different branches may reveal different knowledge. A Player who discovered a tru
 ### II.6.3 Memory significance engine
 
 Not every sentence belongs in durable memory. Classify:
+
 - CONFIRMED CANON: source-backed actual authored fact, tracked by version/digest;
 - APPROVED DECISION: explicit Creator endorsement with project/scope;
 - HARD COMMITMENT: explicit Creator protection;
@@ -929,6 +941,7 @@ Use event-driven incremental updates, not a full model retelling after each drag
 ### II.6.4 Retrieval, context and token economy
 
 Build every inference context from an inspectable **Current Context Package**:
+
 - authenticated Creator and exact active Chronicle;
 - tool/selection/current Draft revision with digest, unsaved-save state and scoped permissions;
 - high-priority commitments and Creator-required constraints;
@@ -945,6 +958,7 @@ Every memory mutation and sharing of private creative source has permission, ret
 ### II.6.5 Refresh before every new message or material operation
 
 Architect must not answer a subsequent message based on **its last applied edit** when the Creator changed the Chronicle manually afterward. Enforce:
+
 1. Identify current active account, Chronicle, tool, object and authorization.
 2. Reconcile pending autosave/working editor generation safely; either flush or show a protected unsaved-state decision, never read stale server data while silently ignoring unsaved local edits.
 3. Read current canonical draft revision/digest and relevant entity changes; compare to prior last-known revision.
@@ -968,6 +982,7 @@ For an outdoor town-wide Chronicle, it must take realistic location availability
 ## II.8 Cinematic Creative Director and narrative quality
 
 Architect should contribute at professional creative-director depth, not just generate pretty adjectives. It must understand:
+
 - setup/payoff, pacing, dramatic escalation, revelation timing, quiet moments, emotional stakes, motifs and thematic coherence;
 - characters, motivations, relationships and the distinction between what Creator knows and what Player has discovered;
 - branch-specific knowledge, rewarding alternative endings and fairness across playthroughs;
@@ -990,6 +1005,7 @@ AI "hypothetical Player profiles" like cautious explorer or puzzle enthusiast ar
 ## II.9 Creator AI Settings and inline quick controls
 
 Creator receives a dedicated **AI Settings** surface scoped to their account, plus contextual current-Chronicle overrides:
+
 - **Personality & Collaboration:** communication tone, wit, warmth, directness, initiative, detail, preferred critique behavior;
 - **Creative Preferences:** saved artistic styles/genres, reference ideals, recurring workflows and explicit Creator creative direction;
 - **Memory & Story Bible:** stored Creator-profile facts, Chronicle-specific sources, confirmed vs speculative, commitments, corrections, retention and cross-Chronicle restrictions;
@@ -1005,7 +1021,7 @@ The most frequently adjusted controls must be **available inline beside the mess
 
 SC-05 operates within **Free, Paid, and Pro** resource plans. **NONE are unlimited.** Every plan is subject to rate limits, metered compute/credit budgets, model allowlists, maximum cost per request/job, context ceilings, request burst/concurrency and global platform/provider ceilings. The Creator must not pay out-of-pocket without matching product funding. "Unlimited" claims require actual uncapped funding, which is not assumed.
 
-**Free remains an actual capable creative partner**, with truthful critique, normal creative dialogue, Creator personalization, a reliable *compact* Chronicle Story Bible, source-aware memory, selected scoped real tool editing, basic puzzle/branch planning, ordinary manual Creator Tools, and useful staged production within budget. It is **Luna-only by enforced model policy** with conservative request/rate caps. Exhaustion pauses chargeable AI work, not normal saved Chronicle editing or access to existing content. It must not deliberately forget vital facts or become a deliberately incompetent chat façade.
+**Free remains an actual capable creative partner**, with truthful critique, normal creative dialogue, Creator personalization, a reliable _compact_ Chronicle Story Bible, source-aware memory, selected scoped real tool editing, basic puzzle/branch planning, ordinary manual Creator Tools, and useful staged production within budget. It is **Luna-only by enforced model policy** with conservative request/rate caps. Exhaustion pauses chargeable AI work, not normal saved Chronicle editing or access to existing content. It must not deliberately forget vital facts or become a deliberately incompetent chat façade.
 
 **Paid** raises finite model-access eligibility, larger token/context budgets, more frequent/larger authoring jobs, longer/larger Story Bible and living Storybook generation, deeper creativity reviews, optional richer media budgets and priority throughput.
 
@@ -1024,6 +1040,7 @@ The price of an Architect subscription cannot be set by arbitrarily counting mes
 The repository currently has an Admiralty page named **AI Usage & Quotas** (at /admin/ai-usage) associated with Parallax A1. It tracks per-model pricing revision, input/cached/output/reasoning token accounting, financial reservations, settled/unknown exposure, global/user limits, model policy, daily summaries, user dossier, history and provider health. SC-05 MUST **extend this existing accounting authority into a Voyagewright-wide AI cost plane**, not duplicate it. Preserve existing durable atomic reservation/dispatch/settlement/idempotency controls and cross-server safety; current per-request context bounds were designed for the smaller Parallax Assistant and must be reviewed before high-context Chronicle jobs.
 
 Additional useful billable event dimensions:
+
 - product owner: ARCHITECT / PARALLAX_RECONSTRUCTION / SPATIAL_AUTHORING / FUTURE_PUZZLE_GENERATION / STORY_ADAPTATION / MEDIA_PROVIDER;
 - operation: dialogue, clarify, blueprint, plan comparison, actual draft apply, edit, critique, continuity scan, Story Bible extraction, Storybook generation, context retrieval, tool plan, retry/repair, media creation;
 - account/tier, pseudonymous Chronicle ID, source revision digest, conversation/work-session/task/job scope;
@@ -1062,6 +1079,7 @@ No automatic background experiments, uncontrolled provider calls, unattended mod
 ### II.11.1 Strong lifecycle properties
 
 Switching Architect full → docked → ambient → other tool MUST preserve:
+
 - authenticated Creator/Chronicle identity, source revision and selected object context;
 - conversation message order, unfinished request identity and generation state;
 - active collaboration style/personality/focus and scoped approvals;
@@ -1097,7 +1115,7 @@ Use the precise example in II.4.6. Show substantive creative critique and two vi
 
 ### Journey D: Shift from visual idea to Puzzle Workshop
 
-In full Architect visualizer, Creator sees *proposed* Lighthouse Lens Calibration with storyboard, a plausible 3D mechanism image and typed expected outcome. After approved canonical creation succeeds, its visual representation becomes a shared element that grows into real SC-04 Puzzle Workshop in Detailed mode while the Architect conversation contracts into the actual supplied-background rail. Puzzle Workshop shows original 2D mechanism, optional supported Parallax Scene references, actual clues/variants/outcomes, Drydock validation and safe Playtest. Modifications made manually then alter the canonical revision, and Architect's **next message begins by refreshing these edits**.
+In full Architect visualizer, Creator sees _proposed_ Lighthouse Lens Calibration with storyboard, a plausible 3D mechanism image and typed expected outcome. After approved canonical creation succeeds, its visual representation becomes a shared element that grows into real SC-04 Puzzle Workshop in Detailed mode while the Architect conversation contracts into the actual supplied-background rail. Puzzle Workshop shows original 2D mechanism, optional supported Parallax Scene references, actual clues/variants/outcomes, Drydock validation and safe Playtest. Modifications made manually then alter the canonical revision, and Architect's **next message begins by refreshing these edits**.
 
 ### Journey E: Parallax replacement
 
@@ -1117,53 +1135,53 @@ Creator selects Adapt a Story from the four-path New Chronicle entry; enters the
 
 ## II.13 Acceptance requirements and negative case matrix
 
-| ID | Required acceptance proof |
-|---|---|
-| ARX-001 | Exactly **one** Creator-facing chat assistant: Architect across all Tools; no parallel Parallax assistant session/identity after migration. |
-| ARX-002 | Existing Parallax A1 AI authoring tests, safety/CAS, quotas and source behaviors regress cleanly under Architect host; no lost spatial capability. |
-| ARX-003 | Two-photo reconstruction remains discoverable as its own owned tool with authorized acquisition and Admiralty AI accounting. |
-| ARX-004 | Full AI creation entry from four-choice New Chronicle flows to real full Architect workspace without forced Story Editor redirect. |
-| ARX-005 | Centered first composer animates to bottom right conversation rail on real send, while left/center becomes useful visualizer and no duplicate message/input remains. |
-| ARX-006 | Actual owner-supplied **Architect Background** PNG is used as home background; exact original hash verified once binary delivered to repo asset pipeline; no AI generation substitute. |
-| ARX-007 | Actual owner-supplied **Architect Sidebar Background** PNG is used for conversation rail across intended full/docked views, as an image beneath real UI. |
-| ARX-008 | All ten owner images reconciled to visual components and design acceptance; conceptual/mock data never mistaken for shipped features. |
-| ARX-009 | Chronicle graph, storyboard, puzzle, Artifact and spatial preview visualizers convey actual persisted/proposed status and allow appropriate navigate/edit. |
-| ARX-010 | Full → docked → ambient → full transitions preserve session, messages, focus, selected canonical entity and unsaved work in Story Editor and Spatial Studio. |
-| ARX-011 | Minimized Architect capsule is obvious, responsive and nonblocking; no idle inference or persistent obtrusive corner overlay. |
-| ARX-012 | Liquid Glass style, responsive image crop, opacity/performance, readable contrast and reduced-motion/transparency fallback meet owner visual standards. |
-| ARX-013 | Shared-element Concept → persisted object → real editor transition occurs only after authenticated canonical apply receipt; failure leaves honest preview. |
-| ARX-014 | Five collaboration styles are available inline and independently adjustable from personality, initiative and permissions. |
-| ARX-015 | Creator personality/verbosity/preferences vary speech naturally without reducing honesty, competence or security permissions. |
-| ARX-016 | Quiet, Partner and Creative Director initiative levels plus current Creative Focus affect proactive messaging without creating needless chargeable background calls. |
-| ARX-017 | Three Insights levels clearly separate critical deterministic blockers, contextual design suggestion and quiet artistic critique. |
-| ARX-018 | Insights panel permits review, dismissal, intentional design marking, saved action, evidence/provenance, stale invalidation and no repeated harassment. |
-| ARX-019 | The Chapter III boring/critiquing example produces at least two evidence-aware creative paths, recommendation with rationale, protected-twist consideration and no premature changes. |
-| ARX-020 | Intelligent impact assessment distinguishes ordinary reversible edits from hidden graph/puzzle dependencies, high-impact protected changes and cost-risk changes. |
-| ARX-021 | Discuss / scoped edit / protected approval policies are separately enforced and do not expand solely due to Creative Director setting. |
-| ARX-022 | Detailed, user-selected change scopes are respected; no unrequested edit to other chapters, puzzle outcomes, private letters or immutable editions. |
-| ARX-023 | Creator can mark Preserve Exactly, Protect Intent or Open to Exploration with explicit confirmations and provenance; hard commitments block violation. |
-| ARX-024 | Selected source/Draft read is refreshed **before the next Architect message** following a manual tool change, including saved, unsaved, other-tab and undo/reversion scenarios. |
-| ARX-025 | Account-level preferences may apply across user's ten Chronicles while facts/secrets/characters from other projects remain isolated absent explicit authorized import. |
-| ARX-026 | Confirmed, approved, tentative, rejected, superseded and transient memories are classified and correctly indexed with source revision/provenance. |
-| ARX-027 | Story Bible is inspectable, editable, branch-knowledge-aware, derived from correct Chronicle and incrementally updated after actual changes. |
-| ARX-028 | Storybook remains creative treatment/projection not parallel canonical truth; paid/Pro richness can increase without making free forget essential facts. |
-| ARX-029 | Context retrieval is scope-limited/versioned/cached; no full Storybook or every Chronicle resent for a simple message. |
-| ARX-030 | Creator AI Settings contains personality, creative prefs, memory/commitments, scope/permissions, appearance/presence, tier usage, while key quick selectors are directly in composer. |
-| ARX-031 | SC-04 can be created/revised through only its accepted typed capabilities; alternatives, 2D baseline and Drydock variation verification preserved. |
-| ARX-032 | SC-06 Adapt Story uses Architect as its orchestration/screen while preserving the future SC-06 ownership/rights and normal canonical draft. |
-| ARX-033 | Storytide/Lanternwake cinematic storyboards and quality reviews are human inspectable and cannot claim physical/visual truth without rendered owner review. |
-| ARX-034 | Outdoor/mobile vs virtual/Sea-of-Thieves experience profiles do not fabricate physical/game-sensor capabilities or hide fallbacks. |
-| ARX-035 | Free uses **Luna only**, via server-enforced allowlist; Paid and Pro receive only explicitly eligible models. |
-| ARX-036 | **All** tiers have finite request/rate/compute/context/cost/concurrency ceilings; no plan or account bypasses global financial limits. |
-| ARX-037 | Free retains real thoughtful critique, scoped assisted authoring, Creator preferences and reliable compact Story Bible; no useless crippled assistant. |
-| ARX-038 | Paid/Pro can buy richer Storybook, deeper/more frequent reviews and larger production budgets but free/manual saved tools remain usable on quota exhaustion. |
-| ARX-039 | Actual provider costs for Architect, Parallax and dedicated two-photo reconstruction settle into existing **Admiralty AI Usage & Quotas**, not competing ledgers. |
-| ARX-040 | Admiralty reports per model/tier/operation/Chronicle, admission/exposure/settlement, token/cache use, errors/retries, latency and accepted-result costs without private prompt leaks. |
+| ID      | Required acceptance proof                                                                                                                                                                                              |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ARX-001 | Exactly **one** Creator-facing chat assistant: Architect across all Tools; no parallel Parallax assistant session/identity after migration.                                                                            |
+| ARX-002 | Existing Parallax A1 AI authoring tests, safety/CAS, quotas and source behaviors regress cleanly under Architect host; no lost spatial capability.                                                                     |
+| ARX-003 | Two-photo reconstruction remains discoverable as its own owned tool with authorized acquisition and Admiralty AI accounting.                                                                                           |
+| ARX-004 | Full AI creation entry from four-choice New Chronicle flows to real full Architect workspace without forced Story Editor redirect.                                                                                     |
+| ARX-005 | Centered first composer animates to bottom right conversation rail on real send, while left/center becomes useful visualizer and no duplicate message/input remains.                                                   |
+| ARX-006 | Actual owner-supplied **Architect Background** PNG is used as home background; documentation original hash is verified, and the production asset pipeline must preserve that exact hash; no AI generation substitute.  |
+| ARX-007 | Actual owner-supplied **Architect Sidebar Background** PNG is used for conversation rail across intended full/docked views, as an image beneath real UI.                                                               |
+| ARX-008 | All ten owner images reconciled to visual components and design acceptance; conceptual/mock data never mistaken for shipped features.                                                                                  |
+| ARX-009 | Chronicle graph, storyboard, puzzle, Artifact and spatial preview visualizers convey actual persisted/proposed status and allow appropriate navigate/edit.                                                             |
+| ARX-010 | Full → docked → ambient → full transitions preserve session, messages, focus, selected canonical entity and unsaved work in Story Editor and Spatial Studio.                                                           |
+| ARX-011 | Minimized Architect capsule is obvious, responsive and nonblocking; no idle inference or persistent obtrusive corner overlay.                                                                                          |
+| ARX-012 | Liquid Glass style, responsive image crop, opacity/performance, readable contrast and reduced-motion/transparency fallback meet owner visual standards.                                                                |
+| ARX-013 | Shared-element Concept → persisted object → real editor transition occurs only after authenticated canonical apply receipt; failure leaves honest preview.                                                             |
+| ARX-014 | Five collaboration styles are available inline and independently adjustable from personality, initiative and permissions.                                                                                              |
+| ARX-015 | Creator personality/verbosity/preferences vary speech naturally without reducing honesty, competence or security permissions.                                                                                          |
+| ARX-016 | Quiet, Partner and Creative Director initiative levels plus current Creative Focus affect proactive messaging without creating needless chargeable background calls.                                                   |
+| ARX-017 | Three Insights levels clearly separate critical deterministic blockers, contextual design suggestion and quiet artistic critique.                                                                                      |
+| ARX-018 | Insights panel permits review, dismissal, intentional design marking, saved action, evidence/provenance, stale invalidation and no repeated harassment.                                                                |
+| ARX-019 | The Chapter III boring/critiquing example produces at least two evidence-aware creative paths, recommendation with rationale, protected-twist consideration and no premature changes.                                  |
+| ARX-020 | Intelligent impact assessment distinguishes ordinary reversible edits from hidden graph/puzzle dependencies, high-impact protected changes and cost-risk changes.                                                      |
+| ARX-021 | Discuss / scoped edit / protected approval policies are separately enforced and do not expand solely due to Creative Director setting.                                                                                 |
+| ARX-022 | Detailed, user-selected change scopes are respected; no unrequested edit to other chapters, puzzle outcomes, private letters or immutable editions.                                                                    |
+| ARX-023 | Creator can mark Preserve Exactly, Protect Intent or Open to Exploration with explicit confirmations and provenance; hard commitments block violation.                                                                 |
+| ARX-024 | Selected source/Draft read is refreshed **before the next Architect message** following a manual tool change, including saved, unsaved, other-tab and undo/reversion scenarios.                                        |
+| ARX-025 | Account-level preferences may apply across user's ten Chronicles while facts/secrets/characters from other projects remain isolated absent explicit authorized import.                                                 |
+| ARX-026 | Confirmed, approved, tentative, rejected, superseded and transient memories are classified and correctly indexed with source revision/provenance.                                                                      |
+| ARX-027 | Story Bible is inspectable, editable, branch-knowledge-aware, derived from correct Chronicle and incrementally updated after actual changes.                                                                           |
+| ARX-028 | Storybook remains creative treatment/projection not parallel canonical truth; paid/Pro richness can increase without making free forget essential facts.                                                               |
+| ARX-029 | Context retrieval is scope-limited/versioned/cached; no full Storybook or every Chronicle resent for a simple message.                                                                                                 |
+| ARX-030 | Creator AI Settings contains personality, creative prefs, memory/commitments, scope/permissions, appearance/presence, tier usage, while key quick selectors are directly in composer.                                  |
+| ARX-031 | SC-04 can be created/revised through only its accepted typed capabilities; alternatives, 2D baseline and Drydock variation verification preserved.                                                                     |
+| ARX-032 | SC-06 Adapt Story uses Architect as its orchestration/screen while preserving the future SC-06 ownership/rights and normal canonical draft.                                                                            |
+| ARX-033 | Storytide/Lanternwake cinematic storyboards and quality reviews are human inspectable and cannot claim physical/visual truth without rendered owner review.                                                            |
+| ARX-034 | Outdoor/mobile vs virtual/Sea-of-Thieves experience profiles do not fabricate physical/game-sensor capabilities or hide fallbacks.                                                                                     |
+| ARX-035 | Free uses **Luna only**, via server-enforced allowlist; Paid and Pro receive only explicitly eligible models.                                                                                                          |
+| ARX-036 | **All** tiers have finite request/rate/compute/context/cost/concurrency ceilings; no plan or account bypasses global financial limits.                                                                                 |
+| ARX-037 | Free retains real thoughtful critique, scoped assisted authoring, Creator preferences and reliable compact Story Bible; no useless crippled assistant.                                                                 |
+| ARX-038 | Paid/Pro can buy richer Storybook, deeper/more frequent reviews and larger production budgets but free/manual saved tools remain usable on quota exhaustion.                                                           |
+| ARX-039 | Actual provider costs for Architect, Parallax and dedicated two-photo reconstruction settle into existing **Admiralty AI Usage & Quotas**, not competing ledgers.                                                      |
+| ARX-040 | Admiralty reports per model/tier/operation/Chronicle, admission/exposure/settlement, token/cache use, errors/retries, latency and accepted-result costs without private prompt leaks.                                  |
 | ARX-041 | Before final tier pricing, a bounded authorized benchmark covers short, medium, huge multi-Chronicle/multi-session workflows, memory/context, Storybook, creative evaluation, spatial/puzzle/media and revision loops. |
-| ARX-042 | Billing UNKNOWN/timeouts remain conservatively reserved; no silent retry, provider auto-escalation or out-of-pocket exposure on cap. |
-| ARX-043 | Universal Playtest and Drydock show actual scenario/structural evidence separately from AI subjective evaluation and physical-device proof. |
-| ARX-044 | No unrestricted model-authorized database writes, direct publication, hidden invitation, arbitrary script execution or secret cross-account retrieval. |
-| ARX-045 | Full Creator journey receives explicit owner visual/UX acceptance on real representative displays, with source-bound Sounding Line and protected-main review. |
+| ARX-042 | Billing UNKNOWN/timeouts remain conservatively reserved; no silent retry, provider auto-escalation or out-of-pocket exposure on cap.                                                                                   |
+| ARX-043 | Universal Playtest and Drydock show actual scenario/structural evidence separately from AI subjective evaluation and physical-device proof.                                                                            |
+| ARX-044 | No unrestricted model-authorized database writes, direct publication, hidden invitation, arbitrary script execution or secret cross-account retrieval.                                                                 |
+| ARX-045 | Full Creator journey receives explicit owner visual/UX acceptance on real representative displays, with source-bound Sounding Line and protected-main review.                                                          |
 
 These criteria supplement Part I's earlier acceptance list; **neither set may be silently dropped or reduced**. Any claimed completed phase must show which requirements were satisfied, which remain proposed/unavailable, and which need physical/owner acceptance. Follow the adjacent SC requirements ledger with additional ARX IDs instead of replacing its 76 historical requirements.
 

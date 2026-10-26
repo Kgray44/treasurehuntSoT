@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-24",
+  "generated_at": "2026-10-26",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -4540,6 +4540,48 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_v1.4.3_Root_Maintenance_Lane_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Chronicle_Creation/Project_Chronicle_Architect_Governing_Document_v1.0.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Chronicle_Creation/Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Chronicle_Creation/SC_Requirements_Traceability_Ledger_v1.0.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Chronicle_Creation/SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Chronicle_Creation/visual_references/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Chronicle_Creation/Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Spatial_Chronicle_Creation/Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

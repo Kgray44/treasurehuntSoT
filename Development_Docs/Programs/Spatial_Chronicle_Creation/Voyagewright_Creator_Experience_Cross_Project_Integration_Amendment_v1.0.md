@@ -13,6 +13,7 @@ repository: Kgray44/treasurehuntSoT
 ---
 
 # Voyagewright Creator Experience Cross-Project Integration Amendment
+
 ## An integrated creative workspace for one Chronicle, many equal-standing authoring tools
 
 > **Governing product promise:** Every major Creator discipline is discoverable, usable, and respected as a first-class authoring experience. A Creator can move fluidly among Story & Branches, Puzzle Workshop, Spatial Studio, Artifacts, Worlds & Navigation, Device Interactions, Cinematics/Media and Drydock without losing the Chronicle, their place, or their work. All tools contribute to **one canonical Chronicle** with project-owned data and one authorized publication path.
@@ -32,6 +33,7 @@ SC-04 design revealed significant shared work that cannot be hidden in the Puzzl
 Separate project teams can fulfill local technical requirements yet deliver an experience that feels fragmented, inaccessible, or inconsistent. This amendment defines the **whole-Creator journey** and delegates actual implementation to existing owners. It is not permission to refactor all project surfaces in one enormous speculative pass.
 
 **Required outcomes:**
+
 - A person sees all major authoring disciplines as peers, with transparent availability and maturity.
 - The entry hub is attractive and useful, but never a mandatory detour for every tool transition.
 - Each tool has an honest shared Chronicle identity, breadcrumbs, contextual return and predictable state persistence.
@@ -44,22 +46,22 @@ Separate project teams can fulfill local technical requirements yet deliver an e
 
 ## 2. Authority, ownership and non-negotiable boundaries
 
-| Domain | Primary owner | Shared Creator contract | Must not be re-owned by this amendment |
-|---|---|---|---|
-| Unified Tools hub, shared shell, tool switcher, breadcrumbs, contextual return, visual Branch Editor | **Shipwright / Creator Studio**, with global UX governance | Discoverable pages, coherent user journeys, saved editing context, accessible controls | Canonical graph schema, progression, validation rules |
-| Branch graph validation, typed connections, expressions, scenario and statistical analysis | **Drydock** | Schema/policy authority, previews, reasoned diagnostics, proven/bounded counts | Runtime business events and UI navigation |
-| Authoritative Chronicle/draft/progression, choices, session and outcomes | **One Voyage / accepted Chronicle services** | Exact draft identity, graph mutation and immutable published version, shared/individual progress | A second branch or puzzle runtime |
-| Spatial Scene/Environment, reusable assets/effects and spatial renderer | **Parallax** | Scoped Scene editor, semantic references, playback adapter, physical fidelity labeling | Chronicle branching/Player event authority |
-| Physical/virtual worldspace, waypoint, route and travel context | **Landfall** | Worldspace/navigation editing and estimated travel inputs | Device permission/provider truth |
-| Generic sensors, device capability and permission | **Sextant** | Device authoring, simulated capability profiles, runtime qualification | Place, puzzle or Chronicle completion authority |
-| Cross-device identity, roles/transport/handoff | **Crossdeck** | Multisurface previews, same-Player multi-device and actual team participation distinction | Second Player identity for one device |
-| Physical recognition/interaction | **Watchglass / Reach** | Evidence/fidelity-labeled simulation adapters | Guaranteed outcomes from unqualified observations |
-| Artifact definitions, relationships, displays and grants | **Existing artifact/Chronicle services**, with Shipwright UI | Artifact Studio discovery, qualified 2D/3D representations, collection/reward editing | Duplicate inventory/custody truth |
-| Narrative craft and animation | **Storytide / Lanternwake** | Cinematic editor integration, presentation previews, accessibility variants | Independent plot/progression or puzzle success |
-| Canonical authoring tests, scenarios, readiness and estimates | **Drydock** | Universal Playtest validation backbone, bounded simulation | Real-world test evidence without devices/Players |
-| Published sharing, license/dependency/mode restrictions | **Harborlight + Sealed Hold** | Reusable puzzle/scene/artifact distribution through canonical policy | Sharing mutable private drafts silently |
-| Whole-Chronicle AI | **SC-05 Chronicle Architect** | Governed calls into these tools using actual capabilities | Direct low-level writer, editor replacement or publication control |
-| Source-bound software evidence | **Sounding Line** | Exact-source technical verification and protected decision | AI or design-signoff substitution |
+| Domain                                                                                               | Primary owner                                                | Shared Creator contract                                                                                                  | Must not be re-owned by this amendment                                                   |
+| ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| Unified Tools hub, shared shell, tool switcher, breadcrumbs, contextual return, visual Branch Editor | **Shipwright / Creator Studio**, with global UX governance   | Discoverable pages, coherent user journeys, saved editing context, accessible controls                                   | Canonical graph schema, progression, validation rules                                    |
+| Branch graph validation, typed connections, expressions, scenario and statistical analysis           | **Drydock**                                                  | Schema/policy authority, previews, reasoned diagnostics, proven/bounded counts                                           | Runtime business events and UI navigation                                                |
+| Authoritative Chronicle/draft/progression, choices, session and outcomes                             | **One Voyage / accepted Chronicle services**                 | Exact draft identity, graph mutation and immutable published version, shared/individual progress                         | A second branch or puzzle runtime                                                        |
+| Spatial Scene/Environment, reusable assets/effects and spatial renderer                              | **Parallax**                                                 | Scoped Scene editor, semantic references, playback adapter, physical fidelity labeling                                   | Chronicle branching/Player event authority                                               |
+| Physical/virtual worldspace, waypoint, route and travel context                                      | **Landfall**                                                 | Worldspace/navigation editing and estimated travel inputs                                                                | Device permission/provider truth                                                         |
+| Generic sensors, device capability and permission                                                    | **Sextant**                                                  | Device authoring, simulated capability profiles, runtime qualification                                                   | Place, puzzle or Chronicle completion authority                                          |
+| Cross-device identity, roles/transport/handoff                                                       | **Crossdeck**                                                | Multisurface previews, same-Player multi-device and actual team participation distinction                                | Second Player identity for one device                                                    |
+| Physical recognition/interaction                                                                     | **Watchglass / Reach**                                       | Evidence/fidelity-labeled simulation adapters                                                                            | Guaranteed outcomes from unqualified observations                                        |
+| Artifact definitions, relationships, displays and grants                                             | **Existing artifact/Chronicle services**, with Shipwright UI | Artifact Studio discovery, qualified 2D/3D representations, collection/reward editing                                    | Duplicate inventory/custody truth                                                        |
+| Narrative craft and animation                                                                        | **Storytide / Lanternwake**                                  | Cinematic editor integration, presentation previews, accessibility variants                                              | Independent plot/progression or puzzle success                                           |
+| Canonical authoring tests, scenarios, readiness and estimates                                        | **Drydock**                                                  | Universal Playtest validation backbone, bounded simulation                                                               | Real-world test evidence without devices/Players                                         |
+| Published sharing, license/dependency/mode restrictions                                              | **Harborlight + Sealed Hold**                                | Reusable puzzle/scene/artifact distribution through canonical policy                                                     | Sharing mutable private drafts silently                                                  |
+| Whole-Chronicle AI                                                                                   | **SC-05 Chronicle Architect**                                | Single Creator-facing partner across tools; governed domain calls with shared Chronicle/conversation/revision continuity | Direct low-level writer, rival domain chatbot, editor replacement or publication control |
+| Source-bound software evidence                                                                       | **Sounding Line**                                            | Exact-source technical verification and protected decision                                                               | AI or design-signoff substitution                                                        |
 
 One feature receives **one primary owner** even if several owners provide dependencies. Conflicts must be explicitly reconciled and recorded before implementation. The current accepted domain constitutions and exact current main implementation prevail where this proposed UX contract describes a capability not yet real.
 
@@ -76,6 +78,7 @@ No tool may be artificially relegated to obscure nested menus merely because it 
 ### 3.2 Hub is not a compulsory round trip
 
 A Creator can:
+
 - choose any available tool from the Tools home;
 - switch directly from Story Editor to Puzzle Workshop or from Spatial Studio to Artifact authoring;
 - use contextual **Edit in ...** links attached to actual selected objects;
@@ -102,6 +105,12 @@ Preserve scroll/canvas/zoom/selection where technically safe; never claim such s
 
 Consistent UI semantics for New/Empty, Working Draft, Read-Only Release, Saving, Unsaved, Conflict, Permission Denied, Missing Capability, Offline, Provider Failure, Preview, Simulated, Published Version and Recovery. Desktop supports large creative canvases; narrow/mobile retains navigation and deliberate limited-mode messaging rather than broken cramped controls. Keyboard, assistive technology, 200% zoom, contrast and reduced motion are required per global governance.
 
+### 3.5 Architect continuity and original visual references
+
+The [expanded SC-05 specification](./Project_Chronicle_Architect_Governing_Document_v1.0.md) governs the single Creator-facing partner across full-screen, docked and minimized ambient states. Shipwright owns the shared shell and contextual tool handoff; each domain retains canonical operation authority. Preserve Parallax A1 functionality and the independent two-photo room reconstruction tool; retire its competing conversation interface only after verified parity and owner acceptance.
+
+The [ten-image original gallery](./visual_references/README.md) and [exact-byte manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) show the required backgrounds, full Architect, Storyboard, Puzzle visualizer and expanded/minimized Editor and Spatial Studio concepts. The home and sidebar backgrounds are distinct original assets. These references are proposed design evidence, not implemented screens or permission to begin implementation.
+
 ## 4. Named Branch Editor: visual navigation over canonical Chronicle graph
 
 ### 4.1 Human model
@@ -115,6 +124,7 @@ Named branches are authoring/navigational projections over **canonical versioned
 From a Choice, Condition, Puzzle Outcome, Timer/Event or Captain-governed decision, the Creator selects a path. Instead of spilling large divergent trees into the parent vertical editor, the parent shows distinct **clickable named path cards** with a synopsis, number of owned Story Blocks, linked puzzles, completion/end/merge status and warnings. Selecting one opens an editor scope visually identical to the ordinary Story Editor and preserves drag/drop, insert/move, inspector, undo/redo, autosave/version conflicts, keyboard alternatives and preview.
 
 A branch editor:
+
 - offers explicit **return to parent** and breadcrumb ancestry;
 - can show optional **up one level** navigation for nested branches;
 - displays the true branch source and supported possible entry conditions;
@@ -136,6 +146,7 @@ For ambiguous/cyclic graphs, the editor must clearly show shared or external tar
 ### 4.4 Branch decision authoring
 
 Instead of a raw target-ID dropdown, Creator chooses a human intent:
+
 - **Player choice:** shows actual decision prompt, option labels, visibility, default/timeout policy and allowed participants.
 - **Story condition:** readable condition builder over canonical Drydock typed expression/variable policy, with cases and fallback.
 - **Puzzle outcome:** map full/partial/alternative/failure/assisted outcomes to named paths as exposed by SC-04 contracts.
@@ -153,6 +164,7 @@ This is a **cross-project Shipwright-led redesign**, potentially introduced as a
 ## 5. Puzzle integration into Story Editor
 
 **Add Puzzle** is a first-class contextual action from a chapter, block insertion, named branch, or Chronicle-level tools. The Creator may:
+
 - create from scratch, select a starter pattern, or instantiate an eligible reusable/private/Community puzzle;
 - automatically see a recognizable puzzle component/ref in the main Story Editor;
 - access supported puzzle elements such as Introduce, Discover, Interact, Hint, Resolve, Reward, and Outcome as **contextual insert actions**, not an uncontrolled automatic dump of all possible Story Blocks;
@@ -169,6 +181,7 @@ Puzzle definitions, parameters, instance refs and underlying Story Block graph r
 **Playtest** is available in shared Creator shell and contextual tool views, where supported. It is a **mode spanning every Creator tool** rather than a Puzzle Workshop feature. Previewing a Story passage, branching decisions, a spatial room, an Artifact reveal, a route, sensor gesture, cinematic, or the whole Chronicle should use one conceptual test session with domain adapters.
 
 The same user can choose:
+
 - **Test this item**: selected passage, branch, puzzle, scene, artifact, waypoint or presentation;
 - **Test this chapter or route**: focused narrative segment;
 - **Play this Chronicle**: end-to-end realistic experience with complete present capabilities;
@@ -209,7 +222,7 @@ Do not return a misleading finite **total possible paths** for cyclic/open-ended
 ### 7.2 Time models and evidence
 
 A useful conceptual route-time decomposition is:
-\`T = T_read + T_search + T_reason + T_interact + T_travel + T_wait + T_retry\`.
+`T = T_read + T_search + T_reason + T_interact + T_travel + T_wait + T_retry`.
 Measured prose length can inform reading-time models; Landfall route geometry and mobility posture can inform travel time when valid; mechanisms and animation length can inform interaction duration; searching/reasoning/retry depend on modeled human variance. Never claim unjustified minute-level certainty. Offer editable assumptions, percentiles/ranges, scenario comparisons and provenance.
 
 Dry-run models and real Player observations must be stored/reported separately with exact source version, puzzle instance parameters, Chronicle context, audience/provider/crew posture and participation class. Difficulty is neither a score of intelligence nor a warranty of completion time.
@@ -222,7 +235,7 @@ Drydock owns the analytical model, algorithms and classification; One Voyage and
 
 ### 8.1 Existing reality
 
-A supported per-Chronicle Artifact authoring section already exists at \`/studio/tales/[taleId]/artifacts\` via \`TaleEditorSection\`; the existence of Artifact definitions does **not** prove a standalone Artifact Studio exists. Player Artifact Cabinet is separate and must not be mistaken for Creator authoring. The existing feature catalog historically used \`/studio/artifacts\` and a Deepwater reconciliation identified it as stale versus the canonical per-Chronicle route. This proposed amendment does not invent a shipped new Studio.
+A supported per-Chronicle Artifact authoring section already exists at `/studio/tales/[taleId]/artifacts` via `TaleEditorSection`; the existence of Artifact definitions does **not** prove a standalone Artifact Studio exists. Player Artifact Cabinet is separate and must not be mistaken for Creator authoring. The existing feature catalog historically used `/studio/artifacts` and a Deepwater reconciliation identified it as stale versus the canonical per-Chronicle route. This proposed amendment does not invent a shipped new Studio.
 
 ### 8.2 Proposed Artifact Studio experience
 
@@ -298,4 +311,4 @@ Still requiring later discrete design review: exact branch-scope graph represent
 - [Deepwater root cause and stale catalog route](../../Programs/Deepwater/reports/Project_Deepwater_Phase_2_Root_Cause_Summary.md).
 - Owner conversations October 24–25, 2026: equal-standing Tools, named branch editing and outcomes, Drydock analytics, universal Playtest Mode, individual/crew progression, puzzle reuse and safe variability.
 
-**Adoption note:** This amendment proposes coherent interfaces *between* accepted owners. It neither amends their canonical semantics automatically nor relaxes current Sounding Line, protected-main, owner review, privacy, or hardware-evidence obligations.
+**Adoption note:** This amendment proposes coherent interfaces _between_ accepted owners. It neither amends their canonical semantics automatically nor relaxes current Sounding Line, protected-main, owner review, privacy, or hardware-evidence obligations.

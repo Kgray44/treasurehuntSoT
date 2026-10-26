@@ -3,7 +3,7 @@ title: "Voyagewright Spatial Chronicle Creation Program"
 subtitle: "SC-00 through SC-11: Master Roadmap, Capability Boundaries, Dependency Map, and Completion Architecture"
 document_id: VW-SC-PROGRAM-001
 version: "1.0-review-candidate"
-date: "2026-10-24"
+date: "2026-10-25"
 status: "PROPOSED_GOVERNANCE_AWAITING_OWNER_AND_PROTECTED_REVIEW"
 audience: product-engineering
 canonical_for: spatial-chronicle-creation-program-proposed
@@ -13,6 +13,7 @@ source_basis: October 14-15 2026 Spatial Studio Improvements discussion and curr
 ---
 
 # Voyagewright Spatial Chronicle Creation Program
+
 ## Master roadmap and governing integration plan, SC-00 through SC-11
 
 > **Program principle.** A Creator authors **one canonical Chronicle**, whether working manually, with AI, from a template, or by adapting existing writing. Specialized tools author their own domain objects; Chronicle Creator coordinates them. The authored experience must remain inspectable, editable, accessible, verifiable, playable, and stable after publication. No subsystem may substitute a demonstration, placeholder UI, or AI-generated description for real canonical authoring.
@@ -50,7 +51,7 @@ Not in scope: a second Chronicle domain or database; autonomous publication; raw
 
 - **Environment:** persistent spatial setting and semantic structure, including geometry, furniture, surfaces, windows, doors, and baseline lighting. Owned within Parallax's accepted environment model.
 - **Environment revision:** version of that setting during authoring; any published reference must be immutable or pinned to an immutable snapshot.
-- **Scene:** what happens *in* an environment. It references an environment revision and composes objects, effects, changes in lighting, tracks, spatial interactions, states, and entry/exit presentation.
+- **Scene:** what happens _in_ an environment. It references an environment revision and composes objects, effects, changes in lighting, tracks, spatial interactions, states, and entry/exit presentation.
 - **Scene revision:** stable authored definition that can be attached, reviewed, compared and eventually pinned into a published Chronicle.
 - **Chronicle:** canonical authored identity and chapters/Story Blocks, narrative decisions, gates, resources and outcomes under Chronicle Creator/One Voyage rules.
 - **Chronicle spatial binding:** explicit relationship from a particular chapter/block/moment to a particular Scene revision, trigger, presentation and completion semantics.
@@ -97,24 +98,24 @@ This series is **subordinate to** global product governance and current accepted
 
 ## 6. SC-series roadmap at a glance
 
-| Increment | Product intent | Primary owner(s) | Boundary / release condition |
-|---|---|---|---|
-| **SC-00** | Creator/Spatial Studio readiness and shared authoring boundaries | Shipwright + Parallax | Four truthful creation entry paths; working/draft/library clarity; preparatory UX rather than fake AI availability |
-| **SC-00A** | Chronicle Creator entry and inline details | Shipwright | Manual create genuinely works; future AI/adaptation/template paths marked forthcoming until implemented |
-| **SC-00B** | Spatial Inspector usability and complete field preservation | Parallax | Selected-object controls function at Guided/Standard/Engineering depths; no hidden lost property |
-| **SC-00C** | Spatial Library discovery, owner actions and reuse | Parallax | Clear Assets/Environments/Scenes/Effects/Compositions; durable browse/place/edit/save behavior |
-| **SC-01** | Environment and Scene Manager | Parallax | Reuse one versioned environment across multiple editable, independently versioned scenes; stable edition pins |
-| **SC-02** | Premium Asset and Spatial Effects Library | Parallax + Lanternwake contracts | Curated original assets and authored light/mist/particles/audio/interaction effects, resource budgets and provenance |
-| **SC-03** | Chronicle-to-Scene Integration | Shipwright + Parallax + One Voyage | Typed block/scene binding, triggers, state, transition and immutable reference without duplicate progression |
-| **SC-04** | Chronicle Puzzle Composition | Shipwright/Creator authoring + One Voyage + Drydock | **[Detailed proposed Puzzle Workshop constitution](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md)** covers 2D mechanisms, composition, seeded variation, crew/Captain roles, outcomes, analytics and Playtest; not yet accepted or implemented by this document |
-| **SC-05** | AI Chronicle Architect | Shipwright / Chronicle Creator orchestration | AI proposes and applies a real, editable, governed whole-Chronicle draft; detailed adjacent governing document |
-| **SC-06** | Story Import and Adaptation | Chronicle Creator + Sealed Hold + Drydock | Source-to-interactive Chronicle pipeline; **detailed fidelity and transformation semantics reserved** |
-| **SC-07** | Community publishing and reuse | Harborlight + relevant domain owners | Versioned, scanned, moderated, rights-aware templates/assets/scenes/Chronicles without draft leakage |
-| **SC-07A** | Spatial Studio publishing handoff | Parallax + Harborlight | Specialized existing proposal/candidate for safe spatial item sharing; must reconcile actual source |
-| **SC-08** | Cinematic narrative composition | Storytide + Lanternwake + Shipwright | Authored transitions, scene timing, reveal/replay/fallback and coherent storytelling without parallel animation authority |
-| **SC-09** | Chronicle Lens and multi-surface experience | Parallax + Crossdeck + Sextant + Reach/Device Lab | Truthful active device participation, accessible alternatives, life-cycle and device/hardware qualification |
-| **SC-10** | Whole-platform integration | Integration owners + Drydock + Sounding Line | Real authored paths through source/preview/publishing/Player/Captain/community/history; product navigation parity |
-| **SC-11** | Golden Chronicle end-to-end demonstration | Program owners + KG owner acceptance | A fully authored, playable, measurable reference Chronicle across agreed target devices and formats |
+| Increment  | Product intent                                                   | Primary owner(s)                                    | Boundary / release condition                                                                                                                                                                                                                                                        |
+| ---------- | ---------------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **SC-00**  | Creator/Spatial Studio readiness and shared authoring boundaries | Shipwright + Parallax                               | Four truthful creation entry paths; working/draft/library clarity; preparatory UX rather than fake AI availability                                                                                                                                                                  |
+| **SC-00A** | Chronicle Creator entry and inline details                       | Shipwright                                          | Manual create genuinely works; future AI/adaptation/template paths marked forthcoming until implemented                                                                                                                                                                             |
+| **SC-00B** | Spatial Inspector usability and complete field preservation      | Parallax                                            | Selected-object controls function at Guided/Standard/Engineering depths; no hidden lost property                                                                                                                                                                                    |
+| **SC-00C** | Spatial Library discovery, owner actions and reuse               | Parallax                                            | Clear Assets/Environments/Scenes/Effects/Compositions; durable browse/place/edit/save behavior                                                                                                                                                                                      |
+| **SC-01**  | Environment and Scene Manager                                    | Parallax                                            | Reuse one versioned environment across multiple editable, independently versioned scenes; stable edition pins                                                                                                                                                                       |
+| **SC-02**  | Premium Asset and Spatial Effects Library                        | Parallax + Lanternwake contracts                    | Curated original assets and authored light/mist/particles/audio/interaction effects, resource budgets and provenance                                                                                                                                                                |
+| **SC-03**  | Chronicle-to-Scene Integration                                   | Shipwright + Parallax + One Voyage                  | Typed block/scene binding, triggers, state, transition and immutable reference without duplicate progression                                                                                                                                                                        |
+| **SC-04**  | Chronicle Puzzle Composition                                     | Shipwright/Creator authoring + One Voyage + Drydock | **[Detailed proposed Puzzle Workshop constitution](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md)** covers 2D mechanisms, composition, seeded variation, crew/Captain roles, outcomes, analytics and Playtest; not yet accepted or implemented by this document |
+| **SC-05**  | AI Chronicle Architect                                           | Shipwright / Chronicle Creator orchestration        | AI proposes and applies a real, editable, governed whole-Chronicle draft; detailed adjacent governing document                                                                                                                                                                      |
+| **SC-06**  | Story Import and Adaptation                                      | Chronicle Creator + Sealed Hold + Drydock           | Source-to-interactive Chronicle pipeline; **detailed fidelity and transformation semantics reserved**                                                                                                                                                                               |
+| **SC-07**  | Community publishing and reuse                                   | Harborlight + relevant domain owners                | Versioned, scanned, moderated, rights-aware templates/assets/scenes/Chronicles without draft leakage                                                                                                                                                                                |
+| **SC-07A** | Spatial Studio publishing handoff                                | Parallax + Harborlight                              | Specialized existing proposal/candidate for safe spatial item sharing; must reconcile actual source                                                                                                                                                                                 |
+| **SC-08**  | Cinematic narrative composition                                  | Storytide + Lanternwake + Shipwright                | Authored transitions, scene timing, reveal/replay/fallback and coherent storytelling without parallel animation authority                                                                                                                                                           |
+| **SC-09**  | Chronicle Lens and multi-surface experience                      | Parallax + Crossdeck + Sextant + Reach/Device Lab   | Truthful active device participation, accessible alternatives, life-cycle and device/hardware qualification                                                                                                                                                                         |
+| **SC-10**  | Whole-platform integration                                       | Integration owners + Drydock + Sounding Line        | Real authored paths through source/preview/publishing/Player/Captain/community/history; product navigation parity                                                                                                                                                                   |
+| **SC-11**  | Golden Chronicle end-to-end demonstration                        | Program owners + KG owner acceptance                | A fully authored, playable, measurable reference Chronicle across agreed target devices and formats                                                                                                                                                                                 |
 
 ### Numbering reconciliation
 
@@ -164,22 +165,22 @@ Do not turn this into an instruction to rebuild accepted source. First identify 
 
 ## 8. Accountabilities and decision rights
 
-| Owning system | Owns | SC program may do | SC program may NOT do |
-|---|---|---|---|
-| Shipwright / Chronicle Creator | Authoring screens, Story Blocks, graph and Creator workflow | Provide one accessible composer and govern AI-facing operations | Duplicate Chronicle identity or progression |
-| One Voyage | Published Chronicle identity, events, sessions, completion truth | Receive authorized authored definitions and later normal completion proposals | Let AI/Parallax directly change live progression |
-| Parallax | Environment/Scene/version, spatial object and spatial runtime | Provide scenes, anchors, spatial Library and authored interaction operations | Declare Chronicle puzzle success unilaterally |
-| Landfall | Worldspaces, routes, waypoints and maps | Supply place/navigation reference contracts | Become the puzzle/AI authoring engine |
-| Sextant | Device capability, sensors and permissions | Report available semantic capabilities | Assert GPS/spatial meaning independently |
-| Crossdeck | One-person/multi-device participation and handoff | Describe supported surface combinations | Create duplicate Player sessions |
-| Reach/Watchglass | Target acquisition and visual evidence under respective ownership | Expose qualified interactions/evidence references | Silently turn low-confidence detection into completion |
-| Storytide/Lanternwake | Narrative experience and presentation authority | Define authored transitions and accessible motion | Author alternate business-state truth |
-| Figurehead | Persistent characters/presence | Expose qualified character assets/poses when actually available | Treat future planned animations as present |
-| Drydock | Schema, graph, state, scenario and readiness verification | Prove authoring feasibility and report actionable failures | Certify a feature solely from UI appearance |
-| Sealed Hold | Protected content/media/import/export | Protect source prose, photos and generated draft assets | Permit raw private content in public telemetry |
-| Harborlight | Community release, scanning, licensing and distribution | Publish explicitly approved immutable derivatives | Expose an unpublished mutable draft |
-| Admiralty | AI provider configuration, spend quotas and privileged operations | Apply policy and observe costs | Read Creator secrets casually or confer publication powers |
-| Sounding Line | Tests, evidence and protected-main release decision | Qualify implementation and source-bound journeys | Be bypassed by an AI success claim |
+| Owning system                  | Owns                                                              | SC program may do                                                             | SC program may NOT do                                      |
+| ------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Shipwright / Chronicle Creator | Authoring screens, Story Blocks, graph and Creator workflow       | Provide one accessible composer and govern AI-facing operations               | Duplicate Chronicle identity or progression                |
+| One Voyage                     | Published Chronicle identity, events, sessions, completion truth  | Receive authorized authored definitions and later normal completion proposals | Let AI/Parallax directly change live progression           |
+| Parallax                       | Environment/Scene/version, spatial object and spatial runtime     | Provide scenes, anchors, spatial Library and authored interaction operations  | Declare Chronicle puzzle success unilaterally              |
+| Landfall                       | Worldspaces, routes, waypoints and maps                           | Supply place/navigation reference contracts                                   | Become the puzzle/AI authoring engine                      |
+| Sextant                        | Device capability, sensors and permissions                        | Report available semantic capabilities                                        | Assert GPS/spatial meaning independently                   |
+| Crossdeck                      | One-person/multi-device participation and handoff                 | Describe supported surface combinations                                       | Create duplicate Player sessions                           |
+| Reach/Watchglass               | Target acquisition and visual evidence under respective ownership | Expose qualified interactions/evidence references                             | Silently turn low-confidence detection into completion     |
+| Storytide/Lanternwake          | Narrative experience and presentation authority                   | Define authored transitions and accessible motion                             | Author alternate business-state truth                      |
+| Figurehead                     | Persistent characters/presence                                    | Expose qualified character assets/poses when actually available               | Treat future planned animations as present                 |
+| Drydock                        | Schema, graph, state, scenario and readiness verification         | Prove authoring feasibility and report actionable failures                    | Certify a feature solely from UI appearance                |
+| Sealed Hold                    | Protected content/media/import/export                             | Protect source prose, photos and generated draft assets                       | Permit raw private content in public telemetry             |
+| Harborlight                    | Community release, scanning, licensing and distribution           | Publish explicitly approved immutable derivatives                             | Expose an unpublished mutable draft                        |
+| Admiralty                      | AI provider configuration, spend quotas and privileged operations | Apply policy and observe costs                                                | Read Creator secrets casually or confer publication powers |
+| Sounding Line                  | Tests, evidence and protected-main release decision               | Qualify implementation and source-bound journeys                              | Be bypassed by an AI success claim                         |
 
 ## 9. Design requirements shared by all increments
 
@@ -224,28 +225,28 @@ For each accepted increment, record:
 
 SC-05 must read the separate [Chronicle Architect governing document](./Project_Chronicle_Architect_Governing_Document_v1.0.md). The program must not start AI implementation until current canonical authoring tools, Drydock integration, capability lookup, provider/quota controls, and necessary rights/consent paths are available or the increment explicitly defines and proves a smaller coherent plateau.
 
-Architect is a **high-level orchestration assistant**; the Parallax Spatial Assistant remains a specialized spatial editor. The two may hand off work through canonical operations, never through hidden chat-to-chat state. Neither can override Creator edits, destroy drafts or publish automatically.
+Architect is the **single Creator-facing conversational partner**. Parallax A1 retains its specialized spatial authoring operations, provider/accounting/privacy controls and distinct two-photo room reconstruction workflow behind domain-owned tools. Typed requests and receipts connect those operations to Architect; no second conversation or hidden chat-to-chat state is introduced. The conflicting legacy conversation interface retires only after verified functional parity and owner acceptance. Architect cannot override Creator edits, destroy drafts or publish automatically.
 
 SC-04 now has a **proposed detailed constitution** based on the October 24–25 owner discussion, linked above, while its implementation still requires domain reconciliation and ratification. SC-06 Story Adaptation still requires its own future owner discussion and separate document. The [cross-project Creator Experience amendment](./Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md) and [requirements ledger](./SC_Requirements_Traceability_Ledger_v1.0.md) preserve features that should not be mis-owned by the Puzzle Workshop.
 
 ## 12. Proposed delivery and quality gates for later approval
 
-| Gate | Must be demonstrated before classifying increment product-complete |
-|---|---|
-| G-01 Source reality | Current main contracts inspected, planned-vs-implemented reconciled |
-| G-02 Creator discovery | Normal navigation, coherent screen purpose, desktop/mobile access |
-| G-03 Real authoring | Creator can create/reopen/edit canonical owned artifacts |
-| G-04 Persistence | Save, close, reopen, reload, undo where applicable, and conflict recovery |
-| G-05 Version truth | Immutable editions stable, reused source versions explicit |
-| G-06 Multi-project orchestration | No duplicate One Voyage/Parallax/Shipwright state or unauthorized writes |
-| G-07 Drydock | Schema, graph, branch/outcome and published-content readiness |
-| G-08 Capability | Required/optional hardware and providers correctly negotiated/fallback |
-| G-09 Security | Owner/foreign authorization, privacy/spoilers, media/rights and no leakage |
-| G-10 Accessibility | Keyboard, screen reader, reduced-motion/audio independence and responsive |
-| G-11 Operational truth | Safe failure, cancellation, retry, idempotency, cost and cleanup |
-| G-12 Release evidence | Source-bound tests, protected-main decision, landed-tree verification |
-| G-13 Human acceptance | KG/owner walks through intended experience and accepts visual/product quality |
-| G-14 Final story | A full synthetic Chronicle completed without hidden manual engineering steps |
+| Gate                             | Must be demonstrated before classifying increment product-complete            |
+| -------------------------------- | ----------------------------------------------------------------------------- |
+| G-01 Source reality              | Current main contracts inspected, planned-vs-implemented reconciled           |
+| G-02 Creator discovery           | Normal navigation, coherent screen purpose, desktop/mobile access             |
+| G-03 Real authoring              | Creator can create/reopen/edit canonical owned artifacts                      |
+| G-04 Persistence                 | Save, close, reopen, reload, undo where applicable, and conflict recovery     |
+| G-05 Version truth               | Immutable editions stable, reused source versions explicit                    |
+| G-06 Multi-project orchestration | No duplicate One Voyage/Parallax/Shipwright state or unauthorized writes      |
+| G-07 Drydock                     | Schema, graph, branch/outcome and published-content readiness                 |
+| G-08 Capability                  | Required/optional hardware and providers correctly negotiated/fallback        |
+| G-09 Security                    | Owner/foreign authorization, privacy/spoilers, media/rights and no leakage    |
+| G-10 Accessibility               | Keyboard, screen reader, reduced-motion/audio independence and responsive     |
+| G-11 Operational truth           | Safe failure, cancellation, retry, idempotency, cost and cleanup              |
+| G-12 Release evidence            | Source-bound tests, protected-main decision, landed-tree verification         |
+| G-13 Human acceptance            | KG/owner walks through intended experience and accepts visual/product quality |
+| G-14 Final story                 | A full synthetic Chronicle completed without hidden manual engineering steps  |
 
 G-14 by itself is insufficient if unrelated required branches, devices or conditions remain unproved. Conversely, individual increments should leave current main valid if later SC increments are delayed indefinitely.
 
@@ -282,10 +283,9 @@ A future reference Chronicle should cover both the human creative loop and a cre
 
 This is a **target scenario**, not a claim that five chapters/six puzzles or every named adapter currently work. A fully nonspatial story and a mobile-first physical journey deserve their own independent acceptance examples too.
 
-
 ### October 25 SC-05 detailed design reconciliation
 
-The Creator has now explicitly established that **Chronicle Architect is the one Creator-facing conversational partner** across every tool; the existing Parallax A1 conversational interface is to be retired after verified functional parity, while its spatial authoring capabilities and distinct **two-photo room reconstruction tool** remain available. SC-05's [expanded governing specification](./Project_Chronicle_Architect_Governing_Document_v1.0.md) defines complete full-screen, docked and ambient appearances; the exact supplied lighthouse/coast home and portrait sidebar images; animated shared-element transitions into real tools; Creative Profiles, Story Bible/Storybook, Creative Journal, Creative Commitments and scoped Insights; intelligent authority; and finite **Free/Luna-only, Paid, Pro** AI resource tiers with centrally metered Admiralty accounting. The companion [visual source manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) distinguishes verified image identity from binary GitHub custody still outstanding. The traceability ledger now contains **121 proposed requirements**, including 45 additional SC-05 acceptance conditions. These are **design commitments**, not proof of implementation or tier pricing approval. All integrations remain blocked on applicable domain review and owner's explicit authorization. SC-06 Story Adaptation still requires its separate discussion and constitution.
+The Creator has now explicitly established that **Chronicle Architect is the one Creator-facing conversational partner** across every tool; the existing Parallax A1 conversational interface is to be retired after verified functional parity, while its spatial authoring capabilities and distinct **two-photo room reconstruction tool** remain available. SC-05's [expanded governing specification](./Project_Chronicle_Architect_Governing_Document_v1.0.md) defines complete full-screen, docked and ambient appearances; the exact supplied lighthouse/coast home and portrait sidebar images; animated shared-element transitions into real tools; Creative Profiles, Story Bible/Storybook, Creative Journal, Creative Commitments and scoped Insights; intelligent authority; and finite **Free/Luna-only, Paid, Pro** AI resource tiers with centrally metered Admiralty accounting. The companion [visual source manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) records exact original-byte identity and verified documentation custody, with all ten original PNGs available in the [visual gallery](./visual_references/README.md). The traceability ledger now contains **121 proposed requirements**, including 45 additional SC-05 acceptance conditions. These are **design commitments**, not proof of implementation or tier pricing approval. All integrations remain blocked on applicable domain review and owner's explicit authorization. SC-06 Story Adaptation still requires its separate discussion and constitution.
 
 ## 15. Future amendment discipline
 
@@ -295,7 +295,7 @@ No automatic implementation follows the documentation PR. No outstanding SC or e
 
 ## 16. Source and references
 
-**Primary planning source:** October 14–15, 2026 ChatGPT conversation preserved as project attachment *Spatial Studio Improvements.txt*, especially its definitions of reusable Environments/Scenes, Puzzle Engine ownership, four creation modes, Architect orchestration, story adaptation, capability registry, build sequencing and golden demonstration. That material was a design conversation, not an approved technical implementation claim.
+**Primary planning source:** October 14–15, 2026 ChatGPT conversation preserved as project attachment _Spatial Studio Improvements.txt_, especially its definitions of reusable Environments/Scenes, Puzzle Engine ownership, four creation modes, Architect orchestration, story adaptation, capability registry, build sequencing and golden demonstration. That material was a design conversation, not an approved technical implementation claim.
 
 **Repository context, discoverable October 24, 2026:**
 
@@ -307,7 +307,7 @@ No automatic implementation follows the documentation PR. No outstanding SC or e
 - [Drydock governing records](../../Projects/Project%20Drydock/)
 - [Spatial Chronicle Pilot](../../Projects/Spatial_Chronicle_Pilot/README.md) — integrated test experience, **not** this SC implementation roadmap
 - [SC-04 Puzzle Workshop proposed governing document](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md)
-- [SC-05 exact owner-supplied background/concept image manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) — ten original PNGs source-identified; separate binary ZIP in conversation; GitHub binary import pending.
+- [SC-05 exact owner-supplied background/concept image manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) — all ten original PNGs imported into this draft branch, SHA-256 verified, and individually previewed in the [gallery](./visual_references/README.md); production integration remains future work.
 - [Creator Experience cross-project amendment](./Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md)
 - [Cross-project requirements traceability ledger](./SC_Requirements_Traceability_Ledger_v1.0.md)
 - PR pointers above for SC-00A/B/C, SC-01, SC-02 and SC-07A implementation candidates.
