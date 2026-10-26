@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
@@ -22,7 +23,9 @@ for (const mobile of [false, true])
     baseURL,
   }) => {
     ensureGenericSoundingLineIsolation();
-    const source = process.env.PARALLAX_A1_SOURCE_SHA;
+    const source = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8", windowsHide: true }).trim();
+    if (process.env.PARALLAX_A1_SOURCE_SHA && process.env.PARALLAX_A1_SOURCE_SHA !== source)
+      throw new Error("EXACT_SOURCE_MISMATCH");
     if (!source || !/^[a-f0-9]{40}$/.test(source)) throw new Error("EXACT_SOURCE_REQUIRED");
     const evidence = `artifacts/parallax-tracking-recovery/${source.slice(0, 12)}`;
     await mkdir(evidence, { recursive: true });

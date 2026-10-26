@@ -1940,10 +1940,10 @@ for (const [name, mutate, code] of [
     assert.throws(f.validate, code);
   });
 
-test("fixture scope freezes F16 and keeps only three protected source changes and five exact candidate guards", () => {
+test("fixture scope freezes F16 and keeps only three protected source changes and eight exact candidate fixture repairs", () => {
   assert.equal(Z.base, "03fbcb52bdd3f28f7ce7c029355a07fac6e2f3ce");
   assert.equal(Z.candidate, "bb7572b21ad43b0c5b4d47b52b182f4e2fa46b33");
-  assert.equal(PR776_FIXTURE_SCOPE_PATHS.length, 5);
+  assert.equal(PR776_FIXTURE_SCOPE_PATHS.length, 8);
   assert.equal(PR776_FIXTURE_SCOPE_REPAIR_PATHS.length, 3);
   const f = fixture();
   assert.deepEqual(f.record.fixtureScopePredecessor, Z);

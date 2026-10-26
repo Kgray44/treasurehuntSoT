@@ -336,7 +336,8 @@ test("Creator authors a full scene and navigates during interpolated playback wi
   await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await page.getByRole("button", { name: "Add position animation · 2 s", exact: true }).click();
   const animation = page.getByRole("region", { name: "Object animation editor", exact: true });
-  await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).fill("8");
+  // Keep playback active through navigation and 60 samples on software-rendered CI.
+  await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).fill("30");
   await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).press("Tab");
   await saveCurrentWorkingDraft(page);
   await expect(currentStudioStatus(page)).toHaveText("Working draft saved");
