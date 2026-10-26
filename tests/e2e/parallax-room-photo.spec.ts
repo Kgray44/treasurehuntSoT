@@ -16,6 +16,11 @@ import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
 import type { RendererReceipt } from "../../src/components/studio/parallax/spatial-workstation";
 import { spatialPropStyle } from "../../src/parallax/prop-style";
 
+// These opt-in fixtures require their guarded development runner.
+test.skip(
+  process.env.PARALLAX_ROOM_PHOTO_RUNTIME !== "SYNTHETIC_DEVELOPMENT",
+  "Run the explicitly authorized isolated photo development fixture.",
+);
 test.use({ video: "on", actionTimeout: 30000 });
 test.afterAll(() => db.$disconnect());
 const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;

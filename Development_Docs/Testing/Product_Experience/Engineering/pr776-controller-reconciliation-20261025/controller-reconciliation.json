@@ -21,17 +21,17 @@
   },
   "additionalIndependentPasses": 0,
   "existingOwnerDecisionSha256": "311b4d8ea06696f271bb32bdcfc85634e5b208673947e0897aed00ded87eeb92",
-  "activation": "PROVISIONAL owned-development record only; public qualification pending hosted pilot40258226894; intended only one next normal protected-main merge with first parent e42ee150b8aec488eaa4c0521f55b2d9d092e983; frozen819/703, CBC/CFB, M6/5669, M7/F, M8/F10 and M9/F12, M10/F13, M11/F14 and M12/F15 identities, exact six-path PR776-only generic browser-authority budget and technical pilot fixture repair and all prior review counts remain required. This controller repair adds zero independent product review passes.",
+  "activation": "One next normal protected-main merge after 03fbcb52bdd3f28f7ce7c029355a07fac6e2f3ce permits only the exact test opt-in guards recorded in candidateFixtureBlobs. Original product assertions, all 32 contracts, 118 contexts, 48 deferred states, 938 immutable files and all prior cumulative review counts remain preserved. No additional independent product pass is granted.",
   "requiredRepairBlobs": {
     "tests/e2e/spatial-chronicle-pilot.spec.ts": "8231348e3b26d007c3fbaeff2c4d2acfffb418bb",
     "scripts/sounding-line/browser-authority.mjs": "d9c6f3491e1dd45850bee0c0bc5ae16c98c83181",
     ".prettierignore": "1a7ac7aaddc186905621e957b00e1c11591af9c5",
-    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "5b24cb379e30fed94a5f930a82fd4cb61611a155",
+    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "1a239c7dad731a58d97fbbc7fb93c6d695c42cd5",
     "scripts/sounding-line/experience-reviewed-adoption.mjs": "d8f00d95b1f5d25ef532a6597eabd35caa1cbc0d",
     "scripts/sounding-line/product-experience.mjs": "37cfb4987e1df47bb0ef11cb3aeb9513ad04a438",
     "scripts/sounding-line/experience-prepare.mjs": "e3df75622a9fc947c10d407985dd4e06accdacea",
     "scripts/sounding-line/experience-attestation.mjs": "3529c4a4bf3c4c4cd0079f0eaffac5e9ab96f6be",
-    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "2f4235f33cc138d6cd2eb76b3547c756d1c4bc78",
+    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "814f94fc3e10b5ea6aa178655fd18d26f44b183d",
     "tests/sounding-line/experience-attestation.test.mjs": "e2f4b2077e569dfacfea4008272a951d2f60e837",
     "tests/sounding-line/experience-paired.test.mjs": "df6ea6a17fbc9f09c04d8933ff298eeef159e4ca",
     "scripts/sounding-line/experience-selected-checkout.mjs": "7584473aaac3fe9f4a12762db5e5bd5bc49795ba",
@@ -59,7 +59,7 @@
   "historicalReportSetsPreserved": 8,
   "reviewOrdinals": { "fourth": 9, "second": 23 },
   "ownerAcceptance": "NOT_CLAIMED",
-  "expectedCurrentSourceDigest": "3c84696521d4d5215b513495b3d665149307e1d6c09573f3f7da2a851a899f2c",
+  "expectedCurrentSourceDigest": "b7dfd7ca3bbdfddc71747199ce3c39ba18475a6611e2ae87028ac749be274b06",
   "transportPredecessor": {
     "base": "cbc3e643cc11c172983fb8f6f43036abda590182",
     "baseParents": ["819c992fb15ef0b87299ddaaed143427bd00a13d", "b86fe3abd41daf21e62a7dc876653982fa42bbe4"],
@@ -159,5 +159,25 @@
     "canonicalBytes": 1451427,
     "canonicalBlob": "cf3c9c5968fcd364c4d49b7718c113e81a731165",
     "reviewArtifactId": 12617234771
+  },
+  "fixtureScopePredecessor": {
+    "base": "03fbcb52bdd3f28f7ce7c029355a07fac6e2f3ce",
+    "baseParents": ["e42ee150b8aec488eaa4c0521f55b2d9d092e983", "59d947be442768c0436d961f4ca40783c070dd25"],
+    "baseTree": "0c104fe936fe7f776d17c9a4aae38b1895bac2ff",
+    "candidate": "bb7572b21ad43b0c5b4d47b52b182f4e2fa46b33",
+    "candidateParents": ["d86ac5063ef22664e476bfff332e83dba59e34d0"],
+    "candidateTree": "1c67e1a6531a7bbd80bc5db692508a708d9bdbd4",
+    "sourceDigest": "3c84696521d4d5215b513495b3d665149307e1d6c09573f3f7da2a851a899f2c",
+    "canonicalSha256": "75715b94e8a220ba2df6df900a77a21d46d9e8a3bc8e5d1eaf425f33192718ed",
+    "canonicalBytes": 1451427,
+    "canonicalBlob": "2b361086a7d5a96bef1002c3d196153fd130fdfc",
+    "reviewArtifactId": 12626102983
+  },
+  "candidateFixtureBlobs": {
+    "tests/e2e/parallax-environment-creation.spec.ts": "a0514840a69f814674fc8bcd60cfe61be7dc3f8b",
+    "tests/e2e/parallax-photo-feedback.spec.ts": "2148dbd2422223ed228639daf963a92e2a874ce2",
+    "tests/e2e/parallax-room-photo.spec.ts": "748802947e7e3a907da7f21d5c66538945cd8bbb",
+    "tests/e2e/parallax-owner-room-photo.spec.ts": "631d91a70484b944443f13572143b4e69f84a646",
+    "tests/e2e/parallax-groups.spec.ts": "681cddcebea1d3f2fc26fdc0665d5f05bb0f1172"
   }
 }

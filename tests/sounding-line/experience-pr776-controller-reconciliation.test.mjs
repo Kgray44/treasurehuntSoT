@@ -5,6 +5,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   PR776_CONTROLLER as P,
+  PR776_FIXTURE_SCOPE_PREDECESSOR as Z,
+  PR776_FIXTURE_SCOPE_PATHS,
+  PR776_FIXTURE_SCOPE_REPAIR_PATHS,
   PR776_CONTROLLER_PATHS,
   PR776_TRANSPORT_PREDECESSOR as T,
   PR776_TRANSPORT_REPAIR_PATHS,
@@ -74,7 +77,16 @@ function fixture() {
     },
     evidence: structuredClone(original),
     record: { ...structuredClone(template), status: "ACTIVE", expectedCurrentSourceDigest: CURRENT_SOURCE },
-    parents: [W.base, POLICY_HEAD],
+    parents: [Z.base, POLICY_HEAD],
+    fixtureScopeParents: [...Z.baseParents],
+    fixtureScopeTree: Z.baseTree,
+    fixtureScopeHeadTree: Z.baseTree,
+    fixtureScopeCarrierParents: [...Z.candidateParents],
+    fixtureScopeCarrierTree: Z.candidateTree,
+    fixtureScopeCarrierAncestry: true,
+    fixtureScopeCanonicalTree: new Map([[C, `100644 blob ${Z.canonicalBlob}`]]),
+    fixtureScopeControllerChanges: [...PR776_CONTROLLER_PATHS],
+    fixtureScopeChanges: [...PR776_FIXTURE_SCOPE_REPAIR_PATHS],
     predecessorParents: [...T.baseParents],
     predecessorTree: T.baseTree,
     predecessorHeadTree: T.baseTree,
@@ -160,14 +172,18 @@ function fixture() {
     intakeChanges: [...PR776_INTAKE_REPAIR_PATHS],
     repairChanges: [...PR776_OBSERVABILITY_REPAIR_PATHS],
     baseChanges: [...PR776_CONTROLLER_PATHS],
-    candidateChanges: [...PR776_CONTROLLER_PATHS],
+    candidateChanges: [...PR776_CONTROLLER_PATHS, ...PR776_FIXTURE_SCOPE_PATHS],
     oldTree: new Map(inventory.map((row) => [row.path, `100644 blob ${row.blob}`])),
     baseTree: new Map(Object.entries(template.requiredRepairBlobs).map(([file, oid]) => [file, `100644 blob ${oid}`])),
     canonical: structuredClone(original),
     ancestry: true,
     recordPresent: true,
   };
-  f.candidateTree = new Map([...f.oldTree, ...f.baseTree]);
+  f.candidateTree = new Map([
+    ...f.oldTree,
+    ...f.baseTree,
+    ...Object.entries(template.candidateFixtureBlobs).map(([file, oid]) => [file, `100644 blob ${oid}`]),
+  ]);
   f.oldIndex = {
     version: 1,
     generated_at: "2026-10-25",
@@ -184,6 +200,26 @@ function fixture() {
   f.oldMatrix = 'header\n"Development_Docs/existing.md","historical status preserved"\n';
   f.currentMatrix = f.oldMatrix + added.map((file) => `"${file}","generated migration inventory"`).join("\n") + "\n";
   f.git = (_, args) => {
+    if (args[0] === "show" && args[1] === "-s" && [Z.base, Z.candidate].includes(args[3]))
+      return Buffer.from((args[3] === Z.base ? f.fixtureScopeParents : f.fixtureScopeCarrierParents).join(" "));
+    if (args[0] === "rev-parse" && [Z.base, Z.baseParents[1], Z.candidate].some((sha) => args[1] === sha + "^{tree}"))
+      return Buffer.from(
+        args[1] === Z.base + "^{tree}"
+          ? f.fixtureScopeTree
+          : args[1] === Z.candidate + "^{tree}"
+            ? f.fixtureScopeCarrierTree
+            : f.fixtureScopeHeadTree,
+      );
+    if (args[0] === "diff") {
+      if (args[3] === P.oldBase && args[4] === Z.base) return Buffer.from(f.fixtureScopeControllerChanges.join("\n"));
+      if (args[3] === W.base && args[4] === Z.base) return Buffer.from(f.genericBudgetChanges.join("\n"));
+      if (args[3] === Z.base && args[4] === BASE) return Buffer.from(f.fixtureScopeChanges.join("\n"));
+    }
+    if (args[0] === "merge-base" && args[2] === Z.candidate)
+      assert.equal(f.fixtureScopeCarrierAncestry, true, "F16_ANCESTRY_REJECTED");
+    if (args[0] === "ls-tree" && args[1] === "-rz" && args[2] === Z.candidate)
+      return Buffer.from([...f.fixtureScopeCanonicalTree].map(([file, meta]) => `${meta}\t${file}\0`).join(""));
+
     if (args[0] === "show" && args[1] === "-s")
       return Buffer.from(
         (args[3] === T.base
@@ -360,7 +396,8 @@ function fixture() {
           revision === S.candidate ||
           revision === J.candidate ||
           revision === V.candidate ||
-          revision === W.candidate
+          revision === W.candidate ||
+          revision === Z.candidate
         ) {
           f.historicalCanonicalBlobReads += 1;
           throw Error("FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ");
@@ -379,7 +416,7 @@ function fixture() {
   f.validate = () => validatePR776ReviewedIdentity(f.bind(), f.evidence, { root: "pure-fixture", readGit: f.git });
   return f;
 }
-test("finite ninth controller merge retains the exact spent32-row review with zero new passes", () => {
+test("finite tenth controller merge retains the exact spent32-row review with zero new passes", () => {
   const f = fixture(),
     current = f.bind(),
     old = pr776HistoricalReviewedPlan(current);
@@ -1901,4 +1938,114 @@ for (const [name, mutate, code] of [
     const f = fixture();
     mutate(f);
     assert.throws(f.validate, code);
+  });
+
+test("fixture scope freezes F16 and keeps only three protected source changes and five exact candidate guards", () => {
+  assert.equal(Z.base, "03fbcb52bdd3f28f7ce7c029355a07fac6e2f3ce");
+  assert.equal(Z.candidate, "bb7572b21ad43b0c5b4d47b52b182f4e2fa46b33");
+  assert.equal(PR776_FIXTURE_SCOPE_PATHS.length, 5);
+  assert.equal(PR776_FIXTURE_SCOPE_REPAIR_PATHS.length, 3);
+  const f = fixture();
+  assert.deepEqual(f.record.fixtureScopePredecessor, Z);
+  assert.deepEqual(Object.keys(f.record.candidateFixtureBlobs).sort(), [...PR776_FIXTURE_SCOPE_PATHS].sort());
+  assert.equal(f.validate(), true);
+  assert.equal(f.historicalCanonicalBlobReads, 0);
+});
+for (const [name, mutate] of [
+  [
+    "changed M13 parent",
+    (f) => {
+      f.fixtureScopeParents[1] = POLICY_HEAD;
+    },
+  ],
+  [
+    "changed M13 tree",
+    (f) => {
+      f.fixtureScopeTree = TREE;
+    },
+  ],
+  [
+    "changed qualified C16 tree",
+    (f) => {
+      f.fixtureScopeHeadTree = TREE;
+    },
+  ],
+  [
+    "missing M13 controller path",
+    (f) => {
+      f.fixtureScopeControllerChanges.pop();
+    },
+  ],
+  [
+    "changed F16 parent",
+    (f) => {
+      f.fixtureScopeCarrierParents[0] = POLICY_HEAD;
+    },
+  ],
+  [
+    "changed F16 tree",
+    (f) => {
+      f.fixtureScopeCarrierTree = TREE;
+    },
+  ],
+  [
+    "lost F16 ancestry",
+    (f) => {
+      f.fixtureScopeCarrierAncestry = false;
+    },
+  ],
+  [
+    "changed F16 canonical",
+    (f) => {
+      f.fixtureScopeCanonicalTree.set(C, "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "lost protected repair",
+    (f) => {
+      f.fixtureScopeChanges.pop();
+    },
+  ],
+  [
+    "unrelated protected repair",
+    (f) => {
+      f.fixtureScopeChanges.push("src/unrelated.ts");
+    },
+  ],
+  [
+    "changed frozen record",
+    (f) => {
+      f.record.fixtureScopePredecessor.sourceDigest = "a".repeat(64);
+    },
+  ],
+  [
+    "missing fixture pin",
+    (f) => {
+      delete f.record.candidateFixtureBlobs[PR776_FIXTURE_SCOPE_PATHS[0]];
+    },
+  ],
+  [
+    "extra fixture pin",
+    (f) => {
+      f.record.candidateFixtureBlobs["src/unrelated.ts"] = "a".repeat(40);
+    },
+  ],
+  [
+    "changed guard source",
+    (f) => {
+      f.candidateTree.set(PR776_FIXTURE_SCOPE_PATHS[0], "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "changed guard mode",
+    (f) => {
+      const p = PR776_FIXTURE_SCOPE_PATHS[0];
+      f.candidateTree.set(p, f.candidateTree.get(p).replace("100644", "100755"));
+    },
+  ],
+])
+  test("fixture scope rejects " + name, () => {
+    const f = fixture();
+    mutate(f);
+    assert.throws(() => f.validate());
   });

@@ -138,6 +138,7 @@ test("Visible Bedroom geometry reaches the Assistant and a retained real respons
   context,
   baseURL,
 }) => {
+  test.skip(process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1", "Run the guarded unpaid Parallax browser fixture.");
   ensureGenericSoundingLineIsolation();
   const account = await closureAccount("Synthetic Room-Aware Assistant Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
@@ -381,6 +382,7 @@ test("Assistant previews and applies grouping and whole-group motion through the
   context,
   baseURL,
 }) => {
+  test.skip(process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1", "Run the guarded unpaid Parallax browser fixture.");
   ensureGenericSoundingLineIsolation();
   if (process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1") throw new Error("Unpaid synthetic provider required");
   const account = await closureAccount("Synthetic Assistant Groups Creator");
@@ -645,6 +647,7 @@ test("Assistant retains general follow-up intent, removes a reviewed asset and e
   context,
   baseURL,
 }) => {
+  test.skip(process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1", "Run the guarded unpaid Parallax browser fixture.");
   ensureGenericSoundingLineIsolation();
   const account = await closureAccount("Synthetic Advanced Assistant Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
