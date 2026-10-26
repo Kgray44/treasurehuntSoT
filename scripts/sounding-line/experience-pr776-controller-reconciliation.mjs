@@ -139,6 +139,9 @@ export const PR776_FIXTURE_SCOPE_PATHS = Object.freeze([
   "tests/e2e/parallax-room-photo.spec.ts",
   "tests/e2e/parallax-owner-room-photo.spec.ts",
   "tests/e2e/parallax-groups.spec.ts",
+  "tests/e2e/parallax-tracking-recovery.spec.ts",
+  "tests/e2e/parallax-workstation.spec.ts",
+  "tests/e2e/parallax-asset-quality.spec.ts",
 ]);
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
