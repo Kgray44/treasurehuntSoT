@@ -282,6 +282,11 @@ A future reference Chronicle should cover both the human creative loop and a cre
 
 This is a **target scenario**, not a claim that five chapters/six puzzles or every named adapter currently work. A fully nonspatial story and a mobile-first physical journey deserve their own independent acceptance examples too.
 
+
+### October 25 SC-05 detailed design reconciliation
+
+The Creator has now explicitly established that **Chronicle Architect is the one Creator-facing conversational partner** across every tool; the existing Parallax A1 conversational interface is to be retired after verified functional parity, while its spatial authoring capabilities and distinct **two-photo room reconstruction tool** remain available. SC-05's [expanded governing specification](./Project_Chronicle_Architect_Governing_Document_v1.0.md) defines complete full-screen, docked and ambient appearances; the exact supplied lighthouse/coast home and portrait sidebar images; animated shared-element transitions into real tools; Creative Profiles, Story Bible/Storybook, Creative Journal, Creative Commitments and scoped Insights; intelligent authority; and finite **Free/Luna-only, Paid, Pro** AI resource tiers with centrally metered Admiralty accounting. The companion [visual source manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) distinguishes verified image identity from binary GitHub custody still outstanding. The traceability ledger now contains **121 proposed requirements**, including 45 additional SC-05 acceptance conditions. These are **design commitments**, not proof of implementation or tier pricing approval. All integrations remain blocked on applicable domain review and owner's explicit authorization. SC-06 Story Adaptation still requires its separate discussion and constitution.
+
 ## 15. Future amendment discipline
 
 On owner acceptance of this roadmap, establish a machine-readable SC ledger referencing: increment, owner, governing source, exact accepted base/head, status, dependencies, PR, risk, protected decision, owner approval, next action. Do not use an informal green emoji as release authority. Record adjustments in additive amendments, not by overwriting historical accepted reports.
@@ -302,6 +307,7 @@ No automatic implementation follows the documentation PR. No outstanding SC or e
 - [Drydock governing records](../../Projects/Project%20Drydock/)
 - [Spatial Chronicle Pilot](../../Projects/Spatial_Chronicle_Pilot/README.md) — integrated test experience, **not** this SC implementation roadmap
 - [SC-04 Puzzle Workshop proposed governing document](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md)
+- [SC-05 exact owner-supplied background/concept image manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) — ten original PNGs source-identified; separate binary ZIP in conversation; GitHub binary import pending.
 - [Creator Experience cross-project amendment](./Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md)
 - [Cross-project requirements traceability ledger](./SC_Requirements_Traceability_Ledger_v1.0.md)
 - PR pointers above for SC-00A/B/C, SC-01, SC-02 and SC-07A implementation candidates.
