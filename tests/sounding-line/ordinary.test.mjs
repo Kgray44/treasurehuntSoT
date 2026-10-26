@@ -13,6 +13,7 @@ import { splitMigrationStatements, sqliteBootstrapDatabaseUrl } from "../../scri
 import {
   assertBrowserAuthorityTopology,
   browserRuntimeReceipt,
+  browserAuthorityExecutionTimeoutMs,
   runBrowserAuthority,
   startTaskOwnedHttpProxy,
   stopProxy,
@@ -2301,3 +2302,42 @@ test("generic browser credentials are ephemeral and restricted to the isolated p
 });
 import "./experience-checkout-recovery.test.mjs";
 import "../workspaces/lifecycle.test.mjs";
+
+test("only exact PR776 generic browser authority receives its fixed 45-minute CLI budget", () => {
+  const rows = [
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic", SOUNDING_LINE_PR_NUMBER: "776" }, 45 * 60_000],
+    [{}, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic" }, 15 * 60_000],
+    [{ SOUNDING_LINE_PR_NUMBER: "776" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic", SOUNDING_LINE_PR_NUMBER: "721" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic", SOUNDING_LINE_PR_NUMBER: "0776" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic", SOUNDING_LINE_PR_NUMBER: 776 }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "harborlight-phase3", SOUNDING_LINE_PR_NUMBER: "776" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "unknown", SOUNDING_LINE_PR_NUMBER: "776" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "GENERIC", SOUNDING_LINE_PR_NUMBER: "776" }, 15 * 60_000],
+  ];
+  for (const [environment, expected] of rows) {
+    const unchanged = structuredClone(environment);
+    assert.equal(browserAuthorityExecutionTimeoutMs(environment), expected);
+    assert.deepEqual(environment, unchanged);
+    assert.equal(
+      browserAuthorityExecutionTimeoutMs({
+        ...environment,
+        SOUNDING_LINE_BROWSER_EXECUTION_TIMEOUT_MS: "999999999",
+        executionTimeoutMs: 1,
+      }),
+      expected,
+      "unrecognized caller durations never change the finite selector",
+    );
+  }
+});
+test("browser authority CLI uses the scoped selector while API and experience capture retain their budgets", () => {
+  const authority = readFileSync("scripts/sounding-line/browser-authority.mjs", "utf8");
+  const capture = readFileSync("scripts/sounding-line/experience-browser.mjs", "utf8");
+  assert.match(authority, /executionTimeoutMs = 15 \* 60_000/u);
+  assert.match(
+    authority,
+    /async function main\(\)[\s\S]*?const receipt = await runBrowserAuthority\(\{\s*root,\s*executionTimeoutMs: browserAuthorityExecutionTimeoutMs\(process.env\),/u,
+  );
+  assert.match(capture, /executionTimeoutMs: PREPARATION_PHASES\.CAPTURE/u);
+});
