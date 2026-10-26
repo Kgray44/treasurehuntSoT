@@ -210,11 +210,11 @@ test("R26 preserves the existing authorized 90-minute Crossdeck ceiling and unch
   const jobs = workflow.split(/\n  (?=[a-z][a-z-]*:\n)/u);
   const final = jobs.find((job) => job.startsWith("final-check:\n"));
   assert(final);
+  const timeout = final.match(/\n    timeout-minutes: ([^\n]+)/u)?.[1];
+  const pr776Allowance = "(github.event.pull_request.number == 776 || inputs.pr_number == '776') && 120 || ";
+  assert(timeout?.includes(pr776Allowance));
   assert.equal(
-    // PR776 has a separately scoped allowance; preserve the frozen Crossdeck contract.
-    final
-      .match(/\n    timeout-minutes: ([^\n]+)/u)?.[1]
-      .replace(" || github.event.pull_request.number == 776 || inputs.pr_number == '776'", ""),
+    timeout.replace(pr776Allowance, ""),
     "${{ (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}",
   );
   assert.equal(jobs.filter((job) => job.includes("&& 90 || 45")).length, 1);

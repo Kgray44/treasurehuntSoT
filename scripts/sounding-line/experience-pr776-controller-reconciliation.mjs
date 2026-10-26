@@ -156,6 +156,7 @@ export const PR776_FIXTURE_SCOPE_PATHS = Object.freeze([
   "tests/e2e/parallax-workstation.spec.ts",
   "tests/e2e/parallax-asset-quality.spec.ts",
   "tests/e2e/parallax-sc02-experience.spec.ts",
+  "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
 ]);
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
@@ -289,6 +290,13 @@ export const PR776_FIXTURE_SCOPE_REPAIR_PATHS = Object.freeze([
   "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
   PR776_RECORD_PATH,
 ]);
+export const PR776_CURRENT_REPAIR_PATHS = Object.freeze([
+  ...PR776_FIXTURE_SCOPE_REPAIR_PATHS,
+  ".github/workflows/sounding-line-ordinary.yml",
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
+]);
+export const PR776_AUTH_SESSION_BASE = "a9073c8f469828b2a5741cf643d0e89cca06cdd3";
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
   JSON.stringify(value, (_, item) =>
@@ -342,7 +350,7 @@ function inspect({ root, plan, readGit = git }) {
   const priorControllerPaths = PR776_CONTROLLER_PATHS.filter(
     (file) => !PR776_GENERIC_BUDGET_ADDED_PATHS.includes(file),
   );
-  need(parents.length === 2 && parents[0] === authReuse.base, "ONE_NEXT_NORMAL_AUTH_SESSION_MERGE_REQUIRED");
+  need(parents.length === 2 && parents[0] === PR776_AUTH_SESSION_BASE, "ONE_NEXT_NORMAL_AUTH_SESSION_MERGE_REQUIRED");
   need(
     same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
       text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
@@ -505,6 +513,10 @@ function inspect({ root, plan, readGit = git }) {
     "FROZEN_AUTH_REUSE_CANDIDATE_CHANGED",
   );
   need(
+    exactPaths(paths(read, root, authReuse.base, PR776_AUTH_SESSION_BASE), PR776_FIXTURE_SCOPE_REPAIR_PATHS),
+    "AUTH_SESSION_REPAIR_CHANGED_PATHS",
+  );
+  need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
       text(read, root, ["rev-parse", `${parents[1]}^{tree}`]),
     "QUALIFIED_HEAD_TREE_REQUIRED",
@@ -527,11 +539,11 @@ function inspect({ root, plan, readGit = git }) {
     "GENERIC_BUDGET_REPAIR_CHANGED_PATHS",
   );
   need(
-    exactPaths(paths(read, root, fixtureScope.base, plan.baseSha), PR776_FIXTURE_SCOPE_REPAIR_PATHS),
+    exactPaths(paths(read, root, fixtureScope.base, plan.baseSha), PR776_CURRENT_REPAIR_PATHS),
     "FIXTURE_SCOPE_REPAIR_CHANGED_PATHS",
   );
   need(
-    exactPaths(paths(read, root, authReuse.base, plan.baseSha), PR776_FIXTURE_SCOPE_REPAIR_PATHS),
+    exactPaths(paths(read, root, authReuse.base, plan.baseSha), PR776_CURRENT_REPAIR_PATHS),
     "AUTH_REUSE_REPAIR_CHANGED_PATHS",
   );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),

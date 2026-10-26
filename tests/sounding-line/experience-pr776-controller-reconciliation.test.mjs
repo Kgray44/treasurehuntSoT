@@ -9,6 +9,8 @@ import {
   PR776_AUTH_REUSE_PREDECESSOR as A,
   PR776_FIXTURE_SCOPE_PATHS,
   PR776_FIXTURE_SCOPE_REPAIR_PATHS,
+  PR776_CURRENT_REPAIR_PATHS,
+  PR776_AUTH_SESSION_BASE,
   PR776_CONTROLLER_PATHS,
   PR776_TRANSPORT_PREDECESSOR as T,
   PR776_TRANSPORT_REPAIR_PATHS,
@@ -78,7 +80,7 @@ function fixture() {
     },
     evidence: structuredClone(original),
     record: { ...structuredClone(template), status: "ACTIVE", expectedCurrentSourceDigest: CURRENT_SOURCE },
-    parents: [A.base, POLICY_HEAD],
+    parents: [PR776_AUTH_SESSION_BASE, POLICY_HEAD],
     fixtureScopeParents: [...Z.baseParents],
     fixtureScopeTree: Z.baseTree,
     fixtureScopeHeadTree: Z.baseTree,
@@ -88,6 +90,7 @@ function fixture() {
     fixtureScopeCanonicalTree: new Map([[C, `100644 blob ${Z.canonicalBlob}`]]),
     fixtureScopeControllerChanges: [...PR776_CONTROLLER_PATHS],
     fixtureScopeChanges: [...PR776_FIXTURE_SCOPE_REPAIR_PATHS],
+    currentRepairChanges: [...PR776_CURRENT_REPAIR_PATHS],
     authReuseParents: [...A.baseParents],
     authReuseTree: A.baseTree,
     authReuseHeadTree: A.baseTree,
@@ -95,7 +98,8 @@ function fixture() {
     authReuseCarrierTree: A.candidateTree,
     authReuseCarrierAncestry: true,
     authReuseCanonicalTree: new Map([[C, `100644 blob ${A.canonicalBlob}`]]),
-    authReuseChanges: [...PR776_FIXTURE_SCOPE_REPAIR_PATHS],
+    authReuseChanges: [...PR776_CURRENT_REPAIR_PATHS],
+    authSessionChanges: [...PR776_FIXTURE_SCOPE_REPAIR_PATHS],
     predecessorParents: [...T.baseParents],
     predecessorTree: T.baseTree,
     predecessorHeadTree: T.baseTree,
@@ -221,6 +225,8 @@ function fixture() {
       );
     if (args[0] === "diff" && args[3] === Z.base && args[4] === A.base)
       return Buffer.from(f.fixtureScopeChanges.join("\n"));
+    if (args[0] === "diff" && args[3] === A.base && args[4] === PR776_AUTH_SESSION_BASE)
+      return Buffer.from(f.authSessionChanges.join("\n"));
     if (args[0] === "diff" && args[3] === A.base && args[4] === BASE) return Buffer.from(f.authReuseChanges.join("\n"));
     if (args[0] === "merge-base" && args[2] === A.candidate)
       assert.equal(f.authReuseCarrierAncestry, true, "F17_ANCESTRY_REJECTED");
@@ -239,7 +245,7 @@ function fixture() {
     if (args[0] === "diff") {
       if (args[3] === P.oldBase && args[4] === Z.base) return Buffer.from(f.fixtureScopeControllerChanges.join("\n"));
       if (args[3] === W.base && args[4] === Z.base) return Buffer.from(f.genericBudgetChanges.join("\n"));
-      if (args[3] === Z.base && args[4] === BASE) return Buffer.from(f.fixtureScopeChanges.join("\n"));
+      if (args[3] === Z.base && args[4] === BASE) return Buffer.from(f.currentRepairChanges.join("\n"));
     }
     if (args[0] === "merge-base" && args[2] === Z.candidate)
       assert.equal(f.fixtureScopeCarrierAncestry, true, "F16_ANCESTRY_REJECTED");
@@ -1970,13 +1976,36 @@ for (const [name, mutate, code] of [
 test("fixture scope freezes F16 and keeps only three protected source changes and nine exact candidate fixture repairs", () => {
   assert.equal(Z.base, "03fbcb52bdd3f28f7ce7c029355a07fac6e2f3ce");
   assert.equal(Z.candidate, "bb7572b21ad43b0c5b4d47b52b182f4e2fa46b33");
-  assert.equal(PR776_FIXTURE_SCOPE_PATHS.length, 9);
+  assert.equal(PR776_FIXTURE_SCOPE_PATHS.length, 10);
   assert.equal(PR776_FIXTURE_SCOPE_REPAIR_PATHS.length, 3);
+  assert.equal(PR776_CURRENT_REPAIR_PATHS.length, 6);
   const f = fixture();
   assert.deepEqual(f.record.fixtureScopePredecessor, Z);
   assert.deepEqual(Object.keys(f.record.candidateFixtureBlobs).sort(), [...PR776_FIXTURE_SCOPE_PATHS].sort());
+  assert(PR776_FIXTURE_SCOPE_PATHS.includes("tests/e2e/parallax-sc00c-expanded-library.spec.ts"));
   assert.equal(f.validate(), true);
   assert.equal(f.historicalCanonicalBlobReads, 0);
+});
+test("current repair binds the longer PR776 verification window without changing historical repairs", () => {
+  const f = fixture();
+  assert.equal(f.validate(), true);
+  f.currentRepairChanges = f.currentRepairChanges.filter(
+    (file) => file !== ".github/workflows/sounding-line-ordinary.yml",
+  );
+  assert.throws(() => f.validate(), /FIXTURE_SCOPE_REPAIR_CHANGED_PATHS/u);
+});
+test("completed auth-session repair remains exactly bound before the final CI repair", () => {
+  const f = fixture();
+  assert.equal(f.validate(), true);
+  f.authSessionChanges.pop();
+  assert.throws(() => f.validate(), /AUTH_SESSION_REPAIR_CHANGED_PATHS/u);
+});
+test("current SC00C keyboard fixture remains pinned to its exact candidate blob", () => {
+  const f = fixture();
+  const file = "tests/e2e/parallax-sc00c-expanded-library.spec.ts";
+  assert.equal(f.validate(), true);
+  f.candidateTree.set(file, "100644 blob " + "a".repeat(40));
+  assert.throws(() => f.validate(), /FIXTURE_SCOPE_BLOB_CHANGED/u);
 });
 for (const [name, mutate] of [
   [
