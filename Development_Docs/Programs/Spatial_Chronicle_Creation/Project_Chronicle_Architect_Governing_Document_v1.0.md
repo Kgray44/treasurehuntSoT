@@ -20,7 +20,7 @@ source_basis: October 14-15 2026 original Creator/Parallax discussion and curren
 
 ### Document status and integration caution
 
-This is a **proposed, detailed SC-05 governing specification** for owner and protected-main review. It is a documentation candidate, not evidence that SC-05 has been implemented or permission to begin an implementation phase. It preserves the October 14–15 design: the assistant belongs to Chronicle Creator/Shipwright, NOT inside Parallax as a second name for its specialized Spatial Assistant. It relies upon real current capabilities rather than inventing unsupported features.
+This is a **proposed, detailed SC-05 governing specification** for owner and protected-main review. It is a documentation candidate, not evidence that SC-05 has been implemented or permission to begin an implementation phase. It preserves the October 14–15 distinction between whole-Chronicle AI and Parallax-domain spatial authoring, **updated by the October 25 owner decision to provide exactly one Creator-facing conversational assistant**. Chronicle Architect is the one visible AI partner; the previously accepted Parallax Spatial Assistant functionality is preserved behind domain-owned operations and its conflicting chat interface retires only after safe migration. It relies upon real current capabilities rather than inventing unsupported features.
 
 It must be read alongside the proposed [SC program roadmap](./Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md) and current governing authorities. If an existing accepted contract differs from a conceptual contract below, the implementation MUST explicitly reconcile the discrepancy against current source. No schema/interface described here is an instruction to introduce duplicate Prisma models, new progression state, or shadow databases.
 
@@ -47,22 +47,22 @@ Architect checks the Creator's current owned resources and actually available fe
 
 ## 2. Product ownership and boundaries
 
-**Experience owner:** Chronicle Creator in Project Shipwright/Creator Studio. **Program identity:** SC-05. **Runtime and published progression owner:** One Voyage. **Spatial editor and scene owner:** Parallax. **Specialized spatial AI owner:** Parallax A1 Spatial Assistant. **Validation owner:** Drydock. **Model configuration/AI quotas owner:** Admiralty or its accepted canonical policy. **Software acceptance owner:** Sounding Line. **Protection:** Sealed Hold and the existing user/account/role/privacy systems. **Publication/distribution:** canonical Chronicle publishing and Harborlight where appropriate.
+**Experience owner:** Chronicle Creator in Project Shipwright/Creator Studio. **Program identity:** SC-05. **Runtime and published progression owner:** One Voyage. **Spatial editor and scene owner:** Parallax. **Existing spatial AI operation owner:** Parallax A1, retained as domain capability beneath the single Chronicle Architect interface. **Validation owner:** Drydock. **Model configuration/AI quotas owner:** Admiralty or its accepted canonical policy. **Software acceptance owner:** Sounding Line. **Protection:** Sealed Hold and the existing user/account/role/privacy systems. **Publication/distribution:** canonical Chronicle publishing and Harborlight where appropriate.
 
 Architect owns *intent interpretation, planning, tool orchestration, explanation, approval collection, mutation receipts, provenance and workflow continuity*. It does NOT own the underlying business entities, redefine ownership of other projects, operate live Voyages, or create new unversioned “AI Chronicle” data outside the normal Creator system.
 
-### 2.1 Architect versus Parallax Spatial Assistant
+### 2.1 One Architect user experience versus preserved Parallax-domain operations
 
-| Chronicle Architect | Parallax Spatial Assistant |
+| Single Creator-facing Chronicle Architect | Retained Parallax A1 domain operation layer (not another chat persona) |
 |---|---|
-| Whole Chronicle narrative and authoring coordinator | Spatial scene and environment-specific assistant |
+| Whole Chronicle narrative and authoring coordinator | Specialized spatial scene and environment-specific authoring capability |
 | Understands chapters, story flow, puzzles, audience, endings, asset/scene references | Understands surfaces, scene entities, lights, placements, animation/effect properties |
 | Selects which project operations are relevant | Provides governed Parallax-domain authoring operations |
 | Can request or reuse a particular spatial scene | Must not decide Chronicle completion or publish an entire story |
 | Verifies with Drydock and Creator approval | Produces only domain-scoped draft changes/evidence |
 | Never gives itself Parallax permissions it lacks | Never inherits broad Chronicle permissions just because an AI requested work |
 
-A handoff between assistants should be a **typed request to a domain operation** with source, parameters, expected output and receipt, not hidden cross-agent memory or vague “other assistant, please finish this scene.” No new AI feature can weaken existing Parallax A1 provider/accounting/privacy controls.
+A handoff from Architect to Parallax must be a **typed request to an owned domain operation**, with source, parameters, expected output and receipt, not an invisible second conversation/personality or a vague “other assistant, please finish this scene.” Only Architect remains the Creator-facing assistant. No new AI feature can weaken existing Parallax A1 provider/accounting/privacy controls.
 
 ### 2.2 Editor parity
 
@@ -1158,7 +1158,7 @@ Creator selects Adapt a Story from the four-path New Chronicle entry; enters the
 | ARX-037 | Free retains real thoughtful critique, scoped assisted authoring, Creator preferences and reliable compact Story Bible; no useless crippled assistant. |
 | ARX-038 | Paid/Pro can buy richer Storybook, deeper/more frequent reviews and larger production budgets but free/manual saved tools remain usable on quota exhaustion. |
 | ARX-039 | Actual provider costs for Architect, Parallax and dedicated two-photo reconstruction settle into existing **Admiralty AI Usage & Quotas**, not competing ledgers. |
-| ARX-040 | AdmiraIty reports per model/tier/operation/Chronicle, admission/exposure/settlement, token/cache use, errors/retries, latency and accepted-result costs without private prompt leaks. |
+| ARX-040 | Admiralty reports per model/tier/operation/Chronicle, admission/exposure/settlement, token/cache use, errors/retries, latency and accepted-result costs without private prompt leaks. |
 | ARX-041 | Before final tier pricing, a bounded authorized benchmark covers short, medium, huge multi-Chronicle/multi-session workflows, memory/context, Storybook, creative evaluation, spatial/puzzle/media and revision loops. |
 | ARX-042 | Billing UNKNOWN/timeouts remain conservatively reserved; no silent retry, provider auto-escalation or out-of-pocket exposure on cap. |
 | ARX-043 | Universal Playtest and Drydock show actual scenario/structural evidence separately from AI subjective evaluation and physical-device proof. |
