@@ -15,10 +15,11 @@ Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](docu
 ## Spatial Chronicle Creation program (proposed)
 
 - [SC-00–SC-11 master roadmap](Programs/Spatial_Chronicle_Creation/Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md) — proposed integrated Creator/Spatial Studio roadmap, ownership, dependencies and acceptance gates.
-- [SC-05 Chronicle Architect governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Architect_Governing_Document_v1.0.md) — proposed AI-assisted whole-Chronicle planning, governed operations, cost/privacy controls and validation.
+- [SC-05 Chronicle Architect governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Architect_Governing_Document_v1.0.md) — expanded creative-partner constitution: full/docked/ambient glass UI, real supplied background assets, unified Parallax AI, protected Creator intent, source-aware memory, Story Bible, Insights, scoped edits, cinematic direction, Free/Paid/Pro limits and Admiralty accounting.
 - [SC-04 Puzzle Composition governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md) — detailed proposed Puzzle Workshop, universal 2D baseline, alternative variants, crew/Captain logic and analytics.
 - [Creator Experience cross-project amendment](Programs/Spatial_Chronicle_Creation/Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md) — equal-standing tools, named branch editing, contextual navigation and universal Playtest.
-- [Cross-project requirements traceability ledger](Programs/Spatial_Chronicle_Creation/SC_Requirements_Traceability_Ledger_v1.0.md) — 76 individually tracked proposed requirements, owners, contributors, dependencies and acceptance evidence.
+- [Cross-project requirements traceability ledger](Programs/Spatial_Chronicle_Creation/SC_Requirements_Traceability_Ledger_v1.0.md) — 121 proposed requirements including 45 detailed SC-05 acceptance gates, owners, dependencies and evidence status.
+- [SC-05 owner visual reference image manifest](Programs/Spatial_Chronicle_Creation/SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) — exact original ten-PNG file identities and hashes; two real required background images; binary GitHub import explicitly pending.
 - **SC-06 Story Adaptation** remains intentionally reserved for future owner design discussion. All new SC documents are proposed, not integrated functionality.
 
 ## Current project homes
