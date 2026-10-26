@@ -21,15 +21,17 @@
   },
   "additionalIndependentPasses": 0,
   "existingOwnerDecisionSha256": "311b4d8ea06696f271bb32bdcfc85634e5b208673947e0897aed00ded87eeb92",
-  "activation": "Only one next normal protected-main merge with first parent 1229d4c549160ed72d159c0b708a11352e2f0599; frozen819/703, CBC/CFB, M6/5669, M7/F, M8/F10 and M9/F12, M10/F13 and M11/F14 identities, exact seven-path PR776-only final-job budget repair with narrowly corrected R25/R26 current-workflow assertions and all prior review counts remain required. This controller repair adds zero independent product review passes.",
+  "activation": "PROVISIONAL owned-development record only; public qualification pending hosted pilot40258226894; intended only one next normal protected-main merge with first parent e42ee150b8aec488eaa4c0521f55b2d9d092e983; frozen819/703, CBC/CFB, M6/5669, M7/F, M8/F10 and M9/F12, M10/F13, M11/F14 and M12/F15 identities, exact six-path PR776-only generic browser-authority budget and technical pilot fixture repair and all prior review counts remain required. This controller repair adds zero independent product review passes.",
   "requiredRepairBlobs": {
+    "tests/e2e/spatial-chronicle-pilot.spec.ts": "8231348e3b26d007c3fbaeff2c4d2acfffb418bb",
+    "scripts/sounding-line/browser-authority.mjs": "d9c6f3491e1dd45850bee0c0bc5ae16c98c83181",
     ".prettierignore": "1a7ac7aaddc186905621e957b00e1c11591af9c5",
-    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "9aa42e7927a1e8e431fba77eba5c2339a3be21fc",
+    "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs": "5b24cb379e30fed94a5f930a82fd4cb61611a155",
     "scripts/sounding-line/experience-reviewed-adoption.mjs": "d8f00d95b1f5d25ef532a6597eabd35caa1cbc0d",
     "scripts/sounding-line/product-experience.mjs": "37cfb4987e1df47bb0ef11cb3aeb9513ad04a438",
     "scripts/sounding-line/experience-prepare.mjs": "e3df75622a9fc947c10d407985dd4e06accdacea",
     "scripts/sounding-line/experience-attestation.mjs": "3529c4a4bf3c4c4cd0079f0eaffac5e9ab96f6be",
-    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "a398e8f2eedb58f82a2937b5f68de05d952cf917",
+    "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs": "2f4235f33cc138d6cd2eb76b3547c756d1c4bc78",
     "tests/sounding-line/experience-attestation.test.mjs": "e2f4b2077e569dfacfea4008272a951d2f60e837",
     "tests/sounding-line/experience-paired.test.mjs": "df6ea6a17fbc9f09c04d8933ff298eeef159e4ca",
     "scripts/sounding-line/experience-selected-checkout.mjs": "7584473aaac3fe9f4a12762db5e5bd5bc49795ba",
@@ -44,7 +46,7 @@
     "tests/sounding-line/experience-r26.test.mjs": "c4cafdaad45ef628f8e84b5d07a156a2bc909b1f",
     "scripts/sounding-line/authenticated-completed-evidence.mjs": "5dfafc33d4aebaf4ccf7f267277da21746d2918c",
     "tests/sounding-line/authenticated-completed-evidence.test.mjs": "034719e33679979233319f6b9bf97e5801d36a0f",
-    "tests/sounding-line/ordinary.test.mjs": "ca92d6d7bbd76e755d41dbcd6e4b44d67d0009ea",
+    "tests/sounding-line/ordinary.test.mjs": "29f8ba06e836fe1816b9da801479f5d0f4451a5d",
     "scripts/sounding-line/sqlite-bootstrap.mjs": "fe477e2fce5414e80832c1740cabd61327323aee",
     "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/accepted-canonical.original.json": "382a5c5102fc39841e71a78c396f8db93a9f6ca4",
     "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025/independent-review.original.json": "5e31fe454f2eb2d98f52b248a0911a9c0ca03f40",
@@ -57,7 +59,7 @@
   "historicalReportSetsPreserved": 8,
   "reviewOrdinals": { "fourth": 9, "second": 23 },
   "ownerAcceptance": "NOT_CLAIMED",
-  "expectedCurrentSourceDigest": "6ea8e8dadbe9dfab7f50140bbf967cdeb34f0715312994c17587d3706720e956",
+  "expectedCurrentSourceDigest": "3c84696521d4d5215b513495b3d665149307e1d6c09573f3f7da2a851a899f2c",
   "transportPredecessor": {
     "base": "cbc3e643cc11c172983fb8f6f43036abda590182",
     "baseParents": ["819c992fb15ef0b87299ddaaed143427bd00a13d", "b86fe3abd41daf21e62a7dc876653982fa42bbe4"],
@@ -144,5 +146,18 @@
     "canonicalBytes": 1451427,
     "canonicalBlob": "e3ec035e84b7512ab7f54bc791a356105e428524",
     "reviewArtifactId": 12614235180
+  },
+  "genericBudgetPredecessor": {
+    "base": "e42ee150b8aec488eaa4c0521f55b2d9d092e983",
+    "baseParents": ["1229d4c549160ed72d159c0b708a11352e2f0599", "e062f73eaf96831e0a08fbf18e81764503261f28"],
+    "baseTree": "39a38f63394a5e5104c1b5b349970153ccae5f66",
+    "candidate": "097745ac200d6c5f3f8075e86d6ace397693ddbc",
+    "candidateParents": ["ae5ec15c5b28d66d73865dc441620798f56db79d"],
+    "candidateTree": "36c4cc68d1d944e8eab6542584e3d2bc90d2329d",
+    "sourceDigest": "6ea8e8dadbe9dfab7f50140bbf967cdeb34f0715312994c17587d3706720e956",
+    "canonicalSha256": "b2f1f313d270f8e8ea26e5cfd54b34d2336529fa4e0a60b6b54a898a7f937fb2",
+    "canonicalBytes": 1451427,
+    "canonicalBlob": "cf3c9c5968fcd364c4d49b7718c113e81a731165",
+    "reviewArtifactId": 12617234771
   }
 }
