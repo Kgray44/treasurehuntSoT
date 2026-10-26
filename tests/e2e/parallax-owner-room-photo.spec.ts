@@ -12,6 +12,11 @@ import type { AIModelId } from "../../src/parallax/ai-policy";
 import { syntheticRoomGeometry, discoverRoomSurfaces } from "../../src/parallax/room-geometry";
 import { verifyConstructedEnvironment } from "../../src/parallax/construction-verification";
 import type { RoomEnvironment } from "../../src/parallax/environment-contracts";
+// These opt-in fixtures require their guarded development runner.
+test.skip(
+  process.env.PARALLAX_ROOM_PHOTO_RUNTIME !== "OWNER_AUTHORIZED_LIVE_DEVELOPMENT",
+  "Run the explicitly authorized isolated photo development fixture.",
+);
 test.use({ video: "on", actionTimeout: 30000 });
 const model = process.env.PARALLAX_OWNER_PHOTO_MODEL ?? "gpt-6.1-sol";
 const root = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/owner-photo-${model}`;

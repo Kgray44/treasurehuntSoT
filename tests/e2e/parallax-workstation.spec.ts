@@ -223,6 +223,7 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   context,
   baseURL,
 }) => {
+  test.skip(process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1", "Run the guarded unpaid Parallax browser fixture.");
   if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("PARALLAX_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
   if (process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1") throw new Error("Guarded unpaid Assistant fixture required");
