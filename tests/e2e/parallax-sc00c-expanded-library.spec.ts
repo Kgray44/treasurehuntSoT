@@ -184,6 +184,7 @@ test("saved assets use the shared Library and wait for an approved surface befor
   await dialog.getByRole("button", { name: "Place in Scene" }).click();
   await expect(dialog).toBeHidden();
   await expect(placement).toBeVisible();
+  await expect(page.locator('[aria-label="Spatial canvas"] [data-renderer]')).toBeFocused();
   await placement.getByRole("button", { name: "Floor", exact: true }).first().focus();
   await page.keyboard.press("Enter");
   await expect(placement).toBeHidden();
