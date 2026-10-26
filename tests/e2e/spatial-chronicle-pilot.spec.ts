@@ -184,11 +184,16 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await d.getByLabel("Device name").fill("Navigator desktop");
     await d.getByRole("button", { name: "Use this device", exact: true }).click();
     await d.getByRole("button", { name: "Connect another device", exact: true }).click();
+    await d.getByText("Use a code instead", { exact: true }).click();
     const code = (await d.locator("code").innerText()).replaceAll(" ", "");
     await p.goto(`/devices/pair#code=${code}`);
+    await p.getByText("Name this device", { exact: true }).click();
     await p.getByLabel("Device name").fill("Navigator phone");
-    await p.getByRole("button", { name: "Join this Voyage", exact: true }).click();
-    await expect(p.getByText("This device is connected as Chronicle Lens companion.")).toBeVisible();
+    await p.getByRole("button", { name: "Join the Chronicle", exact: true }).click();
+    await p.waitForURL(`**/devices/companion?voyage=${pilot.voyageId}`);
+    await expect(p.getByRole("region", { name: "Journal companion", exact: true })).toBeVisible();
+    await expect(p.locator("[data-crossdeck-companion]")).toHaveAttribute("data-experience-voyage", pilot.voyageId);
+    await expect(p.locator("[data-crossdeck-companion]")).toHaveAttribute("data-experience-version", pilot.versionId);
     await p.goto(pilot.journalHref);
     await enterClosureJournal(p);
     await capture(p, "phone-journal-opening");
@@ -240,15 +245,19 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await openClosureMap(d);
     await d.getByRole("button", { name: "Close journal tool drawer" }).click();
     const sending = d.getByRole("region", { name: "Send to your devices" });
-    await sending.locator("summary").click();
+    await sending.getByRole("button", { name: /^Send to / }).click();
+    const sendOptions = sending.getByRole("dialog");
     const phoneSurface = await db.crossdeckSurfaceSession.findFirstOrThrow({
       where: { accountSessionId: receiver.id },
     });
-    await sending.getByLabel("Send destination").selectOption(phoneSurface.surfaceId);
-    await sending.getByLabel("Transfer mode").selectOption("MOVE_CUSTODY");
+    const phoneDestination = sendOptions.getByRole("radio", { name: /^Navigator phone / });
+    await expect(phoneDestination).toHaveValue(phoneSurface.surfaceId);
+    await phoneDestination.check();
+    await sendOptions.getByText("More ways to open", { exact: true }).click();
+    await sendOptions.getByLabel("Transfer mode").selectOption("MOVE_CUSTODY");
     const progressionBefore = await db.taleSessionEvent.count({ where: { sessionId: pilot.voyageId } });
     const start = performance.now();
-    await sending.getByRole("button", { name: "Send view", exact: true }).click();
+    await sendOptions.getByRole("button", { name: "Send view", exact: true }).click();
     const receiving = p.getByRole("region", { name: "Send to your devices" });
     await receiving.getByRole("button", { name: /^Receive / }).click();
     await expect(p.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
@@ -277,6 +286,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       .toBe("DISCONNECTED");
     const close = d.getByRole("button", { name: "Close journal tool drawer" });
     if (await close.isVisible()) await close.click();
+    await sending.getByText("Connected view options", { exact: true }).click();
     await sending.getByRole("button", { name: "Recover view here" }).click();
     await expect(sending.getByText(/Controlled here/)).toBeVisible();
     const recoveryMs = performance.now() - recoveryStart;
@@ -327,7 +337,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       .locator("fieldset")
       .filter({ has: d.locator("legend").getByText("Selected spatial object", { exact: true }) })
       .screenshot({ path: `${evidence}/studio-selected-inspector.png` });
-    await d.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+    await d.getByRole("button", { name: /^Open (?:Saved Spatial Items|Library)$/ }).click();
     await d
       .getByRole("complementary", { name: "Spatial Library", exact: true })
       .screenshot({ path: `${evidence}/studio-library.png` });
@@ -340,11 +350,11 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await d
       .getByRole("tabpanel", { name: "Timeline", exact: true })
       .screenshot({ path: `${evidence}/studio-behavior-timeline.png` });
-    await d.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-    await d.getByLabel("Search Library", { exact: true }).fill("missing-fictional-archive");
-    await expect(d.getByText("No saved items match. Create and save a spatial moment to begin.")).toBeVisible();
+    await d.getByRole("button", { name: /^Open (?:Saved Spatial Items|Library)$/ }).click();
+    await d.getByLabel(/^Search (?:Library|assets)$/).fill("missing-fictional-archive");
+    await expect(d.getByText(/^(?:No saved items match\.|No items match these filters\.)/)).toBeVisible();
     await capture(d, "studio-library-empty");
-    await d.getByLabel("Search Library", { exact: true }).fill("");
+    await d.getByLabel(/^Search (?:Library|assets)$/).fill("");
     const canvasFrameIntervals = await d.evaluate(
       () =>
         new Promise<number[]>((resolve) => {

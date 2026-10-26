@@ -23,6 +23,9 @@ import {
   PR776_READER_PREDECESSOR as J,
   PR776_READER_REPAIR_PATHS,
   PR776_FINAL_BUDGET_PREDECESSOR as V,
+  PR776_GENERIC_BUDGET_PREDECESSOR as W,
+  PR776_GENERIC_BUDGET_ADDED_PATHS,
+  PR776_GENERIC_BUDGET_REPAIR_PATHS,
   PR776_FINAL_BUDGET_REPAIR_PATHS,
   PR776_RECORD_PATH,
   bindPR776ControllerReconciliation,
@@ -54,6 +57,7 @@ const added = [
   "public-files-941.original.json",
   "controller-reconciliation.json",
 ].map((file) => E + "/" + file);
+const priorControllerPaths = PR776_CONTROLLER_PATHS.filter((file) => !PR776_GENERIC_BUDGET_ADDED_PATHS.includes(file));
 const CURRENT_SOURCE = "8".repeat(64);
 const BASE = "b".repeat(40),
   CANDIDATE = "c".repeat(40),
@@ -70,7 +74,7 @@ function fixture() {
     },
     evidence: structuredClone(original),
     record: { ...structuredClone(template), status: "ACTIVE", expectedCurrentSourceDigest: CURRENT_SOURCE },
-    parents: [V.base, POLICY_HEAD],
+    parents: [W.base, POLICY_HEAD],
     predecessorParents: [...T.baseParents],
     predecessorTree: T.baseTree,
     predecessorHeadTree: T.baseTree,
@@ -107,6 +111,13 @@ function fixture() {
     readerCarrierParents: [...J.candidateParents],
     readerCarrierTree: J.candidateTree,
     readerCarrierAncestry: true,
+    genericBudgetParents: [...W.baseParents],
+    genericBudgetTree: W.baseTree,
+    genericBudgetHeadTree: W.baseTree,
+    genericBudgetCarrierParents: [...W.candidateParents],
+    genericBudgetCarrierTree: W.candidateTree,
+    genericBudgetCarrierAncestry: true,
+    genericBudgetCanonicalTree: new Map([[C, `100644 blob ${W.canonicalBlob}`]]),
     budgetParents: [...V.baseParents],
     budgetTree: V.baseTree,
     budgetHeadTree: V.baseTree,
@@ -121,29 +132,31 @@ function fixture() {
     frozenCanonicalTree: new Map([[C, `100644 blob ${O.canonicalBlob}`]]),
     historicalCanonicalBlobReads: 0,
     transportChanges: [...PR776_TRANSPORT_REPAIR_PATHS],
-    frozenControllerChanges: PR776_CONTROLLER_PATHS.filter(
+    frozenControllerChanges: priorControllerPaths.filter(
       (file) =>
         !PR776_OBSERVABILITY_ADDED_PATHS.includes(file) &&
         !PR776_INTAKE_ADDED_PATHS.includes(file) &&
         !PR776_PATH_CHECK_ADDED_PATHS.includes(file) &&
         !PR776_SQLITE_ADDED_PATHS.includes(file),
     ),
-    observedControllerChanges: PR776_CONTROLLER_PATHS.filter(
+    observedControllerChanges: priorControllerPaths.filter(
       (file) =>
         !PR776_INTAKE_ADDED_PATHS.includes(file) &&
         !PR776_PATH_CHECK_ADDED_PATHS.includes(file) &&
         !PR776_SQLITE_ADDED_PATHS.includes(file),
     ),
-    intakeControllerChanges: PR776_CONTROLLER_PATHS.filter(
+    intakeControllerChanges: priorControllerPaths.filter(
       (file) => !PR776_PATH_CHECK_ADDED_PATHS.includes(file) && !PR776_SQLITE_ADDED_PATHS.includes(file),
     ),
     pathCheckChanges: [...PR776_PATH_CHECK_REPAIR_PATHS],
-    sqliteControllerChanges: PR776_CONTROLLER_PATHS.filter((file) => !PR776_SQLITE_ADDED_PATHS.includes(file)),
+    sqliteControllerChanges: priorControllerPaths.filter((file) => !PR776_SQLITE_ADDED_PATHS.includes(file)),
     sqliteChanges: [...PR776_SQLITE_REPAIR_PATHS],
-    readerControllerChanges: [...PR776_CONTROLLER_PATHS],
+    readerControllerChanges: [...priorControllerPaths],
     readerChanges: [...PR776_READER_REPAIR_PATHS],
-    budgetControllerChanges: [...PR776_CONTROLLER_PATHS],
+    budgetControllerChanges: [...priorControllerPaths],
     budgetChanges: [...PR776_FINAL_BUDGET_REPAIR_PATHS],
+    genericBudgetControllerChanges: [...priorControllerPaths],
+    genericBudgetChanges: [...PR776_GENERIC_BUDGET_REPAIR_PATHS],
     intakeChanges: [...PR776_INTAKE_REPAIR_PATHS],
     repairChanges: [...PR776_OBSERVABILITY_REPAIR_PATHS],
     baseChanges: [...PR776_CONTROLLER_PATHS],
@@ -197,11 +210,15 @@ function fixture() {
                               ? f.readerParents
                               : args[3] === J.candidate
                                 ? f.readerCarrierParents
-                                : args[3] === V.base
-                                  ? f.budgetParents
-                                  : args[3] === V.candidate
-                                    ? f.budgetCarrierParents
-                                    : f.parents
+                                : args[3] === W.base
+                                  ? f.genericBudgetParents
+                                  : args[3] === W.candidate
+                                    ? f.genericBudgetCarrierParents
+                                    : args[3] === V.base
+                                      ? f.budgetParents
+                                      : args[3] === V.candidate
+                                        ? f.budgetCarrierParents
+                                        : f.parents
         ).join(" "),
       );
     if (args[0] === "rev-parse")
@@ -242,13 +259,19 @@ function fixture() {
                                           ? f.readerHeadTree
                                           : args[1] === J.candidate + "^{tree}"
                                             ? f.readerCarrierTree
-                                            : args[1] === V.base + "^{tree}"
-                                              ? f.budgetTree
-                                              : args[1] === V.baseParents[1] + "^{tree}"
-                                                ? f.budgetHeadTree
-                                                : args[1] === V.candidate + "^{tree}"
-                                                  ? f.budgetCarrierTree
-                                                  : TREE,
+                                            : args[1] === W.base + "^{tree}"
+                                              ? f.genericBudgetTree
+                                              : args[1] === W.baseParents[1] + "^{tree}"
+                                                ? f.genericBudgetHeadTree
+                                                : args[1] === W.candidate + "^{tree}"
+                                                  ? f.genericBudgetCarrierTree
+                                                  : args[1] === V.base + "^{tree}"
+                                                    ? f.budgetTree
+                                                    : args[1] === V.baseParents[1] + "^{tree}"
+                                                      ? f.budgetHeadTree
+                                                      : args[1] === V.candidate + "^{tree}"
+                                                        ? f.budgetCarrierTree
+                                                        : TREE,
       );
     if (args[0] === "merge-base") {
       assert.equal(f.ancestry, true, "ANCESTRY_REJECTED");
@@ -258,6 +281,7 @@ function fixture() {
       if (args[2] === K.candidate) assert.equal(f.pathCheckCarrierAncestry, true, "F10_ANCESTRY_REJECTED");
       if (args[2] === S.candidate) assert.equal(f.sqliteCarrierAncestry, true, "F12_ANCESTRY_REJECTED");
       if (args[2] === J.candidate) assert.equal(f.readerCarrierAncestry, true, "F13_ANCESTRY_REJECTED");
+      if (args[2] === W.candidate) assert.equal(f.genericBudgetCarrierAncestry, true, "F15_ANCESTRY_REJECTED");
       if (args[2] === V.candidate) assert.equal(f.budgetCarrierAncestry, true, "F14_ANCESTRY_REJECTED");
       return Buffer.alloc(0);
     }
@@ -274,9 +298,11 @@ function fixture() {
                   ? f.sqliteControllerChanges
                   : args[4] === J.base
                     ? f.readerControllerChanges
-                    : args[4] === V.base
-                      ? f.budgetControllerChanges
-                      : f.baseChanges
+                    : args[4] === W.base
+                      ? f.genericBudgetControllerChanges
+                      : args[4] === V.base
+                        ? f.budgetControllerChanges
+                        : f.baseChanges
           : args[3] === T.base && args[4] === O.base
             ? f.transportChanges
             : args[3] === O.base && args[4] === N.base
@@ -289,32 +315,36 @@ function fixture() {
                     ? f.sqliteChanges
                     : args[3] === J.base && args[4] === V.base
                       ? f.readerChanges
-                      : args[3] === V.base && args[4] === BASE
+                      : args[3] === V.base && args[4] === W.base
                         ? f.budgetChanges
-                        : f.candidateChanges
+                        : args[3] === W.base && args[4] === BASE
+                          ? f.genericBudgetChanges
+                          : f.candidateChanges
         ).join("\n"),
       );
     if (args[0] === "ls-tree" && args[1] === "-z")
       return f.recordPresent ? Buffer.from("record exists") : Buffer.alloc(0);
     if (args[0] === "ls-tree") {
       const map =
-        args[2] === V.candidate
-          ? f.budgetCanonicalTree
-          : args[2] === J.candidate
-            ? f.readerCanonicalTree
-            : args[2] === S.candidate
-              ? f.sqliteCanonicalTree
-              : args[2] === K.candidate
-                ? f.pathCheckCanonicalTree
-                : args[2] === N.candidate
-                  ? f.intakeCanonicalTree
-                  : args[2] === O.candidate
-                    ? f.frozenCanonicalTree
-                    : args[2] === P.ancestor
-                      ? f.oldTree
-                      : args[2] === BASE
-                        ? f.baseTree
-                        : f.candidateTree;
+        args[2] === W.candidate
+          ? f.genericBudgetCanonicalTree
+          : args[2] === V.candidate
+            ? f.budgetCanonicalTree
+            : args[2] === J.candidate
+              ? f.readerCanonicalTree
+              : args[2] === S.candidate
+                ? f.sqliteCanonicalTree
+                : args[2] === K.candidate
+                  ? f.pathCheckCanonicalTree
+                  : args[2] === N.candidate
+                    ? f.intakeCanonicalTree
+                    : args[2] === O.candidate
+                      ? f.frozenCanonicalTree
+                      : args[2] === P.ancestor
+                        ? f.oldTree
+                        : args[2] === BASE
+                          ? f.baseTree
+                          : f.candidateTree;
       return Buffer.from([...map].map(([file, meta]) => `${meta}\t${file}\0`).join(""));
     }
     if (args[0] === "show") {
@@ -329,7 +359,8 @@ function fixture() {
           revision === K.candidate ||
           revision === S.candidate ||
           revision === J.candidate ||
-          revision === V.candidate
+          revision === V.candidate ||
+          revision === W.candidate
         ) {
           f.historicalCanonicalBlobReads += 1;
           throw Error("FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ");
@@ -348,7 +379,7 @@ function fixture() {
   f.validate = () => validatePR776ReviewedIdentity(f.bind(), f.evidence, { root: "pure-fixture", readGit: f.git });
   return f;
 }
-test("finite eighth controller merge retains the exact spent32-row review with zero new passes", () => {
+test("finite ninth controller merge retains the exact spent32-row review with zero new passes", () => {
   const f = fixture(),
     current = f.bind(),
     old = pr776HistoricalReviewedPlan(current);
@@ -806,8 +837,8 @@ test("frozen M6 and ID-only5669 retain exact source, canonical and spent review 
   assert.equal(O.canonicalSha256, "46e3f544db3f8472986b00d229f2662e901b7f6faf72ec38414c26847b4b80b0");
   assert.equal(O.reviewArtifactId, 12593074243);
   assert.equal(O.canonicalBlob, "14ad1d87c0b03064470896ff9a9d2b4ba90d4d2f");
-  assert.equal(PR776_CONTROLLER_PATHS.length, 30);
-  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 27);
+  assert.equal(PR776_CONTROLLER_PATHS.length, 32);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 29);
   assert.equal(PR776_OBSERVABILITY_REPAIR_PATHS.length, 9);
   assert.deepEqual(f.record.originalIdentity, P);
   assert.deepEqual(f.record.transportPredecessor, T);
@@ -1216,8 +1247,8 @@ test("frozen M9 and F12 retain exact source, canonical and spent review without 
   assert.equal(S.canonicalBlob, "b705d68d183335dbf5f8e7d2292eb900a14e3e10");
   assert.equal(S.reviewArtifactId, 12606664876);
   assert.deepEqual(f.record.sqliteBootstrapPredecessor, S);
-  assert.equal(PR776_CONTROLLER_PATHS.length, 30);
-  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 27);
+  assert.equal(PR776_CONTROLLER_PATHS.length, 32);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 29);
   assert.equal(PR776_SQLITE_REPAIR_PATHS.length, 5);
   assert.equal(f.sqliteControllerChanges.length, 29);
   assert.equal(f.intakeControllerChanges.length, 28);
@@ -1368,8 +1399,8 @@ test("frozen M10 and F13 retain exact source, canonical and spent review without
   assert.equal(J.canonicalBlob, "3d09aa5ce1340742d9486ec0a7df925ad4ae888e");
   assert.equal(J.reviewArtifactId, 12611315114);
   assert.deepEqual(f.record.checkoutReaderPredecessor, J);
-  assert.equal(PR776_CONTROLLER_PATHS.length, 30);
-  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 27);
+  assert.equal(PR776_CONTROLLER_PATHS.length, 32);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 29);
   assert.equal(PR776_READER_REPAIR_PATHS.length, 5);
   assert.equal(f.readerControllerChanges.length, 30);
   assert.equal(f.sqliteControllerChanges.length, 29);
@@ -1498,10 +1529,15 @@ for (const [name, mutate] of [
     assert.throws(f.validate);
   });
 test("reader repair reuses only existing whitelist members without expanding candidate scope", () => {
-  assert.equal(new Set(PR776_CONTROLLER_PATHS).size, 30);
-  for (const file of PR776_READER_REPAIR_PATHS) assert(PR776_CONTROLLER_PATHS.includes(file));
+  const frozenReaderPaths = PR776_CONTROLLER_PATHS.filter((file) => !PR776_GENERIC_BUDGET_ADDED_PATHS.includes(file));
+  assert.equal(new Set(frozenReaderPaths).size, 30);
+  for (const file of PR776_READER_REPAIR_PATHS) assert(frozenReaderPaths.includes(file));
   const f = fixture();
-  assert.deepEqual(f.readerControllerChanges, f.baseChanges);
+  assert.deepEqual(
+    f.readerControllerChanges,
+    f.baseChanges.filter((file) => !PR776_GENERIC_BUDGET_ADDED_PATHS.includes(file)),
+  );
+  assert.deepEqual(f.readerControllerChanges, frozenReaderPaths);
   assert.equal(f.validate(), true);
   f.candidateChanges.push("tests/sounding-line/unregistered-reader.test.mjs");
   assert.throws(f.validate, /UNRELATED_CANDIDATE_CHANGE/u);
@@ -1525,8 +1561,8 @@ test("frozen M11 and F14 retain exact source, canonical and spent review without
   assert.equal(V.canonicalBlob, "e3ec035e84b7512ab7f54bc791a356105e428524");
   assert.equal(V.reviewArtifactId, 12614235180);
   assert.deepEqual(f.record.finalBudgetPredecessor, V);
-  assert.equal(PR776_CONTROLLER_PATHS.length, 30);
-  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 27);
+  assert.equal(PR776_CONTROLLER_PATHS.length, 32);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 29);
   assert.equal(PR776_FINAL_BUDGET_REPAIR_PATHS.length, 7);
   assert.equal(f.budgetControllerChanges.length, 30);
   assert.equal(f.validate(), true);
@@ -1674,3 +1710,195 @@ for (const file of ["tests/sounding-line/experience-r25.test.mjs", "tests/soundi
     assert.throws(f.validate, /REPAIR_BLOB_CHANGED/u);
   });
 }
+
+test("frozen M12 and F15 keep the exact spent review with one required browser authority leaf", () => {
+  const f = fixture();
+  assert.deepEqual(W, {
+    base: "e42ee150b8aec488eaa4c0521f55b2d9d092e983",
+    baseParents: ["1229d4c549160ed72d159c0b708a11352e2f0599", "e062f73eaf96831e0a08fbf18e81764503261f28"],
+    baseTree: "39a38f63394a5e5104c1b5b349970153ccae5f66",
+    candidate: "097745ac200d6c5f3f8075e86d6ace397693ddbc",
+    candidateParents: ["ae5ec15c5b28d66d73865dc441620798f56db79d"],
+    candidateTree: "36c4cc68d1d944e8eab6542584e3d2bc90d2329d",
+    sourceDigest: "6ea8e8dadbe9dfab7f50140bbf967cdeb34f0715312994c17587d3706720e956",
+    canonicalSha256: "b2f1f313d270f8e8ea26e5cfd54b34d2336529fa4e0a60b6b54a898a7f937fb2",
+    canonicalBytes: 1451427,
+    canonicalBlob: "cf3c9c5968fcd364c4d49b7718c113e81a731165",
+    reviewArtifactId: 12617234771,
+  });
+  assert.deepEqual(f.record.genericBudgetPredecessor, W);
+  assert.equal(PR776_CONTROLLER_PATHS.length, 32);
+  assert.equal(Object.keys(f.record.requiredRepairBlobs).length, 29);
+  assert.equal(PR776_GENERIC_BUDGET_REPAIR_PATHS.length, 6);
+  assert.deepEqual(PR776_GENERIC_BUDGET_ADDED_PATHS, [
+    "scripts/sounding-line/browser-authority.mjs",
+    "tests/e2e/spatial-chronicle-pilot.spec.ts",
+  ]);
+  assert.equal(f.genericBudgetControllerChanges.length, 30);
+  assert.equal(f.validate(), true);
+  assert.equal(f.historicalCanonicalBlobReads, 0);
+  assert.throws(
+    () => f.git("pure-fixture", ["show", W.candidate + ":" + C]),
+    /FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ/u,
+  );
+});
+for (const [name, mutate] of [
+  [
+    "M12 itself instead of its one next merge",
+    (f) => {
+      f.plan.baseSha = W.base;
+      f.parents = [...W.baseParents];
+    },
+  ],
+  [
+    "changed M12 parents",
+    (f) => {
+      f.genericBudgetParents[1] = POLICY_HEAD;
+    },
+  ],
+  [
+    "changed M12 tree",
+    (f) => {
+      f.genericBudgetTree = TREE;
+    },
+  ],
+  [
+    "changed M12 qualified tree",
+    (f) => {
+      f.genericBudgetHeadTree = TREE;
+    },
+  ],
+  [
+    "changed M12 cumulative paths",
+    (f) => {
+      f.genericBudgetControllerChanges.pop();
+    },
+  ],
+  [
+    "changed F15 parent",
+    (f) => {
+      f.genericBudgetCarrierParents[0] = POLICY_HEAD;
+    },
+  ],
+  [
+    "changed F15 tree",
+    (f) => {
+      f.genericBudgetCarrierTree = TREE;
+    },
+  ],
+  [
+    "lost F15 ancestry",
+    (f) => {
+      f.genericBudgetCarrierAncestry = false;
+    },
+  ],
+  [
+    "changed F15 canonical leaf",
+    (f) => {
+      f.genericBudgetCanonicalTree.set(C, "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "changed F15 canonical mode",
+    (f) => {
+      f.genericBudgetCanonicalTree.set(C, "100755 blob " + W.canonicalBlob);
+    },
+  ],
+  [
+    "missing authority repair path",
+    (f) => {
+      f.genericBudgetChanges = f.genericBudgetChanges.filter(
+        (p) => p !== "scripts/sounding-line/browser-authority.mjs",
+      );
+    },
+  ],
+  [
+    "missing authority regression path",
+    (f) => {
+      f.genericBudgetChanges = f.genericBudgetChanges.filter((p) => p !== "tests/sounding-line/ordinary.test.mjs");
+    },
+  ],
+  [
+    "unrelated generic budget repair path",
+    (f) => {
+      f.genericBudgetChanges.push("scripts/unrelated.mjs");
+    },
+  ],
+  [
+    "wrong authority base blob",
+    (f) => {
+      f.baseTree.set("scripts/sounding-line/browser-authority.mjs", "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "wrong authority candidate blob",
+    (f) => {
+      f.candidateTree.set("scripts/sounding-line/browser-authority.mjs", "100644 blob " + "a".repeat(40));
+    },
+  ],
+  [
+    "missing required authority blob",
+    (f) => {
+      delete f.record.requiredRepairBlobs["scripts/sounding-line/browser-authority.mjs"];
+    },
+  ],
+  [
+    "changed generic budget predecessor record",
+    (f) => {
+      f.record.genericBudgetPredecessor.reviewArtifactId = 1;
+    },
+  ],
+])
+  test(name + " fails the finite M12 generic authority budget bridge", () => {
+    const f = fixture();
+    mutate(f);
+    assert.throws(f.validate);
+  });
+test("spent F15 machine artifact cannot authenticate the generic authority budget successor", () => {
+  const old = provenance(fixture().bind(), "review");
+  old.run.head_sha = W.base;
+  assert.throws(() => validateAttestationProvenance(old), /ATTESTATION_PROVENANCE_INVALID/u);
+});
+
+for (const [name, mutate, code] of [
+  [
+    "missing pilot technical repair path",
+    (f) => {
+      f.genericBudgetChanges = f.genericBudgetChanges.filter((p) => p !== "tests/e2e/spatial-chronicle-pilot.spec.ts");
+    },
+    /GENERIC_BUDGET_REPAIR_CHANGED_PATHS/u,
+  ],
+  [
+    "changed pilot technical base blob",
+    (f) => {
+      f.baseTree.set("tests/e2e/spatial-chronicle-pilot.spec.ts", "100644 blob " + "a".repeat(40));
+    },
+    /REPAIR_BLOB_CHANGED/u,
+  ],
+  [
+    "changed pilot technical candidate blob",
+    (f) => {
+      f.candidateTree.set("tests/e2e/spatial-chronicle-pilot.spec.ts", "100644 blob " + "a".repeat(40));
+    },
+    /REPAIR_BLOB_CHANGED/u,
+  ],
+  [
+    "missing required pilot technical blob",
+    (f) => {
+      delete f.record.requiredRepairBlobs["tests/e2e/spatial-chronicle-pilot.spec.ts"];
+    },
+    /REQUIRED_REPAIR_BLOBS/u,
+  ],
+  [
+    "future pilot repair in frozen M12",
+    (f) => {
+      f.genericBudgetControllerChanges.push("tests/e2e/spatial-chronicle-pilot.spec.ts");
+    },
+    /FROZEN_FINAL_BUDGET_PREDECESSOR_CHANGED/u,
+  ],
+])
+  test(name + " fails the finite technical-pilot source bridge", () => {
+    const f = fixture();
+    mutate(f);
+    assert.throws(f.validate, code);
+  });
