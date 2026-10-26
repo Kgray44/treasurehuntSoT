@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 
-// Nine finite protected controller merges preserve one spent review; none grants another pass.
+// Ten finite protected controller merges preserve one spent review; none grants another pass.
 export const PR776_CONTROLLER = Object.freeze({
   kind: "PR776_CONTROLLER_BASE_RECONCILIATION_1",
   id: "pr776-attestation-buffer-reconciliation-20261025",
@@ -120,6 +120,29 @@ export const PR776_GENERIC_BUDGET_PREDECESSOR = Object.freeze({
   canonicalBlob: "cf3c9c5968fcd364c4d49b7718c113e81a731165",
   reviewArtifactId: 12617234771,
 });
+export const PR776_FIXTURE_SCOPE_PREDECESSOR = Object.freeze({
+  base: "03fbcb52bdd3f28f7ce7c029355a07fac6e2f3ce",
+  baseParents: ["e42ee150b8aec488eaa4c0521f55b2d9d092e983", "59d947be442768c0436d961f4ca40783c070dd25"],
+  baseTree: "0c104fe936fe7f776d17c9a4aae38b1895bac2ff",
+  candidate: "bb7572b21ad43b0c5b4d47b52b182f4e2fa46b33",
+  candidateParents: ["d86ac5063ef22664e476bfff332e83dba59e34d0"],
+  candidateTree: "1c67e1a6531a7bbd80bc5db692508a708d9bdbd4",
+  sourceDigest: "3c84696521d4d5215b513495b3d665149307e1d6c09573f3f7da2a851a899f2c",
+  canonicalSha256: "75715b94e8a220ba2df6df900a77a21d46d9e8a3bc8e5d1eaf425f33192718ed",
+  canonicalBytes: 1451427,
+  canonicalBlob: "2b361086a7d5a96bef1002c3d196153fd130fdfc",
+  reviewArtifactId: 12626102983,
+});
+export const PR776_FIXTURE_SCOPE_PATHS = Object.freeze([
+  "tests/e2e/parallax-environment-creation.spec.ts",
+  "tests/e2e/parallax-photo-feedback.spec.ts",
+  "tests/e2e/parallax-room-photo.spec.ts",
+  "tests/e2e/parallax-owner-room-photo.spec.ts",
+  "tests/e2e/parallax-groups.spec.ts",
+  "tests/e2e/parallax-tracking-recovery.spec.ts",
+  "tests/e2e/parallax-workstation.spec.ts",
+  "tests/e2e/parallax-asset-quality.spec.ts",
+]);
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
 const INDEX = "Development_Docs/document-index.json";
@@ -247,6 +270,11 @@ export const PR776_GENERIC_BUDGET_REPAIR_PATHS = Object.freeze([
   "scripts/sounding-line/browser-authority.mjs",
   "tests/sounding-line/ordinary.test.mjs",
 ]);
+export const PR776_FIXTURE_SCOPE_REPAIR_PATHS = Object.freeze([
+  "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
+  "tests/sounding-line/experience-pr776-controller-reconciliation.test.mjs",
+  PR776_RECORD_PATH,
+]);
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const stable = (value) =>
   JSON.stringify(value, (_, item) =>
@@ -294,11 +322,12 @@ function inspect({ root, plan, readGit = git }) {
     sqlite = PR776_SQLITE_PREDECESSOR,
     reader = PR776_READER_PREDECESSOR,
     budget = PR776_FINAL_BUDGET_PREDECESSOR,
-    genericBudget = PR776_GENERIC_BUDGET_PREDECESSOR;
+    genericBudget = PR776_GENERIC_BUDGET_PREDECESSOR,
+    fixtureScope = PR776_FIXTURE_SCOPE_PREDECESSOR;
   const priorControllerPaths = PR776_CONTROLLER_PATHS.filter(
     (file) => !PR776_GENERIC_BUDGET_ADDED_PATHS.includes(file),
   );
-  need(parents.length === 2 && parents[0] === genericBudget.base, "ONE_NEXT_NORMAL_GENERIC_BUDGET_MERGE_REQUIRED");
+  need(parents.length === 2 && parents[0] === fixtureScope.base, "ONE_NEXT_NORMAL_FIXTURE_SCOPE_MERGE_REQUIRED");
   need(
     same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
       text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
@@ -435,6 +464,20 @@ function inspect({ root, plan, readGit = git }) {
     "FROZEN_GENERIC_BUDGET_CANDIDATE_CHANGED",
   );
   need(
+    same(text(read, root, ["show", "-s", "--format=%P", fixtureScope.base]).split(" "), fixtureScope.baseParents) &&
+      text(read, root, ["rev-parse", fixtureScope.base + "^{tree}"]) === fixtureScope.baseTree &&
+      text(read, root, ["rev-parse", fixtureScope.baseParents[1] + "^{tree}"]) === fixtureScope.baseTree &&
+      exactPaths(paths(read, root, p.oldBase, fixtureScope.base), PR776_CONTROLLER_PATHS),
+    "FROZEN_GENERIC_BUDGET_PREDECESSOR_CHANGED",
+  );
+  need(
+    same(
+      text(read, root, ["show", "-s", "--format=%P", fixtureScope.candidate]).split(" "),
+      fixtureScope.candidateParents,
+    ) && text(read, root, ["rev-parse", fixtureScope.candidate + "^{tree}"]) === fixtureScope.candidateTree,
+    "FROZEN_FIXTURE_SCOPE_CANDIDATE_CHANGED",
+  );
+  need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
       text(read, root, ["rev-parse", `${parents[1]}^{tree}`]),
     "QUALIFIED_HEAD_TREE_REQUIRED",
@@ -448,11 +491,16 @@ function inspect({ root, plan, readGit = git }) {
   read(root, ["merge-base", "--is-ancestor", reader.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", budget.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", genericBudget.candidate, plan.candidateSha]);
+  read(root, ["merge-base", "--is-ancestor", fixtureScope.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", plan.baseSha, plan.candidateSha]);
   need(exactPaths(paths(read, root, p.oldBase, plan.baseSha), PR776_CONTROLLER_PATHS), "CONTROLLER_CHANGED_PATHS");
   need(
-    exactPaths(paths(read, root, genericBudget.base, plan.baseSha), PR776_GENERIC_BUDGET_REPAIR_PATHS),
+    exactPaths(paths(read, root, genericBudget.base, fixtureScope.base), PR776_GENERIC_BUDGET_REPAIR_PATHS),
     "GENERIC_BUDGET_REPAIR_CHANGED_PATHS",
+  );
+  need(
+    exactPaths(paths(read, root, fixtureScope.base, plan.baseSha), PR776_FIXTURE_SCOPE_REPAIR_PATHS),
+    "FIXTURE_SCOPE_REPAIR_CHANGED_PATHS",
   );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),
     record = JSON.parse(recordBytes);
@@ -470,7 +518,8 @@ function inspect({ root, plan, readGit = git }) {
       same(record.sqliteBootstrapPredecessor, sqlite) &&
       same(record.checkoutReaderPredecessor, reader) &&
       same(record.finalBudgetPredecessor, budget) &&
-      same(record.genericBudgetPredecessor, genericBudget),
+      same(record.genericBudgetPredecessor, genericBudget) &&
+      same(record.fixtureScopePredecessor, fixtureScope),
     "FINITE_PROTECTED_RECORD",
   );
   need(
@@ -496,10 +545,16 @@ function inspect({ root, plan, readGit = git }) {
         candidateTree.get(file) === baseTree.get(file),
       "REPAIR_BLOB_CHANGED",
     );
+  need(
+    exactPaths(Object.keys(record.candidateFixtureBlobs ?? {}), PR776_FIXTURE_SCOPE_PATHS),
+    "FIXTURE_SCOPE_EXACT_PATHS",
+  );
+  for (const [file, oid] of Object.entries(record.candidateFixtureBlobs))
+    need(/^[a-f0-9]{40}$/u.test(oid) && candidateTree.get(file) === `100644 blob ${oid}`, "FIXTURE_SCOPE_BLOB_CHANGED");
   need(readRevision(read, root, plan.candidateSha, PR776_RECORD_PATH).equals(recordBytes), "RECORD_CHANGED");
   need(
     paths(read, root, p.ancestor, plan.candidateSha).every(
-      (file) => PR776_CONTROLLER_PATHS.includes(file) || file === C,
+      (file) => PR776_CONTROLLER_PATHS.includes(file) || PR776_FIXTURE_SCOPE_PATHS.includes(file) || file === C,
     ),
     "UNRELATED_CANDIDATE_CHANGE",
   );
@@ -672,6 +727,15 @@ function inspect({ root, plan, readGit = git }) {
   );
   delete genericBudgetCanonical.reviewArtifactId;
   need(same(genericBudgetCanonical, canonical), "FROZEN_GENERIC_BUDGET_CANONICAL_DATA_CHANGED");
+  const fixtureScopeCanonicalBytes = Buffer.from(
+    JSON.stringify({ ...canonical, reviewArtifactId: fixtureScope.reviewArtifactId }, null, 2) + "\n",
+  );
+  need(
+    tree(read, root, fixtureScope.candidate).get(C) === `100644 blob ${fixtureScope.canonicalBlob}` &&
+      fixtureScopeCanonicalBytes.length === fixtureScope.canonicalBytes &&
+      sha256(fixtureScopeCanonicalBytes) === fixtureScope.canonicalSha256,
+    "FROZEN_FIXTURE_SCOPE_CANONICAL_CHANGED",
+  );
   const publishedCanonical = JSON.parse(readRevision(read, root, plan.candidateSha, C));
   const publishedReviewArtifactId = publishedCanonical.reviewArtifactId;
   need(
