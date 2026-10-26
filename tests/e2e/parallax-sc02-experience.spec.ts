@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type BrowserContext, type Page } from "@playwright/test";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import AxeBuilder from "@axe-core/playwright";
@@ -12,6 +12,8 @@ test.use({
 });
 
 test.afterAll(() => db.$disconnect());
+
+const authenticatedStates = new Map<string, Awaited<ReturnType<BrowserContext["storageState"]>>>();
 
 const profiles = [
   { device: "DESKTOP", motionMode: "NORMAL" },
@@ -28,7 +30,7 @@ for (const profile of profiles) {
     expect(process.env.SOUNDING_LINE_SUITE_PROFILE).toBe("generic");
     ensureGenericSoundingLineIsolation();
     test.setTimeout(180000);
-    const { EXPERIENCE_VIEWPORTS, runExperienceJourney } = await import(
+    const { EXPERIENCE_VIEWPORTS, roleSetupAuthenticationResume, runExperienceJourney } = await import(
       "../../scripts/sounding-line/experience-browser.mjs"
     );
     await page.setViewportSize(EXPERIENCE_VIEWPORTS[profile.device]);
@@ -41,8 +43,23 @@ for (const profile of profiles) {
     );
     expect(journey).toBeDefined();
     const setup = contract.experience.roleSetup.CREATOR;
-    await page.goto(setup.entryPoint);
-    for (const step of setup.steps) {
+    const authenticationResume = roleSetupAuthenticationResume(setup);
+    if (!authenticationResume || !baseURL) throw new Error("Registered creator authentication setup is required");
+    const authenticationKey = createHash("sha256")
+      .update(JSON.stringify({ role: "CREATOR", entryPoint: setup.entryPoint, steps: setup.steps }))
+      .digest("hex");
+    const authenticatedState = authenticatedStates.get(authenticationKey);
+    const expectedOrigin = new URL(baseURL).origin;
+    if (authenticatedState) {
+      expect(authenticatedState.origins).toEqual([]);
+      await page.context().addCookies(authenticatedState.cookies);
+      await page.goto(authenticationResume.entryPoint);
+      expect(page.url()).toBe(new URL(authenticationResume.entryPoint, expectedOrigin).href);
+    } else {
+      await page.goto(setup.entryPoint);
+    }
+    for (let index = authenticatedState ? authenticationResume.stepCount : 0; index < setup.steps.length; index++) {
+      const step = setup.steps[index];
       const target = page.getByRole(step.role as Parameters<Page["getByRole"]>[0], {
         name: step.name,
         exact: true,
@@ -51,11 +68,24 @@ for (const profile of profiles) {
       if (step.action === "fill") await target.fill(step.value);
       else if (step.action === "click") await target.click();
       else throw new Error("Unsupported registered role setup action");
+      if (!authenticatedState && index === authenticationResume.stepCount - 1) {
+        await page.waitForURL(
+          (destination) =>
+            destination.origin === expectedOrigin &&
+            `${destination.pathname}${destination.search}${destination.hash}` === authenticationResume.entryPoint,
+          { waitUntil: "domcontentloaded", timeout: 30000 },
+        );
+      }
     }
     await page
       .getByRole(setup.witness.role, { name: setup.witness.name, exact: true })
       .filter({ hasText: setup.witness.text })
       .waitFor({ state: "visible" });
+    if (!authenticatedState) {
+      const state = await page.context().storageState();
+      // Match governed capture: reuse only authenticated cookies, never UI layout state.
+      authenticatedStates.set(authenticationKey, { cookies: state.cookies, origins: [] });
+    }
     await page.goto(contract.experience.entryPoint);
     const accountId = "00000000-0000-4000-8000-00000000a101";
     const before = await listSpatialItems(accountId);

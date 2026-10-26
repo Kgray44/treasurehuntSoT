@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import {
   PR776_CONTROLLER as P,
   PR776_FIXTURE_SCOPE_PREDECESSOR as Z,
+  PR776_AUTH_REUSE_PREDECESSOR as A,
   PR776_FIXTURE_SCOPE_PATHS,
   PR776_FIXTURE_SCOPE_REPAIR_PATHS,
   PR776_CONTROLLER_PATHS,
@@ -77,7 +78,7 @@ function fixture() {
     },
     evidence: structuredClone(original),
     record: { ...structuredClone(template), status: "ACTIVE", expectedCurrentSourceDigest: CURRENT_SOURCE },
-    parents: [Z.base, POLICY_HEAD],
+    parents: [A.base, POLICY_HEAD],
     fixtureScopeParents: [...Z.baseParents],
     fixtureScopeTree: Z.baseTree,
     fixtureScopeHeadTree: Z.baseTree,
@@ -87,6 +88,14 @@ function fixture() {
     fixtureScopeCanonicalTree: new Map([[C, `100644 blob ${Z.canonicalBlob}`]]),
     fixtureScopeControllerChanges: [...PR776_CONTROLLER_PATHS],
     fixtureScopeChanges: [...PR776_FIXTURE_SCOPE_REPAIR_PATHS],
+    authReuseParents: [...A.baseParents],
+    authReuseTree: A.baseTree,
+    authReuseHeadTree: A.baseTree,
+    authReuseCarrierParents: [...A.candidateParents],
+    authReuseCarrierTree: A.candidateTree,
+    authReuseCarrierAncestry: true,
+    authReuseCanonicalTree: new Map([[C, `100644 blob ${A.canonicalBlob}`]]),
+    authReuseChanges: [...PR776_FIXTURE_SCOPE_REPAIR_PATHS],
     predecessorParents: [...T.baseParents],
     predecessorTree: T.baseTree,
     predecessorHeadTree: T.baseTree,
@@ -200,6 +209,23 @@ function fixture() {
   f.oldMatrix = 'header\n"Development_Docs/existing.md","historical status preserved"\n';
   f.currentMatrix = f.oldMatrix + added.map((file) => `"${file}","generated migration inventory"`).join("\n") + "\n";
   f.git = (_, args) => {
+    if (args[0] === "show" && args[1] === "-s" && [A.base, A.candidate].includes(args[3]))
+      return Buffer.from((args[3] === A.base ? f.authReuseParents : f.authReuseCarrierParents).join(" "));
+    if (args[0] === "rev-parse" && [A.base, A.baseParents[1], A.candidate].some((sha) => args[1] === sha + "^{tree}"))
+      return Buffer.from(
+        args[1] === A.base + "^{tree}"
+          ? f.authReuseTree
+          : args[1] === A.candidate + "^{tree}"
+            ? f.authReuseCarrierTree
+            : f.authReuseHeadTree,
+      );
+    if (args[0] === "diff" && args[3] === Z.base && args[4] === A.base)
+      return Buffer.from(f.fixtureScopeChanges.join("\n"));
+    if (args[0] === "diff" && args[3] === A.base && args[4] === BASE) return Buffer.from(f.authReuseChanges.join("\n"));
+    if (args[0] === "merge-base" && args[2] === A.candidate)
+      assert.equal(f.authReuseCarrierAncestry, true, "F17_ANCESTRY_REJECTED");
+    if (args[0] === "ls-tree" && args[1] === "-rz" && args[2] === A.candidate)
+      return Buffer.from([...f.authReuseCanonicalTree].map(([file, meta]) => `${meta}\t${file}\0`).join(""));
     if (args[0] === "show" && args[1] === "-s" && [Z.base, Z.candidate].includes(args[3]))
       return Buffer.from((args[3] === Z.base ? f.fixtureScopeParents : f.fixtureScopeCarrierParents).join(" "));
     if (args[0] === "rev-parse" && [Z.base, Z.baseParents[1], Z.candidate].some((sha) => args[1] === sha + "^{tree}"))
@@ -397,7 +423,8 @@ function fixture() {
           revision === J.candidate ||
           revision === V.candidate ||
           revision === W.candidate ||
-          revision === Z.candidate
+          revision === Z.candidate ||
+          revision === A.candidate
         ) {
           f.historicalCanonicalBlobReads += 1;
           throw Error("FORBIDDEN_HISTORICAL_CANONICAL_BLOB_READ");
@@ -416,7 +443,7 @@ function fixture() {
   f.validate = () => validatePR776ReviewedIdentity(f.bind(), f.evidence, { root: "pure-fixture", readGit: f.git });
   return f;
 }
-test("finite tenth controller merge retains the exact spent32-row review with zero new passes", () => {
+test("finite eleventh controller merge retains the exact spent32-row review with zero new passes", () => {
   const f = fixture(),
     current = f.bind(),
     old = pr776HistoricalReviewedPlan(current);
@@ -1940,10 +1967,10 @@ for (const [name, mutate, code] of [
     assert.throws(f.validate, code);
   });
 
-test("fixture scope freezes F16 and keeps only three protected source changes and eight exact candidate fixture repairs", () => {
+test("fixture scope freezes F16 and keeps only three protected source changes and nine exact candidate fixture repairs", () => {
   assert.equal(Z.base, "03fbcb52bdd3f28f7ce7c029355a07fac6e2f3ce");
   assert.equal(Z.candidate, "bb7572b21ad43b0c5b4d47b52b182f4e2fa46b33");
-  assert.equal(PR776_FIXTURE_SCOPE_PATHS.length, 8);
+  assert.equal(PR776_FIXTURE_SCOPE_PATHS.length, 9);
   assert.equal(PR776_FIXTURE_SCOPE_REPAIR_PATHS.length, 3);
   const f = fixture();
   assert.deepEqual(f.record.fixtureScopePredecessor, Z);
@@ -2045,6 +2072,38 @@ for (const [name, mutate] of [
   ],
 ])
   test("fixture scope rejects " + name, () => {
+    const f = fixture();
+    mutate(f);
+    assert.throws(() => f.validate());
+  });
+
+test("auth session repair freezes M14 and F17 while adding only the SC02 fixture", () => {
+  assert.equal(A.base, "2a5afb348ed35dd55a96a8f38c098be70bada149");
+  assert.equal(A.candidate, "c7eb5872a76d3704aa80fdd49fb98ac02f802ab9");
+  assert(PR776_FIXTURE_SCOPE_PATHS.includes("tests/e2e/parallax-sc02-experience.spec.ts"));
+  const f = fixture();
+  assert.deepEqual(f.record.authReusePredecessor, A);
+  assert.equal(f.record.additionalIndependentPasses, 0);
+  assert.equal(f.validate(), true);
+  assert.equal(f.historicalCanonicalBlobReads, 0);
+});
+for (const [name, mutate] of [
+  ["changed M14 parent", (f) => (f.authReuseParents[1] = POLICY_HEAD)],
+  ["changed M14 tree", (f) => (f.authReuseTree = TREE)],
+  ["changed qualified C17 tree", (f) => (f.authReuseHeadTree = TREE)],
+  ["changed F17 parent", (f) => (f.authReuseCarrierParents[0] = POLICY_HEAD)],
+  ["changed F17 tree", (f) => (f.authReuseCarrierTree = TREE)],
+  ["lost F17 ancestry", (f) => (f.authReuseCarrierAncestry = false)],
+  ["changed F17 canonical", (f) => f.authReuseCanonicalTree.set(C, "100644 blob " + "a".repeat(40))],
+  ["missing final protected repair", (f) => f.authReuseChanges.pop()],
+  ["unrelated final protected repair", (f) => f.authReuseChanges.push("src/unrelated.ts")],
+  ["changed M14 record", (f) => (f.record.authReusePredecessor.sourceDigest = "a".repeat(64))],
+  [
+    "changed SC02 fixture",
+    (f) => f.candidateTree.set("tests/e2e/parallax-sc02-experience.spec.ts", "100644 blob " + "a".repeat(40)),
+  ],
+])
+  test("auth session repair rejects " + name, () => {
     const f = fixture();
     mutate(f);
     assert.throws(() => f.validate());
