@@ -1978,7 +1978,7 @@ test("fixture scope freezes F16 and keeps only three protected source changes an
   assert.equal(Z.candidate, "bb7572b21ad43b0c5b4d47b52b182f4e2fa46b33");
   assert.equal(PR776_FIXTURE_SCOPE_PATHS.length, 10);
   assert.equal(PR776_FIXTURE_SCOPE_REPAIR_PATHS.length, 3);
-  assert.equal(PR776_CURRENT_REPAIR_PATHS.length, 4);
+  assert.equal(PR776_CURRENT_REPAIR_PATHS.length, 6);
   const f = fixture();
   assert.deepEqual(f.record.fixtureScopePredecessor, Z);
   assert.deepEqual(Object.keys(f.record.candidateFixtureBlobs).sort(), [...PR776_FIXTURE_SCOPE_PATHS].sort());

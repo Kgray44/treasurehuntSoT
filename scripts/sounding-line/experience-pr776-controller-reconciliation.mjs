@@ -293,6 +293,8 @@ export const PR776_FIXTURE_SCOPE_REPAIR_PATHS = Object.freeze([
 export const PR776_CURRENT_REPAIR_PATHS = Object.freeze([
   ...PR776_FIXTURE_SCOPE_REPAIR_PATHS,
   ".github/workflows/sounding-line-ordinary.yml",
+  "tests/sounding-line/experience-r25.test.mjs",
+  "tests/sounding-line/experience-r26.test.mjs",
 ]);
 export const PR776_AUTH_SESSION_BASE = "a9073c8f469828b2a5741cf643d0e89cca06cdd3";
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
