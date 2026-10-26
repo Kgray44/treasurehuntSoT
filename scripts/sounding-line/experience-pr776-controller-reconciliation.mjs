@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 
-// Ten finite protected controller merges preserve one spent review; none grants another pass.
+// Eleven finite protected controller merges preserve one spent review; none grants another pass.
 export const PR776_CONTROLLER = Object.freeze({
   kind: "PR776_CONTROLLER_BASE_RECONCILIATION_1",
   id: "pr776-attestation-buffer-reconciliation-20261025",
@@ -133,6 +133,19 @@ export const PR776_FIXTURE_SCOPE_PREDECESSOR = Object.freeze({
   canonicalBlob: "2b361086a7d5a96bef1002c3d196153fd130fdfc",
   reviewArtifactId: 12626102983,
 });
+export const PR776_AUTH_REUSE_PREDECESSOR = Object.freeze({
+  base: "2a5afb348ed35dd55a96a8f38c098be70bada149",
+  baseParents: ["03fbcb52bdd3f28f7ce7c029355a07fac6e2f3ce", "d12ca27a2909a6a276b3fc08e387dd1feed7e9bb"],
+  baseTree: "6e88a9956d03256ea404dbdd37408eb292a99a8f",
+  candidate: "c7eb5872a76d3704aa80fdd49fb98ac02f802ab9",
+  candidateParents: ["31edda9d24ab0631924edd3b6f23869f873b6297"],
+  candidateTree: "e2d64cfa1c0ee08a80d40fb614c3b1c1ac595465",
+  sourceDigest: "556d8da1bc9e7a1468c803ddeebe2f7e1bb69fc535401ef59c5191f6557e5eb6",
+  canonicalSha256: "5c4ebfa6976da56470be5f87dd797877b113a8be910b1e7406ef1116c6515134",
+  canonicalBytes: 1451427,
+  canonicalBlob: "abbb6e9321dbb9ff17803c53bf8d784eeebc51b1",
+  reviewArtifactId: 12656314378,
+});
 export const PR776_FIXTURE_SCOPE_PATHS = Object.freeze([
   "tests/e2e/parallax-environment-creation.spec.ts",
   "tests/e2e/parallax-photo-feedback.spec.ts",
@@ -142,6 +155,7 @@ export const PR776_FIXTURE_SCOPE_PATHS = Object.freeze([
   "tests/e2e/parallax-tracking-recovery.spec.ts",
   "tests/e2e/parallax-workstation.spec.ts",
   "tests/e2e/parallax-asset-quality.spec.ts",
+  "tests/e2e/parallax-sc02-experience.spec.ts",
 ]);
 const E = "Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025";
 const C = "Development_Docs/Testing/Product_Experience/candidate-review.json";
@@ -323,11 +337,12 @@ function inspect({ root, plan, readGit = git }) {
     reader = PR776_READER_PREDECESSOR,
     budget = PR776_FINAL_BUDGET_PREDECESSOR,
     genericBudget = PR776_GENERIC_BUDGET_PREDECESSOR,
-    fixtureScope = PR776_FIXTURE_SCOPE_PREDECESSOR;
+    fixtureScope = PR776_FIXTURE_SCOPE_PREDECESSOR,
+    authReuse = PR776_AUTH_REUSE_PREDECESSOR;
   const priorControllerPaths = PR776_CONTROLLER_PATHS.filter(
     (file) => !PR776_GENERIC_BUDGET_ADDED_PATHS.includes(file),
   );
-  need(parents.length === 2 && parents[0] === fixtureScope.base, "ONE_NEXT_NORMAL_FIXTURE_SCOPE_MERGE_REQUIRED");
+  need(parents.length === 2 && parents[0] === authReuse.base, "ONE_NEXT_NORMAL_AUTH_SESSION_MERGE_REQUIRED");
   need(
     same(text(read, root, ["show", "-s", "--format=%P", predecessor.base]).split(" "), predecessor.baseParents) &&
       text(read, root, ["rev-parse", predecessor.base + "^{tree}"]) === predecessor.baseTree &&
@@ -478,6 +493,18 @@ function inspect({ root, plan, readGit = git }) {
     "FROZEN_FIXTURE_SCOPE_CANDIDATE_CHANGED",
   );
   need(
+    same(text(read, root, ["show", "-s", "--format=%P", authReuse.base]).split(" "), authReuse.baseParents) &&
+      text(read, root, ["rev-parse", authReuse.base + "^{tree}"]) === authReuse.baseTree &&
+      text(read, root, ["rev-parse", authReuse.baseParents[1] + "^{tree}"]) === authReuse.baseTree &&
+      exactPaths(paths(read, root, fixtureScope.base, authReuse.base), PR776_FIXTURE_SCOPE_REPAIR_PATHS),
+    "FROZEN_AUTH_REUSE_PREDECESSOR_CHANGED",
+  );
+  need(
+    same(text(read, root, ["show", "-s", "--format=%P", authReuse.candidate]).split(" "), authReuse.candidateParents) &&
+      text(read, root, ["rev-parse", authReuse.candidate + "^{tree}"]) === authReuse.candidateTree,
+    "FROZEN_AUTH_REUSE_CANDIDATE_CHANGED",
+  );
+  need(
     text(read, root, ["rev-parse", `${plan.baseSha}^{tree}`]) ===
       text(read, root, ["rev-parse", `${parents[1]}^{tree}`]),
     "QUALIFIED_HEAD_TREE_REQUIRED",
@@ -492,6 +519,7 @@ function inspect({ root, plan, readGit = git }) {
   read(root, ["merge-base", "--is-ancestor", budget.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", genericBudget.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", fixtureScope.candidate, plan.candidateSha]);
+  read(root, ["merge-base", "--is-ancestor", authReuse.candidate, plan.candidateSha]);
   read(root, ["merge-base", "--is-ancestor", plan.baseSha, plan.candidateSha]);
   need(exactPaths(paths(read, root, p.oldBase, plan.baseSha), PR776_CONTROLLER_PATHS), "CONTROLLER_CHANGED_PATHS");
   need(
@@ -501,6 +529,10 @@ function inspect({ root, plan, readGit = git }) {
   need(
     exactPaths(paths(read, root, fixtureScope.base, plan.baseSha), PR776_FIXTURE_SCOPE_REPAIR_PATHS),
     "FIXTURE_SCOPE_REPAIR_CHANGED_PATHS",
+  );
+  need(
+    exactPaths(paths(read, root, authReuse.base, plan.baseSha), PR776_FIXTURE_SCOPE_REPAIR_PATHS),
+    "AUTH_REUSE_REPAIR_CHANGED_PATHS",
   );
   const recordBytes = readRevision(read, root, plan.baseSha, PR776_RECORD_PATH),
     record = JSON.parse(recordBytes);
@@ -519,7 +551,8 @@ function inspect({ root, plan, readGit = git }) {
       same(record.checkoutReaderPredecessor, reader) &&
       same(record.finalBudgetPredecessor, budget) &&
       same(record.genericBudgetPredecessor, genericBudget) &&
-      same(record.fixtureScopePredecessor, fixtureScope),
+      same(record.fixtureScopePredecessor, fixtureScope) &&
+      same(record.authReusePredecessor, authReuse),
     "FINITE_PROTECTED_RECORD",
   );
   need(
@@ -735,6 +768,15 @@ function inspect({ root, plan, readGit = git }) {
       fixtureScopeCanonicalBytes.length === fixtureScope.canonicalBytes &&
       sha256(fixtureScopeCanonicalBytes) === fixtureScope.canonicalSha256,
     "FROZEN_FIXTURE_SCOPE_CANONICAL_CHANGED",
+  );
+  const authReuseCanonicalBytes = Buffer.from(
+    JSON.stringify({ ...canonical, reviewArtifactId: authReuse.reviewArtifactId }, null, 2) + "\n",
+  );
+  need(
+    tree(read, root, authReuse.candidate).get(C) === `100644 blob ${authReuse.canonicalBlob}` &&
+      authReuseCanonicalBytes.length === authReuse.canonicalBytes &&
+      sha256(authReuseCanonicalBytes) === authReuse.canonicalSha256,
+    "FROZEN_AUTH_REUSE_CANONICAL_CHANGED",
   );
   const publishedCanonical = JSON.parse(readRevision(read, root, plan.candidateSha, C));
   const publishedReviewArtifactId = publishedCanonical.reviewArtifactId;
