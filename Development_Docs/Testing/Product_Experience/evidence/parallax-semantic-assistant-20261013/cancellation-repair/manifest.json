@@ -1,0 +1,61 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "e5084c724fde57c1bdbfee688aaac279a3465789",
+  "tree": "6ee6027ab86d325073903737a42efb89badd4011",
+  "finding": "PX-SEM-CANCEL-FEEDBACK-01",
+  "objective": "Creator cancels an actual delayed request and immediately sees completion and unchanged-scene feedback without scrolling. Focus returns to the composer; the full 5.5-second late-reply window produces no second dispatch, proposal or scene mutation. Failure recovery, Engineering continuity and motion preference preserve the scene and unsent composer.",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "limitations": [
+    "Bounded desktop synthetic upstream request; not live model quality, physical device or owner acceptance.",
+    "Unaffected first packet retains its original independent review and REPAIR_AND_RECAPTURE disposition."
+  ],
+  "artifacts": [
+    {
+      "file": "semantic-cancellable-request.png",
+      "bytes": 213272,
+      "sha256": "ba68e02c5fe866b80798d436f19dfef83370e57b0f717fa320c8933d2254694c"
+    },
+    {
+      "file": "semantic-cancelled.png",
+      "bytes": 216796,
+      "sha256": "05a059086a4f42d8847603824edefc081b77634bf66bacb43666980cd295f9cf"
+    },
+    {
+      "file": "semantic-provider-failure.png",
+      "bytes": 215536,
+      "sha256": "9e269706615fdce72fc7bb9dafe3ed3af3dffc2cb833e2741c94f773acea18e2"
+    },
+    {
+      "file": "semantic-motion-switch-preserved-composer.png",
+      "bytes": 219550,
+      "sha256": "aef07792dfb1160996fdfb9958b96d572f80ca876d129c59867c90505f9fbb34"
+    },
+    {
+      "file": "semantic-reduced-motion-clarification.png",
+      "bytes": 213195,
+      "sha256": "09b4511dbdab69f55985f8a0f0121aa6e47638f62e3c54e1dfb9dfd8be6aed83"
+    },
+    {
+      "file": "semantic-recovery-proof.original.json.txt",
+      "bytes": 2244,
+      "sha256": "713668ea12464fe70e6beea155222e266da9486deead5f92bd6a33425c92ff40"
+    },
+    {
+      "file": "semantic-assistant-run.original.json.txt",
+      "bytes": 934,
+      "sha256": "fbaed71acb7ac7f0214dbc7d40b850155b8ad3ffe1d60f0b55b52d97b13a0841"
+    },
+    {
+      "file": "checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 575184,
+      "sha256": "ae6c0fad0a6442c5a4f76d36838fe904c41e7b559a52015f47df63a4f7eefb48"
+    },
+    {
+      "file": "provider-53456.original.jsonl.txt",
+      "bytes": 5985,
+      "sha256": "61ce7d125c6cc7b73691c16f92a2993e8fa603fc1a04ca52f46e7e0d873f17b9"
+    }
+  ]
+}

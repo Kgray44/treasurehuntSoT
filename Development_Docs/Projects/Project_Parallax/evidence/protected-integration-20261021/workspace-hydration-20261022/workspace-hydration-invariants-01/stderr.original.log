@@ -1,0 +1,36 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/studio/parallax/useWorkspaceLayout.test.tsx > honors an early explicit reset including removal of the saved floating window
+AssertionError: expected 333 to be 252 // Object.is equality
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div />[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+- Expected
++ Received
+
+- 252
++ 333
+
+ ❯ src/components/studio/parallax/useWorkspaceLayout.test.tsx:104:112
+    102|   const { result } = renderHook(() => useWorkspaceLayout(scope));
+    103|   act(() => result.current.reset());
+    104|   await waitFor(() => expect(JSON.parse(localStorage.getItem(`parallax…
+       |                                                                                                                ^
+    105|   expect(result.current.layout).toEqual(workspacePreset("SPATIAL"));
+    106|   expect(result.current.layout.assistantWindow).toBeUndefined();
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+

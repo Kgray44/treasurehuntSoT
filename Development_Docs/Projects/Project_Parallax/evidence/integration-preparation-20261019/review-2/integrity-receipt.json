@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "qualification": false,
+  "packetSha256": "7718416f0baf8efd35d4b609cf719725231462c06ed1148dccec78f5497deef1",
+  "mediaCount": 737,
+  "mediaHashErrors": [],
+  "dimensions": 17,
+  "contracts": 9,
+  "frontmatterKeysVerified": [
+    "title",
+    "audience",
+    "status",
+    "canonical_for",
+    "last_reviewed"
+  ],
+  "nativePngDetailCount": 51,
+  "sampledRecordingCount": 60,
+  "decodedFrameCount": 540,
+  "reportHashes": {
+    "independent-review.json": "5c887dc1e42908d85f188de798f10596ddc0b478af6c7660c58bbdc7d5b2b31a",
+    "independent-review.md": "9dc7d2951f363761a0de4b7f9c62d78ffe82e4b3763838bdfdcdad0b690640e8"
+  }
+}

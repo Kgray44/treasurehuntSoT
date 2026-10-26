@@ -1,0 +1,144 @@
+{
+  "kind": "PARALLAX_HOSTED_DEVELOPMENT_FAILURE_DISPOSITION_2",
+  "qualification": false,
+  "observedAtUtc": "2026-10-22T04:35:52.181024+00:00",
+  "run": 39721702762,
+  "attempt": 1,
+  "candidate": "2e1ea05caa88e790f9b6f4f7a36981efed5826a3",
+  "authority": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "wholeRun": "FAILURE",
+  "preparation": "PASS",
+  "selectedBrowserStep": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "cleanup": {
+    "browser": "PASS",
+    "server": "PASS",
+    "proxy": "CLOSED",
+    "treeReaped": true,
+    "streamsClosed": true
+  },
+  "artifactId": 12401793016,
+  "providerArchiveDigestVerified": true,
+  "zipCRC": "PASS",
+  "ciphertextDigestVerified": true,
+  "retentionStatusAsReported": "COMPLETE",
+  "reportedMembers": 14,
+  "reportedRawBytes": 18760953,
+  "reportedIssues": [],
+  "actualPrivateMemberInspection": "PENDING_EXISTING_AUTHORIZED_CUSTODIAN",
+  "actualCaseCounts": "NOT_PUBLICLY_RETAINED_PENDING_PRIVATE_REPORT",
+  "uiCause": "UNKNOWN_PENDING_CAUSAL_INSPECTION",
+  "originalFailure39696321296": "UNCHANGED_ORIGINAL_CAUSE_UNKNOWN",
+  "protectedCapture": false,
+  "protectedQualification": false,
+  "rerun": false,
+  "lifecycle": [
+    {
+      "event": "readiness.backend.start",
+      "utc": "2026-10-22T04:32:38.210Z",
+      "elapsedMs": 19.531
+    },
+    {
+      "event": "readiness.backend.result",
+      "utc": "2026-10-22T04:32:39.669Z",
+      "elapsedMs": 1478.504
+    },
+    {
+      "event": "proxy.start",
+      "utc": "2026-10-22T04:32:39.669Z",
+      "elapsedMs": 1478.603
+    },
+    {
+      "event": "proxy.result",
+      "utc": "2026-10-22T04:32:39.670Z",
+      "elapsedMs": 1479.536
+    },
+    {
+      "event": "readiness.proxy.start",
+      "utc": "2026-10-22T04:32:39.670Z",
+      "elapsedMs": 1479.595
+    },
+    {
+      "event": "readiness.proxy.result",
+      "utc": "2026-10-22T04:32:39.687Z",
+      "elapsedMs": 1496.166
+    },
+    {
+      "event": "capture-child.start",
+      "utc": "2026-10-22T04:32:39.687Z",
+      "elapsedMs": 1496.233
+    },
+    {
+      "event": "capture-child.launched",
+      "utc": "2026-10-22T04:32:39.701Z",
+      "elapsedMs": 1510.097
+    },
+    {
+      "event": "capture-child.exit",
+      "utc": "2026-10-22T04:33:31.831Z",
+      "elapsedMs": 53640.587,
+      "exitCode": 1,
+      "signal": null
+    },
+    {
+      "event": "authority.failure",
+      "utc": "2026-10-22T04:33:31.832Z",
+      "elapsedMs": 53640.909,
+      "failureCategory": "PRODUCT_FAILURE",
+      "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+    },
+    {
+      "event": "cleanup.browser.start",
+      "utc": "2026-10-22T04:33:31.832Z",
+      "elapsedMs": 53641.005
+    },
+    {
+      "event": "cleanup.proxy.start",
+      "utc": "2026-10-22T04:33:31.832Z",
+      "elapsedMs": 53641.033
+    },
+    {
+      "event": "cleanup.server.start",
+      "utc": "2026-10-22T04:33:31.832Z",
+      "elapsedMs": 53641.048
+    },
+    {
+      "event": "cleanup.browser.result",
+      "utc": "2026-10-22T04:33:32.595Z",
+      "elapsedMs": 54404.19,
+      "exitCode": 1,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    {
+      "event": "cleanup.proxy.result",
+      "utc": "2026-10-22T04:33:32.595Z",
+      "elapsedMs": 54404.328,
+      "outcome": "CLOSED"
+    },
+    {
+      "event": "cleanup.server.result",
+      "utc": "2026-10-22T04:33:32.595Z",
+      "elapsedMs": 54404.353,
+      "exitCode": 1,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    {
+      "event": "authority.result",
+      "utc": "2026-10-22T04:33:32.595Z",
+      "elapsedMs": 54404.557,
+      "failureCategory": "PRODUCT_FAILURE",
+      "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+    }
+  ]
+}

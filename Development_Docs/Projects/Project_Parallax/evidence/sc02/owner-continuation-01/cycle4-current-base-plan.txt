@@ -1,0 +1,11 @@
+file:///D:/CodexWorktrees/treasurehunt-parallax-sc-02/scripts/sounding-line/product-experience.mjs:50
+  throw new Error(`PRODUCT_EXPERIENCE_${code}${detail ? `:${detail}` : ""}`);
+        ^
+
+Error: PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration
+    at fail (file:///D:/CodexWorktrees/treasurehunt-parallax-sc-02/scripts/sounding-line/product-experience.mjs:50:9)
+    at planProductExperience (file:///D:/CodexWorktrees/treasurehunt-parallax-sc-02/scripts/sounding-line/product-experience.mjs:537:20)
+    at main (file:///D:/CodexWorktrees/treasurehunt-parallax-sc-02/scripts/sounding-line/experience-browser.mjs:463:16)
+    at async file:///D:/CodexWorktrees/treasurehunt-parallax-sc-02/scripts/sounding-line/experience-browser.mjs:558:90
+
+Node.js v24.18.0

@@ -1,6 +1,7 @@
 "use client";
+import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { createBrowserUuid } from "@/lib/browser-uuid";
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useCallback, useId, type ReactNode } from "react";
 import { ParallaxLensRuntime, type LensSnapshot } from "@/parallax/runtime";
 import { unknownState } from "@/sextant/contracts";
 import type { InstanceBinding, SpatialMoment } from "@/parallax/contracts";
@@ -8,6 +9,7 @@ import { NativeSpatialAdapter } from "@/parallax/native";
 import { landfallNativeHost } from "@/landfall/native-bridge";
 import styles from "./ChronicleLens.module.css";
 import { fieldConsentDisclosure, type FieldMetadata } from "@/parallax/field-contracts";
+import { BrowserRoomView } from "./BrowserRoomView";
 import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 
 function LensMark() {
@@ -57,25 +59,58 @@ export function ChronicleLensEntry({
   blockId,
   replayOnly,
   initiallyOpen = false,
+  compact = false,
 }: {
   moment: SpatialMoment;
   blockId: string;
   replayOnly: boolean;
   initiallyOpen?: boolean;
+  compact?: boolean;
 }) {
   const voyage = useContext(context);
+  const descriptionId = useId();
   const [open, setOpen] = useState(initiallyOpen);
   return (
-    <div className={styles.entry}>
-      <span aria-hidden="true" className={styles.mark}>
-        <LensMark />
-      </span>
-      <div>
-        <strong>{moment.version.title}</strong>
-        <p>A spatial moment is tucked into this passage.</p>
-      </div>
-      <button type="button" onClick={() => setOpen(true)}>
-        Open Chronicle Lens
+    <div className={compact ? styles.compactEntry : styles.entry}>
+      {!compact && (
+        <>
+          <span aria-hidden="true" className={styles.mark}>
+            <LensMark />
+          </span>
+          <div>
+            <strong>{moment.version.title}</strong>
+            <p>
+              {replayOnly
+                ? "Revisit this released scene in view-only mode."
+                : "Open this passage’s scene in your room."}
+            </p>
+          </div>
+        </>
+      )}
+      {compact && (
+        <span id={descriptionId} className="sr-only">
+          {moment.version.title}.{" "}
+          {replayOnly ? "Revisit this released scene in view-only mode." : "Open this passage’s scene in your room."}
+        </span>
+      )}
+      <button
+        type="button"
+        aria-label={compact ? "Open Chronicle Lens" : undefined}
+        aria-describedby={compact ? descriptionId : undefined}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        {compact ? (
+          <>
+            <span className={styles.compactLabelPrefix} aria-hidden="true">
+              Open Chronicle{" "}
+            </span>
+            Lens
+          </>
+        ) : (
+          "Open Chronicle Lens"
+        )}
       </button>
       {open && (
         <ChronicleLens
@@ -118,7 +153,9 @@ export function ChronicleLensEntry({
                 }
               : undefined
           }
-          onClose={() => setOpen(false)}
+          onClose={() => {
+            setOpen(false);
+          }}
           field={
             voyage
               ? async (body) => {
@@ -167,6 +204,11 @@ export function ChronicleLens({
   voyageContext?: VoyageContextData;
   onPresentationChange?: (open: boolean) => void;
 }) {
+  const motionPolicy = useOptionalMotionPolicyContext();
+  const motionPreference = useRef(motionPolicy?.mode ?? "full");
+  useEffect(() => {
+    motionPreference.current = motionPolicy?.mode ?? "full";
+  }, [motionPolicy?.mode]);
   const dialog = useRef<HTMLDialogElement>(null),
     runtime = useRef<ParallaxLensRuntime | null>(null);
   const [state, setState] = useState<LensSnapshot | null>(null),
@@ -177,6 +219,8 @@ export function ChronicleLens({
   const native = useRef<NativeSpatialAdapter | null>(null),
     nativeInteraction = useRef<((id: string, type: "PICK" | "INSPECT" | "PLACE") => void) | null>(null);
   const [nativeAvailable, setNativeAvailable] = useState(false);
+  const [browserRequested, setBrowserRequested] = useState(false);
+  const browserRuntime = useCallback(() => runtime.current, []);
   const [replay, setReplay] = useState(replayOnly);
   const [pending, setPending] = useState<Awaited<ReturnType<ParallaxLensRuntime["interact"]>> | null>(null);
   const [consent, setConsent] = useState(false),
@@ -210,6 +254,7 @@ export function ChronicleLens({
             replayOnly: bound.replayOnly,
             environment: "PRODUCTION",
             searchClock: () => performance.now(),
+            motionPreference: () => motionPreference.current,
             searchTimeStore:
               loadBinding && !bound.replayOnly
                 ? {
@@ -258,7 +303,10 @@ export function ChronicleLens({
       runtime.current?.updateSearchActivity({ foreground: document.visibilityState !== "hidden" });
       // Native presentation can hide its WebView while the app remains foreground.
       // The companion's canonical lifecycle event owns camera shutdown in that case.
-      if (document.visibilityState === "hidden" && !landfallNativeHost()) void runtime.current?.useGuidedView();
+      if (document.visibilityState === "hidden" && !landfallNativeHost()) {
+        if (runtime.current?.read().mode === "BROWSER") void runtime.current.close();
+        else void runtime.current?.useGuidedView();
+      }
     };
     document.addEventListener("visibilitychange", pause);
     const lock = () => runtime.current?.updateSearchActivity({ unlocked: false });
@@ -346,16 +394,35 @@ export function ChronicleLens({
         </button>
       </header>
       <div className={styles.stage}>
-        <div className={styles.compass} aria-hidden="true">
-          <LensMark />
-        </div>
-        <p className={styles.viewLabel}>{state?.mode === "NATIVE" ? "Camera View" : "Guided View"}</p>
-        <p className={styles.narrative}>
-          {activeMoment.attachment.overrides.narrative ?? activeMoment.version.fallback.narrative}
-        </p>
-        <div className={styles.objects}>
+        {state && (
+          <BrowserRoomView
+            key={activeMoment.version.checksum}
+            moment={activeMoment}
+            runtime={browserRuntime}
+            activeChanged={setBrowserRequested}
+            select={(id) => {
+              const entity = activeMoment.version.entities.find((e) => e.id === id);
+              if (entity)
+                void interact(id, entity.interactions.includes("INSPECT") ? "INSPECT" : entity.interactions[0]);
+            }}
+          />
+        )}
+        {!browserRequested && (
+          <>
+            <div className={styles.compass} aria-hidden="true">
+              <LensMark />
+            </div>
+            <p className={styles.viewLabel}>{state?.mode === "NATIVE" ? "Camera View" : "Guided View"}</p>
+            <p className={styles.narrative}>
+              {activeMoment.attachment.overrides.narrative ?? activeMoment.version.fallback.narrative}
+            </p>
+          </>
+        )}
+        <div className={styles.objects} aria-label={browserRequested ? "Selected spatial object" : "Spatial objects"}>
           {activeMoment.version.entities
-            .filter((e) => state?.visibleEntityIds.includes(e.id))
+            .filter(
+              (e) => state?.visibleEntityIds.includes(e.id) && (!browserRequested || state.selectedEntityId === e.id),
+            )
             .map((e) => (
               <article
                 key={e.id}
@@ -376,7 +443,12 @@ export function ChronicleLens({
                     <button
                       type="button"
                       key={type}
-                      disabled={busy || !state || !["READY", "GUIDED_FALLBACK"].includes(state.state)}
+                      disabled={
+                        busy ||
+                        !state ||
+                        !["READY", "GUIDED_FALLBACK"].includes(state.state) ||
+                        (browserRequested && type === "PLACE")
+                      }
                       onClick={() => void interact(e.id, type)}
                     >
                       {type === "PICK"
@@ -554,14 +626,16 @@ export function ChronicleLens({
             Use camera for local placement
           </button>
         )}
-        <p role="status">
-          {observed
-            ? replay
-              ? "Revisited. Your Voyage progress stays the same."
-              : "Interaction recorded. Continue through the passage when you are ready."
-            : (state?.guidance ?? "Opening this passage’s spatial moment…")}
-        </p>
-        <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>
+        {(!browserRequested || state?.mode === "BROWSER" || observed) && (
+          <p role="status">
+            {observed
+              ? replay
+                ? "Revisited. Your Voyage progress stays the same."
+                : "Interaction recorded. Continue through the passage when you are ready."
+              : (state?.guidance ?? "Opening this passage’s spatial moment…")}
+          </p>
+        )}
+        {!browserRequested && <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>}
         {error && <p role="alert">{error}</p>}
         {pending && (
           <button disabled={busy} type="button" onClick={() => void retry()}>

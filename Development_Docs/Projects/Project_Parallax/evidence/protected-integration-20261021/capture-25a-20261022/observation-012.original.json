@@ -1,0 +1,204 @@
+{
+  "at": "2026-10-23T00:22:00.0290393Z",
+  "run": {
+    "conclusion": null,
+    "created_at": "2026-10-23T00:02:46Z",
+    "head_sha": "1c516d27fca521157732fca4cbba773d1542f1b2",
+    "html_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+    "id": 39875668380,
+    "run_attempt": 1,
+    "status": "in_progress",
+    "updated_at": "2026-10-23T00:09:53Z"
+  },
+  "jobs": [
+    {
+      "activeSteps": [],
+      "completed_at": "2026-10-23T00:09:50Z",
+      "conclusion": "success",
+      "id": 120160548373,
+      "name": "Sounding Line / Finite campaign custody",
+      "started_at": "2026-10-23T00:02:49Z",
+      "status": "completed"
+    },
+    {
+      "activeSteps": [
+        {
+          "name": "Retain redacted preparation progress after every outcome",
+          "number": 10,
+          "started_at": "2026-10-23T00:21:58Z"
+        }
+      ],
+      "completed_at": null,
+      "conclusion": null,
+      "id": 120163038116,
+      "name": "Sounding Line / Experience preparation (no mainline decision)",
+      "started_at": "2026-10-23T00:09:52Z",
+      "status": "in_progress"
+    },
+    {
+      "activeSteps": [],
+      "completed_at": "2026-10-23T00:09:50Z",
+      "conclusion": "skipped",
+      "id": 120163039861,
+      "name": "Sounding Line / Focused verification",
+      "started_at": "2026-10-23T00:09:51Z",
+      "status": "completed"
+    },
+    {
+      "activeSteps": [],
+      "completed_at": "2026-10-23T00:09:50Z",
+      "conclusion": "skipped",
+      "id": 120163039897,
+      "name": "Sounding Line / Mainline Decision",
+      "started_at": "2026-10-23T00:09:51Z",
+      "status": "completed"
+    }
+  ],
+  "phases": [
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:21:58Z",
+      "description": "Controller FAIL; progress only, no qualification",
+      "id": 57049453584,
+      "state": "failure",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:21:58Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:21:57Z",
+      "description": "13 RETENTION; preparation progress",
+      "id": 57049452883,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:21:57Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:21:56Z",
+      "description": "12 CLEANUP; preparation progress",
+      "id": 57049452359,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:21:56Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:21:22Z",
+      "description": "11 CAPTURE; preparation progress",
+      "id": 57049420350,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:21:22Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:21:21Z",
+      "description": "10 BROWSER_STARTUP; preparation progress",
+      "id": 57049418629,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:21:21Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:18:24Z",
+      "description": "9 PRODUCTION_BUILD; preparation progress",
+      "id": 57049252354,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:18:24Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:18:23Z",
+      "description": "8 FIXTURE_PREPARER; preparation progress",
+      "id": 57049251693,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:18:23Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:18:23Z",
+      "description": "7 FIXTURE_PREPARER; preparation progress",
+      "id": 57049251077,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:18:23Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:18:20Z",
+      "description": "6 FIXTURE_SEED; preparation progress",
+      "id": 57049247758,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:18:20Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:18:18Z",
+      "description": "5 FIXTURE_BOOTSTRAP; preparation progress",
+      "id": 57049245993,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:18:18Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:18:15Z",
+      "description": "4 FIXTURE_PRISMA; preparation progress",
+      "id": 57049243330,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:18:15Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:17:27Z",
+      "description": "3 STAGING; preparation progress",
+      "id": 57049197019,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:17:27Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:16:53Z",
+      "description": "2 PLANNING; preparation progress",
+      "id": 57049164784,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:16:53Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:16:52Z",
+      "description": "1 ADMISSION; preparation progress",
+      "id": 57049164175,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:16:52Z"
+    },
+    {
+      "context": "Sounding Line / Preparation progress (39875668380.1.a489d237-3ac8-4025-8eed-0b12aa407565)",
+      "created_at": "2026-10-23T00:16:51Z",
+      "description": "0 CONTROLLER_START; preparation progress",
+      "id": 57049163360,
+      "state": "pending",
+      "target_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39875668380",
+      "updated_at": "2026-10-23T00:16:51Z"
+    }
+  ],
+  "guard": {
+    "utc": "2026-10-23T00:21:56.4258111Z",
+    "allowed": true,
+    "floorBytesEach": 32212254720,
+    "cFreeBytes": 56166866944,
+    "dFreeBytes": 117455409152,
+    "estimatedCBytes": 0,
+    "estimatedDBytes": 1048576,
+    "reason": "Both drives remain above reserve after estimated writes"
+  }
+}

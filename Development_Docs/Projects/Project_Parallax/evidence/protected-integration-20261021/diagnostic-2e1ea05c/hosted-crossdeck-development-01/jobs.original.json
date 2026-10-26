@@ -1,0 +1,145 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 119554448090,
+      "run_id": 39696321296,
+      "workflow_name": "Focused development d4a8975200dfdc91ea1b92cbf3b53df6f08da3e0 tests/e2e/crossdeck-experience-refit.spec.ts",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/runs/39696321296",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOTatV2s8AAAAb1gAa2g",
+      "head_sha": "aaff919428ef9ab421579415ce3409949724760d",
+      "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/actions/jobs/119554448090",
+      "html_url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39696321296/job/119554448090",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-21T23:53:43Z",
+      "started_at": "2026-10-21T23:53:45Z",
+      "completed_at": "2026-10-22T00:09:16Z",
+      "name": "Focused browser development (no mainline decision)",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-21T23:53:46Z",
+          "completed_at": "2026-10-21T23:53:47Z"
+        },
+        {
+          "name": "Require protected workflow source and a focused selector",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-21T23:53:47Z",
+          "completed_at": "2026-10-21T23:53:47Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-21T23:53:47Z",
+          "completed_at": "2026-10-21T23:57:36Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-21T23:57:36Z",
+          "completed_at": "2026-10-22T00:02:37Z"
+        },
+        {
+          "name": "Create the dedicated candidate worktree",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-22T00:02:37Z",
+          "completed_at": "2026-10-22T00:03:15Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-22T00:03:15Z",
+          "completed_at": "2026-10-22T00:03:26Z"
+        },
+        {
+          "name": "Install locked development dependencies",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-22T00:03:26Z",
+          "completed_at": "2026-10-22T00:04:04Z"
+        },
+        {
+          "name": "Prepare the source-bound development runtime",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-22T00:04:04Z",
+          "completed_at": "2026-10-22T00:07:46Z"
+        },
+        {
+          "name": "Run the selected development case without qualification",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 9,
+          "started_at": "2026-10-22T00:07:47Z",
+          "completed_at": "2026-10-22T00:09:11Z"
+        },
+        {
+          "name": "Retain encrypted development failure diagnostics",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-22T00:09:11Z",
+          "completed_at": "2026-10-22T00:09:12Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-10-22T00:09:12Z",
+          "completed_at": "2026-10-22T00:09:12Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-22T00:09:12Z",
+          "completed_at": "2026-10-22T00:09:13Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-22T00:09:13Z",
+          "completed_at": "2026-10-22T00:09:13Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-22T00:09:13Z",
+          "completed_at": "2026-10-22T00:09:13Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/check-runs/119554448090",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000026829,
+      "runner_name": "GitHub Actions 1000026829",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

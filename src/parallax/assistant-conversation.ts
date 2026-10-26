@@ -34,6 +34,8 @@ export async function readAssistantConversation(
   const seen = new Set<string>();
   let identity = previousRequestId;
   const currentIds = new Set(draft.content.entities.map((entity) => entity.id));
+  const groupIds = new Set(draft.content.studio?.editingGroups?.map((group) => group.id) ?? []);
+  const featureIds = new Set(draft.content.studio?.environment?.features.map((feature) => feature.id) ?? []);
   while (identity && turns.length < 2) {
     if (seen.has(identity)) unavailable();
     seen.add(identity);
@@ -74,14 +76,33 @@ export async function readAssistantConversation(
       baseRevision: proposal.sceneRevision,
       operations: proposal.operations.map((operation) => {
         const entityId =
-          "entityId" in operation
-            ? operation.entityId
-            : operation.type === "BEHAVIOR"
-              ? operation.targetEntityId
-              : null;
+          operation.type === "DUPLICATE"
+            ? operation.newEntityId
+            : operation.type === "ANIMATION"
+              ? operation.track.entityId
+              : "entityId" in operation
+                ? operation.entityId
+                : operation.type === "BEHAVIOR"
+                  ? operation.targetEntityId
+                  : null;
         return {
           type: operation.type,
           entityId,
+          trackId:
+            operation.type === "ANIMATION" ? operation.track.id : "trackId" in operation ? operation.trackId : null,
+          behaviorId: "behaviorId" in operation ? operation.behaviorId : null,
+          changedFields:
+            operation.type === "CONTENT"
+              ? (["name", "content", "alternativeText", "widthMeters", "interactions"] as const).filter(
+                  (field) => operation[field] !== null,
+                )
+              : operation.type === "SCENE_DETAILS"
+                ? (["title", "tags", "collection", "favorite"] as const).filter((field) => operation[field] !== null)
+                : [],
+          groupId: "groupId" in operation ? operation.groupId : null,
+          groupExistsInCurrentScene: "groupId" in operation && groupIds.has(operation.groupId),
+          featureId: "featureId" in operation ? operation.featureId : null,
+          featureExistsInCurrentScene: "featureId" in operation && featureIds.has(operation.featureId),
           existsInCurrentScene: entityId ? currentIds.has(entityId) : false,
           proposedName: operation.type === "CREATE" ? operation.name : null,
         };

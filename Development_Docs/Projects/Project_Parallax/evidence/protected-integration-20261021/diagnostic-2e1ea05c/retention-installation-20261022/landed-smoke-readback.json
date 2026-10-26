@@ -1,0 +1,72 @@
+{
+  "kind": "INDEPENDENT_INSTALLED_RETENTION_SMOKE_READBACK",
+  "timeUtc": "2026-10-22T04:28:38.0065872Z",
+  "head": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "tree": "c1b234b905b04fd56f045dcd6f9ea0e646bb8a60",
+  "cleanAfter": true,
+  "checkCount": 4,
+  "streamCount": 8,
+  "streams": [
+    {
+      "check": "retention-smoke",
+      "kind": "stdout",
+      "bytes": 1691,
+      "sha256": "c78c68f5649adab825bcde48aa8898dc5de4edea5b4f99bc4ce0550fb06a2ea9",
+      "verified": true
+    },
+    {
+      "check": "retention-smoke",
+      "kind": "stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "check": "docs-validate",
+      "kind": "stdout",
+      "bytes": 33,
+      "sha256": "a577c20ffd716a727eff6829bca7a41e2cbfc01a44de0198134499fdbac40f0a",
+      "verified": true
+    },
+    {
+      "check": "docs-validate",
+      "kind": "stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "check": "features-sync",
+      "kind": "stdout",
+      "bytes": 52,
+      "sha256": "73bc23fe4ed449303d9c74cfae30926bc07330e87a7f7336d3bcb2278a2d9c30",
+      "verified": true
+    },
+    {
+      "check": "features-sync",
+      "kind": "stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    },
+    {
+      "check": "features-validate",
+      "kind": "stdout",
+      "bytes": 35,
+      "sha256": "13a02cc6d2aca9c30371dcae2929505862456f13cd6783b1bd6c98ad7348ba88",
+      "verified": true
+    },
+    {
+      "check": "features-validate",
+      "kind": "stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    }
+  ],
+  "independentReviewSHA256": "a4f1f2c22420bbcc7bebd9283a3bf013251db6d25a19ec9f43585dc6c5f2724c",
+  "requiredCheckId": 119628667519,
+  "requiredApp": 15368,
+  "requiredConclusion": "success",
+  "qualificationForConsumer": false
+}

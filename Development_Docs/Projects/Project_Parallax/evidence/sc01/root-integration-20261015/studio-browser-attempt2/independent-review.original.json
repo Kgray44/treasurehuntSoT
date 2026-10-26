@@ -1,0 +1,3349 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewType": "SUPPORTING_LOCAL_COMBINED_STUDIO_SECOND_CAPTURE_INDEPENDENT_REVIEW",
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "builderRationaleUsed": false,
+  "source": "66699086cbcc86616679b039f33680c6d05588df",
+  "tree": "7c4041543cb3dff4cd11555684e4367bf69b5e69",
+  "sourceWorkspace": "D:/CodexWorktrees/parallax-root-browser-qualification",
+  "captureRoot": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc01\\root-integration-20261015\\studio-browser-attempt2",
+  "captureIdentity": "sc01/root-integration-20261015/studio-browser-attempt2",
+  "captureAttempt": 2,
+  "reviewTier": "SUPPORTING_LOCAL_ONLY",
+  "contract": "parallax.authored-library-and-simulation.experience",
+  "relatedContracts": [
+    "spatial-pilot.experience",
+    "parallax.parametric-room-correction.experience",
+    "parallax.scene-manager.experience"
+  ],
+  "contractMetadataLimit": "Packet has no explicit contractId or dimension list; existing owning contracts map this bounded behavior. Original packet untouched.",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "dispositionScope": "Verify bounded supporting local outcomes and resolve prior two Inspector hierarchy P3findings at current source. No new blocker. Existing painting P3 persists. VERIFY_FINAL_EVIDENCE vocabulary does not promote this to trusted/protected/finalSC00B acceptance or reset review/capture counters.",
+  "blockingFindings": [],
+  "findings": [
+    {
+      "id": "SC00B-COMBINED-01",
+      "contract": "parallax.authored-library-and-simulation.experience",
+      "severity": "P3",
+      "blocking": false,
+      "status": "RESOLVED_AT_66699086_SUPPORTING_ATTEMPT_2",
+      "observation": "Scene settings now has SCENE/Inspector acceptance workshop in all3depth stills while Mapandchest remains selected in graph/canvas. Pinned test asserts Inspector context includes Scene title and excludes group name.",
+      "evidenceIds": [
+        "inspector-captures/scene-guided.png",
+        "inspector-captures/scene-standard.png",
+        "inspector-captures/scene-engineering.png",
+        "videos/recording-2.webm@10.56–11.28s",
+        "tests/e2e/parallax-sc00b-combined.spec.ts"
+      ],
+      "sourceCorroboration": "inspectorHero now prioritizes activeInspectorViewSCENE for eyebrow/title. Scene view no longer includes selected-object actions."
+    },
+    {
+      "id": "SC00B-COMBINED-02",
+      "contract": "parallax.authored-library-and-simulation.experience",
+      "severity": "P3",
+      "blocking": false,
+      "status": "RESOLVED_AT_66699086_SUPPORTING_ATTEMPT_2",
+      "observation": "Selected table/exclusion pages show collapsed Environmenttools&dimensions then Roomfeature/Feature name/classification above fold. Pinned test asserts Feature name in viewport for each; whole Environment entry still exposes global setup.",
+      "evidenceIds": [
+        "inspector-captures/room-feature-guided.png",
+        "inspector-captures/exclusion-zone-guided.png",
+        "inspector-captures/environment-guided.png",
+        "tests/e2e/parallax-sc00b-combined.spec.ts"
+      ],
+      "sourceCorroboration": "RoomEnvironmentEditor wraps global guidance/disclosures/dimensions in details open only without selectedFeatureId."
+    },
+    {
+      "id": "SC02-PLACEMENT-01",
+      "contract": "spatial-pilot.experience",
+      "severity": "P3",
+      "blocking": false,
+      "status": "OPEN_MATERIAL_NONBLOCKING_RECONFIRMED",
+      "observation": "Current floor/table/wall still and recording8 show black back of inserted painting on camera-facing hidden cutaway wall; artwork/front-face attachment is not made intelligible. Same finite limitation as attempt9 retained.",
+      "evidenceIds": [
+        "element-captures/room-aware-floor-table-wall.png",
+        "videos/recording-8.webm@7.68–10.56s"
+      ],
+      "unsupportedVsInsufficientEvidence": "Visual reverse/hidden-support ambiguity is confirmed. Missing support/collision is NOT confirmed: earlier pinned canonical four-wall geometry and display-only cutaway explanation remains applicable; no current opposite/front view or stored surfaceId/pose receipt qualifies mounted visual quality.",
+      "suggestedBoundedFollowup": "If improving preview quality, show selected hidden support or intentional front-face camera cue and recapture. Not a blocking data-integrity finding."
+    }
+  ],
+  "materialNonblockingFindings": [
+    "SC02-PLACEMENT-01"
+  ],
+  "minorObservationClosure": "Standard/Detailed visible copy inconsistency resolved in current empty-selection-standard original.",
+  "dimensions": {
+    "composition": {
+      "observation": "Dark blue Studio retains shared Environment/Scene banner, left graph/Library, central rendered room, right Inspector and Timeline. Scene settings now leads with SCENE and actual Scene title, while selected group remains highlighted separately in graph/canvas. Selected table/exclusion first fold now contains their own selector/name/classification.",
+      "evidenceIds": [
+        "inspector-captures/scene-guided.png",
+        "inspector-captures/room-feature-guided.png",
+        "inspector-captures/exclusion-zone-guided.png",
+        "element-captures/combined-chest-desktop.png"
+      ],
+      "limits": "Supporting local combined integration; no whole-overhaul acceptance."
+    },
+    "hierarchy": {
+      "observation": "SC00B-COMBINED-01 and02 resolved by actual current media: correct Scene hero and collapsed Environment tools when a feature is selected. Environment-only entry still expands global setup. Object identity precedes appropriate typed controls; Guided tool actions, Standard numeric form and Engineering technical detail remain distinct.",
+      "evidenceIds": [
+        "inspector-captures/scene-engineering.png",
+        "inspector-captures/room-feature-guided.png",
+        "inspector-captures/environment-guided.png",
+        "inspector-captures/group-standard.png"
+      ],
+      "limits": ""
+    },
+    "typography": {
+      "observation": "Inspector names/labels remain readable in native strips; Standard copy now consistently says Standard. Light effect controls use dark blue text on white, with count11 visible. Phone Scene title wraps; shared banner secondary instruction truncates but Manage Scenes remains visible.",
+      "evidenceIds": [
+        "inspector-captures/empty-selection-standard.png",
+        "inspector-captures/particles-light-guided.png",
+        "inspector-captures/scene-phone.png"
+      ],
+      "limits": "No long-name/localization or numerical contrast acceptance."
+    },
+    "spacing": {
+      "observation": "Feature controls no longer sit below three global dimensions/disclosures. Desktop quick actions fit one row. Phone top commands wrap; user can scroll lower Scene fields, collapse Inspector and return to canvas. Library categories/search/filter and camera popup fit390px width.",
+      "evidenceIds": [
+        "inspector-captures/room-feature-guided.png",
+        "inspector-captures/exclusion-zone-guided.png",
+        "inspector-captures/phone-edit-return.png",
+        "element-captures/combined-library-phone.png",
+        "element-captures/combined-view-controls-phone.png"
+      ],
+      "limits": "Phone working-size task evidence does not establish permanent whole-room framing or every lower property form."
+    },
+    "controls": {
+      "observation": "Actual Inspector Object scale slider pointer drag enlarges map live while Undo stays disabled, release enables Undo, one Undo restores rendered scale1. It is a slider drag, not viewport gizmo transformation. Numeric light35→Undo12→Redo35, mode/reload35 and feature rename/reload are exercised. Particle count10.5 normalizes to11 and saves. Phone title edit/collapse/return/reopen and rail keyboard Enter/Tab are exercised.",
+      "evidenceIds": [
+        "inspector-captures/scale-live-preview.png",
+        "videos/recording-5.webm",
+        "videos/recording-7.webm",
+        "videos/recording-4.webm",
+        "videos/recording-2.webm",
+        "tests/e2e/parallax-sc00b-combined.spec.ts"
+      ],
+      "limits": "No group scale commit, gizmo drag, invalid scale cancellation, all-effect parameter edit or physical manipulation acceptance."
+    },
+    "contrast": {
+      "observation": "Dark and light Inspector fields retain distinct labels, borders and blue selection. Light shell covers graph/Inspector/viewport controls; Engineering grid and white-blue playback light remain distinguishable. Current painting default view still shows its black reverse at cutaway front, preserving earlier preview-affordance concern.",
+      "evidenceIds": [
+        "inspector-captures/mist-light-guided.png",
+        "inspector-captures/projection-light-engineering.png",
+        "element-captures/combined-composition-playing.png",
+        "element-captures/room-aware-floor-table-wall.png"
+      ],
+      "limits": "No universal contrast audit, Lightphone or physical/material acceptance."
+    },
+    "consistency": {
+      "observation": "Same Inspector context remains across three depths; ordinary objects and typed chest/light/audio/interaction use existing canonical forms/history. SceneManager banner/Manage Scenes and root room insertion paths coexist. Empty-selection Standard vocabulary now matches selector.",
+      "evidenceIds": [
+        "inspector-captures/empty-selection-standard.png",
+        "inspector-captures/furniture-guided.png",
+        "inspector-captures/light-guided.png",
+        "element-captures/combined-chest-desktop.png"
+      ],
+      "limits": "Source path retention is distinct from a newly executed full SceneManager lifecycle."
+    },
+    "states": {
+      "observation": "Current media covers original11context matrix, additional four light-theme effect types/three depths, removed-selection recovery and mixed selection, slider-held live preview, phone saved-title return, reload, actual composition playback and no-fit refusal. Removed selection offers Undo/Open Scene settings and remaining-object chooser; Undo restores chest.",
+      "evidenceIds": [
+        "inspector-captures/removed-selection-guided.png",
+        "inspector-captures/mixed-selection-guided.png",
+        "videos/recording-6.webm",
+        "videos/recording-2.webm",
+        "videos/recording-5.webm",
+        "videos/recording-8.webm",
+        "videos/recording-9.webm"
+      ],
+      "limits": "Blank videos1and3 contribute no role-state proof. Preview/unapplied, locked/busy and broad error matrix remain untested."
+    },
+    "responsive": {
+      "observation": "390x844 actual browser viewport edits Scene title to Inspector phone edit, persists it, collapses Inspector, scrolls canvas into view and reopens same title. Native phone-edit-return shows unobscured toolbar/room; phone Library and View/audio popup retain previous fixes.",
+      "evidenceIds": [
+        "videos/recording-2.webm",
+        "inspector-captures/phone-edit-return.png",
+        "element-captures/combined-library-phone.png",
+        "element-captures/combined-view-controls-phone.png",
+        "tests/e2e/parallax-sc00b-combined.spec.ts"
+      ],
+      "limits": "This is finite desktop-Chrome viewport/mouse operation, not touch/real handset/keyboard popup or whole-room framing qualification. Brief canvas-return state is supported by original still+assertions; not seen in every6th video sample."
+    },
+    "keyboard": {
+      "observation": "Actual effect journey focuses Properties rail and presses Enter, Tab to Spatial context/Enter then Tab to Scene settings/Enter, asserting focus and active state. Camera Escape/Plan→Perspective remain exercised in root journey. This supplies finite rail traversal, not complete keyboard authoring.",
+      "evidenceIds": [
+        "videos/recording-4.webm",
+        "tests/e2e/parallax-sc00b-combined.spec.ts",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "No full keyboard-only Library/scale/group/phone editing journey or assistive-technology proof."
+    },
+    "focus": {
+      "observation": "Selected graph/canvas/Inspector identity remains through depth changes. Actual rail focus/Enter/Tab assertions retain selection identity Portal phenomenon in context and then Scene settings. Phone collapse/reopen retains title. Inspector-only axe reports no serious/critical violations in tested phone/light states.",
+      "evidenceIds": [
+        "videos/recording-4.webm",
+        "videos/recording-2.webm",
+        "tests/e2e/parallax-sc00b-combined.spec.ts"
+      ],
+      "limits": "No full-page axe/focus order or all modal return acceptance. Passing assertions supplement observed state changes."
+    },
+    "feedback": {
+      "observation": "Scale3.2 at pointer-held still matches visibly enlarged map; undo later shrinks it. Particle numeric11 is visibly reflected after fractional entry and persisted. Scene title feedback and revision/save states update. No-fit alert explicitly refuses Wardrobe and offers room/space/manual recovery without changing stored content.",
+      "evidenceIds": [
+        "inspector-captures/scale-live-preview.png",
+        "inspector-captures/particles-light-guided.png",
+        "videos/recording-5.webm",
+        "videos/recording-2.webm",
+        "element-captures/room-aware-no-fit-recovery.png",
+        "tests/e2e/parallax-sc00b-combined.spec.ts",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "No blank/error validation or generic Retrysave recovery executed. No inference from labels alone."
+    },
+    "motion": {
+      "observation": "Light effect inspection is under persisted REDUCED preference and emulated reducedMotion:reduce. It establishes control visibility across depths, not motion of all four effects in simulation. Separate root composition journey actually plays after reload, waits2200ms, shows light/particles and advancing3.1s clock, then pauses with audio voices stopping.",
+      "evidenceIds": [
+        "videos/recording-4.webm",
+        "inspector-captures/phenomenon-light-guided.png",
+        "videos/recording-9.webm",
+        "element-captures/combined-composition-playing.png",
+        "tests/e2e/parallax-sc00b-combined.spec.ts",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "Video-only streams; no audible audio, default/reduced motion animation comparison, GPU/FPS or native physical acceptance."
+    },
+    "continuity": {
+      "observation": "Current seven journeys support same Scene after reload, numeric light history, room rename persistence, one-history scale release/Undo, phone title saved/reopened and fractional particle normalization saved11. Root composition saves one record, reuses two Ghostly Presence roots, reloads, plays with voices2 and pauses0. Physical chest Undo/Redo, entity equality across reload and entire content equality on no-fit are checked.",
+      "evidenceIds": [
+        "videos/recording-2.webm",
+        "videos/recording-5.webm",
+        "videos/recording-7.webm",
+        "videos/recording-8.webm",
+        "videos/recording-9.webm",
+        "tests/e2e/parallax-sc00b-combined.spec.ts",
+        "tests/e2e/parallax-sc02-integration.spec.ts"
+      ],
+      "limits": "Composition ID-remap source architecture is not divergent-edit copy-independence testing. No immutable release restore/privacy-security audit or later PAGED lifecycle acceptance."
+    },
+    "complexity": {
+      "observation": "Selected feature view now places its fields directly after compact global disclosure. Scene hero accurately identifies Scene-wide scope. Guided exposes basic viewport tools while Standard/Engineering reveal fields; light effect technical limitations are disclosed in Engineering. Removed and mixed selection have meaningful specific forms.",
+      "evidenceIds": [
+        "inspector-captures/room-feature-guided.png",
+        "inspector-captures/scene-guided.png",
+        "inspector-captures/projection-light-engineering.png",
+        "inspector-captures/removed-selection-guided.png",
+        "inspector-captures/mixed-selection-guided.png"
+      ],
+      "limits": "Room-only global disclosure still dense when expanded, but no confirmed blocked task. No new material hierarchy defect observed."
+    },
+    "role-outcomes": {
+      "observation": "Authenticated synthetic Creator completes seven finite production browser journeys including context matrix, light/history/rename/reload, slider live preview+oneUndo, light-theme effects/keyboard rail, removed/mixed selection recovery, root Library composition playback and room insertion/no-fit. No current blocking finding observed. Prior painting reverse-preview P3 remains.",
+      "evidenceIds": [
+        "tests/e2e/parallax-sc00b-combined.spec.ts",
+        "tests/e2e/parallax-sc02-integration.spec.ts",
+        "browser.original.log.txt",
+        "run.original.json",
+        "videos/recording-2.webm",
+        "videos/recording-4.webm",
+        "videos/recording-5.webm",
+        "videos/recording-6.webm",
+        "videos/recording-7.webm",
+        "videos/recording-8.webm",
+        "videos/recording-9.webm"
+      ],
+      "limits": "Supporting local evidence only; not trusted/protected review, full SC00B/whole Studio/owner/device acceptance or counter reset."
+    },
+    "fallbacks": {
+      "observation": "Removed selection offers real Undo recovery; no-fit rejects insertion and preserves content. Effect source/rendered copy distinguishes layer mist from volumetrics, surface overlay from occlusion-aware projection, native Guided presentation and unqualified interaction proximity. Guided fallback narrative remains available.",
+      "evidenceIds": [
+        "inspector-captures/removed-selection-guided.png",
+        "element-captures/room-aware-no-fit-recovery.png",
+        "inspector-captures/mist-light-engineering.png",
+        "inspector-captures/projection-light-engineering.png",
+        "inspector-captures/interaction-trigger-engineering.png"
+      ],
+      "limits": "No actual PlayerGuided/native capability/renderer-unavailable or audible audio-denial recovery journey captured."
+    }
+  },
+  "packet": {
+    "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc01\\root-integration-20261015\\studio-browser-attempt2\\packet.json",
+    "sha256": "46ab4bbe70211cdf8a914a4049f0ef2caac1399c178828a505da3e83d103b33f",
+    "originalFilesVerified": 77,
+    "inspectorImages": 54,
+    "elementImages": 6,
+    "recordings": 9,
+    "sevenJourneys": true
+  },
+  "preSourceNotes": {
+    "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\pre-source-visual-notes.original.json",
+    "sha256": "9567a9cb4a72388c39efa769b28208bc420b8e133c51bb7188492579ffbdc530",
+    "frozenBefore": "Current source/test inspection",
+    "notes": {
+      "documentClassification": "engineering-evidence",
+      "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+      "source": "66699086cbcc86616679b039f33680c6d05588df",
+      "tree": "7c4041543cb3dff4cd11555684e4367bf69b5e69",
+      "frozenAt": "2026-10-15T09:18:22.424Z",
+      "packetPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc01\\root-integration-20261015\\studio-browser-attempt2\\packet.json",
+      "packetSha256": "46ab4bbe70211cdf8a914a4049f0ef2caac1399c178828a505da3e83d103b33f",
+      "originalEvidence": [
+        {
+          "path": "browser-runtime.original.json",
+          "bytes": 1316,
+          "sha256": "280a17fc168b4649bf77fd5998e8dc70234b7eac57a75e4aa31785a5a33b61ad"
+        },
+        {
+          "path": "browser-suite-profile.original.json",
+          "bytes": 418,
+          "sha256": "733d498b8fe5cfce9f56baa3b6d258317d72da7665a2e197c64dd4731c80245e"
+        },
+        {
+          "path": "browser.original.log.txt",
+          "bytes": 51644,
+          "sha256": "644295709f61209095747632ceb295fa8217929e52a13baecb267140cda44e5a"
+        },
+        {
+          "path": "run.original.json",
+          "bytes": 510,
+          "sha256": "c5e0039fccd8195d88033144b851815de1131eb365cf88b33f0389523367938c"
+        },
+        {
+          "path": "element-captures/combined-chest-desktop.png",
+          "bytes": 313317,
+          "sha256": "d8b7dd1bc0ef4395401d0ad047b35312948b0b4e189478f3b2c084253255db4c"
+        },
+        {
+          "path": "element-captures/combined-composition-playing.png",
+          "bytes": 336290,
+          "sha256": "0c9a51c0db8b48e9a5e85ac76bea44eb12ea499e3e500857b6ba3366e428744f"
+        },
+        {
+          "path": "element-captures/combined-element-observations.json",
+          "bytes": 70,
+          "sha256": "6cce31ad7ac70fc7e61c2a52e86d825ed334b0ce520f34349db1f080efc0632e"
+        },
+        {
+          "path": "element-captures/combined-library-phone.png",
+          "bytes": 94893,
+          "sha256": "9bf0b1247c9ce1a51b6c630ba1d50e90b81941eb7bf65817f04ca50cc3951ece"
+        },
+        {
+          "path": "element-captures/combined-view-controls-phone.png",
+          "bytes": 104004,
+          "sha256": "cfdafe5f86ccd20cd12fde3284fae346063bdf21f597a022fff45ad72e10e934"
+        },
+        {
+          "path": "element-captures/room-aware-floor-table-wall.png",
+          "bytes": 275653,
+          "sha256": "20042c9591fc596ada7aaee2ebf8bb2cb796413c285dbb51c0177a3bc63b4d74"
+        },
+        {
+          "path": "element-captures/room-aware-no-fit-recovery.png",
+          "bytes": 345541,
+          "sha256": "6d07cec7499afa3b857ee966102cd788fee5b71f271fd1f6bf8d0663416c004a"
+        },
+        {
+          "path": "inspector-captures/effects-observations.json",
+          "bytes": 2029,
+          "sha256": "8fbbec5950e7fbd22311562182b7c66250a3868d0f486a8a4d4ad6141f85ec87"
+        },
+        {
+          "path": "inspector-captures/empty-selection-engineering.png",
+          "bytes": 328828,
+          "sha256": "c94dc3a2ffb6870916dc635778eb2014c720a16588366141293b0711847e0e62"
+        },
+        {
+          "path": "inspector-captures/empty-selection-guided.png",
+          "bytes": 310410,
+          "sha256": "a0b309e288082aacdfda86b5fc0a17018d10042db043ed0e8c49e46ed3d51174"
+        },
+        {
+          "path": "inspector-captures/empty-selection-standard.png",
+          "bytes": 311807,
+          "sha256": "d6570c89a117f050274a8d9e5d52e5a0bb1956e437eb54a06c8a94bb4110facf"
+        },
+        {
+          "path": "inspector-captures/environment-engineering.png",
+          "bytes": 334614,
+          "sha256": "f4cafd1a2b9b6fed1c634707b9ba65bf347353da694962733db4fbea9baba2e3"
+        },
+        {
+          "path": "inspector-captures/environment-guided.png",
+          "bytes": 318610,
+          "sha256": "d7c41216f407c5b619f70e3220bd38735be7de5163a82c5a76a2c2d9c533f499"
+        },
+        {
+          "path": "inspector-captures/environment-standard.png",
+          "bytes": 319711,
+          "sha256": "afb2f665b978f69d1e86f8b61c1321a9c1760ac322f42540f2411cfc6b13ae1a"
+        },
+        {
+          "path": "inspector-captures/exclusion-zone-engineering.png",
+          "bytes": 330694,
+          "sha256": "11b81d6228e686312cf2ff4a2250908247d60b0d631faf736f71ddd6c87a30ec"
+        },
+        {
+          "path": "inspector-captures/exclusion-zone-guided.png",
+          "bytes": 315260,
+          "sha256": "e0e198a5f047fb723f14ca7f1bb13e02074abdc4f6fd66eec05a1ae4641e7787"
+        },
+        {
+          "path": "inspector-captures/exclusion-zone-standard.png",
+          "bytes": 316368,
+          "sha256": "7bc479472498e90d187c0fb47a69a632db5278a618c8bce151937b10251fb921"
+        },
+        {
+          "path": "inspector-captures/furniture-engineering.png",
+          "bytes": 339495,
+          "sha256": "88161c0e04079df87cbceb653f536e3a85cf08a016b14354a087338e1d22daaa"
+        },
+        {
+          "path": "inspector-captures/furniture-guided.png",
+          "bytes": 317899,
+          "sha256": "6e301f928c0ef2d0320c3e82ba79b46906cb0be74a5e60f9af248480fd38ee91"
+        },
+        {
+          "path": "inspector-captures/furniture-standard.png",
+          "bytes": 319004,
+          "sha256": "9a65e6e0b59e68c2ab918d4a3e64f9d92dbf0026d39609601f9fd9211e42fdd7"
+        },
+        {
+          "path": "inspector-captures/group-engineering.png",
+          "bytes": 319969,
+          "sha256": "a5eed9c5c6a7ba710f9dcc8bae22c9a9747ff3f180fe65a3aa7b929e7bea4121"
+        },
+        {
+          "path": "inspector-captures/group-guided.png",
+          "bytes": 298433,
+          "sha256": "54ec99b5900e856964bda5146ae8ac4b5a1fb8fcae3a483e0323a3df0c60c1e4"
+        },
+        {
+          "path": "inspector-captures/group-standard.png",
+          "bytes": 303749,
+          "sha256": "1f6b3363c55c3f4e9ef6973f3d08eb8ed552d76b300a55edda654988b7047bb9"
+        },
+        {
+          "path": "inspector-captures/interaction-trigger-engineering.png",
+          "bytes": 338786,
+          "sha256": "a5dc389da34969365771af45eae46de0e0f9b6aa6cc6eae3734264c92d72f612"
+        },
+        {
+          "path": "inspector-captures/interaction-trigger-guided.png",
+          "bytes": 320359,
+          "sha256": "266ae24815d7cc10c51343eeb81a6ee584112d07ea1a45ce99ae3c3f4cf7c486"
+        },
+        {
+          "path": "inspector-captures/interaction-trigger-standard.png",
+          "bytes": 321443,
+          "sha256": "21a9ff215b58220918d2177cdbff688e94c36fe8d0a1696041d3e3678903e796"
+        },
+        {
+          "path": "inspector-captures/light-engineering.png",
+          "bytes": 325175,
+          "sha256": "84c9ab5b394716df71b8506f72c6d756c8d0d3a0b4c095f5559b2a7035fcc6a9"
+        },
+        {
+          "path": "inspector-captures/light-guided.png",
+          "bytes": 307842,
+          "sha256": "55f28357fa07a1853bb4e5486d5591f2f11c97641d9fef2d5ed4e0541ecdef57"
+        },
+        {
+          "path": "inspector-captures/light-standard.png",
+          "bytes": 308369,
+          "sha256": "2776dd3d15fcbac9d3e71b59c1244d328e5286c57a6f0774a31a0b007ad6256a"
+        },
+        {
+          "path": "inspector-captures/mist-engineering-light.png",
+          "bytes": 334055,
+          "sha256": "e011c4cc3403c10ae5565719ec42d747aedaa8dbddf5638b7d713815e51528a5"
+        },
+        {
+          "path": "inspector-captures/mist-guided-light.png",
+          "bytes": 318260,
+          "sha256": "c6247b4d8a4089f0da44b0008df46932729a3deb20050b1d661d8972522071fa"
+        },
+        {
+          "path": "inspector-captures/mist-standard-light.png",
+          "bytes": 319297,
+          "sha256": "cd6b9b1d141c3a5fd62e9d7960bc8861c4272cf010c3a05f79b14c64c7997dd5"
+        },
+        {
+          "path": "inspector-captures/mixed-selection-engineering.png",
+          "bytes": 309043,
+          "sha256": "57b38a790b32c037a3785b9dd445a26fa310f993509dfb51079d4abdb203d01f"
+        },
+        {
+          "path": "inspector-captures/mixed-selection-guided.png",
+          "bytes": 292260,
+          "sha256": "d8ddf8f132e3eaea2ca78a1c507fe60a9fd60587b13011bdaa2fd7b249c1199a"
+        },
+        {
+          "path": "inspector-captures/mixed-selection-standard.png",
+          "bytes": 298017,
+          "sha256": "7f39a9dc5ab95259d2ae8ecc620e01892f0d77b1df666fb0a693ac53ed88b50a"
+        },
+        {
+          "path": "inspector-captures/observations.json",
+          "bytes": 5336,
+          "sha256": "c79c90229f65aaf3eebf7229488f19e87214eccb8de39fc0834878c2b3dbe841"
+        },
+        {
+          "path": "inspector-captures/parchment-engineering.png",
+          "bytes": 330486,
+          "sha256": "99235137a1188e13bba31ebfbc6097deeed901ce674ec3893fa5114267ea543d"
+        },
+        {
+          "path": "inspector-captures/parchment-guided.png",
+          "bytes": 314489,
+          "sha256": "4c0bdecd84b8f49dc3f1078e8c280cb101419871b907127d1dc887d5c67bb68b"
+        },
+        {
+          "path": "inspector-captures/parchment-standard.png",
+          "bytes": 312599,
+          "sha256": "b8c81ba77521fda13585c1099adcb6ca6637722be2a01300f2cde86a9abce4cd"
+        },
+        {
+          "path": "inspector-captures/particles-engineering-light.png",
+          "bytes": 326013,
+          "sha256": "93c4d018a8affac092b4cac587044236fd6f8b314b11e8efee7474465a82fcb2"
+        },
+        {
+          "path": "inspector-captures/particles-guided-light.png",
+          "bytes": 312978,
+          "sha256": "d55a55a5b693f446d631be21a7c08aeb911fb171d42ed4e54864f12debd21656"
+        },
+        {
+          "path": "inspector-captures/particles-standard-light.png",
+          "bytes": 313783,
+          "sha256": "70556e98bdd743ccd70f66ab74b51efc3a46be6a11e3cebff4e7fd2852de912d"
+        },
+        {
+          "path": "inspector-captures/phenomenon-engineering-light.png",
+          "bytes": 330284,
+          "sha256": "21025db7d4647cf3be9b0877283fd5adbcb5bbeeae122cef4417f1d529d98b3d"
+        },
+        {
+          "path": "inspector-captures/phenomenon-guided-light.png",
+          "bytes": 319911,
+          "sha256": "a9b4b8d59ae4d0c64ee6180e05a3e381fd8e7d46a8d43e2e29c4187b304a17ca"
+        },
+        {
+          "path": "inspector-captures/phenomenon-standard-light.png",
+          "bytes": 316844,
+          "sha256": "df6fe4692d8941b24c2ab9915d28cca38243a348c304a20cf86b5f2d9d9d46c8"
+        },
+        {
+          "path": "inspector-captures/phone-edit-return.png",
+          "bytes": 123539,
+          "sha256": "0163fa06075215c2eaa2ed1581959e35473842db673610b2f0e55cdeed06a73f"
+        },
+        {
+          "path": "inspector-captures/projection-engineering-light.png",
+          "bytes": 331964,
+          "sha256": "86937c1abd48e17c406111b7f23b675cd3b9f07779490c56c89cf7b048f7e503"
+        },
+        {
+          "path": "inspector-captures/projection-guided-light.png",
+          "bytes": 314893,
+          "sha256": "b0d1f958d9a42d9e0d2f3fb05cd639220d2167443fb8ca9e5f21ff6489ea6439"
+        },
+        {
+          "path": "inspector-captures/projection-standard-light.png",
+          "bytes": 315912,
+          "sha256": "fd387496fdba8f2b0193b32116a7dfcb147b3a1f90e2da159feea3c4a5dfa6a6"
+        },
+        {
+          "path": "inspector-captures/removed-selection-engineering.png",
+          "bytes": 286124,
+          "sha256": "09239eb6d5360c7ea3c1ebc30cb101dbaa2710688b87b8d9596a934857b8c318"
+        },
+        {
+          "path": "inspector-captures/removed-selection-guided.png",
+          "bytes": 273236,
+          "sha256": "db1cfa0825291223f70fcf2b774057e46536cc242f479c596a1c19c926077978"
+        },
+        {
+          "path": "inspector-captures/removed-selection-standard.png",
+          "bytes": 274163,
+          "sha256": "b56a8c0b0aec79b34c445114581ea247923e74cfa1d5db11d651da5efdeae2fd"
+        },
+        {
+          "path": "inspector-captures/room-feature-engineering.png",
+          "bytes": 326964,
+          "sha256": "b4c5008f98c3cf5fc4d0d265a846f23f914deb37ca64b6b619c0498330167e35"
+        },
+        {
+          "path": "inspector-captures/room-feature-guided.png",
+          "bytes": 311999,
+          "sha256": "28824a6cbb43f40384826b0dede6794da163eee4213f023d35b9210fd842c7ea"
+        },
+        {
+          "path": "inspector-captures/room-feature-standard.png",
+          "bytes": 313164,
+          "sha256": "096a946d0fde70ed35ea3ed363e29dbec6c895e1482d42cc5c8222f88d37f71b"
+        },
+        {
+          "path": "inspector-captures/scale-live-preview.png",
+          "bytes": 276666,
+          "sha256": "956f7b8d0750770c693717a2526c00c9e3cad99fd1ee3ea59b2986f57332a680"
+        },
+        {
+          "path": "inspector-captures/scene-engineering.png",
+          "bytes": 328202,
+          "sha256": "0caf1d8b6c46c19a8f81284e2500a2c2667e7a5d7ba28150e966b4c4dacf611c"
+        },
+        {
+          "path": "inspector-captures/scene-guided.png",
+          "bytes": 310055,
+          "sha256": "8d0b99251abcf040ff6eddcf40d085457a814de2c05a792c5a6eb1f4fb516bea"
+        },
+        {
+          "path": "inspector-captures/scene-phone.png",
+          "bytes": 96328,
+          "sha256": "e052cf9980848c1e393ee7e1212783a7aefb898f7eb1a5dc591951e74f51cc34"
+        },
+        {
+          "path": "inspector-captures/scene-standard.png",
+          "bytes": 311084,
+          "sha256": "a87a7b3cac55033733b51e53c5b843a7ae611b5e327e5cb1457f88c620991b21"
+        },
+        {
+          "path": "inspector-captures/selection-edges-observations.json",
+          "bytes": 1103,
+          "sha256": "776488c45eb3e3b0a7c9483de075b6f089a8e6712ee439a5ee89793ca0360815"
+        },
+        {
+          "path": "inspector-captures/timeline-audio-engineering.png",
+          "bytes": 328461,
+          "sha256": "76e5078722d97dce0117bcf8eb0188876017104566c0d80cb82b081efcaac100"
+        },
+        {
+          "path": "inspector-captures/timeline-audio-guided.png",
+          "bytes": 316048,
+          "sha256": "6734683afcfddfa864fbe501bbc0da7a2626259b9ab53276813276b04309cddf"
+        },
+        {
+          "path": "inspector-captures/timeline-audio-standard.png",
+          "bytes": 315148,
+          "sha256": "2c07ab418b52e76a85a136232a7016ec5ee2e81e07f65737be95b90966e63bd2"
+        },
+        {
+          "path": "videos/recording-1.webm",
+          "bytes": 1234,
+          "sha256": "fbba4168e44d1534b4e6518063c872404c345e979f09f9443aee686a22f307a5"
+        },
+        {
+          "path": "videos/recording-2.webm",
+          "bytes": 701701,
+          "sha256": "e1c8274f1167e476853bbd6e2ed2f2172c6240f1ab6e3fda8178a714b45a8040"
+        },
+        {
+          "path": "videos/recording-3.webm",
+          "bytes": 1202,
+          "sha256": "f620dede2dad641709fc266efbb9cf231f9b1f65370bb1dff231dbc72d500dc6"
+        },
+        {
+          "path": "videos/recording-4.webm",
+          "bytes": 358197,
+          "sha256": "94ce209a968752d0b8e5134c7b7b8e64b904189a9610121cb99a0dd72dc0a9e0"
+        },
+        {
+          "path": "videos/recording-5.webm",
+          "bytes": 73852,
+          "sha256": "e9c155288a04ad76fc1064bad6d66f4034422850c7995d7accd76567385f356b"
+        },
+        {
+          "path": "videos/recording-6.webm",
+          "bytes": 185185,
+          "sha256": "43b96d881a0469868bfebfa5819df82c82333cc529e8de249eb88388aee08227"
+        },
+        {
+          "path": "videos/recording-7.webm",
+          "bytes": 406725,
+          "sha256": "e091e6072fcfba845224885f82827acd039d8b137165aec1aef2d9f307d680cf"
+        },
+        {
+          "path": "videos/recording-8.webm",
+          "bytes": 690216,
+          "sha256": "acb6c22ac93dddce64beba1e1084c96a6b7e7bf9c52dfa2f7d3ee5370e01e1b8"
+        },
+        {
+          "path": "videos/recording-9.webm",
+          "bytes": 693108,
+          "sha256": "a9de36746a6a5b426ab028d36fb7bd3a59eb9fd3171a8a4edd42d57e5126d69e"
+        }
+      ],
+      "stillCoverage": "All54Inspector originals:51covered via17triptychs(fullframe thumbnails+native1:1right360px strip),scale-live-preview/phone-edit-return/scene-phone expanded directly. All6elementPNG originals expanded directly. Derived contact sheets preserve original pixels, no synthesized UI.",
+      "videos": [
+        {
+          "file": "videos/recording-1.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-1\\sampling-manifest.json",
+          "sha256": "9b59f26d873c8b8d5c5d36f61e56ad52202a6ecfb6ec3aa8a6a165f99ea76c17",
+          "duration": 0.12,
+          "nativeFrames": 3,
+          "samples": 3,
+          "maxGap": 0.04,
+          "span": [
+            0,
+            0.08
+          ]
+        },
+        {
+          "file": "videos/recording-2.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\sampling-manifest.json",
+          "sha256": "b3845d199d7b0b06573519d92dad7aa5fad0995e596e6a0fe8a6da5ada316636",
+          "duration": 13.96,
+          "nativeFrames": 349,
+          "samples": 59,
+          "maxGap": 0.24,
+          "span": [
+            0,
+            13.92
+          ]
+        },
+        {
+          "file": "videos/recording-3.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-3\\sampling-manifest.json",
+          "sha256": "f94cdc1a5eef251f992aae76df046d8944dc298faebc099995da8b7699af4acf",
+          "duration": 0.08,
+          "nativeFrames": 2,
+          "samples": 2,
+          "maxGap": 0.04,
+          "span": [
+            0,
+            0.04
+          ]
+        },
+        {
+          "file": "videos/recording-4.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\sampling-manifest.json",
+          "sha256": "5a64943259c454aa68305e335bcbfb74d43839548761cf57888f987a1e956be3",
+          "duration": 6.52,
+          "nativeFrames": 163,
+          "samples": 28,
+          "maxGap": 0.24,
+          "span": [
+            0,
+            6.48
+          ]
+        },
+        {
+          "file": "videos/recording-5.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\sampling-manifest.json",
+          "sha256": "b53ea015686835dfc6c757c076a6580a4921e7e3d8dae3fb9ee7e546921d457a",
+          "duration": 2.24,
+          "nativeFrames": 56,
+          "samples": 11,
+          "maxGap": 0.24,
+          "span": [
+            0,
+            2.2
+          ]
+        },
+        {
+          "file": "videos/recording-6.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\sampling-manifest.json",
+          "sha256": "bc0ee0af65d23cf3be28dc46a0198b463731b5b7e7a1b535df859817b1e09399",
+          "duration": 4.44,
+          "nativeFrames": 111,
+          "samples": 20,
+          "maxGap": 0.24,
+          "span": [
+            0,
+            4.4
+          ]
+        },
+        {
+          "file": "videos/recording-7.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\sampling-manifest.json",
+          "sha256": "7fe0b1a3bba0d350cabab55b602f230cbe8cb30f4a89ffaadc5219621158364c",
+          "duration": 7.64,
+          "nativeFrames": 191,
+          "samples": 33,
+          "maxGap": 0.24,
+          "span": [
+            0,
+            7.6
+          ]
+        },
+        {
+          "file": "videos/recording-8.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\sampling-manifest.json",
+          "sha256": "686c3cf041a21ade74033805bacd95a72e66daeb3353826c07b2212ae86b909f",
+          "duration": 15.12,
+          "nativeFrames": 378,
+          "samples": 64,
+          "maxGap": 0.24,
+          "span": [
+            0,
+            15.08
+          ]
+        },
+        {
+          "file": "videos/recording-9.webm",
+          "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\sampling-manifest.json",
+          "sha256": "3213ed151315c19de752f7a24604a2f8049ecde3e6ecb5853113c52e73b8009c",
+          "duration": 12.52,
+          "nativeFrames": 313,
+          "samples": 53,
+          "maxGap": 0.24,
+          "span": [
+            0,
+            12.48
+          ]
+        }
+      ],
+      "recordingMethod": "Allnine originals decoded native25fps VP8 video-only withFFmpeg-vsync0. Every6thframe+endpoint across fullspans inspected; allframesin2tinyblankclips. Maximum0.24sgap;fullchronology notcontinuousrealtimeplayback/everyencodedframe or audibleaudio.",
+      "observations": [
+        "PriorSceneheroambiguityresolvedinall3modeoriginals:SCENE/Inspectoracceptanceworkshop whilegroupremainshighlighted. Priorroomfeaturehierarchyresolved:Environmenttools&dimensionscollapsedwhenNewtable/Newexclusionselected,Featureselector/name/classificationvisibleabovefold;wholeEnvironmententryexpandsroomwide controls. StandardcopycorrectlyusesStandard.",
+        "Guided/basicversusStandardrotation/scalefieldsandEngineeringdiagnosticsretained. Physicalchest/light/audio/interactionlabelsmatchselection;groupandmixedselectionhaveGuidedMove/Rotate/ResizeversusnumericXYZ/rotation/scale. RemovedselectionexplicitMissingselection/Selectionunavailable,Undo/OpenScenesettings andremainingobjectchooser. No wrong-targeteditingobserved.",
+        "LightappearanceeffectstillscoversSoftmist/Floatingmagic/Projectedsymbol/Portalall3depths. Whiteshellandslateglyphsreadable;selectedrows/boundsblue. Count11visible;mix/density/opacity/speedcontrolsandtruthfullayeredmist/noocclusionprojection/Guidednativecopy. TheseEDITORstillsarecontrolvisibility,notallsimulatedeffectmotion.",
+        "Scale-live-preview nativeimage showsmapenlargedondeskandnumericObjectscale3.2;recording5~1.44smallmap→1.68larger→1.92large→2.16smallagain. Needexacttest/assertionproofpointerdownandoneUndo;donotmislabelgizmodrag.",
+        "Phonevideo2~12.00–12.96scrollstoExperiencetitleandrenamesInspectorphoneedit;13.20–13.92returnedInspectoroverview/newtitle. Nativephone-edit-returnshowsroomcanvas/toolbarwithInspectorcollapsedandscrolledheaderoutofview. Thecanvasreturnmomentisnotvisibleinevery6thvideosamples;still pluspinnedtestneeded, no inventedcontinuousrecordingproof.",
+        "Video1.12s3framesandvideo3.08s2framesallblankwhite;nojourneyproof. Video2contextmatrix/phone;4Lightthemeeffectinspection/keyboardrail;5scale;6removed/mixedselection;7numericlight/history/mode/reload+tablerename/reload;8physicalinsertion/undo/redo/tableLantern/painting/reload/wardrobes/noFit;9Librarychest/light/compositionsave/reuse/reload/play/pause/phonecamera.",
+        "SC02nativephoneLibraryheadingunobscured,Viewaudiofullfirstrow/loweractionsvisible. Desktopcompositionplayingbrightwhiteblueandparticles/clock3.1s;noaudibleaudio. PhysicalpaintingstillblackreverseatcutawayfrontsupportaspriorP3;noopposite-wall/frontfacecaptureadded. NofitalertnamesWardrobe/Bedroomandstatesnoinsertion,roompersists.",
+        "No blockingvisualdefect observed in bounded supplied states. Keyboardrail/scalecommit/savedcount/independentreuse exactactions require pinnedsource and actualobservations afterfreeze. No laterPAGEDclient/API qualification, owner/protected/physical/hardware/fullSC00Bacceptance."
+      ]
+    }
+  },
+  "sourceEvidence": [
+    {
+      "path": ".agents/product-experience-workflow.md",
+      "source": "66699086cbcc86616679b039f33680c6d05588df",
+      "sha256": "365cac8d8b789b18524ad640a3fa3731f9e6c6608a79357f647da33f07737536"
+    },
+    {
+      "path": "testing/contracts.json",
+      "source": "66699086cbcc86616679b039f33680c6d05588df",
+      "sha256": "cc75c2387dafe8fde86b25fffdf4cffe286073ce568a4744cde62f2d4aca8b94"
+    },
+    {
+      "path": "tests/e2e/parallax-sc00b-combined.spec.ts",
+      "source": "66699086cbcc86616679b039f33680c6d05588df",
+      "sha256": "da051ebad4624ce662e697a6d12241d3d5a06ec137c022c6aeea1fdbfcd1757e"
+    },
+    {
+      "path": "tests/e2e/parallax-sc02-integration.spec.ts",
+      "source": "66699086cbcc86616679b039f33680c6d05588df",
+      "sha256": "c22b921944fc3e207c84255f7c90b9f4877360aa45ffaff332f41bfe141e1831"
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.tsx",
+      "source": "66699086cbcc86616679b039f33680c6d05588df",
+      "sha256": "3e6090bc220ef6a1146e32cd4c602ea85dd37ff9913ab3c990f14925fbfe984b"
+    },
+    {
+      "path": "src/components/studio/parallax/RoomEnvironmentEditor.tsx",
+      "source": "66699086cbcc86616679b039f33680c6d05588df",
+      "sha256": "f1cb72c193b2a2b43afe4b26e309f5a9455e09e9a3f16ee3050c4dc5d02aa62d"
+    },
+    {
+      "path": "src/components/studio/parallax/InspectorControls.tsx",
+      "source": "66699086cbcc86616679b039f33680c6d05588df",
+      "sha256": "0a8e402c42bc8657e61d16c015b8be67c0f396569b23155ed52175041d5e3723"
+    }
+  ],
+  "receiptAssessment": {
+    "run": {
+      "candidate": "66699086cbcc86616679b039f33680c6d05588df",
+      "tree": "7c4041543cb3dff4cd11555684e4367bf69b5e69",
+      "workspace": "D:\\CodexWorktrees\\parallax-root-browser-qualification",
+      "startedAt": "2026-10-15T09:04:41.3850363Z",
+      "databaseUrl": "file:D:/CodexWorktrees/parallax-root-browser-qualification/artifacts/sounding-line/generic-66699086cbcc/validation-isolated-20261015-050441337-4192e30ceaa64040b6ce54d3ff89531f.db",
+      "finishedAt": "2026-10-15T09:07:21.2962655Z",
+      "exitCode": 0
+    },
+    "runtime": {
+      "version": 1,
+      "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+      "baseURL": "http://127.0.0.1:53334",
+      "failureCategory": null,
+      "failureCode": null,
+      "lifecycle": {
+        "capture": "PASS",
+        "fixture": "NOT_STARTED",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 3,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 44,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "cancelled": false
+      },
+      "timings": {
+        "serverPreparationMs": 18,
+        "serverReadinessMs": 2053,
+        "browserExecutionMs": 70392,
+        "infrastructureFailureWaitMs": 0,
+        "cleanupMs": 47
+      }
+    },
+    "profile": {
+      "version": 1,
+      "profile": "generic",
+      "browserTests": [
+        "tests/e2e/parallax-sc00b-combined.spec.ts",
+        "tests/e2e/parallax-sc02-integration.spec.ts",
+        "--workers=1",
+        "--reporter=line",
+        "--output",
+        "D:\\Codex_Parallax_Task_Cache\\px-production-qualification\\studio-root-browser-attempt-2-66699086cbcc/test-results"
+      ],
+      "status": "PASS",
+      "failureCategory": null,
+      "failureCode": null
+    },
+    "browser": "Original log7passed(1.0m); runtimebrowserExecutionMs70392 is distinct wrapper timing.",
+    "binding": "Candidate/tree match pinned Git tree; packet and all77file hashes/bytes independently verified. No invented sourceBinding receipt field.",
+    "cleanup": "PASS, portsReleased/treeReaped/streamsClosed; browserexit0, serverexit1/escalatedtrue. Do not claim naturalserverexit0.",
+    "observations": {
+      "effects": {
+        "captures": [
+          {
+            "selection": "mist",
+            "mode": "GUIDED",
+            "path": "artifacts/parallax-sc00b-integration/browser/mist-guided-light.png"
+          },
+          {
+            "selection": "mist",
+            "mode": "DETAILED",
+            "path": "artifacts/parallax-sc00b-integration/browser/mist-standard-light.png"
+          },
+          {
+            "selection": "mist",
+            "mode": "ENGINEERING",
+            "path": "artifacts/parallax-sc00b-integration/browser/mist-engineering-light.png"
+          },
+          {
+            "selection": "particles",
+            "mode": "GUIDED",
+            "path": "artifacts/parallax-sc00b-integration/browser/particles-guided-light.png"
+          },
+          {
+            "selection": "particles",
+            "mode": "DETAILED",
+            "path": "artifacts/parallax-sc00b-integration/browser/particles-standard-light.png"
+          },
+          {
+            "selection": "particles",
+            "mode": "ENGINEERING",
+            "path": "artifacts/parallax-sc00b-integration/browser/particles-engineering-light.png"
+          },
+          {
+            "selection": "projection",
+            "mode": "GUIDED",
+            "path": "artifacts/parallax-sc00b-integration/browser/projection-guided-light.png"
+          },
+          {
+            "selection": "projection",
+            "mode": "DETAILED",
+            "path": "artifacts/parallax-sc00b-integration/browser/projection-standard-light.png"
+          },
+          {
+            "selection": "projection",
+            "mode": "ENGINEERING",
+            "path": "artifacts/parallax-sc00b-integration/browser/projection-engineering-light.png"
+          },
+          {
+            "selection": "phenomenon",
+            "mode": "GUIDED",
+            "path": "artifacts/parallax-sc00b-integration/browser/phenomenon-guided-light.png"
+          },
+          {
+            "selection": "phenomenon",
+            "mode": "DETAILED",
+            "path": "artifacts/parallax-sc00b-integration/browser/phenomenon-standard-light.png"
+          },
+          {
+            "selection": "phenomenon",
+            "mode": "ENGINEERING",
+            "path": "artifacts/parallax-sc00b-integration/browser/phenomenon-engineering-light.png"
+          }
+        ],
+        "errors": [],
+        "theme": "LIGHT",
+        "motion": "REDUCED",
+        "ownerAccepted": false
+      },
+      "selectionEdges": {
+        "captures": [
+          {
+            "selection": "removed-selection",
+            "mode": "GUIDED",
+            "path": "artifacts/parallax-sc00b-integration/browser/removed-selection-guided.png"
+          },
+          {
+            "selection": "removed-selection",
+            "mode": "DETAILED",
+            "path": "artifacts/parallax-sc00b-integration/browser/removed-selection-standard.png"
+          },
+          {
+            "selection": "removed-selection",
+            "mode": "ENGINEERING",
+            "path": "artifacts/parallax-sc00b-integration/browser/removed-selection-engineering.png"
+          },
+          {
+            "selection": "mixed-selection",
+            "mode": "GUIDED",
+            "path": "artifacts/parallax-sc00b-integration/browser/mixed-selection-guided.png"
+          },
+          {
+            "selection": "mixed-selection",
+            "mode": "DETAILED",
+            "path": "artifacts/parallax-sc00b-integration/browser/mixed-selection-standard.png"
+          },
+          {
+            "selection": "mixed-selection",
+            "mode": "ENGINEERING",
+            "path": "artifacts/parallax-sc00b-integration/browser/mixed-selection-engineering.png"
+          }
+        ],
+        "errors": [],
+        "synthetic": true,
+        "ownerAccepted": false
+      },
+      "elements": {
+        "errors": [],
+        "synthetic": true,
+        "physicalAcceptance": false
+      }
+    },
+    "accessibility": "Inspector-scoped serious/critical axe checks only in supplied phone and light-effect journeys; finite rail keyboard assertions. No fullpage/assistivetechnology acceptance."
+  },
+  "recordingInspection": {
+    "method": "Allnine originals decoded native25fps VP8 video-only withFFmpeg-vsync0. Every6thframe+endpoint across fullspans inspected; allframesin2tinyblankclips. Maximum0.24sgap;fullchronology notcontinuousrealtimeplayback/everyencodedframe or audibleaudio.",
+    "coverage": [
+      {
+        "file": "videos/recording-1.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-1\\sampling-manifest.json",
+        "sha256": "9b59f26d873c8b8d5c5d36f61e56ad52202a6ecfb6ec3aa8a6a165f99ea76c17",
+        "duration": 0.12,
+        "nativeFrames": 3,
+        "samples": 3,
+        "maxGap": 0.04,
+        "span": [
+          0,
+          0.08
+        ]
+      },
+      {
+        "file": "videos/recording-2.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\sampling-manifest.json",
+        "sha256": "b3845d199d7b0b06573519d92dad7aa5fad0995e596e6a0fe8a6da5ada316636",
+        "duration": 13.96,
+        "nativeFrames": 349,
+        "samples": 59,
+        "maxGap": 0.24,
+        "span": [
+          0,
+          13.92
+        ]
+      },
+      {
+        "file": "videos/recording-3.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-3\\sampling-manifest.json",
+        "sha256": "f94cdc1a5eef251f992aae76df046d8944dc298faebc099995da8b7699af4acf",
+        "duration": 0.08,
+        "nativeFrames": 2,
+        "samples": 2,
+        "maxGap": 0.04,
+        "span": [
+          0,
+          0.04
+        ]
+      },
+      {
+        "file": "videos/recording-4.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\sampling-manifest.json",
+        "sha256": "5a64943259c454aa68305e335bcbfb74d43839548761cf57888f987a1e956be3",
+        "duration": 6.52,
+        "nativeFrames": 163,
+        "samples": 28,
+        "maxGap": 0.24,
+        "span": [
+          0,
+          6.48
+        ]
+      },
+      {
+        "file": "videos/recording-5.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\sampling-manifest.json",
+        "sha256": "b53ea015686835dfc6c757c076a6580a4921e7e3d8dae3fb9ee7e546921d457a",
+        "duration": 2.24,
+        "nativeFrames": 56,
+        "samples": 11,
+        "maxGap": 0.24,
+        "span": [
+          0,
+          2.2
+        ]
+      },
+      {
+        "file": "videos/recording-6.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\sampling-manifest.json",
+        "sha256": "bc0ee0af65d23cf3be28dc46a0198b463731b5b7e7a1b535df859817b1e09399",
+        "duration": 4.44,
+        "nativeFrames": 111,
+        "samples": 20,
+        "maxGap": 0.24,
+        "span": [
+          0,
+          4.4
+        ]
+      },
+      {
+        "file": "videos/recording-7.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\sampling-manifest.json",
+        "sha256": "7fe0b1a3bba0d350cabab55b602f230cbe8cb30f4a89ffaadc5219621158364c",
+        "duration": 7.64,
+        "nativeFrames": 191,
+        "samples": 33,
+        "maxGap": 0.24,
+        "span": [
+          0,
+          7.6
+        ]
+      },
+      {
+        "file": "videos/recording-8.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\sampling-manifest.json",
+        "sha256": "686c3cf041a21ade74033805bacd95a72e66daeb3353826c07b2212ae86b909f",
+        "duration": 15.12,
+        "nativeFrames": 378,
+        "samples": 64,
+        "maxGap": 0.24,
+        "span": [
+          0,
+          15.08
+        ]
+      },
+      {
+        "file": "videos/recording-9.webm",
+        "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\sampling-manifest.json",
+        "sha256": "3213ed151315c19de752f7a24604a2f8049ecde3e6ecb5853113c52e73b8009c",
+        "duration": 12.52,
+        "nativeFrames": 313,
+        "samples": 53,
+        "maxGap": 0.24,
+        "span": [
+          0,
+          12.48
+        ]
+      }
+    ],
+    "sampling": [
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-1\\sampling-manifest.json",
+        "sha256": "9b59f26d873c8b8d5c5d36f61e56ad52202a6ecfb6ec3aa8a6a165f99ea76c17",
+        "durationSeconds": 0.12,
+        "nativeFrameCount": 3,
+        "sampleCount": 3,
+        "maxGapSeconds": 0.04,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-1\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-1\\decoded-original\\0002.png",
+            "frameIndex": 1,
+            "secondsAtDeclared25fps": 0.04,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-1\\decoded-original\\0003.png",
+            "frameIndex": 2,
+            "secondsAtDeclared25fps": 0.08,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          }
+        ]
+      },
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\sampling-manifest.json",
+        "sha256": "b3845d199d7b0b06573519d92dad7aa5fad0995e596e6a0fe8a6da5ada316636",
+        "durationSeconds": 13.96,
+        "nativeFrameCount": 349,
+        "sampleCount": 59,
+        "maxGapSeconds": 0.24,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "de931f0292cab5ff75f4b496f4225d55ea060eda9bef33d78e99e4b0487bafc5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "15eca9f929d581a0ed7261281987112efcb57293b5cfbd3ac784c2349c79f7fd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "90e6fc609e934a80b96d89905b7dbe540603f8e22b5cece4b921428503b492ba"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "40e09b025b205718d6e122b5992b62c9bc44f22809d777c86a4cabda13b8d927"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "40e09b025b205718d6e122b5992b62c9bc44f22809d777c86a4cabda13b8d927"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "57ded31d86a1e760641984462d6a66ee723871540b1594040b01412acb5e8cbe"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "dc8e709d7caa8e53e324a866d54153f14196492992a145629abb8d1817688723"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "e5ac305907816ff1ca73f0f7424228355108c2b9f5a40899f8b8a2ed14a787d8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "5c175085f2da3a3eac0f17ebf5058ca938d170953d728a9332a5c5c880a519bd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "9b7be8b267823a869c84ff4301b9a26fe9547fa35f129608aab5b7082834262b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "44a1bf01c6d8f7d4ab9bcb7af7ece4504a2e1d87e93b0633032bd3fa51ccc38c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "79bd41a420e52c339db144f2324bb672d4290d4b1af3f610975d5bb4f1cc64e4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "ce5e72cf5ece56133cf90a9bd310a5e0075bab27942617a20581fd12984d8ee8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "03d927f5a95dd218bdbf7c282ce4ba4b50655575cc674ee9c6eb8ec37abd3328"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "7ce46bc2f3d7c104471dfc7743fed4425887a7c16fcdbc185d8dca1895f16471"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "3bbe24fb7792e4fa2d3963b7dc04da24b2059fabead735777f398b3d15b904e5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "1c4020429284dcbeeb40164337b3770b149e4be5062333f67a047d56ee3e5afe"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "9ec99487705a9c28c8c4baf4a1c8ccc3c3a8f993d38ec2e79930728a8891dfc6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "24f2b7fc23452d06523a60bbd61c8b80e5ae943460833ae5babb4081b2580d2e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0115.png",
+            "frameIndex": 114,
+            "secondsAtDeclared25fps": 4.56,
+            "sha256": "87db69f5e450e9008d0aed0acf53445836eda52b52c00ea22202355e4619583b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0121.png",
+            "frameIndex": 120,
+            "secondsAtDeclared25fps": 4.8,
+            "sha256": "804c7003dda5c70ef09a3532a5c5c40ad25eab7306a427a37908c4e0874708cd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0127.png",
+            "frameIndex": 126,
+            "secondsAtDeclared25fps": 5.04,
+            "sha256": "e18161713c5e48d645b308710282436dd4ce654c870353d294f79c0461ef9523"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0133.png",
+            "frameIndex": 132,
+            "secondsAtDeclared25fps": 5.28,
+            "sha256": "887a170889caa456d1cc2daf98393f9da314fe17a0dec94c450a01b966da0f38"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0139.png",
+            "frameIndex": 138,
+            "secondsAtDeclared25fps": 5.52,
+            "sha256": "5565e0f9b0218cefad678429c2443da495d478b358f5d9940fe5c4266d6773c8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0145.png",
+            "frameIndex": 144,
+            "secondsAtDeclared25fps": 5.76,
+            "sha256": "b71c55470149f46e7cb9dc0e0e6dc058dfdc9270d1d315ddb88ee868800e4466"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0151.png",
+            "frameIndex": 150,
+            "secondsAtDeclared25fps": 6,
+            "sha256": "889df56390c5f990ae35150923ed0c816bbea125aac1e85455474caf33ca1194"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0157.png",
+            "frameIndex": 156,
+            "secondsAtDeclared25fps": 6.24,
+            "sha256": "9745182f48c5f3254955dd07829588c89acfb83824f23c5b7f10abe5ea0bcafa"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0163.png",
+            "frameIndex": 162,
+            "secondsAtDeclared25fps": 6.48,
+            "sha256": "975d48604af8f95d74df5d337e896ba5760eb7ed7140aa5ff24ebf3e9565c7f6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0169.png",
+            "frameIndex": 168,
+            "secondsAtDeclared25fps": 6.72,
+            "sha256": "b1a77850409adc7d8297832e8b8a49c934255f61dd29653c0886bd178eec1cc6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0175.png",
+            "frameIndex": 174,
+            "secondsAtDeclared25fps": 6.96,
+            "sha256": "55d9c5ddc94d60d976ffa10a5b3d757ce2681bb4bb4ec8bfe858ef096ffca2b9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0181.png",
+            "frameIndex": 180,
+            "secondsAtDeclared25fps": 7.2,
+            "sha256": "d66346b98f3025731f5c1cd66a2da82f69161342f923c5b2a0ae5e36a6f1c35d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0187.png",
+            "frameIndex": 186,
+            "secondsAtDeclared25fps": 7.44,
+            "sha256": "ad603670b14c0b566fcf6ecde84b691f499fa959a178ec9812dc274cb31ebbdd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0193.png",
+            "frameIndex": 192,
+            "secondsAtDeclared25fps": 7.68,
+            "sha256": "e846e9687814535bff6e57105535901ade1390df9317367e7ad1352a7b310b4b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0199.png",
+            "frameIndex": 198,
+            "secondsAtDeclared25fps": 7.92,
+            "sha256": "096e2dec652ab8c1f8bc7f1b2ea568903aea9072ea8a0245a36db73bd446a1f8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0205.png",
+            "frameIndex": 204,
+            "secondsAtDeclared25fps": 8.16,
+            "sha256": "60bc05d8d149620d2526c29b34c9ec577f34809b022b97f9bcba2159cff07674"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0211.png",
+            "frameIndex": 210,
+            "secondsAtDeclared25fps": 8.4,
+            "sha256": "c2024fad5223540b876f2bbeef558ddeadb272c184efa48d77103c1debbc75ce"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0217.png",
+            "frameIndex": 216,
+            "secondsAtDeclared25fps": 8.64,
+            "sha256": "4ea47d7e17d619c10bbf8ff61f40d2f43a7bb073196e99a9fcc3c4cf3cc8a504"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0223.png",
+            "frameIndex": 222,
+            "secondsAtDeclared25fps": 8.88,
+            "sha256": "08266474206e3f4e8b43c07f9ad42d92afc5621f8e8d10997479ca9512371797"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0229.png",
+            "frameIndex": 228,
+            "secondsAtDeclared25fps": 9.12,
+            "sha256": "0e850df1f7372e017d62a4fef9b7311a5f6d3beda4571b0cec99e2f455f0c077"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0235.png",
+            "frameIndex": 234,
+            "secondsAtDeclared25fps": 9.36,
+            "sha256": "4de433af8bfb660f593a5593ea809667433cc9a169a2bb10288e06d473d0ed4e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0241.png",
+            "frameIndex": 240,
+            "secondsAtDeclared25fps": 9.6,
+            "sha256": "b8f486b360a6be1fc9883ace3e4ffb42045d9621873f0ff3a4e6df780a9d9b1c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0247.png",
+            "frameIndex": 246,
+            "secondsAtDeclared25fps": 9.84,
+            "sha256": "18bd46e7161eb0ac702544e01881fbc6031530ca84d3a2655e1305fa376acfce"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0253.png",
+            "frameIndex": 252,
+            "secondsAtDeclared25fps": 10.08,
+            "sha256": "e9c4fb5e80dfff9a27a7f6caa8f0e3bd9a01886feb0e02c3be35d32d89dee5b6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0259.png",
+            "frameIndex": 258,
+            "secondsAtDeclared25fps": 10.32,
+            "sha256": "fe6dc7672cb1191a2077094d8f40f3eeab008764217b23c51c877480ccdb7c98"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0265.png",
+            "frameIndex": 264,
+            "secondsAtDeclared25fps": 10.56,
+            "sha256": "687e2add9753366cbe2fe338e4551b46ec216649ed5c78449c050e54460e2c40"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0271.png",
+            "frameIndex": 270,
+            "secondsAtDeclared25fps": 10.8,
+            "sha256": "2e0f306a137b27b3b880b6fcf0b8468bfc5e80c99b909831d5a2264b1c6fbf5a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0277.png",
+            "frameIndex": 276,
+            "secondsAtDeclared25fps": 11.04,
+            "sha256": "e4ec4152823de4d1e54365e4dabd9520f1a56a262dec62682b0f461d6514aaac"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0283.png",
+            "frameIndex": 282,
+            "secondsAtDeclared25fps": 11.28,
+            "sha256": "d8e8a75b40576c1b5f025d3dfd86e3a7dd774c2cc71f6470af4eec53abb9326f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0289.png",
+            "frameIndex": 288,
+            "secondsAtDeclared25fps": 11.52,
+            "sha256": "1dc15fa1cf0a0c140a6a6fa045acfe199ecc261429250b1e2fd8a42e92668661"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0295.png",
+            "frameIndex": 294,
+            "secondsAtDeclared25fps": 11.76,
+            "sha256": "e14ef811fa95739ec09c062b1cae895c67b34c9539b02f89ce17201ba85ea320"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0301.png",
+            "frameIndex": 300,
+            "secondsAtDeclared25fps": 12,
+            "sha256": "0520d75a0e060101fad1b873b144715943b472d65998fbc7b9f7b3327d6aad10"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0307.png",
+            "frameIndex": 306,
+            "secondsAtDeclared25fps": 12.24,
+            "sha256": "673f937a88025fc701e6d66fa499f053fbf8776246600b8d0a77c68be936fe80"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0313.png",
+            "frameIndex": 312,
+            "secondsAtDeclared25fps": 12.48,
+            "sha256": "d4a5766379ca2ac681f8a12b77596e0f39b40857cc9955f0b2f3dcf30e59bf30"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0319.png",
+            "frameIndex": 318,
+            "secondsAtDeclared25fps": 12.72,
+            "sha256": "95be9ecc8b69bd22b33c113d83cc7bea0c69afa4af53001b28ec48256f392787"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0325.png",
+            "frameIndex": 324,
+            "secondsAtDeclared25fps": 12.96,
+            "sha256": "95be9ecc8b69bd22b33c113d83cc7bea0c69afa4af53001b28ec48256f392787"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0331.png",
+            "frameIndex": 330,
+            "secondsAtDeclared25fps": 13.2,
+            "sha256": "c971cf2c0f951d9cf2215172a83f5bb396634d03e168ec65c14e0836ea8f4ef2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0337.png",
+            "frameIndex": 336,
+            "secondsAtDeclared25fps": 13.44,
+            "sha256": "aab70d2c9a54ca7f4e2e3097eb8c16a28a70cde974dfecf11c417a1dfcb44bb6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0343.png",
+            "frameIndex": 342,
+            "secondsAtDeclared25fps": 13.68,
+            "sha256": "aab70d2c9a54ca7f4e2e3097eb8c16a28a70cde974dfecf11c417a1dfcb44bb6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-2\\decoded-original\\0349.png",
+            "frameIndex": 348,
+            "secondsAtDeclared25fps": 13.92,
+            "sha256": "aab70d2c9a54ca7f4e2e3097eb8c16a28a70cde974dfecf11c417a1dfcb44bb6"
+          }
+        ]
+      },
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-3\\sampling-manifest.json",
+        "sha256": "f94cdc1a5eef251f992aae76df046d8944dc298faebc099995da8b7699af4acf",
+        "durationSeconds": 0.08,
+        "nativeFrameCount": 2,
+        "sampleCount": 2,
+        "maxGapSeconds": 0.04,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-3\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-3\\decoded-original\\0002.png",
+            "frameIndex": 1,
+            "secondsAtDeclared25fps": 0.04,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          }
+        ]
+      },
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\sampling-manifest.json",
+        "sha256": "5a64943259c454aa68305e335bcbfb74d43839548761cf57888f987a1e956be3",
+        "durationSeconds": 6.52,
+        "nativeFrameCount": 163,
+        "sampleCount": 28,
+        "maxGapSeconds": 0.24,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "8419d1e4d98cd0d25bc614c3aaaa0a7be3b83ca52cbcccf55a37bffddeaa4615"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "a37aa48a2edbb008dfb2d3d95de29efcb8ff06879c2d5030b2972ba76a9d8e19"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "ac92c23e50448125856caa3edbe5d1fed4a97554d755de310e49d018d322374b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "9822b106d221a1e3b67592a2eeba2376feb38be157cb1251b954034705fdf0ba"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "7635ef0881f8dbfef29970cd86ef7aaa528f22a4c3e7db7be3d0dec5ad90e30a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "a57be71b11f595f71efa7e903d1491d5c802cc493ac40f291fdb37ba093bc83b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "7963c156df0872c0fa888336499965f5021d2f07bf80ca0a172169629bf9e583"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "0ec4adf2d59e3453dce5820c8b49f08a05ce0702ea08b4f792b27badf7d08b12"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "d176f27289c1060dc496b3a18b4bb761a54e0212b21b1b320ed652b2e54251f3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "3396de07c1b7d5576eb6e196623d7c70e2a958e5694051534134e5b82fe2c28f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "8948216885deea1229584a50fccd242e61d8087c985cf8c42b81de3bc0092c35"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "98dd7129bd56b49a48627df77c0ee4fe0ee4d63244f12029cb9ea2c22ac6e253"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "98dd7129bd56b49a48627df77c0ee4fe0ee4d63244f12029cb9ea2c22ac6e253"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "60f70b981435599de16147a6d5de0f0d997e8d66109fa3412d29f40e04a07037"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "023561e78f7b8fc6e8ee8a548bff3a9ae07442f41becbee45a81149a60f01329"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "a351baf4faf75e2b8b0ee2a36c676f837a39c8e7c089daba9b7473a9c018d1b6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "dd572e71f851c35e7e5a1305291d868d57886c02828668e07f7c33a50ead21d7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "084335b33aec526c6f8afa9745d60c7aafbd97a89d94317b73c45220c77f074e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0115.png",
+            "frameIndex": 114,
+            "secondsAtDeclared25fps": 4.56,
+            "sha256": "7c1dc37d56d7f6c880418c3eb2956a36c677ff832313b6b90c2ba856306ee643"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0121.png",
+            "frameIndex": 120,
+            "secondsAtDeclared25fps": 4.8,
+            "sha256": "820675e962d12b7ef658d9a113d6ac166a1126e22d4da76310de0bc4eaa4ed99"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0127.png",
+            "frameIndex": 126,
+            "secondsAtDeclared25fps": 5.04,
+            "sha256": "4c2c8e824bea5e00f8c4f5fb4083d12b7ec70a4ed843d0195dd2e0b72a6f8962"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0133.png",
+            "frameIndex": 132,
+            "secondsAtDeclared25fps": 5.28,
+            "sha256": "e68526f9a780255219b7218d389b8228f308924da9974d2d282de5808e642633"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0139.png",
+            "frameIndex": 138,
+            "secondsAtDeclared25fps": 5.52,
+            "sha256": "123c43db91636c44692221bb2e48f10392bf7abdc3115b5da719a017daadcd59"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0145.png",
+            "frameIndex": 144,
+            "secondsAtDeclared25fps": 5.76,
+            "sha256": "d63319436c20c560a858206ad902c1738d34a7c062b05c326e408b1d400a73a8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0151.png",
+            "frameIndex": 150,
+            "secondsAtDeclared25fps": 6,
+            "sha256": "6a6fd2025aa4b5e6e2ff40fa14837ff016c0d7e3bc617ee56a98c01e2eaf700f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0157.png",
+            "frameIndex": 156,
+            "secondsAtDeclared25fps": 6.24,
+            "sha256": "9c4f709233cf832bf0c8a10e47b42358b677c7d2cb1912584c3e8ddbbb01de18"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-4\\decoded-original\\0163.png",
+            "frameIndex": 162,
+            "secondsAtDeclared25fps": 6.48,
+            "sha256": "5be90b66beeb933499ddb3a25ac3b82935e636097c23ec32578299bf15293a7c"
+          }
+        ]
+      },
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\sampling-manifest.json",
+        "sha256": "b53ea015686835dfc6c757c076a6580a4921e7e3d8dae3fb9ee7e546921d457a",
+        "durationSeconds": 2.24,
+        "nativeFrameCount": 56,
+        "sampleCount": 11,
+        "maxGapSeconds": 0.24,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "8419d1e4d98cd0d25bc614c3aaaa0a7be3b83ca52cbcccf55a37bffddeaa4615"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "319eee6ed1a8966c94cf516382b7771c1eb8c6cb15cb91f6b7ada0612beb6162"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "b580a2321a7f17c53e7d46a6f1ec77509a13ef683b5b2bc45fa9b3836130c277"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "e9703a533b4dab960e62348edac8160a9121a34250fc4b02cb5ca32562abd5aa"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "dcb51da535c4b7b4470f297355ea8af143bd00b0df91651e89822c21c3eba7ff"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "84da299cd25e007052dca0dffeaad38293215934ed1b441e36605c0307fe3ae5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "2e282bd917499789b57dee106f6f96fe233ab5d11e751470f91fe2cee1a6676b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "35530f24a057e869b59f93c84985ffcf43c613f03c411a548fca0f075ac28401"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "c20cbd51df0ccc3acce15f0b1c2766a812c29afe10f66a3bb69d6e83a3ffc5df"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-5\\decoded-original\\0056.png",
+            "frameIndex": 55,
+            "secondsAtDeclared25fps": 2.2,
+            "sha256": "8de81bfcd8e4d824665708e9d2a6d70ef21a11068b76c613a469b424c0f1577d"
+          }
+        ]
+      },
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\sampling-manifest.json",
+        "sha256": "bc0ee0af65d23cf3be28dc46a0198b463731b5b7e7a1b535df859817b1e09399",
+        "durationSeconds": 4.44,
+        "nativeFrameCount": 111,
+        "sampleCount": 20,
+        "maxGapSeconds": 0.24,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "eba254aaea79fc851217290e761097585b09414661fbc2546aeb83716af92e18"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "b2088cbf5e9d2908730a76d4f61836589049491874d7739ceb8a6f2053e4d940"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "955022762de1ef937e4adc6f3083d927fd889858464a51c8a9c5c03d3d637cd3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "a2dc3c88df6e12689d59598fc1326fd74bca8d480aef43ceee5f46487b5f3f88"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "a2dc3c88df6e12689d59598fc1326fd74bca8d480aef43ceee5f46487b5f3f88"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "8c084bf11be4fff6d31be49ae4fdb5c49ff8e0491c456d6f47f93aac35724d18"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "328eefcab3637116b18f8de5b19b79c1962cffde97b1a5288dedbdfe54acdabb"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "4b9d4952ddd8d69aa1681c2d5f382237926ffc72de6cdabbd138bd6bc16d3f52"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "874f1039469b7feda7399a469eea703ee2e946058650e6180828589536599c4a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "5eb60335d168b83de4a4afb57314a1c540d976e523669c473362be00043f96a7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "484976360428b744f0ec8dfea3610a49f41e3c643d499d45114b157ed189fc39"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "e9daaa70c2491b34de147f660bac537bf6a6e318199172590d7545f0e02bc010"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "77290524be7158059285ee9c93342ac944c7d1a59b8719f955bcab75d2ab2b40"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "e2a92346f7a790a204ff0f7efaa30a2ce71855ab5806239281699a8d04d8062a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "b717c4958fbd2855423ece75c5b27f946b12de44e6a652c44ad8033da3c4c2ae"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "9e80449bd7fffc60dbbcf6569e734a3b074ac76d7d024e2f67d1d6e9c4925538"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "409152cd2802e011243a355746c0d2b63f660a5d9affe42b5b6d0b56d260b62a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "2b729976a10466b17e71a833ae689c734250175fc53b8472f56aa2de41578425"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-6\\decoded-original\\0111.png",
+            "frameIndex": 110,
+            "secondsAtDeclared25fps": 4.4,
+            "sha256": "cd2ad3fe6acc662bc1a90877e736abb333f7566ca02d9c05a9cdcd6585cd46da"
+          }
+        ]
+      },
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\sampling-manifest.json",
+        "sha256": "7fe0b1a3bba0d350cabab55b602f230cbe8cb30f4a89ffaadc5219621158364c",
+        "durationSeconds": 7.64,
+        "nativeFrameCount": 191,
+        "sampleCount": 33,
+        "maxGapSeconds": 0.24,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "4340f64173c5c50b57811309184768b78f432a4e1b7a8c8634f1a5899f275c4c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "51d75b7b18d1db656f48dd342ba87cbb83e49944aaff56aa62aaa967ce7b0b21"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "8d0e3c26b5df98bdcb1a664fe86e55e9afd15a5adfe6bf5dd71048c5359c0778"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "fba9a8558885f41f2cefd6b257f99ad14380e2a2ac8dd029c65b0e4864eb804b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "37950c907ff058d574b0c11f64100ab760643cf94f8e8b69d5c6dbbb98ed0380"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "4cc5818678125e3e0b889bf77bb438f90ab79c2f4ae8484edc7e7f8e6cdb1c77"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "17517d3499f61b7145dcd286afc66d75f89d345d022e57bc9830e773290da379"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "77fe07b37ec9b2bcec07470511d705b07df590947d7facfdf707c6032d587561"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "7f25e0094b9c004cfe1a68e8c771df5c05395696c9ebd63cbecdd873f8127adc"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "2072974538407de7634b3bb4462621c671759c3f4c4f084829edcf3890f3e8fa"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "cfb4e815695c4fbbf1b25422b119bc470b598705f4c00f75b7fa0ddc50baa612"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "2b6c993fb1cb30bba3311c8c8b009e37136cf861629ec0efcf9db9d5d32d8788"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "2b6c993fb1cb30bba3311c8c8b009e37136cf861629ec0efcf9db9d5d32d8788"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "c9aef2075046b4794981528a8f7ce9b3480cc04934f11ae42644ac2f5f637492"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "242b7cfa64c3a5dc73c775c80deb9014d2908df2450ae86a787ff9a7c7b882cf"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "e6d2df6a7ea44943330d0fc32d9ca270ef22131e9875200eb131e7bbe29ca2d3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "e6d2df6a7ea44943330d0fc32d9ca270ef22131e9875200eb131e7bbe29ca2d3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "bef2875bfb987d591bf5fb79c7a578091da27032285d0acb09af860e1e97546d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0115.png",
+            "frameIndex": 114,
+            "secondsAtDeclared25fps": 4.56,
+            "sha256": "ebebb2ea41e7825f9cc6bba53f792adc5e5bc9686ffaf03c1f1a94805c9d3621"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0121.png",
+            "frameIndex": 120,
+            "secondsAtDeclared25fps": 4.8,
+            "sha256": "937353f64d061805241efc85b2cb9dad007c322f3ed4c0667b12c99dd154ea16"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0127.png",
+            "frameIndex": 126,
+            "secondsAtDeclared25fps": 5.04,
+            "sha256": "06297c5c8d85f0a4c816cec75a06a4e56339c3ce41af25d4ae4f40fde6aa66f4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0133.png",
+            "frameIndex": 132,
+            "secondsAtDeclared25fps": 5.28,
+            "sha256": "f8aadb494cd15944a2d95667c9728a62575a47488b4ffdab9289943992d55546"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0139.png",
+            "frameIndex": 138,
+            "secondsAtDeclared25fps": 5.52,
+            "sha256": "2e967c05d6961c93f2b5575157ab9148c1f617642f84feea1b9e00e3d1908136"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0145.png",
+            "frameIndex": 144,
+            "secondsAtDeclared25fps": 5.76,
+            "sha256": "4beece902274b340628bbe1e9cb2b51234d94f82528488f8a9e43b3755920095"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0151.png",
+            "frameIndex": 150,
+            "secondsAtDeclared25fps": 6,
+            "sha256": "45b5153ed6617b3bf8ccecfb7036e60fda6816edd3c4c58b4b9e2f8c1e0248ec"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0157.png",
+            "frameIndex": 156,
+            "secondsAtDeclared25fps": 6.24,
+            "sha256": "9b6a8bbcd38e16a55dbaa41d7b34c64c733edbe6349680c6396124ef312b2e82"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0163.png",
+            "frameIndex": 162,
+            "secondsAtDeclared25fps": 6.48,
+            "sha256": "254747f73d813be389ac3deb14814e655c9fd62f8ece455f5b137abf1eb3e21b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0169.png",
+            "frameIndex": 168,
+            "secondsAtDeclared25fps": 6.72,
+            "sha256": "a039d138110f0f287db9dcbc7ffb972c5a82b76e835993176cd1f128db39cb00"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0175.png",
+            "frameIndex": 174,
+            "secondsAtDeclared25fps": 6.96,
+            "sha256": "89e564bd22c08a2fd284a81fb6b4cee7d8403b042cd941f42c2f830e52fe1a87"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0181.png",
+            "frameIndex": 180,
+            "secondsAtDeclared25fps": 7.2,
+            "sha256": "0e733b069814382af48329b736718ac9249de6ae167f6dc3e46dd76c6dd2fedf"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0187.png",
+            "frameIndex": 186,
+            "secondsAtDeclared25fps": 7.44,
+            "sha256": "0f6cdff01a653d794a724f1597cc7864f5e818579040be87b9aa4c0dff6561f2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-7\\decoded-original\\0191.png",
+            "frameIndex": 190,
+            "secondsAtDeclared25fps": 7.6,
+            "sha256": "bfd70965acf357a77c406986c2e9a3fd642360673dec23319265298df1a045a7"
+          }
+        ]
+      },
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\sampling-manifest.json",
+        "sha256": "686c3cf041a21ade74033805bacd95a72e66daeb3353826c07b2212ae86b909f",
+        "durationSeconds": 15.12,
+        "nativeFrameCount": 378,
+        "sampleCount": 64,
+        "maxGapSeconds": 0.24,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "15eca9f929d581a0ed7261281987112efcb57293b5cfbd3ac784c2349c79f7fd"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "1ed7a1a1e43c101754f1d737c1a71711cbb5bc178de9874717dc587f34db7ffc"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "e3249f92a07d598dddf4186ccd9b74ee9979cbe349791d5fc8809486abf41262"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "58a9a7fab5cef7d40b0b480b7df04c44f6006da25fabb54d4537aaa96fde6a84"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "a16cae0beda72feb0e1583982f2895bd8daf6e5933eab8e7644055ffac3b1755"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "96e8278f0f21e9fdeaed65bc8f9b7b9b526c2316afd15c1a85a84c607efa3035"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "21acddd25550051d8b7d1bb32f86b780292e5235a4472ac6b597099270a4c1f9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "b220c54ea0792b2e9d11371e62f7d90dd3c955cf875c36cb2d48144bc239ce8a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "1a17bac0b10fac4e46b6535db1a3e1b2b14fbf2fb16fbdcf868f649e3531f17d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "817c7a657309f3be14d61e3eb6c240238b480cad416f7699c01330ffd1826508"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "9dccb25838c081015b68199a486e6762ad0147c0e7bdeb5df860898b3890f590"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "841752b3d59e2fd723d91fe1c55aabcbf73dc83d5ed87262d625a7a6a5259464"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "2ef92c2dd2249660056c55b75d15891732ec0c5a6a2a7f6598db72a7ba9adf97"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "a1a16fbcf93dbb689878a39871fda3d1a299e1ff84fb735557a8fa251153eb6e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "b2e0b389c0ffda91dda15084623fa0309cada6618b92aa55cb9cb990520fa4f3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "dac11f46ec12472348c37d170d7144727ba961afdad61d28d1a732d7d4abb595"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "9072ccf299f9f8a3c79a0efb5173cde133a9dea446ba33ad56c53282b41a85e8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "c0f076da87e1b06669b9e85b9ba99d656ed80ac45aaab15a8092bbe2c75361d9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0115.png",
+            "frameIndex": 114,
+            "secondsAtDeclared25fps": 4.56,
+            "sha256": "5584a65f44f5354abd22f6cdc9e8b55d5d80a4c5bcbdfc6a7f693cc304d9b5d0"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0121.png",
+            "frameIndex": 120,
+            "secondsAtDeclared25fps": 4.8,
+            "sha256": "57cb20b2627af35d299dd8f0d63f41fa6f753cce36a4fd5f1bec0cc20b42513e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0127.png",
+            "frameIndex": 126,
+            "secondsAtDeclared25fps": 5.04,
+            "sha256": "98923549ab189c4e5753376d7b4625fbcdad1249716fdf87b44095e302a8acd4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0133.png",
+            "frameIndex": 132,
+            "secondsAtDeclared25fps": 5.28,
+            "sha256": "eaeb98d55a5cdb850702ec8e3f5fd45efcf5460f4e57be3ea4072442719a8aba"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0139.png",
+            "frameIndex": 138,
+            "secondsAtDeclared25fps": 5.52,
+            "sha256": "42ed178ed7d510190522013b1153f96ac546bfc9d13115c5f053cbd3f8dfa4c1"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0145.png",
+            "frameIndex": 144,
+            "secondsAtDeclared25fps": 5.76,
+            "sha256": "c31ac1edf0e42e5eceb2b946f92fe74452a3f3f7a9bc350ad0302fcf6f6f93d2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0151.png",
+            "frameIndex": 150,
+            "secondsAtDeclared25fps": 6,
+            "sha256": "fb62c0a73f131f6f2b337b28b224f72932c8254f535ea7a2638072df7c9aae52"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0157.png",
+            "frameIndex": 156,
+            "secondsAtDeclared25fps": 6.24,
+            "sha256": "97d8539f1878c2da2cde4129a9999ea59f971d0928d9f48b3cb2af21dce0b439"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0163.png",
+            "frameIndex": 162,
+            "secondsAtDeclared25fps": 6.48,
+            "sha256": "dc851136987173a08c059dde53a165148d44ac1ddbf4001d56084a5b2cebe3e5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0169.png",
+            "frameIndex": 168,
+            "secondsAtDeclared25fps": 6.72,
+            "sha256": "ad25a71fb616f6b23b99a316b8c7a947a266daf7d86c7df40d223c8a4844a2f6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0175.png",
+            "frameIndex": 174,
+            "secondsAtDeclared25fps": 6.96,
+            "sha256": "ad25a71fb616f6b23b99a316b8c7a947a266daf7d86c7df40d223c8a4844a2f6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0181.png",
+            "frameIndex": 180,
+            "secondsAtDeclared25fps": 7.2,
+            "sha256": "51341abee21bbb5af5006b241c727665606c03c88fc87d83aeec63c3005113e1"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0187.png",
+            "frameIndex": 186,
+            "secondsAtDeclared25fps": 7.44,
+            "sha256": "3ece1d7f065f6496fccf2f70126a473608780ec7b9256d5a0e7f0259d2f305a9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0193.png",
+            "frameIndex": 192,
+            "secondsAtDeclared25fps": 7.68,
+            "sha256": "8c1b535c7c8d89cbc603060e5d2269856b77ef0377412d61ba1e0bfa4c02c50a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0199.png",
+            "frameIndex": 198,
+            "secondsAtDeclared25fps": 7.92,
+            "sha256": "eacead1eeffc0fec61e4f1da65d095052cad308f31cecbc9d96c14c076f90d75"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0205.png",
+            "frameIndex": 204,
+            "secondsAtDeclared25fps": 8.16,
+            "sha256": "eacead1eeffc0fec61e4f1da65d095052cad308f31cecbc9d96c14c076f90d75"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0211.png",
+            "frameIndex": 210,
+            "secondsAtDeclared25fps": 8.4,
+            "sha256": "55c9e689ed2217438ac2117b82282f000cd8c3516ad560c8d9e49b18f0b21863"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0217.png",
+            "frameIndex": 216,
+            "secondsAtDeclared25fps": 8.64,
+            "sha256": "202afa2bd230109af2ff38d72fe9e96961fd3cb199d1b9c10f1719c972e4cb0c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0223.png",
+            "frameIndex": 222,
+            "secondsAtDeclared25fps": 8.88,
+            "sha256": "b672e08af04b06a5ebc2b9011965bdc42845c6dc50941d2a32957ff7e6161ca0"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0229.png",
+            "frameIndex": 228,
+            "secondsAtDeclared25fps": 9.12,
+            "sha256": "0905d6af902f20eea34c99ed3d07f621d635580deec72e95b9430cf44b9d5bb0"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0235.png",
+            "frameIndex": 234,
+            "secondsAtDeclared25fps": 9.36,
+            "sha256": "29d9de06f7f0ab516a3d8e4b744646cf2be14612ac83c9eaf017fcfb94bf700a"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0241.png",
+            "frameIndex": 240,
+            "secondsAtDeclared25fps": 9.6,
+            "sha256": "be0a633c5811ca2ab6780baa6380448725f9bd4596416ea2203808be02c207e4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0247.png",
+            "frameIndex": 246,
+            "secondsAtDeclared25fps": 9.84,
+            "sha256": "be0a633c5811ca2ab6780baa6380448725f9bd4596416ea2203808be02c207e4"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0253.png",
+            "frameIndex": 252,
+            "secondsAtDeclared25fps": 10.08,
+            "sha256": "4ffc3d0b7abbe43e99d17dc9a3174cd803e60685825da4d1d3a5718e91749e3b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0259.png",
+            "frameIndex": 258,
+            "secondsAtDeclared25fps": 10.32,
+            "sha256": "76d7f126ca07c98397bd4fb966a79202b64af2cc372ccb42f47673973e83c64b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0265.png",
+            "frameIndex": 264,
+            "secondsAtDeclared25fps": 10.56,
+            "sha256": "8ddc250d67e0993cb675f9a8f8e555e3dc55aec712f542a26b53127242057e23"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0271.png",
+            "frameIndex": 270,
+            "secondsAtDeclared25fps": 10.8,
+            "sha256": "f98c13b3b97f33902aeedc84d279d20e50e141bb555ce35f8bdcf81aff7497e3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0277.png",
+            "frameIndex": 276,
+            "secondsAtDeclared25fps": 11.04,
+            "sha256": "cf5c471c6b4889dd17cc698e6c74510f93df1ff7e2e637948b1a8cde8ecff537"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0283.png",
+            "frameIndex": 282,
+            "secondsAtDeclared25fps": 11.28,
+            "sha256": "75771888525d62a7b10290c0619896221a8897a5276956069a796915c7fe28ae"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0289.png",
+            "frameIndex": 288,
+            "secondsAtDeclared25fps": 11.52,
+            "sha256": "ab312ddb4e399873732993f5ff84b773278965074e0051cf44708cdd6d268a2c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0295.png",
+            "frameIndex": 294,
+            "secondsAtDeclared25fps": 11.76,
+            "sha256": "0be1f2e2f4a771897c3a800a06b4172067497190cc4e9329ebee94d66149f6c3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0301.png",
+            "frameIndex": 300,
+            "secondsAtDeclared25fps": 12,
+            "sha256": "c25f41e11b4703e684f3c01bdec2fc1165ded48dcf103a8193b74c6049b8ff39"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0307.png",
+            "frameIndex": 306,
+            "secondsAtDeclared25fps": 12.24,
+            "sha256": "43d35073365a989ea48d9af9bb45070df67744fb0f15a86c054c7d070786fe88"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0313.png",
+            "frameIndex": 312,
+            "secondsAtDeclared25fps": 12.48,
+            "sha256": "43d35073365a989ea48d9af9bb45070df67744fb0f15a86c054c7d070786fe88"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0319.png",
+            "frameIndex": 318,
+            "secondsAtDeclared25fps": 12.72,
+            "sha256": "667b87f80790c11b8f54552aa0d144adc5e7bca449b3e885c4aee3b5041d762d"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0325.png",
+            "frameIndex": 324,
+            "secondsAtDeclared25fps": 12.96,
+            "sha256": "6ba47db6318ed7ecad62f7f378e60c9aecef35abebef5ee902767ff4f9734fe6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0331.png",
+            "frameIndex": 330,
+            "secondsAtDeclared25fps": 13.2,
+            "sha256": "859980d5c19f4e18fc32ee5139d4243081f395207d29e7331f8a457a7d510ab2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0337.png",
+            "frameIndex": 336,
+            "secondsAtDeclared25fps": 13.44,
+            "sha256": "5867e60c5e601fb7f25e1399285fc161ef983c4ad5de52afa6c2ad42e25520da"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0343.png",
+            "frameIndex": 342,
+            "secondsAtDeclared25fps": 13.68,
+            "sha256": "09404c2fd81c9d473e17fc0b7ec32a1680c942abcf7ee4019a9ad554b5126984"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0349.png",
+            "frameIndex": 348,
+            "secondsAtDeclared25fps": 13.92,
+            "sha256": "9d1f2d72dbed8590a0db3c3e50922a053c8d968fda86536723e2e0a91d9b6fec"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0355.png",
+            "frameIndex": 354,
+            "secondsAtDeclared25fps": 14.16,
+            "sha256": "9d1f2d72dbed8590a0db3c3e50922a053c8d968fda86536723e2e0a91d9b6fec"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0361.png",
+            "frameIndex": 360,
+            "secondsAtDeclared25fps": 14.4,
+            "sha256": "09ebe643805367ce9f289e58574b6d178ce90a61d057a134cae47b5a6b240d96"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0367.png",
+            "frameIndex": 366,
+            "secondsAtDeclared25fps": 14.64,
+            "sha256": "eb00d81a1e876c9e29c22e0af7c0b95871d70e0bfc7c25d987b3cd2cd1839a80"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0373.png",
+            "frameIndex": 372,
+            "secondsAtDeclared25fps": 14.88,
+            "sha256": "17f7ea740427c32d92da30a21f4b87c22842ce78be351aa03adb579d2f182815"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-8\\decoded-original\\0378.png",
+            "frameIndex": 377,
+            "secondsAtDeclared25fps": 15.08,
+            "sha256": "88f58c35a0c2149316eae025817c540d19c92bfa6e017121b9c03858a79f1a4e"
+          }
+        ]
+      },
+      {
+        "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\sampling-manifest.json",
+        "sha256": "3213ed151315c19de752f7a24604a2f8049ecde3e6ecb5853113c52e73b8009c",
+        "durationSeconds": 12.52,
+        "nativeFrameCount": 313,
+        "sampleCount": 53,
+        "maxGapSeconds": 0.24,
+        "frames": [
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0001.png",
+            "frameIndex": 0,
+            "secondsAtDeclared25fps": 0,
+            "sha256": "5ee1ecccbe566e9090124ca539c7bba9d9947968d089018f628579985843ad7e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0007.png",
+            "frameIndex": 6,
+            "secondsAtDeclared25fps": 0.24,
+            "sha256": "35a969ef29e1b914d83d5caa17198a7330eb50482a18c6fa204b9845dee13780"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0013.png",
+            "frameIndex": 12,
+            "secondsAtDeclared25fps": 0.48,
+            "sha256": "f406b7141a5eac6b9db980a99f456043556b1bb6bf785d96da19f4b897f56323"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0019.png",
+            "frameIndex": 18,
+            "secondsAtDeclared25fps": 0.72,
+            "sha256": "e0edf453e3529928c4ce7bc6a65b13a8e5c7a4fe613511f1d2c455485297c0cb"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0025.png",
+            "frameIndex": 24,
+            "secondsAtDeclared25fps": 0.96,
+            "sha256": "f6725ce514fea0b375297bd6ce8d7dafec9caba4afc5069483b401c1eac995c9"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0031.png",
+            "frameIndex": 30,
+            "secondsAtDeclared25fps": 1.2,
+            "sha256": "fee22adce5337150b7b3a5ba99341188dbad1a04a0881d9ee50d16c88fcf5661"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0037.png",
+            "frameIndex": 36,
+            "secondsAtDeclared25fps": 1.44,
+            "sha256": "f98a5c4c1b9088710db390d01752d37259a086bc6164efd6ccf92133149dca51"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0043.png",
+            "frameIndex": 42,
+            "secondsAtDeclared25fps": 1.68,
+            "sha256": "3e2614402a06dd209d7321585b78085a4f346b1803b9f910338151d4e9852bf0"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0049.png",
+            "frameIndex": 48,
+            "secondsAtDeclared25fps": 1.92,
+            "sha256": "dec54f9f2d3978c2faa163250348e32507cd3a6db0822d65ee93d289ccc940db"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0055.png",
+            "frameIndex": 54,
+            "secondsAtDeclared25fps": 2.16,
+            "sha256": "26ab39024017ee8ddee4f05f299e5a1a48fc066284253f1831f90a69150b7c95"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0061.png",
+            "frameIndex": 60,
+            "secondsAtDeclared25fps": 2.4,
+            "sha256": "157703ecc9903c1aab23443fc2e3c5268317442e40024e7ba51a731e91099caa"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0067.png",
+            "frameIndex": 66,
+            "secondsAtDeclared25fps": 2.64,
+            "sha256": "5ecdd02dec83ce2c076a308cef1eee37f9de42ff8688141bd4f5dcc6a47145eb"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0073.png",
+            "frameIndex": 72,
+            "secondsAtDeclared25fps": 2.88,
+            "sha256": "b04f4658033c648e09d53f8362319bbb16f7a8491d8efa99a6de2ea5a2e17e24"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0079.png",
+            "frameIndex": 78,
+            "secondsAtDeclared25fps": 3.12,
+            "sha256": "4ba8752728ed87aa0d3c7556db047ced00895c0ab60a2156677a6ba85c0eb57e"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0085.png",
+            "frameIndex": 84,
+            "secondsAtDeclared25fps": 3.36,
+            "sha256": "a4ccd0d932c2cbe567f20bb6e3cee182dea278de237812a1b51539676a9fdb6f"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0091.png",
+            "frameIndex": 90,
+            "secondsAtDeclared25fps": 3.6,
+            "sha256": "a1a4d4540ced16d77c806fce347f5c0ccaddfe43fbcf8f6b1f0de8ff216d35a6"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0097.png",
+            "frameIndex": 96,
+            "secondsAtDeclared25fps": 3.84,
+            "sha256": "138cfdeca86e50e1d7e30bbdd8f97532b171bcd3d449ba4d80c11a17b1673964"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0103.png",
+            "frameIndex": 102,
+            "secondsAtDeclared25fps": 4.08,
+            "sha256": "e8672be6b5d8c2693a3ea49840c850fbf2f31e90885bf861549a2c2ba6d16050"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0109.png",
+            "frameIndex": 108,
+            "secondsAtDeclared25fps": 4.32,
+            "sha256": "6ce1c57ed484f29066df12211c107408afccf13f7315e54bba6a388d275831ff"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0115.png",
+            "frameIndex": 114,
+            "secondsAtDeclared25fps": 4.56,
+            "sha256": "a230f62240159b0514cd0b3b9f549754eacbcafbba261cd0662240ae55433402"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0121.png",
+            "frameIndex": 120,
+            "secondsAtDeclared25fps": 4.8,
+            "sha256": "159a6b3861a4df6a443341f443427e1bffa85be3728160b196bcc99fdd9a05ee"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0127.png",
+            "frameIndex": 126,
+            "secondsAtDeclared25fps": 5.04,
+            "sha256": "159a6b3861a4df6a443341f443427e1bffa85be3728160b196bcc99fdd9a05ee"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0133.png",
+            "frameIndex": 132,
+            "secondsAtDeclared25fps": 5.28,
+            "sha256": "5d2d0c7f3d897808a1a14b73ce77cca16189134bad46acaa390ad0e1965e2db1"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0139.png",
+            "frameIndex": 138,
+            "secondsAtDeclared25fps": 5.52,
+            "sha256": "4238d0053fb0a4e02c28fe66ee255ed93046b513b8e231065e184a4204956691"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0145.png",
+            "frameIndex": 144,
+            "secondsAtDeclared25fps": 5.76,
+            "sha256": "206e18f7b9df7c86d28d3b2f5e80679939c17d744502155cd470051e92f7bb57"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0151.png",
+            "frameIndex": 150,
+            "secondsAtDeclared25fps": 6,
+            "sha256": "badf31b31893220f43ffc769fb2e3a3b573d0d19838a70e59e91c43ae3f3874c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0157.png",
+            "frameIndex": 156,
+            "secondsAtDeclared25fps": 6.24,
+            "sha256": "4dce081cc96f8d9d5e4216ba81756ca5c421bb72220d2479bfce6e40fa2a8e36"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0163.png",
+            "frameIndex": 162,
+            "secondsAtDeclared25fps": 6.48,
+            "sha256": "5a8a19f7e5f84d41114a83b3e44dd84ab0c6491e0b57ea333a2411e1119df9b0"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0169.png",
+            "frameIndex": 168,
+            "secondsAtDeclared25fps": 6.72,
+            "sha256": "58843c526746694c88d0cd6ea1b675233b0726537d18471c7aa40d5a2a34ffc1"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0175.png",
+            "frameIndex": 174,
+            "secondsAtDeclared25fps": 6.96,
+            "sha256": "f553800268b3ee419c0a20f96941f75fd8df36a18e8ac5c1ff6f955e0f2f7c12"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0181.png",
+            "frameIndex": 180,
+            "secondsAtDeclared25fps": 7.2,
+            "sha256": "c86dc52b43d3d20ffeb40a82edca267c3335c17f5e6c9f4b89d3b1cfa0b3b577"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0187.png",
+            "frameIndex": 186,
+            "secondsAtDeclared25fps": 7.44,
+            "sha256": "e0a0ce561b23c663ff5942c568a77d6b296b1f55c572880a9890021c5e268406"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0193.png",
+            "frameIndex": 192,
+            "secondsAtDeclared25fps": 7.68,
+            "sha256": "d94c6737cc94a4f3e3eec742695a2c8f0ab3304f3b8af1ce84eaa98565f75de0"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0199.png",
+            "frameIndex": 198,
+            "secondsAtDeclared25fps": 7.92,
+            "sha256": "cf84d8ec879d89934575cdd1a5f90843f9e76bccfa212c0ac34055ac0496b000"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0205.png",
+            "frameIndex": 204,
+            "secondsAtDeclared25fps": 8.16,
+            "sha256": "54cd5ffa95c8db1a778893ff21c96cc2b33f0fc93c1e655d1019e53f81254fef"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0211.png",
+            "frameIndex": 210,
+            "secondsAtDeclared25fps": 8.4,
+            "sha256": "7fa1e11053061918f1d0b5002b209ab8ec6da02a51423ab712d7dfd5f93c05f7"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0217.png",
+            "frameIndex": 216,
+            "secondsAtDeclared25fps": 8.64,
+            "sha256": "f77bdcb563d1a291e38d69580be65535acf199604cb066f37fd64cc17dfc7e2b"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0223.png",
+            "frameIndex": 222,
+            "secondsAtDeclared25fps": 8.88,
+            "sha256": "c79308c83860c03077c5e43262b45018c74704befc77e85b1ac9cf63d9635597"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0229.png",
+            "frameIndex": 228,
+            "secondsAtDeclared25fps": 9.12,
+            "sha256": "7d97840cee08a1d03ffc9196a51ab3077165ecbb3fe1f1bdc4ddbdc1bec3f259"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0235.png",
+            "frameIndex": 234,
+            "secondsAtDeclared25fps": 9.36,
+            "sha256": "bb4dfef6ed0dab4e0df4c1245662ca04dfe0181bc81a7eb52cad04c1bdc33101"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0241.png",
+            "frameIndex": 240,
+            "secondsAtDeclared25fps": 9.6,
+            "sha256": "3b881ca0911d079d659f1121bb4bc5a4579560f38d41098cf41a3841e079ad2c"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0247.png",
+            "frameIndex": 246,
+            "secondsAtDeclared25fps": 9.84,
+            "sha256": "6ba534c13614ea0056d137b0e456f14b01f6e334b88d32d02c8c7fd19c39e528"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0253.png",
+            "frameIndex": 252,
+            "secondsAtDeclared25fps": 10.08,
+            "sha256": "0dc936f8250780e0b3c96ce826974778551b4d8b5298344a429f74c911a7b4a3"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0259.png",
+            "frameIndex": 258,
+            "secondsAtDeclared25fps": 10.32,
+            "sha256": "b1530d0fa63f57aa0de6b58908b6920c523c7e07c65ca9a46fea5f9cde2cdc06"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0265.png",
+            "frameIndex": 264,
+            "secondsAtDeclared25fps": 10.56,
+            "sha256": "09d006e1f498a0d368186447e00703f90ff20d541b810a47675ba708ba5e95a5"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0271.png",
+            "frameIndex": 270,
+            "secondsAtDeclared25fps": 10.8,
+            "sha256": "b2b2620538f70971f44820c4f5ccb10873663688ca113286715583f82a65fad8"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0277.png",
+            "frameIndex": 276,
+            "secondsAtDeclared25fps": 11.04,
+            "sha256": "9c215e875496070d99462738574c053211a750207c52be02cade63a416367bc2"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0283.png",
+            "frameIndex": 282,
+            "secondsAtDeclared25fps": 11.28,
+            "sha256": "90308f26f2f4c6b23d39d742a50b236af8a66f8efb547998bec45b5a3fd791ce"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0289.png",
+            "frameIndex": 288,
+            "secondsAtDeclared25fps": 11.52,
+            "sha256": "1467a7eef00580c87f0a9c7a5cea5e2df31eb97b0b503e3f410470b4f69f7045"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0295.png",
+            "frameIndex": 294,
+            "secondsAtDeclared25fps": 11.76,
+            "sha256": "75b481dd8457b4eb45017f89048b8ae3564e667255c7cde21b71bb3927484477"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0301.png",
+            "frameIndex": 300,
+            "secondsAtDeclared25fps": 12,
+            "sha256": "08344bcf86351cbdfe03a310b8de1c43ac4a527dab7fe3769d0637b96ab7b583"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0307.png",
+            "frameIndex": 306,
+            "secondsAtDeclared25fps": 12.24,
+            "sha256": "0af0193636d9d34f8d2ff0325ce7c03e27c586c52d5fe4fd20c141fb5efd4740"
+          },
+          {
+            "file": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-66699086\\video-9\\decoded-original\\0313.png",
+            "frameIndex": 312,
+            "secondsAtDeclared25fps": 12.48,
+            "sha256": "967f9dc0eadd936d9cf1395b99d7c3c76ba6247c48271b60cd9fd05afcc12938"
+          }
+        ]
+      }
+    ],
+    "nativeDecodedFrames": 1566,
+    "inspectedFrames": 273,
+    "meaningfulVideos": 7,
+    "blankClips": [
+      1,
+      3
+    ],
+    "chronology": [
+      "Scale-live-preview nativeimage showsmapenlargedondeskandnumericObjectscale3.2;recording5~1.44smallmap→1.68larger→1.92large→2.16smallagain. Needexacttest/assertionproofpointerdownandoneUndo;donotmislabelgizmodrag.",
+      "Phonevideo2~12.00–12.96scrollstoExperiencetitleandrenamesInspectorphoneedit;13.20–13.92returnedInspectoroverview/newtitle. Nativephone-edit-returnshowsroomcanvas/toolbarwithInspectorcollapsedandscrolledheaderoutofview. Thecanvasreturnmomentisnotvisibleinevery6thvideosamples;still pluspinnedtestneeded, no inventedcontinuousrecordingproof.",
+      "Video1.12s3framesandvideo3.08s2framesallblankwhite;nojourneyproof. Video2contextmatrix/phone;4Lightthemeeffectinspection/keyboardrail;5scale;6removed/mixedselection;7numericlight/history/mode/reload+tablerename/reload;8physicalinsertion/undo/redo/tableLantern/painting/reload/wardrobes/noFit;9Librarychest/light/compositionsave/reuse/reload/play/pause/phonecamera."
+    ]
+  },
+  "originalEvidence": [
+    {
+      "path": "browser-runtime.original.json",
+      "bytes": 1316,
+      "sha256": "280a17fc168b4649bf77fd5998e8dc70234b7eac57a75e4aa31785a5a33b61ad"
+    },
+    {
+      "path": "browser-suite-profile.original.json",
+      "bytes": 418,
+      "sha256": "733d498b8fe5cfce9f56baa3b6d258317d72da7665a2e197c64dd4731c80245e"
+    },
+    {
+      "path": "browser.original.log.txt",
+      "bytes": 51644,
+      "sha256": "644295709f61209095747632ceb295fa8217929e52a13baecb267140cda44e5a"
+    },
+    {
+      "path": "run.original.json",
+      "bytes": 510,
+      "sha256": "c5e0039fccd8195d88033144b851815de1131eb365cf88b33f0389523367938c"
+    },
+    {
+      "path": "element-captures/combined-chest-desktop.png",
+      "bytes": 313317,
+      "sha256": "d8b7dd1bc0ef4395401d0ad047b35312948b0b4e189478f3b2c084253255db4c"
+    },
+    {
+      "path": "element-captures/combined-composition-playing.png",
+      "bytes": 336290,
+      "sha256": "0c9a51c0db8b48e9a5e85ac76bea44eb12ea499e3e500857b6ba3366e428744f"
+    },
+    {
+      "path": "element-captures/combined-element-observations.json",
+      "bytes": 70,
+      "sha256": "6cce31ad7ac70fc7e61c2a52e86d825ed334b0ce520f34349db1f080efc0632e"
+    },
+    {
+      "path": "element-captures/combined-library-phone.png",
+      "bytes": 94893,
+      "sha256": "9bf0b1247c9ce1a51b6c630ba1d50e90b81941eb7bf65817f04ca50cc3951ece"
+    },
+    {
+      "path": "element-captures/combined-view-controls-phone.png",
+      "bytes": 104004,
+      "sha256": "cfdafe5f86ccd20cd12fde3284fae346063bdf21f597a022fff45ad72e10e934"
+    },
+    {
+      "path": "element-captures/room-aware-floor-table-wall.png",
+      "bytes": 275653,
+      "sha256": "20042c9591fc596ada7aaee2ebf8bb2cb796413c285dbb51c0177a3bc63b4d74"
+    },
+    {
+      "path": "element-captures/room-aware-no-fit-recovery.png",
+      "bytes": 345541,
+      "sha256": "6d07cec7499afa3b857ee966102cd788fee5b71f271fd1f6bf8d0663416c004a"
+    },
+    {
+      "path": "inspector-captures/effects-observations.json",
+      "bytes": 2029,
+      "sha256": "8fbbec5950e7fbd22311562182b7c66250a3868d0f486a8a4d4ad6141f85ec87"
+    },
+    {
+      "path": "inspector-captures/empty-selection-engineering.png",
+      "bytes": 328828,
+      "sha256": "c94dc3a2ffb6870916dc635778eb2014c720a16588366141293b0711847e0e62"
+    },
+    {
+      "path": "inspector-captures/empty-selection-guided.png",
+      "bytes": 310410,
+      "sha256": "a0b309e288082aacdfda86b5fc0a17018d10042db043ed0e8c49e46ed3d51174"
+    },
+    {
+      "path": "inspector-captures/empty-selection-standard.png",
+      "bytes": 311807,
+      "sha256": "d6570c89a117f050274a8d9e5d52e5a0bb1956e437eb54a06c8a94bb4110facf"
+    },
+    {
+      "path": "inspector-captures/environment-engineering.png",
+      "bytes": 334614,
+      "sha256": "f4cafd1a2b9b6fed1c634707b9ba65bf347353da694962733db4fbea9baba2e3"
+    },
+    {
+      "path": "inspector-captures/environment-guided.png",
+      "bytes": 318610,
+      "sha256": "d7c41216f407c5b619f70e3220bd38735be7de5163a82c5a76a2c2d9c533f499"
+    },
+    {
+      "path": "inspector-captures/environment-standard.png",
+      "bytes": 319711,
+      "sha256": "afb2f665b978f69d1e86f8b61c1321a9c1760ac322f42540f2411cfc6b13ae1a"
+    },
+    {
+      "path": "inspector-captures/exclusion-zone-engineering.png",
+      "bytes": 330694,
+      "sha256": "11b81d6228e686312cf2ff4a2250908247d60b0d631faf736f71ddd6c87a30ec"
+    },
+    {
+      "path": "inspector-captures/exclusion-zone-guided.png",
+      "bytes": 315260,
+      "sha256": "e0e198a5f047fb723f14ca7f1bb13e02074abdc4f6fd66eec05a1ae4641e7787"
+    },
+    {
+      "path": "inspector-captures/exclusion-zone-standard.png",
+      "bytes": 316368,
+      "sha256": "7bc479472498e90d187c0fb47a69a632db5278a618c8bce151937b10251fb921"
+    },
+    {
+      "path": "inspector-captures/furniture-engineering.png",
+      "bytes": 339495,
+      "sha256": "88161c0e04079df87cbceb653f536e3a85cf08a016b14354a087338e1d22daaa"
+    },
+    {
+      "path": "inspector-captures/furniture-guided.png",
+      "bytes": 317899,
+      "sha256": "6e301f928c0ef2d0320c3e82ba79b46906cb0be74a5e60f9af248480fd38ee91"
+    },
+    {
+      "path": "inspector-captures/furniture-standard.png",
+      "bytes": 319004,
+      "sha256": "9a65e6e0b59e68c2ab918d4a3e64f9d92dbf0026d39609601f9fd9211e42fdd7"
+    },
+    {
+      "path": "inspector-captures/group-engineering.png",
+      "bytes": 319969,
+      "sha256": "a5eed9c5c6a7ba710f9dcc8bae22c9a9747ff3f180fe65a3aa7b929e7bea4121"
+    },
+    {
+      "path": "inspector-captures/group-guided.png",
+      "bytes": 298433,
+      "sha256": "54ec99b5900e856964bda5146ae8ac4b5a1fb8fcae3a483e0323a3df0c60c1e4"
+    },
+    {
+      "path": "inspector-captures/group-standard.png",
+      "bytes": 303749,
+      "sha256": "1f6b3363c55c3f4e9ef6973f3d08eb8ed552d76b300a55edda654988b7047bb9"
+    },
+    {
+      "path": "inspector-captures/interaction-trigger-engineering.png",
+      "bytes": 338786,
+      "sha256": "a5dc389da34969365771af45eae46de0e0f9b6aa6cc6eae3734264c92d72f612"
+    },
+    {
+      "path": "inspector-captures/interaction-trigger-guided.png",
+      "bytes": 320359,
+      "sha256": "266ae24815d7cc10c51343eeb81a6ee584112d07ea1a45ce99ae3c3f4cf7c486"
+    },
+    {
+      "path": "inspector-captures/interaction-trigger-standard.png",
+      "bytes": 321443,
+      "sha256": "21a9ff215b58220918d2177cdbff688e94c36fe8d0a1696041d3e3678903e796"
+    },
+    {
+      "path": "inspector-captures/light-engineering.png",
+      "bytes": 325175,
+      "sha256": "84c9ab5b394716df71b8506f72c6d756c8d0d3a0b4c095f5559b2a7035fcc6a9"
+    },
+    {
+      "path": "inspector-captures/light-guided.png",
+      "bytes": 307842,
+      "sha256": "55f28357fa07a1853bb4e5486d5591f2f11c97641d9fef2d5ed4e0541ecdef57"
+    },
+    {
+      "path": "inspector-captures/light-standard.png",
+      "bytes": 308369,
+      "sha256": "2776dd3d15fcbac9d3e71b59c1244d328e5286c57a6f0774a31a0b007ad6256a"
+    },
+    {
+      "path": "inspector-captures/mist-engineering-light.png",
+      "bytes": 334055,
+      "sha256": "e011c4cc3403c10ae5565719ec42d747aedaa8dbddf5638b7d713815e51528a5"
+    },
+    {
+      "path": "inspector-captures/mist-guided-light.png",
+      "bytes": 318260,
+      "sha256": "c6247b4d8a4089f0da44b0008df46932729a3deb20050b1d661d8972522071fa"
+    },
+    {
+      "path": "inspector-captures/mist-standard-light.png",
+      "bytes": 319297,
+      "sha256": "cd6b9b1d141c3a5fd62e9d7960bc8861c4272cf010c3a05f79b14c64c7997dd5"
+    },
+    {
+      "path": "inspector-captures/mixed-selection-engineering.png",
+      "bytes": 309043,
+      "sha256": "57b38a790b32c037a3785b9dd445a26fa310f993509dfb51079d4abdb203d01f"
+    },
+    {
+      "path": "inspector-captures/mixed-selection-guided.png",
+      "bytes": 292260,
+      "sha256": "d8ddf8f132e3eaea2ca78a1c507fe60a9fd60587b13011bdaa2fd7b249c1199a"
+    },
+    {
+      "path": "inspector-captures/mixed-selection-standard.png",
+      "bytes": 298017,
+      "sha256": "7f39a9dc5ab95259d2ae8ecc620e01892f0d77b1df666fb0a693ac53ed88b50a"
+    },
+    {
+      "path": "inspector-captures/observations.json",
+      "bytes": 5336,
+      "sha256": "c79c90229f65aaf3eebf7229488f19e87214eccb8de39fc0834878c2b3dbe841"
+    },
+    {
+      "path": "inspector-captures/parchment-engineering.png",
+      "bytes": 330486,
+      "sha256": "99235137a1188e13bba31ebfbc6097deeed901ce674ec3893fa5114267ea543d"
+    },
+    {
+      "path": "inspector-captures/parchment-guided.png",
+      "bytes": 314489,
+      "sha256": "4c0bdecd84b8f49dc3f1078e8c280cb101419871b907127d1dc887d5c67bb68b"
+    },
+    {
+      "path": "inspector-captures/parchment-standard.png",
+      "bytes": 312599,
+      "sha256": "b8c81ba77521fda13585c1099adcb6ca6637722be2a01300f2cde86a9abce4cd"
+    },
+    {
+      "path": "inspector-captures/particles-engineering-light.png",
+      "bytes": 326013,
+      "sha256": "93c4d018a8affac092b4cac587044236fd6f8b314b11e8efee7474465a82fcb2"
+    },
+    {
+      "path": "inspector-captures/particles-guided-light.png",
+      "bytes": 312978,
+      "sha256": "d55a55a5b693f446d631be21a7c08aeb911fb171d42ed4e54864f12debd21656"
+    },
+    {
+      "path": "inspector-captures/particles-standard-light.png",
+      "bytes": 313783,
+      "sha256": "70556e98bdd743ccd70f66ab74b51efc3a46be6a11e3cebff4e7fd2852de912d"
+    },
+    {
+      "path": "inspector-captures/phenomenon-engineering-light.png",
+      "bytes": 330284,
+      "sha256": "21025db7d4647cf3be9b0877283fd5adbcb5bbeeae122cef4417f1d529d98b3d"
+    },
+    {
+      "path": "inspector-captures/phenomenon-guided-light.png",
+      "bytes": 319911,
+      "sha256": "a9b4b8d59ae4d0c64ee6180e05a3e381fd8e7d46a8d43e2e29c4187b304a17ca"
+    },
+    {
+      "path": "inspector-captures/phenomenon-standard-light.png",
+      "bytes": 316844,
+      "sha256": "df6fe4692d8941b24c2ab9915d28cca38243a348c304a20cf86b5f2d9d9d46c8"
+    },
+    {
+      "path": "inspector-captures/phone-edit-return.png",
+      "bytes": 123539,
+      "sha256": "0163fa06075215c2eaa2ed1581959e35473842db673610b2f0e55cdeed06a73f"
+    },
+    {
+      "path": "inspector-captures/projection-engineering-light.png",
+      "bytes": 331964,
+      "sha256": "86937c1abd48e17c406111b7f23b675cd3b9f07779490c56c89cf7b048f7e503"
+    },
+    {
+      "path": "inspector-captures/projection-guided-light.png",
+      "bytes": 314893,
+      "sha256": "b0d1f958d9a42d9e0d2f3fb05cd639220d2167443fb8ca9e5f21ff6489ea6439"
+    },
+    {
+      "path": "inspector-captures/projection-standard-light.png",
+      "bytes": 315912,
+      "sha256": "fd387496fdba8f2b0193b32116a7dfcb147b3a1f90e2da159feea3c4a5dfa6a6"
+    },
+    {
+      "path": "inspector-captures/removed-selection-engineering.png",
+      "bytes": 286124,
+      "sha256": "09239eb6d5360c7ea3c1ebc30cb101dbaa2710688b87b8d9596a934857b8c318"
+    },
+    {
+      "path": "inspector-captures/removed-selection-guided.png",
+      "bytes": 273236,
+      "sha256": "db1cfa0825291223f70fcf2b774057e46536cc242f479c596a1c19c926077978"
+    },
+    {
+      "path": "inspector-captures/removed-selection-standard.png",
+      "bytes": 274163,
+      "sha256": "b56a8c0b0aec79b34c445114581ea247923e74cfa1d5db11d651da5efdeae2fd"
+    },
+    {
+      "path": "inspector-captures/room-feature-engineering.png",
+      "bytes": 326964,
+      "sha256": "b4c5008f98c3cf5fc4d0d265a846f23f914deb37ca64b6b619c0498330167e35"
+    },
+    {
+      "path": "inspector-captures/room-feature-guided.png",
+      "bytes": 311999,
+      "sha256": "28824a6cbb43f40384826b0dede6794da163eee4213f023d35b9210fd842c7ea"
+    },
+    {
+      "path": "inspector-captures/room-feature-standard.png",
+      "bytes": 313164,
+      "sha256": "096a946d0fde70ed35ea3ed363e29dbec6c895e1482d42cc5c8222f88d37f71b"
+    },
+    {
+      "path": "inspector-captures/scale-live-preview.png",
+      "bytes": 276666,
+      "sha256": "956f7b8d0750770c693717a2526c00c9e3cad99fd1ee3ea59b2986f57332a680"
+    },
+    {
+      "path": "inspector-captures/scene-engineering.png",
+      "bytes": 328202,
+      "sha256": "0caf1d8b6c46c19a8f81284e2500a2c2667e7a5d7ba28150e966b4c4dacf611c"
+    },
+    {
+      "path": "inspector-captures/scene-guided.png",
+      "bytes": 310055,
+      "sha256": "8d0b99251abcf040ff6eddcf40d085457a814de2c05a792c5a6eb1f4fb516bea"
+    },
+    {
+      "path": "inspector-captures/scene-phone.png",
+      "bytes": 96328,
+      "sha256": "e052cf9980848c1e393ee7e1212783a7aefb898f7eb1a5dc591951e74f51cc34"
+    },
+    {
+      "path": "inspector-captures/scene-standard.png",
+      "bytes": 311084,
+      "sha256": "a87a7b3cac55033733b51e53c5b843a7ae611b5e327e5cb1457f88c620991b21"
+    },
+    {
+      "path": "inspector-captures/selection-edges-observations.json",
+      "bytes": 1103,
+      "sha256": "776488c45eb3e3b0a7c9483de075b6f089a8e6712ee439a5ee89793ca0360815"
+    },
+    {
+      "path": "inspector-captures/timeline-audio-engineering.png",
+      "bytes": 328461,
+      "sha256": "76e5078722d97dce0117bcf8eb0188876017104566c0d80cb82b081efcaac100"
+    },
+    {
+      "path": "inspector-captures/timeline-audio-guided.png",
+      "bytes": 316048,
+      "sha256": "6734683afcfddfa864fbe501bbc0da7a2626259b9ab53276813276b04309cddf"
+    },
+    {
+      "path": "inspector-captures/timeline-audio-standard.png",
+      "bytes": 315148,
+      "sha256": "2c07ab418b52e76a85a136232a7016ec5ee2e81e07f65737be95b90966e63bd2"
+    },
+    {
+      "path": "videos/recording-1.webm",
+      "bytes": 1234,
+      "sha256": "fbba4168e44d1534b4e6518063c872404c345e979f09f9443aee686a22f307a5"
+    },
+    {
+      "path": "videos/recording-2.webm",
+      "bytes": 701701,
+      "sha256": "e1c8274f1167e476853bbd6e2ed2f2172c6240f1ab6e3fda8178a714b45a8040"
+    },
+    {
+      "path": "videos/recording-3.webm",
+      "bytes": 1202,
+      "sha256": "f620dede2dad641709fc266efbb9cf231f9b1f65370bb1dff231dbc72d500dc6"
+    },
+    {
+      "path": "videos/recording-4.webm",
+      "bytes": 358197,
+      "sha256": "94ce209a968752d0b8e5134c7b7b8e64b904189a9610121cb99a0dd72dc0a9e0"
+    },
+    {
+      "path": "videos/recording-5.webm",
+      "bytes": 73852,
+      "sha256": "e9c155288a04ad76fc1064bad6d66f4034422850c7995d7accd76567385f356b"
+    },
+    {
+      "path": "videos/recording-6.webm",
+      "bytes": 185185,
+      "sha256": "43b96d881a0469868bfebfa5819df82c82333cc529e8de249eb88388aee08227"
+    },
+    {
+      "path": "videos/recording-7.webm",
+      "bytes": 406725,
+      "sha256": "e091e6072fcfba845224885f82827acd039d8b137165aec1aef2d9f307d680cf"
+    },
+    {
+      "path": "videos/recording-8.webm",
+      "bytes": 690216,
+      "sha256": "acb6c22ac93dddce64beba1e1084c96a6b7e7bf9c52dfa2f7d3ee5370e01e1b8"
+    },
+    {
+      "path": "videos/recording-9.webm",
+      "bytes": 693108,
+      "sha256": "a9de36746a6a5b426ab028d36fb7bd3a59eb9fd3171a8a4edd42d57e5126d69e"
+    }
+  ],
+  "observationalLimits": [
+    "All60PNGs covered:51Inspectorframes via17comparisontriptychs(fullframe thumbnails+native1:1Inspectorstrip),three remainingInspector originals andsixelement originals expanded. Not every outside-Inspector desktop pixel viewed at1:1.",
+    "Nine originals include two tiny blank context clips; seven meaningful full spans sampled every6thnative25fpsframe+endpoint,0.24s maxgap. Not every encoded frame or real-time playback.",
+    "Slider scale preview/oneUndo is now actual proof; no viewport gizmo drag, group scaling, pointercancel, savedscale reload or device manipulation inferred.",
+    "Four Lighttheme effects are Editor control/type coverage under reduced preference. Do not call all material animation families qualified by static Editor captures. Root composition playback is separate real visible behavior.",
+    "Phone title/edit/collapse/scroll/canvasreturn/reopen is finite browser proof. No whole-scenephoneframing/physicaltouch/handset, Lightphone or allobjectfield journeys.",
+    "Audio voice counters2duringPlay/0Pause and UIlabels are verified; allWebMs video-only. Noaudibility or nativeaudio acceptance.",
+    "Composition reuse checks two roots and savedrecord; no divergent-copyedit isolation or privacy-security audit.",
+    "No current per-insertion surfaceId/worldpose/opposite-wallpainting view; exactmount visualquality notqualified. Single room view cannotcertifyallWardrobe collisiongaps.",
+    "SceneManager/exactEnvironment and root typed paths coexist in pinned source, but fullSceneManager lifecycle not reexecuted here. Later optional PAGEDclient/API/selected-detailguards excluded entirely.",
+    "All historicalSC00B reports remain unmodified; SC02attempts6–9 andd946review rehashedunchanged. This second supporting capture does not reset trusted/protected repair/review budgets.",
+    "No wholecontract/wholeStudio/overhaul/PlayernativeAR/owner/protected/GPU/hardware acceptance. ExistingPlayer debt remains separate."
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedQualification": "NOT_CLAIMED",
+  "trustedFinalReview": "NOT_CLAIMED",
+  "physicalDeviceAcceptance": "NOT_CLAIMED",
+  "audibleAudioAcceptance": "NOT_CLAIMED",
+  "fullSC00BAcceptance": "NOT_CLAIMED",
+  "priorReviews": [
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-12c52dab\\independent-review.original.json",
+      "sha256": "490d1f785a7da3f370907f1d9a8a7393925b697cbcdfe24e051d34481e16b39a"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-32401cb5\\independent-review.original.json",
+      "sha256": "ea7a673f2c4e4ba031a06d00e0c24e7a2e15f104a2225fceb40da21a4c4d1d80"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-776bda87\\independent-review.original.json",
+      "sha256": "d89fab224725c6346d17cba5db99c2195486f1b791d86ff9f71866ce7d685d15"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc02-ddf65229\\independent-review.original.json",
+      "sha256": "7bfca77253915d99e8b807e1d6405c098c9cff0e8084595982b953fa59f409a8"
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\sc01-d946541f\\independent-review.original.json",
+      "sha256": "487e7db659f02ea10b14fd57f1394737575770374e04b05a64edae86153bcf7a"
+    }
+  ],
+  "requiredBlockingRepairs": [],
+  "reviewActions": {
+    "productEdits": false,
+    "trackedDocsEdits": false,
+    "gitMutations": false,
+    "sharedRuntimeActions": false,
+    "testDispatch": false,
+    "inference": false,
+    "onlyWrites": "Ignoredlocaldecoding/sampling and immutable independent report."
+  },
+  "featureCatalogDecision": "NO CHANGE REQUIRED"
+}

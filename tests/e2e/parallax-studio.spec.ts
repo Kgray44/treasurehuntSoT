@@ -1,3 +1,8 @@
+import {
+  currentStudioStatus,
+  openCurrentScenePublication,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import AxeBuilder from "@axe-core/playwright";
@@ -9,7 +14,7 @@ import { createStudioTale, getStudioTale, saveStudioDraft } from "../../src/chro
 import { validateSpatialMoment } from "../../src/parallax/publication";
 import { getBlockDefinition } from "../../src/chronicle/block-registry";
 test.describe.configure({ mode: "serial", timeout: 300000 });
-test.use({ actionTimeout: 30000 });
+test.use({ actionTimeout: 30000, video: "on" });
 test.afterAll(() => db.$disconnect());
 test("Creator builds, versions, attaches, publishes and reopens a spatial moment in Guided mode", async ({
   page,
@@ -71,31 +76,33 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
   try {
     await authenticateClosure(context, account, baseURL!);
     await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
-    await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
     await expect(page.getByLabel("Authoring mode")).toHaveValue("GUIDED");
-    await page.getByText("Library, reuse & publication", { exact: true }).click();
+    await openCurrentScenePublication(page);
     await page.getByLabel("Experience title").fill("Captain's reusable map");
+    await page.getByRole("button", { name: "Open object properties", exact: true }).click();
     await page.getByLabel("Clue or message").fill("The northern harbor is your next bearing.");
+    await openCurrentScenePublication(page);
     await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
-    await page.getByRole("button", { name: "Save draft", exact: true }).click();
-    await expect(page.getByRole("status")).toHaveText("Working draft saved");
+    await saveCurrentWorkingDraft(page);
+    await expect(currentStudioStatus(page)).toHaveText("Working draft saved");
     await page.getByRole("combobox", { name: "Preview", exact: true }).selectOption("FALLBACK");
     await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText(
       "The northern harbor is your next bearing.",
     );
     await page.getByText("Scene actions", { exact: true }).click();
     await page.getByRole("button", { name: "Validate in Drydock" }).click();
-    await expect(page.getByRole("status")).toContainText("Drydock spatial checks complete");
+    await expect(currentStudioStatus(page)).toContainText("Drydock spatial checks complete");
     await page.getByText("Scene actions", { exact: true }).click();
     await page.getByRole("button", { name: "Create immutable version" }).click();
-    await expect(page.getByRole("status")).toContainText("Immutable version created");
+    await expect(currentStudioStatus(page)).toContainText("Immutable version created");
     await page.getByRole("button", { name: "Attach exact version" }).click();
-    await expect(page.getByRole("status")).toContainText("Pinned spatial version attached");
+    await expect(currentStudioStatus(page)).toContainText("Pinned spatial version attached");
     await page.getByRole("button", { name: "Undo attachment", exact: true }).click();
-    await expect(page.getByRole("status")).toHaveText("Spatial attachment undone");
+    await expect(currentStudioStatus(page)).toHaveText("Spatial attachment undone");
     expect((await getStudioTale(tale.id)).draft.chapters[0].blocks[0].presentation.spatialMoment).toBeUndefined();
     await page.getByRole("button", { name: "Redo attachment", exact: true }).click();
-    await expect(page.getByRole("status")).toHaveText("Spatial attachment redone");
+    await expect(currentStudioStatus(page)).toHaveText("Spatial attachment redone");
     const saved = await getStudioTale(tale.id);
     const capsule = validateSpatialMoment(saved.draft.chapters[0].blocks[0].presentation.spatialMoment, blockId);
     expect(capsule.version.entities[0].content).toBe("The northern harbor is your next bearing.");
@@ -105,7 +112,10 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     const a11y = await new AxeBuilder({ page }).analyze();
     expect(a11y.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual([]);
     await page.setViewportSize({ width: 1440, height: 1000 });
-    await page.screenshot({ path: "artifacts/screenshots/parallax-studio-desktop.png", fullPage: true });
+    await page.screenshot({
+      path: `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/studio/parallax-studio-desktop.png`,
+      fullPage: true,
+    });
     await page.goto(`/studio/tales/${tale.id}`);
     const [validationResponse] = await Promise.all([
       page.waitForResponse(
@@ -145,10 +155,10 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     await page.goto(
       `/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&entity=${capsule.version.entities[0].id}&block=${blockId}`,
     );
+    await page.getByRole("button", { name: "Open object properties", exact: true }).click();
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
-    await page.getByLabel("Workspace layout").selectOption("SPATIAL");
-    const publicationSection = page.getByText("Library, reuse & publication", { exact: true });
-    if ((await publicationSection.locator("..").getAttribute("open")) === null) await publicationSection.click();
+    await page.getByLabel("Workspace layout", { exact: true }).selectOption("SPATIAL");
+    await openCurrentScenePublication(page);
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
   } finally {
     // The guarded generic runner owns this disposable database. Keep immutable

@@ -1,0 +1,9 @@
+{
+  "scope": "three exact-finding specs / four cases; one worker; stop after three failures",
+  "attemptRoot": "D:/CodexTemp/parallax-cohort-prep-20261016/local-entry-proof-20261017T152835-fe1d1b41",
+  "candidate": "624491428a2d36b18d3f6d801092457dd608d1ac",
+  "protectedQualification": false,
+  "results": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T152835-fe1d1b41",
+  "kind": "LOCAL_FOCUSED_SYNTHETIC_UNPAID",
+  "crossdeckExecution": false
+}

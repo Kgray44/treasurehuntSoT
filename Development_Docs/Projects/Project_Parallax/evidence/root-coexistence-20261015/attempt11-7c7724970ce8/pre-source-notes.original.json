@@ -1,0 +1,152 @@
+{
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "frozenAtUtc": "2026-10-15T19:19:15.124727+00:00",
+  "sourceNotYetInspected": true,
+  "scope": "Selected saved item owner-scoped publication-status presentation in compact and expanded Library; observed selection/version/actions continuity. Supporting local review only.",
+  "manifestSha256": "370433d7d65c589367bf03bba3b443a1084fc53ae3d7764b172b776c9f40a64f",
+  "allOriginalFilesVerified": 19,
+  "nativeImages": [
+    {
+      "id": "l000.png",
+      "observation": "1440x900 expanded dark Library, Assets selected/search Writing desk. One highlighted card and separate right preview; Place in Scene prominent; keyboard ring on Assets. Built-in object has no private-status sentence."
+    },
+    {
+      "id": "l001.png",
+      "observation": "1024x768 light modal, search ring, two-column cards and right unselected-details placeholder, lower row clipped by scroll region. Compact Source/Show/Sort bar remains readable."
+    },
+    {
+      "id": "l002.png",
+      "observation": "1024x768 dark equivalent; two cards plus detail placeholder, selected/hover blue fill distinct from focus ring on search. No saved private item selected."
+    },
+    {
+      "id": "l003.png",
+      "observation": "390x844 light phone, Filters & view open, Source Built-in / Show All current / Sort Name / 1 active, 35 items and two-column cards. Category rail ends in Swipe arrow. No page-width clipping in static view."
+    },
+    {
+      "id": "l004.png",
+      "observation": "390x844 same phone, My Creations / one active / one Phone filter asset result; saved asset uses generic room-line thumbnail, no selected-status panel."
+    },
+    {
+      "id": "l005.png",
+      "observation": "390x844 scrolled selected Antique book details above two-column results, full preview/title/description/dimensions/support and large Place in Scene visible. Close-details separate from global modal close (not in current scroll). Built-in, not publication-status coverage."
+    },
+    {
+      "id": "l006.png",
+      "observation": "390x844 collapsed Filters & view above two-column grid; search has strong visible ring. 36 items. First four assets readable."
+    },
+    {
+      "id": "l007.png",
+      "observation": "1440x900 dark Scenes with Beta selected among two items, private-status box says Private creation · no Community listing; working revision 3, 0 immutable versions, Private Library. Review publishing limits, Open original, Create independent copy, Duplicate Scene, View Environment, Organize/rename, Version history, Archive visible. Right preview top cropped because detail region is scrolled to actions, not absent preview."
+    },
+    {
+      "id": "l008.png",
+      "observation": "1440x900 same selected Beta plus newly created Working copy card. Private-status line remains readable. Right preview full; bottom actions extend below detail viewport, consistent with scrollable detail region. No indication selection switched to copy."
+    },
+    {
+      "id": "l009.png",
+      "observation": "1440x900 returned Studio Editing Scene Expanded Library journey; Writing desk rendered inside plan bedroom and selected in Properties, ordinary controls/Library retained. No support/physical fidelity qualification."
+    },
+    {
+      "id": "l010.png",
+      "observation": "1440x900 manual placement panel overlays room with Floor keyboard choice and Cancel placement; same Scene title and Working draft saved revision1. Existing authoring layout retained."
+    }
+  ],
+  "recordingReview": {
+    "method": "All three originals decoded completely. Viewed every-third-frame plus final-frame contact sheets across complete decoded span (maximum .12 seconds). 2000x1250 sheets displayed1996x1248; thumbnails establish chronology, native PNGs and selected native800x450 frames inspected for text. No real-time playback/every-frame/touch/audio review claim.",
+    "videos": [
+      {
+        "id": "r001.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 145,
+        "lastFrameSeconds": 5.76,
+        "sampledFrameCount": 49,
+        "maxSampleGapSeconds": 0.12,
+        "sampling": "Every third native frame plus final decoded frame; complete decoded span, contact-sheet inspection, not continuous real-time playback or every frame.",
+        "sheets": [
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\sheet-00.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\sheet-01.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\sheet-02.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\sheet-03.jpg"
+        ]
+      },
+      {
+        "id": "r002.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 155,
+        "lastFrameSeconds": 6.16,
+        "sampledFrameCount": 53,
+        "maxSampleGapSeconds": 0.12,
+        "sampling": "Every third native frame plus final decoded frame; complete decoded span, contact-sheet inspection, not continuous real-time playback or every frame.",
+        "sheets": [
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\sheet-00.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\sheet-01.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\sheet-02.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\sheet-03.jpg"
+        ]
+      },
+      {
+        "id": "r003.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 155,
+        "lastFrameSeconds": 6.16,
+        "sampledFrameCount": 53,
+        "maxSampleGapSeconds": 0.12,
+        "sampling": "Every third native frame plus final decoded frame; complete decoded span, contact-sheet inspection, not continuous real-time playback or every frame.",
+        "sheets": [
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\sheet-00.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\sheet-01.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\sheet-02.jpg",
+          "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\sheet-03.jpg"
+        ]
+      }
+    ],
+    "nativeFrameSpotChecks": [
+      "r002/native-0064.png",
+      "r002/native-0067.png",
+      "r002/native-0070.png",
+      "r002/native-0079.png",
+      "r002/native-0082.png",
+      "r002/native-0088.png",
+      "r003/native-0142.png",
+      "r003/native-0151.png"
+    ]
+  },
+  "chronology": {
+    "r001.webm": [
+      "0-.72 white loading, .84-1.32 Studio opening, 1.44-2.16 preparing synthetic room, 2.28 perspective bedroom then2.40 plan",
+      "2.64 compact Library opens; search Writing desk through3.36;3.48 expanded modal,3.72 selected desk preview,4.08 Assets has focus outline",
+      "4.20 return to same Studio with Place Writing desk/Floor/Cancel panel;4.80 desk selected and rendered,5.16 renamed in Properties,5.40 expanded Library retains selected writing-desk result,5.52-5.76 close returns same Scene and renamed selected object"
+    ],
+    "r002.webm": [
+      ".48-.84 Studio opening;.96-1.44 preparing room;1.56 bedroom with Alpha identity/pinned version1;1.68 compact Library",
+      "2.04 Environments;2.16 Source My Creations;2.28 exact room search;2.52 one room card;2.64 selected compact details,2.76 private-status sentence visibly present in compact detail box. 800x450 recording is scaled desktop UI, not native full-size still",
+      "3.00-3.12 expanded selected same room shows Private creation · no Community listing plus 4x4m/14room features/1 immutable version/SAVED/Used by0definitions/Use version1;3.24 compact return;3.48 selected expanded room again",
+      "3.60 Scenes tab;3.72 loading;3.84 two cards;3.96 Beta selected;4.08-4.20 scrolled actions;4.32 manager opens Create a Scene,4.44 copy name field focus,4.92 third card appears and5.04 copy-created notice",
+      "5.52 Studio header changes to Scene Copy,5.76 expanded Library returns three cards while Beta remains selected and private status remains in detail panel through6.16"
+    ],
+    "r003.webm": [
+      ".36-.60 opening;.72-1.32 prepare;1.44 room/Library;1.92 expanded dark;2.04 visible first-card focus then2.16 search focus;2.64 light equivalent",
+      "2.88 modal closes;3.00 viewport resize to narrow phone inside800x450 recording canvas;3.36 phone expanded light;3.84 Filters opens",
+      "3.96-4.08 My Creations one saved result;4.20 Built-in;4.32 Show working empty;4.44 loading;4.56 All current restores cards;4.68 collapse;4.80 reopen retained filter then4.92 collapse",
+      "5.04-5.16 book selected panel scrolls into view;5.28 temporary error search;5.52-5.88 Library results could not load + Refresh results;6.00-6.16 No items match these filters after recovery, search retained"
+    ]
+  },
+  "provisionalFindings": [
+    {
+      "id": "ROOTPUBLICATION-COVERAGE-01",
+      "kind": "EVIDENCE_LIMIT",
+      "blocking": false,
+      "observation": "Actual private Environment compact/expanded and private Scene expanded states visible; no live published listing state or Publisher-close refresh sequence, nor phone saved-item publication-status display, appears in these media. Do not qualify them from private status or passing test count."
+    }
+  ],
+  "preSourceAssessment": "No concrete blocker in visible private-status presentation/selection continuity. Scope is finite synthetic private state; source needed only to verify provenance, shared rendering path/owner scope, and exact assertions. No live published-state, privacy security audit or refresh correctness claim."
+}

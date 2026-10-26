@@ -17,6 +17,7 @@ export const nativeEntitySchema = z
     kind: z.enum(["PARCHMENT", "MARKER", "TEXT"]),
     content: z.string().min(1).max(2000),
     widthMeters: z.number().finite().min(0.01).max(5),
+    opacity: z.number().finite().min(0).max(1).optional(),
     transform: resolvedTransformSchema,
   })
   .superRefine((e, ctx) => {

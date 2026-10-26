@@ -1,0 +1,3172 @@
+[
+  {
+    "id": "F0001",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium/video.webm",
+    "bytes": 806368,
+    "sha256": "bbca7f4dd4771997ead4c91a0783d6222526b0dcb07f4716d4b464c27b01cd60",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 13.6,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\00-0.00.png"
+      },
+      {
+        "time": 1.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\01-1.70.png"
+      },
+      {
+        "time": 3.4,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\02-3.40.png"
+      },
+      {
+        "time": 5.1,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\03-5.10.png"
+      },
+      {
+        "time": 6.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\04-6.80.png"
+      },
+      {
+        "time": 8.5,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\05-8.50.png"
+      },
+      {
+        "time": 10.2,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\06-10.20.png"
+      },
+      {
+        "time": 11.9,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\07-11.90.png"
+      },
+      {
+        "time": 13.52,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0001\\end-13.52.png"
+      }
+    ]
+  },
+  {
+    "id": "F0008",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium/video.webm",
+    "bytes": 669587,
+    "sha256": "a7cef3acee80ebfa9e2d5c53a5ab7ae46a67e44d4ce3b4374d166a669448ca86",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 14.24,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\00-0.00.png"
+      },
+      {
+        "time": 1.78,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\01-1.78.png"
+      },
+      {
+        "time": 3.56,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\02-3.56.png"
+      },
+      {
+        "time": 5.34,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\03-5.34.png"
+      },
+      {
+        "time": 7.12,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\04-7.12.png"
+      },
+      {
+        "time": 8.9,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\05-8.90.png"
+      },
+      {
+        "time": 10.68,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\06-10.68.png"
+      },
+      {
+        "time": 12.46,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\07-12.46.png"
+      },
+      {
+        "time": 14.16,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0008\\end-14.16.png"
+      }
+    ]
+  },
+  {
+    "id": "F0009",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium/video.webm",
+    "bytes": 412008,
+    "sha256": "ea40f875d19a2237045de571d2195810483394753e0565731dfa039980d444c1",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 6.52,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\00-0.00.png"
+      },
+      {
+        "time": 0.815,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\01-0.81.png"
+      },
+      {
+        "time": 1.63,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\02-1.63.png"
+      },
+      {
+        "time": 2.445,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\03-2.44.png"
+      },
+      {
+        "time": 3.26,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\04-3.26.png"
+      },
+      {
+        "time": 4.075,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\05-4.07.png"
+      },
+      {
+        "time": 4.89,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\06-4.89.png"
+      },
+      {
+        "time": 5.705,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\07-5.71.png"
+      },
+      {
+        "time": 6.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0009\\end-6.44.png"
+      }
+    ]
+  },
+  {
+    "id": "F0010",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-groups-Assistant--b45d8--and-edits-the-actual-scene-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-groups-Assistant--b45d8--and-edits-the-actual-scene-chromium/video.webm",
+    "bytes": 813925,
+    "sha256": "85e292a22e630e28fc2671994d010a0cd81e78a0aa9624f2de56d808580fb7ba",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-groups-Assistant--b45d8--and-edits-the-actual-scene-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 14.0,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\00-0.00.png"
+      },
+      {
+        "time": 1.75,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\01-1.75.png"
+      },
+      {
+        "time": 3.5,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\02-3.50.png"
+      },
+      {
+        "time": 5.25,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\03-5.25.png"
+      },
+      {
+        "time": 7.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\04-7.00.png"
+      },
+      {
+        "time": 8.75,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\05-8.75.png"
+      },
+      {
+        "time": 10.5,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\06-10.50.png"
+      },
+      {
+        "time": 12.25,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\07-12.25.png"
+      },
+      {
+        "time": 13.92,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0010\\end-13.92.png"
+      }
+    ]
+  },
+  {
+    "id": "F0011",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium/video.webm",
+    "bytes": 845530,
+    "sha256": "203768f7cdba49b7af1310ba1ab1479e5f5e577555aa6d8f5a003f3c0771314b",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 11.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\00-0.00.png"
+      },
+      {
+        "time": 1.465,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\01-1.47.png"
+      },
+      {
+        "time": 2.93,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\02-2.93.png"
+      },
+      {
+        "time": 4.395,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\03-4.40.png"
+      },
+      {
+        "time": 5.86,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\04-5.86.png"
+      },
+      {
+        "time": 7.325,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\05-7.33.png"
+      },
+      {
+        "time": 8.79,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\06-8.79.png"
+      },
+      {
+        "time": 10.255,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\07-10.26.png"
+      },
+      {
+        "time": 11.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0011\\end-11.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0012",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-groups-Inspector--d2352-es-the-viewport-edit-toggle-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-groups-Inspector--d2352-es-the-viewport-edit-toggle-chromium/video.webm",
+    "bytes": 691257,
+    "sha256": "13b21515c56d2a470d503d30de3768190a5833a11275cfac07b564288378cb96",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-groups-Inspector--d2352-es-the-viewport-edit-toggle-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 14.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\00-0.00.png"
+      },
+      {
+        "time": 1.84,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\01-1.84.png"
+      },
+      {
+        "time": 3.68,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\02-3.68.png"
+      },
+      {
+        "time": 5.52,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\03-5.52.png"
+      },
+      {
+        "time": 7.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\04-7.36.png"
+      },
+      {
+        "time": 9.2,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\05-9.20.png"
+      },
+      {
+        "time": 11.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\06-11.04.png"
+      },
+      {
+        "time": 12.88,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\07-12.88.png"
+      },
+      {
+        "time": 14.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0012\\end-14.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0013",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium/video.webm",
+    "bytes": 533095,
+    "sha256": "6b774946442ceac47ab622911bae04e4ea189dde5e3dafdb779831ce16f9fd3f",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 8.92,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\00-0.00.png"
+      },
+      {
+        "time": 1.115,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\01-1.11.png"
+      },
+      {
+        "time": 2.23,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\02-2.23.png"
+      },
+      {
+        "time": 3.345,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\03-3.34.png"
+      },
+      {
+        "time": 4.46,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\04-4.46.png"
+      },
+      {
+        "time": 5.575,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\05-5.58.png"
+      },
+      {
+        "time": 6.69,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\06-6.69.png"
+      },
+      {
+        "time": 7.805,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\07-7.80.png"
+      },
+      {
+        "time": 8.84,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0013\\end-8.84.png"
+      }
+    ]
+  },
+  {
+    "id": "F0014",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-groups-single-nam-afa3f-e-the-current-room-controls-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-groups-single-nam-afa3f-e-the-current-room-controls-chromium/video.webm",
+    "bytes": 614483,
+    "sha256": "510959728d45f7cb62d7f4c543bb011272f2a44c4807fc4461fc57b32b3a50c5",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-groups-single-nam-afa3f-e-the-current-room-controls-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 10.64,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\00-0.00.png"
+      },
+      {
+        "time": 1.33,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\01-1.33.png"
+      },
+      {
+        "time": 2.66,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\02-2.66.png"
+      },
+      {
+        "time": 3.99,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\03-3.99.png"
+      },
+      {
+        "time": 5.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\04-5.32.png"
+      },
+      {
+        "time": 6.65,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\05-6.65.png"
+      },
+      {
+        "time": 7.98,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\06-7.98.png"
+      },
+      {
+        "time": 9.31,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\07-9.31.png"
+      },
+      {
+        "time": 10.56,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0014\\end-10.56.png"
+      }
+    ]
+  },
+  {
+    "id": "F0015",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium/video.webm",
+    "bytes": 1151250,
+    "sha256": "30be8f5321569d951963697844a4a4c7e27fb3b35e52a7f1af52232236c1b1e8",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 18.68,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\00-0.00.png"
+      },
+      {
+        "time": 2.335,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\01-2.33.png"
+      },
+      {
+        "time": 4.67,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\02-4.67.png"
+      },
+      {
+        "time": 7.005,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\03-7.00.png"
+      },
+      {
+        "time": 9.34,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\04-9.34.png"
+      },
+      {
+        "time": 11.675,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\05-11.68.png"
+      },
+      {
+        "time": 14.01,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\06-14.01.png"
+      },
+      {
+        "time": 16.345,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\07-16.34.png"
+      },
+      {
+        "time": 18.6,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0015\\end-18.60.png"
+      }
+    ]
+  },
+  {
+    "id": "F0016",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium/video.webm",
+    "bytes": 927842,
+    "sha256": "7585282a6ae51189a63965dfcc07e5faa98af7a2cf5b82e54088b927a11a65fe",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 18.44,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\00-0.00.png"
+      },
+      {
+        "time": 2.305,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\01-2.31.png"
+      },
+      {
+        "time": 4.61,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\02-4.61.png"
+      },
+      {
+        "time": 6.915,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\03-6.92.png"
+      },
+      {
+        "time": 9.22,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\04-9.22.png"
+      },
+      {
+        "time": 11.525,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\05-11.53.png"
+      },
+      {
+        "time": 13.83,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\06-13.83.png"
+      },
+      {
+        "time": 16.135,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\07-16.14.png"
+      },
+      {
+        "time": 18.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0016\\end-18.36.png"
+      }
+    ]
+  },
+  {
+    "id": "F0023",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-09-results\\parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium\\video.webm",
+    "relative": "browser-09-results/parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium/video.webm",
+    "bytes": 662486,
+    "sha256": "f69302eebe5d743db692bc64219b45ea7da0ffcc8f873e6ab040f0e551fcfa12",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 12.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\00-0.00.png"
+      },
+      {
+        "time": 1.59,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\01-1.59.png"
+      },
+      {
+        "time": 3.18,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\02-3.18.png"
+      },
+      {
+        "time": 4.77,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\03-4.77.png"
+      },
+      {
+        "time": 6.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\04-6.36.png"
+      },
+      {
+        "time": 7.95,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\05-7.95.png"
+      },
+      {
+        "time": 9.54,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\06-9.54.png"
+      },
+      {
+        "time": 11.13,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\07-11.13.png"
+      },
+      {
+        "time": 12.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0023\\end-12.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0026",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-10-results\\parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium\\video.webm",
+    "relative": "browser-10-results/parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium/video.webm",
+    "bytes": 5650449,
+    "sha256": "bda52283592af2a25027449508cf6c28b09f649c025daa32749c1b991e4885d4",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 52.08,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 1440x900, SAR 1:1 DAR 8:5, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\00-0.00.png"
+      },
+      {
+        "time": 6.51,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\01-6.51.png"
+      },
+      {
+        "time": 13.02,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\02-13.02.png"
+      },
+      {
+        "time": 19.53,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\03-19.53.png"
+      },
+      {
+        "time": 26.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\04-26.04.png"
+      },
+      {
+        "time": 32.55,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\05-32.55.png"
+      },
+      {
+        "time": 39.06,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\06-39.06.png"
+      },
+      {
+        "time": 45.57,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\07-45.57.png"
+      },
+      {
+        "time": 52.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0026\\end-52.00.png"
+      }
+    ]
+  },
+  {
+    "id": "F0118",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium/video.webm",
+    "bytes": 1849283,
+    "sha256": "0662a8fe0d63709dcab457370a28620b0d7cbc853d0a3a32decbaf077442bc09",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 30.28,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\00-0.00.png"
+      },
+      {
+        "time": 3.785,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\01-3.79.png"
+      },
+      {
+        "time": 7.57,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\02-7.57.png"
+      },
+      {
+        "time": 11.355,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\03-11.36.png"
+      },
+      {
+        "time": 15.14,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\04-15.14.png"
+      },
+      {
+        "time": 18.925,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\05-18.93.png"
+      },
+      {
+        "time": 22.71,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\06-22.71.png"
+      },
+      {
+        "time": 26.495,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\07-26.50.png"
+      },
+      {
+        "time": 30.2,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0118\\end-30.20.png"
+      }
+    ]
+  },
+  {
+    "id": "F0119",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-assistant-present-bfe78-poser-and-actions-reachable-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-assistant-present-bfe78-poser-and-actions-reachable-chromium/video.webm",
+    "bytes": 633493,
+    "sha256": "044e394d1f57d22fe7cc89acbdf7883dd6ec70ee47eaf160b5c9622ea0066a72",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-assistant-present-bfe78-poser-and-actions-reachable-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 8.08,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\00-0.00.png"
+      },
+      {
+        "time": 1.01,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\01-1.01.png"
+      },
+      {
+        "time": 2.02,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\02-2.02.png"
+      },
+      {
+        "time": 3.03,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\03-3.03.png"
+      },
+      {
+        "time": 4.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\04-4.04.png"
+      },
+      {
+        "time": 5.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\05-5.05.png"
+      },
+      {
+        "time": 6.06,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\06-6.06.png"
+      },
+      {
+        "time": 7.07,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\07-7.07.png"
+      },
+      {
+        "time": 8.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0119\\end-8.00.png"
+      }
+    ]
+  },
+  {
+    "id": "F0120",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium/video.webm",
+    "bytes": 911318,
+    "sha256": "5f3c394adf35402ab6697d90824ec1041a9bcbd739f923cc772ab9067c8f8112",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 18.48,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\00-0.00.png"
+      },
+      {
+        "time": 2.31,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\01-2.31.png"
+      },
+      {
+        "time": 4.62,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\02-4.62.png"
+      },
+      {
+        "time": 6.93,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\03-6.93.png"
+      },
+      {
+        "time": 9.24,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\04-9.24.png"
+      },
+      {
+        "time": 11.55,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\05-11.55.png"
+      },
+      {
+        "time": 13.86,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\06-13.86.png"
+      },
+      {
+        "time": 16.17,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\07-16.17.png"
+      },
+      {
+        "time": 18.4,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0120\\end-18.40.png"
+      }
+    ]
+  },
+  {
+    "id": "F0126",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/video.webm",
+    "bytes": 908494,
+    "sha256": "71464e3949c2a818022986523c1816ab906e31c1a2e21f623ebc836048b47ff9",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 13.4,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\00-0.00.png"
+      },
+      {
+        "time": 1.675,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\01-1.68.png"
+      },
+      {
+        "time": 3.35,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\02-3.35.png"
+      },
+      {
+        "time": 5.025,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\03-5.03.png"
+      },
+      {
+        "time": 6.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\04-6.70.png"
+      },
+      {
+        "time": 8.375,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\05-8.38.png"
+      },
+      {
+        "time": 10.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\06-10.05.png"
+      },
+      {
+        "time": 11.725,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\07-11.72.png"
+      },
+      {
+        "time": 13.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0126\\end-13.32.png"
+      }
+    ]
+  },
+  {
+    "id": "F0127",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-library-lifecycle-291af-etadata-and-version-history-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-library-lifecycle-291af-etadata-and-version-history-chromium/video.webm",
+    "bytes": 515788,
+    "sha256": "a2067edb0288e7da43a86c6281f3435afdfe795113c8b17a51e6cf1d4987371c",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-library-lifecycle-291af-etadata-and-version-history-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 10.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\00-0.00.png"
+      },
+      {
+        "time": 1.34,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\01-1.34.png"
+      },
+      {
+        "time": 2.68,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\02-2.68.png"
+      },
+      {
+        "time": 4.02,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\03-4.02.png"
+      },
+      {
+        "time": 5.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\04-5.36.png"
+      },
+      {
+        "time": 6.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\05-6.70.png"
+      },
+      {
+        "time": 8.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\06-8.04.png"
+      },
+      {
+        "time": 9.38,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\07-9.38.png"
+      },
+      {
+        "time": 10.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0127\\end-10.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0131",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium/video.webm",
+    "bytes": 322584,
+    "sha256": "9b73a4418e647e0608d5b35e14b60c29056a48716a9c63fc12c383d7cafb0e63",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 5.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\00-0.00.png"
+      },
+      {
+        "time": 0.715,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\01-0.71.png"
+      },
+      {
+        "time": 1.43,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\02-1.43.png"
+      },
+      {
+        "time": 2.145,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\03-2.15.png"
+      },
+      {
+        "time": 2.86,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\04-2.86.png"
+      },
+      {
+        "time": 3.575,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\05-3.57.png"
+      },
+      {
+        "time": 4.29,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\06-4.29.png"
+      },
+      {
+        "time": 5.005,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\07-5.00.png"
+      },
+      {
+        "time": 5.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0131\\end-5.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0133",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium/video.webm",
+    "bytes": 173824,
+    "sha256": "d4df306b6d63efc58382245ca8a5d7972f79b88174bf1a7e929a579a45cf973c",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 3.52,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\00-0.00.png"
+      },
+      {
+        "time": 0.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\01-0.44.png"
+      },
+      {
+        "time": 0.88,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\02-0.88.png"
+      },
+      {
+        "time": 1.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\03-1.32.png"
+      },
+      {
+        "time": 1.76,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\04-1.76.png"
+      },
+      {
+        "time": 2.2,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\05-2.20.png"
+      },
+      {
+        "time": 2.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\06-2.64.png"
+      },
+      {
+        "time": 3.08,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\07-3.08.png"
+      },
+      {
+        "time": 3.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0133\\end-3.44.png"
+      }
+    ]
+  },
+  {
+    "id": "F0135",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium/video.webm",
+    "bytes": 978197,
+    "sha256": "2040b83318ab296815f4d28421e9eb19cad2e7a43b31ad660569ff9e4c94410a",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 19.6,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\00-0.00.png"
+      },
+      {
+        "time": 2.45,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\01-2.45.png"
+      },
+      {
+        "time": 4.9,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\02-4.90.png"
+      },
+      {
+        "time": 7.35,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\03-7.35.png"
+      },
+      {
+        "time": 9.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\04-9.80.png"
+      },
+      {
+        "time": 12.25,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\05-12.25.png"
+      },
+      {
+        "time": 14.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\06-14.70.png"
+      },
+      {
+        "time": 17.15,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\07-17.15.png"
+      },
+      {
+        "time": 19.52,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0135\\end-19.52.png"
+      }
+    ]
+  },
+  {
+    "id": "F0143",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium/video.webm",
+    "bytes": 1766047,
+    "sha256": "a5ee548bdad209132c535b9f58c34515374fc12c24743d30bc6f108e1ac5037e",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 44.88,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\00-0.00.png"
+      },
+      {
+        "time": 5.61,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\01-5.61.png"
+      },
+      {
+        "time": 11.22,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\02-11.22.png"
+      },
+      {
+        "time": 16.83,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\03-16.83.png"
+      },
+      {
+        "time": 22.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\04-22.44.png"
+      },
+      {
+        "time": 28.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\05-28.05.png"
+      },
+      {
+        "time": 33.66,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\06-33.66.png"
+      },
+      {
+        "time": 39.27,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\07-39.27.png"
+      },
+      {
+        "time": 44.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0143\\end-44.80.png"
+      }
+    ]
+  },
+  {
+    "id": "F0148",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium/video.webm",
+    "bytes": 1236523,
+    "sha256": "3a0ead86db6f5970b56dd5bcaba28f4b8b3145971a3f5729468b078aa7a5a7bf",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 22.68,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\00-0.00.png"
+      },
+      {
+        "time": 2.835,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\01-2.83.png"
+      },
+      {
+        "time": 5.67,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\02-5.67.png"
+      },
+      {
+        "time": 8.505,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\03-8.50.png"
+      },
+      {
+        "time": 11.34,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\04-11.34.png"
+      },
+      {
+        "time": 14.175,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\05-14.18.png"
+      },
+      {
+        "time": 17.01,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\06-17.01.png"
+      },
+      {
+        "time": 19.845,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\07-19.84.png"
+      },
+      {
+        "time": 22.6,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0148\\end-22.60.png"
+      }
+    ]
+  },
+  {
+    "id": "F0150",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium/video.webm",
+    "bytes": 321626,
+    "sha256": "eb3faf0b2d25dd97256af05b5c07187285387958195db71fa06e6309a2d9280f",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 4.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\00-0.00.png"
+      },
+      {
+        "time": 0.59,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\01-0.59.png"
+      },
+      {
+        "time": 1.18,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\02-1.18.png"
+      },
+      {
+        "time": 1.77,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\03-1.77.png"
+      },
+      {
+        "time": 2.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\04-2.36.png"
+      },
+      {
+        "time": 2.95,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\05-2.95.png"
+      },
+      {
+        "time": 3.54,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\06-3.54.png"
+      },
+      {
+        "time": 4.13,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\07-4.13.png"
+      },
+      {
+        "time": 4.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0150\\end-4.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0154",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-sc00c-expanded-li-38712--support-with-animated-root-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-sc00c-expanded-li-38712--support-with-animated-root-chromium/video.webm",
+    "bytes": 326243,
+    "sha256": "9616fd0c16bf455b3d52517fe930d7ecf0be8f8d4cc21948d7c74afd5cab6a1b",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc00c-expanded-li-38712--support-with-animated-root-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 5.92,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\00-0.00.png"
+      },
+      {
+        "time": 0.74,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\01-0.74.png"
+      },
+      {
+        "time": 1.48,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\02-1.48.png"
+      },
+      {
+        "time": 2.22,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\03-2.22.png"
+      },
+      {
+        "time": 2.96,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\04-2.96.png"
+      },
+      {
+        "time": 3.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\05-3.70.png"
+      },
+      {
+        "time": 4.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\06-4.44.png"
+      },
+      {
+        "time": 5.18,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\07-5.18.png"
+      },
+      {
+        "time": 5.84,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0154\\end-5.84.png"
+      }
+    ]
+  },
+  {
+    "id": "F0158",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium/video.webm",
+    "bytes": 330831,
+    "sha256": "69673fcd8378400bcf13de4895d068fc81f7849bd342cb6e51f2fffcb18443f0",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 5.24,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\00-0.00.png"
+      },
+      {
+        "time": 0.655,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\01-0.66.png"
+      },
+      {
+        "time": 1.31,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\02-1.31.png"
+      },
+      {
+        "time": 1.965,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\03-1.97.png"
+      },
+      {
+        "time": 2.62,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\04-2.62.png"
+      },
+      {
+        "time": 3.275,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\05-3.28.png"
+      },
+      {
+        "time": 3.93,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\06-3.93.png"
+      },
+      {
+        "time": 4.585,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\07-4.58.png"
+      },
+      {
+        "time": 5.16,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0158\\end-5.16.png"
+      }
+    ]
+  },
+  {
+    "id": "F0163",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-sc02-integration--22309-nd-refuses-an-occupied-room-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-sc02-integration--22309-nd-refuses-an-occupied-room-chromium/video.webm",
+    "bytes": 859150,
+    "sha256": "f872ef153790ed6998b4ecf57258f12ac39a712a797ff79e64e330b4d9291fcc",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc02-integration--22309-nd-refuses-an-occupied-room-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 17.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\00-0.00.png"
+      },
+      {
+        "time": 2.215,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\01-2.21.png"
+      },
+      {
+        "time": 4.43,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\02-4.43.png"
+      },
+      {
+        "time": 6.645,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\03-6.64.png"
+      },
+      {
+        "time": 8.86,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\04-8.86.png"
+      },
+      {
+        "time": 11.075,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\05-11.07.png"
+      },
+      {
+        "time": 13.29,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\06-13.29.png"
+      },
+      {
+        "time": 15.505,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\07-15.50.png"
+      },
+      {
+        "time": 17.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0163\\end-17.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0169",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium/video.webm",
+    "bytes": 3891463,
+    "sha256": "309e7b60346ca2c85b3e4e9c8b0e0254fecef412db2e5a482de10a8dbaaab8e9",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 91.52,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\00-0.00.png"
+      },
+      {
+        "time": 11.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\01-11.44.png"
+      },
+      {
+        "time": 22.88,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\02-22.88.png"
+      },
+      {
+        "time": 34.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\03-34.32.png"
+      },
+      {
+        "time": 45.76,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\04-45.76.png"
+      },
+      {
+        "time": 57.2,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\05-57.20.png"
+      },
+      {
+        "time": 68.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\06-68.64.png"
+      },
+      {
+        "time": 80.08,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\07-80.08.png"
+      },
+      {
+        "time": 91.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0169\\end-91.44.png"
+      }
+    ]
+  },
+  {
+    "id": "F0171",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium/video.webm",
+    "bytes": 653324,
+    "sha256": "d089738672c964558f8dbb7f8be04bb0f542ed275bf9e082798834bd7465a301",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 10.88,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\00-0.00.png"
+      },
+      {
+        "time": 1.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\01-1.36.png"
+      },
+      {
+        "time": 2.72,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\02-2.72.png"
+      },
+      {
+        "time": 4.08,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\03-4.08.png"
+      },
+      {
+        "time": 5.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\04-5.44.png"
+      },
+      {
+        "time": 6.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\05-6.80.png"
+      },
+      {
+        "time": 8.16,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\06-8.16.png"
+      },
+      {
+        "time": 9.52,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\07-9.52.png"
+      },
+      {
+        "time": 10.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0171\\end-10.80.png"
+      }
+    ]
+  },
+  {
+    "id": "F0172",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium/video.webm",
+    "bytes": 565384,
+    "sha256": "a7c4facf521262a49c49c51a9005ff7fc4f0a60dc7b3de6685c05b0e2a4a9584",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 15.8,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\00-0.00.png"
+      },
+      {
+        "time": 1.975,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\01-1.98.png"
+      },
+      {
+        "time": 3.95,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\02-3.95.png"
+      },
+      {
+        "time": 5.925,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\03-5.93.png"
+      },
+      {
+        "time": 7.9,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\04-7.90.png"
+      },
+      {
+        "time": 9.875,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\05-9.88.png"
+      },
+      {
+        "time": 11.85,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\06-11.85.png"
+      },
+      {
+        "time": 13.825,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\07-13.83.png"
+      },
+      {
+        "time": 15.72,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0172\\end-15.72.png"
+      }
+    ]
+  },
+  {
+    "id": "F0173",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium/video.webm",
+    "bytes": 489967,
+    "sha256": "0a560b6bffe48c0ef54d520e85c714e24c7a66802e0208805d4bcab8c6d29795",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 9.4,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\00-0.00.png"
+      },
+      {
+        "time": 1.175,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\01-1.18.png"
+      },
+      {
+        "time": 2.35,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\02-2.35.png"
+      },
+      {
+        "time": 3.525,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\03-3.53.png"
+      },
+      {
+        "time": 4.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\04-4.70.png"
+      },
+      {
+        "time": 5.875,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\05-5.88.png"
+      },
+      {
+        "time": 7.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\06-7.05.png"
+      },
+      {
+        "time": 8.225,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\07-8.22.png"
+      },
+      {
+        "time": 9.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0173\\end-9.32.png"
+      }
+    ]
+  },
+  {
+    "id": "F0573",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\84472662d0c6\\photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+    "relative": "parallax-a1/browser/84472662d0c6/photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+    "bytes": 384198,
+    "sha256": "6aaa54bb8ff8322ef7112e9eee6d5ad676245ce8c999e79bbf70e3c2026ff11d",
+    "aliases": [
+      "special-12-results/parallax-environment-creat-ca91a-n-independent-editable-room-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 10.52,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\00-0.00.png"
+      },
+      {
+        "time": 1.315,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\01-1.31.png"
+      },
+      {
+        "time": 2.63,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\02-2.63.png"
+      },
+      {
+        "time": 3.945,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\03-3.94.png"
+      },
+      {
+        "time": 5.26,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\04-5.26.png"
+      },
+      {
+        "time": 6.575,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\05-6.57.png"
+      },
+      {
+        "time": 7.89,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\06-7.89.png"
+      },
+      {
+        "time": 9.205,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\07-9.21.png"
+      },
+      {
+        "time": 10.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0573\\end-10.44.png"
+      }
+    ]
+  },
+  {
+    "id": "F0574",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\84472662d0c6\\photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+    "relative": "parallax-a1/browser/84472662d0c6/photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+    "bytes": 359452,
+    "sha256": "ef59559e6fc9e40afbe9816f91a4e650619ee1c86b6717d1d4712f5d91f7946e",
+    "aliases": [
+      "special-12-results/parallax-environment-creat-f049b-n-independent-editable-room-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 7.96,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\00-0.00.png"
+      },
+      {
+        "time": 0.995,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\01-0.99.png"
+      },
+      {
+        "time": 1.99,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\02-1.99.png"
+      },
+      {
+        "time": 2.985,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\03-2.98.png"
+      },
+      {
+        "time": 3.98,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\04-3.98.png"
+      },
+      {
+        "time": 4.975,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\05-4.97.png"
+      },
+      {
+        "time": 5.97,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\06-5.97.png"
+      },
+      {
+        "time": 6.965,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\07-6.96.png"
+      },
+      {
+        "time": 7.88,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0574\\end-7.88.png"
+      }
+    ]
+  },
+  {
+    "id": "F0578",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\84472662d0c6\\photo-parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium-video.webm",
+    "relative": "parallax-a1/browser/84472662d0c6/photo-parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium-video.webm",
+    "bytes": 286110,
+    "sha256": "72b1990a53c49ac4968864d2389ab8dfb41dec778b11594450c7d86a7b2938ca",
+    "aliases": [
+      "special-12-results/parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 5.44,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\00-0.00.png"
+      },
+      {
+        "time": 0.68,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\01-0.68.png"
+      },
+      {
+        "time": 1.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\02-1.36.png"
+      },
+      {
+        "time": 2.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\03-2.04.png"
+      },
+      {
+        "time": 2.72,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\04-2.72.png"
+      },
+      {
+        "time": 3.4,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\05-3.40.png"
+      },
+      {
+        "time": 4.08,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\06-4.08.png"
+      },
+      {
+        "time": 4.76,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\07-4.76.png"
+      },
+      {
+        "time": 5.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0578\\end-5.36.png"
+      }
+    ]
+  },
+  {
+    "id": "F0579",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\84472662d0c6\\photo-parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium-video.webm",
+    "relative": "parallax-a1/browser/84472662d0c6/photo-parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium-video.webm",
+    "bytes": 915699,
+    "sha256": "e50f8f0ae2650976bff501ae18151317c64766f9364d54c2520cc35cfd38b9a1",
+    "aliases": [
+      "special-12-results/parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 28.2,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\00-0.00.png"
+      },
+      {
+        "time": 3.525,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\01-3.52.png"
+      },
+      {
+        "time": 7.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\02-7.05.png"
+      },
+      {
+        "time": 10.575,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\03-10.57.png"
+      },
+      {
+        "time": 14.1,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\04-14.10.png"
+      },
+      {
+        "time": 17.625,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\05-17.62.png"
+      },
+      {
+        "time": 21.15,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\06-21.15.png"
+      },
+      {
+        "time": 24.675,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\07-24.68.png"
+      },
+      {
+        "time": 28.12,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0579\\end-28.12.png"
+      }
+    ]
+  },
+  {
+    "id": "F0580",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\84472662d0c6\\photo-parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium-video.webm",
+    "relative": "parallax-a1/browser/84472662d0c6/photo-parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium-video.webm",
+    "bytes": 395679,
+    "sha256": "f06759d480fb67be745a290ce2755eb30d5bba4a4e68cc836b37d1645d81f0b4",
+    "aliases": [
+      "special-12-results/parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 5.44,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\00-0.00.png"
+      },
+      {
+        "time": 0.68,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\01-0.68.png"
+      },
+      {
+        "time": 1.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\02-1.36.png"
+      },
+      {
+        "time": 2.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\03-2.04.png"
+      },
+      {
+        "time": 2.72,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\04-2.72.png"
+      },
+      {
+        "time": 3.4,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\05-3.40.png"
+      },
+      {
+        "time": 4.08,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\06-4.08.png"
+      },
+      {
+        "time": 4.76,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\07-4.76.png"
+      },
+      {
+        "time": 5.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0580\\end-5.36.png"
+      }
+    ]
+  },
+  {
+    "id": "F0581",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\84472662d0c6\\photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+    "relative": "parallax-a1/browser/84472662d0c6/photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+    "bytes": 1936641,
+    "sha256": "5b5adb33221004b64626946885df7fe732bdf5c6f19b3c7410798954d65cd1f6",
+    "aliases": [
+      "special-12-results/parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 41.12,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\00-0.00.png"
+      },
+      {
+        "time": 5.14,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\01-5.14.png"
+      },
+      {
+        "time": 10.28,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\02-10.28.png"
+      },
+      {
+        "time": 15.42,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\03-15.42.png"
+      },
+      {
+        "time": 20.56,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\04-20.56.png"
+      },
+      {
+        "time": 25.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\05-25.70.png"
+      },
+      {
+        "time": 30.84,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\06-30.84.png"
+      },
+      {
+        "time": 35.98,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\07-35.98.png"
+      },
+      {
+        "time": 41.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0581\\end-41.04.png"
+      }
+    ]
+  },
+  {
+    "id": "F0601",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\961b1a82a1e2\\parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+    "relative": "parallax-a1/browser/961b1a82a1e2/parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+    "bytes": 1187768,
+    "sha256": "ab765c7c2ea6e14a309792dab643fa1c8043d499240db919306a776ec788b5c8",
+    "aliases": [
+      "special-11-results/parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 20.88,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\00-0.00.png"
+      },
+      {
+        "time": 2.61,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\01-2.61.png"
+      },
+      {
+        "time": 5.22,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\02-5.22.png"
+      },
+      {
+        "time": 7.83,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\03-7.83.png"
+      },
+      {
+        "time": 10.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\04-10.44.png"
+      },
+      {
+        "time": 13.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\05-13.05.png"
+      },
+      {
+        "time": 15.66,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\06-15.66.png"
+      },
+      {
+        "time": 18.27,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\07-18.27.png"
+      },
+      {
+        "time": 20.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0601\\end-20.80.png"
+      }
+    ]
+  },
+  {
+    "id": "F0603",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\961b1a82a1e2\\parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium-video.webm",
+    "relative": "parallax-a1/browser/961b1a82a1e2/parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium-video.webm",
+    "bytes": 2898654,
+    "sha256": "df73d41387369eaf16cd55fe8c78f42d89c795dd9841a95160f622887edab9cc",
+    "aliases": [
+      "special-11-results/parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 28.0,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 1440x900, SAR 1:1 DAR 8:5, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\00-0.00.png"
+      },
+      {
+        "time": 3.5,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\01-3.50.png"
+      },
+      {
+        "time": 7.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\02-7.00.png"
+      },
+      {
+        "time": 10.5,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\03-10.50.png"
+      },
+      {
+        "time": 14.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\04-14.00.png"
+      },
+      {
+        "time": 17.5,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\05-17.50.png"
+      },
+      {
+        "time": 21.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\06-21.00.png"
+      },
+      {
+        "time": 24.5,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\07-24.50.png"
+      },
+      {
+        "time": 27.92,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0603\\end-27.92.png"
+      }
+    ]
+  },
+  {
+    "id": "F0605",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\961b1a82a1e2\\parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video.webm",
+    "relative": "parallax-a1/browser/961b1a82a1e2/parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video.webm",
+    "bytes": 1731646,
+    "sha256": "2c1ef921cd268a733231fa87fc5d5da683b17de06f2161700dc683b0c5a28baa",
+    "aliases": [
+      "special-11-results/parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 14.24,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 1280x800, SAR 1:1 DAR 8:5, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\00-0.00.png"
+      },
+      {
+        "time": 1.78,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\01-1.78.png"
+      },
+      {
+        "time": 3.56,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\02-3.56.png"
+      },
+      {
+        "time": 5.34,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\03-5.34.png"
+      },
+      {
+        "time": 7.12,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\04-7.12.png"
+      },
+      {
+        "time": 8.9,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\05-8.90.png"
+      },
+      {
+        "time": 10.68,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\06-10.68.png"
+      },
+      {
+        "time": 12.46,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\07-12.46.png"
+      },
+      {
+        "time": 14.16,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0605\\end-14.16.png"
+      }
+    ]
+  },
+  {
+    "id": "F0608",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\961b1a82a1e2\\parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium-video.webm",
+    "relative": "parallax-a1/browser/961b1a82a1e2/parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium-video.webm",
+    "bytes": 2355954,
+    "sha256": "29a0066d251a303f66437025a3608dae5f55a2066e76ae963693521a8d136a94",
+    "aliases": [
+      "special-11-results/parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 20.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 1280x800, SAR 1:1 DAR 8:5, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\00-0.00.png"
+      },
+      {
+        "time": 2.59,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\01-2.59.png"
+      },
+      {
+        "time": 5.18,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\02-5.18.png"
+      },
+      {
+        "time": 7.77,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\03-7.77.png"
+      },
+      {
+        "time": 10.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\04-10.36.png"
+      },
+      {
+        "time": 12.95,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\05-12.95.png"
+      },
+      {
+        "time": 15.54,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\06-15.54.png"
+      },
+      {
+        "time": 18.13,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\07-18.13.png"
+      },
+      {
+        "time": 20.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0608\\end-20.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0612",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-ai-enforcement-Gl-26102--visible-Admiralty-controls-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-ai-enforcement-Gl-26102--visible-Admiralty-controls-chromium-video.webm",
+    "bytes": 1998426,
+    "sha256": "681d050b212ea629e3b189bdbaec82b9a78d3136774a6df343b4dbeac7fe1e86",
+    "aliases": [
+      "special-08-results/parallax-ai-enforcement-Gl-26102--visible-Admiralty-controls-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 16.88,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\00-0.00.png"
+      },
+      {
+        "time": 2.11,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\01-2.11.png"
+      },
+      {
+        "time": 4.22,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\02-4.22.png"
+      },
+      {
+        "time": 6.33,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\03-6.33.png"
+      },
+      {
+        "time": 8.44,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\04-8.44.png"
+      },
+      {
+        "time": 10.55,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\05-10.55.png"
+      },
+      {
+        "time": 12.66,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\06-12.66.png"
+      },
+      {
+        "time": 14.77,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\07-14.77.png"
+      },
+      {
+        "time": 16.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0612\\end-16.80.png"
+      }
+    ]
+  },
+  {
+    "id": "F0613",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-ai-enforcement-In-cc015-pacity-retries-stay-durable-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-ai-enforcement-In-cc015-pacity-retries-stay-durable-chromium-video.webm",
+    "bytes": 1786346,
+    "sha256": "592dd550e2f9ca482e230dfb82fe2ada646ac35d12dfe45a86b116183ae95106",
+    "aliases": [
+      "special-08-results/parallax-ai-enforcement-In-cc015-pacity-retries-stay-durable-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 16.08,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\00-0.00.png"
+      },
+      {
+        "time": 2.01,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\01-2.01.png"
+      },
+      {
+        "time": 4.02,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\02-4.02.png"
+      },
+      {
+        "time": 6.03,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\03-6.03.png"
+      },
+      {
+        "time": 8.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\04-8.04.png"
+      },
+      {
+        "time": 10.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\05-10.05.png"
+      },
+      {
+        "time": 12.06,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\06-12.06.png"
+      },
+      {
+        "time": 14.07,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\07-14.07.png"
+      },
+      {
+        "time": 16.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0613\\end-16.00.png"
+      }
+    ]
+  },
+  {
+    "id": "F0614",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-ai-enforcement-Pe-4cf39-ern-actual-Creator-requests-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-ai-enforcement-Pe-4cf39-ern-actual-Creator-requests-chromium-video.webm",
+    "bytes": 2167684,
+    "sha256": "dc2739d7635db9aa45d954c9814e2d95cdeed5ff8c5c8aa3949b0c24534ae12b",
+    "aliases": [
+      "special-08-results/parallax-ai-enforcement-Pe-4cf39-ern-actual-Creator-requests-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 20.96,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\00-0.00.png"
+      },
+      {
+        "time": 2.62,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\01-2.62.png"
+      },
+      {
+        "time": 5.24,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\02-5.24.png"
+      },
+      {
+        "time": 7.86,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\03-7.86.png"
+      },
+      {
+        "time": 10.48,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\04-10.48.png"
+      },
+      {
+        "time": 13.1,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\05-13.10.png"
+      },
+      {
+        "time": 15.72,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\06-15.72.png"
+      },
+      {
+        "time": 18.34,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\07-18.34.png"
+      },
+      {
+        "time": 20.88,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0614\\end-20.88.png"
+      }
+    ]
+  },
+  {
+    "id": "F0616",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-0369e--as-a-read-only-Environment-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium-video.webm",
+    "bytes": 482363,
+    "sha256": "0b2a59dbbbdbc1c3268ffae9da6d80aa820d23e747b98c51c3d4e8574211a19a",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 12.4,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\00-0.00.png"
+      },
+      {
+        "time": 1.55,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\01-1.55.png"
+      },
+      {
+        "time": 3.1,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\02-3.10.png"
+      },
+      {
+        "time": 4.65,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\03-4.65.png"
+      },
+      {
+        "time": 6.2,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\04-6.20.png"
+      },
+      {
+        "time": 7.75,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\05-7.75.png"
+      },
+      {
+        "time": 9.3,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\06-9.30.png"
+      },
+      {
+        "time": 10.85,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\07-10.85.png"
+      },
+      {
+        "time": 12.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0616\\end-12.32.png"
+      }
+    ]
+  },
+  {
+    "id": "F0618",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-14d06--retry-recovers-one-release-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-14d06--retry-recovers-one-release-chromium-video.webm",
+    "bytes": 406457,
+    "sha256": "29f44c023734b82a0b608177544dfee8ccb0ef029be8a60ea83c1019f251c36e",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-14d06--retry-recovers-one-release-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 5.48,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\00-0.00.png"
+      },
+      {
+        "time": 0.685,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\01-0.69.png"
+      },
+      {
+        "time": 1.37,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\02-1.37.png"
+      },
+      {
+        "time": 2.055,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\03-2.06.png"
+      },
+      {
+        "time": 2.74,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\04-2.74.png"
+      },
+      {
+        "time": 3.425,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\05-3.43.png"
+      },
+      {
+        "time": 4.11,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\06-4.11.png"
+      },
+      {
+        "time": 4.795,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\07-4.79.png"
+      },
+      {
+        "time": 5.4,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0618\\end-5.40.png"
+      }
+    ]
+  },
+  {
+    "id": "F0620",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium-video.webm",
+    "bytes": 502294,
+    "sha256": "1200b8bf4f2f67dbdf83f7d30cb39835b2537faa1fd405f304298fa25dd947c9",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 15.88,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\00-0.00.png"
+      },
+      {
+        "time": 1.985,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\01-1.99.png"
+      },
+      {
+        "time": 3.97,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\02-3.97.png"
+      },
+      {
+        "time": 5.955,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\03-5.96.png"
+      },
+      {
+        "time": 7.94,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\04-7.94.png"
+      },
+      {
+        "time": 9.925,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\05-9.93.png"
+      },
+      {
+        "time": 11.91,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\06-11.91.png"
+      },
+      {
+        "time": 13.895,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\07-13.90.png"
+      },
+      {
+        "time": 15.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0620\\end-15.80.png"
+      }
+    ]
+  },
+  {
+    "id": "F0621",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-28f02-rewriting-its-first-release-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-28f02-rewriting-its-first-release-chromium-video.webm",
+    "bytes": 887699,
+    "sha256": "85d6985cc982fd6fb1db78ee1c59c9a7482d048390a754d20369b5347dd55d3a",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-28f02-rewriting-its-first-release-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 14.4,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\00-0.00.png"
+      },
+      {
+        "time": 1.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\01-1.80.png"
+      },
+      {
+        "time": 3.6,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\02-3.60.png"
+      },
+      {
+        "time": 5.4,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\03-5.40.png"
+      },
+      {
+        "time": 7.2,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\04-7.20.png"
+      },
+      {
+        "time": 9.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\05-9.00.png"
+      },
+      {
+        "time": 10.8,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\06-10.80.png"
+      },
+      {
+        "time": 12.6,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\07-12.60.png"
+      },
+      {
+        "time": 14.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0621\\end-14.32.png"
+      }
+    ]
+  },
+  {
+    "id": "F0623",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-478f7-returns-to-the-saved-source-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium-video.webm",
+    "bytes": 593698,
+    "sha256": "770cf46bdc5cf0dd9d27021321aab8c7626d3337caee7142c802f7c9fdd005ff",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 10.28,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\00-0.00.png"
+      },
+      {
+        "time": 1.285,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\01-1.28.png"
+      },
+      {
+        "time": 2.57,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\02-2.57.png"
+      },
+      {
+        "time": 3.855,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\03-3.85.png"
+      },
+      {
+        "time": 5.14,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\04-5.14.png"
+      },
+      {
+        "time": 6.425,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\05-6.42.png"
+      },
+      {
+        "time": 7.71,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\06-7.71.png"
+      },
+      {
+        "time": 8.995,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\07-8.99.png"
+      },
+      {
+        "time": 10.2,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0623\\end-10.20.png"
+      }
+    ]
+  },
+  {
+    "id": "F0624",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-5b28c-refusal-and-remains-private-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-5b28c-refusal-and-remains-private-chromium-video.webm",
+    "bytes": 345128,
+    "sha256": "4e57edf364c2e60e8ecba0ecd767a4e2705e553f3fef0cbd27bce3b0eeb7279d",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-5b28c-refusal-and-remains-private-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 5.56,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\00-0.00.png"
+      },
+      {
+        "time": 0.695,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\01-0.69.png"
+      },
+      {
+        "time": 1.39,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\02-1.39.png"
+      },
+      {
+        "time": 2.085,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\03-2.08.png"
+      },
+      {
+        "time": 2.78,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\04-2.78.png"
+      },
+      {
+        "time": 3.475,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\05-3.47.png"
+      },
+      {
+        "time": 4.17,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\06-4.17.png"
+      },
+      {
+        "time": 4.865,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\07-4.86.png"
+      },
+      {
+        "time": 5.48,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0624\\end-5.48.png"
+      }
+    ]
+  },
+  {
+    "id": "F0626",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium-video.webm",
+    "bytes": 1107910,
+    "sha256": "c51690bfcf6db72688d77e624312f6fc5aba4038e2f5f3a186e014ce87261957",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 26.08,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\00-0.00.png"
+      },
+      {
+        "time": 3.26,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\01-3.26.png"
+      },
+      {
+        "time": 6.52,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\02-6.52.png"
+      },
+      {
+        "time": 9.78,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\03-9.78.png"
+      },
+      {
+        "time": 13.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\04-13.04.png"
+      },
+      {
+        "time": 16.3,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\05-16.30.png"
+      },
+      {
+        "time": 19.56,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\06-19.56.png"
+      },
+      {
+        "time": 22.82,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\07-22.82.png"
+      },
+      {
+        "time": 26.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0626\\end-26.00.png"
+      }
+    ]
+  },
+  {
+    "id": "F0627",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium-video.webm",
+    "bytes": 517584,
+    "sha256": "31df4249f43498fe6bdea5beb0a4aff247db0e0331e5269307f58a325328d9f6",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 14.48,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\00-0.00.png"
+      },
+      {
+        "time": 1.81,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\01-1.81.png"
+      },
+      {
+        "time": 3.62,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\02-3.62.png"
+      },
+      {
+        "time": 5.43,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\03-5.43.png"
+      },
+      {
+        "time": 7.24,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\04-7.24.png"
+      },
+      {
+        "time": 9.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\05-9.05.png"
+      },
+      {
+        "time": 10.86,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\06-10.86.png"
+      },
+      {
+        "time": 12.67,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\07-12.67.png"
+      },
+      {
+        "time": 14.4,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0627\\end-14.40.png"
+      }
+    ]
+  },
+  {
+    "id": "F0628",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-a1\\browser\\b72f5e5c2b38\\parallax-spatial-community-fea16-io-entry-without-publishing-chromium-video.webm",
+    "relative": "parallax-a1/browser/b72f5e5c2b38/parallax-spatial-community-fea16-io-entry-without-publishing-chromium-video.webm",
+    "bytes": 581081,
+    "sha256": "a1ecb014ef65e362c25cc962a8ccfd88c99be579f6067c685f2b13737f0e4fc3",
+    "aliases": [
+      "special-08-results/parallax-spatial-community-fea16-io-entry-without-publishing-chromium/video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 7.08,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\00-0.00.png"
+      },
+      {
+        "time": 0.885,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\01-0.89.png"
+      },
+      {
+        "time": 1.77,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\02-1.77.png"
+      },
+      {
+        "time": 2.655,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\03-2.66.png"
+      },
+      {
+        "time": 3.54,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\04-3.54.png"
+      },
+      {
+        "time": 4.425,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\05-4.42.png"
+      },
+      {
+        "time": 5.31,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\06-5.31.png"
+      },
+      {
+        "time": 6.195,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\07-6.20.png"
+      },
+      {
+        "time": 7.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0628\\end-7.00.png"
+      }
+    ]
+  },
+  {
+    "id": "F0679",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-integration-browser\\b72f5e5c2b38\\guided-desktop\\recordings\\9ba83702770cc6d103f5afc05d5b25be.webm",
+    "relative": "parallax-integration-browser/b72f5e5c2b38/guided-desktop/recordings/9ba83702770cc6d103f5afc05d5b25be.webm",
+    "bytes": 523965,
+    "sha256": "c6aab03f7f756bd13032b8704f05e77a28f9193baea524e14fe812fc5759558d",
+    "aliases": [],
+    "bindingValid": true,
+    "duration": 5.4,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x562, SAR 1:1 DAR 400:281, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\00-0.00.png"
+      },
+      {
+        "time": 0.675,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\01-0.68.png"
+      },
+      {
+        "time": 1.35,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\02-1.35.png"
+      },
+      {
+        "time": 2.025,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\03-2.03.png"
+      },
+      {
+        "time": 2.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\04-2.70.png"
+      },
+      {
+        "time": 3.375,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\05-3.38.png"
+      },
+      {
+        "time": 4.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\06-4.05.png"
+      },
+      {
+        "time": 4.725,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\07-4.73.png"
+      },
+      {
+        "time": 5.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0679\\end-5.32.png"
+      }
+    ]
+  },
+  {
+    "id": "F0680",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-integration-browser\\b72f5e5c2b38\\guided-phone\\recordings\\5b88740d57d7bf3da32b7ce72a2143de.webm",
+    "relative": "parallax-integration-browser/b72f5e5c2b38/guided-phone/recordings/5b88740d57d7bf3da32b7ce72a2143de.webm",
+    "bytes": 484719,
+    "sha256": "b7b385bc96c2e11ff193741b187b9a84cd81b88c23e97cd415490852c7b402e5",
+    "aliases": [],
+    "bindingValid": true,
+    "duration": 4.84,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 368x800, SAR 1:1 DAR 23:50, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\00-0.00.png"
+      },
+      {
+        "time": 0.605,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\01-0.60.png"
+      },
+      {
+        "time": 1.21,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\02-1.21.png"
+      },
+      {
+        "time": 1.815,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\03-1.81.png"
+      },
+      {
+        "time": 2.42,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\04-2.42.png"
+      },
+      {
+        "time": 3.025,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\05-3.02.png"
+      },
+      {
+        "time": 3.63,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\06-3.63.png"
+      },
+      {
+        "time": 4.235,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\07-4.23.png"
+      },
+      {
+        "time": 4.76,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0680\\end-4.76.png"
+      }
+    ]
+  },
+  {
+    "id": "F0688",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-tracking-recovery\\b72f5e5c2b38\\recordings\\ba4467af0efc88442b6cc0303af0367c.webm",
+    "relative": "parallax-tracking-recovery/b72f5e5c2b38/recordings/ba4467af0efc88442b6cc0303af0367c.webm",
+    "bytes": 671448,
+    "sha256": "2d2934f28482f5755ce358c5b7aba8faaf043dca6f6b9de9ef2adccdc6907428",
+    "aliases": [],
+    "bindingValid": true,
+    "duration": 5.68,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 368x800, SAR 1:1 DAR 23:50, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\00-0.00.png"
+      },
+      {
+        "time": 0.71,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\01-0.71.png"
+      },
+      {
+        "time": 1.42,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\02-1.42.png"
+      },
+      {
+        "time": 2.13,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\03-2.13.png"
+      },
+      {
+        "time": 2.84,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\04-2.84.png"
+      },
+      {
+        "time": 3.55,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\05-3.55.png"
+      },
+      {
+        "time": 4.26,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\06-4.26.png"
+      },
+      {
+        "time": 4.97,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\07-4.97.png"
+      },
+      {
+        "time": 5.6,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0688\\end-5.60.png"
+      }
+    ]
+  },
+  {
+    "id": "F0689",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\parallax-tracking-recovery\\b72f5e5c2b38\\recordings\\cc2fa8a3eec06e7958a0904945187bbc.webm",
+    "relative": "parallax-tracking-recovery/b72f5e5c2b38/recordings/cc2fa8a3eec06e7958a0904945187bbc.webm",
+    "bytes": 645554,
+    "sha256": "26c1ec54230ce0ef5b7750e9666cd02fa76e86e7d4b313724a35a226678811da",
+    "aliases": [],
+    "bindingValid": true,
+    "duration": 6.12,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x562, SAR 1:1 DAR 400:281, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\00-0.00.png"
+      },
+      {
+        "time": 0.765,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\01-0.77.png"
+      },
+      {
+        "time": 1.53,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\02-1.53.png"
+      },
+      {
+        "time": 2.295,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\03-2.29.png"
+      },
+      {
+        "time": 3.06,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\04-3.06.png"
+      },
+      {
+        "time": 3.825,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\05-3.83.png"
+      },
+      {
+        "time": 4.59,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\06-4.59.png"
+      },
+      {
+        "time": 5.355,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\07-5.36.png"
+      },
+      {
+        "time": 6.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0689\\end-6.04.png"
+      }
+    ]
+  },
+  {
+    "id": "F0730",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\special-09-results\\parallax-sc00c-scale-brows-04e80--paged-in-the-actual-Studio-chromium\\video.webm",
+    "relative": "special-09-results/parallax-sc00c-scale-brows-04e80--paged-in-the-actual-Studio-chromium/video.webm",
+    "bytes": 1101329,
+    "sha256": "58f7908dc0a1508e8236d5336e4c0e4a2fd9a4854c10e8e5acbcbdab901ff902",
+    "aliases": [],
+    "bindingValid": true,
+    "duration": 26.72,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions 0/8 through 7/8, native frames retained. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\00-0.00.png"
+      },
+      {
+        "time": 3.34,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\01-3.34.png"
+      },
+      {
+        "time": 6.68,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\02-6.68.png"
+      },
+      {
+        "time": 10.02,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\03-10.02.png"
+      },
+      {
+        "time": 13.36,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\04-13.36.png"
+      },
+      {
+        "time": 16.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\05-16.70.png"
+      },
+      {
+        "time": 20.04,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\06-20.04.png"
+      },
+      {
+        "time": 23.38,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\07-23.38.png"
+      },
+      {
+        "time": 26.64,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0730\\end-26.64.png"
+      }
+    ]
+  },
+  {
+    "id": "F0145",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium/video.webm",
+    "bytes": 361824,
+    "sha256": "10fc56d8022e927020522487e1182505cbfd700e8a7dc41342be72d4c3a02aaa",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 7.64,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions plus final frame. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\00-0.00.png"
+      },
+      {
+        "time": 0.955,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\01-0.95.png"
+      },
+      {
+        "time": 1.91,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\02-1.91.png"
+      },
+      {
+        "time": 2.865,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\03-2.86.png"
+      },
+      {
+        "time": 3.82,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\04-3.82.png"
+      },
+      {
+        "time": 4.775,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\05-4.77.png"
+      },
+      {
+        "time": 5.73,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\06-5.73.png"
+      },
+      {
+        "time": 6.685,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\07-6.68.png"
+      },
+      {
+        "time": 7.56,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0145\\end-7.56.png"
+      }
+    ]
+  },
+  {
+    "id": "F0149",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium/video.webm",
+    "bytes": 240047,
+    "sha256": "85a4e581508a73c55fd95444518dec16928cd39d995275bb4865e4697e658958",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 5.4,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions plus final frame. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\00-0.00.png"
+      },
+      {
+        "time": 0.675,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\01-0.68.png"
+      },
+      {
+        "time": 1.35,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\02-1.35.png"
+      },
+      {
+        "time": 2.025,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\03-2.03.png"
+      },
+      {
+        "time": 2.7,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\04-2.70.png"
+      },
+      {
+        "time": 3.375,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\05-3.38.png"
+      },
+      {
+        "time": 4.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\06-4.05.png"
+      },
+      {
+        "time": 4.725,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\07-4.73.png"
+      },
+      {
+        "time": 5.32,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0149\\end-5.32.png"
+      }
+    ]
+  },
+  {
+    "id": "F0151",
+    "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\review-final\\media\\browser-11-results\\parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium\\video.webm",
+    "relative": "browser-11-results/parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium/video.webm",
+    "bytes": 477322,
+    "sha256": "897e60ee338c8045aace10da0d9937c594d2e0a2f1d358c789ae7119d81d2e3f",
+    "aliases": [
+      "parallax-a1/browser/7f0cbbd39893/parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium-video.webm"
+    ],
+    "bindingValid": true,
+    "duration": 9.68,
+    "videoMetadata": "vp8 (libvpx), yuv420p(tv, progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn",
+    "audioStreamPresent": false,
+    "sampling": "Eight decoded frames at duration fractions plus final frame. No continuous real-time playback.",
+    "frames": [
+      {
+        "time": 0.0,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\00-0.00.png"
+      },
+      {
+        "time": 1.21,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\01-1.21.png"
+      },
+      {
+        "time": 2.42,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\02-2.42.png"
+      },
+      {
+        "time": 3.63,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\03-3.63.png"
+      },
+      {
+        "time": 4.84,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\04-4.84.png"
+      },
+      {
+        "time": 6.05,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\05-6.05.png"
+      },
+      {
+        "time": 7.26,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\06-7.26.png"
+      },
+      {
+        "time": 8.47,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\07-8.47.png"
+      },
+      {
+        "time": 9.6,
+        "file": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\frames\\F0151\\end-9.60.png"
+      }
+    ]
+  }
+]

@@ -1,0 +1,1158 @@
+{
+  "schemaVersion": 1,
+  "kind": "LOCAL_INTEGRATION_PREPARATION",
+  "qualification": false,
+  "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+  "runtimeInputs": [
+    "src",
+    "prisma",
+    "public",
+    "scripts",
+    "testing",
+    "package.json",
+    "package-lock.json",
+    "next.config.ts",
+    "tsconfig.json",
+    "middleware.ts"
+  ],
+  "runtimeImplementation": {
+    "entries": "100644 blob 064088a11f37d13679cd5af5d2c8d9f31a627a1c\tnext.config.ts\n100644 blob fca84d3ab68ff77c013554e5eb9531cb3f7b11c2\tpackage-lock.json\n100644 blob 37b096381c2acaa747a24bccee901c62215b3577\tpackage.json\n040000 tree 2e87b0d256b7bc6197f5424877bcbd9688140404\tprisma\n040000 tree e31807462b7cf2c5a4cc0acfc03a76f01414fbf6\tpublic\n040000 tree 1c5fabd8a57f5cb61da5f868e242e3c502cddae9\tscripts\n040000 tree 990a1e47ea61172aed289c803abd5d2a7593a5e0\tsrc\n040000 tree ab77f6d035f37894e0f6b8821d2765745dff7c33\ttesting\n100644 blob a6578467ec306941a2b8d9fa0ab439cc1884bcee\ttsconfig.json",
+    "sha256": "b6e83ca5ad2406989707a6eae88a2b51bd605fc2eba6182cc045a4cd5b3b222e"
+  },
+  "unit": {
+    "prefix": "unit-11",
+    "candidate": "6808e456379bca8a2eba90dbe5d20411e69e0be0",
+    "passed": 1372,
+    "failed": 0,
+    "pending": 0,
+    "sourceBinding": "VALID"
+  },
+  "browser": {
+    "inventory": 114,
+    "eligible": 109,
+    "passed": 109,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "cohorts": [
+      {
+        "cohort": "special-04",
+        "kind": "PRODUCTION",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "tree": "8f1c741a0d03227ac1822a569eec8814bc06d8f9",
+        "passed": 2,
+        "sourceBinding": "VALID",
+        "runtimeImplementationSha256": "b6e83ca5ad2406989707a6eae88a2b51bd605fc2eba6182cc045a4cd5b3b222e",
+        "reportSha256": "9f57037d7b54ca525a3cbf460079893b657f17dbc9c4a757ab203a999720f9c0",
+        "sourceReceiptSha256": "a9ef100b2597627ad428955c64d8e1ffa4b159091d9e7a096d147fdd82840869",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": 0,
+            "elapsedMs": 5,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 185,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        }
+      },
+      {
+        "cohort": "browser-09",
+        "kind": "PRODUCTION",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "tree": "8f1c741a0d03227ac1822a569eec8814bc06d8f9",
+        "passed": 22,
+        "sourceBinding": "VALID",
+        "runtimeImplementationSha256": "b6e83ca5ad2406989707a6eae88a2b51bd605fc2eba6182cc045a4cd5b3b222e",
+        "reportSha256": "35ac164bf20d0f272f37f386fc93a81d32e7f52496993be442058c346cbd8ce0",
+        "sourceReceiptSha256": "6717cc454583878469e412e341b19e25d141471d4f92576053bb0115f946b366",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": 0,
+            "elapsedMs": 3,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 171,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        }
+      },
+      {
+        "cohort": "browser-10",
+        "kind": "PRODUCTION",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "tree": "8f1c741a0d03227ac1822a569eec8814bc06d8f9",
+        "passed": 8,
+        "sourceBinding": "VALID",
+        "runtimeImplementationSha256": "b6e83ca5ad2406989707a6eae88a2b51bd605fc2eba6182cc045a4cd5b3b222e",
+        "reportSha256": "cdd9d6574d6f64d66d0f4d847022b0fa2028eac3e1718a16a8afb99386e53998",
+        "sourceReceiptSha256": "441e26f7756b7e6e3d47ee62f6ff72893e8badefe5f382398181a1fe163c6f34",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": 0,
+            "elapsedMs": 3,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 158,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        }
+      },
+      {
+        "cohort": "browser-11",
+        "kind": "PRODUCTION",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "tree": "8f1c741a0d03227ac1822a569eec8814bc06d8f9",
+        "passed": 48,
+        "sourceBinding": "VALID",
+        "runtimeImplementationSha256": "b6e83ca5ad2406989707a6eae88a2b51bd605fc2eba6182cc045a4cd5b3b222e",
+        "reportSha256": "023e9b037e760998d7954ee4c1bb034765d1827616d8c1eb1494e25d6976db92",
+        "sourceReceiptSha256": "7dcb3e531a181c1b389bec8692e2b315012b2f3a48c63d04706e2d3ba65ed6c3",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": 0,
+            "elapsedMs": 4,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 169,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        }
+      },
+      {
+        "cohort": "special-08",
+        "kind": "PRODUCTION",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "tree": "221f78f38a1beb47430d051ba02a21e5ef68bc22",
+        "passed": 18,
+        "sourceBinding": "VALID",
+        "runtimeImplementationSha256": "b6e83ca5ad2406989707a6eae88a2b51bd605fc2eba6182cc045a4cd5b3b222e",
+        "reportSha256": "95f2f7bc7cb02be99011629c888c83dc1d0f2995994de218d99a99ec2f0ce676",
+        "sourceReceiptSha256": "ae795d8f7c5a5a09c0376fd36b7bb80d2b694aa4e81810d8551a9743051c6607",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": 0,
+            "elapsedMs": 8,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 178,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        }
+      },
+      {
+        "cohort": "special-09",
+        "kind": "PRODUCTION_SCALE_2000",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "tree": "221f78f38a1beb47430d051ba02a21e5ef68bc22",
+        "passed": 1,
+        "sourceBinding": "VALID",
+        "runtimeImplementationSha256": "b6e83ca5ad2406989707a6eae88a2b51bd605fc2eba6182cc045a4cd5b3b222e",
+        "reportSha256": "a466092d5b8a702cd21f0221318ec5fb30677282cb761612a2b1893eabd9710f",
+        "sourceReceiptSha256": "bc243733f2e7bc5307cdc63181aca4521b71258fd3b9927a9842fd91b2572bc6",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": 0,
+            "elapsedMs": 4,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 153,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        }
+      },
+      {
+        "cohort": "special-12",
+        "kind": "DEVELOPMENT_SYNTHETIC_PHOTOS",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "tree": "2a310b1868dffd0e1ce162d94f807ee52f6eea71",
+        "passed": 10,
+        "sourceBinding": "VALID",
+        "runtimeImplementationSha256": "b6e83ca5ad2406989707a6eae88a2b51bd605fc2eba6182cc045a4cd5b3b222e",
+        "reportSha256": "9517c9fde43ccc86ff2d1f0d4e6723a1d14bf2a0da34db85337dd1564af7ad1e",
+        "sourceReceiptSha256": "0c8927a5b3f755aed29f453f0933266796bbf1e0a49faf7296591693a4028d8d",
+        "cleanup": {
+          "status": "PASS",
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": 0,
+            "elapsedMs": 4,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 185,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "portReleased": true
+        }
+      }
+    ],
+    "cases": [
+      {
+        "file": "parallax-adaptive.spec.ts",
+        "title": "Remote Creator stages, publishes and reopens an adaptive multi-object Chronicle",
+        "cohort": "special-04",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "1a3c142c6946f4b9ab24c51030128ee65a81624e"
+      },
+      {
+        "file": "parallax-studio.spec.ts",
+        "title": "Creator builds, versions, attaches, publishes and reopens a spatial moment in Guided mode",
+        "cohort": "special-04",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a6174b2d1d9051ef7bb5d0b6e8027036381c2a66"
+      },
+      {
+        "file": "parallax-animation.spec.ts",
+        "title": "Creator edits, renders, scrubs, plays and reloads real object keyframes, then resets triggered simulation",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "825f4d99c6238acae79ccec72b264f9bae99836f"
+      },
+      {
+        "file": "parallax-animation.spec.ts",
+        "title": "Middle and Ctrl drag use the same camera pan and renderer recovery retains the draft",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "825f4d99c6238acae79ccec72b264f9bae99836f"
+      },
+      {
+        "file": "parallax-asset-quality.spec.ts",
+        "title": "Creator inspects representative actual asset materials at useful distances in both appearances without altering the saved scene",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "4db9c2d5143038b15356233405b9e07befc556a9"
+      },
+      {
+        "file": "parallax-asset-quality.spec.ts",
+        "title": "Creator duplicates and reuses a right boot without changing its rendered handedness",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "4db9c2d5143038b15356233405b9e07befc556a9"
+      },
+      {
+        "file": "parallax-asset-quality.spec.ts",
+        "title": "Creator authors a full scene and navigates during interpolated playback without rebuilding props",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "4db9c2d5143038b15356233405b9e07befc556a9"
+      },
+      {
+        "file": "parallax-authoring-refinements.spec.ts",
+        "title": "Creator renames, drags and resizes a real animated clip, observes motion and recovers hidden or tiny assets through saved replay",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "110489d1427fafae792d863fdb341836fa01d1d8"
+      },
+      {
+        "file": "parallax-authoring-refinements.spec.ts",
+        "title": "Renaming one footprint preserves its shape and rebuilds only that prop",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "110489d1427fafae792d863fdb341836fa01d1d8"
+      },
+      {
+        "file": "parallax-authoring-refinements.spec.ts",
+        "title": "Record captures edited poses and motion stays clear across modes and renderer recovery",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "110489d1427fafae792d863fdb341836fa01d1d8"
+      },
+      {
+        "file": "parallax-groups.spec.ts",
+        "title": "single name clicks rename assets and groups, and Library exclusion tools use the current room controls",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a19ac40a0114eb118684f26547738de4c5d173cb"
+      },
+      {
+        "file": "parallax-groups.spec.ts",
+        "title": "Visible Bedroom geometry reaches the Assistant and a retained real response animates into clear entrance placement",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a19ac40a0114eb118684f26547738de4c5d173cb"
+      },
+      {
+        "file": "parallax-groups.spec.ts",
+        "title": "Inspector text preserves spaces and newlines, and room membership requires the viewport edit toggle",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a19ac40a0114eb118684f26547738de4c5d173cb"
+      },
+      {
+        "file": "parallax-groups.spec.ts",
+        "title": "Scene Graph reorders live without moving assets, and a floor click places the whole selected footprint group",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a19ac40a0114eb118684f26547738de4c5d173cb"
+      },
+      {
+        "file": "parallax-groups.spec.ts",
+        "title": "Assistant previews and applies grouping and whole-group motion through the server adapter without inference traffic",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a19ac40a0114eb118684f26547738de4c5d173cb"
+      },
+      {
+        "file": "parallax-groups.spec.ts",
+        "title": "Twenty footprints group through keyboard selection, move live together, cancel safely and retain editable membership",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a19ac40a0114eb118684f26547738de4c5d173cb"
+      },
+      {
+        "file": "parallax-groups.spec.ts",
+        "title": "A mixed asset and room-feature group uses the same rotation/scale controls without double-moving its bound asset",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a19ac40a0114eb118684f26547738de4c5d173cb"
+      },
+      {
+        "file": "parallax-groups.spec.ts",
+        "title": "Assistant retains general follow-up intent, removes a reviewed asset and edits the actual scene",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "a19ac40a0114eb118684f26547738de4c5d173cb"
+      },
+      {
+        "file": "parallax-reusable-assets.spec.ts",
+        "title": "Creator saves and reuses a versioned object, edits only its instance, reloads and archives the unchanged definition",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "d2c3467cd1ce0dc2e6f841a41543f3fd00e8a1ec"
+      },
+      {
+        "file": "parallax-room-features.spec.ts",
+        "title": "Environment editing selects rendered features and shares live transform gizmos, history and persistence",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "2dd1ba90aeefe83ba591d2399ad88dc2c86d0c19"
+      },
+      {
+        "file": "parallax-room-features.spec.ts",
+        "title": "Creator edits semantic room dimensions and furniture while the actual rendered clue follows its desk across reload",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "2dd1ba90aeefe83ba591d2399ad88dc2c86d0c19"
+      },
+      {
+        "file": "parallax-spatial-assistant.spec.ts",
+        "title": "Creator signs in, reviews actual canvas proposals, saves once and reopens an exact Chronicle pin",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "8dd906ad03e3e5575e91491edc2f9c2dfe310016"
+      },
+      {
+        "file": "parallax-surfaces.spec.ts",
+        "title": "Creator snaps a clue to both walls, table and entire floor with orientation, Undo and persisted restore",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "b61ab4e0072411616ef3d112044f0a114fa8494d"
+      },
+      {
+        "file": "parallax-surfaces.spec.ts",
+        "title": "Hidden Wall Message retains wall intent when automatic placement is enabled and aligns when switched to table",
+        "cohort": "browser-09",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "b61ab4e0072411616ef3d112044f0a114fa8494d"
+      },
+      {
+        "file": "parallax-sc02.spec.ts",
+        "title": "SC-02 Creator places real assets, edits a light, saves and reuses a composition, then reloads the same Scene",
+        "cohort": "browser-10",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "82fc3ed20fdb40613335654edcdc7cffd8ad3d86"
+      },
+      {
+        "file": "parallax-sc02.spec.ts",
+        "title": "SC-02 actual Studio renders every model family and three composed scenes with finite instrumentation",
+        "cohort": "browser-10",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "82fc3ed20fdb40613335654edcdc7cffd8ad3d86"
+      },
+      {
+        "file": "parallax-sc02.spec.ts",
+        "title": "SC-02 Studio visibly executes projected effects, a portal and additional light types",
+        "cohort": "browser-10",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "82fc3ed20fdb40613335654edcdc7cffd8ad3d86"
+      },
+      {
+        "file": "parallax-sc02.spec.ts",
+        "title": "SC-02 Creator authors and reuses elements with native keyboard navigation and returns from assistance",
+        "cohort": "browser-10",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "82fc3ed20fdb40613335654edcdc7cffd8ad3d86"
+      },
+      {
+        "file": "parallax-sc02.spec.ts",
+        "title": "SC-02 preserves a failed save and recovers audio from unavailable and Guided preview states",
+        "cohort": "browser-10",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "82fc3ed20fdb40613335654edcdc7cffd8ad3d86"
+      },
+      {
+        "file": "parallax-sc02.spec.ts",
+        "title": "SC-02 measures a composed Scene and reclaims temporary model resources",
+        "cohort": "browser-10",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "82fc3ed20fdb40613335654edcdc7cffd8ad3d86"
+      },
+      {
+        "file": "parallax-workstation.spec.ts",
+        "title": "Adaptive workspace docks reclaim viewport area and preserve editing across layouts and reload",
+        "cohort": "browser-10",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "81cc99a032fc562bba11853e875e68515b847889"
+      },
+      {
+        "file": "parallax-workstation.spec.ts",
+        "title": "Creator edits a populated 3D workstation, previews intent, and retains canonical history",
+        "cohort": "browser-10",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "81cc99a032fc562bba11853e875e68515b847889"
+      },
+      {
+        "file": "parallax-assistant-presentation.spec.ts",
+        "title": "visible Assistant viewport, docking, authoring modes and reduced motion review",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "bceae026f4c2e6775f884252fc5d353bffbf9868"
+      },
+      {
+        "file": "parallax-assistant-presentation.spec.ts",
+        "title": "Creator reads and scrolls a populated landscape proposal while keeping the composer and actions reachable",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "bceae026f4c2e6775f884252fc5d353bffbf9868"
+      },
+      {
+        "file": "parallax-cinematic.spec.ts",
+        "title": "Creator clicks a graph title, edits a selected pose, resizes unobstructed handles and watches two cinematic takes",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "27d1573395c54fadffe231d6f110d846c64916a4"
+      },
+      {
+        "file": "parallax-click-surface.spec.ts",
+        "title": "Clicking visible room surfaces places the selected asset without opening Surfaces and preserves Undo",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "83123e7d3fa20f5151ca7b01e75bc971c2105639"
+      },
+      {
+        "file": "parallax-construction-checks.spec.ts",
+        "title": "Creator follows exact construction findings, corrects wall orientation and reviews miniature scale through save and reload",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "b99d313885a81319cb47846f004dcd5260ff2b4c"
+      },
+      {
+        "file": "parallax-context-menu.spec.ts",
+        "title": "Creator uses one graph toolbar, right-click object commands and keyboard menus across saved scenes and phone",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fea4767881b1c4c2b7e090cce59e3f5459cfab86"
+      },
+      {
+        "file": "parallax-direct-placement.spec.ts",
+        "title": "Creator sees a receiving surface during real dragging, clamps on release, freely positions with clamping off and selects directly in the viewport",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "bc3384ac1826cbeacc65e731f38e31efc5fe56ad"
+      },
+      {
+        "file": "parallax-exclusion-zones.spec.ts",
+        "title": "Environment zones use real gizmos, retain edits and deletion, and disappear from ordinary scene rendering",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "283d798be2b5711088c3bb99ab93f40974790870"
+      },
+      {
+        "file": "parallax-library-lifecycle.spec.ts",
+        "title": "durable working scene, explicit saved membership, named Save As, metadata and version history",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fc7eba819cffe206de7f68ae40a5f8387e2078de"
+      },
+      {
+        "file": "parallax-library-lifecycle.spec.ts",
+        "title": "independent environment creation, editing and reuse do not manufacture scene definitions",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fc7eba819cffe206de7f68ae40a5f8387e2078de"
+      },
+      {
+        "file": "parallax-library-lifecycle.spec.ts",
+        "title": "pending save retry and reload retain one stable definition and visible failure",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fc7eba819cffe206de7f68ae40a5f8387e2078de"
+      },
+      {
+        "file": "parallax-library-lifecycle.spec.ts",
+        "title": "lost Save As response replays one copy and two tabs preserve conflicting edits deliberately",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fc7eba819cffe206de7f68ae40a5f8387e2078de"
+      },
+      {
+        "file": "parallax-library-lifecycle.spec.ts",
+        "title": "light and dark Library views remain typed, responsive and keyboard reachable",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fc7eba819cffe206de7f68ae40a5f8387e2078de"
+      },
+      {
+        "file": "parallax-library-lifecycle.spec.ts",
+        "title": "stale environment recovery keeps the original CAS base after reload",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fc7eba819cffe206de7f68ae40a5f8387e2078de"
+      },
+      {
+        "file": "parallax-library-lifecycle.spec.ts",
+        "title": "failed historical copy cannot substitute an earlier version for a newly selected version",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fc7eba819cffe206de7f68ae40a5f8387e2078de"
+      },
+      {
+        "file": "parallax-opacity.spec.ts",
+        "title": "Creator authors actual material fading, recovers a transparent object and replays its saved fade",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "9ea4aa600daed5c308da5a411f76d9c97b4f00f9"
+      },
+      {
+        "file": "parallax-owner-refinements.spec.ts",
+        "title": "owner refinements: coherent Studio themes, overlay assistance and populated working docks",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "48756b43709e6a14d16df04bc0fb33b9e02529e6"
+      },
+      {
+        "file": "parallax-owner-refinements.spec.ts",
+        "title": "floating assistance moves, resizes, restores and keeps its composer at the bottom without editing the scene",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "48756b43709e6a14d16df04bc0fb33b9e02529e6"
+      },
+      {
+        "file": "parallax-owner-refinements.spec.ts",
+        "title": "Admiralty daily chart selects actual request and cost projections with empty and populated states",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "48756b43709e6a14d16df04bc0fb33b9e02529e6"
+      },
+      {
+        "file": "parallax-parametric-room.spec.ts",
+        "title": "Creator adds and rebuilds actual furniture, protects a bound desk, corrects scale and retains the room through reload and phone edits",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fcafca51403ef589a1be6e027a30de013ecf345b"
+      },
+      {
+        "file": "parallax-rooms.spec.ts",
+        "title": "Creator explores ten furnished environments in both appearances without changing the scene",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "8253e5bc88ec7fe84b11a4d0115c5c67857ea3c6"
+      },
+      {
+        "file": "parallax-sc00b-combined.spec.ts",
+        "title": "SC-00B combined Inspector covers twelve selection contexts and room recovery at each depth",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "351476d4ec597e1a2ccdaf135c477d8710790a33"
+      },
+      {
+        "file": "parallax-sc00b-combined.spec.ts",
+        "title": "SC-00B typed light and room feature edits survive undo, mode travel, and saved reload",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "351476d4ec597e1a2ccdaf135c477d8710790a33"
+      },
+      {
+        "file": "parallax-sc00b-combined.spec.ts",
+        "title": "SC-00B scale drag previews on the combined canvas before one history commit",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "351476d4ec597e1a2ccdaf135c477d8710790a33"
+      },
+      {
+        "file": "parallax-sc00b-combined.spec.ts",
+        "title": "SC-00B typed effects retain three depths, light theme, and keyboard rail navigation",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "351476d4ec597e1a2ccdaf135c477d8710790a33"
+      },
+      {
+        "file": "parallax-sc00b-combined.spec.ts",
+        "title": "SC-00B combined Inspector handles removed and mixed selections at every depth",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "351476d4ec597e1a2ccdaf135c477d8710790a33"
+      },
+      {
+        "file": "parallax-sc00b-combined.spec.ts",
+        "title": "SC-00B natural Creator Library entry and Inspector return on desktop",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "351476d4ec597e1a2ccdaf135c477d8710790a33"
+      },
+      {
+        "file": "parallax-sc00b-combined.spec.ts",
+        "title": "SC-00B natural Creator Library entry and Inspector return on phone",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "351476d4ec597e1a2ccdaf135c477d8710790a33"
+      },
+      {
+        "file": "parallax-sc00c-drop-placement.spec.ts",
+        "title": "Library physical drag uses the pointed support and selects the inserted instance",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "b20effc70b511a0bac84cbc6d9b487846952f290"
+      },
+      {
+        "file": "parallax-sc00c-expanded-library.spec.ts",
+        "title": "compact to expanded Library stages a surface placement and returns to the same content",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "10fd975f271024cbf66b88ac9a5917fe42c475bd"
+      },
+      {
+        "file": "parallax-sc00c-expanded-library.spec.ts",
+        "title": "saved assets use the shared Library and wait for an approved surface before creating a Scene copy",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "10fd975f271024cbf66b88ac9a5917fe42c475bd"
+      },
+      {
+        "file": "parallax-sc00c-expanded-library.spec.ts",
+        "title": "scaled physical saved asset keeps keyboard and pointer support with animated root",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "10fd975f271024cbf66b88ac9a5917fe42c475bd"
+      },
+      {
+        "file": "parallax-sc00c-expanded-library.spec.ts",
+        "title": "expanded Library adapts to narrow and phone layouts, themes, reduced motion, and catalog errors",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "10fd975f271024cbf66b88ac9a5917fe42c475bd"
+      },
+      {
+        "file": "parallax-sc00c-expanded-library.spec.ts",
+        "title": "expanded Environment and Scene actions use the same saved sources and Scene Manager",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "10fd975f271024cbf66b88ac9a5917fe42c475bd"
+      },
+      {
+        "file": "parallax-sc00c-library-context-menu.spec.ts",
+        "title": "Library card menus preserve insertion, current-Scene protection, keyboard focus and phone bounds",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "ac1f50aebfd540d57bf21997fe52c7d8ec40a856"
+      },
+      {
+        "file": "parallax-sc00c-library-journeys.spec.ts",
+        "title": "Creator searches, previews and inserts a built-in asset with immediate selection",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "648db4d18c56c472b8451b4774f1470aa2df8635"
+      },
+      {
+        "file": "parallax-sc00c-library-journeys.spec.ts",
+        "title": "keyboard opens a card's relevant actions and inserts its asset",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "648db4d18c56c472b8451b4774f1470aa2df8635"
+      },
+      {
+        "file": "parallax-sc00c-library-journeys.spec.ts",
+        "title": "Creator follows a saved Environment to two Scenes, opens one, returns and renames it",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "648db4d18c56c472b8451b4774f1470aa2df8635"
+      },
+      {
+        "file": "parallax-sc02-integration.spec.ts",
+        "title": "combined Library places typed elements, saves and independently reuses a composition with rendered playback",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "d6d7fe78357f0f85bd0a5f72192a91f0242951c4"
+      },
+      {
+        "file": "parallax-sc02-integration.spec.ts",
+        "title": "physical Library insertion uses Bedroom supports, preserves Undo and refuses an occupied room",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "d6d7fe78357f0f85bd0a5f72192a91f0242951c4"
+      },
+      {
+        "file": "parallax-scene-manager.spec.ts",
+        "title": "Creator authors three independent Haunted Bedroom Scenes, reviews an explicit shared revision and retains immutable references",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "1dc2c9b55a8c8256eb4a93ca3b305682d15862ab"
+      },
+      {
+        "file": "parallax-scene-manager.spec.ts",
+        "title": "built-in copies use a distinct legacy working editor and explicit release before independent Scene reuse",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "1dc2c9b55a8c8256eb4a93ca3b305682d15862ab"
+      },
+      {
+        "file": "parallax-scene-manager.spec.ts",
+        "title": "a reviewed synthetic reconstructed Environment is selectable and another Scene duplicates without changing its pin",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "1dc2c9b55a8c8256eb4a93ca3b305682d15862ab"
+      },
+      {
+        "file": "parallax-scene-manager.spec.ts",
+        "title": "a retained autosave failure stays visible inside Scene Manager and retries the same working identity",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "1dc2c9b55a8c8256eb4a93ca3b305682d15862ab"
+      },
+      {
+        "file": "parallax-semantic-assistant.spec.ts",
+        "title": "Assistant places a real note on the correct table near the window with truthful renderer confirmation, identity and saved restore",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "bd4d123df4de210ea9337e2584bd6c53dff2c6e8"
+      },
+      {
+        "file": "parallax-semantic-assistant.spec.ts",
+        "title": "Assistant asks about two plausible tables, cancels an actual request and reports provider failure without changing the scene",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "bd4d123df4de210ea9337e2584bd6c53dff2c6e8"
+      },
+      {
+        "file": "parallax-semantic-assistant.spec.ts",
+        "title": "Public sign-in input and focus survive switching motion preferences in both directions",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "bd4d123df4de210ea9337e2584bd6c53dff2c6e8"
+      },
+      {
+        "file": "parallax-simulation.spec.ts",
+        "title": "Creator authors a delayed interaction, sees matching and unmatched outcomes, resets and replays saved simulation",
+        "cohort": "browser-11",
+        "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+        "testBlob": "fd4ac9bbc5dac95770c895371235a0e00e7ba5c8"
+      },
+      {
+        "file": "parallax-ai-enforcement.spec.ts",
+        "title": "People dossier allowance, suspension and advanced access govern actual Creator requests",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "a18fcbc7eab6896792bce3914c56ad9cc9ab4bbe"
+      },
+      {
+        "file": "parallax-ai-enforcement.spec.ts",
+        "title": "Global warning, stale policy review, disable and reservation cap match visible Admiralty controls",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "a18fcbc7eab6896792bce3914c56ad9cc9ab4bbe"
+      },
+      {
+        "file": "parallax-ai-enforcement.spec.ts",
+        "title": "Independent browser sessions and users cannot reserve the same last capacity; retries stay durable",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "a18fcbc7eab6896792bce3914c56ad9cc9ab4bbe"
+      },
+      {
+        "file": "parallax-guided.spec.ts",
+        "title": "Guided Lens preserves meaning and progression on desktop",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "c9ce67a0a4a41bd9e1f19cfbc60d061f1ef1ee15"
+      },
+      {
+        "file": "parallax-guided.spec.ts",
+        "title": "Guided Lens preserves meaning and progression on mobile",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "c9ce67a0a4a41bd9e1f19cfbc60d061f1ef1ee15"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "private asset reaches the canonical listing and installs as an immutable Library release",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "Creator updates an approved listing through the same wizard without rewriting its first release",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "rich Environment and pinned Scene use reviewed geometry without private Library metadata",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "owned synthetic Environment publishes from Library and installs as a read-only Environment",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "procedural Effect publishes from Effects and installs in the second Creator's Effects Library",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "owned Composition publishes from Compositions and installs as a reusable read-only prefab",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "unlicensed physical content has a visible refusal and remains private",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "a lost submission response reports uncertainty and exact retry recovers one release",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "a Creator reaches server package review from the ordinary Studio entry without publishing",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "a Creator without a public Profile gets a direct setup route and returns to the saved source",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-spatial-community.spec.ts",
+        "title": "a private-profile Environment returns to its selected immutable version after Profile setup",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+      },
+      {
+        "file": "parallax-tracking-recovery.spec.ts",
+        "title": "Chronicle Lens explains browser tracker startup failure on desktop",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "c19645d817b7795f7d0a3cda913ed9ccd7532b86"
+      },
+      {
+        "file": "parallax-tracking-recovery.spec.ts",
+        "title": "Chronicle Lens explains browser tracker startup failure on phone",
+        "cohort": "special-08",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "c19645d817b7795f7d0a3cda913ed9ccd7532b86"
+      },
+      {
+        "file": "parallax-sc00c-scale-browser.spec.ts",
+        "title": "a large saved-Scene catalog remains searchable and paged in the actual Studio",
+        "cohort": "special-09",
+        "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+        "testBlob": "8f16bdd28165d4f9e1453394f38db42aba2d74c6"
+      },
+      {
+        "file": "parallax-ai-quotas.spec.ts",
+        "title": "Admiralty changes an AI allowance through the existing People dossier",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "1e7c9a7ce6ad293bb7a33d3b63d879ff4e8e8dad"
+      },
+      {
+        "file": "parallax-environment-creation.spec.ts",
+        "title": "Environment photo setup imports 1 views, renders the proposal and saves an independent editable room",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "adb6a4b325dfed3235e4d07ca95e8e72718f984c"
+      },
+      {
+        "file": "parallax-environment-creation.spec.ts",
+        "title": "Environment photo setup imports 2 views, renders the proposal and saves an independent editable room",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "adb6a4b325dfed3235e4d07ca95e8e72718f984c"
+      },
+      {
+        "file": "parallax-environment-entry.spec.ts",
+        "title": "Environment plus opens keyboard-friendly choices, duplicates a source and starts an empty shell",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "8654aac9c0efe5cbbc54da6444569629804002f5"
+      },
+      {
+        "file": "parallax-environment-library.spec.ts",
+        "title": "pinned room editing creates an explicit independent Environment copy and preserves the Scene release pin",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "37d242e39f163659dda61e94d67939b872d8f32f"
+      },
+      {
+        "file": "parallax-environment-library.spec.ts",
+        "title": "Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "37d242e39f163659dda61e94d67939b872d8f32f"
+      },
+      {
+        "file": "parallax-photo-feedback.spec.ts",
+        "title": "Photo setup timeout-dark keeps processing and recovery visible without modifying the source",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "fc507b6fdd80dbd17e4bcd362d20f00f9ba6c9c8"
+      },
+      {
+        "file": "parallax-photo-feedback.spec.ts",
+        "title": "Photo setup clarification-phone-light keeps processing and recovery visible without modifying the source",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "fc507b6fdd80dbd17e4bcd362d20f00f9ba6c9c8"
+      },
+      {
+        "file": "parallax-photo-feedback.spec.ts",
+        "title": "Photo setup network-desktop-light keeps processing and recovery visible without modifying the source",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "fc507b6fdd80dbd17e4bcd362d20f00f9ba6c9c8"
+      },
+      {
+        "file": "parallax-room-photo.spec.ts",
+        "title": "Creator privately imports a room photo, confirms measurement, preserves it through refinement, creates a hidden letter and replays its reveal",
+        "cohort": "special-12",
+        "candidate": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+        "testBlob": "c724dfab763b5d94135c3061137a481878775ff0"
+      }
+    ],
+    "excluded": [
+      {
+        "file": "parallax-owner-room-photo.spec.ts",
+        "title": "One owner photograph walkthrough starts without dimensions and retains editable rendered layout",
+        "reason": "Owner private-photo or retained private-observation input is outside the authorized synthetic scope."
+      },
+      {
+        "file": "parallax-owner-room-photo.spec.ts",
+        "title": "Two owner photograph walkthrough starts without dimensions and retains editable rendered layout",
+        "reason": "Owner private-photo or retained private-observation input is outside the authorized synthetic scope."
+      },
+      {
+        "file": "parallax-phase3-baseline.spec.ts",
+        "title": "capture accepted Phase 2 Studio before Phase 3 UI edits",
+        "reason": "Historical Phase 2 baseline must retain its original source."
+      },
+      {
+        "file": "parallax-room-observation-replay.spec.ts",
+        "title": "Retained single observation keeps table poses through mapping, rendering and reload without inference",
+        "reason": "Owner private-photo or retained private-observation input is outside the authorized synthetic scope."
+      },
+      {
+        "file": "parallax-room-observation-replay.spec.ts",
+        "title": "Retained two observation keeps table poses through mapping, rendering and reload without inference",
+        "reason": "Owner private-photo or retained private-observation input is outside the authorized synthetic scope."
+      }
+    ]
+  },
+  "limits": [
+    "This runtime-input signature establishes implementation equivalence across exact local receipts; it does not rebind those receipts to a different Git commit.",
+    "Protected acceptance requires fresh exact-candidate governed capture, authenticated review and ordinary Sounding Line after Crossdeck closure.",
+    "Development photo fixtures and all upstream AI calls are synthetic and unpaid. No owner private content, physical AR, live-provider accuracy or owner acceptance is claimed."
+  ]
+}

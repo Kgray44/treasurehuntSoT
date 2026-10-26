@@ -1,0 +1,30 @@
+{
+  "kind": "USER_VISIBLE_REPAIR_DOCUMENTATION_REVIEW",
+  "timeUtc": "2026-10-22T05:35:29.0092070Z",
+  "classification": "Ordinary Journal layout and runtime-identity correction in existing integration candidate",
+  "reviewed": [
+    {
+      "path": "docs/product/features.md",
+      "disposition": "NO CHANGE: existing candidate availability and qualification boundaries remain accurate"
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/product-status/current-status.md",
+      "disposition": "NO CHANGE: pending exact-candidate verification/qualification already explicit"
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md",
+      "disposition": "NO CHANGE: existing source-bound candidate and physical/native boundaries preserved"
+    },
+    {
+      "path": "docs/user/player-guide.md",
+      "disposition": "UPDATE: compact header Lens action, scene details and earlier scenes below reading book"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "disposition": "UPDATE: unreleased candidate correction, browser verification pending"
+    }
+  ],
+  "featureCatalog": "NO_CHANGE_REQUIRED: ordinary bug fix; no major capability or availability promotion",
+  "evidenceClassification": "Engineering validation records under Development_Docs; active continuation under .agents",
+  "rawBrowserOrKeyDataPublished": false
+}

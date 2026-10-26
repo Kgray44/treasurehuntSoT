@@ -1,0 +1,68 @@
+{
+  "captures": [
+    {
+      "selection": "mist",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/mist-guided-light.png"
+    },
+    {
+      "selection": "mist",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/mist-standard-light.png"
+    },
+    {
+      "selection": "mist",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/mist-engineering-light.png"
+    },
+    {
+      "selection": "particles",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/particles-guided-light.png"
+    },
+    {
+      "selection": "particles",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/particles-standard-light.png"
+    },
+    {
+      "selection": "particles",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/particles-engineering-light.png"
+    },
+    {
+      "selection": "projection",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/projection-guided-light.png"
+    },
+    {
+      "selection": "projection",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/projection-standard-light.png"
+    },
+    {
+      "selection": "projection",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/projection-engineering-light.png"
+    },
+    {
+      "selection": "phenomenon",
+      "mode": "GUIDED",
+      "path": "artifacts/parallax-sc00b-integration/browser/phenomenon-guided-light.png"
+    },
+    {
+      "selection": "phenomenon",
+      "mode": "DETAILED",
+      "path": "artifacts/parallax-sc00b-integration/browser/phenomenon-standard-light.png"
+    },
+    {
+      "selection": "phenomenon",
+      "mode": "ENGINEERING",
+      "path": "artifacts/parallax-sc00b-integration/browser/phenomenon-engineering-light.png"
+    }
+  ],
+  "errors": [],
+  "theme": "LIGHT",
+  "motion": "REDUCED",
+  "ownerAccepted": false
+}

@@ -1,0 +1,457 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - link "Voyagewright home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: ✦
+        - generic [ref=e7]:
+          - strong [ref=e8]: Voyagewright
+          - generic [ref=e9]: Voyagewright Studio
+      - generic [ref=e10]:
+        - generic [ref=e11]: Voyagewright Studio
+        - link "Return" [ref=e12] [cursor=pointer]:
+          - /url: /studio/library
+      - button "Synthetic SC-00B Combined Inspector Creator" [ref=e14] [cursor=pointer]:
+        - generic [ref=e15]: SS
+        - generic [ref=e16]: Synthetic SC-00B Combined Inspector Creator
+        - generic [ref=e17]: ▾
+    - paragraph [ref=e18]: This immersive experience uses its authored appearance. Your appearance preference applies on standard product surfaces.
+    - main [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - link "← Creator Studio" [ref=e26] [cursor=pointer]:
+            - /url: /studio/library
+          - heading "Parallax" [level=1] [ref=e27]: ◈ Parallax
+          - status [ref=e28]: Working draft saved
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - text: Authoring mode
+            - combobox "Authoring mode" [ref=e31]:
+              - option "GUIDED"
+              - option "STANDARD"
+              - option "ENGINEERING" [selected]
+          - button "Undo" [ref=e32] [cursor=pointer]:
+            - img [ref=e33]
+          - button "Redo" [disabled] [ref=e35]:
+            - img [ref=e36]
+          - button "Save to Library" [ref=e38] [cursor=pointer]
+          - button "Save as new…" [ref=e39] [cursor=pointer]
+          - button "Versions" [ref=e40] [cursor=pointer]
+          - group [ref=e41]:
+            - generic "Scene actions" [ref=e42] [cursor=pointer]
+      - region "Environment and Scene" [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]: SHARED ENVIRONMENT
+          - strong [ref=e46]: Empty room
+          - generic [ref=e47]: Choose an Environment in Scene Manager
+        - generic [ref=e48]: →
+        - generic [ref=e49]:
+          - generic [ref=e50]: EDITING SCENE
+          - strong [ref=e51]: Inspector acceptance workshop
+          - generic [ref=e52]: Working draft saved · revision 2
+        - button "Manage Scenes" [ref=e53] [cursor=pointer]
+      - navigation "Workstation panels" [ref=e54]:
+        - combobox "Workspace layout" [ref=e56]:
+          - option "Spatial Editing" [selected]
+          - option "Scene Construction"
+          - option "Behavior Authoring"
+          - option "Focus / Immersive"
+        - generic [ref=e57]:
+          - button "Library & hierarchy" [pressed] [ref=e58] [cursor=pointer]:
+            - img [ref=e59]
+          - button "Inspector" [pressed] [ref=e61] [cursor=pointer]:
+            - img [ref=e62]
+          - button "Diagnostics · 1" [ref=e64] [cursor=pointer]
+          - button "Reset Workspace Layout" [ref=e65] [cursor=pointer]:
+            - img [ref=e66]
+      - generic [ref=e68]:
+        - navigation "Library and hierarchy dock" [ref=e69]:
+          - button "Open Library" [ref=e70] [cursor=pointer]: ▱
+          - button "Open Scene Hierarchy" [pressed] [ref=e71] [cursor=pointer]: ☷
+        - complementary "Spatial Library" [ref=e72]:
+          - separator "Resize library panel" [ref=e73]
+          - generic [ref=e74]:
+            - heading "Scene graph" [level=2] [ref=e75]
+            - button "Collapse left dock" [ref=e76] [cursor=pointer]: ‹
+          - tabpanel "Open Scene Hierarchy" [ref=e77]:
+            - region "Scene graph" [ref=e78]:
+              - generic [ref=e79]:
+                - heading "Scene Graph 5" [level=2] [ref=e80]:
+                  - text: Scene Graph
+                  - generic [ref=e81]: "5"
+                - toolbar "Scene graph object actions" [ref=e82]:
+                  - button "Group selected items" [ref=e83] [cursor=pointer]:
+                    - img [ref=e84]
+                  - button "Rename object" [disabled] [ref=e86]:
+                    - img [ref=e87]
+                  - button "Hide object" [disabled] [ref=e89]:
+                    - img [ref=e90]
+                  - button "Lock object" [disabled] [ref=e92]:
+                    - img [ref=e93]
+                  - button "Duplicate object" [disabled] [ref=e95]:
+                    - img [ref=e96]
+                  - button "Remove object" [disabled] [ref=e98]:
+                    - img [ref=e99]
+              - tablist "Scene graph categories" [ref=e101]:
+                - tab "Assets" [selected] [ref=e102] [cursor=pointer]
+                - tab "Groups" [ref=e103] [cursor=pointer]
+              - paragraph [ref=e104]: 1 selected · Ctrl/⌘ click or Space to add · Shift for range
+              - textbox "Scene graph search" [ref=e106]:
+                - /placeholder: Search scene…
+              - tabpanel "Assets" [ref=e107]:
+                - list [ref=e108]:
+                  - listitem [ref=e109]:
+                    - button "Desk Map parchment" [ref=e110] [cursor=pointer]:
+                      - img [ref=e112]
+                      - generic [ref=e114]:
+                        - text: Desk Map
+                        - generic [ref=e115]: parchment
+                      - generic "Drag to reorder; Alt + arrow keys" [ref=e117]:
+                        - img [ref=e118]
+                  - listitem [ref=e120]:
+                    - button "Articulated chest marker" [ref=e121] [cursor=pointer]:
+                      - img [ref=e123]
+                      - generic [ref=e125]:
+                        - text: Articulated chest
+                        - generic [ref=e126]: marker
+                      - generic "Drag to reorder; Alt + arrow keys" [ref=e128]:
+                        - img [ref=e129]
+                  - listitem [ref=e131]:
+                    - button "Point light marker" [ref=e132] [cursor=pointer]:
+                      - img [ref=e134]
+                      - generic [ref=e136]:
+                        - text: Point light
+                        - generic [ref=e137]: marker
+                      - generic "Drag to reorder; Alt + arrow keys" [ref=e139]:
+                        - img [ref=e140]
+                  - listitem [ref=e142]:
+                    - button "Spatial ambience marker" [ref=e143] [cursor=pointer]:
+                      - img [ref=e145]
+                      - generic [ref=e147]:
+                        - text: Spatial ambience
+                        - generic [ref=e148]: marker
+                      - generic "Drag to reorder; Alt + arrow keys" [ref=e150]:
+                        - img [ref=e151]
+                  - listitem [ref=e153]:
+                    - button "Interaction region marker" [ref=e154] [cursor=pointer]:
+                      - img [ref=e156]
+                      - generic [ref=e158]:
+                        - text: Interaction region
+                        - generic [ref=e159]: marker
+                      - generic "Drag to reorder; Alt + arrow keys" [ref=e161]:
+                        - img [ref=e162]
+                - region "Room feature selection" [ref=e164]:
+                  - heading "Room features" [level=3] [ref=e165]
+                  - list [ref=e166]:
+                    - listitem [ref=e167]:
+                      - button "floor furniture floor" [ref=e168] [cursor=pointer]:
+                        - img [ref=e169]
+                        - generic [ref=e171]:
+                          - text: floor furniture
+                          - generic [ref=e172]: floor
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e173]:
+                          - img [ref=e174]
+                    - listitem [ref=e176]:
+                      - button "wall window wall" [ref=e177] [cursor=pointer]:
+                        - img [ref=e178]
+                        - generic [ref=e180]:
+                          - text: wall window
+                          - generic [ref=e181]: wall
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e182]:
+                          - img [ref=e183]
+                    - listitem [ref=e185]:
+                      - button "wall front wall" [ref=e186] [cursor=pointer]:
+                        - img [ref=e187]
+                        - generic [ref=e189]:
+                          - text: wall front
+                          - generic [ref=e190]: wall
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e191]:
+                          - img [ref=e192]
+                    - listitem [ref=e194]:
+                      - button "wall left wall" [ref=e195] [cursor=pointer]:
+                        - img [ref=e196]
+                        - generic [ref=e198]:
+                          - text: wall left
+                          - generic [ref=e199]: wall
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e200]:
+                          - img [ref=e201]
+                    - listitem [ref=e203]:
+                      - button "wall right wall" [ref=e204] [cursor=pointer]:
+                        - img [ref=e205]
+                        - generic [ref=e207]:
+                          - text: wall right
+                          - generic [ref=e208]: wall
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e209]:
+                          - img [ref=e210]
+                    - listitem [ref=e212]:
+                      - button "ceiling ceiling" [ref=e213] [cursor=pointer]:
+                        - img [ref=e214]
+                        - generic [ref=e216]:
+                          - text: ceiling
+                          - generic [ref=e217]: ceiling
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e218]:
+                          - img [ref=e219]
+                    - listitem [ref=e221]:
+                      - button "New table table" [pressed] [ref=e222] [cursor=pointer]:
+                        - img [ref=e223]
+                        - generic [ref=e225]:
+                          - text: New table
+                          - generic [ref=e226]: table
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e227]:
+                          - img [ref=e228]
+                    - listitem [ref=e230]:
+                      - button "New exclusion zone exclusion_zone" [ref=e231] [cursor=pointer]:
+                        - img [ref=e232]
+                        - generic [ref=e234]:
+                          - text: New exclusion zone
+                          - generic [ref=e235]: exclusion_zone
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e236]:
+                          - img [ref=e237]
+                    - listitem [ref=e239]:
+                      - button "New other other" [ref=e240] [cursor=pointer]:
+                        - img [ref=e241]
+                        - generic [ref=e243]:
+                          - text: New other
+                          - generic [ref=e244]: other
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e245]:
+                          - img [ref=e246]
+                    - listitem [ref=e248]:
+                      - button "New table exclusion exclusion_zone" [ref=e249] [cursor=pointer]:
+                        - img [ref=e250]
+                        - generic [ref=e252]:
+                          - text: New table exclusion
+                          - generic [ref=e253]: exclusion_zone
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e254]:
+                          - img [ref=e255]
+                    - listitem [ref=e257]:
+                      - button "New other exclusion exclusion_zone" [ref=e258] [cursor=pointer]:
+                        - img [ref=e259]
+                        - generic [ref=e261]:
+                          - text: New other exclusion
+                          - generic [ref=e262]: exclusion_zone
+                        - generic "Drag to reorder; Alt + arrow keys" [ref=e263]:
+                          - img [ref=e264]
+        - generic [ref=e266]:
+          - generic [ref=e267]:
+            - generic [ref=e268]:
+              - text: Preview
+              - combobox "Preview" [ref=e269]:
+                - option "EDITOR" [selected]
+                - option "PHONE"
+                - option "LENS"
+                - option "CREW"
+                - option "LOW_CAPABILITY"
+                - option "FALLBACK"
+                - option "ACCESSIBILITY"
+                - option "PERFORMANCE"
+                - option "REMOTE"
+            - generic [ref=e270]:
+              - text: Environment
+              - combobox "Environment" [ref=e271]:
+                - option "Empty room · editable" [selected]
+                - option "Bedroom"
+                - option "Living room"
+                - option "Small dorm"
+                - option "Office"
+                - option "Classroom"
+                - option "Gallery"
+                - option "Outdoor trail"
+                - option "Plaza"
+                - option "Empty room"
+                - option "Cluttered room"
+            - button "Test in 10 environments" [ref=e272] [cursor=pointer]
+          - region "Spatial canvas" [ref=e273]:
+            - generic:
+              - generic: "Preview: Empty room"
+              - generic: SYNTHETIC / EDITOR
+            - generic [ref=e274]:
+              - group [ref=e275]:
+                - generic [ref=e276]:
+                  - button "Finish environment editing" [pressed] [ref=e277] [cursor=pointer]:
+                    - img [ref=e278]
+                  - combobox "Camera perspective" [ref=e280]:
+                    - option "Perspective" [selected]
+                    - option "Plan / orthographic"
+                    - option "Front elevation"
+                  - button "Frame selection" [ref=e281] [cursor=pointer]:
+                    - img [ref=e282]
+                  - button "Reset view" [ref=e284] [cursor=pointer]:
+                    - img [ref=e285]
+                  - combobox "Gizmo coordinate space" [ref=e287]:
+                    - option "World coordinates" [selected]
+                    - option "Local coordinates"
+                  - button "Frame scene" [ref=e288] [cursor=pointer]
+                  - generic [ref=e289]:
+                    - text: Preview quality
+                    - combobox "Preview quality" [ref=e290]:
+                      - option "Low"
+                      - option "Medium" [selected]
+                      - option "High"
+                  - button "Enable preview audio" [ref=e291] [cursor=pointer]
+              - toolbar "Spatial editing tools" [ref=e292]:
+                - button "Select tool" [pressed] [ref=e293] [cursor=pointer]:
+                  - img [ref=e294]
+                  - generic [ref=e296]: Select
+                - button "Move tool" [ref=e297] [cursor=pointer]:
+                  - img [ref=e298]
+                  - generic [ref=e300]: Move
+                - button "Rotate tool" [ref=e301] [cursor=pointer]:
+                  - img [ref=e302]
+                  - generic [ref=e304]: Rotate
+                - button "Scale tool" [ref=e305] [cursor=pointer]:
+                  - img [ref=e306]
+                  - generic [ref=e308]: Scale
+                - button "Toggle snapping" [pressed] [ref=e309] [cursor=pointer]:
+                  - text: ⌗
+                  - generic [ref=e310]: Grid
+                - button "Auto surface clamping" [pressed] [ref=e311] [cursor=pointer]:
+                  - text: ⊞
+                  - generic [ref=e312]: Clamp
+                - button "Toggle spatial overlays" [ref=e313] [cursor=pointer]:
+                  - text: ◈
+                  - generic [ref=e314]: Surfaces
+            - generic [ref=e315]:
+              - text: Environment editing · select any room feature, then use Move, Rotate or Scale. Room features rotate upright around Y.
+              - combobox "Viewport room feature" [ref=e316]:
+                - option "Select room feature" [disabled]
+                - option "floor furniture"
+                - option "wall window"
+                - option "wall front"
+                - option "wall left"
+                - option "wall right"
+                - option "ceiling"
+                - option "New table" [selected]
+                - option "New exclusion zone"
+                - option "New other"
+                - option "New table exclusion"
+                - option "New other exclusion"
+            - generic "Interactive synthetic 3D environment" [ref=e318]
+            - generic [ref=e319]:
+              - generic [ref=e320]: ROOM FEATURE
+              - strong [ref=e321]: New table
+              - button "Edit selected feature" [ref=e322] [cursor=pointer]
+              - generic [ref=e323]: Editable environment geometry
+            - generic [ref=e324]:
+              - generic [ref=e325]: ◉ Synthetic geometry · cutaway view · physical qualification pending
+              - generic [ref=e326]: 5 objects / 7 safe candidates
+            - generic [ref=e327]:
+              - strong [ref=e328]: Manual placement
+              - text: Select an object to begin.
+              - group [ref=e329]:
+                - generic "Navigation help" [ref=e330] [cursor=pointer]
+            - generic "Keyboard spatial selection" [ref=e331]:
+              - button "Desk Map. Desk Map, available to inspect in Guided View." [ref=e332] [cursor=pointer]: Desk Map
+              - button "Articulated chest. Carved flat lid, internal tray, exposed hinges and a working rear lid pivot." [ref=e333] [cursor=pointer]: Articulated chest
+              - button "Point light. Local light with physical distance falloff." [ref=e334] [cursor=pointer]: Point light
+              - button "Spatial ambience. Synthesized ether, wind or hum with positional attenuation. Requires Enable preview audio; no recorded whisper is included." [ref=e335] [cursor=pointer]: Spatial ambience
+              - button "Interaction region. Inspectable region, visible in Editor. Proximity triggers require a future qualified runtime; no automatic puzzle action." [ref=e336] [cursor=pointer]: Interaction region
+          - generic [ref=e337]:
+            - button "Ask Parallax" [ref=e338] [cursor=pointer]:
+              - generic [ref=e339]: ✦ Ask Parallax
+              - generic [ref=e340]: Place a folded letter on a table near the entrance…
+            - generic [ref=e341]: AI unavailable · phrase rules
+          - region "Bottom workstation dock" [ref=e342]:
+            - generic [ref=e343]:
+              - tablist "Bottom dock tools" [ref=e344]:
+                - tab "Timeline" [ref=e345] [cursor=pointer]
+                - tab "Simulation" [ref=e346] [cursor=pointer]
+                - tab "Diagnostics" [ref=e347] [cursor=pointer]
+                - tab "Events" [ref=e348] [cursor=pointer]
+              - generic [ref=e349]:
+                - button "Play timeline" [ref=e350] [cursor=pointer]
+                - button "Restart timeline" [ref=e351] [cursor=pointer]
+                - button "Stop timeline" [ref=e352] [cursor=pointer]
+                - generic [ref=e353]: 0.0 / 60.0 s
+                - button "Expand bottom dock" [ref=e354] [cursor=pointer]: ⌃
+        - complementary "Spatial inspector" [ref=e355]:
+          - separator "Resize inspector panel" [ref=e356]
+          - generic [ref=e357]:
+            - generic [ref=e358]:
+              - heading "Spatial context" [level=2] [ref=e359]
+              - generic [ref=e360]: Guided · Standard · Engineering
+            - button "Collapse Inspector" [ref=e361] [cursor=pointer]: ›
+          - region "Inspector context" [ref=e362]:
+            - generic [ref=e363]: Room feature
+            - strong [ref=e364]: New table
+            - paragraph [ref=e365]: Placement, relationships, and behavior stay connected to this selection.
+          - group [ref=e366]:
+            - generic "Room & environmental features" [ref=e367] [cursor=pointer]
+            - region "Room spatial context" [ref=e368]:
+              - group [ref=e369]:
+                - generic "Environment tools and dimensions" [ref=e370]:
+                  - heading "Room tools & dimensions" [level=3] [ref=e371]
+                  - paragraph [ref=e372]: Editable authoring geometry · preset · 11 features. This is not a measured room survey.
+                  - paragraph [ref=e373]: Resizing the room moves its features proportionally. Furniture keeps its own dimensions.
+                  - group "Exclusion zones" [ref=e374]:
+                    - button "Exclusion zones · 3" [ref=e375] [cursor=pointer]
+                  - group "Construction checks" [ref=e376]:
+                    - button "Construction checks · checks passed · 0 findings" [ref=e377] [cursor=pointer]
+                  - region "Add room features" [ref=e378]:
+                    - heading "Add room features" [level=3] [ref=e379]
+                    - generic [ref=e380]:
+                      - text: New feature type
+                      - combobox "New room feature type" [ref=e381]:
+                        - option "floor"
+                        - option "wall"
+                        - option "ceiling"
+                        - option "door"
+                        - option "window"
+                        - option "table"
+                        - option "desk" [selected]
+                        - option "chair"
+                        - option "sofa"
+                        - option "bed"
+                        - option "cabinet"
+                        - option "wardrobe"
+                        - option "shelf"
+                        - option "appliance"
+                        - option "tree"
+                        - option "other"
+                        - option "exclusion zone"
+                    - button "Add room feature" [ref=e382] [cursor=pointer]
+                    - paragraph [ref=e383]: Doors and windows cut matching coplanar wall openings. Door movement is not simulated. Use Construction checks to review support and attachment.
+                  - group "Room dimensions" [ref=e384]:
+                    - button "Room dimensions" [ref=e385] [cursor=pointer]
+                    - generic [ref=e386]:
+                      - text: Room width (m)
+                      - spinbutton "Room width (m)" [ref=e387]: "4"
+                    - generic [ref=e388]:
+                      - text: Room height (m)
+                      - spinbutton "Room height (m)" [ref=e389]: "2.8"
+                    - generic [ref=e390]:
+                      - text: Room depth (m)
+                      - spinbutton "Room depth (m)" [ref=e391]: "4"
+                - generic [ref=e392]:
+                  - text: Room feature
+                  - combobox "Room feature" [ref=e393]:
+                    - option "Choose a feature" [disabled]
+                    - option "floor furniture · floor"
+                    - option "wall window · wall"
+                    - option "wall front · wall"
+                    - option "wall left · wall"
+                    - option "wall right · wall"
+                    - option "ceiling · ceiling"
+                    - option "New table · table" [selected]
+                    - option "New exclusion zone · exclusion zone"
+                    - option "New other · other"
+                    - option "New table exclusion · exclusion zone"
+                    - option "New other exclusion · exclusion zone"
+                - region "Room feature relationships" [ref=e394]:
+                  - heading "Support and nearby features" [level=3] [ref=e395]
+                  - paragraph [ref=e396]: 1 usable surfaces · 1 supporting an authored object.
+                  - paragraph [ref=e397]: Attached objects must be moved before their supporting feature can be rebuilt or removed.
+                  - button "floor furniture · 0.00 m in front of" [ref=e398] [cursor=pointer]
+                  - button "ceiling · 0.00 m in front of" [ref=e399] [cursor=pointer]
+                  - button "New exclusion zone · 0.00 m in front of" [ref=e400] [cursor=pointer]
+                  - button "New table exclusion · 0.00 m in front of" [ref=e401] [cursor=pointer]
+        - navigation "Inspector dock" [ref=e402]:
+          - button "Open object properties" [ref=e403] [cursor=pointer]: ◈
+          - button "Open spatial context" [active] [pressed] [ref=e404] [cursor=pointer]: ◎
+          - button "Open scene settings" [ref=e405] [cursor=pointer]: ▣
+  - alert [ref=e406]
+```

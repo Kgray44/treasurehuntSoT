@@ -1,0 +1,2562 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt
+
+Sourcemap for "D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/postmark/dist/index.js" points to missing source files
+Sourcemap for "D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/standardwebhooks/dist/index.js" points to missing source files
+stderr | src/components/studio/parallax/SpatialStudio.test.tsx > offers an explicit Environment copy before editing a pinned Scene room
+An error occurred in the <SpatialContentLibrary> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/components/studio/parallax/SpatialStudio.test.tsx > records manual transforms as reversible edits and serializes autosave
+An error occurred in the <SpatialContentLibrary> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/components/studio/parallax/SpatialStudio.test.tsx > keeps a newly saved scene in the URL without losing Chronicle, Passage or history state
+An error occurred in the <SpatialContentLibrary> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/components/studio/parallax/SpatialStudio.test.tsx > mounts the real port, previews without saving, installs one acknowledged history change and avoids duplicate autosave
+An error occurred in the <SpatialContentLibrary> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/components/studio/parallax/SpatialStudio.test.tsx > rejects a mounted late response after a manual edit and byte-identical undo
+An error occurred in the <SpatialContentLibrary> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+stderr | src/components/studio/parallax/SpatialStudio.test.tsx > locates a proposed object in the real preview without erasing it on selection
+An error occurred in the <SpatialContentLibrary> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx (17 tests | 7 failed) 23377ms
+   × offers an explicit Environment copy before editing a pinned Scene room 1553ms
+   × records manual transforms as reversible edits and serializes autosave 3197ms
+   × keeps a newly saved scene in the URL without losing Chronicle, Passage or history state 3069ms
+   × mounts the real port, previews without saving, installs one acknowledged history change and avoids duplicate autosave 5281ms
+   × rejects a mounted late response after a manual edit and byte-identical undo 259ms
+   × locates a proposed object in the real preview without erasing it on selection 5232ms
+   × adds a Library exclusion tool to the visible environment and selects its shared editing controls 959ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > offers an explicit Environment copy before editing a pinned Scene room
+TestingLibraryElementError: Unable to find role="dialog"
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ waitForWrapper D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx:55:31
+     53|   await screen.findByRole("heading", { name: "Parallax", level: 1 });
+     54|   fireEvent.click(screen.getByRole("button", { name: "Edit room featur…
+     55|   const dialog = await screen.findByRole("dialog");
+       |                               ^
+     56|   expect(within(dialog).getByText(/This Scene keeps its released Envir…
+     57|   expect(within(dialog).getByRole("combobox", { name: "Type" })).toHav…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > records manual transforms as reversible edits and serializes autosave
+AssertionError: expected false to be true // Object.is equality
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div />
+  </body>
+</html>
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ timeout src/components/studio/parallax/SpatialStudio.test.tsx:269:70
+    267|   fireEvent.change(screen.getByLabelText("Object width in meters"), { …
+    268|   fireEvent.blur(screen.getByLabelText("Object width in meters"));
+    269|   await waitFor(() => expect(calls.some((c) => c.action === "SAVE")).t…
+       |                                                                      ^
+    270|   expect(
+    271|     (calls.find((c) => c.action === "SAVE")!.draft as ReturnType<typeo…
+ ❯ runWithExpensiveErrorDiagnosticsDisabled D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > keeps a newly saved scene in the URL without losing Chronicle, Passage or history state
+AssertionError: expected false to be true // Object.is equality
+
+Ignored nodes: comments, script, style
+<html>
+  <head />
+  <body>
+    <div />
+  </body>
+</html>
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ timeout src/components/studio/parallax/SpatialStudio.test.tsx:357:76
+    355|   render(<SpatialStudio chronicleId="chronicle" blockId="block" />);
+    356|   await screen.findByRole("heading", { name: "Parallax", level: 1 });
+    357|   await waitFor(() => expect(calls.some((call) => call.action === "SAV…
+       |                                                                            ^
+    358|   const saved = calls.find((call) => call.action === "SAVE")!;
+    359|   const savedDraft = draftSchema.parse(saved.draft);
+ ❯ runWithExpensiveErrorDiagnosticsDisabled D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > mounts the real port, previews without saving, installs one acknowledged history change and avoids duplicate autosave
+TestingLibraryElementError: Unable to find role="button" and name "Apply all changes"
+
+Ignored nodes: comments, script, style
+<aside
+  aria-label="Spatial Assistant"
+  class="_assistant_739f37"
+  data-motion="full"
+  role="region"
+>
+  <header
+    aria-label="Spatial Assistant header"
+    class="_header_739f37"
+    data-floating-gesture="move"
+    tabindex="0"
+    title="Drag header to move · arrow keys move · Shift moves farther"
+  >
+    <div
+      class="_emblem_739f37"
+    >
+      <svg
+        aria-hidden="true"
+        fill="none"
+        height="36"
+        stroke="currentColor"
+        stroke-width="1.3"
+        viewBox="0 0 40 40"
+        width="36"
+      >
+        <path
+          d="m20 5 4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"
+        />
+        <path
+          d="m30 5 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"
+        />
+      </svg>
+    </div>
+    <div>
+      <p>
+        PARALLAX
+      </p>
+      <h2>
+        <button
+          aria-label="Move floating Spatial Assistant"
+          class="_headerDragTitle_739f37"
+          data-floating-gesture="move"
+          tabindex="0"
+          title="Drag header to move · arrow keys move · Shift moves farther"
+          type="button"
+        >
+          Spatial Assistant
+        </button>
+      </h2>
+    </div>
+    <div
+      class="_assistantWindowControls_06d964"
+    >
+      <span
+        aria-live="polite"
+        class="_srOnly_06d964"
+      />
+      <button
+        aria-label="Dock assistance"
+        aria-pressed="false"
+        title="Dock assistance"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          focusable="false"
+          height="18"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.7"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path
+            d="M4 4h16v16H4ZM9 4v16M12 8h5M12 12h5M12 16h3"
+          />
+        </svg>
+      </button>
+      <button
+        aria-label="Close assistance"
+        title="Close assistance"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          height="18"
+          stroke="currentColor"
+          stroke-width="1.6"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path
+            d="m6 6 12 12M18 6 6 18"
+          />
+        </svg>
+      </button>
+    </div>
+  </header>
+  <div
+    class="_context_739f37"
+  >
+    <span
+      aria-hidden="true"
+      class="_contextDot_739f37"
+    />
+    <span>
+      Desk Map
+    </span>
+    <small>
+      1
+       objects
+    </small>
+    <button>
+      View canvas
+    </button>
+  </div>
+  <div
+    aria-label="Assistance response"
+    class="_body_739f37"
+    role="region"
+    tabindex="0"
+  >
+    <div
+      class="_chatTurn_739f37"
+      style="opacity: 0; transform: translateY(10px);"
+    >
+      <div
+        class="_sentRequest_739f37"
+      >
+        <span
+          class="_kicker_739f37"
+        >
+          YOUR IDEA
+        </span>
+        <p>
+          Make the map smaller without changing its clue.
+        </p>
+      </div>
+    </div>
+    <div
+      aria-label="Assistant thinking"
+      class="_thinking_739f37"
+      style="opacity: 0; transform: translateY(10px) scale(0.988);"
+    >
+      <div
+        aria-hidden="true"
+        class="_thinkingOrb_739f37"
+      >
+        <span
+          class="_thinkingRing_739f37"
+        />
+        <span
+          class="_thinkingRing_739f37"
+        />
+        <span
+          class="_thinkingSpark_739f37"
+        >
+          ✦
+        </span>
+      </div>
+      <strong>
+        Shaping your idea
+      </strong>
+      <span
+        aria-hidden="true"
+        class="_thinkingDots_739f37"
+      >
+        <i />
+        <i />
+        <i />
+      </span>
+    </div>
+    <p
+      aria-live="polite"
+      class="_screenReaderStatus_739f37"
+      data-working="true"
+      role="status"
+    >
+      <span
+        aria-hidden="true"
+        style="opacity: 0.35; transform: scale(0.952) rotate(-30deg);"
+      >
+        ◌
+      </span>
+      Interpreting your idea…
+    </p>
+  </div>
+  <footer
+    class="_footer_739f37"
+  >
+    <div
+      class="_footerMeta_739f37"
+    >
+      <div
+        class="_usage_739f37"
+      >
+        <details>
+          <summary>
+            500
+             of 
+            500
+             requests remaining
+          </summary>
+          <p>
+            0
+             requests used. Your allowance
+             
+            inherits platform defaults
+            .
+          </p>
+          <p>
+            Resets 
+            10/31/2026, 8:00:00 PM
+            .
+          </p>
+          <p>
+            Advanced assistance is unavailable for this account.
+          </p>
+        </details>
+      </div>
+      <div
+        class="_history_739f37"
+      >
+        <button
+          disabled=""
+        >
+          Undo
+        </button>
+        <button
+          disabled=""
+        >
+          Redo
+        </button>
+      </div>
+    </div>
+    <form>
+      <label
+        class="_srOnly_739f37"
+        for="assistant-request-owned"
+      >
+        Describe your spatial idea
+      </label>
+      <textarea
+        id="assistant-request-owned"
+        maxlength="2000"
+        placeholder="Describe a change to Desk Map…"
+        rows="3"
+      />
+      <div
+        class="_composerActions_739f37"
+      >
+        <small>
+          Enter to send · Shift+Enter for a new line
+          <br />
+          0
+          /2,000
+        </small>
+        <button
+          type="button"
+        >
+          Start new task
+        </button>
+        <button
+          type="button"
+        >
+          Cancel request
+        </button>
+      </div>
+    </form>
+  </footer>
+</aside>
+
+Ignored nodes: comments, script, style
+<aside
+  aria-label="Spatial Assistant"
+  class="_assistant_739f37"
+  data-motion="full"
+  role="region"
+>
+  <header
+    aria-label="Spatial Assistant header"
+    class="_header_739f37"
+    data-floating-gesture="move"
+    tabindex="0"
+    title="Drag header to move · arrow keys move · Shift moves farther"
+  >
+    <div
+      class="_emblem_739f37"
+    >
+      <svg
+        aria-hidden="true"
+        fill="none"
+        height="36"
+        stroke="currentColor"
+        stroke-width="1.3"
+        viewBox="0 0 40 40"
+        width="36"
+      >
+        <path
+          d="m20 5 4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"
+        />
+        <path
+          d="m30 5 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"
+        />
+      </svg>
+    </div>
+    <div>
+      <p>
+        PARALLAX
+      </p>
+      <h2>
+        <button
+          aria-label="Move floating Spatial Assistant"
+          class="_headerDragTitle_739f37"
+          data-floating-gesture="move"
+          tabindex="0"
+          title="Drag header to move · arrow keys move · Shift moves farther"
+          type="button"
+        >
+          Spatial Assistant
+        </button>
+      </h2>
+    </div>
+    <div
+      class="_assistantWindowControls_06d964"
+    >
+      <span
+        aria-live="polite"
+        class="_srOnly_06d964"
+      />
+      <button
+        aria-label="Dock assistance"
+        aria-pressed="false"
+        title="Dock assistance"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          focusable="false"
+          height="18"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.7"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path
+            d="M4 4h16v16H4ZM9 4v16M12 8h5M12 12h5M12 16h3"
+          />
+        </svg>
+      </button>
+      <button
+        aria-label="Close assistance"
+        title="Close assistance"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          height="18"
+          stroke="currentColor"
+          stroke-width="1.6"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path
+            d="m6 6 12 12M18 6 6 18"
+          />
+        </svg>
+      </button>
+    </div>
+  </header>
+  <div
+    class="_context_739f37"
+  >
+    <span
+      aria-hidden="true"
+      class="_contextDot_739f37"
+    />
+    <span>
+      Desk Map
+    </span>
+    <small>
+      1
+       objects
+    </small>
+    <button>
+      View canvas
+    </button>
+  </div>
+  <div
+    aria-label="Assistance response"
+    class="_body_739f37"
+    role="region"
+    tabindex="0"
+  >
+    <div
+      class="_chatTurn_739f37"
+      style="opacity: 0; transform: translateY(10px);"
+    >
+      <div
+        class="_sentRequest_739f37"
+      >
+        <span
+          class="_kicker_739f37"
+        >
+          YOUR IDEA
+        </span>
+        <p>
+          Make the map smaller without changing its clue.
+        </p>
+      </div>
+    </div>
+    <div
+      aria-label="Assistant thinking"
+      class="_thinking_739f37"
+      style="opacity: 0; transform: translateY(10px) scale(0.988);"
+    >
+      <div
+        aria-hidden="true"
+        class="_thinkingOrb_739f37"
+      >
+        <span
+          class="_thinkingRing_739f37"
+        />
+        <span
+          class="_thinkingRing_739f37"
+        />
+        <span
+          class="_thinkingSpark_739f37"
+        >
+          ✦
+        </span>
+      </div>
+      <strong>
+        Shaping your idea
+      </strong>
+      <span
+        aria-hidden="true"
+        class="_thinkingDots_739f37"
+      >
+        <i />
+        <i />
+        <i />
+      </span>
+    </div>
+    <p
+      aria-live="polite"
+      class="_screenReaderStatus_739f37"
+      data-working="true"
+      role="status"
+    >
+      <span
+        aria-hidden="true"
+        style="opacity: 0.35; transform: scale(0.952) rotate(-30deg);"
+      >
+        ◌
+      </span>
+      Interpreting your idea…
+    </p>
+  </div>
+  <footer
+    class="_footer_739f37"
+  >
+    <div
+      class="_footerMeta_739f37"
+    >
+      <div
+        class="_usage_739f37"
+      >
+        <details>
+          <summary>
+            500
+             of 
+            500
+             requests remaining
+          </summary>
+          <p>
+            0
+             requests used. Your allowance
+             
+            inherits platform defaults
+            .
+          </p>
+          <p>
+            Resets 
+            10/31/2026, 8:00:00 PM
+            .
+          </p>
+          <p>
+            Advanced assistance is unavailable for this account.
+          </p>
+        </details>
+      </div>
+      <div
+        class="_history_739f37"
+      >
+        <button
+          disabled=""
+        >
+          Undo
+        </button>
+        <button
+          disabled=""
+        >
+          Redo
+        </button>
+      </div>
+    </div>
+    <form>
+      <label
+        class="_srOnly_739f37"
+        for="assistant-request-owned"
+      >
+        Describe your spatial idea
+      </label>
+      <textarea
+        id="assistant-request-owned"
+        maxlength="2000"
+        placeholder="Describe a change to Desk Map…"
+        rows="3"
+      />
+      <div
+        class="_composerActions_739f37"
+      >
+        <small>
+          Enter to send · Shift+Enter for a new line
+          <br />
+          0
+          /2,000
+        </small>
+        <button
+          type="button"
+        >
+          Start new task
+        </button>
+        <button
+          type="button"
+        >
+          Cancel request
+        </button>
+      </div>
+    </form>
+  </footer>
+</aside>
+ ❯ waitForWrapper D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx:381:15
+    379|   expect(calls.filter((call) => call.action !== "ENVIRONMENT_CATALOG")…
+    380|   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
+    381|   await panel.findByRole("button", { name: "Apply all changes" }, { ti…
+       |               ^
+    382|   expect(calls.filter((call) => call.action === "AI")).toHaveLength(1);
+    383|   expect(screen.getByLabelText("Object width in meters")).toHaveValue(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > rejects a mounted late response after a manual edit and byte-identical undo
+TestingLibraryElementError: Unable to find a label with the text of: Object width in meters
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ Object.getElementError D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx:412:27
+    410|   await waitFor(() => expect(calls.some((call) => call.action === "AI"…
+    411|   const submitted = calls.find((call) => call.action === "AI")!;
+    412|   fireEvent.change(screen.getByLabelText("Object width in meters"), { …
+       |                           ^
+    413|   fireEvent.blur(screen.getByLabelText("Object width in meters"));
+    414|   fireEvent.click(screen.getAllByRole("button", { name: "Undo" })[0]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > locates a proposed object in the real preview without erasing it on selection
+TestingLibraryElementError: Unable to find role="button" and name "Apply all changes"
+
+Ignored nodes: comments, script, style
+<aside
+  aria-label="Spatial Assistant"
+  class="_assistant_739f37"
+  data-motion="full"
+  role="region"
+>
+  <header
+    aria-label="Spatial Assistant header"
+    class="_header_739f37"
+    data-floating-gesture="move"
+    tabindex="0"
+    title="Drag header to move · arrow keys move · Shift moves farther"
+  >
+    <div
+      class="_emblem_739f37"
+    >
+      <svg
+        aria-hidden="true"
+        fill="none"
+        height="36"
+        stroke="currentColor"
+        stroke-width="1.3"
+        viewBox="0 0 40 40"
+        width="36"
+      >
+        <path
+          d="m20 5 4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"
+        />
+        <path
+          d="m30 5 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"
+        />
+      </svg>
+    </div>
+    <div>
+      <p>
+        PARALLAX
+      </p>
+      <h2>
+        <button
+          aria-label="Move floating Spatial Assistant"
+          class="_headerDragTitle_739f37"
+          data-floating-gesture="move"
+          tabindex="0"
+          title="Drag header to move · arrow keys move · Shift moves farther"
+          type="button"
+        >
+          Spatial Assistant
+        </button>
+      </h2>
+    </div>
+    <div
+      class="_assistantWindowControls_06d964"
+    >
+      <span
+        aria-live="polite"
+        class="_srOnly_06d964"
+      />
+      <button
+        aria-label="Dock assistance"
+        aria-pressed="false"
+        title="Dock assistance"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          focusable="false"
+          height="18"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.7"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path
+            d="M4 4h16v16H4ZM9 4v16M12 8h5M12 12h5M12 16h3"
+          />
+        </svg>
+      </button>
+      <button
+        aria-label="Close assistance"
+        title="Close assistance"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          height="18"
+          stroke="currentColor"
+          stroke-width="1.6"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path
+            d="m6 6 12 12M18 6 6 18"
+          />
+        </svg>
+      </button>
+    </div>
+  </header>
+  <div
+    class="_context_739f37"
+  >
+    <span
+      aria-hidden="true"
+      class="_contextDot_739f37"
+    />
+    <span>
+      Desk Map
+    </span>
+    <small>
+      1
+       objects
+    </small>
+    <button>
+      View canvas
+    </button>
+  </div>
+  <div
+    aria-label="Assistance response"
+    class="_body_739f37"
+    role="region"
+    tabindex="0"
+  >
+    <div
+      class="_chatTurn_739f37"
+      style="opacity: 0; transform: translateY(10px);"
+    >
+      <div
+        class="_sentRequest_739f37"
+      >
+        <span
+          class="_kicker_739f37"
+        >
+          YOUR IDEA
+        </span>
+        <p>
+          Add a readable note.
+        </p>
+      </div>
+    </div>
+    <div
+      aria-label="Assistant thinking"
+      class="_thinking_739f37"
+      style="opacity: 0; transform: translateY(10px) scale(0.988);"
+    >
+      <div
+        aria-hidden="true"
+        class="_thinkingOrb_739f37"
+      >
+        <span
+          class="_thinkingRing_739f37"
+        />
+        <span
+          class="_thinkingRing_739f37"
+        />
+        <span
+          class="_thinkingSpark_739f37"
+        >
+          ✦
+        </span>
+      </div>
+      <strong>
+        Shaping your idea
+      </strong>
+      <span
+        aria-hidden="true"
+        class="_thinkingDots_739f37"
+      >
+        <i />
+        <i />
+        <i />
+      </span>
+    </div>
+    <p
+      aria-live="polite"
+      class="_screenReaderStatus_739f37"
+      data-working="true"
+      role="status"
+    >
+      <span
+        aria-hidden="true"
+        style="opacity: 0.35; transform: scale(0.952) rotate(-30deg);"
+      >
+        ◌
+      </span>
+      Interpreting your idea…
+    </p>
+  </div>
+  <footer
+    class="_footer_739f37"
+  >
+    <div
+      class="_footerMeta_739f37"
+    >
+      <div
+        class="_usage_739f37"
+      >
+        <details>
+          <summary>
+            500
+             of 
+            500
+             requests remaining
+          </summary>
+          <p>
+            0
+             requests used. Your allowance
+             
+            inherits platform defaults
+            .
+          </p>
+          <p>
+            Resets 
+            10/31/2026, 8:00:00 PM
+            .
+          </p>
+          <p>
+            Advanced assistance is unavailable for this account.
+          </p>
+        </details>
+      </div>
+      <div
+        class="_history_739f37"
+      >
+        <button
+          disabled=""
+        >
+          Undo
+        </button>
+        <button
+          disabled=""
+        >
+          Redo
+        </button>
+      </div>
+    </div>
+    <form>
+      <label
+        class="_srOnly_739f37"
+        for="assistant-request-owned"
+      >
+        Describe your spatial idea
+      </label>
+      <textarea
+        id="assistant-request-owned"
+        maxlength="2000"
+        placeholder="Describe a change to Desk Map…"
+        rows="3"
+      />
+      <div
+        class="_composerActions_739f37"
+      >
+        <small>
+          Enter to send · Shift+Enter for a new line
+          <br />
+          0
+          /2,000
+        </small>
+        <button
+          type="button"
+        >
+          Start new task
+        </button>
+        <button
+          type="button"
+        >
+          Cancel request
+        </button>
+      </div>
+    </form>
+  </footer>
+</aside>
+
+Ignored nodes: comments, script, style
+<aside
+  aria-label="Spatial Assistant"
+  class="_assistant_739f37"
+  data-motion="full"
+  role="region"
+>
+  <header
+    aria-label="Spatial Assistant header"
+    class="_header_739f37"
+    data-floating-gesture="move"
+    tabindex="0"
+    title="Drag header to move · arrow keys move · Shift moves farther"
+  >
+    <div
+      class="_emblem_739f37"
+    >
+      <svg
+        aria-hidden="true"
+        fill="none"
+        height="36"
+        stroke="currentColor"
+        stroke-width="1.3"
+        viewBox="0 0 40 40"
+        width="36"
+      >
+        <path
+          d="m20 5 4 11 11 4-11 4-4 11-4-11-11-4 11-4Z"
+        />
+        <path
+          d="m30 5 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z"
+        />
+      </svg>
+    </div>
+    <div>
+      <p>
+        PARALLAX
+      </p>
+      <h2>
+        <button
+          aria-label="Move floating Spatial Assistant"
+          class="_headerDragTitle_739f37"
+          data-floating-gesture="move"
+          tabindex="0"
+          title="Drag header to move · arrow keys move · Shift moves farther"
+          type="button"
+        >
+          Spatial Assistant
+        </button>
+      </h2>
+    </div>
+    <div
+      class="_assistantWindowControls_06d964"
+    >
+      <span
+        aria-live="polite"
+        class="_srOnly_06d964"
+      />
+      <button
+        aria-label="Dock assistance"
+        aria-pressed="false"
+        title="Dock assistance"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          focusable="false"
+          height="18"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.7"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path
+            d="M4 4h16v16H4ZM9 4v16M12 8h5M12 12h5M12 16h3"
+          />
+        </svg>
+      </button>
+      <button
+        aria-label="Close assistance"
+        title="Close assistance"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          height="18"
+          stroke="currentColor"
+          stroke-width="1.6"
+          viewBox="0 0 24 24"
+          width="18"
+        >
+          <path
+            d="m6 6 12 12M18 6 6 18"
+          />
+        </svg>
+      </button>
+    </div>
+  </header>
+  <div
+    class="_context_739f37"
+  >
+    <span
+      aria-hidden="true"
+      class="_contextDot_739f37"
+    />
+    <span>
+      Desk Map
+    </span>
+    <small>
+      1
+       objects
+    </small>
+    <button>
+      View canvas
+    </button>
+  </div>
+  <div
+    aria-label="Assistance response"
+    class="_body_739f37"
+    role="region"
+    tabindex="0"
+  >
+    <div
+      class="_chatTurn_739f37"
+      style="opacity: 0; transform: translateY(10px);"
+    >
+      <div
+        class="_sentRequest_739f37"
+      >
+        <span
+          class="_kicker_739f37"
+        >
+          YOUR IDEA
+        </span>
+        <p>
+          Add a readable note.
+        </p>
+      </div>
+    </div>
+    <div
+      aria-label="Assistant thinking"
+      class="_thinking_739f37"
+      style="opacity: 0; transform: translateY(10px) scale(0.988);"
+    >
+      <div
+        aria-hidden="true"
+        class="_thinkingOrb_739f37"
+      >
+        <span
+          class="_thinkingRing_739f37"
+        />
+        <span
+          class="_thinkingRing_739f37"
+        />
+        <span
+          class="_thinkingSpark_739f37"
+        >
+          ✦
+        </span>
+      </div>
+      <strong>
+        Shaping your idea
+      </strong>
+      <span
+        aria-hidden="true"
+        class="_thinkingDots_739f37"
+      >
+        <i />
+        <i />
+        <i />
+      </span>
+    </div>
+    <p
+      aria-live="polite"
+      class="_screenReaderStatus_739f37"
+      data-working="true"
+      role="status"
+    >
+      <span
+        aria-hidden="true"
+        style="opacity: 0.35; transform: scale(0.952) rotate(-30deg);"
+      >
+        ◌
+      </span>
+      Interpreting your idea…
+    </p>
+  </div>
+  <footer
+    class="_footer_739f37"
+  >
+    <div
+      class="_footerMeta_739f37"
+    >
+      <div
+        class="_usage_739f37"
+      >
+        <details>
+          <summary>
+            500
+             of 
+            500
+             requests remaining
+          </summary>
+          <p>
+            0
+             requests used. Your allowance
+             
+            inherits platform defaults
+            .
+          </p>
+          <p>
+            Resets 
+            10/31/2026, 8:00:00 PM
+            .
+          </p>
+          <p>
+            Advanced assistance is unavailable for this account.
+          </p>
+        </details>
+      </div>
+      <div
+        class="_history_739f37"
+      >
+        <button
+          disabled=""
+        >
+          Undo
+        </button>
+        <button
+          disabled=""
+        >
+          Redo
+        </button>
+      </div>
+    </div>
+    <form>
+      <label
+        class="_srOnly_739f37"
+        for="assistant-request-owned"
+      >
+        Describe your spatial idea
+      </label>
+      <textarea
+        id="assistant-request-owned"
+        maxlength="2000"
+        placeholder="Describe a change to Desk Map…"
+        rows="3"
+      />
+      <div
+        class="_composerActions_739f37"
+      >
+        <small>
+          Enter to send · Shift+Enter for a new line
+          <br />
+          0
+          /2,000
+        </small>
+        <button
+          type="button"
+        >
+          Start new task
+        </button>
+        <button
+          type="button"
+        >
+          Cancel request
+        </button>
+      </div>
+    </form>
+  </footer>
+</aside>
+ ❯ waitForWrapper D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx:436:15
+    434|   fireEvent.change(panel.getByLabelText("Describe your spatial idea"),…
+    435|   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
+    436|   await panel.findByRole("button", { name: "Apply all changes" }, { ti…
+       |               ^
+    437|   fireEvent.click(panel.getAllByRole("button", { name: "Locate object"…
+    438|   const canvas = within(screen.getByLabelText("Spatial canvas", { exac…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  src/components/studio/parallax/SpatialStudio.test.tsx > adds a Library exclusion tool to the visible environment and selects its shared editing controls
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Inspect Exclusion Zone"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  <main
+    class="_studio_06d964 _adaptiveWorkspace_06d964"
+    data-account-id="synthetic-creator"
+    data-layout="SPATIAL"
+    data-mode="GUIDED"
+    style="--studio-top: 0px;"
+  />
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  <header
+    class="_header_06d964"
+  />
+
+  --------------------------------------------------
+  link:
+
+  Name "← Synthetic Chronicle":
+  <a
+    href="/studio/library"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Parallax":
+  <h1 />
+
+  Name "Library":
+  <h2 />
+
+  Name "Spatial content":
+  <h3 />
+
+  Name "Properties":
+  <h2 />
+
+  Name "Identity & message":
+  <h3 />
+
+  Name "Shape & orientation":
+  <h3 />
+
+  Name "Accessibility":
+  <h3 />
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  <span
+    role="status"
+  />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Authoring mode":
+  <select />
+
+  Name "Workspace layout":
+  <select
+    aria-label="Workspace layout"
+  />
+
+  Name "Source":
+  <select />
+
+  Name "Show":
+  <select />
+
+  Name "Sort":
+  <select />
+
+  Name "Preview":
+  <select
+    aria-label="Preview"
+  />
+
+  Name "Environment":
+  <select
+    aria-label="Environment"
+  />
+
+  Name "Camera perspective":
+  <select
+    aria-label="Camera perspective"
+  />
+
+  Name "Preview quality":
+  <select
+    aria-label="Preview quality"
+  />
+
+  --------------------------------------------------
+  option:
+
+  Name "GUIDED":
+  <option
+    value="GUIDED"
+  />
+
+  Name "STANDARD":
+  <option
+    value="DETAILED"
+  />
+
+  Name "ENGINEERING":
+  <option
+    value="ENGINEERING"
+  />
+
+  Name "Spatial Editing":
+  <option
+    value="SPATIAL"
+  />
+
+  Name "Scene Construction":
+  <option
+    value="CONSTRUCTION"
+  />
+
+  Name "Behavior Authoring":
+  <option
+    value="BEHAVIOR"
+  />
+
+  Name "Focus / Immersive":
+  <option
+    value="FOCUS"
+  />
+
+  Name "All sources":
+  <option
+    value="ALL"
+  />
+
+  Name "Favorites":
+  <option
+    value="FAVORITES"
+  />
+
+  Name "All current":
+  <option
+    value="ACTIVE"
+  />
+
+  Name "Saved and built-in":
+  <option
+    value="SAVED"
+  />
+
+  Name "Working drafts":
+  <option
+    value="WORKING"
+  />
+
+  Name "Archived":
+  <option
+    value="ARCHIVED"
+  />
+
+  Name "Name":
+  <option
+    value="NAME"
+  />
+
+  Name "Recently updated":
+  <option
+    value="RECENT"
+  />
+
+  Name "EDITOR":
+  <option />
+
+  Name "PHONE":
+  <option />
+
+  Name "LENS":
+  <option />
+
+  Name "CREW":
+  <option />
+
+  Name "LOW_CAPABILITY":
+  <option />
+
+  Name "FALLBACK":
+  <option />
+
+  Name "ACCESSIBILITY":
+  <option />
+
+  Name "PERFORMANCE":
+  <option />
+
+  Name "REMOTE":
+  <option />
+
+  Name "Bedroom":
+  <option
+    value="bedroom"
+  />
+
+  Name "Living room":
+  <option
+    value="living-room"
+  />
+
+  Name "Small dorm":
+  <option
+    value="dorm"
+  />
+
+  Name "Office":
+  <option
+    value="office"
+  />
+
+  Name "Classroom":
+  <option
+    value="classroom"
+  />
+
+  Name "Gallery":
+  <option
+    value="gallery"
+  />
+
+  Name "Outdoor trail":
+  <option
+    value="trail"
+  />
+
+  Name "Plaza":
+  <option
+    value="plaza"
+  />
+
+  Name "Empty room":
+  <option
+    value="empty"
+  />
+
+  Name "Cluttered room":
+  <option
+    value="cluttered"
+  />
+
+  Name "Perspective":
+  <option
+    value="perspective"
+  />
+
+  Name "Plan / orthographic":
+  <option
+    value="plan"
+  />
+
+  Name "Front elevation":
+  <option
+    value="front"
+  />
+
+  Name "Low":
+  <option
+    value="LOW"
+  />
+
+  Name "Medium":
+  <option
+    value="MEDIUM"
+  />
+
+  Name "High":
+  <option
+    value="HIGH"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Undo":
+  <button
+    aria-label="Undo"
+    disabled=""
+    title="Undo"
+  />
+
+  Name "Redo":
+  <button
+    aria-label="Redo"
+    disabled=""
+    title="Redo"
+  />
+
+  Name "Save to Library":
+  <button />
+
+  Name "Save as new…":
+  <button />
+
+  Name "Versions":
+  <button />
+
+  Name "Validate in Drydock":
+  <button />
+
+  Name "Create immutable version":
+  <button />
+
+  Name "Manage Scenes":
+  <button
+    disabled=""
+  />
+
+  Name "Library & hierarchy":
+  <button
+    aria-label="Library & hierarchy"
+    aria-pressed="true"
+    title="Library & hierarchy"
+  />
+
+  Name "Inspector":
+  <button
+    aria-label="Inspector"
+    aria-pressed="true"
+    title="Inspector"
+  />
+
+  Name "Diagnostics · clear":
+  <button
+    aria-expanded="false"
+  />
+
+  Name "Reset Workspace Layout":
+  <button
+    aria-label="Reset Workspace Layout"
+    title="Reset Workspace Layout"
+  />
+
+  Name "Open Library":
+  <button
+    aria-controls="left-panel-ASSETS"
+    aria-label="Open Library"
+    aria-pressed="true"
+    id="left-tab-ASSETS"
+    title="Open Library"
+  />
+
+  Name "Open Scene Hierarchy":
+  <button
+    aria-controls="left-panel-HIERARCHY"
+    aria-label="Open Scene Hierarchy"
+    aria-pressed="false"
+    id="left-tab-HIERARCHY"
+    title="Open Scene Hierarchy"
+  />
+
+  Name "Collapse left dock":
+  <button
+    aria-label="Collapse left dock"
+  />
+
+  Name "Filters & viewSource, status, sort":
+  <button
+    aria-controls="_r_s_"
+    aria-expanded="false"
+    class="_filterToggle_7d7ec9"
+    type="button"
+  />
+
+  Name "Grid":
+  <button
+    aria-pressed="true"
+  />
+
+  Name "List":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Test in 10 environments":
+  <button />
+
+  Name "Edit room features":
+  <button
+    aria-label="Edit room features"
+    aria-pressed="false"
+    title="Edit environment"
+    type="button"
+  />
+
+  Name "Frame selection":
+  <button
+    aria-label="Frame selection"
+    title="Frame selected object"
+  />
+
+  Name "Reset view":
+  <button
+    aria-label="Reset view"
+    title="Reset view"
+  />
+
+  Name "Frame scene":
+  <button />
+
+  Name "Enable preview audio":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Select tool":
+  <button
+    aria-label="Select tool"
+    aria-pressed="true"
+    title="Select"
+  />
+
+  Name "Move tool":
+  <button
+    aria-label="Move tool"
+    aria-pressed="false"
+    title="Move"
+  />
+
+  Name "Rotate tool":
+  <button
+    aria-label="Rotate tool"
+    aria-pressed="false"
+    title="Rotate"
+  />
+
+  Name "Scale tool":
+  <button
+    aria-label="Scale tool"
+    aria-pressed="false"
+    title="Scale"
+  />
+
+  Name "Toggle snapping":
+  <button
+    aria-label="Toggle snapping"
+    aria-pressed="true"
+    title="Snap movement, rotation and scale to regular increments"
+  />
+
+  Name "Auto surface clamping":
+  <button
+    aria-label="Auto surface clamping"
+    aria-pressed="true"
+    title="Align moved objects to nearby clear surfaces. Turn off for free positioning."
+  />
+
+  Name "Toggle spatial overlays":
+  <button
+    aria-label="Toggle spatial overlays"
+    aria-pressed="false"
+  />
+
+  Name "Retry 3D renderer":
+  <button />
+
+  Name "Isolate selected object":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Edit selected object":
+  <button />
+
+  Name "Desk Map. Desk Map, available to inspect in Guided View.":
+  <button
+    aria-label="Desk Map. Desk Map, available to inspect in Guided View."
+    aria-pressed="true"
+  />
+
+  Name "Ask Parallax":
+  <button
+    aria-controls="parallax-assistance"
+    aria-expanded="false"
+    aria-label="Ask Parallax"
+  />
+
+  Name "Play timeline":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Restart timeline":
+  <button />
+
+  Name "Stop timeline":
+  <button />
+
+  Name "Expand bottom dock":
+  <button
+    aria-label="Expand bottom dock"
+  />
+
+  Name "Selected object actions":
+  <button
+    aria-label="Selected object actions"
+    title="Object actions"
+  />
+
+  Name "Collapse Inspector":
+  <button
+    aria-label="Collapse Inspector"
+  />
+
+  Name "Frame":
+  <button
+    title="Frame this object in the viewport"
+  />
+
+  Name "Hide":
+  <button
+    title="Hide this object"
+  />
+
+  Name "Lock":
+  <button
+    title="Lock this object"
+  />
+
+  Name "Duplicate":
+  <button
+    title="Duplicate this object"
+  />
+
+  Name "Delete":
+  <button
+    disabled=""
+    title="Delete this object"
+  />
+
+  Name "Move in scene":
+  <button />
+
+  Name "Rotate in scene":
+  <button />
+
+  Name "Resize in scene":
+  <button />
+
+  Name "Open object properties":
+  <button
+    aria-label="Open object properties"
+    aria-pressed="true"
+    title="Properties of the selected item"
+  />
+
+  Name "Open spatial context":
+  <button
+    aria-label="Open spatial context"
+    aria-pressed="false"
+    title="Placement, relationships, and behavior links"
+  />
+
+  Name "Open scene settings":
+  <button
+    aria-label="Open scene settings"
+    aria-pressed="false"
+    title="Scene fallback, library details, and versions"
+  />
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  <details
+    class="_sceneActions_06d964"
+  />
+
+  Name "Library view":
+  <div
+    aria-label="Library view"
+    class="_view_7d7ec9"
+    role="group"
+  />
+
+  Name "":
+  <details
+    class="_viewInstrument_06d964"
+    open=""
+  />
+
+  Name "":
+  <details
+    class="_navigationHelp_06d964"
+  />
+
+  Name "Selected spatial object":
+  <fieldset />
+
+  --------------------------------------------------
+  region:
+
+  Name "Environment and Scene":
+  <section
+    aria-label="Environment and Scene"
+    class="_context_811451"
+  />
+
+  Name "Spatial content library":
+  <section
+    aria-label="Spatial content library"
+    class="_library_7d7ec9"
+  />
+
+  Name "Spatial canvas":
+  <section
+    aria-label="Spatial canvas"
+    class="_canvas_06d964  "
+  />
+
+  Name "Bottom workstation dock":
+  <section
+    aria-label="Bottom workstation dock"
+    class="_bottomDock_06d964"
+    data-open="false"
+    style="height: 36px;"
+  />
+
+  Name "Inspector context":
+  <section
+    aria-label="Inspector context"
+    class="_inspectorHero_06d964"
+  />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  Name "":
+  <strong />
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Workstation panels":
+  <nav
+    aria-label="Workstation panels"
+    class="_workstationNavigation_06d964"
+  />
+
+  Name "Library and hierarchy dock":
+  <nav
+    aria-label="Library and hierarchy dock"
+    class="_dockRail_06d964"
+  />
+
+  Name "Inspector dock":
+  <nav
+    aria-label="Inspector dock"
+    class="_dockRail_06d964 _rightRail_06d964"
+  />
+
+  --------------------------------------------------
+  complementary:
+
+  Name "Spatial Library":
+  <aside
+    aria-label="Spatial Library"
+    class="_library_06d964"
+  />
+
+  Name "Spatial inspector":
+  <aside
+    aria-label="Spatial inspector"
+    class="_inspector_06d964"
+  />
+
+  --------------------------------------------------
+  separator:
+
+  Name "Resize library panel":
+  <div
+    aria-label="Resize library panel"
+    aria-orientation="vertical"
+    aria-valuemax="420"
+    aria-valuemin="210"
+    aria-valuenow="252"
+    class="_dockHandle_06d964"
+    role="separator"
+    tabindex="0"
+  />
+
+  Name "Resize inspector panel":
+  <div
+    aria-label="Resize inspector panel"
+    aria-orientation="vertical"
+    aria-valuemax="420"
+    aria-valuemin="210"
+    aria-valuenow="292"
+    class="_dockHandle_06d964"
+    role="separator"
+    tabindex="0"
+  />
+
+  --------------------------------------------------
+  tabpanel:
+
+  Name "Open Library":
+  <div
+    aria-labelledby="left-tab-ASSETS"
+    class="_leftPane_06d964"
+    id="left-panel-ASSETS"
+    role="tabpanel"
+  />
+
+  --------------------------------------------------
+  tablist:
+
+  Name "Library content type":
+  <div
+    aria-label="Library content type"
+    class="_kinds_7d7ec9"
+    role="tablist"
+  />
+
+  Name "Bottom dock tools":
+  <div
+    aria-label="Bottom dock tools"
+    class="_dockTabs_06d964"
+    role="tablist"
+  />
+
+  --------------------------------------------------
+  tab:
+
+  Name "Assets":
+  <button
+    aria-selected="true"
+    role="tab"
+  />
+
+  Name "Environments":
+  <button
+    aria-selected="false"
+    role="tab"
+  />
+
+  Name "Scenes":
+  <button
+    aria-selected="false"
+    role="tab"
+  />
+
+  Name "Timeline":
+  <button
+    aria-controls="bottom-panel-TIMELINE"
+    aria-selected="false"
+    id="bottom-tab-TIMELINE"
+    role="tab"
+  />
+
+  Name "Simulation":
+  <button
+    aria-controls="bottom-panel-SIMULATION"
+    aria-selected="false"
+    id="bottom-tab-SIMULATION"
+    role="tab"
+  />
+
+  Name "Diagnostics":
+  <button
+    aria-controls="bottom-panel-DIAGNOSTICS"
+    aria-selected="false"
+    id="bottom-tab-DIAGNOSTICS"
+    role="tab"
+  />
+
+  Name "Events":
+  <button
+    aria-controls="bottom-panel-EVENTS"
+    aria-selected="false"
+    id="bottom-tab-EVENTS"
+    role="tab"
+  />
+
+  --------------------------------------------------
+  searchbox:
+
+  Name "Search assets":
+  <input
+    placeholder="Name, type, description…"
+    type="search"
+    value=""
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="_empty_7d7ec9"
+  />
+
+  Name "":
+  <p
+    class="_footnote_7d7ec9"
+  />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  toolbar:
+
+  Name "Spatial editing tools":
+  <div
+    aria-label="Spatial editing tools"
+    class="_viewportTools_06d964"
+    role="toolbar"
+  />
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Object name":
+  <input
+    maxlength="160"
+    type="text"
+    value="Desk Map"
+  />
+
+  Name "Clue or message":
+  <textarea
+    maxlength="2000"
+  />
+
+  Name "Accessible description":
+  <textarea
+    maxlength="2000"
+  />
+
+  --------------------------------------------------
+  spinbutton:
+
+  Name "Object width in meters":
+  <input
+    aria-label="Object width in meters"
+    max="5"
+    min="0.01"
+    step="0.01"
+    type="number"
+    value="0.5"
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main
+      class="_studio_06d964 _adaptiveWorkspace_06d964"
+      data-account-id="synthetic-creator"
+      data-layout="SPATIAL"
+      data-mode="GUIDED"
+      style="--studio-top: 0px;"
+    >
+      <header
+        class="_header_06d964"
+      >
+        <div>
+          <a
+            href="/studio/library"
+          >
+            ← 
+            Synthetic Chronicle
+          </a>
+          <h1>
+            <span
+              aria-hidden="true"
+            >
+              ◈
+            </span>
+             Parallax
+          </h1>
+          <span
+            role="status"
+          >
+            Working draft opened
+          </span>
+        </div>
+        <div
+          class="_toolbar_06d964"
+        >
+          <label>
+            Authoring mode
+            <select>
+              <option
+                value="GUIDED"
+              >
+                GUIDED
+              </option>
+              <option
+                value="DETAILED"
+              >
+                STANDARD
+              </option>
+              <option
+                value="ENGINEERING"
+              >
+                ENGINEERING
+              </option>
+            </select>
+          </label>
+          <button
+            aria-label="Undo"
+            disabled=""
+            title="Undo"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              focusable="false"
+              height="18"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <path
+                d="m8 4-5 5 5 5M3 9h10a7 7 0 0 1 7 7v3"
+              />
+            </svg>
+          </button>
+          <button
+            aria-label="Redo"
+            disabled=""
+            title="Redo"
+          >
+            <svg
+              aria-hidden="true"
+              fill="none"
+              focusable="false"
+              height="18"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <path
+                d="m16 4 5 5-5 5M21 9H11a7 7 0 0 0-7 7v3"
+              />
+            </svg>
+          </button>
+          <button>
+            Save to Library
+          </button>
+          <button>
+            Save as new…
+          </button>
+          <button>
+            Versions
+          </button>
+          <details
+            class="_sceneActions_06d964"
+          >
+            <summary>
+              Scene actions
+            </summary>
+            <div>
+              <button>
+                Validate in Drydock
+              </button>
+              <button>
+                Create immutable version
+              </button>
+            </div>
+          </details>
+        </div>
+      </header>
+      <section
+        aria-label="Environment and Scene"
+        class="_context_811451"
+      >
+        <div>
+          <small>
+            SHARED ENVIRONMENT
+          </small>
+          <strong>
+            Loading Environments…
+          </strong>
+          <span>
+            Choose an Environment in Scene Manager
+          </span>
+        </div>
+        <span
+          aria-hidden="true"
+          class="_connector_811451"
+        >
+          →
+        </span>
+        <div>
+          <small>
+            EDITING SCENE
+          </small>
+          <strong>
+            Desk Map
+          </strong>
+          <span>
+            Working draft saved · revision 1
+          </span>
+        </div>
+        <button
+          disabled=""
+        >
+          Manage Scenes
+        </button>
+      </section>
+      <nav
+        aria-label="Workstation panels"
+        class="_workstationNavigation_06d964"
+      >
+        <div>
+          <select
+            aria-label="Workspace layout"
+          >
+            <option
+              value="SPATIAL"
+            >
+              Spatial Editing
+            </option>
+            <option
+              value="CONSTRUCTION"
+            >
+              Scene Construction
+            </option>
+            <option
+              value="BEHAVIOR"
+            >
+              Behavior Authoring
+            </option>
+            <option
+              value="FOCUS"
+            >
+              Focus / Immersive
+            </option>
+          </select>
+        </div>
+        <div>
+          <button
+            aria-lab...
+ ❯ Object.getElementError D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/config.js:37:19
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx:552:26
+    550|   await screen.findByRole("heading", { name: "Parallax", level: 1 });
+    551|   fireEvent.click(screen.getByLabelText("Open Library", { selector: "b…
+    552|   fireEvent.click(screen.getByRole("button", { name: "Inspect Exclusio…
+       |                          ^
+    553|   fireEvent.click(screen.getByRole("button", { name: "Add to active Sc…
+    554|   expect(screen.getByRole("button", { name: "Finish environment editin…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 7 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'includes')
+ ❯ src/components/studio/parallax/SpatialContentLibrary.tsx:332:29
+    330|     (candidate) =>
+    331|       ["ASSETS", "ENVIRONMENTS", "SCENES"].includes(candidate) ||
+    332|       (paged ? catalogPage?.availableKinds.includes(candidate) : entri…
+       |                             ^
+    333|   );
+    334|   const matching = useMemo(
+ ❯ SpatialContentLibrary src/components/studio/parallax/SpatialContentLibrary.tsx:329:99
+ ❯ Object.react_stack_bottom_frame D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17469:41
+
+This error originated in "src/components/studio/parallax/SpatialStudio.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "offers an explicit Environment copy before editing a pinned Scene room". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'includes')
+ ❯ src/components/studio/parallax/SpatialContentLibrary.tsx:332:29
+    330|     (candidate) =>
+    331|       ["ASSETS", "ENVIRONMENTS", "SCENES"].includes(candidate) ||
+    332|       (paged ? catalogPage?.availableKinds.includes(candidate) : entri…
+       |                             ^
+    333|   );
+    334|   const matching = useMemo(
+ ❯ SpatialContentLibrary src/components/studio/parallax/SpatialContentLibrary.tsx:329:99
+ ❯ Object.react_stack_bottom_frame D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17469:41
+
+This error originated in "src/components/studio/parallax/SpatialStudio.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "records manual transforms as reversible edits and serializes autosave". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'includes')
+ ❯ src/components/studio/parallax/SpatialContentLibrary.tsx:332:29
+    330|     (candidate) =>
+    331|       ["ASSETS", "ENVIRONMENTS", "SCENES"].includes(candidate) ||
+    332|       (paged ? catalogPage?.availableKinds.includes(candidate) : entri…
+       |                             ^
+    333|   );
+    334|   const matching = useMemo(
+ ❯ SpatialContentLibrary src/components/studio/parallax/SpatialContentLibrary.tsx:329:99
+ ❯ Object.react_stack_bottom_frame D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17469:41
+
+This error originated in "src/components/studio/parallax/SpatialStudio.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "keeps a newly saved scene in the URL without losing Chronicle, Passage or history state". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'includes')
+ ❯ src/components/studio/parallax/SpatialContentLibrary.tsx:332:29
+    330|     (candidate) =>
+    331|       ["ASSETS", "ENVIRONMENTS", "SCENES"].includes(candidate) ||
+    332|       (paged ? catalogPage?.availableKinds.includes(candidate) : entri…
+       |                             ^
+    333|   );
+    334|   const matching = useMemo(
+ ❯ SpatialContentLibrary src/components/studio/parallax/SpatialContentLibrary.tsx:329:99
+ ❯ Object.react_stack_bottom_frame D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17469:41
+
+This error originated in "src/components/studio/parallax/SpatialStudio.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "mounts the real port, previews without saving, installs one acknowledged history change and avoids duplicate autosave". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'includes')
+ ❯ src/components/studio/parallax/SpatialContentLibrary.tsx:332:29
+    330|     (candidate) =>
+    331|       ["ASSETS", "ENVIRONMENTS", "SCENES"].includes(candidate) ||
+    332|       (paged ? catalogPage?.availableKinds.includes(candidate) : entri…
+       |                             ^
+    333|   );
+    334|   const matching = useMemo(
+ ❯ SpatialContentLibrary src/components/studio/parallax/SpatialContentLibrary.tsx:329:99
+ ❯ Object.react_stack_bottom_frame D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17469:41
+
+This error originated in "src/components/studio/parallax/SpatialStudio.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "rejects a mounted late response after a manual edit and byte-identical undo". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'includes')
+ ❯ src/components/studio/parallax/SpatialContentLibrary.tsx:332:29
+    330|     (candidate) =>
+    331|       ["ASSETS", "ENVIRONMENTS", "SCENES"].includes(candidate) ||
+    332|       (paged ? catalogPage?.availableKinds.includes(candidate) : entri…
+       |                             ^
+    333|   );
+    334|   const matching = useMemo(
+ ❯ SpatialContentLibrary src/components/studio/parallax/SpatialContentLibrary.tsx:329:99
+ ❯ Object.react_stack_bottom_frame D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17469:41
+
+This error originated in "src/components/studio/parallax/SpatialStudio.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "locates a proposed object in the real preview without erasing it on selection". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: Cannot read properties of undefined (reading 'includes')
+ ❯ src/components/studio/parallax/SpatialContentLibrary.tsx:332:29
+    330|     (candidate) =>
+    331|       ["ASSETS", "ENVIRONMENTS", "SCENES"].includes(candidate) ||
+    332|       (paged ? catalogPage?.availableKinds.includes(candidate) : entri…
+       |                             ^
+    333|   );
+    334|   const matching = useMemo(
+ ❯ SpatialContentLibrary src/components/studio/parallax/SpatialContentLibrary.tsx:329:99
+ ❯ Object.react_stack_bottom_frame D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync D:/Codex_Parallax_Task_Cache/px-production-qualification/node_modules-relocated-20261015/react-dom/cjs/react-dom-client.development.js:17469:41
+
+This error originated in "src/components/studio/parallax/SpatialStudio.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "flushes edits before Drydock validation and keeps the completed feedback". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  7 failed | 23 passed (30)
+     Errors  7 errors
+   Start at  05:42:30
+   Duration  63.56s (transform 18.08s, setup 13.37s, import 34.40s, tests 25.59s, environment 59.25s)
+

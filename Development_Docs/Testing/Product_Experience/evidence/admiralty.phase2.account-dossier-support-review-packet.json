@@ -1,0 +1,352 @@
+{
+  "objective": "Request scoped support only after privileged verification and preserve the independent owner-consent boundary.",
+  "contract": {
+    "id": "admiralty.phase2.account-dossier-support",
+    "name": "Account dossier and consented Support Access integration",
+    "authority": "project-admiralty",
+    "owners": [
+      "project-admiralty"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A canonically signed-in synthetic Administrator using the existing governed Admiralty and Community tasks.",
+      "objective": "Request scoped support only after privileged verification and preserve the independent owner-consent boundary.",
+      "visibleOutcome": "Request scoped support only after privileged verification and preserve the independent owner-consent boundary.",
+      "integrationOwner": "Existing Parallax integration owner #776; Admiralty and Harborlight retain authorization, redaction, support consent and command authority.",
+      "accessibility": "Preserve labelled inputs, semantic outcomes, readable constrained layouts and the same parent return in desktop and phone motion variants.",
+      "fallback": "Keep real capability denial, bounded no-match results, missing data, privileged confirmation, scoped consent and second-reviewer requirements. No fake healthy provider or approved command is supplied.",
+      "navigation": "Use the existing visible task controls, observe the real result, and follow the advertised return.",
+      "designTarget": "Preserve current Admiralty/Community task composition and the accepted shared Homeport identity and return frame.",
+      "entryPoint": "/admin",
+      "systems": [
+        "project-admiralty",
+        "harborlight"
+      ],
+      "sourcePaths": [
+        "src/app/admin/people/page.tsx",
+        "src/components/admiralty/DossierSupportPanel.tsx",
+        "src/components/admiralty/AdmiraltyConsole.tsx",
+        "src/styles/admiralty.css"
+      ],
+      "projectionPaths": [
+        "src/admiralty/projections.ts",
+        "src/admiralty/investigation.ts",
+        "src/admiralty/ports/harborlight-admin-read.ts",
+        "src/admiralty/ports/operations-admin-read.ts"
+      ],
+      "states": [
+        "SUPPORT_TARGET_READABLE",
+        "OWNER_CONSENT_REQUIRED",
+        "HOME_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "ADMINISTRATOR"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "ADMINISTRATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fadmin",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-operator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Platform Overview",
+            "text": "Platform Overview"
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry/recovery frame only; no standalone Admiralty or moderation-body visual acceptance is asserted.",
+          "preserve": "Readable identity, clear role destinations and a usable return; review the actual governed task body independently."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry/recovery frame only; no standalone Admiralty or moderation-body visual acceptance is asserted.",
+          "preserve": "Readable identity, clear role destinations and a usable return; review the actual governed task body independently."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "admiralty-phase2-account-dossier-support-compatibility",
+          "roles": [
+            "ADMINISTRATOR"
+          ],
+          "outcome": "Request scoped support only after privileged verification and preserve the independent owner-consent boundary.",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "People"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Search",
+              "value": "Synthetic Parallax Support Target"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Search"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Synthetic Parallax Support Target"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "state": "SUPPORT_TARGET_READABLE",
+              "path": "/admin/people/00000000-0000-4000-8000-00000000a110",
+              "text": "A human-readable, auditable account projection from Wayfarer. Private prose and credential material are not returned."
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Confirm current password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Verify for privileged work"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Purpose",
+              "value": "Synthetic compatibility request for exact account-state support consent."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Request owner consent"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "state": "OWNER_CONSENT_REQUIRED",
+              "path": "/admin/people/00000000-0000-4000-8000-00000000a110",
+              "text": "The target user must approve it.",
+              "kind": "outcome",
+              "meaning": "The actual privileged support request waits for the independently signed-in target owner; it does not grant itself access."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Safe return"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Home"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "state": "HOME_RETURNED",
+              "path": "/",
+              "returnPath": true
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-admiralty-compatibility.spec.ts",
+        "tests/e2e/admiralty-phase2.spec.ts"
+      ],
+      "limitations": [
+        "The capture journey creates only a pending synthetic support request. The separate new browser cases exercise real owner approval, scoped read, owner revocation and denied subsequent read.",
+        "AdmiraltyConsole.tsx is preserved unreferenced legacy source, with no current import or render site. The active canonical successor is DossierSupportPanel on the account dossier; no rendered legacy-console acceptance or blanket exemption is claimed.",
+        "No real private account, content or production support grant is used.",
+        "Accepted references cover shared entry and recovery framing only, not a curated task-body baseline. Current captured media and independent review remain required.",
+        "Browser cases retain these separate domain assertions: The actual signed-in account retains its canonical role/capability boundary across navigation. Private prose, credential material and unsupported provider/deployment authority are not promoted by aggregate data or previews. The visible return preserves the canonical account; previews do not become command execution or owner consent."
+      ],
+      "continuity": {
+        "objective": "Observe the same visible synthetic account identity at entry, task outcomes and return. Separate browser cases verify canonical IDs, capabilities and domain privacy; this aria-label alone does not prove them.",
+        "checks": [
+          {
+            "id": "visible-account-identity",
+            "role": "group",
+            "name": "Synthetic Parallax Operator",
+            "attribute": "aria-label"
+          }
+        ]
+      }
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-SUPPORT_TARGET_READABLE-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-SUPPORT_TARGET_READABLE-4.png",
+      "sha256": "ece0dbae44492ba48182344307d9e941934ebfe902eb05d008690ba53606ea12",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "state": "SUPPORT_TARGET_READABLE",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-OWNER_CONSENT_REQUIRED-9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-OWNER_CONSENT_REQUIRED-9.png",
+      "sha256": "f6ff3ec3d63f269197ecac18bb217b9bb20f82f12bb62b2d961e652167bd5a90",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "state": "OWNER_CONSENT_REQUIRED",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-HOME_RETURNED-12",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-HOME_RETURNED-12.png",
+      "sha256": "02c6ea82c19eabd24d22e76071a67ba7610b9a7fffaf2f03b06deeed6c4e1157",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "state": "HOME_RETURNED",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "5d0e5c722087058344872fa9ed44c07c251cd7140f2d4245dd592ae3b23b27b2",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d8d2d254da96064398abbe6b5769da13.webm",
+      "sha256": "e4461ec7cab022d2893e8933298bac66b68ccf007e1f1b5d5ed84c5ce0cc112c",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED-SUPPORT_TARGET_READABLE-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED-SUPPORT_TARGET_READABLE-4.png",
+      "sha256": "c6f311c6b65f33e6d0a8288c5a9f2b53d598a39e7e081fa90d4e6c694a8d136c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "state": "SUPPORT_TARGET_READABLE",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED-OWNER_CONSENT_REQUIRED-9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED-OWNER_CONSENT_REQUIRED-9.png",
+      "sha256": "ae47265ba2e7ebf038908d8e37c3c9bbd840b78e4b52e0be9a6308de6b44f5ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "state": "OWNER_CONSENT_REQUIRED",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED-HOME_RETURNED-12",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED-HOME_RETURNED-12.png",
+      "sha256": "298e269f67e2ed969f53b68460d1c1a329e1396cefa00f424531f677829d066b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "state": "HOME_RETURNED",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "dc1bb03dc6e398901e2654562d4658d699490f63049fd1b3358ad123f57a855f",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.account-dossier-support-admiralty-phase2-account-dossier-support-compatibility-MOBILE-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7fa40425d7e64ff39a81beb987769310.webm",
+      "sha256": "55fde3b6631edf387e450d0b2b32fac2aa8d675093457ab26b11c73a89a53d06",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.account-dossier-support",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "3c63c1d6b45a1dcfdf3547568a0ac3617bc4aaf31981cdc8e7625307c52fc65b",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

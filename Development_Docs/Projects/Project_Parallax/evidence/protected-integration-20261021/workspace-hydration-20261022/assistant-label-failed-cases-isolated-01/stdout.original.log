@@ -1,0 +1,14 @@
+
+ RUN  v4.1.11 D:/CodexWorktrees/parallax-776-final39-20261022
+
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx (21 tests | 4 failed | 17 skipped) 20386ms
+   × offers an explicit Environment copy before editing a pinned Scene room 6215ms
+   × returns from expanded Library to a staged surface placement and preserves browsing context 6717ms
+   × opens Guided mode with canvas/library/timeline and keeps mode changes out of stored truth 3537ms
+   × adds a Library exclusion tool to the visible environment and selects its shared editing controls 3898ms
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  4 failed | 1 passed | 32 skipped (37)
+   Start at  21:02:37
+   Duration  63.83s (transform 10.66s, setup 2.20s, import 20.08s, tests 22.19s, environment 14.87s)
+

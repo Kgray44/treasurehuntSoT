@@ -1,0 +1,12 @@
+{
+  "kind": "ORIGINAL_UNIT_EXPECT_AST_SUBSEQUENCE_PRESERVED",
+  "file": "src/components/player/journal/ChronicleJournalSession.test.ts",
+  "parent": "ae52b7e05c57301d85dbe52d0189896df9e1a075",
+  "originalExpectRootedCalls": 392,
+  "currentExpectRootedCalls": 402,
+  "allOriginalExpectAstPreservedInOrder": true,
+  "currentSHA256": "97d657b351c35cbd74c87fce6ce3e3a24dd1be7730b0cb6a0883ad246bf2f8e1",
+  "e2eSHA256": "399e882bf639631c70a2a2dc267bd24f4ed0b03ccfc49c764bdbfdd8e91f07ca",
+  "geometryHelperSHA256": "c357f82adc02231936f180f72a03951bb973de514373821a00a1ebf068a49be2",
+  "qualification": false
+}

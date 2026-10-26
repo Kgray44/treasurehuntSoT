@@ -3,7 +3,7 @@ title: Parallax A1 local OpenAI configuration
 audience: developer-operator
 status: current
 canonical_for: parallax-a1-local-openai-configuration
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-14
 ---
 
 # Shared local OpenAI configuration
@@ -36,6 +36,40 @@ the durable Admiralty policy and user allowance must also admit the request.
 The server dispatches through the fixed OpenAI Responses HTTPS adapter. Only its
 authorization header receives the credential; request bodies and safe diagnostic
 projections exclude it. No live call is made by the diagnostics below.
+
+## Resume the existing owner Studio preview
+
+For the owned Windows preview on port 3130, retain its runtime record under
+`tmp/parallax-a1/owner-studio-preview/runtime.json`. After stopping only that
+verified preview, run:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/parallax/resume-owner-studio-preview.ps1 -EnableOwnerPhotoDevelopment
+```
+
+The launcher reuses the recorded database and never resets or seeds scenes. It
+refreshes the shared Windows user OpenAI credential in memory. Photo development
+uses the existing local private-content providers, with a database-scoped storage
+directory outside all checkouts and a persistent CurrentUser DPAPI-protected
+master key. Its directory ACL grants the current Windows user access. Keep this
+directory with the database; losing its key can make stored private content
+unreadable. No credentials are written into tracked files or `.env.local`.
+
+`-CheckOnly` verifies configuration without starting a server or making API calls.
+The explicit photo flag uses the synthetic development scanner, which does not
+certify malware protection. The Studio reports this limitation. Production
+scanner and key-management requirements are unchanged. File validation, explicit
+processing consent, private storage and permission withdrawal remain enforced.
+
+The initial restoration changed processing timeout to 90 seconds through
+the existing Admiralty preview, reauthentication and audited execution path,
+while preserving request/model/monetary settings. A subsequent owner-authorized
+[model-routing increment](AI_Model_Routing_and_Overrides_20261014.md) uses Sol
+for photos and Luna for standard Assistant requests, with a 180-second timeout
+and a bounded USD 0.40 local-preview cap inside the remaining USD 5 task ceiling.
+Historical usage and unknown cancellation exposure are preserved.
+Photo reconstruction can still return a geometric clarification or failure;
+configuration readiness does not establish reconstruction fidelity.
 
 ## Safe worktree diagnostic
 

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "candidate": "9bc5351324b0a96cd37b720573740af3aa6e9c4b",
+  "tree": "8e70fa2e5216538c4c6ecfe9e19d9de8830e5be0",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T14:48:00.805Z",
+  "finishedAt": "2026-10-13T14:49:08.081Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-1.webm",
+      "sha256": "cea749f6ea79648da0cfe2579baabf0b25a43802d99200de6fc5c1e0091c1b41"
+    },
+    {
+      "file": "parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-2.webm",
+      "sha256": "07e3ab77c1747dc44ee0877e938e66a48ed0d30329eb39d12bf12c4ab3546d14"
+    },
+    {
+      "file": "parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+      "sha256": "6d161dd90e69f56a23c45ae8cb71a66101660cf4e4758428a57868e79244403b"
+    },
+    {
+      "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "sha256": "e95b8e80b846bce2708e5bddd637b268933b29cba4d581e4004762ec5c4ea1cd"
+    }
+  ]
+}

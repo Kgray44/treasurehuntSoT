@@ -1,0 +1,39 @@
+{
+  "name": "assistant-label-workstation-format-01",
+  "at": "2026-10-23T00:53:05.915Z",
+  "exit": {
+    "code": 0,
+    "signal": null,
+    "guardianExitCode": 0
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 0,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 0,
+    "elapsedMs": 12,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37303799808,
+  "minimumD": 117406183424,
+  "monitorSamples": 3,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 58,
+      "sha256": "5deaaf2a1d90977ba6f1ddcf173775a53264ddceb3726e8e5bdd62e1ccb4fb24"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

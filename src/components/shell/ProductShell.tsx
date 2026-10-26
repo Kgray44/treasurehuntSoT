@@ -372,7 +372,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
         ) : null}
 
         {accountControl ? (
-          <div className="shell-profile-region">
+          <div className="shell-profile-region" role="group" aria-label={profileLabel}>
             <button
               ref={accountButtonRef}
               className="shell-profile-trigger"

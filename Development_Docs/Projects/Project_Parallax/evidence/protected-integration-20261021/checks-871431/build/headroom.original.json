@@ -1,0 +1,66 @@
+{
+  "kind": "PARALLAX_BUILD_HEADROOM_OBSERVATION_1",
+  "createdAtUtc": "2026-10-21T23:31:48.258Z",
+  "qualification": false,
+  "distDirectory": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\.next",
+  "files": 6316,
+  "logicalBytes": 726678670,
+  "cacheLogicalBytes": 530461248,
+  "links": [
+    {
+      "path": ".next\\node_modules\\@prisma\\client-2c3a283f134fdcb6",
+      "target": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\node_modules\\@prisma\\client"
+    },
+    {
+      "path": ".next\\node_modules\\pino-28069d5257187539",
+      "target": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\node_modules\\pino"
+    },
+    {
+      "path": ".next\\node_modules\\sharp-20c6a5da84e2135f",
+      "target": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\node_modules\\sharp"
+    }
+  ],
+  "largest": [
+    {
+      "path": ".next\\cache\\turbopack\\v16.3.8-b0fad0d4\\00000312.sst",
+      "bytes": 67914597
+    },
+    {
+      "path": ".next\\cache\\turbopack\\v16.3.8-b0fad0d4\\00000308.sst",
+      "bytes": 47410175
+    },
+    {
+      "path": ".next\\cache\\turbopack\\v16.3.8-b0fad0d4\\00000274.sst",
+      "bytes": 47326363
+    },
+    {
+      "path": ".next\\cache\\turbopack\\v16.3.8-b0fad0d4\\00000313.sst",
+      "bytes": 46756174
+    },
+    {
+      "path": ".next\\cache\\turbopack\\v16.3.8-b0fad0d4\\00000310.sst",
+      "bytes": 44901049
+    },
+    {
+      "path": ".next\\cache\\turbopack\\v16.3.8-b0fad0d4\\00000309.sst",
+      "bytes": 43006754
+    },
+    {
+      "path": ".next\\cache\\turbopack\\v16.3.8-b0fad0d4\\00000311.sst",
+      "bytes": 40635928
+    },
+    {
+      "path": ".next\\cache\\turbopack\\v16.3.8-b0fad0d4\\00000276.sst",
+      "bytes": 38399403
+    }
+  ],
+  "nonCacheLogicalBytes": 196217422,
+  "freeC": 35187740672,
+  "reserveBytes": 32212254720,
+  "prepareEstimate": {
+    "newBuildBytes": 726678670,
+    "temporaryMarginBytes": 1073741824,
+    "requiredFreeBefore": 34012675214,
+    "passes": true
+  }
+}

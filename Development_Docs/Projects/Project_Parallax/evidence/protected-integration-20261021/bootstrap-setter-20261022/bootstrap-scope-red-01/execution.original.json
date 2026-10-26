@@ -1,0 +1,39 @@
+{
+  "name": "bootstrap-scope-red-01",
+  "at": "2026-10-23T02:50:30.294Z",
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 14,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37278527488,
+  "minimumD": 111698423808,
+  "monitorSamples": 6,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 435,
+      "sha256": "651702b445fb772fae8a16d8859b34ab6c6272508a5a95c4dd31b5770e7d2fc5"
+    },
+    "stderr": {
+      "bytes": 1060,
+      "sha256": "1e0a3bbe5854e162b0ce1cdeb5cb3c5b6ce9922d1f3d92d53628a8bdaac0547f"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

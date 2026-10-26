@@ -1,0 +1,12 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 D:/CodexWorktrees/parallax-sc01-compat-review
+
+
+ Test Files  3 passed (3)
+      Tests  35 passed (35)
+   Start at  03:34:02
+   Duration  2.69s (transform 822ms, setup 335ms, import 2.46s, tests 783ms, environment 1.99s)
+

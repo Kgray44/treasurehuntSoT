@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "generatedAt": "2026-10-19T20:53:15.627Z",
+  "rootRefresh": {
+    "before": "c293af18d56e7bf29c02a7667b23d9a3fe658646",
+    "after": "8715b61b301df519fff637e52ecd2d982ca38271",
+    "changedPaths": [
+      ".agents/parallax-studio-overhaul.md",
+      "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "Development_Docs/Projects/Project_Parallax/Cohort_Integration_Decision_Log_20261016.md",
+      "Development_Docs/Projects/Project_Parallax/evidence/cohort-preparation-20261016/r20-infrastructure-intake-20261019.original.json",
+      "Development_Docs/document-index.json"
+    ],
+    "productOrTestDelta": false
+  },
+  "protectedMainRefresh": {
+    "before": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+    "after": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+    "changedPaths": [
+      ".agents/README.md",
+      ".agents/crossdeck-r20-acceptance-boundary.md",
+      "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/adjudication.json",
+      "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/causal-disposition.md",
+      "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/historical-ledger.json",
+      "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+      "Development_Docs/Projects/Voyagewright_Refit_V1/README.md",
+      "Development_Docs/Projects/Voyagewright_Refit_V1/player-journal-crossdeck/design-packet.md",
+      "Development_Docs/Projects/Voyagewright_Refit_V1/refit-registry.json",
+      "Development_Docs/Testing/Product_Experience/README.md",
+      "Development_Docs/document-index.json",
+      "scripts/sounding-line/experience-current-admission.mjs",
+      "scripts/sounding-line/experience-current-r20.mjs",
+      "scripts/sounding-line/experience-exception.mjs",
+      "scripts/sounding-line/experience-scope-adjudication.mjs",
+      "scripts/sounding-line/product-experience.mjs",
+      "testing/product-experience-exceptions.json",
+      "tests/sounding-line/experience-current-admission.test.mjs",
+      "tests/sounding-line/experience-current-r20.test.mjs",
+      "tests/sounding-line/experience-exception.test.mjs",
+      "tests/sounding-line/product-experience.test.mjs"
+    ],
+    "productPaths": [
+      "src",
+      "prisma",
+      "public",
+      "package.json",
+      "package-lock.json",
+      "next.config.ts",
+      "tsconfig.json"
+    ],
+    "productTreeEntriesUnchanged": true,
+    "protectedAcceptanceChanged": true,
+    "parallaxProductAcceptance": false
+  },
+  "historicalVisualPacket": {
+    "pullRequest": 705,
+    "head": "c9179a46b15b8e87be086e838f860ea71a57118f",
+    "disposition": "Historical owner-review baseline only; never rerun its unguarded producer against the current UI or promote it to current owner acceptance.",
+    "records": [
+      {
+        "file": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Visual_Review_20261011.md",
+        "destination": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Visual_Review_20261011.md",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 8870,
+        "gitBlob": "00a985166f451afb0244b7b2b7f0d44964cd5fd5",
+        "sha256": "47e58d04ea23249de136a1b7d53f362340682a2493a8c19f5a97f46f01a91e83"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/01-unsaved-workshop.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/01-unsaved-workshop.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 528662,
+        "gitBlob": "521af4e99c236fd8a4f05b2fee7c38bb0edb44ce",
+        "sha256": "5cf65415510b1d5b17699dd5ccf991707a3bc608e0ceef27eebde32068b7e6e9"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/02-guided-desktop.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/02-guided-desktop.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 581439,
+        "gitBlob": "bd3f0ff6d9ea058527e69a1399db7bac6f7d9bb3",
+        "sha256": "6314ce151fd9ce5f52f8635e4c22411b28a7dbbcc4db9759830a4b24a8778a25"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/03-detailed-desktop.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/03-detailed-desktop.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 640682,
+        "gitBlob": "3a0a364bb84311eb94f4ada2813dfd823910b7eb",
+        "sha256": "93137f110995e71ae06315eca0bfe602ab8338b461cd17c1ced173444afda025"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/04-engineering-desktop.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/04-engineering-desktop.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 662368,
+        "gitBlob": "9e7de967a2119814517c65ae94759c6f453b317a",
+        "sha256": "01e7ec7c82b0efb33cee6648969a514aa7169d834286c8f56157e7e5e65a817f"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/05-scene-preview.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/05-scene-preview.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 586583,
+        "gitBlob": "0034dafbe67f351eca022c9de97a0b265472647c",
+        "sha256": "6733937b1ab97c99336e9657cfa44e0872a9b6ff0a621a98d7550a041fc39496"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/06-guided-fallback.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/06-guided-fallback.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 352145,
+        "gitBlob": "dc942da89dff5f580dc43cba2ff2b25ea570e36a",
+        "sha256": "7b038b3b350374b7e1fd026636d81bd8f6726df6a3b78f6aa94b33651a3b200a"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/07-validation.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/07-validation.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 588997,
+        "gitBlob": "b231d3ff62193f8cd4ca82d6d5c0e769beabf875",
+        "sha256": "d235379fb0a6a3bce3c88dbf5842166601948dd92d270c8c89e78960182e45a9"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/08-version-library.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/08-version-library.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 593114,
+        "gitBlob": "625ac95571574de3c1ffa8334baac18c78b43ee8",
+        "sha256": "a806086efb7d6be2844bbf6d212aec9ea408c6a37d854fd36b53efb630aba388"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/09-desktop-1440.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/09-desktop-1440.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 452480,
+        "gitBlob": "c6a0ebd94cf3842e61efeb970ca13a64457cf76f",
+        "sha256": "1dd4f129276ddbd1d1aac1ea9a282fb8499a913db5868aa54cf76edd8870bf0c"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/10-tablet.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/10-tablet.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 338902,
+        "gitBlob": "daf900eee065df53309fddec4002054a612ba9ce",
+        "sha256": "3e389fe04e93957a02b3ca5d17ebc25fdbd5a66b78cfa33379354f03c1f4dfae"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/11-phone.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/11-phone.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 269103,
+        "gitBlob": "72629a0c41a0c5b31be561051e568c4cfbf0d3f1",
+        "sha256": "757b1abf5fa9e9faaf2118e2e666b6487511a69d2cb61b6ab35fecdb4dede1ec"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/12-reusable-library.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/12-reusable-library.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 408013,
+        "gitBlob": "65a4244d6330f9ed467201d00b04df546b9f9639",
+        "sha256": "15820c6cf750c7727b27502ea599204123cbdf07aa507af35505f03f65545032"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/13-restricted.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/13-restricted.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 726220,
+        "gitBlob": "46daf352e6d6b74a5c8b6faf204d70265ccde1a6",
+        "sha256": "96ddcf02a0bd0472c2a74250ce03d43576a4c05f783107fb86e62cbf8b0dce76"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/14-chronicle-attachment.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/14-chronicle-attachment.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 464152,
+        "gitBlob": "aff4b67ed7bdb103123b7350ef97d232eb7dca96",
+        "sha256": "5ce545ddfacd45557cbf221d5b355205e6a91fe40da2fd181ca29758d0651c44"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/15-publication-review.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/15-publication-review.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 276919,
+        "gitBlob": "1eea767a990be0e3f7c3d819e1e73a6637f89c5c",
+        "sha256": "fa1400d009b30e296474953d3bee2996c555d739debf307c00b9537798b5a1ea"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/captures.json",
+        "destination": "Experience_Images/Spatial_Studio_20261011/captures.json",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 4054,
+        "gitBlob": "c43080a8a30dd0cfdfe065842010278d267a48a2",
+        "sha256": "debc32eb72c125b620133cc753f9d0d5bd4212531562584148094009e9bbab88"
+      },
+      {
+        "file": "Experience_Images/Spatial_Studio_20261011/contact-sheet.png",
+        "destination": "Experience_Images/Spatial_Studio_20261011/contact-sheet.png",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_MISSING_HISTORICAL_RECORD",
+        "bytes": 3410165,
+        "gitBlob": "fd38153edd81b4177854c7c0bf7df4614484216a",
+        "sha256": "999e5d7617e145aa777f13db53929bd9a2196c22e914fca3ec4d2e8bdf015398"
+      },
+      {
+        "file": "scripts/parallax/visual-contact-sheet.mjs",
+        "destination": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/historical-pr705/scripts__parallax__visual-contact-sheet.mjs.original.txt",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_INACTIVE_PRODUCER_SOURCE",
+        "bytes": 2676,
+        "gitBlob": "fd22aabfcee356bf6a03a246d6378c39dffe2704",
+        "sha256": "1ad489be5cbf6c1b9393fec9539a6c9b53a6ba89706b25ad723daa434fa1c53d"
+      },
+      {
+        "file": "tests/e2e/parallax-visual-review.spec.ts",
+        "destination": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/historical-pr705/tests__e2e__parallax-visual-review.spec.ts.original.txt",
+        "source": "c9179a46b15b8e87be086e838f860ea71a57118f",
+        "capturedProductSource": "f458bf2dc1176016c2d166180f038f0f15ac9f7c",
+        "status": "PRESERVE_INACTIVE_PRODUCER_SOURCE",
+        "bytes": 12775,
+        "gitBlob": "3d5a8520ff81158f48aadd287b2b22fe94b4026f",
+        "sha256": "0d277692c989af04ad93660e57e87fe64c91355225f815c81a98249106a5dc71"
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-22T13:19:28.578426+00:00",
+  "merged": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+  "parents": [
+    "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+    "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+  ],
+  "currentMain": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "ordinary": {
+    "run": 39780857222,
+    "attempt": 1,
+    "head": "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b",
+    "event": "pull_request_target",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 119831437520,
+        "name": "Sounding Line / Finite campaign custody",
+        "conclusion": "success"
+      },
+      {
+        "id": 119834330428,
+        "name": "Sounding Line / Focused verification",
+        "conclusion": "success"
+      },
+      {
+        "id": 119834332198,
+        "name": "Sounding Line / Experience preparation (no mainline decision)",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 119846490080,
+        "name": "Sounding Line / Mainline Decision",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "artifacts": [],
+  "landedSmoke": "PENDING_ACTUAL_ACCEPTED_HANDOFF",
+  "sourceMutation": false
+}

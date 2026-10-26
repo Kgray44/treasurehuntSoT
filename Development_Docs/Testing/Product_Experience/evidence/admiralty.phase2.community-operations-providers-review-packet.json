@@ -1,0 +1,285 @@
+{
+  "objective": "Preview the bounded expired-lease recovery consequence while retaining explicit privileged confirmation.",
+  "contract": {
+    "id": "admiralty.phase2.community-operations-providers",
+    "name": "Community, operations, provider, configuration, and release truth",
+    "authority": "project-admiralty",
+    "owners": [
+      "project-admiralty"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A canonically signed-in synthetic Administrator using the existing governed Admiralty and Community tasks.",
+      "objective": "Preview the bounded expired-lease recovery consequence while retaining explicit privileged confirmation.",
+      "visibleOutcome": "Preview the bounded expired-lease recovery consequence while retaining explicit privileged confirmation.",
+      "integrationOwner": "Existing Parallax integration owner #776; Admiralty and Harborlight retain authorization, redaction, support consent and command authority.",
+      "accessibility": "Preserve labelled inputs, semantic outcomes, readable constrained layouts and the same parent return in desktop and phone motion variants.",
+      "fallback": "Keep real capability denial, bounded no-match results, missing data, privileged confirmation, scoped consent and second-reviewer requirements. No fake healthy provider or approved command is supplied.",
+      "navigation": "Use the existing visible task controls, observe the real result, and follow the advertised return.",
+      "designTarget": "Preserve current Admiralty/Community task composition and the accepted shared Homeport identity and return frame.",
+      "entryPoint": "/admin/operations",
+      "systems": [
+        "project-admiralty",
+        "harborlight"
+      ],
+      "sourcePaths": [
+        "src/app/admin/operations/page.tsx",
+        "src/components/admiralty/CommunityOutboxLeaseRecoveryPanel.tsx",
+        "src/styles/admiralty.css"
+      ],
+      "projectionPaths": [
+        "src/admiralty/projections.ts",
+        "src/admiralty/investigation.ts",
+        "src/admiralty/ports/harborlight-admin-read.ts",
+        "src/admiralty/ports/operations-admin-read.ts"
+      ],
+      "states": [
+        "LEASE_PREVIEW_READABLE",
+        "HOME_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "ADMINISTRATOR"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "ADMINISTRATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fadmin%2Foperations",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-operator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "main",
+            "name": "",
+            "text": "Workers, queues, schedulers, database, backup, and restore evidence."
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry/recovery frame only; no standalone Admiralty or moderation-body visual acceptance is asserted.",
+          "preserve": "Readable identity, clear role destinations and a usable return; review the actual governed task body independently."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry/recovery frame only; no standalone Admiralty or moderation-body visual acceptance is asserted.",
+          "preserve": "Readable identity, clear role destinations and a usable return; review the actual governed task body independently."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "admiralty-phase2-community-operations-providers-compatibility",
+          "roles": [
+            "ADMINISTRATOR"
+          ],
+          "outcome": "Preview the bounded expired-lease recovery consequence while retaining explicit privileged confirmation.",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Reason",
+              "value": "Synthetic compatibility preview only; preserve current leases."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Preview lease recovery"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Before you release leases",
+              "state": "LEASE_PREVIEW_READABLE",
+              "path": "/admin/operations",
+              "text": "Before you release leases",
+              "kind": "outcome",
+              "meaning": "The actual governed preview shows the bounded recovery consequence without releasing or claiming a lease."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Safe return"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Home"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "state": "HOME_RETURNED",
+              "path": "/",
+              "returnPath": true
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-admiralty-compatibility.spec.ts",
+        "tests/e2e/admiralty-phase2.spec.ts"
+      ],
+      "limitations": [
+        "This is a real command-preview journey, not a read-only relabel. It deliberately does not execute recovery; new tests require the confirmation button to remain disabled without assurance and observe zero execute requests.",
+        "Full lease recovery, idempotency and postcondition obligations remain governed by their existing owner tests; a preview is not execution acceptance.",
+        "Accepted references cover shared entry and recovery framing only, not a curated task-body baseline. Current captured media and independent review remain required.",
+        "Browser cases retain these separate domain assertions: The actual signed-in account retains its canonical role/capability boundary across navigation. Private prose, credential material and unsupported provider/deployment authority are not promoted by aggregate data or previews. The visible return preserves the canonical account; previews do not become command execution or owner consent."
+      ],
+      "continuity": {
+        "objective": "Observe the same visible synthetic account identity at entry, task outcomes and return. Separate browser cases verify canonical IDs, capabilities and domain privacy; this aria-label alone does not prove them.",
+        "checks": [
+          {
+            "id": "visible-account-identity",
+            "role": "group",
+            "name": "Synthetic Parallax Operator",
+            "attribute": "aria-label"
+          }
+        ]
+      }
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-LEASE_PREVIEW_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-LEASE_PREVIEW_READABLE-2.png",
+      "sha256": "89b7eb82fd5403ada5bbf9ad18e8aa94b84f176aed0414b29edc5ff42b607378",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "state": "LEASE_PREVIEW_READABLE",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-HOME_RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-HOME_RETURNED-5.png",
+      "sha256": "6d91a099c2ab4361bb504f10302069c9605502528f518404a55c52ecf8360997",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "state": "HOME_RETURNED",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-DESKTOP-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "180819453b0755dc5bb229498496b7d053ebf1ccad7f73fbae2897d7125b5276",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c2034213c3b17e0ef2d369a0629896b5.webm",
+      "sha256": "2acde2b27af0a41746707689670fccc34f7b56c1254be0fc423182693e564d56",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-MOBILE-ADMINISTRATOR-REDUCED-LEASE_PREVIEW_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-MOBILE-ADMINISTRATOR-REDUCED-LEASE_PREVIEW_READABLE-2.png",
+      "sha256": "41496344068a34d675b45b18552b2e626eaf475ce25b40cc3efdaea6f7f7dea2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "state": "LEASE_PREVIEW_READABLE",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-MOBILE-ADMINISTRATOR-REDUCED-HOME_RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-MOBILE-ADMINISTRATOR-REDUCED-HOME_RETURNED-5.png",
+      "sha256": "298e269f67e2ed969f53b68460d1c1a329e1396cefa00f424531f677829d066b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "state": "HOME_RETURNED",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-MOBILE-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-MOBILE-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "8539a6c0165c25132d75441b7dbd9e4bc7b1cc65574045cebe8862165c856fea",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.community-operations-providers-admiralty-phase2-community-operations-providers-compatibility-MOBILE-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c20aedf4d8f688ad75e6e0781348a476.webm",
+      "sha256": "8c0728aa2faa894e47bea23a872350861dffac79cdeaf30159a9d659a556a409",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.community-operations-providers",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "b469383a1ded459698d1d62c8c4e8822d267edfd6aa752cc64c894230eed7f93",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

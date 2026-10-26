@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "candidate": "7d3b436c2e5e2fba9fd5a44fe66f43b85bee7d21",
+  "tree": "8b45441167e826e0aa02b1eefeef3224caef8d20",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T18:51:03.396Z",
+  "finishedAt": "2026-10-13T18:53:34.228Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm",
+      "sha256": "b138623289873f1b3cbffdc8526492dfe5d356fd3d65d2f57ab523dc4f0dcb03"
+    },
+    {
+      "file": "parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+      "sha256": "5e545f472b7a4f99baeb767b9cd1be2545afa1e7c8c9bb008f6b8137e0380f04"
+    },
+    {
+      "file": "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "sha256": "d6138189b583c4f0b159466680f55a1e72320b02d31542261d605154b129f40b"
+    },
+    {
+      "file": "parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+      "sha256": "4e93cc78f9dc872497293f1c47092dc7ab18f327e384e0f2d9d98184631693cf"
+    },
+    {
+      "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "sha256": "f36535ded914c2b14c0b2a59c1ea7327dbbb9547b79c3849ce08eecf57d1d8da"
+    },
+    {
+      "file": "parallax-room-features-Env-588a2-mos-history-and-persistence-chromium-video.webm",
+      "sha256": "55fd4647c3473d03e760bf5b09bd0d7d94fe1417dc37bce36f1ba1a54d30411f"
+    }
+  ]
+}

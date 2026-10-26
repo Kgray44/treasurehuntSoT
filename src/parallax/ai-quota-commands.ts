@@ -65,6 +65,12 @@ async function currentPolicy(
     throw new AdmiraltyError("ADMIN_TARGET_NOT_FOUND", "Account unavailable.", 404);
   const row = await tx.aIQuotaUserPolicy.findUnique({ where: { accountId: input.accountId } });
   const current = row ? aiUserPolicySchema.nullable().parse(JSON.parse(row.policy)) : null;
+  if (
+    [input.policy?.standardModel, input.policy?.advancedModel, input.policy?.roomModel].some(
+      (model) => model != null && !global.allowedModels.includes(model),
+    )
+  )
+    throw new AdmiraltyError("ADMIN_VALIDATION_FAILED", "User models must be in the global allowed-model list.", 400);
   if (input.policy?.expiresAt && Date.parse(input.policy.expiresAt) <= now.getTime())
     throw new AdmiraltyError("ADMIN_VALIDATION_FAILED", "An exception must expire in the future.", 400);
   return {

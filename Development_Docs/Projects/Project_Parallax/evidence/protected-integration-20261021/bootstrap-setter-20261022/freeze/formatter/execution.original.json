@@ -1,0 +1,39 @@
+{
+  "name": "bootstrap-freeze-format-01",
+  "at": "2026-10-23T02:59:16.359Z",
+  "exit": {
+    "code": 0,
+    "signal": null,
+    "guardianExitCode": 0
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 0,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 0,
+    "elapsedMs": 8,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37275451392,
+  "minimumD": 111673298944,
+  "monitorSamples": 1,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 2646,
+      "sha256": "c3c61999ff028877b011639734c13688dc3c0ab20d775a0fcecaee479cfc3e98"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

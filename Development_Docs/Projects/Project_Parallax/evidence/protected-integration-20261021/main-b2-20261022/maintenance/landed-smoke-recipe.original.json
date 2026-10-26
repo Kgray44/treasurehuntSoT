@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "--test",
+    "--test-name-pattern=actual failed prisma-generate|early fingerprint failure|workflow preparation failure|product environment strips|provider and controller",
+    "tests/sounding-line/preparation-failure-retention.test.mjs"
+  ],
+  "outerMs": 60000,
+  "sourceFiles": [
+    ".agents/README.md",
+    ".agents/development-preparation-retention-repair.md",
+    ".github/workflows/sounding-line-focused-repair.yml",
+    "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Preparation_Failure_Retention_Record.md",
+    "Development_Docs/Testing/README.md",
+    "Development_Docs/document-index.json",
+    "package.json",
+    "scripts/sounding-line/develop-browser-suite.mjs",
+    "scripts/sounding-line/development-preparation-evidence.mjs",
+    "scripts/sounding-line/preparation-failure-output.mjs",
+    "scripts/sounding-line/preparation-failure-publication.mjs",
+    "tests/sounding-line/experience-current-admission.test.mjs",
+    "tests/sounding-line/experience-exception.test.mjs",
+    "tests/sounding-line/experience-r24.test.mjs",
+    "tests/sounding-line/experience-r25.test.mjs",
+    "tests/sounding-line/experience-r26.test.mjs",
+    "tests/sounding-line/preparation-failure-retention.test.mjs",
+    "tests/sounding-line/fixtures/historical-admission-binding.mjs",
+    "scripts/sounding-line/owned-process.mjs",
+    "..\\..\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\run-landed-check-bound.mjs"
+  ]
+}

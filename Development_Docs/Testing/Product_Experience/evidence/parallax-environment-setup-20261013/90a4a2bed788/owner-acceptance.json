@@ -1,0 +1,23 @@
+{
+  "documentClassification": "engineering-evidence",
+  "source": "3779f79f1155a5990ff8de3b71509605dac0fb56",
+  "origin": "DIRECT_OWNER_ASYNC_REPLY",
+  "observedDate": "2026-10-13",
+  "reply": "Accept this setup presentation",
+  "scope": [
+    "three environment creation choices",
+    "photo progress/cancellation presentation",
+    "3D proposal review presentation"
+  ],
+  "excluded": [
+    "reconstruction accuracy",
+    "actual camera or world tracking",
+    "real iPhone/touch",
+    "configured production photo providers",
+    "whole Spatial Studio/protected integration"
+  ],
+  "independentReviewOutcome": "VERIFY_FINAL_EVIDENCE",
+  "independentFinding": "ENVSETUP-01 resolved by deliberate navigation recapture at 90a4a2bed788",
+  "recaptureSource": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+  "continuity": "git diff 3779f79f HEAD -- src/components/studio/parallax src/parallax/environment-library-authoring.ts is empty; changes are tests, registration and disk-aware capture helper. Presentation acceptance stays bound to the reviewed 3779 gallery."
+}

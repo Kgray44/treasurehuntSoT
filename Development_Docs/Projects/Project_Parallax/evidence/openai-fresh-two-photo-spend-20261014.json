@@ -1,0 +1,33 @@
+{
+  "documentClassification": "engineering-evidence",
+  "scope": "PARALLAX_FRESH_TWO_PHOTO_CHECK_AND_OWNED_INTERACTIVE_PREVIEW",
+  "ownerCeilingNanoUsd": 5000000000,
+  "earlierExperimentReportsSettledNanoUsd": 1689356395,
+  "earlierUnknownExposureRetainedNanoUsd": 2058000000,
+  "interactivePreview": {
+    "requests": 27,
+    "settledNanoUsd": 16047885,
+    "exposureNanoUsd": 19547885,
+    "readOnlyAggregate": true,
+    "countedAdditionallyForConservativeBudget": true
+  },
+  "freshTwoPhotoCheck": {
+    "generationRequests": 1,
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "low",
+    "authorizedCeilingNanoUsd": 150000000,
+    "status": "SETTLED",
+    "inputTokens": 9507,
+    "outputTokens": 4743,
+    "settledNanoUsd": 71196000,
+    "roomOutcome": "PROPOSED",
+    "wholeBrowserJourney": "FAIL_FINAL_PERMISSION_DISCLOSURE"
+  },
+  "conservativeCombinedExposureUpperBoundNanoUsd": 3838100280,
+  "remainingConservativeAllowanceNanoUsd": 1161899720,
+  "automaticRetries": false,
+  "astraCalls": 0,
+  "unknownReservationsReleased": false,
+  "globalAccountUsageAudited": false,
+  "ownerPhotosPromptsRawResponsesCredentialsIncluded": false
+}

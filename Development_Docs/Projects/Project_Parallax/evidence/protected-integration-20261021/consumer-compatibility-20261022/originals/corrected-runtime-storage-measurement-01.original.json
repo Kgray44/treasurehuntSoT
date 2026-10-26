@@ -1,0 +1,19 @@
+{
+  "kind": "CHANGED_SOURCE_PREPARATION_AND_SIX_FILES_ALLOCATION_MEASUREMENT",
+  "at": "2026-10-22T16:43:15.881884+00:00",
+  "measuredBuild": "D:\\CodexWorktrees\\parallax-776-final39-20261022\\artifacts\\sounding-line\\browser-development\\prepared-7a60e33d-b0fa-4013-8770-df3dcc3cb53d\\immutable-build",
+  "physicalFiles": 6267,
+  "logicalBytes": 734657894,
+  "allocatedBytes": 740573352,
+  "reparseTargetsExcluded": 3,
+  "additionalDBudget": 17179869184,
+  "freeC": 32400220160,
+  "freeD": 110060306432,
+  "CReserveFloor": 32212254720,
+  "proactiveCStopAt": 32346472448,
+  "storageEligible": true,
+  "reviewStillRequired": true,
+  "buildStarted": false,
+  "qualification": false,
+  "protectedCapture": false
+}

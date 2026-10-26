@@ -1,0 +1,34 @@
+{
+  "baseline": {
+    "sha": "d7e3345662605ef78cdbfb36420c6643ba546558e8b553f6d2eaebf13e41fc75",
+    "fresh": 95,
+    "scale": 1.0443469315809435,
+    "trajectoryRms": 0.07225479662755532,
+    "offAxisRms": 0.06247876400875096,
+    "stationaryTailMaxDrift": 0.26471695093133074,
+    "rotationMaxDegrees": 1.8823087542565766,
+    "medianProcessMs": 14.560699999999997,
+    "lastWorld": [
+      0.32199615038628093,
+      0.23971166304201005,
+      0.0373435820011834
+    ],
+    "physicalAcceptance": false
+  },
+  "imageTrackIdentity": {
+    "sha": "835154f12aacf3e2af99dc8f1fc44e58192484d3e2539699a1d65c043ab102d3",
+    "fresh": 95,
+    "scale": 1.0986788863583545,
+    "trajectoryRms": 0.013461386962737697,
+    "offAxisRms": 0.006493556651865352,
+    "stationaryTailMaxDrift": 0.03646277800526287,
+    "rotationMaxDegrees": 1.0058555535726046,
+    "medianProcessMs": 14.198500000000081,
+    "lastWorld": [
+      0.39931977447784506,
+      -0.00849198350745338,
+      0.0007663632755606454
+    ],
+    "physicalAcceptance": false
+  }
+}

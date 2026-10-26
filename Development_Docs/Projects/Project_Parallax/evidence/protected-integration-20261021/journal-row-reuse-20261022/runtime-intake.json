@@ -1,0 +1,97 @@
+{
+  "kind": "PARALLAX_ROW_REUSE_RUNTIME_EVIDENCE_INTAKE",
+  "classification": "ENGINEERING_DEVELOPMENT_ONLY_NOT_ACCEPTANCE",
+  "at": "2026-10-22T07:06:11.797484+00:00",
+  "producer": "b617b6825688d2d3d89a34284588ce456701aa8f",
+  "authority": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "run": 39735856149,
+  "qualification": false,
+  "copyCount": 11,
+  "copiedBytes": 42596,
+  "originals": [
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\run.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/run.original.json",
+      "bytes": 12811,
+      "sha256": "8bc1a7f481d7e5c9d2578eaeecf648d92db6a33ae59c633ecb45d0369a2c0afa"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\jobs.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/jobs.original.json",
+      "bytes": 3502,
+      "sha256": "9013e639f2ab0d7b9f7af34978410fe98aa677481c66af0ed2f0c7880e035bae"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\artifacts.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/artifacts.original.json",
+      "bytes": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\download-custody.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/download-custody.json",
+      "bytes": 3155,
+      "sha256": "0ae039813a97153d58976e6ab2c568506824233d531e2d84a29466b70122cfa0"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\dispatch-request.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/dispatch-request.json",
+      "bytes": 1508,
+      "sha256": "aef0a704ebe0bf48a8192e98c09824c0a14ec15613ab2d4dc043c88a1cf8d822"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\dispatch-result.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/dispatch-result.json",
+      "bytes": 82,
+      "sha256": "e54e9e9db0bc52e2428cf4c04582acaf86b88c88a978269bff2dc10ef826acc2"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\run-binding.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/run-binding.json",
+      "bytes": 617,
+      "sha256": "7502a87c7e47d6be4780ad4063f21156bb46a901e8bb2889afa43729167beba8"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\watch-result.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/watch-result.json",
+      "bytes": 154,
+      "sha256": "2c964914ad42bd0ac239dbb95e4e2d73cee1efad4d94a2b83f0a87973e5fbf39"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\development-pass.receipt.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/development-pass.receipt.json",
+      "bytes": 7264,
+      "sha256": "c6f07d2024db8961029ae3fcca6fc0db513d60a3512ed72a4b7f7a20e2857feb"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\browser-step.public.original.log",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/browser-step.public.original.log",
+      "bytes": 11010,
+      "sha256": "bb170014106d00e6fc1c953d6edc060494b647c18909baff316f70c3c829c93c"
+    },
+    {
+      "source": "D:\\CodexTemp\\parallax-root-custody-handoff-20261022-01a12c32\\development-result-39735856149.review.original.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/journal-row-reuse-20261022/runtime/development-result-39735856149.review.original.json",
+      "bytes": 2461,
+      "sha256": "803a6aa2c11d4dda1925c4cb442dee8ae99f708a959d53415c278d272708323c"
+    }
+  ],
+  "allCopiesRehashed": true,
+  "privatePayloadOrRawSuccessReportPublished": false,
+  "publicStepLogOnly": true,
+  "caseCounts": "Not exposed by retained public success logs; do not invent privately inspected counts",
+  "documentationClassification": {
+    "humanEngineeringCheckpointAndEvidenceNavigation": "Current engineering documents with valid frontmatter",
+    "changelog": "Current product-engineering human document with valid frontmatter",
+    "automation": ".agents active continuation with valid frontmatter",
+    "machineReceipts": "Engineering validation evidence under Development_Docs; not human documents"
+  },
+  "featureDecision": "NO_CHANGE_REQUIRED_ORDINARY_LAYOUT_CORRECTION",
+  "majorAvailabilityPromoted": false,
+  "finalIntegrationHeld": [
+    "#790 ordinary required-check routing",
+    "#788 unmerged draft",
+    "#776 accepted-main reconciliation and final experience/ordinary qualification"
+  ],
+  "independentResultReview": "Exact provider/run/log/receipt readback; not independent rendered Product Experience review"
+}

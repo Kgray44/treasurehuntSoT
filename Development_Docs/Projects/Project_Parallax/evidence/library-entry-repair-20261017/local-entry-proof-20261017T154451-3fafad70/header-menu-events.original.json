@@ -1,0 +1,140 @@
+[
+  {
+    "at": 3505.899999999441,
+    "event": "pointerdown",
+    "target": {
+      "tag": "H1",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "active": {
+      "tag": "BUTTON",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "menu": false,
+    "y": 0
+  },
+  {
+    "at": 3506.2000000001863,
+    "event": "focusin",
+    "target": {
+      "tag": "H1",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "active": {
+      "tag": "H1",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "menu": false,
+    "y": 0
+  },
+  {
+    "at": 3506.7000000001863,
+    "event": "contextmenu",
+    "target": {
+      "tag": "H1",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "active": {
+      "tag": "H1",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "menu": false,
+    "y": 0
+  },
+  {
+    "at": 3511.7999999998137,
+    "event": "focusin",
+    "target": {
+      "tag": "BUTTON",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "active": {
+      "tag": "BUTTON",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "menu": true,
+    "y": 0
+  },
+  {
+    "at": 3512,
+    "event": "menu-change",
+    "target": {
+      "tag": "document"
+    },
+    "active": {
+      "tag": "BUTTON",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "menu": true,
+    "y": 0
+  },
+  {
+    "at": 3557.5,
+    "event": "pointerdown",
+    "target": {
+      "tag": "BUTTON",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "active": {
+      "tag": "BUTTON",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "menu": true,
+    "y": 0
+  },
+  {
+    "at": 3558.2000000001863,
+    "event": "focusin",
+    "target": {
+      "tag": "H1",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "active": {
+      "tag": "H1",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "menu": true,
+    "y": 0
+  },
+  {
+    "at": 3562.7999999998137,
+    "event": "menu-change",
+    "target": {
+      "tag": "document"
+    },
+    "active": {
+      "tag": "H1",
+      "class": null,
+      "top": 0,
+      "left": 0
+    },
+    "menu": false,
+    "y": 0
+  }
+]

@@ -1,0 +1,31 @@
+import { afterEach, expect, it, vi } from "vitest";
+import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
+import { workspacePreset } from "@/parallax/workspace-layout";
+import { useWorkspaceLayout } from "./useWorkspaceLayout";
+
+afterEach(() => {
+  cleanup();
+  localStorage.clear();
+  vi.unstubAllGlobals();
+});
+
+it("preserves an early Library action while restoring account preferences", async () => {
+  vi.stubGlobal("innerWidth", 1920);
+  vi.stubGlobal("matchMedia", vi.fn((query: string) => {
+    expect(query).toBe("(max-width: 1099px)");
+    return { matches: false, media: query, addEventListener: vi.fn(), removeEventListener: vi.fn() };
+  }));
+  const scope = "synthetic-layout-hydration";
+  localStorage.setItem(
+    `parallax.workspace.v1:${scope}`,
+    JSON.stringify({ ...workspacePreset("SPATIAL"), libraryOpen: false, libraryWidth: 333 }),
+  );
+  const { result } = renderHook(() => useWorkspaceLayout(scope));
+  expect(result.current.layout.libraryWidth).toBe(252);
+  expect(result.current.layout.libraryOpen).toBe(false);
+  act(() => result.current.setLayout((previous) => ({ ...previous, libraryOpen: true })));
+  expect(result.current.layout.libraryOpen).toBe(true);
+  expect(result.current.layout.libraryWidth).toBe(252);
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
+  expect(result.current.layout.libraryOpen).toBe(true);
+});

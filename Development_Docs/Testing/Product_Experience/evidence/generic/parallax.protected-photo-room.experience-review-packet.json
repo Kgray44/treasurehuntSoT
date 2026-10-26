@@ -1,0 +1,393 @@
+{
+  "objective": "Privately reconstruct and refine an approximate editable room with explicit image permission and truthful manual fallback",
+  "contract": {
+    "id": "parallax.protected-photo-room.experience",
+    "name": "Protected approximate photo room reconstruction and refinement",
+    "authority": "one-voyage",
+    "owners": [
+      "spatial-pilot",
+      "one-voyage",
+      "sealed-hold"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+      "objective": "Privately reconstruct and refine an approximate editable room with explicit image permission and truthful manual fallback",
+      "visibleOutcome": "A Creator reviews uncertain room geometry before saving; identifiable additional views refine the same room; unavailable private providers preserve manual editing",
+      "integrationOwner": "Parallax protected photo room reconstruction",
+      "systems": [
+        "project-parallax",
+        "project-watchglass",
+        "sealed-hold",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/components/studio/parallax",
+        "src/app/studio/parallax"
+      ],
+      "projectionPaths": [
+        "src/parallax/room-perception-service.ts",
+        "src/parallax/room-reconstruction.ts",
+        "src/watchglass/room-perception.ts",
+        "src/private-content/media/room-photo.ts",
+        "src/app/api/studio/parallax/room-photo"
+      ],
+      "entryPoint": "/studio/library",
+      "states": [
+        "PHOTO_UNAVAILABLE",
+        "RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "accessibility": "Labeled feature, type and measurement controls support keyboard input; native disclosure summaries expose grouped corrections; phone preserves a usable contextual Inspector and access to the canvas. Themes and reduced motion retain meaning.",
+      "fallback": "Missing private provider/scanner/OpenAI allowance leaves photo controls disabled with configuration guidance and ordinary manual editing available. No synthetic scanner is production proof.",
+      "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+      "designTarget": "Preserve the contextual blue Inspector. A Room photograph reconstruction disclosure names readiness before upload. Explicit consent covers sanitized OpenAI image processing and token counting. Show saving/import/check/inference phases; cancel keeps the scene. Review estimated dimensions and uncertainties before saved Apply. Additional views require a shared feature, preserve canonical room identity and confirmed measurements, and clarify uncertain alignment. List each private processing permission with a persistent owner-only withdrawal control. Cutaway display exposes furniture while preserving all wall and ceiling geometry and surfaces.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+          "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+          "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-studio-library",
+        "screen-page-studio"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-room-features.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "limitations": [
+        "The protected generic production runtime currently has no configured private photo providers. Its browser journey covers unavailable/manual recovery. The photo workflow is separately exercised against an owned DEVELOPMENT server with synthetic storage scanning and unpaid intercepted inference; this does not qualify production readiness, live vision accuracy or physical room calibration. Full configured-production and all-mode/device acceptance remain open."
+      ],
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-rooms-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "text": "Voyagewright Studio"
+          }
+        }
+      },
+      "continuity": {
+        "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+        "checks": [
+          {
+            "id": "creator-identity",
+            "role": "button",
+            "name": "Synthetic Parallax Rooms Creator",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+        "feedbackBudgetMs": 3000
+      },
+      "journeys": [
+        {
+          "id": "creator-checks-photo-availability-and-manual-recovery",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "Unavailable private photo providers preserve manual room editing and return to Library",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Spatial Studio"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open scene settings"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Room photograph reconstruction"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Room photograph reconstruction",
+              "text": "Manual room editing is available.",
+              "path": "/studio/parallax",
+              "state": "PHOTO_UNAVAILABLE",
+              "kind": "outcome",
+              "meaning": "Photo readiness is explicit and manual room editing remains available",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "RETURNED",
+              "kind": "return",
+              "meaning": "Creator returns to the canonical Library",
+              "feedbackBoundary": true,
+              "returnPath": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-NORMAL-PHOTO_UNAVAILABLE-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-NORMAL-PHOTO_UNAVAILABLE-3.png",
+      "sha256": "e9795cc192e068c7c03a1fbd39359f4e5ef623fd644631f38b9bd887b6331bd4",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "state": "PHOTO_UNAVAILABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-NORMAL-RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-NORMAL-RETURNED-5.png",
+      "sha256": "087500683dc9693d7e9e3c3a6bdce60f59760f93b2180c7d510d62e3a2315e6d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "d9f2f5c8c1c59b2526a528eff0e01c195ae079b90a91c50f72a9ea52d24f8554",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/85e76529afb55eb3d28831525549a5f4.webm",
+      "sha256": "bcf9865d611cd297b0ec07a74e7884bf2b24ebdfd69d34f4b9ae8b15464c8906",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-REDUCED-PHOTO_UNAVAILABLE-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-REDUCED-PHOTO_UNAVAILABLE-3.png",
+      "sha256": "a4eb20b7ba788ec57dfe67ed5bf73209c52994a89a8b0e1aacd8c3eb782237c9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "state": "PHOTO_UNAVAILABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-REDUCED-RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-REDUCED-RETURNED-5.png",
+      "sha256": "087500683dc9693d7e9e3c3a6bdce60f59760f93b2180c7d510d62e3a2315e6d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "3ea7dbd5978f59ac954f710fe3624189a9fa200c19b16fa6659be64314226fba",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/43fcddb154ea87f0237d85f97b24a98e.webm",
+      "sha256": "d55358f188bbdc2da3a18891c1ae64666810034164b3cbf83b36ef84a0e46ebb",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-NORMAL-PHOTO_UNAVAILABLE-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-NORMAL-PHOTO_UNAVAILABLE-3.png",
+      "sha256": "880be848c079b390b36234cb667f7d6e4d6e94564de245e7dde377b8387dbc29",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "state": "PHOTO_UNAVAILABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-NORMAL-RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-NORMAL-RETURNED-5.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "bf14edb8e014d6ec7a919c49cae1532c23c1d4861062e599c0560da8f8e9d233",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/035799af9277f49bb35a47cc115eda54.webm",
+      "sha256": "ce59660a12a105420b814488cc3aafc364d98fda320aa52c1fd166ec3b7d4b3f",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-REDUCED-PHOTO_UNAVAILABLE-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-REDUCED-PHOTO_UNAVAILABLE-3.png",
+      "sha256": "880be848c079b390b36234cb667f7d6e4d6e94564de245e7dde377b8387dbc29",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "state": "PHOTO_UNAVAILABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-REDUCED-RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-REDUCED-RETURNED-5.png",
+      "sha256": "a90bdb84034e8d44fcbcf52d574ad675590469d0232c71f79284dec24d6bd834",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "63abdd3f9381f27db46d5f7937f70bacf6e4686b17defeffb5f153fce3bcdd08",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.protected-photo-room.experience-creator-checks-photo-availability-and-manual-recovery-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2b348e6c75d1d58943432a486c5d97fe.webm",
+      "sha256": "440bbbdbac0896db66e81b5f9c469f7ec1c6975b772445e028c535e0df0a5beb",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.protected-photo-room.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "1ba4d3a9ceb1ec857d89e7e8d9e312f4bc1d3b2fb862acac041e5f37c061a57e",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

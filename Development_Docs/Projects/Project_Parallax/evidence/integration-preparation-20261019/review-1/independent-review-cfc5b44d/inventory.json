@@ -1,0 +1,2518 @@
+{
+  "packetSha256": "32fa1145d98ca3ba258dc9e3a012f66251aa7fd5d0221e59ac71140f7e75eabb",
+  "media": [
+    {
+      "id": "M001",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\animation-end.png",
+      "sha256": "ec9493a4c8063ccc5fe604514e3fddf346a7da5e76db267d55ef19422ee70d9b",
+      "bindingValid": true,
+      "bytes": 201307,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M002",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\animation-phone-timeline-controls.png",
+      "sha256": "bd0c259114d09895338117989b9cce06462d237a9567a2c77386e40ca7d3a546",
+      "bindingValid": true,
+      "bytes": 80482,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M003",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\animation-phone-viewport.png",
+      "sha256": "d0fd428ec99566b6e534ff2847710c08f837376403a9fee634f82d66363bddb1",
+      "bindingValid": true,
+      "bytes": 113943,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M004",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\animation-phone.png",
+      "sha256": "9d25e6f1c9ac271907d4d7fe28276dd8abe73a21c99a1e2705ccd8cbdd02dcb5",
+      "bindingValid": true,
+      "bytes": 115262,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M005",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\animation-reloaded-zoom.png",
+      "sha256": "4b5e5735da0455365687bea660f3370490f0605ca2c0123ef6e48e93f0c1c2a4",
+      "bindingValid": true,
+      "bytes": 246365,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M006",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\animation-start.png",
+      "sha256": "acaa96b101039140e821e808f5d1514b876e2f5433c0c16f9bc865127e72b0f3",
+      "bindingValid": true,
+      "bytes": 206101,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M007",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\collection-library.png",
+      "sha256": "8ad65e600f6240a0e0ee90e2267d38d62016e2a9fd27223621c8c4cd8ee4f7fb",
+      "bindingValid": true,
+      "bytes": 291636,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M008",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\combined-chest-desktop.png",
+      "sha256": "b01eaa93c1bfab45cf624f122f20cbaa6e98698161dcd77aee1422c0253461dc",
+      "bindingValid": true,
+      "bytes": 310956,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M009",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\combined-composition-playing.png",
+      "sha256": "35f5be3d7a49fecf1b69b73e905289da72ee1b373757a800a4d3298a649e3f9f",
+      "bindingValid": true,
+      "bytes": 332661,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M010",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\combined-library-phone.png",
+      "sha256": "f4f245996a9b4b8a7bf93dd8d7bee59425d60c14f32424561d2d5b70439f84b7",
+      "bindingValid": true,
+      "bytes": 94925,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M011",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\combined-view-controls-phone.png",
+      "sha256": "0a05173e1f6bd72d9aef88a8b3160c94531d281a0a86fc3b80642ad900fe1464",
+      "bindingValid": true,
+      "bytes": 104037,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M012",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\construction-corrected-reloaded-phone.png",
+      "sha256": "5e442f4b60e4d1f01639adc166f22aa2c8c3f2645e310faff514eee171117ac6",
+      "bindingValid": true,
+      "bytes": 73249,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M013",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\construction-scale-review-phone.png",
+      "sha256": "9d8c8024f4c5b6cf8cf648a94c898efe824c7254cf96c3b678267980e69d4aa4",
+      "bindingValid": true,
+      "bytes": 64546,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M014",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\construction-wall-and-scale-findings.png",
+      "sha256": "9fa3f85dfba79ff34eaf9de7a5d6da3c27ffae917a31ad14f18127d560e5bc7f",
+      "bindingValid": true,
+      "bytes": 283936,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M015",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\direct-clamp-held-preview.png",
+      "sha256": "51690e8e5f10c382aa0025e9b7b66fdf709ed0367a295cfc83fb7a7488d24a56",
+      "bindingValid": true,
+      "bytes": 398047,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M016",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\direct-clamped-release.png",
+      "sha256": "9de87d2d4b8ae3f57ab5d727e3616ea6b0969c50edab4b8d93f98e58e373286c",
+      "bindingValid": true,
+      "bytes": 409049,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M017",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\direct-free-held-preview.png",
+      "sha256": "366652f9b18c98f15654f576e507f5998d2de227d223266c2bda77d18926452e",
+      "bindingValid": true,
+      "bytes": 407223,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M018",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\direct-free-release.png",
+      "sha256": "a52691c01b729cf4f57998eb52704352a05f74bd356c5a8456fae89f067debbe",
+      "bindingValid": true,
+      "bytes": 406712,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M019",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\direct-pointer-cancel-restored.png",
+      "sha256": "bc8a5476ca39fa85018c2dc0aaab5012050144782f141f6b7479e560a6063db5",
+      "bindingValid": true,
+      "bytes": 407555,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M020",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\direct-viewport-selection.png",
+      "sha256": "4506cd92e6f0f239101613d26058fbb7bcbb1b6157712abaa62e599d6b021911",
+      "bindingValid": true,
+      "bytes": 407824,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M021",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\environment-definition-laptop.png",
+      "sha256": "29eaed4513319d692bb0b608298b00e4f2a8a8686e974374631b39ab4cd5dd30",
+      "bindingValid": true,
+      "bytes": 203753,
+      "size": [
+        1366,
+        900
+      ]
+    },
+    {
+      "id": "M022",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\environment-definition-phone.png",
+      "sha256": "b6fa09fe81385296614dfad8e87ba76e341a91ac336b4625e4129daefa540a1a",
+      "bindingValid": true,
+      "bytes": 106885,
+      "size": [
+        390,
+        1211
+      ]
+    },
+    {
+      "id": "M023",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\exclusion-automatic.png",
+      "sha256": "f116e1c273ab053e6f84cd575df3733c1cad47313983e3519e45a72ba1cd8652",
+      "bindingValid": true,
+      "bytes": 343245,
+      "size": [
+        1600,
+        1100
+      ]
+    },
+    {
+      "id": "M024",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\exclusion-deleted.png",
+      "sha256": "65659fcf313f31c4de5f1d9b0148bbe9d99a84606ad5f7aee815994e0076a358",
+      "bindingValid": true,
+      "bytes": 325197,
+      "size": [
+        1600,
+        1100
+      ]
+    },
+    {
+      "id": "M025",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\exclusion-edited.png",
+      "sha256": "8387ac7b98835af1d0aa05facd3c7e7a33191ead1b07f02a116d0cc82046efa1",
+      "bindingValid": true,
+      "bytes": 327158,
+      "size": [
+        1600,
+        1100
+      ]
+    },
+    {
+      "id": "M026",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\exclusion-light-reduced-motion.png",
+      "sha256": "c713f621062b0e5b264961c842a9f157cb6ce66c1a3d5f39de321e6cefef329d",
+      "bindingValid": true,
+      "bytes": 345476,
+      "size": [
+        1600,
+        1100
+      ]
+    },
+    {
+      "id": "M027",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\exclusion-live-move.png",
+      "sha256": "5bfd3ece7d35a5c58d798ae6083724d279cc2cb4f3b0869014d787e0885ba5cf",
+      "bindingValid": true,
+      "bytes": 325166,
+      "size": [
+        1600,
+        1100
+      ]
+    },
+    {
+      "id": "M028",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\exclusion-normal-scene.png",
+      "sha256": "17b78e6382537fd9e4f9c11a2d44b6603f58117fdcbc1445b8fac3f849f00755",
+      "bindingValid": true,
+      "bytes": 340911,
+      "size": [
+        1600,
+        1100
+      ]
+    },
+    {
+      "id": "M029",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\exclusion-phone-edited.png",
+      "sha256": "92f26fb55b4787bed433ed604efb8455ec06630df8b7e5ab6e7d680ada983277",
+      "bindingValid": true,
+      "bytes": 93328,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M030",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "ddb6ce1dc3bbec407bd2ab8e478b018b7912fe73a6722edec03ebbb32156d38b",
+      "bindingValid": true,
+      "bytes": 499000
+    },
+    {
+      "id": "M031",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "d1aa02cc770f404105d9b9d8b449f30bf89ae19d2eb5922f7b0520b5700e9edb",
+      "bindingValid": true,
+      "bytes": 264594
+    },
+    {
+      "id": "M032",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "sha256": "5cc4c05c0a5a206f6fcad402e3b87f085b4ca5eca6db22ee32a16de920a04c04",
+      "bindingValid": true,
+      "bytes": 555476
+    },
+    {
+      "id": "M033",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "sha256": "c56a5bf9ca54b0f10a33c6ae04866a1612d96ce8fe7f3ff02cf8bba4e860447a",
+      "bindingValid": true,
+      "bytes": 583740
+    },
+    {
+      "id": "M034",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "sha256": "736da345cb5b81d77bbb48ffa05d508707cc459e436b6297875a124a54360ef5",
+      "bindingValid": true,
+      "bytes": 956491
+    },
+    {
+      "id": "M035",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-test-failed-1.png",
+      "sha256": "25d0d7c7263b558fbe1897f74c90acd4984e3d937d2f80b01e28cbac8f9bc02f",
+      "bindingValid": true,
+      "bytes": 269055,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M036",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+      "sha256": "b67c660415aa5dcd7d7f2fa376f48760d1bc8cd31344310de01065c3c5a0d5aa",
+      "bindingValid": true,
+      "bytes": 698350
+    },
+    {
+      "id": "M037",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Assistant--b45d8--and-edits-the-actual-scene-chromium-test-failed-1.png",
+      "sha256": "64f01d1ad89a5fdf6c9601c9a57deec3b147a27c30e87b053f3b977900a80316",
+      "bindingValid": true,
+      "bytes": 269130,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M038",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Assistant--b45d8--and-edits-the-actual-scene-chromium-video.webm",
+      "sha256": "894dbf22625c47a7908559e91f2614a30e8d9935eafddbf4bd26e24d1e51db21",
+      "bindingValid": true,
+      "bytes": 692813
+    },
+    {
+      "id": "M039",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-test-failed-1.png",
+      "sha256": "15f4466ce398105c8d79340f5a7a8d00e338146ab91f37e42009dacc79ff42cf",
+      "bindingValid": true,
+      "bytes": 269051,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M040",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "sha256": "93e372a65da524bcda66f50cd902c9fb0d0c26bb1e5f14b44df73823b7c0d525",
+      "bindingValid": true,
+      "bytes": 680248
+    },
+    {
+      "id": "M041",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Inspector--d2352-es-the-viewport-edit-toggle-chromium-test-failed-1.png",
+      "sha256": "042da24c7f9254150feca76875a1aca5f1f68897c36998ca1051695f86fc7422",
+      "bindingValid": true,
+      "bytes": 268947,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M042",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Inspector--d2352-es-the-viewport-edit-toggle-chromium-video.webm",
+      "sha256": "aea46d89b10e92a81d3717c27f2cea43115e3db5c1c161cdfcdb64fff35e281d",
+      "bindingValid": true,
+      "bytes": 683662
+    },
+    {
+      "id": "M043",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium-test-failed-1.png",
+      "sha256": "9978c21c667b4b498f5c460de729221c455f322ac4d810ba4c9d53477aaa883e",
+      "bindingValid": true,
+      "bytes": 268943,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M044",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium-video.webm",
+      "sha256": "cc91c7bfe67cefc249cada90eb750687bb8033128b1c9f1140058beba4765609",
+      "bindingValid": true,
+      "bytes": 676240
+    },
+    {
+      "id": "M045",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-single-nam-afa3f-e-the-current-room-controls-chromium-test-failed-1.png",
+      "sha256": "48d9ff1fd578a3d1867aaa4e1f3cc9e3d611ae480f5ed8df38eb95e12c5295e1",
+      "bindingValid": true,
+      "bytes": 269046,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M046",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-single-nam-afa3f-e-the-current-room-controls-chromium-video.webm",
+      "sha256": "9a458da5a5212e271706a12fc2777c066ca610af9850a03036a3919244c883ea",
+      "bindingValid": true,
+      "bytes": 700429
+    },
+    {
+      "id": "M047",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-test-failed-1.png",
+      "sha256": "a2679311a9cfa2e0d6287ad62d86d0f03ab5e4fbdda9d629471a685f4a8252e5",
+      "bindingValid": true,
+      "bytes": 268697,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M048",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+      "sha256": "98ccef70eb86ca2754d84dbdb127af6a5e4d5d976d3f6bcf8d37179b587e1f80",
+      "bindingValid": true,
+      "bytes": 679763
+    },
+    {
+      "id": "M049",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-test-failed-1.png",
+      "sha256": "d8e5de16d7b00e2ee3ddf82b4a2089d4f392f4d3c2dd3cf5f7631c7edd82028f",
+      "bindingValid": true,
+      "bytes": 269314,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M050",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium-video.webm",
+      "sha256": "e638847c1037464ecc713ee13a40f557b85b5ccfe729677b8a7b79603f07cb7b",
+      "bindingValid": true,
+      "bytes": 678522
+    },
+    {
+      "id": "M051",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-library-lifecycle-291af-etadata-and-version-history-chromium-video.webm",
+      "sha256": "e38f985f8b4395723997406fe162abf1b7d435a2e79bde9c6090d0fe7aa23ae1",
+      "bindingValid": true,
+      "bytes": 538523
+    },
+    {
+      "id": "M052",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium-video.webm",
+      "sha256": "f963cd2c0833aff0a26efa62407581a490289754e400fe1348c67ef5ae746c10",
+      "bindingValid": true,
+      "bytes": 329356
+    },
+    {
+      "id": "M053",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-library-lifecycle-4e27a-inition-and-visible-failure-chromium-video.webm",
+      "sha256": "b7a802ae1d895e61cf8a18c970f0eb7246661038b86cc9ba94cb5ae5fa381c0a",
+      "bindingValid": true,
+      "bytes": 154823
+    },
+    {
+      "id": "M054",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video-1.webm",
+      "sha256": "5e14e292d1bd7aa86223aaf9c0e7160d21c46a8084a5f1a22d26141d14ea1a1c",
+      "bindingValid": true,
+      "bytes": 157620
+    },
+    {
+      "id": "M055",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video.webm",
+      "sha256": "9f3243da79e6611fb14bf972e49b7f2a3e428745ee1633c046830a4c266c6f96",
+      "bindingValid": true,
+      "bytes": 293728
+    },
+    {
+      "id": "M056",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-library-lifecycle-a1739-or-a-newly-selected-version-chromium-video.webm",
+      "sha256": "e5a3338dd4816494a3e547e78e264bc3899c3bc961be944e40d2fd82d5946d74",
+      "bindingValid": true,
+      "bytes": 202968
+    },
+    {
+      "id": "M057",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium-video.webm",
+      "sha256": "9ae552099640d7441e7bcc3384ecc67e57c8311a1eb37130acd6d2178c0411ba",
+      "bindingValid": true,
+      "bytes": 191695
+    },
+    {
+      "id": "M058",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium-video.webm",
+      "sha256": "526bc086d8b8c9861d7272c96a17db3e6878a83fd55af3fafbb109c43c73b575",
+      "bindingValid": true,
+      "bytes": 292638
+    },
+    {
+      "id": "M059",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-video.webm",
+      "sha256": "f205b6fc0751f622277d22d1ec47d39cddf64bd377903d130b94c90ca07bd499",
+      "bindingValid": true,
+      "bytes": 731635
+    },
+    {
+      "id": "M060",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video-1.webm",
+      "sha256": "400bc70a978ef65514a696c22cf4fff786b3068f008325c33becfe442efa133f",
+      "bindingValid": true,
+      "bytes": 1266
+    },
+    {
+      "id": "M061",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video.webm",
+      "sha256": "973a04d447ed7f6087769516e01ee51978a0f1bb94424fc77034689a9c63640b",
+      "bindingValid": true,
+      "bytes": 306115
+    },
+    {
+      "id": "M062",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-320d1-s-before-one-history-commit-chromium-video.webm",
+      "sha256": "718d6db2101df385da82c2ad58b4ef66affecaad2aff5b876c040dde32d9ec51",
+      "bindingValid": true,
+      "bytes": 75987
+    },
+    {
+      "id": "M063",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video-1.webm",
+      "sha256": "a538bfc3ad509ebbeb5413afb211a288a62795824a463e5629612f69bbace986",
+      "bindingValid": true,
+      "bytes": 1202
+    },
+    {
+      "id": "M064",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video.webm",
+      "sha256": "3f7096d7f35f86f7ba5cd1b00cc53ab1ed417cd408ecca5c2b8dd8822a2f1d8d",
+      "bindingValid": true,
+      "bytes": 1083789
+    },
+    {
+      "id": "M065",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium-video.webm",
+      "sha256": "552946d2d891ea2b95ff701115a0fc3cff9003a53777df8c2d5ad709bc796d3e",
+      "bindingValid": true,
+      "bytes": 188920
+    },
+    {
+      "id": "M066",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium-video.webm",
+      "sha256": "4bc6300c211d997f70d4bc84f906a34b624465884a7fb12ca4a4b5dc16ef6843",
+      "bindingValid": true,
+      "bytes": 322644
+    },
+    {
+      "id": "M067",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium-video.webm",
+      "sha256": "db83b8989f0081ee89fe6efdac3a05fa884de6ed6adef5df6c1ca83262bedc11",
+      "bindingValid": true,
+      "bytes": 467215
+    },
+    {
+      "id": "M068",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00b-combined-SC-d36c9-Inspector-return-on-desktop-chromium-video.webm",
+      "sha256": "992bc9a9bac4e0181393c0438ca5000d1f12ef2d15949a1765244ccd121dae0b",
+      "bindingValid": true,
+      "bytes": 454096
+    },
+    {
+      "id": "M069",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-drop-placem-c4a60-lects-the-inserted-instance-chromium-video.webm",
+      "sha256": "d7f0c11823de679004cfb3348706412ff213b628161fc8ff9d25386404c5e006",
+      "bindingValid": true,
+      "bytes": 164861
+    },
+    {
+      "id": "M070",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-expanded-li-38712--support-with-animated-root-chromium-video.webm",
+      "sha256": "3c680ec0b3447eacf32a14388004834204ed355d21ad3b1832c99b355ff9d4c5",
+      "bindingValid": true,
+      "bytes": 264634
+    },
+    {
+      "id": "M071",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-expanded-li-61d52-efore-creating-a-Scene-copy-chromium-video.webm",
+      "sha256": "38e7ec9816a70c9bf4b7a0606a8add3686274516fcd4f986791f2d9678a9a968",
+      "bindingValid": true,
+      "bytes": 313037
+    },
+    {
+      "id": "M072",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-expanded-li-71774-returns-to-the-same-content-chromium-video.webm",
+      "sha256": "0afe55e756b144f5d4533e00f6de8b29c9f3013e6c3be9700deb9992dc6994ff",
+      "bindingValid": true,
+      "bytes": 303561
+    },
+    {
+      "id": "M073",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-expanded-li-c3284-d-sources-and-Scene-Manager-chromium-video.webm",
+      "sha256": "fad49a65b57927e1d219217e5615da74cb73599c8801f690177ec145cd1e31cf",
+      "bindingValid": true,
+      "bytes": 512122
+    },
+    {
+      "id": "M074",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium-video.webm",
+      "sha256": "e2ecbcb3a275b1e9e1930a7f16f6254b9445789036a4ef1dbb74aea3bb7901fb",
+      "bindingValid": true,
+      "bytes": 360854
+    },
+    {
+      "id": "M075",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-library-con-f5869-oard-focus-and-phone-bounds-chromium-video.webm",
+      "sha256": "b86be1e1340fcdd436682dca6c7c046ac19933d8ce08530a6e1cf13ef451ed8f",
+      "bindingValid": true,
+      "bytes": 392755
+    },
+    {
+      "id": "M076",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-library-jou-1ed15-et-with-immediate-selection-chromium-video.webm",
+      "sha256": "2ef2859c23e010f06fb7f3f35b72ff059ee24a490051ac3501f729690a7b0dd1",
+      "bindingValid": true,
+      "bytes": 114836
+    },
+    {
+      "id": "M077",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-library-jou-4bf00-tions-and-inserts-its-asset-chromium-video.webm",
+      "sha256": "9c7bc8695a23a4ca5c17197938d19b4dbf9fb54477ee8b8b746f7e2b3f9b9fbe",
+      "bindingValid": true,
+      "bytes": 107412
+    },
+    {
+      "id": "M078",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc00c-library-jou-775be--one-returns-and-renames-it-chromium-video.webm",
+      "sha256": "5e7aa0fc1cda9f382f0fe09d57eeee30b95222ee26932b5d7a8cc00a26695d27",
+      "bindingValid": true,
+      "bytes": 308053
+    },
+    {
+      "id": "M079",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc02-integration--22309-nd-refuses-an-occupied-room-chromium-video.webm",
+      "sha256": "ef65746835e44a8484e30864ab182eef0f2184c6c0ab16c12f00504639ca4e5e",
+      "bindingValid": true,
+      "bytes": 752160
+    },
+    {
+      "id": "M080",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-sc02-integration--3d4ec-tion-with-rendered-playback-chromium-video.webm",
+      "sha256": "d821641b5417d9a47cbebe6ecbf0595617568ec2e797ce115e6b1679eee94582",
+      "bindingValid": true,
+      "bytes": 820967
+    },
+    {
+      "id": "M081",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-scene-manager-a-r-77a61-s-the-same-working-identity-chromium-video.webm",
+      "sha256": "e503decdea76982a8fe3d7676a39c20a6f2d0d86a6876396ad4fd02d77182620",
+      "bindingValid": true,
+      "bytes": 318041
+    },
+    {
+      "id": "M082",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-scene-manager-a-r-8c509-es-without-changing-its-pin-chromium-video.webm",
+      "sha256": "3b0572a0fc0e6193938544d231212ece84428efb6240d6256427a4d10aa5fcb2",
+      "bindingValid": true,
+      "bytes": 350774
+    },
+    {
+      "id": "M083",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-scene-manager-bui-fe8d0-ore-independent-Scene-reuse-chromium-video.webm",
+      "sha256": "57f4a980cce0a7b33d2426a3947e77a1a2fd3f36fddf74565e3e408e9cda790b",
+      "bindingValid": true,
+      "bytes": 949805
+    },
+    {
+      "id": "M084",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video-1.webm",
+      "sha256": "1092769b84d82a5a2f63155d2778817454c0eda8c8f14535d935f47f7ec426b2",
+      "bindingValid": true,
+      "bytes": 1202
+    },
+    {
+      "id": "M085",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video.webm",
+      "sha256": "5e2d890afd2613284e05687091d5c0d91644d80ef9815f5aa747aa0bf0161e4a",
+      "bindingValid": true,
+      "bytes": 3792751
+    },
+    {
+      "id": "M086",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+      "sha256": "e2c9560bb4684c559832c3264d89a2a1671d68e7ce553ed40d906e86d82648aa",
+      "bindingValid": true,
+      "bytes": 76401
+    },
+    {
+      "id": "M087",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "sha256": "68a96b34ce4dd711c1391cebe6ddb44a02a0ad76b42ec2fed8b71d4d70a7a846",
+      "bindingValid": true,
+      "bytes": 610558
+    },
+    {
+      "id": "M088",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "sha256": "708c19eca43e626e35438fe59516ab5e6cf699bbf48ee9b908cb9d4018aed7a8",
+      "bindingValid": true,
+      "bytes": 627831
+    },
+    {
+      "id": "M089",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-0369e--as-a-read-only-Environment-chromium-video-1.webm",
+      "sha256": "fa5341becd2d429860cb03fab1ef3d5f805ab83df7185f2b4f40c937667f136a",
+      "bindingValid": true,
+      "bytes": 1202
+    },
+    {
+      "id": "M090",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-0369e--as-a-read-only-Environment-chromium-video.webm",
+      "sha256": "a261021242657494fd7f844aa6d3dadb6033cce009869aa7f344bff19e78fe0f",
+      "bindingValid": true,
+      "bytes": 380231
+    },
+    {
+      "id": "M091",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-0f048-version-after-Profile-setup-chromium-video.webm",
+      "sha256": "42d0435c4a161be87e0987662b8c2918168e61cba2b51a8c0c9b9eb3933f6000",
+      "bindingValid": true,
+      "bytes": 614011
+    },
+    {
+      "id": "M092",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-14d06--retry-recovers-one-release-chromium-video.webm",
+      "sha256": "8dea021da348fdcbd84210a0dca02b89fc3c528c7520c064fff42bf0d58fec27",
+      "bindingValid": true,
+      "bytes": 280666
+    },
+    {
+      "id": "M093",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-1f615-ut-private-Library-metadata-chromium-video.webm",
+      "sha256": "8afb5605ed9fa100d3b7086e3f65e1bbc9ee323045ef4451d4550980493a307b",
+      "bindingValid": true,
+      "bytes": 242450
+    },
+    {
+      "id": "M094",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium-video.webm",
+      "sha256": "deef554986eeeb56a08ab5a7def736019ebc360f43d38065f80aa4d3f166d39f",
+      "bindingValid": true,
+      "bytes": 328973
+    },
+    {
+      "id": "M095",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-28f02-rewriting-its-first-release-chromium-video.webm",
+      "sha256": "a259bf6de750af3d5d139c6d7cd95b16f9232a63c00f4a1ed6f2bd2511376a01",
+      "bindingValid": true,
+      "bytes": 662858
+    },
+    {
+      "id": "M096",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-478f7-returns-to-the-saved-source-chromium-video-1.webm",
+      "sha256": "87517b5f48ab25ef9387806de90e334198632258017e2928cddfc6a557a757b3",
+      "bindingValid": true,
+      "bytes": 1202
+    },
+    {
+      "id": "M097",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-478f7-returns-to-the-saved-source-chromium-video.webm",
+      "sha256": "a91fe6d176d9e41cab9891ca9a39d6a62e2b5e4e9d1e844640f38426fe9a9804",
+      "bindingValid": true,
+      "bytes": 568311
+    },
+    {
+      "id": "M098",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-5b28c-refusal-and-remains-private-chromium-video.webm",
+      "sha256": "b4fb31d81453cfd30de484a3b4bf0d457ac8f3b34bc61d433cc2d3f66acb532f",
+      "bindingValid": true,
+      "bytes": 271760
+    },
+    {
+      "id": "M099",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium-video-1.webm",
+      "sha256": "3898bf95f622fb2bd8f280522a8c0215e2b8f066a1e56d0b7ddadcac4601f0b2",
+      "bindingValid": true,
+      "bytes": 1202
+    },
+    {
+      "id": "M100",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium-video.webm",
+      "sha256": "acfa4ad76deb3a43be88541aad536cb308a2402072fe8a1f9f295166dfc82cc5",
+      "bindingValid": true,
+      "bytes": 957817
+    },
+    {
+      "id": "M101",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium-video.webm",
+      "sha256": "73a8947e270473cc40b63f6795ff2b16597e69a68b01158e7ea37d3ec207191b",
+      "bindingValid": true,
+      "bytes": 393828
+    },
+    {
+      "id": "M102",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parallax-spatial-community-fea16-io-entry-without-publishing-chromium-video.webm",
+      "sha256": "d71ae5be0c282927a41fe7f3ca9a976c9cc6dc6a8b21d98e0d40785b93189d09",
+      "bindingValid": true,
+      "bytes": 437929
+    },
+    {
+      "id": "M103",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parametric-bound-rebuild-protected.png",
+      "sha256": "bf789c0c6bcc69d86d027d6a2e4020ac535b4074b4f8ddb63e6a24db9b1eb415",
+      "bindingValid": true,
+      "bytes": 297008,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M104",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parametric-bound-support-protected.png",
+      "sha256": "028a11eaec5de2041abd974ea42bf95fa85df654bdc2a3fda4551c3d40c4e2f4",
+      "bindingValid": true,
+      "bytes": 296927,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M105",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parametric-known-measurement.png",
+      "sha256": "d6d6401eb052bdf83049b8f8d31becd48cb50313308756979a213851b87dc206",
+      "bindingValid": true,
+      "bytes": 382432,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M106",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parametric-phone-feature.png",
+      "sha256": "42e19b16bb6145ec647531c7a602d86df40d29c5231b0e58d1d434eb0109835f",
+      "bindingValid": true,
+      "bytes": 92979,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M107",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parametric-phone-reloaded.png",
+      "sha256": "0d9cb2fc1c0fcc56c5edf9f02e9e8c710cc923f43e1e4c649e19ae3ec9e88a59",
+      "bindingValid": true,
+      "bytes": 94478,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M108",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parametric-rebuilt-sofa.png",
+      "sha256": "694f62d53b8a6874fa21fc5d83d0d621b613cd65643ed30d3499cd9599afaa4b",
+      "bindingValid": true,
+      "bytes": 298116,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M109",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\parametric-restored-room.png",
+      "sha256": "e09e91751529a05ce92bfc56a2d502703e62caa28e217b4a429014952df63a0c",
+      "bindingValid": true,
+      "bytes": 252968,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M110",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\renderer-context-loss.png",
+      "sha256": "5a51c58bc85c1b38cdb111abb46536aadc9756d2aa3e541e8d7f3bce311a560d",
+      "bindingValid": true,
+      "bytes": 190045,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M111",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\renderer-isolated-framed.png",
+      "sha256": "182d433cc3d274fa9db1938c127fd9c6f29c944b67cad46ed9070fb1afd3c62d",
+      "bindingValid": true,
+      "bytes": 215715,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M112",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\renderer-recovered.png",
+      "sha256": "df633582459a9698c66439eaeadd0afc26ea3a09d306b36ce513f92b50ec7bb4",
+      "bindingValid": true,
+      "bytes": 215227,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M113",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\room-aware-floor-table-wall.png",
+      "sha256": "56de2dff34b0ff3bcea742b7066ada6ef2de9421408fdde54eb42afa5de858e5",
+      "bindingValid": true,
+      "bytes": 273388,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M114",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\room-aware-no-fit-recovery.png",
+      "sha256": "01051e04d4f6c2ab5f9c980734825ba0c22b29f1dd2819e6380f399b9c5eafbd",
+      "bindingValid": true,
+      "bytes": 345286,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M115",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-comparison.png",
+      "sha256": "e1028d6638b039fbaa03080a67a483af858c800cee6bb1ff6dfacd7bd4391842",
+      "bindingValid": true,
+      "bytes": 121441,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M116",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-environment-impact.png",
+      "sha256": "56f8d67936bbef71932c432779b493a68333bf20b2d8a944be147e622d484219",
+      "bindingValid": true,
+      "bytes": 119661,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M117",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-gallery-phone.png",
+      "sha256": "63ffa65e37256dd0c3afaa123ed3ee703aced51538af2d8e7feb4c893df99460",
+      "bindingValid": true,
+      "bytes": 69021,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M118",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-haunting-canvas.png",
+      "sha256": "f3b5f71d125ff6791a002828424a84d9ef99315731da2f2727722cbbaf4e8e6f",
+      "bindingValid": true,
+      "bytes": 326113,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M119",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-invalid-legacy-geometry.png",
+      "sha256": "be53adacf67b3222127e06d9d513638bc69671b863112a4b977abb06de37529d",
+      "bindingValid": true,
+      "bytes": 97111,
+      "size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "M120",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-invalid-semantic-reference.png",
+      "sha256": "63fa18ba565f363a7871e190bd2eaab8db0de717d7cb80e714024dcfa179a20e",
+      "bindingValid": true,
+      "bytes": 83614,
+      "size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "M121",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-legacy-scene.png",
+      "sha256": "db4ad1d167400eb10ad1ab2b6b11e9e1c1b7d17474c4968e5f3a3db7c3fe214a",
+      "bindingValid": true,
+      "bytes": 166740,
+      "size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "M122",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-legacy-working.png",
+      "sha256": "12e8664f004f8d61fa810a91fc627e1d05fef7c8a33814e33a1d44ce8debc856",
+      "bindingValid": true,
+      "bytes": 99811,
+      "size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "M123",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-letter-canvas.png",
+      "sha256": "3299b9b1681306b9cc7880c82491c0803ad469fc5653f35b26f6bd250727d99b",
+      "bindingValid": true,
+      "bytes": 268210,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M124",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-letter-card-phone.png",
+      "sha256": "1ce762034941e4b9c81e50bf26bc7efaf8a6e83f5b512930efde3ac6aebb8e10",
+      "bindingValid": true,
+      "bytes": 58552,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M125",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-manager-phone.png",
+      "sha256": "5935390a71cbdb73a0e3aa82a4ce403b23dcdcc164d9f52a00e361483937d046",
+      "bindingValid": true,
+      "bytes": 51638,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M126",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-ordinary-canvas.png",
+      "sha256": "539306276a3b0743f902af8c814ac74715add22aff53e00f1ba080ee8f401776",
+      "bindingValid": true,
+      "bytes": 269887,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M127",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-reconstructed-source.png",
+      "sha256": "f2490a3df5aa9caeeb90000582bd33397bfd598de6461c1a6cccf9dce320d3c7",
+      "bindingValid": true,
+      "bytes": 103886,
+      "size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "M128",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-save-error.png",
+      "sha256": "8d7a560bd32751dfdab2c2575e4edcef0ec7f221983fbfd573e49bd0196dc62b",
+      "bindingValid": true,
+      "bytes": 72475,
+      "size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "M129",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-save-recovered.png",
+      "sha256": "918d788dd044ecb579fa542174bd12ccfe05ae8893c37bbaf7c14fdb6452f80e",
+      "bindingValid": true,
+      "bytes": 67854,
+      "size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "M130",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-scene-information.png",
+      "sha256": "848fbec232e97f15fb30b97b6b01196bf55038c3407fe587a2b18cc68d7fdd81",
+      "bindingValid": true,
+      "bytes": 134118,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M131",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-shared-environment.png",
+      "sha256": "3517d46c67cb589403825ec646d6320f31bbf3a69d7af7f46bd829f0c23d82d3",
+      "bindingValid": true,
+      "bytes": 231081,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M132",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\sc01-integrated-three-scenes.png",
+      "sha256": "0d3f8a1394301fb8b570e22b292ec93cfb671b4292aec9d9f77bd0449f1e4826",
+      "bindingValid": true,
+      "bytes": 177700,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M133",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-ambiguous-target-question.png",
+      "sha256": "b08d569f06953b2e0100170000aea05f586ab0570b504ff6b287eb2c5741532a",
+      "bindingValid": true,
+      "bytes": 220099,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M134",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-applied-renderer-confirmation.png",
+      "sha256": "3a049a1dd8a27d6ddd72e4d8de8129d03b0b3f4f06cf1bc101a55afaf3370ce9",
+      "bindingValid": true,
+      "bytes": 238321,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M135",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-assistant-preview-engineering.png",
+      "sha256": "b1f757fa464bc4c5d6cb97d0fa9e481e4377857e5426da78ba394cf05895f1c9",
+      "bindingValid": true,
+      "bytes": 270914,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M136",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-assistant-preview-guided.png",
+      "sha256": "b261f3a5f8ca189cf6ea71b7451ffa64f6d3e25720645337f67381665687778a",
+      "bindingValid": true,
+      "bytes": 253533,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M137",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-assistant-preview-returned.png",
+      "sha256": "9f8fa5158cc03b93a39d12730a710774cf74374a1f49a21758b73d483c56cc7d",
+      "bindingValid": true,
+      "bytes": 271360,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M138",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-assistant-preview-scene.png",
+      "sha256": "6a100d7537e030f1b937413731ff5234245aaf7d98a10521824d7f2b7c435f05",
+      "bindingValid": true,
+      "bytes": 285602,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M139",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-assistant-preview-standard.png",
+      "sha256": "4e8889a6157db8b6b3184834900b17362f4db177a494ca5342d986415e01b966",
+      "bindingValid": true,
+      "bytes": 255347,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M140",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-cancellable-request.png",
+      "sha256": "8946b9a01351144f2815d86f5e3961adbe2e877226dae11c50ae1fd3617d5ac1",
+      "bindingValid": true,
+      "bytes": 229043,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M141",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-cancelled.png",
+      "sha256": "46cae66ff94dd12600796c76630a14091a0d15c3a668ef1bc1821149fb7713d0",
+      "bindingValid": true,
+      "bytes": 222704,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M142",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-interpreting.png",
+      "sha256": "bba2de37d69c3f62ce3a5f1f0141e4d9d843af38447ed049fa320e9bdd1c7c26",
+      "bindingValid": true,
+      "bytes": 218197,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M143",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-motion-switch-preserved-composer.png",
+      "sha256": "bc90025a7cb9963481256d4f41c8b4aed9986498aae65647e74f8341022a8bfd",
+      "bindingValid": true,
+      "bytes": 229024,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M144",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-proposed-note-in-view.png",
+      "sha256": "b84b36cb287194b317b4aa720a61c3af9cfa988b09e84eefe4f4be1a3627fd6d",
+      "bindingValid": true,
+      "bytes": 329314,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M145",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-provider-failure.png",
+      "sha256": "014c1a1a4569612804c83d899fc742939d13938bdef6e8deb3fc12b18ee950c9",
+      "bindingValid": true,
+      "bytes": 227744,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M146",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-public-sign-in-reduced-motion.png",
+      "sha256": "24c10ebc363c06b67c3425d7ee5466475bbe60436e850e1a5de37015a993cdcd",
+      "bindingValid": true,
+      "bytes": 516187,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "id": "M147",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-public-sign-in-restored-motion.png",
+      "sha256": "24c10ebc363c06b67c3425d7ee5466475bbe60436e850e1a5de37015a993cdcd",
+      "bindingValid": true,
+      "bytes": 516187,
+      "size": [
+        1280,
+        800
+      ]
+    },
+    {
+      "id": "M148",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-reduced-motion-clarification.png",
+      "sha256": "3607552fbb9787a42438cf67d978a0ff105bf13c64e3fe4154c8a782d3a8a8f8",
+      "bindingValid": true,
+      "bytes": 219616,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M149",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-selected-detailed.png",
+      "sha256": "3c7f105e59fbfac1b220bdc344dce77eec4a6feafd51797c0e047a70f640bcf4",
+      "bindingValid": true,
+      "bytes": 316301,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M150",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-selected-engineering.png",
+      "sha256": "bc8af4be7eb3efa996a36127b40672e56da1949a34f1225b5d4cfa695541430a",
+      "bindingValid": true,
+      "bytes": 318110,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M151",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\semantic-selected-guided.png",
+      "sha256": "d391b668dc77144ecc205f58c2e206cb265af4e44c52b413d06016be7b58a4de",
+      "bindingValid": true,
+      "bytes": 314451,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M152",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\typed-library-desktop-dark.png",
+      "sha256": "7dd3cdc0688aa03de6ae8a52e9e714e7c1d0fab7af482522b91ab0a362f92113",
+      "bindingValid": true,
+      "bytes": 292177,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M153",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\typed-library-laptop-light.png",
+      "sha256": "d4ceb6a15bd48ebdbc33eda5070f09c7217869786b1602c30c671a33c4c94862",
+      "bindingValid": true,
+      "bytes": 272722,
+      "size": [
+        1366,
+        900
+      ]
+    },
+    {
+      "id": "M154",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\typed-library-phone-light.png",
+      "sha256": "91cdb757fcfda9e14eb8e5af30f197ef107a39070ebc8fc5ba268af6779449da",
+      "bindingValid": true,
+      "bytes": 95193,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M155",
+      "relative": "parallax-a1\\browser\\cfc5b44d031f\\version-preview-desktop.png",
+      "sha256": "b5820cab139d5a9f61eb29d7dab30e1869bda251ba1d5463eb7a3e4af3abf679",
+      "bindingValid": true,
+      "bytes": 223501,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M156",
+      "relative": "parallax-sc00b-integration\\browser\\ambient-context-engineering.png",
+      "sha256": "0ebeeaecf573a61ad245ca7d185e7f2e24ec1c4d7b975757a35d7906aa0af961",
+      "bindingValid": true,
+      "bytes": 305111,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M157",
+      "relative": "parallax-sc00b-integration\\browser\\empty-selection-engineering.png",
+      "sha256": "5f178146853adfb8c654e5e90cf65bf8e49e5935b8dc261705bd811f06015d9d",
+      "bindingValid": true,
+      "bytes": 316776,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M158",
+      "relative": "parallax-sc00b-integration\\browser\\empty-selection-guided.png",
+      "sha256": "cca4d3c989be7b519f4800d093151e35fc41dd6b88dfdbaae32abc8044807c5c",
+      "bindingValid": true,
+      "bytes": 299881,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M159",
+      "relative": "parallax-sc00b-integration\\browser\\empty-selection-standard.png",
+      "sha256": "efcd42f2d4a8f3e1d9fff074b9a8af3a3cd83c284e4dd051ad41582c90b1495b",
+      "bindingValid": true,
+      "bytes": 301214,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M160",
+      "relative": "parallax-sc00b-integration\\browser\\environment-engineering.png",
+      "sha256": "cec69d918274225995bca5a14f6b5c29c217e347715f661333fa2ed238d25c25",
+      "bindingValid": true,
+      "bytes": 310911,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M161",
+      "relative": "parallax-sc00b-integration\\browser\\environment-from-asset-guided.png",
+      "sha256": "bac2739d68bf8c296f272c3f17702cc1a0df1bfa811883bf1e6e30f1570f305d",
+      "bindingValid": true,
+      "bytes": 296332,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M162",
+      "relative": "parallax-sc00b-integration\\browser\\environment-guided.png",
+      "sha256": "017b13e8302d8ec92af62d6cb30c11a213a017de7a337a9665c777b8c68d63fe",
+      "bindingValid": true,
+      "bytes": 296340,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M163",
+      "relative": "parallax-sc00b-integration\\browser\\environment-standard.png",
+      "sha256": "bfc38e42e304bc0078337dd2e7b3213a9955d4dc6f7f7481a838368085ed19d1",
+      "bindingValid": true,
+      "bytes": 297479,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M164",
+      "relative": "parallax-sc00b-integration\\browser\\exclusion-zone-engineering.png",
+      "sha256": "15b395e3ae813c6558720763c65a686b2e2efa680db353a7548a4185ffb75b7a",
+      "bindingValid": true,
+      "bytes": 322454,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M165",
+      "relative": "parallax-sc00b-integration\\browser\\exclusion-zone-guided.png",
+      "sha256": "d9f1e17c35e0ecc2a4ee21fef20a1d8911a3161b461ffcea4f0af52971f9554d",
+      "bindingValid": true,
+      "bytes": 308389,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M166",
+      "relative": "parallax-sc00b-integration\\browser\\exclusion-zone-standard.png",
+      "sha256": "c248cf7cba98f0f8ccce62a8b53548e2e6d3c89e81107cb2ff7ec8dd28d29b4b",
+      "bindingValid": true,
+      "bytes": 308797,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M167",
+      "relative": "parallax-sc00b-integration\\browser\\furniture-engineering.png",
+      "sha256": "8f10b9ac57164f2bfbde23abb47e62813143ce19c065d2ab8817ba8bb77d072e",
+      "bindingValid": true,
+      "bytes": 335902,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M168",
+      "relative": "parallax-sc00b-integration\\browser\\furniture-guided.png",
+      "sha256": "0c64c79e208eeb9bf08578b137a07aca8faae390e47d62915f5f8cc26b103b1c",
+      "bindingValid": true,
+      "bytes": 313230,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M169",
+      "relative": "parallax-sc00b-integration\\browser\\furniture-standard.png",
+      "sha256": "2a0924595dbff9c8affd9057c759dcc647abf84c6959480cfe2e64896d355cbc",
+      "bindingValid": true,
+      "bytes": 314326,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M170",
+      "relative": "parallax-sc00b-integration\\browser\\group-engineering.png",
+      "sha256": "6cbaf6055de3194a78e336be446483c73e9fa26337d4c1f1f71d232b17c70204",
+      "bindingValid": true,
+      "bytes": 311148,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M171",
+      "relative": "parallax-sc00b-integration\\browser\\group-guided.png",
+      "sha256": "f917188b137f11934d22db307104d858c980406d167cda7f4eb07c4338e4749e",
+      "bindingValid": true,
+      "bytes": 291611,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M172",
+      "relative": "parallax-sc00b-integration\\browser\\group-standard.png",
+      "sha256": "b4089c8a6bd104f11088df1eeee5ea661e17599c4c78f2843e138b8a4f358997",
+      "bindingValid": true,
+      "bytes": 296719,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M173",
+      "relative": "parallax-sc00b-integration\\browser\\interaction-trigger-engineering.png",
+      "sha256": "d503eaac357af2da50370dac2d1cf9c99ea5b59d022ffcdd794b4b44da544f86",
+      "bindingValid": true,
+      "bytes": 328690,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M174",
+      "relative": "parallax-sc00b-integration\\browser\\interaction-trigger-guided.png",
+      "sha256": "eb5681dfe975f363a6c10fc0bf30e0a374572f826a4be9c542bdcf64aaa00659",
+      "bindingValid": true,
+      "bytes": 308073,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M175",
+      "relative": "parallax-sc00b-integration\\browser\\interaction-trigger-standard.png",
+      "sha256": "4e4980f7f3b78c81db7efbc16dc6c899d3bee127cbafcd05716df0f5a179adec",
+      "bindingValid": true,
+      "bytes": 309126,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M176",
+      "relative": "parallax-sc00b-integration\\browser\\library-return-desktop.png",
+      "sha256": "5d040794f6a7f4aef1e58b81e8a8f9711d711ab8f5c55107897bc3e8dac41144",
+      "bindingValid": true,
+      "bytes": 305032,
+      "size": [
+        1440,
+        1037
+      ]
+    },
+    {
+      "id": "M177",
+      "relative": "parallax-sc00b-integration\\browser\\library-return-phone.png",
+      "sha256": "447a839793629c3c31740d3d3f59c69c3d87e248de614957b4a1023b3b35e1ad",
+      "bindingValid": true,
+      "bytes": 119635,
+      "size": [
+        390,
+        863
+      ]
+    },
+    {
+      "id": "M178",
+      "relative": "parallax-sc00b-integration\\browser\\light-engineering-scrolled-resized.png",
+      "sha256": "235c3392ffdcadcfb1a99d24363735e77cdc35704eb99bf2c6c341ae85adc35d",
+      "bindingValid": true,
+      "bytes": 316659,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M179",
+      "relative": "parallax-sc00b-integration\\browser\\light-engineering.png",
+      "sha256": "711f3c43e8478a8b53ea152b5670858dccfcc7bed5ecf71b92855c428d99853b",
+      "bindingValid": true,
+      "bytes": 322446,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M180",
+      "relative": "parallax-sc00b-integration\\browser\\light-guided.png",
+      "sha256": "a5aadbc0261f35a23649c426bc53f401836b8c007a4c2b1cc5174b1d99bbdc67",
+      "bindingValid": true,
+      "bytes": 305751,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M181",
+      "relative": "parallax-sc00b-integration\\browser\\light-standard.png",
+      "sha256": "21016e484acce26e4aae277d018246737bf0dc0ef5d94cf4374861245b0b07a6",
+      "bindingValid": true,
+      "bytes": 306811,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M182",
+      "relative": "parallax-sc00b-integration\\browser\\mist-engineering-light.png",
+      "sha256": "82b48b46f764222a3150de5a242d0a69ca82df56f9a7e7542514a461b3cd0bc8",
+      "bindingValid": true,
+      "bytes": 329885,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M183",
+      "relative": "parallax-sc00b-integration\\browser\\mist-guided-light.png",
+      "sha256": "e37cfb8c11a6d47edbe93f3859b8423a2c68fc6b92dfba462a03567b7a7c045e",
+      "bindingValid": true,
+      "bytes": 316840,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M184",
+      "relative": "parallax-sc00b-integration\\browser\\mist-standard-light.png",
+      "sha256": "0b6c37b0e99b15ded5fe88e0a0090dfc213871d27be43dcadaa7ccfc737d2d05",
+      "bindingValid": true,
+      "bytes": 317857,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M185",
+      "relative": "parallax-sc00b-integration\\browser\\mixed-selection-engineering.png",
+      "sha256": "97c4199c07acfbb85477fee542695d80e0f6cf5c0bbd464cd84630c9f943a85e",
+      "bindingValid": true,
+      "bytes": 308703,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M186",
+      "relative": "parallax-sc00b-integration\\browser\\mixed-selection-guided.png",
+      "sha256": "cfac1942a69e0ac7637d9bc77e2a44d918fb215c1f333b4805daf6d81d471fa6",
+      "bindingValid": true,
+      "bytes": 292390,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M187",
+      "relative": "parallax-sc00b-integration\\browser\\mixed-selection-standard.png",
+      "sha256": "cdc4164b71862a58265a543dcf010359eea9ef74c25a6339efdc722d1bddb56f",
+      "bindingValid": true,
+      "bytes": 297365,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M188",
+      "relative": "parallax-sc00b-integration\\browser\\parchment-engineering.png",
+      "sha256": "28dc07ab6b1805ce08c593d10f5ffbe0a8cee53484ee7e90fa93ff03b3f46d09",
+      "bindingValid": true,
+      "bytes": 328738,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M189",
+      "relative": "parallax-sc00b-integration\\browser\\parchment-guided.png",
+      "sha256": "7af4a105b4284acdfc4b10b5a09e51d38d2969cd0d98ab7c113eb59c35515f5d",
+      "bindingValid": true,
+      "bytes": 310387,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M190",
+      "relative": "parallax-sc00b-integration\\browser\\parchment-standard.png",
+      "sha256": "16fd2951133dc3a5cd610a7734ce1016a660fb96f7ddae97b1755692ce46200b",
+      "bindingValid": true,
+      "bytes": 312024,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M191",
+      "relative": "parallax-sc00b-integration\\browser\\particles-engineering-light.png",
+      "sha256": "81acca0d00bd101542d948bfcc634e24de2e3eb1f130a37d3cee4697df20e3f9",
+      "bindingValid": true,
+      "bytes": 324784,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M192",
+      "relative": "parallax-sc00b-integration\\browser\\particles-guided-light.png",
+      "sha256": "a3807f52df56592481acd65c3ade297ea0e6624be87245a2f739cd4e15e3d18f",
+      "bindingValid": true,
+      "bytes": 312137,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M193",
+      "relative": "parallax-sc00b-integration\\browser\\particles-standard-light.png",
+      "sha256": "d863ae90ccf05a83de65f86df8d6e8fef490aa632a4dcf687fc4cb4f05a02b31",
+      "bindingValid": true,
+      "bytes": 313226,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M194",
+      "relative": "parallax-sc00b-integration\\browser\\phenomenon-engineering-light.png",
+      "sha256": "25a859039e2571f40d44d62c5add2d85c1e652fc3d9acb6c7b8e921268b046cd",
+      "bindingValid": true,
+      "bytes": 327860,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M195",
+      "relative": "parallax-sc00b-integration\\browser\\phenomenon-guided-light.png",
+      "sha256": "fb98f2ab890f2ab51eee1391ada8f83afe87ef1e5c02fe015cfb94fb8cb75ee0",
+      "bindingValid": true,
+      "bytes": 315599,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M196",
+      "relative": "parallax-sc00b-integration\\browser\\phenomenon-standard-light.png",
+      "sha256": "93e9e87682b4362050686b01759c4c6b949caf636bb293320ef4bf52c22c6078",
+      "bindingValid": true,
+      "bytes": 314617,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M197",
+      "relative": "parallax-sc00b-integration\\browser\\phone-edit-return.png",
+      "sha256": "b8eff0c6622dac8ea2460dffe735dfa52ef4942384875fc64a61e4140e6f7053",
+      "bindingValid": true,
+      "bytes": 119675,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M198",
+      "relative": "parallax-sc00b-integration\\browser\\projection-engineering-light.png",
+      "sha256": "7d765aafca497928561336cac7821ad9eeadf6481f5c8badd93fbee0352a11de",
+      "bindingValid": true,
+      "bytes": 329479,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M199",
+      "relative": "parallax-sc00b-integration\\browser\\projection-guided-light.png",
+      "sha256": "77bdf9a57c0185a57d8c9b172650231a8bc9a81e0597d9c5bc53248db9482270",
+      "bindingValid": true,
+      "bytes": 313816,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M200",
+      "relative": "parallax-sc00b-integration\\browser\\projection-standard-light.png",
+      "sha256": "ae793fb986e400ad8cc18ae0edd53ae21a2a49f115a850fcd9c7c3485e1778ae",
+      "bindingValid": true,
+      "bytes": 314926,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M201",
+      "relative": "parallax-sc00b-integration\\browser\\removed-room-feature-engineering.png",
+      "sha256": "4273b065c7f86db2a3aeb21c567adc1bc366e619f093e9d1a083e5ab86e93bad",
+      "bindingValid": true,
+      "bytes": 320085,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M202",
+      "relative": "parallax-sc00b-integration\\browser\\removed-room-feature-guided.png",
+      "sha256": "9210493ac3a8412237d5966f8360a436e661d5426022a33220a81a6a37c5a257",
+      "bindingValid": true,
+      "bytes": 304503,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M203",
+      "relative": "parallax-sc00b-integration\\browser\\removed-room-feature-scene.png",
+      "sha256": "904a1b6d34449fea6b252ebe2897afb0b8ed1de45fe8ab7ab0c00cfa457cdf90",
+      "bindingValid": true,
+      "bytes": 322850,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M204",
+      "relative": "parallax-sc00b-integration\\browser\\removed-room-feature-standard.png",
+      "sha256": "2f705ead3ff6af1daa9404397d2e19c1c034a7f88421dad90aeba1760eb6404e",
+      "bindingValid": true,
+      "bytes": 305608,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M205",
+      "relative": "parallax-sc00b-integration\\browser\\removed-selection-engineering.png",
+      "sha256": "00441f9b4757f269a58da4667aa7e9db8aa9adfc9d33723e65adecc8ee30f65f",
+      "bindingValid": true,
+      "bytes": 287673,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M206",
+      "relative": "parallax-sc00b-integration\\browser\\removed-selection-guided.png",
+      "sha256": "dc8786d0d9d64d9802ab91e3a2befe3fa2259595530565038a99b824a159db7f",
+      "bindingValid": true,
+      "bytes": 275334,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M207",
+      "relative": "parallax-sc00b-integration\\browser\\removed-selection-scene.png",
+      "sha256": "5887d0c563c2188b85d6c27e88e97a601c2f520dc4d08855b4c84cb80efe5bc9",
+      "bindingValid": true,
+      "bytes": 286610,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M208",
+      "relative": "parallax-sc00b-integration\\browser\\removed-selection-standard.png",
+      "sha256": "0c2d3b0da5734bf0178c2b6d9e7a09c948a543f7fb80e05cf2fbff7df8095e96",
+      "bindingValid": true,
+      "bytes": 275984,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M209",
+      "relative": "parallax-sc00b-integration\\browser\\room-feature-context-dimensions-guided-scrolled.png",
+      "sha256": "9c505a40dd229f7ab62160cf11fcaac6422aa5123790c8146fbaaca470e21862",
+      "bindingValid": true,
+      "bytes": 313822,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M210",
+      "relative": "parallax-sc00b-integration\\browser\\room-feature-context-guided.png",
+      "sha256": "d1f82cb46e8c28de7be78ab55438394f8a0181e5258bcc1993b4badfddd048bf",
+      "bindingValid": true,
+      "bytes": 315160,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M211",
+      "relative": "parallax-sc00b-integration\\browser\\room-feature-engineering.png",
+      "sha256": "00751097f0bbf4b544646b708f8fecfc4aa887a69710e51112c7cd9d898e7028",
+      "bindingValid": true,
+      "bytes": 324669,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M212",
+      "relative": "parallax-sc00b-integration\\browser\\room-feature-guided.png",
+      "sha256": "16a2542a18262a197591c9bf472c3d95503a6582fe4dfc979da0449b4554d1ff",
+      "bindingValid": true,
+      "bytes": 309222,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M213",
+      "relative": "parallax-sc00b-integration\\browser\\room-feature-standard.png",
+      "sha256": "481f3dca56e5087b9b5495a70da9d52b4fb49bb492cd82d6f6333567f7d6657e",
+      "bindingValid": true,
+      "bytes": 311184,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M214",
+      "relative": "parallax-sc00b-integration\\browser\\scale-live-preview.png",
+      "sha256": "ff9f99ae4ab9e2db82c6445ac6f1361d3ba23fd8a5214e3d6005501b6722df3a",
+      "bindingValid": true,
+      "bytes": 272688,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M215",
+      "relative": "parallax-sc00b-integration\\browser\\scene-engineering.png",
+      "sha256": "32324dd4d1f6f5cd0f7248d7e0bc9f95504c93e0ff456ef5951320c921b7c5ae",
+      "bindingValid": true,
+      "bytes": 321192,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M216",
+      "relative": "parallax-sc00b-integration\\browser\\scene-guided.png",
+      "sha256": "05a069e06ae49f5db99a7f5379cf4e9d5428c8a2222c4dcd423a86622f73f121",
+      "bindingValid": true,
+      "bytes": 298023,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M217",
+      "relative": "parallax-sc00b-integration\\browser\\scene-phone.png",
+      "sha256": "0838b0169c52f1d0b23b4130fa4ebd21ba8b7964e84acfd7f8cdc1ac03f24d52",
+      "bindingValid": true,
+      "bytes": 94873,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M218",
+      "relative": "parallax-sc00b-integration\\browser\\scene-standard.png",
+      "sha256": "30faa0dab139b52d714f6b57cade89b248d18154f972303b30641da668b91dc0",
+      "bindingValid": true,
+      "bytes": 304625,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M219",
+      "relative": "parallax-sc00b-integration\\browser\\spot-direction-engineering.png",
+      "sha256": "575f57c23cda8cd5ea30bdda00cf9b40b863115d6572c91e25aec61ad8c29b99",
+      "bindingValid": true,
+      "bytes": 307049,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M220",
+      "relative": "parallax-sc00b-integration\\browser\\support-surface-engineering.png",
+      "sha256": "6953adf90032c6aa1ffa7a413a6b7e64ecc59cd99146b5abb998ad778c1ea809",
+      "bindingValid": true,
+      "bytes": 322013,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M221",
+      "relative": "parallax-sc00b-integration\\browser\\support-surface-guided.png",
+      "sha256": "87975414d0c3fa7ba96858b8fa03f6c45ccf597022c6bfc380bc0e00f95cfc5f",
+      "bindingValid": true,
+      "bytes": 306824,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M222",
+      "relative": "parallax-sc00b-integration\\browser\\support-surface-standard.png",
+      "sha256": "ccf8b602610fae877d4b7ba8c153e6b648074c18a3139d51a35ac0099333443e",
+      "bindingValid": true,
+      "bytes": 308793,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M223",
+      "relative": "parallax-sc00b-integration\\browser\\timeline-audio-engineering.png",
+      "sha256": "e339e87dcd9e9c5d6cb399ae1817a6c11ac538ba4742adfdc2714c703ea87e41",
+      "bindingValid": true,
+      "bytes": 319683,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M224",
+      "relative": "parallax-sc00b-integration\\browser\\timeline-audio-guided.png",
+      "sha256": "c0303d86074e53fb5c8d780c85d9e3fe25600b4200edf7cbfc58c0bc26711100",
+      "bindingValid": true,
+      "bytes": 306145,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M225",
+      "relative": "parallax-sc00b-integration\\browser\\timeline-audio-standard.png",
+      "sha256": "808074f1db660598fbdfdddf78f0240970832719bb6419a70899737f8badf234",
+      "bindingValid": true,
+      "bytes": 304421,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M226",
+      "relative": "sc00c\\drag-placement\\pointed-floor-insertion.png",
+      "sha256": "fbe29f50c150b2a057c858d1d80ca21e4d2a451ed68f9eefedee32fc2d53d80d",
+      "bindingValid": true,
+      "bytes": 314225,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M227",
+      "relative": "sc00c\\drag-placement\\pointed-floor-preview.png",
+      "sha256": "4e090497b599136e18a70668014728b661be22570ad73a92641c9291c65397f6",
+      "bindingValid": true,
+      "bytes": 290551,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M228",
+      "relative": "sc00c\\expanded-library\\local\\expanded-desktop.png",
+      "sha256": "52f80603aec9b071e7fc22151ae56295c738af1ca81bbed8cb2118b882e9f40b",
+      "bindingValid": true,
+      "bytes": 101872,
+      "size": [
+        1440,
+        900
+      ]
+    },
+    {
+      "id": "M229",
+      "relative": "sc00c\\expanded-library\\local\\expanded-light-reduced.png",
+      "sha256": "9c7eca074c0d6d499dc6fe510293150cde39b586a84597282ea9f3b92a456a7f",
+      "bindingValid": true,
+      "bytes": 97751,
+      "size": [
+        1024,
+        768
+      ]
+    },
+    {
+      "id": "M230",
+      "relative": "sc00c\\expanded-library\\local\\expanded-narrow.png",
+      "sha256": "4ce1546f481b5e09ab0c152574263fe249cacf0d0215d86afceb57239e7216f1",
+      "bindingValid": true,
+      "bytes": 95147,
+      "size": [
+        1024,
+        768
+      ]
+    },
+    {
+      "id": "M231",
+      "relative": "sc00c\\expanded-library\\local\\expanded-phone-filters-built-in.png",
+      "sha256": "e2d61d86607631a64c3ac035e7ee427800788313fb2a22ccf625f9a6b0e24d6c",
+      "bindingValid": true,
+      "bytes": 49815,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M232",
+      "relative": "sc00c\\expanded-library\\local\\expanded-phone-filters-private.png",
+      "sha256": "793c7cb628c7444062642b5cf00e7fc2a7409b6ce11a7e8bf87171a42d9a9f07",
+      "bindingValid": true,
+      "bytes": 28494,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M233",
+      "relative": "sc00c\\expanded-library\\local\\expanded-phone-selected.png",
+      "sha256": "91290ff29f3ff1388aa454aca580ea6349d5b94955cbd8793557f32f140c65aa",
+      "bindingValid": true,
+      "bytes": 56073,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M234",
+      "relative": "sc00c\\expanded-library\\local\\expanded-phone.png",
+      "sha256": "64e4c102094f3b0e6e02b6768a3ccdb5635d67c48bc0be2ad9577532a24ae5ae",
+      "bindingValid": true,
+      "bytes": 63504,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M235",
+      "relative": "sc00c\\expanded-library\\local\\expanded-scene-actions.png",
+      "sha256": "ffa868ce5df8493dad9a378400a51da5f79fb2bb13ebfb2978f0af86fb377cac",
+      "bindingValid": true,
+      "bytes": 104622,
+      "size": [
+        1440,
+        900
+      ]
+    },
+    {
+      "id": "M236",
+      "relative": "sc00c\\expanded-library\\local\\expanded-scene-relationships.png",
+      "sha256": "02ddc075ab293de5e1e2c306ee2bb229f9e616a3954f10da7a6dff7cb005cb63",
+      "bindingValid": true,
+      "bytes": 279318,
+      "size": [
+        1440,
+        900
+      ]
+    },
+    {
+      "id": "M237",
+      "relative": "sc00c\\expanded-library\\local\\placed-selected.png",
+      "sha256": "fb47324701d6bc0895e41acf800820dc4640c4af3ca7f30e35a945f2cffede94",
+      "bindingValid": true,
+      "bytes": 275217,
+      "size": [
+        1440,
+        900
+      ]
+    },
+    {
+      "id": "M238",
+      "relative": "sc00c\\expanded-library\\local\\placement-preview.png",
+      "sha256": "5d0bbb3ddfa0836eb4ab35b5bf76b44cee8a0dda52255b038d765face47d36a1",
+      "bindingValid": true,
+      "bytes": 274941,
+      "size": [
+        1440,
+        900
+      ]
+    },
+    {
+      "id": "M239",
+      "relative": "sc00c\\expanded-library\\local\\scaled-animated-playback.png",
+      "sha256": "f9212e3c9bdedebe374ab75f848ce4909e668d0ff6febc71eb502b104f3324e7",
+      "bindingValid": true,
+      "bytes": 270731,
+      "size": [
+        1440,
+        900
+      ]
+    },
+    {
+      "id": "M240",
+      "relative": "sc00c\\expanded-library\\local\\scaled-keyboard-placed.png",
+      "sha256": "1fddec941ce0213537e93f82f5fbd08db6c44f248b994a2a7d937a3cbb03b0a0",
+      "bindingValid": true,
+      "bytes": 270058,
+      "size": [
+        1440,
+        900
+      ]
+    },
+    {
+      "id": "M241",
+      "relative": "sc00c\\expanded-library\\local\\scaled-pointer-placed.png",
+      "sha256": "70d6eeaeff9057e1ca0517a718eba150f9694965e7ab97cd2f7225a076f71a20",
+      "bindingValid": true,
+      "bytes": 262456,
+      "size": [
+        1440,
+        900
+      ]
+    },
+    {
+      "id": "M242",
+      "relative": "sc00c\\library-context-menu\\unbound\\built-in-context-desktop.png",
+      "sha256": "a152765fe73f6a28e5bad71fdf5e8454de2a08b3351cf8924abf094132b0174f",
+      "bindingValid": true,
+      "bytes": 311348,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M243",
+      "relative": "sc00c\\library-context-menu\\unbound\\context-placement-preview-phone.png",
+      "sha256": "fdfbf6e93a2fb05a60f8b15d2af93857613c4435f8534d3aaa6c1f63d43cbf21",
+      "bindingValid": true,
+      "bytes": 108195,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M244",
+      "relative": "sc00c\\library-context-menu\\unbound\\current-scene-context-desktop.png",
+      "sha256": "3fe8eac4c7cea0c5be6d3cf60c6a4b3a7cad9518195c49282c5269c9875102e3",
+      "bindingValid": true,
+      "bytes": 304474,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M245",
+      "relative": "sc00c\\library-context-menu\\unbound\\expanded-phone-context-light-reduced.png",
+      "sha256": "ebaa9ac6d069791aff77374ee01e0741e9eb9fc1b96b965d7c05e257b30ee48c",
+      "bindingValid": true,
+      "bytes": 35907,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M246",
+      "relative": "sc00c\\library-journeys\\unbound\\associated-scenes.png",
+      "sha256": "a8aca062faccba57195f220fdcee38b5ffc315b948152cb6487e5b32fdb55fbf",
+      "bindingValid": true,
+      "bytes": 292822,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M247",
+      "relative": "sc00c\\library-journeys\\unbound\\built-in-asset-preview.png",
+      "sha256": "75e02b95fdd2cc91c8febc30576a52554ebe88a83bf589b5c9f311028ecb56dc",
+      "bindingValid": true,
+      "bytes": 293177,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M248",
+      "relative": "sc00c\\library-journeys\\unbound\\built-in-asset-selected.png",
+      "sha256": "ad5b689b3e10954a9459dcb9b16da51a66e31e89f07170f74b47c5507c4744fa",
+      "bindingValid": true,
+      "bytes": 287232,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M249",
+      "relative": "sc00c\\library-journeys\\unbound\\favorite-collection-filter.png",
+      "sha256": "4df0dbac3fc167f158eb206ca727ef2892fd1f7e415a189b16ac14d5be5024e7",
+      "bindingValid": true,
+      "bytes": 293249,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M250",
+      "relative": "sc00c\\library-journeys\\unbound\\keyboard-context-add-phone.png",
+      "sha256": "105c8cae46c56a701af379248d1f798e2a61b32ed72eb3dbb97b8fa38476299c",
+      "bindingValid": true,
+      "bytes": 93434,
+      "size": [
+        390,
+        844
+      ]
+    },
+    {
+      "id": "M251",
+      "relative": "sc00c\\library-journeys\\unbound\\saved-environment-preview.png",
+      "sha256": "4ad4a7e589ff17fe99e1d2bf6be505bcd6f32ba9f8c5bd73a719738f34a74d8b",
+      "bindingValid": true,
+      "bytes": 294079,
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    {
+      "id": "M252",
+      "relative": "sc00c\\library-journeys\\unbound\\scene-renamed-with-environment-pin.png",
+      "sha256": "c14d6333a169284730c4ac7a86ece1b55b1ab379614336a1b67e44ca005d924c",
+      "bindingValid": true,
+      "bytes": 291027,
+      "size": [
+        1440,
+        1000
+      ]
+    }
+  ],
+  "mismatches": []
+}

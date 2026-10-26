@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "candidate": "b724a9c0268c04f2b732cd8d8a1268c470f67c7c",
+  "tree": "f4a438d7e786ef186dd978e0431af5140d0383bb",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T19:36:00.476Z",
+  "finishedAt": "2026-10-13T19:37:27.537Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+      "sha256": "e3f2e3af85466cf26ea5d33bc08a370c4345a07b2ec51de8da3dc01d216c63b0"
+    },
+    {
+      "file": "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "sha256": "825a77423f289c944f548835a480e8f107f853c08802d3fdf34aef0f372cd7a7"
+    },
+    {
+      "file": "parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+      "sha256": "88fb78d82b1bcd1add17b42a0cb38ada3b2f2522c2d37ed6d49b709c3eeac85f"
+    },
+    {
+      "file": "parallax-room-observation--49af9-nd-reload-without-inference-chromium-video.webm",
+      "sha256": "6e9b6ff9aebcbf90b568731d78cadbf79d92267b0cc6a36cb7b996c88cca23d0"
+    },
+    {
+      "file": "parallax-room-observation--d83b0-nd-reload-without-inference-chromium-video.webm",
+      "sha256": "e83488e2df35f5841d2e62e4b4cd1a0a05107151a6942c9d4ac747db8d9ae2d6"
+    }
+  ]
+}

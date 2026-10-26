@@ -3,6 +3,9 @@ import { authoritativeListingEngagement, reconcileListingEngagement } from "./en
 
 function client() {
   return {
+    communityListing: {
+      findMany: vi.fn().mockResolvedValue([{ id: "listing-1", itemType: "CHRONICLE" }]),
+    },
     communityListingAggregate: {
       findMany: vi.fn().mockResolvedValue([
         {
@@ -32,7 +35,24 @@ describe("homeport.owner-correction.round2.authoritative-engagement", () => {
     expect(result).toMatchObject({ saveCount: 2, reviewCount: 1, averageRating: 4 });
     expect(fake.communityReview.groupBy).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: expect.objectContaining({ status: "ACTIVE", deletedAt: null, verifiedCompletion: true }),
+        where: expect.objectContaining({
+          status: "ACTIVE",
+          deletedAt: null,
+          OR: [{ verifiedCompletion: true }, { listingId: { in: [] }, verifiedInstallation: true }],
+        }),
+      }),
+    );
+  });
+
+  it("includes verified installations in spatial release ratings", async () => {
+    const fake = client();
+    fake.communityListing.findMany.mockResolvedValue([{ id: "listing-1", itemType: "SPATIAL_ASSET" }]);
+    await authoritativeListingEngagement(["listing-1"], fake as never);
+    expect(fake.communityReview.groupBy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          OR: [{ verifiedCompletion: true }, { listingId: { in: ["listing-1"] }, verifiedInstallation: true }],
+        }),
       }),
     );
   });

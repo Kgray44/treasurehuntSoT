@@ -1,0 +1,23 @@
+[WebServer] (node:58088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 12 tests using 1 worker
+
+(node:60000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:19:5 › SC-00B combined Inspector covers eleven selection contexts at each authoring depth (13.4s)
+  ok  2 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:184:5 › SC-00B typed light and room feature edits survive undo, mode travel, and saved reload (6.9s)
+  ok  3 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:261:5 › SC-00B scale drag previews on the combined canvas before one history commit (1.8s)
+  ok  4 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:306:5 › SC-00B typed effects retain three depths, light theme, and keyboard rail navigation (5.8s)
+  ok  5 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:433:5 › SC-00B combined Inspector handles removed and mixed selections at every depth (3.3s)
+  ok  6 [chromium] › tests\e2e\parallax-sc00c-drop-placement.spec.ts:15:5 › Library physical drag uses the pointed support and selects the inserted instance (3.0s)
+  ok  7 [chromium] › tests\e2e\parallax-sc02-integration.spec.ts:12:5 › combined Library places typed elements, saves and independently reuses a composition with rendered playback (12.8s)
+  ok  8 [chromium] › tests\e2e\parallax-sc02-integration.spec.ts:115:5 › physical Library insertion uses Bedroom supports, preserves Undo and refuses an occupied room (14.6s)
+  ok  9 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:58:5 › Creator authors three independent Haunted Bedroom Scenes, reviews an explicit shared revision and retains immutable references (1.4m)
+  ok 10 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:279:5 › built-in copies use a distinct legacy working editor and explicit release before independent Scene reuse (6.2s)
+  ok 11 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:388:5 › a reviewed synthetic reconstructed Environment is selectable and another Scene duplicates without changing its pin (3.1s)
+  ok 12 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:431:5 › a retained autosave failure stays visible inside Scene Manager and retries the same working identity (3.0s)
+
+  12 passed (2.8m)

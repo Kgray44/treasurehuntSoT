@@ -195,7 +195,8 @@ describe("Parallax creator authoring", () => {
       expect(nativePose.position).toEqual({ x: 2, y: 3, z: 4.01 });
       const preview = previewEntityTransform(draft.content, draft.content.entities[0].id);
       expect(preview.position.y).toBeCloseTo(preset === "Hidden Wall Message" ? 1.4 : 0.76);
-      expect(preview.position.z).toBeCloseTo(preset === "Hidden Wall Message" ? -0.99 : -1);
+      // The vertical reference is the actual back-wall face, rather than a plane in the room's middle.
+      expect(preview.position.z).toBeCloseTo(preset === "Hidden Wall Message" ? -1.926 : -1.32);
       expect(anchor.transform.position).toEqual({ x: 0, y: 0, z: 0.01 });
     }
     const local = createSpatialDraft("local", "Floating Compass");
@@ -219,7 +220,7 @@ describe("Parallax creator authoring", () => {
         transform: composeTransform(inverseTransform(parent), moved),
       });
       expect(edited.content.entities[0].transform.position.x).toBeCloseTo(0.2);
-      expect(previewEntityTransform(edited.content, entityId).position.x).toBeCloseTo(0.2);
+      expect(previewEntityTransform(edited.content, entityId).position.x).toBeCloseTo(original.position.x + 0.2);
       expect(edited.content.anchors[0].transform).toEqual(anchor.transform);
     }
   });

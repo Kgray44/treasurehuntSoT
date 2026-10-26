@@ -1,8 +1,10 @@
+import { findSurfacePlacement } from "./surface-placement";
 import { draftSchema, type SpatialDraft } from "./authoring";
 import { defaultRecipe, defaultDiscovery, type SemanticRecipe, type AdaptiveContent } from "./adaptive-contracts";
 import { identityTransform } from "./contracts";
-import type { Candidate, EnvironmentEvidence } from "./adaptive";
-
+import type { EnvironmentEvidence } from "./adaptive";
+import { discoverRoomSurfaces, syntheticRoomGeometry } from "./room-geometry";
+import type { RoomFeature } from "./environment-contracts";
 export function enableAdaptiveAuthoring(input: SpatialDraft): SpatialDraft {
   const draft = structuredClone(input);
   if (draft.content.adaptive) return draft;
@@ -15,7 +17,18 @@ export function enableAdaptiveAuthoring(input: SpatialDraft): SpatialDraft {
     lifecycle: "DEFINITION",
     variation: "BEST_MATCH",
     variant: 0,
-    recipes: roots.map((e) => defaultRecipe(e.id)),
+    recipes: roots.map((e) => {
+      const recipe = defaultRecipe(e.id);
+      const anchor = draft.content.anchors.find((a) => a.id === e.anchorId);
+      if (anchor?.kind === "SURFACE_RELATIVE" && anchor.alignment === "VERTICAL") {
+        recipe.preferredSurfaces = ["WALL"];
+        recipe.alternateSurfaces = ["TABLE", "DESK", "SHELF"];
+        recipe.preferredContext = [];
+        recipe.maximumHeightMeters = 1.8;
+        recipe.preferredHeightMeters = 1.4;
+      }
+      return recipe;
+    }),
     relationships: [],
     revealOrder: [],
     budget: { maximumNodes: 1024, maximumCandidatesPerEntity: 12, maximumVisibleEntities: 16 },
@@ -52,6 +65,7 @@ export function enableAdaptiveAuthoring(input: SpatialDraft): SpatialDraft {
     if (!draft.content.entities.some((e) => e.anchorId === old))
       draft.content.anchors = draft.content.anchors.filter((a) => a.id !== old);
   }
+  if (draft.content.studio) delete draft.content.studio.surfacePreviewFrames;
   return draftSchema.parse(draft);
 }
 export function updateAdaptiveContent(draft: SpatialDraft, adaptive: AdaptiveContent): SpatialDraft {
@@ -144,47 +158,47 @@ export function syntheticEnvironmentEvidence(room: {
   vertical: boolean;
   tracking: boolean;
   clutter: number;
+  features?: RoomFeature[];
+  evidence?: EnvironmentEvidence;
 }): EnvironmentEvidence {
-  const candidates: Candidate[] = [];
-  const add = (
-    id: string,
-    surface: Candidate["surface"],
-    x: number,
-    y: number,
-    z: number,
-    context: Candidate["context"],
-    safe = true,
-  ) => {
+  if (room.evidence) return structuredClone(room.evidence);
+  const candidates = discoverRoomSurfaces(syntheticRoomGeometry(room), room);
+  const floor = candidates.find((c) => c.surface === "FLOOR")!;
+  // Whole-plane bounds and the safe furniture-side staging point have distinct purposes.
+  floor.exclusions = [...(floor.exclusions ?? []), { x: 0, y: 0, width: 1.2, depth: 1.2 }];
+  const staging = findSurfacePlacement({ ...identityTransform(), position: floor.position }, floor, 0.8);
+  if (staging)
+    floor.placementOffset = {
+      x: staging.position.x - floor.position.x,
+      y: 0,
+      z: staging.position.z - floor.position.z,
+    };
+  // Keep placement targets separate from non-surface free-space and hazard regions.
+  const template = candidates.find((c) => c.surface === "TABLE") ?? candidates[0];
+  candidates.push({
+    ...template,
+    id: "unsafe-walkway",
+    surface: "FLOOR",
+    context: ["WALKWAY", "ENTRANCE"],
+    region: "ENTRANCE_REGION",
+    position: { x: 0, y: 0, z: 0 },
+    normal: { x: 0, y: 1, z: 0 },
+    widthMeters: 1.2,
+    depthMeters: 1.2,
+    safe: false,
+  });
+  if (room.tracking)
     candidates.push({
-      id,
-      surface,
-      context,
-      region: context.includes("ENTRANCE") ? "ENTRANCE_REGION" : "CURRENT_ROOM",
-      position: { x, y, z },
-      normal: surface === "WALL" ? { x: 0, y: 0, z: 1 } : { x: 0, y: 1, z: 0 },
-      widthMeters: surface === "WALL" ? 2 : 1.2,
+      ...template,
+      id: "free-space",
+      surface: "OPEN_SPACE",
+      context: [],
+      position: { x: 0, y: 0.8, z: -room.depth * 0.3 },
+      normal: { x: 0, y: 1, z: 0 },
+      widthMeters: 1.2,
       depthMeters: 1.2,
-      clearanceMeters: room.clutter > 0.8 ? 0.05 : 0.35,
-      reachMeters: 1,
-      visibility: 0.85,
-      confidence: room.tracking ? 0.95 : 0.45,
-      seatedReachable: y <= 1.3,
-      safe,
-      occluded: false,
+      safe: true,
     });
-  };
-  if (room.horizontal) {
-    add("table-left", "TABLE", -room.width * 0.22, 0.75, -room.depth * 0.2, ["FURNITURE"]);
-    add("desk-right", "DESK", room.width * 0.22, 0.8, -room.depth * 0.25, ["FURNITURE", "WINDOW"]);
-    add("table-entry", "TABLE", room.width * 0.2, 0.7, room.depth * 0.22, ["FURNITURE", "ENTRANCE"]);
-    add("shelf-entry", "SHELF", -room.width * 0.22, 1.1, room.depth * 0.22, ["FURNITURE", "ENTRANCE"]);
-  }
-  if (room.vertical) add("wall-window", "WALL", room.width * 0.3, 1.2, -room.depth * 0.45, ["WINDOW"]);
-  if (room.tracking) {
-    add("floor-furniture", "FLOOR", -room.width * 0.2, 0, -room.depth * 0.1, ["FURNITURE"]);
-    add("free-space", "OPEN_SPACE", 0, 0.8, -room.depth * 0.3, []);
-  }
-  add("unsafe-walkway", "FLOOR", 0, 0, 0, ["WALKWAY", "ENTRANCE"], false);
   return {
     schemaVersion: 1,
     frameId: `synthetic-${room.id}`,

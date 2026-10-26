@@ -1,0 +1,228 @@
+{
+  "kind": "PARALLAX_JOURNAL_ROW_REUSE_DEVELOPMENT_PASS",
+  "classification": "ENGINEERING_DEVELOPMENT_ONLY_NOT_ACCEPTANCE",
+  "at": "2026-10-22T07:04:43.406628+00:00",
+  "run": 39735856149,
+  "attempt": 1,
+  "candidate": "b617b6825688d2d3d89a34284588ce456701aa8f",
+  "authority": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "wholeRun": "SUCCESS",
+  "preparation": "SUCCESS",
+  "browserStep": "SUCCESS",
+  "controllerStatus": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+  "qualification": false,
+  "selector": "tests/e2e/crossdeck-experience-refit.spec.ts",
+  "sourceBindingVerified": true,
+  "unchangedSourceSHA256": {
+    "tests/e2e/crossdeck-experience-refit.spec.ts": "399e882bf639631c70a2a2dc267bd24f4ed0b03ccfc49c764bdbfdd8e91f07ca",
+    "tests/e2e/fixtures/journal-layout.ts": "c357f82adc02231936f180f72a03951bb973de514373821a00a1ebf068a49be2"
+  },
+  "unchangedCriteria": {
+    "viewport": [
+      390,
+      844
+    ],
+    "minimumReadingBand": [
+      280,
+      211
+    ],
+    "pollTimeoutMs": 10000,
+    "headingAndBandHitTests": true
+  },
+  "sourceDeclaredMotionCases": [
+    "no-preference",
+    "reduce"
+  ],
+  "caseCountEvidence": {
+    "perCaseCountsPublished": false,
+    "rawPlaywrightReportAvailableInRetainedPublicLogs": false,
+    "publicLogCountOrMotionLines": false,
+    "scope": "Unchanged entire file; two unconditionally declared motion cases. Controller PASS enforces positive selected count, zero skipped/flaky cases and no runtime failure; exact raw counts are not quoted as privately inspected.",
+    "configuredRetries": 0,
+    "configuredRepeatEach": 1
+  },
+  "lifecycle": [
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "readiness.backend.start",
+      "utc": "2026-10-22T06:59:52.328Z",
+      "elapsedMs": 12.866,
+      "pid": 3864
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "readiness.backend.result",
+      "utc": "2026-10-22T06:59:53.462Z",
+      "elapsedMs": 1146.063,
+      "pid": 3864
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "proxy.start",
+      "utc": "2026-10-22T06:59:53.462Z",
+      "elapsedMs": 1146.158
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "proxy.result",
+      "utc": "2026-10-22T06:59:53.463Z",
+      "elapsedMs": 1146.919
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "readiness.proxy.start",
+      "utc": "2026-10-22T06:59:53.463Z",
+      "elapsedMs": 1146.981,
+      "pid": 3864
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "readiness.proxy.result",
+      "utc": "2026-10-22T06:59:53.478Z",
+      "elapsedMs": 1162.131,
+      "pid": 3864
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "capture-child.start",
+      "utc": "2026-10-22T06:59:53.478Z",
+      "elapsedMs": 1162.212
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "capture-child.launched",
+      "utc": "2026-10-22T06:59:53.486Z",
+      "elapsedMs": 1169.801,
+      "pid": 3888
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "capture-child.exit",
+      "utc": "2026-10-22T07:01:17.114Z",
+      "elapsedMs": 84797.902,
+      "pid": 3888,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.browser.start",
+      "utc": "2026-10-22T07:01:17.114Z",
+      "elapsedMs": 84798.097,
+      "pid": 3888
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.proxy.start",
+      "utc": "2026-10-22T07:01:17.114Z",
+      "elapsedMs": 84798.133
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.server.start",
+      "utc": "2026-10-22T07:01:17.114Z",
+      "elapsedMs": 84798.148,
+      "pid": 3864
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.browser.result",
+      "utc": "2026-10-22T07:01:17.170Z",
+      "elapsedMs": 84853.865,
+      "pid": 3888,
+      "exitCode": 0,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.proxy.result",
+      "utc": "2026-10-22T07:01:17.170Z",
+      "elapsedMs": 84853.998,
+      "outcome": "CLOSED"
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "cleanup.server.result",
+      "utc": "2026-10-22T07:01:17.170Z",
+      "elapsedMs": 84854.019,
+      "pid": 3864,
+      "exitCode": 1,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    {
+      "namespace": "SOUNDING_LINE_DIAGNOSTIC",
+      "version": 1,
+      "component": "browser-authority",
+      "event": "authority.result",
+      "utc": "2026-10-22T07:01:17.170Z",
+      "elapsedMs": 84854.18,
+      "failureCategory": null,
+      "failureCode": null
+    },
+    {
+      "status": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+      "role": "DEVELOPMENT_ONLY",
+      "qualification": false,
+      "output": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/authority/artifacts/focused-development-private/execution"
+    }
+  ],
+  "failureDiagnosticsStep": "SKIPPED_EXPECTED_SUCCESS",
+  "failureArtifactCount": 0,
+  "logsZIPBytes": 46714,
+  "logsZIPSHA256": "e7a1809f851e15703a7c478b452ff2a48d31f7a4037cfdfb02c697acc6c13390",
+  "logsProviderDigestAvailable": false,
+  "logsZIPCRC": "PASS",
+  "browserStepBytes": 11010,
+  "browserStepSHA256": "bb170014106d00e6fc1c953d6edc060494b647c18909baff316f70c3c829c93c",
+  "priorFailuresPreserved": [
+    39696321296,
+    39721702762,
+    39730281230
+  ],
+  "limits": [
+    "No raw success Playwright report or per-case numeric counts retained in public logs",
+    "No final governed capture, independent rendered review, ordinary qualification or protected merge",
+    "No physical AR, native delivery, live-provider fidelity or owner acceptance",
+    "Final maintenance bundle and accepted-main reconciliation remain held"
+  ]
+}

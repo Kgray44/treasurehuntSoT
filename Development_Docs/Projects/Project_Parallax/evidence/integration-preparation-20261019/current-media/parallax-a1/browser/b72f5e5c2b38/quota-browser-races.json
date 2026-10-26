@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "globalAdmissions": [
+    200,
+    429
+  ],
+  "singleUserLimit": true,
+  "stableIdentityRows": 1,
+  "provider": "SYNTHETIC_UNPAID",
+  "settledRows": 3
+}

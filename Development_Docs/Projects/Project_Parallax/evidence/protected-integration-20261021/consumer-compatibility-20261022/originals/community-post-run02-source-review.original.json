@@ -1,0 +1,61 @@
+{
+  "kind": "BOUNDED_POST_RUN_COMMUNITY_SOURCE_REVIEW",
+  "at": "2026-10-22T17:59:38.589060+00:00",
+  "reviewerThread": "01a12c32-ea0a-70d3-a918-5f9f735fa107",
+  "head": "28ece6275ad51a23008e1301964a3eb8a9c0ab8d",
+  "status": "NO_FINDING_IN_EXACT_BOUNDED_CORRECTION_SOURCE_ONLY",
+  "reviewedFiles": {
+    "testing/contracts.json": "70cf68f9c4f71eb669826100b84534e8bbe25e489b549b78880f5ab05522b897",
+    "tests/e2e/parallax-community-compatibility.spec.ts": "fa9bd952431d1e78fdef4ac1bd7fc53c71a420f492f5984019dd695888905404"
+  },
+  "requestedPreformatContractsHash": "7c71eb54bba43391b85dbf6e92c30017e74504d10a6fa65d2e9369df1d5bbc66",
+  "requestedHashDisposition": "Superseded by formatted bytes; reviewed current70cf against verified immutable04, not claiming review of stale7c71 tuple.",
+  "priorOriginals": {
+    "contracts": "2ab018a6280be7676cf320ec1494f24cfb64412c193f63143fe3471f4c53f326",
+    "communitySpec": "6431e9209ca1a2e8ad6373f26d0671c8713417086e07170cb059bbff4f2035b0"
+  },
+  "exactChanges": [
+    "Spec: only return destination heading adds level1, retaining exact title.",
+    "Metadata: only PRIVATE_DRAFTS_RETURNED witness becomes main/empty accessible name/exact existing text, preserving path/state/returnPath."
+  ],
+  "proof": "Full structural contracts equality after only expected witness mutation; full spec byte equality after only locator mutation; nine other freeze04 files hash-identical.",
+  "contractCount": 502,
+  "contractOrderAndAllIDsPreserved": true,
+  "otherFrozenFilesMatch": {
+    "tests/e2e/parallax-shared-consumers.spec.ts": true,
+    "tests/e2e/parallax-passport-compatibility.spec.ts": true,
+    "tests/e2e/parallax-workspace-compatibility.spec.ts": true,
+    "tests/e2e/parallax-access-availability.spec.ts": true,
+    "tests/e2e/parallax-admiralty-compatibility.spec.ts": true,
+    "tests/e2e/fixtures/parallax-experience.ts": true,
+    "tests/e2e/fixtures/parallax-compatibility-archive.ts": true,
+    "tests/e2e/fixtures/parallax-compatibility-governance.ts": true,
+    "tests/e2e/fixtures/parallax-unavailable-html.ts": true
+  },
+  "productAndPrismaDelta": [],
+  "preserved": [
+    "Actual Save revision UI and success message",
+    "Persisted approximateLocation, PRIVATE, DRAFT, verifiedCompletion false",
+    "Foreign authenticated JSON404 and title absence",
+    "Anonymous public JSON404 and synthetic location absence",
+    "Context cleanup in finally",
+    "Existing browserTests, limitations, continuity and all other contract fields"
+  ],
+  "originalRun": {
+    "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\combined-community-browser-02\\playwright-report.original.json",
+    "sha256": "3bdcb7e466032e32a5a64984999119aa2d9bb3ac46c8e3472b844e45084a07f5",
+    "passed": 4,
+    "failed": 2,
+    "failure": "Return destination heading resolved to h1 and h2 at line151 for desktop and phone",
+    "laterAssertions": "Foreign/anonymous JSON404 checks at original lines152-167 were not reached; remain UNVERIFIED in run02."
+  },
+  "runtimeOnCorrection": "NOT_RUN",
+  "build": false,
+  "browserRerun": false,
+  "protectedCapture": false,
+  "qualification": false,
+  "productEditByReviewer": false,
+  "ownerAcceptance": false,
+  "physicalAcceptance": false,
+  "coordinatorDelivery": "Tool attempts failed with Request ID8a68cb22-5ce1-4806-ac44-e3d7c2f2ec22; retain this original."
+}

@@ -1,0 +1,328 @@
+{
+  "candidate": "6d3d20243a203fce4aa229faab3a8bff9e7663c9",
+  "startedAt": "2026-10-15T15:12:41.814Z",
+  "finishedAt": "2026-10-15T15:15:41.074Z",
+  "sourceBinding": "VALID",
+  "files": [
+    {
+      "path": "captures/effects-observations.json",
+      "sha256": "8fbbec5950e7fbd22311562182b7c66250a3868d0f486a8a4d4ad6141f85ec87"
+    },
+    {
+      "path": "captures/empty-selection-engineering.png",
+      "sha256": "ba78aadfd568491ee974eab9d1aa259b3b65789727b0adeea6bd4b622a42288a"
+    },
+    {
+      "path": "captures/empty-selection-guided.png",
+      "sha256": "5f305987c4cda29dcb11f6d8d5a3e9513b9498b024ec07b3f2a13d6108cb5fdd"
+    },
+    {
+      "path": "captures/empty-selection-standard.png",
+      "sha256": "3545fcd0ecca2fc30d6aff0a3bc8b05481d27390eff717883e4fa5a290ffb88f"
+    },
+    {
+      "path": "captures/environment-engineering.png",
+      "sha256": "5c21fc496b3adf4a7aedb9cbd2b30ed3bec3c7ec6c5ae51af8c0692061c3f569"
+    },
+    {
+      "path": "captures/environment-from-asset-guided.png",
+      "sha256": "7b66b3f7859bd741908abaefc3c0087c57a21a363b7827bb79d48d328e8473c5"
+    },
+    {
+      "path": "captures/environment-guided.png",
+      "sha256": "4cd3dc2fbb90d02ab804b952de6d6ffa0b51614e0159bb83384a975268221016"
+    },
+    {
+      "path": "captures/environment-standard.png",
+      "sha256": "53de874a674e7bfd091e854694e5aa5d5001e6d67bdc8357faa3015ebfa423f8"
+    },
+    {
+      "path": "captures/exclusion-zone-engineering.png",
+      "sha256": "5b2b72d128b304f6a5d36c55d0f10cb28bd7ea2fa9251281bfa2847d34cc490a"
+    },
+    {
+      "path": "captures/exclusion-zone-guided.png",
+      "sha256": "b71bbd94f5e8392a8d6eb92fb803e8894e30f6c1731044d2683e3b855f87eeda"
+    },
+    {
+      "path": "captures/exclusion-zone-standard.png",
+      "sha256": "0b55f54cb307d7f362d0a5894b1a78ae8c223ce69524733b947343d5bddc283d"
+    },
+    {
+      "path": "captures/furniture-engineering.png",
+      "sha256": "a659c7cf29c63bc798257cf955d347246ada99fc65a884430249b8a6b318c170"
+    },
+    {
+      "path": "captures/furniture-guided.png",
+      "sha256": "ffcb49b99f83befe7caac8e650aa6370868ab07fe9eb63cf3327c2fcde738921"
+    },
+    {
+      "path": "captures/furniture-standard.png",
+      "sha256": "b7a5f0b055db5d5a53fd44aed0ee249473bef90fc810717527b2fc05c71d7f9e"
+    },
+    {
+      "path": "captures/group-engineering.png",
+      "sha256": "9e3442281dd82706f329437e969dabaa837308852ea599f6e35b65cff93abca4"
+    },
+    {
+      "path": "captures/group-guided.png",
+      "sha256": "b5049fa05101706759cd559a78d536bae2ced00d2cb7df1bb169d60a10b2de20"
+    },
+    {
+      "path": "captures/group-standard.png",
+      "sha256": "96d30ed554f7f0388190d09412733b076316e352994b9ae36439fcae88a6f95e"
+    },
+    {
+      "path": "captures/interaction-trigger-engineering.png",
+      "sha256": "580a022ee60e479a7faa26b1f9bad8acfbcf39b1f243d9d9b4317aa317ad52f3"
+    },
+    {
+      "path": "captures/interaction-trigger-guided.png",
+      "sha256": "520f07dac2f4667d11ef8f866e699f75a7a1815d5234998a99297aa237ac9de7"
+    },
+    {
+      "path": "captures/interaction-trigger-standard.png",
+      "sha256": "628109c11c0069aa7a367a357ab3e331479e87ba28ac2730941f2e80b6c15b35"
+    },
+    {
+      "path": "captures/library-return-desktop.png",
+      "sha256": "b021ba60b9ff2ae0b6566a8d0a659d58e192521dea45fb5852947aa59aabda53"
+    },
+    {
+      "path": "captures/library-return-phone.png",
+      "sha256": "64659098e7555129c0a5ec3172266d3762d965e6abec2f84d7acfa6f7ad708af"
+    },
+    {
+      "path": "captures/light-engineering-scrolled-resized.png",
+      "sha256": "2f6f765c7f087da778dd68850480cacd3d6a3268d9baaf4d442dc08677ad35af"
+    },
+    {
+      "path": "captures/light-engineering.png",
+      "sha256": "850dea2ff90de5635f8c0967268aad61a6f43d96bc6774179473d29ac7a40b77"
+    },
+    {
+      "path": "captures/light-guided.png",
+      "sha256": "25329009b9d2a6e0dd76853657eb5544e1f45d7f23041472ffa2e5d9c3f80680"
+    },
+    {
+      "path": "captures/light-standard.png",
+      "sha256": "6dcb8e82ac3565c2c7807afeda4315f53947c8cca41455175769bfbdf28ed6e4"
+    },
+    {
+      "path": "captures/mist-engineering-light.png",
+      "sha256": "132f1db37ae19227d7f33f8528e8d330cb90d8d275fbc0e89865ffdefb463ea1"
+    },
+    {
+      "path": "captures/mist-guided-light.png",
+      "sha256": "11582cce877388c98a0038185cd4a003e5d732c34775dda32cfc7fe84449f428"
+    },
+    {
+      "path": "captures/mist-standard-light.png",
+      "sha256": "cab0136d9288b55f119c68c856d73cd56770614de553fc5f14b6e825b44bed4f"
+    },
+    {
+      "path": "captures/mixed-selection-engineering.png",
+      "sha256": "8d735d0fb7111da4e1cf5debf1c01224ec4c56ca8983df60e6d47c0f83173ee5"
+    },
+    {
+      "path": "captures/mixed-selection-guided.png",
+      "sha256": "3845ba3a725887f86ba846729b21d8c5eee07fcb207a16e293d689d5fa981941"
+    },
+    {
+      "path": "captures/mixed-selection-standard.png",
+      "sha256": "26987fa78259b92773b0f36254a7caaf52c358691785a09aec04b0d4121421a6"
+    },
+    {
+      "path": "captures/observations.json",
+      "sha256": "25adbe5a90388d8cde78e746525e7434b8592c3fcedc736bc7d4604e951273d5"
+    },
+    {
+      "path": "captures/parchment-engineering.png",
+      "sha256": "f6d27512b01251ee77d8f4a4e362b7b1d482ffa18f0760ad145a95d90bde45a2"
+    },
+    {
+      "path": "captures/parchment-guided.png",
+      "sha256": "b4be36d9028b96ac157122bf86e957309a47b2cb2b0d42dcac7b0b7cefddd9d5"
+    },
+    {
+      "path": "captures/parchment-standard.png",
+      "sha256": "ed295f4347820baf662500778926d29992fa96c3b5aa04094e0c1763064c9353"
+    },
+    {
+      "path": "captures/particles-engineering-light.png",
+      "sha256": "fbdc702fdb3213943944c994e141b8715270aadebef4dc492223e1515258d27d"
+    },
+    {
+      "path": "captures/particles-guided-light.png",
+      "sha256": "8792f7430be657787291c4657805d6c93cb072679d3301b5d26218323a4f1a20"
+    },
+    {
+      "path": "captures/particles-standard-light.png",
+      "sha256": "048d7c6780a9dfafd58a67b7802ab808995b823a7f253259e345c74e890ba260"
+    },
+    {
+      "path": "captures/phenomenon-engineering-light.png",
+      "sha256": "11d823511c78e1557ef63da88ab51c84e226c722d2fbc2c71186cdbb4128feb0"
+    },
+    {
+      "path": "captures/phenomenon-guided-light.png",
+      "sha256": "50d6c45093b6be567db68ee5c8199a2f2a14dd73f2f4fffea755bea7da2044b7"
+    },
+    {
+      "path": "captures/phenomenon-standard-light.png",
+      "sha256": "cdf9073d8c61763b4da4a45cbc20b53bef9f52ce6dd7c96a7874383604c83d48"
+    },
+    {
+      "path": "captures/phone-edit-return.png",
+      "sha256": "fe99a8c402e505654f517448fec2f590365f5b29947c97811134b49410ee74ea"
+    },
+    {
+      "path": "captures/projection-engineering-light.png",
+      "sha256": "cf09e51b4f1725852d0a2a1c4c2b7849c7a1ee47137e5691fd20a9348028e049"
+    },
+    {
+      "path": "captures/projection-guided-light.png",
+      "sha256": "5ab395a799433eebab02b5506d73e1e1ccaa6a6a3bd39671d650909cce891c2f"
+    },
+    {
+      "path": "captures/projection-standard-light.png",
+      "sha256": "448acc65d7de8c320f260b8971d6c508c5428a6ee1295050d9c03e783f2a3f43"
+    },
+    {
+      "path": "captures/removed-room-feature-engineering.png",
+      "sha256": "98b586f2c2dd9408ee7606f7baf720c39a74acc7151232568566fbc5f8b84fe7"
+    },
+    {
+      "path": "captures/removed-room-feature-guided.png",
+      "sha256": "78d56c9d7476c1ed06fd316cf11dc3f1336cf0cef6b5a6a7d6d261ad3eb88809"
+    },
+    {
+      "path": "captures/removed-room-feature-scene.png",
+      "sha256": "2d04cef0c2e0e9d320b4630f98833e7aa164a28b2f98933c8adb6fd362e341ac"
+    },
+    {
+      "path": "captures/removed-room-feature-standard.png",
+      "sha256": "61f1b50ca488ee0438e804f393f2946d1eda8c6613a89cddce56281a29695d0c"
+    },
+    {
+      "path": "captures/removed-selection-engineering.png",
+      "sha256": "13de2fc289f68aa5e6c5f8ce152dd9ca5c576d4aa24fe20c2b17a2af03a106f6"
+    },
+    {
+      "path": "captures/removed-selection-guided.png",
+      "sha256": "eac4643de2dbd350bd24f43d48cd577b725c077e6d58ac9592ba2c3ed8224563"
+    },
+    {
+      "path": "captures/removed-selection-scene.png",
+      "sha256": "614cf81f7c4599ecc3b4ac5986d3178fb3d494a311a3a26cb8d48e3233c126bd"
+    },
+    {
+      "path": "captures/removed-selection-standard.png",
+      "sha256": "6e37808887d2d3fc60e5ecf4de3bb3682718c05811760a4a579ed9a782775650"
+    },
+    {
+      "path": "captures/room-feature-context-dimensions-guided-scrolled.png",
+      "sha256": "fdec756712273b413346b1c02606af041276b50ffaf75eb8d5d27b1fb9d5c890"
+    },
+    {
+      "path": "captures/room-feature-context-guided.png",
+      "sha256": "134c0ad1a81c012ac928f6d642bdf4d1e26bb4a633ea6bb9010da3ef3d915085"
+    },
+    {
+      "path": "captures/room-feature-engineering.png",
+      "sha256": "abb2326f1307a7d357a7db9c580f01b639b6af1cc5c4fb6036558b0b825b61b3"
+    },
+    {
+      "path": "captures/room-feature-guided.png",
+      "sha256": "d9bcaa665f0120829cdbc075d5339c5a5d55febdad0fdfad272e7d4141be3260"
+    },
+    {
+      "path": "captures/room-feature-standard.png",
+      "sha256": "61e7b297dc19c995e198fad0154e5e4bb23db598b16058a324a1ad3e56d73e73"
+    },
+    {
+      "path": "captures/scale-live-preview.png",
+      "sha256": "c7ce1d472b255ee8303e5add3fef16df70d9165ac6baa670d53e5b4d038ac884"
+    },
+    {
+      "path": "captures/scene-engineering.png",
+      "sha256": "9dd8d9b465a4c75acbea7850eef13c7e49a731a35ef04143dec00cb15ead58aa"
+    },
+    {
+      "path": "captures/scene-guided.png",
+      "sha256": "d53aee74c89f08d1ae10c71a3d9e5aaa123694c86f2a6b9988bfc2537f15d36b"
+    },
+    {
+      "path": "captures/scene-phone.png",
+      "sha256": "80b3dfd8b338f59398f2c704c15f464b1628d43edb59ca69328809118a065719"
+    },
+    {
+      "path": "captures/scene-standard.png",
+      "sha256": "8c6621c83991323978a1c8163dea6883e6f2f5d70e4691f4d4774bda59977ed9"
+    },
+    {
+      "path": "captures/selection-edges-observations.json",
+      "sha256": "776488c45eb3e3b0a7c9483de075b6f089a8e6712ee439a5ee89793ca0360815"
+    },
+    {
+      "path": "captures/support-surface-engineering.png",
+      "sha256": "c22c081ede600ba1961e004c3161bd8c002828f93834de61ea1e9b9d902b3c2f"
+    },
+    {
+      "path": "captures/support-surface-guided.png",
+      "sha256": "ebfcd5a135d8ba4502b28063c678c7d083f44937978ccfe591375048a35e21af"
+    },
+    {
+      "path": "captures/support-surface-standard.png",
+      "sha256": "9fd1b5eb0504a10a48f0ed43259d67f8ce26f86ac15595c657364c91d1339068"
+    },
+    {
+      "path": "captures/timeline-audio-engineering.png",
+      "sha256": "1dc4f5b2b52731c707cd41d2cc0e1307cb5742173aaaa712f9bedb3636e5fa7f"
+    },
+    {
+      "path": "captures/timeline-audio-guided.png",
+      "sha256": "6f354b30904923c8e554cf325c84aebb39c7b226885765f5661b7cf64fb74f7a"
+    },
+    {
+      "path": "captures/timeline-audio-standard.png",
+      "sha256": "7294f97201ef31d0d646931079d226a0ad7d2bdbd6099549c854bbb10c70094d"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video-1.webm",
+      "sha256": "f7be45206f1dcdc2f5d4417755ea44a4fd4500afc26959cd81731066b4b4281c"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video.webm",
+      "sha256": "a9e83648138fb3346910490ee8575bf1446aedfafefae01d72b47a946e14e46f"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-320d1-s-before-one-history-commit-chromium-video.webm",
+      "sha256": "2ec675d6a80ef7951adcbe6fbd466ed66b16e40634b5cc000ccefbf530835503"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video-1.webm",
+      "sha256": "12e3ebe31ca85fa13e78b506294b1d4623b686fa7fe2d68b5861f472d6ebdde1"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video.webm",
+      "sha256": "18ba6194205ecdee551f680f7104aec5df3450f2002bb4180fd7fa8dd1cd1bb9"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium-video.webm",
+      "sha256": "ea0d783bbd95ae98e98790a8bfde42f5c54df86a1c9e3088801c3652363c2716"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium-video.webm",
+      "sha256": "dea24a890527013162dc54c6313585aac55e22a4157111c24c4ae5e64091cd52"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium-video.webm",
+      "sha256": "d0815dd2889860af731f5bd147acd5c99797a028ba62565124188809f42685cd"
+    },
+    {
+      "path": "recordings/parallax-sc00b-combined-SC-d36c9-Inspector-return-on-desktop-chromium-video.webm",
+      "sha256": "4b2dcfc2e53550ff4b16a3d78698a589615f30268f8a9aa90d9530411b550aa3"
+    }
+  ]
+}

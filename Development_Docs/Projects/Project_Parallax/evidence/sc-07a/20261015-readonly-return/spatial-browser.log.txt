@@ -1,0 +1,21 @@
+[WebServer] (node:35780) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 5 tests using 1 worker
+
+(node:36744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36744) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:119:5 › private asset reaches the canonical listing and installs as an immutable Library release (10.2s)
+  ok 2 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:244:5 › rich Environment and pinned Scene use reviewed geometry without private Library metadata (2.7s)
+  ok 3 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:300:5 › owned synthetic Environment publishes from Library and installs as a read-only Environment (6.1s)
+  ok 4 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:365:5 › unlicensed physical content has a visible refusal and remains private (3.0s)
+  ok 5 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:404:5 › a lost submission response reports uncertainty and exact retry recovers one release (2.5s)
+
+  5 passed (29.0s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

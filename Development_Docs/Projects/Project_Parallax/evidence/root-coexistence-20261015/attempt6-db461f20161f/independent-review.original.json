@@ -1,0 +1,537 @@
+{
+  "schemaVersion": 1,
+  "kind": "INDEPENDENT_SUPPORTING_BOUNDED_SECOND_EVIDENCE_REPAIR_REVIEW",
+  "createdUTC": "2026-10-15T17:54:28.873469+00:00",
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root/main",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "source": {
+    "commit": "db461f20161f1794fc81a555dc0602779b9049af",
+    "tree": "e90571dc21e31a77b5e37bdfb86809bd1682b865",
+    "productSource": "9efdfc89186b112812f387de1423365d0dcf9405",
+    "unchangedComparedPaths": [
+      "src/components",
+      "src/parallax",
+      "testing/contracts.json"
+    ],
+    "unchangedComparedPathsVerified": true,
+    "pinnedReadFiles": [
+      {
+        "path": "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+        "source": "db461f20161f1794fc81a555dc0602779b9049af",
+        "sha256": "fca41d9a0bf5211597d643d70951b3a7393e0fc043b48f681e1fe1c36cbaee20",
+        "gitBlob": "7f963ba47dff6ae7caeb02b34837623620dd7a44"
+      },
+      {
+        "path": "tests/e2e/parallax-spatial-community.spec.ts",
+        "source": "db461f20161f1794fc81a555dc0602779b9049af",
+        "sha256": "f469deff8b2bfaffad56d246b5467f4ba032649659b803f57ebbd89b568a9cab",
+        "gitBlob": "71c981a9153e89468ff8ca3c16e2c70724169141"
+      },
+      {
+        "path": "testing/contracts.json",
+        "source": "db461f20161f1794fc81a555dc0602779b9049af",
+        "sha256": "4d6b3efb9c40d555e7390711c7eae2e8dc5967d26293327e822f7ed3ad0adf69",
+        "gitBlob": "374ad35eb3e036b7a51655173b49776c0bdaed3a"
+      }
+    ]
+  },
+  "contract": {
+    "id": "parallax.spatial-community-publishing.experience",
+    "path": "testing/contracts.json",
+    "objective": "Save a private spatial definition, inspect contextual Community publishing steps and server package, then return without accidental publication.",
+    "boundedIncrement": "Readable semantic included-effects, behavior and animation list before explicit acknowledgement/submission; second test-only evidence repair. This review does not qualify every contract outcome."
+  },
+  "packet": {
+    "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\manifest.json",
+    "sha256": "132e7e41b4a2d447a0ad9b231fe6a600f0b94a2b12ea473d6583d26e96696f4b",
+    "verifiedArtifactCount": 10,
+    "files": [
+      {
+        "path": "browser.original.log",
+        "originalPath": "tmp/root-package-review-db461f20161f.log",
+        "bytes": 47038,
+        "sha256": "8bf5575c6a4b88420c5a28d4a19de8136b5133059e6f95ac0101d806bfdeaec4",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\browser.original.log"
+      },
+      {
+        "path": "browser-runtime.original.json",
+        "originalPath": "artifacts/sounding-line/browser-runtime.json",
+        "bytes": 1316,
+        "sha256": "b7b861166a6b1278314ea7c29741b868e39ce54a29bac41e5cf127c76d4309d7",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\browser-runtime.original.json"
+      },
+      {
+        "path": "browser-suite-profile.original.json",
+        "originalPath": "artifacts/sounding-line/browser-suite-profile.json",
+        "bytes": 411,
+        "sha256": "9e072b24c5e6270b6095b38a6ce25939ab91d7336b5f170ec5fe6bd03b776a18",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\browser-suite-profile.original.json"
+      },
+      {
+        "path": "r000.json",
+        "originalPath": "artifacts/root-package-review-db461f20161f/.last-run.json",
+        "bytes": 45,
+        "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\r000.json"
+      },
+      {
+        "path": "r001.png",
+        "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-installed-desktop.png",
+        "bytes": 202296,
+        "sha256": "b33ad2d1c12f7b4a3686b4c75e6baae4a4df6596bcbeb37c82208aabb21cb3c4",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\r001.png"
+      },
+      {
+        "path": "r002.png",
+        "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review-desktop.png",
+        "bytes": 86462,
+        "sha256": "ea9e1e3aef5595aed34fd0e1326b56390deeb1a14c081d1154a4b9e688a22ddd",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\r002.png"
+      },
+      {
+        "path": "r003.png",
+        "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review-phone.png",
+        "bytes": 44576,
+        "sha256": "053cf448dfbddb2433c7fddca665ac5aaa107f7bf3645f70fb96634c7ddc90a3",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\r003.png"
+      },
+      {
+        "path": "r004.png",
+        "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review.png",
+        "bytes": 11390,
+        "sha256": "638ef131f2d5a2410115521272da5e7a47b4efee3cde86c7dbc0b3b61b4f5621",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\r004.png"
+      },
+      {
+        "path": "r005.webm",
+        "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/video.webm",
+        "bytes": 412714,
+        "sha256": "b05ae56733319ccd59583c3521ea1c47a4262db7ef2b147af1309f09316e9e53",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\r005.webm"
+      },
+      {
+        "path": "a000.json",
+        "originalPath": "artifacts/parallax-a1/browser/db461f20161f/run.json",
+        "bytes": 610,
+        "sha256": "2d706f0794bc29d16e0f38bcf34e29af00542872183ee3d6eda6830b1e9d8c01",
+        "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt6-db461f20161f\\a000.json"
+      }
+    ]
+  },
+  "inspection": {
+    "preSourceNotes": {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\package-review-db461\\pre-source-visual-notes.original.json",
+      "sha256": "c0220541583f83ba50c239911eb73078bfba672fa4caeed4dcffe643100016fc",
+      "frozenBeforeCurrentSourceAndReceiptInspection": true
+    },
+    "nativeImagesInspected": [
+      "r001.png",
+      "r002.png",
+      "r003.png",
+      "r004.png"
+    ],
+    "recording": {
+      "id": "r005.webm",
+      "sha256": "b05ae56733319ccd59583c3521ea1c47a4262db7ef2b147af1309f09316e9e53",
+      "durationSeconds": 8.68,
+      "nativeDimensions": [
+        800,
+        450
+      ],
+      "nativeFrameCount": 217,
+      "nativeFPS": 25,
+      "sampleCount": 73,
+      "sampleSpanSeconds": [
+        0,
+        8.64
+      ],
+      "maximumSampleGapSeconds": 0.12,
+      "method": "Every third native frame including the endpoint, all five timestamped contact sheets inspected; all native PNG originals inspected separately. Contact-sheet cells 490x275; not every video frame or real-time playback.",
+      "samplingManifest": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\package-review-db461\\sampling-manifest.json",
+      "samplingManifestSHA256": "4cc760d0b8732b7e6dfa8a06c4d06279397bed72f4f3eeead5d6f35571ecff57",
+      "audioProof": "NONE",
+      "chronology": [
+        {
+          "seconds": [
+            0,
+            0.72
+          ],
+          "observation": "Blank/loading frames."
+        },
+        {
+          "seconds": [
+            0.84,
+            2.4
+          ],
+          "observation": "Opening Studio, then room/canvas."
+        },
+        {
+          "seconds": [
+            2.52,
+            3.24
+          ],
+          "observation": "Library opens, Effects selected and source item details."
+        },
+        {
+          "seconds": [
+            3.36,
+            3.84
+          ],
+          "observation": "Source, description and rights steps; rights acknowledgement then review loading."
+        },
+        {
+          "seconds": [
+            3.96,
+            4.44
+          ],
+          "observation": "Review, collapsed/focused disclosure, then expanded three-entry list."
+        },
+        {
+          "seconds": [
+            4.56,
+            4.68
+          ],
+          "observation": "Phone viewport/capture transition; native phone PNG is primary text/row proof."
+        },
+        {
+          "seconds": [
+            4.8,
+            5.04
+          ],
+          "observation": "Desktop review restored, explicit acknowledgement, then submission result."
+        },
+        {
+          "seconds": [
+            5.04,
+            8.64
+          ],
+          "observation": "Submitted moderation state; Return button remains unclicked."
+        }
+      ]
+    }
+  },
+  "technicalCorroboration": {
+    "focusedProductionBrowser": "1 passed (13.2s); not the original 19-case suite rerun",
+    "build": "Compiled successfully in 24.7s per original browser log",
+    "fullTypeScript": "Completed in 34.8s per original browser log",
+    "sourceBinding": "VALID",
+    "provider": "SYNTHETIC_UNPAID",
+    "capture": "PASS",
+    "ownedCleanup": "PASS; browser exit 0; owned server exit 1 after escalation, tree reaped, streams closed and ports released. Not a natural server exit-0 claim.",
+    "testSpecifics": [
+      "Native summary focus: Space collapse, Enter reopen.",
+      "Nonempty TIMER behavior: delayMs 2000, target effect entity, SHOW action.",
+      "Opacity LINEAR track: 0 at 0ms and 1 at 1000ms.",
+      "Reviewed package and installed behaviors and animation tracks asserted equal to saved fixture arrays.",
+      "Phone rows explicitly scrolled into view and viewport assertions checked in addition to native pixel review."
+    ]
+  },
+  "dimensions": {
+    "composition": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The full 1280x720 desktop Review view preserves the rounded blue wizard, framed body and fixed footer. All three included-definition rows fit above the footer; the upper preview card is partially scrolled out of view.",
+        "At 390x844, the deliberately scrolled body shows the three complete row cards around y285-537, then credits, the optional sanitized-package control and unchecked acknowledgement before the footer around y738."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r005.webm@4.32-4.68"
+      ],
+      "limits": "Phone summary control is above this scrolled viewport; the capture proves rows, not simultaneous visibility of every wizard section."
+    },
+    "hierarchy": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The step rail and Review heading frame the package inspection. 'Inspect included effects and behavior (3)' precedes the definition cards, credits and acknowledgement.",
+        "Effect, behavior and animation are separate rows rather than a raw JSON wall. Submission follows an explicit review checkbox."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r005.webm@3.96-5.04"
+      ],
+      "limits": "No claim for more than these three rows or arbitrary deeply nested packages."
+    },
+    "typography": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "Native desktop and phone images make 'Soft mist', 'Behavior: timer → show' and 'Animation: opacity · 2 keyframes' readable without the footer cutting the text.",
+        "The text wraps inside the phone body and retains the visual distinction between names and supporting detail."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r004.png"
+      ],
+      "limits": "This is a semantic summary of trigger/action and property/keyframe count, not full numeric delay or keyframe-value inspection."
+    },
+    "spacing": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The three cards remain individually separated on both captured widths. On phone the final animation row ends before credits and the acknowledgement; no row collides with the fixed footer.",
+        "The full desktop capture retains breathing room around the expanded section and the footer actions."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png"
+      ],
+      "limits": "Only the captured scroll position and three-item content are established."
+    },
+    "controls": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The disclosure visibly opens to three rows. Native keyboard Space collapse and Enter reopen are asserted in the pinned test after focus; the recording includes collapsed and expanded states.",
+        "Back and Submit remain in the footer. Submit is disabled in the unchecked review images and becomes available after acknowledgement."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r005.webm@4.08-5.04",
+        "PINNED_TEST"
+      ],
+      "limits": "Return to Spatial Studio is visible in the Submitted state but is not clicked; raw JSON expansion is also not exercised here."
+    },
+    "contrast": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The blue wizard text and light definition cards remain visually distinct. The yellow outline makes the focused summary conspicuous on desktop.",
+        "Phone rows and acknowledgement text are readable against their captured backgrounds."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r004.png"
+      ],
+      "limits": "No measured WCAG audit, alternate appearance or all application states is established."
+    },
+    "consistency": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The rounded blue wizard, step rail and persistent footer retain the established Community/Studio family seen in the original source-bound 9ef review.",
+        "The source comparison reports no changes under src/components, src/parallax or testing/contracts.json between 9ef and db461."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "PINNED_SOURCE_DIFF",
+        "PRIOR_9EF_REVIEW"
+      ],
+      "limits": "The later test-only recapture does not turn all historical screenshots into a new whole-Studio acceptance."
+    },
+    "states": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The recording reaches source, description, rights, review and Submitted moderation states. The Review screenshots show an unchecked acknowledgement and disabled Submit.",
+        "The current list includes an actual nonempty TIMER SHOW behavior as well as atmosphere and animation. The final screen says Submitted rather than claiming immediate public availability."
+      ],
+      "evidenceIds": [
+        "r005.webm@3.36-8.64",
+        "r002.png",
+        "r003.png",
+        "PINNED_TEST"
+      ],
+      "limits": "Empty, refusal and Profile prerequisite states remain historical 9ef still evidence; this focused case does not rerun them."
+    },
+    "responsive": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The original 390x844 phone PNG now contains all three complete expanded rows above the acknowledgement and footer; this directly closes the prior hidden-row evidence gap.",
+        "The desktop version shows the expanded section within the complete surrounding dialog. Native viewport assertions supplement rather than substitute for these pixels."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r005.webm@4.44-4.68",
+        "PINNED_TEST"
+      ],
+      "limits": "Desktop Chromium emulation only; no real phone, touch, orientation, all breakpoints or long-list qualification. The summary is above the phone viewport at this deliberate scroll."
+    },
+    "keyboard": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The pinned browser case focuses the native summary, sends Space to collapse, then Enter to reopen and checks each state.",
+        "The recording captures the collapsed summary around 4.08-4.20 seconds and expanded list by 4.32 seconds."
+      ],
+      "evidenceIds": [
+        "r005.webm@4.08-4.44",
+        "r002.png",
+        "PINNED_TEST"
+      ],
+      "limits": "Not a complete keyboard traversal, screen reader or phone keyboard review; submit/return focus continuity is unclaimed."
+    },
+    "focus": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The desktop full image and list crop show a clear yellow focus outline surrounding the summary.",
+        "The open list itself does not cover the disclosure focus indicator or footer actions."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r004.png"
+      ],
+      "limits": "No proof of focus restoration after closing or returning to Studio; that action remains unclicked."
+    },
+    "feedback": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The summary count is three and the open list visibly explains all three included definitions.",
+        "The final moderation screen gives an explicit Submitted result after the review acknowledgement; it does not label the package immediately public."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r005.webm@4.92-8.64"
+      ],
+      "limits": "This successful focused recording does not establish latency guarantees or new failure feedback; historical refusals remain separate."
+    },
+    "motion": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "Timed samples cover the entire original 8.68-second video: loading, natural Library entry, wizard progression, disclosure state changes, phone capture transition and Submitted state.",
+        "No package-list motion makes the text visibly illegible in the sampled sequence; the stills provide native text scrutiny."
+      ],
+      "evidenceIds": [
+        "r005.webm",
+        "sampling-manifest.json",
+        "sheet-0.jpg",
+        "sheet-1.jpg",
+        "sheet-2.jpg",
+        "sheet-3.jpg",
+        "sheet-4.jpg"
+      ],
+      "limits": "73 of 217 frames sampled across the complete span, not every frame or real-time playback. No reduced-motion comparison, rendered effect fidelity or audio audibility proof."
+    },
+    "continuity": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "The Creator begins in Studio, opens Library and Effects, selects the definition and enters the publishing wizard without an unrelated replacement surface.",
+        "The pinned test corroborates exact reviewed and installed behaviors and animation tracks. The installed Library still shows the effect in a separate private working canvas."
+      ],
+      "evidenceIds": [
+        "r005.webm@2.16-5.04",
+        "r001.png",
+        "PINNED_TEST"
+      ],
+      "limits": "The installer context is screenshot-only. Return to Spatial Studio is not clicked, so the complete return journey, resulting focus and preserved Scene after that action are unqualified."
+    },
+    "complexity": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "A collapsed semantic list provides progressive detail; opening it reveals three manageable rows and leaves sanitized package JSON optional.",
+        "The current phone framing keeps all three rows, credits and acknowledgement readable without needing a dense raw payload."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r004.png"
+      ],
+      "limits": "No qualification of larger packages, every behavior parameter, long names or arbitrary list depth."
+    },
+    "role-outcomes": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "A Creator can see the server-reviewed package's included atmosphere, timer/show behavior and opacity animation before acknowledging and submitting this synthetic Effect.",
+        "The current production case verifies reviewed/installed exact behavior and animation data; visual review independently verifies the human-facing row labels and order before acknowledgement."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r005.webm@3.96-5.04",
+        "PINNED_TEST",
+        "a000.json"
+      ],
+      "limits": "This qualifies the new list presentation outcome only, not all outcomes of the owning Community publishing contract, owner approval, moderation release or broader Scene/Studio workflows."
+    },
+    "fallbacks": {
+      "assessment": "SUPPORTED_WITHIN_BOUNDED_SCOPE",
+      "observations": [
+        "Back remains visible before submission; Submitted exposes Return to Spatial Studio. These are visible recovery affordances rather than demonstrated executed return paths.",
+        "The original immutable review retains empty/recovery/Profile/refusal still observations. No current media contradicts them, but they are not rerun here."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r005.webm@5.04-8.64",
+        "PRIOR_9EF_REVIEW"
+      ],
+      "limits": "Current successful focus case does not prove cancellation, Profile return, retry recovery, offline behavior or executed return. No physical AR/device fallback qualification."
+    }
+  },
+  "findings": [
+    {
+      "id": "COMMUNITYPACKAGE-EVIDENCE-01",
+      "classification": "INSUFFICIENT_EVIDENCE_REPAIRED",
+      "status": "RESOLVED_IN_BOUNDED_SCOPE",
+      "severity": "NO_CURRENT_BLOCKER",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "observations": [
+        "The original missing Creator recording and surrounding full-dialog context are now supported by the complete sampled recording and desktop image.",
+        "The first repair's phone rows previously fell below visible content; current r003 visibly shows all three complete definition cards above acknowledgement and footer.",
+        "An actual timer/show behavior is now visible and test-correlated with exact reviewed/installed metadata.",
+        "Disclosure keyboard collapse/reopen is source-bound and visible through focused/collapsed/open states."
+      ],
+      "evidenceIds": [
+        "r002.png",
+        "r003.png",
+        "r004.png",
+        "r005.webm",
+        "PINNED_TEST"
+      ],
+      "repairRequired": false
+    },
+    {
+      "id": "COMMUNITYPACKAGE-RETURN-LIMIT",
+      "classification": "BOUNDED_UNCREDITED_OUTCOME",
+      "severity": "NONBLOCKING_FOR_NEW_LIST_INCREMENT",
+      "status": "NOT_QUALIFIED_FOR_FULL_CONTRACT_RETURN",
+      "contractId": "parallax.spatial-community-publishing.experience",
+      "observations": [
+        "Return to Spatial Studio is visible but unclicked through the recording endpoint.",
+        "The pinned Publisher Return button still calls onClose; product and contract paths are unchanged from 9ef. Source identity does not prove the executed return experience.",
+        "The request covers the new included-content list presentation. No new visual defect or new return regression is established; the absent click is an honest bounded limitation, not a blocker for this display increment.",
+        "If asserting the complete contract objective including returning to the same Studio/Scene, that outcome needs actual executed evidence and is not accepted by this report."
+      ],
+      "evidenceIds": [
+        "r005.webm@5.04-8.64",
+        "PINNED_SOURCE_DIFF",
+        "PINNED_PUBLISHER"
+      ],
+      "repairRequiredForThisIncrement": false
+    }
+  ],
+  "confirmedBlockingProductFindings": [],
+  "confirmedMaterialNonblockingProductFindings": [],
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "dispositionScope": "Supporting local verification of the finite package-list presentation and explicit acknowledgement/submission sequence. No further evidence repair is required for COMMUNITYPACKAGE-EVIDENCE-01 in this scope.",
+  "remainingLimits": [
+    "No complete Return-to-Studio or canonical Scene/focus return qualification.",
+    "Installer context screenshot only, not recorded installation chronology.",
+    "One focused Effect journey, not a 19-case rerun. Earlier empty, Profile, refusal and recovery stills remain historical 9ef evidence.",
+    "One three-entry package; not all content lengths, numeric parameters or full keyframe values.",
+    "No new light appearance, reduced motion, comprehensive accessibility, touch or physical phone evidence.",
+    "Synthetic unpaid local production Chromium; no live MySQL, public moderation release, audio audibility, rendered-effect fidelity, physical tracking/AR or hardware proof.",
+    "No trusted/protected acceptance, counter reset, broad Studio/full-overhaul or whole-contract acceptance."
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "trustedAcceptance": "NOT_CLAIMED",
+  "physicalAcceptance": "NOT_CLAIMED",
+  "historicalReviewsPreserved": [
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\package-review-9efdf\\independent-review.original.json",
+      "sha256": "8d14394507c05ea1bc2a7d1bade6b0535b8a5802030c76166034e8d518a260ac",
+      "disposition": "REPAIR_AND_RECAPTURE",
+      "scope": "Original 9ef package with no Community recording; preserved historical evidence gap."
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\package-review-7d47a\\independent-review.original.json",
+      "sha256": "4d054c38a0f040f6fa64a8080d532bc061136ca108924f169d97ce4dc9e05742",
+      "disposition": "REPAIR_AND_RECAPTURE",
+      "scope": "First evidence repair: desktop and Creator recording supported, phone rows not visible; preserved."
+    }
+  ],
+  "mutationScope": "New immutable ignored review JSON only; no source, Git, runtime, API, build, test, contract, documentation or original-media changes.",
+  "featureCatalog": "NO CHANGE REQUIRED"
+}

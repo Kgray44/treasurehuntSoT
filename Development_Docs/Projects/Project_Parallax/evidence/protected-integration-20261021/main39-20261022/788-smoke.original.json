@@ -1,0 +1,415 @@
+{
+  "classification": "BOUNDED_D_ONLY_ACTUAL_LANDED_READER_COMPOSITION_SMOKE_NOT_CONSUMER_ACCEPTANCE",
+  "root": "D:/CodexWorktrees/sounding-line-nonapplicable-landed-fc5855f4",
+  "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+  "parents": [
+    "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+    "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+  ],
+  "candidate": "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b",
+  "base": "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+  "startedAt": "2026-10-22T13:17:34.547Z",
+  "completedAt": "2026-10-22T13:18:47.256Z",
+  "heapBudgetMiB": 512,
+  "temp": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.temp",
+  "immutable": [
+    {
+      "file": "testing/product-experience-exceptions.json",
+      "baseBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+      "landedBlob": "089308bf475a2b22bfdc64ac46164996855e7010"
+    },
+    {
+      "file": "scripts/sounding-line/experience-current-r26.mjs",
+      "baseBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100",
+      "landedBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100"
+    },
+    {
+      "file": "scripts/sounding-line/experience-current-admission.mjs",
+      "baseBlob": "540ba2ea53d30535fc34c6d19dda578776cc9a11",
+      "landedBlob": "540ba2ea53d30535fc34c6d19dda578776cc9a11"
+    },
+    {
+      "file": ".github/workflows/sounding-line-control-plane.yml",
+      "baseBlob": "92f4df6245e8e7fcea6dea8f494ebea2886466dd",
+      "landedBlob": "92f4df6245e8e7fcea6dea8f494ebea2886466dd"
+    },
+    {
+      "file": ".github/workflows/sounding-line-ordinary.yml",
+      "baseBlob": "cef69188292774c816e33e7a9aad467edadeff25",
+      "landedBlob": "cef69188292774c816e33e7a9aad467edadeff25"
+    },
+    {
+      "file": "scripts/sounding-line/experience-exception.mjs",
+      "baseBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b",
+      "landedBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b"
+    },
+    {
+      "file": "tests/sounding-line/experience-exception.test.mjs",
+      "baseBlob": "09b70143551f6b05c94c5e29b73142b8f8d2b5d1",
+      "landedBlob": "09b70143551f6b05c94c5e29b73142b8f8d2b5d1"
+    },
+    {
+      "file": "tests/sounding-line/unrelated-expired-r26.test.mjs",
+      "baseBlob": "d6505db91f5db2d992be0fbfb31d53ad706f110f",
+      "landedBlob": "d6505db91f5db2d992be0fbfb31d53ad706f110f"
+    },
+    {
+      "file": "scripts/sounding-line/development-failure-evidence.mjs",
+      "baseBlob": "206222c84ccacaa7b3ae029d534d81da69fd2502",
+      "landedBlob": "206222c84ccacaa7b3ae029d534d81da69fd2502"
+    }
+  ],
+  "checks": [
+    {
+      "name": "reader-native-links",
+      "args": [
+        "--test",
+        "tests/sounding-line/source-snapshot-batches.test.mjs",
+        "tests/sounding-line/development-build-links.test.mjs"
+      ],
+      "startedAt": "2026-10-22T13:17:34.548Z",
+      "completedAt": "2026-10-22T13:17:36.801Z",
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "streams": {
+        "stdout": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.reader-native-links.stdout.original.bin",
+          "bytes": 1665,
+          "sha256": "f83a2dd35e9fc84ecef8ce7788b51d6a9618214e149136484ee172090a4b07ef"
+        },
+        "stderr": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.reader-native-links.stderr.original.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "sourceBefore": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      },
+      "sourceAfter": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      }
+    },
+    {
+      "name": "exact-diagnostic-shape",
+      "args": [
+        "--test",
+        "--test-name-pattern=only exact product-source batch-check reads retain native failure provenance",
+        "tests/sounding-line/browser-diagnostics.test.mjs"
+      ],
+      "startedAt": "2026-10-22T13:17:36.802Z",
+      "completedAt": "2026-10-22T13:17:38.669Z",
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "streams": {
+        "stdout": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.exact-diagnostic-shape.stdout.original.bin",
+          "bytes": 207,
+          "sha256": "df89a32df9c6142b331acb1004aab2d8724a4880552951e0ec3cd4342f78639d"
+        },
+        "stderr": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.exact-diagnostic-shape.stderr.original.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "sourceBefore": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      },
+      "sourceAfter": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      }
+    },
+    {
+      "name": "portable-retention",
+      "args": [
+        "--test",
+        "tests/sounding-line/development-failure-evidence.test.mjs"
+      ],
+      "startedAt": "2026-10-22T13:17:38.669Z",
+      "completedAt": "2026-10-22T13:17:41.018Z",
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "streams": {
+        "stdout": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.portable-retention.stdout.original.bin",
+          "bytes": 1692,
+          "sha256": "301bd5c0000b03884cabb2806cb3334b953dad371ed923c3f9883068ce016937"
+        },
+        "stderr": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.portable-retention.stderr.original.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "sourceBefore": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      },
+      "sourceAfter": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      }
+    },
+    {
+      "name": "accepted-unrelated-routing",
+      "args": [
+        "--test",
+        "tests/sounding-line/unrelated-expired-r26.test.mjs"
+      ],
+      "startedAt": "2026-10-22T13:17:41.018Z",
+      "completedAt": "2026-10-22T13:18:32.694Z",
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "streams": {
+        "stdout": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.accepted-unrelated-routing.stdout.original.bin",
+          "bytes": 624,
+          "sha256": "9b7b08ff3f56438b754d34e3317549dc75e7ef6f013b7bbae7558f428ff24612"
+        },
+        "stderr": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.accepted-unrelated-routing.stderr.original.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "sourceBefore": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      },
+      "sourceAfter": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      }
+    },
+    {
+      "name": "original-r3-admission",
+      "args": [
+        "--test",
+        "--test-name-pattern=R3 Git admission permits only the bounded repair and freezes every other runtime entry",
+        "tests/sounding-line/experience-exception.test.mjs"
+      ],
+      "startedAt": "2026-10-22T13:18:32.694Z",
+      "completedAt": "2026-10-22T13:18:41.637Z",
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "streams": {
+        "stdout": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.original-r3-admission.stdout.original.bin",
+          "bytes": 219,
+          "sha256": "15eab1d44a573c8dfa98a72343d863098f993349896b491511ea698bbad52705"
+        },
+        "stderr": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.original-r3-admission.stderr.original.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "sourceBefore": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      },
+      "sourceAfter": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      }
+    },
+    {
+      "name": "docs-validate",
+      "args": [
+        "scripts/validate-documentation.mjs"
+      ],
+      "startedAt": "2026-10-22T13:18:41.638Z",
+      "completedAt": "2026-10-22T13:18:43.093Z",
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "streams": {
+        "stdout": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.docs-validate.stdout.original.bin",
+          "bytes": 33,
+          "sha256": "a577c20ffd716a727eff6829bca7a41e2cbfc01a44de0198134499fdbac40f0a"
+        },
+        "stderr": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.docs-validate.stderr.original.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "sourceBefore": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      },
+      "sourceAfter": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      }
+    },
+    {
+      "name": "features-sync",
+      "args": [
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/features/build-feature-catalog.ts"
+      ],
+      "startedAt": "2026-10-22T13:18:43.093Z",
+      "completedAt": "2026-10-22T13:18:45.038Z",
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "streams": {
+        "stdout": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.features-sync.stdout.original.bin",
+          "bytes": 52,
+          "sha256": "73bc23fe4ed449303d9c74cfae30926bc07330e87a7f7336d3bcb2278a2d9c30"
+        },
+        "stderr": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.features-sync.stderr.original.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "sourceBefore": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      },
+      "sourceAfter": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      }
+    },
+    {
+      "name": "features-validate",
+      "args": [
+        "node_modules/tsx/dist/cli.mjs",
+        "scripts/features/validate-feature-catalog.ts"
+      ],
+      "startedAt": "2026-10-22T13:18:45.038Z",
+      "completedAt": "2026-10-22T13:18:46.824Z",
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "streams": {
+        "stdout": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.features-validate.stdout.original.bin",
+          "bytes": 35,
+          "sha256": "13a02cc6d2aca9c30371dcae2929505862456f13cd6783b1bd6c98ad7348ba88"
+        },
+        "stderr": {
+          "file": "D:\\CodexTemp\\sounding-line-batch-repair-20261021-01a13d1d\\reader-landed-39b706ad-01.features-validate.stderr.original.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "sourceBefore": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      },
+      "sourceAfter": {
+        "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+        "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+        "parents": [
+          "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+          "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+        ],
+        "status": ""
+      }
+    }
+  ],
+  "statusBefore": "",
+  "sourceFinal": {
+    "head": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+    "tree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+    "parents": [
+      "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+      "513d2f4f30bc14727aad12d3c7c1e202ab1fc01b"
+    ],
+    "status": ""
+  },
+  "exactFinal": true,
+  "statusAfter": ""
+}

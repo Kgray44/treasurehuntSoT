@@ -1,0 +1,16 @@
+{
+  "candidate": "6808e456379bca8a2eba90dbe5d20411e69e0be0",
+  "tree": "1d51544bc471adfcae0317cb075f09e94e2645a1",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "startedAt": "2026-10-19T20:09:11.690Z",
+  "finishedAt": "2026-10-19T20:09:18.671Z",
+  "database": "file:C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/validation-isolated-sc07a-unit-10-030c893c-4581-4be2-9f0d-5372453c7b8c.db",
+  "scanner": "synthetic-test",
+  "nonceHash": "8508628db57cc97d9f557f02b4b1bb365c666d3e1b6216d923aaf2c4ca66f319",
+  "node": "v24.18.0",
+  "tests": [
+    "src/components/studio/parallax/StudioContextMenu.test.tsx"
+  ],
+  "exitCode": 0,
+  "sourceBinding": "VALID"
+}

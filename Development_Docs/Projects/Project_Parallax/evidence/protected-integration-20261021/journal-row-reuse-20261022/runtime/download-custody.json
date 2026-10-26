@@ -1,0 +1,83 @@
+{
+  "kind": "PARALLAX_HOSTED_DEVELOPMENT_TERMINAL_CUSTODY_4",
+  "qualification": false,
+  "runId": 39735856149,
+  "attempt": 1,
+  "candidate": "b617b6825688d2d3d89a34284588ce456701aa8f",
+  "authority": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "conclusion": "success",
+  "downloads": [
+    {
+      "endpoint": "repos/Kgray44/treasurehuntSoT/actions/runs/39735856149/logs",
+      "file": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\hosted-crossdeck-development-04\\provider-run-logs.original.zip",
+      "bytes": 46714,
+      "sha256": "e7a1809f851e15703a7c478b452ff2a48d31f7a4037cfdfb02c697acc6c13390",
+      "providerDigestVerified": false,
+      "zipCRC": "PASS",
+      "members": [
+        {
+          "name": "0_Focused browser development (no mainline decision).txt",
+          "bytes": 96324
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/system.txt",
+          "bytes": 612
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/1_Set up job.txt",
+          "bytes": 2239
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/2_Require protected workflow source and a focused selector.txt",
+          "bytes": 1356
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/3_Run actions_checkout@v4.txt",
+          "bytes": 15064
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/4_Run actions_checkout@v4.txt",
+          "bytes": 17189
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/5_Create the dedicated candidate worktree.txt",
+          "bytes": 11281
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/6_Run actions_setup-node@v4.txt",
+          "bytes": 3207
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/7_Install locked development dependencies.txt",
+          "bytes": 27873
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/8_Prepare the source-bound development runtime.txt",
+          "bytes": 3174
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/9_Run the selected development case without qualification.txt",
+          "bytes": 11010
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/18_Post Run actions_setup-node@v4.txt",
+          "bytes": 481
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/19_Post Run actions_checkout@v4.txt",
+          "bytes": 1561
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/20_Post Run actions_checkout@v4.txt",
+          "bytes": 1554
+        },
+        {
+          "name": "Focused browser development (no mainline decision)/21_Complete job.txt",
+          "bytes": 371
+        }
+      ]
+    }
+  ],
+  "retention": null,
+  "createdAtUtc": "2026-10-22T07:03:12.391557+00:00"
+}

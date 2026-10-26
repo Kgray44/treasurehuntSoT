@@ -1,0 +1,620 @@
+{
+  "schemaVersion": 1,
+  "reviewKind": "INDEPENDENT_SUPPORTING_BOUNDED_FINAL_MEDIA_VERIFICATION",
+  "frozenAtUtc": "2026-10-15T21:52:29.580949+00:00",
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "verdict": "No new visible blocker in the observed privatecancel/retry/history,creditedinstalledplacement andfinite scaledkeyboard/pointer/root-motionflows. Verifyonlytheseactualboundedoutcomes;mediareviewdoesnotdecideadoption/protectedqualification.",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "trustedAcceptance": "NOT_CLAIMED",
+  "protectedAcceptance": "NOT_CLAIMED",
+  "physicalAcceptance": "NOT_CLAIMED",
+  "rootAdoption": "NOT_CLAIMED;incomingarchive,rootnotadoptedatdispatch.",
+  "owningContract": "parallax.authored-library-and-simulation.experience",
+  "fullContractAcceptance": "NOT_CLAIMED",
+  "repairIterationContext": "Finalverificationafterboundedthirdrepair;earlierfailedd481/correcteda77andallhistoricalreviewscountersremainunchanged. Noadditionalrepairrun.",
+  "source": {
+    "captureCommit": "7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65",
+    "captureTree": "6404a5155b5ca75b8a45c0c9058dacad1971be5e",
+    "initialArchiveCommit": "8053bda101c0785c724b35cc2370399ee7953c8f",
+    "initialArchiveTree": "3a30cac2896c86fcfc160129cf5f9795ca0fc195",
+    "supplementArchiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+    "supplementArchiveTree": "5ef0f45ab2af40cac05092a0fa88cdabda1febc8",
+    "captureTo8053SrcTestsDiffEmpty": true,
+    "8053To2197SrcTestsDiffEmpty": true
+  },
+  "originalArtifacts": [
+    {
+      "id": "browser-runtime.json",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/browser-runtime.json",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "00b9999a4c10ee347047221bc0acdfce8f7b6f70706b665d51ae4f3152b58140",
+      "gitBlob": "72a985ba39cad2ff547e98cad0cbca358e05e4b4"
+    },
+    {
+      "id": "browser-suite-profile.json",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/browser-suite-profile.json",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\browser-suite-profile.json",
+      "bytes": 355,
+      "sha256": "7de3b3b961347e935fc840c4bcfa47eda4c9e6113b061410ce0e6ec540f28de9",
+      "gitBlob": "d62b6907ecea6dbb6b94fe55ca43203ba5304ff2"
+    },
+    {
+      "id": "installed-asset-placement.webm",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/installed-asset-placement.webm",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\installed-asset-placement.webm",
+      "bytes": 925036,
+      "sha256": "27e5ddec3041772e165141f707970ea318a826ba072a3b6621129d6a98db17c8",
+      "gitBlob": "003a0296c7cb3da2999107643a9e28cae016905c"
+    },
+    {
+      "id": "playwright-last-run.json",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/playwright-last-run.json",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\playwright-last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "gitBlob": "cbcc1fbac11a74b608b2b3edc3a2ffd6ab639cb2"
+    },
+    {
+      "id": "run.log.txt",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/run.log.txt",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\run.log.txt",
+      "bytes": 46533,
+      "sha256": "2b718571df213e4b9ba239249a2a450d9d11df17c5ba0e07a8b7a5c1896eee84",
+      "gitBlob": "ac15bbc853c209168e72b5e89f757bade8714806"
+    },
+    {
+      "id": "saved-asset-placement.webm",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/saved-asset-placement.webm",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\saved-asset-placement.webm",
+      "bytes": 365283,
+      "sha256": "d84cc0aa0c15bf27f74e36fa115f39a3bc10d1b1376519471299f3404a7cdd5a",
+      "gitBlob": "042722d83a9c1bfa64b929fa7dc937103c322b18"
+    },
+    {
+      "id": "scaled-animated-playback.png",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/scaled-animated-playback.png",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\scaled-animated-playback.png",
+      "bytes": 270768,
+      "sha256": "08063e9952a9d9d61c45de4f9a50a89612a599e72edcb06e1037adae7cd270d2",
+      "gitBlob": "93d1937da9a6653caa9a61e706ca812e97c78fe0"
+    },
+    {
+      "id": "scaled-keyboard-placed.png",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/scaled-keyboard-placed.png",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\scaled-keyboard-placed.png",
+      "bytes": 262621,
+      "sha256": "f7413dd06c1377cc2eaa0f1f5028587bfaefab58ee89ed39c0cecb42a4c62cf8",
+      "gitBlob": "a137935faee44e51c682cdfb8f4135c69c091037"
+    },
+    {
+      "id": "scaled-placement.webm",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/scaled-placement.webm",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\scaled-placement.webm",
+      "bytes": 330856,
+      "sha256": "8fc7bbee83b44a50b8a996c95953f213ad5adc1f66fb12e3d1182ca2d64da1ba",
+      "gitBlob": "6f2ae6136c3bdd1a7d972a21341d0e032ec08a44"
+    },
+    {
+      "id": "scaled-pointer-placed.png",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/scaled-pointer-placed.png",
+      "extractedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\scaled-pointer-placed.png",
+      "bytes": 262653,
+      "sha256": "4e5e115f1f416774c217e412a36094c1cd0c00f39b173ed8fab09b6e54641509",
+      "gitBlob": "cba8f32979edda2f433ce1c83cba12d484a1be9b"
+    },
+    {
+      "id": "asset-installer.original.webm",
+      "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-installer.original.webm",
+      "bytes": 996404,
+      "sha256": "7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76",
+      "gitBlob": "dc65490c79924fba7681a94fd94bd57234cbfdc4"
+    },
+    {
+      "id": "asset-installed-expanded.png",
+      "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-installed-expanded.png",
+      "bytes": 239755,
+      "sha256": "85b57daf5672ab4614a0a1cafc1d6c620cdab266afdd7699e213cfea5258fe58",
+      "gitBlob": "fe7e975adb7a793eba36f87926eb1a1be7b6694a"
+    },
+    {
+      "id": "asset-reused-desktop.png",
+      "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-reused-desktop.png",
+      "bytes": 289192,
+      "sha256": "8ace66a013e13cec656e162734b4edaa6664a49a89bf4367e55d32c06d49fa5f",
+      "gitBlob": "80a9edefb11bff651a9f7e54020d6c8f3b42629d"
+    }
+  ],
+  "artifactExtraction": {
+    "method": "Create-onlyexactgitshow8053initial10originals;source-reviewrationalefilesexcluded. Recoveredsupplementnativevideofirstread-onlycopied,thenbyte-equalverifiedtogitshow2197;twoPNGcreate-onlyextracted. MutableownerHEADnotused.",
+    "manifests": [
+      {
+        "path": "D:\\CodexTemp\\root-placement-7ac7594e-media\\extraction-manifest.json",
+        "sha256": "d248c98d0567e1fb3ff64699f6dd4da255d38be14a7dc325294ec4b38b860b7d",
+        "bytes": 5194
+      },
+      {
+        "path": "D:\\CodexTemp\\root-placement-7ac7594e-media\\installer-extraction-manifest.original.json",
+        "sha256": "0c747444989b682e362de3b82cf7c074991534be29d54ebcdc3f53c33882267a",
+        "bytes": 1640
+      }
+    ]
+  },
+  "preSourceNotes": [
+    {
+      "path": "D:\\CodexTemp\\root-placement-7ac7594e-media\\pre-source-notes.original.json",
+      "sha256": "3a6b6e82fcacca0fa6c83e625306bad1301192d3c1a10ebc9367b5bff817fd6d",
+      "bytes": 11539
+    },
+    {
+      "path": "D:\\CodexTemp\\root-placement-7ac7594e-media\\installer-pre-source-notes.original.json",
+      "sha256": "b7984893ba6ee9fe46e11e22885878adafb95c92bbf172af5881365a65897084",
+      "bytes": 5001
+    }
+  ],
+  "recordingInspection": {
+    "method": "Complete decoded spans, every third native frame plus final decoded frame; full-span timed contact-sheet sampling, not realtime/every-frame playback.",
+    "videos": [
+      {
+        "id": "saved-asset-placement.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 152,
+        "lastFrameSeconds": 6.04,
+        "sampledFrameCount": 52,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\saved-asset-placement\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\saved-asset-placement\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\saved-asset-placement\\sheet-02.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\saved-asset-placement\\sheet-03.jpg"
+        ]
+      },
+      {
+        "id": "installed-asset-placement.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 440,
+        "lastFrameSeconds": 17.56,
+        "sampledFrameCount": 148,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-02.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-03.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-04.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-05.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-06.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-07.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-08.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\installed-asset-placement\\sheet-09.jpg"
+        ]
+      },
+      {
+        "id": "scaled-placement.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 134,
+        "lastFrameSeconds": 5.32,
+        "sampledFrameCount": 46,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\scaled-placement\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\scaled-placement\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\scaled-placement\\sheet-02.jpg"
+        ]
+      },
+      {
+        "id": "asset-installer.original.webm",
+        "originalRetainedPath": "D:\\CodexWorktrees\\treasurehunt-sc00c-scale-browser\\test-results\\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium\\asset-installer.webm",
+        "copiedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\asset-installer.original.webm",
+        "bytes": 996404,
+        "sha256": "7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76",
+        "width": 1440,
+        "height": 1000,
+        "fps": 25,
+        "decodedFrameCount": 182,
+        "lastFrameSeconds": 7.24,
+        "sampledFrameCount": 62,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\asset-installer-original\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\asset-installer-original\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\asset-installer-original\\sheet-02.jpg",
+          "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\asset-installer-original\\sheet-03.jpg"
+        ],
+        "sourceLinkage": "Awaiting committed supplement; hashverified retainednativecopy,not yetfinalsourceassociation."
+      }
+    ],
+    "totalDecodedFrames": 908,
+    "totalSampledFrames": 308,
+    "maxSampleGapSeconds": 0.12,
+    "sheetCount": 21,
+    "nativePngCount": 5,
+    "nativePngsInspected": [
+      "scaled-keyboard-placed.png",
+      "scaled-pointer-placed.png",
+      "scaled-animated-playback.png",
+      "asset-installed-expanded.png",
+      "asset-reused-desktop.png"
+    ],
+    "contactSheetDisplay": "2000x1250displayed1996x1248;thumbnailsforchronology,nativestills/framesforreadability. Notrealtime/every-frameinspection.",
+    "nativeFrameSpots": [
+      "scaled-placement/native-0094.png",
+      "scaled-placement/native-0109.png",
+      "scaled-placement/native-0124.png",
+      "scaled-placement/native-0134.png",
+      "saved-asset-placement/native-0097.png",
+      "saved-asset-placement/native-0103.png"
+    ],
+    "motionAid": {
+      "path": "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\scaled-placement\\motion-native-crop-aid.png",
+      "sha256": "47b82a2166e8e9337c8e127066b896a1e035c2512ec8cca355b94e4874a6d014",
+      "method": "Same nativepixelcrop x325..375,y270..305 atframes94,103,109,115,121,127,134 enlarged4xnearest solelyforinspection; no generated/interpolatedcontent.",
+      "observation": "Candelabra pale/blue form shifts subtly across fixedtabletop/grid while table itself stays still. It remains near placed table at playbackstart and movesrightward over sampledplayback; small at whole-room scale, not comfortable modeldetail/viewingdistanceproof."
+    },
+    "samplingManifests": [
+      {
+        "path": "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampling-manifest.json",
+        "sha256": "b924bf1e9f7d903f935327203922301ff429ae7dd326bfe3d9b80718d7bf4d7a",
+        "bytes": 50147
+      },
+      {
+        "path": "D:\\CodexTemp\\root-placement-7ac7594e-media\\installer-sampling-manifest.original.json",
+        "sha256": "3ca13cdf3222dcbee3b7c75688941b66cd5c69b91df3f2ce4ae4a8c427ae9b10",
+        "bytes": 11906
+      }
+    ]
+  },
+  "chronology": {
+    "saved-asset-placement.webm": [
+      "0-.72white;.84-1.56opening;1.68-2.28preparation;2.40room;2.52Library;2.88savedsearch;3.12selectedprivateitem;3.24Placepanel",
+      "3.36invalidhint/busy?panelremains;3.72Floorfocus/busycontrols;3.84panelstill;3.96panelgone sameoriginal-lookingroom/revision1;4.08no visiblelatecopy before4.20modal. Transportrelease/time mustbeassertion-supported separately.",
+      "4.32expanded selectedsameasset/version;4.44Placepanel;4.80-4.92copyadded/revision2/selectedDeskMap;5.16-5.52Selection unavailable afterUndo,copyabsent;5.64selectionrestored;5.88-6.04expandedreturn samequery/selecteditem"
+    ],
+    "scaled-placement.webm": [
+      "0-.12white;.24-.60opening;.72-.96prepare;1.08smalltable room;1.32Library;1.68searchScaledcandelabra;1.92oneitem;2.04Placepanelwithtablebutton;2.40selectedCandelabra appearsontable/revision2;2.64nativekeyboardstillretained",
+      "2.88-3.12Selection unavailable afterUndo;3.24Placepanelagain;3.60-3.72selectedCandelabraontable/revision4;3.84nativepointerstill. Keyboardvspointer input types require pinnedtest confirmation.",
+      "3.96LENSplayback;4.08-5.32Pause/timeadvance,table/gridremainfixed,candelabrasmallshape subtlyshiftsright. Nativecropaid confirms slight motion againsttabletop;no big jumpaway to origin seen."
+    ],
+    "installed-asset-placement.webm": [
+      "Entire0\u201317.56srecordinginspected: .36-.60opening;.72-1.08prepare;1.20room;1.32Library;1.68ownerSavedAssetcard;2.04privatedetail;2.16-3.00phonePublisherContext;3.12desktop;3.24description;3.36includedcontent;3.48rights;3.60review;3.84Submitted.",
+      "4.08returnOwnerStudio;4.20-4.68pendingownerstatus;4.92expandedpending;5.16compact;6.60resizephone;6.84reload;7.56compactLibrary;8.04savedcard;8.52expandedpublishedphone;8.76-9.00light;9.24desktop;9.60Communitylisting;10.32-17.56listingheader stable.",
+      "No installerpersona,Installthisexactrelease action,creditedcopynotification,placementpromptorfloorcopy/history appears. Filelabeldoesnotmatch actualcontent. Do not credit installedfollowthrough from thisvideo or substituteoldmedia."
+    ]
+  },
+  "installerSupplementChronology": [
+    "0-.12Communitylisting;.24InstalltomyLibrary;.36Installing;.48OpeninSpatialStudio;.60-.72navigation;.84-1.44prepare;1.56room;1.80expandedLibrary;1.92-2.16selectedinstalleddetail;2.28compactreturn;2.40detaillicense/version/Place.",
+    "2.52viewportresizephone;2.88-3.12compactdetailsscrolltoPlace;3.24desktop;3.36-3.96reloadprepare;4.08room;4.32secondreload;5.04room;5.40selectedinstalleddetail/Place.",
+    "5.52placementprompt;5.64Floor;5.88busy;6.12panelgoneandselectedpaperonfloor,creditnotification/revision2.6.48paperdisappears/1object;6.72paperreturns/2objects;7.24paperremainsselectedwithinstalledsourceandcredits."
+  ],
+  "nativeImageObservations": {
+    "scaled-keyboard-placed.png": "1440x900 dark Studio with Small table browser room/Scaled placement scene revision2, selected Candelabra and Independent released copy added. Tiny candelabra centered on narrow table, distinct elevated white paper elsewhere above floor. Inspector names0.4x0.5x0.18m nominal model and table support, bottom proxy. These labels are not measured physical/fullvolume proof. Library loading result/item lines visible at capture.",
+    "scaled-pointer-placed.png": "1440x900 same room/camera/selected Candelabra on same table,revision4, selectedpose0.01/0.81/0.01vskeyboard0.00/0.81/0.00. Tiny appearance similar; no off-table placement visible. Library still loading in this still.",
+    "scaled-animated-playback.png": "1440x900 LENS preview Pause timeline active/time0.3, same Candelabra selected on table,pose0.04/0.81/0.01; ordinary mutating buttons disabled. Selected source Scaledcandelabra/privateSavedasset/version1.0.0 displayed in Library. Positionnumber alone not motion proof; video inspected separately.",
+    "asset-installed-expanded.png": "1440x1000darkexpandedLibraryselectedSyntheticDeskMapInstalledCommunity/read-only/pinnedrelease1.0.0/licenseRemixwithattribution/creator+collaboratorcredits;85itemgrid,Showmore37remaining;placementactionsbelowdetailviewport.",
+    "asset-reused-desktop.png": "1440x1000Studio,Creditedinstalledcopyadded Undoavailable;SceneDeskMaprevision2;selectedpaperonfloor;Libraryinstalledread-onlyrelease/license/credits/version1.0.0/Placebuttonretained;2objects9candidates."
+  },
+  "dimensions": {
+    "composition": {
+      "applicability": "Applicable to finite placement and continuity.",
+      "observation": "Blue Studio Library/canvas/Properties composition is preserved. Named Place panel overlays currentroom without replacingScene. Scaledcandelabra appears on same smalltable after keyboard/pointer. Installedoriginal details/credits remain beside selectedcopy.",
+      "evidenceIds": [
+        "scaled-keyboard-placed.png",
+        "scaled-pointer-placed.png",
+        "asset-reused-desktop.png",
+        "saved-asset-placement.webm@3.24-4.80"
+      ],
+      "limits": ""
+    },
+    "hierarchy": {
+      "applicability": "Applicable.",
+      "observation": "Place panel namesselecteditem, clear-surface instruction, keyboardalternative, supportbutton andCancel. Selectedobject/Scene/revision/source remain separate; installeddetail clearly distinguishesread-onlyreleasefromprivatecopy.",
+      "evidenceIds": [
+        "saved-asset-placement.webm@3.24",
+        "scaled-placement.webm@2.04",
+        "asset-installed-expanded.png",
+        "asset-reused-desktop.png"
+      ],
+      "limits": ""
+    },
+    "typography": {
+      "applicability": "Applicable at native still sizes.",
+      "observation": "1440x900scaledstills clearly identify Candelabra and pose/revision;1440x1000installedstills show read-only/license/creator+collaboratorcredits. The scaledmodel is intentionallytiny atwhole-room scale; detailform/materialreadabilitycannotbeassessed fromits fewpixels.",
+      "evidenceIds": [
+        "scaled-keyboard-placed.png",
+        "scaled-pointer-placed.png",
+        "asset-installed-expanded.png",
+        "asset-reused-desktop.png"
+      ],
+      "limits": "Nofontaudit/fullmodelqualityqualification."
+    },
+    "spacing": {
+      "applicability": "Applicable.",
+      "observation": "Placementbuttons remain distinct. Installeddetail has verticaloverflow: license/version/Place accessed byscroll inactualinstaller. Phonecompactdetail scroll retainslicenseandversion; noactionoverlapconfirmed.",
+      "evidenceIds": [
+        "asset-installer.original.webm@2.40-3.24",
+        "asset-reused-desktop.png"
+      ],
+      "limits": "Notallcontrolsvisibleatonce; existingindependentscrollregiondoesnotproveeveryactionfitsoneviewport."
+    },
+    "controls": {
+      "applicability": "Applicable, bounded.",
+      "observation": "PrivateCancelremovespendingpanel; retry thenkeyboardplacement succeeds; privateUndo/Redo removes/restorescopy. Scaledkeyboardandpointereachplaceontable;PlaychangesLENS andPauseavailable. InstalledPlace/Floor leadscreditedcopy.",
+      "evidenceIds": [
+        "saved-asset-placement.webm@3.72-6.04",
+        "scaled-placement.webm@2.04-5.32",
+        "asset-installer.original.webm@5.52-7.24"
+      ],
+      "limits": "InstalledUndo/RedoNOTexecutedbycurrentpinnedtest;Undoavailablemessageonly. Do notattributeitsbriefdisappearance/reappearancetohistoryinput."
+    },
+    "contrast": {
+      "applicability": "Applicable as visual-only check.",
+      "observation": "Darkpanels/lighttext andbluefocus/selectionboundariesremainclearin native1440stills. Installedwhitepaperoutlinedblueagainsttanfloor;scaledtable/gridprovidesstablebackgroundfortinymotion.",
+      "evidenceIds": [
+        "asset-reused-desktop.png",
+        "scaled-keyboard-placed.png",
+        "scaled-animated-playback.png"
+      ],
+      "limits": "NomeasuredWCAG/axeproof; nolightplacement/reducedmotionrecapture inthisfocusedpacket."
+    },
+    "consistency": {
+      "applicability": "Applicable.",
+      "observation": "Private/installed/scaledAssets use PlaceinScene\u2192namedsurfaceprompt andkeepLibrary/sourceidentity. Bothscaledresults visiblyuse sametable;selectedposechangesonlyslightly(0/.81/0vs.01/.81/.01).",
+      "evidenceIds": [
+        "saved-asset-placement.webm",
+        "asset-installer.original.webm@5.40-6.12",
+        "scaled-keyboard-placed.png",
+        "scaled-pointer-placed.png"
+      ],
+      "limits": "Pose/dimensionlabelsarenotfullsolid/collisionmeasurement."
+    },
+    "states": {
+      "applicability": "Applicable to suppliedfinitecases.",
+      "observation": "Privateinvalidhint, pendingbusycontrols, cancellationwithoutvisiblecopy, successfulinsertion, SelectionunavailableafterUndo andRedo recovery allappear. ScaledEditorplaced\u2192LENSplayback retainsselectedCandelabra andPause.",
+      "evidenceIds": [
+        "saved-asset-placement.webm@3.36-5.76",
+        "scaled-placement.webm@3.60-5.32"
+      ],
+      "limits": "Noalllicense/permissions/network/no-fit/complexsolidstates;initialpublisherrecordingnotinstalledproof."
+    },
+    "responsive": {
+      "applicability": "Partial;Librarycontinuityonly.",
+      "observation": "Recoveredinstallerphoneviewport showscompactLibraryread-onlydetails/license/version/Placeafter scroll,thenreturnsdesktopforactualplacement. Originalmislabeledvideoalsohasownerphonepublishedviewsbutnotinstallerplacement.",
+      "evidenceIds": [
+        "asset-installer.original.webm@2.52-3.24",
+        "installed-asset-placement.webm@7.56-9.24"
+      ],
+      "limits": "Noactualphoneplacement/cancel/history,physicaltouch/deviceorfullresponsiveacceptance. Priorresponsivevideosremainhistorical."
+    },
+    "keyboard": {
+      "applicability": "Applicablefinitealternative.",
+      "observation": "Saved/scaledtests use focusedsupportbutton+Enter;actualpanels provideKeyboardchoosearoomsurfacebelow. Scalednativekeyboardresultandvideosupportthealternative.",
+      "evidenceIds": [
+        "scaled-keyboard-placed.png",
+        "scaled-placement.webm@2.04-2.40",
+        "tests/e2e/parallax-sc00c-expanded-library.spec.ts"
+      ],
+      "limits": "Keyinputidentitycomesfrompinnedtest,notpixelsalone;noexhaustivekeyboard/screen-readertraversal."
+    },
+    "focus": {
+      "applicability": "Applicable,partial.",
+      "observation": "SuccessfulcopiesbecomeselectedinProperties/selectedobjectcard. PrivateUndo showsSelectionunavailableandordinaryrecoveryactions;Redo restoresDeskMap. Libraryquery/selectedsourcereturnintact.",
+      "evidenceIds": [
+        "saved-asset-placement.webm@4.80-6.04",
+        "asset-reused-desktop.png",
+        "scaled-pointer-placed.png"
+      ],
+      "limits": "NoexhaustiveactiveElement/assistivetechnologyreview;installedhistorynotattributed."
+    },
+    "feedback": {
+      "applicability": "Applicable.",
+      "observation": "Invalidprivatepoint saysnothinginserted whilepromptremains;successsaysIndependentreleasedcopyadded orCreditedinstalledcopyadded \u00b7 Undoavailable,revision/objectcountupdate. SameSceneidentitypersists.",
+      "evidenceIds": [
+        "saved-asset-placement.webm@3.36-4.92",
+        "asset-reused-desktop.png",
+        "scaled-keyboard-placed.png"
+      ],
+      "limits": "Noaudiblefeedback/service-latencyclaim;bottominvalidhintisdistinctfromupprompt."
+    },
+    "motion": {
+      "applicability": "Applicablecentralfiniteanimationcase.",
+      "observation": "Scaledvideo3.72placedEditor\u21923.96LENSplayback\u21925.32candelabra subtlymovesrightacross fixedtabletop/grid;nativeframes94/103/109/115/121/127/134andnearest-neighborinspectioncropconfirmactualpixelmovement,notonlyposetext. Itstartsneartheplacedtablewithoutvisiblejumpaway.",
+      "evidenceIds": [
+        "scaled-placement.webm@3.72-5.32",
+        "scaled-animated-playback.png",
+        "sampled/scaled-placement/motion-native-crop-aid.png"
+      ],
+      "limits": "Motiontinyatnormalroomframing;strictframe0alignment/0.1mextentandscaleareassertion-supported,notpixelcertified. Noallanimationproperties/physicaltracking/reducedmotionqualification."
+    },
+    "continuity": {
+      "applicability": "Applicablecentral.",
+      "observation": "Privatecancellationleavessameoriginal-looking1object/revision1 before retry;testhold/release/late-responseassertionssupportnosavedlatecopy. Retry/privateUndoRedo\u2192sameLibraryselection. Scaledkeyboard\u2192Undo\u2192pointerretainssource/placedpose;installedcopyretainsreadOnlyoriginal/credits.",
+      "evidenceIds": [
+        "saved-asset-placement.webm@3.84-6.04",
+        "scaled-placement.webm@2.40-5.32",
+        "asset-reused-desktop.png",
+        "tests/e2e/parallax-sc00c-expanded-library.spec.ts"
+      ],
+      "limits": "Transportrelease/storedstatecannotbeobservedfrompixels. Generalconcurrency,fullvolume/animatedenvelope/scaleuniversalcorrectnessnotproved."
+    },
+    "complexity": {
+      "applicability": "Applicable.",
+      "observation": "SurfaceplacementreusesexistingLibrary/canvasandshowsoneboundedchoice+Cancel;Editor/LENSplaybackremainsoneworkstationwithselectedobjectretained. Installedrightsremainprogressivedetails.",
+      "evidenceIds": [
+        "scaled-placement.webm@2.04-5.32",
+        "asset-installer.original.webm@5.40-7.24"
+      ],
+      "limits": "WholePublisher/Libraryoverhaulandcomplexmultiobjectplacementoutofscope."
+    },
+    "role-outcomes": {
+      "applicability": "SyntheticauthenticatedCreatorandinstaller.",
+      "observation": "PrivateCreator cancels/retriesandsavesreleasedcopy;installedpersona placeslicensedcopywithreadOnlyrelease/creditretained;scaledfixturekeyboard/pointerandrootmovementarefiniteactualoutcomes.",
+      "evidenceIds": [
+        "saved-asset-placement.webm",
+        "asset-installer.original.webm",
+        "scaled-placement.webm"
+      ],
+      "limits": "Noowner/trusted/protected/adoption/physicalacceptance. Sourceclearancefromothersnotmanufacturedbythismediareview."
+    },
+    "fallbacks": {
+      "applicability": "Applicablefiniteinvalid/cancel/history.",
+      "observation": "Invalidpointkeepspromptwithnoinsertmessage;cancelreturnsroom;privateUndooffersSelectionunavailablerecoveryandRedo restores. Capturedcopyremainsindependentofread-onlyinstalledLibraryitem.",
+      "evidenceIds": [
+        "saved-asset-placement.webm@3.36-5.76",
+        "asset-reused-desktop.png"
+      ],
+      "limits": "Noarbitrarylatewrites/rejectedrights/fullsolidnoFit/physicalfallbackproof. Noadditionalcapturesorrepairlooprequested."
+    }
+  },
+  "findings": [
+    {
+      "id": "PLACEMENT-FINAL-EVIDENCE-01",
+      "classification": "RESOLVED_BY_SEPARATE_ORIGINAL_PROVENANCE_SUPPLEMENT",
+      "blockingProductDefect": false,
+      "initialGap": "8053installed-asset-placement.webmSHA27e5ddec3041772e165141f707970ea318a826ba072a3b6621129d6a98db17c8actuallycontainsowningCreatorPublisher/status/listingflow,nocreditedinstallerplacement.",
+      "resolution": "2197addsasset-installer.original.webmSHA7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76,996404B,native1440x1000;complete0\u20137.24sinspectedplus2nativestills,actualinstall/readOnly/credit/Place/Floor/selectedpaperoutcome. Misnamedoriginalremainshashidenticalanditsfullspanwasreviewedwithoutcreditinginstalleractions. No rerun orsubstitutionofoldermedia.",
+      "limits": "InstalledUndo/RedoinputnotexecutedincurrentpinnedCommunitytest. Briefcopydisappearance/reappearanceisobservedbutnotattributedtohistory;creditavailableUndofeedbackonly."
+    },
+    {
+      "id": "PLACEMENT-FINAL-LIMIT-02",
+      "classification": "NONBLOCKING_BOUNDED_EVIDENCE_LIMIT",
+      "blockingProductDefect": false,
+      "observation": "Scaledfixturetinyatwhole-roomsize,actualsubtlemotionvisibleagainstfixedtablebutnoexactgeometricclaimsfrompixels. Storedscale/pose/frame0/extentsandlatecancelrequiresourceassertions.",
+      "action": "Retainfinitefixture/fullsolid/physical/device/phoneplacementlimits;donotpromotetoproductiongeneralfitacceptance."
+    }
+  ],
+  "confirmedNewVisibleBlockingFindings": [],
+  "materialNonblockingProductFindings": [],
+  "postMediaAssertions": {
+    "sourceFiles": [
+      {
+        "path": "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+        "source": "7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65",
+        "gitBlob": "48fd07fe62428310ef95547e46cbe1be379b5444",
+        "sha256": "c40f9644320b652b4de3b131311436f7b6ce008be1a6b2b6b85dcc62577aa375",
+        "bytes": 32446,
+        "inspectionScope": "Relevant saved/scaled and installer assertions only; fullfilehashisidentity,notwholefileaudit."
+      },
+      {
+        "path": "tests/e2e/parallax-spatial-community.spec.ts",
+        "source": "7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65",
+        "gitBlob": "cd4a46008f566dde35a1fffdc90706c6c98216e1",
+        "sha256": "bdf5c51cdf5f943ab5fb3b938560b14456224d26051e802645cd1ff73a8b3435",
+        "bytes": 61137,
+        "inspectionScope": "Relevant saved/scaled and installer assertions only; fullfilehashisidentity,notwholefileaudit."
+      },
+      {
+        "path": "testing/contracts.json",
+        "source": "7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65",
+        "gitBlob": "746d10983d8cd26452263c05077e32646cae10e1",
+        "sha256": "5c83fbafbafc1d4ce2d256a546705ad840bf75891524589dc709007e0938f5d4",
+        "bytes": 288994,
+        "inspectionScope": "Relevant saved/scaled and installer assertions only; fullfilehashisidentity,notwholefileaudit."
+      }
+    ],
+    "observations": [
+      "PrivatecaseexplicitlyholdsfirstASSET_INSERT,clicksCancel,releasesheldroute,awaitslateresponse,assertsstored1entityandPlaceenabled;successfulretryasserts2entities/sourceversionlineageandexecutesUndo/Redo/return. Pixelscorroboratefiniteunchanged-lookingroom/retry/history,nottransportinternals.",
+      "Scaledcasebuilds0.3x0.8x0.3mtable,rootcandelabrascale0.25,POSITIONtrack0\u21921000ms+0.1mx. KeyboardEnterplaces;previewscaleassert0.25,versionlineage,startposexequalsplacedx,semanticextent0.1m;thenUndoandpointerclickprojectedtablepoint.",
+      "Pointerposeassertedwithin0.03mofkeyboardpose. RenderedobjectprojectionchangesafterPlayby>0.001normalizedscreenunits;videoactualtinyformmovementindependentlyinspected. Thesearefiniteassertions,notuniversalvolume/solidcertification.",
+      "InstalledcaseclicksPlace/Floor,assertscreditednotification/stored2entities/installeddefinitionlineage/originalreadOnly. NoexplicitinstalledUndo/Redoclicks,soearlierbriefvisualtransitionisnotattributedtosuchactions.",
+      "Noindependent-source-reviewreports/builderrationaleread;noexpandedgeneralimplementationauditneededforboundedmediaverdict."
+    ]
+  },
+  "technicalReceipts": {
+    "runtime": {
+      "version": 1,
+      "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+      "baseURL": "http://127.0.0.1:64107",
+      "failureCategory": null,
+      "failureCode": null,
+      "lifecycle": {
+        "capture": "PASS",
+        "fixture": "NOT_STARTED",
+        "cleanup": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 5,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": true,
+            "payloadExitCode": null,
+            "elapsedMs": 36,
+            "ownership": "WINDOWS_JOB_OBJECT"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "cancelled": false
+      },
+      "timings": {
+        "serverPreparationMs": 15,
+        "serverReadinessMs": 2302,
+        "browserExecutionMs": 40400,
+        "infrastructureFailureWaitMs": 0,
+        "cleanupMs": 41
+      }
+    },
+    "profile": {
+      "version": 1,
+      "profile": "generic",
+      "browserTests": [
+        "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+        "tests/e2e/parallax-spatial-community.spec.ts",
+        "-g",
+        "scaled physical saved asset keeps|saved assets use|private asset reaches",
+        "--workers=1"
+      ],
+      "status": "PASS",
+      "failureCategory": null,
+      "failureCode": null
+    },
+    "lastRun": {
+      "status": "passed",
+      "failedTests": []
+    },
+    "logSummary": "Originalrun.log.txtcompiled50s/fullTypeScript49s;3passed29.7s. CapturePASS/browserexit0/cleanupPASS;serverexit1ownedescalation. Technicalexecutionisnotvisual/owner/trustedacceptance. ExactGitcapture/archiveidentitiesareverified;noadditionalprotectedrunornewrootreruninferred."
+  },
+  "retainedLimitations": [
+    "Onlyfiniteprivatepaperandscaledcandelabra/Tablefixtures;notallsolidshapes/animations/groups/supports/rotationorcollisionenvelopes.",
+    "RecordedinstalledphoneLibraryscrollisnotphoneplacementcompletion/touch/realdeviceproof;nofreshfullresponsive/reducedmotionjourneyhere.",
+    "Tinyscaledmodel/motionnotmaterialdetail/readabilityatallworkingdistances;onlyactualplacementandmotionfinitecase.",
+    "Noaudioaudibility/GPU/hardware/AR/physicaltracking/privatephoto/inferenceorpaidcalls.",
+    "Priorreportsincluding2f15/earlierfailuresremainimmutable;nosource/adoption/trustedcounterreset.",
+    "PE-DEBT-PARALLAX-PLAYERunchanged;repairOwnerSpatialExperienceRefit,pathDevelopment_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED;independentreviewartifactonly.Parenthandlesrepositoryvalidation;nobuild/test/runtime/providerdispatch/sourceedits."
+}

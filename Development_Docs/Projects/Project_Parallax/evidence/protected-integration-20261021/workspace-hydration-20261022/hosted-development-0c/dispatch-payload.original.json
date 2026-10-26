@@ -1,0 +1,7 @@
+{
+  "ref": "main",
+  "inputs": {
+    "candidate_sha": "0c0f7fbee465640938a1128101671c809f0164f5",
+    "test_selector": "tests/e2e/parallax-workstation.spec.ts:21"
+  }
+}

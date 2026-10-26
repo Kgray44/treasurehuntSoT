@@ -1,0 +1,33 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 D:/CodexWorktrees/parallax-sc01-compat-review
+
+ ❯ src/parallax/library-lifecycle-service.test.ts (17 tests | 1 failed | 16 skipped) 72ms
+     × invalidates a prior calibration review when explicitly applying a different Environment version 71ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/parallax/library-lifecycle-service.test.ts > working identities, reusable definitions and immutable history > invalidates a prior calibration review when explicitly applying a different Environment version
+AssertionError: expected 'CALIBRATED' to be 'SEMANTIC' // Object.is equality
+
+Expected: "SEMANTIC"
+Received: "CALIBRATED"
+
+ ❯ src/parallax/library-lifecycle-service.test.ts:464:65
+    462|       store,
+    463|     );
+    464|     expect(result.draft.content.adaptive!.calibration.maturity).toBe("…
+       |                                                                 ^
+    465|     expect(result.draft.content.adaptive!.calibration).not.toHavePrope…
+    466|     expect(result.draft.content.placementPolicy).toBe("ADAPTIVE_STICKY…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 skipped (17)
+   Start at  03:33:01
+   Duration  12.58s (transform 1.05s, setup 1.29s, import 3.94s, tests 72ms, environment 6.80s)
+

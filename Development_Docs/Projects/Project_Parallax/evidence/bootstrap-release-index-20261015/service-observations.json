@@ -1,0 +1,79 @@
+{
+  "afterDeduplication": {
+    "scope": "Read-only service measurement on retained isolated synthetic database; not browser or physical acceptance",
+    "stats": [
+      {
+        "mode": "FULL",
+        "ms": 1983,
+        "bytes": 23990029,
+        "items": 2000,
+        "releaseCount": 10000,
+        "fullReleaseCount": 10000
+      },
+      {
+        "mode": "INDEX_ONLY",
+        "ms": 2170,
+        "bytes": 6626029,
+        "items": 2000,
+        "releaseCount": 10000,
+        "fullReleaseCount": 0
+      }
+    ]
+  },
+  "beforeDeduplication": {
+    "scope": "Read-only service measurement on retained isolated synthetic database; not browser or physical acceptance",
+    "stats": [
+      {
+        "mode": "FULL",
+        "ms": 2023,
+        "bytes": 23990029,
+        "items": 2000,
+        "releaseCount": 10000,
+        "fullReleaseCount": 10000
+      },
+      {
+        "mode": "INDEX_ONLY",
+        "ms": 2105,
+        "bytes": 7764029,
+        "items": 2000,
+        "releaseCount": 10000,
+        "fullReleaseCount": 0
+      }
+    ]
+  },
+  "classification": "engineering-evidence",
+  "schemaVersion": 1,
+  "sourceState": "unfrozen-local-service-probes",
+  "limitations": [
+    "No browser timing or rendered acceptance",
+    "No latency improvement demonstrated",
+    "No live MySQL execution",
+    "Working documents and metadata indexes still grow with inventory",
+    "No physical tracking evidence"
+  ],
+  "sourceFiles": [
+    {
+      "path": "src/parallax/spatial-library-bootstrap.ts",
+      "sha256": "bc63b8e0a1b4f005e39bb6143ac63aeb3550dff69fbdf08bd73946a54d7f08d8"
+    },
+    {
+      "path": "src/parallax/library-lifecycle-service.ts",
+      "sha256": "a8fd2423fa17eafded1ca0792e6b7702bee8bafe81b23ae19bbf707f452a9926"
+    },
+    {
+      "path": "src/parallax/library-release-index.ts",
+      "sha256": "04605592af0f55ec07847bee93bc2ba739d28bef177e7b4d0b70ecdf910e027f"
+    },
+    {
+      "path": "src/parallax/library-service.ts",
+      "sha256": "477f167cedf276cd051bbb3bc41d8514265a4e59dcf3357294eb8d466379b55b"
+    }
+  ],
+  "sourceBase": "880ff5b933bfba6259b5404592cf2cd6406e126b",
+  "fixture": {
+    "content": "retained isolated synthetic minimal scenes",
+    "releasesPerScene": 5,
+    "operation": "read only",
+    "savedScenes": 2000
+  }
+}

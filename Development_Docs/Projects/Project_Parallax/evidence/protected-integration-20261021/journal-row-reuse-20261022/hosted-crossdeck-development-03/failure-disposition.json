@@ -1,0 +1,132 @@
+{
+  "kind": "REVIEWED_JOURNAL_REPAIR_REGRESSION_FAILURE",
+  "qualification": false,
+  "observedAtUtc": "2026-10-22T06:09:10.310195+00:00",
+  "run": 39730281230,
+  "attempt": 1,
+  "candidate": "933102dbc2b5d3702814ab8cee4f5285e880dcfe",
+  "authority": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "wholeRun": "FAILURE",
+  "preparation": "PASS",
+  "browserStep": "FAIL",
+  "artifact": 12405323679,
+  "providerArchiveAndCiphertextDigestsVerified": true,
+  "zipCRC": "PASS",
+  "reportedRetention": "COMPLETE",
+  "reportedMembers": 14,
+  "reportedRawBytes": 30930317,
+  "reportedIssues": [],
+  "newCause": "UNKNOWN_PENDING_AUTHENTICATED_PRIVATE_INSPECTION",
+  "sameAssertionAssumed": false,
+  "caseCounts": "UNAVAILABLE_IN_PUBLIC_METADATA",
+  "newSourceMutation": false,
+  "rerun": false,
+  "lifecycle": [
+    {
+      "event": "readiness.backend.start",
+      "utc": "2026-10-22T06:03:00.783Z",
+      "elapsedMs": 16.285
+    },
+    {
+      "event": "readiness.backend.result",
+      "utc": "2026-10-22T06:03:01.707Z",
+      "elapsedMs": 939.899
+    },
+    {
+      "event": "proxy.start",
+      "utc": "2026-10-22T06:03:01.707Z",
+      "elapsedMs": 940.009
+    },
+    {
+      "event": "proxy.result",
+      "utc": "2026-10-22T06:03:01.708Z",
+      "elapsedMs": 940.664
+    },
+    {
+      "event": "readiness.proxy.start",
+      "utc": "2026-10-22T06:03:01.708Z",
+      "elapsedMs": 940.73
+    },
+    {
+      "event": "readiness.proxy.result",
+      "utc": "2026-10-22T06:03:01.722Z",
+      "elapsedMs": 954.398
+    },
+    {
+      "event": "capture-child.start",
+      "utc": "2026-10-22T06:03:01.722Z",
+      "elapsedMs": 954.463
+    },
+    {
+      "event": "capture-child.launched",
+      "utc": "2026-10-22T06:03:01.735Z",
+      "elapsedMs": 967.699
+    },
+    {
+      "event": "capture-child.exit",
+      "utc": "2026-10-22T06:04:32.602Z",
+      "elapsedMs": 91834.965,
+      "exitCode": 1,
+      "signal": null
+    },
+    {
+      "event": "authority.failure",
+      "utc": "2026-10-22T06:04:32.603Z",
+      "elapsedMs": 91835.276,
+      "failureCategory": "PRODUCT_FAILURE",
+      "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+    },
+    {
+      "event": "cleanup.browser.start",
+      "utc": "2026-10-22T06:04:32.603Z",
+      "elapsedMs": 91835.406
+    },
+    {
+      "event": "cleanup.proxy.start",
+      "utc": "2026-10-22T06:04:32.603Z",
+      "elapsedMs": 91835.43
+    },
+    {
+      "event": "cleanup.server.start",
+      "utc": "2026-10-22T06:04:32.603Z",
+      "elapsedMs": 91835.437
+    },
+    {
+      "event": "cleanup.browser.result",
+      "utc": "2026-10-22T06:04:33.740Z",
+      "elapsedMs": 92972.253,
+      "exitCode": 1,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    {
+      "event": "cleanup.proxy.result",
+      "utc": "2026-10-22T06:04:33.740Z",
+      "elapsedMs": 92972.42,
+      "outcome": "CLOSED"
+    },
+    {
+      "event": "cleanup.server.result",
+      "utc": "2026-10-22T06:04:33.740Z",
+      "elapsedMs": 92972.437,
+      "exitCode": 1,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    {
+      "event": "authority.result",
+      "utc": "2026-10-22T06:04:33.740Z",
+      "elapsedMs": 92972.668,
+      "failureCategory": "PRODUCT_FAILURE",
+      "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+    }
+  ]
+}

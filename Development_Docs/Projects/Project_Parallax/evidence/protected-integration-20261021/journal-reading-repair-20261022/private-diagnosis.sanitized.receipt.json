@@ -1,0 +1,78 @@
+{
+  "kind": "STUDIO776_SANITIZED_PRIVATE_DIAGNOSIS",
+  "status": "CONFIRMED_FIRST_ASSERTION",
+  "at": "2026-10-22T04:56:27.730426+00:00",
+  "authorizationBasis": "Verified relay of existing direct human Studio objective; private diagnostic read only",
+  "providerRunId": 39721702762,
+  "runAttempt": 1,
+  "artifactId": 12401793016,
+  "candidate": "2e1ea05caa88e790f9b6f4f7a36981efed5826a3",
+  "authority": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "zip": {
+    "bytes": 25128132,
+    "sha256": "fbd988abe23bbe3bb4b4ceb61498a58c5c20f1f4f3c1e831661f3c634134f82a"
+  },
+  "keyIdentityVerified": true,
+  "keyTransferred": false,
+  "credentialSearch": false,
+  "membersVerified": 14,
+  "rawBytes": 18760953,
+  "inventoryVerified": 7,
+  "streamsVerified": 4,
+  "sourceBindingVerified": true,
+  "report": {
+    "bytes": 16288,
+    "sha256": "5216873b63d017c6e6385e4019c327a67aaa676a19cae5f7803f7ccc6b6045ee"
+  },
+  "failure": {
+    "mode": "no-preference",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "stage": "Return to Chronicle after restoring portrait orientation and closing restored Charts drawer",
+    "assertion": "tests/e2e/fixtures/journal-layout.ts:225:3",
+    "callsite": "tests/e2e/crossdeck-experience-refit.spec.ts:598:7",
+    "pollTimeoutMs": 10000,
+    "headingIntersects": "Journal tools",
+    "headingHitTests": [
+      {
+        "x": 82,
+        "y": 721,
+        "hitTag": "BUTTON"
+      },
+      {
+        "x": 156,
+        "y": 721,
+        "hitTag": "BUTTON"
+      },
+      {
+        "x": 231,
+        "y": 721,
+        "hitTag": "BUTTON"
+      }
+    ],
+    "minimumReadingArea": {
+      "width": 280,
+      "height": 211
+    },
+    "qualifyingHeadingContainingReadingAreaFound": false,
+    "cause": "Recorded heading occlusion by Journal tools buttons after return; source-level regression cause not established"
+  },
+  "stats": {
+    "startTime": "2026-10-22T04:32:41.608Z",
+    "duration": 50095.581,
+    "expected": 0,
+    "skipped": 1,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "unchangedOriginals": true,
+  "newWorkflowOrCampaignExecution": false,
+  "sourceMutation": false,
+  "limitations": [
+    "No CSS/root-regression attribution beyond recorded geometry",
+    "No raw private error, cookie, key, media or credential location disclosed",
+    "Original earlier failed run39696321296 remains separate"
+  ]
+}

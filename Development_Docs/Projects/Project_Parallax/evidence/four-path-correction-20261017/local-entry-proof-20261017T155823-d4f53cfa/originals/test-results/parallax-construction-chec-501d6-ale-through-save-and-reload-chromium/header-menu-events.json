@@ -1,0 +1,54 @@
+[
+  {
+    "at": 5259.100000000559,
+    "event": "open",
+    "tag": "DIV",
+    "class": "product-shell-content",
+    "left": 0,
+    "top": 0,
+    "details": [
+      {
+        "tag": "DIV",
+        "class": "product-shell-content",
+        "left": 0,
+        "top": 0
+      },
+      {
+        "tag": "DIV",
+        "class": "product-shell workspace-creator shell-mode-IMMERSIVE",
+        "left": 0,
+        "top": 0
+      },
+      {
+        "tag": "BODY",
+        "class": null,
+        "left": 0,
+        "top": 0
+      },
+      {
+        "tag": "HTML",
+        "class": null,
+        "left": 0,
+        "top": 0
+      }
+    ]
+  },
+  {
+    "at": 5265.100000000559,
+    "event": "scroll",
+    "tag": "MAIN",
+    "class": "SpatialStudio-module__HjJBfG__studio SpatialStudio-module__HjJBfG__adaptiveWorkspace",
+    "left": 1,
+    "top": 0,
+    "details": "untracked"
+  },
+  {
+    "at": 5265.200000000186,
+    "event": "dismiss:scroll",
+    "tag": "MAIN",
+    "class": "SpatialStudio-module__HjJBfG__studio SpatialStudio-module__HjJBfG__adaptiveWorkspace",
+    "left": 1,
+    "top": 0,
+    "details": null
+  }
+]

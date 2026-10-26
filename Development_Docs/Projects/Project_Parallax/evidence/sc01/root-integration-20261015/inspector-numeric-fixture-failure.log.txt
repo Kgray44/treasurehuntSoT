@@ -1,0 +1,29 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt
+
+ ❯ src/components/studio/parallax/SpatialElementInspector.test.tsx (2 tests | 1 failed) 179ms
+   × commits a valid whole particle count and keeps its numeric display consistent 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/studio/parallax/SpatialElementInspector.test.tsx > commits a valid whole particle count and keeps its numeric display consistent
+TypeError: Cannot read properties of undefined (reading 'element')
+ ❯ src/components/studio/parallax/SpatialElementInspector.test.tsx:41:51
+     39|   const entity = {
+     40|     ...createSpatialDraft("inspector-particles").content.entities[0],
+     41|     element: spatialElementSchema.parse(particles.element),
+       |                                                   ^
+     42|   };
+     43|   const onChange = vi.fn();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  04:43:26
+   Duration  7.75s (transform 1.09s, setup 313ms, import 2.47s, tests 179ms, environment 2.84s)
+

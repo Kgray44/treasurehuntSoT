@@ -1,0 +1,45 @@
+{
+  "kind": "CORRECTION_INTAKE_AFTER_FIRST_FAILED_COMBINED_RUN",
+  "at": "2026-10-22T16:39:33.622Z",
+  "sourceHead": "28ece6275ad51a23008e1301964a3eb8a9c0ab8d",
+  "rawPrivateBrowserLogsOrCredentialsIncluded": false,
+  "qualification": false,
+  "experienceAcceptance": false,
+  "records": [
+    {
+      "file": "originals/combined-browser-results.original.json",
+      "source": "D:/CodexTemp/parallax-resume-20261021-01a15554/coverage-repair-01/combined-browser-results.original.json",
+      "bytes": 28307,
+      "sha256": "2984dc9ead9d199d7e6bbd57c0fc7ba79bc1d01430d5416a7f58f30dd4a20c21",
+      "tier": "FAILED_DEVELOPMENT_ORIGINAL"
+    },
+    {
+      "file": "originals/first-combined-failure-diagnosis.original.json",
+      "source": "D:/CodexTemp/parallax-resume-20261021-01a15554/coverage-repair-01/first-combined-failure-diagnosis.original.json",
+      "bytes": 2625,
+      "sha256": "b6e50be91e1e401a7ad7aa3dcc950fd82dc64ac0cf9bbf43c1716c45ee3c571a",
+      "tier": "SOURCE_DIAGNOSTIC_NOT_ACCEPTANCE"
+    },
+    {
+      "file": "originals/runtime-corrections-applied.original.json",
+      "source": "D:/CodexTemp/parallax-resume-20261021-01a15554/coverage-repair-01/runtime-corrections-applied.original.json",
+      "bytes": 895,
+      "sha256": "7eaf17c67eb8b317c6df7ed83c5b546189b830a2137df6cdca39df521dd5c00c",
+      "tier": "SOURCE_DIAGNOSTIC_NOT_ACCEPTANCE"
+    },
+    {
+      "file": "originals/corrected-schema-obligations-01.original.json",
+      "source": "D:/CodexTemp/parallax-resume-20261021-01a15554/coverage-repair-01/corrected-schema-obligations-01.original.json",
+      "bytes": 1455,
+      "sha256": "88afac7addba1143712cae567b26267136745f55f4c89e3b611127100ab5871d",
+      "tier": "SOURCE_DIAGNOSTIC_NOT_ACCEPTANCE"
+    },
+    {
+      "file": "originals/complete-source-freeze-03.original.json",
+      "source": "D:/CodexTemp/parallax-resume-20261021-01a15554/coverage-repair-01/complete-source-freeze-03.original.json",
+      "bytes": 3522,
+      "sha256": "a5eb0db1ef9f1b7e64e6ee109a1d011162afae424bd9b26ef68b8e479afc66ee",
+      "tier": "SOURCE_DIAGNOSTIC_NOT_ACCEPTANCE"
+    }
+  ]
+}

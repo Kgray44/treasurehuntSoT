@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "candidate": "6fc2eb251203985c76a627431136b35013a711dc",
+  "tree": "8edec55658d5797b9601e5f761fb02c7f7763d1f",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T13:27:21.345Z",
+  "finishedAt": "2026-10-13T13:29:31.862Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+      "sha256": "2688f716f62664d6b15b853e25b49626a4184f34d90befd8daa4bf2bea044771"
+    },
+    {
+      "file": "parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+      "sha256": "5930f550375e55438b4ba247a36c2cc50d54f65bb115f3e95ae137a228f88028"
+    },
+    {
+      "file": "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+      "sha256": "e8d9d78494b651ec2e50da7c872180afbadbc03a32d36f0987353a3d034c2b90"
+    },
+    {
+      "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "sha256": "b3e1ce7adbf477dce73f929401c5ef644071e20e2f393481fae067895e3f5592"
+    },
+    {
+      "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "sha256": "8fb67c68f7475a9ce90cd90c88fc53aa6444a03a4ce7525f075fc7c291f2eadf"
+    },
+    {
+      "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "sha256": "6bbae74c8865a8cc78fa70a25bbf8ce9b85cb3711c63aa0b165914ab1dbdb47b"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[WebServer] (node:43976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 7 tests using 1 worker
+
+(node:30292) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:30292) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:24:5 › Creator searches, previews and inserts a built-in asset with immediate selection (5.0s)
+  ok 2 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:54:5 › Creator follows a saved Environment to two Scenes, opens one, returns and renames it (3.9s)
+(node:48760) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48760) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 3 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:100:5 › private asset reaches the canonical listing and installs as an immutable Library release (8.5s)
+  ok 4 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:189:5 › rich Environment and pinned Scene use reviewed geometry without private Library metadata (2.2s)
+  ok 5 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:245:5 › owned synthetic Environment publishes from Library and installs as a read-only Environment (5.6s)
+  ok 6 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:309:5 › unlicensed physical content has a visible refusal and remains private (2.6s)
+  ok 7 [chromium] › tests\e2e\parallax-spatial-community.spec.ts:348:5 › a lost submission response reports uncertainty and exact retry recovers one release (2.5s)
+
+  7 passed (51.1s)

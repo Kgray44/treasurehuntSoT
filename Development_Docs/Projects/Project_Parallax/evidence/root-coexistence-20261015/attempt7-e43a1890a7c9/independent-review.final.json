@@ -1,0 +1,2404 @@
+{
+  "schemaVersion": 1,
+  "kind": "INDEPENDENT_SUPPORTING_BOUNDED_SC00C_TOOLBAR_AND_LICENSED_COMPOSITION_REUSE_REVIEW",
+  "createdUTC": "2026-10-15T18:37:12.759343+00:00",
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root/main",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "contractIds": [
+    "parallax.authored-library-and-simulation.experience",
+    "parallax.spatial-community-publishing.experience"
+  ],
+  "humanObjective": "Use compact Source/Show/Sort/Scene Environment Library controls, browse responsively, and add an installed licensed Composition as a credited copy in a private Scene while the original remains read-only.",
+  "sources": {
+    "root": {
+      "commit": "e43a1890a7c984ea98a7580d58957df05b549f61",
+      "tree": "59d4f22392f87b0c5ae887087a5883224f625f73"
+    },
+    "focusedTestOnly": {
+      "commit": "bce938ab790ecedcfe893d97f81ede8933af4e45",
+      "tree": "fcc46bf594fd7a4a4166fe0a11d739cd84167527",
+      "productAndContractByteIdentityToRootVerified": true,
+      "verifiedPaths": [
+        "src",
+        "testing/contracts.json"
+      ]
+    },
+    "inherited": {
+      "commit": "780b8a76dc3cdf28178a036e66c57cc92c15c676",
+      "identity": "Own inherited captures and scale receipts; never rebound to root."
+    },
+    "pinnedSourceReads": [
+      {
+        "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+        "path": ".agents/product-experience-workflow.md",
+        "sha256": "365cac8d8b789b18524ad640a3fa3731f9e6c6608a79357f647da33f07737536",
+        "gitBlob": "b71ce2d7f53c7cf11a31d9452f95d2b05e04cef7"
+      },
+      {
+        "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+        "path": "testing/contracts.json",
+        "sha256": "c6c7a993fd91c05ba1ddd78cadf8443e12d4a8660a150d6959be43338028ba0b",
+        "gitBlob": "af2b3e0b2c941318cd8999f0638f0c84b1cc0e25"
+      },
+      {
+        "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+        "path": "src/components/studio/parallax/SpatialContentLibrary.tsx",
+        "sha256": "3e466ab585009622c8c38f37189e11c776ba3d28368aa7d9a70a5bd2c9a6483a",
+        "gitBlob": "5215eda7076c9ea2f9dfef9e51029ecdbc16bd52"
+      },
+      {
+        "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+        "path": "src/components/studio/parallax/SpatialContentLibrary.module.css",
+        "sha256": "120ea29c625acff9ca3a9161101f3575400f2cfacae9acba0158c114b485b76a",
+        "gitBlob": "8b41e20c103dd0b83149890392819ced7f3d843c"
+      },
+      {
+        "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+        "path": "src/components/studio/parallax/SpatialStudio.tsx",
+        "sha256": "27b7956807637d3227406df025448a577657faf7c1d1457d57a8e9a3354470ce",
+        "gitBlob": "ed4db6320ea1d21b21c6902a060f28aadd3de926"
+      },
+      {
+        "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+        "path": "src/parallax/library-service.ts",
+        "sha256": "872483122c94b6c909f41d6ea4e57121ca5683d7e1308f5cfee2843c193afd5b",
+        "gitBlob": "6512f9954f208e944c9dc6c44ffb37d5c60e9de7"
+      },
+      {
+        "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+        "path": "src/community/spatial-reuse-rights.ts",
+        "sha256": "0d96499a0e6816d23af264be12d9bccfa6c83bbf6ece46802b8f74e55bf409e3",
+        "gitBlob": "2a95c51cfce89559b8172a15b9019735c132996c"
+      },
+      {
+        "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+        "path": "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+        "sha256": "fd67701d87f2509097467c1b880561282b626e9c1b3357d0fe92a51d0603e2d9",
+        "gitBlob": "6d2d4c8173b40faa5eceb4a858f6a5c8b26f662d"
+      },
+      {
+        "source": "bce938ab790ecedcfe893d97f81ede8933af4e45",
+        "path": "tests/e2e/parallax-spatial-community.spec.ts",
+        "sha256": "88856aacab4d81f7c05efa7cb7e25310926c348d03330cbb293753dfa2ec7a72",
+        "gitBlob": "006416dad8094f142c456af687d1571fe07d510a"
+      }
+    ]
+  },
+  "packets": [
+    {
+      "id": "attempt7-e43a1890a7c9",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\manifest.json",
+      "sha256": "2a25736da77cc513f30010b329d42e12f11a70ebe4c15efa8f166412df6ffbe4",
+      "source": "e43a1890a7c984ea98a7580d58957df05b549f61",
+      "tree": "59d4f22392f87b0c5ae887087a5883224f625f73",
+      "verifiedArtifactCount": 120,
+      "files": [
+        {
+          "path": "browser.original.log",
+          "originalPath": "tmp/root-library-reuse-e43a1890a7c9.log",
+          "bytes": 68933,
+          "sha256": "c23cda728310d9cd2d18de73d7bd8ff0f56b100e421259262055fa882b4bde89",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\browser.original.log"
+        },
+        {
+          "path": "browser-runtime.original.json",
+          "originalPath": "artifacts/sounding-line/browser-runtime.json",
+          "bytes": 1318,
+          "sha256": "dc86ad3a3d7ad232dd771b498223b982fbb416f56e8c18043c2e00222c751d06",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\browser-runtime.original.json"
+        },
+        {
+          "path": "browser-suite-profile.original.json",
+          "originalPath": "artifacts/sounding-line/browser-suite-profile.json",
+          "bytes": 687,
+          "sha256": "71f159c5ae7a55f1fa2389b87fddd99700291e2413bdddf5f517feccb36d134a",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\browser-suite-profile.original.json"
+        },
+        {
+          "path": "r000.json",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/.last-run.json",
+          "bytes": 45,
+          "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r000.json"
+        },
+        {
+          "path": "r001.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-291af-etadata-and-version-history-chromium/video.webm",
+          "bytes": 559145,
+          "sha256": "844ac0f11e37defb1e7c64755c9eb5397ba58a1beb75e9412d4a29e851c6cc47",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r001.webm"
+        },
+        {
+          "path": "r002.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium/video.webm",
+          "bytes": 392317,
+          "sha256": "3dcbf5f42067500092ccdbf4e1d1976c6de23ef3243583f0e024eb37667a4e98",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r002.webm"
+        },
+        {
+          "path": "r003.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-4e27a-inition-and-visible-failure-chromium/video.webm",
+          "bytes": 229501,
+          "sha256": "eebe308b75466fb007a552fbd3d02183ab6fe6f6613a9cd1a613400faeea22b4",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r003.webm"
+        },
+        {
+          "path": "r004.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium/video-1.webm",
+          "bytes": 164480,
+          "sha256": "93fe7ed5c0545efd0849fe5239a9d493a1dd5b2730a58fadfc8391fb93fd4b18",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r004.webm"
+        },
+        {
+          "path": "r005.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium/video.webm",
+          "bytes": 347217,
+          "sha256": "93b7fbd6c5bad0b81fc4b094862f261f19381b9047ee413358ce6b03aa8fce57",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r005.webm"
+        },
+        {
+          "path": "r006.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-a1739-or-a-newly-selected-version-chromium/video.webm",
+          "bytes": 212339,
+          "sha256": "9de7f514e596f213c81bf36d158c4a2c768d34a69f50f8edeafc5fd88db693b4",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r006.webm"
+        },
+        {
+          "path": "r007.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium/video.webm",
+          "bytes": 209517,
+          "sha256": "361478db0d65ae8e2e77cbd504e776edc86330bcec3518b9bd4e10a35c024730",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r007.webm"
+        },
+        {
+          "path": "r008.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium/video.webm",
+          "bytes": 371249,
+          "sha256": "965b4fc6d16ab57f72435275ff007b96309c5e4eb008e54bd0da0dba483e775a",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r008.webm"
+        },
+        {
+          "path": "r009.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-drop-placem-c4a60-lects-the-inserted-instance-chromium/video.webm",
+          "bytes": 193596,
+          "sha256": "0d9b0c7022abbdf618c5739210835bc69979a043fe780fa3f1ccbdda5956bcbb",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r009.webm"
+        },
+        {
+          "path": "r010.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-expanded-li-71774-returns-to-the-same-content-chromium/video.webm",
+          "bytes": 361756,
+          "sha256": "84d41404d342f2f5d1434f50913fb73d3a9b7debec3c8dd06650f99cc9d1f732",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r010.webm"
+        },
+        {
+          "path": "r011.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-expanded-li-c3284-d-sources-and-Scene-Manager-chromium/video.webm",
+          "bytes": 545486,
+          "sha256": "2a68c12b53588c235dfb1f03fedce5ba19bc14372ac95e69d4a41566efddcb11",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r011.webm"
+        },
+        {
+          "path": "r012.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium/video.webm",
+          "bytes": 283986,
+          "sha256": "12a3ac102611760b298e0cf5739ee66fb67f0bbe43f5f21691542d76a95ab11f",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r012.webm"
+        },
+        {
+          "path": "r013.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-library-jou-1ed15-et-with-immediate-selection-chromium/video.webm",
+          "bytes": 120251,
+          "sha256": "6dd70ad3c23c977409eca45c45226303ea87f9f1077893ba257b9a87aaab7d8e",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r013.webm"
+        },
+        {
+          "path": "r014.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-library-jou-4bf00-tions-and-inserts-its-asset-chromium/video.webm",
+          "bytes": 119513,
+          "sha256": "f501e12df27d24fc0308e3189e473e4cdf48ccab01fdaddaec4890aa048bae9c",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r014.webm"
+        },
+        {
+          "path": "r015.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-sc00c-library-jou-775be--one-returns-and-renames-it-chromium/video.webm",
+          "bytes": 417635,
+          "sha256": "41aa6fe1abab246b2124116f8ff3305496921b1051d1956c896a6569cfca8181",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r015.webm"
+        },
+        {
+          "path": "r016.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium/video.webm",
+          "bytes": 64526,
+          "sha256": "1222a33180ab38fe184ae2466fa8cc80f07f9b34b1d1a645b2a6ac0ed72b9c0d",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r016.webm"
+        },
+        {
+          "path": "r017.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium/video.webm",
+          "bytes": 688382,
+          "sha256": "6bf3d18690e63e80a12cc14b8731b3df7b316b06e644e0f013cfb355c23cdb6a",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r017.webm"
+        },
+        {
+          "path": "r018.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium/video.webm",
+          "bytes": 599825,
+          "sha256": "6a7fbe692fa6611d3fb98d075e3607eba366a355e8f9c1f8a9c6bf961db75675",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r018.webm"
+        },
+        {
+          "path": "r019.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/environment-installed-desktop.png",
+          "bytes": 287883,
+          "sha256": "028c05a88e18ac85e884d9e234d42dc7925adabe4a864bc8d16c66fc3ff0e0b5",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r019.png"
+        },
+        {
+          "path": "r020.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/environment-installed-details.png",
+          "bytes": 18516,
+          "sha256": "fe6d2b83d1a60ebcb0fa2d6743fb78e81c55f9a47a6e329ec6b747ef960941c0",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r020.png"
+        },
+        {
+          "path": "r021.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/environment-review-desktop.png",
+          "bytes": 88928,
+          "sha256": "ea85d8f4534660cb475cd23f88e475c3e27e22f7077576f821fda756bbd2c4b6",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r021.png"
+        },
+        {
+          "path": "r022.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0369e--as-a-read-only-Environment-chromium/video.webm",
+          "bytes": 346157,
+          "sha256": "03ec960cec0bb5b9ce1a8e66a688f80bb582e2d1278d7dba75411a8ce4d1fe8d",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r022.webm"
+        },
+        {
+          "path": "r023.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0f048-version-after-Profile-setup-chromium/environment-profile-return.png",
+          "bytes": 89105,
+          "sha256": "66eec1072da1dd1e2b3a0e1a23d490c35b9da06250eb1b48e527e4972be85933",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r023.png"
+        },
+        {
+          "path": "r024.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-0f048-version-after-Profile-setup-chromium/video.webm",
+          "bytes": 628740,
+          "sha256": "8fbb4ca757f6506dc93bafee1fb665bf14225dc3301b317c198de5bb25888924",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r024.webm"
+        },
+        {
+          "path": "r025.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-14d06--retry-recovers-one-release-chromium/unconfirmed-response.png",
+          "bytes": 89671,
+          "sha256": "a5c05e895aec3d00faed091996b82392c647c15a36acab44e66f105cb9fb5a80",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r025.png"
+        },
+        {
+          "path": "r026.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-14d06--retry-recovers-one-release-chromium/video.webm",
+          "bytes": 366134,
+          "sha256": "8388158ae56c3c923c2d420d37ff8201f11f014aa50709d3b2bde9102770b542",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r026.webm"
+        },
+        {
+          "path": "r027.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-1f615-ut-private-Library-metadata-chromium/scene-package-review.png",
+          "bytes": 89006,
+          "sha256": "66712799bbd16908f2c7c52521658845bb4fae0a56034fc01c0f0861c10d8025",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r027.png"
+        },
+        {
+          "path": "r028.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-1f615-ut-private-Library-metadata-chromium/video.webm",
+          "bytes": 267337,
+          "sha256": "4c71ff1ec891899296cb4b8e318b3a739865351ec4e0e78a272fd6af34a525c5",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r028.webm"
+        },
+        {
+          "path": "r029.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/composition-installed-desktop.png",
+          "bytes": 202696,
+          "sha256": "9864a93df1ebd1766291c349c9e99e814f2193d850236c3d860c58a7a3c1f0db",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r029.png"
+        },
+        {
+          "path": "r030.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/composition-reused-desktop.png",
+          "bytes": 195774,
+          "sha256": "04ade14a37fe00a41ea0f20263b4dab499cb390de9c65bbd8be624254a70f24d",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r030.png"
+        },
+        {
+          "path": "r031.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/video.webm",
+          "bytes": 352410,
+          "sha256": "91b2a696c03a50e74e3c7e3356660077a676c10348e40a58fcfdb4bccff756ed",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r031.webm"
+        },
+        {
+          "path": "r032.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-28f02-rewriting-its-first-release-chromium/updated-release-listing.png",
+          "bytes": 685021,
+          "sha256": "ee0b68c22561d377827985dfcb374630f6a176a714c55f3e653d3af7ffd1b988",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r032.png"
+        },
+        {
+          "path": "r033.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-28f02-rewriting-its-first-release-chromium/updated-release-pending-review.png",
+          "bytes": 103331,
+          "sha256": "9e7ebc1eac0f7b2009ef0d5b05fbc579d7f6af6dc3d6b3202b7e2fef3f2456a9",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r033.png"
+        },
+        {
+          "path": "r034.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-28f02-rewriting-its-first-release-chromium/video.webm",
+          "bytes": 847224,
+          "sha256": "a2192b30ce9c9d48324945bba1fabaecfd9a58317a163a5a73f8931b86148e3a",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r034.webm"
+        },
+        {
+          "path": "r035.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/profile-ready-return.png",
+          "bytes": 127357,
+          "sha256": "db8f80e79513ebeaf1b604564a367b503f5ac6f25f9b964749d729a0baa6be42",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r035.png"
+        },
+        {
+          "path": "r036.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/profile-required-desktop.png",
+          "bytes": 86982,
+          "sha256": "7ebada64f3250edb0a95138a30469ee384975b78425d858a0addcd50727a15e9",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r036.png"
+        },
+        {
+          "path": "r037.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/profile-required-mobile.png",
+          "bytes": 49445,
+          "sha256": "494cba7681be0cbcd1984aa612bdc17c99e8c7b0098af8dcd17f1bbb4bf0ed45",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r037.png"
+        },
+        {
+          "path": "r038.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/video-1.webm",
+          "bytes": 1330,
+          "sha256": "699b71b6ac1cc8386ff3fc5d988bb3f2127030cc2c7668231759643fe9ede387",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r038.webm"
+        },
+        {
+          "path": "r039.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-478f7-returns-to-the-saved-source-chromium/video.webm",
+          "bytes": 638041,
+          "sha256": "30bc3f068db1e43929853fed8c38b51f78baae40ea4b7b391058a177863bb0c9",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r039.webm"
+        },
+        {
+          "path": "r040.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-5b28c-refusal-and-remains-private-chromium/rights-refusal-mobile.png",
+          "bytes": 47349,
+          "sha256": "12eff54bdbf2e0b3c47b2a59b7cbd3d86a14cbe36a2293f520b3e69608d568c1",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r040.png"
+        },
+        {
+          "path": "r041.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-5b28c-refusal-and-remains-private-chromium/video.webm",
+          "bytes": 331743,
+          "sha256": "52cbd45788e0df9174c9017e00b07953395e186b16363016fb6f90b3f1e4381b",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r041.webm"
+        },
+        {
+          "path": "r042.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installed-desktop.png",
+          "bytes": 287326,
+          "sha256": "e9e7260dc1f846b942d7f3c29f10b13dbf9a43cee21931bfe73e19e99449668c",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r042.png"
+        },
+        {
+          "path": "r043.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installed-details.png",
+          "bytes": 23281,
+          "sha256": "364aca527f3f29f72eb930c7d72030800c824e3346fa76aadf6b54059a557967",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r043.png"
+        },
+        {
+          "path": "r044.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installed-expanded.png",
+          "bytes": 262752,
+          "sha256": "a092cf35bf3ff64a9ed1759506fd0997aa1f8779649be28ad42ed424411ae068",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r044.png"
+        },
+        {
+          "path": "r045.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-installed-mobile.png",
+          "bytes": 96458,
+          "sha256": "d205d44c191dad109eb1d4d55d7bfb5dca4fa2d3d99092f62f9b9fdbc4962c48",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r045.png"
+        },
+        {
+          "path": "r046.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-listing-desktop.png",
+          "bytes": 770333,
+          "sha256": "5de1f5fcfed225c68b8d2b225ac61cb4dbcd0af138c4d5de1acf64c7e6e60a24",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r046.png"
+        },
+        {
+          "path": "r047.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-source-mobile.png",
+          "bytes": 47300,
+          "sha256": "98b3d931b14dbe2cab407050a9bd3a90fdf73e598a2b1b694ad4d4db53997a42",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r047.png"
+        },
+        {
+          "path": "r048.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/asset-submitted-desktop.png",
+          "bytes": 118294,
+          "sha256": "fbd137889667f3bc9efcfce0d1210d6f377f126a16aa6966cdce6c18d2a0c5d3",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r048.png"
+        },
+        {
+          "path": "r049.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/video-1.webm",
+          "bytes": 1234,
+          "sha256": "13183a36151571fc0f6ec666b5f62af4c267ea2d8b000a8c8dd5d35a9b872e3b",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r049.webm"
+        },
+        {
+          "path": "r050.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-a2b06-n-immutable-Library-release-chromium/video.webm",
+          "bytes": 453257,
+          "sha256": "82a4974d3f499f9675864f66a89808ddf511dca753da3fba780af85c25b413e3",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r050.webm"
+        },
+        {
+          "path": "r051.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-installed-desktop.png",
+          "bytes": 202040,
+          "sha256": "0eb813a68b39c79a4114d2a5a2c95c04e4f7185f3de2bcf1f43155ba51827bd4",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r051.png"
+        },
+        {
+          "path": "r052.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review-desktop.png",
+          "bytes": 86462,
+          "sha256": "ea9e1e3aef5595aed34fd0e1326b56390deeb1a14c081d1154a4b9e688a22ddd",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r052.png"
+        },
+        {
+          "path": "r053.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review-phone.png",
+          "bytes": 44576,
+          "sha256": "053cf448dfbddb2433c7fddca665ac5aaa107f7bf3645f70fb96634c7ddc90a3",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r053.png"
+        },
+        {
+          "path": "r054.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review.png",
+          "bytes": 11390,
+          "sha256": "638ef131f2d5a2410115521272da5e7a47b4efee3cde86c7dbc0b3b61b4f5621",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r054.png"
+        },
+        {
+          "path": "r055.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/video.webm",
+          "bytes": 422017,
+          "sha256": "084ff901fcf1f64590a7c9229279a548430dc19fc62872d38394d60d7095956e",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r055.webm"
+        },
+        {
+          "path": "r056.png",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-fea16-io-entry-without-publishing-chromium/natural-studio-package-review.png",
+          "bytes": 89334,
+          "sha256": "9e758a52d02b63dfa9b18dd0309d7a214ab5b8e34ec5f028644d60f8b370f78b",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r056.png"
+        },
+        {
+          "path": "r057.webm",
+          "originalPath": "artifacts/root-library-reuse-e43a1890a7c9/parallax-spatial-community-fea16-io-entry-without-publishing-chromium/video.webm",
+          "bytes": 543624,
+          "sha256": "0cde3f4d20722a41e3434a0845f4431cb02740aa7bea3394673df17a28bbdb6d",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\r057.webm"
+        },
+        {
+          "path": "a000.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/collection-library.png",
+          "bytes": 293873,
+          "sha256": "5e7de1d9e319d71598847d338ad02ecbffe3a2c72a06c866405910d6badbe6e4",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a000.png"
+        },
+        {
+          "path": "a001.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/environment-definition-laptop.png",
+          "bytes": 203714,
+          "sha256": "a070e7c02400a47923298846ca354c828da404c7ff5ba915cac42c11cf01d1c7",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a001.png"
+        },
+        {
+          "path": "a002.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/environment-definition-phone.png",
+          "bytes": 106885,
+          "sha256": "b6fa09fe81385296614dfad8e87ba76e341a91ac336b4625e4129daefa540a1a",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a002.png"
+        },
+        {
+          "path": "a003.jsonl",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/provider-47416.jsonl",
+          "bytes": 17229,
+          "sha256": "71669b31d6e9090a6eecaea2ba311f7f1289507be437d8e7b034bd1180428926",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a003.jsonl"
+        },
+        {
+          "path": "a004.json",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/run.json",
+          "bytes": 6436,
+          "sha256": "0a7233e88538e2ac1ccaba7e372e5294e21a3f62aba58a764217dfc510191f37",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a004.json"
+        },
+        {
+          "path": "a005.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-ambiguous-target-question.png",
+          "bytes": 220085,
+          "sha256": "dda4c853be9d3c2394f7ed260c0ea97cdad057419dc09ec3881e1a41898b0f86",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a005.png"
+        },
+        {
+          "path": "a006.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-applied-renderer-confirmation.png",
+          "bytes": 237331,
+          "sha256": "aae7b76de4a7d281986f08c7d3b89c24e6f4db43d6eba9b61f8c25b126d8c359",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a006.png"
+        },
+        {
+          "path": "a007.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-engineering.png",
+          "bytes": 270860,
+          "sha256": "b0284a702757ee742bce9c0c8eb28e1af09bbbcdf60087f108c8bf43071c059c",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a007.png"
+        },
+        {
+          "path": "a008.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-guided.png",
+          "bytes": 253459,
+          "sha256": "347577325b6b3badda190882e14c7124b2993733e862b267ecea6c9a2c093f5d",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a008.png"
+        },
+        {
+          "path": "a009.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-returned.png",
+          "bytes": 271299,
+          "sha256": "a47064402426242069e293c2760123d1cee65e3f3bf47d42f68c87b660814bd2",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a009.png"
+        },
+        {
+          "path": "a010.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-scene.png",
+          "bytes": 285562,
+          "sha256": "435f29a3f1b6c382402608896975909e27ab5244b95378e748aaf3ffde288398",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a010.png"
+        },
+        {
+          "path": "a011.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-assistant-preview-standard.png",
+          "bytes": 255297,
+          "sha256": "7474b0885121bc273ef5f97dfd853c0b3cf6b88d78721a7e415cd62ada68f1c5",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a011.png"
+        },
+        {
+          "path": "a012.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-cancellable-request.png",
+          "bytes": 228952,
+          "sha256": "2362378bd8c9bd05230088af26a29665042bb6266132ff016d4c3bcc6e5016c5",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a012.png"
+        },
+        {
+          "path": "a013.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-cancelled.png",
+          "bytes": 222741,
+          "sha256": "a9c387702c013e03e0aadbdb79f2547e404fc4e7638ea15d56137c99b7b6a55c",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a013.png"
+        },
+        {
+          "path": "a014.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-interpreting.png",
+          "bytes": 218542,
+          "sha256": "482a6858832fa9a7a8b887354ac5fc1401d403fe189c770b7ed8d56ad5fece34",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a014.png"
+        },
+        {
+          "path": "a015.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-motion-switch-preserved-composer.png",
+          "bytes": 228987,
+          "sha256": "ccc3d3ffc8410aa6cf8e1a8c1498c3af0fbf236d7bb9807cdde22ae7afdddef7",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a015.png"
+        },
+        {
+          "path": "a016.json",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-placement-proof.json",
+          "bytes": 1879,
+          "sha256": "abe41b2e9dc70c44f8c45c7c0b5385ffff0e31d991bf2699418a6c1a1e15ea26",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a016.json"
+        },
+        {
+          "path": "a017.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-proposed-note-in-view.png",
+          "bytes": 329117,
+          "sha256": "4550fb4c4e2e0f28c4464a724e90d6271f937155def14c13f4f64a52eb347a6a",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a017.png"
+        },
+        {
+          "path": "a018.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-provider-failure.png",
+          "bytes": 224933,
+          "sha256": "c1a6a1581480c6a4c7339263b5041b89178b107bcacde25297b5c88d382b7ed1",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a018.png"
+        },
+        {
+          "path": "a019.json",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-public-motion-proof.json",
+          "bytes": 328,
+          "sha256": "376b4babfbc8fcc05a2b490c9dc0a3ca8325a6397f31e9bd09036c76cf57b46e",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a019.json"
+        },
+        {
+          "path": "a020.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-public-sign-in-reduced-motion.png",
+          "bytes": 516059,
+          "sha256": "10272cad15f888e6be820547c474335a204382d45532ec17f2e504891bde83d1",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a020.png"
+        },
+        {
+          "path": "a021.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-public-sign-in-restored-motion.png",
+          "bytes": 516059,
+          "sha256": "10272cad15f888e6be820547c474335a204382d45532ec17f2e504891bde83d1",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a021.png"
+        },
+        {
+          "path": "a022.json",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-recovery-proof.json",
+          "bytes": 2270,
+          "sha256": "6f809bdf94ae90c4473a3fdbfd3720950b611c563c1f73d21a24fe656c0de34b",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a022.json"
+        },
+        {
+          "path": "a023.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-reduced-motion-clarification.png",
+          "bytes": 221435,
+          "sha256": "b267626b9d6c42e4b21b4fb2e746e8a331a2e170ed854323fa5946d9539d112b",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a023.png"
+        },
+        {
+          "path": "a024.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-selected-detailed.png",
+          "bytes": 316239,
+          "sha256": "93a1967851f864e25057f641c32f5949e923681c69e7d79fbadf5a17895ec6ef",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a024.png"
+        },
+        {
+          "path": "a025.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-selected-engineering.png",
+          "bytes": 318043,
+          "sha256": "d1ddebe98d9d003156eeea83bceaa5ea0869c465b8e0aac2ff211b5e39b69216",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a025.png"
+        },
+        {
+          "path": "a026.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/semantic-selected-guided.png",
+          "bytes": 314399,
+          "sha256": "31facb77e8ada8a795da884ebad9a72c01a1d09adade0520649100528599b2fc",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a026.png"
+        },
+        {
+          "path": "a027.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/typed-library-desktop-dark.png",
+          "bytes": 292260,
+          "sha256": "ca16ca1c578e9e67a1dd7d39c52f913cac05926b1c5ce5d7a4b393abbda48ccc",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a027.png"
+        },
+        {
+          "path": "a028.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/typed-library-laptop-light.png",
+          "bytes": 272879,
+          "sha256": "9e2197d20a6d950552b5f46029dd99320d2aa0b8fa93b3932da96098a5daed54",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a028.png"
+        },
+        {
+          "path": "a029.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/typed-library-phone-light.png",
+          "bytes": 95244,
+          "sha256": "72a72872288c60647bcbb22eab834eb27a7c45d5f010c57c9e2fa533f5a5e869",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a029.png"
+        },
+        {
+          "path": "a030.png",
+          "originalPath": "artifacts/parallax-a1/browser/e43a1890a7c9/version-preview-desktop.png",
+          "bytes": 223466,
+          "sha256": "e6c6b61c4cb9b099a587106a0a45549681c69b4f282e94b58f852dbad57d28c3",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\a030.png"
+        },
+        {
+          "path": "t000.png",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/desktop-entry.png",
+          "bytes": 608712,
+          "sha256": "789261fa148b95c8d8919d4bde2a21d5dfa670ffecaf67eb3f95459e38b92183",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t000.png"
+        },
+        {
+          "path": "t001.png",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/desktop-guided-return.png",
+          "bytes": 609087,
+          "sha256": "05df3972ac4fee3abd897ee656c09ea52d0edf4ea9a8e38d150e88b99a9ae0f9",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t001.png"
+        },
+        {
+          "path": "t002.png",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/desktop-recovery.png",
+          "bytes": 613794,
+          "sha256": "70f5e8ebfbf2a8892db43f97fc8def7ac8c6326fe2b35452861f93f89cdef918",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t002.png"
+        },
+        {
+          "path": "t003.json",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/desktop-result.json",
+          "bytes": 588,
+          "sha256": "f529823e07080f4a7cda6c0c37c8437e088215745dd70bd081881bbc6fe87b62",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t003.json"
+        },
+        {
+          "path": "t004.png",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/phone-entry.png",
+          "bytes": 312424,
+          "sha256": "9dd32bc065a15d2ec9aa1bcb3052c2940e7888b13caad8e0e20424c3eac473f2",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t004.png"
+        },
+        {
+          "path": "t005.png",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/phone-guided-return.png",
+          "bytes": 311867,
+          "sha256": "57047299ae6e577e2412c0c7483cc2107b957e20fa359f747a5774049ff06415",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t005.png"
+        },
+        {
+          "path": "t006.png",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/phone-recovery.png",
+          "bytes": 320217,
+          "sha256": "0fa64a2d07581f6cc7ac073609b6395645f0791c763451d2f9b69b23f3ae55ce",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t006.png"
+        },
+        {
+          "path": "t007.json",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/phone-result.json",
+          "bytes": 588,
+          "sha256": "f529823e07080f4a7cda6c0c37c8437e088215745dd70bd081881bbc6fe87b62",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t007.json"
+        },
+        {
+          "path": "t008.webm",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/recordings/32d46924ef33cf0e0de91915b3678486.webm",
+          "bytes": 473074,
+          "sha256": "db1bdb52e31c72dcacd6a2ea027fce1f8c8d4d65809c060f628b07ca49420c2b",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t008.webm"
+        },
+        {
+          "path": "t009.webm",
+          "originalPath": "artifacts/parallax-tracking-recovery/e43a1890a7c9/recordings/908dd729de99bed551981330a801b4bb.webm",
+          "bytes": 570681,
+          "sha256": "7b9d5a994675b6c0f03514c4d194207bb592e43132e9bb383cbfdd633e035324",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\t009.webm"
+        },
+        {
+          "path": "l000.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/expanded-desktop.png",
+          "bytes": 101872,
+          "sha256": "0b2fc7f48e2534ecdac23b4201e6273be1e50f770985d67802b0203ece47a775",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l000.png"
+        },
+        {
+          "path": "l001.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/expanded-light-reduced.png",
+          "bytes": 97708,
+          "sha256": "106f5c900e8b4165b2690bdab85dfa43ba77c054bb511659d1f67fa6df5706be",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l001.png"
+        },
+        {
+          "path": "l002.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/expanded-narrow.png",
+          "bytes": 94972,
+          "sha256": "ae720ebf04cc631ede23484af4f9d236fe01cf8e7fc9d9f5455a3263eb4929cd",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l002.png"
+        },
+        {
+          "path": "l003.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/expanded-phone-selected.png",
+          "bytes": 56073,
+          "sha256": "91290ff29f3ff1388aa454aca580ea6349d5b94955cbd8793557f32f140c65aa",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l003.png"
+        },
+        {
+          "path": "l004.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/expanded-phone.png",
+          "bytes": 63452,
+          "sha256": "b44e01a205f0f5009bd8ee55e325e97cb6f7647f70bd05a9f4dc712f757f7a83",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l004.png"
+        },
+        {
+          "path": "l005.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/expanded-scene-actions.png",
+          "bytes": 104621,
+          "sha256": "ed1ab2ca58c58e4bbe5fca2524d3ffc88bcad04a7b671b550f18e8ceb7a4a0b1",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l005.png"
+        },
+        {
+          "path": "l006.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/expanded-scene-relationships.png",
+          "bytes": 214271,
+          "sha256": "4df291f253aebd36dcb10302b4d601f6fde9da25120e85ed23be8e6ae13cd4f9",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l006.png"
+        },
+        {
+          "path": "l007.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/placed-selected.png",
+          "bytes": 275408,
+          "sha256": "c7e31c30c31d5b0267c74c71e61f3789687fa284930ace0cec059c38b71995f1",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l007.png"
+        },
+        {
+          "path": "l008.png",
+          "originalPath": "artifacts/sc00c/expanded-library/local/placement-preview.png",
+          "bytes": 275147,
+          "sha256": "335065f0bdb5b994b896b4fdfcd2cfd9c61f57d3284b529275b05d85f4bdefb8",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\l008.png"
+        },
+        {
+          "path": "j000.png",
+          "originalPath": "artifacts/sc00c/library-journeys/unbound/associated-scenes.png",
+          "bytes": 294748,
+          "sha256": "fd534ea405de4bea8ada10bc8a0fe761878dd2164438582f97383ace50a4c7ae",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\j000.png"
+        },
+        {
+          "path": "j001.png",
+          "originalPath": "artifacts/sc00c/library-journeys/unbound/built-in-asset-preview.png",
+          "bytes": 293323,
+          "sha256": "7cb2b07532e7b6b22badade75511983fd0bc47132197c0634de08b5a7bb81587",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\j001.png"
+        },
+        {
+          "path": "j002.png",
+          "originalPath": "artifacts/sc00c/library-journeys/unbound/built-in-asset-selected.png",
+          "bytes": 287444,
+          "sha256": "8477eaab0c9af17dc8909a79d841219945bac3e4467360d5455d6c7ebf9f2688",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\j002.png"
+        },
+        {
+          "path": "j003.png",
+          "originalPath": "artifacts/sc00c/library-journeys/unbound/favorite-collection-filter.png",
+          "bytes": 294345,
+          "sha256": "1454514cdb3fe4bf4e2cff9cb68155e65620577cd9ae6213a0a31b39fc0800ec",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\j003.png"
+        },
+        {
+          "path": "j004.png",
+          "originalPath": "artifacts/sc00c/library-journeys/unbound/keyboard-context-add-phone.png",
+          "bytes": 93434,
+          "sha256": "105c8cae46c56a701af379248d1f798e2a61b32ed72eb3dbb97b8fa38476299c",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\j004.png"
+        },
+        {
+          "path": "j005.png",
+          "originalPath": "artifacts/sc00c/library-journeys/unbound/saved-environment-preview.png",
+          "bytes": 294326,
+          "sha256": "484eab25de3df6f07907afbe2f563c5f11d4eaeb8e222439d7301effdee00ba3",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\j005.png"
+        },
+        {
+          "path": "j006.png",
+          "originalPath": "artifacts/sc00c/library-journeys/unbound/scene-renamed-with-environment-pin.png",
+          "bytes": 301607,
+          "sha256": "79f3699666de1105e0778b77a8e95592d03234f8f1ac0432b381dd6b6d1d895c",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\j006.png"
+        },
+        {
+          "path": "d000.png",
+          "originalPath": "artifacts/sc00c/drag-placement/pointed-floor-insertion.png",
+          "bytes": 314439,
+          "sha256": "eb66bab0cc801529021d20226e0a591db612caed6536318a98160fcaa432a982",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\d000.png"
+        },
+        {
+          "path": "d001.png",
+          "originalPath": "artifacts/sc00c/drag-placement/pointed-floor-preview.png",
+          "bytes": 290736,
+          "sha256": "97b1a98d601c1aa40a78d7c4bf369cf11a2ba633d7f8ec14aa61bbf3bb16d87e",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt7-e43a1890a7c9\\d001.png"
+        }
+      ]
+    },
+    {
+      "id": "attempt8-bce938ab790e",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\manifest.json",
+      "sha256": "f93092ab655e258c7bb6d2230e7f171af5b2b4980730016c0b706ae8bb6bf902",
+      "source": "bce938ab790ecedcfe893d97f81ede8933af4e45",
+      "tree": "fcc46bf594fd7a4a4166fe0a11d739cd84167527",
+      "verifiedArtifactCount": 10,
+      "files": [
+        {
+          "path": "browser.original.log",
+          "originalPath": "tmp/root-composition-reuse-bce938ab790e.log",
+          "bytes": 47026,
+          "sha256": "47344e9af6a833456ffdc2adec623e9b91b2fdb14eb42701d4a05066cf487ea1",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\browser.original.log"
+        },
+        {
+          "path": "browser-runtime.original.json",
+          "originalPath": "artifacts/sounding-line/browser-runtime.json",
+          "bytes": 1316,
+          "sha256": "a8daa33e6012047885b8b07405af534ad322706c3c6bbe9ad67af86773a503c6",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\browser-runtime.original.json"
+        },
+        {
+          "path": "browser-suite-profile.original.json",
+          "originalPath": "artifacts/sounding-line/browser-suite-profile.json",
+          "bytes": 414,
+          "sha256": "9c99ca28d435f081680384c3b0fb27010881a7f4ede0c3b8cd16202f354c2810",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\browser-suite-profile.original.json"
+        },
+        {
+          "path": "r000.json",
+          "originalPath": "artifacts/root-composition-reuse-bce938ab790e/.last-run.json",
+          "bytes": 45,
+          "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\r000.json"
+        },
+        {
+          "path": "r001.webm",
+          "originalPath": "artifacts/root-composition-reuse-bce938ab790e/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/5ed690dbf8c4d921359962d0b2c6405b.webm",
+          "bytes": 410558,
+          "sha256": "09b7e1fcdd52a2d9c40ba94f41def65e83fbeacf799792c7a5bbba164fd9cd64",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\r001.webm"
+        },
+        {
+          "path": "r002.png",
+          "originalPath": "artifacts/root-composition-reuse-bce938ab790e/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/composition-installed-desktop.png",
+          "bytes": 202954,
+          "sha256": "d13d2341395660e1ae64772455f7216dac4e9275ec65129cd0282346b1ae09e3",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\r002.png"
+        },
+        {
+          "path": "r003.webm",
+          "originalPath": "artifacts/root-composition-reuse-bce938ab790e/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/composition-installer.webm",
+          "bytes": 410558,
+          "sha256": "09b7e1fcdd52a2d9c40ba94f41def65e83fbeacf799792c7a5bbba164fd9cd64",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\r003.webm"
+        },
+        {
+          "path": "r004.png",
+          "originalPath": "artifacts/root-composition-reuse-bce938ab790e/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/composition-reused-desktop.png",
+          "bytes": 196096,
+          "sha256": "280d49fb4d9972f1f209d10f7fc169fb33a75f0ae282cc883deeafd92a70d7ab",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\r004.png"
+        },
+        {
+          "path": "r005.webm",
+          "originalPath": "artifacts/root-composition-reuse-bce938ab790e/parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium/video.webm",
+          "bytes": 357397,
+          "sha256": "293041367db77839b6d49d5f4b3cd0e84f91b7f5f8789d74ecbd6458eb88ae74",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\r005.webm"
+        },
+        {
+          "path": "a000.json",
+          "originalPath": "artifacts/parallax-a1/browser/bce938ab790e/run.json",
+          "bytes": 610,
+          "sha256": "a310ab95164cf7b18be81cf116682c8103bdafdaeaa49f7fac64cc2828e19220",
+          "absoluteArchivePath": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\root-coexistence-20261015\\attempt8-bce938ab790e\\a000.json"
+        }
+      ]
+    }
+  ],
+  "preSourceNotes": [
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\inherited-pre-source-notes.original.json",
+      "sha256": "3854f10d798a5f6919dc0f8ef5e34e50c185195efcc69f43b19c59bdd7a6b220",
+      "bytes": 9401,
+      "frozenBeforePinnedSourceInspection": true
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\root-pre-source-notes.original.json",
+      "sha256": "94783e7d2898eb956d78d027d93f12ea86f06bd4d10c3910ea2172f79e4584f4",
+      "bytes": 22369,
+      "frozenBeforePinnedSourceInspection": true
+    },
+    {
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\pre-source-notes.original.json",
+      "sha256": "f1acde2f72a7d899f670e20c97b62e2d8002ed3de33cf299a934ca8e67fb2cc3",
+      "bytes": 6271,
+      "frozenBeforePinnedSourceInspection": true
+    }
+  ],
+  "mediaInspection": {
+    "nativeRootPNGs": [
+      "l000.png",
+      "l001.png",
+      "l002.png",
+      "l003.png",
+      "l004.png",
+      "l005.png",
+      "l006.png",
+      "l007.png",
+      "l008.png",
+      "j000.png",
+      "j001.png",
+      "j002.png",
+      "j003.png",
+      "j004.png",
+      "j005.png",
+      "j006.png",
+      "d000.png",
+      "d001.png",
+      "r029.png",
+      "r030.png"
+    ],
+    "nativeFocusedPNGs": [
+      "r002.png",
+      "r004.png"
+    ],
+    "nativeInheritedPNGs": 7,
+    "rootRecordings": {
+      "method": "Every sixth decoded native25fpsframe plus endpoint; complete video decoding. All generated sheets require visual inspection. No source/test/receipt reading.",
+      "videos": [
+        {
+          "id": "r001.webm",
+          "durationSeconds": 14.36,
+          "nativeFrames": 359,
+          "samples": 61,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.28,
+            5.52,
+            5.76,
+            6.0,
+            6.24,
+            6.48,
+            6.72,
+            6.96,
+            7.2,
+            7.44,
+            7.68,
+            7.92,
+            8.16,
+            8.4,
+            8.64,
+            8.88,
+            9.12,
+            9.36,
+            9.6,
+            9.84,
+            10.08,
+            10.32,
+            10.56,
+            10.8,
+            11.04,
+            11.28,
+            11.52,
+            11.76,
+            12.0,
+            12.24,
+            12.48,
+            12.72,
+            12.96,
+            13.2,
+            13.44,
+            13.68,
+            13.92,
+            14.16,
+            14.32
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.03999999999999915,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r001\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r001\\sheet-1.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r001\\sheet-2.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r001\\sheet-3.jpg"
+          ]
+        },
+        {
+          "id": "r002.webm",
+          "durationSeconds": 6.92,
+          "nativeFrames": 173,
+          "samples": 30,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.28,
+            5.52,
+            5.76,
+            6.0,
+            6.24,
+            6.48,
+            6.72,
+            6.88
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r002\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r002\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r003.webm",
+          "durationSeconds": 5.36,
+          "nativeFrames": 134,
+          "samples": 24,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.28,
+            5.32
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r003\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r003\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r004.webm",
+          "durationSeconds": 3.96,
+          "nativeFrames": 99,
+          "samples": 18,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            3.92
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r004\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r004\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r005.webm",
+          "durationSeconds": 6.96,
+          "nativeFrames": 174,
+          "samples": 30,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.28,
+            5.52,
+            5.76,
+            6.0,
+            6.24,
+            6.48,
+            6.72,
+            6.92
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r005\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r005\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r006.webm",
+          "durationSeconds": 3.04,
+          "nativeFrames": 76,
+          "samples": 14,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.0
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r006\\sheet-0.jpg"
+          ]
+        },
+        {
+          "id": "r007.webm",
+          "durationSeconds": 4.32,
+          "nativeFrames": 108,
+          "samples": 19,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.28
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r007\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r007\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r008.webm",
+          "durationSeconds": 6.64,
+          "nativeFrames": 166,
+          "samples": 29,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.28,
+            5.52,
+            5.76,
+            6.0,
+            6.24,
+            6.48,
+            6.6
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r008\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r008\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r009.webm",
+          "durationSeconds": 4.92,
+          "nativeFrames": 123,
+          "samples": 22,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            4.88
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r009\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r009\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r010.webm",
+          "durationSeconds": 5.24,
+          "nativeFrames": 131,
+          "samples": 23,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.2
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r010\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r010\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r011.webm",
+          "durationSeconds": 6.2,
+          "nativeFrames": 155,
+          "samples": 27,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.28,
+            5.52,
+            5.76,
+            6.0,
+            6.16
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r011\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r011\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r012.webm",
+          "durationSeconds": 5.28,
+          "nativeFrames": 132,
+          "samples": 23,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.24
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r012\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r012\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r013.webm",
+          "durationSeconds": 3.52,
+          "nativeFrames": 88,
+          "samples": 16,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.48
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r013\\sheet-0.jpg"
+          ]
+        },
+        {
+          "id": "r014.webm",
+          "durationSeconds": 3.92,
+          "nativeFrames": 98,
+          "samples": 18,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            3.88
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r014\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r014\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r015.webm",
+          "durationSeconds": 7.24,
+          "nativeFrames": 181,
+          "samples": 31,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.28,
+            5.52,
+            5.76,
+            6.0,
+            6.24,
+            6.48,
+            6.72,
+            6.96,
+            7.2
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.040000000000000036,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r015\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r015\\sheet-1.jpg"
+          ]
+        },
+        {
+          "id": "r031.webm",
+          "durationSeconds": 8.6,
+          "nativeFrames": 215,
+          "samples": 37,
+          "sampleTimes": [
+            0.0,
+            0.24,
+            0.48,
+            0.72,
+            0.96,
+            1.2,
+            1.44,
+            1.68,
+            1.92,
+            2.16,
+            2.4,
+            2.64,
+            2.88,
+            3.12,
+            3.36,
+            3.6,
+            3.84,
+            4.08,
+            4.32,
+            4.56,
+            4.8,
+            5.04,
+            5.28,
+            5.52,
+            5.76,
+            6.0,
+            6.24,
+            6.48,
+            6.72,
+            6.96,
+            7.2,
+            7.44,
+            7.68,
+            7.92,
+            8.16,
+            8.4,
+            8.56
+          ],
+          "maximumSampleGapSeconds": 0.2400000000000002,
+          "endTailSeconds": 0.03999999999999915,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r031\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r031\\sheet-1.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r031\\sheet-2.jpg"
+          ]
+        }
+      ]
+    },
+    "focusedRecordings": {
+      "method": "Every third native25fpsframe plus endpoint; all spans decoded. Sheets await inspection. Duplicate installer r001 counted once asr003.",
+      "videos": [
+        {
+          "id": "r003.webm",
+          "durationSeconds": 4.44,
+          "nativeFrames": 111,
+          "sampleTimes": [
+            0.0,
+            0.12,
+            0.24,
+            0.36,
+            0.48,
+            0.6,
+            0.72,
+            0.84,
+            0.96,
+            1.08,
+            1.2,
+            1.32,
+            1.44,
+            1.56,
+            1.68,
+            1.8,
+            1.92,
+            2.04,
+            2.16,
+            2.28,
+            2.4,
+            2.52,
+            2.64,
+            2.76,
+            2.88,
+            3.0,
+            3.12,
+            3.24,
+            3.36,
+            3.48,
+            3.6,
+            3.72,
+            3.84,
+            3.96,
+            4.08,
+            4.2,
+            4.32,
+            4.4
+          ],
+          "samples": 38,
+          "maxGapSeconds": 0.12,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r003\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r003\\sheet-1.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r003\\sheet-2.jpg"
+          ]
+        },
+        {
+          "id": "r005.webm",
+          "durationSeconds": 8.76,
+          "nativeFrames": 219,
+          "sampleTimes": [
+            0.0,
+            0.12,
+            0.24,
+            0.36,
+            0.48,
+            0.6,
+            0.72,
+            0.84,
+            0.96,
+            1.08,
+            1.2,
+            1.32,
+            1.44,
+            1.56,
+            1.68,
+            1.8,
+            1.92,
+            2.04,
+            2.16,
+            2.28,
+            2.4,
+            2.52,
+            2.64,
+            2.76,
+            2.88,
+            3.0,
+            3.12,
+            3.24,
+            3.36,
+            3.48,
+            3.6,
+            3.72,
+            3.84,
+            3.96,
+            4.08,
+            4.2,
+            4.32,
+            4.44,
+            4.56,
+            4.68,
+            4.8,
+            4.92,
+            5.04,
+            5.16,
+            5.28,
+            5.4,
+            5.52,
+            5.64,
+            5.76,
+            5.88,
+            6.0,
+            6.12,
+            6.24,
+            6.36,
+            6.48,
+            6.6,
+            6.72,
+            6.84,
+            6.96,
+            7.08,
+            7.2,
+            7.32,
+            7.44,
+            7.56,
+            7.68,
+            7.8,
+            7.92,
+            8.04,
+            8.16,
+            8.28,
+            8.4,
+            8.52,
+            8.64,
+            8.72
+          ],
+          "samples": 74,
+          "maxGapSeconds": 0.12,
+          "sheets": [
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r005\\sheet-0.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r005\\sheet-1.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r005\\sheet-2.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r005\\sheet-3.jpg",
+            "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r005\\sheet-4.jpg"
+          ]
+        }
+      ]
+    },
+    "rootSamplingSummary": {
+      "uniqueRecordings": 16,
+      "nativeFrames": 2412,
+      "sampledFrames": 422,
+      "sheetsInspected": 33,
+      "maximumGapSeconds": 0.24
+    },
+    "focusedSamplingSummary": {
+      "uniqueRecordings": 2,
+      "nativeFrames": 330,
+      "sampledFrames": 112,
+      "sheetsInspected": 8,
+      "maximumGapSeconds": 0.12
+    },
+    "methodLimits": "All native PNGs inspected at original size. Complete decoded video spans sampled including last frame, each final frame 0.04s before container duration. Root videos and focused primary Creator video800x450; focused installer video1280x720. All25fps. Contact sheets2000x1250 displayed1996x1248, cells490x275. Not real-time or every-frame inspection. Native stills are primary fine-text evidence.",
+    "duplicateInstaller": "focus:r001.webm == focus:r003.webm SHA09b7e1fcdd52a2d9c40ba94f41def65e83fbeacf799792c7a5bbba164fd9cd64; counted once.",
+    "excludedFromNewReview": "Unrelated Assistant/Lens and other Publisher package media in root manifest. All130 packet files hash/size verified, but not all are visually reviewed or credited.",
+    "nativeRecordingDimensions": [
+      {
+        "recordingId": "root:r001.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r001\\decode.txt",
+        "decoderLogSHA256": "039db17eb17d4884b553d7a5c9792be562827e7980c134e3f97f5a8be31c020d"
+      },
+      {
+        "recordingId": "root:r002.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r002\\decode.txt",
+        "decoderLogSHA256": "ad2aeb3011eb7beec3b20af0e501c3cccdf8866d866da3bc5611d725d43b681b"
+      },
+      {
+        "recordingId": "root:r003.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r003\\decode.txt",
+        "decoderLogSHA256": "34de3a83f5c6027348568726e61e8f4330ea1e70c31a372f2fcba0f475c6fb6e"
+      },
+      {
+        "recordingId": "root:r004.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r004\\decode.txt",
+        "decoderLogSHA256": "17c656314f16d5ad1fd3045a5e7e838c4fbb67f1cfe0c3308ae2aa10905b88f6"
+      },
+      {
+        "recordingId": "root:r005.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r005\\decode.txt",
+        "decoderLogSHA256": "24be1ddc2ba7964b01355c6d5a46a8de91d8b8e082089bf4181d40eec63cd774"
+      },
+      {
+        "recordingId": "root:r006.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r006\\decode.txt",
+        "decoderLogSHA256": "be6e080ca685eb9b0c08f32fef0879fb8882b6a306ff5cf8b081b51ef6d2b3ee"
+      },
+      {
+        "recordingId": "root:r007.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r007\\decode.txt",
+        "decoderLogSHA256": "5df5be34f32fb3412463b67adc0d1ed29b0c2e838a25467b7e5fae5adfb0a494"
+      },
+      {
+        "recordingId": "root:r008.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r008\\decode.txt",
+        "decoderLogSHA256": "55d2afc3840285f04969a13a43cdd5bc80990a357a2beaac705923befc6e6e23"
+      },
+      {
+        "recordingId": "root:r009.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r009\\decode.txt",
+        "decoderLogSHA256": "ba9bebf7f602d8a5a09d398b356b7e1e3277bec46fdcd644c08c48c8d7aaa196"
+      },
+      {
+        "recordingId": "root:r010.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r010\\decode.txt",
+        "decoderLogSHA256": "c9f348cdba425ef08ea0186caa236c6b2ce50eb39e12aa4b0e0675cb91ead95b"
+      },
+      {
+        "recordingId": "root:r011.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r011\\decode.txt",
+        "decoderLogSHA256": "56502a9e1d86c0d31e74102314814ce1e3c66f7e559dd6745f2f6aa5b635c385"
+      },
+      {
+        "recordingId": "root:r012.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r012\\decode.txt",
+        "decoderLogSHA256": "30b80d1bdf055f3944de6e1f0ee5ad40956e15824c5ae4c2ec3fcf1fe6881a5b"
+      },
+      {
+        "recordingId": "root:r013.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r013\\decode.txt",
+        "decoderLogSHA256": "938e670b531aa043d5d076f0f96d6b9376a4ee17b04d97fc7bca88f617af4d2d"
+      },
+      {
+        "recordingId": "root:r014.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r014\\decode.txt",
+        "decoderLogSHA256": "ad0c675ab571245f0a7b12b97a821dc9fa30dadac768d6634671d85170973a34"
+      },
+      {
+        "recordingId": "root:r015.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r015\\decode.txt",
+        "decoderLogSHA256": "78b49aba156c07770cebd443906ca655231994c2f4a0930ab2379db214569fc9"
+      },
+      {
+        "recordingId": "root:r031.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\r031\\decode.txt",
+        "decoderLogSHA256": "70dd244334892bbac83794cbbeb05a78df68f8d48123b46d41ae748227138bc3"
+      },
+      {
+        "recordingId": "focus:r003.webm",
+        "width": 1280,
+        "height": 720,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r003\\decode.txt",
+        "decoderLogSHA256": "604a86e103d706a0ef33054a5a93db2a2b87cb54178dfe4843b90c78a81d9f98"
+      },
+      {
+        "recordingId": "focus:r005.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decoderLog": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\focused-bce938\\r005\\decode.txt",
+        "decoderLogSHA256": "ab384397f36c0dc8ac946c1ab37a740588c58b9b2eb84581fd233b0bfeb93d35"
+      }
+    ]
+  },
+  "sourceAndReceiptCorroboration": {
+    "rootProduction": {
+      "cases": "30 passed (3.5m), combined technical suite",
+      "build": "Compiled successfully in40s",
+      "fullTypeScript": "Finished in2.2min",
+      "sourceBinding": "VALID",
+      "startedAt": "2026-10-15T18:17:44.140Z",
+      "finishedAt": "2026-10-15T18:26:15.427Z"
+    },
+    "focusedProduction": {
+      "cases": "1 passed (13.7s), not30-case rerun",
+      "build": "Compiled successfully in42s",
+      "fullTypeScript": "Finished in60s",
+      "sourceBinding": "VALID",
+      "startedAt": "2026-10-15T18:27:28.581Z",
+      "finishedAt": "2026-10-15T18:30:07.252Z"
+    },
+    "cleanup": "Both capture/cleanup PASS; browser exit0. Server exit1 follows owned escalation with direct exit observed, tree reaped, streams closed and ports released. No natural server exit0 claim.",
+    "defaultCaptureAliases": "local/unbound/drag aliases do not independently establish source. Current exact wrapper manifest/originalPath and source-bound run receipt are retained; capture timestamps within that wrapper were attested by capture assembler, not independently reconstructed from unarchived originals by reviewer.",
+    "pinnedAssertions": [
+      "Tab stays within expanded dialog; Escape closes and returns focus to Expand; query, unsaved edit and projected camera retained.",
+      "Source/Show/Sort geometry in one row; reduced motion animation none; phone document width finite; selected detail and catalog503/reload/no-match checked.",
+      "Scene/Environment uses canonical Manager; duplicate retains released Environment version and creates third independent item.",
+      "Focused installed Composition creates two saved target entities; studio.assetInstances contains installed mapping definitionId; original source readOnly remains true."
+    ],
+    "narrowSourceFindings": [
+      "Environment select moved within controls strip; phone control layout remains a native disclosure.",
+      "Installed copy action gated by read-only source and verified allowsModification. Labels distinguish credited Composition/copy from ordinary saved reuse.",
+      "Server validates installation, pinned release/license/checksum/version binding, target ownership and revision; read-only target rejected. Source transaction reads source and returns an inserted target draft; ordinary client history/persistence saves the target.",
+      "No product or contract difference under src/testing contracts between e43 and bce; recorder refinement is test-only."
+    ]
+  },
+  "dimensions": {
+    "composition": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "The expanded dark desktop Library has five category tabs on the left, a search row, one compact Source/Show/Sort toolbar, results and a separate right detail region. Scenes add Environment within that toolbar rather than consuming another full row.",
+        "At 1024px, the toolbar remains ordered above a two-column asset grid and a right guidance/detail region. At 390px, horizontal tabs, search, collapsed Filters & view and two-card grid use the available width; selecting the book places detail above cards."
+      ],
+      "evidenceIds": [
+        "root:l000",
+        "root:l001",
+        "root:l002",
+        "root:l003",
+        "root:l004",
+        "root:l005"
+      ],
+      "limits": "Finite captured widths and scroll positions. Phone expanded-filter composition is not shown."
+    },
+    "hierarchy": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Category, search and compact filters precede cards. Selected Writing desk detail ends with the prominent Place in Scene action; Scene details instead expose original/copy/Environment/history actions.",
+        "The installed Composition state explicitly says its release is read-only and the canvas is a separate private working Scene; Add credited composition is a distinct action rather than an edit to the original."
+      ],
+      "evidenceIds": [
+        "root:l000",
+        "root:l005",
+        "root:r029",
+        "focus:r002",
+        "focus:r004",
+        "focus:r003.webm@1.08-4.40"
+      ],
+      "limits": "Installed details may require panel scrolling; no claim all explanatory rows are simultaneously visible."
+    },
+    "typography": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "At native scale, Source, Show, Sort and Environment labels and selected options remain readable in the finite desktop and narrow toolbar.",
+        "Phone card names and selected-book description/dimensions wrap within the viewport. The Scene Environment option is truncated by the finite desktop select width; the associated Environment name also appears in the selected Scene detail."
+      ],
+      "evidenceIds": [
+        "root:l000",
+        "root:l002",
+        "root:l003",
+        "root:l005"
+      ],
+      "limits": "Native stills establish legibility; 800x450 recordings establish chronology, not fine text readability or every long name."
+    },
+    "spacing": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "The desktop toolbar's inline labels and selects form a compact horizontal strip with card space below. The narrow layout avoids Source/Show/Sort collisions.",
+        "Phone selected detail and Place in Scene stay above the next card row. Full Scene detail actions scroll within their region; the bottom clipping in the relationship still is a scroll boundary, not evidence that actions are absent."
+      ],
+      "evidenceIds": [
+        "root:l002",
+        "root:l003",
+        "root:l005",
+        "root:l006",
+        "root:r011.webm@4.32-5.76"
+      ],
+      "limits": "No expanded phone filter or arbitrary-content-length layout qualification."
+    },
+    "controls": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Current recordings show compact-to-expanded browsing, selecting Writing desk, Place in Scene, choosing floor placement and returning with the desk selected.",
+        "Scene/Environment actions open the canonical Scene Manager and create an independent Scene copy. Focused installer recording shows selecting version 1.0.0 and Add credited composition, followed by a two-object private Scene and Undo-available feedback."
+      ],
+      "evidenceIds": [
+        "root:r010.webm@2.40-5.20",
+        "root:r011.webm@3.36-6.16",
+        "focus:r003.webm@3.36-4.40",
+        "focus:r004"
+      ],
+      "limits": "No pointer/touch qualification on a real phone. Composition Undo is offered but not executed in this capture."
+    },
+    "contrast": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Dark and light native images preserve visible control borders, selected category/card styling and readable dark/light text.",
+        "Search and category focus outlines are conspicuous against both captured appearances."
+      ],
+      "evidenceIds": [
+        "root:l000",
+        "root:l001",
+        "root:l002",
+        "root:l003",
+        "root:l004"
+      ],
+      "limits": "No whole-app contrast audit, measured conformance or all disabled/error/focus combinations."
+    },
+    "consistency": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Current root media retains the inherited 780b rounded blue Library/workstation layout and uses the same card/detail hierarchy across compact and expanded views.",
+        "Source comparison verifies no changes under src or testing/contracts.json between root e43 and focused test-only bce. Inherited 780b media retains its original identity and is comparison evidence only."
+      ],
+      "evidenceIds": [
+        "INHERITED_780B_NOTES",
+        "root:l000",
+        "root:l007",
+        "focus:r002",
+        "PINNED_SOURCE_DIFF"
+      ],
+      "limits": "The 780b 2,000-Scene run is not rebound to root or counted as a current root scale rerun."
+    },
+    "states": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "The current library recording reaches populated, loading, selected and no-match states. The phone catalog-failure sequence visibly presents a reload control, then returns to a no-match result for the remaining query.",
+        "Working-save conflict/recovery recordings retain the editing surface and offer explicit retry/restore/recover/copy decisions. The installed Composition and reused private Scene have visibly different read-only/editing states."
+      ],
+      "evidenceIds": [
+        "root:r012.webm@4.32-5.24",
+        "root:r003.webm@2.88-5.32",
+        "root:r004.webm@3.36-3.92",
+        "root:r007.webm@2.40-4.28",
+        "focus:r002",
+        "focus:r004"
+      ],
+      "limits": "These are synthetic injected failures. No live service outage/performance or every rights-refusal state is visually qualified."
+    },
+    "responsive": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "The exact root packet includes 1440px desktop, 1024px light/dark and 390px light Library images. Phone selected-item detail and its action fit within 390px; the category strip advertises horizontal swipe.",
+        "The phone context-Add journey reaches the selected Peeking Letter Inspector. Current phone filters are collapsed in all inspected media."
+      ],
+      "evidenceIds": [
+        "root:l001",
+        "root:l002",
+        "root:l003",
+        "root:l004",
+        "root:j004",
+        "root:r014.webm"
+      ],
+      "limits": "Expanded phone filter manipulation is explicitly not qualified. Licensed Composition reuse is desktop only; no real phone, touch, orientation or all breakpoint proof."
+    },
+    "keyboard": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "The pinned expanded-Library test wraps focus within the dialog after Tab from Close, closes with Escape and asserts focus returns to Expand Spatial Library while preserving an unsaved object edit and projected camera.",
+        "The current phone Library journey uses the contextual Add path and ends at the selected letter Inspector; the recording and native result corroborate the outcome, with exact key events established by the pinned test."
+      ],
+      "evidenceIds": [
+        "root:r010.webm",
+        "root:r014.webm",
+        "root:j004",
+        "PINNED_EXPANDED_TEST"
+      ],
+      "limits": "Not a comprehensive keyboard-only session, screen reader assessment or keyboard reuse of the installed Composition."
+    },
+    "focus": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Native images clearly identify focused category/search controls. The placed desk and phone-added letter are selected in their ordinary contextual Inspector.",
+        "Source-bound Escape focus restoration returns to the existing Expand control; visible selected details and query remain present when reopening."
+      ],
+      "evidenceIds": [
+        "root:l000",
+        "root:l001",
+        "root:l002",
+        "root:l007",
+        "root:j004",
+        "root:r010.webm@4.80-5.20",
+        "PINNED_EXPANDED_TEST"
+      ],
+      "limits": "No claim all dialogs or installer/page navigation restore focus, and no Publisher Return focus proof."
+    },
+    "feedback": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Placement preview says to point to a clear floor surface and offers a Floor keyboard alternative and Cancel placement.",
+        "The invalid-drop still says no clear floor support and nothing inserted while the previously inserted chest remains. Composition copy reports credited installed composition added and Undo available, with saved revision 2 and two objects."
+      ],
+      "evidenceIds": [
+        "root:l008",
+        "root:d000",
+        "root:d001",
+        "root:r009.webm@2.88-4.88",
+        "focus:r004",
+        "focus:r003.webm@3.84-4.40"
+      ],
+      "limits": "The invalid-drop feedback refers to the subsequent rejected drop, not to deleting the earlier valid chest. No inference of absent support or whole-room physical fit."
+    },
+    "motion": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Every complete relevant root recording was decoded and inspected through timed samples spanning opening, Library/modal transitions, placement and recovery; reduced-motion light Library retains the same controls and cards.",
+        "Focused installer chronology covers actual listing/install/open/reload/select/copy rather than substituting an installed screenshot."
+      ],
+      "evidenceIds": [
+        "root:r001-r015.webm",
+        "root:r031.webm",
+        "root:l001",
+        "root:r012.webm",
+        "focus:r003.webm",
+        "focus:r005.webm"
+      ],
+      "limits": "Root sampling max 0.24s, focused max 0.12s; not real-time/every-frame inspection. Reduced-motion animationName:none is assertion-correlated, not a timing benchmark. No audio/effect-fidelity/tracking proof."
+    },
+    "continuity": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Writing desk is placed back into Expanded Library journey with the same Studio workspace and selection; unsaved object edit/query/camera continuity is assertion-correlated.",
+        "Associated Scene navigation and duplication preserve the pinned Environment version in the test. Focused Composition installation stays read-only in Library; adding the credited instance changes the separately saved private target to two entities."
+      ],
+      "evidenceIds": [
+        "root:l007",
+        "root:r010.webm",
+        "root:r011.webm",
+        "root:j006",
+        "focus:r003.webm",
+        "PINNED_EXPANDED_TEST",
+        "PINNED_COMPOSITION_TEST"
+      ],
+      "limits": "Source-lineage and readOnly assertions are not a full before/after byte-equality audit of every installed envelope. Publisher Return is unclicked and remains unqualified."
+    },
+    "complexity": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "The compact toolbar removes an extra Environment row in Scene browsing while keeping labels explicit. Mobile initially discloses Filters & view rather than presenting the entire toolbar above cards.",
+        "The installed Composition copy action states credit and private-copy intent and leaves the pinned version selector beside the action."
+      ],
+      "evidenceIds": [
+        "root:l005",
+        "root:l004",
+        "focus:r004",
+        "PINNED_LIBRARY"
+      ],
+      "limits": "Phone disclosure expansion, large option sets, many Composition members and arbitrary license combinations are not established by these captures."
+    },
+    "role-outcomes": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "A Creator visibly searches/selects a built-in asset, places it into the same Scene and continues ordinary Inspector editing. The expanded Environment/Scene flow reaches canonical Scene Manager and a distinct copied Scene.",
+        "A second Creator installs the synthetic licensed Composition, opens the read-only entry, and inserts a credited instance into an independent private Scene. Pinned assertions establish saved target count 2, asset-instance definitionId equal to the installed source mapping and original readOnly true."
+      ],
+      "evidenceIds": [
+        "root:r010.webm",
+        "root:r011.webm",
+        "focus:r003.webm",
+        "focus:r002",
+        "focus:r004",
+        "PINNED_COMPOSITION_TEST"
+      ],
+      "limits": "One finite licensed Composition fixture. No universal license/commercial-use approval, full Studio/contract completion or owner acceptance."
+    },
+    "fallbacks": {
+      "assessment": "SUPPORTED_WITH_EXPLICIT_LIMITS",
+      "observations": [
+        "Catalog failure exposes Reload results and a truthful no-match state after the query remains. Placement offers cancel and a keyboard surface alternative; invalid drops give a reason.",
+        "Installed Composition thumbnail explicitly says Preview unavailable while its selected metadata and private canvas remain available. Source rejects unverified/nonmodifiable installed rights rather than treating read-only installation as unrestricted editing."
+      ],
+      "evidenceIds": [
+        "root:r012.webm@4.32-5.24",
+        "root:l008",
+        "root:d000",
+        "focus:r002",
+        "PINNED_RIGHTS",
+        "PINNED_LIBRARY"
+      ],
+      "limits": "Rights-rejection variants are source seams, not newly captured rendered refusals. No physical AR or hardware fallback qualification."
+    }
+  },
+  "findings": [
+    {
+      "id": "SC00C-ROOT-REUSE-EVIDENCE",
+      "status": "SUPPORTED_IN_BOUNDED_SCOPE",
+      "classification": "OUTCOME_VERIFIED",
+      "blocking": false,
+      "contractIds": [
+        "parallax.authored-library-and-simulation.experience",
+        "parallax.spatial-community-publishing.experience"
+      ],
+      "observation": "The focused actual second-Creator recording supplies the previously missing installer/copy chronology. It shows the read-only Library entry and distinct private Scene, then credited copy feedback/revision2/twoobjects. Native before/after images and exact target/source assertions corroborate the finite result.",
+      "evidenceIds": [
+        "focus:r002",
+        "focus:r003.webm@0.12-4.40",
+        "focus:r004",
+        "PINNED_COMPOSITION_TEST"
+      ],
+      "repairRequired": false
+    },
+    {
+      "id": "SC00C-PHONE-FILTER-COVERAGE-LIMIT",
+      "status": "UNQUALIFIED_SUBOUTCOME",
+      "classification": "INSUFFICIENT_EVIDENCE_FOR_BROADER_PHONE_CLAIM",
+      "blockingForBoundedVerdict": false,
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "observation": "Phone expanded Library captures and recordings show Filters & view collapsed. Search, selection/details and contextual Add are demonstrated; expansion/manipulation of Source/Show/Sort/Environment on phone is not. Source layout/disclosure and passing width assertions do not replace that rendered interaction proof.",
+      "evidenceIds": [
+        "root:l003",
+        "root:l004",
+        "root:r012.webm@3.60-5.24",
+        "root:r014.webm"
+      ],
+      "effectOnClaim": "Do not call this a full responsive-filter-interaction qualification or whole-contract acceptance. No concrete product visual defect was established.",
+      "repairRequiredForThisFiniteClaim": false
+    }
+  ],
+  "confirmedBlockingProductFindings": [],
+  "confirmedMaterialNonblockingProductFindings": [],
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "boundedVerdict": "Supporting local verification of the captured compact/expanded desktop toolbar, search/selection/placement/return continuity, finite light/narrow/390phone Library presentation and desktop credited installed Composition copy into a private target. Expanded phone filter manipulation and other stated limits remain uncredited.",
+  "remainingLimits": [
+    "No expanded phone filter manipulation or phone/keyboard/light/reduced-motion licensed Composition reuse chronology.",
+    "Original installed readOnly status is asserted; not a comprehensive byte-equality audit of every installed envelope.",
+    "Composition Undo availability is visible; actual undo/reload of the newly copied instance is not exercised in this focused media.",
+    "No root2,000-Scene rerun: inherited780b scale evidence retains its own source and earlier timing constraints.",
+    "No comprehensive accessibility/contrast audit, all lengths/content/license combinations or every recovery state.",
+    "Synthetic local production Chromium only; no real phone/touch, physical tracking/AR, hardware/GPU performance, live MySQL or audible audio/effect fidelity.",
+    "Publisher Return to Spatial Studio remains unclicked in relevant Creator recordings; prior db461 bounded verdict and return limitation stay unchanged.",
+    "No whole-Studio, full owning-contract, protected/trusted or owner acceptance; no reset of earlier attempts/counters."
+  ],
+  "priorPublisherReviewPreserved": {
+    "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\package-review-db461\\independent-review.original.json",
+    "sha256": "bb58e6df26572c6d50412f11e383098723979303a2ec9de8fafc467b2d889d29",
+    "status": "UNCHANGED",
+    "scope": "Earlier bounded package-summary verdict only; not rebound to newsource."
+  },
+  "baselineDebt": {
+    "id": "PE-DEBT-PARALLAX-PLAYER",
+    "status": "NOT_CLOSED_BY_THIS_REVIEW",
+    "repairOwner": "SpatialExperienceRefit",
+    "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+    "fingerprint": "94e3716d8ae26d5986e855cd4996b36d0edfbce1a2778937ba23548cc3506834"
+  },
+  "ownerAcceptance": "NOT_CLAIMED",
+  "trustedAcceptance": "NOT_CLAIMED",
+  "physicalAcceptance": "NOT_CLAIMED",
+  "mutationScope": "Ignored independent notes/sampling/report only; no product, Git, shared runtime, build, test, paid call, contract, tracked documentation or original-media mutations.",
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "immutableOriginalAndErratum": {
+    "originalPath": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\independent-review.original.json",
+    "originalSHA256": "b717a93400c49bc51706e3d2c9ca0973247e359ef0e2d94e9f0320816ab1461a",
+    "erratumPath": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-library-e43a\\provenance-metadata-correction.original.json",
+    "erratumSHA256": "092b165abb8c7b60ddafdd6befa49999f3f222f834c93826329f036a93279f27",
+    "correction": "Only recording dimensions metadata; no altered media, source, notes, observations or verdict."
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "baseline": "cfc5b44d031f27a9878febc44d61a6dcebb11f63",
+  "candidate": "86fa610275062ff5dc1c608fabc1832a10017b13",
+  "results": [
+    {
+      "file": "scripts/parallax/run-owner-room-photo-browser.mjs",
+      "emittedJavaScriptEqual": false,
+      "beforeEmissionSha256": "929f645c8030a1a207f90c66b9bf30075dd83e503097debd8ee0d416a98e4f20",
+      "afterEmissionSha256": "62461cb261041c9333e3d6b74af27bdb88904ec8e6e94e0c886b13d5048e68a8",
+      "classification": "EXPLICIT_SOURCE_CHANGE"
+    },
+    {
+      "file": "src/components/studio/parallax/BehaviorTracks.tsx",
+      "emittedJavaScriptEqual": true,
+      "beforeEmissionSha256": "112f4c1a0f3b44bd4c49dcaf3d9183985c786acb40e59399b2456b9f62f7d641",
+      "afterEmissionSha256": "112f4c1a0f3b44bd4c49dcaf3d9183985c786acb40e59399b2456b9f62f7d641",
+      "classification": "FORMATTING_ONLY"
+    },
+    {
+      "file": "src/components/studio/parallax/RoomEnvironmentEditor.tsx",
+      "emittedJavaScriptEqual": false,
+      "beforeEmissionSha256": "58395995070f4d3e76a4813a1caa7c79bc1a2bda2956c250d0143cec33eecadf",
+      "afterEmissionSha256": "78cff7df33d57e5a6c92efa8d75bd4077b1bee91c8b3ec65804143700ffd6846",
+      "classification": "EXPLICIT_SOURCE_CHANGE"
+    },
+    {
+      "file": "src/components/studio/parallax/SceneGroups.tsx",
+      "emittedJavaScriptEqual": false,
+      "beforeEmissionSha256": "6c5b6e0ea24276faa16974e43220b88ec4ddd19c031d7637bd299be33ca5b58e",
+      "afterEmissionSha256": "172106dcfed9e644f5fe4e45e8f0bfec322f91793ae49198f7b3b4ad704443c5",
+      "classification": "EXPLICIT_SOURCE_CHANGE"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialAssetInspector3D.tsx",
+      "emittedJavaScriptEqual": false,
+      "beforeEmissionSha256": "dc6fb8f469b684e29ff3c05db35db8b25c7d757eb2ffcbf1d4063d2faea7af17",
+      "afterEmissionSha256": "686fa002d7c2415baaa17ace987e43da399ae5361aebb123f40d2d6b14987d73",
+      "classification": "EXPLICIT_SOURCE_CHANGE"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+      "emittedJavaScriptEqual": false,
+      "beforeEmissionSha256": "b12f43efa25b3bff84da0dcc466dc56a49f9b3cc882de5e5e3cb19b35ad72e8f",
+      "afterEmissionSha256": "cb77c0a6ae57118f65c5dfba1d2ca977078b9e85c6e553e7cd5870991c67ede2",
+      "classification": "EXPLICIT_SOURCE_CHANGE"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialContentLibrary.tsx",
+      "emittedJavaScriptEqual": false,
+      "beforeEmissionSha256": "d9edb55c209a45bde7e78c036b1284597f029d55b77f7258e28139b530fdfc9c",
+      "afterEmissionSha256": "f74c9b995a1fd32059c41eefa71ff06db0710d3746941523f30498c8571f00a9",
+      "classification": "EXPLICIT_SOURCE_CHANGE"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialElementInspector.tsx",
+      "emittedJavaScriptEqual": false,
+      "beforeEmissionSha256": "12c57f4c6a1d421813c91f29e43f83479ea906c806f2a12f9ac350b451fb669e",
+      "afterEmissionSha256": "7d39d4eedd8789e3ffa88db1393f55f51ad702231820a14789063997e147c2f3",
+      "classification": "EXPLICIT_SOURCE_CHANGE"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialStudio.tsx",
+      "emittedJavaScriptEqual": true,
+      "beforeEmissionSha256": "0f55cb40bb2760b8fce511450426e4ccf0da79f57daf1edb70b20c1f437ddefb",
+      "afterEmissionSha256": "0f55cb40bb2760b8fce511450426e4ccf0da79f57daf1edb70b20c1f437ddefb",
+      "classification": "FORMATTING_ONLY"
+    },
+    {
+      "file": "src/parallax/group-surface-placement.ts",
+      "emittedJavaScriptEqual": false,
+      "beforeEmissionSha256": "8a7cc5cfc4e89abfece73a08a0cbd618904180eaeebf3836e226f65e5959c41b",
+      "afterEmissionSha256": "9c0b4066a40fee5d6354423aade2b9dc815aaba39cbf157cd0cfee555b702fd0",
+      "classification": "EXPLICIT_SOURCE_CHANGE"
+    },
+    {
+      "file": "src/parallax/spatial-catalog-page-service.ts",
+      "emittedJavaScriptEqual": true,
+      "beforeEmissionSha256": "3666938cad7352a2c3a00a222d2501a8f1cbbe0ce74374038b72857c0a432246",
+      "afterEmissionSha256": "3666938cad7352a2c3a00a222d2501a8f1cbbe0ce74374038b72857c0a432246",
+      "classification": "FORMATTING_ONLY"
+    }
+  ]
+}

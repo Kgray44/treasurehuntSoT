@@ -1,0 +1,42 @@
+{
+  "kind": "ADDITIVE_CONTRACT_OBLIGATION_PRESERVATION_AUDIT",
+  "at": "2026-10-22T15:53:16.320731+00:00",
+  "originalIDsPreserved": 501,
+  "total": 502,
+  "newIDs": [
+    "parallax.integration.pilot-owner-boundary"
+  ],
+  "existingContractsReceivingExperience": [
+    "community-moderation-integrity",
+    "homeport.community.public-projection",
+    "homeport.community.quarantine",
+    "homeport.community.voyage-logs",
+    "homeport.phase7.account.canonical-lifecycle",
+    "homeport.owner-correction.round1.workspaces",
+    "homeport.passport.product-surface",
+    "homeport.transition.reduced-motion",
+    "admiralty.phase2.read-projection-redaction",
+    "admiralty.phase2.account-dossier-support",
+    "admiralty.phase2.community-operations-providers",
+    "admiralty.phase2.registry-activation"
+  ],
+  "priorExperienceSourceAdditionsOnly": {
+    "spatial-pilot.experience": [
+      "public/parallax/sc02"
+    ],
+    "admiralty.phase1.registry": [
+      "src/components/admiralty/AIQuotaOverrides.tsx"
+    ],
+    "parallax.spatial-community-publishing.experience": [
+      "src/app/admin/community/[listingId]/page.tsx",
+      "src/app/community/[slug]/page.tsx",
+      "src/components/admiralty/SpatialPublicationReviewPanel.tsx",
+      "src/components/community/CommunityReviewList.tsx",
+      "src/components/community/SpatialCommunityInstall.tsx"
+    ]
+  },
+  "unexpected": [],
+  "baselineDebtReferencesJourneysRoleSetupMotionContinuityPreserved": true,
+  "contractsSHA256": "431bd61b5ce2bb9855f93639fa38e54275b4f6de6690be968641e53201eb3779",
+  "runtimeOrExperienceAcceptance": false
+}

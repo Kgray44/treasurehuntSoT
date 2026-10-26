@@ -1,0 +1,39 @@
+{
+  "name": "6bb-exclusion-observation-01",
+  "at": "2026-10-23T02:42:16.690Z",
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 4,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37278969856,
+  "minimumD": 111707660288,
+  "monitorSamples": 4,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 461,
+      "sha256": "83ce8461150e2215471abbf02743b30817e907d77336de928e5ce9920ebce563"
+    },
+    "stderr": {
+      "bytes": 15544,
+      "sha256": "70a1b8318986d0b5b57730ce4fec22545a42c7a199c2af30def7813aacc7afce"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

@@ -1,0 +1,80 @@
+{
+  "source": "34d397d336912a949dbd6b2c4601e9ac0079f805",
+  "observations": [
+    {
+      "id": "symbol",
+      "metrics": {
+        "renderMs": 2.699999988079071,
+        "calls": 80,
+        "triangles": 916,
+        "geometries": 51,
+        "textures": 4,
+        "audioSources": 0,
+        "quality": "MEDIUM"
+      }
+    },
+    {
+      "id": "footprints",
+      "metrics": {
+        "renderMs": 3.299999952316284,
+        "calls": 90,
+        "triangles": 1036,
+        "geometries": 51,
+        "textures": 4,
+        "audioSources": 0,
+        "quality": "MEDIUM"
+      }
+    },
+    {
+      "id": "writing",
+      "metrics": {
+        "renderMs": 5.5,
+        "calls": 80,
+        "triangles": 916,
+        "geometries": 51,
+        "textures": 4,
+        "audioSources": 0,
+        "quality": "MEDIUM"
+      }
+    },
+    {
+      "id": "portal",
+      "metrics": {
+        "renderMs": 3.199999988079071,
+        "calls": 95,
+        "triangles": 3364,
+        "geometries": 54,
+        "textures": 4,
+        "audioSources": 0,
+        "quality": "MEDIUM"
+      }
+    },
+    {
+      "id": "spot-light",
+      "metrics": {
+        "renderMs": 2.900000035762787,
+        "calls": 109,
+        "triangles": 33744,
+        "geometries": 58,
+        "textures": 7,
+        "audioSources": 0,
+        "quality": "MEDIUM"
+      }
+    },
+    {
+      "id": "ambient-light",
+      "metrics": {
+        "renderMs": 5.899999976158142,
+        "calls": 109,
+        "triangles": 33744,
+        "geometries": 58,
+        "textures": 7,
+        "audioSources": 0,
+        "quality": "MEDIUM"
+      }
+    }
+  ],
+  "limits": [
+    "Rendered local software-WebGL views; no physical, native or owner acceptance"
+  ]
+}

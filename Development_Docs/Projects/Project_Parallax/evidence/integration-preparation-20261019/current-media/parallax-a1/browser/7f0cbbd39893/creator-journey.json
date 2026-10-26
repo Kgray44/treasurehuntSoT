@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "steps": 28,
+  "provider": "SYNTHETIC_UNPAID",
+  "definitionId": "64b925da-59f8-4c1c-a95f-52c07f33eb6d",
+  "pinnedChecksum": "fac492568b2f12fa706071d20182154c3a4615933c405e22d70540964e709c40",
+  "requestId": "acdaf4d0-d4f0-4645-8e19-09b2a9c0116d",
+  "applicationRevision": 3,
+  "progressionUnchanged": true,
+  "postActions": [
+    {
+      "action": "ENVIRONMENT_CATALOG"
+    },
+    {
+      "action": "ENVIRONMENT_CATALOG"
+    },
+    {
+      "action": "SAVE"
+    },
+    {
+      "action": "SAVE"
+    },
+    {
+      "action": "AI",
+      "kind": "ASSISTANT"
+    },
+    {
+      "action": "ASSISTANT_APPLY"
+    },
+    {
+      "action": "ENVIRONMENT_CATALOG"
+    },
+    {
+      "action": "AI",
+      "kind": "ASSISTANT"
+    },
+    {
+      "action": "ASSISTANT_APPLY"
+    },
+    {
+      "action": "SAVE"
+    },
+    {
+      "action": "VALIDATE"
+    },
+    {
+      "action": "RELEASE"
+    },
+    {
+      "action": "ENVIRONMENT_CATALOG"
+    },
+    {
+      "action": "ATTACH"
+    },
+    {
+      "action": "ENVIRONMENT_CATALOG"
+    },
+    {
+      "action": "ENVIRONMENT_CATALOG"
+    }
+  ]
+}

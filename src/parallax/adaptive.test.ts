@@ -41,9 +41,10 @@ describe("adaptive semantic staging", () => {
       relativePlacement: "RIGHT" as const,
     };
     const candidate = {
-      ...syntheticEnvironmentEvidence(room).candidates[0],
+      ...syntheticEnvironmentEvidence(room).candidates.find((c) => c.id === "reference-desk")!,
       surface: "WALL" as const,
       normal: { x: 1, y: 0, z: 0 },
+      rotation: undefined,
     };
     const result = evaluateCandidate(recipe, candidate, 0.25, true);
     expect(result.accepted).toBe(true);
@@ -59,7 +60,7 @@ describe("adaptive semantic staging", () => {
   });
   it("requires an actual viewer context for player-facing placement", () => {
     const recipe = { ...draft().content.adaptive!.recipes[0], orientation: "PLAYER_FACING" as const };
-    const candidate = syntheticEnvironmentEvidence(room).candidates[0];
+    const candidate = syntheticEnvironmentEvidence(room).candidates.find((c) => c.id === "reference-desk")!;
     expect(evaluateCandidate(recipe, candidate, 0.25, true).constraints).toContain("VIEWER_CONTEXT_REQUIRED");
     expect(evaluateCandidate(recipe, candidate, 0.25, true, { x: 4, y: 1, z: 2 }).accepted).toBe(true);
   });
@@ -77,7 +78,7 @@ describe("adaptive semantic staging", () => {
       { confidence: 0.1 },
       { visibility: 0 },
       { position: { x: 9, y: 0.75, z: 9 } },
-      { normal: { x: 0, y: 0, z: 1 } },
+      { normal: { x: 0, y: 0, z: 1 }, rotation: identityTransform().rotation },
     ]) {
       expect(
         revalidateAdaptiveScene(
@@ -166,6 +167,9 @@ describe("adaptive semantic staging", () => {
   });
   it("changes geometry across rooms without fabricating physical qualification", () => {
     const content = draft().content;
+    // A fixed reference desk exists in every room; use room-dependent tables for this variation assertion.
+    content.adaptive!.recipes[0].preferredSurfaces = ["TABLE"];
+    content.adaptive!.recipes[0].alternateSurfaces = [];
     const results = simulationEnvironments.map((r) =>
       resolveAdaptiveScene(content, syntheticEnvironmentEvidence(r), "same"),
     );

@@ -1,0 +1,27 @@
+.agents/parallax-studio-overhaul.md 635ms
+scripts/parallax/run-owner-room-photo-browser.mjs 296ms
+src/community/spatial-publication.integration.test.ts 265ms
+src/components/studio/parallax/BehaviorTracks.tsx 63ms
+src/components/studio/parallax/RoomEnvironmentEditor.tsx 51ms
+src/components/studio/parallax/SceneGroups.tsx 42ms
+src/components/studio/parallax/SpatialCommunityPublisher.tsx 60ms
+src/components/studio/parallax/SpatialContentLibrary.test.tsx 46ms
+src/components/studio/parallax/SpatialContentLibrary.tsx 92ms
+src/components/studio/parallax/SpatialElementInspector.tsx 11ms
+src/components/studio/parallax/SpatialStudio.tsx 252ms
+src/parallax/group-surface-placement.test.ts 30ms
+src/parallax/group-surface-placement.ts 11ms
+src/parallax/spatial-catalog-page-service.test.ts 12ms
+src/parallax/spatial-catalog-page-service.ts 15ms
+src/parallax/surface-placement.test.ts 13ms
+tests/e2e/parallax-sc00b-combined.spec.ts 47ms
+tests/e2e/parallax-sc00c-drop-placement.spec.ts 5ms
+tests/e2e/parallax-sc00c-expanded-library.spec.ts 36ms
+tests/e2e/parallax-spatial-community.spec.ts 90ms
+src/components/studio/parallax/SpatialStudio.test.tsx 58ms
+src/components/studio/parallax/SpatialAssetInspector3D.tsx 12ms (unchanged)
+tests/e2e/parallax-groups.spec.ts 66ms
+tests/e2e/parallax-sc02.spec.ts 101ms
+tests/e2e/parallax-asset-quality.spec.ts 23ms
+tests/e2e/parallax-authoring-refinements.spec.ts 53ms
+tests/e2e/parallax-room-photo.spec.ts 19ms
