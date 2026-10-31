@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { requireCanonicalAccountIdentity, verifyPlayerCsrf } from "@/platform/auth";
+import { verifyPlayerCsrf } from "@/platform/auth";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { communityApiError } from "@/community/api";
 import { preflightSpatialPublication } from "@/community/spatial-publication";
 
 export async function POST(request: Request) {
-  const actor = await requireCanonicalAccountIdentity();
+  const actor = await requireStudioWorkspace(request);
   if (!actor || !(await verifyPlayerCsrf(request.headers.get("x-csrf-token"))))
     return NextResponse.json(
       { code: "COMMUNITY_ACCESS_DENIED", error: "Creator access and CSRF verification required." },
