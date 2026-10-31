@@ -497,7 +497,7 @@ All updates require normal SC-05 Change Impact Assessment, source revision check
 
 ### 11.4 Stale work, concurrency, undo and recoverability
 
-If source changes while an adaptation job is running, the job's source digest is stale. Reevaluate or stop before applying. If another browser modifies target blocks or Artist changes the selected Scene manually, use owning-tool CAS/generation checks before Apply. An edit followed by Undo may have same digest but changed edit generation; keep the existing Parallax/Chronicle safe contract.
+If source changes while an adaptation job is running, the job's source digest is stale. Reevaluate or stop before applying. If another browser modifies target blocks or the Creator changes the selected Scene manually, use owning-tool CAS/generation checks before Apply. An edit followed by Undo may have same digest but changed edit generation; keep the existing Parallax/Chronicle safe contract.
 
 Partial application must produce per-stage receipts and preserve existing data. Idempotent retry cannot duplicate the same scene/blocks or reward; uncertain billing stays reserved until reconciled. An undo of an adapted block does not automatically erase source history or prior source mapping audit. When a target is manually deleted, source map gets an orphan/tombstone status, not resurrect it without consent.
 
@@ -701,7 +701,7 @@ The narrator claims a missing character was never seen again, but another charac
 
 ### 15.8 Large full novel / three resource tiers
 
-Free Creator indexes/parses a long source under allowed source/storage policies and progressively works on selected scenes with Luna until finite AI allowance is reached; normal manual tools continue. Paid Creator builds a larger staged adaptation but remains subject to per-job/global caps. Pro Creator authorizes deep multichapter planning and alternative narrative review, yet hard spend cap refuses a proposed expensive media pipeline. None receive unlimited provider calls. AdmiraIty history displays safe, source-identified operation usage.
+Free Creator indexes/parses a long source under allowed source/storage policies and progressively works on selected scenes with Luna until finite AI allowance is reached; normal manual tools continue. Paid Creator builds a larger staged adaptation but remains subject to per-job/global caps. Pro Creator authorizes deep multichapter planning and alternative narrative review, yet hard spend cap refuses a proposed expensive media pipeline. None receive unlimited provider calls. Admiralty history displays safe, source-identified operation usage.
 
 ### 15.9 Rights-restricted source
 
