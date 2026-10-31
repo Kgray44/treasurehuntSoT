@@ -14,15 +14,17 @@ source_basis: "October 31, 2026 owner SC-06 design conversation, SC roadmap and 
 ---
 
 # SC-06: Story Import & Adaptation
+
 ## Turning a story into a world someone can experience
 
-> **Governing experience promise.** SC-06 helps a Creator discover how a story can be *experienced*, not merely rewritten. One Creator may wish to faithfully walk through the events as authored; another may wish to live freely inside the story's world. Both are first-class goals. The Creator controls where the experience sits between them, down to individual source elements, and can change that direction at any time. **The source keeps its identity; the adapted Chronicle remains a normal editable Chronicle.**
+> **Governing experience promise.** SC-06 helps a Creator discover how a story can be _experienced_, not merely rewritten. One Creator may wish to faithfully walk through the events as authored; another may wish to live freely inside the story's world. Both are first-class goals. The Creator controls where the experience sits between them, down to individual source elements, and can change that direction at any time. **The source keeps its identity; the adapted Chronicle remains a normal editable Chronicle.**
 >
 > **Architect relationship:** Not an AI vending machine. A genuinely thoughtful collaborator.
 
 ## 0. Document authority, provenance and limits
 
-This is the **detailed proposed SC-06 governing constitution**, written *after* the separate owner design discussion on October 31, 2026. It fills the deliberately reserved fourth document of the original SC family:
+This is the **detailed proposed SC-06 governing constitution**, written _after_ the separate owner design discussion on October 31, 2026. It fills the deliberately reserved fourth document of the original SC family:
+
 1. [SC-00–SC-11 Master Program Roadmap](./Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md);
 2. [SC-05 Chronicle Architect Governing Specification](./Project_Chronicle_Architect_Governing_Document_v1.0.md);
 3. [SC-04 Puzzle Composition Governing Specification](./Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md);
@@ -33,6 +35,7 @@ Also read the [Creator Experience Cross-Project Integration Amendment](./Voyagew
 This document is **proposed**, not accepted mainline authority or product implementation. Requirements herein define what a subsequently owner-ratified implementation **must** accomplish; exact interfaces, DTOs, schema changes, model prompts and database migrations remain subject to current owner contracts, protected Source review, license/privacy/security gates, Sounding Line and explicit product-owner acceptance. No command in this document authorizes autonomous deployment, model spending, publication, database writes or mainline merge.
 
 **Source distinctions.** The October 31 conversation explicitly establishes:
+
 - three adaptation approaches are **presets** for a fully editable per-element fidelity system;
 - the Player's role and relationship to the source story are fundamental;
 - original source and published Chronicle version history must remain properly separated and immutable;
@@ -46,7 +49,7 @@ This document is **proposed**, not accepted mainline authority or product implem
 
 Additional safety, proof, data-model and interaction details below are **proposed implementation requirements derived from those approved product choices**. They must be reconciled with current real services; do not imply their APIs already exist.
 
-**Normative terms:** MUST/MUST NOT/SHALL express gating requirements after owner ratification; SHOULD is an expected default needing recorded rationale to waive; MAY is an optional feature. Source schemas in this document are *conceptual only*, never an authorization to create a shadow database or incompatible Graph model.
+**Normative terms:** MUST/MUST NOT/SHALL express gating requirements after owner ratification; SHOULD is an expected default needing recorded rationale to waive; MAY is an optional feature. Source schemas in this document are _conceptual only_, never an authorization to create a shadow database or incompatible Graph model.
 
 ### 0.1 Non-negotiable invariants
 
@@ -77,7 +80,7 @@ SC-06 should feel creative, approachable and delightful for a novice while offer
 
 - A new Creator imports a short story, speaks with Architect about how it should feel, reviews a clear Source Story Map and chooses an adaptation approach. The first scene is created and can really be edited/played.
 - An experienced Creator imports a long, complicated novel, chooses unusual Player roles, sets explicit character/ending boundaries, and supervises a staged, source-grounded adaptation with visible costs, validation and revision safety.
-- A Creator who began *manually* with seven Chronicle chapters imports a story and asks Architect to adapt it into **only Chapter V**, without turning the entire Chronicle into an "AI Chronicle."
+- A Creator who began _manually_ with seven Chronicle chapters imports a story and asks Architect to adapt it into **only Chapter V**, without turning the entire Chronicle into an "AI Chronicle."
 - A Creator revises the source later and sees a precise impacted-object comparison rather than watching all their beautiful manual work get replaced.
 - A free Creator can do useful, thoughtful incremental source work with Luna within finite allowances, and all manual Creator tools remain available when AI allowance is exhausted.
 - A published Chronicle remains playable, version-pinned and unaffected by new source edits or subsequent re-adaptation.
@@ -89,29 +92,30 @@ SC-06 is not a second editor runtime; a second Architect persona; a general purp
 
 ## 2. Ownership and source-of-truth boundaries
 
-| Concern | Accountable owner / contract | SC-06 role | Prohibited shortcut |
-|---|---|---|---|
-| Creator's unified journey / contextual workspace | Shipwright / Creator Studio + SC-05 | Offer adaptation views inside Architect, preserve context and ordinary tool links | Independent adaptation app and chat |
-| Natural language source understanding and creative co-design | SC-05 Chronicle Architect under SC-06 fidelity contract | Generate source-grounded proposals, story maps, creative options | Unreviewed direct database mutations |
-| Source files, rights, access and private content lifecycle | Existing protected asset/Sealed Hold & account services | Accept approved sources and store source versions through owned facilities | Public URLs or plaintext source logs by default |
-| Source parsing, fingerprint, deterministic structure | Accepted ingestion/storage services, SC-06 adapter | Segment/index/hash/version with bounded source types | Claim arbitrary formats have reliable extraction |
-| Source mapping, adaptation policy, fidelity audit | SC-06 product/domain contract with Drydock owner review | Connect source anchors ↔ authored target objects and policies | Opaque unmappable novel rewrite |
-| Story Blocks, chapters, draft state, publication, progression | One Voyage / Chronicle services and Drydock graph schemas | Use normal canonical authoring operations | Parallel adapted-only event graph |
-| Guided named Branch Editor | Shipwright + Drydock/One Voyage | Suggest and link real outcomes/routes | Parallel "adapted branch" runtime |
-| Puzzle mechanics and solution correctness | SC-04 + Drydock | Propose/create only approved Puzzle definitions/instances | Fake interactive puzzle placeholder |
-| Spatial scenes/AR, maps, devices, multi-surface | Parallax, Landfall, Sextant, Crossdeck, Watchglass, Reach | Bind qualified owner-source operations | Invent sensor or game observation |
-| Narrative/cinematic presentation | Storytide/Lanternwake | Suggest and apply approved timings/edits | Unsupported cinematic promise |
-| Artifacts, custody and grants | Current Artifact/One Voyage services | Request normal typed effects | New source-only Artifact inventory |
-| Validation, scenario and adaptation consistency | Drydock for proofs; SC-06/Architect for editorial checks | Produce source-bound reports with evidence classes | Call subjectivity a mathematical proof |
-| Community and packaging | Harborlight + Sealed Hold | Rights-aware reuse/release only via canonical policy | Upload private manuscript to public Community |
-| AI spend/model policies | Admiralty AI Usage & Quotas | Consume budgeted text/media calls through one ledger | Hidden costs or separate provider account |
-| Software acceptance | Sounding Line and owner product/visual review | Provide exact source evidence and Player journey testing | "Model said done" as acceptance |
+| Concern                                                       | Accountable owner / contract                              | SC-06 role                                                                        | Prohibited shortcut                              |
+| ------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------ |
+| Creator's unified journey / contextual workspace              | Shipwright / Creator Studio + SC-05                       | Offer adaptation views inside Architect, preserve context and ordinary tool links | Independent adaptation app and chat              |
+| Natural language source understanding and creative co-design  | SC-05 Chronicle Architect under SC-06 fidelity contract   | Generate source-grounded proposals, story maps, creative options                  | Unreviewed direct database mutations             |
+| Source files, rights, access and private content lifecycle    | Existing protected asset/Sealed Hold & account services   | Accept approved sources and store source versions through owned facilities        | Public URLs or plaintext source logs by default  |
+| Source parsing, fingerprint, deterministic structure          | Accepted ingestion/storage services, SC-06 adapter        | Segment/index/hash/version with bounded source types                              | Claim arbitrary formats have reliable extraction |
+| Source mapping, adaptation policy, fidelity audit             | SC-06 product/domain contract with Drydock owner review   | Connect source anchors ↔ authored target objects and policies                    | Opaque unmappable novel rewrite                  |
+| Story Blocks, chapters, draft state, publication, progression | One Voyage / Chronicle services and Drydock graph schemas | Use normal canonical authoring operations                                         | Parallel adapted-only event graph                |
+| Guided named Branch Editor                                    | Shipwright + Drydock/One Voyage                           | Suggest and link real outcomes/routes                                             | Parallel "adapted branch" runtime                |
+| Puzzle mechanics and solution correctness                     | SC-04 + Drydock                                           | Propose/create only approved Puzzle definitions/instances                         | Fake interactive puzzle placeholder              |
+| Spatial scenes/AR, maps, devices, multi-surface               | Parallax, Landfall, Sextant, Crossdeck, Watchglass, Reach | Bind qualified owner-source operations                                            | Invent sensor or game observation                |
+| Narrative/cinematic presentation                              | Storytide/Lanternwake                                     | Suggest and apply approved timings/edits                                          | Unsupported cinematic promise                    |
+| Artifacts, custody and grants                                 | Current Artifact/One Voyage services                      | Request normal typed effects                                                      | New source-only Artifact inventory               |
+| Validation, scenario and adaptation consistency               | Drydock for proofs; SC-06/Architect for editorial checks  | Produce source-bound reports with evidence classes                                | Call subjectivity a mathematical proof           |
+| Community and packaging                                       | Harborlight + Sealed Hold                                 | Rights-aware reuse/release only via canonical policy                              | Upload private manuscript to public Community    |
+| AI spend/model policies                                       | Admiralty AI Usage & Quotas                               | Consume budgeted text/media calls through one ledger                              | Hidden costs or separate provider account        |
+| Software acceptance                                           | Sounding Line and owner product/visual review             | Provide exact source evidence and Player journey testing                          | "Model said done" as acceptance                  |
 
 No single broad "SC-06 service" acquires unrestricted read/write access across these domains. Every operation must be a narrow, authenticated, version-checked capability call. The SC-06 owner is responsible for the meaning of source mapping, not ownership of all downstream entities.
 
 ## 3. Four New Chronicle entry choices are flexible starting intentions
 
 Creator Studio has four prominent, equal-standing starting choices:
+
 - **Create Manually**
 - **Create with AI**
 - **Adapt a Story**
@@ -120,6 +124,7 @@ Creator Studio has four prominent, equal-standing starting choices:
 These are **onboarding intentions or workflow presets**, not mutually exclusive Chronicle types, permission grants or separate products. Choosing one does not modify One Voyage publication/progression semantics. The Creator may move among manual construction, AI collaboration, template reuse and source adaptation in any order.
 
 Examples requiring explicit acceptance:
+
 - Manually create a Chronicle, import a short story six sessions later, adapt its ending into the middle of the existing narrative.
 - Start from a template, then import a source manuscript and replace only specific template chapters after reviewed effects.
 - Choose Adapt a Story, create first draft, then use normal manual Story Editor and Parallax without invoking AI for months.
@@ -130,7 +135,8 @@ Examples requiring explicit acceptance:
 
 ### 3.1 Relationship to SC-05 Architect
 
-The Architect is the *one* Creator-facing conversational creative partner. SC-06 is a **specialized competence and workflow** of that Architect:
+The Architect is the _one_ Creator-facing conversational creative partner. SC-06 is a **specialized competence and workflow** of that Architect:
+
 - source-oriented opening prompt and scope selector;
 - import/inspect current source;
 - source map and fidelity profile in central visualizer;
@@ -153,6 +159,7 @@ No design is accepted solely because the page looks like the screenshot. It must
 ### 4.1 Input affordances
 
 A Creator may choose supported paths:
+
 - paste or type authored text directly;
 - upload an explicit supported private source document;
 - choose an authorized source already associated with the Chronicle or account;
@@ -170,6 +177,7 @@ A new import creates an **immutable Source Version** (after accepted storage pol
 ### 4.3 Original source versus extracted text
 
 Some inputs can be faithfully represented as native text; some require conversion, structure extraction, or media analysis. Preserve distinctions:
+
 - original uploaded bytes, when permitted;
 - normalized extracted text with parser version, encoding, localization and known omissions;
 - canonical source-section/chapter/paragraph/offset references or equivalent robust anchors;
@@ -190,6 +198,7 @@ Mapping can explicitly combine sources when rights and Creator instructions allo
 ### 5.1 Core task
 
 Architect should **understand before constructing**. The Story Understanding Pass produces a private, inspectable and source-linked map of:
+
 - narrative structure and logical chronology versus order of presentation;
 - scenes, transitions, viewpoint and changes in time/place;
 - named people/characters, relationships, roles, motivations and knowledge;
@@ -207,6 +216,7 @@ This must be **evidence-grounded** rather than an invented "complete story" reco
 ### 5.2 Claims versus observed statements
 
 Explicitly distinguish:
+
 - **Source text states:** a character says "I never loved him."
 - **Narrative fact:** the narrator asserts a relationship, subject to narrator reliability.
 - **Interpretation:** this sentence may represent grief, denial, deception or literal truth.
@@ -237,17 +247,18 @@ For cross-chapter plots, targeted retrieval must include necessary preceding/fut
 
 ### 6.1 Three preset starting points
 
-| Starting preset | Intent | Default adaptation posture |
-|---|---|---|
-| **Faithful Experience** | Let Players experience the original story closely | Preserve essential plot sequence, characters, important dialogue, facts and ending; use interactions for exploration, participation and careful presentation |
-| **Interactive Adaptation** | Keep recognizable story while giving Players meaningful agency | Preserve the core themes/identity and selected plot points; allow reviewed choices, optional paths, puzzle design and approved alternative outcomes |
-| **Creative Reimagining** | Invite Players to live in or reinterpret the source world | Allow more extensive restructuring, original material and alternate outcomes while retaining Creator-selected world/character/theme anchors and source lineage |
+| Starting preset            | Intent                                                         | Default adaptation posture                                                                                                                                     |
+| -------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Faithful Experience**    | Let Players experience the original story closely              | Preserve essential plot sequence, characters, important dialogue, facts and ending; use interactions for exploration, participation and careful presentation   |
+| **Interactive Adaptation** | Keep recognizable story while giving Players meaningful agency | Preserve the core themes/identity and selected plot points; allow reviewed choices, optional paths, puzzle design and approved alternative outcomes            |
+| **Creative Reimagining**   | Invite Players to live in or reinterpret the source world      | Allow more extensive restructuring, original material and alternate outcomes while retaining Creator-selected world/character/theme anchors and source lineage |
 
 **These are preset vectors**, not separate services, locked data types or permanent state. The Creator can change any individual fidelity setting at any time, and can apply a new preset to selected elements via a visible diff. Changing the global preset must never erase more-specific custom settings or existing authored Chronicle objects without explicit review.
 
 ### 6.2 Per-element fidelity contract
 
 A configurable rule can apply to:
+
 - source work overall;
 - section/chapter/paragraph or exact quoted span;
 - character identity, relationship, motivation, voice and knowledge;
@@ -261,6 +272,7 @@ A configurable rule can apply to:
 - certain source visual/media material.
 
 Example policy values:
+
 - **PRESERVE EXACTLY:** exact bytes/approved normalized text or immutable specific source element.
 - **PRESERVE FACT:** consistent established meaning while wording/presentation may change.
 - **PROTECT INTENT:** emotional/narrative purpose must remain, explicit review before material change.
@@ -275,6 +287,7 @@ A rule also needs scope, priority, author/approver, affected exact source versio
 ### 6.3 Fidelity changes after construction
 
 The Creator can move from Faithful to Interactive or selectively relax a character rule after drafting scenes. Present:
+
 - which settings will change, new vs existing;
 - what source passages and Chronicle objects are affected;
 - whether a previously protected ending or exact quotation becomes available for editing;
@@ -287,6 +300,7 @@ Do **not** automatically rebuild the Chronicle, erase human work or rewrite publ
 ### 6.4 Original ending policy
 
 By default, the original ending remains preserved and reachable if the Creator selects Faithful Experience or has not explicitly authorized alternate endings. Under another preset, the Creator may:
+
 - keep original ending as sole outcome;
 - keep it as preferred/primary outcome but allow authorized alternatives;
 - establish several equally legitimate endings;
@@ -306,6 +320,7 @@ A faithful adaptation can still include rich interaction, environmental explorat
 Before detailed transformation, Architect should ask or infer-as-proposal the Player's intended role, since this changes viewpoint, authority, interaction design and even the nature of the adaptation.
 
 Supported creative archetypes (presets, editable):
+
 - **Be the Protagonist:** Players enact key actions/decisions as original main character where feasible.
 - **Assist the Protagonist:** Players are companions/supporting participants influencing how events are experienced.
 - **Witness the Story:** Players discover and participate around an established mostly fixed plot without rewriting central events.
@@ -319,6 +334,7 @@ A role is a creative **participation contract**, not an authorization to imperso
 ### 7.2 Scene participation mapping
 
 For each source event, the Creator can select how it becomes an experience:
+
 - Read/listen/watch the established event.
 - Explore a Scene to discover the event.
 - Perform an action originally performed by a source character.
@@ -354,6 +370,7 @@ Present source chronology, character relationships, places, mysteries, emotional
 ### 8.3 Adaptation Map view
 
 Present a readable **source ↔ playable Chronicle** correspondence:
+
 - source passage(s)/beat(s) and mapped Chronicle chapter/branch/block/moment(s);
 - original text vs proposed/approved transformed text;
 - what was preserved exactly, paraphrased, reorganized, omitted intentionally or invented by Creator/AI;
@@ -374,6 +391,7 @@ After imported source or policy revision, show a focused diff: changed source sp
 ### 8.6 Source Coverage view
 
 Show:
+
 - meaningful source beats inventoried;
 - beats already adapted with target references;
 - preserved verbatim, transformed, summarized, intentionally omitted, undecided;
@@ -387,7 +405,7 @@ A "98% source coverage" metric is not proof of artistic quality. Counts must spe
 
 ### 8.7 UI continuity and motion
 
-The existing SC-05 home/rail visuals, color/light/dark, Liquid Glass surfaces and exact user supplied background assets remain governing. Transition to an adaptation subview should be an in-place visualizer change or meaningful shared-element expansion, not a new application page or unfamiliar chatbot. A proposed interactive moment can smoothly grow into the *real* Story Editor, Puzzle Workshop, Parallax Studio, Artifact editor or Drydock Playtest only **after a real successful canonical receipt**. Re-entering source view returns to the same anchor and selection without rereading from scratch or spending an idle inference call.
+The existing SC-05 home/rail visuals, color/light/dark, Liquid Glass surfaces and exact user supplied background assets remain governing. Transition to an adaptation subview should be an in-place visualizer change or meaningful shared-element expansion, not a new application page or unfamiliar chatbot. A proposed interactive moment can smoothly grow into the _real_ Story Editor, Puzzle Workshop, Parallax Studio, Artifact editor or Drydock Playtest only **after a real successful canonical receipt**. Re-entering source view returns to the same anchor and selection without rereading from scratch or spending an idle inference call.
 
 Keyboard, touch, screen reader, zoom, contrast, reduced motion/transparency, narrow viewport and large text must retain complete meaningful access. Do not turn source maps into purely visual diagrams with no accessible text/list representation.
 
@@ -396,6 +414,7 @@ Keyboard, touch, screen reader, zoom, contrast, reduced motion/transparency, nar
 ### 9.1 Experience Blueprint and Production Blueprint
 
 SC-06 uses SC-05's **same two-layer blueprint**:
+
 - Creative Blueprint: emotional intent, intended audience, genre, tone, role, pacing, important beats, acceptable divergence and narrative goals.
 - Production Blueprint: exact authored chapters/Story Blocks/branch edges/Puzzle Instances/Scenes/Worldspaces/Artifacts/cinematics, dependency references, proof requirements, staged operations and cost boundaries.
 
@@ -404,6 +423,7 @@ Both link to approved Source Story Map and fidelity rules. Plans must distinguis
 ### 9.2 Show real competing approaches
 
 When a major transformation has meaningful creative alternatives, Architect may suggest:
+
 - **Relive the Original:** faithful participation in events as written.
 - **Uncover What Happened:** Players investigate later and discover the preserved original story via Artifacts/Scenes.
 - **Live in the World:** Creator-approved new plot with source setting, motifs and key characters.
@@ -428,6 +448,7 @@ A personal letter, dedication, vow, sensitive memory or manually written finale 
 ### 10.1 Canonical construction boundary
 
 All materialized output must use real authorized domain commands. SC-06 never asks a model to return a giant "ChronicleJSON" and saves it unchecked. The orchestration should:
+
 1. freeze/identify selected immutable source versions, fidelity policy revision and target Chronicle/draft revision;
 2. create a reviewable source-grounded mapping and canonical object plan;
 3. validate structural, type, license and capability prerequisites;
@@ -468,6 +489,7 @@ If the AI is unavailable, its allowance exhausted, or the original source detach
 ### 11.1 Three separate histories
 
 The design must distinguish:
+
 1. **Source Version lineage:** exact original literary source revisions and permitted normalized derivatives; authoritative original source bytes.
 2. **Adaptation Plan/Mapping lineage:** source interpretation, policy, approved transformation decisions and source-to-target bindings.
 3. **Canonical Chronicle Draft/Publication lineage:** current authoring revisions, published immutable editions, actual Player histories.
@@ -485,6 +507,7 @@ When source moved or merged substantially, mapping confidence may be unknown; do
 ### 11.3 Reconciliation choices
 
 For each affected scope, the Creator can:
+
 - keep current Chronicle content, leaving source mismatch acknowledged;
 - adapt only the changed source portion;
 - accept a reviewed proposed Story/Scene/Puzzle revision;
@@ -510,6 +533,7 @@ A source work becoming restricted, permission being revoked, or a previously val
 ### 12.1 Four evidence classes
 
 The review UI should distinguish:
+
 - **EXACT FACT / SOURCE RECEIPT:** document text, source version/spans, actual saved object IDs, byte-for-byte protected passage identity.
 - **DETERMINISTIC/BOUNDED PROOF:** Drydock reachability, required dependencies, schema consistency, authorized role/outcome, source span mapping integrity when provable.
 - **MODELED ESTIMATE:** Playtest timing, reading/search/travel, Player behavior/difficulty with assumptions and confidence.
@@ -520,6 +544,7 @@ Do not display all four under a single vague "97% adaptation quality" score. A p
 ### 12.2 Fidelity report
 
 Architect may flag:
+
 - original characters whose identities, voices or motivations seem altered;
 - contradictions with protected chronology/facts;
 - source events omitted without explicit intent;
@@ -538,6 +563,7 @@ For each flag provide source anchor, target references, relevant policy/commitme
 Drydock handles ordinary authored Chronicle structure, including graph accessibility, branches/merge, SC-04 puzzle solutions, missing dependencies, deterministic seeded variations, individual/shared progress, device fallback and authorized outcomes.
 
 **Playtest remains universal**, not a private SC-06 preview engine. It should support:
+
 - play source-faithful route, alternate approved route or investigators' route;
 - inspect actual Player-facing information flow vs source narrative;
 - test accessibility and 2D paths;
@@ -559,26 +585,27 @@ Source Coverage is a meaningful editing tool, not a vanity progress bar. Report 
 
 ### 13.2 Pipeline stages and AI decision points
 
-| Stage | First implementation approach | When a model call is justified |
-|---|---|---|
-| Ingest/validate | Auth, safe parser, byte hashing, limits, rights metadata | Not for simple format/size checks |
-| Extract text/structure | Deterministic parser, chapter delimiters, offsets, normalized text | Only for difficult layout/semantic boundaries and approved image/OCR processing |
-| Segment/index | Deterministic chunks, stable ID/version digests, exact duplicate detection | Optional semantic topic grouping if benchmarked valuable |
-| Understand relevant portions | Store source-anchored facts, cast/chronology/clues and uncertainty | Purpose-bounded Luna/eligible-model analysis of selected chunks |
-| Global story synthesis | Combine validated compact section facts, key source anchors | Bounded cross-chapter analysis when plot continuity demands it |
-| Fidelity/role policy | UI presets + deterministic rule precedence | Optional conversational guidance, not model deciding creator rights |
-| Build blueprint | Reuse SC-05 plan and canonical tool registry | Meaningful generative creative/technical planning |
-| Apply construction | Canonical owned create/update APIs, validated typed commands | Model only for authored prose, creative transformations or nontrivial synthesis |
-| Validate | Drydock, deterministic source/graph/rights checks | Optional clearly labeled editorial critique, not replacing proof |
-| Reconcile source revisions | Hash diff, dependency invalidation, anchored target indexes | Only affected ambiguous parts or creative re-adaptation |
-| Maintain memory | Durable compact decisions, event-driven invalidation and cache | Targeted interpretation when genuinely needed |
-| Playtest | Ordinary Drydock/Player presentation and adapters | Optional review synthesis explicitly requested, not continuously streaming inference |
+| Stage                        | First implementation approach                                              | When a model call is justified                                                       |
+| ---------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Ingest/validate              | Auth, safe parser, byte hashing, limits, rights metadata                   | Not for simple format/size checks                                                    |
+| Extract text/structure       | Deterministic parser, chapter delimiters, offsets, normalized text         | Only for difficult layout/semantic boundaries and approved image/OCR processing      |
+| Segment/index                | Deterministic chunks, stable ID/version digests, exact duplicate detection | Optional semantic topic grouping if benchmarked valuable                             |
+| Understand relevant portions | Store source-anchored facts, cast/chronology/clues and uncertainty         | Purpose-bounded Luna/eligible-model analysis of selected chunks                      |
+| Global story synthesis       | Combine validated compact section facts, key source anchors                | Bounded cross-chapter analysis when plot continuity demands it                       |
+| Fidelity/role policy         | UI presets + deterministic rule precedence                                 | Optional conversational guidance, not model deciding creator rights                  |
+| Build blueprint              | Reuse SC-05 plan and canonical tool registry                               | Meaningful generative creative/technical planning                                    |
+| Apply construction           | Canonical owned create/update APIs, validated typed commands               | Model only for authored prose, creative transformations or nontrivial synthesis      |
+| Validate                     | Drydock, deterministic source/graph/rights checks                          | Optional clearly labeled editorial critique, not replacing proof                     |
+| Reconcile source revisions   | Hash diff, dependency invalidation, anchored target indexes                | Only affected ambiguous parts or creative re-adaptation                              |
+| Maintain memory              | Durable compact decisions, event-driven invalidation and cache             | Targeted interpretation when genuinely needed                                        |
+| Playtest                     | Ordinary Drydock/Player presentation and adapters                          | Optional review synthesis explicitly requested, not continuously streaming inference |
 
 A UI interaction such as opening Source Story Map, scrolling the source, switching adaptation tabs or minimizing Architect should not bill a model call. Unchanged source segments shouldn't be reanalyzed simply because the page reopened.
 
 ### 13.3 Context budgets and hierarchical retrieval
 
 Every call receives the minimal authorized **Context Package**:
+
 - selected source version and relevant anchored excerpt(s);
 - exact active Chronicle/draft/selected target revision;
 - Creator style and relevant hard Creative Commitments;
@@ -609,6 +636,7 @@ A long novel may exceed free single-job limits. Architect should still discuss v
 ### 13.6 Admiralty is the one ledger
 
 All paid inference and provider charges for adaptation and source understanding use the existing **Admiralty → AI Usage & Quotas** authoritative reservation/settlement path. Record workload categories such as:
+
 - SC06_SOURCE_IMPORT_AI (only if model work actually used);
 - SC06_STORY_UNDERSTANDING;
 - SC06_SOURCE_MAP_SYNTHESIS;
@@ -628,6 +656,7 @@ Atomic shared database reservation and user/global budgets control in-flight cos
 ### 13.7 Benchmarks before quotas/prices
 
 Run source-bound **bounded synthetic benchmarks only after separate cost authorization** for:
+
 1. very short story, concise and long-form Creator conversation;
 2. medium multi-chapter work with relationships and reveal timing;
 3. full novel-length source, hierarchical analysis and chapter mapping;
@@ -713,117 +742,117 @@ Creator changes a puzzle and Scene in the canonical editor, closes the browser a
 
 ## 16. Failure, edge-case and negative-case requirements
 
-| Case | Required disposition |
-|---|---|
-| Empty file / unsupported format | Truthful import error, no model hallucination or phantom source |
-| Scanned pages not extracted | Clearly identify missing text/pages; request supported input, do not fabricate |
-| Extremely long source beyond tier/job size | Stage and summarize supported portions, explicit coverage gaps, no unlimited calls |
-| Source ends without resolution | Preserve intentional ambiguity; do not invent original ending |
-| Two characters share a name | Disambiguate source spans, not random merge |
-| Character lies about relationship | Tag speech as claim, not canon |
-| Multiple narrators contradict one another | Present unresolved interpretations, allow Creator ruling |
-| Personal letter marked Preserve Exactly | Reject unauthorized paraphrase, including during "improve this" |
-| Creator changes preset after manual polishing | Preview fidelity impact only, do not overwrite unrelated manual edits |
-| Imported source revised while AI applies | Stale-source guard; stop or replan with approval |
-| Target Scene manually changed during analysis | Current canonical revision wins; no stale overwrite |
-| Same source uploaded twice | Idempotent authorized reuse or explicit new version; no duplicate hidden costs |
-| Multi-source conflicting timelines | Explicit source provenance and conflict review |
-| Source from another account | Server rejects unauthorized read, no filename/digest side-channel |
-| Unsupported 3D/AR scene | Honest concept/fallback, no "saved playable Scene" claim |
-| Free user reaches allowance | AI pauses; source and normal Chronicle remain editable |
-| Paid/Pro reaches hard spending ceiling | No charged dispatch; stage proposal for later explicit authorization |
-| Provider timeout after dispatch | Conservative UNKNOWN exposure, no automatic hidden retry |
-| Model proposes forbidden publication | Reject at owner/domain authorization layer |
-| Creator wants fixed source ending and random alternatives | Warn about policy contradiction, preserve source ending as required |
-| Exact quote source anchor moves in V2 | Remap only with source evidence or ask; no silent wrong binding |
-| Source beat intentionally omitted | Mark OMITTED_WITH_APPROVAL, not a false missing quality defect |
-| Source-to-target link orphaned by deletion | Report orphaned reference, don't resurrect deleted object automatically |
-| Player in two devices under crew participation | One actual Player identity, not two roles |
-| Public export with private source quote | Rights and Sealed Hold checks, no unauthorized leak |
-| Import source contains hostile agent prompt | Treat as data, no tool privilege |
-| User requests a scene without interactivity | Respect quiet narrative as valid design |
-| AI claims a feeling or theme is objectively wrong | Editorial classification with rationale, no false Drydock proof |
-| Browser refresh or tab switching | Resumable source mapping, job status and Chronicle identity |
-| Back/undo after partial authoring | Versioned receipts, no accidental loss of source history |
-| Multiple published Chronicle editions | Exact pinning, no retrospective source- or AI-induced change |
+| Case                                                      | Required disposition                                                               |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Empty file / unsupported format                           | Truthful import error, no model hallucination or phantom source                    |
+| Scanned pages not extracted                               | Clearly identify missing text/pages; request supported input, do not fabricate     |
+| Extremely long source beyond tier/job size                | Stage and summarize supported portions, explicit coverage gaps, no unlimited calls |
+| Source ends without resolution                            | Preserve intentional ambiguity; do not invent original ending                      |
+| Two characters share a name                               | Disambiguate source spans, not random merge                                        |
+| Character lies about relationship                         | Tag speech as claim, not canon                                                     |
+| Multiple narrators contradict one another                 | Present unresolved interpretations, allow Creator ruling                           |
+| Personal letter marked Preserve Exactly                   | Reject unauthorized paraphrase, including during "improve this"                    |
+| Creator changes preset after manual polishing             | Preview fidelity impact only, do not overwrite unrelated manual edits              |
+| Imported source revised while AI applies                  | Stale-source guard; stop or replan with approval                                   |
+| Target Scene manually changed during analysis             | Current canonical revision wins; no stale overwrite                                |
+| Same source uploaded twice                                | Idempotent authorized reuse or explicit new version; no duplicate hidden costs     |
+| Multi-source conflicting timelines                        | Explicit source provenance and conflict review                                     |
+| Source from another account                               | Server rejects unauthorized read, no filename/digest side-channel                  |
+| Unsupported 3D/AR scene                                   | Honest concept/fallback, no "saved playable Scene" claim                           |
+| Free user reaches allowance                               | AI pauses; source and normal Chronicle remain editable                             |
+| Paid/Pro reaches hard spending ceiling                    | No charged dispatch; stage proposal for later explicit authorization               |
+| Provider timeout after dispatch                           | Conservative UNKNOWN exposure, no automatic hidden retry                           |
+| Model proposes forbidden publication                      | Reject at owner/domain authorization layer                                         |
+| Creator wants fixed source ending and random alternatives | Warn about policy contradiction, preserve source ending as required                |
+| Exact quote source anchor moves in V2                     | Remap only with source evidence or ask; no silent wrong binding                    |
+| Source beat intentionally omitted                         | Mark OMITTED_WITH_APPROVAL, not a false missing quality defect                     |
+| Source-to-target link orphaned by deletion                | Report orphaned reference, don't resurrect deleted object automatically            |
+| Player in two devices under crew participation            | One actual Player identity, not two roles                                          |
+| Public export with private source quote                   | Rights and Sealed Hold checks, no unauthorized leak                                |
+| Import source contains hostile agent prompt               | Treat as data, no tool privilege                                                   |
+| User requests a scene without interactivity               | Respect quiet narrative as valid design                                            |
+| AI claims a feeling or theme is objectively wrong         | Editorial classification with rationale, no false Drydock proof                    |
+| Browser refresh or tab switching                          | Resumable source mapping, job status and Chronicle identity                        |
+| Back/undo after partial authoring                         | Versioned receipts, no accidental loss of source history                           |
+| Multiple published Chronicle editions                     | Exact pinning, no retrospective source- or AI-induced change                       |
 
 ## 17. Acceptance gates, with stable requirement IDs
 
-All SC-06 acceptance criteria are **proposed and must be tracked in the companion ledger**. A future implementation increment may choose a subset only with explicit owner-scoped phase approval, and must not declare the *whole SC-06* complete while applicable gates remain unverified.
+All SC-06 acceptance criteria are **proposed and must be tracked in the companion ledger**. A future implementation increment may choose a subset only with explicit owner-scoped phase approval, and must not declare the _whole SC-06_ complete while applicable gates remain unverified.
 
 ### A. One unified Creator/Architect experience
 
-| ID | Required proof |
-|---|---|
-| ADP-001 | Four New Chronicle entry choices act only as interchangeable starting intentions, not separate Chronicle types/engines. |
-| ADP-002 | An existing manual or template Chronicle imports/adapts a story later without losing identity, authoring content or standard tool access. |
+| ID      | Required proof                                                                                                                                           |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ADP-001 | Four New Chronicle entry choices act only as interchangeable starting intentions, not separate Chronicle types/engines.                                  |
+| ADP-002 | An existing manual or template Chronicle imports/adapts a story later without losing identity, authoring content or standard tool access.                |
 | ADP-003 | Adapt a Story uses the existing one Chronicle Architect conversation, profile, Story Bible and full/docked/ambient interfaces, with no second assistant. |
-| ADP-004 | Source-oriented visualizer tabs/controls coexist with normal SC-05 right rail, true backgrounds, glass UI and smooth tool transitions. |
-| ADP-005 | Architect can present two substantially different source-grounded adaptation approaches and combine them through Creator review. |
-| ADP-006 | A concept-to-real-Story/Puzzle/Scene transition is visually fluid only after an authorized saved object receipt; no faux persisted content. |
-| ADP-007 | Editor/tool manual changes become current canonical context before Architect's next consequential message/application. |
+| ADP-004 | Source-oriented visualizer tabs/controls coexist with normal SC-05 right rail, true backgrounds, glass UI and smooth tool transitions.                   |
+| ADP-005 | Architect can present two substantially different source-grounded adaptation approaches and combine them through Creator review.                         |
+| ADP-006 | A concept-to-real-Story/Puzzle/Scene transition is visually fluid only after an authorized saved object receipt; no faux persisted content.              |
+| ADP-007 | Editor/tool manual changes become current canonical context before Architect's next consequential message/application.                                   |
 
 ### B. Source import, custody and source understanding
 
-| ID | Required proof |
-|---|---|
-| ADP-008 | Source adapters admit only actual supported formats/size/types, show extraction warnings/coverage and reject malformed or unsupported data. |
-| ADP-009 | Original source versions are immutable/provenance-bound and separately stored from normalized extracted text and published Chronicle editions. |
+| ID      | Required proof                                                                                                                                       |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ADP-008 | Source adapters admit only actual supported formats/size/types, show extraction warnings/coverage and reject malformed or unsupported data.          |
+| ADP-009 | Original source versions are immutable/provenance-bound and separately stored from normalized extracted text and published Chronicle editions.       |
 | ADP-010 | Source Story Map identifies anchored scenes, relationships, chronology, objects, mysteries, reveals, themes and uncertainty using real source spans. |
-| ADP-011 | Claims, narrator statements, interpretations, Creator canon and AI proposals remain separate, including unreliable narrators. |
-| ADP-012 | Multiple source works have distinct source IDs, rights and role/scope; no silent unrelated-chronicle or unrelated-source blending. |
-| ADP-013 | Story Bible/Storybook derived facts retain source provenance and are invalidated incrementally when source/canonical facts change. |
-| ADP-014 | Creator can inspect, correct and decline proposed source interpretations without modifying immutable originals. |
+| ADP-011 | Claims, narrator statements, interpretations, Creator canon and AI proposals remain separate, including unreliable narrators.                        |
+| ADP-012 | Multiple source works have distinct source IDs, rights and role/scope; no silent unrelated-chronicle or unrelated-source blending.                   |
+| ADP-013 | Story Bible/Storybook derived facts retain source provenance and are invalidated incrementally when source/canonical facts change.                   |
+| ADP-014 | Creator can inspect, correct and decline proposed source interpretations without modifying immutable originals.                                      |
 
 ### C. Fidelity, Player role and meaningful creative participation
 
-| ID | Required proof |
-|---|---|
-| ADP-015 | Faithful, Interactive and Reimagining presets are editable initial policies, not separate rendering or construction engines. |
-| ADP-016 | Individual fidelity rules apply to source work, chapter, passage, character, event, dialogue, clue, setting, theme, ending and added content. |
+| ID      | Required proof                                                                                                                                    |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ADP-015 | Faithful, Interactive and Reimagining presets are editable initial policies, not separate rendering or construction engines.                      |
+| ADP-016 | Individual fidelity rules apply to source work, chapter, passage, character, event, dialogue, clue, setting, theme, ending and added content.     |
 | ADP-017 | Exact protected quotations and protected story/ending intent remain unchanged by authorized general edits until specific Creator review/approval. |
-| ADP-018 | Switching presets or fidelity rules shows actual impact and preserves more-specific Creator-approved overrides and manual authoring. |
-| ADP-019 | Creator can select protagonist, companion, witness, investigator, new character, crew or hybrid role and see honest consequences. |
+| ADP-018 | Switching presets or fidelity rules shows actual impact and preserves more-specific Creator-approved overrides and manual authoring.              |
+| ADP-019 | Creator can select protagonist, companion, witness, investigator, new character, crew or hybrid role and see honest consequences.                 |
 | ADP-020 | Fixed, optional, altered, and what-if endings are differentiated, with source ending preserved by default unless explicit authorized alternative. |
-| ADP-021 | An emotionally significant source scene may remain quiet/noninteractive; no artificial mandatory puzzle/AR requirement. |
-| ADP-022 | Role-specific knowledge, collaborative progress and same-person multi-device comply with existing One Voyage/Crossdeck/SC-04 contracts. |
+| ADP-021 | An emotionally significant source scene may remain quiet/noninteractive; no artificial mandatory puzzle/AR requirement.                           |
+| ADP-022 | Role-specific knowledge, collaborative progress and same-person multi-device comply with existing One Voyage/Crossdeck/SC-04 contracts.           |
 
 ### D. Traceability and canonical Chronicle construction
 
-| ID | Required proof |
-|---|---|
-| ADP-023 | The Adaptation Map supports two-way many-to-many source/target links with classification and versioned source anchors. |
-| ADP-024 | Creator can inspect preserved, paraphrased, omitted, restructured and newly authored material, including who approved AI additions. |
-| ADP-025 | Source Coverage report names explicit denominator, omissions, unknowns and mapped statuses; it does not mislabel coverage as quality. |
+| ID      | Required proof                                                                                                                              |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| ADP-023 | The Adaptation Map supports two-way many-to-many source/target links with classification and versioned source anchors.                      |
+| ADP-024 | Creator can inspect preserved, paraphrased, omitted, restructured and newly authored material, including who approved AI additions.         |
+| ADP-025 | Source Coverage report names explicit denominator, omissions, unknowns and mapped statuses; it does not mislabel coverage as quality.       |
 | ADP-026 | All applied output is normal real versioned Chronicle content through owner-authenticated tools, not AI-only parallel data or placeholders. |
-| ADP-027 | Actual chapters/branches, puzzles, Scene/Artifact/Worldspace refs and outcomes comply with owner schema and source-bound Drydock. |
-| ADP-028 | Creator can edit, playtest and maintain adapted output manually with AI disabled/exhausted, subject to ordinary rights/capability. |
+| ADP-027 | Actual chapters/branches, puzzles, Scene/Artifact/Worldspace refs and outcomes comply with owner schema and source-bound Drydock.           |
+| ADP-028 | Creator can edit, playtest and maintain adapted output manually with AI disabled/exhausted, subject to ordinary rights/capability.          |
 
 ### E. Revision reconciliation, protection and recovery
 
-| ID | Required proof |
-|---|---|
-| ADP-029 | Source V1→V2 change produces anchored diff and dependency impact without silently changing existing draft or published editions. |
-| ADP-030 | Creator can keep current, selectively re-adapt, remap or defer changed source sections, preserving unrelated manual improvements. |
-| ADP-031 | Re-apply/idempotent retry, concurrent tab edit, source change and undo/redo guards prevent stale overwrites or duplicate objects. |
-| ADP-032 | Published Chronicle snapshots and Player histories remain stable despite imported source changes and subsequent adaptation runs. |
+| ID      | Required proof                                                                                                                           |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| ADP-029 | Source V1→V2 change produces anchored diff and dependency impact without silently changing existing draft or published editions.         |
+| ADP-030 | Creator can keep current, selectively re-adapt, remap or defer changed source sections, preserving unrelated manual improvements.        |
+| ADP-031 | Re-apply/idempotent retry, concurrent tab edit, source change and undo/redo guards prevent stale overwrites or duplicate objects.        |
+| ADP-032 | Published Chronicle snapshots and Player histories remain stable despite imported source changes and subsequent adaptation runs.         |
 | ADP-033 | Missing source references, orphans, rights change and incompatible source rebinds produce honest reviewable issues and no silent repair. |
 
 ### F. Proof, privacy, economics and human quality
 
-| ID | Required proof |
-|---|---|
-| ADP-034 | Drydock structural proof and exact source checks are clearly distinguished from modeled Player estimates and Architect's subjective fidelity critiques. |
-| ADP-035 | Universal Playtest exercises actual adapted Player routes, source reveal timing, 2D/accessibility fallback and cooperative/role conditions. |
-| ADP-036 | Original authorship, permissions and public redistribution rights remain separately reviewed; private source never leaks to Community or AI billing exports. |
-| ADP-037 | Malicious source instructions, foreign-account IDs, unsupported URLs and metadata cannot redirect Architect tools, spending or publication. |
-| ADP-038 | Deterministic parsing/indexing, cached anchored understanding and targeted AI retrieval reduce repeat tokens without masking stale source errors. |
-| ADP-039 | Free is Luna-only; Free/Paid/Pro all respect finite quotas, global spending and per-job exposure; manual editing survives exhaustion. |
-| ADP-040 | SC-06 model/operation/cached token/cost/retry/accepted-result accounting uses the existing Admiralty AI Usage & Quotas authority. |
-| ADP-041 | Representative short, medium, novel-length, revision and long-term collaboration benchmarks are cost-capped, source-bound, quality-reviewed before fixed tier pricing. |
+| ID      | Required proof                                                                                                                                                                 |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ADP-034 | Drydock structural proof and exact source checks are clearly distinguished from modeled Player estimates and Architect's subjective fidelity critiques.                        |
+| ADP-035 | Universal Playtest exercises actual adapted Player routes, source reveal timing, 2D/accessibility fallback and cooperative/role conditions.                                    |
+| ADP-036 | Original authorship, permissions and public redistribution rights remain separately reviewed; private source never leaks to Community or AI billing exports.                   |
+| ADP-037 | Malicious source instructions, foreign-account IDs, unsupported URLs and metadata cannot redirect Architect tools, spending or publication.                                    |
+| ADP-038 | Deterministic parsing/indexing, cached anchored understanding and targeted AI retrieval reduce repeat tokens without masking stale source errors.                              |
+| ADP-039 | Free is Luna-only; Free/Paid/Pro all respect finite quotas, global spending and per-job exposure; manual editing survives exhaustion.                                          |
+| ADP-040 | SC-06 model/operation/cached token/cost/retry/accepted-result accounting uses the existing Admiralty AI Usage & Quotas authority.                                              |
+| ADP-041 | Representative short, medium, novel-length, revision and long-term collaboration benchmarks are cost-capped, source-bound, quality-reviewed before fixed tier pricing.         |
 | ADP-042 | A full Creator journey from source import through blueprint, real construction, fidelity review, Playtest and ordinary Chronicle publishing receives owner quality acceptance. |
-| ADP-043 | All proposed/actual outputs clearly label concepts versus persisted and verified material; no fake interactive Scene or source comprehension claim. |
-| ADP-044 | Complete documentation/source/rights/graph/asset provenance and regressions receive appropriate Sounding Line/protected-main acceptance; a draft PR is not a release. |
+| ADP-043 | All proposed/actual outputs clearly label concepts versus persisted and verified material; no fake interactive Scene or source comprehension claim.                            |
+| ADP-044 | Complete documentation/source/rights/graph/asset provenance and regressions receive appropriate Sounding Line/protected-main acceptance; a draft PR is not a release.          |
 
 ## 18. Proposed implementation increments (not authorization)
 
@@ -893,7 +922,7 @@ These are **implementation choices**, not reasons to erase the product guarantee
 
 ### 20.3 Final governance statement
 
-**SC-06 must be able to accomplish both creative goals easily:** allow Players to experience an original story substantially as its author conceived it, *or* give them meaningful freedom to inhabit and explore that story's world. The fidelity and participation systems make these composable, not exclusive.
+**SC-06 must be able to accomplish both creative goals easily:** allow Players to experience an original story substantially as its author conceived it, _or_ give them meaningful freedom to inhabit and explore that story's world. The fidelity and participation systems make these composable, not exclusive.
 
 **The original story remains preserved. The Creator remains in control. The end product is a normal Chronicle. Architect is the single creative partner. AI expenses are bounded and accountable.**
 
