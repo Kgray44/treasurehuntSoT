@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-25",
+  "generated_at": "2026-10-31",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -8842,6 +8842,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R9_Verification_20261016.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Harborlight/SC_07A_Current_Main_Recovery_20261031.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
