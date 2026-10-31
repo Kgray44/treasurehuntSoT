@@ -1,0 +1,189 @@
+{
+  "classification": "engineering-evidence",
+  "runtime": "PRODUCTION",
+  "samples": [
+    {
+      "elapsedMs": 105.30000001192093,
+      "x": 0.6465187500007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 207.40000000596046,
+      "x": 0.6527687500007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 315,
+      "x": 0.6590187500007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.29999998211860657,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 416.59999999403954,
+      "x": 0.665268750000745,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 517,
+      "x": 0.6715187500007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.4000000059604645,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 622.2000000178814,
+      "x": 0.6788125000007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.3999999761581421,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 722.9000000059605,
+      "x": 0.6850625000007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.4000000059604645,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 829.9000000059605,
+      "x": 0.6913125000007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.4000000059604645,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 935.5,
+      "x": 0.6986000000007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.3999999761581421,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 1038.5999999940395,
+      "x": 0.704850000000745,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.4000000059604645,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 1140.5,
+      "x": 0.711106250000745,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 1245.2000000178814,
+      "x": 0.7173500000007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    },
+    {
+      "elapsedMs": 1345.5999999940395,
+      "x": 0.7236000000007451,
+      "costs": {
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 5,
+        "textures": 6,
+        "cpuSubmitMs": 0.5999999940395355,
+        "pixelRatio": 1,
+        "width": 1042,
+        "height": 446
+      }
+    }
+  ],
+  "limits": "Current software-rendered submission samples; no before/after or hardware FPS claim."
+}

@@ -1,0 +1,1034 @@
+{
+  "documentClassification": "engineering-evidence",
+  "evidenceTier": "PUBLIC_SYNTHETIC_ACCOUNT_LIVE_OBSERVATIONS",
+  "reports": [
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "6a3b2eda454dccf5290bc55bc884c3ffab4d7dcb",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T02:47:49.425Z",
+      "maxCalls": 4,
+      "budgetNano": 25000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 1600,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 4,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "followup-correction",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-609a587f-ccc4-48d7-9ed8-91d4d66deaaf",
+          "replyStatus": "FAILED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": "INCOMPLETE_OUTPUT",
+          "passed": false,
+          "findings": [
+            "NO_VALID_PROPOSAL"
+          ],
+          "interpretation": null,
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-pronoun-size",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-a1178daa-97ec-4847-9858-6732bbbec407",
+          "replyStatus": "FAILED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": "INCOMPLETE_OUTPUT",
+          "passed": false,
+          "findings": [
+            "NO_VALID_PROPOSAL"
+          ],
+          "interpretation": null,
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-continuation",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-2541b6c1-afbf-4c0c-8c78-9cfa6c844ba3",
+          "replyStatus": "FAILED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": "INCOMPLETE_OUTPUT",
+          "passed": false,
+          "findings": [
+            "NO_VALID_PROPOSAL"
+          ],
+          "interpretation": null,
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-multiple-subjects",
+          "category": "ambiguity",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-371c3cdb-3987-4396-9a6c-c09ba72756e8",
+          "replyStatus": "FAILED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": "INCOMPLETE_OUTPUT",
+          "passed": false,
+          "findings": [
+            "NO_VALID_PROPOSAL"
+          ],
+          "interpretation": null,
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-609a587f-ccc4-48d7-9ed8-91d4d66deaaf",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "0",
+          "settledCostNano": "0",
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":82.58390000000054,\"contextMs\":1402.609300000001,\"providerMs\":1123.8258000000005}"
+        },
+        {
+          "requestId": "synthetic-a1178daa-97ec-4847-9858-6732bbbec407",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "0",
+          "settledCostNano": "0",
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":102.01030000000173,\"contextMs\":613.2198000000008,\"providerMs\":1060.2326000000012}"
+        },
+        {
+          "requestId": "synthetic-2541b6c1-afbf-4c0c-8c78-9cfa6c844ba3",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "0",
+          "settledCostNano": "0",
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":30.81449999999859,\"contextMs\":573.8037999999997,\"providerMs\":1244.755299999999}"
+        },
+        {
+          "requestId": "synthetic-371c3cdb-3987-4396-9a6c-c09ba72756e8",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "0",
+          "settledCostNano": "0",
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":37.40470000000096,\"contextMs\":667.9424999999992,\"providerMs\":993.7585000000017}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "6a3b2eda454dccf5290bc55bc884c3ffab4d7dcb",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T02:49:57.792Z",
+      "maxCalls": 1,
+      "budgetNano": 5000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 1600,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 1,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "followup-correction",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-d8c12b5a-9f39-4f09-b847-3d43b961a433",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "INTERPRETATION_MISMATCH",
+            "REQUIRED_RELATIVE_TRANSFORM_MISSING"
+          ],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "There are two maps, and the current selection conflicts with the recent reference.",
+            "clarification": "Which map should I shift left: \u201cDesk Map\u201d or \u201cDesk Map copy\u201d?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "I\u2019ll wait for you to identify the map before proposing a change."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-d8c12b5a-9f39-4f09-b847-3d43b961a433",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "246200",
+          "settledCostNano": "246200",
+          "inputTokens": 5252,
+          "outputTokens": 218,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":67.1963999999989,\"contextMs\":839.8816000000006,\"providerMs\":3680.2994,\"materializationMs\":2.809900000000198,\"validationMs\":3.041000000001077}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "6a3b2eda454dccf5290bc55bc884c3ffab4d7dcb",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T02:51:20.011Z",
+      "maxCalls": 4,
+      "budgetNano": 25000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 1600,
+      "instructionVariant": "CURRENT",
+      "reasoning": "low",
+      "instructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+      "attempts": 4,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "followup-correction",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-92cdeec7-9771-4977-b266-cadc0800b4a0",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "REQUIRED_RELATIVE_TRANSFORM_MISSING"
+          ],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I\u2019ll propose shifting the selected Desk Map slightly left, interpreting left as negative anchor-local X.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "shift-selected-map-left",
+                "explanation": "Move the selected map 10 cm in negative anchor-local X; this is a small relative shift and leaves its other position coordinates and scale unchanged.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "synthetic-evaluation:entity-0",
+                "translation": {
+                  "x": -0.1,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 1
+              }
+            ],
+            "assumptions": [
+              "\u201cLeft\u201d means negative anchor-local X in this fixed-placement scene.",
+              "\u201cA little\u201d is interpreted as a 10 cm shift."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "This is a proposal only. Review the direction and distance before applying; the other map is unchanged."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-pronoun-size",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-8b72aba5-439d-4567-89f3-0fd7a5dc44da",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "Propose making the second map slightly smaller.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "shrink-second-map",
+                "explanation": "Reduce the second map\u2019s scale by 10%, without changing its position or content.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "second-map",
+                "translation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 0.9
+              }
+            ],
+            "assumptions": [
+              "\u201cThat\u201d refers to the second map, as indicated by the resolved follow-up reference."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "This is a proposal only; review and approve it before it is applied."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-continuation",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-46219dd6-1c7e-421c-817d-2b02facd842a",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": null,
+          "passed": false,
+          "findings": [
+            "REQUIRED_RELATIVE_TRANSFORM_MISSING"
+          ],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I\u2019ll nudge the second map slightly to the right and leave its words unchanged.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "move-second-map-right",
+                "explanation": "Move the map 5 cm right in its existing anchor-local position; this does not change its text.",
+                "dependsOn": [],
+                "type": "TRANSFORM",
+                "entityId": "second-map",
+                "position": {
+                  "x": 0.25,
+                  "y": 0,
+                  "z": 0
+                },
+                "scale": 1
+              }
+            ],
+            "assumptions": [
+              "\u201cSame object\u201d refers to the second map from the prior request.",
+              "\u201cTo the right\u201d means positive X in the existing anchor-local coordinates."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "This is a small placement change only. The map\u2019s words are left as they are."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-multiple-subjects",
+          "category": "ambiguity",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-b55c3f81-e12a-4c48-8183-f44f53bf550a",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "62f0375b369f8f29c0f4ef04e94b37d74a95480248f8f4219d8853a7ff2a47e9",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "Which map should I make smaller: \u201cDesk Map\u201d or \u201cDesk Map copy\u201d?",
+            "clarification": "Which map should I make smaller: \u201cDesk Map\u201d or \u201cDesk Map copy\u201d?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "I found two maps, and \u201cit\u201d could refer to either one. Please choose which map to resize."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-92cdeec7-9771-4977-b266-cadc0800b4a0",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "349450",
+          "settledCostNano": "349450",
+          "inputTokens": 5254,
+          "outputTokens": 424,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":38.3738000000003,\"contextMs\":995.3639000000003,\"providerMs\":6141.946699999999,\"materializationMs\":153.97649999999885,\"validationMs\":154.1841000000004}"
+        },
+        {
+          "requestId": "synthetic-8b72aba5-439d-4567-89f3-0fd7a5dc44da",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "265450",
+          "settledCostNano": "265450",
+          "inputTokens": 5254,
+          "outputTokens": 256,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":43.6315999999988,\"contextMs\":458.8709999999992,\"providerMs\":5368.703099999999,\"materializationMs\":117.8708000000006,\"validationMs\":118.1195000000007}"
+        },
+        {
+          "requestId": "synthetic-46219dd6-1c7e-421c-817d-2b02facd842a",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "302825",
+          "settledCostNano": "302825",
+          "inputTokens": 5261,
+          "outputTokens": 329,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":27.685600000000704,\"contextMs\":426.57770000000164,\"providerMs\":5122.803,\"materializationMs\":2.2805999999982305,\"validationMs\":2.460899999998219}"
+        },
+        {
+          "requestId": "synthetic-b55c3f81-e12a-4c48-8183-f44f53bf550a",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "200450",
+          "settledCostNano": "200450",
+          "inputTokens": 5318,
+          "outputTokens": 110,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":35.373999999999796,\"contextMs\":450.8946999999971,\"providerMs\":2028.3037000000004,\"materializationMs\":1.0701999999982945,\"validationMs\":1.1889000000010128}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "6a3b2eda454dccf5290bc55bc884c3ffab4d7dcb",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T02:52:50.949Z",
+      "maxCalls": 4,
+      "budgetNano": 25000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 1600,
+      "instructionVariant": "PRODUCTION",
+      "reasoning": "low",
+      "instructionsDigest": "6f766a2b3e11a99f60c30ce95ba76efc02bb6a491ef033e979d6dc6f63387a7d",
+      "attempts": 4,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "followup-correction",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-39ae53b1-313d-464f-82ab-6f742bcb1e14",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "6f766a2b3e11a99f60c30ce95ba76efc02bb6a491ef033e979d6dc6f63387a7d",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll shift the second map a little to the left.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "move-second-map-left",
+                "explanation": "Move the map slightly left while preserving its height, depth, and size.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "second-map",
+                "translation": {
+                  "x": -0.05,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 1
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "I\u2019ll use the previous request\u2019s map as the subject, rather than the currently selected object."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-pronoun-size",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-2a86ae99-c7c0-4f38-95eb-ce97eff8323a",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "6f766a2b3e11a99f60c30ce95ba76efc02bb6a491ef033e979d6dc6f63387a7d",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll make the second map a little smaller while keeping its position unchanged.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "shrink-second-map",
+                "explanation": "Reduce the map's scale slightly without changing its placement.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "second-map",
+                "translation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 0.9
+              }
+            ],
+            "assumptions": [
+              "I interpreted \u201cthat\u201d as the second map from your previous request."
+            ],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "The proposal preserves the map's position and other properties."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-continuation",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-804f19b9-cf81-430d-ac0a-2bb85a05f199",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "6f766a2b3e11a99f60c30ce95ba76efc02bb6a491ef033e979d6dc6f63387a7d",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll nudge the second map slightly to the right while keeping its words unchanged.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "op-move-map-right",
+                "explanation": "Shift the referenced map a small distance along the world-right axis without changing its words or other properties.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "second-map",
+                "translation": {
+                  "x": 0.05,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 1
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "This is a proposed change for Creator review; it has not been applied."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-multiple-subjects",
+          "category": "ambiguity",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-442814fb-3095-4274-8035-f6dc8c5eb9e0",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "6f766a2b3e11a99f60c30ce95ba76efc02bb6a491ef033e979d6dc6f63387a7d",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "I need to know which map you want smaller.",
+            "clarification": "Should I make the Desk Map or the Desk Map copy smaller?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "The previous request referred to both maps, so I need you to identify which one."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-39ae53b1-313d-464f-82ab-6f742bcb1e14",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "964300",
+          "settledCostNano": "964300",
+          "inputTokens": 6763,
+          "outputTokens": 238,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":37.96770000000015,\"contextMs\":824.0870999999997,\"providerMs\":2914.494200000001,\"materializationMs\":100.88769999999931,\"validationMs\":101.17489999999998}"
+        },
+        {
+          "requestId": "synthetic-2a86ae99-c7c0-4f38-95eb-ce97eff8323a",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "227620",
+          "settledCostNano": "227620",
+          "inputTokens": 6771,
+          "outputTokens": 150,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":69.740600000001,\"contextMs\":610.0879999999997,\"providerMs\":2129.2064999999984,\"materializationMs\":98.63659999999982,\"validationMs\":99.63620000000083}"
+        },
+        {
+          "requestId": "synthetic-804f19b9-cf81-430d-ac0a-2bb85a05f199",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "251245",
+          "settledCostNano": "251245",
+          "inputTokens": 6772,
+          "outputTokens": 197,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":29.475399999999354,\"contextMs\":427.60429999999906,\"providerMs\":2822.9943999999996,\"materializationMs\":142.67459999999846,\"validationMs\":142.85359999999855}"
+        },
+        {
+          "requestId": "synthetic-442814fb-3095-4274-8035-f6dc8c5eb9e0",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "232870",
+          "settledCostNano": "232870",
+          "inputTokens": 6841,
+          "outputTokens": 143,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":35.16909999999916,\"contextMs\":471.04239999999845,\"providerMs\":2343.413199999999,\"materializationMs\":0.718299999996816,\"validationMs\":0.8578999999990629}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "6a3b2eda454dccf5290bc55bc884c3ffab4d7dcb",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T02:55:05.797Z",
+      "maxCalls": 6,
+      "budgetNano": 20000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 1600,
+      "instructionVariant": "PRODUCTION",
+      "reasoning": "low",
+      "instructionsDigest": "acd534c1323ef2ee11db0199b0814e08bc67a6c34cdf5c9fd654e995c68c857a",
+      "attempts": 6,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "followup-correction",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-766dcfb6-bba2-4145-a7a4-c1a4bc9960a1",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "acd534c1323ef2ee11db0199b0814e08bc67a6c34cdf5c9fd654e995c68c857a",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll move the second map slightly left.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "move-second-map-left",
+                "explanation": "Shift the map a little left while preserving its height, depth, size, and rotation.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "second-map",
+                "translation": {
+                  "x": -0.1,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 1
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "This is a proposed move for Creator review; it hasn't been applied."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-pronoun-size",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-1af442ac-015c-46e6-a048-cddde31aca06",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "acd534c1323ef2ee11db0199b0814e08bc67a6c34cdf5c9fd654e995c68c857a",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll make the second map a little smaller while keeping its position unchanged.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "op1",
+                "explanation": "Slightly reduce the second map's size without changing its placement.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "second-map",
+                "translation": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 0.9
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "This proposal preserves the map's position and other properties; it is not applied until reviewed."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-continuation",
+          "category": "RETAINED_TASK_REFERENCE_INFERENCE",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-9c2dfa22-4a54-4b66-91dd-396ea7dd0e12",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "acd534c1323ef2ee11db0199b0814e08bc67a6c34cdf5c9fd654e995c68c857a",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll nudge the second map slightly to the right while keeping its words unchanged.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "move-second-map-right",
+                "explanation": "Move the map a small amount along the world-right axis without changing its words or other properties.",
+                "dependsOn": [],
+                "type": "RELATIVE_TRANSFORM",
+                "entityId": "second-map",
+                "translation": {
+                  "x": 0.05,
+                  "y": 0,
+                  "z": 0
+                },
+                "scaleFactor": 1
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "This proposes a small rightward move of the map identified in your previous request; its text is left untouched."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-multiple-subjects",
+          "category": "ambiguity",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-e96f1d10-f7a2-4c9a-b0d9-276a0d4481e1",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "acd534c1323ef2ee11db0199b0814e08bc67a6c34cdf5c9fd654e995c68c857a",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "CLARIFICATION",
+            "summary": "I need to know which map you want smaller.",
+            "clarification": "Which map should I make smaller: \u201cDesk Map\u201d or \u201cDesk Map copy\u201d?",
+            "operations": [],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "Both maps were part of the previous request, so I need you to specify which one."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "advanced-remove-asset",
+          "category": "object editing",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-e0db9f9a-9198-41a8-9224-813eb64c16b9",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "acd534c1323ef2ee11db0199b0814e08bc67a6c34cdf5c9fd654e995c68c857a",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll remove the second map and keep the original map unchanged.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "remove-second-map",
+                "explanation": "Remove the duplicate map while preserving the original map and its content.",
+                "dependsOn": [],
+                "type": "DELETE",
+                "entityId": "second-map"
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "The proposal targets only \u201cDesk Map copy\u201d; the original \u201cDesk Map\u201d and its words will remain unchanged."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "advanced-scene-title",
+          "category": "object editing",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-0a50560f-3b39-4992-9e60-ada014717377",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "acd534c1323ef2ee11db0199b0814e08bc67a6c34cdf5c9fd654e995c68c857a",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll rename the scene to Moonlit Harbor and leave all objects and their words unchanged.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "rename-scene",
+                "explanation": "Update the scene title only; preserve its objects and content.",
+                "dependsOn": [],
+                "type": "SCENE_DETAILS",
+                "title": "Moonlit Harbor",
+                "tags": null,
+                "collection": null,
+                "favorite": null
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "The proposal changes only the scene title."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-766dcfb6-bba2-4145-a7a4-c1a4bc9960a1",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "956425",
+          "settledCostNano": "956425",
+          "inputTokens": 6468,
+          "outputTokens": 296,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":38.34479999999985,\"contextMs\":765.7453999999998,\"providerMs\":3909.4105999999992,\"materializationMs\":99.63930000000073,\"validationMs\":99.88819999999942}"
+        },
+        {
+          "requestId": "synthetic-1af442ac-015c-46e6-a048-cddde31aca06",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "243900",
+          "settledCostNano": "243900",
+          "inputTokens": 6472,
+          "outputTokens": 189,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":25.220499999999447,\"contextMs\":846.0288,\"providerMs\":3128.6471,\"materializationMs\":139.14599999999882,\"validationMs\":139.29860000000008}"
+        },
+        {
+          "requestId": "synthetic-9c2dfa22-4a54-4b66-91dd-396ea7dd0e12",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "270525",
+          "settledCostNano": "270525",
+          "inputTokens": 6481,
+          "outputTokens": 240,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":29.66660000000047,\"contextMs\":438.2986000000019,\"providerMs\":4058.5832999999984,\"materializationMs\":98.37030000000232,\"validationMs\":98.53000000000247}"
+        },
+        {
+          "requestId": "synthetic-e96f1d10-f7a2-4c9a-b0d9-276a0d4481e1",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "220650",
+          "settledCostNano": "220650",
+          "inputTokens": 6538,
+          "outputTokens": 126,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":38.30989999999656,\"contextMs\":630.1818000000021,\"providerMs\":3616.2690000000002,\"materializationMs\":0.733700000000681,\"validationMs\":0.8385999999991327}"
+        },
+        {
+          "requestId": "synthetic-e0db9f9a-9198-41a8-9224-813eb64c16b9",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "204275",
+          "settledCostNano": "204275",
+          "inputTokens": 6303,
+          "outputTokens": 152,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":20.3012000000017,\"contextMs\":720.402100000003,\"providerMs\":2318.629799999999,\"materializationMs\":3.287799999998242,\"validationMs\":3.3870999999999185}"
+        },
+        {
+          "requestId": "synthetic-0a50560f-3b39-4992-9e60-ada014717377",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "166525",
+          "settledCostNano": "166525",
+          "inputTokens": 6105,
+          "outputTokens": 126,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":27.830800000003364,\"contextMs\":680.268,\"providerMs\":2377.7341000000015,\"materializationMs\":0.9570000000021537,\"validationMs\":1.1236000000026252}"
+        }
+      ]
+    },
+    {
+      "corpusVersion": "parallax-spatial-assistant-2026-10-11-v4",
+      "mode": "BOUNDED_LIVE_PROVIDER",
+      "experimentSet": "natural-and-adaptive-2026-10-11-v1",
+      "candidateCommit": "6a3b2eda454dccf5290bc55bc884c3ffab4d7dcb",
+      "uncommittedSource": true,
+      "createdAt": "2026-10-14T03:59:45.089Z",
+      "maxCalls": 2,
+      "budgetNano": 5000000,
+      "maximumInputTokens": 12000,
+      "maximumOutputTokens": 1600,
+      "instructionVariant": "PRODUCTION",
+      "reasoning": "low",
+      "instructionsDigest": "87fd609c0916831064ac6ad5e7d1e8805243225e90a8f3ddf047ee350f5dffc7",
+      "attempts": 2,
+      "stoppedEarly": false,
+      "results": [
+        {
+          "caseId": "followup-scene-subject",
+          "category": "object editing",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-3774f939-bbe1-4e2a-8f1d-e6e6874eed4d",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "87fd609c0916831064ac6ad5e7d1e8805243225e90a8f3ddf047ee350f5dffc7",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll shorten the scene title to \u201cMoonlit Harbor.\u201d",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "shorten-scene-title",
+                "explanation": "Use a concise version of the current scene title.",
+                "dependsOn": [],
+                "type": "SCENE_DETAILS",
+                "title": "Moonlit Harbor",
+                "tags": null,
+                "collection": null,
+                "favorite": null
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "I\u2019ll keep the title\u2019s moonlit harbor theme while making it briefer."
+          },
+          "rejectedInterpretation": null
+        },
+        {
+          "caseId": "followup-animation-subject",
+          "category": "object editing",
+          "model": "gpt-6-luna",
+          "requestId": "synthetic-be6fe741-3253-4013-896a-2627af0bb847",
+          "replyStatus": "PROPOSED",
+          "providerInstructionsDigest": "87fd609c0916831064ac6ad5e7d1e8805243225e90a8f3ddf047ee350f5dffc7",
+          "replyCode": null,
+          "passed": true,
+          "findings": [],
+          "interpretation": {
+            "intentType": "EDIT",
+            "summary": "I'll extend the map\u2019s fade to four seconds.",
+            "clarification": null,
+            "operations": [
+              {
+                "id": "retime-fade",
+                "explanation": "Set the opacity animation duration to four seconds.",
+                "dependsOn": [],
+                "type": "RETIME_ANIMATION",
+                "trackId": "fade",
+                "startMs": 0,
+                "endMs": 4000
+              }
+            ],
+            "assumptions": [],
+            "unsupportedCapabilities": [],
+            "warnings": [],
+            "accessibilityNotes": [],
+            "creatorExplanation": "This proposes extending the existing fade from 2,000 ms to 4,000 ms; it has not been applied."
+          },
+          "rejectedInterpretation": null
+        }
+      ],
+      "usage": [
+        {
+          "requestId": "synthetic-3774f939-bbe1-4e2a-8f1d-e6e6874eed4d",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "890800",
+          "settledCostNano": "890800",
+          "inputTokens": 6367,
+          "outputTokens": 190,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":178.8984999999957,\"contextMs\":2121.143400000001,\"providerMs\":3416.2522000000026,\"materializationMs\":7.692199999997683,\"validationMs\":8.564899999997579}"
+        },
+        {
+          "requestId": "synthetic-be6fe741-3253-4013-896a-2627af0bb847",
+          "model": "gpt-6-luna",
+          "status": "SETTLED",
+          "reservationNano": "2300000",
+          "exposureNano": "225920",
+          "settledCostNano": "225920",
+          "inputTokens": 6420,
+          "outputTokens": 178,
+          "failureCode": null,
+          "timings": "{\"admissionMs\":107.04799999999523,\"contextMs\":582.1054999999906,\"providerMs\":2850.301400000011,\"materializationMs\":13.080499999996391,\"validationMs\":13.441299999991315}"
+        }
+      ]
+    }
+  ],
+  "interpretationLimits": [
+    "Historical CURRENT is an older frozen evaluation variant. Earlier results retain that identity. PRODUCTION now uses actual runtime instructions.",
+    "The first four summary-pattern constrained requests returned incomplete with reported zero tokens. They do not prove intent quality. Removing that pattern produced a completed response; no universal upstream root-cause claim.",
+    "Synthetic retained context rows are zero-cost fixtures, not previous model responses. Excluded from reported provider ledger usage.",
+    "Later production variants passed 4/4 then 6/6. Bounded observations, not universal inference or owner acceptance.",
+    "Dirty-source flags retained; these reports do not establish protected exact-candidate qualification.",
+    "A subsequent 2/2 production comparison resolves scene-title and animation-duration subjects, not just assets. These are bounded synthetic cases."
+  ],
+  "accounting": {
+    "additionalRequests": 21,
+    "additionalSettledNano": "6219430",
+    "combinedSettledNano": "1689356395",
+    "conservativeCombinedExposureNano": "3747356395",
+    "ownerCeilingNano": "5000000000",
+    "earlierUnknownReservationsRetained": true
+  }
+}

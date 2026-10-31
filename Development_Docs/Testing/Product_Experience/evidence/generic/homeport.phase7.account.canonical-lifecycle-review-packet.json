@@ -1,0 +1,322 @@
+{
+  "objective": "Preserve owner identity, private account read projections and session boundaries when shared Chronicle and Scene types expand.",
+  "contract": {
+    "id": "homeport.phase7.account.canonical-lifecycle",
+    "name": "Project Homeport Phase7 Account Canonical Lifecycle",
+    "authority": "project-homeport",
+    "owners": [
+      "project-homeport"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A signed-in Creator reading their own canonical Personal Harbor account.",
+      "objective": "Preserve owner identity, private account read projections and session boundaries when shared Chronicle and Scene types expand.",
+      "visibleOutcome": "The same account owner opens Personal Information through the visible account card and returns to Home with no unintended account mutation.",
+      "integrationOwner": "Existing Parallax integration owner #776; Homeport retains all account and lifecycle authority.",
+      "accessibility": "Use semantic cards and keyboard activation on desktop and phone; preserve ordinary headings, native field labels and focus.",
+      "fallback": "Keep canonical sign-in and authorization denials, unavailable-section recovery and account lifecycle protections unchanged.",
+      "navigation": "Open Personal Harbor, use the Profile Personal Information card, and take the advertised Return to Home action.",
+      "designTarget": "Preserve the existing account task composition and the accepted shared Homeport frame and return hierarchy.",
+      "entryPoint": "/account",
+      "systems": [
+        "HOMEPORT"
+      ],
+      "sourcePaths": [
+        "src/app/account/accessibility/page.tsx",
+        "src/app/account/cancel-deletion/page.tsx",
+        "src/app/account/claim/page.tsx",
+        "src/app/account/data/page.tsx",
+        "src/app/account/email-change/page.tsx",
+        "src/app/account/linked-identities/page.tsx",
+        "src/app/account/merge/page.tsx",
+        "src/app/account/notifications/page.tsx",
+        "src/app/account/page.tsx",
+        "src/app/account/personal-information/page.tsx",
+        "src/app/account/preferences/page.tsx",
+        "src/app/account/privacy/page.tsx",
+        "src/app/account/reactivate/page.tsx",
+        "src/app/account/roles/page.tsx",
+        "src/app/account/security/page.tsx",
+        "src/app/account/sessions/page.tsx",
+        "src/app/account/support-access/page.tsx",
+        "src/app/register/page.tsx",
+        "src/app/reset-password/page.tsx",
+        "src/app/verify-email/page.tsx",
+        "src/components/auth/CurrentUserProvider.tsx",
+        "src/components/auth/SignOutButton.tsx",
+        "src/components/homeport/AccountSurfaces.tsx",
+        "src/components/homeport/AuthenticatedHarborPage.tsx",
+        "src/components/homeport/PersonalHarborLayout.tsx",
+        "src/components/homeport/PreferenceRuntimeBridge.tsx"
+      ],
+      "projectionPaths": [
+        "src/homeport/personal-harbor.ts",
+        "src/components/auth/CurrentUserProvider.tsx",
+        "src/chronicle/journal-contract.ts",
+        "src/landfall/offline-store.ts"
+      ],
+      "states": [
+        "OWNER_IDENTITY_READY",
+        "PERSONAL_INFORMATION_READABLE",
+        "HOME_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Faccount",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Synthetic Parallax Creator",
+            "text": "Synthetic Parallax Creator"
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport gateway frame and return hierarchy; this is not a claim that uncurated Account screenshots were accepted.",
+          "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport gateway frame and return hierarchy; this is not a claim that uncurated Account screenshots were accepted.",
+          "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "account-private-read-and-home-return",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "The authenticated account owner reads the canonical Personal Information view through its real visible account card, then recovers Home without changing account data.",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Synthetic Parallax Creator",
+              "state": "OWNER_IDENTITY_READY"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Profile Personal Information"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "main",
+              "name": "",
+              "text": "Review account-held identity information and change only what accepted services support.",
+              "path": "/account/personal-information",
+              "meaning": "The existing private account projection still renders its real task after the expanded shared-content models; it is not replaced by a persisted role or a synthetic success marker.",
+              "state": "PERSONAL_INFORMATION_READABLE"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Home"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "path": "/",
+              "returnPath": true,
+              "state": "HOME_RETURNED"
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-shared-consumers.spec.ts"
+      ],
+      "limitations": [
+        "Active-account read, session isolation and natural return compatibility only; unchanged claim, merge, deletion and recovery obligations retain their Homeport authority.",
+        "The accepted references describe the shared Homeport frame. No uncurated Account screenshot or prior standalone Account visual acceptance is claimed."
+      ],
+      "homeportScreenIds": [
+        "screen-page-account",
+        "screen-page-account-personal-information"
+      ],
+      "homeportJourneyIds": [
+        "B",
+        "G",
+        "K"
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED-OWNER_IDENTITY_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED-OWNER_IDENTITY_READY-0.png",
+      "sha256": "32e43b0ad1eea0578446f88bb5f13f999314e717041dfaef67776c6d89b25ccd",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "state": "OWNER_IDENTITY_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED-PERSONAL_INFORMATION_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED-PERSONAL_INFORMATION_READABLE-2.png",
+      "sha256": "f6eae283fc2198a2e23c44c26d88f884dced3ddb9a3dfccd610b00a28a4c7c94",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "state": "PERSONAL_INFORMATION_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED-HOME_RETURNED-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED-HOME_RETURNED-4.png",
+      "sha256": "f296c9b3b3d7cdc74e40a64972c4c1fcb8d51850ea11636fd8dab3998b423799",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "state": "HOME_RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "253cec15a50ee7c3d2483e3821c88357ad322ac0e9ae4e10cb4a7156198ec598",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/db3a6b37805c2ca8bc70554a49af37da.webm",
+      "sha256": "c1fd4e05cb0d138b7137ce55f4538eb29f636317f4183c525df434cc256af17c",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED-OWNER_IDENTITY_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED-OWNER_IDENTITY_READY-0.png",
+      "sha256": "7631e22a4fce477a8f82f8ebaf25dd6340860b67df7a36bc2b41620315a18d7e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "state": "OWNER_IDENTITY_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED-PERSONAL_INFORMATION_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED-PERSONAL_INFORMATION_READABLE-2.png",
+      "sha256": "ba2264f390b96d3ab7eb58bbf2aef081fefe25bc615b38a32302cfb2963a262a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "state": "PERSONAL_INFORMATION_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED-HOME_RETURNED-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED-HOME_RETURNED-4.png",
+      "sha256": "298e269f67e2ed969f53b68460d1c1a329e1396cefa00f424531f677829d066b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "state": "HOME_RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "3c4b4a366344a323fba2435363ad978495e85ae9d16a341f9d0bcaca9326696d",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.phase7.account.canonical-lifecycle-account-private-read-and-home-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/32934a69096e13901cf7f4f158e2adfa.webm",
+      "sha256": "dd4c71f590dd08e27ca9c11611bac9b53f3b51bbcb075951d68bcff31f21b5c4",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.phase7.account.canonical-lifecycle",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "660a64937dbe5d1f5e9d0a69aac4f76c0899b914efe8a5aadda11e1f5d2c268e",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

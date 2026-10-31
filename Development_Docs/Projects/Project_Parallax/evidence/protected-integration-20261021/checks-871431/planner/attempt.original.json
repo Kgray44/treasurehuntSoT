@@ -1,0 +1,40 @@
+{
+  "kind": "PARALLAX_LOCAL_NONCONSUMING_PLAN_FAILURE_1",
+  "createdAtUtc": "2026-10-21T23:44:40.983Z",
+  "source": "871431cd0827d42551c8a8b9d2d7fde5e16c1f77",
+  "base": "aaff919428ef9ab421579415ce3409949724760d",
+  "qualification": false,
+  "command": [
+    "node",
+    "scripts/sounding-line/experience-browser.mjs",
+    "--base",
+    "aaff919428ef9ab421579415ce3409949724760d",
+    "--candidate",
+    "871431cd0827d42551c8a8b9d2d7fde5e16c1f77",
+    "--plan",
+    "true"
+  ],
+  "exitCode": 1,
+  "status": "FAILED_BEFORE_PLAN_OUTPUT",
+  "nestedError": {
+    "code": "ENOBUFS",
+    "operation": "git cat-file --batch",
+    "maxBufferBytes": 134217728,
+    "partialStdoutBytes": 134283264,
+    "signal": "SIGTERM"
+  },
+  "stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "bytes": 3113,
+    "sha256": "b0f1843cea10db1aec2bc37ec15c8deb47c23f5d55426fa04b72f9b6192ff39a"
+  },
+  "metadataGitReadsExecuted": true,
+  "captureExecuted": false,
+  "authenticatedReviewExecuted": false,
+  "protectedQualificationExecuted": false,
+  "diagnosisClarification": "The size-diagnosis original commandExecuted:false means no qualification execution; its scoped ls-tree/cat-file metadata commands did execute. Preserve that original rather than rewriting it.",
+  "repairCoordination": "Existing sole Sounding Line maintenance owner; no candidate-only workaround, filtering or new limit was applied."
+}

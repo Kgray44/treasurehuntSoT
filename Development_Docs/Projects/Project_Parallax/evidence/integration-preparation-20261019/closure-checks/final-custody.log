@@ -1,0 +1,11 @@
+file:///D:/CodexTemp/parallax-integration-20261019-01a15554/verify-final-custody.mjs:9
+for(const r of records){const bytes=readFileSync(repo+'/'+r.file);if(sha256(bytes)!==r.sha256||tree.get(r.file)?.split(' ')[2]!==blob(bytes))throw new Error('Git/working custody mismatch '+r.file)}
+                                                                                                                                                   ^
+
+Error: Git/working custody mismatch Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/receipts/browser-04-inventory.log
+    at file:///D:/CodexTemp/parallax-integration-20261019-01a15554/verify-final-custody.mjs:9:148
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.18.0

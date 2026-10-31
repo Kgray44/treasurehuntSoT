@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00b-combined.spec.ts",
+    "--workers=1",
+    "--reporter=line",
+    "--output",
+    "D:\\Codex_Parallax_Task_Cache\\px-production-qualification\\sc00b-root-browser-attempt-1-d946541f2b29/test-results"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

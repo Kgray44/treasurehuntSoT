@@ -3,7 +3,7 @@ title: Parallax A1 AI quota operator guide
 audience: administrator
 status: current
 canonical_for: parallax-a1-quota-operator-guide
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-14
 ---
 
 # AI resource control
@@ -25,6 +25,13 @@ access are disabled. Defaults include 500 requests per user and a $10 global
 monthly spending cap. Only supported models and bounded values are accepted.
 Emergency disable stops new requests without erasing usage.
 
+GPT-6 Astra was evaluated and rejected by the owner: it is not a selectable
+or allowed provider model. The current supported models remain Luna and Sol.
+Its completed comparison and accounting receipts are retained without rewriting
+historical charges. Provider timeout accepts up to 180,000 milliseconds for slower vision
+requests; the initial 20,000-millisecond timeout is unchanged. A timeout still
+retains unresolved provider exposure rather than assuming zero charge.
+
 ## Global settings and consequences
 
 The overview's daily chart can show **Requests**, **Settled cost**, or **Accounted
@@ -39,6 +46,31 @@ changes no limits.
 
 Use the existing **People** search to open a user's account dossier and inspect
 or change their AI allowances there. There is no second AI-specific user search.
+
+The active candidate adds separate **Spatial Assistant**, **Advanced Assistant**
+and **Room reconstruction** model selectors in Global Policy. The photo default
+is Sol, while standard Assistant requests stay on Luna. Room requests use the
+advanced reasoning setting, independently of the text Advanced eligibility
+switch. All requests still pass the global allowed-model list, account access,
+token, concurrency and monetary checks. A missing or disallowed room model
+does not silently switch to Luna.
+
+The same model selectors appear in each People dossier. **Use global** inherits
+that model independently; quota blanks also inherit. Exceptions may expire,
+and global rate, request and spending ceilings remain authoritative.
+
+**User Overrides** lists accounts with retained individual policies, their exact
+model/quota/access values, recorded reason, expiry and current status. Filter
+for models or quota/access settings, and load further pages when needed. Expired
+exceptions are labeled as using global values; reset policies disappear from
+the inventory while their audit history remains. Unknown historical reasons
+are explicitly labeled. **Review / reset to global** opens the existing user
+policy panel. **Reset to global** previews removal of the entire exception;
+privileged password assurance and explicit confirmation complete the reset.
+It does not erase historical usage or refund charges. Observers can inspect
+but cannot change policies. The owner accepted the source81f presentation;
+bounded narrow keyboard evidence is recorded separately in the
+[model-routing review](AI_Model_Routing_and_Overrides_20261014.md).
 
 Amounts in the form are US dollars. Request allowances reset at the start of
 the UTC calendar month; changing a limit never clears consumption already

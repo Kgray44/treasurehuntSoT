@@ -1,0 +1,13 @@
+{
+  "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+  "mode": "extras",
+  "startedAt": "2026-10-19T20:58:15.219Z",
+  "tests": [
+    "tests/e2e/parallax-ai-enforcement.spec.ts",
+    "tests/e2e/parallax-guided.spec.ts",
+    "tests/e2e/parallax-spatial-community.spec.ts",
+    "tests/e2e/parallax-tracking-recovery.spec.ts"
+  ],
+  "resultRoot": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-08-results",
+  "qualification": false
+}

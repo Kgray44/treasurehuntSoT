@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "classification": "SUPPORTING_LOCAL_COMPARISON_CONTRACT_CHECKS",
+  "sourceCommit": "c3c4b579cd2d999602a778922f069dd9c7a9138b",
+  "priorReviewedProductSource": "a33780ae92ab6e2a1e5aea33995a34896de591b6",
+  "productSourceDiff": "EMPTY_VERIFIED_GIT_DIFF_SRC_EXCLUDING_TESTS",
+  "checks": {
+    "command": "npx vitest run src/parallax/scene-comparison.test.ts src/parallax/environment-authoring.test.ts",
+    "exitCode": 0,
+    "testFiles": 2,
+    "tests": 11,
+    "status": "PASS",
+    "additionalDistinctTests": 2,
+    "existingTestsRerun": 9,
+    "format": "PASS",
+    "changedFileLint": "PASS"
+  },
+  "requirements": [
+    "Tideglass stable identity distinguishes same-looking replacement objects as added and removed",
+    "A per-Scene lighting override does not alter shared Environment geometry or authored objects",
+    "Comparison leaves source content unchanged"
+  ],
+  "sourceFiles": [
+    {
+      "path": "src/parallax/scene-comparison.test.ts",
+      "sha256": "41992dd6df32316681d4852fa71415d1bd18e6d7acd983787392a745975b0e1c"
+    },
+    {
+      "path": "src/parallax/scene-comparison.ts",
+      "sha256": "f104b41c956421833f3fefba3434c08055ef9439ccf2e566e78b6586d9e3da00"
+    },
+    {
+      "path": "src/parallax/environment-authoring.test.ts",
+      "sha256": "3bc7701726409f94d349ebcabff83b294ca7f3aef8683cd5e67d04cfddb834fc"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "focused-comparison.log",
+      "sha256": "13359473c1fc803ef2f025a4fe4008bfdefdc54ef8af0f865e7ce0498c314807"
+    }
+  ],
+  "existingReviewHistory": "UNCHANGED_REPAIR_ITERATION_2_INDEPENDENT_LOCAL_REVIEW_3",
+  "protectedAcceptance": "NOT_ESTABLISHED",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "combinedStudioLimit": "The future combined projection must include canonical studio.animationTracks after lossless Studio integration; this receipt proves the currently supported comparison contracts only."
+}

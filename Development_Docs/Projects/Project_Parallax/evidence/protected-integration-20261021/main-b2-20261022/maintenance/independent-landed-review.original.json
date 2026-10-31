@@ -1,0 +1,392 @@
+{
+  "documentClass": "engineering-evidence",
+  "createdAt": "2026-10-23T03:22:13.945Z",
+  "status": "PASS_EXACT_PROTECTED_LANDED_INFRASTRUCTURE_CORRECTION_AND_SMOKE",
+  "reviewer": "/root/lifecycle_review",
+  "installed": true,
+  "pr": 793,
+  "merge": "b2d901af5646ce76b3b2bd5a88e1ad8563c2db57",
+  "qualifiedHead": "bb496b533a49c4c06c58d11319e11c2eca793ad5",
+  "tree": "2de39c85baf0c12fbf28975ee6093f29db953480",
+  "orderedParents": [
+    "1c516d27fca521157732fca4cbba773d1542f1b2",
+    "bb496b533a49c4c06c58d11319e11c2eca793ad5"
+  ],
+  "mergedAt": "2026-10-23T03:11:36Z",
+  "normalQualification": {
+    "receipt": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\independent-corrected-qualification-bb496b53.original.json",
+      "bytes": 10122,
+      "sha256": "e4efe009a7de0a5cf63c23d6a912bd99d68507f198eba441fd5e03df212dd719"
+    },
+    "run": 39891293849,
+    "attempt": 1,
+    "event": "pull_request_target",
+    "requiredCheck": 120217824809,
+    "appId": 15368,
+    "checkSuite": 108120951377,
+    "strictRequiredContext": "Sounding Line / Mainline Decision",
+    "counts": {
+      "canonical": {
+        "total": 921,
+        "pass": 920,
+        "fail": 0,
+        "cancelled": 0,
+        "skip": 1
+      },
+      "rendered": {
+        "total": 13,
+        "pass": 13,
+        "fail": 0,
+        "cancelled": 0,
+        "skip": 0
+      },
+      "features": {
+        "total": 9,
+        "pass": 9
+      },
+      "previouslyMaskedExceptionCasesObservedPass": 5,
+      "preparationRetentionObservedPass": 18
+    }
+  },
+  "provider": [
+    {
+      "mode": "main",
+      "payload": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-landed-main.original.json",
+        "bytes": 117387,
+        "sha256": "ad2e3f2df2ed0773d35af22f2410aee07bb0893586d5423ea6f516529cc00dbc"
+      },
+      "capture": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-landed-main.capture.original.json",
+        "bytes": 1106,
+        "sha256": "999590d861c4a6c3b20e05aa2118b85d57247d58779824470a371ffc0a086bb0"
+      },
+      "observedAt": "2026-10-23T03:13:21.053Z",
+      "representation": "provider JSON emitted by gh api"
+    },
+    {
+      "mode": "pr",
+      "payload": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-landed-pr.original.json",
+        "bytes": 19823,
+        "sha256": "bc34ea71a30646b4f2b5e44b48e2016aaa2d906af361e62b2dac39712a4ab82e"
+      },
+      "capture": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-landed-pr.capture.original.json",
+        "bytes": 1096,
+        "sha256": "aab13914b72bd63e27f3ef90a2083456c363cc437bb4d1cfa6ec3ef9523509d6"
+      },
+      "observedAt": "2026-10-23T03:13:06.195Z",
+      "representation": "provider JSON emitted by gh api"
+    }
+  ],
+  "workingCheckout": {
+    "root": "D:/CodexWorktrees/sounding-line-preparation-retention-landed-bb496b53-20261022",
+    "before": {
+      "head": "b2d901af5646ce76b3b2bd5a88e1ad8563c2db57",
+      "tree": "2de39c85baf0c12fbf28975ee6093f29db953480",
+      "parents": [
+        "1c516d27fca521157732fca4cbba773d1542f1b2",
+        "bb496b533a49c4c06c58d11319e11c2eca793ad5"
+      ],
+      "branch": "HEAD",
+      "status": ""
+    },
+    "after": {
+      "head": "b2d901af5646ce76b3b2bd5a88e1ad8563c2db57",
+      "tree": "2de39c85baf0c12fbf28975ee6093f29db953480",
+      "parents": [
+        "1c516d27fca521157732fca4cbba773d1542f1b2",
+        "bb496b533a49c4c06c58d11319e11c2eca793ad5"
+      ],
+      "branch": "HEAD",
+      "status": ""
+    },
+    "wholeQualifiedHeadToLandedDiffEmpty": true,
+    "rawCommitBytes": 1221,
+    "rawCommitObjectId": "b2d901af5646ce76b3b2bd5a88e1ad8563c2db57",
+    "rawCommitSHA256": "9bf756ef96556ff7df34fbad60f45e0130bc6e740380414a98314e94c23fac6e",
+    "sourceManifest": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\frozen-clock-commit-source.original.json",
+      "bytes": 5582,
+      "sha256": "ecbe46c4160f7a44bfdbe3cb865627e73baa35b35ffabd4d8c9a9dc3b6d85ef7"
+    },
+    "verified20": [
+      {
+        "relativePath": ".agents/README.md",
+        "bytes": 5519,
+        "sha256": "cae3cb7d0d234071a8bffc237ff852db276017904a539684b4600bbcf2713687",
+        "gitBlob": "c8ea2ebd7eb645dbf117d7baaf9e36eb490d50c4",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": ".agents/development-preparation-retention-repair.md",
+        "bytes": 2124,
+        "sha256": "b90f7737f56a419fefc7f60151f56551449be27042981d6889058ba89f41df0d",
+        "gitBlob": "cc12f8a06f195006e9734304748d73cd9191ddca",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": ".github/workflows/sounding-line-focused-repair.yml",
+        "bytes": 6772,
+        "sha256": "a8c5e5d349952328989498a6eea2234a3ef04d97dee5bd07b524dc5888fc98d1",
+        "gitBlob": "574a4e21861dffa4db9b06643850b462e151e7cd",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+        "bytes": 3440194,
+        "sha256": "74e5dc4eaf5c51e4d8ccd8d201304dc929c921647e4e075183ac0b4de7decaeb",
+        "gitBlob": "a334dd595b481b8057db5d7c2e3631941e8d6e2b",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Preparation_Failure_Retention_Record.md",
+        "bytes": 4474,
+        "sha256": "ac748a5a4618e4f681a46413dee99d1d9356bc985b2e2ec5640f583a53b267b7",
+        "gitBlob": "e1dd8dc01f67364891901162395824b2b563801d",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "Development_Docs/Testing/README.md",
+        "bytes": 2013,
+        "sha256": "23940a6cbdeecc56d7b8d70a13a09b0998fca0352c3ba3ceca8f0e43489617d0",
+        "gitBlob": "a99093195f6921e2af3c01549c72ce34d2a7b51e",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "Development_Docs/document-index.json",
+        "bytes": 546882,
+        "sha256": "d17b51210b3be8f52adbac6d8471974d981212ad0fd5704ccec2ae3edad426e2",
+        "gitBlob": "17888a8358bae2e842e56ee4d3b9df88eb3d6a6f",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "package.json",
+        "bytes": 31609,
+        "sha256": "5c943f2a48fb7bdc832e2fa6e3042be660e94860940332a578b67f3aaf0ea341",
+        "gitBlob": "db2b3bf6ba9272e53d159b646e7e71106824ef6e",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "scripts/sounding-line/develop-browser-suite.mjs",
+        "bytes": 39236,
+        "sha256": "fe6bd3a5445a38249e83cbb9038bb6935aedbf6f6f13f51630f4824c7bb529da",
+        "gitBlob": "c03181fa05028b49f70558e4a17bcd8526b6bda8",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "scripts/sounding-line/development-preparation-evidence.mjs",
+        "bytes": 12038,
+        "sha256": "9d31a61623c28fc98ee803d036e0a83f536707332fcfede0746114ea35cb5300",
+        "gitBlob": "bfd500e66c707d3594dbdcc63172d3225d521254",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "scripts/sounding-line/preparation-failure-output.mjs",
+        "bytes": 6591,
+        "sha256": "5bda627a4544370236cff875035a3791d542b1658bcf87290b2718dce388d494",
+        "gitBlob": "9058cfd351475ea258a17f6c3d8c4ac66cb53311",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "scripts/sounding-line/preparation-failure-publication.mjs",
+        "bytes": 9697,
+        "sha256": "1996128a7ee0847f5a0277737bc45541a2acc34d25df699454641817b2ca9e9c",
+        "gitBlob": "2bcf3ad12485ef8ca6dd02c2a176e588e90fdf8d",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "tests/sounding-line/experience-current-admission.test.mjs",
+        "bytes": 102550,
+        "sha256": "2a0c9b8bd0fe1d31d41b5ab97f3ce701691aa769e938a0b056ee6801dd647135",
+        "gitBlob": "67878ed5f74d0e1cb926b911ecc5a57cd8018565",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "tests/sounding-line/experience-exception.test.mjs",
+        "bytes": 217951,
+        "sha256": "af3f8124540a4cd03c31530239c68f84edb7f898e9d62698ad6902cf449bf41c",
+        "gitBlob": "5dc0b75699ff568ad243e6c24d273691502999ae",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "tests/sounding-line/experience-r24.test.mjs",
+        "bytes": 14408,
+        "sha256": "878aa1b49276d86673e2cb8614b786de28c40172b9e54f355c4d0d74fd987e48",
+        "gitBlob": "c041cb6665c8db4320f9cb091258d331709092d8",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "tests/sounding-line/experience-r25.test.mjs",
+        "bytes": 17471,
+        "sha256": "2489c536d9b6190caa1311d5f2897a760f450dbf70402aa789ceb61e007a74b1",
+        "gitBlob": "aba597232ba9015eb5285e70446ced996c7e74fb",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "tests/sounding-line/experience-r26.test.mjs",
+        "bytes": 20833,
+        "sha256": "399ad2fdb238c613fd7f9436e3fb6e10e51bf6b3436133e290333c0109347db8",
+        "gitBlob": "c5a7fd595b8d85dd3e23281305485d76a3e36fd0",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "tests/sounding-line/preparation-failure-retention.test.mjs",
+        "bytes": 24694,
+        "sha256": "8afa357ce32fba9b8c5136f16317f963b6ab55cdc4b3fe8e5835508cda12d8bd",
+        "gitBlob": "6e95f96159a72a120dfee6abe279781dfd1c070c",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "tests/sounding-line/fixtures/historical-admission-binding.mjs",
+        "bytes": 1097,
+        "sha256": "b9555acaff43fa1534d992b43d403d858eac05aa44cb0162532318b6b7376b75",
+        "gitBlob": "9e085bfa0bb0a16c3f2ded2fc25423ad3f23fe30",
+        "independentlyVerified": true
+      },
+      {
+        "relativePath": "scripts/sounding-line/owned-process.mjs",
+        "bytes": 7087,
+        "sha256": "28266ddb98360512d8196ae4a71ceb92a447c98128b0b5156b95f5aaab9d18df",
+        "gitBlob": "d2051a5f5809e634c1b2c1a99a052edbcd060c3d",
+        "independentlyVerified": true
+      }
+    ]
+  },
+  "materialization": {
+    "helper": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\materialize-qualified-landing-v3.mjs",
+      "bytes": 7344,
+      "sha256": "15d285b501f1ef42d15da59241f065c8957e5b2ecf3bb949f8c6b0ca619acdd1"
+    },
+    "receipt": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\landed-source-materialization.original.json",
+      "bytes": 8906,
+      "sha256": "71c747e798d1b77cf7286b2a75e1998f5f88c98e2d955885a3ced4b4880c1fe2"
+    },
+    "owned": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\qualified-landed-materialization-02.owned-result.original.json",
+      "bytes": 1534,
+      "sha256": "2671a1be7f89287d6927de9b56536e62c94d204e2b4d66dc824da48fcf5e7b14"
+    },
+    "streams": [
+      {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\qualified-landed-materialization-02.stdout.original",
+        "bytes": 266,
+        "sha256": "f7c10aeb26d417b8b58300ed14c4788568916f1ea4dad0cfddee36aef32960eb"
+      },
+      {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\qualified-landed-materialization-02.stderr.original",
+        "bytes": 45,
+        "sha256": "aa752dc7e4aa17237eec4e99ecf994dc75e083d50b931b3fdb3d180e9aaee46a"
+      }
+    ],
+    "elapsedMs": 40552,
+    "outerMs": 90000,
+    "cleanupMs": 6,
+    "cleanup": "PASS_WINDOWS_JOB_OBJECT_TREE_REAPED_STREAMS_CLOSED",
+    "method": "REUSE_EXACT_EXISTING_OBJECT",
+    "newNetworkRequests": 0,
+    "noAcquisitionOriginAttribution": true,
+    "selectedFileCount": 566,
+    "estimatedDBytes": 214106112,
+    "dependencyHold": {
+      "target": "D:/CodexRepos/treasurehunt-sounding-line-maintenance-20261015/node_modules",
+      "accessPolicy": "READ_ONLY_FOR_THIS_LANE",
+      "osReadOnlyEnforced": false,
+      "preserveOtherConsumers": true
+    }
+  },
+  "smoke": {
+    "recipe": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\landed-preparation-smoke-02.recipe.original.json",
+      "bytes": 1598,
+      "sha256": "e78b7a27923a8e3b6739527ab12c347fe010c8179eca6062ee2315a958af902e"
+    },
+    "claim": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\landed-preparation-smoke-02.claim.original.json",
+      "bytes": 5988,
+      "sha256": "30540a1cd3687d90dc539443e6f3325f38c2bf17d4c1b140c319f4bf7c45c911"
+    },
+    "owned": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\landed-preparation-smoke-02.owned-result.original.json",
+      "bytes": 2313,
+      "sha256": "136b8c42cc3821db3065a7cf2198d6a08438a79a1b2e091bf02ec8d08cc75ea4"
+    },
+    "streams": [
+      {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\landed-preparation-smoke-02.stdout.original",
+        "bytes": 608,
+        "sha256": "94873b29bed0f1ea544c42ca57b8ce4001f7e11cd4700b9d539114d8ce2bfe9c"
+      },
+      {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\landed-verification\\landed-preparation-smoke-02.stderr.original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "sourceBindingsUnchanged": 21,
+    "includesExactRunner": true,
+    "total": 5,
+    "pass": 5,
+    "fail": 0,
+    "cancelled": 0,
+    "skip": 0,
+    "testDurationMs": 6279.7006,
+    "elapsedIncludingCleanupMs": 11355,
+    "outerMs": 60000,
+    "cleanup": "PASS_WINDOWS_JOB_OBJECT_TREE_REAPED_STREAMS_CLOSED",
+    "cleanupMs": 9,
+    "localNode": "v24.18.0",
+    "hostedNode": "v24.19.0"
+  },
+  "preservedFailures": {
+    "materialization01": {
+      "receipt": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\qualified-landed-materialization-01.owned-result.original.json",
+        "bytes": 1549,
+        "sha256": "b82581fbbccedaeb278d30dcd27c5b956ca3f8b9ac7d1d17f3f3f12672a2f472"
+      },
+      "streams": [
+        {
+          "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\qualified-landed-materialization-01.stdout.original",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\qualified-landed-materialization-01.stderr.original",
+          "bytes": 1523,
+          "sha256": "979a23b10f3d025a67fd7c275d2bc5e32b61146e08c00b43eec6d3de8db51663"
+        }
+      ],
+      "reason": "30s inner Git fetch ETIMEDOUT before checkout creation; later local object presence is not attributed to this failed operation",
+      "cleanupMs": 9,
+      "nonaccepting": true
+    },
+    "failedQualification": "53383782/run39887104918 remains failed",
+    "localCorrectedClockRun": "240s timeout/17 observedPASS/exception-file completion unproved remains incomplete",
+    "allPriorReceiptsImmutable": true
+  },
+  "disposition": "INSTALLED infrastructure correction: exact independently reviewed and newly normally qualified source is the actual protected-main merge, and the bounded five-case landed smoke passes with exact source/checkout bindings and owned cleanup. No open source or landed-verification blocker.",
+  "boundaries": [
+    "Review used retained provider captures/local read-only Git/file/hash inspections; no fresh API request, tests, probes, source/Git mutation, browser, capture, custody or consumer action by reviewer. Only this exclusive engineering receipt is written.",
+    "Provider payloads are retained gh-api JSON/text, not original HTTP wire bytes. Normal-merge provenance is supported by premerge native CLEAN snapshot and successful strict app15368 qualification plus operator-reported normal non-bypass merge; this review did not execute merge.",
+    "V3 reused an exact existing local commit under no-lazy-fetch Git environment. Its prior fetch failed; no claim assigns the existing object acquisition to a particular actor or operation.",
+    "Local Windows smoke covers five synthetic/nonconsumer cases only. Full18 retention cases and all policy/typecheck/lint/privacy/docs/feature/rendered gates are bound to the separate successful Ubuntu qualification.",
+    "The original development preparation failure cause remains UNKNOWN. This correction retains bounded encrypted/redacted failure evidence; it does not establish recovery or a successful real application preparation.",
+    "No finite grant/counter/expiry reset, refund, consumer retry, capture/review allowance, product acceptance or future execution eligibility is conferred. Sole Studio owner must reconcile source, classify eligibility and obtain any separately required execution authority."
+  ],
+  "openBlockingFindings": [],
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "reserveGuard": {
+    "utc": "2026-10-23T03:20:52.0592899Z",
+    "allowed": true,
+    "floorBytesEach": 32212254720,
+    "cFreeBytes": 37255241728,
+    "dFreeBytes": 111581356032,
+    "estimatedCBytes": 0,
+    "estimatedDBytes": 1048576
+  }
+}

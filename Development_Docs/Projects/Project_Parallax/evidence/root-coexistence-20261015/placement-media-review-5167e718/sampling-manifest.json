@@ -1,0 +1,1379 @@
+{
+  "method": "Complete decoded spans, every third native frame plus final decoded frame. Full-span contact-sheet timed samples, not realtime/every-frame playback.",
+  "videos": [
+    {
+      "id": "private-current",
+      "originalId": "8840a4bc-library-community15/saved-asset-placement.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 109,
+      "lastFrameSeconds": 4.32,
+      "sampledFrameCount": 37,
+      "maxSampleGapSeconds": 0.12,
+      "sheets": [
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\sheet-00.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\sheet-01.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\sheet-02.jpg"
+      ],
+      "samples": [
+        {
+          "frame": 1,
+          "seconds": 0.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0001.png"
+        },
+        {
+          "frame": 4,
+          "seconds": 0.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0004.png"
+        },
+        {
+          "frame": 7,
+          "seconds": 0.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0007.png"
+        },
+        {
+          "frame": 10,
+          "seconds": 0.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0010.png"
+        },
+        {
+          "frame": 13,
+          "seconds": 0.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0013.png"
+        },
+        {
+          "frame": 16,
+          "seconds": 0.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0016.png"
+        },
+        {
+          "frame": 19,
+          "seconds": 0.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0019.png"
+        },
+        {
+          "frame": 22,
+          "seconds": 0.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0022.png"
+        },
+        {
+          "frame": 25,
+          "seconds": 0.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0025.png"
+        },
+        {
+          "frame": 28,
+          "seconds": 1.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0028.png"
+        },
+        {
+          "frame": 31,
+          "seconds": 1.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0031.png"
+        },
+        {
+          "frame": 34,
+          "seconds": 1.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0034.png"
+        },
+        {
+          "frame": 37,
+          "seconds": 1.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0037.png"
+        },
+        {
+          "frame": 40,
+          "seconds": 1.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0040.png"
+        },
+        {
+          "frame": 43,
+          "seconds": 1.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0043.png"
+        },
+        {
+          "frame": 46,
+          "seconds": 1.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0046.png"
+        },
+        {
+          "frame": 49,
+          "seconds": 1.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0049.png"
+        },
+        {
+          "frame": 52,
+          "seconds": 2.04,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0052.png"
+        },
+        {
+          "frame": 55,
+          "seconds": 2.16,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0055.png"
+        },
+        {
+          "frame": 58,
+          "seconds": 2.28,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0058.png"
+        },
+        {
+          "frame": 61,
+          "seconds": 2.4,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0061.png"
+        },
+        {
+          "frame": 64,
+          "seconds": 2.52,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0064.png"
+        },
+        {
+          "frame": 67,
+          "seconds": 2.64,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0067.png"
+        },
+        {
+          "frame": 70,
+          "seconds": 2.76,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0070.png"
+        },
+        {
+          "frame": 73,
+          "seconds": 2.88,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0073.png"
+        },
+        {
+          "frame": 76,
+          "seconds": 3.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0076.png"
+        },
+        {
+          "frame": 79,
+          "seconds": 3.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0079.png"
+        },
+        {
+          "frame": 82,
+          "seconds": 3.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0082.png"
+        },
+        {
+          "frame": 85,
+          "seconds": 3.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0085.png"
+        },
+        {
+          "frame": 88,
+          "seconds": 3.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0088.png"
+        },
+        {
+          "frame": 91,
+          "seconds": 3.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0091.png"
+        },
+        {
+          "frame": 94,
+          "seconds": 3.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0094.png"
+        },
+        {
+          "frame": 97,
+          "seconds": 3.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0097.png"
+        },
+        {
+          "frame": 100,
+          "seconds": 3.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0100.png"
+        },
+        {
+          "frame": 103,
+          "seconds": 4.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0103.png"
+        },
+        {
+          "frame": 106,
+          "seconds": 4.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0106.png"
+        },
+        {
+          "frame": 109,
+          "seconds": 4.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\native-0109.png"
+        }
+      ]
+    },
+    {
+      "id": "responsive-current",
+      "originalId": "8840a4bc-library-community15/responsive-library.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 128,
+      "lastFrameSeconds": 5.08,
+      "sampledFrameCount": 44,
+      "maxSampleGapSeconds": 0.12,
+      "sheets": [
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\sheet-00.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\sheet-01.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\sheet-02.jpg"
+      ],
+      "samples": [
+        {
+          "frame": 1,
+          "seconds": 0.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0001.png"
+        },
+        {
+          "frame": 4,
+          "seconds": 0.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0004.png"
+        },
+        {
+          "frame": 7,
+          "seconds": 0.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0007.png"
+        },
+        {
+          "frame": 10,
+          "seconds": 0.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0010.png"
+        },
+        {
+          "frame": 13,
+          "seconds": 0.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0013.png"
+        },
+        {
+          "frame": 16,
+          "seconds": 0.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0016.png"
+        },
+        {
+          "frame": 19,
+          "seconds": 0.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0019.png"
+        },
+        {
+          "frame": 22,
+          "seconds": 0.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0022.png"
+        },
+        {
+          "frame": 25,
+          "seconds": 0.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0025.png"
+        },
+        {
+          "frame": 28,
+          "seconds": 1.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0028.png"
+        },
+        {
+          "frame": 31,
+          "seconds": 1.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0031.png"
+        },
+        {
+          "frame": 34,
+          "seconds": 1.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0034.png"
+        },
+        {
+          "frame": 37,
+          "seconds": 1.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0037.png"
+        },
+        {
+          "frame": 40,
+          "seconds": 1.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0040.png"
+        },
+        {
+          "frame": 43,
+          "seconds": 1.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0043.png"
+        },
+        {
+          "frame": 46,
+          "seconds": 1.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0046.png"
+        },
+        {
+          "frame": 49,
+          "seconds": 1.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0049.png"
+        },
+        {
+          "frame": 52,
+          "seconds": 2.04,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0052.png"
+        },
+        {
+          "frame": 55,
+          "seconds": 2.16,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0055.png"
+        },
+        {
+          "frame": 58,
+          "seconds": 2.28,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0058.png"
+        },
+        {
+          "frame": 61,
+          "seconds": 2.4,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0061.png"
+        },
+        {
+          "frame": 64,
+          "seconds": 2.52,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0064.png"
+        },
+        {
+          "frame": 67,
+          "seconds": 2.64,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0067.png"
+        },
+        {
+          "frame": 70,
+          "seconds": 2.76,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0070.png"
+        },
+        {
+          "frame": 73,
+          "seconds": 2.88,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0073.png"
+        },
+        {
+          "frame": 76,
+          "seconds": 3.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0076.png"
+        },
+        {
+          "frame": 79,
+          "seconds": 3.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0079.png"
+        },
+        {
+          "frame": 82,
+          "seconds": 3.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0082.png"
+        },
+        {
+          "frame": 85,
+          "seconds": 3.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0085.png"
+        },
+        {
+          "frame": 88,
+          "seconds": 3.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0088.png"
+        },
+        {
+          "frame": 91,
+          "seconds": 3.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0091.png"
+        },
+        {
+          "frame": 94,
+          "seconds": 3.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0094.png"
+        },
+        {
+          "frame": 97,
+          "seconds": 3.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0097.png"
+        },
+        {
+          "frame": 100,
+          "seconds": 3.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0100.png"
+        },
+        {
+          "frame": 103,
+          "seconds": 4.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0103.png"
+        },
+        {
+          "frame": 106,
+          "seconds": 4.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0106.png"
+        },
+        {
+          "frame": 109,
+          "seconds": 4.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0109.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 4.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0112.png"
+        },
+        {
+          "frame": 115,
+          "seconds": 4.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0115.png"
+        },
+        {
+          "frame": 118,
+          "seconds": 4.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0118.png"
+        },
+        {
+          "frame": 121,
+          "seconds": 4.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0121.png"
+        },
+        {
+          "frame": 124,
+          "seconds": 4.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0124.png"
+        },
+        {
+          "frame": 127,
+          "seconds": 5.04,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0127.png"
+        },
+        {
+          "frame": 128,
+          "seconds": 5.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\native-0128.png"
+        }
+      ]
+    },
+    {
+      "id": "library-return-current",
+      "originalId": "8840a4bc-library-community15/expanded-library-return.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 125,
+      "lastFrameSeconds": 4.96,
+      "sampledFrameCount": 43,
+      "maxSampleGapSeconds": 0.12,
+      "sheets": [
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\sheet-00.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\sheet-01.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\sheet-02.jpg"
+      ],
+      "samples": [
+        {
+          "frame": 1,
+          "seconds": 0.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0001.png"
+        },
+        {
+          "frame": 4,
+          "seconds": 0.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0004.png"
+        },
+        {
+          "frame": 7,
+          "seconds": 0.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0007.png"
+        },
+        {
+          "frame": 10,
+          "seconds": 0.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0010.png"
+        },
+        {
+          "frame": 13,
+          "seconds": 0.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0013.png"
+        },
+        {
+          "frame": 16,
+          "seconds": 0.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0016.png"
+        },
+        {
+          "frame": 19,
+          "seconds": 0.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0019.png"
+        },
+        {
+          "frame": 22,
+          "seconds": 0.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0022.png"
+        },
+        {
+          "frame": 25,
+          "seconds": 0.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0025.png"
+        },
+        {
+          "frame": 28,
+          "seconds": 1.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0028.png"
+        },
+        {
+          "frame": 31,
+          "seconds": 1.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0031.png"
+        },
+        {
+          "frame": 34,
+          "seconds": 1.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0034.png"
+        },
+        {
+          "frame": 37,
+          "seconds": 1.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0037.png"
+        },
+        {
+          "frame": 40,
+          "seconds": 1.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0040.png"
+        },
+        {
+          "frame": 43,
+          "seconds": 1.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0043.png"
+        },
+        {
+          "frame": 46,
+          "seconds": 1.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0046.png"
+        },
+        {
+          "frame": 49,
+          "seconds": 1.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0049.png"
+        },
+        {
+          "frame": 52,
+          "seconds": 2.04,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0052.png"
+        },
+        {
+          "frame": 55,
+          "seconds": 2.16,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0055.png"
+        },
+        {
+          "frame": 58,
+          "seconds": 2.28,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0058.png"
+        },
+        {
+          "frame": 61,
+          "seconds": 2.4,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0061.png"
+        },
+        {
+          "frame": 64,
+          "seconds": 2.52,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0064.png"
+        },
+        {
+          "frame": 67,
+          "seconds": 2.64,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0067.png"
+        },
+        {
+          "frame": 70,
+          "seconds": 2.76,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0070.png"
+        },
+        {
+          "frame": 73,
+          "seconds": 2.88,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0073.png"
+        },
+        {
+          "frame": 76,
+          "seconds": 3.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0076.png"
+        },
+        {
+          "frame": 79,
+          "seconds": 3.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0079.png"
+        },
+        {
+          "frame": 82,
+          "seconds": 3.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0082.png"
+        },
+        {
+          "frame": 85,
+          "seconds": 3.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0085.png"
+        },
+        {
+          "frame": 88,
+          "seconds": 3.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0088.png"
+        },
+        {
+          "frame": 91,
+          "seconds": 3.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0091.png"
+        },
+        {
+          "frame": 94,
+          "seconds": 3.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0094.png"
+        },
+        {
+          "frame": 97,
+          "seconds": 3.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0097.png"
+        },
+        {
+          "frame": 100,
+          "seconds": 3.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0100.png"
+        },
+        {
+          "frame": 103,
+          "seconds": 4.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0103.png"
+        },
+        {
+          "frame": 106,
+          "seconds": 4.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0106.png"
+        },
+        {
+          "frame": 109,
+          "seconds": 4.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0109.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 4.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0112.png"
+        },
+        {
+          "frame": 115,
+          "seconds": 4.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0115.png"
+        },
+        {
+          "frame": 118,
+          "seconds": 4.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0118.png"
+        },
+        {
+          "frame": 121,
+          "seconds": 4.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0121.png"
+        },
+        {
+          "frame": 124,
+          "seconds": 4.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0124.png"
+        },
+        {
+          "frame": 125,
+          "seconds": 4.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\native-0125.png"
+        }
+      ]
+    },
+    {
+      "id": "surface-current",
+      "originalId": "8840a4bc-lifecycle11/surface-drop.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 95,
+      "lastFrameSeconds": 3.76,
+      "sampledFrameCount": 33,
+      "maxSampleGapSeconds": 0.12,
+      "sheets": [
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\sheet-00.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\sheet-01.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\sheet-02.jpg"
+      ],
+      "samples": [
+        {
+          "frame": 1,
+          "seconds": 0.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0001.png"
+        },
+        {
+          "frame": 4,
+          "seconds": 0.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0004.png"
+        },
+        {
+          "frame": 7,
+          "seconds": 0.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0007.png"
+        },
+        {
+          "frame": 10,
+          "seconds": 0.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0010.png"
+        },
+        {
+          "frame": 13,
+          "seconds": 0.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0013.png"
+        },
+        {
+          "frame": 16,
+          "seconds": 0.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0016.png"
+        },
+        {
+          "frame": 19,
+          "seconds": 0.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0019.png"
+        },
+        {
+          "frame": 22,
+          "seconds": 0.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0022.png"
+        },
+        {
+          "frame": 25,
+          "seconds": 0.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0025.png"
+        },
+        {
+          "frame": 28,
+          "seconds": 1.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0028.png"
+        },
+        {
+          "frame": 31,
+          "seconds": 1.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0031.png"
+        },
+        {
+          "frame": 34,
+          "seconds": 1.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0034.png"
+        },
+        {
+          "frame": 37,
+          "seconds": 1.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0037.png"
+        },
+        {
+          "frame": 40,
+          "seconds": 1.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0040.png"
+        },
+        {
+          "frame": 43,
+          "seconds": 1.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0043.png"
+        },
+        {
+          "frame": 46,
+          "seconds": 1.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0046.png"
+        },
+        {
+          "frame": 49,
+          "seconds": 1.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0049.png"
+        },
+        {
+          "frame": 52,
+          "seconds": 2.04,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0052.png"
+        },
+        {
+          "frame": 55,
+          "seconds": 2.16,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0055.png"
+        },
+        {
+          "frame": 58,
+          "seconds": 2.28,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0058.png"
+        },
+        {
+          "frame": 61,
+          "seconds": 2.4,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0061.png"
+        },
+        {
+          "frame": 64,
+          "seconds": 2.52,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0064.png"
+        },
+        {
+          "frame": 67,
+          "seconds": 2.64,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0067.png"
+        },
+        {
+          "frame": 70,
+          "seconds": 2.76,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0070.png"
+        },
+        {
+          "frame": 73,
+          "seconds": 2.88,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0073.png"
+        },
+        {
+          "frame": 76,
+          "seconds": 3.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0076.png"
+        },
+        {
+          "frame": 79,
+          "seconds": 3.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0079.png"
+        },
+        {
+          "frame": 82,
+          "seconds": 3.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0082.png"
+        },
+        {
+          "frame": 85,
+          "seconds": 3.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0085.png"
+        },
+        {
+          "frame": 88,
+          "seconds": 3.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0088.png"
+        },
+        {
+          "frame": 91,
+          "seconds": 3.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0091.png"
+        },
+        {
+          "frame": 94,
+          "seconds": 3.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0094.png"
+        },
+        {
+          "frame": 95,
+          "seconds": 3.76,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\native-0095.png"
+        }
+      ]
+    },
+    {
+      "id": "private-repair",
+      "originalId": "94390701-placement-repair/saved-asset-placement.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 126,
+      "lastFrameSeconds": 5.0,
+      "sampledFrameCount": 43,
+      "maxSampleGapSeconds": 0.12,
+      "sheets": [
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\sheet-00.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\sheet-01.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\sheet-02.jpg"
+      ],
+      "samples": [
+        {
+          "frame": 1,
+          "seconds": 0.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0001.png"
+        },
+        {
+          "frame": 4,
+          "seconds": 0.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0004.png"
+        },
+        {
+          "frame": 7,
+          "seconds": 0.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0007.png"
+        },
+        {
+          "frame": 10,
+          "seconds": 0.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0010.png"
+        },
+        {
+          "frame": 13,
+          "seconds": 0.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0013.png"
+        },
+        {
+          "frame": 16,
+          "seconds": 0.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0016.png"
+        },
+        {
+          "frame": 19,
+          "seconds": 0.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0019.png"
+        },
+        {
+          "frame": 22,
+          "seconds": 0.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0022.png"
+        },
+        {
+          "frame": 25,
+          "seconds": 0.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0025.png"
+        },
+        {
+          "frame": 28,
+          "seconds": 1.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0028.png"
+        },
+        {
+          "frame": 31,
+          "seconds": 1.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0031.png"
+        },
+        {
+          "frame": 34,
+          "seconds": 1.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0034.png"
+        },
+        {
+          "frame": 37,
+          "seconds": 1.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0037.png"
+        },
+        {
+          "frame": 40,
+          "seconds": 1.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0040.png"
+        },
+        {
+          "frame": 43,
+          "seconds": 1.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0043.png"
+        },
+        {
+          "frame": 46,
+          "seconds": 1.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0046.png"
+        },
+        {
+          "frame": 49,
+          "seconds": 1.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0049.png"
+        },
+        {
+          "frame": 52,
+          "seconds": 2.04,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0052.png"
+        },
+        {
+          "frame": 55,
+          "seconds": 2.16,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0055.png"
+        },
+        {
+          "frame": 58,
+          "seconds": 2.28,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0058.png"
+        },
+        {
+          "frame": 61,
+          "seconds": 2.4,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0061.png"
+        },
+        {
+          "frame": 64,
+          "seconds": 2.52,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0064.png"
+        },
+        {
+          "frame": 67,
+          "seconds": 2.64,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0067.png"
+        },
+        {
+          "frame": 70,
+          "seconds": 2.76,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0070.png"
+        },
+        {
+          "frame": 73,
+          "seconds": 2.88,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0073.png"
+        },
+        {
+          "frame": 76,
+          "seconds": 3.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0076.png"
+        },
+        {
+          "frame": 79,
+          "seconds": 3.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0079.png"
+        },
+        {
+          "frame": 82,
+          "seconds": 3.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0082.png"
+        },
+        {
+          "frame": 85,
+          "seconds": 3.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0085.png"
+        },
+        {
+          "frame": 88,
+          "seconds": 3.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0088.png"
+        },
+        {
+          "frame": 91,
+          "seconds": 3.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0091.png"
+        },
+        {
+          "frame": 94,
+          "seconds": 3.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0094.png"
+        },
+        {
+          "frame": 97,
+          "seconds": 3.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0097.png"
+        },
+        {
+          "frame": 100,
+          "seconds": 3.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0100.png"
+        },
+        {
+          "frame": 103,
+          "seconds": 4.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0103.png"
+        },
+        {
+          "frame": 106,
+          "seconds": 4.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0106.png"
+        },
+        {
+          "frame": 109,
+          "seconds": 4.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0109.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 4.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0112.png"
+        },
+        {
+          "frame": 115,
+          "seconds": 4.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0115.png"
+        },
+        {
+          "frame": 118,
+          "seconds": 4.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0118.png"
+        },
+        {
+          "frame": 121,
+          "seconds": 4.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0121.png"
+        },
+        {
+          "frame": 124,
+          "seconds": 4.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0124.png"
+        },
+        {
+          "frame": 126,
+          "seconds": 5.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\native-0126.png"
+        }
+      ]
+    },
+    {
+      "id": "installed-repair",
+      "originalId": "94390701-placement-repair/installed-asset-placement.webm",
+      "width": 1440,
+      "height": 1000,
+      "fps": 25,
+      "decodedFrameCount": 156,
+      "lastFrameSeconds": 6.2,
+      "sampledFrameCount": 53,
+      "maxSampleGapSeconds": 0.12,
+      "sheets": [
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\sheet-00.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\sheet-01.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\sheet-02.jpg",
+        "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\sheet-03.jpg"
+      ],
+      "samples": [
+        {
+          "frame": 1,
+          "seconds": 0.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0001.png"
+        },
+        {
+          "frame": 4,
+          "seconds": 0.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0004.png"
+        },
+        {
+          "frame": 7,
+          "seconds": 0.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0007.png"
+        },
+        {
+          "frame": 10,
+          "seconds": 0.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0010.png"
+        },
+        {
+          "frame": 13,
+          "seconds": 0.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0013.png"
+        },
+        {
+          "frame": 16,
+          "seconds": 0.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0016.png"
+        },
+        {
+          "frame": 19,
+          "seconds": 0.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0019.png"
+        },
+        {
+          "frame": 22,
+          "seconds": 0.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0022.png"
+        },
+        {
+          "frame": 25,
+          "seconds": 0.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0025.png"
+        },
+        {
+          "frame": 28,
+          "seconds": 1.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0028.png"
+        },
+        {
+          "frame": 31,
+          "seconds": 1.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0031.png"
+        },
+        {
+          "frame": 34,
+          "seconds": 1.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0034.png"
+        },
+        {
+          "frame": 37,
+          "seconds": 1.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0037.png"
+        },
+        {
+          "frame": 40,
+          "seconds": 1.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0040.png"
+        },
+        {
+          "frame": 43,
+          "seconds": 1.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0043.png"
+        },
+        {
+          "frame": 46,
+          "seconds": 1.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0046.png"
+        },
+        {
+          "frame": 49,
+          "seconds": 1.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0049.png"
+        },
+        {
+          "frame": 52,
+          "seconds": 2.04,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0052.png"
+        },
+        {
+          "frame": 55,
+          "seconds": 2.16,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0055.png"
+        },
+        {
+          "frame": 58,
+          "seconds": 2.28,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0058.png"
+        },
+        {
+          "frame": 61,
+          "seconds": 2.4,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0061.png"
+        },
+        {
+          "frame": 64,
+          "seconds": 2.52,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0064.png"
+        },
+        {
+          "frame": 67,
+          "seconds": 2.64,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0067.png"
+        },
+        {
+          "frame": 70,
+          "seconds": 2.76,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0070.png"
+        },
+        {
+          "frame": 73,
+          "seconds": 2.88,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0073.png"
+        },
+        {
+          "frame": 76,
+          "seconds": 3.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0076.png"
+        },
+        {
+          "frame": 79,
+          "seconds": 3.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0079.png"
+        },
+        {
+          "frame": 82,
+          "seconds": 3.24,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0082.png"
+        },
+        {
+          "frame": 85,
+          "seconds": 3.36,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0085.png"
+        },
+        {
+          "frame": 88,
+          "seconds": 3.48,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0088.png"
+        },
+        {
+          "frame": 91,
+          "seconds": 3.6,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0091.png"
+        },
+        {
+          "frame": 94,
+          "seconds": 3.72,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0094.png"
+        },
+        {
+          "frame": 97,
+          "seconds": 3.84,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0097.png"
+        },
+        {
+          "frame": 100,
+          "seconds": 3.96,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0100.png"
+        },
+        {
+          "frame": 103,
+          "seconds": 4.08,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0103.png"
+        },
+        {
+          "frame": 106,
+          "seconds": 4.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0106.png"
+        },
+        {
+          "frame": 109,
+          "seconds": 4.32,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0109.png"
+        },
+        {
+          "frame": 112,
+          "seconds": 4.44,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0112.png"
+        },
+        {
+          "frame": 115,
+          "seconds": 4.56,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0115.png"
+        },
+        {
+          "frame": 118,
+          "seconds": 4.68,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0118.png"
+        },
+        {
+          "frame": 121,
+          "seconds": 4.8,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0121.png"
+        },
+        {
+          "frame": 124,
+          "seconds": 4.92,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0124.png"
+        },
+        {
+          "frame": 127,
+          "seconds": 5.04,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0127.png"
+        },
+        {
+          "frame": 130,
+          "seconds": 5.16,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0130.png"
+        },
+        {
+          "frame": 133,
+          "seconds": 5.28,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0133.png"
+        },
+        {
+          "frame": 136,
+          "seconds": 5.4,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0136.png"
+        },
+        {
+          "frame": 139,
+          "seconds": 5.52,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0139.png"
+        },
+        {
+          "frame": 142,
+          "seconds": 5.64,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0142.png"
+        },
+        {
+          "frame": 145,
+          "seconds": 5.76,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0145.png"
+        },
+        {
+          "frame": 148,
+          "seconds": 5.88,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0148.png"
+        },
+        {
+          "frame": 151,
+          "seconds": 6.0,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0151.png"
+        },
+        {
+          "frame": 154,
+          "seconds": 6.12,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0154.png"
+        },
+        {
+          "frame": 156,
+          "seconds": 6.2,
+          "path": "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\native-0156.png"
+        }
+      ]
+    }
+  ]
+}

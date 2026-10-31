@@ -1,0 +1,143 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "c304d36f416af14cdc98b5636ffb5631d914a5b4",
+  "tree": "1f5e1b51657f07edc026da4b6ae28d0df874e3b5",
+  "finding": "AQ-01",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "objective": "A Creator reads actual map details and letter ink at useful framed viewing distances in both dark and light Studio. Inspect the full five-prop dark/light and room context recapture, natural Library entry and unchanged saved scene, under the same physically shaded paper, room lights and filmic tone mapping.",
+  "runtime": "PRODUCTION",
+  "automaticPaidCalls": 0,
+  "status": "ONE_ASSET_QUALITY_JOURNEY_PASS_PENDING_INDEPENDENT_REVIEW",
+  "artifacts": [
+    {
+      "file": "asset-quality-compass-dark-canvas.png",
+      "bytes": 75894,
+      "sha256": "b3098fa3813a5740ea3f6f399d7eeb1eaba62694ecfb0980aa80ca364792cc39"
+    },
+    {
+      "file": "asset-quality-compass-dark.png",
+      "bytes": 181153,
+      "sha256": "bbbdf63cf33dd2bc0756361d948112d1e53cf27cf9d1a480ad6db3bc46f42806"
+    },
+    {
+      "file": "asset-quality-compass-light-canvas.png",
+      "bytes": 76714,
+      "sha256": "d05777acacc81b1c088897828cabc9db2dd3e5ded3dd28f1725ae9607a7cdd67"
+    },
+    {
+      "file": "asset-quality-compass-light.png",
+      "bytes": 201782,
+      "sha256": "eda5b24a602998cee3d91c8fb8b084a29ea73ea05f976bb03b070824fd048905"
+    },
+    {
+      "file": "asset-quality-footprint-dark-canvas.png",
+      "bytes": 55774,
+      "sha256": "d631dae0da3035a229cf1191cc6e4b12d530d682569f0ec760d01880d7cfcf78"
+    },
+    {
+      "file": "asset-quality-footprint-dark.png",
+      "bytes": 160682,
+      "sha256": "6f8ea184df248a557a59bf32e4514d39fed4472735b33b1a247d1c40423fa6a3"
+    },
+    {
+      "file": "asset-quality-footprint-light-canvas.png",
+      "bytes": 56358,
+      "sha256": "6d38f29ee32968f478199169f2597973545a33e490b5a9d9be9c4ee5e42394c9"
+    },
+    {
+      "file": "asset-quality-footprint-light.png",
+      "bytes": 180160,
+      "sha256": "209a3135da4af92c2876cbfa5404f89789c376da25644a07dc1303de86a721ca"
+    },
+    {
+      "file": "asset-quality-letter-dark-canvas.png",
+      "bytes": 52356,
+      "sha256": "b4f749c86d28c103fa11960f2864540361e434bc397ee4b42f1bb124d75ab850"
+    },
+    {
+      "file": "asset-quality-letter-dark.png",
+      "bytes": 158948,
+      "sha256": "5a803b9aa3d5f5f3a0188dfc7819f0c9f872ea97cb3812a90ca433ccaa440d2a"
+    },
+    {
+      "file": "asset-quality-letter-light-canvas.png",
+      "bytes": 53813,
+      "sha256": "3dc54abc1d3b881ab0fe73043881dff14c2aff8309eed93205095fe67d948fe3"
+    },
+    {
+      "file": "asset-quality-letter-light.png",
+      "bytes": 178682,
+      "sha256": "216d903a23daac826fbd49d6f704f8121d8624869f104a9539b3c74aad4465da"
+    },
+    {
+      "file": "asset-quality-map-dark-canvas.png",
+      "bytes": 63230,
+      "sha256": "516ce39b12b0bcf67ad219842c142d41a71cc947118ee503f4a36df533eb97c1"
+    },
+    {
+      "file": "asset-quality-map-dark.png",
+      "bytes": 171863,
+      "sha256": "26d0d732ac9ed32f16252eb8650a0f810ed618ac325e8386860f9b87f5a99d99"
+    },
+    {
+      "file": "asset-quality-map-light-canvas.png",
+      "bytes": 66187,
+      "sha256": "3f1a0ad69e1b716cf3da7c8e6cd666e9b6921668e5454e519793bcb990779345"
+    },
+    {
+      "file": "asset-quality-map-light.png",
+      "bytes": 193152,
+      "sha256": "5c3f40e57f1bef924497bac4b53fb715982a30abc5071dbfc65c0cf3cd72465a"
+    },
+    {
+      "file": "asset-quality-observations.original.json.txt",
+      "bytes": 10261,
+      "sha256": "8047825a8fed36044a767278f407970e458a5d7bac567b9b8558a280176423ae"
+    },
+    {
+      "file": "asset-quality-room-dark.png",
+      "bytes": 260181,
+      "sha256": "28eb958ea259085de605324a838454be8ede6cdca49ff5c5c0144c800dcf9a71"
+    },
+    {
+      "file": "asset-quality-room-light.png",
+      "bytes": 278236,
+      "sha256": "18b6ef48bee3cc7a54ae1c549d70f6f251df11f33806e50c496901b677d790c7"
+    },
+    {
+      "file": "asset-quality-text-dark-canvas.png",
+      "bytes": 55060,
+      "sha256": "f5daca02c6e4a7ad198b1da0c8fb5946ee723df9abb97a45785c107e3ddd36e5"
+    },
+    {
+      "file": "asset-quality-text-dark.png",
+      "bytes": 159920,
+      "sha256": "bd12020b556acee38b66a9bbefe80900cb33f1c8d1c57d37f3ded2ed8c4ce57b"
+    },
+    {
+      "file": "asset-quality-text-light-canvas.png",
+      "bytes": 56343,
+      "sha256": "3ec1225a6c9530da8f4a4c8610a6d015d9386ab18f5fe86e29073155841ff806"
+    },
+    {
+      "file": "asset-quality-text-light.png",
+      "bytes": 180028,
+      "sha256": "5aa2b56b9bc690113b371c928429245d42afc5ef2b339c5277c4d74d7f44e8d9"
+    },
+    {
+      "file": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+      "bytes": 952205,
+      "sha256": "d31a025c63bcfa60419dc7b297c7d7c961f55edd1ca1abb9052dc23d36e9da24"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 610,
+      "sha256": "a30a5066006a70cfa3ef97988f75a05a6d72824134434ee3793021d89a831684"
+    }
+  ],
+  "limitations": [
+    "Actual software-rendered fixtures, not representative GPU/hardware/native performance.",
+    "Isolated prop closeups do not establish contact shadows; room contexts supplement them.",
+    "Original first review and5747ce15 source/media remain unchanged. No full-overhaul owner acceptance."
+  ]
+}

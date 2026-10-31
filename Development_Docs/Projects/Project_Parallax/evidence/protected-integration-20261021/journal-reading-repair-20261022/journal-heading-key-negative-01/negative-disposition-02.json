@@ -1,0 +1,10 @@
+{
+  "kind": "MISSING_PRIMARY_KEY_NEGATIVE_CONTROL",
+  "expectedRegressionObserved": true,
+  "failedSelectedCases": 2,
+  "observedFailure": "Open old dialog remains after authoritative primary-passage change",
+  "priorClassifierFailure": "Expected matcher token toBeNull; actual Vitest rendering says to be null",
+  "originalTestRunPreserved": true,
+  "analysisOnly": true,
+  "newTestExecution": false
+}

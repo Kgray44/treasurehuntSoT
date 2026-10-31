@@ -1,0 +1,41 @@
+{
+  "status": "INCOMPLETE_PLATFORM_BROAD_RUN_STOPPED",
+  "qualification": false,
+  "candidate": "961b1a82a1e2a7a33cc35f11c6e02e53027658e4",
+  "reason": "Four Windows failures match accepted main; broader inherited fixture runner stopped making progress after R12 output. Preserve incomplete outcome.",
+  "ownedParent": 138872,
+  "processes": [
+    {
+      "ProcessId": 129492,
+      "ParentProcessId": 131360,
+      "Name": "git.exe",
+      "CreationDate": "2026-10-19T17:20:08.055949-04:00"
+    },
+    {
+      "ProcessId": 131360,
+      "ParentProcessId": 140420,
+      "Name": "git.exe",
+      "CreationDate": "2026-10-19T17:20:07.957963-04:00"
+    },
+    {
+      "ProcessId": 140420,
+      "ParentProcessId": 131092,
+      "Name": "git.exe",
+      "CreationDate": "2026-10-19T17:20:07.944521-04:00"
+    },
+    {
+      "ProcessId": 131092,
+      "ParentProcessId": 138872,
+      "Name": "node.exe",
+      "CreationDate": "2026-10-19T17:15:47.233718-04:00"
+    },
+    {
+      "ProcessId": 138872,
+      "ParentProcessId": 138628,
+      "Name": "node.exe",
+      "CreationDate": "2026-10-19T17:14:45.072381-04:00"
+    }
+  ],
+  "allRecordedPidsExited": true,
+  "finishedAt": "2026-10-19T21:20:13.8787446Z"
+}

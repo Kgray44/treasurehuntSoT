@@ -1,0 +1,14 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+	longpaths = true
+[remote "origin"]
+	url = https://github.com/Kgray44/treasurehuntSoT.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "codex/parallax-integration-prep-20261019"]
+	remote = origin
+	merge = refs/heads/codex/parallax-integration-prep-20261019

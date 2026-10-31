@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-23T01:49:10.578Z",
+  "before": [
+    {
+      "path": "src/components/studio/parallax/useWorkspaceLayout.ts",
+      "sha256": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d"
+    },
+    {
+      "path": "src/components/studio/parallax/useWorkspaceLayout.test.tsx",
+      "sha256": "9ec134d2a07f683b3fc5210e67521b190aad17aa9c178c10864741057c4f48c7"
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.test.tsx",
+      "sha256": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c"
+    }
+  ],
+  "after": [
+    {
+      "path": "src/components/studio/parallax/useWorkspaceLayout.ts",
+      "sha256": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d"
+    },
+    {
+      "path": "src/components/studio/parallax/useWorkspaceLayout.test.tsx",
+      "sha256": "197c43d99aa982b1cacbc3d00d095676277038f170f1af89813c4d10651e9ac5"
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.test.tsx",
+      "sha256": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c"
+    }
+  ],
+  "qualification": false
+}

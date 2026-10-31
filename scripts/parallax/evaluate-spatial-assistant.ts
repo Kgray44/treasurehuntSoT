@@ -13,16 +13,34 @@ import {
   type AIModelId,
 } from "../../src/parallax/ai-policy";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
-import { assistantInterpretationSchema, SpatialAssistantError } from "../../src/parallax/spatial-assistant";
+import {
+  assistantInterpretationSchema,
+  assistantSceneDigest,
+  SpatialAssistantError,
+} from "../../src/parallax/spatial-assistant";
 import { requestSpatialAssistant } from "../../src/parallax/spatial-assistant-service";
 import { canonicalChecksum } from "../../src/drydock/canonical";
 import { spatialItemKind } from "../../src/parallax/library-service";
 import { parseUSDNano } from "../../src/components/admiralty/ai-quota-format";
 import { assistantEvaluationCorpus, CORPUS_VERSION } from "../../tests/parallax/spatial-assistant-corpus-v1";
 import { evaluateAssistantCase } from "../../tests/parallax/evaluate-assistant-case";
-import { OPENAI_RESPONSES_URL, OpenAIProviderError, extractOpenAIResponse } from "../../src/parallax/openai-provider";
+import {
+  OPENAI_RESPONSES_URL,
+  OpenAIProviderError,
+  extractOpenAIResponse,
+  countOpenAIInputTokens,
+} from "../../src/parallax/openai-provider";
 import { instructionExperiments } from "../../tests/parallax/spatial-assistant-instruction-experiments";
-import { assistantExperiments, experimentScene } from "../../tests/parallax/spatial-assistant-experiments";
+import {
+  assistantExperiments,
+  experimentScene,
+  type ExperimentCase,
+} from "../../tests/parallax/spatial-assistant-experiments";
+import {
+  roomPlacementExperiments,
+  evaluateRoomPlacement,
+  type RoomPlacementCase,
+} from "../../tests/parallax/room-placement-experiments";
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const args = process.argv.slice(2);
@@ -34,14 +52,16 @@ const argument = (name: string) => {
 };
 async function main() {
   const ids = argument("--cases")?.split(",") ?? assistantEvaluationCorpus.map((item) => item.id);
-  const cases = ids.map((id) => {
-    const item = [...assistantEvaluationCorpus, ...assistantExperiments].find((candidate) => candidate.id === id);
+  const cases: ExperimentCase[] = ids.map((id) => {
+    const item = [...assistantEvaluationCorpus, ...assistantExperiments, ...roomPlacementExperiments].find(
+      (candidate) => candidate.id === id,
+    );
     if (!item) throw new Error("Unknown corpus case identity.");
     return item;
   });
   if (new Set(ids).size !== ids.length) throw new Error("Corpus case identities must be unique.");
   evaluationStage = "MODEL_SELECTION";
-  const instructionVariant = argument("--instructions") ?? "CURRENT";
+  const instructionVariant = argument("--instructions") ?? "PRODUCTION";
   if (!(instructionVariant in instructionExperiments)) throw new Error("Unknown evaluation instruction variant.");
   const instructions = instructionExperiments[instructionVariant as keyof typeof instructionExperiments];
   const reasoning = argument("--reasoning") ?? "low";
@@ -54,6 +74,9 @@ async function main() {
       caseId: item.id,
       category: item.category,
       ...evaluateAssistantCase(item, experimentScene(item), item.deterministicFixture),
+      ...("roomPreset" in item
+        ? evaluateRoomPlacement(item as RoomPlacementCase, experimentScene(item), item.deterministicFixture)
+        : {}),
     }));
     process.stdout.write(
       JSON.stringify(
@@ -101,6 +124,10 @@ async function main() {
   const url = `file:${join(fixtureRoot, "evaluation.sqlite").replaceAll("\\", "/")}`;
   let store: PrismaClient | undefined;
   const records: Record<string, unknown>[] = [];
+  const evidenceDirectory = join(repository, "tmp/parallax-a1/evaluations");
+  await mkdir(evidenceDirectory, { recursive: true });
+  const output = join(evidenceDirectory, `live-${randomUUID()}.json`);
+  const dispatches: Record<string, unknown>[] = [];
   try {
     evaluationStage = "DATABASE_PROVISION";
     const provision = spawnSync(
@@ -183,11 +210,79 @@ async function main() {
           },
           update: { envelope: JSON.stringify(draft), checksum: canonicalChecksum(draft) },
         });
+        let previousRequestId: string | null = null;
+        if (item.priorIntent) {
+          // Synthetic retained history only; these zero-cost fixture rows are not provider evidence or usage.
+          previousRequestId = `synthetic-context-${randomUUID()}`;
+          const previous = assistantInterpretationSchema.parse({
+            intentType: "EDIT",
+            summary: "I'll rename the requested object.",
+            clarification: null,
+            operations:
+              item.priorIntent.operations ??
+              item.priorIntent.entityIds.map((entityId, index) => ({
+                id: `reference-${index}`,
+                type: "CONTENT",
+                entityId,
+                name: null,
+                content: null,
+                alternativeText: null,
+                widthMeters: null,
+                interactions: null,
+                explanation: "Keep the requested object as the task subject.",
+                dependsOn: [],
+              })),
+            assumptions: [],
+            warnings: [],
+            unsupportedCapabilities: [],
+            accessibilityNotes: [],
+            creatorExplanation: "Synthetic prior task context; not a model result.",
+          });
+          await store.aIUsageLedger.create({
+            data: {
+              id: previousRequestId,
+              accountId,
+              requestId: previousRequestId,
+              idempotencyKey: previousRequestId,
+              fingerprint: canonicalChecksum(previous),
+              definitionId: draft.content.definitionId,
+              operationCategory: "SYNTHETIC_CONTEXT",
+              period: "1900-01",
+              provider: "SYNTHETIC",
+              model: "SYNTHETIC",
+              mode: "STANDARD",
+              pricingRevision: "SYNTHETIC",
+              pricing: "{}",
+              policyRevision: 1,
+              status: "SETTLED",
+              reservationNano: BigInt(0),
+              exposureNano: BigInt(0),
+              settledCostNano: BigInt(0),
+              leaseExpiresAt: new Date(Date.now() + 3600000),
+              resultExpiresAt: new Date(Date.now() + 3600000),
+              result: JSON.stringify({
+                status: "PROPOSED",
+                proposal: {
+                  ...previous,
+                  schemaVersion: 1,
+                  requestId: previousRequestId,
+                  definitionId: draft.content.definitionId,
+                  sceneRevision: 1,
+                  editorGeneration: 0,
+                  sceneDigest: await assistantSceneDigest(draft),
+                },
+                conversation: { request: item.priorIntent.request, previousRequestId: null },
+              }),
+            },
+          });
+        }
         attempts++;
         attemptedCalls = attempts;
         evaluationStage = "BOUNDED_PROVIDER_REQUEST";
         const requestId = `synthetic-${randomUUID()}`;
         let providerInterpretation: unknown = null;
+        let providerInstructionsDigest: string | null = null;
+        let countedInput: { digest: string; tokens: number } | null = null;
         try {
           const reply = await requestSpatialAssistant(
             accountId,
@@ -198,20 +293,90 @@ async function main() {
               requestId,
               idempotencyKey: randomUUID(),
               request: item.request,
+              previousRequestId,
               selectedEntityId: item.selectedEntityId,
               mode: model === "gpt-6.1-sol" ? "ADVANCED" : "STANDARD",
             },
             {
               store,
               fetcher: async (url, init) => {
-                if (url !== OPENAI_RESPONSES_URL || typeof init?.body !== "string")
+                if (
+                  ![OPENAI_RESPONSES_URL, `${OPENAI_RESPONSES_URL}/input_tokens`].includes(String(url)) ||
+                  typeof init?.body !== "string"
+                )
                   throw new OpenAIProviderError("EVALUATION_REQUEST_BOUNDARY", "Unexpected evaluation request.", true);
                 const body = JSON.parse(init.body);
-                body.instructions = instructions;
+                if (
+                  instructionVariant !== "PRODUCTION" &&
+                  (!("roomPreset" in item) || instructionVariant !== "CURRENT")
+                )
+                  body.instructions = instructions;
                 const serialized = JSON.stringify(body);
-                if (Buffer.byteLength(serialized, "utf8") + 256 > maximumInputTokens)
-                  throw new OpenAIProviderError("CONTEXT_TOO_LARGE", "Evaluation context exceeds its allowance.", true);
+                providerInstructionsDigest = canonicalChecksum(body.instructions);
+                const { model: requestModel, instructions: prompt, input, reasoning, text, tools } = body;
+                const digest = canonicalChecksum({
+                  model: requestModel,
+                  instructions: prompt,
+                  input,
+                  reasoning,
+                  text,
+                  tools,
+                });
+                if (url === `${OPENAI_RESPONSES_URL}/input_tokens`) {
+                  const counted = await fetch(url, { ...init, body: serialized });
+                  if (counted.ok) {
+                    const value = await counted.clone().json();
+                    if (
+                      value.object === "response.input_tokens" &&
+                      Number.isSafeInteger(value.input_tokens) &&
+                      value.input_tokens >= 0
+                    )
+                      countedInput = { digest, tokens: value.input_tokens };
+                  }
+                  return counted;
+                }
+                if (Buffer.byteLength(serialized, "utf8") + 256 > maximumInputTokens) {
+                  const tokens =
+                    countedInput?.digest === digest
+                      ? countedInput.tokens
+                      : await countOpenAIInputTokens(body, defaultAIGlobalPolicy.timeoutMs);
+                  if (tokens + 256 > maximumInputTokens)
+                    throw new OpenAIProviderError(
+                      "CONTEXT_TOO_LARGE",
+                      "Evaluation context exceeds its allowance.",
+                      true,
+                    );
+                }
+                // Durable conservative receipt exists before every paid dispatch.
+                // Unknown responses retain their reservation; no retries.
+                const dispatch = {
+                  caseId: item.id,
+                  model,
+                  requestId,
+                  digest,
+                  status: "DISPATCH_RESERVED",
+                  maximumCostNano: aiMaximumExposureNano(
+                    aiPricing[model],
+                    maximumInputTokens,
+                    maximumOutputTokens,
+                  ).toString(),
+                  usage: null as unknown,
+                  responseDiagnostics: null as unknown,
+                };
+                dispatches.push(dispatch);
+                await writeFile(`${output}.dispatches.json`, JSON.stringify(dispatches, null, 2));
                 const response = await fetch(url, { ...init, body: serialized });
+                if (response.ok) {
+                  const envelope = await response.clone().json();
+                  dispatch.status = "RESPONSE_RECEIVED";
+                  dispatch.usage = envelope.usage ?? null;
+                  dispatch.responseDiagnostics = {
+                    status: envelope.status ?? null,
+                    incompleteReason: envelope.incomplete_details?.reason ?? null,
+                    errorCode: envelope.error?.code ?? null,
+                  };
+                  await writeFile(`${output}.dispatches.json`, JSON.stringify(dispatches, null, 2));
+                }
                 // Only this public synthetic runner retains schema-validated
                 // interpretations, including ones rejected by materialization.
                 // Never retain headers, credentials or arbitrary raw envelopes.
@@ -228,7 +393,13 @@ async function main() {
           );
           const evaluation =
             "proposal" in reply
-              ? evaluateAssistantCase(item, draft, assistantInterpretationSchema.strip().parse(reply.proposal))
+              ? "roomPreset" in item
+                ? evaluateRoomPlacement(
+                    item as RoomPlacementCase,
+                    draft,
+                    assistantInterpretationSchema.strip().parse(reply.proposal),
+                  )
+                : evaluateAssistantCase(item, draft, assistantInterpretationSchema.strip().parse(reply.proposal))
               : { passed: false, findings: ["NO_VALID_PROPOSAL"] };
           records.push({
             caseId: item.id,
@@ -236,6 +407,7 @@ async function main() {
             model,
             requestId,
             replyStatus: reply.status,
+            providerInstructionsDigest,
             replyCode: "code" in reply ? reply.code : null,
             ...evaluation,
             // This runner accepts only public synthetic corpus cases. Retain the
@@ -259,6 +431,7 @@ async function main() {
     }
     evaluationStage = "SAFE_REPORT";
     const ledger = await store.aIUsageLedger.findMany({
+      where: { operationCategory: { not: "SYNTHETIC_CONTEXT" } },
       select: {
         requestId: true,
         model: true,
@@ -298,9 +471,6 @@ async function main() {
         settledCostNano: row.settledCostNano?.toString() ?? null,
       })),
     };
-    const evidenceDirectory = join(repository, "tmp/parallax-a1/evaluations");
-    await mkdir(evidenceDirectory, { recursive: true });
-    const output = join(evidenceDirectory, `live-${randomUUID()}.json`);
     await writeFile(output, JSON.stringify(report, null, 2));
     process.stdout.write(
       JSON.stringify({

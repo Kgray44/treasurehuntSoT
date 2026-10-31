@@ -1,0 +1,636 @@
+{
+  "kind": "PARALLAX_ROOT_ACCEPTED39_DOMAIN_SOURCE_DISPOSITION_REFRESH",
+  "classification": "ENGINEERING_SOURCE_EVIDENCE_REVIEW_NOT_ACCEPTANCE",
+  "atUtc": "2026-10-22T13:22:51.0033497Z",
+  "root": "8715b61b301df519fff637e52ecd2d982ca38271",
+  "consumerBeforeReconciliation": "720e45753e1a7504b116c1f2e3c5a93e69ad75f1",
+  "acceptedBase": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "acceptedTree": "a628d0c648c10541b9017ee9077b2b60f9707d3a",
+  "acceptedBaseNotYetInConsumer": true,
+  "acceptedProductChangesSinceAaff": [],
+  "latestRootProductPathsAbsentFromConsumer": [],
+  "implementationAncestry": [
+    {
+      "ref": "76da4c36b5b01f47fa27c4d4810312ae27902a7b",
+      "rootAncestor": true,
+      "candidateAncestor": true
+    },
+    {
+      "ref": "6bea21300369db4598d0e746b63f2f5cfcebc517",
+      "rootAncestor": true,
+      "candidateAncestor": true
+    },
+    {
+      "ref": "73db990b554e2236df7bbda4286f5b8023a3636f",
+      "rootAncestor": true,
+      "candidateAncestor": true
+    }
+  ],
+  "family": [
+    {
+      "number": 727,
+      "historicalHead": "401f29bb65b2be55d1d9bd124425ba359db1bddb",
+      "disposition": "SUPERSEDED_BY_CANONICAL_ADOPTION",
+      "counts": {
+        "changed": 26,
+        "missing": 3,
+        "exact": 68
+      },
+      "productFiles": [
+        {
+          "path": "src/app/api/studio/parallax/route.test.ts",
+          "state": "changed",
+          "branchBlob": "2bd16d898c459289eb30161fbbdcd35752447144",
+          "latestRootBlob": "4eb65434935dcc32ae2ebec14ecb1a240a693b64",
+          "candidateBlob": "4eb65434935dcc32ae2ebec14ecb1a240a693b64"
+        },
+        {
+          "path": "src/app/api/studio/parallax/route.ts",
+          "state": "changed",
+          "branchBlob": "88f8c42647d43c2078538df3da8e43434786d040",
+          "latestRootBlob": "48390d75997ba584ac3a0c7fea8b9d30fef75327",
+          "candidateBlob": "48390d75997ba584ac3a0c7fea8b9d30fef75327"
+        },
+        {
+          "path": "src/components/studio/parallax/SceneManager.module.css",
+          "state": "exact",
+          "branchBlob": "177a7529e789c1d052de697f76cee15b7b108ad7",
+          "latestRootBlob": "177a7529e789c1d052de697f76cee15b7b108ad7",
+          "candidateBlob": "177a7529e789c1d052de697f76cee15b7b108ad7"
+        },
+        {
+          "path": "src/components/studio/parallax/SceneManager.test.tsx",
+          "state": "changed",
+          "branchBlob": "e900a93e58822d8aac9650391111eb809cee0fa8",
+          "latestRootBlob": "b0ae6d1bc6a75c83d38b4f60916eaccb1f7fa6ef",
+          "candidateBlob": "b0ae6d1bc6a75c83d38b4f60916eaccb1f7fa6ef"
+        },
+        {
+          "path": "src/components/studio/parallax/SceneManager.tsx",
+          "state": "changed",
+          "branchBlob": "6c9598b85924fcebf32814e4247ea6458be17641",
+          "latestRootBlob": "525bd2fc140282320f50e1b35b2876fbd8e5c54b",
+          "candidateBlob": "525bd2fc140282320f50e1b35b2876fbd8e5c54b"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialCanvas.tsx",
+          "state": "changed",
+          "branchBlob": "a4235f252100a1206345b07f702c247dc31ec799",
+          "latestRootBlob": "86196347b16ba661b780ac1371216f60dcd1ec30",
+          "candidateBlob": "f350a268d77d3e53b3320ee25a2a1937df0bacb2"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.module.css",
+          "state": "changed",
+          "branchBlob": "02c674c4d241340672ffccf028f07a03e2fce52e",
+          "latestRootBlob": "9bd7fbc690ecec841feb213b3f8d1d4d03bbea8c",
+          "candidateBlob": "bb0389113f524670b197757532e8110760a2046c"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.tsx",
+          "state": "changed",
+          "branchBlob": "b557486d32f7286415ce49f45d5b47a12fe985ca",
+          "latestRootBlob": "01eba002fdc82369c5f8c9e7b89af4f9985fda72",
+          "candidateBlob": "4ccf3524fadd0c33eb6d2f21d8b87881fcd39880"
+        },
+        {
+          "path": "src/components/studio/parallax/spatial-workstation.ts",
+          "state": "changed",
+          "branchBlob": "4cbae5509ae03559383825711f9ad94de698176e",
+          "latestRootBlob": "d7f8e68ee3a61eb825f8d2730c8cfbeae2094574",
+          "candidateBlob": "4c9e0624acb2e0095e090e012e59fc691e900f44"
+        },
+        {
+          "path": "src/parallax/authoring.ts",
+          "state": "changed",
+          "branchBlob": "fde17d916f5f81ffb7cf0ad5a9e46b920a7df6b7",
+          "latestRootBlob": "6a9a1ad3c943746279b2a975c491a0010e0a679d",
+          "candidateBlob": "6a9a1ad3c943746279b2a975c491a0010e0a679d"
+        },
+        {
+          "path": "src/parallax/builtin-environments.v1.json",
+          "state": "exact",
+          "branchBlob": "70fd2d68946df6eb1e9150ddefa754aedabb110b",
+          "latestRootBlob": "70fd2d68946df6eb1e9150ddefa754aedabb110b",
+          "candidateBlob": "70fd2d68946df6eb1e9150ddefa754aedabb110b"
+        },
+        {
+          "path": "src/parallax/contracts.ts",
+          "state": "changed",
+          "branchBlob": "1769070966c56fa3b71c7c255be60045b3519212",
+          "latestRootBlob": "20273607e07fdc3dd01c8f4ef510ba9b9faf9d74",
+          "candidateBlob": "20273607e07fdc3dd01c8f4ef510ba9b9faf9d74"
+        },
+        {
+          "path": "src/parallax/environment-authoring.test.ts",
+          "state": "changed",
+          "branchBlob": "61b998bd10d19881059865d8b97dfac18a8d500b",
+          "latestRootBlob": "012cca2ef12c82076c6cb9effda71755007a5ed1",
+          "candidateBlob": "012cca2ef12c82076c6cb9effda71755007a5ed1"
+        },
+        {
+          "path": "src/parallax/environment-authoring.ts",
+          "state": "changed",
+          "branchBlob": "9bfaed12831bb3fb2070438602a58cd6cd47d1b1",
+          "latestRootBlob": "6bd8aa7dbfa781dc86f78d683d695d8faa55fd96",
+          "candidateBlob": "6bd8aa7dbfa781dc86f78d683d695d8faa55fd96"
+        },
+        {
+          "path": "src/parallax/environment-contracts.ts",
+          "state": "changed",
+          "branchBlob": "021730aeaf467f9dd48657c7de256db8012bd344",
+          "latestRootBlob": "ec2837674e50c01d4837a3c6d9a839281802b04c",
+          "candidateBlob": "ec2837674e50c01d4837a3c6d9a839281802b04c"
+        },
+        {
+          "path": "src/parallax/environment-reference.ts",
+          "state": "changed",
+          "branchBlob": "080ca1889dfa8c0ceb35190c1393674059931895",
+          "latestRootBlob": "5f7c8f170f27c0bf1c47bcaac0720bb395182f10",
+          "candidateBlob": "5f7c8f170f27c0bf1c47bcaac0720bb395182f10"
+        },
+        {
+          "path": "src/parallax/environment-service.test.ts",
+          "state": "missing",
+          "branchBlob": "698dba5d819fcdf779f5bcf5447b94c277c678c6",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "src/parallax/environment-service.ts",
+          "state": "missing",
+          "branchBlob": "4604eeebbc710e9172965c209561cbd615bb62ad",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "src/parallax/library-service.ts",
+          "state": "changed",
+          "branchBlob": "a3ad22f2f062769aa0a82a28ad2cbcd2e312a774",
+          "latestRootBlob": "d772df341c5fb631464d25a33d9cc0f491c4dac0",
+          "candidateBlob": "d772df341c5fb631464d25a33d9cc0f491c4dac0"
+        },
+        {
+          "path": "src/parallax/scene-comparison.test.ts",
+          "state": "missing",
+          "branchBlob": "3a6b84f318321fdbe1339cc7eef2003b8bc25b2a",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "src/parallax/scene-comparison.ts",
+          "state": "changed",
+          "branchBlob": "fcf6feca597ac0056f154201aa007b1fde18cfd9",
+          "latestRootBlob": "0cba94b8a86f37c09ea90135ca4840255ba85aee",
+          "candidateBlob": "0cba94b8a86f37c09ea90135ca4840255ba85aee"
+        },
+        {
+          "path": "src/parallax/scene-reference.ts",
+          "state": "exact",
+          "branchBlob": "462015a5260f7d5cc6fcb1c010dac04b9ebd959b",
+          "latestRootBlob": "462015a5260f7d5cc6fcb1c010dac04b9ebd959b",
+          "candidateBlob": "462015a5260f7d5cc6fcb1c010dac04b9ebd959b"
+        },
+        {
+          "path": "tests/e2e/parallax-scene-manager.spec.ts",
+          "state": "changed",
+          "branchBlob": "4264f7af204e6e5b9e14bd01b5999d30c075b7c8",
+          "latestRootBlob": "1dc2c9b55a8c8256eb4a93ca3b305682d15862ab",
+          "candidateBlob": "1dc2c9b55a8c8256eb4a93ca3b305682d15862ab"
+        }
+      ]
+    },
+    {
+      "number": 728,
+      "historicalHead": "73db990b554e2236df7bbda4286f5b8023a3636f",
+      "disposition": "EXACT_HEAD_ANCESTOR",
+      "counts": {
+        "changed": 0,
+        "missing": 0,
+        "exact": 0
+      },
+      "productFiles": []
+    },
+    {
+      "number": 729,
+      "historicalHead": "d9e04166fb0df26a6985187152cd151848b6b270",
+      "disposition": "SUPERSEDED_BY_CANONICAL_ADOPTION",
+      "counts": {
+        "changed": 22,
+        "missing": 146,
+        "exact": 0
+      },
+      "productFiles": [
+        {
+          "path": "src/components/studio/parallax/InspectorControls.module.css",
+          "state": "changed",
+          "branchBlob": "391e953b20c43c9749cf000d3a4d48728a2a7678",
+          "latestRootBlob": "651cda4007a8a2e479bc2ab8ea86c7e3d2074e61",
+          "candidateBlob": "651cda4007a8a2e479bc2ab8ea86c7e3d2074e61"
+        },
+        {
+          "path": "src/components/studio/parallax/InspectorControls.tsx",
+          "state": "changed",
+          "branchBlob": "ece8c9d59adcc595208222ca6b1fe01d2f48144d",
+          "latestRootBlob": "140bde832b522cf58f9c39338fef78698b38d9cc",
+          "candidateBlob": "140bde832b522cf58f9c39338fef78698b38d9cc"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialCanvas.tsx",
+          "state": "changed",
+          "branchBlob": "102fffe6b6e81945c069a0d84f698e8d99c02def",
+          "latestRootBlob": "86196347b16ba661b780ac1371216f60dcd1ec30",
+          "candidateBlob": "f350a268d77d3e53b3320ee25a2a1937df0bacb2"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.module.css",
+          "state": "changed",
+          "branchBlob": "dfc879576a4d4d8381560c59c33bd3072db57150",
+          "latestRootBlob": "9bd7fbc690ecec841feb213b3f8d1d4d03bbea8c",
+          "candidateBlob": "bb0389113f524670b197757532e8110760a2046c"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.test.tsx",
+          "state": "changed",
+          "branchBlob": "84f5aea200aba6aa12ca7239b5c688fdf273c6bc",
+          "latestRootBlob": "a871da7f3438de57fdf2074dd9aaa72116004a7d",
+          "candidateBlob": "3a972f08a38a93a0156ea5cf4f244bbc2c35c0ce"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.tsx",
+          "state": "changed",
+          "branchBlob": "5f4ce5acb2d94cc210783e4c4e0093d83612c8ca",
+          "latestRootBlob": "01eba002fdc82369c5f8c9e7b89af4f9985fda72",
+          "candidateBlob": "4ccf3524fadd0c33eb6d2f21d8b87881fcd39880"
+        },
+        {
+          "path": "tests/e2e/fixtures/parallax-experience.ts",
+          "state": "changed",
+          "branchBlob": "8b79e5593224cd0f3c06d3951819d8a5f5e8b224",
+          "latestRootBlob": "963a460d1a37563279a6476a673fc837e77ae2aa",
+          "candidateBlob": "963a460d1a37563279a6476a673fc837e77ae2aa"
+        },
+        {
+          "path": "tests/e2e/parallax-adaptive.spec.ts",
+          "state": "changed",
+          "branchBlob": "bb07b0be360aed853a7248132428783d21ac7eed",
+          "latestRootBlob": "9ec89885af0658051127015884d35b32721a952f",
+          "candidateBlob": "1a3c142c6946f4b9ab24c51030128ee65a81624e"
+        },
+        {
+          "path": "tests/e2e/parallax-owner-refinements.spec.ts",
+          "state": "changed",
+          "branchBlob": "4c16ec9449d54995d59c862781b0dc2ae9051794",
+          "latestRootBlob": "0c1401e2b2aeb456add725777e551ca04f475139",
+          "candidateBlob": "48756b43709e6a14d16df04bc0fb33b9e02529e6"
+        },
+        {
+          "path": "tests/e2e/parallax-sc00b-inspector.spec.ts",
+          "state": "missing",
+          "branchBlob": "1f96767664a4b544b2710600375442972a2a9367",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "tests/e2e/parallax-spatial-assistant.spec.ts",
+          "state": "changed",
+          "branchBlob": "3ee4e3ad323e69abb5f960b50653a1adfc0099cd",
+          "latestRootBlob": "27d44093e8f9d052c8de6dcec08609c71fa41117",
+          "candidateBlob": "8dd906ad03e3e5575e91491edc2f9c2dfe310016"
+        },
+        {
+          "path": "tests/e2e/parallax-studio.spec.ts",
+          "state": "changed",
+          "branchBlob": "3b47f31f2ee5b4f38cb53878f47ab57d9301671d",
+          "latestRootBlob": "208350d2d9f8fb270ba5e25aa8fb919fcf0f37f5",
+          "candidateBlob": "a6174b2d1d9051ef7bb5d0b6e8027036381c2a66"
+        },
+        {
+          "path": "tests/e2e/parallax-workstation.spec.ts",
+          "state": "changed",
+          "branchBlob": "9fe5027d9bad2224159be2418f9bbf233b46b0a8",
+          "latestRootBlob": "b785107ae03a4fa62c993d94f8e5c9c0076bb018",
+          "candidateBlob": "81cc99a032fc562bba11853e875e68515b847889"
+        }
+      ]
+    },
+    {
+      "number": 733,
+      "historicalHead": "b7a5e64b843cd76ed865d07b73c3394f5fb2a7f4",
+      "disposition": "SUPERSEDED_BY_EXPANDED_CANONICAL_LIBRARY",
+      "counts": {
+        "changed": 33,
+        "missing": 93,
+        "exact": 18
+      },
+      "productFiles": [
+        {
+          "path": "src/app/api/studio/parallax/route.test.ts",
+          "state": "changed",
+          "branchBlob": "2bd16d898c459289eb30161fbbdcd35752447144",
+          "latestRootBlob": "4eb65434935dcc32ae2ebec14ecb1a240a693b64",
+          "candidateBlob": "4eb65434935dcc32ae2ebec14ecb1a240a693b64"
+        },
+        {
+          "path": "src/app/api/studio/parallax/route.ts",
+          "state": "changed",
+          "branchBlob": "88f8c42647d43c2078538df3da8e43434786d040",
+          "latestRootBlob": "48390d75997ba584ac3a0c7fea8b9d30fef75327",
+          "candidateBlob": "48390d75997ba584ac3a0c7fea8b9d30fef75327"
+        },
+        {
+          "path": "src/components/studio/parallax/SceneManager.module.css",
+          "state": "exact",
+          "branchBlob": "177a7529e789c1d052de697f76cee15b7b108ad7",
+          "latestRootBlob": "177a7529e789c1d052de697f76cee15b7b108ad7",
+          "candidateBlob": "177a7529e789c1d052de697f76cee15b7b108ad7"
+        },
+        {
+          "path": "src/components/studio/parallax/SceneManager.test.tsx",
+          "state": "changed",
+          "branchBlob": "e900a93e58822d8aac9650391111eb809cee0fa8",
+          "latestRootBlob": "b0ae6d1bc6a75c83d38b4f60916eaccb1f7fa6ef",
+          "candidateBlob": "b0ae6d1bc6a75c83d38b4f60916eaccb1f7fa6ef"
+        },
+        {
+          "path": "src/components/studio/parallax/SceneManager.tsx",
+          "state": "changed",
+          "branchBlob": "b3f5613ee13e4046e702fc1cf2690a9ccd6fb7ad",
+          "latestRootBlob": "525bd2fc140282320f50e1b35b2876fbd8e5c54b",
+          "candidateBlob": "525bd2fc140282320f50e1b35b2876fbd8e5c54b"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialCanvas.tsx",
+          "state": "changed",
+          "branchBlob": "0beec4a8dbf65ab2c69f689a8efd8a11e63bbbc3",
+          "latestRootBlob": "86196347b16ba661b780ac1371216f60dcd1ec30",
+          "candidateBlob": "f350a268d77d3e53b3320ee25a2a1937df0bacb2"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialLibrary.module.css",
+          "state": "missing",
+          "branchBlob": "f5a31577a2fe8a8167df5aa6b1e8b2245e200cfd",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialLibrary.tsx",
+          "state": "changed",
+          "branchBlob": "fc4ed83856fcb38a38f6eb6b75bfd59863f12e65",
+          "latestRootBlob": "76516d48b580276f5dc9f44babced97cec7e65ab",
+          "candidateBlob": "76516d48b580276f5dc9f44babced97cec7e65ab"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.module.css",
+          "state": "changed",
+          "branchBlob": "4e6aa9f8eb264cb0a50bbdef3ffecf3cfc7f26ee",
+          "latestRootBlob": "9bd7fbc690ecec841feb213b3f8d1d4d03bbea8c",
+          "candidateBlob": "bb0389113f524670b197757532e8110760a2046c"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.test.tsx",
+          "state": "changed",
+          "branchBlob": "f82218966581c0238588b733158403b571c134cb",
+          "latestRootBlob": "a871da7f3438de57fdf2074dd9aaa72116004a7d",
+          "candidateBlob": "3a972f08a38a93a0156ea5cf4f244bbc2c35c0ce"
+        },
+        {
+          "path": "src/components/studio/parallax/SpatialStudio.tsx",
+          "state": "changed",
+          "branchBlob": "ec8b5f630dd48508d09a784b86f92c26ee43dad3",
+          "latestRootBlob": "01eba002fdc82369c5f8c9e7b89af4f9985fda72",
+          "candidateBlob": "4ccf3524fadd0c33eb6d2f21d8b87881fcd39880"
+        },
+        {
+          "path": "src/components/studio/parallax/spatial-workstation.ts",
+          "state": "changed",
+          "branchBlob": "5ca6278c42354d4a9738adbed9f1a74e47df3abc",
+          "latestRootBlob": "d7f8e68ee3a61eb825f8d2730c8cfbeae2094574",
+          "candidateBlob": "4c9e0624acb2e0095e090e012e59fc691e900f44"
+        },
+        {
+          "path": "src/parallax/authoring.ts",
+          "state": "changed",
+          "branchBlob": "480579bbd3862dac9c5aae9c7db0a59e74f7b430",
+          "latestRootBlob": "6a9a1ad3c943746279b2a975c491a0010e0a679d",
+          "candidateBlob": "6a9a1ad3c943746279b2a975c491a0010e0a679d"
+        },
+        {
+          "path": "src/parallax/builtin-environments.v1.json",
+          "state": "exact",
+          "branchBlob": "70fd2d68946df6eb1e9150ddefa754aedabb110b",
+          "latestRootBlob": "70fd2d68946df6eb1e9150ddefa754aedabb110b",
+          "candidateBlob": "70fd2d68946df6eb1e9150ddefa754aedabb110b"
+        },
+        {
+          "path": "src/parallax/contracts.ts",
+          "state": "changed",
+          "branchBlob": "ae546b8745b3b9acfbca7852b0cf91eb78db066b",
+          "latestRootBlob": "20273607e07fdc3dd01c8f4ef510ba9b9faf9d74",
+          "candidateBlob": "20273607e07fdc3dd01c8f4ef510ba9b9faf9d74"
+        },
+        {
+          "path": "src/parallax/environment-authoring.test.ts",
+          "state": "changed",
+          "branchBlob": "61b998bd10d19881059865d8b97dfac18a8d500b",
+          "latestRootBlob": "012cca2ef12c82076c6cb9effda71755007a5ed1",
+          "candidateBlob": "012cca2ef12c82076c6cb9effda71755007a5ed1"
+        },
+        {
+          "path": "src/parallax/environment-authoring.ts",
+          "state": "changed",
+          "branchBlob": "9bfaed12831bb3fb2070438602a58cd6cd47d1b1",
+          "latestRootBlob": "6bd8aa7dbfa781dc86f78d683d695d8faa55fd96",
+          "candidateBlob": "6bd8aa7dbfa781dc86f78d683d695d8faa55fd96"
+        },
+        {
+          "path": "src/parallax/environment-contracts.ts",
+          "state": "changed",
+          "branchBlob": "021730aeaf467f9dd48657c7de256db8012bd344",
+          "latestRootBlob": "ec2837674e50c01d4837a3c6d9a839281802b04c",
+          "candidateBlob": "ec2837674e50c01d4837a3c6d9a839281802b04c"
+        },
+        {
+          "path": "src/parallax/environment-reference.ts",
+          "state": "changed",
+          "branchBlob": "080ca1889dfa8c0ceb35190c1393674059931895",
+          "latestRootBlob": "5f7c8f170f27c0bf1c47bcaac0720bb395182f10",
+          "candidateBlob": "5f7c8f170f27c0bf1c47bcaac0720bb395182f10"
+        },
+        {
+          "path": "src/parallax/environment-service.test.ts",
+          "state": "missing",
+          "branchBlob": "698dba5d819fcdf779f5bcf5447b94c277c678c6",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "src/parallax/environment-service.ts",
+          "state": "missing",
+          "branchBlob": "4604eeebbc710e9172965c209561cbd615bb62ad",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "src/parallax/library-catalog.test.ts",
+          "state": "missing",
+          "branchBlob": "fa6181742396ed47d1e6b5247e8f0c06d6e2b138",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "src/parallax/library-catalog.ts",
+          "state": "missing",
+          "branchBlob": "9997bf2734a51dd3bdff06b88e4f2c3196f477db",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "src/parallax/library-service.ts",
+          "state": "changed",
+          "branchBlob": "a3ad22f2f062769aa0a82a28ad2cbcd2e312a774",
+          "latestRootBlob": "d772df341c5fb631464d25a33d9cc0f491c4dac0",
+          "candidateBlob": "d772df341c5fb631464d25a33d9cc0f491c4dac0"
+        },
+        {
+          "path": "src/parallax/scene-comparison.ts",
+          "state": "changed",
+          "branchBlob": "fcf6feca597ac0056f154201aa007b1fde18cfd9",
+          "latestRootBlob": "0cba94b8a86f37c09ea90135ca4840255ba85aee",
+          "candidateBlob": "0cba94b8a86f37c09ea90135ca4840255ba85aee"
+        },
+        {
+          "path": "src/parallax/scene-reference.ts",
+          "state": "exact",
+          "branchBlob": "462015a5260f7d5cc6fcb1c010dac04b9ebd959b",
+          "latestRootBlob": "462015a5260f7d5cc6fcb1c010dac04b9ebd959b",
+          "candidateBlob": "462015a5260f7d5cc6fcb1c010dac04b9ebd959b"
+        },
+        {
+          "path": "tests/e2e/parallax-owner-refinements.spec.ts",
+          "state": "changed",
+          "branchBlob": "fa3d338da00ba6e5e622dec21e7117edd89059b3",
+          "latestRootBlob": "0c1401e2b2aeb456add725777e551ca04f475139",
+          "candidateBlob": "48756b43709e6a14d16df04bc0fb33b9e02529e6"
+        },
+        {
+          "path": "tests/e2e/parallax-sc00c-library.spec.ts",
+          "state": "missing",
+          "branchBlob": "cf30639759434261ac3d6609c6f6ae9c023c03b1",
+          "latestRootBlob": null,
+          "candidateBlob": null
+        },
+        {
+          "path": "tests/e2e/parallax-sc02.spec.ts",
+          "state": "changed",
+          "branchBlob": "18807ed7fff856607c2c48b6237d1e9015ac7088",
+          "latestRootBlob": "e8aa6bde9e00cd334a4121ed1f92660eff076334",
+          "candidateBlob": "82fc3ed20fdb40613335654edcdc7cffd8ad3d86"
+        },
+        {
+          "path": "tests/e2e/parallax-scene-manager.spec.ts",
+          "state": "changed",
+          "branchBlob": "7b0165e4a83798452b90602ab6969fbef1064432",
+          "latestRootBlob": "1dc2c9b55a8c8256eb4a93ca3b305682d15862ab",
+          "candidateBlob": "1dc2c9b55a8c8256eb4a93ca3b305682d15862ab"
+        },
+        {
+          "path": "tests/e2e/parallax-workstation.spec.ts",
+          "state": "changed",
+          "branchBlob": "5c4c7f5f65d7e779cbe34a5e041b4e4a4fa27827",
+          "latestRootBlob": "b785107ae03a4fa62c993d94f8e5c9c0076bb018",
+          "candidateBlob": "81cc99a032fc562bba11853e875e68515b847889"
+        },
+        {
+          "path": "tests/e2e/spatial-chronicle-pilot.spec.ts",
+          "state": "changed",
+          "branchBlob": "45184cd4d45d121b644e2fde93d71844093e119d",
+          "latestRootBlob": "4595fea7b4f214cd60a7316b1237dd4b8f5fe203",
+          "candidateBlob": "4595fea7b4f214cd60a7316b1237dd4b8f5fe203"
+        }
+      ]
+    },
+    {
+      "number": 734,
+      "historicalHead": "d32f7c8d7892f9e2626a316ca1a013875d6c285d",
+      "disposition": "PACKET_CONTAINED_WITH_LATER_DOCUMENT_EDITS",
+      "counts": {
+        "changed": 7,
+        "missing": 0,
+        "exact": 141
+      },
+      "productFiles": []
+    },
+    {
+      "number": 736,
+      "historicalHead": "9c6de12a34f7391607eb26df37752dcdc82c60ed",
+      "disposition": "PUBLISHER_CONTAINED_WITH_LATER_BROWSER_TEST",
+      "counts": {
+        "changed": 23,
+        "missing": 0,
+        "exact": 51
+      },
+      "productFiles": [
+        {
+          "path": "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+          "state": "changed",
+          "branchBlob": "d796f375bfc2d5c1aa07dd10e4b410a3d97c34f5",
+          "latestRootBlob": "d796f375bfc2d5c1aa07dd10e4b410a3d97c34f5",
+          "candidateBlob": "8280b7c340b78713995c9e512ac1c27cd55d5792"
+        },
+        {
+          "path": "tests/e2e/parallax-spatial-community.spec.ts",
+          "state": "changed",
+          "branchBlob": "d83618dd4675c382c477848cbf63a2c982769877",
+          "latestRootBlob": "feed9d8f972f7d884d2a8f0727e218edc3b164eb",
+          "candidateBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+        }
+      ]
+    },
+    {
+      "number": 739,
+      "historicalHead": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "disposition": "PRODUCT_TEST_CONTAINED_DISTINCT_ENGINEERING_EVIDENCE_RETAINED",
+      "counts": {
+        "changed": 25,
+        "missing": 0,
+        "exact": 51
+      },
+      "productFiles": [
+        {
+          "path": "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
+          "state": "changed",
+          "branchBlob": "d796f375bfc2d5c1aa07dd10e4b410a3d97c34f5",
+          "latestRootBlob": "d796f375bfc2d5c1aa07dd10e4b410a3d97c34f5",
+          "candidateBlob": "8280b7c340b78713995c9e512ac1c27cd55d5792"
+        },
+        {
+          "path": "tests/e2e/parallax-spatial-community.spec.ts",
+          "state": "changed",
+          "branchBlob": "feed9d8f972f7d884d2a8f0727e218edc3b164eb",
+          "latestRootBlob": "feed9d8f972f7d884d2a8f0727e218edc3b164eb",
+          "candidateBlob": "78c20ad7111f19d625edb572e51fe6cb19dd8c6d"
+        }
+      ]
+    }
+  ],
+  "historicalDisposition": "NO_PR_CLOSED_OR_DUPLICATE_MERGE_AUTHORIZED",
+  "historicalFailuresPreserved": [
+    39696321296,
+    39721702762,
+    39730281230
+  ],
+  "passingDevelopmentProducer": "b617b6825688d2d3d89a34284588ce456701aa8f",
+  "passingDevelopmentRun": 39735856149,
+  "physicalIPhoneCalibration": "NEGATIVE_UNRESOLVED",
+  "sourceMutation": false,
+  "newCandidateOrCapture": false,
+  "qualification": false,
+  "creatorDependency": "Actual #776 and separate #781 landings precede dependent #726 capture/review; expiry unchanged 2026-10-23T03:59:59Z",
+  "limits": [
+    "Path/blob and ancestry review does not prove behavior or current rendered acceptance.",
+    "Superseded historical missing/changed files are not automatically missing capability.",
+    "Review must be refreshed for the actual reconciled #776 source after the sole owner commits it.",
+    "Existing source-bound failed and passing receipts retain their original producers."
+  ]
+}

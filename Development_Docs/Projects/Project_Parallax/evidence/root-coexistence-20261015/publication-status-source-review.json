@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "BUILDER_TRANSCRIPTION_OF_INDEPENDENT_SOURCE_REVIEW",
+  "source": "7c7724970ce8c66ccbc2116d5fda823956386672",
+  "tree": "106067edb976062b7226e72637822f50b83b595b",
+  "base": "11776923abea3283e3b334f7b5b56954cb54fb49",
+  "reviewer": "/root/studio_foundation_review",
+  "provenance": "Transcribed from the independent reviewer's final tool-delivered message; not an authenticated original review artifact.",
+  "verdict": "NO_CONCRETE_BLOCKER_FOUND",
+  "scope": [
+    "Compact and expanded selected-source publication status",
+    "Owner-scoped server listing lookup and stale-request protection",
+    "Publisher close invalidation and preserved publication/version safeguards"
+  ],
+  "observations": [
+    "Both views use the same selected-source lookup; results render only for their matching source key.",
+    "Replaced requests are aborted and cannot install late results.",
+    "The server verifies source ownership and filters listings by authenticated owner profile and manifest source ID/kind.",
+    "No caller-selected account or new listing exposure was introduced.",
+    "Closing Publisher invalidates status lookup; publication actions, exact version selection and acknowledgments remain unchanged."
+  ],
+  "sourceSha256": {
+    "src/components/studio/parallax/SpatialContentLibrary.tsx": "aa27a788e974557046db68c15cc942aea7ce514e518fca6aa340abfe440dbe21",
+    "src/components/studio/parallax/SpatialContentLibrary.test.tsx": "1338953167fb5ccb80129f42073d205c47fb2f6e296a7698cfce1f7e6359e986",
+    "src/app/api/community/spatial-publication/licenses/route.ts": "0ef6c3214ba41e0222ecc6dfa212e34b8215c41c1ca18e8e36633ddab8ab14f3",
+    "src/community/spatial-publication.ts": "e0d14a868a11190704f52a9bf1e2670d8980daf8ed4d810cc886e3b39a624665"
+  },
+  "limits": [
+    "Source-only; tests inspected, not run by reviewer.",
+    "Fresh rendering and Publisher-close refresh chronology require separate media evidence.",
+    "No owner, physical or protected acceptance."
+  ]
+}

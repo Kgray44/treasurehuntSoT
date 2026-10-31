@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "classification": "LOCAL_CORRECTED_COPY_PRESERVATION_PRODUCTION_BROWSER_JOURNEY",
+  "attemptOrdinal": 4,
+  "candidate": "ff98bce2b1a508bf8848fc9562a3753b1e8224d0",
+  "previousAttempts": [
+    "03fd8a318c3b",
+    "8e612f7ad96f",
+    "cde8957a8f14"
+  ],
+  "authorization": "EXISTING_DIRECT_OWNER_ORDINARY_REPAIR",
+  "previousResults": "ALL_THREE_FAIL_RETAINED",
+  "protectedReviewCounters": "UNCHANGED",
+  "physicalAcceptance": "NOT_CLAIMED"
+}

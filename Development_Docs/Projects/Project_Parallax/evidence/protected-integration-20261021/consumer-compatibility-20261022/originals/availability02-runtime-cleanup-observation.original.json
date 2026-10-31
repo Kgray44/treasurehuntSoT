@@ -1,0 +1,55 @@
+{
+  "kind": "FILTERED_AVAILABILITY_RUNTIME_CLEANUP_OBSERVATION",
+  "at": "2026-10-22T18:04:48.732Z",
+  "source": "D:/CodexTemp/parallax-resume-20261021-01a15554/combined-availability-browser-02/browser-runtime.private.json",
+  "sourceSHA256": "809c7a15fbd051340c45d48a6c93761a269a3eef5df177f53645dab843829020",
+  "capture": "PASS",
+  "cleanup": {
+    "browser": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": 0,
+      "elapsedMs": 3,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "fixture": {
+      "status": "NOT_STARTED",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    "server": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": null,
+      "elapsedMs": 154,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "proxy": {
+      "status": "PASS"
+    },
+    "portsReleased": true,
+    "status": "PASS"
+  },
+  "privateFailureDiagnostics": {
+    "browser": {
+      "retention": "INCOMPLETE",
+      "issues": [
+        "SETUP_FAILED"
+      ],
+      "qualification": false
+    }
+  },
+  "finalProducerReceipt": "MISSING",
+  "groupStatus": "FAIL_C_PROACTIVE_RESERVE_STOP",
+  "qualification": false
+}

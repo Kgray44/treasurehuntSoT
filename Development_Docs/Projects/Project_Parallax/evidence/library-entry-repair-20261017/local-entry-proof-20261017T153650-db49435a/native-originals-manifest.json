@@ -1,0 +1,504 @@
+{
+  "kind": "NATIVE_LOCAL_FOCUSED_PROOF_ORIGINALS",
+  "candidate": "673abb39e44c7552b50fe03bde0349ae1057d38d",
+  "tree": "f7e341ef6d6da61d44e6a8bf95bcf506c93dde64",
+  "finishedAt": "2026-10-17T15:40:55.617Z",
+  "exitCode": 1,
+  "sourceHeadUnchanged": true,
+  "workingTreeClean": true,
+  "files": [
+    {
+      "path": "sc00c-media/built-in-context-desktop.png",
+      "bytes": 311591,
+      "sha256": "cb50f17be69554598c9049451f6f296eccf6250f43105a23913e2f81d43f0769"
+    },
+    {
+      "path": "sc00c-media/context-placement-preview-phone.png",
+      "bytes": 108264,
+      "sha256": "6c249a9e6546cd37a4e208040fa1be4efc1fcdda09ba25b9f367fbdd8421e98c"
+    },
+    {
+      "path": "sc00c-media/current-scene-context-desktop.png",
+      "bytes": 304512,
+      "sha256": "0a6c8002cdece88cc567c38ed08210f60f2b5c24294f933fe3ecfcc5ffbcc6a6"
+    },
+    {
+      "path": "sc00c-media/expanded-phone-context-light-reduced.png",
+      "bytes": 35907,
+      "sha256": "ebaa9ac6d069791aff77374ee01e0741e9eb9fc1b96b965d7c05e257b30ee48c"
+    },
+    {
+      "path": "run-artifacts/animation-end.png",
+      "bytes": 201277,
+      "sha256": "148e156812407b2bef20919df9c328f58f58139c2dab45d7a441957053358ac1"
+    },
+    {
+      "path": "run-artifacts/animation-phone-layout.json",
+      "bytes": 422,
+      "sha256": "367850cc41bbf843ba38af40d726da39a901bb2d032d043c8715f0f0c2483e01"
+    },
+    {
+      "path": "run-artifacts/animation-phone-timeline-controls.png",
+      "bytes": 80482,
+      "sha256": "bd0c259114d09895338117989b9cce06462d237a9567a2c77386e40ca7d3a546"
+    },
+    {
+      "path": "run-artifacts/animation-phone-viewport.png",
+      "bytes": 113943,
+      "sha256": "d0fd428ec99566b6e534ff2847710c08f837376403a9fee634f82d66363bddb1"
+    },
+    {
+      "path": "run-artifacts/animation-phone.png",
+      "bytes": 115262,
+      "sha256": "9d25e6f1c9ac271907d4d7fe28276dd8abe73a21c99a1e2705ccd8cbdd02dcb5"
+    },
+    {
+      "path": "run-artifacts/animation-reloaded-zoom.png",
+      "bytes": 246343,
+      "sha256": "1322b42d834dc2917db2532be96a2ac23ba84267990933dd6a7a3bcafddbf951"
+    },
+    {
+      "path": "run-artifacts/animation-start.png",
+      "bytes": 206155,
+      "sha256": "fd7b804fa8dd1ea7d99896c21c4578d2992301364c6796e4b253d027df8a10a6"
+    },
+    {
+      "path": "run-artifacts/cinematic-first-take.png",
+      "bytes": 233820,
+      "sha256": "109ac0e1fc44c93e63b7473b6948bedc3138f796816c5f057c55a4c9b38b5c87"
+    },
+    {
+      "path": "run-artifacts/cinematic-live-duration-resize.png",
+      "bytes": 234857,
+      "sha256": "7bb0ccd4198c4cb4f02202f990a05be1cca9dcc4ee65c81007e98f8ae13aa4c9"
+    },
+    {
+      "path": "run-artifacts/cinematic-reduced-motion.png",
+      "bytes": 231389,
+      "sha256": "7e74ddcd0376e948364b5612da9aaf1d6fa96af3abf259ee5d7622620979afd8"
+    },
+    {
+      "path": "run-artifacts/cinematic-renderer-proof.json",
+      "bytes": 50434,
+      "sha256": "23d3c1482e0d33e02558c6cc7881f32cf2ecc77c40c1e03c724a9543327dd0fb"
+    },
+    {
+      "path": "run-artifacts/cinematic-second-take.png",
+      "bytes": 232898,
+      "sha256": "7477b0022129fb3f16f20e59fdb4bd42d211d89c7d54535b84e965f9359ed054"
+    },
+    {
+      "path": "run-artifacts/cinematic-selected-keyframe-settings.png",
+      "bytes": 234708,
+      "sha256": "568efbf8368b49b966731baf2f7e62a58333b4fb0e5927b3db59f81fc2e7f6e0"
+    },
+    {
+      "path": "run-artifacts/click-surface-placed-and-restored.png",
+      "bytes": 257729,
+      "sha256": "540410dbd1c250c9e8e6b13002f4782e2628b054d1d971bf1e371aa406860314"
+    },
+    {
+      "path": "run-artifacts/construction-scale-review-phone.png",
+      "bytes": 64546,
+      "sha256": "9d8c8024f4c5b6cf8cf648a94c898efe824c7254cf96c3b678267980e69d4aa4"
+    },
+    {
+      "path": "run-artifacts/construction-wall-and-scale-findings.png",
+      "bytes": 283894,
+      "sha256": "4ecd70eac8066fbb77fb8e6cca4bdecf5991b896541ab51b60afce216b21ced8"
+    },
+    {
+      "path": "run-artifacts/direct-clamp-held-preview.png",
+      "bytes": 397989,
+      "sha256": "1e2de682fddea6eca6d49155d458e8c25e62998f0911735fc16ccc505776381d"
+    },
+    {
+      "path": "run-artifacts/direct-clamped-release.png",
+      "bytes": 408988,
+      "sha256": "4a4d28b09d11cf5f8c989d84ff43288520628b79ffbea4a612ecf3dbd08eb366"
+    },
+    {
+      "path": "run-artifacts/direct-free-held-preview.png",
+      "bytes": 407161,
+      "sha256": "aca2c779ed1747463a75bc1947775fbc5b89484add60a6e2055e2feb8deea182"
+    },
+    {
+      "path": "run-artifacts/direct-free-release.png",
+      "bytes": 406652,
+      "sha256": "f5f28612677f369be862cce98fc9df99a75b700bf891c6165b95f467b9e3b072"
+    },
+    {
+      "path": "run-artifacts/direct-pointer-cancel-restored.png",
+      "bytes": 407492,
+      "sha256": "d017cde8c5b23712cda3b93d138274e11e7b242196d4407b496ce8a8d21f75f0"
+    },
+    {
+      "path": "run-artifacts/opacity-actual-material-proof.json",
+      "bytes": 1707,
+      "sha256": "b4d5840bda7573d3db10af8a9ff1f5bd8214a1b46d04e60bdd112bdfb6b94427"
+    },
+    {
+      "path": "run-artifacts/opacity-editor-recovery-dark.png",
+      "bytes": 245952,
+      "sha256": "ad9de55cd5d6c8acf48859520b862557f83142410c9d0132f29e78bbac833c8c"
+    },
+    {
+      "path": "run-artifacts/opacity-faint-material-recovery-dark.png",
+      "bytes": 240171,
+      "sha256": "ecce137edcc5fab06058a103cf8e2fbffaef59fd05d6319ed6070f952531424c"
+    },
+    {
+      "path": "run-artifacts/opacity-full-material-dark.png",
+      "bytes": 246655,
+      "sha256": "7cbb50313a47f42ba3832716e8c81f81e143ffbe21855895234ea6752491ed7e"
+    },
+    {
+      "path": "run-artifacts/opacity-full-material-light.png",
+      "bytes": 258866,
+      "sha256": "46a1ac49bd6e6369927020ad38a4e0cf3898465bad768d9ceb1868e9f594c512"
+    },
+    {
+      "path": "run-artifacts/opacity-invalid-entry-restored.png",
+      "bytes": 247818,
+      "sha256": "1355602d4da74df4b4dd69cf2e8aff3e4eb09a16c156897595d6b43a1b89ec4f"
+    },
+    {
+      "path": "run-artifacts/opacity-partial-material-dark.png",
+      "bytes": 246474,
+      "sha256": "d0b85dee9c9852c998994e35bbc131f94d39106fd310c4f6fc30ea265830a17f"
+    },
+    {
+      "path": "run-artifacts/opacity-partial-material-light.png",
+      "bytes": 258797,
+      "sha256": "3a30beca1fd00fb2f91327b64d40645470d6d76bae91bc269fa3536e37bb278f"
+    },
+    {
+      "path": "run-artifacts/opacity-phone-editor-recovery.png",
+      "bytes": 62161,
+      "sha256": "58c8596fdd0f19fc5c80d2a3188a60c73e27ba3433c0cb58e49cc41def9d7c71"
+    },
+    {
+      "path": "run-artifacts/opacity-room-full-dark.png",
+      "bytes": 267566,
+      "sha256": "9029f1c3eecb19d37a6e11d8ba9355f4590e19d87543d3561d1b8fd03ee0aa36"
+    },
+    {
+      "path": "run-artifacts/opacity-room-partial-dark.png",
+      "bytes": 268054,
+      "sha256": "3d9beded3345cc0f977b27523b737f182b12306103c2bff3ee7d021915d0f43a"
+    },
+    {
+      "path": "run-artifacts/opacity-room-zero-dark.png",
+      "bytes": 268696,
+      "sha256": "900e1df334da6fb139a753cd610bcce89a5503298a5aafbfb17cbf4adeb690c7"
+    },
+    {
+      "path": "run-artifacts/opacity-saved-replay-dark.png",
+      "bytes": 268821,
+      "sha256": "b0285f58339c98f36ce7e1f5da8938bd8f69ae83477c8ee5e291d7aa37b3a5e2"
+    },
+    {
+      "path": "run-artifacts/opacity-zero-material-dark.png",
+      "bytes": 229587,
+      "sha256": "b814f0d974b03b2a57b88dceba89277b690a498244390077603cb3971dcdbe31"
+    },
+    {
+      "path": "run-artifacts/opacity-zero-material-light.png",
+      "bytes": 240533,
+      "sha256": "0e378980655bd22e9da021fe7eec0cad43a3c61f5351932b53820d071683703c"
+    },
+    {
+      "path": "run-artifacts/parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "bytes": 454730,
+      "sha256": "1e7d5533a7551d9b21446aca2d7606a43ff44337319ff163b723e7a90af8b391"
+    },
+    {
+      "path": "run-artifacts/parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "bytes": 274937,
+      "sha256": "79674729bcef47737700f5d303acd9c91393ef4b24032e83f87e0a9f26f9e3ae"
+    },
+    {
+      "path": "run-artifacts/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "bytes": 715766,
+      "sha256": "fad6e044c082c333162391ed1e17e6450a6b06667ed645b35c760d7cb69b15c4"
+    },
+    {
+      "path": "run-artifacts/parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium-video.webm",
+      "bytes": 281391,
+      "sha256": "7cc2b729669f1e98a4428dd7687042c55937d1ac333e465c3da6b8fb42b9d932"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-error-context.md",
+      "bytes": 15467,
+      "sha256": "8ee3bd2ef1b5d572ece597c696fb8006ce26f3e93353ab1f3bca238c483fb15d"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-test-failed-1.png",
+      "bytes": 97108,
+      "sha256": "71618ce6cee89ddfd710befebf32eb9e5588482b8b3a70d4e8b5c4c48ed6e8cd"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "bytes": 739393,
+      "sha256": "b3ce5a65a6ff1f17f216e613279175e0e85eeddf6f11c379cfcbc3184208f5d0"
+    },
+    {
+      "path": "run-artifacts/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-error-context.md",
+      "bytes": 19818,
+      "sha256": "4b96ffb704a4c1ffeefab086ab7b2ebd564863f46bc307e31786ae381da73215"
+    },
+    {
+      "path": "run-artifacts/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-test-failed-1.png",
+      "bytes": 406333,
+      "sha256": "b6359a0b671bc1b9501a4097b7685afb92a67e5ddce15a77a743f9e66645e4ad"
+    },
+    {
+      "path": "run-artifacts/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "bytes": 1088073,
+      "sha256": "171d39812e13c63cf4c364c7ae662b913e0a2b6088274ae67539fe0727153ee9"
+    },
+    {
+      "path": "run-artifacts/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-error-context.md",
+      "bytes": 16538,
+      "sha256": "b4f5cd41bad752e637edac6e9674cfeeb08e990850b84cf670ab03372406449d"
+    },
+    {
+      "path": "run-artifacts/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-test-failed-1.png",
+      "bytes": 317078,
+      "sha256": "4dbc1b39431a0675603238ce904d1dde1bc11275c714565697ce2c892a404b79"
+    },
+    {
+      "path": "run-artifacts/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "bytes": 834535,
+      "sha256": "25f63cae05eb73a1247ca9b1ef89eb13ddb2eebc430b9f42c49fe34ad286573e"
+    },
+    {
+      "path": "run-artifacts/parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "bytes": 916041,
+      "sha256": "f1dcd76461cea68e48d4964cc3017d251cfb0836406608ad570f91ceb9f3c7d7"
+    },
+    {
+      "path": "run-artifacts/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-error-context.md",
+      "bytes": 13463,
+      "sha256": "6132db5fb6323acd2817e669a56d559990255f32538944b8cca6d9bc76cd321c"
+    },
+    {
+      "path": "run-artifacts/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-test-failed-1.png",
+      "bytes": 280659,
+      "sha256": "d0fe8e5d6ccf93261827bd5ca2c266532b39eec0d45587340b04e0e7cf285b28"
+    },
+    {
+      "path": "run-artifacts/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-video.webm",
+      "bytes": 739413,
+      "sha256": "c50ecdb774ddc2a1bf87c2f0e8ba414e51d25aace9402d1fd390f66052a2b36c"
+    },
+    {
+      "path": "run-artifacts/parallax-sc00c-library-con-f5869-oard-focus-and-phone-bounds-chromium-video.webm",
+      "bytes": 423509,
+      "sha256": "38fba2192bc88cb2bf81b4799d69a7dae29182d52d93a66d79105dc21a518426"
+    },
+    {
+      "path": "run-artifacts/parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm",
+      "bytes": 492867,
+      "sha256": "979079c4d44618a114c1e1b64bd8684e4e9efc34c64f8d79cd84d19d4d18edd6"
+    },
+    {
+      "path": "run-artifacts/renderer-context-loss.png",
+      "bytes": 190015,
+      "sha256": "febac61f059bd2e9a331a102a0c195065babffd71507fb119643b44b4f96d47f"
+    },
+    {
+      "path": "run-artifacts/renderer-isolated-framed.png",
+      "bytes": 215685,
+      "sha256": "a7acbe88ae04316d45e82f8767e5e280ebf2ced900e0833e7d4528aeea44207d"
+    },
+    {
+      "path": "run-artifacts/renderer-recovered.png",
+      "bytes": 215196,
+      "sha256": "e3c366a8a3b91c500777505427620fc4905ed597faa967aeab1d0bc81654fc42"
+    },
+    {
+      "path": "run-artifacts/room-edit-controls-open-after-click.png",
+      "bytes": 270930,
+      "sha256": "4ce09135e7be78d821e85965928506024f318134f270d0853e8b1831b6309c59"
+    },
+    {
+      "path": "run-artifacts/run.json",
+      "bytes": 2550,
+      "sha256": "6b1897bec7f35e1f192e63009bd7bd8caff91199c865bebce1bac1f3ae6c296e"
+    },
+    {
+      "path": "run-artifacts/simulation-delayed-action.png",
+      "bytes": 217502,
+      "sha256": "15bf1db9f9b524ee5e60aa69ecf7a93598f1fbbf66ebee9aeff01c1a3a7a4605"
+    },
+    {
+      "path": "run-artifacts/simulation-delayed-evidence.png",
+      "bytes": 218128,
+      "sha256": "43b285f12f21691c8f6e6c8cf386d191621ea29f5a82518ceba866bbf6bca41b"
+    },
+    {
+      "path": "run-artifacts/simulation-engineering-replay.png",
+      "bytes": 221249,
+      "sha256": "fb06907f84052a8cb5b5f46b957f6628a5203294c0c8870f3482f8f3e70e66ae"
+    },
+    {
+      "path": "run-artifacts/simulation-hidden-evidence.png",
+      "bytes": 199442,
+      "sha256": "382a73e1bea648cec21d01e291637cf82f67c50e556a2697e7b62a719798d652"
+    },
+    {
+      "path": "run-artifacts/simulation-hidden-result.png",
+      "bytes": 198187,
+      "sha256": "4d23d808120cc2165778fd79e8808b689b0aa482e0ea2278752fefa2cbdac969"
+    },
+    {
+      "path": "run-artifacts/simulation-no-effect.png",
+      "bytes": 218398,
+      "sha256": "a2d8936517304871bae5a7331b5dbc7672f8d24fb5c9ca5ab5b553e9b0cf34e1"
+    },
+    {
+      "path": "run-artifacts/simulation-reset.png",
+      "bytes": 216070,
+      "sha256": "553097db25e457eece6ece3bbb0c9156d57a06c1a84eeff2510a93738e941975"
+    },
+    {
+      "path": "run-artifacts/timeline-live-playhead-scrub.png",
+      "bytes": 234174,
+      "sha256": "536378e0828c9585359efeaac54da9aba753aa09f188249fc8e0285880fdd042"
+    },
+    {
+      "path": "test-results/.last-run.json",
+      "bytes": 243,
+      "sha256": "7aad1d16278273f0cdd95e796b8fb5a54774e66e785e6d3f5ffcf4375f2d8334"
+    },
+    {
+      "path": "test-results/parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium/video.webm",
+      "bytes": 454730,
+      "sha256": "1e7d5533a7551d9b21446aca2d7606a43ff44337319ff163b723e7a90af8b391"
+    },
+    {
+      "path": "test-results/parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium/video.webm",
+      "bytes": 274937,
+      "sha256": "79674729bcef47737700f5d303acd9c91393ef4b24032e83f87e0a9f26f9e3ae"
+    },
+    {
+      "path": "test-results/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium/video.webm",
+      "bytes": 715766,
+      "sha256": "fad6e044c082c333162391ed1e17e6450a6b06667ed645b35c760d7cb69b15c4"
+    },
+    {
+      "path": "test-results/parallax-click-surface-Cli-244ce-Surfaces-and-preserves-Undo-chromium/video.webm",
+      "bytes": 281391,
+      "sha256": "7cc2b729669f1e98a4428dd7687042c55937d1ac333e465c3da6b8fb42b9d932"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/error-context.md",
+      "bytes": 15467,
+      "sha256": "8ee3bd2ef1b5d572ece597c696fb8006ce26f3e93353ab1f3bca238c483fb15d"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/test-failed-1.png",
+      "bytes": 97108,
+      "sha256": "71618ce6cee89ddfd710befebf32eb9e5588482b8b3a70d4e8b5c4c48ed6e8cd"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/trace.zip",
+      "bytes": 4784540,
+      "sha256": "512adec9a83b6174cfe88a27aed08891e518967064ca994dbc0c10a01941c792"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/video.webm",
+      "bytes": 739393,
+      "sha256": "b3ce5a65a6ff1f17f216e613279175e0e85eeddf6f11c379cfcbc3184208f5d0"
+    },
+    {
+      "path": "test-results/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium/error-context.md",
+      "bytes": 19818,
+      "sha256": "4b96ffb704a4c1ffeefab086ab7b2ebd564863f46bc307e31786ae381da73215"
+    },
+    {
+      "path": "test-results/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium/test-failed-1.png",
+      "bytes": 406333,
+      "sha256": "b6359a0b671bc1b9501a4097b7685afb92a67e5ddce15a77a743f9e66645e4ad"
+    },
+    {
+      "path": "test-results/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium/trace.zip",
+      "bytes": 7633280,
+      "sha256": "5983aad0026c12212f2fd30113a1d4abf00d31a42e78b54c4de94703baca7159"
+    },
+    {
+      "path": "test-results/parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium/video.webm",
+      "bytes": 1088073,
+      "sha256": "171d39812e13c63cf4c364c7ae662b913e0a2b6088274ae67539fe0727153ee9"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/error-context.md",
+      "bytes": 16538,
+      "sha256": "b4f5cd41bad752e637edac6e9674cfeeb08e990850b84cf670ab03372406449d"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/test-failed-1.png",
+      "bytes": 317078,
+      "sha256": "4dbc1b39431a0675603238ce904d1dde1bc11275c714565697ce2c892a404b79"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/trace.zip",
+      "bytes": 4407645,
+      "sha256": "8f3eb244ad4002553e6dbbae617f1f1f48541aa10618c8d7d4a325a4aa57fbb0"
+    },
+    {
+      "path": "test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/video.webm",
+      "bytes": 834535,
+      "sha256": "25f63cae05eb73a1247ca9b1ef89eb13ddb2eebc430b9f42c49fe34ad286573e"
+    },
+    {
+      "path": "test-results/parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium/video.webm",
+      "bytes": 916041,
+      "sha256": "f1dcd76461cea68e48d4964cc3017d251cfb0836406608ad570f91ceb9f3c7d7"
+    },
+    {
+      "path": "test-results/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium/error-context.md",
+      "bytes": 13463,
+      "sha256": "6132db5fb6323acd2817e669a56d559990255f32538944b8cca6d9bc76cd321c"
+    },
+    {
+      "path": "test-results/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium/test-failed-1.png",
+      "bytes": 280659,
+      "sha256": "d0fe8e5d6ccf93261827bd5ca2c266532b39eec0d45587340b04e0e7cf285b28"
+    },
+    {
+      "path": "test-results/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium/trace.zip",
+      "bytes": 4084637,
+      "sha256": "59ca868f4b9bc79f67ad29de833b0e28ccde3a0952d43ea44affb5befd971f9a"
+    },
+    {
+      "path": "test-results/parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium/video.webm",
+      "bytes": 739413,
+      "sha256": "c50ecdb774ddc2a1bf87c2f0e8ba414e51d25aace9402d1fd390f66052a2b36c"
+    },
+    {
+      "path": "test-results/parallax-sc00c-library-con-f5869-oard-focus-and-phone-bounds-chromium/video.webm",
+      "bytes": 423509,
+      "sha256": "38fba2192bc88cb2bf81b4799d69a7dae29182d52d93a66d79105dc21a518426"
+    },
+    {
+      "path": "test-results/parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium/video.webm",
+      "bytes": 492867,
+      "sha256": "979079c4d44618a114c1e1b64bd8684e4e9efc34c64f8d79cd84d19d4d18edd6"
+    },
+    {
+      "path": "browser-runtime.json",
+      "bytes": 1383,
+      "sha256": "68033de660b8d4c72a67a851b51d2049719109043e73d5fe3946b21a251a7047"
+    },
+    {
+      "path": "browser-suite-profile.json",
+      "bytes": 910,
+      "sha256": "fd72032eb1a79556e7771afeabab9a6facb1c9e74de0e38a3eaa350e08a3c438"
+    }
+  ],
+  "protectedQualification": false,
+  "crossdeckExecution": false,
+  "physicalAcceptance": false
+}

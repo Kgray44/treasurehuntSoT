@@ -1,0 +1,119 @@
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
+import { StrictMode } from "react";
+import { workspacePreset } from "@/parallax/workspace-layout";
+import { useWorkspaceLayout } from "./useWorkspaceLayout";
+
+beforeEach(() => {
+  localStorage.clear();
+  vi.stubGlobal("innerWidth", 1920);
+  vi.stubGlobal("matchMedia", vi.fn((query: string) => {
+    expect(query).toBe("(max-width: 1099px)");
+    return { matches: innerWidth < 1100, media: query, addEventListener: vi.fn(), removeEventListener: vi.fn() };
+  }));
+});
+
+afterEach(() => {
+  cleanup();
+  localStorage.clear();
+  vi.unstubAllGlobals();
+});
+
+it("preserves an early Library action while restoring account preferences", async () => {
+  const scope = "synthetic-layout-hydration";
+  localStorage.setItem(
+    `parallax.workspace.v1:${scope}`,
+    JSON.stringify({ ...workspacePreset("SPATIAL"), libraryOpen: false, libraryWidth: 333 }),
+  );
+  const { result } = renderHook(() => useWorkspaceLayout(scope));
+  expect(result.current.layout.libraryWidth).toBe(252);
+  expect(result.current.layout.libraryOpen).toBe(false);
+  act(() => result.current.setLayout((previous) => ({ ...previous, libraryOpen: true })));
+  expect(result.current.layout.libraryOpen).toBe(true);
+  expect(result.current.layout.libraryWidth).toBe(252);
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
+  expect(result.current.layout.libraryOpen).toBe(true);
+});
+
+it("keeps rapid actions including a return to the initial value", async () => {
+  const scope = "synthetic-layout-rapid";
+  localStorage.setItem(`parallax.workspace.v1:${scope}`, JSON.stringify({
+    ...workspacePreset("CONSTRUCTION"), libraryWidth: 333, inspectorWidth: 350,
+  }));
+  const { result } = renderHook(() => useWorkspaceLayout(scope));
+  expect(result.current.layout.libraryWidth).toBe(252);
+  act(() => {
+    result.current.setLayout(previous => ({ ...previous, libraryOpen: true }));
+    result.current.setLayout(previous => ({ ...previous, libraryOpen: false, assistantDocked: true }));
+  });
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
+  expect(result.current.layout.libraryOpen).toBe(false);
+  expect(result.current.layout.assistantDocked).toBe(true);
+  expect(result.current.layout.inspectorWidth).toBe(350);
+});
+
+it("restores untouched account preferences", async () => {
+  const scope = "synthetic-layout-untouched";
+  const saved = { ...workspacePreset("CONSTRUCTION"), libraryWidth: 333, assistantDocked: true };
+  localStorage.setItem(`parallax.workspace.v1:${scope}`, JSON.stringify(saved));
+  const { result } = renderHook(() => useWorkspaceLayout(scope));
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
+  expect(result.current.layout).toEqual(saved);
+});
+
+it("cancels the previous account hydration and keeps only the new account's early action", async () => {
+  const first = "synthetic-layout-first";
+  const second = "synthetic-layout-second";
+  localStorage.setItem(`parallax.workspace.v1:${first}`, JSON.stringify({
+    ...workspacePreset("SPATIAL"), libraryWidth: 333,
+  }));
+  localStorage.setItem(`parallax.workspace.v1:${second}`, JSON.stringify({
+    ...workspacePreset("CONSTRUCTION"), libraryWidth: 377, assistantDocked: false,
+  }));
+  const { result, rerender } = renderHook(({ scope }) => useWorkspaceLayout(scope), { initialProps: { scope: first } });
+  act(() => result.current.setLayout(previous => ({ ...previous, libraryOpen: true, assistantDocked: true })));
+  rerender({ scope: second });
+  act(() => result.current.setLayout(previous => ({ ...previous, libraryOpen: false })));
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(377));
+  expect(result.current.layout.libraryOpen).toBe(false);
+  expect(result.current.layout.assistantDocked).toBe(false);
+  expect(JSON.parse(localStorage.getItem(`parallax.workspace.v1:${first}`)!).libraryWidth).toBe(333);
+});
+
+it("retains automatic narrow-screen collapse when there is no early action", async () => {
+  vi.stubGlobal("innerWidth", 390);
+  const scope = "synthetic-layout-narrow";
+  localStorage.setItem(`parallax.workspace.v1:${scope}`, JSON.stringify({
+    ...workspacePreset("CONSTRUCTION"), libraryWidth: 333, bottomOpen: true,
+  }));
+  const { result } = renderHook(() => useWorkspaceLayout(scope));
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
+  expect(result.current.layout.libraryOpen).toBe(false);
+  expect(result.current.layout.inspectorOpen).toBe(false);
+  expect(result.current.layout.bottomOpen).toBe(false);
+});
+
+it("honors an early explicit reset including removal of the saved floating window", async () => {
+  const scope = "synthetic-layout-reset";
+  localStorage.setItem(`parallax.workspace.v1:${scope}`, JSON.stringify({
+    ...workspacePreset("CONSTRUCTION"), libraryWidth: 333,
+    assistantWindow: { x: 10, y: 20, width: 430, height: 600 },
+  }));
+  const { result } = renderHook(() => useWorkspaceLayout(scope));
+  act(() => result.current.reset());
+  await waitFor(() => expect(JSON.parse(localStorage.getItem(`parallax.workspace.v1:${scope}`)!).libraryWidth).toBe(252));
+  expect(result.current.layout).toEqual(workspacePreset("SPATIAL"));
+  expect(result.current.layout.assistantWindow).toBeUndefined();
+});
+
+it("preserves early intent through Strict Mode effect cleanup and replay", async () => {
+  const scope = "synthetic-layout-strict";
+  localStorage.setItem(`parallax.workspace.v1:${scope}`, JSON.stringify({
+    ...workspacePreset("SPATIAL"), libraryWidth: 333,
+  }));
+  const { result } = renderHook(() => useWorkspaceLayout(scope), { wrapper: StrictMode });
+  expect(result.current.layout.libraryWidth).toBe(252);
+  act(() => result.current.setLayout(previous => ({ ...previous, libraryOpen: true })));
+  await waitFor(() => expect(result.current.layout.libraryWidth).toBe(333));
+  expect(result.current.layout.libraryOpen).toBe(true);
+});

@@ -1,0 +1,289 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - link "Voyagewright home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]: ✦
+        - strong [ref=e8]: Voyagewright
+      - link "Return" [ref=e10] [cursor=pointer]:
+        - /url: /studio/library
+      - button "Synthetic construction findings Creator" [ref=e12] [cursor=pointer]:
+        - generic [ref=e13]: SC
+    - paragraph [ref=e14]: This immersive experience uses its authored appearance. Your appearance preference applies on standard product surfaces.
+    - main [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - link "← Creator Studio" [ref=e22] [cursor=pointer]:
+            - /url: /studio/library
+          - heading "Parallax" [level=1] [ref=e23]: ◈ Parallax
+          - status [ref=e24]: Working draft saved
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - text: Authoring mode
+            - combobox "Authoring mode" [ref=e27]:
+              - option "GUIDED"
+              - option "STANDARD"
+              - option "ENGINEERING" [selected]
+          - button "Undo" [ref=e28] [cursor=pointer]:
+            - img [ref=e29]
+          - button "Redo" [disabled] [ref=e31]:
+            - img [ref=e32]
+          - button "Save to Library" [ref=e34] [cursor=pointer]
+          - button "Save as new…" [ref=e35] [cursor=pointer]
+          - button "Versions" [ref=e36] [cursor=pointer]
+          - group [ref=e37]:
+            - generic "Scene actions" [ref=e38] [cursor=pointer]
+      - region "Environment and Scene" [ref=e39]:
+        - generic [ref=e40]:
+          - generic [ref=e41]: SHARED ENVIRONMENT
+          - strong [ref=e42]: Bedroom
+          - generic [ref=e43]: Choose an Environment in Scene Manager
+        - generic [ref=e44]:
+          - generic [ref=e45]: EDITING SCENE
+          - strong [ref=e46]: Construction findings working Scene
+          - generic [ref=e47]: Working draft saved · revision 2
+        - button "Manage Scenes" [ref=e48] [cursor=pointer]
+      - navigation "Workstation panels" [ref=e49]:
+        - combobox "Workspace layout" [ref=e51]:
+          - option "Spatial Editing" [selected]
+          - option "Scene Construction"
+          - option "Behavior Authoring"
+          - option "Focus / Immersive"
+        - generic [ref=e52]:
+          - button "Library & hierarchy" [ref=e53] [cursor=pointer]:
+            - img [ref=e54]
+          - button "Inspector" [pressed] [ref=e56] [cursor=pointer]:
+            - img [ref=e57]
+          - button "Diagnostics · clear" [ref=e59] [cursor=pointer]
+          - button "Reset Workspace Layout" [ref=e60] [cursor=pointer]:
+            - img [ref=e61]
+      - generic [ref=e63]:
+        - navigation "Library and hierarchy dock" [ref=e64]:
+          - button "Open Library" [ref=e65] [cursor=pointer]: ▱
+          - button "Open Scene Hierarchy" [ref=e66] [cursor=pointer]: ☷
+        - generic [ref=e67]:
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - text: Preview
+              - combobox "Preview" [ref=e70]:
+                - option "EDITOR" [selected]
+                - option "PHONE"
+                - option "LENS"
+                - option "CREW"
+                - option "LOW_CAPABILITY"
+                - option "FALLBACK"
+                - option "ACCESSIBILITY"
+                - option "PERFORMANCE"
+                - option "REMOTE"
+            - generic [ref=e71]:
+              - text: Environment
+              - combobox "Environment" [ref=e72]:
+                - option "Bedroom · editable" [selected]
+                - option "Bedroom"
+                - option "Living room"
+                - option "Small dorm"
+                - option "Office"
+                - option "Classroom"
+                - option "Gallery"
+                - option "Outdoor trail"
+                - option "Plaza"
+                - option "Empty room"
+                - option "Cluttered room"
+            - button "Test in 10 environments" [ref=e73] [cursor=pointer]
+          - region "Spatial canvas" [ref=e74]:
+            - generic:
+              - generic: "Preview: Bedroom"
+              - generic: SYNTHETIC / EDITOR
+            - generic:
+              - group [ref=e75]:
+                - generic "View & audio" [ref=e76] [cursor=pointer]
+                - option "Perspective" [selected]
+                - option "Plan / orthographic"
+                - option "Front elevation"
+                - option "World coordinates" [selected]
+                - option "Local coordinates"
+                - option "Low"
+                - option "Medium" [selected]
+                - option "High"
+              - toolbar "Spatial editing tools" [ref=e77]:
+                - button "Select tool" [pressed] [ref=e78] [cursor=pointer]:
+                  - img [ref=e79]
+                - button "Move tool" [ref=e81] [cursor=pointer]:
+                  - img [ref=e82]
+                - button "Rotate tool" [ref=e84] [cursor=pointer]:
+                  - img [ref=e85]
+                - button "Scale tool" [ref=e87] [cursor=pointer]:
+                  - img [ref=e88]
+                - button "Toggle snapping" [pressed] [ref=e90] [cursor=pointer]: ⌗
+                - button "Auto surface clamping" [pressed] [ref=e91] [cursor=pointer]: ⊞
+                - button "Toggle spatial overlays" [ref=e92] [cursor=pointer]: ◈
+            - generic [ref=e93]:
+              - text: Environment editing · select any room feature, then use Move, Rotate or Scale. Room features rotate upright around Y.
+              - combobox "Viewport room feature" [ref=e94]:
+                - option "Select room feature" [disabled]
+                - option "floor furniture"
+                - option "wall window"
+                - option "wall front"
+                - option "wall left"
+                - option "wall right"
+                - option "ceiling"
+                - option "entry door"
+                - option "window"
+                - option "reference desk" [selected]
+                - option "table left"
+                - option "bed"
+                - option "wardrobe"
+                - option "desk chair"
+                - option "bedside lamp"
+                - option "entry door exclusion"
+                - option "reference desk exclusion"
+                - option "table left exclusion"
+                - option "bed exclusion"
+                - option "wardrobe exclusion"
+                - option "desk chair exclusion"
+                - option "window exclusion"
+                - option "reference desk exclusion"
+                - option "entry door exclusion"
+                - option "table left exclusion"
+                - option "bedside lamp exclusion"
+                - option "bed exclusion"
+                - option "wardrobe exclusion"
+                - option "bedside lamp exclusion"
+            - generic "Interactive synthetic 3D environment" [ref=e96]
+            - generic [ref=e97]:
+              - strong [ref=e98]: reference desk
+              - button "Edit selected feature" [ref=e99] [cursor=pointer]
+              - generic [ref=e100]: Editable environment geometry
+            - generic [ref=e102]: ◉ Synthetic geometry · cutaway view · physical qualification pending
+            - generic [ref=e103]:
+              - strong [ref=e104]: Manual placement
+              - text: Select an object to begin.
+              - group [ref=e105]:
+                - generic "Navigation help" [ref=e106] [cursor=pointer]
+            - generic "Keyboard spatial selection" [ref=e107]:
+              - button "Desk Map. Desk Map, available to inspect in Guided View." [ref=e108] [cursor=pointer]: Desk Map
+          - button "Ask Parallax" [ref=e110] [cursor=pointer]:
+            - generic [ref=e111]: ✦ Ask Parallax
+          - region "Bottom workstation dock" [ref=e112]:
+            - generic [ref=e113]:
+              - tablist "Bottom dock tools" [ref=e114]:
+                - tab "Timeline" [ref=e115] [cursor=pointer]
+                - tab "Simulation" [ref=e116] [cursor=pointer]
+                - tab "Diagnostics" [ref=e117] [cursor=pointer]
+                - tab "Events" [ref=e118] [cursor=pointer]
+              - generic [ref=e119]:
+                - button "Play timeline" [ref=e120] [cursor=pointer]
+                - button "Restart timeline" [ref=e121] [cursor=pointer]
+                - button "Stop timeline" [ref=e122] [cursor=pointer]
+                - button "Expand bottom dock" [ref=e123] [cursor=pointer]: ⌃
+        - complementary "Spatial inspector" [ref=e124]:
+          - generic [ref=e125]:
+            - generic [ref=e126]:
+              - heading "Spatial context" [level=2] [ref=e127]
+              - generic [ref=e128]: Guided · Standard · Engineering
+            - button "Collapse Inspector" [ref=e129] [cursor=pointer]: ›
+          - region "Inspector context" [ref=e130]:
+            - generic [ref=e131]: Room feature
+            - heading "reference desk" [level=3] [ref=e132]
+            - paragraph [ref=e133]: Room tools, supporting surfaces, and nearby features.
+          - group [ref=e134]:
+            - generic "Room & environmental features" [ref=e135] [cursor=pointer]
+            - region "Room spatial context" [ref=e136]:
+              - group [ref=e137]:
+                - generic [ref=e138]:
+                  - text: Room feature
+                  - combobox "Room feature" [ref=e139]:
+                    - option "Choose a feature" [disabled]
+                    - option "floor furniture · floor"
+                    - option "wall window · wall"
+                    - option "wall front · wall"
+                    - option "wall left · wall"
+                    - option "wall right · wall"
+                    - option "ceiling · ceiling"
+                    - option "entry door · door"
+                    - option "window · window"
+                    - option "reference desk · desk" [selected]
+                    - option "table left · table"
+                    - option "bed · bed"
+                    - option "wardrobe · wardrobe"
+                    - option "desk chair · chair"
+                    - option "bedside lamp · other"
+                    - option "entry door exclusion · exclusion zone"
+                    - option "reference desk exclusion · exclusion zone"
+                    - option "table left exclusion · exclusion zone"
+                    - option "bed exclusion · exclusion zone"
+                    - option "wardrobe exclusion · exclusion zone"
+                    - option "desk chair exclusion · exclusion zone"
+                    - option "window exclusion · exclusion zone"
+                    - option "reference desk exclusion · exclusion zone"
+                    - option "entry door exclusion · exclusion zone"
+                    - option "table left exclusion · exclusion zone"
+                    - option "bedside lamp exclusion · exclusion zone"
+                    - option "bed exclusion · exclusion zone"
+                    - option "wardrobe exclusion · exclusion zone"
+                    - option "bedside lamp exclusion · exclusion zone"
+                - region "Room feature relationships" [ref=e140]:
+                  - heading "Support and nearby features" [level=3] [ref=e141]
+                  - paragraph [ref=e142]: 1 usable surfaces · 1 supporting an authored object.
+                  - paragraph [ref=e143]: 2 linked exclusion zones follow this feature.
+                  - paragraph [ref=e144]: Attached objects must be moved before their supporting feature can be rebuilt or removed.
+                  - button "desk chair · chair · 0.70 m between centres" [ref=e145] [cursor=pointer]
+                  - button "wall window · wall · 0.93 m between centres" [ref=e146] [cursor=pointer]
+                  - button "window · window · 0.93 m between centres" [ref=e147] [cursor=pointer]
+                  - button "wardrobe · wardrobe · 0.96 m between centres" [ref=e148] [cursor=pointer]
+                - generic "Environment tools and dimensions" [ref=e149]:
+                  - heading "Room tools & dimensions" [level=3] [ref=e150]
+                  - paragraph [ref=e151]: Editable authoring geometry · preset · 28 features. This is not a measured room survey.
+                  - paragraph [ref=e152]: Resizing the room moves its features proportionally. Furniture keeps its own dimensions.
+                  - group "Exclusion zones" [ref=e153]:
+                    - button "Exclusion zones · 14" [ref=e154] [cursor=pointer]
+                  - group "Construction checks" [ref=e155]:
+                    - button "Construction checks · checks passed · 0 findings" [ref=e156] [cursor=pointer]
+                    - paragraph [ref=e157]: Checks cover constructed parts, shell, openings, support, overlap and declared paths. Confidence and visual acceptance are separate.
+                    - paragraph [ref=e158]: No findings within these checks. Physical accessibility and rendered appearance still need review.
+                  - region "Add room features" [ref=e159]:
+                    - heading "Add room features" [level=3] [ref=e160]
+                    - generic [ref=e161]:
+                      - text: New feature type
+                      - combobox "New room feature type" [ref=e162]:
+                        - option "floor"
+                        - option "wall"
+                        - option "ceiling"
+                        - option "door"
+                        - option "window"
+                        - option "table"
+                        - option "desk" [selected]
+                        - option "chair"
+                        - option "sofa"
+                        - option "bed"
+                        - option "cabinet"
+                        - option "wardrobe"
+                        - option "shelf"
+                        - option "appliance"
+                        - option "tree"
+                        - option "other"
+                        - option "exclusion zone"
+                    - button "Add room feature" [ref=e163] [cursor=pointer]
+                    - paragraph [ref=e164]: Doors and windows cut matching coplanar wall openings. Door movement is not simulated. Use Construction checks to review support and attachment.
+                  - group "Room dimensions" [ref=e165]:
+                    - button "Room dimensions" [ref=e166] [cursor=pointer]
+                    - generic [ref=e167]:
+                      - text: Room width (m)
+                      - spinbutton "Room width (m)" [ref=e168]: "4"
+                    - generic [ref=e169]:
+                      - text: Room height (m)
+                      - spinbutton "Room height (m)" [ref=e170]: "2.8"
+                    - generic [ref=e171]:
+                      - text: Room depth (m)
+                      - spinbutton "Room depth (m)" [ref=e172]: "4"
+        - navigation "Inspector dock" [ref=e173]:
+          - button "Open object properties" [ref=e174] [cursor=pointer]: ◈
+          - button "Open spatial context" [pressed] [ref=e175] [cursor=pointer]: ◎
+          - button "Open scene settings" [ref=e176] [cursor=pointer]: ▣
+  - alert [ref=e177]: Parallax Spatial Studio
+```

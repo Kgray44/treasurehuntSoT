@@ -1,0 +1,65 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "bb66687d96134dd2d76e16a08c2981700db9ae31",
+  "tree": "d6368d6838ab27f29daab8a58a435b236406d50a",
+  "provider": "SYNTHETIC_UNPAID",
+  "sourceBinding": "VALID",
+  "artifacts": [
+    {
+      "file": "cinematic-selected-keyframe-settings.png",
+      "bytes": 182865,
+      "sha256": "5f27371abc0d59bd7dc7bf30559b98724da7a31fa487e37cd2760634ea9a9aec"
+    },
+    {
+      "file": "cinematic-live-duration-resize.png",
+      "bytes": 182832,
+      "sha256": "efc0a6528c2b6b1e235399052232dea480a9179427bd1947e6ff3f9be7d68b5a"
+    },
+    {
+      "file": "timeline-live-playhead-scrub.png",
+      "bytes": 180415,
+      "sha256": "6575681989169ed7542792f0b5098c9907d91b136c274b1480aaf49b6ec0eb21"
+    },
+    {
+      "file": "cinematic-first-take.png",
+      "bytes": 178815,
+      "sha256": "b19d5307b0a81a99fc243a19005965ae2a6d1a13893ae992bbfbcfd5a0caa4cc"
+    },
+    {
+      "file": "cinematic-second-take.png",
+      "bytes": 179484,
+      "sha256": "9ae217a9262fcf238567aa47ec900930ab3714764aa2610a7c63d91073b01fe4"
+    },
+    {
+      "file": "cinematic-reduced-motion.png",
+      "bytes": 177643,
+      "sha256": "d46619a223eae50d1d996c854afaac1531eff32dbd222615037ba74048e35931"
+    },
+    {
+      "file": "room-edit-controls-open-after-click.png",
+      "bytes": 227573,
+      "sha256": "0c3a9978f59c4665578852ac47973f56bff0b03ee02e909715dd51d08eaf5a9b"
+    },
+    {
+      "file": "cinematic-renderer-proof.original.json.txt",
+      "bytes": 50268,
+      "sha256": "195954351e1f1859f0273519f753cf6d08c6a631f246ab2ef443a919bb375899"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 610,
+      "sha256": "70820a635c036c6ad171b53ce4607a88f4e342428ab037c168c0a1c47c6d629e"
+    },
+    {
+      "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "bytes": 596474,
+      "sha256": "e3977e03c5b0762b185f215821fe82baeb2bff43b71a95493ebef63f548b1348"
+    }
+  ],
+  "review": {
+    "file": "independent-review.raw.original.json.txt",
+    "bytes": 25940,
+    "sha256": "daad9fbba8b84652f79a5f58461f36bee0345dd8f9a633c7b671bb0993af5329"
+  },
+  "limits": "Bounded synthetic desktop production journey and independent review. No owner/full-overhaul/device/world-tracking acceptance."
+}

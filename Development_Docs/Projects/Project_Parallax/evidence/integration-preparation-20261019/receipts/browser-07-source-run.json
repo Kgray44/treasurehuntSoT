@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "candidate": "6ed01bce581d0d8d0561fb851af1a40fe42d4422",
+  "tree": "8fab3713b76d4491ce84714b1d6c48201374cf3f",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-19T19:47:58.843Z",
+  "finishedAt": "2026-10-19T19:57:40.664Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-sc02-SC-02-actual-170db-with-finite-instrumentation-chromium-video.webm",
+      "sha256": "c2773160ae6d6b184ccd86634ad7cd630b473a7446f978672c05badb36bcfa40"
+    },
+    {
+      "file": "parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium-video.webm",
+      "sha256": "1a73ac4f21617581ee42d20bab472b276dbead5b956fe107f9288e7cdb3156f6"
+    },
+    {
+      "file": "parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium-video.webm",
+      "sha256": "2981029519bcb2292807e7fca94c6608a82dd292e247ed14c07b4f3009211a8d"
+    },
+    {
+      "file": "parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium-video.webm",
+      "sha256": "8cc0be576a704c2f0aadad559df926e99e23a19e3b1371af09ad15f50782154f"
+    },
+    {
+      "file": "parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium-video.webm",
+      "sha256": "f33e69fe040635f52187b20a58ae60ba5bb6529658f2810c7b6f2915aa12b146"
+    },
+    {
+      "file": "parallax-sc02-SC-02-Studio-0e25d--and-additional-light-types-chromium-video.webm",
+      "sha256": "ae1da9300e3af351a8378234d33b745ec42a0858d1c8774bf68633aaeb4be389"
+    },
+    {
+      "file": "parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video.webm",
+      "sha256": "40c0c04d3b99f23c2ec65452935fbc63268d56c4bf1e4caf222d4f6ef58b9a36"
+    }
+  ]
+}

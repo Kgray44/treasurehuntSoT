@@ -1,3 +1,9 @@
+import { withVerificationStage } from "./verification-diagnostics.mjs";
+import {
+  isPR776ControllerReconciliation,
+  validatePR776TrustedCapture,
+  validatePR776ReviewSubmission,
+} from "./experience-pr776-controller-reconciliation.mjs";
 import {
   isReviewedEvidenceAdoption,
   historicalReviewedPlan,
@@ -17,6 +23,15 @@ import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-bind
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
 };
+// Keep each native crypto update below Node's single-call input limit.
+export function attestationArchiveDigest(archive) {
+  const hash = createHash("sha256");
+  const chunkBytes = 8 * 1024 * 1024;
+  for (let offset = 0; offset < archive.length; offset += chunkBytes)
+    hash.update(archive.subarray(offset, offset + chunkBytes));
+  return "sha256:" + hash.digest("hex");
+}
+
 export function artifactJson(archive, filename) {
   // Read the named file through the ZIP central directory, never extract paths.
   for (let offset = 0; offset + 46 <= archive.length; offset++) {
@@ -91,29 +106,52 @@ export async function loadTrustedExperienceArtifact({ root, plan, artifactId, ki
       if (!response.ok) fail(`ATTESTATION_ACCESS_FAILED_${response.status}`);
       return binary ? Buffer.from(await response.arrayBuffer()) : response.json();
     });
-  const artifact = await api(`actions/artifacts/${artifactId}`);
-  const run = await api(`actions/runs/${artifact.workflow_run?.id}`);
-  const workflow = await api(`actions/workflows/${run.workflow_id}`);
-  validateAttestationProvenance({
-    artifact,
-    run,
-    workflow,
-    plan,
-    kind,
-    repository,
-    actors: policy.trustedReviewActors,
-  });
-  const archive = await api(`actions/artifacts/${artifactId}/zip`, true);
-  if (`sha256:${createHash("sha256").update(archive).digest("hex")}` !== artifact.digest)
-    fail("ATTESTATION_ARCHIVE_DIGEST_MISMATCH");
-  const manifest = artifactJson(archive, `${kind}.json`);
-  if (
-    manifest.baseSha !== plan.baseSha ||
-    manifest.sourceDigest !== plan.sourceDigest ||
-    manifest.contractDigest !== plan.contractDigest ||
-    (plan.exception && experienceDigest(manifest.exception) !== experienceDigest(plan.exception))
-  )
-    fail("ATTESTATION_SOURCE_MISMATCH");
+  const { artifact, run } = await withVerificationStage(
+    "TRUSTED_ATTESTATION_METADATA",
+    async () => {
+      const artifact = await api(`actions/artifacts/${artifactId}`);
+      const run = await api(`actions/runs/${artifact.workflow_run?.id}`);
+      const workflow = await api(`actions/workflows/${run.workflow_id}`);
+      validateAttestationProvenance({
+        artifact,
+        run,
+        workflow,
+        plan,
+        kind,
+        repository,
+        actors: policy.trustedReviewActors,
+      });
+      return { artifact, run };
+    },
+    { observeFailure: false },
+  );
+  const archive = await withVerificationStage(
+    "TRUSTED_ATTESTATION_DOWNLOAD",
+    () => api(`actions/artifacts/${artifactId}/zip`, true),
+    { observeFailure: false },
+  );
+  await withVerificationStage(
+    "TRUSTED_ATTESTATION_HASH",
+    () => {
+      if (attestationArchiveDigest(archive) !== artifact.digest) fail("ATTESTATION_ARCHIVE_DIGEST_MISMATCH");
+    },
+    { observeFailure: false },
+  );
+  const manifest = await withVerificationStage(
+    "TRUSTED_ATTESTATION_MANIFEST",
+    () => {
+      const manifest = artifactJson(archive, `${kind}.json`);
+      if (
+        manifest.baseSha !== plan.baseSha ||
+        manifest.sourceDigest !== plan.sourceDigest ||
+        manifest.contractDigest !== plan.contractDigest ||
+        (plan.exception && experienceDigest(manifest.exception) !== experienceDigest(plan.exception))
+      )
+        fail("ATTESTATION_SOURCE_MISMATCH");
+      return manifest;
+    },
+    { observeFailure: false },
+  );
   return {
     ...manifest,
     trustedArtifact: { id: artifact.id, digest: artifact.digest, runId: run.id, runAttempt: run.run_attempt },
@@ -130,7 +168,7 @@ export async function verifyTrustedExperienceAttestation({
   if (!plan.attestationPolicy?.required) fail("TRUSTED_ATTESTATION_POLICY_MISSING");
   const currentPlan = plan;
   if (isReviewedEvidenceAdoption(plan)) {
-    validateReviewedIdentity(plan, evidence);
+    validateReviewedIdentity(plan, evidence, { root });
     plan = historicalReviewedPlan(plan);
   }
   validateR8FormatEvidenceIdentity(plan, evidence);
@@ -144,11 +182,13 @@ export async function verifyTrustedExperienceAttestation({
   });
   const review = await loadArtifact({
     root,
-    plan,
+    plan: isPR776ControllerReconciliation(currentPlan) ? currentPlan : plan,
     artifactId: evidence.reviewArtifactId,
     kind: "review",
     policy: plan.attestationPolicy,
   });
+  validatePR776TrustedCapture(currentPlan, capture);
+  validatePR776ReviewSubmission(currentPlan, review);
   validateCurrentCaptureIdentity(isReviewedEvidenceAdoption(currentPlan) ? plan : currentPlan, capture, evidence);
   validatePreSourceCaptureBinding(
     isReviewedEvidenceAdoption(currentPlan) ? plan : currentPlan,

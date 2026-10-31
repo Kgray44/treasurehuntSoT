@@ -1,0 +1,23 @@
+{
+  "mode": "execute",
+  "campaignsInspected": 1,
+  "chroniclesCreated": 1,
+  "publishedVersionsCreated": 1,
+  "sessionsCreated": 1,
+  "playersMigrated": 1,
+  "membershipsMigrated": 1,
+  "invitationsMigrated": 0,
+  "chaptersTranslated": 5,
+  "storyBlocksCreated": 5,
+  "artifactsMigrated": 5,
+  "sideQuestsMigrated": 4,
+  "locationsMigrated": 5,
+  "routesMigrated": 2,
+  "eventsMigrated": 0,
+  "auditRecordsMigrated": 2,
+  "legacyIdentifiersMapped": 61,
+  "warnings": [],
+  "failures": [],
+  "unmappedFields": [],
+  "checksumMismatches": []
+}

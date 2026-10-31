@@ -1,0 +1,403 @@
+{
+  "objective": "Preserve historical editions, owner-private read projections, honest empty and denied states, and a natural Personal Harbor return as shared Chronicle and Scene models expand.",
+  "contract": {
+    "id": "homeport.passport.product-surface",
+    "name": "Passport Product Surface",
+    "authority": "project-homeport",
+    "owners": [
+      "project-homeport",
+      "wayfarer"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A signed-in Player returning to their private, version-pinned Voyage archive.",
+      "objective": "Preserve historical editions, owner-private read projections, honest empty and denied states, and a natural Personal Harbor return as shared Chronicle and Scene models expand.",
+      "visibleOutcome": "The Player opens a preserved Voyage from Your Voyages, reads its historical title and edition, and returns through the visible archive and Personal Harbor links without rewriting the record.",
+      "integrationOwner": "Existing Parallax integration owner #776; Homeport and Wakebook retain all Passport and historical-record authority.",
+      "accessibility": "Use named Passport navigation, keyboard activation, readable historical cards, real headings and visible recovery actions on desktop and phone in both motion modes.",
+      "fallback": "Preserve empty archive guidance, real 401 and wrong-owner 404 denials, sign-in redirects, and the visible archive retry action; no invented history or healthy-response mocks.",
+      "navigation": "Chronicle Passport → Your Voyages → the selected historical Voyage → Back to Your Voyages → Personal Harbor → Return to Home.",
+      "designTarget": "Preserve current Wakebook task composition and the accepted shared Homeport frame and return hierarchy.",
+      "entryPoint": "/passport",
+      "systems": [
+        "HOMEPORT"
+      ],
+      "sourcePaths": [
+        "src/app/passport/artifacts/[artifactId]/page.tsx",
+        "src/app/passport/artifacts/page.tsx",
+        "src/app/passport/atlas/page.tsx",
+        "src/app/passport/history/[recordId]/book/page.tsx",
+        "src/app/passport/history/[recordId]/page.tsx",
+        "src/app/passport/history/[recordId]/replay/page.tsx",
+        "src/app/passport/history/page.tsx",
+        "src/app/passport/memories/page.tsx",
+        "src/app/passport/page.tsx",
+        "src/app/passport/people/page.tsx",
+        "src/app/passport/saved/page.tsx",
+        "src/app/passport/statistics/page.tsx",
+        "src/app/passport/timeline/page.tsx",
+        "src/components/homeport/PassportSurfaces.tsx",
+        "src/components/wakebook/AuthenticatedPassportPage.tsx",
+        "src/components/wakebook/PassportLayout.tsx",
+        "src/components/wakebook/WakebookInsights.tsx",
+        "src/components/wakebook/WakebookVoyageBook.tsx",
+        "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "src/components/wayfarer/ArtifactCabinet.tsx",
+        "src/components/wayfarer/ChronicleHistory.tsx",
+        "src/components/wayfarer/ChroniclePassport.tsx",
+        "src/styles/personal-harbor.css"
+      ],
+      "projectionPaths": [
+        "src/wakebook/archive-query.ts",
+        "src/chronicle/history.ts",
+        "src/chronicle/journal-contract.ts"
+      ],
+      "states": [
+        "PASSPORT_READY",
+        "ARCHIVE_READABLE",
+        "PINNED_VOYAGE_READABLE",
+        "ARCHIVE_RETURNED",
+        "HOME_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "PLAYER"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "PLAYER": {
+          "entryPoint": "/sign-in?returnTo=%2Fpassport",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-archive-player@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Chronicle Passport",
+            "text": "Chronicle Passport"
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry and return frame only; this is not an accepted Passport-body baseline.",
+          "preserve": "Readable shared frame, private owner identity and ordinary return hierarchy; preserve current Wakebook archive composition."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry and return frame only; this is not an accepted Passport-body baseline.",
+          "preserve": "Readable shared frame, private owner identity and ordinary return hierarchy; preserve current Wakebook archive composition."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "passport-pinned-voyage-and-home-return",
+          "roles": [
+            "PLAYER"
+          ],
+          "outcome": "The existing archive presents an owner-private historical edition rather than the later live Chronicle title, then returns through the real navigation without altering its checksum or record.",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Chronicle Passport",
+              "state": "PASSPORT_READY"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Your Voyages"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "heading",
+              "name": "Your private shelf",
+              "path": "/passport/history",
+              "meaning": "The current Wakebook archive resolves the authenticated Player private history from canonical records.",
+              "state": "ARCHIVE_READABLE",
+              "text": "Your private shelf"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Open Synthetic Parallax pinned Voyage Voyage"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "heading",
+              "name": "Synthetic Parallax pinned Voyage",
+              "meaning": "The archived title comes from the preserved published edition; the live source title is deliberately different.",
+              "state": "PINNED_VOYAGE_READABLE",
+              "text": "Synthetic Parallax pinned Voyage",
+              "path": "/passport/history/parallax-compat-00000000-0000-4000-8000-00000000b106-record"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Back to Your Voyages"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Your private shelf",
+              "path": "/passport/history",
+              "state": "ARCHIVE_RETURNED"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Personal Harbor"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Home"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "path": "/",
+              "returnPath": true,
+              "state": "HOME_RETURNED"
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-passport-compatibility.spec.ts",
+        "tests/e2e/wakebook-phase1.spec.ts",
+        "tests/e2e/wakebook-phase2.spec.ts"
+      ],
+      "limitations": [
+        "A synthetic pinned archive proves software read and authorization compatibility only; it grants no physical, native, provider, owner or protected-main acceptance.",
+        "Accepted references describe shared Homeport entry and return framing only. No curated Passport-body baseline exists in the protected reference registry; fresh actual-app media and independent review remain required.",
+        "Existing extended archive, replay, keepsake, atlas and memory obligations retain their own tests and authority; the representative journey does not claim each lifecycle action was exercised."
+      ],
+      "homeportScreenIds": [
+        "screen-page-passport",
+        "screen-page-passport-history",
+        "screen-page-passport-history-recordId"
+      ],
+      "homeportJourneyIds": [
+        "H"
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-PASSPORT_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-PASSPORT_READY-0.png",
+      "sha256": "b85341f5b09dcaf58c5752435882804990fdd147a15474a7b08e0589af3a7209",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "PASSPORT_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-ARCHIVE_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-ARCHIVE_READABLE-2.png",
+      "sha256": "350065de6fefd189f23ca356d9bec28b4dc539854eccc1162cd0bc3612f9f050",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "ARCHIVE_READABLE",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-PINNED_VOYAGE_READABLE-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-PINNED_VOYAGE_READABLE-4.png",
+      "sha256": "138358a8adc93d688631c064a40782adcfa19e0115a51888540835bcd7e88daa",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "PINNED_VOYAGE_READABLE",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-ARCHIVE_RETURNED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-ARCHIVE_RETURNED-6.png",
+      "sha256": "2fc25642c534a27f5f579e07951fca744aadb08e6d06ecb3742bf747ccf59ba1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "ARCHIVE_RETURNED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-HOME_RETURNED-9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-HOME_RETURNED-9.png",
+      "sha256": "50cf0fad0959218d1104fb1bbeb0db83103a73d8b8e64edb990bd4d6389b8aee",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "HOME_RETURNED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "sha256": "42a903b0d1290bd1e7a67cb6946ad842963ad7893099e402d989b770c42134e6",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-DESKTOP-PLAYER-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fe7b1b110d1b9e739adaf615da250275.webm",
+      "sha256": "87f791efbe867257ea0763e4d716bda4e456337f5cfef821cdbd3ff772fc0a2b",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-PASSPORT_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-PASSPORT_READY-0.png",
+      "sha256": "2f8ca44675531b633c16bb8be6ec072c7ec9d9de21505a1e41c9a0aed83c30cd",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "PASSPORT_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-ARCHIVE_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-ARCHIVE_READABLE-2.png",
+      "sha256": "8e5593125773289968ff6a8af5947d3781c5f65d400ea91ef7ab848d8b53875d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "ARCHIVE_READABLE",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-PINNED_VOYAGE_READABLE-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-PINNED_VOYAGE_READABLE-4.png",
+      "sha256": "2a64c066006b25b6e3c047b00bbc7e5597abe46207864a82f30b73ea24f53ae9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "PINNED_VOYAGE_READABLE",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-ARCHIVE_RETURNED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-ARCHIVE_RETURNED-6.png",
+      "sha256": "efb781db6bb85e022fc1923dd37b842fe0f462d5d9ed95992fe1324e7414877c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "ARCHIVE_RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-HOME_RETURNED-9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-HOME_RETURNED-9.png",
+      "sha256": "298e269f67e2ed969f53b68460d1c1a329e1396cefa00f424531f677829d066b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "state": "HOME_RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "sha256": "778c867102664e5664545e24428375b594ee9730edbf5c09fbe1b22e71842e49",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.passport.product-surface-passport-pinned-voyage-and-home-return-MOBILE-PLAYER-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f1287c50b51cb24cdf621c9661147667.webm",
+      "sha256": "8bfd6a15c1cc3a4e7cf7a669aff38df154865b6eca22db98c15e6430af390ffe",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.passport.product-surface",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "8e7933d08d894c2a8ac38697da0fbbf54528006f45a4b1267eb98cbf48e90e60",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "PARALLAX_FOCUSED_UNIT_INPUT_1",
+  "qualification": false,
+  "source": "871431cd0827d42551c8a8b9d2d7fde5e16c1f77",
+  "tree": "9ecab6da7aab2626061767c2d358cdfd346c9ac4",
+  "sourceSelectionSha256": "c30b9db3a1df42e0109cd4aa294c0a445cd2393d5dd34da5c9e8fec31be90b9f",
+  "node": "v24.18.0",
+  "lockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "configSha256": "5c35beed9c917672f32e1367589c4ea8fa989cd9de61c487dded3103f53a8af2",
+  "configOverrides": {
+    "cacheDir": "D:/CodexTemp/parallax-resume-20261021-01a15554/focused-unit-01/vite-cache",
+    "testCache": false
+  },
+  "environmentOverrides": {
+    "SEALED_HOLD_SINGLE_FORK": "1",
+    "DATABASE_PROVIDER": "sqlite",
+    "DATABASE_URL": "file:D:/CodexTemp/parallax-resume-20261021-01a15554/focused-unit-01/isolated.sqlite",
+    "TEMP": "D:/CodexTemp/parallax-resume-20261021-01a15554/focused-unit-01/temp",
+    "TMP": "D:/CodexTemp/parallax-resume-20261021-01a15554/focused-unit-01/temp"
+  },
+  "selection": [
+    "src/components/crossdeck",
+    "src/components/player/parallax",
+    "src/components/player/journal/ChronicleJournalSession.test.ts",
+    "src/parallax/chronicle-lens-companion.test.ts",
+    "src/parallax/browser-tracking-rays.test.ts",
+    "src/parallax/browser-tracking-planes.test.ts",
+    "src/parallax/browser-tracking-lifecycle.test.ts",
+    "src/parallax/browser-runtime.test.ts",
+    "src/parallax/adaptive-runtime.test.ts"
+  ],
+  "args": [
+    "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\node_modules\\vitest\\vitest.mjs",
+    "run",
+    "src/components/crossdeck",
+    "src/components/player/parallax",
+    "src/components/player/journal/ChronicleJournalSession.test.ts",
+    "src/parallax/chronicle-lens-companion.test.ts",
+    "src/parallax/browser-tracking-rays.test.ts",
+    "src/parallax/browser-tracking-planes.test.ts",
+    "src/parallax/browser-tracking-lifecycle.test.ts",
+    "src/parallax/browser-runtime.test.ts",
+    "src/parallax/adaptive-runtime.test.ts",
+    "--config",
+    "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\focused-unit-01\\vitest-output-paths.config.mts",
+    "--reporter=json",
+    "--outputFile",
+    "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\focused-unit-01\\report.json"
+  ],
+  "startedAtUtc": "2026-10-21T23:29:13.473Z",
+  "freeSpaceBefore": {
+    "C": 30720315392,
+    "D": 200250294272
+  }
+}

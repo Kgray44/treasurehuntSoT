@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "status": "PREFLIGHT_STOPPED_BEFORE_VITEST",
+  "source": "871431cd0827d42551c8a8b9d2d7fde5e16c1f77",
+  "missingSelectedPath": "src/parallax/runtime.test.ts",
+  "actualRelevantPaths": [
+    "src/parallax/browser-runtime.test.ts",
+    "src/parallax/adaptive-runtime.test.ts"
+  ],
+  "unitCasesExecuted": 0,
+  "buildOrBrowserStarted": false,
+  "error": "AssertionError: src/parallax/runtime.test.ts",
+  "observedAt": "2026-10-21T23:21:33.313134+00:00"
+}

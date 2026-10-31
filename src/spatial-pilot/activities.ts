@@ -32,7 +32,7 @@ export const pilotActivities = [
     id: "pair",
     title: "Bring a phone aboard",
     detail:
-      "Sign into the same synthetic navigator account on your phone. On desktop open Voyage devices, name the desktop, Use this device, then Connect another device. Use the pairing link or code on the phone. Do not create another Player.",
+      "Sign into the same synthetic navigator account on your phone. On desktop open Voyage devices, name the desktop, Use this device, then Create pairing code. Use the pairing link or code on the phone. Do not create another Player.",
     destination: "devices",
   },
   {

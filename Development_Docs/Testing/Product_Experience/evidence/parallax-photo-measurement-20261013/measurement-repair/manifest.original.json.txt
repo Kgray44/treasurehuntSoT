@@ -1,0 +1,97 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "e57ed5da6344d55057dc7a4c3a0f506cd55812db",
+  "tree": "bb72e4acb7fb9f05973e3375be132b26ffbeed00",
+  "objective": "Creator imports a protected synthetic room image through Library and Studio, previews actual approximate geometry, corrects desk width to1.75m through the room editor, saves and reloads its scale, reviews an additional view with conflicting desk estimates and visible preservation guidance, applies the room, withdraws photo permission, creates a separate folded pirate letter on the desk beside the window without changing the map, observes its five-second reveal by elapsed playback, and repeats elapsed playback after reload without editing saved state.",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "status": "ONE_JOURNEY_PASS_PENDING_INDEPENDENT_REVIEW",
+  "artifacts": [
+    {
+      "file": "photo-letter-after-reveal.png",
+      "bytes": 305456,
+      "sha256": "eaecefdf3b2bfe45100cc225eeb5cda332ac09f007e8c0bdc1c92b529ff2e45a"
+    },
+    {
+      "file": "photo-letter-before-reveal.png",
+      "bytes": 304009,
+      "sha256": "b0947546b36490e7426b76049b494a7d33cfd7dff53bf333466ee3c147d5e53b"
+    },
+    {
+      "file": "photo-letter-proposed.png",
+      "bytes": 202713,
+      "sha256": "9e60e65de6a45892242787c8b3ef169eabecc9550a7354489f827b1812362dfd"
+    },
+    {
+      "file": "photo-letter-reloaded-replay.png",
+      "bytes": 186729,
+      "sha256": "940b9212928f68ca61f60cd36370e33c4a79fd16258ab442b4c8e605042e77c9"
+    },
+    {
+      "file": "photo-letter-saved-hidden.png",
+      "bytes": 195611,
+      "sha256": "4687eccdee60c1a147b58b7140ed17c440194d6054d6bf6cd2592e2c9c7b1bf5"
+    },
+    {
+      "file": "photo-measurement-observations.original.json.txt",
+      "bytes": 7244,
+      "sha256": "aef5fbfbfda0378e27c45f03547b9161fc93b101161f94f61ef5c27a5735ec5a"
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "bytes": 1267578,
+      "sha256": "29cfc821026d07a8a6049da9fe0139339bb248acb3465963dc248370f6f4e1e9"
+    },
+    {
+      "file": "photo-room-applied-cutaway.png",
+      "bytes": 200229,
+      "sha256": "1328e3eb32630c8bab1f6ccaf2e609ecad7c80e286f9ee8cca5cc4d3cbe78bb7"
+    },
+    {
+      "file": "photo-room-geometry-preview.png",
+      "bytes": 226517,
+      "sha256": "19df0de0a2cafbfc21655a0512d0c51f1dd483dcb9da69cc8364d77fce1103aa"
+    },
+    {
+      "file": "photo-room-known-measurement.png",
+      "bytes": 246495,
+      "sha256": "293f1702b1b2a43a8144a9e14f9679a6d6a9fffc6041b13a361bed77f2492701"
+    },
+    {
+      "file": "photo-room-measurement-reloaded.png",
+      "bytes": 215002,
+      "sha256": "c71b8e11a0d2a3a2bb9e98a9cce51963fa1c18830ff9871905fdbe720ceb5e04"
+    },
+    {
+      "file": "photo-room-measurement-retained-proposal.png",
+      "bytes": 234921,
+      "sha256": "fda0ddf8e8da531a0b64880a7984543b14fc070c6e95b679a3d54fbd070cb378"
+    },
+    {
+      "file": "photo-room-permission-withdrawn.png",
+      "bytes": 229600,
+      "sha256": "93815a7c9a7ad9a2fb3aba746adb255903dd9caf2a9b2fef4bd235ce872f9bc3"
+    },
+    {
+      "file": "photo-room-proposal.png",
+      "bytes": 226311,
+      "sha256": "6762d5cbb35ac06bac1f29548bb3f76df0484f98459e7e1046dc409ab050bef7"
+    },
+    {
+      "file": "photo-room-restored.png",
+      "bytes": 229212,
+      "sha256": "bdf79a360c183ee45dd9352fc4ae2dd45b0eb194473b537545737bb77049937f"
+    },
+    {
+      "file": "photo-run.original.json.txt",
+      "bytes": 531,
+      "sha256": "fccfbd37ae35b58c9e56c62a8d2ce7f876b262ff2d1e28d9760753deb074bc8b"
+    }
+  ],
+  "limitations": [
+    "Synthetic room images and observations qualify the protected authoring workflow, not live image interpretation or physical room accuracy.",
+    "No production scanning/private-provider readiness, GPU/native performance or full-overhaul owner acceptance.",
+    "This packet supplements the preserved bdf2a photo review; it does not replace that original receipt."
+  ]
+}

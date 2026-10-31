@@ -1,0 +1,18 @@
+{
+  "documentClass": "engineering-evidence",
+  "at": "2026-10-23T04:19:24.6249914Z",
+  "publishedParent": "aee0cd823fc105ff3efc14363ce8f1f98b3e3876",
+  "base": "b2d901af5646ce76b3b2bd5a88e1ad8563c2db57",
+  "kind": "FROZEN_UNCOMMITTED_CHANGED_SOURCE",
+  "source": {
+    "src/components/studio/parallax/EnvironmentDefinitionWorkspace.tsx": "daaa4d783388d901e1a7ea88eb908d1f422cb867ef676f4b4d0aa7bc98104164",
+    "src/components/studio/parallax/EnvironmentDefinitionWorkspace.test.tsx": "496f67d79d76d3e0241423ad80451158f792abde0901956e978e01dc08484258",
+    "src/components/studio/parallax/SpatialContentLibrary.tsx": "47b540714ba18102e19987820466d2da1cd24eb244ea0669d3390a50c118393a",
+    "src/components/studio/parallax/SpatialContentLibrary.test.tsx": "1a829a006743ce523dcb0d4f710d8bbfa31d5effe92f4ee0436ea73f6de20700",
+    "src/components/studio/parallax/SpatialStudio.test.tsx": "6b573b2cccc3a1deff7f6a20d7d9890232c766a38000f946af9a1200ce5c21fd",
+    "src/components/studio/parallax/useWorkspaceLayout.ts": "274ceb72d933c3434d244819a6b3388f4105853de97351c31205bba3f9520258",
+    "src/components/studio/parallax/useWorkspaceLayout.test.tsx": "6caf779f12094a857546774ff5048308d1a15c2c18efdef6efb88440f00eaf3e"
+  },
+  "qualification": false,
+  "captureInvoked": false
+}

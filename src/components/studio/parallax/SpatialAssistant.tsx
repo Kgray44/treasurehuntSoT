@@ -1,6 +1,15 @@
 "use client";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  isAdvancedAssistantOperation,
+  advancedOperationTitle,
+  advancedOperationDescription,
+} from "@/parallax/assistant-advanced-operations";
+import { useEffect, useLayoutEffect, useRef, useState, type HTMLAttributes, type ReactNode } from "react";
 import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { AnimatePresence, motion } from "motion/react";
+import { resolvePlatformMotionToken, platformMotionEasing } from "@/animation/platform/motion-tokens";
+import { evaluateSpatialScene } from "@/parallax/behavior";
+import type { RendererReceipt } from "./spatial-workstation";
 import type { SpatialDraft } from "@/parallax/authoring";
 import { spatialId } from "@/parallax/contracts";
 import {
@@ -10,6 +19,7 @@ import {
   type AssistantOperation,
 } from "@/parallax/spatial-assistant";
 import type { AssistantRequest } from "@/parallax/spatial-assistant-service";
+import type { EditingGroupMember } from "@/parallax/editing-group-contracts";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import styles from "./SpatialAssistant.module.css";
 
@@ -33,10 +43,16 @@ export type SpatialAssistantPort = {
   ) => Promise<SpatialAssistantSavedDraft>;
 };
 export type SpatialAssistantProps = {
+  headerProps?: HTMLAttributes<HTMLElement> & { "data-floating-gesture"?: string };
+  windowControls?: ReactNode;
+  taskResetVersion?: number;
   draft: SpatialDraft;
   revision: number;
   editorGeneration: number;
   selectedEntityId: string | null;
+  selectedGroupId?: string | null;
+  selectedMembers?: readonly EditingGroupMember[];
+  environmentEditing?: boolean;
   accountId: string;
   usage: Usage;
   port: SpatialAssistantPort;
@@ -48,6 +64,8 @@ export type SpatialAssistantProps = {
   canRedo: boolean;
   onClose?: () => void;
   onCanvasView?: () => void;
+  renderedSceneVersion?: string;
+  renderedEntities?: Record<string, RendererReceipt["status"]>;
 };
 type Stage =
   | "IDLE"
@@ -60,6 +78,7 @@ type Stage =
   | "UNSUPPORTED"
   | "APPLYING"
   | "ACCEPTED"
+  | "CANCELLED"
   | "FAILED"
   | "UNAVAILABLE";
 const stageText: Record<Stage, string> = {
@@ -73,6 +92,7 @@ const stageText: Record<Stage, string> = {
   UNSUPPORTED: "A supported alternative is needed",
   APPLYING: "Applying and saving reviewed changes…",
   ACCEPTED: "Your changes are saved",
+  CANCELLED: "Request cancelled",
   FAILED: "The request could not finish",
   UNAVAILABLE: "Assistance is unavailable",
 };
@@ -139,28 +159,64 @@ function SuggestionIcon({ kind }: { kind: string }) {
   );
 }
 function operationTitle(operation: AssistantOperation) {
+  if (isAdvancedAssistantOperation(operation)) return advancedOperationTitle(operation);
   return {
     CREATE: "New spatial object",
     CONTENT: "Object details",
     PLACEMENT: "Placement",
+    ROOM_PLACEMENT: "Room feature placement",
     SEMANTIC_PLACEMENT: "Adaptive placement",
     TRANSFORM: "Position & scale",
+    RELATIVE_TRANSFORM: "Move & resize",
     VISIBILITY: "Visibility",
     BEHAVIOR: "Interaction & timing",
     FALLBACK: "Guided accessibility",
+    GROUP_CREATE: "New group",
+    GROUP_MEMBERS: "Group members",
+    GROUP_RENAME: "Group name",
+    GROUP_UNGROUP: "Ungroup items",
+    GROUP_TRANSFORM: "Move, rotate & scale group",
   }[operation.type];
 }
 function operationDescription(operation: AssistantOperation, draft: SpatialDraft) {
+  if (isAdvancedAssistantOperation(operation)) return advancedOperationDescription(operation, draft);
   const name =
     "entityId" in operation
       ? (draft.content.entities.find((entity) => entity.id === operation.entityId)?.name ??
         (operation.type === "CREATE" ? operation.name : "Proposed object"))
       : "Guided experience";
   switch (operation.type) {
+    case "RELATIVE_TRANSFORM":
+      return `${name} · move by ${operation.translation.x}, ${operation.translation.y}, ${operation.translation.z} m · size ×${operation.scaleFactor}`;
+    case "GROUP_CREATE":
+      return `${operation.name} · ${operation.members.length} items`;
+    case "GROUP_MEMBERS":
+      return `${draft.content.studio?.editingGroups?.find((group) => group.id === operation.groupId)?.name ?? "Group"} · ${operation.members.length} members`;
+    case "GROUP_RENAME":
+      return `Rename group to ${operation.name}`;
+    case "GROUP_UNGROUP":
+      return "Remove grouping; keep its items and their current poses";
+    case "GROUP_TRANSFORM": {
+      const changes = [];
+      if (Object.values(operation.translation).some((value) => value !== 0))
+        changes.push(
+          `move by X ${operation.translation.x} m, Y ${operation.translation.y} m, Z ${operation.translation.z} m (world axes)`,
+        );
+      if (operation.yawDegrees !== 0) changes.push(`rotate ${operation.yawDegrees}°`);
+      if (operation.scale !== 1) changes.push(`scale ×${operation.scale}`);
+      return `${draft.content.studio?.editingGroups?.find((group) => group.id === operation.groupId)?.name ?? "Group"} · ${changes.join(", ") || "keep the current pose"}`;
+    }
     case "CREATE":
       return `${operation.name} · ${operation.placement === "DESK" ? "on a horizontal surface" : operation.placement === "WALL" ? "on a wall" : operation.placement === "ENTRANCE" ? "near the entrance" : "in the local scene"}`;
     case "PLACEMENT":
       return `${name} · ${operation.placement.toLowerCase()}`;
+    case "ROOM_PLACEMENT": {
+      const room = draft.content.studio?.environment;
+      const target =
+        room?.features.find((f) => f.id === operation.targetFeatureId)?.name ?? operation.classification.toLowerCase();
+      const near = room?.features.find((f) => f.id === operation.nearFeatureId)?.name;
+      return `${name} · on ${target}${near ? ` near ${near}` : ""} · editable room geometry`;
+    }
     case "SEMANTIC_PLACEMENT":
       return `${name} · ${operation.relativePlacement.toLowerCase()} on ${operation.surface.toLowerCase().replaceAll("_", " ")}${operation.context ? ` near ${operation.context.toLowerCase()}` : ""} · adaptive recipe, calibration review required`;
     case "TRANSFORM":
@@ -180,6 +236,18 @@ export function SpatialAssistant(props: SpatialAssistantProps) {
 }
 function SpatialAssistantSession(props: SpatialAssistantProps) {
   const { mode: motionMode } = useMotionMode();
+  const stateMotion = resolvePlatformMotionToken("state", motionMode);
+  const transition = { duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") };
+  const [sentRequest, setSentRequest] = useState("");
+  const [currentResponse, setCurrentResponse] = useState<AssistantProposal | null>(null);
+  const [currentMessageId, setCurrentMessageId] = useState("");
+  const [conversation, setConversation] = useState<
+    { id: string; request: string; response: AssistantProposal | null }[]
+  >([]);
+  const [savedRenderReview, setSavedRenderReview] = useState<{
+    sceneVersion: string;
+    entities: { id: string; name: string; visible: boolean }[];
+  } | null>(null);
   const [collapsed, setCollapsed] = useState(false),
     [composer, setComposer] = useState(""),
     [stage, setStage] = useState<Stage>("IDLE"),
@@ -210,6 +278,29 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   const working = ["PREPARING", "INTERPRETING", "RECEIVING", "VALIDATING", "APPLYING"].includes(stage);
   const selected = props.draft.content.entities.find((entity) => entity.id === props.selectedEntityId);
   const sessionKey = `parallax.assistant.v1:${props.accountId}:${props.draft.content.definitionId}`;
+  const taskResetVersion = useRef(props.taskResetVersion);
+  useEffect(() => {
+    if (taskResetVersion.current === props.taskResetVersion) return;
+    taskResetVersion.current = props.taskResetVersion;
+    requestGeneration.current++;
+    controller.current?.abort();
+    queueMicrotask(() => {
+      setSentRequest("");
+      setCurrentResponse(null);
+      setConversation([]);
+      setProposal(null);
+      setSelectedIds([]);
+      setPreviousRequestId(null);
+      setComposer("");
+      setPreviewing(false);
+      setRestored(false);
+      setStage("IDLE");
+      setNotice("");
+      try {
+        sessionStorage.removeItem(sessionKey);
+      } catch {}
+    });
+  }, [props.taskResetVersion, sessionKey]);
   useEffect(() => {
     mounted.current = true;
     return () => {
@@ -265,7 +356,8 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   }, [stale, previewPort]);
   const shownNotice = stale ? "Your scene has changed. Regenerate this proposal to preserve your newer work." : notice;
   useLayoutEffect(() => {
-    if (shownNotice && (stage === "FAILED" || stage === "UNAVAILABLE") && body.current) body.current.scrollTop = 0;
+    if (shownNotice && (stage === "FAILED" || stage === "UNAVAILABLE" || stage === "CANCELLED") && body.current)
+      body.current.scrollTop = 0;
   }, [shownNotice, stage]);
   function affected(ids: readonly string[]) {
     return [
@@ -273,11 +365,24 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         (proposal?.operations ?? [])
           .filter((operation) => ids.includes(operation.id))
           .flatMap((operation) =>
-            "entityId" in operation
-              ? [operation.entityId]
-              : operation.type === "BEHAVIOR"
-                ? [operation.targetEntityId]
-                : [],
+            operation.type === "DUPLICATE"
+              ? [operation.newEntityId]
+              : operation.type === "ANIMATION"
+                ? [operation.track.entityId]
+                : "entityId" in operation
+                  ? [operation.entityId]
+                  : operation.type === "BEHAVIOR"
+                    ? [operation.targetEntityId]
+                    : "groupId" in operation
+                      ? ("members" in operation
+                          ? operation.members
+                          : (latest.current.draft.content.studio?.editingGroups?.find(
+                              (group) => group.id === operation.groupId,
+                            )?.members ?? [])
+                        )
+                          .filter((member) => member.kind === "ASSET")
+                          .map((member) => member.id)
+                      : [],
           ),
       ),
     ];
@@ -314,10 +419,17 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
   }
   async function submit() {
     if (working || !composer.trim() || !usage.enabled) return;
+    const message = composer.trim();
     const generation = ++requestGeneration.current,
       abort = new AbortController();
     controller.current = abort;
+    if (sentRequest && currentResponse)
+      setConversation((turns) => [...turns, { id: currentMessageId, request: sentRequest, response: currentResponse }]);
+    setCurrentResponse(null);
+    setCurrentMessageId(crypto.randomUUID());
     setNotice("");
+    setSentRequest(message);
+    setComposer("");
     setStage("PREPARING");
     setProposal(null);
     latest.current.onPreview(null, []);
@@ -334,8 +446,11 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
           editorGeneration: snapshot.editorGeneration,
           requestId: crypto.randomUUID(),
           idempotencyKey: crypto.randomUUID(),
-          request: composer.trim(),
+          request: message,
           selectedEntityId: latest.current.selectedEntityId,
+          selectedGroupId: latest.current.selectedGroupId ?? null,
+          selectedMembers: latest.current.selectedMembers ? [...latest.current.selectedMembers] : [],
+          environmentEditing: latest.current.environmentEditing ?? false,
           previousRequestId,
           mode: advanced ? "ADVANCED" : "STANDARD",
         },
@@ -373,6 +488,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         throw new Error("Your scene has changed. Regenerate this proposal to preserve your newer work.");
       setProposal(checked);
       setPreviousRequestId(checked.requestId);
+      setCurrentResponse(checked);
       setSelectedIds(checked.operations.map((operation) => operation.id));
       setStage(
         checked.clarification ? "CLARIFICATION" : checked.intentType === "UNSUPPORTED" ? "UNSUPPORTED" : "PREVIEW",
@@ -426,6 +542,18 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
         throw new Error(
           "The canonical save acknowledgement could not be verified. Retry this reviewed change before installing it.",
         );
+      const ids = affected(selectedIds);
+      const states = evaluateSpatialScene(saved.draft.content, [], 0, true).states;
+      setSavedRenderReview({
+        sceneVersion: JSON.stringify(saved.draft),
+        entities: saved.draft.content.entities
+          .filter((entity) => ids.includes(entity.id))
+          .map((entity) => ({
+            id: entity.id,
+            name: entity.name,
+            visible: states[entity.id].visible,
+          })),
+      });
       latest.current.onPreview(null, []);
       setPreviewing(false);
       setProposal(null);
@@ -445,34 +573,112 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
     );
   return (
     <aside role="region" className={styles.assistant} data-motion={motionMode} aria-label="Spatial Assistant">
-      <header className={styles.header}>
+      <header className={styles.header} {...props.headerProps}>
         <div className={styles.emblem}>
           <SuggestionIcon kind="spark" />
         </div>
         <div>
           <p>PARALLAX</p>
-          <h2>Spatial Assistant</h2>
+          <h2>
+            {props.headerProps ? (
+              <button
+                type="button"
+                className={styles.headerDragTitle}
+                {...props.headerProps}
+                aria-label="Move floating Spatial Assistant"
+              >
+                Spatial Assistant
+              </button>
+            ) : (
+              "Spatial Assistant"
+            )}
+          </h2>
         </div>
-        <button
-          aria-label="Collapse Spatial Assistant"
-          aria-expanded="true"
-          onClick={() => {
-            props.onPreview(null, []);
-            setPreviewing(false);
-            setCollapsed(true);
-            props.onClose?.();
-          }}
-        >
-          −
-        </button>
+        {props.windowControls ?? (
+          <button
+            aria-label="Collapse Spatial Assistant"
+            aria-expanded="true"
+            onClick={() => {
+              setSentRequest("");
+              setCurrentResponse(null);
+              setConversation([]);
+              props.onPreview(null, []);
+              setPreviewing(false);
+              setCollapsed(true);
+              props.onClose?.();
+            }}
+          >
+            −
+          </button>
+        )}
       </header>
       <div className={styles.context}>
         <span className={styles.contextDot} aria-hidden="true" />
-        <span>{selected ? selected.name : "Whole scene"}</span>
+        <span>
+          {props.draft.content.studio?.editingGroups?.find((group) => group.id === props.selectedGroupId)?.name ??
+            (props.selectedMembers && props.selectedMembers.length > 1
+              ? `${props.selectedMembers.length} selected items`
+              : selected
+                ? selected.name
+                : "Whole scene")}
+        </span>
         <small>{props.draft.content.entities.length} objects</small>
         {props.onCanvasView && <button onClick={props.onCanvasView}>View canvas</button>}
       </div>
-      <div className={styles.body} ref={body}>
+      <div className={styles.body} ref={body} role="region" aria-label="Assistance response" tabIndex={0}>
+        <AnimatePresence initial={false}>
+          {[
+            ...conversation,
+            ...(sentRequest
+              ? [
+                  {
+                    id: currentMessageId,
+                    request: sentRequest,
+                    response: !proposal && !working ? currentResponse : null,
+                  },
+                ]
+              : []),
+          ].map((turn) => (
+            <motion.div
+              key={turn.id}
+              className={styles.chatTurn}
+              initial={{ opacity: 0, y: stateMotion.distancePx }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -stateMotion.distancePx }}
+              transition={transition}
+            >
+              <div className={styles.sentRequest}>
+                <span className={styles.kicker}>YOUR IDEA</span>
+                <p>{turn.request}</p>
+              </div>
+              {turn.response && (
+                <div className={styles.previousReply}>
+                  <p>{turn.response.summary}</p>
+                  {turn.response.clarification && (
+                    <p className={styles.previousQuestion}>{turn.response.clarification}</p>
+                  )}
+                  <details>
+                    <summary>Earlier response</summary>
+                    <p>{turn.response.creatorExplanation}</p>
+                    {turn.response.operations.map((operation) => (
+                      <p key={operation.id}>
+                        {operationDescription(operation, props.draft)} · {operation.explanation}
+                      </p>
+                    ))}
+                    {[
+                      ...turn.response.warnings,
+                      ...turn.response.assumptions,
+                      ...turn.response.accessibilityNotes,
+                      ...turn.response.unsupportedCapabilities,
+                    ].map((note, index) => (
+                      <p key={index}>{note}</p>
+                    ))}
+                  </details>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
         {restored && (
           <p className={styles.notice} role="status">
             Your task session is restored. I’ll use the current saved scene for your next request.
@@ -507,20 +713,107 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             <p className={styles.reassurance}>You review every change. Your scene stays yours.</p>
           </section>
         )}
-        <p className={styles.activity} role="status" aria-live="polite" data-working={working}>
-          <span aria-hidden="true">{working ? "◌" : stage === "ACCEPTED" ? "✓" : "✦"}</span>
+        <AnimatePresence initial={false} mode="wait">
+          {working && (
+            <motion.div
+              key="thinking"
+              className={styles.thinking}
+              aria-label="Assistant thinking"
+              initial={{ opacity: 0, y: stateMotion.distancePx, scale: 1 - stateMotion.scaleDelta }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -stateMotion.distancePx, scale: 1 - stateMotion.scaleDelta }}
+              transition={transition}
+            >
+              <div className={styles.thinkingOrb} aria-hidden="true">
+                <span className={styles.thinkingRing} />
+                <span className={styles.thinkingRing} />
+                <span className={styles.thinkingSpark}>✦</span>
+              </div>
+              <strong>{stage === "APPLYING" ? "Bringing your scene together" : "Shaping your idea"}</strong>
+              <span className={styles.thinkingDots} aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <motion.p
+          transition={transition}
+          className={working || (proposal && stage !== "ACCEPTED") ? styles.screenReaderStatus : styles.activity}
+          role="status"
+          aria-live="polite"
+          data-working={working}
+        >
+          <motion.span
+            key={stage}
+            aria-hidden="true"
+            initial={
+              motionMode === "reduced"
+                ? false
+                : { opacity: 0.35, scale: 1 - stateMotion.scaleDelta * 4, rotate: working ? -30 : 0 }
+            }
+            animate={{ opacity: 1, scale: 1, rotate: working && motionMode !== "reduced" ? 30 : 0 }}
+            transition={{ duration: stateMotion.durationSeconds, ease: platformMotionEasing("state") }}
+          >
+            {working ? "◌" : stage === "ACCEPTED" ? "✓" : "✦"}
+          </motion.span>
           {stageText[stage]}
-        </p>
+        </motion.p>
+        {stage === "ACCEPTED" && savedRenderReview && (
+          <section aria-label="Saved scene canvas check" className={styles.notice}>
+            {props.renderedSceneVersion !== savedRenderReview.sceneVersion ? (
+              <p>The changes are saved. Canvas confirmation is pending; open the canvas to inspect this scene.</p>
+            ) : savedRenderReview.entities.length === 0 ? (
+              <p>The saved scene has rendered. These changes do not add or move a visible object.</p>
+            ) : (
+              savedRenderReview.entities.map((entity) => {
+                const status = props.renderedEntities?.[entity.id];
+                const visible = status === "IN_VIEW";
+                const authoredHidden = status === "HIDDEN" && !entity.visible;
+                return (
+                  <p key={entity.id}>
+                    <strong>{entity.name}</strong>:{" "}
+                    {visible
+                      ? "rendered in the current view."
+                      : authoredHidden
+                        ? "saved hidden as authored. Preview its reveal in the timeline."
+                        : `saved, but ${status === "OUTSIDE_VIEW" ? "outside the current view" : status === "OCCLUDED" ? "occluded in this view" : status === "TOO_SMALL" ? "too small to read in this view" : status === "HIDDEN" ? "hidden in the current preview" : status === "TRANSPARENT" ? "transparent at the current animation time" : "its geometry is not confirmed"}.`}
+                    {!visible && !authoredHidden && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          props.onSelect(entity.id);
+                          props.onCanvasView?.();
+                        }}
+                      >
+                        Locate {entity.name} in canvas
+                      </button>
+                    )}
+                  </p>
+                );
+              })
+            )}
+          </section>
+        )}
         {shownNotice && (
           <p className={styles.notice} role="status">
             {shownNotice}
           </p>
         )}
         {proposal && (
-          <section className={styles.proposal} ref={review} tabIndex={-1} aria-label="Review spatial proposal">
-            <span className={styles.kicker}>PROPOSED EXPERIENCE</span>
+          <motion.section
+            key={proposal.requestId}
+            initial={{ opacity: 0, y: stateMotion.distancePx }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -stateMotion.distancePx }}
+            transition={transition}
+            className={styles.proposal}
+            ref={review}
+            tabIndex={-1}
+            aria-label="Review spatial proposal"
+          >
             <h3>{proposal.summary}</h3>
-            <p>{proposal.creatorExplanation}</p>
             {proposal.clarification && (
               <div className={styles.clarification}>
                 <h4>One quick clarification</h4>
@@ -556,9 +849,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                     <strong>{operationDescription(operation, props.draft)}</strong>
                   </span>
                 </label>
-                <p>{operation.explanation}</p>
-                {operation.dependsOn.length > 0 && <small>Includes related changes when applied as a bundle.</small>}
-                {"entityId" in operation && (
+                {"entityId" in operation && operation.type !== "DELETE" && (
                   <button
                     className={styles.linkButton}
                     disabled={stale || working || (operation.type === "CREATE" && !selectedIds.includes(operation.id))}
@@ -580,21 +871,24 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                 )}
               </article>
             ))}
-            {[...proposal.warnings, ...proposal.accessibilityNotes].map((finding, index) => (
-              <p className={styles.finding} key={`${index}:${finding}`}>
-                {finding}
-              </p>
-            ))}
-            {proposal.assumptions.length > 0 && (
-              <details>
-                <summary>Assumptions to review</summary>
-                <ul>
-                  {proposal.assumptions.map((assumption) => (
-                    <li key={assumption}>{assumption}</li>
-                  ))}
-                </ul>
-              </details>
-            )}
+            <details className={styles.reviewDetails}>
+              <summary>Details &amp; considerations</summary>
+              <p>{proposal.creatorExplanation}</p>
+              {[...proposal.warnings, ...proposal.accessibilityNotes].map((finding, index) => (
+                <p key={`${index}:${finding}`}>{finding}</p>
+              ))}
+              <ul>
+                {proposal.assumptions.map((assumption) => (
+                  <li key={assumption}>{assumption}</li>
+                ))}
+              </ul>
+              {proposal.operations.map((operation) => (
+                <p key={operation.id}>
+                  {operation.explanation}
+                  {operation.dependsOn.length ? " Related changes are included when applied together." : ""}
+                </p>
+              ))}
+            </details>
             {proposal.operations.length > 0 && (
               <>
                 <div className={styles.previewSwitch}>
@@ -613,7 +907,6 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                     Proposed scene
                   </button>
                 </div>
-                <p className={styles.reassurance}>Review changes in your scene before you apply them.</p>
                 <div className={styles.applyBar}>
                   <button
                     className={styles.primary}
@@ -629,6 +922,9 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
                   <button
                     disabled={working}
                     onClick={() => {
+                      setSentRequest("");
+                      setCurrentResponse(null);
+                      setConversation([]);
                       props.onPreview(null, []);
                       setPreviewing(false);
                       setProposal(null);
@@ -649,7 +945,7 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             >
               Refine this proposal
             </button>
-          </section>
+          </motion.section>
         )}
       </div>
       <footer className={styles.footer}>
@@ -757,8 +1053,14 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             </small>
             <button
               type="button"
-              disabled={working}
+              disabled={stage === "APPLYING"}
               onClick={() => {
+                requestGeneration.current++;
+                controller.current?.abort();
+                controller.current = null;
+                setSentRequest("");
+                setCurrentResponse(null);
+                setConversation([]);
                 setPreviousRequestId(null);
                 setRestored(false);
                 setComposer("");
@@ -777,17 +1079,31 @@ function SpatialAssistantSession(props: SpatialAssistantProps) {
             </button>
             {working && stage !== "APPLYING" ? (
               <button
+                key="cancel-request"
                 type="button"
-                onClick={() => {
+                onClick={(event) => {
+                  // Do not submit when this click replaces Cancel with Send.
+                  event.preventDefault();
+                  requestGeneration.current++;
                   controller.current?.abort();
-                  setStage("IDLE");
+                  controller.current = null;
+                  setSentRequest("");
+                  setCurrentResponse(null);
+                  setConversation([]);
+                  setStage("CANCELLED");
                   setNotice("Assistance cancelled. Your scene is unchanged.");
+                  input.current?.focus();
                 }}
               >
                 Cancel request
               </button>
             ) : (
-              <button type="submit" className={styles.primary} disabled={!composer.trim() || working || !usage.enabled}>
+              <button
+                key="send-request"
+                type="submit"
+                className={styles.primary}
+                disabled={!composer.trim() || working || !usage.enabled}
+              >
                 Send idea <span aria-hidden="true">↗</span>
               </button>
             )}

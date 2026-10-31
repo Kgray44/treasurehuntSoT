@@ -1,0 +1,119 @@
+(node:132628) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Listing tests:
+  [chromium] › parallax-adaptive.spec.ts:16:5 › Remote Creator stages, publishes and reopens an adaptive multi-object Chronicle
+  [chromium] › parallax-ai-enforcement.spec.ts:86:5 › People dossier allowance, suspension and advanced access govern actual Creator requests
+  [chromium] › parallax-ai-enforcement.spec.ts:195:5 › Global warning, stale policy review, disable and reservation cap match visible Admiralty controls
+  [chromium] › parallax-ai-enforcement.spec.ts:255:5 › Independent browser sessions and users cannot reserve the same last capacity; retries stay durable
+  [chromium] › parallax-ai-quotas.spec.ts:14:5 › Admiralty changes an AI allowance through the existing People dossier
+  [chromium] › parallax-animation.spec.ts:22:5 › Creator edits, renders, scrubs, plays and reloads real object keyframes, then resets triggered simulation
+  [chromium] › parallax-animation.spec.ts:218:5 › Middle and Ctrl drag use the same camera pan and renderer recovery retains the draft
+  [chromium] › parallax-asset-quality.spec.ts:27:5 › Creator inspects representative actual asset materials at useful distances in both appearances without altering the saved scene
+  [chromium] › parallax-asset-quality.spec.ts:163:5 › Creator duplicates and reuses a right boot without changing its rendered handedness
+  [chromium] › parallax-asset-quality.spec.ts:278:5 › Creator authors a full scene and navigates during interpolated playback without rebuilding props
+  [chromium] › parallax-assistant-presentation.spec.ts:23:5 › visible Assistant viewport, docking, authoring modes and reduced motion review
+  [chromium] › parallax-assistant-presentation.spec.ts:290:5 › Creator reads and scrolls a populated landscape proposal while keeping the composer and actions reachable
+  [chromium] › parallax-authoring-refinements.spec.ts:23:5 › Creator renames, drags and resizes a real animated clip, observes motion and recovers hidden or tiny assets through saved replay
+  [chromium] › parallax-authoring-refinements.spec.ts:228:5 › Renaming one footprint preserves its shape and rebuilds only that prop
+  [chromium] › parallax-authoring-refinements.spec.ts:288:5 › Record captures edited poses and motion stays clear across modes and renderer recovery
+  [chromium] › parallax-cinematic.spec.ts:13:5 › Creator clicks a graph title, edits a selected pose, resizes unobstructed handles and watches two cinematic takes
+  [chromium] › parallax-click-surface.spec.ts:14:5 › Clicking visible room surfaces places the selected asset without opening Surfaces and preserves Undo
+  [chromium] › parallax-construction-checks.spec.ts:17:5 › Creator follows exact construction findings, corrects wall orientation and reviews miniature scale through save and reload
+  [chromium] › parallax-context-menu.spec.ts:19:5 › Creator uses one graph toolbar, right-click object commands and keyboard menus across saved scenes and phone
+  [chromium] › parallax-direct-placement.spec.ts:21:5 › Creator sees a receiving surface during real dragging, clamps on release, freely positions with clamping off and selects directly in the viewport
+  [chromium] › parallax-environment-creation.spec.ts:21:7 › Environment photo setup imports 1 views, renders the proposal and saves an independent editable room
+  [chromium] › parallax-environment-creation.spec.ts:21:7 › Environment photo setup imports 2 views, renders the proposal and saves an independent editable room
+  [chromium] › parallax-environment-entry.spec.ts:20:5 › Environment plus opens keyboard-friendly choices, duplicates a source and starts an empty shell
+  [chromium] › parallax-environment-library.spec.ts:22:5 › pinned room editing creates an explicit independent Environment copy and preserves the Scene release pin
+  [chromium] › parallax-environment-library.spec.ts:123:5 › Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots
+  [chromium] › parallax-exclusion-zones.spec.ts:16:5 › Environment zones use real gizmos, retain edits and deletion, and disappear from ordinary scene rendering
+  [chromium] › parallax-groups.spec.ts:34:5 › single name clicks rename assets and groups, and Library exclusion tools use the current room controls
+  [chromium] › parallax-groups.spec.ts:136:5 › Visible Bedroom geometry reaches the Assistant and a retained real response animates into clear entrance placement
+  [chromium] › parallax-groups.spec.ts:228:5 › Inspector text preserves spaces and newlines, and room membership requires the viewport edit toggle
+  [chromium] › parallax-groups.spec.ts:285:5 › Scene Graph reorders live without moving assets, and a floor click places the whole selected footprint group
+  [chromium] › parallax-groups.spec.ts:379:5 › Assistant previews and applies grouping and whole-group motion through the server adapter without inference traffic
+  [chromium] › parallax-groups.spec.ts:438:5 › Twenty footprints group through keyboard selection, move live together, cancel safely and retain editable membership
+  [chromium] › parallax-groups.spec.ts:591:5 › A mixed asset and room-feature group uses the same rotation/scale controls without double-moving its bound asset
+  [chromium] › parallax-groups.spec.ts:643:5 › Assistant retains general follow-up intent, removes a reviewed asset and edits the actual scene
+  [chromium] › parallax-guided.spec.ts:12:7 › Guided Lens preserves meaning and progression on desktop
+  [chromium] › parallax-guided.spec.ts:12:7 › Guided Lens preserves meaning and progression on mobile
+  [chromium] › parallax-library-lifecycle.spec.ts:21:5 › durable working scene, explicit saved membership, named Save As, metadata and version history
+  [chromium] › parallax-library-lifecycle.spec.ts:92:5 › independent environment creation, editing and reuse do not manufacture scene definitions
+  [chromium] › parallax-library-lifecycle.spec.ts:187:5 › pending save retry and reload retain one stable definition and visible failure
+  [chromium] › parallax-library-lifecycle.spec.ts:223:5 › lost Save As response replays one copy and two tabs preserve conflicting edits deliberately
+  [chromium] › parallax-library-lifecycle.spec.ts:283:5 › light and dark Library views remain typed, responsive and keyboard reachable
+  [chromium] › parallax-library-lifecycle.spec.ts:351:5 › stale environment recovery keeps the original CAS base after reload
+  [chromium] › parallax-library-lifecycle.spec.ts:386:5 › failed historical copy cannot substitute an earlier version for a newly selected version
+  [chromium] › parallax-opacity.spec.ts:16:5 › Creator authors actual material fading, recovers a transparent object and replays its saved fade
+  [chromium] › parallax-owner-refinements.spec.ts:24:5 › owner refinements: coherent Studio themes, overlay assistance and populated working docks
+  [chromium] › parallax-owner-refinements.spec.ts:197:5 › floating assistance moves, resizes, restores and keeps its composer at the bottom without editing the scene
+  [chromium] › parallax-owner-refinements.spec.ts:309:5 › Admiralty daily chart selects actual request and cost projections with empty and populated states
+  [chromium] › parallax-owner-room-photo.spec.ts:111:7 › One owner photograph walkthrough starts without dimensions and retains editable rendered layout
+  [chromium] › parallax-owner-room-photo.spec.ts:111:7 › Two owner photograph walkthrough starts without dimensions and retains editable rendered layout
+  [chromium] › parallax-parametric-room.spec.ts:19:5 › Creator adds and rebuilds actual furniture, protects a bound desk, corrects scale and retains the room through reload and phone edits
+  [chromium] › parallax-phase3-baseline.spec.ts:9:5 › capture accepted Phase 2 Studio before Phase 3 UI edits
+  [chromium] › parallax-photo-feedback.spec.ts:18:7 › Photo setup timeout-dark keeps processing and recovery visible without modifying the source
+  [chromium] › parallax-photo-feedback.spec.ts:18:7 › Photo setup clarification-phone-light keeps processing and recovery visible without modifying the source
+  [chromium] › parallax-photo-feedback.spec.ts:18:7 › Photo setup network-desktop-light keeps processing and recovery visible without modifying the source
+  [chromium] › parallax-reusable-assets.spec.ts:24:5 › Creator saves and reuses a versioned object, edits only its instance, reloads and archives the unchanged definition
+  [chromium] › parallax-room-features.spec.ts:22:5 › Environment editing selects rendered features and shares live transform gizmos, history and persistence
+  [chromium] › parallax-room-features.spec.ts:157:5 › Creator edits semantic room dimensions and furniture while the actual rendered clue follows its desk across reload
+  [chromium] › parallax-room-observation-replay.spec.ts:22:7 › Retained single observation keeps table poses through mapping, rendering and reload without inference
+  [chromium] › parallax-room-observation-replay.spec.ts:22:7 › Retained two observation keeps table poses through mapping, rendering and reload without inference
+  [chromium] › parallax-room-photo.spec.ts:22:5 › Creator privately imports a room photo, confirms measurement, preserves it through refinement, creates a hidden letter and replays its reveal
+  [chromium] › parallax-rooms.spec.ts:19:5 › Creator explores ten furnished environments in both appearances without changing the scene
+  [chromium] › parallax-sc00b-combined.spec.ts:19:5 › SC-00B combined Inspector covers twelve selection contexts and room recovery at each depth
+  [chromium] › parallax-sc00b-combined.spec.ts:324:5 › SC-00B typed light and room feature edits survive undo, mode travel, and saved reload
+  [chromium] › parallax-sc00b-combined.spec.ts:442:5 › SC-00B scale drag previews on the combined canvas before one history commit
+  [chromium] › parallax-sc00b-combined.spec.ts:487:5 › SC-00B typed effects retain three depths, light theme, and keyboard rail navigation
+  [chromium] › parallax-sc00b-combined.spec.ts:614:5 › SC-00B combined Inspector handles removed and mixed selections at every depth
+  [chromium] › parallax-sc00b-combined.spec.ts:689:7 › SC-00B natural Creator Library entry and Inspector return on desktop
+  [chromium] › parallax-sc00b-combined.spec.ts:689:7 › SC-00B natural Creator Library entry and Inspector return on phone
+  [chromium] › parallax-sc00c-drop-placement.spec.ts:15:5 › Library physical drag uses the pointed support and selects the inserted instance
+  [chromium] › parallax-sc00c-expanded-library.spec.ts:28:5 › compact to expanded Library stages a surface placement and returns to the same content
+  [chromium] › parallax-sc00c-expanded-library.spec.ts:108:5 › saved assets use the shared Library and wait for an approved surface before creating a Scene copy
+  [chromium] › parallax-sc00c-expanded-library.spec.ts:213:5 › scaled physical saved asset keeps keyboard and pointer support with animated root
+  [chromium] › parallax-sc00c-expanded-library.spec.ts:373:5 › expanded Library adapts to narrow and phone layouts, themes, reduced motion, and catalog errors
+  [chromium] › parallax-sc00c-expanded-library.spec.ts:469:5 › expanded Environment and Scene actions use the same saved sources and Scene Manager
+  [chromium] › parallax-sc00c-library-context-menu.spec.ts:16:5 › Library card menus preserve insertion, current-Scene protection, keyboard focus and phone bounds
+  [chromium] › parallax-sc00c-library-journeys.spec.ts:24:5 › Creator searches, previews and inserts a built-in asset with immediate selection
+  [chromium] › parallax-sc00c-library-journeys.spec.ts:54:5 › keyboard opens a card's relevant actions and inserts its asset
+  [chromium] › parallax-sc00c-library-journeys.spec.ts:91:5 › Creator follows a saved Environment to two Scenes, opens one, returns and renames it
+  [chromium] › parallax-sc00c-scale-browser.spec.ts:17:5 › a large saved-Scene catalog remains searchable and paged in the actual Studio
+  [chromium] › parallax-sc02-integration.spec.ts:12:5 › combined Library places typed elements, saves and independently reuses a composition with rendered playback
+  [chromium] › parallax-sc02-integration.spec.ts:134:5 › physical Library insertion uses Bedroom supports, preserves Undo and refuses an occupied room
+  [chromium] › parallax-sc02.spec.ts:57:5 › SC-02 Creator places real assets, edits a light, saves and reuses a composition, then reloads the same Scene
+  [chromium] › parallax-sc02.spec.ts:246:5 › SC-02 actual Studio renders every model family and three composed scenes with finite instrumentation
+  [chromium] › parallax-sc02.spec.ts:300:5 › SC-02 Studio visibly executes projected effects, a portal and additional light types
+  [chromium] › parallax-sc02.spec.ts:418:5 › SC-02 Creator authors and reuses elements with native keyboard navigation and returns from assistance
+  [chromium] › parallax-sc02.spec.ts:590:5 › SC-02 preserves a failed save and recovers audio from unavailable and Guided preview states
+  [chromium] › parallax-sc02.spec.ts:707:5 › SC-02 measures a composed Scene and reclaims temporary model resources
+  [chromium] › parallax-scene-manager.spec.ts:58:5 › Creator authors three independent Haunted Bedroom Scenes, reviews an explicit shared revision and retains immutable references
+  [chromium] › parallax-scene-manager.spec.ts:279:5 › built-in copies use a distinct legacy working editor and explicit release before independent Scene reuse
+  [chromium] › parallax-scene-manager.spec.ts:388:5 › a reviewed synthetic reconstructed Environment is selectable and another Scene duplicates without changing its pin
+  [chromium] › parallax-scene-manager.spec.ts:431:5 › a retained autosave failure stays visible inside Scene Manager and retries the same working identity
+  [chromium] › parallax-semantic-assistant.spec.ts:110:5 › Assistant places a real note on the correct table near the window with truthful renderer confirmation, identity and saved restore
+  [chromium] › parallax-semantic-assistant.spec.ts:257:5 › Assistant asks about two plausible tables, cancels an actual request and reports provider failure without changing the scene
+  [chromium] › parallax-semantic-assistant.spec.ts:370:5 › Public sign-in input and focus survive switching motion preferences in both directions
+  [chromium] › parallax-simulation.spec.ts:17:5 › Creator authors a delayed interaction, sees matching and unmatched outcomes, resets and replays saved simulation
+  [chromium] › parallax-spatial-assistant.spec.ts:55:5 › Creator signs in, reviews actual canvas proposals, saves once and reopens an exact Chronicle pin
+  [chromium] › parallax-spatial-community.spec.ts:188:5 › private asset reaches the canonical listing and installs as an immutable Library release
+  [chromium] › parallax-spatial-community.spec.ts:429:5 › Creator updates an approved listing through the same wizard without rewriting its first release
+  [chromium] › parallax-spatial-community.spec.ts:506:5 › rich Environment and pinned Scene use reviewed geometry without private Library metadata
+  [chromium] › parallax-spatial-community.spec.ts:565:5 › owned synthetic Environment publishes from Library and installs as a read-only Environment
+  [chromium] › parallax-spatial-community.spec.ts:645:5 › procedural Effect publishes from Effects and installs in the second Creator's Effects Library
+  [chromium] › parallax-spatial-community.spec.ts:736:5 › owned Composition publishes from Compositions and installs as a reusable read-only prefab
+  [chromium] › parallax-spatial-community.spec.ts:817:5 › unlicensed physical content has a visible refusal and remains private
+  [chromium] › parallax-spatial-community.spec.ts:856:5 › a lost submission response reports uncertainty and exact retry recovers one release
+  [chromium] › parallax-spatial-community.spec.ts:905:5 › a Creator reaches server package review from the ordinary Studio entry without publishing
+  [chromium] › parallax-spatial-community.spec.ts:954:5 › a Creator without a public Profile gets a direct setup route and returns to the saved source
+  [chromium] › parallax-spatial-community.spec.ts:1005:5 › a private-profile Environment returns to its selected immutable version after Profile setup
+  [chromium] › parallax-studio.spec.ts:14:5 › Creator builds, versions, attaches, publishes and reopens a spatial moment in Guided mode
+  [chromium] › parallax-surfaces.spec.ts:30:5 › Creator snaps a clue to both walls, table and entire floor with orientation, Undo and persisted restore
+  [chromium] › parallax-surfaces.spec.ts:118:5 › Hidden Wall Message retains wall intent when automatic placement is enabled and aligns when switched to table
+  [chromium] › parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on desktop
+  [chromium] › parallax-tracking-recovery.spec.ts:20:7 › Chronicle Lens explains browser tracker startup failure on phone
+  [chromium] › parallax-workstation.spec.ts:20:5 › Adaptive workspace docks reclaim viewport area and preserve editing across layouts and reload
+  [chromium] › parallax-workstation.spec.ts:164:5 › Creator edits a populated 3D workstation, previews intent, and retains canonical history
+Total: 114 tests in 47 files

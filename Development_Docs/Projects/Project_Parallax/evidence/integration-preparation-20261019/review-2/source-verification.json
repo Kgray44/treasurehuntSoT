@@ -1,0 +1,47 @@
+{
+  "candidate": "961b1a82a1e2a7a33cc35f11c6e02e53027658e4",
+  "applicationPathDiffFrom84472662": [],
+  "acceptedReferenceExports": [
+    {
+      "declaredSource": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "exportedFrom": "961b1a82a1e2a7a33cc35f11c6e02e53027658e4",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "export": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\HP-P6-EV-001-root-standard-desktop.png",
+      "sha256": "4c1c6c44de8007dec2a05fda240249f4e87b56b7b6f7fe2335323f2e7f5cc024",
+      "declaredSourcePathAvailable": false,
+      "note": "Exported exact frozen candidate artifact. Declared historical source does not contain this later saved evidence path; no historical artifact identity equivalence is asserted."
+    },
+    {
+      "declaredSource": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "exportedFrom": "961b1a82a1e2a7a33cc35f11c6e02e53027658e4",
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "export": "D:\\CodexTemp\\parallax-integration-20261019-01a15554\\independent-review-final\\HP-P6-EV-002-root-modern-mobile.png",
+      "sha256": "661f40c43a7dc7a3f55376675a282e1c10a6562b284235f2be93fb733a0e7477",
+      "declaredSourcePathAvailable": false,
+      "note": "Exported exact frozen candidate artifact. Declared historical source does not contain this later saved evidence path; no historical artifact identity equivalence is asserted."
+    }
+  ],
+  "rawReceiptHashChecks": [
+    {
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\integration-preparation-20261019\\receipts\\special-05-report.json",
+      "sha256": "a67e47927b6a6a73d5736050854c4d8d6864c3984eaec8051f21aef1b5191d3d",
+      "matchesAddendum": true
+    },
+    {
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\integration-preparation-20261019\\receipts\\special-05-source-run.json",
+      "sha256": "a349d9027c4f1b60f62185df34968bcc2960177022bab72850c7f6bcb07e9c4d",
+      "matchesAddendum": true
+    },
+    {
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\integration-preparation-20261019\\receipts\\special-08-report.json",
+      "sha256": "95f2f7bc7cb02be99011629c888c83dc1d0f2995994de218d99a99ec2f0ce676",
+      "matchesAddendum": true
+    },
+    {
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\integration-preparation-20261019\\receipts\\special-08-source-run.json",
+      "sha256": "ae795d8f7c5a5a09c0376fd36b7bb80d2b694aa4e81810d8551a9743051c6607",
+      "matchesAddendum": true
+    }
+  ],
+  "addendumSha256": "5ba7cef1cff5de1a5cd694fb5d5b1528808e77fc24bdf10874b2a3025e0d1a30"
+}

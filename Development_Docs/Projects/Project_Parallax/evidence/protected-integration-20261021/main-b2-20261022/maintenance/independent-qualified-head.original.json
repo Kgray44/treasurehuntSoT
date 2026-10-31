@@ -1,0 +1,246 @@
+{
+  "documentClass": "engineering-evidence",
+  "createdAt": "2026-10-23T03:13:18.992Z",
+  "status": "PASS_EXACT_NORMAL_QUALIFICATION_READY_FOR_NORMAL_PROTECTED_MERGE",
+  "reviewer": "/root/lifecycle_review",
+  "candidate": "bb496b533a49c4c06c58d11319e11c2eca793ad5",
+  "tree": "2de39c85baf0c12fbf28975ee6093f29db953480",
+  "base": "1c516d27fca521157732fca4cbba773d1542f1b2",
+  "pr": 793,
+  "run": 39891293849,
+  "attempt": 1,
+  "event": "pull_request_target",
+  "normalQualification": true,
+  "checkSuite": 108120951377,
+  "requiredDecision": {
+    "id": 120217824809,
+    "name": "Sounding Line / Mainline Decision",
+    "appId": 15368,
+    "conclusion": "success",
+    "detailsURL": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39891293849/job/120217824809"
+  },
+  "requiredProtection": {
+    "strict": true,
+    "context": "Sounding Line / Mainline Decision",
+    "appId": 15368
+  },
+  "providerPRSnapshot": {
+    "observedAt": "2026-10-23T03:08:37.847Z",
+    "open": true,
+    "ready": true,
+    "unmerged": true,
+    "mergeable": true,
+    "mergeableState": "clean",
+    "head": "bb496b533a49c4c06c58d11319e11c2eca793ad5",
+    "base": "1c516d27fca521157732fca4cbba773d1542f1b2"
+  },
+  "source": {
+    "review": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\independent-preparation-frozen-clock-review-bb496b53.original.json",
+      "bytes": 23870,
+      "sha256": "4ee4e4b20372ffd4096a4575bb9f2aef1edb65d408b1bb5e71202780bc559992"
+    },
+    "manifest": {
+      "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\frozen-clock-commit-source.original.json",
+      "bytes": 5582,
+      "sha256": "ecbe46c4160f7a44bfdbe3cb865627e73baa35b35ffabd4d8c9a9dc3b6d85ef7"
+    },
+    "all20FinalRawBindingsUnchanged": true,
+    "clean": true
+  },
+  "counts": {
+    "canonical": {
+      "total": 921,
+      "pass": 920,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 1
+    },
+    "rendered": {
+      "total": 13,
+      "pass": 13,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0
+    },
+    "features": {
+      "total": 9,
+      "pass": 9
+    },
+    "previouslyMaskedExceptionCasesObservedPass": 5,
+    "preparationRetentionObservedPass": 18
+  },
+  "successfulGates": [
+    {
+      "number": 15,
+      "name": "Bind control-plane validation to the exact candidate tree",
+      "conclusion": "success"
+    },
+    {
+      "number": 16,
+      "name": "Run focused Sounding Line regression for the control-plane candidate",
+      "conclusion": "success"
+    },
+    {
+      "number": 17,
+      "name": "Typecheck the control-plane candidate",
+      "conclusion": "success"
+    },
+    {
+      "number": 18,
+      "name": "Verify rendered experience adversarial fixtures",
+      "conclusion": "success"
+    },
+    {
+      "number": 19,
+      "name": "Lint the control-plane candidate",
+      "conclusion": "success"
+    },
+    {
+      "number": 20,
+      "name": "Scan the control-plane candidate for private content",
+      "conclusion": "success"
+    },
+    {
+      "number": 21,
+      "name": "Validate the control-plane candidate documentation",
+      "conclusion": "success"
+    },
+    {
+      "number": 22,
+      "name": "Test the control-plane candidate feature records",
+      "conclusion": "success"
+    }
+  ],
+  "captures": [
+    {
+      "mode": "run",
+      "observedAt": "2026-10-23T03:08:25.472Z",
+      "payload": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-run.original.json",
+        "bytes": 13228,
+        "sha256": "9de3c18513087759dc7ffe94377552ab96e861e6d2d5b4ab420e58930dac1652"
+      },
+      "capture": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-run.capture.original.json",
+        "bytes": 1111,
+        "sha256": "ea5bca8e8d2b99920cf70f116af3cbd42dfb69731bc7db6fd213757d841a7ef7"
+      },
+      "representation": "provider JSON emitted by gh api"
+    },
+    {
+      "mode": "jobs",
+      "observedAt": "2026-10-23T03:08:28.646Z",
+      "payload": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-jobs.original.json",
+        "bytes": 13912,
+        "sha256": "5cf73ded1ab847336ef66d093e0e3c195f708ca658cd44280773d6a7c1aa2bd2"
+      },
+      "capture": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-jobs.capture.original.json",
+        "bytes": 1131,
+        "sha256": "d3acfc8d6fddb536ea03ef1df6b34263696764c3baafeefe66c26b9be7107e4e"
+      },
+      "representation": "provider JSON emitted by gh api"
+    },
+    {
+      "mode": "checks",
+      "observedAt": "2026-10-23T03:08:31.489Z",
+      "payload": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-checks.original.json",
+        "bytes": 14489,
+        "sha256": "e99929f77ac1b575de79f65b2d5d38b871b50f36fc5b9fd97f4c135dc0e89c4d"
+      },
+      "capture": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-checks.capture.original.json",
+        "bytes": 1165,
+        "sha256": "cf8d87bf537c847ff25191ef5a92c9280b87acf437e052820d4e3c294c2bc5db"
+      },
+      "representation": "provider JSON emitted by gh api"
+    },
+    {
+      "mode": "required",
+      "observedAt": "2026-10-23T03:08:34.587Z",
+      "payload": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-required.original.json",
+        "bytes": 374,
+        "sha256": "6c376b89eda87891a58c36aff591c050136290b5183d03ebe6c44ac34de5a3da"
+      },
+      "capture": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-required.capture.original.json",
+        "bytes": 1142,
+        "sha256": "ac4178b92f3ab71d00d84d6c35691b936f2ab776e93f3d0659a332fae0c881ae"
+      },
+      "representation": "provider JSON emitted by gh api"
+    },
+    {
+      "mode": "pr",
+      "observedAt": "2026-10-23T03:08:37.847Z",
+      "payload": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-pr.original.json",
+        "bytes": 18867,
+        "sha256": "18d445f15640bd2811a47b10e3189d2f5eacfeca40b9ddf77beedce9beb957d0"
+      },
+      "capture": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-pr.capture.original.json",
+        "bytes": 1094,
+        "sha256": "c5fe68220de08c6f4c78f59b9201da0f7c17d25b6acb568b4ddbc8d2da665d11"
+      },
+      "representation": "provider JSON emitted by gh api"
+    },
+    {
+      "mode": "artifacts",
+      "observedAt": "2026-10-23T03:08:40.690Z",
+      "payload": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-artifacts.original.json",
+        "bytes": 32,
+        "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+      },
+      "capture": {
+        "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-final-artifacts.capture.original.json",
+        "bytes": 1143,
+        "sha256": "2baf34c6bc20c58edb7a794414c2f12d02de6b4e1d4bc78d50db844e9370ca87"
+      },
+      "representation": "provider JSON emitted by gh api"
+    }
+  ],
+  "decodedVerificationLog": {
+    "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-39891293849-verification-joblog.original.txt",
+    "bytes": 454570,
+    "sha256": "6aafa3f950aac1935b56c3eb0c7207a857c69b3a7dc637f90bca5fadf16e8b78"
+  },
+  "parsedVerificationReceipt": {
+    "path": "D:\\CodexTemp\\development-preparation-retention-20261022-01a13d1d\\corrected-qualification-linux-verification.original.json",
+    "bytes": 7477,
+    "sha256": "c553b668a3810dc3beb22c2389fdaa3e93b5b9204f676dcbfee131a96910bc30"
+  },
+  "parsedReceiptTiming": "Earlier parsed verification receipt retained its then-pending decision status. This later receipt joins the exact same log to final terminal-success run/check records without overwriting the earlier receipt.",
+  "scope": {
+    "controlPlaneQualification": true,
+    "experiencePreparationJob": "SKIPPED",
+    "finiteQualificationSeal": "SKIPPED",
+    "providerArtifacts": 0,
+    "consumerCaptureReplay": false,
+    "mergePerformed": false,
+    "landedVerification": "PENDING_SEPARATE_AFTER_NORMAL_MERGE"
+  },
+  "limitations": [
+    "Read-only retained provider JSON/text emitted by gh api and local Git/file/hash inspection. No fresh provider query by reviewer; these are not original HTTP wire bytes.",
+    "Head/base/protection/native clean state are snapshot observations. Normal native protected exact-head merge must recheck freshness and abort on drift; no bypass, admin exception, protection change or status manufacture is approved.",
+    "Failed533/run39887104918 and local240s incomplete run remain immutable nonaccepting evidence. The new-head successful qualification does not erase them.",
+    "No consumer retry, new finite allowance, capture or product acceptance is granted. Actual merge parents/tree/source and bounded landed smoke still require independent verification.",
+    "ANSI styles were stripped only in memory to verify the feature summary. Raw log bytes and hash remain unchanged."
+  ],
+  "openBlockingFindings": [],
+  "reviewerActivity": "No tests/probes/browser/API/CI/custody/consumer actions and no source/Git mutations. Sole write this exclusive engineering receipt.",
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "reserveGuard": {
+    "utc": "2026-10-23T03:10:23.6334616Z",
+    "allowed": true,
+    "floorBytesEach": 32212254720,
+    "cFreeBytes": 37263515648,
+    "dFreeBytes": 111621885952,
+    "estimatedCBytes": 0,
+    "estimatedDBytes": 1048576
+  }
+}

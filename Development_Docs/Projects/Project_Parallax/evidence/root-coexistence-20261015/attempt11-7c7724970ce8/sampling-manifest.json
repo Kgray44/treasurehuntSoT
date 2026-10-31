@@ -1,0 +1,953 @@
+{
+  "manifestSha256": "370433d7d65c589367bf03bba3b443a1084fc53ae3d7764b172b776c9f40a64f",
+  "files": [
+    {
+      "path": "browser.original.log",
+      "originalPath": "tmp/root-publication-status-7c7724970ce8.log",
+      "bytes": 48858,
+      "sha256": "65ff38545f431e54b45736e304ef249be170907f6431bf9ee11a9723591618b8"
+    },
+    {
+      "path": "browser-runtime.original.json",
+      "originalPath": "artifacts/sounding-line/browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "89b144e0e9f0dd3e33eb1c6731311d35b962507b61213f9f68b6b5b552959d1a"
+    },
+    {
+      "path": "browser-suite-profile.original.json",
+      "originalPath": "artifacts/sounding-line/browser-suite-profile.json",
+      "bytes": 371,
+      "sha256": "aba826181d7eb838183edb50fa4deff4536d819876165d46ba5602fffa2147bf"
+    },
+    {
+      "path": "a000.json",
+      "originalPath": "artifacts/parallax-a1/browser/7c7724970ce8/run.json",
+      "bytes": 998,
+      "sha256": "563b926bc6a64f722c7f25ef50e311745423dee61478c384d7b24ddd609b0275"
+    },
+    {
+      "path": "r000.json",
+      "originalPath": "artifacts/root-publication-status-7c7724970ce8/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "r001.webm",
+      "originalPath": "artifacts/root-publication-status-7c7724970ce8/parallax-sc00c-expanded-li-71774-returns-to-the-same-content-chromium/video.webm",
+      "bytes": 369102,
+      "sha256": "49277099bb5938f696d77d2bfbdc804498fe7c5409b88b1fe0daaa008578f022"
+    },
+    {
+      "path": "r002.webm",
+      "originalPath": "artifacts/root-publication-status-7c7724970ce8/parallax-sc00c-expanded-li-c3284-d-sources-and-Scene-Manager-chromium/video.webm",
+      "bytes": 503553,
+      "sha256": "d6fb706665d433c7d14b4bbb1dbc3cdc8a12f81fe89e74cae286a42134aabdce"
+    },
+    {
+      "path": "r003.webm",
+      "originalPath": "artifacts/root-publication-status-7c7724970ce8/parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium/video.webm",
+      "bytes": 356668,
+      "sha256": "4333803dff42175178ac7f0730bce5406ccfd01f9d245e32789346ea524a7be5"
+    },
+    {
+      "path": "l000.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-desktop.png",
+      "bytes": 101868,
+      "sha256": "397d90a5bf36ecc23c165095e1e42fb5c7e678637bbd11f4ab43c5989756e02b"
+    },
+    {
+      "path": "l001.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-light-reduced.png",
+      "bytes": 97755,
+      "sha256": "72c16888a199a721be35fb91fa021d59f25c38db7154a9d5453e434ebad6774b"
+    },
+    {
+      "path": "l002.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-narrow.png",
+      "bytes": 95011,
+      "sha256": "c36b47969b8a3b9a327f214c5b2e766421a8151d815795700f2f104372f1e11f"
+    },
+    {
+      "path": "l003.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-phone-filters-built-in.png",
+      "bytes": 49818,
+      "sha256": "8d3646b9c5cdda6c3d6e613f211456c934972f34bc3c555fb7ad5e21fc5c1feb"
+    },
+    {
+      "path": "l004.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-phone-filters-private.png",
+      "bytes": 28494,
+      "sha256": "793c7cb628c7444062642b5cf00e7fc2a7409b6ce11a7e8bf87171a42d9a9f07"
+    },
+    {
+      "path": "l005.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-phone-selected.png",
+      "bytes": 56073,
+      "sha256": "91290ff29f3ff1388aa454aca580ea6349d5b94955cbd8793557f32f140c65aa"
+    },
+    {
+      "path": "l006.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-phone.png",
+      "bytes": 63504,
+      "sha256": "64e4c102094f3b0e6e02b6768a3ccdb5635d67c48bc0be2ad9577532a24ae5ae"
+    },
+    {
+      "path": "l007.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-scene-actions.png",
+      "bytes": 104628,
+      "sha256": "0de7214e40f9392d832a5ee986c896e8732c440061c50e0e0057fe4d2ebc529f"
+    },
+    {
+      "path": "l008.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/expanded-scene-relationships.png",
+      "bytes": 109107,
+      "sha256": "50962fd0a47ea31388a869571cbb015314cdfa7b2006534f7dcdbc2052d4c3b7"
+    },
+    {
+      "path": "l009.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/placed-selected.png",
+      "bytes": 275408,
+      "sha256": "c7e31c30c31d5b0267c74c71e61f3789687fa284930ace0cec059c38b71995f1"
+    },
+    {
+      "path": "l010.png",
+      "originalPath": "artifacts/sc00c/expanded-library/7c7724970ce8/placement-preview.png",
+      "bytes": 275068,
+      "sha256": "3b5af0d25a30521e0ffbf9f548085ec2b1a263b6d4d64cbc4c643385db0db42b"
+    }
+  ],
+  "videos": [
+    {
+      "id": "r001.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 145,
+      "lastFrameSeconds": 5.76,
+      "sampledFrameCount": 49,
+      "maxSampleGapSeconds": 0.12,
+      "sampling": "Every third native frame plus final decoded frame; complete decoded span, contact-sheet inspection, not continuous real-time playback or every frame.",
+      "samples": [
+        {
+          "nativeFrame": 1,
+          "timeSeconds": 0.0,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0001.png"
+        },
+        {
+          "nativeFrame": 4,
+          "timeSeconds": 0.12,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0004.png"
+        },
+        {
+          "nativeFrame": 7,
+          "timeSeconds": 0.24,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0007.png"
+        },
+        {
+          "nativeFrame": 10,
+          "timeSeconds": 0.36,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0010.png"
+        },
+        {
+          "nativeFrame": 13,
+          "timeSeconds": 0.48,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0013.png"
+        },
+        {
+          "nativeFrame": 16,
+          "timeSeconds": 0.6,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0016.png"
+        },
+        {
+          "nativeFrame": 19,
+          "timeSeconds": 0.72,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0019.png"
+        },
+        {
+          "nativeFrame": 22,
+          "timeSeconds": 0.84,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0022.png"
+        },
+        {
+          "nativeFrame": 25,
+          "timeSeconds": 0.96,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0025.png"
+        },
+        {
+          "nativeFrame": 28,
+          "timeSeconds": 1.08,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0028.png"
+        },
+        {
+          "nativeFrame": 31,
+          "timeSeconds": 1.2,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0031.png"
+        },
+        {
+          "nativeFrame": 34,
+          "timeSeconds": 1.32,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0034.png"
+        },
+        {
+          "nativeFrame": 37,
+          "timeSeconds": 1.44,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0037.png"
+        },
+        {
+          "nativeFrame": 40,
+          "timeSeconds": 1.56,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0040.png"
+        },
+        {
+          "nativeFrame": 43,
+          "timeSeconds": 1.68,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0043.png"
+        },
+        {
+          "nativeFrame": 46,
+          "timeSeconds": 1.8,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0046.png"
+        },
+        {
+          "nativeFrame": 49,
+          "timeSeconds": 1.92,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0049.png"
+        },
+        {
+          "nativeFrame": 52,
+          "timeSeconds": 2.04,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0052.png"
+        },
+        {
+          "nativeFrame": 55,
+          "timeSeconds": 2.16,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0055.png"
+        },
+        {
+          "nativeFrame": 58,
+          "timeSeconds": 2.28,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0058.png"
+        },
+        {
+          "nativeFrame": 61,
+          "timeSeconds": 2.4,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0061.png"
+        },
+        {
+          "nativeFrame": 64,
+          "timeSeconds": 2.52,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0064.png"
+        },
+        {
+          "nativeFrame": 67,
+          "timeSeconds": 2.64,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0067.png"
+        },
+        {
+          "nativeFrame": 70,
+          "timeSeconds": 2.76,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0070.png"
+        },
+        {
+          "nativeFrame": 73,
+          "timeSeconds": 2.88,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0073.png"
+        },
+        {
+          "nativeFrame": 76,
+          "timeSeconds": 3.0,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0076.png"
+        },
+        {
+          "nativeFrame": 79,
+          "timeSeconds": 3.12,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0079.png"
+        },
+        {
+          "nativeFrame": 82,
+          "timeSeconds": 3.24,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0082.png"
+        },
+        {
+          "nativeFrame": 85,
+          "timeSeconds": 3.36,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0085.png"
+        },
+        {
+          "nativeFrame": 88,
+          "timeSeconds": 3.48,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0088.png"
+        },
+        {
+          "nativeFrame": 91,
+          "timeSeconds": 3.6,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0091.png"
+        },
+        {
+          "nativeFrame": 94,
+          "timeSeconds": 3.72,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0094.png"
+        },
+        {
+          "nativeFrame": 97,
+          "timeSeconds": 3.84,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0097.png"
+        },
+        {
+          "nativeFrame": 100,
+          "timeSeconds": 3.96,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0100.png"
+        },
+        {
+          "nativeFrame": 103,
+          "timeSeconds": 4.08,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0103.png"
+        },
+        {
+          "nativeFrame": 106,
+          "timeSeconds": 4.2,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0106.png"
+        },
+        {
+          "nativeFrame": 109,
+          "timeSeconds": 4.32,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0109.png"
+        },
+        {
+          "nativeFrame": 112,
+          "timeSeconds": 4.44,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0112.png"
+        },
+        {
+          "nativeFrame": 115,
+          "timeSeconds": 4.56,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0115.png"
+        },
+        {
+          "nativeFrame": 118,
+          "timeSeconds": 4.68,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0118.png"
+        },
+        {
+          "nativeFrame": 121,
+          "timeSeconds": 4.8,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0121.png"
+        },
+        {
+          "nativeFrame": 124,
+          "timeSeconds": 4.92,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0124.png"
+        },
+        {
+          "nativeFrame": 127,
+          "timeSeconds": 5.04,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0127.png"
+        },
+        {
+          "nativeFrame": 130,
+          "timeSeconds": 5.16,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0130.png"
+        },
+        {
+          "nativeFrame": 133,
+          "timeSeconds": 5.28,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0133.png"
+        },
+        {
+          "nativeFrame": 136,
+          "timeSeconds": 5.4,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0136.png"
+        },
+        {
+          "nativeFrame": 139,
+          "timeSeconds": 5.52,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0139.png"
+        },
+        {
+          "nativeFrame": 142,
+          "timeSeconds": 5.64,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0142.png"
+        },
+        {
+          "nativeFrame": 145,
+          "timeSeconds": 5.76,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\native-0145.png"
+        }
+      ],
+      "sheets": [
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\sheet-00.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\sheet-01.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\sheet-02.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r001\\sheet-03.jpg"
+      ]
+    },
+    {
+      "id": "r002.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 155,
+      "lastFrameSeconds": 6.16,
+      "sampledFrameCount": 53,
+      "maxSampleGapSeconds": 0.12,
+      "sampling": "Every third native frame plus final decoded frame; complete decoded span, contact-sheet inspection, not continuous real-time playback or every frame.",
+      "samples": [
+        {
+          "nativeFrame": 1,
+          "timeSeconds": 0.0,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0001.png"
+        },
+        {
+          "nativeFrame": 4,
+          "timeSeconds": 0.12,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0004.png"
+        },
+        {
+          "nativeFrame": 7,
+          "timeSeconds": 0.24,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0007.png"
+        },
+        {
+          "nativeFrame": 10,
+          "timeSeconds": 0.36,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0010.png"
+        },
+        {
+          "nativeFrame": 13,
+          "timeSeconds": 0.48,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0013.png"
+        },
+        {
+          "nativeFrame": 16,
+          "timeSeconds": 0.6,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0016.png"
+        },
+        {
+          "nativeFrame": 19,
+          "timeSeconds": 0.72,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0019.png"
+        },
+        {
+          "nativeFrame": 22,
+          "timeSeconds": 0.84,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0022.png"
+        },
+        {
+          "nativeFrame": 25,
+          "timeSeconds": 0.96,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0025.png"
+        },
+        {
+          "nativeFrame": 28,
+          "timeSeconds": 1.08,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0028.png"
+        },
+        {
+          "nativeFrame": 31,
+          "timeSeconds": 1.2,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0031.png"
+        },
+        {
+          "nativeFrame": 34,
+          "timeSeconds": 1.32,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0034.png"
+        },
+        {
+          "nativeFrame": 37,
+          "timeSeconds": 1.44,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0037.png"
+        },
+        {
+          "nativeFrame": 40,
+          "timeSeconds": 1.56,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0040.png"
+        },
+        {
+          "nativeFrame": 43,
+          "timeSeconds": 1.68,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0043.png"
+        },
+        {
+          "nativeFrame": 46,
+          "timeSeconds": 1.8,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0046.png"
+        },
+        {
+          "nativeFrame": 49,
+          "timeSeconds": 1.92,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0049.png"
+        },
+        {
+          "nativeFrame": 52,
+          "timeSeconds": 2.04,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0052.png"
+        },
+        {
+          "nativeFrame": 55,
+          "timeSeconds": 2.16,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0055.png"
+        },
+        {
+          "nativeFrame": 58,
+          "timeSeconds": 2.28,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0058.png"
+        },
+        {
+          "nativeFrame": 61,
+          "timeSeconds": 2.4,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0061.png"
+        },
+        {
+          "nativeFrame": 64,
+          "timeSeconds": 2.52,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0064.png"
+        },
+        {
+          "nativeFrame": 67,
+          "timeSeconds": 2.64,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0067.png"
+        },
+        {
+          "nativeFrame": 70,
+          "timeSeconds": 2.76,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0070.png"
+        },
+        {
+          "nativeFrame": 73,
+          "timeSeconds": 2.88,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0073.png"
+        },
+        {
+          "nativeFrame": 76,
+          "timeSeconds": 3.0,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0076.png"
+        },
+        {
+          "nativeFrame": 79,
+          "timeSeconds": 3.12,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0079.png"
+        },
+        {
+          "nativeFrame": 82,
+          "timeSeconds": 3.24,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0082.png"
+        },
+        {
+          "nativeFrame": 85,
+          "timeSeconds": 3.36,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0085.png"
+        },
+        {
+          "nativeFrame": 88,
+          "timeSeconds": 3.48,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0088.png"
+        },
+        {
+          "nativeFrame": 91,
+          "timeSeconds": 3.6,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0091.png"
+        },
+        {
+          "nativeFrame": 94,
+          "timeSeconds": 3.72,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0094.png"
+        },
+        {
+          "nativeFrame": 97,
+          "timeSeconds": 3.84,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0097.png"
+        },
+        {
+          "nativeFrame": 100,
+          "timeSeconds": 3.96,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0100.png"
+        },
+        {
+          "nativeFrame": 103,
+          "timeSeconds": 4.08,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0103.png"
+        },
+        {
+          "nativeFrame": 106,
+          "timeSeconds": 4.2,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0106.png"
+        },
+        {
+          "nativeFrame": 109,
+          "timeSeconds": 4.32,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0109.png"
+        },
+        {
+          "nativeFrame": 112,
+          "timeSeconds": 4.44,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0112.png"
+        },
+        {
+          "nativeFrame": 115,
+          "timeSeconds": 4.56,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0115.png"
+        },
+        {
+          "nativeFrame": 118,
+          "timeSeconds": 4.68,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0118.png"
+        },
+        {
+          "nativeFrame": 121,
+          "timeSeconds": 4.8,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0121.png"
+        },
+        {
+          "nativeFrame": 124,
+          "timeSeconds": 4.92,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0124.png"
+        },
+        {
+          "nativeFrame": 127,
+          "timeSeconds": 5.04,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0127.png"
+        },
+        {
+          "nativeFrame": 130,
+          "timeSeconds": 5.16,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0130.png"
+        },
+        {
+          "nativeFrame": 133,
+          "timeSeconds": 5.28,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0133.png"
+        },
+        {
+          "nativeFrame": 136,
+          "timeSeconds": 5.4,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0136.png"
+        },
+        {
+          "nativeFrame": 139,
+          "timeSeconds": 5.52,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0139.png"
+        },
+        {
+          "nativeFrame": 142,
+          "timeSeconds": 5.64,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0142.png"
+        },
+        {
+          "nativeFrame": 145,
+          "timeSeconds": 5.76,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0145.png"
+        },
+        {
+          "nativeFrame": 148,
+          "timeSeconds": 5.88,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0148.png"
+        },
+        {
+          "nativeFrame": 151,
+          "timeSeconds": 6.0,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0151.png"
+        },
+        {
+          "nativeFrame": 154,
+          "timeSeconds": 6.12,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0154.png"
+        },
+        {
+          "nativeFrame": 155,
+          "timeSeconds": 6.16,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\native-0155.png"
+        }
+      ],
+      "sheets": [
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\sheet-00.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\sheet-01.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\sheet-02.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r002\\sheet-03.jpg"
+      ]
+    },
+    {
+      "id": "r003.webm",
+      "width": 800,
+      "height": 450,
+      "fps": 25,
+      "decodedFrameCount": 155,
+      "lastFrameSeconds": 6.16,
+      "sampledFrameCount": 53,
+      "maxSampleGapSeconds": 0.12,
+      "sampling": "Every third native frame plus final decoded frame; complete decoded span, contact-sheet inspection, not continuous real-time playback or every frame.",
+      "samples": [
+        {
+          "nativeFrame": 1,
+          "timeSeconds": 0.0,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0001.png"
+        },
+        {
+          "nativeFrame": 4,
+          "timeSeconds": 0.12,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0004.png"
+        },
+        {
+          "nativeFrame": 7,
+          "timeSeconds": 0.24,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0007.png"
+        },
+        {
+          "nativeFrame": 10,
+          "timeSeconds": 0.36,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0010.png"
+        },
+        {
+          "nativeFrame": 13,
+          "timeSeconds": 0.48,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0013.png"
+        },
+        {
+          "nativeFrame": 16,
+          "timeSeconds": 0.6,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0016.png"
+        },
+        {
+          "nativeFrame": 19,
+          "timeSeconds": 0.72,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0019.png"
+        },
+        {
+          "nativeFrame": 22,
+          "timeSeconds": 0.84,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0022.png"
+        },
+        {
+          "nativeFrame": 25,
+          "timeSeconds": 0.96,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0025.png"
+        },
+        {
+          "nativeFrame": 28,
+          "timeSeconds": 1.08,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0028.png"
+        },
+        {
+          "nativeFrame": 31,
+          "timeSeconds": 1.2,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0031.png"
+        },
+        {
+          "nativeFrame": 34,
+          "timeSeconds": 1.32,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0034.png"
+        },
+        {
+          "nativeFrame": 37,
+          "timeSeconds": 1.44,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0037.png"
+        },
+        {
+          "nativeFrame": 40,
+          "timeSeconds": 1.56,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0040.png"
+        },
+        {
+          "nativeFrame": 43,
+          "timeSeconds": 1.68,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0043.png"
+        },
+        {
+          "nativeFrame": 46,
+          "timeSeconds": 1.8,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0046.png"
+        },
+        {
+          "nativeFrame": 49,
+          "timeSeconds": 1.92,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0049.png"
+        },
+        {
+          "nativeFrame": 52,
+          "timeSeconds": 2.04,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0052.png"
+        },
+        {
+          "nativeFrame": 55,
+          "timeSeconds": 2.16,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0055.png"
+        },
+        {
+          "nativeFrame": 58,
+          "timeSeconds": 2.28,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0058.png"
+        },
+        {
+          "nativeFrame": 61,
+          "timeSeconds": 2.4,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0061.png"
+        },
+        {
+          "nativeFrame": 64,
+          "timeSeconds": 2.52,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0064.png"
+        },
+        {
+          "nativeFrame": 67,
+          "timeSeconds": 2.64,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0067.png"
+        },
+        {
+          "nativeFrame": 70,
+          "timeSeconds": 2.76,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0070.png"
+        },
+        {
+          "nativeFrame": 73,
+          "timeSeconds": 2.88,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0073.png"
+        },
+        {
+          "nativeFrame": 76,
+          "timeSeconds": 3.0,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0076.png"
+        },
+        {
+          "nativeFrame": 79,
+          "timeSeconds": 3.12,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0079.png"
+        },
+        {
+          "nativeFrame": 82,
+          "timeSeconds": 3.24,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0082.png"
+        },
+        {
+          "nativeFrame": 85,
+          "timeSeconds": 3.36,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0085.png"
+        },
+        {
+          "nativeFrame": 88,
+          "timeSeconds": 3.48,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0088.png"
+        },
+        {
+          "nativeFrame": 91,
+          "timeSeconds": 3.6,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0091.png"
+        },
+        {
+          "nativeFrame": 94,
+          "timeSeconds": 3.72,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0094.png"
+        },
+        {
+          "nativeFrame": 97,
+          "timeSeconds": 3.84,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0097.png"
+        },
+        {
+          "nativeFrame": 100,
+          "timeSeconds": 3.96,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0100.png"
+        },
+        {
+          "nativeFrame": 103,
+          "timeSeconds": 4.08,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0103.png"
+        },
+        {
+          "nativeFrame": 106,
+          "timeSeconds": 4.2,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0106.png"
+        },
+        {
+          "nativeFrame": 109,
+          "timeSeconds": 4.32,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0109.png"
+        },
+        {
+          "nativeFrame": 112,
+          "timeSeconds": 4.44,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0112.png"
+        },
+        {
+          "nativeFrame": 115,
+          "timeSeconds": 4.56,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0115.png"
+        },
+        {
+          "nativeFrame": 118,
+          "timeSeconds": 4.68,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0118.png"
+        },
+        {
+          "nativeFrame": 121,
+          "timeSeconds": 4.8,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0121.png"
+        },
+        {
+          "nativeFrame": 124,
+          "timeSeconds": 4.92,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0124.png"
+        },
+        {
+          "nativeFrame": 127,
+          "timeSeconds": 5.04,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0127.png"
+        },
+        {
+          "nativeFrame": 130,
+          "timeSeconds": 5.16,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0130.png"
+        },
+        {
+          "nativeFrame": 133,
+          "timeSeconds": 5.28,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0133.png"
+        },
+        {
+          "nativeFrame": 136,
+          "timeSeconds": 5.4,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0136.png"
+        },
+        {
+          "nativeFrame": 139,
+          "timeSeconds": 5.52,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0139.png"
+        },
+        {
+          "nativeFrame": 142,
+          "timeSeconds": 5.64,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0142.png"
+        },
+        {
+          "nativeFrame": 145,
+          "timeSeconds": 5.76,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0145.png"
+        },
+        {
+          "nativeFrame": 148,
+          "timeSeconds": 5.88,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0148.png"
+        },
+        {
+          "nativeFrame": 151,
+          "timeSeconds": 6.0,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0151.png"
+        },
+        {
+          "nativeFrame": 154,
+          "timeSeconds": 6.12,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0154.png"
+        },
+        {
+          "nativeFrame": 155,
+          "timeSeconds": 6.16,
+          "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\native-0155.png"
+        }
+      ],
+      "sheets": [
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\sheet-00.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\sheet-01.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\sheet-02.jpg",
+        "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\root-publication-7c772\\r003\\sheet-03.jpg"
+      ]
+    }
+  ]
+}

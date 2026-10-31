@@ -61,7 +61,7 @@ export function evaluateAssistantCase(item: AssistantEvaluationCase, draft: Spat
     // The fixed synthetic desk/wall fixtures use identical canonical anchor
     // poses. Check final geometry against existing content, including dependent
     // transforms; this is a conservative readability rubric, not AR collision proof.
-    if (!draft.content.adaptive) {
+    if (!draft.content.adaptive && !draft.content.studio?.environment) {
       for (const operation of proposal.operations) {
         if (operation.type !== "CREATE" || !["DESK", "WALL"].includes(operation.placement)) continue;
         const created = next.content.entities.find((entity) => entity.id === operation.entityId)!;

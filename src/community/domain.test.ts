@@ -11,7 +11,7 @@ import {
 } from "./domain";
 
 describe("Harborlight domain foundation", () => {
-  it("freezes capabilities for every typed item", () => expect(Object.keys(communityItemTypes)).toHaveLength(14));
+  it("freezes capabilities for every typed item", () => expect(Object.keys(communityItemTypes)).toHaveLength(17));
   it("normalizes safe handles and rejects reserved or invisible names", () => {
     expect(normalizeHandle("Chart-Maker")).toBe("chart-maker");
     expect(() => normalizeHandle("admin")).toThrow();

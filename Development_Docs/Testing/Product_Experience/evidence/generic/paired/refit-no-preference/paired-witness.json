@@ -3,19 +3,19 @@
   "status": "PASS",
   "caseId": "crossdeck-pair-normal",
   "binding": {
-    "baseSha": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
-    "candidateSha": "f5e0cddde5c626648bc264f93819836a49c04d33",
-    "candidateTree": "938c007861668b996eb5787ce9121354c7c0d56b",
-    "sourceDigest": "e6cf2d544efc36fce2ccfee7f16334296a1f82e783726e7dfd067a67d3a7debf",
-    "contractDigest": "38acd7ca5fe745298cd50f83ae7ecdb9a9a2c0aaefccfd6889a818f7285ee2a7",
-    "recordDigest": "02391f9e6ee41b656e228a1b38ff3ee7e29065f4ae8e2a585f5eb23aabda751d",
-    "databaseSha256": "af777322c37feb9c1e5b848684e3d11fca1bd8870787b9ef50d88ef6519d045f"
+    "baseSha": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+    "candidateSha": "f265f062767d40618df9152aa8900eaf17bfa92d",
+    "candidateTree": "3a26000daf5d1d15d0be0618f64bd0dd50f5cf0c",
+    "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+    "contractDigest": "7dc2911fb58ef2d1794bb7d2e28d7dd175a34fa82f89b0ff7e715ec55ddf8da3",
+    "recordDigest": null,
+    "databaseSha256": "75d8a854a8ba818f66bf1249c9ff28966f1653cc7ff7d07a5d58c47949dce916"
   },
   "contexts": {
     "DESKTOP": {
-      "voyageId": "cmvhdzr8o000a0c132hdig48a",
-      "editionId": "cmvhdzr8i00080c13a4ykxr2j",
-      "surfaceId": "eba58661-8bd7-400b-a7b3-cbc111bb7ba3",
+      "voyageId": "cmvn9qwk5000a3740iqamq5mq",
+      "editionId": "cmvn9qwk100083740enby08rz",
+      "surfaceId": "4c340f63-736f-4c09-81e5-93cb02d1fa7f",
       "viewport": {
         "width": 1440,
         "height": 1000
@@ -23,9 +23,9 @@
       "reducedMotion": false
     },
     "MOBILE": {
-      "voyageId": "cmvhdzr8o000a0c132hdig48a",
-      "editionId": "cmvhdzr8i00080c13a4ykxr2j",
-      "surfaceId": "427de576-8799-4c88-a011-d5f003e05a80",
+      "voyageId": "cmvn9qwk5000a3740iqamq5mq",
+      "editionId": "cmvn9qwk100083740enby08rz",
+      "surfaceId": "9de79c1a-cfa2-4ca3-a012-d3da4d0a39b4",
       "viewport": {
         "width": 390,
         "height": 844
@@ -34,9 +34,9 @@
     }
   },
   "fixture": {
-    "voyageId": "cmvhdzr8o000a0c132hdig48a",
-    "editionId": "cmvhdzr8i00080c13a4ykxr2j",
-    "databaseSha256": "af777322c37feb9c1e5b848684e3d11fca1bd8870787b9ef50d88ef6519d045f"
+    "voyageId": "cmvn9qwk5000a3740iqamq5mq",
+    "editionId": "cmvn9qwk100083740enby08rz",
+    "databaseSha256": "75d8a854a8ba818f66bf1249c9ff28966f1653cc7ff7d07a5d58c47949dce916"
   },
   "outcomes": {
     "JOIN_AUTHORIZED": true,
@@ -91,7 +91,7 @@
           "height": 1180
         }
       },
-      "recording": "0f6e388183ed450c5395cd9fcc042dfa.webm",
+      "recording": "4b55830acf49ba685a7008a734b2804d.webm",
       "trace": "desktop-trace.zip"
     },
     "MOBILE": {
@@ -169,7 +169,7 @@
           "height": 844
         }
       },
-      "recording": "2bcdcd2cbb5f3552468dbc9e49bb79b6.webm",
+      "recording": "338052eb16b79b896848d2b0e81aa320.webm",
       "trace": "phone-trace.zip"
     }
   }

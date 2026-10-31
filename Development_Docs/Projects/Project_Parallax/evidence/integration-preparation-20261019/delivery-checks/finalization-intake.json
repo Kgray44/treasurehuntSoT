@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "records": [
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\delivery-custody-853ba25cb5a6.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/delivery-checks/delivery-custody-853ba25cb5a6.json",
+      "bytes": 744,
+      "sha256": "25ffe8d19d3356660eee5f44dfa145cdafa7865f0a1c38efd55614e5970c88d1"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\delivery-custody-verification.log",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/delivery-checks/delivery-custody-verification.log",
+      "bytes": 692,
+      "sha256": "1013d74d9428c0a9c9fee82d741d978894294a0cbe5b6e2d6552be24f8ad3f09"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\docs-index-final-closure.log",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/delivery-checks/docs-index-final-closure.log",
+      "bytes": 172,
+      "sha256": "791784ad972f0eed09dfa26833593093a73726348f8b12ffc43733da4f958612"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\docs-validate-final-closure.log",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/delivery-checks/docs-validate-final-closure.log",
+      "bytes": 131,
+      "sha256": "d02f2021a89bb9b41404eb5ad11fe876e8712693098268f49d04df9637019523"
+    }
+  ]
+}

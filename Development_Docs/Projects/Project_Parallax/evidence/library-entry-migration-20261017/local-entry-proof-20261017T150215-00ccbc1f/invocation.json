@@ -1,0 +1,9 @@
+{
+  "scope": "nine entry migration specs; one worker; stop after three failures",
+  "results": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T150215-00ccbc1f",
+  "kind": "LOCAL_FOCUSED_SYNTHETIC_UNPAID",
+  "attemptRoot": "D:/CodexTemp/parallax-cohort-prep-20261016/local-entry-proof-20261017T150215-00ccbc1f",
+  "candidate": "bc4afd1898545bcb3a99bb5d3a091e818b0da336",
+  "protectedQualification": false,
+  "crossdeckExecution": false
+}

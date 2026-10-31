@@ -4,12 +4,23 @@
     "id": "crossdeck.refit.published-lens",
     "name": "Crossdeck published spatial clue Player consumer",
     "authority": "one-voyage",
-    "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+    "owners": [
+      "spatial-pilot",
+      "one-voyage",
+      "project-crossdeck",
+      "reach"
+    ],
     "critical": true,
     "experience": {
       "persona": "An authorized Player receiving a Creator-published spatial clue in a persisted private Voyage",
       "integrationOwner": "Parallax published-clue delivery with Crossdeck continuity",
-      "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+      "systems": [
+        "project-crossdeck",
+        "project-parallax",
+        "one-voyage",
+        "project-landfall",
+        "player-journal"
+      ],
       "sourcePaths": [
         "src/components/player/parallax",
         "src/components/player/journal",
@@ -23,8 +34,13 @@
         "src/app/api/player/playthroughs",
         "src/app/api/player/sessions"
       ],
-      "devices": ["DESKTOP", "MOBILE"],
-      "roles": ["PLAYER"],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "PLAYER"
+      ],
       "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
       "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
       "references": [
@@ -45,8 +61,13 @@
           "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
         }
       ],
-      "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
-      "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+      "homeportScreenIds": [
+        "screen-page-player-playthroughs-playthroughid-journal"
+      ],
+      "browserTests": [
+        "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "tests/e2e/crossdeck-refit-recovery.spec.ts"
+      ],
       "fixtureProfile": "generic",
       "recordingRequired": true,
       "continuity": {
@@ -82,7 +103,12 @@
       "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
       "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
       "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
-      "states": ["JOURNAL_READY", "LENS_READY", "INSPECTED", "RETURNED"],
+      "states": [
+        "JOURNAL_READY",
+        "LENS_READY",
+        "INSPECTED",
+        "RETURNED"
+      ],
       "navigation": "Open the active Journal, open its released Chronicle Lens, inspect the actual clue, then close Lens and return to the same Journal.",
       "designTarget": "Preserve the published clue and readable Guided hierarchy, with truthful camera availability, keyboard inspection and an immediate contextual close/return.",
       "roleSetup": {
@@ -122,7 +148,9 @@
       "journeys": [
         {
           "id": "published-clue-inspect-return",
-          "roles": ["PLAYER"],
+          "roles": [
+            "PLAYER"
+          ],
           "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
           "steps": [
             {
@@ -197,15 +225,16 @@
             }
           ]
         }
-      ]
+      ],
+      "homeportJourneyIds": []
     }
   },
-  "sourceDigest": "e6cf2d544efc36fce2ccfee7f16334296a1f82e783726e7dfd067a67d3a7debf",
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
   "artifacts": [
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
-      "sha256": "20753a66d74141f5308dbf76f6a7375507e8c75f41dd6690acc47cd6dc215034",
+      "sha256": "5d021b0d1bbad8a725fb9d6ac711d7c9e17778c3233d581fddbe967920398f16",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -217,7 +246,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3.png",
-      "sha256": "131674bb7697ac6a98b97267b73b1d2a895075c7d1c8fb58973892ad59be36fd",
+      "sha256": "2d87b55ba1b41834b03d69eb6b590b5b6a7b14073bc02a955f79e30d141b2b73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -229,7 +258,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6.png",
-      "sha256": "6011b086939518a8f4c27d180c276b63fc6fb2c7b6483a974a9b2fbae6cba7c4",
+      "sha256": "2d5737be3b95bbd758899f5dc0d676c3e8ab3935607b58c79db42f67fa4e92ff",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -241,7 +270,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8.png",
-      "sha256": "851f4b1855a23a6b40aec6492c6e23a54ae51ce8dd32d0ae301d43993ce8d035",
+      "sha256": "e4f86e69d41d5908f14b3f108ff0906eda45680354d97ff32c700de6cf7d6727",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -253,7 +282,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
-      "sha256": "cd495fa9b79cd8277224a52779048897f4b62730d4fe7f9c85b82ce6f446437a",
+      "sha256": "1d5615e36b93b441027b9c88b1a840e9071f8bb5351fccef24a4fa32c43da03c",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -263,8 +292,8 @@
     },
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/da665eca910c077586cd633423ae4678.webm",
-      "sha256": "9c67177bf25c8635425fff54546a268cf37a6d3ec5ca03188600bf902ffed6ad",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6c892e1f5e2a01f3c987726491862fd8.webm",
+      "sha256": "cd11dd08fd8d5de8a017fe638a3e726f7afec8f28a95e9b85cea96bf1a959e90",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -275,7 +304,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
-      "sha256": "8b4981ff21affeda714166f1491d91caa2136a3e496222322a1b70a61cc29b42",
+      "sha256": "f75a240411d014505cc11664bdc69f5a408e53a680c8674721731f679846dc8a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -287,7 +316,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3.png",
-      "sha256": "f70431f7fb041c7bbd57b903f1c2cc3057b16446b9cd3b9b5c6760069a527cd1",
+      "sha256": "28fcb1a7726bd2eadb5091efb3d77978948c6187ecd701f77eea6ad2285a2c8e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -299,7 +328,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-INSPECTED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-INSPECTED-6.png",
-      "sha256": "2e294168f6bff5e82a24096cbc1724b3bf79fc0319525b274ef4500776f1a88b",
+      "sha256": "45a70ef56066fc078feba471ac9ed12ff291844e588736e36d7fa5926424bb14",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -311,7 +340,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8.png",
-      "sha256": "e5745748f4289d59f0e9643bbfbad090c8818c9bdbaa204a561756b7e9a754a1",
+      "sha256": "7ad3b85c0cf12a8773f9c5991bf7d1acbf9abc582dedf1c897625887673cb24e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -323,7 +352,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
-      "sha256": "ac79ddb3711bce3eb7ea84c1024ab3fb9802cff447cc81b6c72bccfc14ad88b2",
+      "sha256": "8103b85423b084d420353a0551891f36914dd7fa07158a33f457100f477162aa",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -333,8 +362,8 @@
     },
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/5ae312a5f2950cf54aeb93a84c9d58da.webm",
-      "sha256": "0bd97a45899983e87d853a60c086bde8459529ffcafec76d8e3c973c3dc96ff6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/4b8a19937e075db1a573b4e3f9ad5101.webm",
+      "sha256": "3a8ccabedb7ccdc7f393b2cdc36c8be17801e599da0d50159fc8b78cd9e60e00",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -345,7 +374,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
-      "sha256": "e5655e2fef89a27ee972f85c9fed7416d83349ea63636bbec71ca17f7c082952",
+      "sha256": "22366f4fe87859cebfab4e37eb707484e87fe6012411592f3bec9b30b0edce61",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -357,7 +386,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3.png",
-      "sha256": "bf5b36beb3632c105d03eceb34094a5eebf2789caadad47d2458c771aff2c642",
+      "sha256": "0da8b7b295742c48cbf474fced1fd23279a8668caa0c59c225f7fbf366476add",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -369,7 +398,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6.png",
-      "sha256": "8932f350e5b3d2253e5d4f2f0d454ac54d3074a23aafc6c57aaa543e29b501d4",
+      "sha256": "f2b7837de44364291c06535f9fe4fde86803290ce8c779e5ac57da3fa5173f18",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -381,7 +410,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8.png",
-      "sha256": "86941533d67abb685f403eb5f1049d3fe52de50871c62daf18018a7261b8e87c",
+      "sha256": "a41c36dc3c34cd8411b6e9ccdc9a42997d8dee86dd36b4ad4e16b3883b5bf63e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -393,7 +422,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
-      "sha256": "86b0022ad5fa12c0ce698ea0c45d79c80c5a4969b7fbc4c3709eff2388051425",
+      "sha256": "175be7dd584d7943017af359445156dadc3a38626198dcec1e755e60bdefc39b",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -403,8 +432,8 @@
     },
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3c9496a85ba49716e15dde6d59f3232c.webm",
-      "sha256": "016ba1039ae82a7d88724f2f92028fcffa54aea2a5fae6a238aa5380a45f49a5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/91fae848efe7c367b1445e5ca219f6d3.webm",
+      "sha256": "7cdd831aaa1d40f7618c1ba51ea37c7a4fefc0342d1e6d15d1775a12d906eb41",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -415,7 +444,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
-      "sha256": "f99741af72290e717a27d1de88df36b48358dcb19d57ab0633f126ce3ebfb51d",
+      "sha256": "05b10f444816469009e11e7d6b939d2bad9aa03e9661c2b1d76db7f16e4deb43",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -427,7 +456,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3.png",
-      "sha256": "b5809240cd49e1ecea53bba78cae6ccf393202842eb790c54c6bbe1127fde562",
+      "sha256": "ec1f6bbcd9944c35f6c2f21e00155592ef823244d36c50c5431bb51dd1802b8b",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -439,7 +468,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6.png",
-      "sha256": "1254a0e5ce9101951241bb7b1497def294866ca84fdc3d6a3f8423c70ad8740b",
+      "sha256": "25463090bc304fcfdb6eeef239f088add4b7b4ed108a98a81f459c6309722f71",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -451,7 +480,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8.png",
-      "sha256": "cc3290bd7f5fa0996d48b7a9b8a8cdbf68e4494c03fed1fe0b4e0add0ed38868",
+      "sha256": "448c590b6f018bfd2bd28f269d02b702031e527b8b17cf7baa345d6fbe34bf72",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -463,7 +492,7 @@
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
-      "sha256": "aaead613f1c19024019ab9e5b8efeabdae768bee6e86fca45df996fa6df78031",
+      "sha256": "ae64b472fbe646ac5210609d08c80b2ac95da0759839dd81bdb11e7b281ca2d5",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -473,8 +502,8 @@
     },
     {
       "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/01153c1a43471f2c860d7b0e99635b21.webm",
-      "sha256": "bb0385b244aeae976237e24f58bcaeb46b892e4782f4fac1fab009b26c1a3013",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c8a9c68f34284c9ee3aaba784f2df486.webm",
+      "sha256": "7397482db1c56743f47ab161f92ea57aa5889d571099adbaa2f2b8e095b38a7b",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "crossdeck.refit.published-lens",
@@ -483,7 +512,7 @@
       "motionMode": "REDUCED"
     }
   ],
-  "packetDigest": "c765949ebd2608d3325e31d2519b7512ef8963403626848926374d501f1b465c",
+  "packetDigest": "a76a2ce7da16c5f53388bde41bed699ed2fa0c763622f6a73ca8566a54720c87",
   "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
   "reviewDimensions": [
     "composition",

@@ -1,0 +1,102 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "c206229d14726e5d506b83a2be30837ba7e4beae",
+  "tree": "46e000b949815e9576d6c6e4ca1b91f55ab575e6",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "status": "ONE_CURRENT_PHOTO_JOURNEY_PASSED",
+  "objective": "Refresh the complete protected photo import/room preview/known desk measurement/save/reload/conflicting refinement/permission withdrawal/new separate hidden letter/five-second elapsed reveal/post-reload elapsed replay journey after the paper readability change.",
+  "artifacts": [
+    {
+      "file": "photo-letter-after-reveal.png",
+      "bytes": 309509,
+      "sha256": "2e3fa699184eb8f68c97142c3f6f3b2050afeade141d513a80543d78417b8f91"
+    },
+    {
+      "file": "photo-letter-before-reveal.png",
+      "bytes": 308633,
+      "sha256": "867f14afb23cffb25aea13ec91225fcafffaf9a87eab24ecf409a0526ff8acb5"
+    },
+    {
+      "file": "photo-letter-proposed.png",
+      "bytes": 202838,
+      "sha256": "f9990218d97c42ba52d0ffade2455aa2a288ace14f1e5a0d3c4ad505a8a86f6e"
+    },
+    {
+      "file": "photo-letter-reloaded-replay.png",
+      "bytes": 186955,
+      "sha256": "8777f99abc2000cd3082795cb5632d81a6b163ad5f495ba8908d49436626d7e0"
+    },
+    {
+      "file": "photo-letter-saved-hidden.png",
+      "bytes": 195719,
+      "sha256": "cda8851bf6ea90697c22f579be3d49a120058fb76964e8fbccb09d62e55e9a66"
+    },
+    {
+      "file": "photo-measurement-observations.original.json.txt",
+      "bytes": 7244,
+      "sha256": "dfbbc0259917435a512040e939fe6003da7b8d7bdf746ac60f5eac5a200260b8"
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "bytes": 1197951,
+      "sha256": "c7bb32b93af692dce794b9a3f3254579230b81b08daf6567cbcc39885149214f"
+    },
+    {
+      "file": "photo-room-applied-cutaway.png",
+      "bytes": 200457,
+      "sha256": "2c92c9b796f25ffc5ea475cc6687f28d4884479a3867b3ce2a0a872f0ab637a0"
+    },
+    {
+      "file": "photo-room-geometry-preview.png",
+      "bytes": 226589,
+      "sha256": "b11a998171d382706426ce01291ffe49127d39089bf18a30c674e0819f336d8a"
+    },
+    {
+      "file": "photo-room-known-measurement.png",
+      "bytes": 246736,
+      "sha256": "a1af1b1ef8e24d031785268f9c8036f99f09b9f55c70c6401be4918bf0eb49f5"
+    },
+    {
+      "file": "photo-room-measurement-reloaded.png",
+      "bytes": 215132,
+      "sha256": "9a31a76f0623a116c53ad4ea028e16bf399089fc238c36fcd01be88814e5f602"
+    },
+    {
+      "file": "photo-room-measurement-retained-proposal.png",
+      "bytes": 235045,
+      "sha256": "bd853f0dcfb6bd76043972a290fd54049b56e44e12298c10c6babdced594d354"
+    },
+    {
+      "file": "photo-room-permission-withdrawn.png",
+      "bytes": 229637,
+      "sha256": "44bc46f823f2bf96b7fc8708db0ad54c9ddf26d1df0b95f3ee581b3a9d51630e"
+    },
+    {
+      "file": "photo-room-proposal.png",
+      "bytes": 226385,
+      "sha256": "cd5c41f3a18346bce7ab1798d888376a68a29e2356f15f1f5b606f63af198188"
+    },
+    {
+      "file": "photo-room-restored.png",
+      "bytes": 229328,
+      "sha256": "0e81c280c44058ad9cb6413581deeab1dbf63a113870a9c1c5ae29afc3c91a45"
+    },
+    {
+      "file": "photo-room-unavailable-manual.png",
+      "bytes": 297068,
+      "sha256": "1cf15b3b440d7bba7b0cadb8c64e7e29545ca2e1d10a2d37d6c811332afa6036"
+    },
+    {
+      "file": "photo-run.original.json.txt",
+      "bytes": 531,
+      "sha256": "cc6ab31bb26e9486b89a7439f923c0c53f12c9ee9b4cf1e117bfa36156dce4ee"
+    }
+  ],
+  "limitations": [
+    "Synthetic images/upstream observations qualify workflow, not live image interpretation or physical accuracy.",
+    "Independent measurement/replay review remains source-bound to e57ed5da; current paper visual review is bound to c206229d and full current regression separately passes27 production journeys.",
+    "No configured production scanner/private-provider, physical/native, full scenarioN or owner acceptance claim."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "PARALLAX_TEST_DIAGNOSTIC_FORMAT_DRAFT_4",
+  "status": "FROZEN_PREPARE_ONLY_NOT_APPLIED",
+  "qualification": false,
+  "createdAtUtc": "2026-10-22T02:35:06.298Z",
+  "baseCommit": "d4a8975200dfdc91ea1b92cbf3b53df6f08da3e0",
+  "originalWorkingSha256": "5953108b4fe66f27b2d6b99ead5c52be0315f0f3f80915f644b35dc5ff5b7f89",
+  "parentDraftSha256": "beeae0b83c252be89579fe97b03a08afa02c5e9222f99c327fcca7110d38eed8",
+  "draftSha256": "399e882bf639631c70a2a2dc267bd24f4ed0b03ccfc49c764bdbfdd8e91f07ca",
+  "wholeSemanticAstUnchangedFromReviewed03": true,
+  "originalExpectCallNodes": 168,
+  "draftExpectCallNodes": 168,
+  "originalExpectAstSequenceUnchanged": true,
+  "formatPass": true,
+  "lint": {
+    "errors": 0,
+    "warnings": 0,
+    "cache": false
+  },
+  "syntaxParse": "PASS",
+  "strictHelperTypes": {
+    "status": "PASS",
+    "sourceFile": "strict-helper-types-1792636714854.json",
+    "negativeControl": "TS2345 reproduced",
+    "fixedDiagnostics": 0,
+    "otherDiagnostics": 0
+  },
+  "wholeCandidateTypecheck": "NOT_RUN",
+  "attachmentRuntimeRetention": "NOT_PROVEN",
+  "browserDispatch": false,
+  "candidateApplied": false,
+  "draftBytes": 37132,
+  "preparationBudgetBytes": 2097152,
+  "syntheticContextCases": 9,
+  "applyCheck": "PASS_READ_ONLY",
+  "expectedGitBlob": "5b38e628378047b14f4ba4ab66cfd773a71697bf",
+  "patchSha256": "186c8104e7066435e87edae09bbb71133ff5aa3d6f56da83bde93cb3cbdc55bd",
+  "preparationOwnerPid": 46904
+}

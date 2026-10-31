@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "3a6845be9b024cf4221bebc3cae296ea00441bcc",
+  "tree": "d3c25bb180d5cb16062f29f98b3dc36d4d821ec6",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T14:36:12.588Z",
+  "finishedAt": "2026-10-13T14:37:07.453Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "sha256": "0019b021a0c483a2922417ba7060ffaa86ea9b86788f0c4aed756bba9d958d01"
+    }
+  ]
+}

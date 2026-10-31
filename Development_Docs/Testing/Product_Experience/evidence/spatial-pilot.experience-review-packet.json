@@ -1,0 +1,1342 @@
+{
+  "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library",
+  "contract": {
+    "id": "spatial-pilot.experience",
+    "name": "Synthetic Spatial Chronicle publication, multi-device adventure and gated owner trials",
+    "authority": "one-voyage",
+    "owners": [
+      "spatial-pilot",
+      "one-voyage",
+      "project-crossdeck",
+      "reach"
+    ],
+    "critical": true,
+    "experienceIntent": {
+      "objective": "Create a spatial clue and understand the experience a Player will receive",
+      "visibleOutcome": "Published scenes reach a representative Player Lens with truthful capability tiers and accessible fallback",
+      "integrationOwner": "Parallax Creator-to-Player experience integration",
+      "systems": [
+        "project-parallax",
+        "project-crossdeck",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/parallax",
+        "src/components/studio/parallax",
+        "src/components/player/parallax",
+        "src/spatial-pilot"
+      ],
+      "persona": "A Creator or Player completing the named human objective",
+      "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+      "baselineDebt": [
+        {
+          "id": "PE-DEBT-PARALLAX-PLAYER",
+          "fingerprint": "94e3716d8ae26d5986e855cd4996b36d0edfbce1a2778937ba23548cc3506834",
+          "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+          "repairOwner": "Spatial Experience Refit",
+          "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+          "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+          "deficiency": "Creator preview and Player entity controls do not by themselves establish one coherent spatial clue experience."
+        }
+      ],
+      "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+    },
+    "experience": {
+      "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+      "objective": "Use a coherent blue Spatial Studio, preserve the scene while opening assistance, and return to the Creator Library",
+      "visibleOutcome": "Light appearance covers the authoring shell and synthetic environment; overlay assistance preserves the viewport and canonical authoring controls",
+      "integrationOwner": "Parallax Creator-to-Player experience integration",
+      "systems": [
+        "project-parallax",
+        "project-crossdeck",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/components/studio/parallax",
+        "src/app/studio/parallax",
+        "public/parallax/sc02"
+      ],
+      "projectionPaths": [
+        "src/parallax"
+      ],
+      "entryPoint": "/studio/library",
+      "states": [
+        "EDITOR_READY",
+        "ASSISTANT_READY",
+        "ASSISTANT_DOCKED",
+        "RETURNED",
+        "SC02_MODEL_PLACED",
+        "SC02_COMPOSITION_READY",
+        "SC02_PREFAB_SAVED",
+        "SC02_PREFAB_REUSED",
+        "SC02_MODEL_METADATA",
+        "SC02_MODEL_IN_GRAPH",
+        "SC02_COMPOSITION_IN_GRAPH"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
+      "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+      "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+      "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+          "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+          "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-studio-library",
+        "screen-page-studio"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-owner-refinements.spec.ts",
+        "tests/e2e/parallax-assistant-presentation.spec.ts",
+        "tests/e2e/parallax-spatial-assistant.spec.ts",
+        "tests/e2e/parallax-workstation.spec.ts",
+        "tests/e2e/parallax-sc02.spec.ts",
+        "tests/e2e/parallax-sc02-experience.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "limitations": [
+        "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged.",
+        "SC-02 new element types render in Web Studio; current Player/native adapters select their authored Guided alternatives. Layered mist and surface overlays do not claim volumetric scattering or occlusion-aware projection; synthesized preview ambience is not a recorded voice."
+      ],
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "text": "Voyagewright Studio"
+          }
+        }
+      },
+      "continuity": {
+        "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+        "checks": [
+          {
+            "id": "creator-identity",
+            "role": "button",
+            "name": "Synthetic Parallax Creator",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+        "feedbackBudgetMs": 3000
+      },
+      "journeys": [
+        {
+          "id": "creator-assistance-and-return",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "A Creator enters the actual editor, opens and docks contextual assistance, and returns to the same Creator library",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Spatial Studio"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Ask Parallax",
+              "path": "/studio/parallax",
+              "state": "EDITOR_READY",
+              "kind": "outcome",
+              "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Ask Parallax"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial Assistant",
+              "text": "Spatial Assistant",
+              "path": "/studio/parallax",
+              "state": "ASSISTANT_READY",
+              "kind": "outcome",
+              "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Dock assistance"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Ask Parallax workspace",
+              "text": "Float assistance",
+              "path": "/studio/parallax",
+              "state": "ASSISTANT_DOCKED",
+              "kind": "outcome",
+              "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Close assistance"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "RETURNED",
+              "returnPath": true
+            }
+          ]
+        },
+        {
+          "id": "sc02-assets-and-reusable-composition",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "A Creator places an actual modeled chest, saves an editable Ghostly Presence composition and inserts an independent reusable instance before returning to the Creator Library",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Spatial Studio"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Library"
+            },
+            {
+              "action": "fill",
+              "role": "searchbox",
+              "name": "Search assets",
+              "value": "Treasure chest"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Inspect Treasure chest"
+            },
+            {
+              "action": "assert",
+              "role": "complementary",
+              "name": "Treasure chest details",
+              "text": "0.80 × 0.61 × 0.50 m · floor support",
+              "path": "/studio/parallax",
+              "state": "SC02_MODEL_METADATA",
+              "kind": "outcome",
+              "meaning": "The modeled chest exposes its authored width, depth, height and floor-support metadata before insertion; this is semantic asset evidence, not physical AR qualification."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Add to active Scene"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open object properties",
+              "devices": [
+                "MOBILE"
+              ]
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial element properties",
+              "text": "PHYSICAL ASSET",
+              "path": "/studio/parallax",
+              "state": "SC02_MODEL_PLACED",
+              "kind": "outcome",
+              "meaning": "The actual modeled chest is selected in the scene and its semantic properties, dimensions and support metadata are available.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Collapse Inspector"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Scene Hierarchy"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Scene graph",
+              "text": "Treasure chest",
+              "path": "/studio/parallax",
+              "state": "SC02_MODEL_IN_GRAPH",
+              "kind": "outcome",
+              "meaning": "The actual modeled chest remains in the authored Scene graph when the Creator returns from its properties to the Library."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Library"
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Assets"
+            },
+            {
+              "action": "keyboard",
+              "key": "End",
+              "expectFocus": {
+                "role": "tab",
+                "name": "Compositions"
+              }
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Compositions"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Filters & view Source, status, sort",
+              "devices": [
+                "MOBILE"
+              ]
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Source"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "fill",
+              "role": "searchbox",
+              "name": "Search compositions",
+              "value": "Ghostly Presence"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Inspect Ghostly Presence"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Add to active Scene"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open object properties"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial element properties",
+              "text": "INTERACTION VOLUME",
+              "path": "/studio/parallax",
+              "state": "SC02_COMPOSITION_READY",
+              "kind": "outcome",
+              "meaning": "A composition root and individually editable light, mist, particles and audio children have been inserted in the canonical scene."
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Object name",
+              "contextValue": "SC02_COMPOSITION_NAME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open spatial context"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Save selected composition"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Collapse Inspector"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Scene Hierarchy"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Scene graph",
+              "text": "SC02 synthetic composition",
+              "path": "/studio/parallax",
+              "state": "SC02_COMPOSITION_IN_GRAPH",
+              "kind": "outcome",
+              "meaning": "The authored composition root and its individually editable light, mist, particles and audio children remain in the Scene graph after saving a reusable definition."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Library"
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Compositions"
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Source"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "fill",
+              "role": "searchbox",
+              "name": "Search compositions",
+              "contextValue": "SC02_COMPOSITION_NAME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Inspect SC02_COMPOSITION_NAME",
+              "contextName": "SC02_COMPOSITION_INSPECT_NAME"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Add saved composition",
+              "text": "Add saved composition",
+              "path": "/studio/parallax",
+              "state": "SC02_PREFAB_SAVED",
+              "kind": "outcome",
+              "meaning": "The saved editable composition is reachable in the existing personal Spatial Library."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Add saved composition"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open object properties"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial element properties",
+              "text": "INTERACTION VOLUME",
+              "path": "/studio/parallax",
+              "state": "SC02_PREFAB_REUSED",
+              "kind": "outcome",
+              "meaning": "The saved composition inserts an independently editable instance without replacing the authored Scene."
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Object name",
+              "value": "Independently edited Ghostly Presence"
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Authoring mode"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "keyboard",
+              "key": "Shift+F10"
+            },
+            {
+              "action": "click",
+              "role": "menuitem",
+              "name": "Save draft"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "RETURNED",
+              "returnPath": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1.png",
+      "sha256": "3f761acc3101168fed194e47a052b4936d2e1769104ee02ba9bac3a4c07ff9d0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3.png",
+      "sha256": "679fc64e03bdc22a39b10644a5e29bc83a2b640cd116d9836b68c3cc1af86a38",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_DOCKED-5.png",
+      "sha256": "eb0478d87e539c59ba59c5c962e6a0e5dbce881bba54bfbc137df92837c534fd",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_DOCKED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-8.png",
+      "sha256": "ab2e24840470851a77ee69d93451ec6d987d541f7d0804a76a21c6bdd7582cd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "23b955ddd93c02f9fd73e42a112c2f95bfdf51c1738a0397e2134e060099dcfc",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/75c3f2604aebb6fba08edc3910ffb8e0.webm",
+      "sha256": "6eea254b03bd1d3df3d2812c7f82520fb71b01c809d65be2e0ebb5faafd260f5",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1.png",
+      "sha256": "ebc358f18c6ac685b4c554ab796b75af35bc705204d8d216fc9b9a13bda5b0de",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_READY-3.png",
+      "sha256": "679fc64e03bdc22a39b10644a5e29bc83a2b640cd116d9836b68c3cc1af86a38",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-ASSISTANT_DOCKED-5.png",
+      "sha256": "5ae547f42d8dc673fe82c4c42359bed10d95ca1524f11ddd7fcbf411ff4cbdc0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_DOCKED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-8.png",
+      "sha256": "ab2e24840470851a77ee69d93451ec6d987d541f7d0804a76a21c6bdd7582cd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "546999cfb5f71dc4ed2f9ef3ebfc971ffdf664648b557ca0304d5be576bb346e",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/26080c31cd98552d505b40cca56efa12.webm",
+      "sha256": "75dab558d918f9473d50fd9ec0a128b9fb1eccc1ddcb4ca9c30d1b4b2f349e53",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_MODEL_METADATA-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_MODEL_METADATA-4.png",
+      "sha256": "2e6a923f268daa62ab90d7d385d55ca7aa614a0dc09dfde3e3d68d1d5317c5b8",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_METADATA",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_MODEL_PLACED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_MODEL_PLACED-7.png",
+      "sha256": "8212a8f4f98417030d56cdce42dba4bedf90db2e004b9282484cd9109a3a0f35",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_PLACED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_MODEL_IN_GRAPH-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_MODEL_IN_GRAPH-10.png",
+      "sha256": "770277f4de99ea4bc2cf616c84d83e1ee7a7ab4c97f89f1f2f92c348ce292fdb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_IN_GRAPH",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_COMPOSITION_READY-24",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_COMPOSITION_READY-24.png",
+      "sha256": "84b42359ae057a182d9c859225f82ead46ca5fd41284dd6419a3edab4f3a162b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_COMPOSITION_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_COMPOSITION_IN_GRAPH-30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_COMPOSITION_IN_GRAPH-30.png",
+      "sha256": "2cb6f0ee0719b3ddbf4affdcecbbcf7791ef4a6b009f97394f398cdc54bff4d6",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_COMPOSITION_IN_GRAPH",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_PREFAB_SAVED-40",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_PREFAB_SAVED-40.png",
+      "sha256": "2ce1793e1a8696c56d091a358e4c5f6197cc3e206e4c7d7b4d3e3b54e4f3496d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_PREFAB_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_PREFAB_REUSED-43",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-SC02_PREFAB_REUSED-43.png",
+      "sha256": "6b93804cd38c0fa0b48ee99f7651f8b9f76c6ab7d5b4761210fe15524e2d5650",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_PREFAB_REUSED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-RETURNED-50",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-RETURNED-50.png",
+      "sha256": "ab2e24840470851a77ee69d93451ec6d987d541f7d0804a76a21c6bdd7582cd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "fc1ff4cb1bbc56bf67d8f48762ee0494df650d8531cc70c93ded4f13f41f1bd2",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/ec4180998807b57d0cfd13a1b5b471e7.webm",
+      "sha256": "d3886d7559099fa7dca8f111a117e0bc5a093257fb6a1170b72aa70ba97b11f5",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_MODEL_METADATA-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_MODEL_METADATA-4.png",
+      "sha256": "71aa39fc104e9f021cbf9c5e45b5f6547ba70faedd6be27a322066eaad3de9eb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_METADATA",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_MODEL_PLACED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_MODEL_PLACED-7.png",
+      "sha256": "300a4ea0dab54277469d4a180436a6c6dceb27e4505ba035ee4dea0de17b4dd9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_PLACED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_MODEL_IN_GRAPH-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_MODEL_IN_GRAPH-10.png",
+      "sha256": "bf8172d0b26ecced1eabc71a4c6073cb5ef34f780c53cbe786b7208603dcd548",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_IN_GRAPH",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_COMPOSITION_READY-24",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_COMPOSITION_READY-24.png",
+      "sha256": "ab4e6dbc3dbe253e8586a37dd062f1267813f531256a25b401b71ac67ece8713",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_COMPOSITION_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_COMPOSITION_IN_GRAPH-30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_COMPOSITION_IN_GRAPH-30.png",
+      "sha256": "728819ea8d5e3e12b12d147154772260c9a00d6e639e473054459f5c0b0c2454",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_COMPOSITION_IN_GRAPH",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_PREFAB_SAVED-40",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_PREFAB_SAVED-40.png",
+      "sha256": "698e1f9c5f52beb90ae8809d310a52098f00fad3b2746e15b4f26fefff1a2862",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_PREFAB_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_PREFAB_REUSED-43",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-SC02_PREFAB_REUSED-43.png",
+      "sha256": "6506ae2e5c011e3c2b9951dd99344ce4da94f0ff315cd5ffab25e32fb34ea376",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_PREFAB_REUSED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-RETURNED-50",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-RETURNED-50.png",
+      "sha256": "ab2e24840470851a77ee69d93451ec6d987d541f7d0804a76a21c6bdd7582cd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "76021755c57dce43c06ea22b6b3ba5d0bd91717edc825ed273c26d1ea250572f",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/82cc245478fffd63d73c3027f1323970.webm",
+      "sha256": "09fe963578c1a752a405bf56a26952355344ca90af24b3e51880ae785713dfd7",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1.png",
+      "sha256": "33333d3322a55a811bd6f02d9264b7ec4963ec651c06358628516a8d5900c790",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_READY-3.png",
+      "sha256": "1941de3f3beee4b5f6e2a5b7bbc8a6230c047e9170959e4e6b3202b12ab4ff69",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-ASSISTANT_DOCKED-5.png",
+      "sha256": "9c8d1cf40d08f3ad090c5e5df3e1564edf52b494338cc631482cb9b7cae9da93",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_DOCKED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-RETURNED-8.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "fd0c967291458599ced8525758848fb0eaf1a71f21c745ea3816ded5b476a5bc",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fec482acbb6b322f88da96dc0f1957b6.webm",
+      "sha256": "525725cff584b1519e0d733aa0fce1b3c501b92b071a1aa959c11a14de3d5c4a",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1.png",
+      "sha256": "0ba080318b8b54b4b185996ea20ec2e0ed0473b6290db2160c024303ba9bcf0d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_READY-3.png",
+      "sha256": "1941de3f3beee4b5f6e2a5b7bbc8a6230c047e9170959e4e6b3202b12ab4ff69",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-ASSISTANT_DOCKED-5.png",
+      "sha256": "9c8d1cf40d08f3ad090c5e5df3e1564edf52b494338cc631482cb9b7cae9da93",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "ASSISTANT_DOCKED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-RETURNED-8.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "e7a1ff6152ab2d8222fe27b7fe8437a3c205bc17807d98d86f06a890987132cd",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-creator-assistance-and-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d807623176c5225d8366a60f56e4880e.webm",
+      "sha256": "d9335c88ee5e111f2a0aed00d7f30e535f61bf3bc1fc147c7ad3524f0dd6bab4",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_MODEL_METADATA-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_MODEL_METADATA-4.png",
+      "sha256": "194f83f37b78f36ce7f18de6bb9205ad855e1d87a6db43e29bf6c4f4df30e445",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_METADATA",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_MODEL_PLACED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_MODEL_PLACED-7.png",
+      "sha256": "914271c75c7f5c6de58f3edc6afcaa99e90b8aa76ab2e19225cc16199227def8",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_PLACED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_MODEL_IN_GRAPH-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_MODEL_IN_GRAPH-10.png",
+      "sha256": "3cd6d965045260a4dd2a76658219d29ca4e2c43187b3d05c9f84cd5feeda0eae",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_IN_GRAPH",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_COMPOSITION_READY-24",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_COMPOSITION_READY-24.png",
+      "sha256": "3273b097ae5ff309cd119404c95ee39e969856139d1d395477cf9c5349a91462",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_COMPOSITION_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_COMPOSITION_IN_GRAPH-30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_COMPOSITION_IN_GRAPH-30.png",
+      "sha256": "d6f3ff0c944c6a9d123e00a4f8c29e56e855105a9b1abeea5f753f495eb44013",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_COMPOSITION_IN_GRAPH",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_PREFAB_SAVED-40",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_PREFAB_SAVED-40.png",
+      "sha256": "bf0bbb7bdffaf4c699a394bb086b483b39b832a968932404ada393e7643c31cc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_PREFAB_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_PREFAB_REUSED-43",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-SC02_PREFAB_REUSED-43.png",
+      "sha256": "13f7d1cef54cbd692c2f088b0a77806a899833c4ec3ebcb47aca230ebac64597",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_PREFAB_REUSED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-RETURNED-50",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-RETURNED-50.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "b7cc5f3d4305c638d24e6bfc2a70028c6e5358854441019d55d1f71ec8aa9672",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b90080d63854fb94043ee21af200d716.webm",
+      "sha256": "4d24aa1f56a7fa511655fe63e84055db35d94d8b798c1be03927f140226a79bc",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_MODEL_METADATA-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_MODEL_METADATA-4.png",
+      "sha256": "7fa620ade7cdb6a13509e2aeaa6c4cdb91a1983efbdacca077f74a2915c94c27",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_METADATA",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_MODEL_PLACED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_MODEL_PLACED-7.png",
+      "sha256": "a4edaf2eb66d48e7b98733e79277ea8974a2c2d8c7715995177a33d607bc21e7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_PLACED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_MODEL_IN_GRAPH-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_MODEL_IN_GRAPH-10.png",
+      "sha256": "5d3c811135935f411da5889870b141519105f3a586fbac02e3f6672072c1123c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_MODEL_IN_GRAPH",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_COMPOSITION_READY-24",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_COMPOSITION_READY-24.png",
+      "sha256": "3273b097ae5ff309cd119404c95ee39e969856139d1d395477cf9c5349a91462",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_COMPOSITION_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_COMPOSITION_IN_GRAPH-30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_COMPOSITION_IN_GRAPH-30.png",
+      "sha256": "7f3ca876fe70578575b4b24e2d003b42ea766359ebd2ddac9ee156e01d0da754",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_COMPOSITION_IN_GRAPH",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_PREFAB_SAVED-40",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_PREFAB_SAVED-40.png",
+      "sha256": "0b38bbd5a796b37bde5b7695f4002048eadae4103a09351946c27980341a1018",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_PREFAB_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_PREFAB_REUSED-43",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-SC02_PREFAB_REUSED-43.png",
+      "sha256": "841e642725367cf6c632180b079c103a80f5a99d5d6b3a49cd09fd12c24cc48b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "SC02_PREFAB_REUSED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-RETURNED-50",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-RETURNED-50.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "54c3b37fbf0a9d415c450cc8f8b500a35c1f99bbeab7cc8e86b804167086af53",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "spatial-pilot.experience-sc02-assets-and-reusable-composition-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/596eab3b00a05e163d6de58e33ce1c78.webm",
+      "sha256": "fa84beade17b444514e197b3f21fc2567f6fa497ed0ceb6f29697b1083fe2154",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "spatial-pilot.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "95909ca05dbebfbd46e971d7f4cd72afb7cda7b500419745dbffb28281588c34",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

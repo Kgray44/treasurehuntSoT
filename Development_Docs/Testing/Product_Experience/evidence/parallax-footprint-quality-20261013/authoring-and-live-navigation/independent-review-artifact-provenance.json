@@ -1,0 +1,53 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "5f55fd4e011bd8410e5c8dd036022736982ee98b",
+  "tree": "aaaa1ccd47534e2eb1b3bc57a954810bc5048455",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "manifestPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/manifest.json",
+  "manifestSha256": "87a05473851475b50ed0297c04d7063d201337d3b7f1797586fb30198df7b035",
+  "rawReviewPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/independent-review.original.json.txt",
+  "rawReviewSha256": "76765f39fd8fe2a14206e5052d847f998eda80b07f66371b176d504b63f54ad4",
+  "normalizedReviewPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/independent-review.json",
+  "normalizedSha256": "76765f39fd8fe2a14206e5052d847f998eda80b07f66371b176d504b63f54ad4",
+  "semanticIdentity": true,
+  "artifactCount": 4,
+  "artifacts": [
+    {
+      "file": "asset-quality-full-scene-playback.png",
+      "bytes": 278489,
+      "sha256": "4542d93d065c32b6b8ea5f614999d1e05c7387cf6848d094949aa1315753fb6e",
+      "id": "asset-quality-full-scene-playback.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/asset-quality-full-scene-playback.png",
+      "verified": true
+    },
+    {
+      "file": "asset-quality-responsiveness.original.json.txt",
+      "bytes": 4517,
+      "sha256": "628d0732359bcf80f99a6f1d739e3de4a6c3a9e4b3faa968aea88091164f208e",
+      "id": "asset-quality-responsiveness.original.json.txt",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/asset-quality-responsiveness.original.json.txt",
+      "verified": true
+    },
+    {
+      "file": "parallax-asset-quality-Cre-b583d-ck-without-rebuilding-props-chromium-video.webm",
+      "bytes": 428359,
+      "sha256": "0b520058f929f4ac76bb8789218414f001681bfc6afd59e264f751f5d45dd365",
+      "id": "parallax-asset-quality-Cre-b583d-ck-without-rebuilding-props-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/parallax-asset-quality-Cre-b583d-ck-without-rebuilding-props-chromium-video.webm",
+      "verified": true
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 610,
+      "sha256": "fbf6e3665eef54b2e5474d92b8ce21612239e5df1a1f91475a7f28e90ecbe9f9",
+      "id": "run.original.json.txt",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/run.original.json.txt",
+      "verified": true
+    }
+  ],
+  "previousRawReview": {
+    "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/independent-review.original.json.txt",
+    "sha256": "210ba88ef10091d409d10836c5dcede8101709232df8ea5e818838f4214d28bb",
+    "unchanged": true
+  }
+}

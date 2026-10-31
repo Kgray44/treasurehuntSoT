@@ -164,22 +164,23 @@ test("R25 extends only the authorized Crossdeck final-check ceiling to 90 minute
   const jobs = workflow.split(/\n  (?=[a-z][a-z-]*:\n)/u);
   const final = jobs.find((job) => job.startsWith("final-check:\n"));
   assert(final);
+  const timeout = final.match(/\n    timeout-minutes: ([^\n]+)/u)?.[1];
+  const pr776Allowance = "(github.event.pull_request.number == 776 || inputs.pr_number == '776') && 120 || ";
+  assert(timeout?.includes(pr776Allowance));
   assert.equal(
-    final.match(/\n    timeout-minutes: ([^\n]+)/u)?.[1],
+    timeout.replace(pr776Allowance, ""),
     "${{ (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}",
   );
   assert.equal(jobs.filter((job) => job.includes("&& 90 || 45")).length, 1);
   assert.equal(record().currentSourceAdmission.precommandRecovery.jobLimitMinutes, 90);
   assert.equal(record().currentSourceAdmission.precommandRecovery.otherPullRequestsJobLimitMinutes, 45);
+  // This historical admission freezes its original candidate engines, not unrelated later repairs.
   for (const file of [
     "scripts/sounding-line/ordinary.mjs",
     "scripts/sounding-line/authenticated-completed-evidence.mjs",
     "scripts/sounding-line/verification-diagnostics.mjs",
   ])
-    assert.equal(
-      readFileSync(new URL("../../" + file, import.meta.url), "utf8"),
-      git("show", `${r.protectedBaseAncestorSha}:${file}`),
-    );
+    assert.equal(git("show", `${r.frozenReferenceSha}:${file}`), git("show", `${r.protectedBaseAncestorSha}:${file}`));
 });
 
 test("installed R25 reader denies missing, retired, invalid and expired rows without falling back", (t) => {

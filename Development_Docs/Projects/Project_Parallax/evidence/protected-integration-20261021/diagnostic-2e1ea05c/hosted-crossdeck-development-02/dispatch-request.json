@@ -1,0 +1,17 @@
+{
+  "kind": "ONE_COORDINATED_DEVELOPMENT_DIAGNOSTIC_DISPATCH",
+  "qualification": false,
+  "purpose": "DEVELOPMENT_ONLY",
+  "candidate": "2e1ea05caa88e790f9b6f4f7a36981efed5826a3",
+  "authorityBeforeDispatch": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "workflowBlob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+  "selector": "tests/e2e/crossdeck-experience-refit.spec.ts",
+  "previousFailureRun": 39696321296,
+  "testBlob": "5b38e628378047b14f4ba4ab66cfd773a71697bf",
+  "exactSourceChecks": "format lint whole-candidate-TypeScript PASS",
+  "landedSmokeReceiptSHA256": "490a5ec23e827814ac2e869b6ceb754cc4a74e81340dded68441cdba88744476",
+  "uniquePreflight": true,
+  "requestTimeUtc": "2026-10-22T04:19:06.3952660Z",
+  "freeC": 33361080320,
+  "noProtectedCampaign": true
+}

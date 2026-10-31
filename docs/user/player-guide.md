@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-16
+last_reviewed: 2026-10-22
 ---
 
 # Player guide
@@ -41,6 +41,23 @@ Use Personal Harbor's device preferences and security controls to review or
 remove account sessions. See [account security](account-security.md).
 
 When a released passage includes a spatial moment, choose **Open Chronicle Lens** to read and interact with its clue in Guided View. The same clue stays readable without a camera, while seated or using a keyboard. A compatible native companion can offer local camera placement. Closing the camera, using Android Back, or losing its permission returns the moment to Guided View; reopen it explicitly for a fresh camera session. Lens interactions are recorded separately from Voyage progression. Revisited passages preserve their meaning without changing progress.
+
+The active browser candidate keeps **Open Chronicle Lens** in the Journal header,
+above the book. On phones, the compact action reads **Lens**. Scene details and
+earlier released scenes remain below the book;
+earlier scenes open in view-only mode. **Continue Voyage** inside the Journal
+advances the story; keep the spatial passage open while testing its interactions.
+On the explicitly enabled local browser prototype, choose **Start browser AR**
+and grant camera/motion permissions. Its tracking and room alignment remain
+experimental: the owner phone test has not achieved reliable calibration.
+An authored Environment version remains pinned to its released Scene; editing a
+separate Environment copy does not recalibrate or move an already released room.
+Tracking-loss notices explain cleared taps; calibration errors appear above the
+camera and in its corner-step hint. Tap inside the live camera image. A stalled
+scene opening reports a recovery message after 15 seconds; if the previous scene
+cannot close, close Chronicle Lens and reopen it. Surface-assisted alignment is disabled unless the selected provider
+supplies verified detected geometry. Guided View is a deliberate camera-free
+alternative and does not establish world anchoring.
 
 Where signed region preparation is enabled, an optional offline region panel appears in the Journal map.
 Select **Prepare offline region** to check availability, size, included released

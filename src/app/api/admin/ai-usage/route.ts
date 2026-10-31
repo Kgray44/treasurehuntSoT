@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmiraltyOperator } from "@/admiralty/authorization";
 import { admiraltyErrorResponse, enforceAdmiraltyRateLimit } from "@/admiralty/http";
-import { aiQuotaOverview, aiQuotaUserDetail, aiQuotaUsageHistory } from "@/parallax/ai-quota-projections";
+import {
+  aiQuotaOverview,
+  aiQuotaUserDetail,
+  aiQuotaUsageHistory,
+  aiQuotaOverrides,
+} from "@/parallax/ai-quota-projections";
 import { aiUTCPeriod } from "@/parallax/ai-policy";
 const headers = { "Cache-Control": "private, no-store", Vary: "Cookie" };
 export async function GET(request: Request) {
@@ -12,6 +17,11 @@ export async function GET(request: Request) {
     const query = new URL(request.url).searchParams,
       section = query.get("section") ?? "overview";
     if (section === "overview") return NextResponse.json(await aiQuotaOverview(), { headers });
+    if (section === "overrides") {
+      await requireAdmiraltyOperator("ACCOUNT_OBSERVE");
+      const cursor = query.get("cursor") ? z.string().min(1).max(128).parse(query.get("cursor")) : undefined;
+      return NextResponse.json(await aiQuotaOverrides(cursor), { headers });
+    }
     const accountId = query.get("accountId") ? z.string().min(1).max(128).parse(query.get("accountId")) : undefined;
     if (accountId) await requireAdmiraltyOperator("ACCOUNT_OBSERVE");
     if (section === "user" && accountId)

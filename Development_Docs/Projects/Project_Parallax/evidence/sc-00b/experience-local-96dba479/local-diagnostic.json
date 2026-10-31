@@ -1,0 +1,943 @@
+{
+  "status": "LOCAL_DIAGNOSTIC_PASS",
+  "trustedCapture": false,
+  "independentReview": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "candidateSha": "96dba479ccde4510170f3a6af625798d47892bba",
+  "baseSha": "48296fbf23b8c90f5ebf9d20ebc85b9d8c824d85",
+  "sourceDigest": "48bef4e95476d5dfc1c4afd732e1a6df8c417104a1b6505e885ad89ca2672116",
+  "contractDigest": "eaef21c691b1f09ef4cecb1583ee8f72419b75007ddbbffd4234064e569d88bf",
+  "journeys": [
+    {
+      "id": "creator-inspector-context-and-return",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator enters the actual Inspector, travels across all three rail destinations with the same object selected and returns to the Creator Library",
+      "observations": [
+        {
+          "step": 4,
+          "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.",
+          "role": "heading",
+          "name": "Scene settings",
+          "text": "Scene settings"
+        },
+        {
+          "step": 6,
+          "meaning": "The selected object's common edits and quick actions return without reselecting it.",
+          "role": "complementary",
+          "name": "Spatial inspector",
+          "text": "Edit what this item is"
+        },
+        {
+          "step": 8,
+          "meaning": "Placement, relationships and behavior links are available for the same selected object.",
+          "role": "heading",
+          "name": "Spatial context",
+          "text": "Spatial context"
+        }
+      ],
+      "visibleActions": 7,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 98.27769999999964,
+      "measurement": "Visible rail action to rendered contextual Inspector heading",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": false,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SCENE",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "PROPERTIES",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "CONTEXT",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-inspector-context-and-return",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator enters the actual Inspector, travels across all three rail destinations with the same object selected and returns to the Creator Library",
+      "observations": [
+        {
+          "step": 4,
+          "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.",
+          "role": "heading",
+          "name": "Scene settings",
+          "text": "Scene settings"
+        },
+        {
+          "step": 6,
+          "meaning": "The selected object's common edits and quick actions return without reselecting it.",
+          "role": "complementary",
+          "name": "Spatial inspector",
+          "text": "Edit what this item is"
+        },
+        {
+          "step": 8,
+          "meaning": "Placement, relationships and behavior links are available for the same selected object.",
+          "role": "heading",
+          "name": "Spatial context",
+          "text": "Spatial context"
+        }
+      ],
+      "visibleActions": 7,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 86.9246000000021,
+      "measurement": "Visible rail action to rendered contextual Inspector heading",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SCENE",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "PROPERTIES",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "CONTEXT",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-inspector-removal-recovery-and-return",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator sees an explicit unavailable selection after deletion, restores the object through Undo and returns to the Library",
+      "observations": [
+        {
+          "step": 6,
+          "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.",
+          "role": "region",
+          "name": "Unavailable selection",
+          "text": "Selection unavailable"
+        },
+        {
+          "step": 8,
+          "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.",
+          "role": "complementary",
+          "name": "Spatial inspector",
+          "text": "Edit what this item is"
+        }
+      ],
+      "visibleActions": 8,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 166.6237000000001,
+      "measurement": "Visible rail action to rendered contextual Inspector heading",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": false,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "INVALID_SELECTION",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RESTORED_SELECTION",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-inspector-removal-recovery-and-return",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator sees an explicit unavailable selection after deletion, restores the object through Undo and returns to the Library",
+      "observations": [
+        {
+          "step": 6,
+          "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.",
+          "role": "region",
+          "name": "Unavailable selection",
+          "text": "Selection unavailable"
+        },
+        {
+          "step": 8,
+          "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.",
+          "role": "complementary",
+          "name": "Spatial inspector",
+          "text": "Edit what this item is"
+        }
+      ],
+      "visibleActions": 8,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 122.27819999999338,
+      "measurement": "Visible rail action to rendered contextual Inspector heading",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "INVALID_SELECTION",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RESTORED_SELECTION",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-inspector-context-and-return",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator enters the actual Inspector, travels across all three rail destinations with the same object selected and returns to the Creator Library",
+      "observations": [
+        {
+          "step": 4,
+          "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.",
+          "role": "heading",
+          "name": "Scene settings",
+          "text": "Scene settings"
+        },
+        {
+          "step": 6,
+          "meaning": "The selected object's common edits and quick actions return without reselecting it.",
+          "role": "complementary",
+          "name": "Spatial inspector",
+          "text": "Edit what this item is"
+        },
+        {
+          "step": 8,
+          "meaning": "Placement, relationships and behavior links are available for the same selected object.",
+          "role": "heading",
+          "name": "Spatial context",
+          "text": "Spatial context"
+        }
+      ],
+      "visibleActions": 7,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 108.61759999999776,
+      "measurement": "Visible rail action to rendered contextual Inspector heading",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": false,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SCENE",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "PROPERTIES",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "CONTEXT",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-inspector-context-and-return",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator enters the actual Inspector, travels across all three rail destinations with the same object selected and returns to the Creator Library",
+      "observations": [
+        {
+          "step": 4,
+          "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.",
+          "role": "heading",
+          "name": "Scene settings",
+          "text": "Scene settings"
+        },
+        {
+          "step": 6,
+          "meaning": "The selected object's common edits and quick actions return without reselecting it.",
+          "role": "complementary",
+          "name": "Spatial inspector",
+          "text": "Edit what this item is"
+        },
+        {
+          "step": 8,
+          "meaning": "Placement, relationships and behavior links are available for the same selected object.",
+          "role": "heading",
+          "name": "Spatial context",
+          "text": "Spatial context"
+        }
+      ],
+      "visibleActions": 7,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 102.1073999999935,
+      "measurement": "Visible rail action to rendered contextual Inspector heading",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "SCENE",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "PROPERTIES",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "CONTEXT",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-inspector-removal-recovery-and-return",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator sees an explicit unavailable selection after deletion, restores the object through Undo and returns to the Library",
+      "observations": [
+        {
+          "step": 6,
+          "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.",
+          "role": "region",
+          "name": "Unavailable selection",
+          "text": "Selection unavailable"
+        },
+        {
+          "step": 8,
+          "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.",
+          "role": "complementary",
+          "name": "Spatial inspector",
+          "text": "Edit what this item is"
+        }
+      ],
+      "visibleActions": 8,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 131.35759999998845,
+      "measurement": "Visible rail action to rendered contextual Inspector heading",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": false,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "INVALID_SELECTION",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RESTORED_SELECTION",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    },
+    {
+      "id": "creator-inspector-removal-recovery-and-return",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED",
+      "entryPoint": "/studio/library",
+      "outcome": "A Creator sees an explicit unavailable selection after deletion, restores the object through Undo and returns to the Library",
+      "observations": [
+        {
+          "step": 6,
+          "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.",
+          "role": "region",
+          "name": "Unavailable selection",
+          "text": "Selection unavailable"
+        },
+        {
+          "step": 8,
+          "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.",
+          "role": "complementary",
+          "name": "Spatial inspector",
+          "text": "Edit what this item is"
+        }
+      ],
+      "visibleActions": 8,
+      "returnPathVerified": true,
+      "status": "PASS",
+      "continuity": [],
+      "feedbackMs": 129.54969999998866,
+      "measurement": "Visible rail action to rendered contextual Inspector heading",
+      "accessibility": {
+        "keyboard": true,
+        "focus": true,
+        "reducedMotion": true,
+        "motionPreferenceVerified": true,
+        "overflow": false,
+        "states": [
+          {
+            "state": "INVALID_SELECTION",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RESTORED_SELECTION",
+            "axeSerious": [],
+            "overflow": false
+          },
+          {
+            "state": "RETURNED",
+            "axeSerious": [],
+            "overflow": false
+          }
+        ],
+        "axeSerious": []
+      },
+      "roleVerified": true
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-SCENE-4",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-SCENE-4.png",
+      "sha256": "3192fb6c2b068fff87c79384bd656dac7e291a239d5d0ea35e37a85a527c5cb0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "SCENE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-PROPERTIES-6",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-PROPERTIES-6.png",
+      "sha256": "bfe0b1312a3fbd0086a5b9b850190c645913405e4542fc2084ca8c4f2ed62649",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "PROPERTIES",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-CONTEXT-8",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-CONTEXT-8.png",
+      "sha256": "55219202fe4b2bcc93e75cd35a8efcdb25415dd36fb160a92547183ded69aae1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "CONTEXT",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-10",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-10.png",
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/3c1f4381e51fd4e9ee7b03bed77d3226.webm",
+      "sha256": "1a6d3205144be7c0c6b9ce10b5a51609762c06bba47cc75e55ba7d0e7fbc13aa",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-SCENE-4",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-SCENE-4.png",
+      "sha256": "7f296a95e92bd559ffb35f0d564ed0a903f48882f15758461358eae25ad78785",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "SCENE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-PROPERTIES-6",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-PROPERTIES-6.png",
+      "sha256": "1f5eb07c08abeacd5d27cead52a678a2cd52509d8d37cc6cfa506076f2aff832",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "PROPERTIES",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-CONTEXT-8",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-CONTEXT-8.png",
+      "sha256": "6c17f677e1f084c36b8d5f5968b6ef79c159ce8b2af522d11da11cfd7ab883d0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "CONTEXT",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-10",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-10.png",
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/f463304062f1b9f0f1998e44ab6d705c.webm",
+      "sha256": "e9e27fa588b0631c7ec99b467009bd1bf8242d4ea1f1b432b0cc7683c92d5273",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-INVALID_SELECTION-6",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-INVALID_SELECTION-6.png",
+      "sha256": "0efc519d712d0fdb9f2a4ee96c6b21bbd1005e9377322de9c931b3e64fc57991",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "INVALID_SELECTION",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-RESTORED_SELECTION-8",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-RESTORED_SELECTION-8.png",
+      "sha256": "c88d8c4ff3c751b8a61981896fa235c77c3fbf4fd328e699ea1ce894ad38f5c3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RESTORED_SELECTION",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-10",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-10.png",
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/27fdb2840858504e8c8d3b635a96c529.webm",
+      "sha256": "a0fa02af5a8bf0339d479f11910e363be5d14e891bda570dca2730aad6375b22",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-INVALID_SELECTION-6",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-INVALID_SELECTION-6.png",
+      "sha256": "d9815936aeee65317aa8a7118cdaadb7a68bd4ed0f17d6c33d717864bdf1ea8f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "INVALID_SELECTION",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-RESTORED_SELECTION-8",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-RESTORED_SELECTION-8.png",
+      "sha256": "27542fd5f871662b4789cdfd4fbd5365c0ea17df284f37a3654938cd4667c190",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RESTORED_SELECTION",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-10",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-10.png",
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/1cbe7749c60ecf0217aae1617391b529.webm",
+      "sha256": "1390f448b5a6fd9f31fcea1ab5f5e3a3e9a479c8d2072931d7fdc7b1a4a7f65d",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-SCENE-4",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-SCENE-4.png",
+      "sha256": "0e7faa121aca1dc5ccc3b1df2ecee03e314a4c5d7f9865bfe72420314c7fec4d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "SCENE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-PROPERTIES-6",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-PROPERTIES-6.png",
+      "sha256": "d91f50e6607b604a2044a6e29b480b164190bd002f31fb90861298b37103ccc8",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "PROPERTIES",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-CONTEXT-8",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-CONTEXT-8.png",
+      "sha256": "bb290a143a4862fd16842abdd00df7abda9b3d3d7c5589871e2be410d9be5bfa",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "CONTEXT",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-RETURNED-10",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-RETURNED-10.png",
+      "sha256": "792b0fe2a9fcc715f79410d2069ba79194aa37528b26cca12012ced8d961fe62",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/48a6058091334daf82493d8d73e08249.webm",
+      "sha256": "f5c2fbefb75a796c6d462d0abfb5dff2cbd4235016b0c944efb11f09e3050aa8",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-SCENE-4",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-SCENE-4.png",
+      "sha256": "44e3e53a2d3c510f78835917f5db2d0736ae5b9ce444c35cd5ce06240a35325e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "SCENE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-PROPERTIES-6",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-PROPERTIES-6.png",
+      "sha256": "d91f50e6607b604a2044a6e29b480b164190bd002f31fb90861298b37103ccc8",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "PROPERTIES",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-CONTEXT-8",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-CONTEXT-8.png",
+      "sha256": "bb290a143a4862fd16842abdd00df7abda9b3d3d7c5589871e2be410d9be5bfa",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "CONTEXT",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-RETURNED-10",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-RETURNED-10.png",
+      "sha256": "792b0fe2a9fcc715f79410d2069ba79194aa37528b26cca12012ced8d961fe62",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/89e4a59b38cc636693e1366ac3c2219d.webm",
+      "sha256": "6202d5b61b0d952cba290fbd1e5fd6347825b7872a31436252b5ea13a1958a19",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-INVALID_SELECTION-6",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-INVALID_SELECTION-6.png",
+      "sha256": "a6ef36dd059dcb05133f15d14cda735a2143767c3a1417cf2acaa9b8d6e842ce",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "INVALID_SELECTION",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-RESTORED_SELECTION-8",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-RESTORED_SELECTION-8.png",
+      "sha256": "0f3b646dced367261fa2a2f967c3662017c6b400041a3278382f087aff883f68",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RESTORED_SELECTION",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-RETURNED-10",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-RETURNED-10.png",
+      "sha256": "792b0fe2a9fcc715f79410d2069ba79194aa37528b26cca12012ced8d961fe62",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/446cefca05a8af6d4b8dadda0075f03a.webm",
+      "sha256": "b9d45cfa0dc1d32c2d53a607c18c2f4d974cbe7a1132d7c1a6dceb22c91fc173",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-INVALID_SELECTION-6",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-INVALID_SELECTION-6.png",
+      "sha256": "985609ef5a71e2f8e87b26289bb828be36ca4f693b1dc03ce0f877c0c51aab84",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "INVALID_SELECTION",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-RESTORED_SELECTION-8",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-RESTORED_SELECTION-8.png",
+      "sha256": "e6bb17eef2380bb46479a4566f45d21e559eea5ba64368e6d4563739b4f972c1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RESTORED_SELECTION",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-RETURNED-10",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-RETURNED-10.png",
+      "sha256": "792b0fe2a9fcc715f79410d2069ba79194aa37528b26cca12012ced8d961fe62",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-96dba479/504ac76b0b04c93cdff5ae1478525598.webm",
+      "sha256": "796b781c14953bddd1e2a7d32ce5a4a3fca1aeb33b1bf58ed9117529ff55a5b6",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.sc00b.inspector.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "omittedTraceCount": 8
+}

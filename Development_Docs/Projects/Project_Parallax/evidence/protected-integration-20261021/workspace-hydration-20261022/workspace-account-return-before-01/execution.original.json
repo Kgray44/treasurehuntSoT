@@ -1,0 +1,35 @@
+{
+  "name": "workspace-account-return-before-01",
+  "at": "2026-10-23T01:44:20.815Z",
+  "failure": "OWNED_COMMAND_SAFETY_DEADLINE",
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": null,
+    "elapsedMs": 240,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37299150848,
+  "minimumD": 111783981056,
+  "monitorSamples": 19,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 64,
+      "sha256": "a3f2b4bff7122ae0887b6c1891780a997e55d70fb7578fba4d5820a09997fbd4"
+    },
+    "stderr": {
+      "bytes": 375,
+      "sha256": "b4acd4f819050212c4fe3b3ed8416421330f7ff8c72cb9bb667c335f3e24a94e"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

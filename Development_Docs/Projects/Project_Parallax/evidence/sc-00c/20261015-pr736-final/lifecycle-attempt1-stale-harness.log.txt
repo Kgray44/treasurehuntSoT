@@ -1,0 +1,193 @@
+[WebServer] (node:41936) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:60332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60332) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  1 [chromium] › tests\e2e\parallax-environment-entry.spec.ts:20:5 › Environment plus opens keyboard-friendly choices, duplicates a source and starts an empty shell (34.1s)
+(node:37880) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37880) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  2 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:21:5 › durable working scene, explicit saved membership, named Save As, metadata and version history (16.9s)
+(node:67196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:67196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  x  3 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:89:5 › independent environment creation, editing and reuse do not manufacture scene definitions (11.6s)
+(node:65088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65088) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 4 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:181:5 › pending save retry and reload retain one stable definition and visible failure (3.8s)
+  ok 5 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:217:5 › lost Save As response replays one copy and two tabs preserve conflicting edits deliberately (4.7s)
+  x  6 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:277:5 › light and dark Library views remain typed, responsive and keyboard reachable (31.7s)
+(node:59224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59224) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 7 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:342:5 › stale environment recovery keeps the original CAS base after reload (3.4s)
+  ok 8 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:377:5 › failed historical copy cannot substitute an earlier version for a newly selected version (2.3s)
+
+
+  1) [chromium] › tests\e2e\parallax-environment-entry.spec.ts:20:5 › Environment plus opens keyboard-friendly choices, duplicates a source and starts an empty shell 
+
+    TimeoutError: locator.focus: Timeout 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Create environment', exact: true })[22m
+
+
+      39 |   await page.getByRole("tab", { name: "Environments", exact: true }).click();
+      40 |   const plus = page.getByRole("button", { name: "Create environment", exact: true });
+    > 41 |   await plus.focus();
+         |              ^
+      42 |   await plus.press("Enter");
+      43 |   const setup = page.getByRole("dialog", { name: "Create an environment", exact: true });
+      44 |   await expect(setup).toBeVisible();
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-environment-entry.spec.ts:41:14
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:21:5 › durable working scene, explicit saved membership, named Save As, metadata and version history 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByLabel('Current scene', { exact: true })
+    Expected substring: [32m"Independent voyage scene"[39m
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 10000ms[22m
+    [2m  - waiting for getByLabel('Current scene', { exact: true })[22m
+
+
+      54 |   await copy.getByLabel("Name", { exact: true }).fill("Independent voyage scene");
+      55 |   await copy.getByRole("button", { name: "Create independent definition", exact: true }).click();
+    > 56 |   await expect(page.getByLabel("Current scene", { exact: true })).toContainText("Independent voyage scene");
+         |                                                                   ^
+      57 |   expect(await db.reusableAuthoringItem.count({ where: { ownerAccountId: account.id } })).toBe(2);
+      58 |   await page.getByRole("button", { name: "Versions", exact: true }).click();
+      59 |   const history = page.getByRole("dialog", { name: "Version history", exact: true });
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-library-lifecycle.spec.ts:56:67
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-291af-etadata-and-version-history-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-291af-etadata-and-version-history-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\parallax-library-lifecycle-291af-etadata-and-version-history-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-291af-etadata-and-version-history-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-library-lifecycle-291af-etadata-and-version-history-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:89:5 › independent environment creation, editing and reuse do not manufacture scene definitions 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  getByRole('region', { name: 'Environment definitions', exact: true }).getByRole('article')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  10000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 10000ms[22m
+    [2m  - waiting for getByRole('region', { name: 'Environment definitions', exact: true }).getByRole('article')[22m
+    [2m    13 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+      109 |   await page.getByRole("tab", { name: "Environments", exact: true }).click();
+      110 |   const library = page.getByRole("region", { name: "Environment definitions", exact: true });
+    > 111 |   await expect(library.getByRole("article")).toHaveCount(1);
+          |                                              ^
+      112 |   await library.getByRole("button", { name: "Use in current scene" }).click();
+      113 |   await expect(page.getByRole("status").filter({ hasText: "snapshot applied" }).first()).toBeVisible();
+      114 |   const applied = await db.reusableAuthoringItemVersion.findUnique({
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-library-lifecycle.spec.ts:111:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:277:5 › light and dark Library views remain typed, responsive and keyboard reachable 
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('button', { name: 'Open Saved Spatial Items', exact: true })[22m
+
+
+      301 |   await page.setViewportSize({ width: 1440, height: 1000 });
+      302 |   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
+    > 303 |   await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+          |                                                                                     ^
+      304 |   const library = page.getByRole("region", { name: "Spatial Library", exact: true });
+      305 |   await expect(library.getByRole("article")).toHaveCount(2);
+      306 |   await library.getByLabel("Library type").selectOption("ENVIRONMENT");
+        at D:\CodexWorktrees\treasurehunt-sc00c-scale-browser\tests\e2e\parallax-library-lifecycle.spec.ts:303:85
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [chromium] › tests\e2e\parallax-environment-entry.spec.ts:20:5 › Environment plus opens keyboard-friendly choices, duplicates a source and starts an empty shell 
+    [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:21:5 › durable working scene, explicit saved membership, named Save As, metadata and version history 
+    [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:89:5 › independent environment creation, editing and reuse do not manufacture scene definitions 
+    [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:277:5 › light and dark Library views remain typed, responsive and keyboard reachable 
+  4 passed (2.6m)

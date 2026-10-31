@@ -299,6 +299,12 @@ function nextServerMode(argumentsList) {
   return "unknown";
 }
 
+export function browserAuthorityExecutionTimeoutMs(environment = process.env) {
+  return environment.SOUNDING_LINE_SUITE_PROFILE === "generic" && environment.SOUNDING_LINE_PR_NUMBER === "776"
+    ? 45 * 60_000
+    : 15 * 60_000;
+}
+
 export async function runBrowserAuthority({
   root,
   browserArguments,
@@ -674,6 +680,7 @@ async function main() {
   if (!publicationOutput.initialized) throw new Error("SOUNDING_LINE_PRIVATE_PUBLICATION_OUTPUT_INITIALIZATION_FAILED");
   const receipt = await runBrowserAuthority({
     root,
+    executionTimeoutMs: browserAuthorityExecutionTimeoutMs(process.env),
     onPrivateFailurePublication: publicationOutput.capture,
     fixtureArguments,
     fixtureProject,

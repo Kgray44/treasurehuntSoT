@@ -1,0 +1,23 @@
+{
+  "classification": "engineering-evidence",
+  "candidate": "c4dc66598e25dc93cfd94323a1ec0988fbc4da46",
+  "tree": "2371b5c080a71f387df442a7bf2d0329d7eb0944",
+  "browserJourneys": 4,
+  "browserResult": "passed",
+  "domainTests": 377,
+  "domainFiles": 27,
+  "domainResult": "passed",
+  "productionCompilationAndTypeScript": "passed",
+  "lint": "passed after unused import cleanup",
+  "provider": "synthetic-unpaid",
+  "desktopRoomCaptures": 20,
+  "phoneRoomCaptures": 20,
+  "ownerAcceptance": "not-claimed",
+  "protectedQualification": "blocked",
+  "blocker": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity",
+  "localVisualReview": "ACCEPTED_FOCUSED_LOCAL",
+  "reviewDimensions": 17,
+  "reviewScreenshots": 47,
+  "reviewRecordings": 3,
+  "reviewBlockers": 0
+}

@@ -1,0 +1,290 @@
+{
+  "objective": "Keep the animation director, route boundary and existing form feedback compatible without replacing the editor or changing persisted account data.",
+  "contract": {
+    "id": "homeport.transition.reduced-motion",
+    "name": "Project Homeport Reduced Motion Transition Semantics",
+    "authority": "project-homeport",
+    "owners": [
+      "project-homeport"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A signed-in Creator editing a local Personal Information draft while system motion changes.",
+      "objective": "Keep the animation director, route boundary and existing form feedback compatible without replacing the editor or changing persisted account data.",
+      "visibleOutcome": "The real account form exposes its unsaved state, retains value and focus under both OS motion changes, and keeps a usable return to Home.",
+      "integrationOwner": "Existing Parallax integration owner #776; Homeport and the animation runtime retain their current account and playback authority.",
+      "accessibility": "Preserve keyboard focus, native field labels and the same task in full and reduced motion.",
+      "fallback": "Preserve the real unsaved draft, focus and motion-policy boundary. The separate guarded owned Showcase journey covers its explicitly enabled harness; no normal-production lab availability is inferred.",
+      "navigation": "Personal Information local draft → visible Unsaved changes feedback → Return to Home.",
+      "designTarget": "Preserve current form task hierarchy and accepted shared Homeport frame; judge actual motion and focus from current runtime evidence.",
+      "entryPoint": "/account/personal-information",
+      "systems": [
+        "project-homeport"
+      ],
+      "sourcePaths": [
+        "src/animation/director/AnimationProvider.tsx",
+        "src/animation/platform/RouteMotionBoundary.tsx"
+      ],
+      "projectionPaths": [
+        "src/animation/motion/useMotionMode.ts",
+        "src/homeport/preferences.ts"
+      ],
+      "states": [
+        "MOTION_EDITOR_READY",
+        "DRAFT_FEEDBACK_VISIBLE",
+        "MOTION_HOME_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Faccount%2Fpersonal-information",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Personal Information",
+            "text": "Personal Information"
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport gateway frame and return hierarchy; this is not a claim that uncurated Account screenshots were accepted.",
+          "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport gateway frame and return hierarchy; this is not a claim that uncurated Account screenshots were accepted.",
+          "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "motion-draft-feedback-and-home-return",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "The current form provides visible unsaved feedback and a natural return while the separate browser cases retain local draft identity and focus across OS motion changes.",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Personal Information",
+              "state": "MOTION_EDITOR_READY"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Display name",
+              "value": "Unsaved motion compatibility draft"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "main",
+              "name": "",
+              "text": "Unsaved changes",
+              "path": "/account/personal-information",
+              "meaning": "The actual local form announces its unsaved state; feedback is not presented as saved account data.",
+              "state": "DRAFT_FEEDBACK_VISIBLE"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Home"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "path": "/",
+              "returnPath": true,
+              "state": "MOTION_HOME_RETURNED"
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-shared-consumers.spec.ts",
+        "tests/e2e/parallax-access-availability.spec.ts"
+      ],
+      "limitations": [
+        "The existing two OS-toggle browser cases prove local draft/focus compatibility; they do not establish physical/native pointing or external provider readiness.",
+        "The production-disabled animation lab is covered by actual 404 availability checks, not a claim that its developer playback UI was rendered in production.",
+        "Accepted references are shared-frame references only; actual motion/task-body review remains required."
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_EDITOR_READY-0.png",
+      "sha256": "bfa1a63ea781f3a6f2530bc32d7736d2f5f4d6837bc84539d7a3c085d671bccc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "state": "MOTION_EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2.png",
+      "sha256": "0521b7ce3dda518314a01df50251535b651ef06eb9cdb984f4359e98227a0300",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "state": "DRAFT_FEEDBACK_VISIBLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-MOTION_HOME_RETURNED-4.png",
+      "sha256": "f296c9b3b3d7cdc74e40a64972c4c1fcb8d51850ea11636fd8dab3998b423799",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "state": "MOTION_HOME_RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "c71ed5e0d1555413461c521978e7040af433b53a72224e594a32bf1d936403e9",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/81f3589447a7301cd2a1f4f4442c26e0.webm",
+      "sha256": "02e281e8ddbe58e8032f8acef292401e0bc7f99db6c090b7d40873fd413d0c33",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_EDITOR_READY-0.png",
+      "sha256": "d73e9502e0fa7634be59c73988743a8efe9d2f9250ffae55ea471029b6cf267e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "state": "MOTION_EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-DRAFT_FEEDBACK_VISIBLE-2.png",
+      "sha256": "d945f4ee26dca02dc7aaec798c70933ddce4756a13a94a675a4a0f1b227bca18",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "state": "DRAFT_FEEDBACK_VISIBLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-MOTION_HOME_RETURNED-4.png",
+      "sha256": "298e269f67e2ed969f53b68460d1c1a329e1396cefa00f424531f677829d066b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "state": "MOTION_HOME_RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "5bc1d61750aac963d4e251b5a5c7efd5a7dcbaa3c8a32e6f86cddf0f695002a0",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.transition.reduced-motion-motion-draft-feedback-and-home-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/1c75b5ce048225a7a26c9a5596f95af8.webm",
+      "sha256": "432487d5977cbceeadeb3b0f04732ceeddbe1fc4ba1ae36439d93fb4b05d1edf",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.transition.reduced-motion",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "c330fdc3463107ab068813a9d69e2de6f473bb429f2894cbb879a3a33bfb66f7",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

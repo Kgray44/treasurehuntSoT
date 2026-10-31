@@ -1,0 +1,75 @@
+{
+  "name": "availability",
+  "test": "tests/e2e/parallax-access-availability.spec.ts",
+  "status": "FAIL_DEVELOPMENT_ONLY",
+  "at": "2026-10-22T17:15:59.075Z",
+  "expectedCount": 2,
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "failure": "C_PROACTIVE_RESERVE_STOP",
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": null,
+    "elapsedMs": 180,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 12353642496,
+  "stopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "bytes": 4990,
+      "sha256": "c8fef7ede2c1b976164462a4cfec23a09133000ae684258a3f53d6f20731c858"
+    }
+  },
+  "producerStatus": "MISSING",
+  "resultHash": null,
+  "reportHash": "d48863ab587fe3c282191c02054230eba671ebe6734d74e992c6a77cf6483973",
+  "reportStats": {
+    "startTime": "2026-10-22T17:00:23.335Z",
+    "duration": 10387.148000000001,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "rows": [
+    {
+      "title": "Owned Showcase controls and owner-only pilot preserve their distinct boundaries · desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Owned Showcase controls and owner-only pilot preserve their distinct boundaries · phone",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "runtimeCleanup": null,
+  "failureDiagnostics": null,
+  "buildReusedWithoutRebuild": false,
+  "qualification": false,
+  "protectedCapture": false
+}

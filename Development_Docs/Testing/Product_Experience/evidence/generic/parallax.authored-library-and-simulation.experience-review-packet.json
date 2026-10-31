@@ -1,0 +1,1016 @@
+{
+  "objective": "Save a separate reusable object, place an independent copy in a scene, and understand authored interaction results; resolve semantic room targets, verify saved rendered proposals, and retain authored work through cancellation and motion preference changes; select multiple assets or room features, save a named editing group and transform it together without losing individual authoring data",
+  "contract": {
+    "id": "parallax.authored-library-and-simulation.experience",
+    "name": "Reusable spatial definitions and canonical scene simulation",
+    "authority": "one-voyage",
+    "owners": [
+      "spatial-pilot",
+      "one-voyage",
+      "project-crossdeck",
+      "reach"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+      "objective": "Save a separate reusable object, place an independent copy in a scene, and understand authored interaction results; resolve semantic room targets, verify saved rendered proposals, and retain authored work through cancellation and motion preference changes; select multiple assets or room features, save a named editing group and transform it together without losing individual authoring data",
+      "visibleOutcome": "Definition and scene copies remain distinct, return from an isolated definition restores the room view, and simulation explains matching effects and their rendered outcomes; the correct table near a window receives a visible saved note, equally plausible targets ask a named question, cancellation confirms unchanged work and late replies cannot alter it, and presentation policy changes retain the scene and composer; Assets and Groupings tree tabs show editable named groups, a shared gizmo moves all members live, cancellation restores them, and Undo/save/reload preserve membership and canonical poses; environment editing shows translucent scoped exclusion volumes around blockers and lets Creators move, rotate, resize, rename and remove reservations through the same controls, with persisted edits and nearby clear-space placement",
+      "integrationOwner": "Parallax authored library and simulation experience",
+      "systems": [
+        "project-parallax",
+        "project-crossdeck",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/components/studio/parallax",
+        "src/app/studio/parallax",
+        "src/parallax/library-lifecycle-service.ts",
+        "src/parallax/library-lifecycle-contracts.ts",
+        "src/parallax/environment-workspace.ts",
+        "src/components/studio/parallax/SpatialLibrary.tsx",
+        "src/components/studio/parallax/EnvironmentDefinitionWorkspace.tsx",
+        "src/components/studio/parallax/working-recovery.ts"
+      ],
+      "projectionPaths": [
+        "src/parallax",
+        "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java",
+        "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxSceneTransfer.java",
+        "native/android/app/src/main/java/com/voyagewright/landfall/LandfallActivity.java",
+        "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift",
+        "native/ios/LandfallCompanion/ParallaxSceneTransfer.swift",
+        "native/ios/LandfallCompanion/LandfallCompanion.swift",
+        "src/components/player/parallax/ChronicleLens.tsx"
+      ],
+      "entryPoint": "/studio/library",
+      "states": [
+        "LIBRARY_READY",
+        "ASSET_SAVED",
+        "INSTANCE_SAVED",
+        "SIMULATION_READY",
+        "SIMULATION_RESET",
+        "RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning.",
+      "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+      "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+      "designTarget": "Preserve the blue workstation and primary left rail. Saved cards distinguish scenes and reusable objects with labeled pose schematics, metadata and explicit copy actions. An isolated definition frames its object; returning to a scene restores useful room framing. The Simulation dock shares the timeline clock, shows available interactions, matching behavior delays, evaluated object states and real renderer visibility. Reset restores initial scene state; no-match feedback explains how to author an effect. Engineering mode adds identities and coordinates. Ordinary Save/history remain canonical. The refined blue workstation keeps its established panel layout. Scene Graph rows contain assets only, with one selected-object icon toolbar. Context menus expose existing object/viewport/preset/saved-scene commands, support keyboard entry and focus restoration, and honor preview, locking, busy and proposal constraints. Inspector identity precedes environment tools; detailed navigation guidance is disclosed on demand. Opacity uses the existing property selector and numeric keyframe fields, labeled zero-to-one material factors. Play/scrub visibly fades the same mesh and its directional shadow, zero opacity identifies a transparent object with Reveal in editor recovery, and Editor restores original translucency without editing saved content. Native companion capability negotiation explicitly falls back with a fading-specific explanation when unsupported. Timeline clips and pose markers occupy separate pointer rows. The settings pane stays beside tracks and identifies the selected pose. Cinematic is the third continuous interpolation choice, with exact endpoints, smooth easing, bounded per-take arcs and asset-aware sway; Step remains an explicit instantaneous option. Reduced motion removes decorative arcs and sway. A Scene Graph title click enters inline rename. Edit room features opens and focuses actual controls after React commits room geometry. Photo authoring accepts one or two views, estimates scale automatically and exposes optional relative scaling. Scene Timeline has one continuous current-time line and a connected wide grabber. Captured-pointer scrubbing previews canonical scene state live, pauses playback, leaves authored tracks unchanged, supports keyboard seeking and exposes current-time recovery outside a zoomed window. The page title and Parallax icon occupy the upper left; the active scene has a distinct centered identity. Library has Assets and Environments tabs. Every saved edited/reconstructed room has an environment entry with rename, edit, apply and discovery deletion that retains scene copies. Environment editing uses the same live gizmos and synchronized Inspector selection. With a fixed asset selected, clicking a visible room surface places and aligns it at the clicked point without requiring overlays. Open doorframes and explicit appliance shapes distinguish physical features instead of showing every appliance as a cabinet. Scene Graph adds Assets and Groupings tabs and one Group toolbar icon. Modifier clicks, Shift ranges, Ctrl/Command A, modifier Space, arrow focus and Ctrl/Command G offer keyboard selection and grouping. No/marginal selection opens a named member chooser; a multiple selection groups immediately and can be renamed. Groups select and highlight together in the scene, expose member inspection and right-click commands, and use the same Move/Rotate/Scale tools with a clear numeric group Inspector. Room members rotate upright and scale uniformly. Live preview commits once at release; Escape/pointer cancellation restores the saved poses. Lock and automatic-placement limits remain visible. Membership changes and ungrouping retain entities, room features and hierarchy. Assistant group edits use the same canonical preview/review/Apply and safe input preflight. Exclusion zones appear as lightly filled outlined boxes only during environment editing. The Room Inspector has a compact exclusion section for discovering blockers and adding manual reservations. Automatic envelopes follow their modeled blocker on a named support face. Editing an envelope detaches it, and deleting it stays deleted without suppressing real solid obstacles. Exclusion volumes never become observed furniture or placement surfaces. Finish environment editing clears room selection and removes the volumes from normal scene rendering. Library Environments adds a single plus entry point opening a rounded, focus-restoring setup dialog: independent saved-room/preset copy, empty editable shell, or one/two-photo reconstruction. Photo setup shows private local thumbnails, explicit consent, real import/inference progress with reduced-motion support, cancel/retry, an actual orbitable room proposal with expandable review notes, and Apply into an independently saved editable environment. Preserved source rooms, reload continuity and configured-provider refusal remain observable. Unpaid development inference proves the UI workflow only; live layout accuracy, configured production readiness and phone AR are separate gates. Individual grouped assets retain regular controls; Groups explicitly selects whole groups. Scene Graph order follows drag live and saves one Undo step. Group floor clicks preserve spacing atomically. The continuous floor distinguishes usable furniture clearance from low blocked gaps. One Assistant frame contains header controls, animated pending work and retained clarification exchanges, with concise first-person review and immediate removal of stale actions. Working drafts persist without saved Library membership. Independent environment documents never create unnecessary Scene cards. A unified typed Library separates saved/working/legacy/archive views and supports collections, favorites, versions and pinned reuse. Named copies are idempotent, historical copies retain version-specific intent, and recovery preserves the original CAS revision. Environment keyboard history is scoped independently from its originating Scene; its tall canvas retains every transform control. Light/dark and narrow layouts remain readable.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+          "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+          "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-studio-library",
+        "screen-page-studio"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-reusable-assets.spec.ts",
+        "tests/e2e/parallax-simulation.spec.ts",
+        "tests/e2e/parallax-animation.spec.ts",
+        "tests/e2e/parallax-context-menu.spec.ts",
+        "tests/e2e/parallax-authoring-refinements.spec.ts",
+        "tests/e2e/parallax-semantic-assistant.spec.ts",
+        "tests/e2e/parallax-asset-quality.spec.ts",
+        "tests/e2e/parallax-opacity.spec.ts",
+        "tests/e2e/parallax-cinematic.spec.ts",
+        "tests/e2e/parallax-room-features.spec.ts",
+        "tests/e2e/parallax-environment-library.spec.ts",
+        "tests/e2e/parallax-environment-entry.spec.ts",
+        "tests/e2e/parallax-click-surface.spec.ts",
+        "tests/e2e/parallax-groups.spec.ts",
+        "tests/e2e/parallax-exclusion-zones.spec.ts",
+        "tests/e2e/parallax-library-lifecycle.spec.ts",
+        "tests/e2e/parallax-sc00c-library-journeys.spec.ts",
+        "tests/e2e/parallax-sc00c-drop-placement.spec.ts",
+        "tests/e2e/parallax-spatial-community.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "limitations": [
+        "This candidate requires the full Studio overhaul acceptance matrix. Imported models, photo reconstruction, native physical rendering and owner acceptance are not established by the bounded reusable-object and simulation journeys. Schematics are authored-bounds diagrams, not rendered thumbnails."
+      ],
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "text": "Voyagewright Studio"
+          }
+        }
+      },
+      "continuity": {
+        "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+        "checks": [
+          {
+            "id": "creator-identity",
+            "role": "button",
+            "name": "Synthetic Parallax Creator",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+        "feedbackBudgetMs": 3000
+      },
+      "journeys": [
+        {
+          "id": "creator-simulation-diagnosis-and-reset",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "The Creator finds actual scene interaction controls, receives a no-effect explanation when no behavior matches, resets initial state and returns to Library",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Spatial Studio"
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Simulation"
+            },
+            {
+              "action": "assert",
+              "role": "tabpanel",
+              "name": "Simulation",
+              "text": "Interact with",
+              "state": "SIMULATION_READY",
+              "path": "/studio/parallax",
+              "kind": "outcome",
+              "meaning": "The natural editor entry opens populated scene-specific interaction and evaluated-object controls.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Simulate inspect"
+            },
+            {
+              "action": "assert",
+              "role": "tabpanel",
+              "name": "Simulation",
+              "text": "has no matching behavior",
+              "state": "SIMULATION_READY",
+              "path": "/studio/parallax",
+              "kind": "outcome",
+              "meaning": "An interaction with no authored behavior gives explicit recovery guidance instead of a false scene-change success.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Reset simulation"
+            },
+            {
+              "action": "assert",
+              "role": "tabpanel",
+              "name": "Simulation",
+              "text": "Simulation reset to the initial scene state.",
+              "state": "SIMULATION_RESET",
+              "path": "/studio/parallax",
+              "kind": "outcome",
+              "meaning": "Reset returns the clock and transient inputs to initial Player preview while preserving authoring content.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "RETURNED",
+              "returnPath": true
+            }
+          ]
+        },
+        {
+          "id": "creator-reusable-definition-and-scene-copy",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "The Creator saves a separate object definition, adds its released copy to the existing scene, and returns through canonical navigation",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Spatial Studio"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Edit selected object"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open scene settings"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Library, reuse & publication"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Asset name",
+              "contextValue": "PARALLAX_REUSABLE_ASSET_NAME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Save selected object as reusable asset"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Reusable asset definition and immutable version saved; source scene unchanged",
+              "state": "ASSET_SAVED",
+              "path": "/studio/parallax",
+              "kind": "outcome",
+              "meaning": "Saving the selected object creates an independent library definition and immutable version without changing the source scene.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Expand Spatial Library"
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Scenes"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home",
+              "expectFocus": {
+                "role": "tab",
+                "name": "Assets"
+              }
+            },
+            {
+              "action": "click",
+              "role": "tab",
+              "name": "Assets"
+            },
+            {
+              "action": "fill",
+              "role": "searchbox",
+              "name": "Search assets",
+              "contextValue": "PARALLAX_REUSABLE_ASSET_NAME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Inspect PARALLAX_REUSABLE_ASSET_NAME",
+              "contextName": "PARALLAX_REUSABLE_ASSET_INSPECT_NAME"
+            },
+            {
+              "action": "assert",
+              "role": "complementary",
+              "name": "PARALLAX_REUSABLE_ASSET_NAME details",
+              "contextName": "PARALLAX_REUSABLE_ASSET_DETAILS_NAME",
+              "text": "Private Library",
+              "state": "LIBRARY_READY",
+              "path": "/studio/parallax",
+              "kind": "outcome",
+              "meaning": "The separate owned definition and its release are discoverable through the canonical expanded Library.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Place in Scene"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Cancel placement",
+              "text": "Cancel placement",
+              "state": "PLACEMENT_PREVIEW",
+              "path": "/studio/parallax",
+              "kind": "outcome",
+              "meaning": "The immutable asset waits in the viewport for a reviewed surface choice; no Scene copy exists yet.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Floor"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Independent released copy added",
+              "state": "INSTANCE_SAVED",
+              "path": "/studio/parallax",
+              "kind": "outcome",
+              "meaning": "The owned immutable asset becomes an independently editable Scene copy through ordinary history and persistence.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "RETURNED",
+              "returnPath": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-SIMULATION_READY-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-SIMULATION_READY-2.png",
+      "sha256": "877c9886ec3bed70ae90a70f691f26a74a91db475e380895a2c0e0dbf6cd5500",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-SIMULATION_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-SIMULATION_READY-4.png",
+      "sha256": "ef0bd8830a87d35a2b736e2c61037380f2fdc0c4c912e3c95b6754e9767352f4",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-SIMULATION_RESET-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-SIMULATION_RESET-6.png",
+      "sha256": "f3185d275782feb3e61b1eb1b469ecc6353a7aa723cc650666505d5ba4fdd147",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_RESET",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-RETURNED-8.png",
+      "sha256": "ab2e24840470851a77ee69d93451ec6d987d541f7d0804a76a21c6bdd7582cd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "b62c391a438335187c63d4ed482b61c3d63f556a8ce78f413133b590bcd56033",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/e2e00db75c050523515a4ae7e5881654.webm",
+      "sha256": "b17655540d1f49ca4422591ddf1a60cb7fd296af89be3985423ee2caf752afdf",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-SIMULATION_READY-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-SIMULATION_READY-2.png",
+      "sha256": "356be4fa7936d57c09ba3a17c4f1596ebe69b057997a33a1a3760ae5ac08c0ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-SIMULATION_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-SIMULATION_READY-4.png",
+      "sha256": "d4a3b59807c542880b36b17337726754f2061996070c8a2ff7613c5228e3cf13",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-SIMULATION_RESET-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-SIMULATION_RESET-6.png",
+      "sha256": "49bc08a265f7ed65e3adb1242a86ae95a0cd2a512021ba1e91ba8717f01010af",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_RESET",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-RETURNED-8.png",
+      "sha256": "ab2e24840470851a77ee69d93451ec6d987d541f7d0804a76a21c6bdd7582cd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "13f6e3a967ed214f8ca10e5d34331623020b5d56078ae8f9d7fa2c4c3dd97d04",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/33b55674c50ab12afc0e257f11a54967.webm",
+      "sha256": "9c532d453110c4a7a7ef25de88c30acfcf0cfa541c67b77f443861661e535bca",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-ASSET_SAVED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-ASSET_SAVED-6.png",
+      "sha256": "712e70a7b3f09496ed99db872e7657ddaea6ce6d04bd999d5a05345b452f957c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "ASSET_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-LIBRARY_READY-13",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-LIBRARY_READY-13.png",
+      "sha256": "39a9fef65df7abe82f69c9c697699e02932a13c0d72cb600af5d8543855d8a74",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "LIBRARY_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-PLACEMENT_PREVIEW-15",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-PLACEMENT_PREVIEW-15.png",
+      "sha256": "8fbf9548cca211e74ec8765fe6a218b755e3710507a0e4504bad1e4e44d9a01c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "PLACEMENT_PREVIEW",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-INSTANCE_SAVED-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-INSTANCE_SAVED-17.png",
+      "sha256": "feaa5ae763a23252b818c49272df255c44c45a4841ea069013a2695e2422bc1f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "INSTANCE_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-RETURNED-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-RETURNED-19.png",
+      "sha256": "ab2e24840470851a77ee69d93451ec6d987d541f7d0804a76a21c6bdd7582cd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "0922da91f4263f9251fd1f22242dfbb9db631f28266837ddb85be38a44bd03bc",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/e066c6952d113aecd631dbe7262d96ca.webm",
+      "sha256": "369696ed971f4cebf45cf5e7f2f2aa7070388403704abc466dedd2fea18157f0",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-ASSET_SAVED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-ASSET_SAVED-6.png",
+      "sha256": "8c50bd57e9a274e98e15860e887c737c53e1a2c5c93afd52ed180d0911e0ec35",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "ASSET_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-LIBRARY_READY-13",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-LIBRARY_READY-13.png",
+      "sha256": "4cfb5d806cf5f09adb17f9bc2678c3d49c6a7b980ba72b3a50b60f303d80c7bc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "LIBRARY_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-PLACEMENT_PREVIEW-15",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-PLACEMENT_PREVIEW-15.png",
+      "sha256": "ae0217741d185db9d5673d7191024e9eabb66a7fc001d03d700586e32ad0806d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "PLACEMENT_PREVIEW",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-INSTANCE_SAVED-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-INSTANCE_SAVED-17.png",
+      "sha256": "1ba19e3493785c5a634bd4a5a71fe9fcdb496b497b9983231eb32cde086ec462",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "INSTANCE_SAVED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-RETURNED-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-RETURNED-19.png",
+      "sha256": "ab2e24840470851a77ee69d93451ec6d987d541f7d0804a76a21c6bdd7582cd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "0f166a50156b312db7926698da4ee376e7fe4414eec5f8a8ed00672f5131c34f",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/25f5143d8f9962204c6e94499a340efe.webm",
+      "sha256": "6d0464da2c39200a67796c6e3636358c0cbf60c0c917ff74b00fff5437dc303c",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-SIMULATION_READY-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-SIMULATION_READY-2.png",
+      "sha256": "5aa287c034042343bd76b3a23dc1d39caf4c91e4c1d4109f055a48a220b0153f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-SIMULATION_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-SIMULATION_READY-4.png",
+      "sha256": "93100a9eb922b420a36b1ca0dfe9c907a28506a25cd9bd9583d4e160c3e8415c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-SIMULATION_RESET-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-SIMULATION_RESET-6.png",
+      "sha256": "0367ddcf34bcfec346952d4ee972bb7ce64a226300445f9982fb0a54b9a49325",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_RESET",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-RETURNED-8.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "80c99f965b9a3e650113c74dc87f40f3084a45cd12409fe02470746683cd344f",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/ff72d7b1e48ce39dc449c605fa77202b.webm",
+      "sha256": "5fae9890d2373eac5bdc706135e819a54320d53253341b48601a9cdc644427da",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-SIMULATION_READY-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-SIMULATION_READY-2.png",
+      "sha256": "11c47b2f9af582a62543d608ba9c097afc9d12536e78513d2d1156dc2b0dcfab",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-SIMULATION_READY-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-SIMULATION_READY-4.png",
+      "sha256": "2e230f2a7450b352c2e37402626147b1f2f02c554c8ae414e61a34e402df8e8b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-SIMULATION_RESET-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-SIMULATION_RESET-6.png",
+      "sha256": "09b0b4f183b5dfd5fbef66162dbc1a0cb4b25b6098800e97627c7d8aa7f7ec3c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "SIMULATION_RESET",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-RETURNED-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-RETURNED-8.png",
+      "sha256": "a90bdb84034e8d44fcbcf52d574ad675590469d0232c71f79284dec24d6bd834",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "20734b8e0d1d81c6c0bfdc11562ab5b3af1d9029abf9a6bec3b950aebca17762",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-simulation-diagnosis-and-reset-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/38511b26b03f68388c9cd15eb95a3f8e.webm",
+      "sha256": "e8f0c2a68e8d6089ce1d8fcacf29277d081e5340011168134c2fb05fc8963ab5",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-ASSET_SAVED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-ASSET_SAVED-6.png",
+      "sha256": "ab83afe00a66d3f6477eddbc0b4d1d23a144f66ebde26a390dd77cd1b0dc3493",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "ASSET_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-LIBRARY_READY-13",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-LIBRARY_READY-13.png",
+      "sha256": "64cc42db2c622236d974a8c1b800d4434e5f3eb0a1c7f2e5040f9b95a2fe3255",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "LIBRARY_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-PLACEMENT_PREVIEW-15",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-PLACEMENT_PREVIEW-15.png",
+      "sha256": "2c070a974a94f6968d0d47cb190f9616a21fb04988895e607442b044d7a7aeea",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "PLACEMENT_PREVIEW",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-INSTANCE_SAVED-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-INSTANCE_SAVED-17.png",
+      "sha256": "805ffa78babfa6b08743f5e5acd52ba79a42be7c1c839b1fb831d5a1ce834a77",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "INSTANCE_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-RETURNED-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-RETURNED-19.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "89963b84133e0a13bad90f166c8defdab36d39deeb16a585b62b1a8106692ee4",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2cc39cf1a853047c458c7676e5a963dd.webm",
+      "sha256": "262a281004bb2ef0299ae80d041512d335705fcd8730c4c44382abb2568c39da",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-ASSET_SAVED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-ASSET_SAVED-6.png",
+      "sha256": "e16e6dd517d9a3a67f14a802875407481442a92c9201d28cf784b3110ac6550d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "ASSET_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-LIBRARY_READY-13",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-LIBRARY_READY-13.png",
+      "sha256": "acf37f7d142b31e1e9503019debfff0fa31326f2e89b9f42e0a5f42cae04dd90",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "LIBRARY_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-PLACEMENT_PREVIEW-15",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-PLACEMENT_PREVIEW-15.png",
+      "sha256": "23c13a3902c61cbc607cfbfae40c6d99dd0ff971d4a0cdfa74166c74b41d4535",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "PLACEMENT_PREVIEW",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-INSTANCE_SAVED-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-INSTANCE_SAVED-17.png",
+      "sha256": "75ff0d9bf44be8600a8e4a1bccd2b86f198c11f96ccc8980aee236da177e07e3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "INSTANCE_SAVED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-RETURNED-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-RETURNED-19.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "465fa7d603328634df7fd1f160ad532d6b6d65982880fc2e6890bd27e5dfd9a7",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.authored-library-and-simulation.experience-creator-reusable-definition-and-scene-copy-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/5c10b84a9d623b710e6a3243018d5f1c.webm",
+      "sha256": "2584dacccd4f72425fa594fd6ad3326b16910c5eb6ce53487bd01d2cb57379ac",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "fe2c6849ac57c654be35a05d4b76f9a6216aff43a62575654135581ea7a5cb43",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

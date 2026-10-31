@@ -12,7 +12,7 @@ import {
   type Anchor,
 } from "./contracts";
 import { composeTransform } from "./transforms";
-import { evaluateSpatialBehavior, type SpatialInput } from "./behavior";
+import { evaluateSpatialScene, type SpatialInput } from "./behavior";
 import type { CapabilityState } from "@/sextant/contracts";
 import {
   resolveAdaptiveScene,
@@ -36,7 +36,7 @@ export type TrackingState =
   | "LOST"
   | "UNSUPPORTED";
 const bindingCrew = (binding: InstanceBinding) => binding.sessionId;
-export type RuntimeMode = "GUIDED" | "NATIVE" | "SIMULATED";
+export type RuntimeMode = "GUIDED" | "NATIVE" | "BROWSER" | "SIMULATED";
 export type SpatialRuntimeEvent =
   | { type: "TRACKING"; state: TrackingState }
   | { type: "ANCHOR_LOST"; anchorId: string };
@@ -53,7 +53,14 @@ export interface SpatialRuntimeAdapter {
   resolve(anchor: Anchor): Promise<Transform | null>;
   place(alignment: "HORIZONTAL" | "VERTICAL"): Promise<Transform | null>;
   render(
-    entities: readonly { id: string; kind: string; content: string; widthMeters: number; transform: Transform }[],
+    entities: readonly {
+      id: string;
+      kind: string;
+      content: string;
+      widthMeters: number;
+      transform: Transform;
+      opacity?: number;
+    }[],
   ): Promise<void>;
   stop(): Promise<void>;
   environmentEvidence?(): Promise<EnvironmentEvidence | null>;
@@ -68,6 +75,7 @@ export type SpatialContext = {
     save: (key: string, value: SceneResolution) => void;
   };
   searchClock?: () => number;
+  motionPreference?: () => "full" | "gentle" | "reduced";
   searchTimeStore?: { load: (key: string) => number; save: (key: string, seconds: number) => void };
 };
 export type LensState =
@@ -136,8 +144,11 @@ export class ParallaxLensRuntime {
   private normalSamples = 0;
   private interactionPending = false;
   private startedAt = 0;
+  private cinematicTake = 0;
   private spatialInputs: SpatialInput[] = [];
   private timers: ReturnType<typeof setTimeout>[] = [];
+  private animationTimer: ReturnType<typeof setTimeout> | undefined;
+  private animationGeneration = 0;
   private readonly ledger = new Map<string, InteractionReceipt>();
   private readonly assistance = new Map<string, DiscoveryAssistance>();
   private resolution: SceneResolution | null = null;
@@ -216,6 +227,7 @@ export class ParallaxLensRuntime {
     const epoch = ++this.epoch;
     this.abort = new AbortController();
     this.startedAt = this.now().getTime();
+    this.cinematicTake = Math.floor(Math.random() * 2147483647);
     this.spatialInputs = [
       { trigger: "SCENE_ENTER", atMs: 0 },
       { trigger: "TIMER", atMs: 0 },
@@ -224,8 +236,12 @@ export class ParallaxLensRuntime {
       throw new Error("PARALLAX_SIMULATION_FORBIDDEN");
     this.adapter =
       candidate &&
-      (candidate.mode === "SIMULATED" ||
-        (candidate.mode === "NATIVE" && candidate.worldTracking && this.usableCamera()))
+      (candidate.mode === "BROWSER" ||
+        (candidate.mode === "SIMULATED" && !this.moment.version.entities.some((entity) => entity.element)) ||
+        (["NATIVE", "BROWSER"].includes(candidate.mode) &&
+          candidate.worldTracking &&
+          this.usableCamera() &&
+          !this.moment.version.entities.some((entity) => entity.element)))
         ? candidate
         : new GuidedSpatialAdapter();
     this.update({
@@ -236,6 +252,12 @@ export class ParallaxLensRuntime {
       anchors: {},
     });
     try {
+      if (this.adapter.mode === "BROWSER" && (!this.adapter.worldTracking || !this.usableCamera()))
+        throw new Error("Browser AR requires an active authorized camera and world-tracking provider.");
+      if (this.adapter.mode === "BROWSER" && this.moment.version.entities.some((entity) => entity.element))
+        throw new Error(
+          "Browser AR does not yet render these authored element types. Choose Guided View explicitly to continue.",
+        );
       await this.adapter.start({
         signal: this.abort.signal,
         sceneIdentity: { versionChecksum: this.moment.version.checksum, instanceId: this.instanceId },
@@ -245,6 +267,10 @@ export class ParallaxLensRuntime {
       });
       if (epoch !== this.epoch) return;
       const anchors: Record<string, ResolvedAnchor> = {};
+      if (this.adapter.mode === "BROWSER" && this.moment.version.adaptive)
+        throw new Error(
+          "Browser tracking currently requires a room-aligned authored scene. Adaptive physical surface evidence is not available.",
+        );
       if (this.moment.version.adaptive && this.adapter.mode !== "GUIDED") {
         const evidence = await this.adapter.environmentEvidence?.();
         if (!evidence || (evidence.source === "SIMULATED" && this.context.environment !== "DEVICE_LAB")) {
@@ -300,7 +326,8 @@ export class ParallaxLensRuntime {
         else if (this.resolution && this.moment.version.adaptive) {
           const root = this.moment.version.entities.find((e) => e.anchorId === a.id && !e.parentEntityId);
           t = root ? (this.resolution.placements[root.id]?.transform ?? null) : null;
-        } else if (a.kind === "FIXED_WORLDSPACE") {
+        } else if (this.adapter.mode === "BROWSER") t = await this.adapter.resolve(a);
+        else if (a.kind === "FIXED_WORLDSPACE") {
           const w = this.context.worldspace;
           t =
             w && w.id === a.worldspaceId && w.frameId === a.frameId
@@ -309,6 +336,8 @@ export class ParallaxLensRuntime {
         } else t = await this.adapter.resolve(a);
         if (epoch !== this.epoch) return;
         if (!t) {
+          if (this.adapter.mode === "BROWSER")
+            throw new Error("Room alignment must be completed before opening this spatial scene.");
           await this.useGuidedView();
           return;
         }
@@ -333,8 +362,8 @@ export class ParallaxLensRuntime {
         tracking: this.snapshot.state === "READY" || this.snapshot.mode === "GUIDED",
         inSearchRegion: true,
       });
-    } catch {
-      if (epoch === this.epoch) await this.useGuidedView();
+    } catch (cause) {
+      if (epoch === this.epoch) await this.presentationFailure(cause);
     }
   }
   private onEvent(e: SpatialRuntimeEvent) {
@@ -347,7 +376,7 @@ export class ParallaxLensRuntime {
       void this.useGuidedView();
       return;
     }
-    if (e.type === "TRACKING" && e.state === "INTERRUPTED") {
+    if (e.type === "TRACKING" && e.state === "INTERRUPTED" && this.adapter.mode !== "BROWSER") {
       void this.useGuidedView();
       return;
     }
@@ -381,7 +410,28 @@ export class ParallaxLensRuntime {
       });
     }
   }
-  async useGuidedView() {
+  /** Browser AR attempts remain explicit. A failed or interrupted attempt never silently becomes Guided. */
+  private async presentationFailure(cause?: unknown) {
+    if (this.adapter.mode !== "BROWSER") return this.useGuidedView(cause);
+    clearTimeout(this.animationTimer);
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
+    this.normalSamples = 0;
+    this.updateSearchActivity({ tracking: false });
+    await this.adapter.stop().catch(() => undefined);
+    this.update({
+      state: "DEGRADED",
+      tracking: "LOST",
+      guidance:
+        cause instanceof Error
+          ? cause.message
+          : "Browser tracking stopped. Restart and align again, or choose Guided View.",
+      anchors: {},
+      visibleEntityIds: [],
+    });
+  }
+  async useGuidedView(cause?: unknown) {
+    clearTimeout(this.animationTimer);
     this.timers.forEach(clearTimeout);
     this.timers = [];
     const epoch = ++this.epoch;
@@ -409,7 +459,10 @@ export class ParallaxLensRuntime {
       state: "GUIDED_FALLBACK",
       mode: "GUIDED",
       tracking: "UNSUPPORTED",
-      guidance: guidance.UNSUPPORTED,
+      guidance:
+        cause instanceof Error && cause.message === "PARALLAX_NATIVE_OPACITY_UNSUPPORTED"
+          ? "This companion cannot preview opacity animation. Guided View keeps the clue available; update the companion to preview fading."
+          : guidance.UNSUPPORTED,
       anchors,
     });
     await this.draw();
@@ -437,7 +490,10 @@ export class ParallaxLensRuntime {
     for (const [id, state] of Object.entries(states))
       this.context.searchTimeStore?.save(this.searchTimeKey(id), state.meaningfulSeconds);
     this.update({ discovery: states });
-    if (Object.values(states).some((s) => s.recovery === "GUIDED") && this.snapshot.mode !== "GUIDED")
+    if (
+      Object.values(states).some((s) => s.recovery === "GUIDED") &&
+      !["GUIDED", "BROWSER"].includes(this.snapshot.mode)
+    )
       await this.useGuidedView();
   }
   async reveal() {
@@ -448,10 +504,13 @@ export class ParallaxLensRuntime {
     if (this.adapter.mode === "NATIVE" && !this.usableCamera()) await this.useGuidedView();
   }
   private async draw() {
-    const states = evaluateSpatialBehavior(
+    if (this.adapter.mode === "BROWSER" && !Object.keys(this.snapshot.anchors).length) return;
+    const { states } = evaluateSpatialScene(
       this.moment.version,
       this.spatialInputs,
       this.now().getTime() - this.startedAt,
+      false,
+      { take: this.cinematicTake, motion: this.context.motionPreference?.() },
     );
     const a = this.moment.version.adaptive;
     const currentReveal = a?.revealOrder.find((id) => !this.discovered.has(id)) ?? a?.revealOrder.at(-1);
@@ -461,7 +520,9 @@ export class ParallaxLensRuntime {
         : states[e.id].visible && (!currentReveal || !a?.revealOrder.includes(e.id) || e.id === currentReveal),
     );
     this.update({
-      visibleEntityIds: visible.map((e) => e.id),
+      visibleEntityIds: visible
+        .filter((e) => this.adapter.mode === "GUIDED" || states[e.id].opacity !== 0)
+        .map((e) => e.id),
       highlightedEntityIds: visible.filter((e) => states[e.id].highlighted).map((e) => e.id),
     });
     const transforms = new Map<string, Transform>();
@@ -471,7 +532,7 @@ export class ParallaxLensRuntime {
       const e = this.moment.version.entities.find((x) => x.id === id)!;
       const t = composeTransform(
         e.parentEntityId ? resolve(e.parentEntityId) : this.snapshot.anchors[e.anchorId].transform,
-        e.transform,
+        states[e.id].transform,
       );
       transforms.set(id, t);
       return t;
@@ -482,15 +543,44 @@ export class ParallaxLensRuntime {
         kind: e.kind,
         content: e.content,
         widthMeters: e.widthMeters,
+        ...(states[e.id].opacity !== undefined ? { opacity: states[e.id].opacity } : {}),
         transform: resolve(e.id),
       })),
     );
   }
   private scheduleBehavior() {
+    clearTimeout(this.animationTimer);
+    const animationGeneration = ++this.animationGeneration;
     this.timers.forEach(clearTimeout);
     this.timers = [];
     const epoch = this.epoch;
     const elapsed = this.now().getTime() - this.startedAt;
+    const lastFrame = Math.max(
+      0,
+      ...(this.moment.version.studio?.animationTracks ?? [])
+        .filter((t) => t.enabled)
+        .flatMap((t) => t.keyframes.map((f) => f.atMs)),
+    );
+    const animate = () => {
+      if (
+        epoch !== this.epoch ||
+        animationGeneration !== this.animationGeneration ||
+        this.abort.signal.aborted ||
+        this.snapshot.mode === "GUIDED"
+      )
+        return;
+      this.animationTimer = setTimeout(async () => {
+        if (epoch !== this.epoch || animationGeneration !== this.animationGeneration || this.abort.signal.aborted)
+          return;
+        try {
+          await this.draw();
+          if (this.now().getTime() - this.startedAt < lastFrame) animate();
+        } catch (cause) {
+          if (epoch === this.epoch) await this.presentationFailure(cause);
+        }
+      }, 33);
+    };
+    if (lastFrame > elapsed) animate();
     const due = new Set(
       (this.moment.version.studio?.behaviors ?? [])
         .flatMap((b) =>
@@ -504,7 +594,8 @@ export class ParallaxLensRuntime {
       this.timers.push(
         setTimeout(
           () => {
-            if (epoch === this.epoch && !this.abort.signal.aborted) void this.draw().catch(() => this.useGuidedView());
+            if (epoch === this.epoch && !this.abort.signal.aborted)
+              void this.draw().catch((cause) => this.presentationFailure(cause));
           },
           time - elapsed + 1,
         ),
@@ -557,7 +648,7 @@ export class ParallaxLensRuntime {
           await this.draw();
         } catch (error) {
           Object.assign(anchor, original);
-          await this.useGuidedView();
+          await this.presentationFailure(error);
           throw error;
         }
       }
@@ -609,6 +700,7 @@ export class ParallaxLensRuntime {
     const epoch = ++this.epoch;
     this.abort.abort();
     this.timers.forEach(clearTimeout);
+    clearTimeout(this.animationTimer);
     this.timers = [];
     this.normalSamples = 0;
     this.interactionPending = false;

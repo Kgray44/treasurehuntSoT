@@ -1,0 +1,8 @@
+import json,subprocess,re
+from pathlib import Path
+out=Path(r'D:\CodexTemp\parallax-integration-20261019-01a15554\independent-review-final');inv=json.loads((out/'inventory.json').read_text());ff=r'C:\Users\kkids\AppData\Local\ms-playwright\ffmpeg-1011\ffmpeg-win64.exe';rows=[]
+for m in inv['media']:
+ if not m['file'].endswith('.webm'):continue
+ r=subprocess.run([ff,'-i',m['file']],capture_output=True,text=True);mt=re.search(r'Duration: (\d+):(\d+):(\d+\.\d+)',r.stderr);dur=int(mt[1])*3600+int(mt[2])*60+float(mt[3]) if mt else None
+ video=re.search(r'Video: ([^\n]+)',r.stderr);rows.append({**m,'duration':dur,'videoMetadata':video[1] if video else None,'audioStreamPresent':bool(re.search('Audio:',r.stderr))})
+(out/'recordings.json').write_text(json.dumps(rows,indent=2));print('\n'.join(f"{r['id']} {r['duration']} {r['relative']}" for r in rows))

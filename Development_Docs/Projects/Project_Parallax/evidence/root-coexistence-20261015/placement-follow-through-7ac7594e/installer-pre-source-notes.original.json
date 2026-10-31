@@ -1,0 +1,71 @@
+{
+  "stage": "SUPPLEMENT_MEDIA_BEFORE_SOURCE",
+  "sourceNotYetInspected": true,
+  "frozenAtUtc": "2026-10-15T21:49:43.978581+00:00",
+  "archive": {
+    "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+    "archiveTree": "5ef0f45ab2af40cac05092a0fa88cdabda1febc8",
+    "sourceAndTestsUnchangedFrom8053": true,
+    "mislabelOriginalUnchanged": true,
+    "files": [
+      {
+        "id": "asset-installer.original.webm",
+        "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+        "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-installer.original.webm",
+        "bytes": 996404,
+        "sha256": "7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76",
+        "gitBlob": "dc65490c79924fba7681a94fd94bd57234cbfdc4"
+      },
+      {
+        "id": "asset-installed-expanded.png",
+        "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+        "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-installed-expanded.png",
+        "bytes": 239755,
+        "sha256": "85b57daf5672ab4614a0a1cafc1d6c620cdab266afdd7699e213cfea5258fe58",
+        "gitBlob": "fe7e975adb7a793eba36f87926eb1a1be7b6694a"
+      },
+      {
+        "id": "asset-reused-desktop.png",
+        "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+        "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-reused-desktop.png",
+        "bytes": 289192,
+        "sha256": "8ace66a013e13cec656e162734b4edaa6664a49a89bf4367e55d32c06d49fa5f",
+        "gitBlob": "80a9edefb11bff651a9f7e54020d6c8f3b42629d"
+      }
+    ]
+  },
+  "extractionManifestSha256": "0c747444989b682e362de3b82cf7c074991534be29d54ebcdc3f53c33882267a",
+  "samplingManifestSha256": "3ca13cdf3222dcbee3b7c75688941b66cd5c69b91df3f2ce4ae4a8c427ae9b10",
+  "sampling": {
+    "id": "asset-installer.original.webm",
+    "originalRetainedPath": "D:\\CodexWorktrees\\treasurehunt-sc00c-scale-browser\\test-results\\parallax-spatial-community-a2b06-n-immutable-Library-release-chromium\\asset-installer.webm",
+    "copiedPath": "D:\\CodexTemp\\root-placement-7ac7594e-media\\asset-installer.original.webm",
+    "bytes": 996404,
+    "sha256": "7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76",
+    "width": 1440,
+    "height": 1000,
+    "fps": 25,
+    "decodedFrameCount": 182,
+    "lastFrameSeconds": 7.24,
+    "sampledFrameCount": 62,
+    "maxSampleGapSeconds": 0.12,
+    "sheets": [
+      "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\asset-installer-original\\sheet-00.jpg",
+      "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\asset-installer-original\\sheet-01.jpg",
+      "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\asset-installer-original\\sheet-02.jpg",
+      "D:\\CodexTemp\\root-placement-7ac7594e-media\\sampled\\asset-installer-original\\sheet-03.jpg"
+    ],
+    "sourceLinkage": "Awaiting committed supplement; hashverified retainednativecopy,not yetfinalsourceassociation."
+  },
+  "sourceLinkageCorrection": "Retainedcopyindependentlymatchesgitshow2197asset-installer.original.webmbyteforbyte. src/tests8053..2197emptyverified;thiscorrectsmediafilemapping,notnewrun. InitialmisnamedPublishermediaunchangedandgapfindingpreserved.",
+  "nativeStills": {
+    "asset-installed-expanded.png": "1440x1000darkexpandedLibraryselectedSyntheticDeskMapInstalledCommunity/read-only/pinnedrelease1.0.0/licenseRemixwithattribution/creator+collaboratorcredits;85itemgrid,Showmore37remaining;placementactionsbelowdetailviewport.",
+    "asset-reused-desktop.png": "1440x1000Studio,Creditedinstalledcopyadded Undoavailable;SceneDeskMaprevision2;selectedpaperonfloor;Libraryinstalledread-onlyrelease/license/credits/version1.0.0/Placebuttonretained;2objects9candidates."
+  },
+  "chronology": [
+    "0-.12Communitylisting;.24InstalltomyLibrary;.36Installing;.48OpeninSpatialStudio;.60-.72navigation;.84-1.44prepare;1.56room;1.80expandedLibrary;1.92-2.16selectedinstalleddetail;2.28compactreturn;2.40detaillicense/version/Place.",
+    "2.52viewportresizephone;2.88-3.12compactdetailsscrolltoPlace;3.24desktop;3.36-3.96reloadprepare;4.08room;4.32secondreload;5.04room;5.40selectedinstalleddetail/Place.",
+    "5.52placementprompt;5.64Floor;5.88busy;6.12panelgoneandselectedpaperonfloor,creditnotification/revision2.6.48paperdisappears/1object;6.72paperreturns/2objects;7.24paperremainsselectedwithinstalledsourceandcredits."
+  ],
+  "boundedAssessment": "Installerflowactualcoveragegapresolvedbyseparatecommittedoriginalwithoutoverwritingmisnamedvideo. Pixelsestablishfiniteplacement/history/creditpresentation;sourceassertionsneededfortransport,storedlineage/equalityandattributionpersistence. Physical/fullsolid/scaleproofunqualified."
+}

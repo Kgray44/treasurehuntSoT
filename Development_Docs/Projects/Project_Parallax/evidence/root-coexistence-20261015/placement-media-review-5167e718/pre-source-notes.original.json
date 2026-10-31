@@ -1,0 +1,204 @@
+{
+  "stage": "FROZEN_EXPERIENCE_BEFORE_SOURCE",
+  "reviewerContext": "owner_experience_review",
+  "sourceNotYetInspected": true,
+  "receiptsNotYetInspected": true,
+  "frozenAtUtc": "2026-10-15T21:08:48.026075+00:00",
+  "archiveCommit": "5167e718a8f1c674bd095975c58d2a4c677fd598",
+  "archiveTree": "d3cd496e7b848bd3e1b7a3f86172ab08b994d4ae",
+  "extractionManifestSha256": "ffbbeac1385452cb112a1d2a33167d01d514cbf589647b8923d13bd5656e6f05",
+  "imagesInspected": [
+    {
+      "id": "8840a4bc-library-community15/installed-asset-expanded.png",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/8840a4bc-library-community15/installed-asset-expanded.png",
+      "extractedPath": "D:\\CodexTemp\\root-placement-5167-media\\8840a4bc-library-community15\\installed-asset-expanded.png",
+      "bytes": 239754,
+      "sha256": "3e20f2fe4ee74b9c10caac4d6dc8434d5e213de19df9e80c711ff77f6b6845e2",
+      "gitBlob": "2b295490c88f730e82ab1beef0d4279599c0af96"
+    },
+    {
+      "id": "8840a4bc-library-community15/installed-asset-placed.png",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/8840a4bc-library-community15/installed-asset-placed.png",
+      "extractedPath": "D:\\CodexTemp\\root-placement-5167-media\\8840a4bc-library-community15\\installed-asset-placed.png",
+      "bytes": 270657,
+      "sha256": "12d8145b8a99b1ab5753576600448884c6f1d1bfbead38e583b994922a4e4c4e",
+      "gitBlob": "34e5cd2f8f2e16926dcb7ec5bad54cd28aa15be2"
+    },
+    {
+      "id": "94390701-placement-repair/installed-asset-expanded.png",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/94390701-placement-repair/installed-asset-expanded.png",
+      "extractedPath": "D:\\CodexTemp\\root-placement-5167-media\\94390701-placement-repair\\installed-asset-expanded.png",
+      "bytes": 130728,
+      "sha256": "57b3a3d5e42f1b9641d899e0ddaf4b37e355210368d38e4e7f3c3259118608f2",
+      "gitBlob": "de22d1656c84788ea89b11cf3d3c481625d6e2cf"
+    },
+    {
+      "id": "94390701-placement-repair/installed-asset-placed.png",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/94390701-placement-repair/installed-asset-placed.png",
+      "extractedPath": "D:\\CodexTemp\\root-placement-5167-media\\94390701-placement-repair\\installed-asset-placed.png",
+      "bytes": 270655,
+      "sha256": "a7ca6a745cd754edaf8b9ea6e628ac869c1533fea0da1425d1f89a9243e93b57",
+      "gitBlob": "093031cfdc9ddf3facf27d23d05350d2d57feee5"
+    }
+  ],
+  "imageObservations": [
+    "Both1440x1000 expanded installed-item stills preserve Spatial Library blue modal/sidebar/search/filter/grid/details.85items/Show more37remaining, selected Synthetic Desk Map detail persists although visible grid beginsAAfixtures. Details explicitly InstalledCommunity/read-only, licenseRemixwithattributionv1, creator/collaboratorcredit, pinnedrelease1.0.0. Lower actions are below detailviewport, not shown in this still.",
+    "Both1440x1000 placed stills show Credited installed copy added \u00b7 Undo is available, currentEditingSceneDeskMap revision2, selectedDeskMap paper visible on floor in frontofbed,2objects/9safe candidates. InstalledLibrary identity/readOnly description remains in leftpanel. This proves a visible copy/selection/result, not fullvolume/scale/physicalfit."
+  ],
+  "recordingInspection": {
+    "method": "Complete decoded spans, every third native frame plus final decoded frame. Full-span contact-sheet timed samples, not realtime/every-frame playback.",
+    "allSixCompleteDecodedSpansInspected": true,
+    "decodedFrames": 739,
+    "sampledFrames": 253,
+    "maxSampleGapSeconds": 0.12,
+    "contactSheetCount": 19,
+    "contactSheetDisplay": "2000x1250 displayed1996x1248; thumbnails for chronology, native still/native frame spots for detail.",
+    "videos": [
+      {
+        "id": "private-current",
+        "originalId": "8840a4bc-library-community15/saved-asset-placement.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 109,
+        "lastFrameSeconds": 4.32,
+        "sampledFrameCount": 37,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-current\\sheet-02.jpg"
+        ]
+      },
+      {
+        "id": "responsive-current",
+        "originalId": "8840a4bc-library-community15/responsive-library.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 128,
+        "lastFrameSeconds": 5.08,
+        "sampledFrameCount": 44,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\responsive-current\\sheet-02.jpg"
+        ]
+      },
+      {
+        "id": "library-return-current",
+        "originalId": "8840a4bc-library-community15/expanded-library-return.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 125,
+        "lastFrameSeconds": 4.96,
+        "sampledFrameCount": 43,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\library-return-current\\sheet-02.jpg"
+        ]
+      },
+      {
+        "id": "surface-current",
+        "originalId": "8840a4bc-lifecycle11/surface-drop.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 95,
+        "lastFrameSeconds": 3.76,
+        "sampledFrameCount": 33,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\surface-current\\sheet-02.jpg"
+        ]
+      },
+      {
+        "id": "private-repair",
+        "originalId": "94390701-placement-repair/saved-asset-placement.webm",
+        "width": 800,
+        "height": 450,
+        "fps": 25,
+        "decodedFrameCount": 126,
+        "lastFrameSeconds": 5.0,
+        "sampledFrameCount": 43,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\private-repair\\sheet-02.jpg"
+        ]
+      },
+      {
+        "id": "installed-repair",
+        "originalId": "94390701-placement-repair/installed-asset-placement.webm",
+        "width": 1440,
+        "height": 1000,
+        "fps": 25,
+        "decodedFrameCount": 156,
+        "lastFrameSeconds": 6.2,
+        "sampledFrameCount": 53,
+        "maxSampleGapSeconds": 0.12,
+        "sheets": [
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\sheet-00.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\sheet-01.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\sheet-02.jpg",
+          "D:\\CodexTemp\\root-placement-5167-media\\sampled\\installed-repair\\sheet-03.jpg"
+        ]
+      }
+    ],
+    "nativeSpotChecks": [
+      "private-repair/native-0070.png",
+      "private-repair/native-0076.png",
+      "private-repair/native-0082.png",
+      "private-repair/native-0085.png",
+      "private-current/native-0055.png",
+      "private-current/native-0061.png",
+      "private-current/native-0088.png",
+      "installed-repair/native-0136.png"
+    ]
+  },
+  "chronology": {
+    "private-current": [
+      "0-.12white;.24-.48opening;.60-1.08prepare;1.20room;1.44savedsearch1.68oneReusable reviewclue;1.92selecteddetail;2.04Placepanel",
+      "2.16floorchoicefocused;2.28-2.40panelremains;2.52panelagain;2.76cancelgone;2.88-3.12expanded same savedasset selected/version1.0.0",
+      "3.24Placepanel closesmodal;3.48independent released copy added/revision2 andsmallfloorpaper;3.72-3.84Selection unavailable afterUndo;3.96DeskMap selectedagain/Redo;4.20-4.32expandedreturn same search/selecteditem"
+    ],
+    "private-repair": [
+      "0-.60white;.72-1.08opening;1.20-1.92prepare;2.04room;2.16savedsearch;2.40one savedcard;2.52detail;2.64Placepanel",
+      "2.76-3.00panel remains;native3.00 bottomhint No clear floor support at that point. Nothing was inserted. Native3.24 maincontrols grey/busy while Floor/Cancel panel remains;3.36panelgone andmaincontrolsnormal, original1object unchanged visibly. Late-response arrival is not labeled bypixels.",
+      "3.48-3.72expanded same saveditem/version;3.84Placepanel;4.08Independent releasedcopy added/revision2;4.32-4.44Selection unavailable afterUndo;4.56DeskMapselectionrestored;4.92-5.00expandedreturn"
+    ],
+    "installed-repair": [
+      "0-.12Communitylisting;.24Installthisexactrelease;.36OpeninSpatialStudio;.60-.72navigateStudio;.84-1.20prepare;1.32room withinstalledlist;1.80-1.92expandedselectedinstalleddetail(85items);2.04returncompact",
+      "2.28scrolledinstalleddetaillicense/version/Place;2.52-3.00phoneviewport andcompactLibraryscrolleddetail/Placebutton;3.12desktopreturn;3.24-3.72reloadprepare;3.84room;4.08anotherreload;4.56room",
+      "4.92installeddetail;5.04Placepanel;5.16Floorbutton;5.40nativeframe136pointer?paper/tableoutline visible butpanelstillpresent,mainbuttonsbusy;5.52panelgone;5.64paperonfloor;6.20paperremainsselected/creditednotification;noUndoRedoobservedhere"
+    ],
+    "surface-current": [
+      "0-.12white;.24-.48opening;.60-.96prepare;1.08room;1.20grid;1.32Library;1.68Plan;1.80scrollLibrary;2.04selectedTreasurechest",
+      "2.16-2.40room/wait;2.52chestnowvisibleplannearbedwall andselectedProperties;2.76-3.00Selection unavailable/chestabsent;3.12chestreturns/selected;3.76stable. Numeric test/source needed to confirm exactdrop/UndoRedo; no fullvolumevalidationfrompixels."
+    ],
+    "responsive-current": [
+      "0-.12white;.24-.36opening;.48-.84prepare;.96room;1.08compactLibrary;1.44expandednarrowdark;1.56cardfocus;1.68searchfocus;1.92light reduced-lookingpresentation(no preferenceassumption yet)",
+      "2.28resizephone;2.52expandedlightphone;2.88Filtersopen;3.00MyCreationsoneasset;3.24BuiltIngrid;3.36Workingempty;3.48restored;3.72collapse;3.84reopen;3.96collapse",
+      "4.08-4.20bookselecteddetailsabovegrid;4.32temporaryerrorsearch;4.44-4.80Libraryresultscouldnotload/Refreshresults;4.92-5.08nomatchafterretry;noactualphoneplacementperformed"
+    ],
+    "library-return-current": [
+      "0-1.08opening;1.20-1.80prepare;1.92room;2.04Plan;2.16Library;2.40writingdesksearch;2.88expanded;3.24deskselecteddetails;3.48Assetsfocusring",
+      "3.60Placepaneloverplanroom;4.08deskvisible/selected;4.44renamefocus;4.68expandedselecteddeskretained;4.80-4.96compactreturnselectedrenamedobject"
+    ]
+  },
+  "provisionalFindings": [
+    {
+      "id": "PLACEMENT-EVIDENCE-LIMIT-01",
+      "classification": "UNQUALIFIED_OUTCOME_NOT_CONFIRMED_PRODUCT_DEFECT",
+      "observation": "Visible cancellation and unchanged-lookingroom do not alone prove delayedtransport completion/nohiddenlatewrites; inspect source-bound assertions after notes. PhoneLibrary browsing proved, phonecompletionnotshown. RenderedfloorpaperandplanChestpositiondonotestablishvolume,scale,supportorphysicalfit."
+    }
+  ],
+  "preSourceAssessment": "No concrete new visual blocker identified. Placementprompt namesselectedasset, offersFloor/Cancel, preservesroom;invalidhint appearsatcanvasbottomratherthanpanel;busy/cancelandsuccess/historyreturnarefinitevisualoutcomes. Protectedhold/adoptionnotassessed or lifted."
+}

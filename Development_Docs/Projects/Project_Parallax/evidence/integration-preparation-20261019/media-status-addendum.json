@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "packetCandidate": "961b1a82a1e2a7a33cc35f11c6e02e53027658e4",
+  "diagnosticMedia": [
+    "F0358",
+    "F0359"
+  ],
+  "diagnosticSource": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+  "diagnosticCohort": "special-05",
+  "diagnosticOutcome": {
+    "passed": 15,
+    "failed": 1,
+    "serialSkipped": 2
+  },
+  "countedInCompleted109": false,
+  "successfulSuccessor": {
+    "cohort": "special-08",
+    "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "peopleRecording": "F0614",
+    "quotaExhaustedStill": "F0630",
+    "globalControlRecordings": [
+      "F0611",
+      "F0612"
+    ],
+    "reservationRetryRecording": "F0613"
+  },
+  "receiptHashes": {
+    "special-05-report.json": "a67e47927b6a6a73d5736050854c4d8d6864c3984eaec8051f21aef1b5191d3d",
+    "special-05-source-run.json": "a349d9027c4f1b60f62185df34968bcc2960177022bab72850c7f6bcb07e9c4d",
+    "special-08-report.json": "95f2f7bc7cb02be99011629c888c83dc1d0f2995994de218d99a99ec2f0ce676",
+    "special-08-source-run.json": "ae795d8f7c5a5a09c0376fd36b7bb80d2b694aa4e81810d8551a9743051c6607"
+  },
+  "scope": "The packet intentionally retains diagnostic media. Only the completed cohorts selected in verification-ledger-complete-local.json contribute to the unique 109. Extra 7f0 Community/Guided/tracking media from special-05 are observations; the selected successful successor for those cases is special-08."
+}

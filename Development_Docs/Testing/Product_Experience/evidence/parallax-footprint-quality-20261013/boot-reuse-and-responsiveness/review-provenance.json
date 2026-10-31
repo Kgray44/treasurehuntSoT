@@ -1,0 +1,499 @@
+{
+  "documentClassification": "engineering-evidence",
+  "originalReviewSha256": "210ba88ef10091d409d10836c5dcede8101709232df8ea5e818838f4214d28bb",
+  "normalizationMetadata": {
+    "normalizedFrom": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/independent-review.original.json.txt",
+    "rawReviewSha256": "210ba88ef10091d409d10836c5dcede8101709232df8ea5e818838f4214d28bb",
+    "artifacts": [
+      {
+        "id": "asset-quality-compass-dark-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-compass-dark-canvas.png",
+        "bytes": 75894,
+        "sha256": "b3098fa3813a5740ea3f6f399d7eeb1eaba62694ecfb0980aa80ca364792cc39",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-compass-dark.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-compass-dark.png",
+        "bytes": 181153,
+        "sha256": "bbbdf63cf33dd2bc0756361d948112d1e53cf27cf9d1a480ad6db3bc46f42806",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-compass-light-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-compass-light-canvas.png",
+        "bytes": 76714,
+        "sha256": "d05777acacc81b1c088897828cabc9db2dd3e5ded3dd28f1725ae9607a7cdd67",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-compass-light.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-compass-light.png",
+        "bytes": 201778,
+        "sha256": "bfd9fdc9362357eacf94b80c85c594411b891a4b2c825a789ff6145a1200f547",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-footprint-dark-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-footprint-dark-canvas.png",
+        "bytes": 41549,
+        "sha256": "78eab236f940972b4138ad9135ee86eef7c1004544a28aefcc4cff1c20cf198c",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-footprint-dark.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-footprint-dark.png",
+        "bytes": 147900,
+        "sha256": "5d3fc93f07aa37726a561e1079006ee90b633b1ea66dea5dd9c56ceb62cd322e",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-footprint-light-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-footprint-light-canvas.png",
+        "bytes": 42082,
+        "sha256": "086c456a8b1be3e4b7d5c0785c8b118f1e127cda81e79b0e8e9dbc2dde8a5ef0",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-footprint-light.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-footprint-light.png",
+        "bytes": 166153,
+        "sha256": "2b3fd0d0bc5be73d60d0c4504606de3801eb20249b6c55d53d24addb9b8515be",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-full-scene-playback.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-full-scene-playback.png",
+        "bytes": 194825,
+        "sha256": "0c155925db2175834ee38efe6df853c6a62faed12903a8b577d398c0940cd08d",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-letter-dark-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-letter-dark-canvas.png",
+        "bytes": 53617,
+        "sha256": "ce836a67ec3f36bc61ee1ee992fe0863d2d756c35731f088f598479fbfb4f785",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-letter-dark.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-letter-dark.png",
+        "bytes": 160245,
+        "sha256": "195371c5feda603e944d9c552330fe359d0022218e467af56d8f1922523738ce",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-letter-light-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-letter-light-canvas.png",
+        "bytes": 55111,
+        "sha256": "0984205f13223b97ec91a47c99701cb0d0852a3574ad431bb298e8619e8d29e3",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-letter-light.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-letter-light.png",
+        "bytes": 180175,
+        "sha256": "9c10ef87e462a337498b5ca01582411163071c28db854c85a04558bccff75d7d",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-map-dark-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-map-dark-canvas.png",
+        "bytes": 63168,
+        "sha256": "df4e3b24d7e1ea71b3a755340ab7ca839c9f1a27a67d05dd3103acf848c825f4",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-map-dark.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-map-dark.png",
+        "bytes": 172316,
+        "sha256": "44b0f955c41706ed871dda2090f7de10116a74841803ea9f03d879aab463f916",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-map-light-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-map-light-canvas.png",
+        "bytes": 65892,
+        "sha256": "9ce93a58ca5b93e968e3ceee0027d55e1d972c987c2c7e7488b5909bfce0e083",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-map-light.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-map-light.png",
+        "bytes": 193433,
+        "sha256": "2f94fd3bc71e1fca459e9ee47d183bf9b09b7628d7566dd1e8c5ac2ee01ebb79",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-observations.original.json.txt",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-observations.original.json.txt",
+        "bytes": 10284,
+        "sha256": "0e167be031b5fbdb6c94312297f0ac6cb2580c8f2d812c4254fec728f32cbed7",
+        "verified": true,
+        "type": "original-receipt"
+      },
+      {
+        "id": "asset-quality-responsiveness.original.json.txt",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-responsiveness.original.json.txt",
+        "bytes": 3666,
+        "sha256": "ae4f955eace367e3076b699649ea4cd0a2689356cdc566be5dc89c845ee2b6cf",
+        "verified": true,
+        "type": "original-receipt"
+      },
+      {
+        "id": "asset-quality-right-boot-duplicated.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-right-boot-duplicated.png",
+        "bytes": 257718,
+        "sha256": "7818aa91f257199be9bb74132e2e925ea300c411b11fc1d2bb7572c11e3eee20",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-right-boot-proof.original.json.txt",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-right-boot-proof.original.json.txt",
+        "bytes": 1980,
+        "sha256": "5c694f16480e94a3e6c9c6125b6ad6c852ce2fbc0722187ce97332a59a1d2294",
+        "verified": true,
+        "type": "original-receipt"
+      },
+      {
+        "id": "asset-quality-right-boot-reused.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-right-boot-reused.png",
+        "bytes": 286348,
+        "sha256": "8f6581ddc3db932b395305bb73b05be371ef8b083a10019ed184193b62442b5e",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-room-dark.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-room-dark.png",
+        "bytes": 261898,
+        "sha256": "749c43912e85aad895146846c137b61dcb6e60dcec8d815c04daea38d2060c49",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-room-light.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-room-light.png",
+        "bytes": 279864,
+        "sha256": "53762fd92fca4894eb0c8adaa296e4b190b011bcb9be7de7c3a8f445833273fe",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-text-dark-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-text-dark-canvas.png",
+        "bytes": 53312,
+        "sha256": "1e729034da5dad67fb6a6a2d436d7bcc710dea7dde2d340e0643cc7f8b26e5a1",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-text-dark.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-text-dark.png",
+        "bytes": 157919,
+        "sha256": "a45d0df97b1fc7887efa47395a36ce0666de678d7939bba54e95b1d06fb346db",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-text-light-canvas.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-text-light-canvas.png",
+        "bytes": 54581,
+        "sha256": "25fbb06c3aced2c37b46bc91ef55abaea692d703727ac5135242094c986247c5",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-text-light.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-text-light.png",
+        "bytes": 178016,
+        "sha256": "c9d0c5f59d9df15b55f30d93941880ec4245b4cdbf51da7bdaca1cc6a6b36192",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-trail-dark-room.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-trail-dark-room.png",
+        "bytes": 260954,
+        "sha256": "20f489d419fbf3cf49ccdac2d70c56562d1afade94f21f099ef670eeda4a8ce9",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "asset-quality-trail-light-room.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/asset-quality-trail-light-room.png",
+        "bytes": 279048,
+        "sha256": "db5f5ebefddc661bb4211cb804cf5ed0554b180b65d6f68976581933a933f9a0",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "library-archived-definition.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/library-archived-definition.png",
+        "bytes": 239398,
+        "sha256": "e46bb3381481170405129057464ffc7753553a957faaa407722c8ab00510bc02",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "library-object-definition.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/library-object-definition.png",
+        "bytes": 286700,
+        "sha256": "96a2ac2da4c7e33934ed3334d5a53530f7dec230e7cb9520483f1c4b5dc1170f",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "library-open-definition.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/library-open-definition.png",
+        "bytes": 155309,
+        "sha256": "2db6f018a81e58e0d469751989d8f28bfa642f5b63e52580581676d311208ff0",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "library-placed-instance.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/library-placed-instance.png",
+        "bytes": 424303,
+        "sha256": "8c17d8acdf843db033c621fcbac49b543a866e45709b2b7e6f95d677046e7d9b",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "parallax-asset-quality-Cre-0f5f4--prop-resources-stay-stable-chromium-video.webm",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/parallax-asset-quality-Cre-0f5f4--prop-resources-stay-stable-chromium-video.webm",
+        "bytes": 302576,
+        "sha256": "931c86543069d99d619e68c4da709f91491d286039de429f64ad894d6de1efde",
+        "verified": true,
+        "type": "recording"
+      },
+      {
+        "id": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "bytes": 1057309,
+        "sha256": "51c2af94934cc65c1bba1c30327292c0291cc40eb93eb6f764afe82253df9004",
+        "verified": true,
+        "type": "recording"
+      },
+      {
+        "id": "parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium-video.webm",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium-video.webm",
+        "bytes": 231421,
+        "sha256": "5951feeff23bf52414f295ebe848e25a86ee6892fa38a669c403199c76c093a7",
+        "verified": true,
+        "type": "recording"
+      },
+      {
+        "id": "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+        "bytes": 538277,
+        "sha256": "c64d2de46cf218471758d442f3be9783bd49b6041b0fec55ebae468b99881d38",
+        "verified": true,
+        "type": "recording"
+      },
+      {
+        "id": "parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+        "bytes": 187536,
+        "sha256": "9c75621a109181abd785de733184b44d51572b22ccee6ce7f234cbe0b8a21142",
+        "verified": true,
+        "type": "recording"
+      },
+      {
+        "id": "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+        "bytes": 435228,
+        "sha256": "15e53117c5224b96e8fc143a8ee94e44fbf5ffca3ee95d1003f242c059934373",
+        "verified": true,
+        "type": "recording"
+      },
+      {
+        "id": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+        "bytes": 517560,
+        "sha256": "00fa9e303986672c820610622327c8b329a967cb6ff3a9a44d35819b7c8ba3eb",
+        "verified": true,
+        "type": "recording"
+      },
+      {
+        "id": "refinement-footprint-identity.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-footprint-identity.png",
+        "bytes": 157782,
+        "sha256": "c270213a47a3608fe05450cb11cf34fc23531f5a843bad48673ecec2db940f6e",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-hidden-editing-recovery.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-hidden-editing-recovery.png",
+        "bytes": 167548,
+        "sha256": "2b0d2e7012122c0d72b3901b5dff832033c1b9410223d49225f6ba1c3bd8a0d7",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-instant-step-explanation.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-instant-step-explanation.png",
+        "bytes": 155377,
+        "sha256": "f5cb371db6d265b382b9f45a87fa844e514634cac227b2cea57d658564422125",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-interpolated-object.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-interpolated-object.png",
+        "bytes": 171409,
+        "sha256": "ab8522ff58d3f492d0d10d445af848a85bed201f38c1be2818df53bf0284f94c",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-live-clip-drag.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-live-clip-drag.png",
+        "bytes": 169339,
+        "sha256": "1558617cecfcd02b0f562a836bfe843daec34e2a20cfe264fa4b7099e99a4579",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-live-duration-resize.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-live-duration-resize.png",
+        "bytes": 169231,
+        "sha256": "7140d55b2f4caa4ec467460d45bbba4252f693d250268087448990ac884bbd67",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-motion-detailed.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-motion-detailed.png",
+        "bytes": 155214,
+        "sha256": "cf803b8a9f5330f1b1b54b4824af0b6227a05646ee2e18a1f9eb1cf60a74ced1",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-motion-engineering.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-motion-engineering.png",
+        "bytes": 158195,
+        "sha256": "4009b55573403b76de58fba3628a5228adb00bd8b54950e2377fb9570eef6fa5",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-motion-guided.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-motion-guided.png",
+        "bytes": 153481,
+        "sha256": "0fdd3318245caf0bc6ed2d90bfdbc45c3c9a86849b390e550ed4c49a0c132a54",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-motion-samples.original.json.txt",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-motion-samples.original.json.txt",
+        "bytes": 3864,
+        "sha256": "54bde4fa12ca98230791b1a52f7adf7f979ca5ad6f00507f3e98cc2c26515872",
+        "verified": true,
+        "type": "original-receipt"
+      },
+      {
+        "id": "refinement-phone-requested-fallback.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-phone-requested-fallback.png",
+        "bytes": 76182,
+        "sha256": "0e3159ef4bb4ba1a42233700824ce472dafeb22d39fd3b24bfaccf7eb1ad43bb",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-phone-restored-motion.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-phone-restored-motion.png",
+        "bytes": 80792,
+        "sha256": "faec278ab981ec83c66ca620f7610bcb3b88c041220fd996c753804d207e764b",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-prop-builds.original.json.txt",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-prop-builds.original.json.txt",
+        "bytes": 206,
+        "sha256": "304d82eccbeea132489b6bb3c07bb8593d8618e8441ac31f3bff710d84e34924",
+        "verified": true,
+        "type": "original-receipt"
+      },
+      {
+        "id": "refinement-renamed-graph.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-renamed-graph.png",
+        "bytes": 249789,
+        "sha256": "8dc141535604af56210cf573679f69db58e7c48d63681d296d30b6698d7f7de3",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-renderer-failure-engineering.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-renderer-failure-engineering.png",
+        "bytes": 159638,
+        "sha256": "3492c9bf48b1a09399cb6b60dd78a7e0025ed735521e74ae2aff768dbdb19e4c",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-saved-replay-motion.original.json.txt",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-saved-replay-motion.original.json.txt",
+        "bytes": 1474,
+        "sha256": "482eaf134a887a065ceed4a17defee1e0f973ce02b2bf6731c4de5a997a328fc",
+        "verified": true,
+        "type": "original-receipt"
+      },
+      {
+        "id": "refinement-saved-replay-motion.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-saved-replay-motion.png",
+        "bytes": 276199,
+        "sha256": "759ad8b6c8102aaef6864a7682a6b85fff109d06d107a7fa406d068fe9eca430",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-small-distant-object-recovery.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-small-distant-object-recovery.png",
+        "bytes": 169788,
+        "sha256": "6c882742b9d2391962cc701eac4197129ae627311021715833e91fb77f996025",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "refinement-timeline-context-menu.png",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/refinement-timeline-context-menu.png",
+        "bytes": 180266,
+        "sha256": "c4a45762e69402065803c17488641d1cb08270df79676f8592fe8d7e349c87b2",
+        "verified": true,
+        "type": "screenshot"
+      },
+      {
+        "id": "run.original.json.txt",
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/run.original.json.txt",
+        "bytes": 1774,
+        "sha256": "b85d9b81c498e0c5adfc8687b95b4cee30d0408d6564d321cfecb6cadaa94382",
+        "verified": true,
+        "type": "original-receipt"
+      }
+    ],
+    "normalizationNote": "Expanded actual artifact IDs/paths/hashes from the verified original manifest; substantive immutable reviewer text is unchanged."
+  }
+}

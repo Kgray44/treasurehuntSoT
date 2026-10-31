@@ -1,0 +1,35 @@
+{
+  "name": "compatibility-features-validate-01",
+  "at": "2026-10-22T15:47:43.750Z",
+  "exit": {
+    "code": 0,
+    "signal": null,
+    "guardianExitCode": 0
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 0,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 0,
+    "elapsedMs": 2,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 32430473216,
+  "cStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 141,
+      "sha256": "1914d91351e403058f4c37ba0946d5dae3575fb6b45179f49046f5661445f41a"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "candidate": "1973a912240dc2bae081ee1d47d997c7c01d6a1b",
+  "tree": "2955e5813b7961a51a1611db7bc20f71b20e3c84",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-12T21:51:08.779Z",
+  "finishedAt": "2026-10-12T21:52:06.646Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "97a1f2bf045e4ac5b9152a50214105a4d022f3a0649e878048b570b31f8fba6a"
+    },
+    {
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "0634dbf6c96bc6301acad9815489ab85b895243dde82aa86a412c80261705a7f"
+    },
+    {
+      "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "06044391f49531a1efb654aaa09f303b001a3768687ea63c82d90fb9860d562f"
+    },
+    {
+      "file": "parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm",
+      "sha256": "a914dcb7ef93c783c98144ca1c7fefd60752df788d7aec5bb4f1801f1a516fe0"
+    }
+  ]
+}

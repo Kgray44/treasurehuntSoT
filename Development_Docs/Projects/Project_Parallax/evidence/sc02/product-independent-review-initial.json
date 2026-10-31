@@ -1,0 +1,769 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 independent product experience review, initial actual Studio packet",
+  "reviewedAt": "2026-10-15T04:06:50.9252151Z",
+  "reviewer": {
+    "contextId": "/root/sc02_visual_review",
+    "role": "Independent product-experience reviewer subagent",
+    "separateFromBuilder": true,
+    "implementationSourceInspected": false,
+    "builderRationaleExcluded": true,
+    "method": "Inspected all 19 actual product PNGs, the preserved contract, two accepted-reference images, and sequential sampled frames from both actual recordings before implementation source. Local validation and counters were read as bounded supporting receipts, never as visual acceptance.",
+    "provenanceLimitation": "Reviewer context identity is a provenance label, not cryptographic authentication."
+  },
+  "sourceIdentity": {
+    "productSource": "3be8a828c60317dd078f6451435e2ef686843af6",
+    "protectedBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+    "sourceEvidence": "creator-journey.json records this source; live HEAD was read as the same value at review start. Subsequent builder repairs are outside this initial packet.",
+    "taskOwnedRuntime": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+    "identities": "SYNTHETIC",
+    "sharedRuntime": "NOT_USED_PER_LOCAL_RECEIPT",
+    "cloudSignedCapture": "NOT_SUPPLIED"
+  },
+  "objective": "A Creator uses the actual Spatial Studio to place polished modeled assets, configure real lights and useful effects, save/reuse an editable Ghostly Presence composition, simulate it, save/reload and return coherently; the affected Creator-to-Player and Crossdeck obligations remain intact.",
+  "contracts": [
+    {
+      "id": "spatial-pilot.experience",
+      "journeys": [
+        "creator-assistance-and-return",
+        "sc02-assets-and-reusable-composition"
+      ],
+      "integrationOwner": "Parallax Creator-to-Player experience integration",
+      "scope": "Actual SC-02 Creator outcome inspected; inherited assistance, keyboard/focus, Player and shared-consumer obligations are not waived."
+    },
+    {
+      "id": "crossdeck.phase2.continuity",
+      "integrationOwner": "Crossdeck and Parallax experience integration",
+      "scope": "Affected protected obligation; no experience design or shared-consumer rendered acceptance is supplied."
+    }
+  ],
+  "contractHash": "0659ab84c0654b91e86cdffac61cbf3acc61955a3b2c9d245a7d855fff3e8205",
+  "referencesInspected": [
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "use": "Hierarchy and account/navigation consistency reference; not a demand to copy a gateway into an editor."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+      "use": "Readable constrained hierarchy and contextual navigation reference."
+    }
+  ],
+  "packet": {
+    "preservedRoot": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial",
+    "digestAlgorithm": "SHA256 over sorted UTF8 path<TAB>sha256<LF> records of E01-E26",
+    "digest": "356be8a5a44d88110a9fa1917140b679ff8ec747690c36da1e25eed5da561efc",
+    "evidence": [
+      {
+        "id": "E01",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/treasure-chest-desktop.png",
+        "sha256": "c6ca3e87b2c74341739ae67a0819dac8604de0b606d2566b677610f283ec2c24",
+        "bytes": 537613,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E02",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/real-point-light-enabled.png",
+        "sha256": "719ecfef01c172a38944a1a763eefa307a64544555c9b9421c79e7cc8dc91d54",
+        "bytes": 580673,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E03",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/real-point-light-disabled.png",
+        "sha256": "604f2b969139439878ceaab4319afb93798992c9e6498a1a51bc7a7a77c8d751",
+        "bytes": 520905,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E04",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/light-on-canvas.png",
+        "sha256": "e04e4cd8d4d70445bcc2550ee4a38a208c7f38ce814fee6ca93333d770c4918e",
+        "bytes": 317624,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E05",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/light-off-canvas.png",
+        "sha256": "376bd220fca1c18df5241f360a7bdbb0ca174d72863efc02d349e6aefd528ce2",
+        "bytes": 257540,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E06",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/composition-simulation.png",
+        "sha256": "07d7e20eb0a0320e9f8004d5372bdab6966a32c4e94c7bfcdd2d2a57e30ef39f",
+        "bytes": 485243,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E07",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/composition-dark.png",
+        "sha256": "7afa7ae134fabbe6157acab3bd4b42f69bcb34eeea11b20968c30aecf62c6f7c",
+        "bytes": 356338,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E08",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/composition-light.png",
+        "sha256": "91d2907020ff8879c92703fe329d5901cb4ee0c54c649e0c28a48583d25218b2",
+        "bytes": 335940,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E09",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/composition-constrained.png",
+        "sha256": "84b0d3ffc7bfd608878f0c130ab22decbfcf6ed5f8c9bb5a24ba22ca8864d769",
+        "bytes": 121414,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E10",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/composition-normal-motion.png",
+        "sha256": "602aa600f9e672ba1723faa2b1a00d1ceef0b766b627789a5d4062b39cf36877",
+        "bytes": 317476,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E11",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/family-0.png",
+        "sha256": "ad913a92f1b28e33015b3d62236e09e2f875a02e7161551912e4187ad1edacf8",
+        "bytes": 317710,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E12",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/family-1.png",
+        "sha256": "05899edb2b25f7624cff1c9e4a8bac98c053e6096dcafa40c8d522635871d55f",
+        "bytes": 326747,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E13",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/family-2.png",
+        "sha256": "447976948e92d69431e0aab7839ea0cd8cdd424385176c1d0453d08a27c10402",
+        "bytes": 312463,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E14",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/family-3.png",
+        "sha256": "0084156961a48d26fe42a3f802ef5f2225b6c6470190f6f2217d5f767ae393db",
+        "bytes": 312751,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E15",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/family-4.png",
+        "sha256": "8a87ab529c6f1d2d608d25f1f5622db53fe0552faef4ada1fd4e29e3849c6077",
+        "bytes": 293081,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E16",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/family-5.png",
+        "sha256": "698112b09c87b2cfe19f226174bad98b2d8b0713b6876a890c64638ff54721a6",
+        "bytes": 304154,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E17",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/composed-ghostly-presence.png",
+        "sha256": "f978ef83679f1f1067a4cc20756d7b0f27b0b3656f17759e0a270379e7b3b8c1",
+        "bytes": 378667,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E18",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/composed-haunted-treasure.png",
+        "sha256": "474c14a78c1663aa7e9e137072a907cde1adc663e8331b036c1257a02fb3741d",
+        "bytes": 382155,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E19",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/composed-lantern-embers.png",
+        "sha256": "70699bb4d9d180e9661f5f069fa3870b700bdd579bf17dc9862dd2ba097ce0d1",
+        "bytes": 369865,
+        "kind": "ACTUAL_PRODUCT_SCREENSHOT"
+      },
+      {
+        "id": "E20",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/creator-journey.webm",
+        "sha256": "ab010c1015b9b3fdfd89ed093c9c3c60ad70d60e65caa860f0a4ddafa37be644",
+        "bytes": 2001587,
+        "kind": "ACTUAL_PRODUCT_RECORDING"
+      },
+      {
+        "id": "E21",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/asset-showcase.webm",
+        "sha256": "a253a6afbc312b0abbc8b0537cc15dbe4a6d372190e001cb03b45a364a8a8270",
+        "bytes": 1298757,
+        "kind": "ACTUAL_PRODUCT_RECORDING"
+      },
+      {
+        "id": "E22",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/creator-journey.json",
+        "sha256": "a2086c91801aefa8f08582628d1597e70c76b7f88e88b348d37228a38bc6e91b",
+        "bytes": 456,
+        "kind": "LOCAL_OBSERVATION_RECEIPT"
+      },
+      {
+        "id": "E23",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/showcase-observations.json",
+        "sha256": "53a258bb25ab1b02f9750131e1f4e8716c0945c4372113453bd201f2880562cc",
+        "bytes": 1663,
+        "kind": "LOCAL_OBSERVATION_RECEIPT"
+      },
+      {
+        "id": "E24",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-initial/browser-runtime.json",
+        "sha256": "68783aca81dac2b4dcc4b4c7d4b938b93e0a98b733037b6aa874be6b7c2a4939",
+        "bytes": 1316,
+        "kind": "LOCAL_OBSERVATION_RECEIPT"
+      },
+      {
+        "id": "E25",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-initial-packet/local-validation.json",
+        "sha256": "de201a3f6da192fad95f85596c53e1ef484fced8fcd5763139b1192f35ee2c59",
+        "bytes": 4721,
+        "kind": "SUPPLEMENTAL_LOCAL_EVIDENCE"
+      },
+      {
+        "id": "E26",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-initial-packet/asset-independent-review.json",
+        "sha256": "d740ec4a7c39e8594c9e5151f01cac494647735bab69eb897a28d4abf66a4486",
+        "bytes": 84876,
+        "kind": "SUPPLEMENTAL_LOCAL_EVIDENCE"
+      }
+    ],
+    "derivedMedia": [
+      {
+        "id": "M01",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/creator-contact-1.png",
+        "sha256": "bebb5259aeeb00ca2711c2506e7dafde536598ced61c4a8f94e77baa45f282f7",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      },
+      {
+        "id": "M02",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/creator-contact-2.png",
+        "sha256": "207eb00ddc061ddf058ce8d400a9f3f96a13f7ebc076a0b9b45316b1546d3d01",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      },
+      {
+        "id": "M03",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/creator-contact-3.png",
+        "sha256": "e6b1403c0d93d023ebbbd2087f973f47a50c6a2c59782dd1983af2eea518cf9b",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      },
+      {
+        "id": "M04",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/showcase-contact-1.png",
+        "sha256": "abb9511482446b51f0c1018bb91133a08ce2ef0385a1ae9fd9d368c1a0b93299",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      },
+      {
+        "id": "M05",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/showcase-contact-2.png",
+        "sha256": "9f255fe21ce361b63ab48e03cb35cbee58c76df02c8b0697a8c4d62cf3beec28",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      },
+      {
+        "id": "M06",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/creator/frame-011.png",
+        "sha256": "8e54dcc4923d558bcd99e28e46e4d93f05ee94346309550996ed93e71000760b",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      },
+      {
+        "id": "M07",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/creator/frame-013.png",
+        "sha256": "2875f03ca12af8f1f16e0c744d0e345e4c25c060503bb5cf6bc588e5f0bd26ef",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      },
+      {
+        "id": "M08",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/creator/frame-015.png",
+        "sha256": "317d1bc6b8de84f32db57cdc249b90c085a210f8db88881678e16ed3195cb84a",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      },
+      {
+        "id": "M09",
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-review-media/creator/frame-035.png",
+        "sha256": "8c6295e36131632b3837d560a39cdc04bd6be7c17ad0baf86000acc96c843583",
+        "kind": "DERIVED_RECORDING_INSPECTION_FRAME_OR_CONTACT_SHEET",
+        "limitation": "Decoded from the real recording; contact sheets are reduced previews with approximate output-frame times, not new application captures."
+      }
+    ],
+    "supplementalSnapshotRoot": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-initial-packet"
+  },
+  "recordingInspection": {
+    "creator": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-initial-packet/product/creator-journey.webm",
+      "durationSeconds": 16.72,
+      "resolution": [
+        1440,
+        900
+      ],
+      "fps": 25,
+      "audioStreams": 0
+    },
+    "showcase": {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc02/product-independent-review-initial-packet/product/asset-showcase.webm",
+      "durationSeconds": 9.92,
+      "resolution": [
+        1440,
+        900
+      ],
+      "fps": 25,
+      "audioStreams": 0
+    },
+    "extraction": "Playwright bundled ffmpeg decoded PNG samples with output -r 2; Pillow arranged reduced contact sheets with approximate frame times. Five contact sheets and four selected full frames were inspected.",
+    "sampledFrames": 56,
+    "continuousPlaybackInspected": false,
+    "limitations": [
+      "Sampling cannot establish continuous smoothness, exact latency, transition pacing, all motion events or reduced-motion equivalence.",
+      "No audible signal is present in the recording streams; no perceived spatial-audio acceptance is possible.",
+      "Final Creator recording frame reaches the library while account status is still Checking account; settled identity return is pending."
+    ]
+  },
+  "overall": {
+    "decision": "REPAIR_AND_RECAPTURE",
+    "repairDisposition": "REPAIR_AND_RECAPTURE",
+    "localCreatorOutcome": "SUPPORTED_IN_PART_WITH_CONCRETE_RENDERED_EVIDENCE",
+    "significantVisualCompletion": "BLOCKED",
+    "fullJourneyValidated": false,
+    "softwareQualification": "LOCAL_TEST_RECEIPTS_ONLY_NOT_SOUNDING_LINE_ACCEPTANCE",
+    "protectedIntegration": "NOT_CLAIMED",
+    "physicalNativeReadiness": "NOT_ESTABLISHED",
+    "ownerAcceptance": "NOT_CLAIMED",
+    "rationale": "The chest, semantic inspector, visible light response, composition hierarchy/save and scene reopen are real local evidence. Poor showcase staging and clipped constrained controls prevent significant visual acceptance. The existing vase asset blocker, preserved Crossdeck design gate and unsupported contract dimensions remain explicit."
+  },
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "status": "BLOCKING_FINDING",
+      "evidenceIds": [
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16",
+        "E17",
+        "E18",
+        "E19"
+      ],
+      "observations": [
+        "The desktop shell gives the 3D canvas the main central zone, with library on the left and contextual inspector on the right.",
+        "Family showcases retain the synthetic room's large tables. The new bookshelf/sofa/desk and storage pieces are overlapped or hidden; nautical/clue props are tiny and placed on the floor; curtains visibly intersect a tabletop and other decor is hidden.",
+        "The three composed scenes show localized colored light and some particle/phenomenon marks, but the effect is small relative to the default room and is shown with editor overlays."
+      ],
+      "limits": "These are actual application images, but the showcase staging does not demonstrate the requested polished representative asset collection or correct support placement.",
+      "findingIds": [
+        "SC02-EXPERIENCE-SHOWCASE-OCCLUSION"
+      ]
+    },
+    {
+      "dimension": "hierarchy",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "E06",
+        "M01"
+      ],
+      "observations": [
+        "Scene title/status, authoring actions, preview/environment controls, scene canvas and inspector have clear desktop zones.",
+        "The vertical rail and the internal Library/Hierarchy/Saved tabs visibly expose the same three destinations. This is observed duplication; its introduction/baseline provenance has not been established."
+      ],
+      "limits": "No new-regression claim is made for duplicate navigation; source/baseline comparison was outside this independent experience pass.",
+      "findingIds": []
+    },
+    {
+      "dimension": "typography",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E07",
+        "E08",
+        "E09"
+      ],
+      "observations": [
+        "Scene titles and inspector type headings are readable, and serif brand typography remains distinct from authoring controls.",
+        "Metadata, category chips and bottom instructions use small dense text at the 1440 by 900 working size; at 390px the canvas instructions are especially compressed."
+      ],
+      "limits": "No font-size or accessibility ratio measurement is claimed from screenshots alone.",
+      "findingIds": []
+    },
+    {
+      "dimension": "spacing",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "E08",
+        "E09"
+      ],
+      "observations": [
+        "Desktop dock borders and grouped inspector rows have consistent gaps and separators.",
+        "The library's category-chip block and the canvas's stacked control rows are dense; the constrained layout compounds this density."
+      ],
+      "limits": "The constrained clipping/overlay finding is recorded under responsive behavior.",
+      "findingIds": [
+        "SC02-EXPERIENCE-CONSTRAINED-LAYOUT"
+      ]
+    },
+    {
+      "dimension": "controls",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "E03",
+        "M01",
+        "M03"
+      ],
+      "observations": [
+        "The point-light inspector exposes enabled state, color, type, intensity, range, falloff and pulse frequency; the paired images visibly show enabled-state consequences.",
+        "Physical-asset inspector identifies dimensions and support; the composition hierarchy shows individually named light, atmosphere, particle and audio children.",
+        "Asset cards communicate click/drag placement through a small footer instruction. An explicit visible Add label is not present on the chest card in the supplied capture, even though the journey control is named Add Treasure chest."
+      ],
+      "limits": "Selection and control presence do not establish every transform, support attachment, articulation or cancellation path.",
+      "findingIds": []
+    },
+    {
+      "dimension": "contrast",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E07",
+        "E08",
+        "E09"
+      ],
+      "observations": [
+        "Dark-theme primary text and outlines are distinct from navy surfaces; the light shell changes consistently to pale blue surfaces and dark text.",
+        "The light-theme 3D floor/walls and selected paper become very pale, with weak visual separation in the far/zoomed scene. Small secondary instructions remain difficult to read at the constrained size."
+      ],
+      "limits": "No WCAG contrast pass or failure is inferred without measurement; high-intensity scene lighting and theme effects have not been isolated here.",
+      "findingIds": []
+    },
+    {
+      "dimension": "consistency",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "E06",
+        "E07",
+        "E08",
+        "E11",
+        "E16"
+      ],
+      "observations": [
+        "Common control shapes, blue selection states, inspector separators and title/status arrangement persist across asset families and both themes.",
+        "Type labels PHYSICAL ASSET, LIGHT and INTERACTION VOLUME help distinguish editor semantics, although the composition root is presented as an interaction volume and requires reading its child hierarchy to understand the effect."
+      ],
+      "limits": "Crossdeck and Player-consumer consistency are not represented by this Creator-only packet.",
+      "findingIds": [
+        "CROSSDECK_SHARED_EXPERIENCE_PENDING"
+      ]
+    },
+    {
+      "dimension": "states",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E06",
+        "E07",
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "observations": [
+        "The samples show populated editor, disabled/enabled light, composition save feedback, saved composition, reload preparation and reopened working draft.",
+        "A loading panel explicitly says Preparing the synthetic 3D environment rather than silently showing an empty canvas."
+      ],
+      "limits": "The inherited assistant-ready/docked/closed journey, empty asset search, invalid settings, resource failure, adverse state and recovery were not supplied or independently reviewed.",
+      "findingIds": []
+    },
+    {
+      "dimension": "responsive",
+      "status": "BLOCKING_FINDING",
+      "evidenceIds": [
+        "E09",
+        "E10"
+      ],
+      "observations": [
+        "At 390 by 844, the top workstation action row extends beyond the right edge; Reset Workspace Layout is reduced to a partial R.",
+        "Wrapped canvas controls, the left transform rail and the persistent selected-object card consume a substantial portion of the small working canvas.",
+        "The full-width desktop canvas can use the closed-dock state without losing the central scene."
+      ],
+      "limits": "This is a browser-width observation, not touch, physical-phone or native-device acceptance.",
+      "findingIds": [
+        "SC02-EXPERIENCE-CONSTRAINED-LAYOUT"
+      ]
+    },
+    {
+      "dimension": "keyboard",
+      "status": "PENDING_UNSUPPORTED",
+      "evidenceIds": [
+        "E20"
+      ],
+      "observations": [
+        "A real Creator journey is recorded, but no keyboard-only traversal or activation sequence is identifiable in the supplied evidence."
+      ],
+      "limits": "Keyboard reachability, shortcut conflicts, transform operation, composition save/reuse and return cannot be accepted from mouse-oriented images or passing test counters.",
+      "findingIds": []
+    },
+    {
+      "dimension": "focus",
+      "status": "PENDING_UNSUPPORTED",
+      "evidenceIds": [
+        "E01",
+        "E06",
+        "E20"
+      ],
+      "observations": [
+        "Selected toolbar tools, tabs and entities have visible active/selection treatment."
+      ],
+      "limits": "An active selection is not evidence of keyboard focus. Focus visibility, order, trap avoidance and focus return after docking/closing are not demonstrated.",
+      "findingIds": []
+    },
+    {
+      "dimension": "feedback",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E02",
+        "E03",
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "observations": [
+        "The light on/off image pair visibly changes the chest, wall, floor and table; it is a real scene effect, not merely a blue decorative icon.",
+        "The recording samples show Composition saved to My Spatial Library, Saving working draft and Working draft opened, and the saved item remains listed after reopen."
+      ],
+      "limits": "The contract's 3000ms keyboard-feedback boundary is not independently measured. Status messages/counters alone do not establish all authored behavior survived reload.",
+      "findingIds": []
+    },
+    {
+      "dimension": "motion",
+      "status": "PARTIAL_SAMPLED_RECORDING",
+      "evidenceIds": [
+        "E06",
+        "E10",
+        "E20",
+        "E21",
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05"
+      ],
+      "observations": [
+        "Both WebM recordings were decoded into approximately 2fps sequential samples; scene changes, loading/reopen progression and particle-like speckles are visible across samples.",
+        "Timeline controls and a normal-motion screenshot are present; the simulation screenshot shows a running timeline state."
+      ],
+      "limits": "This is sampled-frame inspection, not continuous playback. Smoothness, pacing, full transition timing, reduced-motion equivalence, cancellation and all entrance/pulse effects are not accepted. The WebM streams contain video only, so no audible sound was inspected.",
+      "findingIds": []
+    },
+    {
+      "dimension": "continuity",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E06",
+        "E07",
+        "E20",
+        "M01",
+        "M02",
+        "M03"
+      ],
+      "observations": [
+        "The sampled recording begins in the Creator Library, enters Spatial Studio, adds the chest/composition, lists Ghostly Presence in Saved, reloads and retains the visible chest/scene, then returns to the Creator Library shell.",
+        "The final recorded library frame still says Checking account, so settled same-identity return is not visually established by this recording endpoint."
+      ],
+      "limits": "No authentication loss is inferred. Exact authored equality and independent instance behavior rely on separate contract verification. The affected Crossdeck continuity design and shared-consumer acceptance remain absent.",
+      "findingIds": [
+        "CROSSDECK_SHARED_EXPERIENCE_PENDING"
+      ]
+    },
+    {
+      "dimension": "complexity",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "M01"
+      ],
+      "observations": [
+        "Family/type names and contextual property groups expose useful distinctions between physical assets and effects.",
+        "Many category chips, a separate element-type selector, duplicated destination controls and heavily prefixed/truncated hierarchy labels add scanning cost.",
+        "Grouping compositions into inspectable children is understandable in the hierarchy and avoids an opaque single effect asset."
+      ],
+      "limits": "No user efficiency or learnability test was supplied; these are concrete layout observations rather than measured usability outcomes.",
+      "findingIds": []
+    },
+    {
+      "dimension": "role-outcomes",
+      "status": "PARTIAL_CREATOR_ONLY",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "E06",
+        "E20",
+        "E22"
+      ],
+      "observations": [
+        "The authenticated synthetic Creator visibly places a modeled chest, obtains real lighting changes, saves a named composition, reopens the scene and reaches the library return shell.",
+        "Independent constituent editing is exposed in the hierarchy and contextual properties."
+      ],
+      "limits": "Player Lens, native/Guided consumer delivery, perceived spatial audio, physical AR and the full Creator-to-Player objective are not proven. No owner acceptance is claimed.",
+      "findingIds": [
+        "CROSSDECK_SHARED_EXPERIENCE_PENDING"
+      ]
+    },
+    {
+      "dimension": "fallbacks",
+      "status": "PARTIAL",
+      "evidenceIds": [
+        "E01",
+        "E02",
+        "M01"
+      ],
+      "observations": [
+        "The footer explicitly says AI unavailable with phrase rules while ordinary authoring controls remain visible.",
+        "The inspector states that Web Studio preview is supported and current Player/native presentation uses the authored Guided alternative.",
+        "The composition root warns that automatic proximity detection requires a qualified runtime and is unavailable."
+      ],
+      "limits": "Truthful labels are useful but do not prove that an accessible Guided alternate actually completes the Player task. No denial/error/recovery or audio-unavailable journey was inspected.",
+      "findingIds": [
+        "CROSSDECK_SHARED_EXPERIENCE_PENDING"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "SC02-EXPERIENCE-SHOWCASE-OCCLUSION",
+      "severity": "BLOCKING",
+      "priority": 1,
+      "contractId": "spatial-pilot.experience",
+      "requirement": "SC-02 section10 representative asset showcase and actual composed scenes; section3 support/placement and visible detailed models",
+      "evidenceIds": [
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16"
+      ],
+      "observation": "Large synthetic-room tables occlude/intersect new furniture/storage; small nautical/clue props are tiny floor objects; decor curtains pass through a table and key decor objects are hidden. These frames cannot serve as a useful premium collection showcase.",
+      "repair": "Stage an uncluttered actual application environment with appropriate support-height/surface placement and useful camera framing so every showcased asset is legible; recapture affected family/showcase scenes. Do not substitute pipeline renders or counters.",
+      "accountableOwner": "Parallax SC-02 Creator experience",
+      "status": "OPEN_INITIAL_PACKET"
+    },
+    {
+      "id": "SC02-EXPERIENCE-CONSTRAINED-LAYOUT",
+      "severity": "BLOCKING",
+      "priority": 2,
+      "contractId": "spatial-pilot.experience",
+      "requirement": "MOBILE device obligation, readable controls and meaningful constrained authoring fallback",
+      "evidenceIds": [
+        "E09"
+      ],
+      "observation": "At390px the workstation action row is clipped at the right edge, leaving only part of Reset Workspace Layout; wrapped canvas controls plus transform rail/selected card consume substantial scene area.",
+      "repair": "Make the constrained toolbar fit or expose an explicit accessible overflow; size/position persistent overlays so a meaningful editing canvas remains. Recapture390px with the required controls reachable.",
+      "accountableOwner": "Parallax SC-02 Creator experience",
+      "status": "OPEN_INITIAL_PACKET"
+    },
+    {
+      "id": "SC02-QUALITY-decorative-vase",
+      "severity": "BLOCKING_CARRIED_FORWARD",
+      "contractId": "spatial-pilot.experience",
+      "evidenceIds": [
+        "E26"
+      ],
+      "observation": "Independent asset review has29 bounded supplied-view passes and an unresolved visibly fragmented blue vase finish after the bounded repair loop.",
+      "repairDisposition": "BLOCK_WITH_EVIDENCE",
+      "repair": "Retain this explicit asset limitation; no production-complete asset-catalog claim is supported. A separate authorized bounded correction needs fresh asset evidence and independent review.",
+      "accountableOwner": "Parallax SC-02 asset finish",
+      "status": "PRESERVED_UNRESOLVED"
+    },
+    {
+      "id": "CROSSDECK_SHARED_EXPERIENCE_PENDING",
+      "canonicalGate": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration",
+      "severity": "BLOCKING_PROTECTED_EXPERIENCE_GATE",
+      "contractId": "crossdeck.phase2.continuity",
+      "evidenceIds": [
+        "E25"
+      ],
+      "observation": "No owning shared-consumer experience design or contextual desktop/phone Lens journey is supplied. Creator-only local evidence does not discharge this obligation.",
+      "repair": "Use the existing Crossdeck/Parallax experience-integration ownership and Product Experience process; preserve protected obligations and baseline debt.",
+      "accountableOwner": "Crossdeck and Parallax experience integration",
+      "status": "PRESERVED_OPEN"
+    }
+  ],
+  "nonBlockingObservations": [
+    {
+      "id": "SC02-NAVIGATION-DUPLICATION-OBSERVED",
+      "evidenceIds": [
+        "E01",
+        "M01"
+      ],
+      "observation": "Library/Hierarchy/Saved appear in both the vertical rail and horizontal dock tabs.",
+      "provenance": "Baseline/new introduction is unknown; no regression or mandatory redesign is asserted."
+    },
+    {
+      "id": "SC02-LIGHT-THEME-SCENE-LEGIBILITY",
+      "evidenceIds": [
+        "E08",
+        "E10"
+      ],
+      "observation": "Pale floor/walls and white paper have weak separation at the zoomed scene scale.",
+      "provenance": "Lighting/theme influence not isolated; no measured contrast failure asserted."
+    }
+  ],
+  "acceptanceEvidencePending": [
+    "Keyboard-only entry, authoring, composition save/reuse and return",
+    "Visible keyboard focus order/return and trap avoidance",
+    "Inherited assistance-ready/docked/closed journey without shrinking canvas",
+    "Reduced-motion comparison and measured3000ms feedback boundary",
+    "Empty/adverse/recovery asset/effect states",
+    "Perceived spatial audio and accessible audio-unavailable fallback",
+    "Settled same-identity library return after the recording endpoint",
+    "Complete Player/Guided consumer outcome and Crossdeck shared experience",
+    "Sustained performance, cleanup/device metrics and physical/native readiness"
+  ],
+  "baselineDebt": [
+    {
+      "id": "PE-DEBT-PARALLAX-PLAYER",
+      "fingerprint": "94e3716d8ae26d5986e855cd4996b36d0edfbce1a2778937ba23548cc3506834",
+      "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+      "repairOwner": "Spatial Experience Refit",
+      "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md"
+    },
+    {
+      "id": "PE-DEBT-CROSSDECK-LENS",
+      "fingerprint": "96ec2717127c177a4afa98b8a9c5cbbf974d57eb1dd56e46b09bb323b7fcd2e9",
+      "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+      "repairOwner": "Spatial Experience Refit",
+      "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md"
+    }
+  ],
+  "limitations": [
+    "Independent review inspected rendered product evidence before source. No implementation source or tests were read to infer the visible outcome.",
+    "Local test/runtime receipts support provenance and bounded process observations; they are not signed cloud review, protected software qualification or visual acceptance.",
+    "Unsupported dimensions are pending, not invented failures or silently passed checks.",
+    "No actual phone touch, native runtime, hardware, perceived audio or owner walkthrough was inspected.",
+    "Initial packet is preserved for review against the requested repair/recapture packet. No broad implementation edits were made by this reviewer."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "kind": "REVIEWED_ROW_REUSE_SOURCE_ACTUAL_RUN",
+  "qualification": false,
+  "id": 39735856149,
+  "attempt": 1,
+  "candidate": "b617b6825688d2d3d89a34284588ce456701aa8f",
+  "actualAuthoritySHA": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "displayTitle": "Focused development b617b6825688d2d3d89a34284588ce456701aa8f tests/e2e/crossdeck-experience-refit.spec.ts",
+  "event": "workflow_dispatch",
+  "createdAt": "2026-10-22T06:44:35Z",
+  "status": "in_progress",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39735856149",
+  "actualWorkflowRequests": 1,
+  "discoveryReads": 2
+}

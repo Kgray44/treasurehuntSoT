@@ -1,0 +1,397 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "6c892c682ea5b1b60e9bf0e8c800ac950ef64507",
+  "tree": "6ec22b5d5602d5e970b9cb4e485c7f4519601418",
+  "objective": "Creator places a note on the table nearest a window, confirms actual rendering/selection/Inspector and saved restore. Two plausible targets ask a named clarification. Cancellation dispatches only the original request and never installs a late reply. Provider failure preserves the scene and Engineering mode. Motion preference switches preserve the active scene and unsent composer; public sign-in retains its actual input/focus in both directions.",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "reviewScope": "Artifacts marked review=true: final media/proofs and paired before-cancel/before-motion-reset adverse recordings/stills and safe synthetic provider logs. Other historical receipts/recordings retain their failures and limits without broad renewal.",
+  "artifacts": [
+    {
+      "phase": "activity-harness-failed",
+      "file": "activity-harness-failed/checks-first-semantic-failure-video.webm",
+      "bytes": 443414,
+      "sha256": "dc30b500c6870f43579c170addfd7d918497f253f4c561a6d5512b9faddf9906",
+      "review": false
+    },
+    {
+      "phase": "activity-harness-failed",
+      "file": "activity-harness-failed/provider-57472.original.jsonl.txt",
+      "bytes": 1185,
+      "sha256": "b250abf9f512bd798eb67d71ec715b682ef193f7eb45135f6de5794359497467",
+      "review": false
+    },
+    {
+      "phase": "activity-harness-failed",
+      "file": "activity-harness-failed/semantic-assistant-run.original.json.txt",
+      "bytes": 329,
+      "sha256": "759263f4d5135d63b5ab717a9f5a32ffa9ca28673b7e9356f3b0ca07e1a9746d",
+      "review": false
+    },
+    {
+      "phase": "activity-harness-failed",
+      "file": "activity-harness-failed/semantic-error-context.original.txt",
+      "bytes": 17785,
+      "sha256": "1990db8e1709cd38bbe13623e6629081e112777c13925f536a996419321f3f2f",
+      "review": false
+    },
+    {
+      "phase": "activity-harness-failed",
+      "file": "activity-harness-failed/semantic-test-failed.png",
+      "bytes": 214377,
+      "sha256": "99e49ada85a2b1186d243b7678ce1b3bd2abd91eabd4d54a7e18a256112a6686",
+      "review": false
+    },
+    {
+      "phase": "apply-harness-failed",
+      "file": "apply-harness-failed/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "bytes": 951090,
+      "sha256": "36bfb0df8c0da4603cc8fb51129c9eb71ab475140c5bc85e333567ea4ffc3f58",
+      "review": false
+    },
+    {
+      "phase": "apply-harness-failed",
+      "file": "apply-harness-failed/provider-37368.original.jsonl.txt",
+      "bytes": 1185,
+      "sha256": "b250abf9f512bd798eb67d71ec715b682ef193f7eb45135f6de5794359497467",
+      "review": false
+    },
+    {
+      "phase": "apply-harness-failed",
+      "file": "apply-harness-failed/semantic-assistant-run.original.json.txt",
+      "bytes": 532,
+      "sha256": "899ff6a3c9c3ce4a4a834a1ac7d9df8586ec8443ddf9e41ed3a89529ed4b3715",
+      "review": false
+    },
+    {
+      "phase": "apply-harness-failed",
+      "file": "apply-harness-failed/semantic-error-context.original.txt",
+      "bytes": 15916,
+      "sha256": "079eafa5e59a134675aab22505bdb2e55cd00ef7034d08048b70f60458bdbc55",
+      "review": false
+    },
+    {
+      "phase": "apply-harness-failed",
+      "file": "apply-harness-failed/semantic-test-failed.png",
+      "bytes": 265705,
+      "sha256": "cb58be17947bd338c0bb91d2e75fc55b51a6b649fa3a834e730321fdc74edb43",
+      "review": false
+    },
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "bytes": 550753,
+      "sha256": "cadfa9b8d3f9bdf54ed07c893746130829613439491c9fa94198ad19e6b90a69",
+      "review": false
+    },
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 566074,
+      "sha256": "ac88727423ec15ffa641abcd7910120ba629b97318a0da345dff12e796153da9",
+      "review": true
+    },
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/provider-53872.original.jsonl.txt",
+      "bytes": 4787,
+      "sha256": "e2f5e4724654842506341eed54e13e8ecaa78a02c458767ab024923906bf1659",
+      "review": true
+    },
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/semantic-assistant-run.original.json.txt",
+      "bytes": 733,
+      "sha256": "f5bd2cf8ecd2e2b6988acf1f8b26766db08c6a8b98e5f21b0a5a5675f8e61e33",
+      "review": false
+    },
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/semantic-cancel-failed.png",
+      "bytes": 227050,
+      "sha256": "8b0c7b88508099c85167e9f2e1ec37883c5e0ae517724816d8061cd3c1b843d1",
+      "review": true
+    },
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/semantic-error-context.original.txt",
+      "bytes": 19807,
+      "sha256": "a32669db0967093b4aabab78624fce9cdf28e6363db4632292138749428dc7fe",
+      "review": false
+    },
+    {
+      "phase": "failure-harness-failed",
+      "file": "failure-harness-failed/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "bytes": 553205,
+      "sha256": "3927e33d82c1557f7e85662ff72e2caa63e2cc0a13c29000c7c621645ded3066",
+      "review": false
+    },
+    {
+      "phase": "failure-harness-failed",
+      "file": "failure-harness-failed/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 692383,
+      "sha256": "7e651ec56bff6f3989f89646264a63c8f5635a7ee2c8cd427e652792a2f2367b",
+      "review": false
+    },
+    {
+      "phase": "failure-harness-failed",
+      "file": "failure-harness-failed/provider-58828.original.jsonl.txt",
+      "bytes": 4781,
+      "sha256": "cbf741e5be64dc86c8e5628e935519f47ebe9d838ec8824b316c15c32d4839d2",
+      "review": false
+    },
+    {
+      "phase": "failure-harness-failed",
+      "file": "failure-harness-failed/semantic-assistant-run.original.json.txt",
+      "bytes": 733,
+      "sha256": "b7d6e34cc8006c886cdefe6f8955c67c2713da785a401377f39ef19bc52954a8",
+      "review": false
+    },
+    {
+      "phase": "failure-harness-failed",
+      "file": "failure-harness-failed/semantic-error-context.original.txt",
+      "bytes": 18244,
+      "sha256": "347571829a0066463878b9bd14e5a6a88c2d89093b79031a03b5034b2a49f8f2",
+      "review": false
+    },
+    {
+      "phase": "failure-harness-failed",
+      "file": "failure-harness-failed/semantic-test-failed.png",
+      "bytes": 215558,
+      "sha256": "8b262d0a57f51f6dc9312d10fadd5ac9c5908787f7ebc8b7d93af4203e1a0948",
+      "review": false
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "bytes": 577554,
+      "sha256": "956dbf2bc6d55a50d062cfc45c8f4b9744973dde6d0805e2da5ee60755d29371",
+      "review": false
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 773553,
+      "sha256": "2afcfd96dc4b58edbed6afb81c53305a4c5b7e7e4409a705babf98678c6566f6",
+      "review": true
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/provider-57660.original.jsonl.txt",
+      "bytes": 4781,
+      "sha256": "cbf741e5be64dc86c8e5628e935519f47ebe9d838ec8824b316c15c32d4839d2",
+      "review": true
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/semantic-assistant-run.original.json.txt",
+      "bytes": 733,
+      "sha256": "ad092af2b8e3ad19edb60ebec9f2172662550f02c258c65fcd44e1bff37ee6e2",
+      "review": false
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/semantic-error-context.original.txt",
+      "bytes": 10675,
+      "sha256": "b1419b07d98b41e3a793acfe45262416f48f63c22dc448f72a02239365503b6c",
+      "review": false
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/semantic-motion-reset-failed.png",
+      "bytes": 237746,
+      "sha256": "a7163c040ed30079e1df9bf9a9ec81c07b9b4ebc06d45683559024da8b4cf736",
+      "review": true
+    },
+    {
+      "phase": "preceding-pass",
+      "file": "preceding-pass/checks-parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+      "bytes": 50846,
+      "sha256": "7540ba19cf230bd59866d6940a08a3b91e3ea20d33bb931db9aff09014ec3c83",
+      "review": false
+    },
+    {
+      "phase": "preceding-pass",
+      "file": "preceding-pass/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "bytes": 562446,
+      "sha256": "e8a4c469d1c02bf2d16739f4c9ecbf27bf12cc39e04a006dfa19745f8829dda3",
+      "review": false
+    },
+    {
+      "phase": "preceding-pass",
+      "file": "preceding-pass/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 565033,
+      "sha256": "f470d7cc90b0b6b3245afed1e4fc0448b7468223b5f4ccc1676153053019cb2c",
+      "review": false
+    },
+    {
+      "phase": "preceding-pass",
+      "file": "preceding-pass/provider-26456.original.jsonl.txt",
+      "bytes": 5985,
+      "sha256": "61ce7d125c6cc7b73691c16f92a2993e8fa603fc1a04ca52f46e7e0d873f17b9",
+      "review": false
+    },
+    {
+      "phase": "preceding-pass",
+      "file": "preceding-pass/semantic-assistant-run.original.json.txt",
+      "bytes": 934,
+      "sha256": "092fc03c2a194a46bee5cd76205cd66a80cba94f86af50458742b75d8a1629a9",
+      "review": false
+    },
+    {
+      "phase": "final",
+      "file": "final/checks-parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+      "bytes": 52498,
+      "sha256": "7a0b905bcd7f263b8c4033cbca01a9f50f720040f5134eeaec0d32ff01d50742",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "bytes": 557720,
+      "sha256": "0104da048b8234b84024ebb5ba977f2a6a3700e8f481fc17311f6a266d63ea2b",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 613536,
+      "sha256": "0cf96b2003b400cabba0d5574bc556458e019e567f69adefbd2e05c2b6026030",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/provider-35516.original.jsonl.txt",
+      "bytes": 5985,
+      "sha256": "61ce7d125c6cc7b73691c16f92a2993e8fa603fc1a04ca52f46e7e0d873f17b9",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-ambiguous-target-question.png",
+      "bytes": 213149,
+      "sha256": "75c1802ca3d255a15e096d4162ff9332eafb7297ab93b3140547e6fc7cb2cfe7",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-applied-renderer-confirmation.png",
+      "bytes": 265698,
+      "sha256": "74ac4d0b3851ac38b4a4babe5a06298de6575dd92d7d3b71abdf800b69b6b60e",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-assistant-run.original.json.txt",
+      "bytes": 934,
+      "sha256": "a496f01023d0c4f96a979f14f48010f70c2d1e4ff8ad244753d015bc5a8fe030",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-cancellable-request.png",
+      "bytes": 213190,
+      "sha256": "8142f9e762d971ff62bba165d5ecbc88b6260f03a634b2c50a89cb7211d45fd8",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-cancelled.png",
+      "bytes": 232208,
+      "sha256": "4ea0ce086b94d6f194340b0e1babc5d44d7a7a9adfebdb4af109658248e2fe5d",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-interpreting.png",
+      "bytes": 199977,
+      "sha256": "f198ac7e0a3ff019257972149f7f01b25815b846cefb4a9260bdaecb80029bf7",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-motion-switch-preserved-composer.png",
+      "bytes": 219550,
+      "sha256": "aef07792dfb1160996fdfb9958b96d572f80ca876d129c59867c90505f9fbb34",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-placement-proof.original.json.txt",
+      "bytes": 1787,
+      "sha256": "74446a20f3100800a35343c7a05284e08ecbb7b5b1b943e3c3e0d414a901bc6a",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-proposed-note-in-view.png",
+      "bytes": 368672,
+      "sha256": "d919fa04a9aebe362612801ef7051648ea3eead921ff62c799c785cf2d3fbf79",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-provider-failure.png",
+      "bytes": 215572,
+      "sha256": "e4868ce96cd965019999f0cbd19c59edb516c0b5a6e6d88290075e49e8513952",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-public-motion-proof.original.json.txt",
+      "bytes": 329,
+      "sha256": "9a2d2064c987c9a2cbbaa4d7ecf84ccd0c2b05eec4512e7f91a90cad22284158",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-public-sign-in-reduced-motion.png",
+      "bytes": 518639,
+      "sha256": "c704a2d07d1c327c0f8e781eb5accf00ccae9dfc363b526825c650428e364465",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-public-sign-in-restored-motion.png",
+      "bytes": 517818,
+      "sha256": "3997ddd196c08b3fbe1d6f72b0d331d8174f35958b8ef2d286f4f29444f53753",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-recovery-proof.original.json.txt",
+      "bytes": 2153,
+      "sha256": "90e0682e32979d6bdda56151f9982dfc908fe71001384a91a410ee9a1a0251e5",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-reduced-motion-clarification.png",
+      "bytes": 213195,
+      "sha256": "09b4511dbdab69f55985f8a0f0121aa6e47638f62e3c54e1dfb9dfd8be6aed83",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-selected-detailed.png",
+      "bytes": 325693,
+      "sha256": "66cb17593dd70e88f6c69ac89969801b7f01e2776372da646febdc4b3753741c",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-selected-engineering.png",
+      "bytes": 329410,
+      "sha256": "a18cbe89d2987b5111ecf88e0f078612a7da94d91f2ab72e2da7e1a6cf40606b",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-selected-guided.png",
+      "bytes": 326536,
+      "sha256": "cf95401fe83f48d1eda751c131b632d73c55530b6e80ad775a142e56ea513aab",
+      "review": true
+    }
+  ]
+}

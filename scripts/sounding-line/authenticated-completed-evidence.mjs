@@ -10,6 +10,7 @@ import { inflateRawSync } from "node:zlib";
 import { canonicalJson, createEvidenceFingerprint, digest, verifyReceipt } from "./evidence.mjs";
 // CLI startup awaits intake, so a deferred import would wait on that same startup.
 import { buildEvidenceObligations, completedEvidenceEnvironmentClass } from "./ordinary.mjs";
+import { withVerificationStage } from "./verification-diagnostics.mjs";
 
 const REPOSITORY = "Kgray44/treasurehuntSoT";
 const WORKFLOW = ".github/workflows/sounding-line-ordinary.yml";
@@ -725,9 +726,6 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
     completedEvidenceEnvironmentClass(plan) === "github-actions-nonbrowser-controlled",
     "PRODUCER_ENVIRONMENT_UNAUTHENTICATED",
   );
-  const obligations = await buildEvidenceObligations(currentRoot, plan);
-  const current = new Map(obligations.map((obligation) => [obligation.id, clone(obligation)]));
-  requireValue(current.size === obligations.length, "CURRENT_OBLIGATION_DUPLICATE");
   const api = request ?? authenticatedTransport();
   const getArchive = download ?? ((endpoint) => api(endpoint, true));
   const branch = await api("branches/main");
@@ -737,6 +735,15 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
   );
   const hints = producers ?? (await discoverCompletedEvidenceProducerHints({ request: api })).hints;
   requireValue(Array.isArray(hints) && hints.length <= LIMITS.producers, "PRODUCER_LIMIT_INVALID");
+  // No producer hints can authenticate receipts. Defer the expensive immutable
+  // closure until reuse is possible; the verifier still fingerprints every group.
+  const obligations = hints.length
+    ? await withVerificationStage("EVIDENCE_FINGERPRINTS", () => buildEvidenceObligations(currentRoot, plan), {
+        observeFailure: false,
+      })
+    : [];
+  const current = new Map(obligations.map((obligation) => [obligation.id, clone(obligation)]));
+  requireValue(current.size === obligations.length, "CURRENT_OBLIGATION_DUPLICATE");
   const receipts = new Map(),
     provenance = new Map(),
     rejections = [];

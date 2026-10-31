@@ -104,6 +104,9 @@ export const reviewDimensionRegistry = {
   LOCATION_PACK: ["visualQuality", "usability", "responsiveness", "listingAccuracy", "accessibility"],
   AUDIO_PACK: ["audioQuality", "loopQuality", "listingAccuracy", "documentation", "accessibility"],
   GUIDE: ["clarity", "usefulness", "accuracy", "accessibility", "currency"],
+  SPATIAL_ASSET: ["clarity", "performance", "customization", "documentation", "accessibility"],
+  SPATIAL_ENVIRONMENT: ["visualQuality", "usability", "listingAccuracy", "documentation", "accessibility"],
+  SPATIAL_SCENE: ["clarity", "performance", "adaptability", "documentation", "accessibility"],
 } as const;
 
 function fail(code: string, message: string): never {
@@ -801,6 +804,7 @@ export async function reviewAccessForActor(listingId: string, accountId?: string
     select: {
       id: true,
       slug: true,
+      itemType: true,
       currentReleaseId: true,
       currentRelease: { select: { sourcePublishedTaleVersionId: true } },
       owner: { select: { accountId: true } },
@@ -809,19 +813,24 @@ export async function reviewAccessForActor(listingId: string, accountId?: string
   const detailHref = listing
     ? `/community/${encodeURIComponent(listing.slug)}#community-review-composer`
     : "/community";
+  const spatial = listing?.itemType.startsWith("SPATIAL_") ?? false;
   if (!accountId)
     return {
       state: "SIGN_IN_REQUIRED",
       eligible: false,
       actionHref: `/sign-in?returnTo=${encodeURIComponent(detailHref)}`,
-      message: "Sign in after completing this Chronicle to publish a review.",
+      message: spatial
+        ? "Sign in after installing this spatial release to publish a review."
+        : "Sign in after completing this Chronicle to publish a review.",
     };
-  if (!listing || !listing.currentReleaseId || !listing.currentRelease?.sourcePublishedTaleVersionId)
+  if (!listing || !listing.currentReleaseId || (!spatial && !listing.currentRelease?.sourcePublishedTaleVersionId))
     return {
       state: "COMPLETION_REQUIRED",
       eligible: false,
       actionHref: detailHref,
-      message: "Reviews open after a verified completion of the current Chronicle release.",
+      message: spatial
+        ? "Reviews open after a verified installation of the current spatial release."
+        : "Reviews open after a verified completion of the current Chronicle release.",
     };
   const profile = await socialDb.playerProfile.findUnique({
     where: { accountId },
@@ -838,22 +847,60 @@ export async function reviewAccessForActor(listingId: string, accountId?: string
       state: "PROFILE_SETUP_REQUIRED",
       eligible: false,
       actionHref: `/account/profile?returnTo=${encodeURIComponent(detailHref)}`,
-      message: "Set up your public Profile to publish your verified-completion review.",
+      message: spatial
+        ? "Set up your public Profile to publish your verified-installation review."
+        : "Set up your public Profile to publish your verified-completion review.",
     };
   if (listing.owner.accountId === accountId)
     return {
       state: "COMPLETION_REQUIRED",
       eligible: false,
       actionHref: detailHref,
-      message: "Creators cannot review their own Chronicle.",
+      message: spatial
+        ? "Creators cannot review their own spatial release."
+        : "Creators cannot review their own Chronicle.",
     };
+  if (spatial) {
+    const installation = await socialDb.communityInstallation.findFirst({
+      where: {
+        accountId,
+        releaseId: listing.currentReleaseId,
+        mode: { not: "PREVIEW_SANDBOX" },
+      },
+      select: { operationId: true },
+    });
+    const committedOperation = installation
+      ? await socialDb.communityInstallOperation.findFirst({
+          where: {
+            id: installation.operationId,
+            accountId,
+            releaseId: listing.currentReleaseId,
+            status: "COMMITTED",
+          },
+          select: { id: true },
+        })
+      : null;
+    return committedOperation
+      ? {
+          state: "ELIGIBLE",
+          eligible: true,
+          reviewedReleaseId: listing.currentReleaseId,
+          message: "Verified installation confirmed. You can publish one review for this spatial release.",
+        }
+      : {
+          state: "COMPLETION_REQUIRED",
+          eligible: false,
+          actionHref: detailHref,
+          message: "Install this exact spatial release before publishing a rating or review.",
+        };
+  }
   const completion = await socialDb.playthroughMembership.findFirst({
     where: {
       playerProfileId: profile.id,
       completedAt: { not: null },
       playthrough: {
         status: "COMPLETED",
-        publishedVersionId: listing.currentRelease.sourcePublishedTaleVersionId,
+        publishedVersionId: listing.currentRelease!.sourcePublishedTaleVersionId!,
         previewMode: false,
       },
     },
@@ -903,10 +950,15 @@ export async function createOrUpdateReview(
     await assertNotBlocked(tx, actor.accountId, listing.owner.accountId);
     const { dimensions, ...reviewData } = validateReviewInput(input, listing.itemType);
     const eligibility = await reviewEligibility(tx, actor, listing, input.reviewedReleaseId);
-    if (!eligibility.reviewedReleaseId || !eligibility.verifiedCompletion)
+    if (
+      !eligibility.reviewedReleaseId ||
+      !(listing.itemType.startsWith("SPATIAL_") ? eligibility.verifiedInstallation : eligibility.verifiedCompletion)
+    )
       fail(
         "COMMUNITY_REVIEW_COMPLETION_REQUIRED",
-        "Complete this exact Chronicle release before publishing a rating or review.",
+        listing.itemType.startsWith("SPATIAL_")
+          ? "Install this exact spatial release before publishing a rating or review."
+          : "Complete this exact Chronicle release before publishing a rating or review.",
       );
     const existing = await tx.communityReview.findUnique({
       where: { listingId_authorAccountId: { listingId: listing.id, authorAccountId: actor.accountId } },
@@ -1053,11 +1105,16 @@ export async function listPublicReviews(listingId: string, viewerAccountId?: str
       moderationStatus: "ACTIVE",
       visibility: { in: ["COMMUNITY", "FEATURED"] },
     },
-    select: { id: true },
+    select: { id: true, itemType: true },
   });
   if (!listing) return [];
   const reviews = await socialDb.communityReview.findMany({
-    where: { listingId, status: "ACTIVE", deletedAt: null, verifiedCompletion: true },
+    where: {
+      listingId,
+      status: "ACTIVE",
+      deletedAt: null,
+      ...(listing.itemType.startsWith("SPATIAL_") ? { verifiedInstallation: true } : { verifiedCompletion: true }),
+    },
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
     take: 100,
   });

@@ -1,0 +1,15 @@
+
+> forever-treasure-companion@0.2.0 test
+> vitest run src/community/spatial-publication.integration.test.ts
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 D:/CodexWorktrees/treasurehunt-sc07a-core-adaptation
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  16:43:23
+   Duration  22.30s (transform 1.27s, setup 2.32s, import 6.15s, tests 924ms, environment 12.10s)

@@ -1,0 +1,11 @@
+
+ RUN  v4.1.11 D:/CodexWorktrees/parallax-776-final39-20261022
+
+ ❯ src/components/studio/parallax/SpatialStudio.test.tsx (21 tests | 1 failed | 19 skipped) 12756ms
+   × adds a Library exclusion tool to the visible environment and selects its shared editing controls 4080ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed | 19 skipped (21)
+   Start at  21:17:43
+   Duration  26.88s (transform 4.82s, setup 656ms, import 10.23s, tests 12.76s, environment 2.70s)
+

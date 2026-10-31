@@ -1,0 +1,21 @@
+{
+  "code": 0,
+  "signal": null,
+  "source": "871431cd0827d42551c8a8b9d2d7fde5e16c1f77",
+  "qualification": false,
+  "completedAtUtc": "2026-10-21T23:30:39.403Z",
+  "report": {
+    "success": true,
+    "numTotalTestSuites": 18,
+    "numPassedTestSuites": 18,
+    "numFailedTestSuites": 0,
+    "numTotalTests": 145,
+    "numPassedTests": 145,
+    "numFailedTests": 0,
+    "numPendingTests": 0
+  },
+  "freeSpaceAfter": {
+    "C": 35197124608,
+    "D": 200250232832
+  }
+}

@@ -1,0 +1,1273 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "engineering-evidence",
+  "reviewer": {
+    "agent": "/root/studio_foundation_review",
+    "role": "independent Product Experience reviewer",
+    "attribution": "Visual-first review requested by /root under .agents/product-experience-workflow.md section 5. Application source and runtimes were not changed."
+  },
+  "candidate": "5ad0dd413bf0b6ca81488416b45b06df23fe5014",
+  "tree": "52cee3aa63ba442744ac826704446bbfebb88268",
+  "reviewDate": "2026-10-12 America/New_York; capture manifests use 2026-10-13 UTC",
+  "artifactRoot": "artifacts/parallax-a1/browser/5ad0dd413bf0",
+  "preservedEvidenceRoot": "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5ad0dd413bf0",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "summary": "No new blocking finding in this bounded packet. The blue Studio composition is retained while asset-only graph rows, one selected-object toolbar, quieter commands, readable Inspector groups, light menus and construction details visibly improve the working hierarchy. PX-CONSTRUCT-01 and the upper-wall phone concern are repaired in the fresh media. Production regressions and development-only photo workflow have separate dispositions and limitations.",
+  "acceptance": {
+    "production": "VERIFY_FINAL_EVIDENCE for the supplied synthetic production presentation, room benchmarks and ten exercised browser journeys.",
+    "developmentPhoto": "VERIFY_FINAL_EVIDENCE for the supplied desktop synthetic development preview/Apply/refinement/withdrawal/retention/Assistant-letter workflow only.",
+    "owner": "The parent separately reports owner acceptance of these exact UI refinements. This receipt grants no additional owner acceptance.",
+    "notGranted": [
+      "whole Spatial Studio overhaul",
+      "comprehensive A-P journey qualification",
+      "entire protected photo contract",
+      "live vision accuracy",
+      "production configured photo provider readiness",
+      "real malware scanning",
+      "native desktop qualification",
+      "physical room calibration",
+      "physical touch or device qualification",
+      "production folded-letter artwork quality",
+      "all command/device/mode combinations",
+      "GPU performance or 60fps smoothness"
+    ]
+  },
+  "inspectionMethod": {
+    "visualFirst": true,
+    "screenshotsInspected": 103,
+    "recordingsInspected": 14,
+    "roomStillsInspected": 44,
+    "sequence": "All actual packet PNGs and full start-to-end decoded recording chronology were inspected before frozen candidate source corroboration. Actual accepted fe5c reference screenshots were subsequently compared for blue layout continuity.",
+    "temporalSampling": "Every supplied production recording was decoded across its full duration at 1 frame/second; the photo recording at 2 frames/second. Animation motion, camera/retry and simulation hide/reset segments were additionally inspected at 5 frames/second.",
+    "limits": "This was a complete sampled chronology review, not continuous native-player playback of every encoded frame. Sub-second transient states and subjective motion smoothness remain unqualified.",
+    "auxiliaryBlankRecordings": [
+      "V3",
+      "V9",
+      "V11"
+    ],
+    "auxiliaryLimit": "These three short auxiliary recordings contain blank white frames and provide no action evidence. Their substantive paired recordings V4, V10 and V12 contain the journeys.",
+    "rationaleExcluded": true,
+    "sourceMode": "git show 5ad0dd413bf0b6ca81488416b45b06df23fe5014:<path> only"
+  },
+  "evidenceIdentifiers": {
+    "convention": "PNG identifiers are exact filenames relative to the artifact/evidence roots. V1-V13 are the ordered production run.json recordings; P1 is the photo-run.json recording.",
+    "productionSourceBinding": "VALID",
+    "productionProvider": "SYNTHETIC_UNPAID",
+    "productionExitCode": 0,
+    "productionJourneyResult": "10 passing production-browser journeys, reported in the capture packet",
+    "photoSourceBinding": "VALID",
+    "photoRuntime": "DEVELOPMENT",
+    "photoProvider": "SYNTHETIC_UNPAID",
+    "photoExitCode": 0,
+    "photoJourneyResult": "1 passing development browser journey",
+    "mediaAggregate": {
+      "algorithm": "SHA256 of UTF-8 sorted lines '<filename> <SHA256>\\n' for all PNG and WEBM files",
+      "files": 117,
+      "png": 103,
+      "webm": 14,
+      "sha256": "5de935d74ccde49d0bba25590bf9ebc30f0c22f848bc4fdb2ef59d97ee13ad55"
+    },
+    "normalizedReceipts": "run.json, photo-run.json and room-render-costs.json decode identically to their retained *.original.json.txt receipts. Formatting changes do not change the captured source or media.",
+    "baseline": "Actual fe5c54386c01 owner-populated-dark-guided.png, owner-populated-light-guided.png and owner-library-and-inspector-dark.png in the old parallax-a1-spatial-assistant worktree; used only for blue design continuity, not as a construction acceptance standard."
+  },
+  "findings": [
+    {
+      "id": "PX-CONSTRUCT-01",
+      "severity": "previous blocker repaired",
+      "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+      "observation": "Classroom now reads as a classroom with desks/chairs, whiteboard and clock; gallery reads as a gallery with three framed paintings, plinth sculptures and bench. Front-angle captures expose the previously problematic wall artwork, and 390px dark/light phone views keep the upper wall details below the viewport toolbar. Native-size classroom phone inspection confirms the entire clock circle is clear.",
+      "evidence": [
+        "room-classroom-dark-front.png",
+        "room-classroom-light-front.png",
+        "room-gallery-dark-front.png",
+        "room-gallery-light-front.png",
+        "room-classroom-dark-phone.png",
+        "room-classroom-light-phone.png",
+        "room-gallery-dark-phone.png",
+        "room-gallery-light-phone.png",
+        "V7"
+      ],
+      "limit": "Recognizable approximate generic benchmarks; no surveyed physical dimensions or comprehensive artwork quality acceptance."
+    },
+    {
+      "id": "PX-UI-5AD-LIGHT-MENU",
+      "severity": "verified repair",
+      "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+      "observation": "The light phone menu has a pale panel, readable dark labels, blue keyboard highlight and red Remove command. Its 236px width fits within the 390px viewport and its bottom remains above the 844px viewport edge.",
+      "evidence": [
+        "graph-context-light-phone.png",
+        "graph-toolbar-light.png",
+        "V4"
+      ],
+      "limit": "Phone test navigates to Lock and dismisses; it does not execute a phone context mutation."
+    },
+    {
+      "id": "PX-UI-5AD-HIERARCHY",
+      "severity": "verified bounded objective",
+      "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+      "observation": "Scene Graph contains asset rows with name/type and selected state, while visibility/lock/duplicate/remove live in one global toolbar. Compact top commands, collapsed navigation help and distinct Inspector groups make the blue working layout cleaner without replacing the accepted shell.",
+      "evidence": [
+        "graph-object-context-dark.png",
+        "graph-toolbar-light.png",
+        "viewport-object-context-dark.png",
+        "room-feature-correction.png",
+        "room-feature-restored.png",
+        "welcome-guided-desktop.png",
+        "V4"
+      ],
+      "limit": "Semantic room features remain in the room Inspector rather than being mistaken for authored graph assets. Icon labels and coarse-pointer sizing are source corroborated; physical touch and screen-reader output are not observed."
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Blue rail/header, graph, central cutaway viewport and right Inspector form a consistent working frame. Open cutaway walls expose the room rather than enclosing the camera. Full room benchmarks fit on phones after their captured framing; Inspector collapse restores the scene.",
+      "evidence": [
+        "welcome-guided-desktop.png",
+        "room-bedroom-dark.png",
+        "room-classroom-dark-phone.png",
+        "room-feature-phone-edited.png",
+        "surfaces-framed-390x844.png",
+        "V6",
+        "V7"
+      ],
+      "limit": "Landscape 844x390 cannot show every editor panel and useful scene detail simultaneously; the demonstrated picker scroll and framing are necessary."
+    },
+    {
+      "dimension": "hierarchy",
+      "judgment": "PASS_BOUNDED",
+      "observation": "One global selected-object icon toolbar replaces repeated row controls; selected row blue state and asset type remain clear. Identity leads Inspector, followed by placement/transform/interactions/behavior/environment/accessibility/library groups. Context commands appear adjacent to the relevant graph, viewport, preset or saved scene.",
+      "evidence": [
+        "graph-toolbar-light.png",
+        "graph-object-context-dark.png",
+        "viewport-object-context-dark.png",
+        "asset-context-dark.png",
+        "saved-scene-context-dark.png",
+        "room-feature-correction.png",
+        "V4"
+      ],
+      "limit": "Saved-scene menu is displayed and dismissed in this context journey; its Open/Create copy commands are not invoked there. The separate library recording exercises copy/open/archive through the library."
+    },
+    {
+      "dimension": "typography",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Compact labels remain readable in supplied desktop and native-size phone captures; Inspector headings and validation text separate field labels from state messages. The light menu has legible dark text and focused blue rows.",
+      "evidence": [
+        "graph-context-light-phone.png",
+        "room-feature-invalid.png",
+        "room-feature-phone.png",
+        "simulation-delayed-evidence.png"
+      ],
+      "limit": "No browser zoom, enlarged text, low-vision or font-substitution qualification."
+    },
+    {
+      "dimension": "spacing",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Inspector section padding and collapsed groups make scanning easier. Phone Inspector uses the available width; room feature controls and surface picker can be reached without horizontal overflow. Phone context menu remains within the viewport.",
+      "evidence": [
+        "room-feature-phone.png",
+        "surface-picker-390x844.png",
+        "surface-picker-844x390.png",
+        "graph-context-light-phone.png",
+        "V6",
+        "V12"
+      ],
+      "limit": "Dense authoring fields still require vertical scrolling on phones; this is an observed workflow, not simultaneous visibility of all controls."
+    },
+    {
+      "dimension": "controls",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Recorded graph actions duplicate, lock/unlock, hide, remove and Undo; viewport context selection and preset Add to scene visibly act on the appropriate object. Surface controls move paper between vertical walls and horizontal table/floor. Timeline authors delayed INSPECT/HIDE; room fields change actual furniture and its bound clue.",
+      "evidence": [
+        "graph-object-context-dark.png",
+        "viewport-object-context-dark.png",
+        "asset-context-dark.png",
+        "surface-wall-left.png",
+        "surface-table-left.png",
+        "surface-Entire-floor.png",
+        "simulation-delayed-action.png",
+        "room-feature-correction.png",
+        "V4",
+        "V6",
+        "V8",
+        "V12"
+      ],
+      "limit": "Not every displayed context command is exercised. Post-save Assistant Locate recovery is offered but not clicked; proposal-stage Locate is exercised."
+    },
+    {
+      "dimension": "contrast",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Dark and light room pairs preserve recognizable furniture, frames, wood/floor boundaries and authored objects. Light menus retain dark labels, blue selection and red destructive action. Classroom whiteboard/clock and gallery paintings remain distinguishable on phone upper walls.",
+      "evidence": [
+        "room-classroom-light-phone.png",
+        "room-gallery-dark-phone.png",
+        "graph-context-light-phone.png",
+        "graph-toolbar-light.png",
+        "all 40 room theme/device benchmark PNGs"
+      ],
+      "limit": "No instrumented contrast-ratio audit or color-vision qualification; some small distant authored objects require Frame for detail."
+    },
+    {
+      "dimension": "consistency",
+      "judgment": "PASS_BOUNDED",
+      "observation": "The existing blue shell is maintained across rooms, library, authoring and simulation. Global object actions and context commands share the same selection behavior. Light and dark variants preserve the hierarchy and room identities.",
+      "evidence": [
+        "welcome-guided-desktop.png",
+        "library-placed-instance.png",
+        "simulation-reset.png",
+        "graph-toolbar-light.png",
+        "V4",
+        "V5",
+        "V7"
+      ],
+      "limit": "Prior d764 docked/floating Assistant mode/device repair receipt remains separate; this packet is not a new complete Assistant presentation matrix."
+    },
+    {
+      "dimension": "states",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Selected, locked, hidden and removed assets have distinct recorded consequences; Undo restores removal. Invalid room width retains the prior room and presents an error. Simulation shows unmatched/no-effect, waiting, applied hide and reset. Context loss has a clear Retry state; archived library has a clear empty state. Photo permissions can be withdrawn while geometry remains.",
+      "evidence": [
+        "room-feature-invalid.png",
+        "simulation-no-effect.png",
+        "simulation-delayed-evidence.png",
+        "simulation-hidden-evidence.png",
+        "renderer-context-loss.png",
+        "renderer-recovered.png",
+        "library-archived-definition.png",
+        "photo-room-permission-withdrawn.png",
+        "V2",
+        "V4",
+        "V5",
+        "V8",
+        "P1"
+      ],
+      "limit": "Not a complete hostile-network/provider/error taxonomy. Production configured photo inference is not exercised."
+    },
+    {
+      "dimension": "responsive",
+      "judgment": "PASS_BOUNDED",
+      "observation": "All ten rooms appear in 1440x1000 desktop and 390x844 phone dark/light captures. Phone feature fields admit an actual x edit, Save and collapse back to a visible desk/clue scene. 844x390 surface picker scroll reaches the available surfaces; phone light menu fits the viewport.",
+      "evidence": [
+        "all 40 room theme/device benchmark PNGs",
+        "room-feature-phone.png",
+        "room-feature-phone-edited.png",
+        "surface-picker-844x390.png",
+        "surfaces-framed-844x390.png",
+        "graph-context-light-phone.png",
+        "V6",
+        "V7",
+        "V12"
+      ],
+      "limit": "Browser viewport emulation only; no real touch device, safe-area/IME/orientation hardware test, complete laptop or all-mode matrix."
+    },
+    {
+      "dimension": "keyboard",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Shift+F10 opens graph/viewport context menus; ArrowDown changes menu focus and Escape dismisses. Frozen context-menu source corroborates arrow/Home/End handling and disabled command skipping. Standard buttons preserve accessible names for shared icon actions.",
+      "evidence": [
+        "graph-context-light-phone.png",
+        "V4",
+        "src/components/studio/parallax/StudioContextMenu.tsx",
+        "tests/e2e/parallax-context-menu.spec.ts"
+      ],
+      "limit": "No complete keyboard-only journey, screen-reader announcement review, alternative input qualification or every keyboard shortcut invocation."
+    },
+    {
+      "dimension": "focus",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Context menu shows an obvious blue focused row; Escape returns to the selected graph row in the recording. Frozen menu implementation restores the opening trigger and constrains menu position; selected object highlight follows graph/viewport interaction.",
+      "evidence": [
+        "graph-context-light-phone.png",
+        "graph-object-context-dark.png",
+        "object-highlight.png",
+        "V4",
+        "src/components/studio/parallax/StudioContextMenu.tsx"
+      ],
+      "limit": "Full focus order across every overlay and validation state has not been exercised."
+    },
+    {
+      "dimension": "feedback",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Assistant visibly separates request interpretation, proposal review, Apply/save and renderer confirmation. Saved changes can then be confirmed rendered, identified as authored hidden, or reported occluded with Locate offered. Simulation names waiting/applied outcomes and Engineering evaluated coordinates. Invalid measurement and renderer Retry give actionable recovery.",
+      "evidence": [
+        "active-inference.png",
+        "completed-proposal.png",
+        "apply-confirmation.png",
+        "simulation-delayed-evidence.png",
+        "simulation-hidden-evidence.png",
+        "simulation-engineering-replay.png",
+        "room-feature-invalid.png",
+        "renderer-context-loss.png",
+        "photo-letter-saved-hidden.png",
+        "V8",
+        "V10",
+        "P1"
+      ],
+      "limit": "Post-save occlusion Locate button is not clicked in the supplied recording. Cold startup/reload Preparing states take several seconds; no latency SLA is established."
+    },
+    {
+      "dimension": "motion",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Decoded animation chronology and denser samples show the compass changing position/orientation, with Restart and Stop restoring states. Timed production simulation visibly hides the framed object and Reset restores it. Development photo scene clock visibly advances from zero and the letter first appears at five seconds.",
+      "evidence": [
+        "animation-start.png",
+        "animation-end.png",
+        "animation-reloaded-zoom.png",
+        "simulation-hidden-result.png",
+        "simulation-reset.png",
+        "photo-letter-before-reveal.png",
+        "photo-letter-after-reveal.png",
+        "V1 at approximately 23-29s",
+        "V8 at approximately 24-27.8s",
+        "P1 at approximately 45.5-52s"
+      ],
+      "limit": "Animation object is small after whole-room reset, so fine detail requires Frame. Sampled chronology proves actual movement/state change, not every encoded frame or subjective smoothness. Phone animation still is not a physical touch playback recording."
+    },
+    {
+      "dimension": "continuity",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Animation, surface placement, feature geometry, instance edits and behavior survive saved reloads in their recordings. Library returns naturally to the copied scene after definition open/archive without a test-only Frame, with both instances visible. Assistant/Chronicle reopens the exact immutable pin. Photo Preview returns to original bedroom before Apply; saved shared-desk correction and withdrawn permissions survive reload.",
+      "evidence": [
+        "library-open-definition.png",
+        "library-archived-definition.png",
+        "room-feature-restored.png",
+        "animation-reloaded-zoom.png",
+        "simulation-engineering-replay.png",
+        "photo-room-geometry-preview.png",
+        "photo-room-restored.png",
+        "photo-letter-reloaded-replay.png",
+        "V5",
+        "V6",
+        "V8",
+        "V10",
+        "V12",
+        "P1"
+      ],
+      "limit": "Chronicle context is seeded and opened using an explicit bound deep link; this is not a complete natural A-P journey. Photo post-reload replay uses Preview next delayed action to jump to 5s, not a second real-time five-second wait."
+    },
+    {
+      "dimension": "complexity",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Shared icon actions, context commands, compact top commands and grouped Inspector reduce repeated controls while retaining detailed authoring. Frame/isolate/reveal and collapsed phone Inspector give workable ways to inspect complex rooms. Ten room constructions have explicit resource counters.",
+      "evidence": [
+        "graph-toolbar-light.png",
+        "room-feature-correction.png",
+        "renderer-isolated-framed.png",
+        "room-render-costs.json",
+        "V2",
+        "V4",
+        "V7"
+      ],
+      "limit": "Room counters measure submission cost only; layered controls still require learning and scrolling. No usability timing study or GPU/hardware performance claim."
+    },
+    {
+      "dimension": "role-outcomes",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Creator can author an instance separately from its definition, correct room furniture and bound clue geometry, review/apply a synthetic Assistant proposal, author delayed hide/reset, save/reload and attach/reopen an immutable Chronicle pin. Engineering sees evaluated simulation coordinates. The ten environments are visually distinct generic benchmarks.",
+      "evidence": [
+        "library-object-definition.png",
+        "library-placed-instance.png",
+        "room-feature-correction.png",
+        "simulation-engineering-replay.png",
+        "creator-journey.json",
+        "V5",
+        "V6",
+        "V8",
+        "V10",
+        "P1"
+      ],
+      "limit": "No complete player/mobile/native role journey, live room perception accuracy, imported model rendering qualification, complete protected contracts or physical/owner acceptance is inferred."
+    },
+    {
+      "dimension": "fallbacks",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Context-loss Retry restores the useful isolated frame and retained draft. Invalid room measurement retains prior geometry and permits correction. Unmatched inspect reports no effect; reset restores simulation. Production unavailable photo state offers manual fallback; development permission withdrawal retains saved geometry. Assistant can report pending/hidden/occluded renderer outcomes without equating save with visibility.",
+      "evidence": [
+        "renderer-context-loss.png",
+        "renderer-recovered.png",
+        "room-feature-invalid.png",
+        "simulation-no-effect.png",
+        "simulation-reset.png",
+        "photo-room-unavailable-manual.png",
+        "photo-room-permission-withdrawn.png",
+        "V2",
+        "V6",
+        "V8",
+        "V10",
+        "P1"
+      ],
+      "limit": "Provider failure, real private image scanning and live inference readiness are unqualified. Production unavailable/manual state and development configured synthetic workflow are separate evidence tiers."
+    }
+  ],
+  "chronology": [
+    {
+      "recording": "V1",
+      "observations": "Compass playback visibly changes position and face orientation; restart and stop restore authored state. Phone animation still contains timeline and populated room.",
+      "bound": "Actual sampled motion verified; no physical phone playback."
+    },
+    {
+      "recording": "V2",
+      "observations": "Middle/Ctrl pan changes the camera, isolate/frame enlarges the paper, and context-loss Retry restores the same useful isolated frame.",
+      "bound": "No shared runtime control or hardware mouse qualification."
+    },
+    {
+      "recording": "V4",
+      "observations": "Approximately 15-30s duplicate, lock/unlock, hide, remove and Undo; 75-85s viewport selection/context; 85-90s preset Add to scene; approximately 103s saved-scene menu; 108-115s light phone keyboard context focus and Escape.",
+      "bound": "Saved-scene commands and phone mutation not invoked in this recording."
+    },
+    {
+      "recording": "V5",
+      "observations": "Separate definition/version, scene copy, reused pinned object, instance-only rename, Undo/Redo/save/reload, open definition, natural return and archive preserve the copied scene.",
+      "bound": "Synthetic library data; original immutable definition remains distinct."
+    },
+    {
+      "recording": "V6",
+      "observations": "Desk name/classification/transforms and room width alter the rendered desk and attached clue; invalid negative width recovers; reload retains edits; phone x .75 to .65 is saved and Inspector collapsed to show scene.",
+      "bound": "No parametric Add/Remove/Rebuild test in this packet; prior parametric acceptance stays separate."
+    },
+    {
+      "recording": "V7",
+      "observations": "All ten room benchmarks and their theme/phone captures inspected; classroom/gallery front angles and complete phone wall artwork are readable.",
+      "bound": "Generic construction, not physical surveyed models."
+    },
+    {
+      "recording": "V8",
+      "observations": "Unmatched inspect, authored 1000ms INSPECT/HIDE, waiting/applied diagnostic, preview hide/reset, saved reload then Frame and real-time Run hide/reset; Engineering coordinates visible.",
+      "bound": "Production synthetic behavior proof, not all trigger combinations."
+    },
+    {
+      "recording": "V10",
+      "observations": "Natural shell entry, explicit seeded Chronicle-context deep link, synthetic request/review/proposal Locate/Apply, save and renderer feedback, second pending-to-occluded outcome with offered Locate, Undo/Redo/reload, validation, immutable pin attachment and exact reopening.",
+      "bound": "Post-save Locate is offered but unclicked; complete A-P natural journey excluded."
+    },
+    {
+      "recording": "V12",
+      "observations": "Paper attaches vertically to walls then lies horizontally on table/floor; Undo/Redo/save/reload preserve placement; phone and landscape surface picker accessed.",
+      "bound": "Desktop browser emulates mobile viewport; landscape requires scrolling."
+    },
+    {
+      "recording": "V13",
+      "observations": "Hidden wall placement transitions to a table and the proposed paper changes to horizontal orientation.",
+      "bound": "Specific tested surfaces only."
+    },
+    {
+      "recording": "P1",
+      "observations": "Approximately 16-18s actual proposed geometry preview before save; 18-19s return to original bedroom; 20-23s preview/Apply; 23-26s additional photo/shared Writing desk refinement; 26-36s withdrawals and reload; 37-43s existing Desk Map changed to hidden letter near desk/window; 45.5-52s actual clock advances and letter appears at five seconds; 60-68s reload then Preview next delayed action.",
+      "bound": "Development synthetic scanner/images/intercepted provider only. Second replay is a clock jump, not a second real-time wait."
+    }
+  ],
+  "construction": {
+    "recognizablePresets": [
+      "bedroom: bed, wardrobe, desk",
+      "living-room: sofa, TV, rug, chair",
+      "dorm: bunk and desks",
+      "office: monitors and chairs",
+      "classroom: desks/chairs, whiteboard, clock",
+      "gallery: framed paintings, plinth sculptures, bench",
+      "trail: trees, path/sign, bench",
+      "plaza: paving and outdoor furniture",
+      "empty: architectural shell",
+      "cluttered: stacked boxes and tables"
+    ],
+    "quality": "Consistent generic low-poly construction with floor/wood/material boundaries, skirting/supports and an open cutaway. Room identities differ substantially across all theme/device views.",
+    "resourceBounds": {
+      "sets": 20,
+      "samplesPerSet": 3,
+      "pixelRatio": 1,
+      "drawCalls": [
+        21,
+        109
+      ],
+      "triangles": [
+        488,
+        25052
+      ],
+      "geometries": [
+        13,
+        56
+      ],
+      "textures": [
+        6,
+        10
+      ],
+      "cpuSubmissionMs": [
+        1,
+        22.1
+      ],
+      "largest": "Classroom: 109 calls, 25052 triangles, 56 geometries, 7 textures",
+      "automatedConstructionChecks": "20 CHECKS_PASSED, no automatic findings",
+      "physicalCalibration": false
+    },
+    "performanceLimit": "CPU submission samples and renderer resource counters are not GPU frame-time, sustained FPS, memory-pressure or real mobile hardware measurements."
+  },
+  "frozenSourceCorroboration": [
+    {
+      "path": ".agents/product-experience-workflow.md",
+      "scope": "Independent review obligations and evidence boundaries."
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "anchor": "lines 9-27",
+      "scope": "Exact seventeen dimension identifiers."
+    },
+    {
+      "path": "testing/contracts.json",
+      "scope": "Affected rooms/presentation/authored-library-and-simulation/photo contract boundaries, not complete contract acceptance."
+    },
+    {
+      "path": "tests/e2e/parallax-context-menu.spec.ts",
+      "scope": "Actual toolbar/context/keyboard invocations; phone Lock is hover/focus, not mutation; saved menu commands only displayed."
+    },
+    {
+      "path": "tests/e2e/parallax-room-photo.spec.ts",
+      "scope": "Preview/return/Apply/refinement/withdrawal, real first Run and post-reload Preview next delayed action; flat synthetic image fixtures."
+    },
+    {
+      "path": "tests/e2e/parallax-simulation.spec.ts",
+      "scope": "1000ms authored trigger, framed saved Run/reset and Engineering evaluated coordinates."
+    },
+    {
+      "path": "tests/e2e/parallax-spatial-assistant.spec.ts",
+      "scope": "Proposal Locate, canonical Apply and renderer checks, immutable version/pin continuity and bound deep links."
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.tsx",
+      "scope": "Asset graph, global selected actions, Inspector grouping, context command wiring and Chronicle attachment."
+    },
+    {
+      "path": "src/components/studio/parallax/StudioContextMenu.tsx",
+      "scope": "Clamped placement, focus restoration, keyboard navigation and accessible command labels."
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialCanvas.tsx",
+      "scope": "Frame/isolate/pan, separate clamping/grid, retained camera on renderer retry and viewport context commands."
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialAssistant.tsx",
+      "scope": "Saved revision matching, pending/hidden/occluded/visible renderer feedback and Locate offered."
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialStudio.module.css",
+      "scope": "Semantic group spacing, light/dark context styling and bounded phone overlays."
+    }
+  ],
+  "retainedHistory": "Previous confirmed findings and failed/gap capture packets are preserved as separate receipts. This verification does not rewrite earlier ce13/e3d/5dfc failure outcomes or extend older foundation, parametric, photo or Assistant repair judgments beyond their own evidence.",
+  "smallestFurtherRequiredRepair": "None confirmed for this bounded supplied packet. Additional evidence, rather than inferred success, is needed for any excluded complete contract, all-command/mode/device, continuous-motion quality, live provider, native/physical or owner acceptance claim.",
+  "featureCatalog": "NO CHANGE REQUIRED: independent evidence review only; no product behavior was changed. Parent owns repository generator/check completion.",
+  "digestVerification": "Independent SHA256 verification of every manifest recording and all 117 PNG/WEBM media files completed. Exact media inventory, preserved-copy equality and receipt digests are appended below.",
+  "mediaInventory": [
+    {
+      "file": "active-inference.png",
+      "sha256": "3a56a5c8e1add436141bc5edc5f03dfd63d031390d4a947969d057b8dca89e32",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "animation-end.png",
+      "sha256": "4287a09e7e53803a5b115791bd1a1634e85a9730cb40a4f72d2eecab7e0cffbd",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "animation-phone.png",
+      "sha256": "2cf8c5b2cf80c7122ee0163e806686654cf14978ec71716591017b146a3bec17",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "animation-reloaded-zoom.png",
+      "sha256": "909eebcd3b0acfc76b26d11d1096651d92dc2ce38369f691a889c3e90079aaae",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "animation-start.png",
+      "sha256": "8ed15c5bb16360ad92b33ab90bd27922b0e6d153e4f06b8f8bb340cd60db1b58",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "apply-confirmation.png",
+      "sha256": "4a39cc09c9e98762f76766e1b4635b0728faa1565928d0706b6eadbc616eb667",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "asset-context-dark.png",
+      "sha256": "c7c6229cc18792b278a03cae4f03f30502d0ea6d6497c3e22cca1977f6b6da95",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "automatic-wall-to-table.png",
+      "sha256": "d953260222dc12a458390966796ccdc2d6eb24efb2618709562cf11eb73def5d",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "completed-proposal.png",
+      "sha256": "3340135724aea9d22f351d43534d91256eaeae92df969a4700964c7de3e198b0",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "current-scene-review.png",
+      "sha256": "17d4fbe849b059afa6beb97c5f8a4c1fb2cc3b7c91e45603fdefb2133ff77966",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "graph-context-light-phone.png",
+      "sha256": "790aae79379df62fdad5b87d836a6e58b11fda8323c3e70df41092aa1de89207",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "graph-object-context-dark.png",
+      "sha256": "286e0dc93e4cdf9caa64aeea90672ecca6c4e1fc7750f64867f248308d97adf8",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "graph-toolbar-light.png",
+      "sha256": "f1ab12e6521c2c4ac3419bb3609e9294aee18f6e4a0aa60d837fc0d5482261dc",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "library-archived-definition.png",
+      "sha256": "c57e76cc6de3871f2a6c03bc91dccee443eed7340457236885ae2875a94bcc2b",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "library-object-definition.png",
+      "sha256": "73b4209f9e4291f0b983724b814951fbb15bcd7fbd7aab0608dffb8a567b080b",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "library-open-definition.png",
+      "sha256": "da25d4f544e0d3f779f8f406096c9462f4fe356f8322cad2820c78a9bdc953e5",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "library-placed-instance.png",
+      "sha256": "354192b40c75e868efbb129970b37439d336a521adfc90d900e5aee0f367c5c3",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "object-highlight.png",
+      "sha256": "a2ba9028adc501c65a493d1e5c05b96d9ee81995fa220a5f491fedf09f9140d8",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "a4e4231720273f25b3a76e0b866841e92666ff386f2261d2dfc19c582474d006",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "2bd8fa78e29cb188492919cdc6d2135514d125a7fed157843307dfd2bc2a5e1c",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video-1.webm",
+      "sha256": "f68d62e492dfe1dffc82b4ca218649abe0cb2786f78a8b8b679cd788e6ac55c3",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video.webm",
+      "sha256": "8dbb6af3f789eba0eed1705e866e0c7d27f50ad615b0e8f086db509e213573db",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "b4a33958018dcfcf669cfcfd8862b7dbc84ea7f31f6e60dc089726250c10dc32",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "sha256": "e6e9fa88315722cc2b6464c339398cddea83c4b968c86cc7b67e34c565b4a8c7",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm",
+      "sha256": "30c067e933ff5483ccb781a197f5b5b0d301e9ea1bf5dfb9d15398c835aa8abe",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm",
+      "sha256": "c93bad6bf7e046b826e9dbef462453e6d33b19829d4e3ebc5cd657725c996ad9",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video-1.webm",
+      "sha256": "5d5c8b604f6648859ad6eefbc882fd89b9dd7a743adac0e9ca049633c010d8f6",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video.webm",
+      "sha256": "fbbcbd4e5fe4fbd2201c281ed29b2b3af504fc6d33fd4d8715980d4cf694ad83",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video-1.webm",
+      "sha256": "01ca7ce20713617288ed768ea901dfccb123c8c697abb2a60ea911ecbe18bf56",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+      "sha256": "dbef374c92116b470b39506802bcf05cb34f8878e03f9e2683b8f079bddb3a12",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm",
+      "sha256": "2fb0019a5269428e8fbde43dbcd85ebcaa43175919bc65223fb93bc9b69ddf49",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-letter-after-reveal.png",
+      "sha256": "fd97543b44c36187ad91bf71e77de8c59b156e2aa57760aedfaab6e423d145d2",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-letter-before-reveal.png",
+      "sha256": "0895fab1e18852e76bdf5f5382b08856539e513dc55cff8c8de3879e734b6473",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-letter-proposed.png",
+      "sha256": "a674d094775b8343189ec27944e57bf9945bf4fb1b2a0138fb65b6d0741daa64",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-letter-reloaded-replay.png",
+      "sha256": "b7cce7a872883b850146bc63d86888e9d70f71761cbe30d69a3d24c1c4bd5ba5",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-letter-saved-hidden.png",
+      "sha256": "79defe8629762522b21a77640f458236ef8be995a13289d796d3ee31215c5bcd",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-fc92a-raws-permission-and-reloads-chromium-video.webm",
+      "sha256": "664affd1545b123d1f570c17f749d97b7876cb2b6a9870edf294828aa6dc53f2",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-room-applied-cutaway.png",
+      "sha256": "1328e3eb32630c8bab1f6ccaf2e609ecad7c80e286f9ee8cca5cc4d3cbe78bb7",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-room-geometry-preview.png",
+      "sha256": "7458659e8d1c0bfb62a0593799ffb5cc28c54687f7006f52991656a8dd23f239",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-room-permission-withdrawn.png",
+      "sha256": "271fecce40bbef6c302f880c16aa52332a6bf920089809f0eacf9c6db8c6dd91",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-room-proposal.png",
+      "sha256": "acc33d1f09e949d72f7285f93eed43d17ac817b8490bc9f4371de2a603cbfcaf",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-room-restored.png",
+      "sha256": "515d88bc6967399d4931c65df03b4a5ea59bd87adad184334ca3b31cb0b106d3",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "photo-room-unavailable-manual.png",
+      "sha256": "f3a35496b94f3581e72250991813998779775a31deb9c9e6fdc632c3bbe9779d",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "proposed-canvas.png",
+      "sha256": "21d3d0054f288f6d8ec6104900551cc77eb88f5798d9efe1a4de021a3dfbacac",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "renderer-context-loss.png",
+      "sha256": "e24aafaa546ebe781e2bba4b7a71a381284fbe8ad92d343d4cc752826f4ed246",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "renderer-isolated-framed.png",
+      "sha256": "bb538d0d9c7a753140ff10f51e04b88d3881a3c1e23d50499008a38734006a64",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "renderer-recovered.png",
+      "sha256": "9ffe6c2a911a1e2f261f142d96798dfd63b024871690083d9b6aa63273caf7d1",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-bedroom-dark-phone.png",
+      "sha256": "73ebd09bf3480ccd2b771a77f664367331444cdaff874af804f1290228e06ce9",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-bedroom-dark.png",
+      "sha256": "da1de2b54f30ce7b869f26ffe117d6ab100bdd46bee5fd2d079d0df7ecb8a1dd",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-bedroom-light-phone.png",
+      "sha256": "b3b13fa1304b4459a3770f0b9961ab6082ff3db4d4fbd4f83478fa991f9af78f",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-bedroom-light.png",
+      "sha256": "2a40a80c8d9d3ca9f1985836edaaae6dfca8cc16e1fe4076fe43812f8d0dcde8",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-classroom-dark-front.png",
+      "sha256": "574ca3252af53468801ac74d5a660ec01b52bf4c8e400a61f744e9e7a7de76cb",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-classroom-dark-phone.png",
+      "sha256": "692fb7bdd5e2e2e2567473d020cff81d17ba1d42a3e0fca0320eef7574158b7f",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-classroom-dark.png",
+      "sha256": "b02b1dc66abc1b5f7dfd696314c63a959ad185186fec8a80cc5a6155349b1823",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-classroom-light-front.png",
+      "sha256": "dd975237c63e4415a9c8fb72bbbc906c00f478889c00d767c1f96b3e082dc444",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-classroom-light-phone.png",
+      "sha256": "327f3fa84a8a90ca8e79c861fb5508c294449c1135d392828abc8257873955f4",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-classroom-light.png",
+      "sha256": "c78a486c2121065867ba547d0be7b44c4a822f437bb153ff251f5cdec9d1528f",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-cluttered-dark-phone.png",
+      "sha256": "b065b60ff4a200102f9352e62fe87d64cdca91086af440caabc4b6428ec69d5c",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-cluttered-dark.png",
+      "sha256": "ccd5b20c026decb88d17b9cd6acc1d09571348ea4d8369824228fac60d5e35c3",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-cluttered-light-phone.png",
+      "sha256": "06f67eb90ea5d9617ed934ce46c7db0543e7e67ba1ef78e03fda7c16d0fbdb7f",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-cluttered-light.png",
+      "sha256": "d00b54c3878048fe7fb36cac0cdf6be2f2175eead1e53fe340ad0c39c263e83f",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-construction-finding.png",
+      "sha256": "650e69693c04183a22f434baafedc12622739008cc43429b42f23c0ee812c127",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-dorm-dark-phone.png",
+      "sha256": "e050d24d6f3f68c7be786bc9bfa1cb90b396b61b04c6bba2b76aceffd017d616",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-dorm-dark.png",
+      "sha256": "be598bf965dc1e11df791dc81b84ded4d3d8c2b78a5f98209c9cd24bd89c447b",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-dorm-light-phone.png",
+      "sha256": "ac4ff95d6f5d0a368c5a60c49a36c4103047a95ca7e63e961d5caddac0ff8639",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-dorm-light.png",
+      "sha256": "d54d3f5456541b9663d65990b79aeea4920bb8feaf65264a201372061ab120b4",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-empty-dark-phone.png",
+      "sha256": "27f074c100e174ba22c76be85638c6eb5882ced82051941b47be2a8354a3f097",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-empty-dark.png",
+      "sha256": "cd451dd04db94ac120d89d1136e7823f7efa402a50629db4090fce4c4310cb47",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-empty-light-phone.png",
+      "sha256": "2712bbb4b58ad361cf55f25ff4881c77ae8929710aabb00c4887c43818809a3e",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-empty-light.png",
+      "sha256": "591489f8aeb4f504379dce70d5c904e1a5af5b81572afe6964a753eee4c4e316",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-feature-correction.png",
+      "sha256": "dcd54becf51aef539f81251e4c263a3cd7b5146fce54cca03eb8b3cc0054d742",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-feature-invalid.png",
+      "sha256": "e38b6adf3da83876b1784323df75b991e65601fb318552d0afa2df5c36cf0ddd",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-feature-phone-edited.png",
+      "sha256": "71cadd939bda7fe1ad569a0bf38c10a6c404fb15d632c81178437c50fc26e77d",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-feature-phone.png",
+      "sha256": "52ab451ffd42146666bf3c4038b59b591381e0bdaf3061acc856526855ffffc8",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-feature-restored.png",
+      "sha256": "8776bca6a3a75baf98a52259eac3b4d0692df05e1585b6226393c689894e5968",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-gallery-dark-front.png",
+      "sha256": "31d15799796c19a6bfc9386fa9ae25092c4aa701ad54d5e70c764b66efa884d6",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-gallery-dark-phone.png",
+      "sha256": "f2cf83449d53b94c9942fa0d3a185f4c541bc9d23a0a4992cf0d6d2c8e56872e",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-gallery-dark.png",
+      "sha256": "ca3debd6bcf3eb9dbd331f032450c5c6eef5f12cf45d2cc73cf1ae1b07f2a23d",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-gallery-light-front.png",
+      "sha256": "532e9237ebdd99999d6aeb2c8879fab2fd5a5639d989ca4764e3392335db80f9",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-gallery-light-phone.png",
+      "sha256": "b1bb2f02e47972e487a377fecd4bd08feba3b505b2146cc1f267c3fca8f88f7c",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-gallery-light.png",
+      "sha256": "f959f9facdaf0cbb3984e6e1537e77f6b4ea9135ced31ced0a3d6c80b8c01a73",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-living-room-dark-phone.png",
+      "sha256": "5b23cc0117a4f1d4d0f5dc8989a78f3ef885de408bb41fd8e1402b10b0dd3925",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-living-room-dark.png",
+      "sha256": "9b8ff4174bdf8cb3d3d81c88aa2765f02898d95a390a381b8028374db04e0060",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-living-room-light-phone.png",
+      "sha256": "3ad7bd923b4ea58208ba38c4aa6d2e16ad7622eba50c51019aad367c12b46ac6",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-living-room-light.png",
+      "sha256": "b9f6bedb9c19c78bd953a51bdd4c7bb3e28c4dcc05d78c8613b13326c9464796",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-office-dark-phone.png",
+      "sha256": "d475fdeef6ea5f7821c1720b8f3f4e61368477b904ffe6d9438143703808fb14",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-office-dark.png",
+      "sha256": "7a15d079b6a46dc7fbe13cbe613545bcb5ef773e8acca0843a69ab8a6b2a17db",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-office-light-phone.png",
+      "sha256": "b41a3b4e6086eb4d2ce6fcbb13750511903e6688beeac82eaaa5285f6fb113de",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-office-light.png",
+      "sha256": "f334a1bee608a09195bccb7affef46952f4d70d1c02166c4972fa0815d8bd51d",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-plaza-dark-phone.png",
+      "sha256": "2288c625838056a5d86067d379e65873abb3b60cc279fbe9b6666472ca7e950d",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-plaza-dark.png",
+      "sha256": "ff1815eb05b4aa37d8210ea0cb034edbc8dbaba5c3a3dad18567d548644ed1ad",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-plaza-light-phone.png",
+      "sha256": "8fe088da4158dffdc67bbea67a883d6751b1844e6484e0304a183132f73c5122",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-plaza-light.png",
+      "sha256": "832f648bd8a49436196faa05d85783f0e704f77b136d6768303778ba886c10cf",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-trail-dark-phone.png",
+      "sha256": "528c4a2662594b0b0b452167dbdd21abf7c62c433c74942e37dae1ecdcad2e34",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-trail-dark.png",
+      "sha256": "008c9b5f1920edd2d77f111c50536a415f0a16fb2a7349ddc77611d4ba9d0ddf",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-trail-light-phone.png",
+      "sha256": "faa8e7f0cb4ef4270f9475f3fa84f232255d0d0ce5e755b32c7a9ff1aa72a995",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "room-trail-light.png",
+      "sha256": "f60ac848043ed65b595e94ef7b418371b6232d9351656183f9078ec7afc29de2",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "saved-scene-context-dark.png",
+      "sha256": "6846a14676153f1eb3a4fe9dba96ea306b9009a9ecd36282097e5f2c29c9016d",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "simulation-delayed-action.png",
+      "sha256": "ae72408e55d93f6cd92a838a8fffe6562604217463936b7bad2c785e6dda4ce2",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "simulation-delayed-evidence.png",
+      "sha256": "4fee987effe23f356d35538bdc2404087628632f648a366a0f25c51cc25c09a8",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "simulation-engineering-replay.png",
+      "sha256": "ebe05c6a9c75d1b92db498dbc0cb454bf302eb6a7f365ad703218e3ec0fce8f6",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "simulation-hidden-evidence.png",
+      "sha256": "1ac432644dff19c6cbc5374ccfbcd2fce7bf926af3a016c2f1a68e4a5eb8d33e",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "simulation-hidden-result.png",
+      "sha256": "40230ba653228927267d4950fc0d91095769554f805d65300cf9fce27ee59229",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "simulation-no-effect.png",
+      "sha256": "b8b6d31d5a906dccffb376d2781aaace38404de471ae645c3682e800e7e1f2c3",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "simulation-reset.png",
+      "sha256": "2e086e3299ffb7cd00d50724329c614bbba46d34a15ad99d1540e24b6fd9fc25",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surface-Entire-floor.png",
+      "sha256": "a561fb5e2fb423de7fa461881148c20a5ff66ae204621c626366ebbbf98630a6",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surface-picker-390x844.png",
+      "sha256": "dd79ed5be2e9429fe22cc0a290ef6fdb8e038078a8c6eb7324c9f5d91c23b39d",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surface-picker-844x390.png",
+      "sha256": "5ccae80f614f328d957bd46e2ac948161679a190addab1e6d3fb5f70238a2a5a",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surface-table-left.png",
+      "sha256": "e19b405d2b7cd011d4a46eec0f80c51ca313ac6562dcca81a18a2b96965bea03",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surface-wall-left.png",
+      "sha256": "5a0f0200e394a7b99bc6ed6217fc147ac589575b7eca71d2c937531adab8dbf1",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surface-wall-window.png",
+      "sha256": "b32d9d242440a59ed78148eb9d1999b3a9a0789d0634ca923a6d7d5f438b1631",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surfaces-390x844.png",
+      "sha256": "8163003d1452df594924b0c11761dcc37a92fec608122ee99d9cf5c885c1db31",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surfaces-844x390.png",
+      "sha256": "bd498d9b143c4179d899b7ed89bba2fbd843b26839cf157f50b211b203c465fb",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surfaces-framed-390x844.png",
+      "sha256": "58e0b6b57b557f6438d26e99a18454bf091aab3da57261ca0407abd8808038d7",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "surfaces-framed-844x390.png",
+      "sha256": "c6594fad287190e4f757fb8083bc96a17feadf4ab3983644d9ce261762668632",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "viewport-object-context-dark.png",
+      "sha256": "461308c3fce98dd9a62d372c9a06dadf217c2b2fa2c97d851880a69fd134b302",
+      "preservedCopyEqual": true
+    },
+    {
+      "file": "welcome-guided-desktop.png",
+      "sha256": "c02b7ea59852b5541314518c135e9099c856a90b7de399f6c1b896c4ce39fe35",
+      "preservedCopyEqual": true
+    }
+  ],
+  "recordingInventory": [
+    {
+      "id": "V1",
+      "manifest": "run.json",
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "a4e4231720273f25b3a76e0b866841e92666ff386f2261d2dfc19c582474d006",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V2",
+      "manifest": "run.json",
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "2bd8fa78e29cb188492919cdc6d2135514d125a7fed157843307dfd2bc2a5e1c",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V3",
+      "manifest": "run.json",
+      "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video-1.webm",
+      "sha256": "f68d62e492dfe1dffc82b4ca218649abe0cb2786f78a8b8b679cd788e6ac55c3",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V4",
+      "manifest": "run.json",
+      "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video.webm",
+      "sha256": "8dbb6af3f789eba0eed1705e866e0c7d27f50ad615b0e8f086db509e213573db",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V5",
+      "manifest": "run.json",
+      "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "b4a33958018dcfcf669cfcfd8862b7dbc84ea7f31f6e60dc089726250c10dc32",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V6",
+      "manifest": "run.json",
+      "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "sha256": "e6e9fa88315722cc2b6464c339398cddea83c4b968c86cc7b67e34c565b4a8c7",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V7",
+      "manifest": "run.json",
+      "file": "parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm",
+      "sha256": "30c067e933ff5483ccb781a197f5b5b0d301e9ea1bf5dfb9d15398c835aa8abe",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V8",
+      "manifest": "run.json",
+      "file": "parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm",
+      "sha256": "c93bad6bf7e046b826e9dbef462453e6d33b19829d4e3ebc5cd657725c996ad9",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V9",
+      "manifest": "run.json",
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video-1.webm",
+      "sha256": "5d5c8b604f6648859ad6eefbc882fd89b9dd7a743adac0e9ca049633c010d8f6",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V10",
+      "manifest": "run.json",
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video.webm",
+      "sha256": "fbbcbd4e5fe4fbd2201c281ed29b2b3af504fc6d33fd4d8715980d4cf694ad83",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V11",
+      "manifest": "run.json",
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video-1.webm",
+      "sha256": "01ca7ce20713617288ed768ea901dfccb123c8c697abb2a60ea911ecbe18bf56",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V12",
+      "manifest": "run.json",
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+      "sha256": "dbef374c92116b470b39506802bcf05cb34f8878e03f9e2683b8f079bddb3a12",
+      "independentlyVerified": true
+    },
+    {
+      "id": "V13",
+      "manifest": "run.json",
+      "file": "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm",
+      "sha256": "2fb0019a5269428e8fbde43dbcd85ebcaa43175919bc65223fb93bc9b69ddf49",
+      "independentlyVerified": true
+    },
+    {
+      "id": "P1",
+      "manifest": "photo-run.json",
+      "file": "photo-parallax-room-photo-Creato-fc92a-raws-permission-and-reloads-chromium-video.webm",
+      "sha256": "664affd1545b123d1f570c17f749d97b7876cb2b6a9870edf294828aa6dc53f2",
+      "independentlyVerified": true
+    }
+  ],
+  "receiptDigests": [
+    {
+      "file": "run.json",
+      "sha256": "be1603d1025da1505378a58f9eaa8621a3ccedf0b5703ce8b0071a55fa113391",
+      "originalFile": "run.original.json.txt",
+      "originalSha256": "6600bc3b43bc5804f1f298ea08d50ad1110df3c678462af80330de054987cdab",
+      "decodedEqual": true
+    },
+    {
+      "file": "photo-run.json",
+      "sha256": "acdb3a7ebc59e117deef70312cb25c0db1620d5b56c9ca1a5dc556fda8f9f7d7",
+      "originalFile": "photo-run.original.json.txt",
+      "originalSha256": "dfbce0d11d19e579c0c69211e590fe5877767a1062f4a3e37b30d67ebac685f9",
+      "decodedEqual": true
+    },
+    {
+      "file": "room-render-costs.json",
+      "sha256": "9a2fc3924bbfed8e1388580b2d138724c0070306442af5834d9f9026e3d1ffb6",
+      "originalFile": "room-render-costs.original.json.txt",
+      "originalSha256": "bf27cf767221214dbea988131b621b731c61667516f4eb5ee7e401927e4992b6",
+      "decodedEqual": true
+    }
+  ],
+  "laterReportedLimit": {
+    "status": "PARENT_REPORTED_NOT_REVIEWED_IN_THIS_PACKET",
+    "observation": "After this source-bound rendered review, the parent reported a hydrated development homepage crash at port 3130: Scene host registry is destroyed, during provider cleanup/reference replay. HTTP auth/status did not prove hydrated homepage health. A separate StrictMode lifecycle repair/recapture is required for that report. This receipt does not prove development homepage health and must not be reused as evidence for that repair. The observed 5ad presentation and synthetic journey judgments remain bound to the exact frozen candidate and captures."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "studio-unit-observation-run-01",
+  "at": "2026-10-23T01:11:57.144Z",
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 11,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37297180672,
+  "minimumD": 117328707584,
+  "monitorSamples": 20,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 19129,
+      "sha256": "23ca0961bae3c3819121f8f305c0450f8048f5c6c5487ad69cb4c0daa194809f"
+    },
+    "stderr": {
+      "bytes": 16885,
+      "sha256": "9f842124b8cdd0788827a197fe12b259f64b836ba43358690f325d654b3591be"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

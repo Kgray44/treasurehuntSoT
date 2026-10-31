@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-23T02:50:09.5520381Z",
+  "kind": "ORIGINAL_HOOK_WITH_NEW_REGRESSION",
+  "publishedHead": "6bbf875d31457103b6d2881bacde6631cbfa0923",
+  "baselineHookSha256": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d",
+  "fixHookSha256": "d966fb24361a3e33b8d5ae724a772ffad89d6ef58882a4045c2bec1de9bf830f",
+  "testSha256": "c12173fcf9a87f8ff8c5ec158585442f09187d64167f195e51fbfbf898a32f55",
+  "resource": {
+    "utc": "2026-10-23T02:50:04.629Z",
+    "freePhysicalBytes": 4954808320,
+    "cpuBusyPercent": 90.24595080983804,
+    "cpuSampleMs": 1000,
+    "cpuIsObservationOnly": true
+  },
+  "expectedDirtyPaths": [
+    " M src/components/studio/parallax/useWorkspaceLayout.test.tsx",
+    " M src/components/studio/parallax/useWorkspaceLayout.ts"
+  ],
+  "caseDefaultSeconds": 5,
+  "outerSeconds": 120,
+  "qualification": false
+}

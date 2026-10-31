@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "candidate": "8928a9855bf1b3abe8c76f7d6cdac16770b97f72",
+  "tree": "499381049b13781de141ecaa25e13699f51cfccf",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-14T21:32:13.892Z",
+  "finishedAt": "2026-10-14T21:34:17.539Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium-video.webm",
+      "sha256": "6f83058cb88686d6b6029054aea333d0abc732cade70743419dcc4fbd8eb3f02"
+    },
+    {
+      "file": "parallax-environment-libra-e13e5--preserving-scene-snapshots-chromium-video.webm",
+      "sha256": "20d830ea5ff01e82a8eef7e0613176fde8a8504fc211ab13bd15dd762790330c"
+    },
+    {
+      "file": "parallax-library-lifecycle-291af-etadata-and-version-history-chromium-video.webm",
+      "sha256": "146dcfba5361e1b54dbafe3a99e039b402a2e77b2c21c023ec5569abb4084b60"
+    },
+    {
+      "file": "parallax-library-lifecycle-3bbd1-sive-and-keyboard-reachable-chromium-video.webm",
+      "sha256": "47c18ff62e93a4a56fd50671ddb38949ef2cad9af9d9aab270a117f3a772891b"
+    },
+    {
+      "file": "parallax-library-lifecycle-4e27a-inition-and-visible-failure-chromium-video.webm",
+      "sha256": "43d5943fd6f3bcdb633f3259bc7b52aa5d2a6e67f027594fe2b457c6e1d8a330"
+    },
+    {
+      "file": "parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video-1.webm",
+      "sha256": "1a51d2dc2cc637e491b74a9f0a7439b900372352faba1e855828724629140f36"
+    },
+    {
+      "file": "parallax-library-lifecycle-77052-flicting-edits-deliberately-chromium-video.webm",
+      "sha256": "329504315db2abe9e22a2782aed408d4ce383d9b597829ce12575248d047f209"
+    },
+    {
+      "file": "parallax-library-lifecycle-a1739-or-a-newly-selected-version-chromium-video.webm",
+      "sha256": "21b2a916b27c0ea8ce20c86546653bc342c679b4e5285d67e556ab56b54d451e"
+    },
+    {
+      "file": "parallax-library-lifecycle-ebee8-ginal-CAS-base-after-reload-chromium-video.webm",
+      "sha256": "f937edce34b3850dc2b5c8d8b1d537872facb97707c934404adb9b982614706d"
+    },
+    {
+      "file": "parallax-library-lifecycle-f97ed-nufacture-scene-definitions-chromium-video.webm",
+      "sha256": "65bdc47ba752f9781edcb671c788a9aaf0abee5be3bc6909af4186d15942dcfe"
+    },
+    {
+      "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "a88f7ec8517e42164ee2e88ff4a8d6bf504f5cf34626ad5acf47cb22d27b85b1"
+    }
+  ]
+}

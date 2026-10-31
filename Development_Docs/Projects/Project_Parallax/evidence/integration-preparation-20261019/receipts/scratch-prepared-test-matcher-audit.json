@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "sourceNotChanged": true,
+  "qualification": false,
+  "status": "PASS",
+  "results": [
+    {
+      "name": "groups",
+      "original": 112,
+      "migrated": 112,
+      "allOriginalMatchersAndArgumentsRetainedInOrder": true
+    },
+    {
+      "name": "SC02",
+      "original": 76,
+      "migrated": 79,
+      "allOriginalMatchersAndArgumentsRetainedInOrder": true
+    }
+  ]
+}

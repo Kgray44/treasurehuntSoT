@@ -1,0 +1,478 @@
+{
+  "kind": "JOURNAL_READING_REPAIR_ENGINEERING_INTAKE",
+  "qualification": false,
+  "timeUtc": "2026-10-22T05:31:31.7832608Z",
+  "parent": "ae52b7e05c57301d85dbe52d0189896df9e1a075",
+  "sourceStatus": "Final Review03: no remaining confirmed source finding; exact local42/type/strictlint pass; original phone browser assertion not yet verified",
+  "initialFailureRun": 39721702762,
+  "privateOriginalsPublished": false,
+  "rawBrowserPayloadsPublished": false,
+  "sourceValidationTier": "LOCAL_ONLY",
+  "count": 66,
+  "bytes": 191971,
+  "originals": [
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\input.json",
+      "relative": "journal-heading-repair-01/input.json",
+      "bytes": 1486,
+      "sha256": "e53de3b4eb8abd344dfdd22edf2c1aaab46d92a9001ee8edba77d54120109a1c",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\checks.json",
+      "relative": "journal-heading-repair-01/checks.json",
+      "bytes": 3188,
+      "sha256": "df7b634877ec4c98563a7d9997d8da137a505ab39b79315d57ad1716e4809cab",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\unit-report.json",
+      "relative": "journal-heading-repair-01/unit-report.json",
+      "bytes": 16905,
+      "sha256": "f87b75cf325efe1b70ce3deeafba0baacfe4dd863008c59b5e97df0212d2d958",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\unit.stdout.original.log",
+      "relative": "journal-heading-repair-01/unit.stdout.original.log",
+      "bytes": 113,
+      "sha256": "e2e726af99e6f6b8a5f3d55287a3069bd51cb4a78dbdec385478f3348cb60282",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\unit.stderr.original.log",
+      "relative": "journal-heading-repair-01/unit.stderr.original.log",
+      "bytes": 571,
+      "sha256": "930b692c3f36da26c3f967e17dbf0c7c193b1149b830fab667c8c0339df15535",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\type.stdout.original.log",
+      "relative": "journal-heading-repair-01/type.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\type.stderr.original.log",
+      "relative": "journal-heading-repair-01/type.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\lint.stdout.original.log",
+      "relative": "journal-heading-repair-01/lint.stdout.original.log",
+      "bytes": 338,
+      "sha256": "0b0b310756fbec8601d65ca351b0b220fd95ea593b611cea862e04ba021d5bd7",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\lint.stderr.original.log",
+      "relative": "journal-heading-repair-01/lint.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\format.original.log",
+      "relative": "journal-heading-repair-01/format.original.log",
+      "bytes": 333,
+      "sha256": "d5e7e15de139f1d0b492c55665f99cd89cce669b74cc9a0815237d27d9bbee9b",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\checks-disposition.json",
+      "relative": "journal-heading-repair-01/checks-disposition.json",
+      "bytes": 485,
+      "sha256": "5fe9360ac7bb327facb294e58c50fa1075a7fd629277619f507be1a6d0e8b19c",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\launcher-01.failure.json",
+      "relative": "journal-heading-repair-01/launcher-01.failure.json",
+      "bytes": 362,
+      "sha256": "91fe54276da04fbc4b3673a50f40c22f21fcf3abf191afe14df6d81fc1c3b4c8",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\input.json",
+      "relative": "journal-heading-repair-02/input.json",
+      "bytes": 1486,
+      "sha256": "8460444a543dee15b5fc929dda2fc6ca1bcc2fc0334fdf945ac4004b44073794",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\checks.json",
+      "relative": "journal-heading-repair-02/checks.json",
+      "bytes": 3188,
+      "sha256": "6aa2ef140558c02e7d9faf68e613f43dd251adc8036d230c4cd615a48c5ac0a2",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\unit-report.json",
+      "relative": "journal-heading-repair-02/unit-report.json",
+      "bytes": 16905,
+      "sha256": "cb46aea4408adb0fc20af519c8f31d116fa9b05189b315a0e21b5005b8dd327d",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\unit.stdout.original.log",
+      "relative": "journal-heading-repair-02/unit.stdout.original.log",
+      "bytes": 113,
+      "sha256": "3ad5e38e6063d0493934a05627abda2fd50857698b1ef2beaa45eacf716a33b8",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\unit.stderr.original.log",
+      "relative": "journal-heading-repair-02/unit.stderr.original.log",
+      "bytes": 571,
+      "sha256": "930b692c3f36da26c3f967e17dbf0c7c193b1149b830fab667c8c0339df15535",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\type.stdout.original.log",
+      "relative": "journal-heading-repair-02/type.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\type.stderr.original.log",
+      "relative": "journal-heading-repair-02/type.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\lint.stdout.original.log",
+      "relative": "journal-heading-repair-02/lint.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-02\\lint.stderr.original.log",
+      "relative": "journal-heading-repair-02/lint.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\input.json",
+      "relative": "journal-heading-repair-03/input.json",
+      "bytes": 1486,
+      "sha256": "1d36d1bbe5c8ec58fd8ab1824e2ee1a977978f65dcbbdba43f4c103baecd3231",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\checks.json",
+      "relative": "journal-heading-repair-03/checks.json",
+      "bytes": 3189,
+      "sha256": "5ffb24f768515cf4117ecd1e7dd43be6017d1ea397bb5bdb2ea31adb817feff0",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\unit-report.json",
+      "relative": "journal-heading-repair-03/unit-report.json",
+      "bytes": 40385,
+      "sha256": "e18fe7c7a52b2ee68749a2d23d2dc12266643f89d3a091d8403f4d87d56bfc26",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\unit.stdout.original.log",
+      "relative": "journal-heading-repair-03/unit.stdout.original.log",
+      "bytes": 113,
+      "sha256": "14724198e88ba20963063a47ee52283f757fc8e045e922c320aa1863dc88f082",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\unit.stderr.original.log",
+      "relative": "journal-heading-repair-03/unit.stderr.original.log",
+      "bytes": 571,
+      "sha256": "930b692c3f36da26c3f967e17dbf0c7c193b1149b830fab667c8c0339df15535",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\type.stdout.original.log",
+      "relative": "journal-heading-repair-03/type.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\type.stderr.original.log",
+      "relative": "journal-heading-repair-03/type.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\lint.stdout.original.log",
+      "relative": "journal-heading-repair-03/lint.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\lint.stderr.original.log",
+      "relative": "journal-heading-repair-03/lint.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\format.original.log",
+      "relative": "journal-heading-repair-03/format.original.log",
+      "bytes": 77,
+      "sha256": "617852d291c331afb94a79d2ba2d0a934372ec8fb0dc0a84197476ba91d5067c",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\checks-disposition.json",
+      "relative": "journal-heading-repair-03/checks-disposition.json",
+      "bytes": 568,
+      "sha256": "9d2d318149b72a564cc29fb6c8966c2c96805b8e28acd2aad0509cb2038c303b",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\input.json",
+      "relative": "journal-heading-repair-04/input.json",
+      "bytes": 1486,
+      "sha256": "30f2762b641a64ecf1a2694e5cc45eb1cc2dbf8aa7379f160d767ff0520eb373",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\checks.json",
+      "relative": "journal-heading-repair-04/checks.json",
+      "bytes": 3189,
+      "sha256": "63afc381974831996671aac6bfa006d4176b47bea0d82371a8f894e537aad6c5",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\unit-report.json",
+      "relative": "journal-heading-repair-04/unit-report.json",
+      "bytes": 38558,
+      "sha256": "c1f9eb2d8e1f57fc5835e4533827868db0c2fcf8009cfc3e1a2436651884e627",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\unit.stdout.original.log",
+      "relative": "journal-heading-repair-04/unit.stdout.original.log",
+      "bytes": 113,
+      "sha256": "6eac7cfdda0ef38e801f325e1899b822df82fdceaaa75cfa57be885bd3472fe0",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\unit.stderr.original.log",
+      "relative": "journal-heading-repair-04/unit.stderr.original.log",
+      "bytes": 571,
+      "sha256": "930b692c3f36da26c3f967e17dbf0c7c193b1149b830fab667c8c0339df15535",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\type.stdout.original.log",
+      "relative": "journal-heading-repair-04/type.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\type.stderr.original.log",
+      "relative": "journal-heading-repair-04/type.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\lint.stdout.original.log",
+      "relative": "journal-heading-repair-04/lint.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\lint.stderr.original.log",
+      "relative": "journal-heading-repair-04/lint.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\format.original.log",
+      "relative": "journal-heading-repair-04/format.original.log",
+      "bytes": 81,
+      "sha256": "8b5720cab4eb95430d6b1df69a2cd345cb9fa4cd2c1c1c07c4424ff0f0e48f66",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-04\\checks-disposition.json",
+      "relative": "journal-heading-repair-04/checks-disposition.json",
+      "bytes": 701,
+      "sha256": "432108e17c9c7c2340910c0e09500bf3c44197eae5b54d91d223e88cfe0bb575",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\input.json",
+      "relative": "journal-heading-repair-05/input.json",
+      "bytes": 1486,
+      "sha256": "93c24c6368df1f968eee5c0c7e7296b81252fb1f1054d7a8bc463765b76e5cea",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\checks.json",
+      "relative": "journal-heading-repair-05/checks.json",
+      "bytes": 3188,
+      "sha256": "7dbf3ed44249f11c99937e2b8262758187d29e7407a6db36ab564553ef5166dd",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\unit-report.json",
+      "relative": "journal-heading-repair-05/unit-report.json",
+      "bytes": 16905,
+      "sha256": "d0b50ef4a95130e3c881e64f0156aa38cd283c21046421a0c424d5041d19e167",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\unit.stdout.original.log",
+      "relative": "journal-heading-repair-05/unit.stdout.original.log",
+      "bytes": 113,
+      "sha256": "27525afb38914c861b02c44e577280107c32fb98031f34e9d937fca88cdabea6",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\unit.stderr.original.log",
+      "relative": "journal-heading-repair-05/unit.stderr.original.log",
+      "bytes": 571,
+      "sha256": "930b692c3f36da26c3f967e17dbf0c7c193b1149b830fab667c8c0339df15535",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\type.stdout.original.log",
+      "relative": "journal-heading-repair-05/type.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\type.stderr.original.log",
+      "relative": "journal-heading-repair-05/type.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\lint.stdout.original.log",
+      "relative": "journal-heading-repair-05/lint.stdout.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\lint.stderr.original.log",
+      "relative": "journal-heading-repair-05/lint.stderr.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\format.original.log",
+      "relative": "journal-heading-repair-05/format.original.log",
+      "bytes": 69,
+      "sha256": "97e8f12f350b0550c5893700d814c18b601fb8a247c7fbe8d4b6576eba079b1c",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\assertion-preservation.json",
+      "relative": "journal-heading-repair-05/assertion-preservation.json",
+      "bytes": 603,
+      "sha256": "4264b1b3d86adbc44dd88a34f8311c3442f8c0f99c6384ae262adc3d56e988aa",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-key-negative-01\\input.json",
+      "relative": "journal-heading-key-negative-01/input.json",
+      "bytes": 1486,
+      "sha256": "b801f26abc236987e99bf10464f33217604f2c2b66bda07df2d56ff36fb64b50",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-key-negative-01\\checks.json",
+      "relative": "journal-heading-key-negative-01/checks.json",
+      "bytes": 2062,
+      "sha256": "3a59e4fe95263fdba402c90c8af1b61d1ae96d9c60be13fdfc9fd65738684ef5",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-key-negative-01\\unit-report.json",
+      "relative": "journal-heading-key-negative-01/unit-report.json",
+      "bytes": 13849,
+      "sha256": "76b10bd5c4a18a3a8be28200fbe8bcf46264c5a4b3b0bf182624127babada669",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-key-negative-01\\unit.stdout.original.log",
+      "relative": "journal-heading-key-negative-01/unit.stdout.original.log",
+      "bytes": 119,
+      "sha256": "16f9208fe47246eaa073d3a61dd51161925d1e503a595b428b8b3bc46aabcaca",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-key-negative-01\\unit.stderr.original.log",
+      "relative": "journal-heading-key-negative-01/unit.stderr.original.log",
+      "bytes": 571,
+      "sha256": "930b692c3f36da26c3f967e17dbf0c7c193b1149b830fab667c8c0339df15535",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-key-negative-01\\negative-disposition.json",
+      "relative": "journal-heading-key-negative-01/negative-disposition.json",
+      "bytes": 716,
+      "sha256": "3224b2eaf8c3be5d54dfcd02b6ca564762191ee5b518f44736418862205733aa",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-key-negative-01\\negative-disposition-02.json",
+      "relative": "journal-heading-key-negative-01/negative-disposition-02.json",
+      "bytes": 413,
+      "sha256": "5a56312eb70526f09fe8588c372a7c647615624462c8c45f25284dc45049a9fd",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-01\\review-01\\manifest.json",
+      "relative": "journal-heading-repair-01/review-01/manifest.json",
+      "bytes": 2305,
+      "sha256": "3d48473ba325f81c8395daaec74226d121f15924673f2daff085206a98151cd1",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-03\\review-02\\manifest.json",
+      "relative": "journal-heading-repair-03/review-02/manifest.json",
+      "bytes": 2405,
+      "sha256": "24b0adea2591f68e6afc91c5b888cc9096945e6f8717e8c1a08b095aac5d2dae",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\journal-heading-repair-05\\review-03\\manifest.json",
+      "relative": "journal-heading-repair-05/review-03/manifest.json",
+      "bytes": 2744,
+      "sha256": "9b9df9cc31d6eeefbe64c31985f7cfcada493d215b4a6fd1114e160abf554bc7",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-root-custody-handoff-20261022-01a12c32\\private-diagnosis.sanitized.receipt.json",
+      "relative": "private-diagnosis.sanitized.receipt.json",
+      "bytes": 2362,
+      "sha256": "6ee58f3fffb526da278056a76943b56bbeab2df567a15eed102da79e054d021a",
+      "copiedByteEqual": true
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-root-custody-handoff-20261022-01a12c32\\source-review-03.original.json",
+      "relative": "source-review-03.original.json",
+      "bytes": 2872,
+      "sha256": "c22802d537993c3df7a96ac4c44d224aeb8e8ba23f0a10c8dc15d8a4a4ea0e6f",
+      "copiedByteEqual": true
+    }
+  ],
+  "priorFailuresPreserved": true
+}

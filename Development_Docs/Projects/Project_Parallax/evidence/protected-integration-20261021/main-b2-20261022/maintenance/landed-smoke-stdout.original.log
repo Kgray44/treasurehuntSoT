@@ -1,0 +1,13 @@
+✔ actual failed prisma-generate retains exact closed bytes and genuine phase (2939.656ms)
+✔ early fingerprint failure has an encrypted receipt and explicit unavailable source with no invented producer (8.3329ms)
+✔ workflow preparation failure selects its own always-uploader while execution stays skipped (4.1206ms)
+✔ product environment strips output authority, both publication nonces and credentials (2.4711ms)
+✔ provider and controller contexts reject altered identity (1.8793ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6279.7006
