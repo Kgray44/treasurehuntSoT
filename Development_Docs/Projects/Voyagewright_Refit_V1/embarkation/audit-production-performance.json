@@ -1,0 +1,2882 @@
+{
+  "classification": "engineering-evidence",
+  "status": "PARTIAL - measured fog recovery; production frame budget remains open",
+  "recordedAt": "2026-09-29T17:08:40.640Z",
+  "auditIds": [
+    "EMB-AUD-07",
+    "EMB-AUD-08",
+    "EMB-AUD-14",
+    "EMB-AUD-19"
+  ],
+  "sourceState": "Two separately sealed uncommitted production builds. No publication or owner acceptance.",
+  "before": {
+    "source": {
+      "buildId": "UV4Y4DBraKpWPuLJpy6zj",
+      "recordedAt": "2026-09-29T16:32:52.053Z",
+      "sourceSha256": {
+        "src/animation/embarkation/Embarkation.tsx": "d8a52217a4eedb80acef0e8c03bce5cff974874e6281ed05efe36a7ace9e7353",
+        "src/animation/embarkation/GenericStage.tsx": "39e9831538933e7ec85ee3aee5812a93b9a3077ca63c2fded68f0d08bd6707ed",
+        "src/animation/embarkation/Inspector.tsx": "706677372c9be453cde0bf1b270b09ea9658aaf8c831c8291d2f471ac2882787",
+        "src/animation/embarkation/adhesion.ts": "00e0cba81bdaab92256983e7d746ed390974142a98672b9329a078dca31c9eb1",
+        "src/animation/embarkation/aperture-mask.test.ts": "827369836ddf504d2654434418d5268fec46c5c228baf1b17bbe25e3e6a225e7",
+        "src/animation/embarkation/aperture-mask.ts": "cbf4428492a58c323fd7b3881362ead6456cb9e1cf566a32598b7be09b6b99aa",
+        "src/animation/embarkation/arrival-material.test.ts": "9b5ead7d125d804c64478f7d2a39736ff717a00eae20a5bbca676c16bda15635",
+        "src/animation/embarkation/arrival-material.ts": "79f24c2073ed4d11e01366c6adfd2919ec1c6acee4f7ce7a5a29a21fbfe6a995",
+        "src/animation/embarkation/arrival.test.ts": "e5ca9a6d2c387390df5bfbb7fa8d2115367cd3a91dcec376cf30659e32d63107",
+        "src/animation/embarkation/arrival.ts": "df26c551ffc1c2c6f40424d480f8e9a6bf0e859d6499f877b34972f13c24dc08",
+        "src/animation/embarkation/atmosphere.ts": "31119cd9550516a36bb3e9505411ae83a92de4abb52ef29af1be60ea4f9a6bb6",
+        "src/animation/embarkation/audio.test.ts": "4c6983d46df38f385ddd8beb25ea5dfc151c5b57bd28fc857f0870f8ee8c3902",
+        "src/animation/embarkation/audio.ts": "702891bec9d2d4163e9ef76991552cd567123f670781a63a407a4201349cf84a",
+        "src/animation/embarkation/cloth-worker.ts": "4a29730dd5f443a592a68b1c59ef60d647b2ae20080fcf2a4ad6a9881966caa2",
+        "src/animation/embarkation/cloth.test.ts": "448ac6e56671dd47052df20bcfd09f3a610b203160f74a9d559ee466ada9dae8",
+        "src/animation/embarkation/cloth.ts": "610fd30b3ebc723c02dd5720515ce7cefb318df6ca68c1cd89a7719b98d25152",
+        "src/animation/embarkation/depth-compositor.ts": "778fa9b126c62fd5421c768844b8168df8b9a9a6a1ea67369bcda68d374f9893",
+        "src/animation/embarkation/depth-qualification.ts": "a19f98a56e87b19e5f52b31fb69972cc0a8db7f7f9d590f8e60f512fcd858c98",
+        "src/animation/embarkation/dom-paint.ts": "8c7c70b644f875416dc0fe22d32c2d4dfc9e6d78fe4eea8bc449d8cb70b144c8",
+        "src/animation/embarkation/dom.test.ts": "3a05a44e285c4213266e47ed4c0c483f9cfb798703d18faf909ab90d9d201b42",
+        "src/animation/embarkation/dom.ts": "b691ee6a23b5bcceeae270b089db21fff264508c72d7894e98fa097114796339",
+        "src/animation/embarkation/dynamics.test.ts": "83d5f9d01ab0c99eefe179912262256478e9e4e0918c8a5c25e28f4b94a95646",
+        "src/animation/embarkation/dynamics.ts": "6b0d1c8cad4b92bb9f092de986c108c25c0f661355819c722f5c418594fdf463",
+        "src/animation/embarkation/embarkation.css": "e0661e981d271271352e67ab299f18e9bb24d89b07fbbf7abaeb430c93ddbf1b",
+        "src/animation/embarkation/environment-set.test.ts": "c7bfc088ccc1aff883c51ac984b35bc7f63c5a5008179e628f47bf7c1951549b",
+        "src/animation/embarkation/environment-set.ts": "95ad636e6980b458622c4f80429a017a15d1bf16bcfed90741af3d25fa4770bc",
+        "src/animation/embarkation/environment.ts": "430506ca72be33d380852c1bd72f77307c77a5dcd546b070f5ce2115b06a818d",
+        "src/animation/embarkation/exposure-qualification.ts": "4c8a7cf2c242192565fca9367953f24d797ccb44a14c10b043be88b095a5d53a",
+        "src/animation/embarkation/exposure.test.ts": "93c94d85c35288d7462b25c941419d73cd99b6e4dd1f64a0ff84509f415fb7fb",
+        "src/animation/embarkation/exposure.ts": "ef9acbc8a99315aaf1f5d96bc0d4f0b7f5ec8d47eb72251564b21e2011459663",
+        "src/animation/embarkation/input-ownership.test.ts": "9670a7063ba0761ef1fc625aa9702515572e6f02df357332240f430dbf5678e0",
+        "src/animation/embarkation/input-ownership.ts": "181835d45e6e718d7241ee268911ed6fe93232f7347107b4f1084022e610094f",
+        "src/animation/embarkation/landscape-space.test.ts": "279afcb09e3929e1d44f143d5be8fbd9cc7d8b212b435eaf060b800aeb5a9093",
+        "src/animation/embarkation/landscape-space.ts": "878f33b22c01f5d4999d32632603e66869b96cc4b0131e192c26e81789990684",
+        "src/animation/embarkation/lens-qualification.ts": "6288743a9c296a66ae237ae6ae4cb4f2a88071ee95baf77e3bdd15122043b4b6",
+        "src/animation/embarkation/lens-water.test.ts": "6ff60c136d7247d9c9dc376427b959dd2841bae417746bed2ac891e9f8284439",
+        "src/animation/embarkation/lens-water.ts": "571b2f6f4eb378c8af5dbab86ea7948fb49df7c99f1b4144924f3e4d57d05ec6",
+        "src/animation/embarkation/live-paint-binding.test.ts": "5eaaf4869e73b6256041df1f4eaa0d9cf3769748640445024144660b64cb7985",
+        "src/animation/embarkation/live-paint-binding.ts": "1bb89be62a163334ac0ec31c86794cf90e7a5dc735d3c35e017588f9fc9b4344",
+        "src/animation/embarkation/live-paint.test.ts": "ac87f159d4a50cc1856701d03ae552ff2a17292a84d62371022fd6561802a449",
+        "src/animation/embarkation/live-paint.ts": "b2e18f29a2957af9bd68f458d46b61181125061d9726b92d620e42e3eb17b594",
+        "src/animation/embarkation/living-material.ts": "33cf7ab6f0dd20dc818641e0a48fbddc2f8b913974a46557866e9903c5fcae2b",
+        "src/animation/embarkation/material-backdrop.test.ts": "eca9fac3bf83627a7561a7cc019248bca304dfd0928aa83f05a69c3eeef06a2d",
+        "src/animation/embarkation/material-backdrop.ts": "33f5979bcfa2070d785d1fdb0c26a543d42595152ed7184bff271e82b6265ac7",
+        "src/animation/embarkation/navigation.tsx": "aad139e244f2639d6e5cd4103c051aa8d820579d60ab7f4c109f915b9c4a4284",
+        "src/animation/embarkation/page-material.test.ts": "182be2f9aee3106e96fa8c7a812940702f165ed0fe36245d59ee7b7ff4013318",
+        "src/animation/embarkation/page-material.ts": "403d2888c7d6644a22ca5cdb5ec6b4b457e949dceee57a31534d83c92b27c6aa",
+        "src/animation/embarkation/paint-mesh.test.ts": "914aec1a749eebd8cd87fea02ab9542353048205c8b3847e4b893f656ae80366",
+        "src/animation/embarkation/paint-mesh.ts": "672e5c92088c4ea98a8838e99d0497522cf501f302579151da43d6fe47079855",
+        "src/animation/embarkation/paint-raster.test.ts": "6dc1b11658f07e9c4a9462bc7bf6f10f735381abf27d86ecda129b6c93c2bedc",
+        "src/animation/embarkation/paint-raster.ts": "3431825b1d9ce1cb1037d16f732b8e01dacb3281df3b74c5343b04c04ecbb6e5",
+        "src/animation/embarkation/paint-surface.ts": "f9f970377c0b91237e60fcba88c9756ff714f476110e27edf420a1c65ac039f5",
+        "src/animation/embarkation/particle-sampler.test.ts": "f45dc0eaab06c77a47e15a5d9a584c28334fa5b56220715aefe6ecdba50c1605",
+        "src/animation/embarkation/particle-sampler.ts": "56be9ef2577aa08793ce979a8908ad8b40e30e981ad7f127df769fbf3baecd65",
+        "src/animation/embarkation/prepare-materials.ts": "b5218b52ac53db86a12b0bc75933b1184f7a87e2ae1a87de7619aeb1daed033f",
+        "src/animation/embarkation/program.test.ts": "65552cc1eb6eb63d042e8ac16a1ef25c13fe8ffe2916719f03f6e28022c60d9f",
+        "src/animation/embarkation/program.ts": "700e7adaf7564bffed2f10e7e23b1ef1230d13283d49ecca2018b925d81dfa04",
+        "src/animation/embarkation/projection.test.ts": "5bac8286df33725517ffc9fd2be805dbfb7e4e44edac337f40e51b11fc8ab5b3",
+        "src/animation/embarkation/projection.ts": "c3ec2085ad10a46d2a69b1e260fd9b60a102ccb759b09f6e33170cba8e8259d2",
+        "src/animation/embarkation/prop-material.ts": "584b468228bd7a5f225ade199123acfc194c3a8d411350fa9daf57e220d67d5b",
+        "src/animation/embarkation/prop-qualification.ts": "29f10ac1c25ae8f259c8dc69d1147de387a90afb18ae5eab128d8b2f6abdf12e",
+        "src/animation/embarkation/prop-shell.test.ts": "e43f536968c0bc89597ec0365f7f072699af1cee2ba0b037992f912b1ce8a328",
+        "src/animation/embarkation/prop-shell.ts": "227b063fea1e4d9e705ece4c65a87c3cf37e487c991db4495bd6bb531d68468b",
+        "src/animation/embarkation/renderer.ts": "2ec0bcd5cba2462bbb8edc969f13aaaf768f8426318af3beb31cf0df22c5f158",
+        "src/animation/embarkation/room-extension.test.ts": "19a717fea602d69c73de0ceb662f4f4f844898c2c11bccc28942d6c3ee68e902",
+        "src/animation/embarkation/room-extension.ts": "a0c57ff2013fb46daaa48768114cac1b54f2f8543f5de4ecdc6b0cab192e985a",
+        "src/animation/embarkation/scene-space.test.ts": "226ab6c860c5658499a0c4c15dd0e9227c33ac776a285afed77d097877e750ac",
+        "src/animation/embarkation/scene-space.ts": "1ad5869ac5f97bf84cf2dfc44241f9f405f3a336c6a32178752b062acd17f66c",
+        "src/animation/embarkation/sound-cues.test.ts": "4dc434b96e703500579b61656082a19f90e1dcf2f046c83fbfe3220da47d8f7a",
+        "src/animation/embarkation/sound-cues.ts": "9ab10065adeb5047bb1d5508a0aef26942a3c24e55860321453ab045f279004b",
+        "src/animation/embarkation/title-snag.test.ts": "28b7f0de2910615932e198c6ce5742e27d84a40300402a0f867419036f6f7b7b",
+        "src/animation/embarkation/title-snag.ts": "10e7fbdc5bbab760809074c80599c1847645bbc260dc30bd9c2bd6a517380470",
+        "src/components/muster/muster.css": "b82fd23ea695eec7bdf8848f23c654b9727af4cdea91b4896a7f590b85d18864",
+        "next.config.ts": "3cbb79f3e46c0fc2cb08a76ddc3ffb92d7715d967aa49326f09d9a5c1c138504"
+      }
+    },
+    "artifact": {
+      "path": ".runtime/embarkation/audit-repair/embarkation-production-no-capture-20260929.json",
+      "sha256": "8d2f12acb69864e6b8a996b0b8a2642d4a5b9bd17c948ef4f1162d9df76f5f16"
+    },
+    "summary": {
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+      "viewport": [
+        1280,
+        720,
+        1.25
+      ],
+      "contexts": [
+        {
+          "id": 0,
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+          "width": 1600,
+          "height": 900
+        }
+      ],
+      "bands": {
+        "pressure": {
+          "frames": 199,
+          "cpuMs": {
+            "count": 199,
+            "p50": 7.200000017881393,
+            "p95": 11.299999982118607,
+            "p99": 13,
+            "max": 14
+          },
+          "gpuMs": {
+            "count": 199,
+            "p50": 5.645888,
+            "p95": 12.680672,
+            "p99": 13.78512,
+            "max": 14.317376
+          },
+          "intervalMs": {
+            "count": 198,
+            "p50": 16.600000023841858,
+            "p95": 19.399999976158142,
+            "p99": 26.900000005960464,
+            "max": 27.5
+          },
+          "draws": {
+            "count": 199,
+            "p50": 154,
+            "p95": 262,
+            "p99": 262,
+            "max": 262
+          },
+          "vertices": {
+            "count": 199,
+            "p50": 850938,
+            "p95": 937986,
+            "p99": 938202,
+            "max": 938304
+          }
+        },
+        "departure": {
+          "frames": 348,
+          "cpuMs": {
+            "count": 348,
+            "p50": 14.599999994039536,
+            "p95": 24.100000023841858,
+            "p99": 27.700000017881393,
+            "max": 28.599999994039536
+          },
+          "gpuMs": {
+            "count": 348,
+            "p50": 18.068768,
+            "p95": 23.305024,
+            "p99": 25.4208,
+            "max": 27.622464
+          },
+          "intervalMs": {
+            "count": 348,
+            "p50": 17.899999976158142,
+            "p95": 26.400000005960464,
+            "p99": 29.5,
+            "max": 30.30000001192093
+          },
+          "draws": {
+            "count": 348,
+            "p50": 478,
+            "p95": 1666,
+            "p99": 1774,
+            "max": 1828
+          },
+          "vertices": {
+            "count": 348,
+            "p50": 1090752,
+            "p95": 2546976,
+            "p99": 2640450,
+            "max": 2711868
+          }
+        },
+        "crossing": {
+          "frames": 232,
+          "cpuMs": {
+            "count": 232,
+            "p50": 23.5,
+            "p95": 34.5,
+            "p99": 39.099999994039536,
+            "max": 40.70000001788139
+          },
+          "gpuMs": {
+            "count": 232,
+            "p50": 23.694048,
+            "p95": 32.086144,
+            "p99": 35.7552,
+            "max": 37.097824
+          },
+          "intervalMs": {
+            "count": 232,
+            "p50": 24.80000001192093,
+            "p95": 36.60000002384186,
+            "p99": 41.19999998807907,
+            "max": 42.900000005960464
+          },
+          "draws": {
+            "count": 232,
+            "p50": 1990,
+            "p95": 2746,
+            "p99": 2827,
+            "max": 2827
+          },
+          "vertices": {
+            "count": 232,
+            "p50": 3144858,
+            "p95": 3462582,
+            "p99": 3531294,
+            "max": 3702978
+          }
+        },
+        "wonder": {
+          "frames": 192,
+          "cpuMs": {
+            "count": 192,
+            "p50": 29.19999998807907,
+            "p95": 40.099999994039536,
+            "p99": 45.599999994039536,
+            "max": 45.80000001192093
+          },
+          "gpuMs": {
+            "count": 192,
+            "p50": 23.651872,
+            "p95": 34.97632,
+            "p99": 39.847104,
+            "max": 41.969344
+          },
+          "intervalMs": {
+            "count": 192,
+            "p50": 30.900000005960464,
+            "p95": 42.69999998807907,
+            "p99": 47,
+            "max": 48.400000005960464
+          },
+          "draws": {
+            "count": 192,
+            "p50": 910,
+            "p95": 1387,
+            "p99": 1405,
+            "max": 1405
+          },
+          "vertices": {
+            "count": 192,
+            "p50": 2093586,
+            "p95": 3046038,
+            "p99": 3085824,
+            "max": 3103164
+          }
+        },
+        "fog": {
+          "frames": 67,
+          "cpuMs": {
+            "count": 67,
+            "p50": 25.099999994039536,
+            "p95": 31.5,
+            "p99": 33.69999998807907,
+            "max": 34.599999994039536
+          },
+          "gpuMs": {
+            "count": 67,
+            "p50": 76.577952,
+            "p95": 110.965056,
+            "p99": 117.163136,
+            "max": 117.515904
+          },
+          "intervalMs": {
+            "count": 67,
+            "p50": 74.40000000596046,
+            "p95": 111.7000000178814,
+            "p99": 117.2000000178814,
+            "max": 118.19999998807907
+          },
+          "draws": {
+            "count": 67,
+            "p50": 262,
+            "p95": 334,
+            "p99": 334,
+            "max": 334
+          },
+          "vertices": {
+            "count": 67,
+            "p50": 260718,
+            "p95": 261042,
+            "p99": 261150,
+            "max": 261366
+          }
+        },
+        "threshold": {
+          "frames": 101,
+          "cpuMs": {
+            "count": 101,
+            "p50": 7.5,
+            "p95": 13.399999976158142,
+            "p99": 14.5,
+            "max": 15.400000005960464
+          },
+          "gpuMs": {
+            "count": 101,
+            "p50": 31.763584,
+            "p95": 70.671392,
+            "p99": 78.34544,
+            "max": 86.157344
+          },
+          "intervalMs": {
+            "count": 101,
+            "p50": 40.599999994039536,
+            "p95": 78.40000000596046,
+            "p99": 88.59999999403954,
+            "max": 99.90000000596046
+          },
+          "draws": {
+            "count": 101,
+            "p50": 289,
+            "p95": 442,
+            "p99": 442,
+            "max": 442
+          },
+          "vertices": {
+            "count": 101,
+            "p50": 6947646,
+            "p95": 10421520,
+            "p99": 10421520,
+            "max": 10421520
+          }
+        },
+        "assembly": {
+          "frames": 165,
+          "cpuMs": {
+            "count": 165,
+            "p50": 18.400000005960464,
+            "p95": 29.600000023841858,
+            "p99": 41.900000005960464,
+            "max": 50.29999998211861
+          },
+          "gpuMs": {
+            "count": 165,
+            "p50": 20.333184,
+            "p95": 23.438208,
+            "p99": 28.849088,
+            "max": 34.308256
+          },
+          "intervalMs": {
+            "count": 165,
+            "p50": 20.900000005960464,
+            "p95": 36.900000005960464,
+            "p99": 50.900000005960464,
+            "max": 56.60000002384186
+          },
+          "draws": {
+            "count": 165,
+            "p50": 65,
+            "p95": 65,
+            "p99": 65,
+            "max": 65
+          },
+          "vertices": {
+            "count": 165,
+            "p50": 282,
+            "p95": 282,
+            "p99": 282,
+            "max": 282
+          }
+        },
+        "stillness": {
+          "frames": 69,
+          "cpuMs": {
+            "count": 69,
+            "p50": 0.9000000059604645,
+            "p95": 1.0999999940395355,
+            "p99": 1.100000023841858,
+            "max": 1.199999988079071
+          },
+          "gpuMs": {
+            "count": 69,
+            "p50": 2.057248,
+            "p95": 4.055136,
+            "p99": 5.077376,
+            "max": 6.139296
+          },
+          "intervalMs": {
+            "count": 69,
+            "p50": 16.69999998807907,
+            "p95": 17,
+            "p99": 27.299999982118607,
+            "max": 58.80000001192093
+          },
+          "draws": {
+            "count": 69,
+            "p50": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "vertices": {
+            "count": 69,
+            "p50": 6,
+            "p95": 6,
+            "p99": 6,
+            "max": 6
+          }
+        }
+      },
+      "ambient": {
+        "frames": 0,
+        "cpuMs": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "gpuMs": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "intervalMs": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "draws": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "vertices": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        }
+      },
+      "canvasCopySubmissionMs": {
+        "count": 621,
+        "p50": 0.09999999403953552,
+        "p95": 0.20000001788139343,
+        "p99": 0.20000001788139343,
+        "max": 0.30000001192092896
+      },
+      "longTasks": [
+        {
+          "at": 113573.39999997616,
+          "duration": 54,
+          "name": "self"
+        },
+        {
+          "at": 116007,
+          "duration": 67,
+          "name": "self"
+        }
+      ],
+      "errors": [],
+      "visibility": [],
+      "workers": [
+        {
+          "kind": [
+            "arrivals"
+          ],
+          "elapsedMs": 2080.699999988079,
+          "caches": 10,
+          "error": null
+        },
+        {
+          "kind": [
+            "actors"
+          ],
+          "elapsedMs": 9364.5,
+          "caches": 3986,
+          "error": null
+        },
+        {
+          "kind": [
+            "snags"
+          ],
+          "elapsedMs": 6278.9000000059605,
+          "caches": 4,
+          "error": null
+        },
+        {
+          "kind": [
+            "width",
+            "height",
+            "surfaces"
+          ],
+          "elapsedMs": 9041.299999982119,
+          "caches": 9,
+          "error": null
+        }
+      ]
+    }
+  },
+  "after": {
+    "source": {
+      "recordedAt": "2026-09-29T16:59:28.087Z",
+      "sourceSha256": {
+        "src/animation/embarkation/adhesion.ts": "00e0cba81bdaab92256983e7d746ed390974142a98672b9329a078dca31c9eb1",
+        "src/animation/embarkation/aperture-mask.test.ts": "827369836ddf504d2654434418d5268fec46c5c228baf1b17bbe25e3e6a225e7",
+        "src/animation/embarkation/aperture-mask.ts": "cbf4428492a58c323fd7b3881362ead6456cb9e1cf566a32598b7be09b6b99aa",
+        "src/animation/embarkation/arrival-material.test.ts": "9b5ead7d125d804c64478f7d2a39736ff717a00eae20a5bbca676c16bda15635",
+        "src/animation/embarkation/arrival-material.ts": "79f24c2073ed4d11e01366c6adfd2919ec1c6acee4f7ce7a5a29a21fbfe6a995",
+        "src/animation/embarkation/arrival.test.ts": "e5ca9a6d2c387390df5bfbb7fa8d2115367cd3a91dcec376cf30659e32d63107",
+        "src/animation/embarkation/arrival.ts": "df26c551ffc1c2c6f40424d480f8e9a6bf0e859d6499f877b34972f13c24dc08",
+        "src/animation/embarkation/atmosphere.ts": "e9f0ec2d3fe6f403cef032151f424e1f21f015bdf8f11b7e37cf81e999eeb81b",
+        "src/animation/embarkation/audio.test.ts": "4c6983d46df38f385ddd8beb25ea5dfc151c5b57bd28fc857f0870f8ee8c3902",
+        "src/animation/embarkation/audio.ts": "702891bec9d2d4163e9ef76991552cd567123f670781a63a407a4201349cf84a",
+        "src/animation/embarkation/cloth-worker.ts": "4a29730dd5f443a592a68b1c59ef60d647b2ae20080fcf2a4ad6a9881966caa2",
+        "src/animation/embarkation/cloth.test.ts": "448ac6e56671dd47052df20bcfd09f3a610b203160f74a9d559ee466ada9dae8",
+        "src/animation/embarkation/cloth.ts": "610fd30b3ebc723c02dd5720515ce7cefb318df6ca68c1cd89a7719b98d25152",
+        "src/animation/embarkation/depth-compositor.ts": "778fa9b126c62fd5421c768844b8168df8b9a9a6a1ea67369bcda68d374f9893",
+        "src/animation/embarkation/depth-qualification.ts": "a19f98a56e87b19e5f52b31fb69972cc0a8db7f7f9d590f8e60f512fcd858c98",
+        "src/animation/embarkation/dom-paint.ts": "8c7c70b644f875416dc0fe22d32c2d4dfc9e6d78fe4eea8bc449d8cb70b144c8",
+        "src/animation/embarkation/dom.test.ts": "3a05a44e285c4213266e47ed4c0c483f9cfb798703d18faf909ab90d9d201b42",
+        "src/animation/embarkation/dom.ts": "b691ee6a23b5bcceeae270b089db21fff264508c72d7894e98fa097114796339",
+        "src/animation/embarkation/dynamics.test.ts": "83d5f9d01ab0c99eefe179912262256478e9e4e0918c8a5c25e28f4b94a95646",
+        "src/animation/embarkation/dynamics.ts": "6b0d1c8cad4b92bb9f092de986c108c25c0f661355819c722f5c418594fdf463",
+        "src/animation/embarkation/embarkation.css": "e0661e981d271271352e67ab299f18e9bb24d89b07fbbf7abaeb430c93ddbf1b",
+        "src/animation/embarkation/Embarkation.tsx": "d8a52217a4eedb80acef0e8c03bce5cff974874e6281ed05efe36a7ace9e7353",
+        "src/animation/embarkation/environment-set.test.ts": "c7bfc088ccc1aff883c51ac984b35bc7f63c5a5008179e628f47bf7c1951549b",
+        "src/animation/embarkation/environment-set.ts": "95ad636e6980b458622c4f80429a017a15d1bf16bcfed90741af3d25fa4770bc",
+        "src/animation/embarkation/environment.ts": "bbba7e6f8f016ac50da7fe0d08a2ae3ca3e83cedf0c4d6271e0db9bc8c8dd38f",
+        "src/animation/embarkation/exposure-qualification.ts": "4c8a7cf2c242192565fca9367953f24d797ccb44a14c10b043be88b095a5d53a",
+        "src/animation/embarkation/exposure.test.ts": "93c94d85c35288d7462b25c941419d73cd99b6e4dd1f64a0ff84509f415fb7fb",
+        "src/animation/embarkation/exposure.ts": "ef9acbc8a99315aaf1f5d96bc0d4f0b7f5ec8d47eb72251564b21e2011459663",
+        "src/animation/embarkation/GenericStage.tsx": "39e9831538933e7ec85ee3aee5812a93b9a3077ca63c2fded68f0d08bd6707ed",
+        "src/animation/embarkation/input-ownership.test.ts": "9670a7063ba0761ef1fc625aa9702515572e6f02df357332240f430dbf5678e0",
+        "src/animation/embarkation/input-ownership.ts": "181835d45e6e718d7241ee268911ed6fe93232f7347107b4f1084022e610094f",
+        "src/animation/embarkation/Inspector.tsx": "706677372c9be453cde0bf1b270b09ea9658aaf8c831c8291d2f471ac2882787",
+        "src/animation/embarkation/landscape-space.test.ts": "279afcb09e3929e1d44f143d5be8fbd9cc7d8b212b435eaf060b800aeb5a9093",
+        "src/animation/embarkation/landscape-space.ts": "878f33b22c01f5d4999d32632603e66869b96cc4b0131e192c26e81789990684",
+        "src/animation/embarkation/lens-qualification.ts": "6288743a9c296a66ae237ae6ae4cb4f2a88071ee95baf77e3bdd15122043b4b6",
+        "src/animation/embarkation/lens-water.test.ts": "6ff60c136d7247d9c9dc376427b959dd2841bae417746bed2ac891e9f8284439",
+        "src/animation/embarkation/lens-water.ts": "571b2f6f4eb378c8af5dbab86ea7948fb49df7c99f1b4144924f3e4d57d05ec6",
+        "src/animation/embarkation/live-paint-binding.test.ts": "5eaaf4869e73b6256041df1f4eaa0d9cf3769748640445024144660b64cb7985",
+        "src/animation/embarkation/live-paint-binding.ts": "1bb89be62a163334ac0ec31c86794cf90e7a5dc735d3c35e017588f9fc9b4344",
+        "src/animation/embarkation/live-paint.test.ts": "ac87f159d4a50cc1856701d03ae552ff2a17292a84d62371022fd6561802a449",
+        "src/animation/embarkation/live-paint.ts": "b2e18f29a2957af9bd68f458d46b61181125061d9726b92d620e42e3eb17b594",
+        "src/animation/embarkation/living-material.ts": "33cf7ab6f0dd20dc818641e0a48fbddc2f8b913974a46557866e9903c5fcae2b",
+        "src/animation/embarkation/material-backdrop.test.ts": "eca9fac3bf83627a7561a7cc019248bca304dfd0928aa83f05a69c3eeef06a2d",
+        "src/animation/embarkation/material-backdrop.ts": "33f5979bcfa2070d785d1fdb0c26a543d42595152ed7184bff271e82b6265ac7",
+        "src/animation/embarkation/navigation.tsx": "aad139e244f2639d6e5cd4103c051aa8d820579d60ab7f4c109f915b9c4a4284",
+        "src/animation/embarkation/page-material.test.ts": "9eb1bcfab9dc8dba47ad0085c7af32ca791a33f16a03a507154bdfef105c293b",
+        "src/animation/embarkation/page-material.ts": "8d500ec8f40a286c57921e21fff991e8cd2ae55eaccaab100d75dcae662ffb42",
+        "src/animation/embarkation/paint-mesh.test.ts": "914aec1a749eebd8cd87fea02ab9542353048205c8b3847e4b893f656ae80366",
+        "src/animation/embarkation/paint-mesh.ts": "672e5c92088c4ea98a8838e99d0497522cf501f302579151da43d6fe47079855",
+        "src/animation/embarkation/paint-raster.test.ts": "6dc1b11658f07e9c4a9462bc7bf6f10f735381abf27d86ecda129b6c93c2bedc",
+        "src/animation/embarkation/paint-raster.ts": "3431825b1d9ce1cb1037d16f732b8e01dacb3281df3b74c5343b04c04ecbb6e5",
+        "src/animation/embarkation/paint-surface.ts": "f9f970377c0b91237e60fcba88c9756ff714f476110e27edf420a1c65ac039f5",
+        "src/animation/embarkation/particle-sampler.test.ts": "f45dc0eaab06c77a47e15a5d9a584c28334fa5b56220715aefe6ecdba50c1605",
+        "src/animation/embarkation/particle-sampler.ts": "56be9ef2577aa08793ce979a8908ad8b40e30e981ad7f127df769fbf3baecd65",
+        "src/animation/embarkation/prepare-materials.ts": "b5218b52ac53db86a12b0bc75933b1184f7a87e2ae1a87de7619aeb1daed033f",
+        "src/animation/embarkation/program.test.ts": "65552cc1eb6eb63d042e8ac16a1ef25c13fe8ffe2916719f03f6e28022c60d9f",
+        "src/animation/embarkation/program.ts": "d5a64a82e228b2b3ab3717d86a2c745acd8856ac3e0ae9f4ec6e339d472fc50b",
+        "src/animation/embarkation/projection.test.ts": "5bac8286df33725517ffc9fd2be805dbfb7e4e44edac337f40e51b11fc8ab5b3",
+        "src/animation/embarkation/projection.ts": "c3ec2085ad10a46d2a69b1e260fd9b60a102ccb759b09f6e33170cba8e8259d2",
+        "src/animation/embarkation/prop-material.ts": "584b468228bd7a5f225ade199123acfc194c3a8d411350fa9daf57e220d67d5b",
+        "src/animation/embarkation/prop-qualification.ts": "29f10ac1c25ae8f259c8dc69d1147de387a90afb18ae5eab128d8b2f6abdf12e",
+        "src/animation/embarkation/prop-shell.test.ts": "e43f536968c0bc89597ec0365f7f072699af1cee2ba0b037992f912b1ce8a328",
+        "src/animation/embarkation/prop-shell.ts": "227b063fea1e4d9e705ece4c65a87c3cf37e487c991db4495bd6bb531d68468b",
+        "src/animation/embarkation/renderer.ts": "2ec0bcd5cba2462bbb8edc969f13aaaf768f8426318af3beb31cf0df22c5f158",
+        "src/animation/embarkation/room-extension.test.ts": "19a717fea602d69c73de0ceb662f4f4f844898c2c11bccc28942d6c3ee68e902",
+        "src/animation/embarkation/room-extension.ts": "a0c57ff2013fb46daaa48768114cac1b54f2f8543f5de4ecdc6b0cab192e985a",
+        "src/animation/embarkation/scene-space.test.ts": "226ab6c860c5658499a0c4c15dd0e9227c33ac776a285afed77d097877e750ac",
+        "src/animation/embarkation/scene-space.ts": "1ad5869ac5f97bf84cf2dfc44241f9f405f3a336c6a32178752b062acd17f66c",
+        "src/animation/embarkation/sound-cues.test.ts": "4dc434b96e703500579b61656082a19f90e1dcf2f046c83fbfe3220da47d8f7a",
+        "src/animation/embarkation/sound-cues.ts": "9ab10065adeb5047bb1d5508a0aef26942a3c24e55860321453ab045f279004b",
+        "src/animation/embarkation/title-snag.test.ts": "28b7f0de2910615932e198c6ce5742e27d84a40300402a0f867419036f6f7b7b",
+        "src/animation/embarkation/title-snag.ts": "10e7fbdc5bbab760809074c80599c1847645bbc260dc30bd9c2bd6a517380470"
+      },
+      "buildId": "zG4GmqCtgkEeIKhxJvjbt"
+    },
+    "artifact": {
+      "path": ".runtime/embarkation/audit-repair/embarkation-production-fog-work-20260929.json",
+      "sha256": "5cfb70d53192e37e18536990f592d89ba4700c1187d0bb012a6991d52cc8c5c1"
+    },
+    "summary": {
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+      "viewport": [
+        1280,
+        720,
+        1.25
+      ],
+      "contexts": [
+        {
+          "height": 900,
+          "id": 0,
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+          "width": 1600
+        }
+      ],
+      "bands": {
+        "pressure": {
+          "frames": 199,
+          "cpuMs": {
+            "count": 199,
+            "p50": 3.699999988079071,
+            "p95": 6.199999988079071,
+            "p99": 7.400000005960464,
+            "max": 8.400000005960464
+          },
+          "gpuMs": {
+            "count": 199,
+            "p50": 7.657696,
+            "p95": 14.654848,
+            "p99": 17.249952,
+            "max": 19.314976
+          },
+          "intervalMs": {
+            "count": 198,
+            "p50": 16.69999998807907,
+            "p95": 17,
+            "p99": 17.099999994039536,
+            "max": 29.80000001192093
+          },
+          "draws": {
+            "count": 199,
+            "p50": 154,
+            "p95": 262,
+            "p99": 271,
+            "max": 271
+          },
+          "vertices": {
+            "count": 199,
+            "p50": 850938,
+            "p95": 938040,
+            "p99": 938634,
+            "max": 938928
+          }
+        },
+        "departure": {
+          "frames": 357,
+          "cpuMs": {
+            "count": 357,
+            "p50": 9.5,
+            "p95": 16.799999982118607,
+            "p99": 20.69999998807907,
+            "max": 26.299999982118607
+          },
+          "gpuMs": {
+            "count": 357,
+            "p50": 17.860672,
+            "p95": 22.669312,
+            "p99": 23.843136,
+            "max": 28.271808
+          },
+          "intervalMs": {
+            "count": 357,
+            "p50": 17.899999976158142,
+            "p95": 24.400000005960464,
+            "p99": 26.400000005960464,
+            "max": 29.5
+          },
+          "draws": {
+            "count": 357,
+            "p50": 559,
+            "p95": 1666,
+            "p99": 1747,
+            "max": 1801
+          },
+          "vertices": {
+            "count": 357,
+            "p50": 1185780,
+            "p95": 2482770,
+            "p99": 2577036,
+            "max": 2651838
+          }
+        },
+        "crossing": {
+          "frames": 262,
+          "cpuMs": {
+            "count": 262,
+            "p50": 19.400000005960464,
+            "p95": 29,
+            "p99": 32.099999994039536,
+            "max": 36.20000001788139
+          },
+          "gpuMs": {
+            "count": 262,
+            "p50": 22.304896,
+            "p95": 26.484128,
+            "p99": 28.088128,
+            "max": 30.898048
+          },
+          "intervalMs": {
+            "count": 262,
+            "p50": 22.400000005960464,
+            "p95": 30.5,
+            "p99": 33.79999998211861,
+            "max": 37.5
+          },
+          "draws": {
+            "count": 262,
+            "p50": 2077,
+            "p95": 2512,
+            "p99": 2539,
+            "max": 2593
+          },
+          "vertices": {
+            "count": 262,
+            "p50": 3108252,
+            "p95": 3452868,
+            "p99": 3548538,
+            "max": 3702978
+          }
+        },
+        "wonder": {
+          "frames": 298,
+          "cpuMs": {
+            "count": 298,
+            "p50": 11.699999988079073,
+            "p95": 23.5,
+            "p99": 29.5,
+            "max": 35.20000001788139
+          },
+          "gpuMs": {
+            "count": 298,
+            "p50": 17.631808,
+            "p95": 27.25712,
+            "p99": 28.004672,
+            "max": 28.958016
+          },
+          "intervalMs": {
+            "count": 298,
+            "p50": 17.900000005960464,
+            "p95": 29,
+            "p99": 36.400000005960464,
+            "max": 39.79999998211861
+          },
+          "draws": {
+            "count": 298,
+            "p50": 905,
+            "p95": 1378,
+            "p99": 1405,
+            "max": 1405
+          },
+          "vertices": {
+            "count": 298,
+            "p50": 1716942,
+            "p95": 3045936,
+            "p99": 3085824,
+            "max": 3103164
+          }
+        },
+        "fog": {
+          "frames": 115,
+          "cpuMs": {
+            "count": 115,
+            "p50": 9.900000005960464,
+            "p95": 19.30000001192093,
+            "p99": 22.19999998807907,
+            "max": 24.19999998807907
+          },
+          "gpuMs": {
+            "count": 115,
+            "p50": 39.154752,
+            "p95": 68.958752,
+            "p99": 70.988992,
+            "max": 82.922784
+          },
+          "intervalMs": {
+            "count": 115,
+            "p50": 40.099999994039536,
+            "p95": 85,
+            "p99": 97.30000001192093,
+            "max": 104.90000000596046
+          },
+          "draws": {
+            "count": 115,
+            "p50": 253,
+            "p95": 334,
+            "p99": 334,
+            "max": 334
+          },
+          "vertices": {
+            "count": 115,
+            "p50": 260742,
+            "p95": 261150,
+            "p99": 261312,
+            "max": 261372
+          }
+        },
+        "threshold": {
+          "frames": 144,
+          "cpuMs": {
+            "count": 144,
+            "p50": 4.300000011920929,
+            "p95": 7.199999988079071,
+            "p99": 7.700000017881393,
+            "max": 13.699999988079073
+          },
+          "gpuMs": {
+            "count": 144,
+            "p50": 26.546944,
+            "p95": 34.361088,
+            "p99": 42.295968,
+            "max": 45.419104
+          },
+          "intervalMs": {
+            "count": 144,
+            "p50": 26.700000017881393,
+            "p95": 45.400000005960464,
+            "p99": 53.30000001192093,
+            "max": 77.5
+          },
+          "draws": {
+            "count": 144,
+            "p50": 442,
+            "p95": 442,
+            "p99": 442,
+            "max": 442
+          },
+          "vertices": {
+            "count": 144,
+            "p50": 10421520,
+            "p95": 10421520,
+            "p99": 10421520,
+            "max": 10421520
+          }
+        },
+        "assembly": {
+          "frames": 166,
+          "cpuMs": {
+            "count": 166,
+            "p50": 11.599999994039536,
+            "p95": 52,
+            "p99": 78.19999998807907,
+            "max": 106.89999997615814
+          },
+          "gpuMs": {
+            "count": 166,
+            "p50": 23.452224,
+            "p95": 28.722176,
+            "p99": 29.515168,
+            "max": 31.196
+          },
+          "intervalMs": {
+            "count": 166,
+            "p50": 16.900000005960464,
+            "p95": 53.5,
+            "p99": 79.09999999403954,
+            "max": 108.2999999821186
+          },
+          "draws": {
+            "count": 166,
+            "p50": 65,
+            "p95": 65,
+            "p99": 65,
+            "max": 149
+          },
+          "vertices": {
+            "count": 166,
+            "p50": 282,
+            "p95": 282,
+            "p99": 282,
+            "max": 3087966
+          }
+        },
+        "stillness": {
+          "frames": 69,
+          "cpuMs": {
+            "count": 69,
+            "p50": 0.5999999940395355,
+            "p95": 0.800000011920929,
+            "p99": 0.9000000059604645,
+            "max": 0.9000000059604645
+          },
+          "gpuMs": {
+            "count": 69,
+            "p50": 1.08704,
+            "p95": 3.97552,
+            "p99": 6.644224,
+            "max": 7.763968
+          },
+          "intervalMs": {
+            "count": 69,
+            "p50": 16.69999998807907,
+            "p95": 16.900000005960464,
+            "p99": 17.900000005960464,
+            "max": 17.900000005960464
+          },
+          "draws": {
+            "count": 69,
+            "p50": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "vertices": {
+            "count": 69,
+            "p50": 6,
+            "p95": 6,
+            "p99": 6,
+            "max": 6
+          }
+        }
+      },
+      "ambient": {
+        "frames": 0,
+        "cpuMs": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "gpuMs": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "intervalMs": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "draws": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "vertices": {
+          "count": 0,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        }
+      },
+      "canvasCopySubmissionMs": {
+        "count": 2814,
+        "p50": 0.09999999403953552,
+        "p95": 0.19999998807907104,
+        "p99": 0.20000001788139343,
+        "max": 0.800000011920929
+      },
+      "longTasks": [
+        {
+          "at": 104088.79999998212,
+          "duration": 58,
+          "name": "self"
+        },
+        {
+          "at": 104279.19999998808,
+          "duration": 75,
+          "name": "self"
+        },
+        {
+          "at": 104501,
+          "duration": 51,
+          "name": "self"
+        },
+        {
+          "at": 104642.79999998212,
+          "duration": 52,
+          "name": "self"
+        },
+        {
+          "at": 104696.29999998212,
+          "duration": 56,
+          "name": "self"
+        },
+        {
+          "at": 104864.69999998808,
+          "duration": 96,
+          "name": "self"
+        },
+        {
+          "at": 105051.29999998212,
+          "duration": 108,
+          "name": "self"
+        },
+        {
+          "at": 105274.09999999404,
+          "duration": 57,
+          "name": "self"
+        },
+        {
+          "at": 105331.5,
+          "duration": 53,
+          "name": "self"
+        },
+        {
+          "at": 105470.09999999404,
+          "duration": 52,
+          "name": "self"
+        },
+        {
+          "at": 105631,
+          "duration": 79,
+          "name": "self"
+        },
+        {
+          "at": 105877.39999997616,
+          "duration": 50,
+          "name": "self"
+        },
+        {
+          "at": 106038.79999998212,
+          "duration": 59,
+          "name": "self"
+        },
+        {
+          "at": 106098.09999999404,
+          "duration": 56,
+          "name": "self"
+        }
+      ],
+      "errors": [],
+      "visibility": [],
+      "workers": [
+        {
+          "kind": [
+            "arrivals"
+          ],
+          "elapsedMs": 1925.9000000059605,
+          "caches": 10,
+          "error": null
+        },
+        {
+          "kind": [
+            "actors"
+          ],
+          "elapsedMs": 7456,
+          "caches": 3986,
+          "error": null
+        },
+        {
+          "kind": [
+            "snags"
+          ],
+          "elapsedMs": 5088.9000000059605,
+          "caches": 4,
+          "error": null
+        },
+        {
+          "kind": [
+            "width",
+            "height",
+            "surfaces"
+          ],
+          "elapsedMs": 4962.800000011921,
+          "caches": 9,
+          "error": null
+        }
+      ]
+    }
+  },
+  "repairs": [
+    "Run independent actor-motion and title-contact preparation concurrently. Preserve all four responsive contact families and every physical cache. The prior serial chain reached the 45s watchdog; fresh parallel production preparation completes, without raising the timeout.",
+    "Skip only Gaussian bank tails beyond four normalized radii (including the bounded z warp), with total discarded density below 9e-11. Share the identical base noise evaluation. Keep all 36 CINEMATIC integration steps and nine geometry/lens samples.",
+    "Omit the exactly zero-intensity storm calculation after its authored departure, and omit lighting of exactly zero-opacity ray steps. Neither changes the density field, lighting law or camera motion.",
+    "Preserve the first lens sample's owned DEPTH_COMPONENT24 attachment for fog reuse. The former stored texture reference was overwritten by later samples. Copy between matching owned depth formats; retain conservative discontinuity checks and the full reference path."
+  ],
+  "nativeComparison": {
+    "artifact": {
+      "path": ".runtime/embarkation/audit-repair/embarkation-fog-work-native-20260929.json",
+      "sha256": "92616e096287338b4ea363c53e42b02e6a32786effa1af645367dcec311f7c95"
+    },
+    "data": {
+      "method": "Matched no-screencast development GPU timer measurement; native pre/post shader readPixels",
+      "probe": "(()=>{const state={frames:[],active:false}, map=new WeakMap(), GL=WebGL2RenderingContext.prototype, native={beginQuery:GL.beginQuery,endQuery:GL.endQuery,getQueryParameter:GL.getQueryParameter};let frame=null;GL.beginQuery=function(...args){if(state.active){frame={at:performance.now(),time:window.__embarkation?.snapshot().filmTime,cpuMs:0,gpuMs:null};map.set(args[1],frame);}return native.beginQuery.apply(this,args)};GL.endQuery=function(...args){const result=native.endQuery.apply(this,args);if(frame){frame.cpuMs=performance.now()-frame.at;state.frames.push(frame);frame=null;}return result};GL.getQueryParameter=function(...args){const result=native.getQueryParameter.apply(this,args),f=map.get(args[0]);if(f&&args[1]===this.QUERY_RESULT)f.gpuMs=Number(result)/1e6;return result};window.__fogProbe={state,dispose(){for(const [k,v]of Object.entries(native))GL[k]=v;delete window.__fogProbe}};return true})()",
+      "pixels": [
+        {
+          "time": 12.15,
+          "meanByteDifference": 3.4722222222222224e-7,
+          "maxByteDifference": 1,
+          "changedChannels": 2,
+          "channelsOver3": 0,
+          "error": 0
+        },
+        {
+          "time": 23.2,
+          "meanByteDifference": 0.0000012152777777777778,
+          "maxByteDifference": 1,
+          "changedChannels": 7,
+          "channelsOver3": 0,
+          "error": 0
+        },
+        {
+          "time": 24.4,
+          "meanByteDifference": 0.0000010416666666666667,
+          "maxByteDifference": 1,
+          "changedChannels": 6,
+          "channelsOver3": 0,
+          "error": 0
+        },
+        {
+          "time": 26.6,
+          "meanByteDifference": 0,
+          "maxByteDifference": 0,
+          "changedChannels": 0,
+          "channelsOver3": 0,
+          "error": 0
+        },
+        {
+          "time": 28.6,
+          "meanByteDifference": 0.000002951388888888889,
+          "maxByteDifference": 1,
+          "changedChannels": 17,
+          "channelsOver3": 0,
+          "error": 0
+        }
+      ],
+      "before": {
+        "frames": [
+          {
+            "at": 77132.19999998808,
+            "cpuMs": 21.400000005960464,
+            "gpuMs": 44.796064,
+            "time": 22
+          },
+          {
+            "at": 77157.69999998808,
+            "cpuMs": 21,
+            "gpuMs": 51.053088,
+            "time": 22.05
+          },
+          {
+            "at": 77180.90000000596,
+            "cpuMs": 19.400000005960464,
+            "gpuMs": 49.689216,
+            "time": 22.066699999999997
+          },
+          {
+            "at": 77202.69999998808,
+            "cpuMs": 18,
+            "gpuMs": 49.850432,
+            "time": 22.083400000000008
+          },
+          {
+            "at": 77231.69999998808,
+            "cpuMs": 21.700000017881393,
+            "gpuMs": 48.167328,
+            "time": 22.1168
+          },
+          {
+            "at": 77256,
+            "cpuMs": 12.800000011920927,
+            "gpuMs": 53.3696,
+            "time": 22.14990000000001
+          },
+          {
+            "at": 77297.5,
+            "cpuMs": 12.5,
+            "gpuMs": 54.130848,
+            "time": 22.1833
+          },
+          {
+            "at": 77341.5,
+            "cpuMs": 8.300000011920929,
+            "gpuMs": 55.565344,
+            "time": 22.2333
+          },
+          {
+            "at": 77369,
+            "cpuMs": 10.5,
+            "gpuMs": 51.897056,
+            "time": 22.249900000000007
+          },
+          {
+            "at": 77398.30000001192,
+            "cpuMs": 9.399999976158142,
+            "gpuMs": 55.735488,
+            "time": 22.283400000000007
+          },
+          {
+            "at": 77448.09999999404,
+            "cpuMs": 9,
+            "gpuMs": 59.513312,
+            "time": 22.3333
+          },
+          {
+            "at": 77500.40000000596,
+            "cpuMs": 9.799999982118608,
+            "gpuMs": 65.18736,
+            "time": 22.38340000000001
+          },
+          {
+            "at": 77556.19999998808,
+            "cpuMs": 13.200000017881392,
+            "gpuMs": 76.767264,
+            "time": 22.44990000000001
+          },
+          {
+            "at": 77612,
+            "cpuMs": 8.300000011920929,
+            "gpuMs": 80.954272,
+            "time": 22.5
+          },
+          {
+            "at": 77665.09999999404,
+            "cpuMs": 12.700000017881392,
+            "gpuMs": 83.229696,
+            "time": 22.549900000000008
+          },
+          {
+            "at": 77719.40000000596,
+            "cpuMs": 8.900000005960464,
+            "gpuMs": 81.929248,
+            "time": 22.59990000000001
+          },
+          {
+            "at": 77781.5,
+            "cpuMs": 8.900000005960464,
+            "gpuMs": 76.47584,
+            "time": 22.66660000000001
+          },
+          {
+            "at": 77846.80000001192,
+            "cpuMs": 8.899999976158142,
+            "gpuMs": 70.726272,
+            "time": 22.733300000000003
+          },
+          {
+            "at": 77924.40000000596,
+            "cpuMs": 11.599999994039536,
+            "gpuMs": 74.99232,
+            "time": 22.8165
+          },
+          {
+            "at": 78005.09999999404,
+            "cpuMs": 8.599999994039536,
+            "gpuMs": 86.843168,
+            "time": 22.89990000000001
+          },
+          {
+            "at": 78092.40000000596,
+            "cpuMs": 6.5,
+            "gpuMs": 78.682944,
+            "time": 22.983300000000003
+          },
+          {
+            "at": 78171.90000000596,
+            "cpuMs": 9.199999988079073,
+            "gpuMs": 76.14688,
+            "time": 23.066600000000005
+          },
+          {
+            "at": 78249,
+            "cpuMs": 8,
+            "gpuMs": 80.406336,
+            "time": 23.1333
+          },
+          {
+            "at": 78318.59999999404,
+            "cpuMs": 9.300000011920927,
+            "gpuMs": 93.589184,
+            "time": 23.199900000000007
+          },
+          {
+            "at": 78396,
+            "cpuMs": 9.599999994039536,
+            "gpuMs": 99.229824,
+            "time": 23.283400000000007
+          },
+          {
+            "at": 78483.30000001192,
+            "cpuMs": 11.199999988079073,
+            "gpuMs": 104.243296,
+            "time": 23.366600000000005
+          },
+          {
+            "at": 78568,
+            "cpuMs": 10.300000011920927,
+            "gpuMs": 102.0056,
+            "time": 23.45010000000001
+          },
+          {
+            "at": 78637,
+            "cpuMs": 9.599999994039536,
+            "gpuMs": 107.429952,
+            "time": 23.516699999999997
+          },
+          {
+            "at": 78736.40000000596,
+            "cpuMs": 8.799999982118607,
+            "gpuMs": 89.005312,
+            "time": 23.616600000000005
+          },
+          {
+            "at": 78813.19999998808,
+            "cpuMs": 9.800000011920927,
+            "gpuMs": 84.975584,
+            "time": 23.699900000000007
+          },
+          {
+            "at": 78913.30000001192,
+            "cpuMs": 7.699999988079071,
+            "gpuMs": 79.829216,
+            "time": 23.799900000000008
+          },
+          {
+            "at": 79016.40000000596,
+            "cpuMs": 21.400000005960464,
+            "gpuMs": 63.41632,
+            "time": 23.89990000000001
+          },
+          {
+            "at": 79118.90000000596,
+            "cpuMs": 15.799999982118608,
+            "gpuMs": 73.30976,
+            "time": 23.99990000000001
+          },
+          {
+            "at": 79228.5,
+            "cpuMs": 14.699999988079073,
+            "gpuMs": 92.862176,
+            "time": 24.1167
+          },
+          {
+            "at": 79336.69999998808,
+            "cpuMs": 19.5,
+            "gpuMs": 110.707648,
+            "time": 24.216600000000007
+          },
+          {
+            "at": 79401.80000001192,
+            "cpuMs": 16.299999982118607,
+            "gpuMs": 114.063392,
+            "time": 24.283300000000004
+          },
+          {
+            "at": 79483.59999999404,
+            "cpuMs": 19.900000005960464,
+            "gpuMs": 125.76752,
+            "time": 24.366600000000005
+          },
+          {
+            "at": 79549.19999998808,
+            "cpuMs": 22.5,
+            "gpuMs": 123.802912,
+            "time": 24.433300000000003
+          },
+          {
+            "at": 79619.69999998808,
+            "cpuMs": 19.100000023841854,
+            "gpuMs": 128.623616,
+            "time": 24.5
+          },
+          {
+            "at": 79714.59999999404,
+            "cpuMs": 9.700000017881392,
+            "gpuMs": 129.551552,
+            "time": 24.59990000000001
+          },
+          {
+            "at": 79826.59999999404,
+            "cpuMs": 9.900000005960464,
+            "gpuMs": 124.167904,
+            "time": 24.716699999999996
+          },
+          {
+            "at": 79941.30000001192,
+            "cpuMs": 12.399999976158142,
+            "gpuMs": 126.678752,
+            "time": 24.8333
+          },
+          {
+            "at": 80066.40000000596,
+            "cpuMs": 13.199999988079073,
+            "gpuMs": 131.17232,
+            "time": 24.95
+          },
+          {
+            "at": 80193.30000001192,
+            "cpuMs": 7.599999994039536,
+            "gpuMs": 140.824608,
+            "time": 25.0833
+          },
+          {
+            "at": 80350.59999999404,
+            "cpuMs": 19.80000001192093,
+            "gpuMs": 141.076192,
+            "time": 25.2333
+          },
+          {
+            "at": 80449.80000001192,
+            "cpuMs": 21.19999998807907,
+            "gpuMs": 135.241568,
+            "time": 25.3333
+          },
+          {
+            "at": 80575.30000001192,
+            "cpuMs": 11.599999994039536,
+            "gpuMs": 126.271872,
+            "time": 25.466699999999996
+          },
+          {
+            "at": 80700.19999998808,
+            "cpuMs": 10,
+            "gpuMs": 111.744768,
+            "time": 25.5833
+          },
+          {
+            "at": 80833.80000001192,
+            "cpuMs": 14,
+            "gpuMs": 118.740096,
+            "time": 25.716800000000003
+          },
+          {
+            "at": 80975.90000000596,
+            "cpuMs": 18.19999998807907,
+            "gpuMs": 101.755456,
+            "time": 25.8667
+          },
+          {
+            "at": 81117.09999999404,
+            "cpuMs": 11.300000011920927,
+            "gpuMs": 91.11952,
+            "time": 26.000100000000007
+          },
+          {
+            "at": 81250.59999999404,
+            "cpuMs": 9.200000017881392,
+            "gpuMs": 100.563456,
+            "time": 26.13330000000001
+          },
+          {
+            "at": 81379.30000001192,
+            "cpuMs": 9.399999976158142,
+            "gpuMs": 113.7352,
+            "time": 26.266600000000007
+          },
+          {
+            "at": 81493.19999998808,
+            "cpuMs": 7.5,
+            "gpuMs": 92.759168,
+            "time": 26.38340000000001
+          },
+          {
+            "at": 81646.69999998808,
+            "cpuMs": 10.700000017881392,
+            "gpuMs": 111.618784,
+            "time": 26.533199999999997
+          },
+          {
+            "at": 81711.69999998808,
+            "cpuMs": 8.800000011920929,
+            "gpuMs": 90.6544,
+            "time": 26.6
+          },
+          {
+            "at": 81802.69999998808,
+            "cpuMs": 9.900000005960464,
+            "gpuMs": 104.91136,
+            "time": 26.683300000000003
+          },
+          {
+            "at": 81904.19999998808,
+            "cpuMs": 11.300000011920927,
+            "gpuMs": 69.86912,
+            "time": 26.783300000000004
+          },
+          {
+            "at": 82018,
+            "cpuMs": 10.300000011920927,
+            "gpuMs": null,
+            "time": 26.9
+          },
+          {
+            "at": 82113.59999999404,
+            "cpuMs": 7.700000017881393,
+            "gpuMs": null,
+            "time": 27.000000000000004
+          },
+          {
+            "at": 82225.09999999404,
+            "cpuMs": 6,
+            "gpuMs": null,
+            "time": 27.1165
+          },
+          {
+            "at": 82315,
+            "cpuMs": 7,
+            "gpuMs": null,
+            "time": 27.200000000000003
+          },
+          {
+            "at": 82419.69999998808,
+            "cpuMs": 10.300000011920927,
+            "gpuMs": null,
+            "time": 27.300000000000004
+          },
+          {
+            "at": 82492.40000000596,
+            "cpuMs": 6.5999999940395355,
+            "gpuMs": null,
+            "time": 27.38330000000001
+          }
+        ],
+        "snapshot": {
+          "active": [
+            "props",
+            "particles"
+          ],
+          "duration": 35.8,
+          "filmTime": 27.38330000000001,
+          "fps": 11.320968320156997,
+          "mute": false,
+          "p95": 133.40000000000873,
+          "reduced": false,
+          "renderMs": 10.800000011920927,
+          "seed": 2595989206,
+          "tier": "CINEMATIC",
+          "time": 27.38330000000001
+        }
+      },
+      "after": {
+        "frames": [
+          {
+            "at": 32217.5,
+            "cpuMs": 13.599999994039536,
+            "gpuMs": 25.096832,
+            "time": 22
+          },
+          {
+            "at": 32233.80000001192,
+            "cpuMs": 11.699999988079073,
+            "gpuMs": 27.109376,
+            "time": 22.016599999999997
+          },
+          {
+            "at": 32247,
+            "cpuMs": 10.700000017881392,
+            "gpuMs": 28.787264,
+            "time": 22.033299999999997
+          },
+          {
+            "at": 32259.40000000596,
+            "cpuMs": 8.300000011920929,
+            "gpuMs": 25.646144,
+            "time": 22.050099999999997
+          },
+          {
+            "at": 32272.5,
+            "cpuMs": 9.800000011920927,
+            "gpuMs": 29.503648,
+            "time": 22.0667
+          },
+          {
+            "at": 32286.80000001192,
+            "cpuMs": 11.5,
+            "gpuMs": 26.480576,
+            "time": 22.0832
+          },
+          {
+            "at": 32303.30000001192,
+            "cpuMs": 8.599999994039536,
+            "gpuMs": 29.180704,
+            "time": 22.1
+          },
+          {
+            "at": 32320.59999999404,
+            "cpuMs": 7.5,
+            "gpuMs": 25.964992,
+            "time": 22.1168
+          },
+          {
+            "at": 32363.90000000596,
+            "cpuMs": 8.699999988079071,
+            "gpuMs": 28.69008,
+            "time": 22.15
+          },
+          {
+            "at": 32396,
+            "cpuMs": 11.599999994039536,
+            "gpuMs": 33.459488,
+            "time": 22.183300000000003
+          },
+          {
+            "at": 32424.90000000596,
+            "cpuMs": 8.199999988079071,
+            "gpuMs": 30.633376,
+            "time": 22.216800000000003
+          },
+          {
+            "at": 32456,
+            "cpuMs": 8.900000005960464,
+            "gpuMs": 31.969504,
+            "time": 22.250000000000004
+          },
+          {
+            "at": 32469,
+            "cpuMs": 7.700000017881393,
+            "gpuMs": 32.361152,
+            "time": 22.266700000000004
+          },
+          {
+            "at": 32486.90000000596,
+            "cpuMs": 10.5,
+            "gpuMs": 33.598336,
+            "time": 22.2833
+          },
+          {
+            "at": 32511,
+            "cpuMs": 14.5,
+            "gpuMs": 32.203776,
+            "time": 22.3001
+          },
+          {
+            "at": 32545.80000001192,
+            "cpuMs": 8.400000005960464,
+            "gpuMs": 34.989184,
+            "time": 22.3333
+          },
+          {
+            "at": 32608.30000001192,
+            "cpuMs": 9.400000005960464,
+            "gpuMs": 33.746176,
+            "time": 22.4
+          },
+          {
+            "at": 32641.70000001788,
+            "cpuMs": 9.399999976158142,
+            "gpuMs": 35.4216,
+            "time": 22.4334
+          },
+          {
+            "at": 32654.70000001788,
+            "cpuMs": 6.699999988079071,
+            "gpuMs": 34.01024,
+            "time": 22.4501
+          },
+          {
+            "at": 32674.80000001192,
+            "cpuMs": 7.400000005960464,
+            "gpuMs": 36.827104,
+            "time": 22.466700000000003
+          },
+          {
+            "at": 32708.20000001788,
+            "cpuMs": 7.299999982118607,
+            "gpuMs": 36.956608,
+            "time": 22.500300000000003
+          },
+          {
+            "at": 32743.5,
+            "cpuMs": 8.800000011920929,
+            "gpuMs": 39.534912,
+            "time": 22.533400000000004
+          },
+          {
+            "at": 32810.5,
+            "cpuMs": 13.300000011920927,
+            "gpuMs": 48.61408,
+            "time": 22.6
+          },
+          {
+            "at": 32826.59999999404,
+            "cpuMs": 7.5,
+            "gpuMs": 48.297056,
+            "time": 22.6167
+          },
+          {
+            "at": 32847.30000001192,
+            "cpuMs": 10,
+            "gpuMs": 47.301312,
+            "time": 22.63330000000001
+          },
+          {
+            "at": 32885.80000001192,
+            "cpuMs": 7.599999994039536,
+            "gpuMs": 51.329056,
+            "time": 22.683300000000006
+          },
+          {
+            "at": 32923.80000001192,
+            "cpuMs": 10.5,
+            "gpuMs": 51.672352,
+            "time": 22.716600000000003
+          },
+          {
+            "at": 32979.30000001192,
+            "cpuMs": 11.400000005960464,
+            "gpuMs": 53.324128,
+            "time": 22.7667
+          },
+          {
+            "at": 33012.30000001192,
+            "cpuMs": 8.5,
+            "gpuMs": 49.461472,
+            "time": 22.8001
+          },
+          {
+            "at": 33061,
+            "cpuMs": 12.5,
+            "gpuMs": 49.462304,
+            "time": 22.85
+          },
+          {
+            "at": 33109,
+            "cpuMs": 9.700000017881392,
+            "gpuMs": 50.00368,
+            "time": 22.9001
+          },
+          {
+            "at": 33161.90000000596,
+            "cpuMs": 12.699999988079073,
+            "gpuMs": 48.241056,
+            "time": 22.95
+          },
+          {
+            "at": 33213.40000000596,
+            "cpuMs": 9.300000011920927,
+            "gpuMs": 47.10848,
+            "time": 23.000099999999996
+          },
+          {
+            "at": 33266.59999999404,
+            "cpuMs": 10.200000017881392,
+            "gpuMs": 46.01424,
+            "time": 23.049999999999997
+          },
+          {
+            "at": 33316.59999999404,
+            "cpuMs": 9.700000017881392,
+            "gpuMs": 48.571456,
+            "time": 23.0999
+          },
+          {
+            "at": 33396,
+            "cpuMs": 13.800000011920927,
+            "gpuMs": 49.342208,
+            "time": 23.1833
+          },
+          {
+            "at": 33448.40000000596,
+            "cpuMs": 13.900000005960464,
+            "gpuMs": 63.021056,
+            "time": 23.233499999999996
+          },
+          {
+            "at": 33466,
+            "cpuMs": 15,
+            "gpuMs": 56.037984,
+            "time": 23.249999999999996
+          },
+          {
+            "at": 33513.20000001788,
+            "cpuMs": 20,
+            "gpuMs": 56.402528,
+            "time": 23.299999999999997
+          },
+          {
+            "at": 33566.20000001788,
+            "cpuMs": 22.19999998807907,
+            "gpuMs": 58.068192,
+            "time": 23.35009999999999
+          },
+          {
+            "at": 33611.5,
+            "cpuMs": 18.30000001192093,
+            "gpuMs": 60.581728,
+            "time": 23.400099999999995
+          },
+          {
+            "at": 33661.30000001192,
+            "cpuMs": 17.900000005960464,
+            "gpuMs": 61.852992,
+            "time": 23.449999999999996
+          },
+          {
+            "at": 33725.5,
+            "cpuMs": 9.900000005960464,
+            "gpuMs": 65.997312,
+            "time": 23.516599999999993
+          },
+          {
+            "at": 33780.59999999404,
+            "cpuMs": 8.800000011920929,
+            "gpuMs": 67.807232,
+            "time": 23.566799999999997
+          },
+          {
+            "at": 33839.30000001192,
+            "cpuMs": 8.199999988079071,
+            "gpuMs": 67.852576,
+            "time": 23.6333
+          },
+          {
+            "at": 33896,
+            "cpuMs": 11.599999994039536,
+            "gpuMs": 71.791328,
+            "time": 23.683399999999995
+          },
+          {
+            "at": 33959.09999999404,
+            "cpuMs": 14.700000017881392,
+            "gpuMs": 66.05216,
+            "time": 23.750099999999993
+          },
+          {
+            "at": 34020.59999999404,
+            "cpuMs": 13.700000017881392,
+            "gpuMs": 53.912448,
+            "time": 23.81669999999999
+          },
+          {
+            "at": 34127.09999999404,
+            "cpuMs": 18.900000005960464,
+            "gpuMs": 46.635072,
+            "time": 23.91669999999999
+          },
+          {
+            "at": 34157.5,
+            "cpuMs": 10.700000017881392,
+            "gpuMs": 45.692032,
+            "time": 23.950099999999992
+          },
+          {
+            "at": 34239.30000001192,
+            "cpuMs": 10,
+            "gpuMs": 50.42352,
+            "time": 24.033499999999993
+          },
+          {
+            "at": 34296,
+            "cpuMs": 10.900000005960464,
+            "gpuMs": 55.089088,
+            "time": 24.08329999999999
+          },
+          {
+            "at": 34366.30000001192,
+            "cpuMs": 9.5,
+            "gpuMs": 58.096832,
+            "time": 24.14999999999999
+          },
+          {
+            "at": 34416.09999999404,
+            "cpuMs": 9.700000017881392,
+            "gpuMs": 57.948,
+            "time": 24.199999999999992
+          },
+          {
+            "at": 34463.59999999404,
+            "cpuMs": 11,
+            "gpuMs": 58.821248,
+            "time": 24.249999999999993
+          },
+          {
+            "at": 34510.59999999404,
+            "cpuMs": 8.400000005960464,
+            "gpuMs": 87.968608,
+            "time": 24.30009999999999
+          },
+          {
+            "at": 34561.5,
+            "cpuMs": 8.400000005960464,
+            "gpuMs": 52.812896,
+            "time": 24.34999999999999
+          },
+          {
+            "at": 34616.20000001788,
+            "cpuMs": 9.099999994039536,
+            "gpuMs": 60.98112,
+            "time": 24.400099999999988
+          },
+          {
+            "at": 34676.5,
+            "cpuMs": 7.599999994039536,
+            "gpuMs": 64.287968,
+            "time": 24.466699999999985
+          },
+          {
+            "at": 34733,
+            "cpuMs": 9,
+            "gpuMs": 67.1,
+            "time": 24.516699999999982
+          },
+          {
+            "at": 34793.59999999404,
+            "cpuMs": 7.400000005960464,
+            "gpuMs": 71.66256,
+            "time": 24.58329999999999
+          },
+          {
+            "at": 34880.40000000596,
+            "cpuMs": 9.599999994039536,
+            "gpuMs": 70.62016,
+            "time": 24.666699999999985
+          },
+          {
+            "at": 34942.90000000596,
+            "cpuMs": 9.199999988079073,
+            "gpuMs": 76.655808,
+            "time": 24.73339999999999
+          },
+          {
+            "at": 34996.09999999404,
+            "cpuMs": 9.400000005960464,
+            "gpuMs": 64.877152,
+            "time": 24.783499999999982
+          },
+          {
+            "at": 35061.80000001192,
+            "cpuMs": 11.400000005960464,
+            "gpuMs": 67.338592,
+            "time": 24.849999999999987
+          },
+          {
+            "at": 35129.59999999404,
+            "cpuMs": 9.700000017881392,
+            "gpuMs": 64.628416,
+            "time": 24.916599999999985
+          },
+          {
+            "at": 35199.80000001192,
+            "cpuMs": 9.099999994039536,
+            "gpuMs": 63.101152,
+            "time": 24.98329999999999
+          },
+          {
+            "at": 35272.80000001192,
+            "cpuMs": 8.5,
+            "gpuMs": 59.45872,
+            "time": 25.066699999999983
+          },
+          {
+            "at": 35356.09999999404,
+            "cpuMs": 8.100000023841858,
+            "gpuMs": 56.298144,
+            "time": 25.149999999999984
+          },
+          {
+            "at": 35437.90000000596,
+            "cpuMs": 9.099999994039536,
+            "gpuMs": 52.06272,
+            "time": 25.233399999999985
+          },
+          {
+            "at": 35481.30000001192,
+            "cpuMs": 15.400000005960464,
+            "gpuMs": 51.831616,
+            "time": 25.266699999999982
+          },
+          {
+            "at": 35546.59999999404,
+            "cpuMs": 17.100000023841858,
+            "gpuMs": 47.3752,
+            "time": 25.333399999999987
+          },
+          {
+            "at": 35612.09999999404,
+            "cpuMs": 16.30000001192093,
+            "gpuMs": 41.551136,
+            "time": 25.399999999999984
+          },
+          {
+            "at": 35677.59999999404,
+            "cpuMs": 11.200000017881392,
+            "gpuMs": 37.466432,
+            "time": 25.46669999999998
+          },
+          {
+            "at": 35729.30000001192,
+            "cpuMs": 9.699999988079073,
+            "gpuMs": 37.302848,
+            "time": 25.516699999999982
+          },
+          {
+            "at": 35779.30000001192,
+            "cpuMs": 8.699999988079071,
+            "gpuMs": 35.36464,
+            "time": 25.566699999999983
+          },
+          {
+            "at": 35831.59999999404,
+            "cpuMs": 10.5,
+            "gpuMs": 36.194272,
+            "time": 25.616699999999984
+          },
+          {
+            "at": 35880.70000001788,
+            "cpuMs": 9.599999994039536,
+            "gpuMs": 33.177504,
+            "time": 25.666899999999988
+          },
+          {
+            "at": 35943.59999999404,
+            "cpuMs": 12.900000005960464,
+            "gpuMs": 37.522784,
+            "time": 25.733499999999985
+          },
+          {
+            "at": 35961.30000001192,
+            "cpuMs": 17.099999994039536,
+            "gpuMs": 34.509792,
+            "time": 25.750099999999986
+          },
+          {
+            "at": 35998.80000001192,
+            "cpuMs": 12.5,
+            "gpuMs": 37.494816,
+            "time": 25.783399999999983
+          },
+          {
+            "at": 36035.70000001788,
+            "cpuMs": 15.699999988079073,
+            "gpuMs": 31.766944,
+            "time": 25.833499999999983
+          },
+          {
+            "at": 36087.70000001788,
+            "cpuMs": 16.299999982118607,
+            "gpuMs": 37.39296,
+            "time": 25.883399999999984
+          },
+          {
+            "at": 36106.80000001192,
+            "cpuMs": 16.19999998807907,
+            "gpuMs": 34.345568,
+            "time": 25.90009999999998
+          },
+          {
+            "at": 36144.40000000596,
+            "cpuMs": 10.800000011920927,
+            "gpuMs": 29.16128,
+            "time": 25.933399999999985
+          },
+          {
+            "at": 36179.5,
+            "cpuMs": 11.200000017881392,
+            "gpuMs": 32.951872,
+            "time": 25.966799999999985
+          },
+          {
+            "at": 36216.5,
+            "cpuMs": 9.200000017881392,
+            "gpuMs": 33.751616,
+            "time": 26.000199999999975
+          },
+          {
+            "at": 36249,
+            "cpuMs": 10.400000005960464,
+            "gpuMs": 31.552096,
+            "time": 26.033399999999983
+          },
+          {
+            "at": 36287.70000001788,
+            "cpuMs": 12.5,
+            "gpuMs": 29.762112,
+            "time": 26.08349999999998
+          },
+          {
+            "at": 36322.5,
+            "cpuMs": 11.900000005960464,
+            "gpuMs": 25.841792,
+            "time": 26.116699999999977
+          },
+          {
+            "at": 36355.30000001192,
+            "cpuMs": 15.199999988079073,
+            "gpuMs": 26.1712,
+            "time": 26.150099999999977
+          },
+          {
+            "at": 36386.30000001192,
+            "cpuMs": 10.699999988079073,
+            "gpuMs": 25.036,
+            "time": 26.18339999999998
+          },
+          {
+            "at": 36421.20000001788,
+            "cpuMs": 9.299999982118608,
+            "gpuMs": 27.23664,
+            "time": 26.21679999999998
+          },
+          {
+            "at": 36455.40000000596,
+            "cpuMs": 8.099999994039536,
+            "gpuMs": 24.66288,
+            "time": 26.24999999999998
+          },
+          {
+            "at": 36481.70000001788,
+            "cpuMs": 9.599999994039536,
+            "gpuMs": 25.221568,
+            "time": 26.266699999999975
+          },
+          {
+            "at": 36508.70000001788,
+            "cpuMs": 10.299999982118608,
+            "gpuMs": 27.241856,
+            "time": 26.300199999999975
+          },
+          {
+            "at": 36534.80000001192,
+            "cpuMs": 10.599999994039536,
+            "gpuMs": 23.288032,
+            "time": 26.316699999999976
+          },
+          {
+            "at": 36561.20000001788,
+            "cpuMs": 10.299999982118608,
+            "gpuMs": 23.294912,
+            "time": 26.34999999999998
+          },
+          {
+            "at": 36588.90000000596,
+            "cpuMs": 7.900000005960464,
+            "gpuMs": 28.047872,
+            "time": 26.38349999999998
+          },
+          {
+            "at": 36613.20000001788,
+            "cpuMs": 11.799999982118608,
+            "gpuMs": 23.580224,
+            "time": 26.400199999999977
+          },
+          {
+            "at": 36640.70000001788,
+            "cpuMs": 7.799999982118607,
+            "gpuMs": 25.825344,
+            "time": 26.43349999999998
+          },
+          {
+            "at": 36666.5,
+            "cpuMs": 9.900000005960464,
+            "gpuMs": 20.860256,
+            "time": 26.450099999999978
+          },
+          {
+            "at": 36691.40000000596,
+            "cpuMs": 7.699999988079071,
+            "gpuMs": 22.50592,
+            "time": 26.483399999999985
+          },
+          {
+            "at": 36714.5,
+            "cpuMs": 10.400000005960464,
+            "gpuMs": 24.794752,
+            "time": 26.49999999999998
+          },
+          {
+            "at": 36746.20000001788,
+            "cpuMs": 8.399999976158142,
+            "gpuMs": 22.722336,
+            "time": 26.53359999999998
+          },
+          {
+            "at": 36766.80000001192,
+            "cpuMs": 9.599999994039536,
+            "gpuMs": 22.58224,
+            "time": 26.550199999999975
+          },
+          {
+            "at": 36795.80000001192,
+            "cpuMs": 10.799999982118608,
+            "gpuMs": 22.337792,
+            "time": 26.58349999999998
+          },
+          {
+            "at": 36814.20000001788,
+            "cpuMs": 11.199999988079073,
+            "gpuMs": 21.24064,
+            "time": 26.600099999999976
+          },
+          {
+            "at": 36838.90000000596,
+            "cpuMs": 8.400000005960464,
+            "gpuMs": 22.263584,
+            "time": 26.633499999999977
+          },
+          {
+            "at": 36862.30000001192,
+            "cpuMs": 10.699999988079073,
+            "gpuMs": 22.740672,
+            "time": 26.650099999999973
+          },
+          {
+            "at": 36896.70000001788,
+            "cpuMs": 11.899999976158142,
+            "gpuMs": 21.78688,
+            "time": 26.683399999999978
+          },
+          {
+            "at": 36909.59999999404,
+            "cpuMs": 8.600000023841858,
+            "gpuMs": 24.495808,
+            "time": 26.700099999999978
+          },
+          {
+            "at": 36931.30000001192,
+            "cpuMs": 11,
+            "gpuMs": 24.624864,
+            "time": 26.716799999999974
+          },
+          {
+            "at": 36954.59999999404,
+            "cpuMs": 9.5,
+            "gpuMs": 23.806528,
+            "time": 26.749999999999975
+          },
+          {
+            "at": 36981.40000000596,
+            "cpuMs": 9.699999988079073,
+            "gpuMs": 26.3072,
+            "time": 26.76679999999998
+          },
+          {
+            "at": 36998.90000000596,
+            "cpuMs": 9.699999988079073,
+            "gpuMs": 21.143872,
+            "time": 26.783499999999975
+          },
+          {
+            "at": 37023.5,
+            "cpuMs": 8,
+            "gpuMs": 20.354016,
+            "time": 26.816899999999976
+          },
+          {
+            "at": 37045.80000001192,
+            "cpuMs": 9.299999982118608,
+            "gpuMs": 25.167744,
+            "time": 26.833599999999972
+          },
+          {
+            "at": 37071.80000001192,
+            "cpuMs": 8.599999994039536,
+            "gpuMs": 21.925952,
+            "time": 26.866799999999976
+          },
+          {
+            "at": 37095.09999999404,
+            "cpuMs": 8.800000011920929,
+            "gpuMs": 20.498112,
+            "time": 26.883499999999973
+          },
+          {
+            "at": 37128.20000001788,
+            "cpuMs": 9,
+            "gpuMs": 24.299584,
+            "time": 26.91659999999997
+          },
+          {
+            "at": 37143.5,
+            "cpuMs": 8.200000017881393,
+            "gpuMs": 22.102144,
+            "time": 26.93349999999997
+          },
+          {
+            "at": 37164.5,
+            "cpuMs": 10,
+            "gpuMs": 20.444704,
+            "time": 26.950099999999967
+          },
+          {
+            "at": 37190.59999999404,
+            "cpuMs": 8.200000017881393,
+            "gpuMs": 24.05008,
+            "time": 26.983599999999967
+          },
+          {
+            "at": 37217.30000001192,
+            "cpuMs": 9.400000005960464,
+            "gpuMs": 20.659136,
+            "time": 27.00029999999997
+          },
+          {
+            "at": 37233.09999999404,
+            "cpuMs": 7.300000011920929,
+            "gpuMs": 20.63824,
+            "time": 27.016899999999968
+          },
+          {
+            "at": 37259,
+            "cpuMs": 5.5999999940395355,
+            "gpuMs": 25.814496,
+            "time": 27.050199999999965
+          },
+          {
+            "at": 37280.40000000596,
+            "cpuMs": 7.400000005960464,
+            "gpuMs": 23.450144,
+            "time": 27.06689999999997
+          },
+          {
+            "at": 37302.80000001192,
+            "cpuMs": 6.699999988079071,
+            "gpuMs": 22.956032,
+            "time": 27.10009999999997
+          },
+          {
+            "at": 37325.70000001788,
+            "cpuMs": 6.5,
+            "gpuMs": 23.531744,
+            "time": 27.116699999999963
+          },
+          {
+            "at": 37347.20000001788,
+            "cpuMs": 7.399999976158142,
+            "gpuMs": 22.359136,
+            "time": 27.13349999999997
+          },
+          {
+            "at": 37369.20000001788,
+            "cpuMs": 6.5999999940395355,
+            "gpuMs": 21.152704,
+            "time": 27.16679999999997
+          },
+          {
+            "at": 37395.5,
+            "cpuMs": 6.9000000059604645,
+            "gpuMs": 24.008032,
+            "time": 27.18329999999997
+          },
+          {
+            "at": 37418.40000000596,
+            "cpuMs": 8.099999994039536,
+            "gpuMs": 21.393824,
+            "time": 27.216699999999964
+          },
+          {
+            "at": 37441.30000001192,
+            "cpuMs": 6,
+            "gpuMs": 22.381312,
+            "time": 27.233599999999964
+          },
+          {
+            "at": 37465.70000001788,
+            "cpuMs": 7.399999976158142,
+            "gpuMs": 22.704608,
+            "time": 27.25019999999996
+          },
+          {
+            "at": 37489.70000001788,
+            "cpuMs": 6.5,
+            "gpuMs": 23.285088,
+            "time": 27.283499999999965
+          },
+          {
+            "at": 37510.30000001192,
+            "cpuMs": 6.5,
+            "gpuMs": null,
+            "time": 27.30019999999996
+          },
+          {
+            "at": 37536.09999999404,
+            "cpuMs": 6.700000017881393,
+            "gpuMs": null,
+            "time": 27.333499999999965
+          },
+          {
+            "at": 37557.70000001788,
+            "cpuMs": 5.5999999940395355,
+            "gpuMs": null,
+            "time": 27.35019999999996
+          },
+          {
+            "at": 37579.59999999404,
+            "cpuMs": 6.9000000059604645,
+            "gpuMs": null,
+            "time": 27.36689999999997
+          },
+          {
+            "at": 37603.59999999404,
+            "cpuMs": 6.300000011920929,
+            "gpuMs": null,
+            "time": 27.400099999999963
+          },
+          {
+            "at": 37626.20000001788,
+            "cpuMs": 6.799999982118607,
+            "gpuMs": null,
+            "time": 27.416799999999967
+          }
+        ],
+        "snapshot": {
+          "active": [
+            "props",
+            "particles"
+          ],
+          "duration": 35.8,
+          "filmTime": 27.416799999999967,
+          "fps": 39.128733533324606,
+          "mute": false,
+          "p95": 66.70000000000437,
+          "reduced": false,
+          "renderMs": 9.900000005960464,
+          "seed": 2595989206,
+          "tier": "CINEMATIC",
+          "time": 27.416799999999967
+        }
+      },
+      "summary": {
+        "before": {
+          "frames": 58,
+          "gpuP50": 89.005312,
+          "gpuP95": 131.17232,
+          "cpuP95": 21.400000005960464
+        },
+        "after": {
+          "frames": 124,
+          "gpuP50": 34.989184,
+          "gpuP95": 67.338592,
+          "cpuP95": 16.30000001192093
+        }
+      },
+      "boundsIntermediate": {
+        "comparison": [
+          {
+            "time": 12.15,
+            "width": 1600,
+            "height": 900,
+            "meanByteDifference": 0,
+            "maxByteDifference": 0,
+            "changedChannels": 0,
+            "totalChannels": 5760000,
+            "error": 0
+          },
+          {
+            "time": 23.2,
+            "width": 1600,
+            "height": 900,
+            "meanByteDifference": 0.0000012152777777777778,
+            "maxByteDifference": 1,
+            "changedChannels": 7,
+            "totalChannels": 5760000,
+            "error": 0
+          },
+          {
+            "time": 24.4,
+            "width": 1600,
+            "height": 900,
+            "meanByteDifference": 6.944444444444445e-7,
+            "maxByteDifference": 1,
+            "changedChannels": 4,
+            "totalChannels": 5760000,
+            "error": 0
+          },
+          {
+            "time": 26.6,
+            "width": 1600,
+            "height": 900,
+            "meanByteDifference": 0,
+            "maxByteDifference": 0,
+            "changedChannels": 0,
+            "totalChannels": 5760000,
+            "error": 0
+          },
+          {
+            "time": 28.6,
+            "width": 1600,
+            "height": 900,
+            "meanByteDifference": 0.00014461805555555555,
+            "maxByteDifference": 1,
+            "changedChannels": 833,
+            "totalChannels": 5760000,
+            "error": 0
+          }
+        ],
+        "timing": {
+          "frames": 70,
+          "gpuP50": 72.425184,
+          "gpuP95": 106.770432,
+          "cpuP95": 18.599999994039536
+        }
+      },
+      "depthIntermediate": {
+        "comparison": [
+          {
+            "time": 12.15,
+            "meanByteDifference": 3.4722222222222224e-7,
+            "maxByteDifference": 1,
+            "changedChannels": 2,
+            "channelsOver3": 0,
+            "error": 0
+          },
+          {
+            "time": 23.2,
+            "meanByteDifference": 0.0000012152777777777778,
+            "maxByteDifference": 1,
+            "changedChannels": 7,
+            "channelsOver3": 0,
+            "error": 0
+          },
+          {
+            "time": 24.4,
+            "meanByteDifference": 0.000005555555555555556,
+            "maxByteDifference": 1,
+            "changedChannels": 32,
+            "channelsOver3": 0,
+            "error": 0
+          },
+          {
+            "time": 26.6,
+            "meanByteDifference": 0.000036979166666666667,
+            "maxByteDifference": 1,
+            "changedChannels": 213,
+            "channelsOver3": 0,
+            "error": 0
+          },
+          {
+            "time": 28.6,
+            "meanByteDifference": 0,
+            "maxByteDifference": 0,
+            "changedChannels": 0,
+            "channelsOver3": 0,
+            "error": 0
+          }
+        ],
+        "timing": {
+          "frames": 69,
+          "gpuP50": 73.844832,
+          "gpuP95": 110.183872,
+          "cpuP95": 18.5
+        }
+      }
+    }
+  },
+  "pixelArtifact": {
+    "path": ".runtime/embarkation/audit-repair/embarkation-fog-work-pixels-20260929.json",
+    "sha256": "1ca4a8928393b78e64995c505b47d09a7cec7cdb8778f4a44234204ea101bdb7"
+  },
+  "fullReference": {
+    "artifact": {
+      "path": ".runtime/embarkation/audit-repair/embarkation-fog-work-reference-20260929.json",
+      "sha256": "fede69b23c3977339b3a78432858bbe563c4ecabf53662ff58b10073ea0dc6ba"
+    },
+    "data": {
+      "method": "Native same-time full-reference vs optimized raster; actual viewport overrides; resize mechanism evidence, not fresh-entry responsive qualification",
+      "probe": "async function(){return await evaluateAudit(`(()=>{const c=window.__embarkation;c.pause();c.layer(undefined);c.freezeLiving(true);const canvas=document.querySelector('.embarkation-overlay canvas'),g=canvas.getContext('webgl2'),results=[];for(const t of [12.15,23.2,24.4,26.6,28.6]){const a=new Uint8Array(canvas.width*canvas.height*4),b=new Uint8Array(a.length);c.exposureReference(true);c.seek(t);g.readPixels(0,0,canvas.width,canvas.height,g.RGBA,g.UNSIGNED_BYTE,a);c.exposureReference(false);c.seek(t);g.readPixels(0,0,canvas.width,canvas.height,g.RGBA,g.UNSIGNED_BYTE,b);let sum=0,max=0,over3=0;for(let i=0;i<a.length;i++){const d=Math.abs(a[i]-b[i]);sum+=d;max=Math.max(max,d);if(d>3)over3++;}results.push({time:t,meanByteDifference:sum/a.length,maxByteDifference:max,channelsOver3:over3,error:g.getError()});}return {viewport:[innerWidth,innerHeight,devicePixelRatio],framebuffer:[canvas.width,canvas.height],results}})()`,15000);}",
+      "matrix": [
+        {
+          "framebuffer": [
+            1600,
+            900
+          ],
+          "results": [
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 2,
+              "meanByteDifference": 0.05305885416666667,
+              "time": 12.15
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 2,
+              "meanByteDifference": 0.014721180555555557,
+              "time": 23.2
+            },
+            {
+              "channelsOver3": 1,
+              "error": 0,
+              "maxByteDifference": 4,
+              "meanByteDifference": 0.010853472222222224,
+              "time": 24.4
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 1,
+              "meanByteDifference": 0.00005486111111111111,
+              "time": 26.6
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 1,
+              "meanByteDifference": 0.00003159722222222222,
+              "time": 28.6
+            }
+          ],
+          "viewport": [
+            1280,
+            720,
+            1.25
+          ]
+        },
+        {
+          "framebuffer": [
+            488,
+            1055
+          ],
+          "results": [
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 2,
+              "meanByteDifference": 0.04289196643617434,
+              "time": 12.15
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 1,
+              "meanByteDifference": 0.01486772589542382,
+              "time": 23.2
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 3,
+              "meanByteDifference": 0.011837658301608269,
+              "time": 24.4
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 0,
+              "meanByteDifference": 0,
+              "time": 26.6
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 0,
+              "meanByteDifference": 0,
+              "time": 28.6
+            }
+          ],
+          "viewport": [
+            390,
+            844,
+            1.25
+          ]
+        },
+        {
+          "framebuffer": [
+            2560,
+            1080
+          ],
+          "results": [
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 3,
+              "meanByteDifference": 0.046355342158564815,
+              "time": 12.15
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 2,
+              "meanByteDifference": 0.008592574508101853,
+              "time": 23.2
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 3,
+              "meanByteDifference": 0.0017814127604166667,
+              "time": 24.4
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 1,
+              "meanByteDifference": 0.00006058304398148148,
+              "time": 26.6
+            },
+            {
+              "channelsOver3": 0,
+              "error": 0,
+              "maxByteDifference": 1,
+              "meanByteDifference": 0.000003616898148148148,
+              "time": 28.6
+            }
+          ],
+          "viewport": [
+            2560,
+            1080,
+            1.0000000149011612
+          ]
+        }
+      ]
+    }
+  },
+  "preparationBaseline": {
+    "path": ".runtime/embarkation/audit-repair/embarkation-production-preparation-baseline-20260929.json",
+    "sha256": "095a2a9ed63cc727e01cbe071739040cff1242b44df96ceade5a91a14904252c"
+  },
+  "countersOff": {
+    "artifact": {
+      "path": ".runtime/embarkation/audit-repair/embarkation-production-cadence-20260929.json",
+      "sha256": "d264bec42102d8e4a0d53c26d27ed9e2c9ac59f6c5c4e0b09ff06ea3da46488e"
+    },
+    "method": "Detailed WebGL/worker wrappers removed. Only an independent RAF cadence observer and long-task observer remain. Elapsed bands start at arming immediately before the ordinary Join click, not an internal film-time readout.",
+    "bands": {
+      "pressure": {
+        "count": 197,
+        "p50": 16.699999999982538,
+        "p95": 16.800000000017462,
+        "p99": 16.89999999999418,
+        "max": 17.10000000000582
+      },
+      "departure": {
+        "count": 359,
+        "p50": 16.699999999982538,
+        "p95": 33.39999999999418,
+        "p99": 33.5,
+        "max": 49.89999999999418
+      },
+      "crossing": {
+        "count": 269,
+        "p50": 16.70000000001164,
+        "p95": 33.40000000002328,
+        "p99": 33.5,
+        "max": 33.5
+      },
+      "wonder": {
+        "count": 303,
+        "p50": 16.70000000001164,
+        "p95": 33.40000000002328,
+        "p99": 33.40000000002328,
+        "max": 33.5
+      },
+      "fog": {
+        "count": 118,
+        "p50": 33.40000000002328,
+        "p95": 83.29999999998836,
+        "p99": 83.5,
+        "max": 133.40000000002328
+      },
+      "threshold": {
+        "count": 147,
+        "p50": 33.29999999998836,
+        "p95": 33.5,
+        "p99": 49.90000000002328,
+        "max": 50
+      },
+      "assembly": {
+        "count": 165,
+        "p50": 16.70000000001164,
+        "p95": 50,
+        "p99": 83.39999999996508,
+        "max": 100
+      },
+      "stillness": {
+        "count": 67,
+        "p50": 16.699999999953434,
+        "p95": 16.800000000046566,
+        "p99": 16.800000000046566,
+        "max": 16.899999999965075
+      }
+    },
+    "longTasks": [
+      {
+        "at": 281102.7999999821,
+        "duration": 60
+      },
+      {
+        "at": 281265.09999999404,
+        "duration": 99
+      },
+      {
+        "at": 281598,
+        "duration": 61
+      },
+      {
+        "at": 281800.6999999881,
+        "duration": 98
+      },
+      {
+        "at": 282043,
+        "duration": 87
+      },
+      {
+        "at": 282476.89999997616,
+        "duration": 75
+      },
+      {
+        "at": 282637.59999999404,
+        "duration": 82
+      },
+      {
+        "at": 282835.7999999821,
+        "duration": 51
+      }
+    ],
+    "finished": true,
+    "visibility": []
+  },
+  "nativeMovie": {
+    "artifact": {
+      "path": ".runtime/embarkation/audit-repair/embarkation-production-native-film-20260929.json",
+      "sha256": "0fcd7389a7508f9c0e0b2d9a6c1d0d884025504867e828007e2becdebd3c91bf"
+    },
+    "player": ".runtime/embarkation/audit-repair/embarkation-production-native-film-20260929.html",
+    "frames": 1004,
+    "timestampSpanSeconds": 44.22405982017517,
+    "method": "CINEMATIC ordinary production Replay at 1x, audio off, CDP native JPEG frames at every second presented frame; no detailed WebGL counters. Actual recorded cadence is retained.",
+    "finished": true,
+    "bands": {
+      "pressure": {
+        "count": 197,
+        "p50": 16.70000000001164,
+        "p95": 16.79999999998836,
+        "p99": 16.900000000023283,
+        "max": 16.900000000023283
+      },
+      "departure": {
+        "count": 346,
+        "p50": 16.70000000001164,
+        "p95": 33.399999999965075,
+        "p99": 33.40000000002328,
+        "max": 33.5
+      },
+      "crossing": {
+        "count": 232,
+        "p50": 33.20000000001164,
+        "p95": 33.5,
+        "p99": 33.59999999997672,
+        "max": 50
+      },
+      "wonder": {
+        "count": 263,
+        "p50": 16.70000000001164,
+        "p95": 33.40000000002328,
+        "p99": 33.5,
+        "max": 33.5
+      },
+      "fog": {
+        "count": 112,
+        "p50": 33.5,
+        "p95": 66.79999999998836,
+        "p99": 83.20000000001164,
+        "max": 150.09999999997672
+      },
+      "threshold": {
+        "count": 137,
+        "p50": 33.29999999998836,
+        "p95": 33.5,
+        "p99": 50,
+        "max": 66.59999999997672
+      },
+      "assembly": {
+        "count": 161,
+        "p50": 16.70000000001164,
+        "p95": 33.40000000002328,
+        "p99": 50.100000000034925,
+        "max": 66.79999999998836
+      },
+      "stillness": {
+        "count": 67,
+        "p50": 16.699999999953434,
+        "p95": 16.79999999998836,
+        "p99": 16.900000000023283,
+        "max": 16.900000000023283
+      }
+    },
+    "observations": "Complete native film and more than eight seconds of ambient room retained. Selected departure, moon and settled-room frames visually inspected; uninterrupted human perceptual acceptance remains separate."
+  },
+  "limits": [
+    "CPU figures include JavaScript instrumentation overhead; drawImage timing is CPU submission cost, not an isolated GPU-copy measurement. No screen recorder ran during these full-film timing captures.",
+    "These are two successive builds on one Chromium/RTX5070 Laptop configuration, not a universal performance claim. The after build also includes the separately measured owner wind/moon repair. Later fog timings are unchanged by that earlier wind envelope.",
+    "The native same-time pixel comparison isolates the fog edits across a shader reload. Three viewport reference comparisons exercise actual renderer resize, not complete fresh-entry responsive qualification.",
+    "Warm state and system load affect worker/preparation durations. Removing the serial dependency is causal; the entire observed wall-time difference must not be attributed to concurrency alone.",
+    "Recorder/counters-off cadence is measured separately. CPU/compositor trace, complete memory/lifecycle qualification and the remaining independent-audit repairs are still required. High-percentile fog cost remains over budget; this is not a ready owner-acceptance candidate."
+  ]
+}

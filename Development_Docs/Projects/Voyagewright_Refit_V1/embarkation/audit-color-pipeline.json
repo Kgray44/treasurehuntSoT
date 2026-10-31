@@ -1,0 +1,760 @@
+{
+  "classification": "engineering-evidence",
+  "status": "LINEAR COLOR REPAIR - broader optical and cinematic qualification remains IN_PROGRESS",
+  "auditIds": [
+    "EMB-AUD-12",
+    "EMB-AUD-06",
+    "EMB-AUD-07",
+    "EMB-AUD-14",
+    "EMB-AUD-19"
+  ],
+  "recordedAt": "2026-09-29T18:13:06.177Z",
+  "baseHead": "bf0a41f8ed984df6c068cb1a0a5919e12267ef22",
+  "sourceSha256": {
+    "src/animation/embarkation/adhesion.ts": "00e0cba81bdaab92256983e7d746ed390974142a98672b9329a078dca31c9eb1",
+    "src/animation/embarkation/aperture-mask.ts": "cbf4428492a58c323fd7b3881362ead6456cb9e1cf566a32598b7be09b6b99aa",
+    "src/animation/embarkation/arrival-material.ts": "79f24c2073ed4d11e01366c6adfd2919ec1c6acee4f7ce7a5a29a21fbfe6a995",
+    "src/animation/embarkation/arrival.ts": "df26c551ffc1c2c6f40424d480f8e9a6bf0e859d6499f877b34972f13c24dc08",
+    "src/animation/embarkation/atmosphere.ts": "1e63a437517d1744a1f3abe276e33ba457aa3c85f754e627a7e8a16b6d1a94cf",
+    "src/animation/embarkation/audio.ts": "702891bec9d2d4163e9ef76991552cd567123f670781a63a407a4201349cf84a",
+    "src/animation/embarkation/cloth-worker.ts": "4a29730dd5f443a592a68b1c59ef60d647b2ae20080fcf2a4ad6a9881966caa2",
+    "src/animation/embarkation/cloth.ts": "25649bbcf9dd0f7979f3299ce032f5ea2115a2b03e613c91893803cee799c63c",
+    "src/animation/embarkation/color-qualification.ts": "508d24c758abcda08952d27c17fad70dd90dec2553d988607858e97b823e46b7",
+    "src/animation/embarkation/color.ts": "ea71ff8fb42206901ebd93c87388d9c685def61509ae7606197d603dd5a04f77",
+    "src/animation/embarkation/depth-compositor.ts": "016a0cbcd39e36088f506b2d89cb2843c622cd378c7db2dbbfb3734956f03a8b",
+    "src/animation/embarkation/depth-qualification.ts": "a19f98a56e87b19e5f52b31fb69972cc0a8db7f7f9d590f8e60f512fcd858c98",
+    "src/animation/embarkation/dom-paint.ts": "8c7c70b644f875416dc0fe22d32c2d4dfc9e6d78fe4eea8bc449d8cb70b144c8",
+    "src/animation/embarkation/dom.ts": "176a34caf081c6433ff9c8e5aa9498016bf43b4f8aeec99fb15f5ae6ff5018c8",
+    "src/animation/embarkation/dynamics.ts": "ff8edb089122e45078af60bd6fb463b62760903fb2772b1a7579457cf55256e9",
+    "src/animation/embarkation/embarkation.css": "e0661e981d271271352e67ab299f18e9bb24d89b07fbbf7abaeb430c93ddbf1b",
+    "src/animation/embarkation/Embarkation.tsx": "d8a52217a4eedb80acef0e8c03bce5cff974874e6281ed05efe36a7ace9e7353",
+    "src/animation/embarkation/environment-set.ts": "95ad636e6980b458622c4f80429a017a15d1bf16bcfed90741af3d25fa4770bc",
+    "src/animation/embarkation/environment.ts": "8c23dcc3e6702b9b851ef24c57c1d67effb0a457435266eeb4a74505b61a6e2f",
+    "src/animation/embarkation/exposure-qualification.ts": "4c8a7cf2c242192565fca9367953f24d797ccb44a14c10b043be88b095a5d53a",
+    "src/animation/embarkation/exposure.ts": "4d0b6f112d1440553aa5116bf174ec0e013c92754333bf5d1f92427c9d9bb8c5",
+    "src/animation/embarkation/GenericStage.tsx": "39e9831538933e7ec85ee3aee5812a93b9a3077ca63c2fded68f0d08bd6707ed",
+    "src/animation/embarkation/input-ownership.ts": "181835d45e6e718d7241ee268911ed6fe93232f7347107b4f1084022e610094f",
+    "src/animation/embarkation/Inspector.tsx": "706677372c9be453cde0bf1b270b09ea9658aaf8c831c8291d2f471ac2882787",
+    "src/animation/embarkation/landscape-space.ts": "878f33b22c01f5d4999d32632603e66869b96cc4b0131e192c26e81789990684",
+    "src/animation/embarkation/lens-qualification.ts": "6288743a9c296a66ae237ae6ae4cb4f2a88071ee95baf77e3bdd15122043b4b6",
+    "src/animation/embarkation/lens-water.ts": "d1e32654d16eb598eaf8cdc995d1ff8fd9ff4ba56cb24aa62472356484416476",
+    "src/animation/embarkation/live-paint-binding.ts": "1bb89be62a163334ac0ec31c86794cf90e7a5dc735d3c35e017588f9fc9b4344",
+    "src/animation/embarkation/live-paint.ts": "b2e18f29a2957af9bd68f458d46b61181125061d9726b92d620e42e3eb17b594",
+    "src/animation/embarkation/living-material.ts": "4b16e417e0a4ffbff7d5457b3e514710e8c2e96ecedc4e85b8f621f382fdfcc8",
+    "src/animation/embarkation/material-backdrop.ts": "61a93fed49152e490f2f8c6c03839960ad6781ee14783d23e023095269d2feb6",
+    "src/animation/embarkation/navigation.tsx": "aad139e244f2639d6e5cd4103c051aa8d820579d60ab7f4c109f915b9c4a4284",
+    "src/animation/embarkation/page-material.ts": "e7a293b6fe845fc2da82a51fe1d835c37746d89094df50deed6dbe0c93774608",
+    "src/animation/embarkation/paint-mesh.ts": "672e5c92088c4ea98a8838e99d0497522cf501f302579151da43d6fe47079855",
+    "src/animation/embarkation/paint-raster.ts": "3431825b1d9ce1cb1037d16f732b8e01dacb3281df3b74c5343b04c04ecbb6e5",
+    "src/animation/embarkation/paint-surface.ts": "8049156781915b542431ee8cff0b208115d1ec1afe6f8a4ab45f3991d6e36268",
+    "src/animation/embarkation/particle-sampler.ts": "56be9ef2577aa08793ce979a8908ad8b40e30e981ad7f127df769fbf3baecd65",
+    "src/animation/embarkation/prepare-materials.ts": "b5218b52ac53db86a12b0bc75933b1184f7a87e2ae1a87de7619aeb1daed033f",
+    "src/animation/embarkation/program.ts": "d5a64a82e228b2b3ab3717d86a2c745acd8856ac3e0ae9f4ec6e339d472fc50b",
+    "src/animation/embarkation/projection.ts": "c3ec2085ad10a46d2a69b1e260fd9b60a102ccb759b09f6e33170cba8e8259d2",
+    "src/animation/embarkation/prop-material.ts": "94d5632bbc462efd748a1fed4623e05303539dc7840b5721a7017bd1c980ab44",
+    "src/animation/embarkation/prop-qualification.ts": "83d6214e8beff3f2c04badcfda251f93dbc59c9fdaaa81924badb125385fe8ca",
+    "src/animation/embarkation/prop-shell.ts": "227b063fea1e4d9e705ece4c65a87c3cf37e487c991db4495bd6bb531d68468b",
+    "src/animation/embarkation/renderer.ts": "61b0868c83abdcedd5b03f0c7bb7102996a74f68e7ce992b1000c4897e4d3501",
+    "src/animation/embarkation/room-extension.ts": "a0c57ff2013fb46daaa48768114cac1b54f2f8543f5de4ecdc6b0cab192e985a",
+    "src/animation/embarkation/scene-color.ts": "39ca77a67b6816e27656c88d2320b41443a164d50f896c4d3ecf26c06fecc33e",
+    "src/animation/embarkation/scene-space.ts": "1ad5869ac5f97bf84cf2dfc44241f9f405f3a336c6a32178752b062acd17f66c",
+    "src/animation/embarkation/sound-cues.ts": "9ab10065adeb5047bb1d5508a0aef26942a3c24e55860321453ab045f279004b",
+    "src/animation/embarkation/title-snag.ts": "10e7fbdc5bbab760809074c80599c1847645bbc260dc30bd9c2bd6a517380470"
+  },
+  "productionBuildId": "zYjJaqW4YcfGbKrma7y_-",
+  "cause": "The shutter average alone decoded sRGB. Earlier illumination, mist/lens composites and alpha blending occurred in encoded bytes. Switching to float targets also exposed formerly clamped additive-alpha overflow and a default-framebuffer reset in the incoming adapter.",
+  "contract": {
+    "artwork": "Browser-normalized sRGB image input; SRGB8 decode before premultiplication; linear-premultiplied mip/filter storage. Masters unchanged.",
+    "masks": "RGBA8/R8 numeric data, no color conversion. Explicit aperture, reconciliation, backing, matte and living masks.",
+    "working": "Linear sRGB primaries, premultiplied coverage. RGBA16F scene, fog, lens and exposure targets; supported 4x MSAA on the measured GPU.",
+    "fallback": "SRGB8_ALPHA8 storage decodes and blends in linear light. It has bounded precision and clips radiance above one; the separate exposure fallback stores a decoded running mean in encoded RGBA8. Neither changes event timing or geometry.",
+    "lighting": "Authored palette/paint grades are explicit display-referred operations. Material illumination, atmospheric interpolation, scattering, lens composition and shutter integration operate in linear light. Additive RGB uses bounded over-coverage alpha.",
+    "css": "Canonical CSS paint and CSS blur retain their specified sRGB-domain blending/filtering inside an explicit display-referred group with shared depth, then return to linear light. Contiguous CSS surfaces share the conversion passes.",
+    "output": "One sRGB presentation transform for the displayed canvas; no automatic exposure, tone mapper or new room grade. The native background/DOM layering is retained."
+  },
+  "native": {
+    "path": ".runtime/embarkation/audit-repair/embarkation-color-reference-20260929.json",
+    "sha256": "7303b06257c2468f7ac3aff30fd2175af47d936756ee7105cd9ff4313ec4425e",
+    "result": {
+      "floating": {
+        "storage": "RGBA16F linear premultiplied",
+        "samples": 4,
+        "roundTrip": 0,
+        "cases": [
+          {
+            "name": "50% white over black",
+            "actual": [
+              188,
+              188,
+              188,
+              255
+            ],
+            "expected": [
+              188,
+              188,
+              188,
+              255
+            ],
+            "error": 0
+          },
+          {
+            "name": "additive midgray",
+            "actual": [
+              175,
+              175,
+              175,
+              255
+            ],
+            "expected": [
+              175,
+              175,
+              175,
+              255
+            ],
+            "error": 0
+          },
+          {
+            "name": "native CSS alpha",
+            "actual": [
+              127,
+              127,
+              127,
+              255
+            ],
+            "expected": [
+              128,
+              128,
+              128,
+              255
+            ],
+            "error": 1
+          }
+        ],
+        "dataMask": {
+          "actual": 188,
+          "expected": 188
+        },
+        "edgeError": 1,
+        "roomError": 0,
+        "fogGradient": [
+          {
+            "opticalDepth": 0,
+            "actual": [
+              6,
+              22,
+              28
+            ],
+            "expected": [
+              6,
+              22,
+              28
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 0.25,
+            "actual": [
+              30,
+              46,
+              59
+            ],
+            "expected": [
+              30,
+              46,
+              59
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 0.5,
+            "actual": [
+              40,
+              58,
+              74
+            ],
+            "expected": [
+              40,
+              58,
+              74
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 0.75,
+            "actual": [
+              46,
+              65,
+              83
+            ],
+            "expected": [
+              46,
+              65,
+              83
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 1,
+            "actual": [
+              51,
+              71,
+              90
+            ],
+            "expected": [
+              51,
+              71,
+              90
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 1.25,
+            "actual": [
+              54,
+              75,
+              95
+            ],
+            "expected": [
+              54,
+              75,
+              95
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 1.5,
+            "actual": [
+              56,
+              78,
+              98
+            ],
+            "expected": [
+              56,
+              78,
+              98
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 1.75,
+            "actual": [
+              58,
+              80,
+              101
+            ],
+            "expected": [
+              58,
+              80,
+              101
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 2,
+            "actual": [
+              59,
+              81,
+              103
+            ],
+            "expected": [
+              59,
+              81,
+              103
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 2.25,
+            "actual": [
+              60,
+              82,
+              104
+            ],
+            "expected": [
+              60,
+              83,
+              104
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 2.5,
+            "actual": [
+              61,
+              83,
+              106
+            ],
+            "expected": [
+              61,
+              83,
+              106
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 2.75,
+            "actual": [
+              62,
+              84,
+              106
+            ],
+            "expected": [
+              62,
+              84,
+              107
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 3,
+            "actual": [
+              62,
+              85,
+              107
+            ],
+            "expected": [
+              62,
+              85,
+              107
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 3.25,
+            "actual": [
+              63,
+              85,
+              108
+            ],
+            "expected": [
+              63,
+              85,
+              108
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 3.5,
+            "actual": [
+              63,
+              85,
+              108
+            ],
+            "expected": [
+              63,
+              86,
+              108
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 3.75,
+            "actual": [
+              63,
+              86,
+              108
+            ],
+            "expected": [
+              63,
+              86,
+              109
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 4,
+            "actual": [
+              63,
+              86,
+              109
+            ],
+            "expected": [
+              63,
+              86,
+              109
+            ],
+            "error": 0
+          }
+        ],
+        "glError": 0,
+        "passed": true
+      },
+      "fallback": {
+        "storage": "SRGB8_ALPHA8 linear blend fallback",
+        "samples": 4,
+        "roundTrip": 0,
+        "cases": [
+          {
+            "name": "50% white over black",
+            "actual": [
+              188,
+              188,
+              188,
+              255
+            ],
+            "expected": [
+              188,
+              188,
+              188,
+              255
+            ],
+            "error": 0
+          },
+          {
+            "name": "additive midgray",
+            "actual": [
+              176,
+              176,
+              176,
+              255
+            ],
+            "expected": [
+              175,
+              175,
+              175,
+              255
+            ],
+            "error": 1
+          },
+          {
+            "name": "native CSS alpha",
+            "actual": [
+              127,
+              127,
+              127,
+              255
+            ],
+            "expected": [
+              128,
+              128,
+              128,
+              255
+            ],
+            "error": 1
+          }
+        ],
+        "dataMask": {
+          "actual": 188,
+          "expected": 188
+        },
+        "edgeError": 1,
+        "roomError": 0,
+        "fogGradient": [
+          {
+            "opticalDepth": 0,
+            "actual": [
+              6,
+              22,
+              28
+            ],
+            "expected": [
+              6,
+              22,
+              28
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 0.25,
+            "actual": [
+              30,
+              46,
+              59
+            ],
+            "expected": [
+              30,
+              46,
+              59
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 0.5,
+            "actual": [
+              40,
+              58,
+              74
+            ],
+            "expected": [
+              40,
+              58,
+              74
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 0.75,
+            "actual": [
+              46,
+              65,
+              84
+            ],
+            "expected": [
+              46,
+              65,
+              83
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 1,
+            "actual": [
+              51,
+              71,
+              90
+            ],
+            "expected": [
+              51,
+              71,
+              90
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 1.25,
+            "actual": [
+              54,
+              75,
+              94
+            ],
+            "expected": [
+              54,
+              75,
+              95
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 1.5,
+            "actual": [
+              56,
+              78,
+              98
+            ],
+            "expected": [
+              56,
+              78,
+              98
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 1.75,
+            "actual": [
+              58,
+              80,
+              101
+            ],
+            "expected": [
+              58,
+              80,
+              101
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 2,
+            "actual": [
+              59,
+              82,
+              103
+            ],
+            "expected": [
+              59,
+              81,
+              103
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 2.25,
+            "actual": [
+              60,
+              82,
+              105
+            ],
+            "expected": [
+              60,
+              83,
+              104
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 2.5,
+            "actual": [
+              61,
+              83,
+              106
+            ],
+            "expected": [
+              61,
+              83,
+              106
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 2.75,
+            "actual": [
+              62,
+              84,
+              106
+            ],
+            "expected": [
+              62,
+              84,
+              107
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 3,
+            "actual": [
+              62,
+              85,
+              107
+            ],
+            "expected": [
+              62,
+              85,
+              107
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 3.25,
+            "actual": [
+              63,
+              85,
+              108
+            ],
+            "expected": [
+              63,
+              85,
+              108
+            ],
+            "error": 0
+          },
+          {
+            "opticalDepth": 3.5,
+            "actual": [
+              63,
+              85,
+              108
+            ],
+            "expected": [
+              63,
+              86,
+              108
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 3.75,
+            "actual": [
+              63,
+              86,
+              108
+            ],
+            "expected": [
+              63,
+              86,
+              109
+            ],
+            "error": 1
+          },
+          {
+            "opticalDepth": 4,
+            "actual": [
+              63,
+              86,
+              109
+            ],
+            "expected": [
+              63,
+              86,
+              109
+            ],
+            "error": 0
+          }
+        ],
+        "glError": 0,
+        "passed": true
+      }
+    }
+  },
+  "film": {
+    "path": ".runtime/embarkation/audit-repair/embarkation-color-film-20260929.json",
+    "player": ".runtime/embarkation/audit-repair/embarkation-color-film-20260929.html",
+    "sha256": "3fb8e462558f4a2a785b5d56453430b975b4d4cd1c8ba340675881e6d36daea5",
+    "frames": 891,
+    "viewport": {
+      "dpr": 1.25,
+      "height": 720,
+      "width": 1280
+    },
+    "duration": 44.97576308250427,
+    "method": "Native CDP screencast, JPEG90, every second compositor frame, 1280x720 maximum; uninterrupted 1x silent playback plus more than eight seconds of ambience.",
+    "frameP50": 16.700000000004366,
+    "frameP95": 33.5,
+    "frameP99": 66.69999999999709,
+    "renderP95": 25.19999998807907,
+    "preloadMs": 16539.90000000596,
+    "rendererFailure": null,
+    "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "working": {
+      "bytes": 138240000,
+      "data": [
+        "aperture",
+        "reconciliationMask",
+        "backingAperture",
+        "matte0",
+        "matte1",
+        "matte2",
+        "livingMasks"
+      ],
+      "display": "sRGB transfer; explicit CSS composition groups",
+      "samples": 4,
+      "working": "RGBA16F linear premultiplied"
+    }
+  },
+  "validation": [
+    "27 focused files / 108 tests passed. Production build and TypeScript passed; five existing Edge/NFT warnings remain.",
+    "Native grayscale and accepted-room-art no-effect round trips have zero maximum byte error in both storage modes. Soft alpha edges, CSS alpha, additive light and 17 fog-gradient references have at most one byte error; no WebGL errors.",
+    "Native selected frames inspected across pressure/release, crossing, landscape, fog, threshold, assembly and final room. Final DOM retains Kato as crew and Sera as Captain; no fixture data or permissions changed."
+  ],
+  "limitations": [
+    "The float reference and forced sRGB fallback were exercised on Chromium/ANGLE/D3D11 with the RTX 5070 Laptop GPU, not independently on a device lacking float targets or every supported browser.",
+    "Capture timing includes recording and development overhead; these frame distributions are not an isolated production GPU benchmark. Extra linear/MSAA/CSS targets increase memory and require the continuing performance qualification.",
+    "Transparent-fragment fog ordering still exposes thin title-edge coverage differences. Broader depth/fog finishing, dynamic landing retargeting, current audiovisual review and the full browser/lifecycle matrix remain open. This is not a final owner-review acceptance claim."
+  ],
+  "references": [
+    "https://registry.khronos.org/webgl/specs/latest/2.0/",
+    "https://registry.khronos.org/webgl/extensions/EXT_color_buffer_float/",
+    "https://www.w3.org/TR/filter-effects-1/"
+  ],
+  "productionFilm": {
+    "path": ".runtime/embarkation/audit-repair/embarkation-color-production-film-20260929.json",
+    "sha256": "61183ef04ade8e30f9f44af5c79a0349ad0f3828a7d27b5e0343403ccbe96e7c",
+    "frames": 977,
+    "duration": 45.2309410572052,
+    "start": {
+      "buildId": "zYjJaqW4YcfGbKrma7y_-",
+      "viewport": {
+        "dpr": 1.25,
+        "height": 720,
+        "width": 1280
+      },
+      "quality": "CINEMATIC",
+      "audio": false,
+      "debug": "undefined"
+    },
+    "end": {
+      "debug": "undefined",
+      "overlay": false,
+      "replay": true
+    },
+    "method": "Native CDP screencast JPEG85, every second compositor frame; ordinary production Replay Arrival and JOIN button; 45-second silent capture."
+  }
+}

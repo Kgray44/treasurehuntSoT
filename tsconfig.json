@@ -52,7 +52,11 @@
     ".next-brightwork-wave5/types/**/*.ts",
     ".next-brightwork-wave5/dev/types/**/*.ts",
     ".next-photo-development/types/**/*.ts",
-    ".next-photo-development/dev/types/**/*.ts"
+    ".next-photo-development/dev/types/**/*.ts",
+    ".next-embarkation-audit/types/**/*.ts",
+    ".next-embarkation-audit/dev/types/**/*.ts",
+    ".next-embarkation-production-audit/types/**/*.ts",
+    ".next-embarkation-production-audit/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".sealed-build*/**", "artifacts/**"]
 }

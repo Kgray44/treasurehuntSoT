@@ -13,6 +13,7 @@ import { MusterAvatar } from "./MusterAvatar";
 import { MusterOptions } from "./MusterOptions";
 import { useMusterStage } from "./useMusterStage";
 import "./muster.css";
+import { Embarkation } from "@/animation/embarkation/Embarkation";
 
 function words(value: string) {
   return value.replaceAll("_", " ").toLowerCase();
@@ -47,6 +48,8 @@ export function MusterRoom({
   const { mode } = useMotionMode();
   const { requestAction, dialog } = useActionDialog();
   const [room, setRoom] = useState<MusterProjection | null>(null);
+  const [destinationReady, setDestinationReady] = useState(false);
+  const [arrivalActive, setArrivalActive] = useState(true);
   const stage = useMusterStage(voyageId, Boolean(room));
   const [messages, setMessages] = useState<MusterMessage[]>([]);
   const [error, setError] = useState("");
@@ -125,6 +128,7 @@ export function MusterRoom({
           setConnection(navigator.onLine ? "Reconnecting" : "Offline");
         }
       } finally {
+        if (mounted.current && roomRef.current) setDestinationReady(true);
         loading.current = false;
         if (refreshQueued.current && mounted.current && !accessRevoked.current) {
           refreshQueued.current = false;
@@ -223,14 +227,14 @@ export function MusterRoom({
   }, [membershipId, revoked, voyageId]);
   useEffect(() => {
     const href = room?.viewer.runtimeHref;
-    if (!playerRoute || !href || revoked || handoff.current === href) return;
+    if (!playerRoute || !href || revoked || arrivalActive || handoff.current === href) return;
     handoff.current = href;
     Promise.resolve()
       .then(() => (onRouteHandoff ? onRouteHandoff(href) : router.push(href)))
       .catch(() => {
         setError("The Voyage has begun, but the journal could not open. Use Open Voyage to try again.");
       });
-  }, [playerRoute, room?.viewer.runtimeHref, revoked, onRouteHandoff, router]);
+  }, [playerRoute, room?.viewer.runtimeHref, revoked, arrivalActive, onRouteHandoff, router]);
 
   async function command(
     action: string,
@@ -282,7 +286,7 @@ export function MusterRoom({
   const playerPath = `/api/player/playthroughs/${voyageId}`;
   if (!room)
     return (
-      <main className="muster-scene muster-loading" data-motion={mode}>
+      <main className="muster-scene muster-loading embarkation-loading" data-motion={mode}>
         <div className="muster-environment" aria-hidden="true" />
         <section>
           <Compass size={34} />
@@ -305,405 +309,411 @@ export function MusterRoom({
   const gathering = ["READY", "INVITING", "SCHEDULED"].includes(voyage.status);
   return (
     <>
-      <main
-        ref={stage}
-        className="muster-scene"
-        data-motion={mode}
-        data-viewer-role={viewer.isCaptain ? (viewer.participates ? "captain-player" : "captain-only") : "player"}
-        aria-labelledby="muster-title"
-      >
-        <div className="muster-environment" aria-hidden="true">
-          <div className="muster-lantern-glow" />
-        </div>
-        <section className="muster-gathering">
-          <header className="muster-title-group">
-            <p className="muster-eyebrow">{viewer.isCaptain ? "Captain Muster" : "Chronicle Muster"}</p>
-            <h1 id="muster-title">{voyage.title}</h1>
-            <p className="muster-voyage-name">{voyage.voyageName}</p>
-            <p className="muster-intro">
-              {viewer.isCaptain
-                ? "Review your crew, prepare together, and set sail when you're ready."
-                : "Review crew, prepare together, and wait for the Captain to set sail."}
-            </p>
-          </header>
-          <ul className="muster-crew" aria-label="Voyage crew">
-            {currentCrew.map((member) => (
-              <li
-                className="muster-crew-card"
-                data-captain={member.isCaptain}
-                data-ready={member.ready}
-                data-invited={member.status === "INVITED"}
-                key={member.id}
-              >
-                {member.isCaptain && <Crown className="muster-crown" size={21} aria-label="Captain" />}
-                <MusterAvatar name={member.displayName} url={member.avatarUrl} />
-                <span
-                  className="muster-presence"
-                  data-presence={member.presence}
-                  title={
-                    member.presence === "CONNECTED"
-                      ? "Connected"
-                      : member.presence === "RECENTLY_LOST"
-                        ? "Reconnecting"
-                        : member.presence === "STALE"
-                          ? "Offline"
-                          : "Connection unknown"
-                  }
+      <Embarkation room={room} destinationReady={destinationReady} onActiveChange={setArrivalActive}>
+        <main
+          ref={stage}
+          className="muster-scene"
+          data-motion={mode}
+          data-viewer-role={viewer.isCaptain ? (viewer.participates ? "captain-player" : "captain-only") : "player"}
+          aria-labelledby="muster-title"
+        >
+          <div className="muster-environment" aria-hidden="true">
+            <div className="muster-lantern-glow" />
+          </div>
+          <section className="muster-gathering">
+            <header className="muster-title-group">
+              <p className="muster-eyebrow">{viewer.isCaptain ? "Captain Muster" : "Chronicle Muster"}</p>
+              <h1 id="muster-title">{voyage.title}</h1>
+              <p className="muster-voyage-name">{voyage.voyageName}</p>
+              <p className="muster-intro">
+                {viewer.isCaptain
+                  ? "Review your crew, prepare together, and set sail when you're ready."
+                  : "Review crew, prepare together, and wait for the Captain to set sail."}
+              </p>
+            </header>
+            <ul className="muster-crew" aria-label="Voyage crew">
+              {currentCrew.map((member) => (
+                <li
+                  className="muster-crew-card"
+                  data-captain={member.isCaptain}
+                  data-ready={member.ready}
+                  data-invited={member.status === "INVITED"}
+                  key={member.id}
                 >
-                  <span className="sr-only">
-                    {member.presence === "CONNECTED"
-                      ? "Connected"
-                      : member.presence === "RECENTLY_LOST"
-                        ? "Reconnecting"
-                        : member.presence === "STALE"
-                          ? "Offline"
-                          : "Connection unknown"}
-                  </span>
-                </span>
-                <strong>{member.displayName}</strong>
-                <span className="muster-crew-role">
-                  {member.isCaptain ? "Captain" : "Crew"}
-                  {member.isCurrentPlayer ? " · You" : ""}
-                </span>
-                <span className="muster-member-ready">
-                  {member.status === "CAPTAIN_ONLY" || (!member.participates && member.isCaptain) ? (
-                    <>
-                      <Anchor size={13} />
-                      Captain only
-                    </>
-                  ) : member.ready ? (
-                    <>
-                      <i>
-                        <Check size={10} />
-                      </i>
-                      Ready
-                    </>
-                  ) : member.status === "INVITED" ? (
-                    <>
-                      <Circle size={11} />
-                      Invited
-                    </>
-                  ) : (
-                    <>
-                      <Circle size={11} />
-                      Preparing
-                    </>
-                  )}
-                </span>
-                {viewer.isCaptain && !member.isCaptain && (
-                  <button
-                    className="muster-manage-member"
-                    aria-label={`Manage ${member.displayName}`}
-                    aria-expanded={selectedMember === member.id}
-                    onClick={() => setSelectedMember(selectedMember === member.id ? null : member.id)}
+                  {member.isCaptain && <Crown className="muster-crown" size={21} aria-label="Captain" />}
+                  <MusterAvatar name={member.displayName} url={member.avatarUrl} />
+                  <span
+                    className="muster-presence"
+                    data-presence={member.presence}
+                    title={
+                      member.presence === "CONNECTED"
+                        ? "Connected"
+                        : member.presence === "RECENTLY_LOST"
+                          ? "Reconnecting"
+                          : member.presence === "STALE"
+                            ? "Offline"
+                            : "Connection unknown"
+                    }
                   >
-                    <ChevronDown size={13} />
-                  </button>
-                )}
-                {viewer.isCaptain && selectedMember === member.id && (
-                  <fieldset disabled={Boolean(busy)}>
-                    <MemberMenu member={member} captainPath={captainPath} voyageId={voyageId} command={command} />
-                  </fieldset>
-                )}
-              </li>
-            ))}
-            {viewer.canInvite && (
-              <li className="muster-open-card">
-                <Link href="/captain/library" aria-label="Invite Crew">
-                  <span>
-                    <Plus size={30} aria-hidden="true" />
+                    <span className="sr-only">
+                      {member.presence === "CONNECTED"
+                        ? "Connected"
+                        : member.presence === "RECENTLY_LOST"
+                          ? "Reconnecting"
+                          : member.presence === "STALE"
+                            ? "Offline"
+                            : "Connection unknown"}
+                    </span>
                   </span>
-                  <strong>Invite Crew</strong>
-                  <small>
-                    Send another
-                    <br />
-                    invitation
-                  </small>
-                </Link>
-              </li>
-            )}
-          </ul>
-          {departed.length > 0 && (
-            <details className="muster-departed">
-              <summary>Earlier crew ({departed.length})</summary>
-              {departed.map((m) => (
-                <p key={m.id}>
-                  {m.displayName} · {words(m.status)}
-                </p>
+                  <strong>{member.displayName}</strong>
+                  <span className="muster-crew-role">
+                    {member.isCaptain ? "Captain" : "Crew"}
+                    {member.isCurrentPlayer ? " · You" : ""}
+                  </span>
+                  <span className="muster-member-ready">
+                    {member.status === "CAPTAIN_ONLY" || (!member.participates && member.isCaptain) ? (
+                      <>
+                        <Anchor size={13} />
+                        Captain only
+                      </>
+                    ) : member.ready ? (
+                      <>
+                        <i>
+                          <Check size={10} />
+                        </i>
+                        Ready
+                      </>
+                    ) : member.status === "INVITED" ? (
+                      <>
+                        <Circle size={11} />
+                        Invited
+                      </>
+                    ) : (
+                      <>
+                        <Circle size={11} />
+                        Preparing
+                      </>
+                    )}
+                  </span>
+                  {viewer.isCaptain && !member.isCaptain && (
+                    <button
+                      className="muster-manage-member"
+                      aria-label={`Manage ${member.displayName}`}
+                      aria-expanded={selectedMember === member.id}
+                      onClick={() => setSelectedMember(selectedMember === member.id ? null : member.id)}
+                    >
+                      <ChevronDown size={13} />
+                    </button>
+                  )}
+                  {viewer.isCaptain && selectedMember === member.id && (
+                    <fieldset disabled={Boolean(busy)}>
+                      <MemberMenu member={member} captainPath={captainPath} voyageId={voyageId} command={command} />
+                    </fieldset>
+                  )}
+                </li>
               ))}
-            </details>
-          )}
-        </section>
-        <aside className="muster-parchment" aria-labelledby="muster-chronicle-title">
-          <div className="muster-paper" aria-hidden="true" />
-          <div className="muster-paper-content">
-            <div className="muster-cover">
-              {coverFailed === voyage.coverUrl ? (
-                <div className="muster-cover-error" role="status">
-                  <p>Chronicle cover temporarily unavailable.</p>
-                  <button onClick={() => setCoverFailed("")}>Retry cover</button>
-                </div>
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={voyage.coverUrl}
-                  alt={`${voyage.title} Chronicle cover`}
-                  onError={() => setCoverFailed(voyage.coverUrl)}
-                />
+              {viewer.canInvite && (
+                <li className="muster-open-card">
+                  <Link href="/captain/library" aria-label="Invite Crew">
+                    <span>
+                      <Plus size={30} aria-hidden="true" />
+                    </span>
+                    <strong>Invite Crew</strong>
+                    <small>
+                      Send another
+                      <br />
+                      invitation
+                    </small>
+                  </Link>
+                </li>
               )}
-              <span>
-                <span aria-hidden="true">✦</span>{" "}
-                {gathering ? "Awaiting departure" : stateName(voyage.status, voyage.authorityState)}
-              </span>
-            </div>
-            <h2 id="muster-chronicle-title">{voyage.title}</h2>
-            {voyage.subtitle && <p className="muster-subtitle">{voyage.subtitle}</p>}
-            {voyage.description && <p className="muster-description">{voyage.description}</p>}
-            <dl className="muster-details">
-              <div>
-                <dt className="muster-detail-icon" aria-hidden="true">
-                  <i>
-                    <BookOpen />
-                  </i>
-                </dt>
-                <dt>Edition</dt>
-                <dd>{voyage.edition}</dd>
+            </ul>
+            {departed.length > 0 && (
+              <details className="muster-departed">
+                <summary>Earlier crew ({departed.length})</summary>
+                {departed.map((m) => (
+                  <p key={m.id}>
+                    {m.displayName} · {words(m.status)}
+                  </p>
+                ))}
+              </details>
+            )}
+          </section>
+          <aside className="muster-parchment" aria-labelledby="muster-chronicle-title">
+            <div className="muster-paper" aria-hidden="true" />
+            <div className="muster-paper-content">
+              <div className="muster-cover">
+                {coverFailed === voyage.coverUrl ? (
+                  <div className="muster-cover-error" role="status">
+                    <p>Chronicle cover temporarily unavailable.</p>
+                    <button onClick={() => setCoverFailed("")}>Retry cover</button>
+                  </div>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={voyage.coverUrl}
+                    alt={`${voyage.title} Chronicle cover`}
+                    onError={() => setCoverFailed(voyage.coverUrl)}
+                  />
+                )}
+                <span>
+                  <span aria-hidden="true">✦</span>{" "}
+                  {gathering ? "Awaiting departure" : stateName(voyage.status, voyage.authorityState)}
+                </span>
               </div>
-              <div>
-                <dt className="muster-detail-icon" aria-hidden="true">
-                  <i>
-                    <Compass />
-                  </i>
-                </dt>
-                <dt>Voyage State</dt>
-                <dd>{stateName(voyage.status, voyage.authorityState)}</dd>
-              </div>
-              <div>
-                <dt className="muster-detail-icon" aria-hidden="true">
-                  <i>
-                    <UserRound />
-                  </i>
-                </dt>
-                <dt>Captain</dt>
-                <dd>{voyage.captainName}</dd>
-              </div>
-              {voyage.duration !== null && (
+              <h2 id="muster-chronicle-title">{voyage.title}</h2>
+              {voyage.subtitle && <p className="muster-subtitle">{voyage.subtitle}</p>}
+              {voyage.description && <p className="muster-description">{voyage.description}</p>}
+              <dl className="muster-details">
                 <div>
                   <dt className="muster-detail-icon" aria-hidden="true">
                     <i>
-                      <Timer />
+                      <BookOpen />
                     </i>
                   </dt>
-                  <dt>Estimated Duration</dt>
-                  <dd>
-                    {voyage.duration >= 60
-                      ? `~ ${Number((voyage.duration / 60).toFixed(1))} ${voyage.duration === 60 ? "Hour" : "Hours"}`
-                      : `~ ${voyage.duration} Minutes`}
-                  </dd>
+                  <dt>Edition</dt>
+                  <dd>{voyage.edition}</dd>
                 </div>
+                <div>
+                  <dt className="muster-detail-icon" aria-hidden="true">
+                    <i>
+                      <Compass />
+                    </i>
+                  </dt>
+                  <dt>Voyage State</dt>
+                  <dd>{stateName(voyage.status, voyage.authorityState)}</dd>
+                </div>
+                <div>
+                  <dt className="muster-detail-icon" aria-hidden="true">
+                    <i>
+                      <UserRound />
+                    </i>
+                  </dt>
+                  <dt>Captain</dt>
+                  <dd>{voyage.captainName}</dd>
+                </div>
+                {voyage.duration !== null && (
+                  <div>
+                    <dt className="muster-detail-icon" aria-hidden="true">
+                      <i>
+                        <Timer />
+                      </i>
+                    </dt>
+                    <dt>Estimated Duration</dt>
+                    <dd>
+                      {voyage.duration >= 60
+                        ? `~ ${Number((voyage.duration / 60).toFixed(1))} ${voyage.duration === 60 ? "Hour" : "Hours"}`
+                        : `~ ${voyage.duration} Minutes`}
+                    </dd>
+                  </div>
+                )}
+              </dl>
+              {voyage.plannedStartAt && (
+                <p className="muster-schedule">
+                  Planned departure · {new Date(voyage.plannedStartAt).toLocaleString()}
+                </p>
               )}
-            </dl>
-            {voyage.plannedStartAt && (
-              <p className="muster-schedule">Planned departure · {new Date(voyage.plannedStartAt).toLocaleString()}</p>
-            )}
-            <section className="muster-readiness" aria-labelledby="muster-readiness-title">
-              <h3 id="muster-readiness-title">Voyage Readiness</h3>
-              <p>{readinessCopy(room)}</p>
-              <div
-                className="muster-progress"
-                role="progressbar"
-                aria-label="Player readiness"
-                aria-valuemin={0}
-                aria-valuemax={Math.max(readiness.total, 1)}
-                aria-valuenow={readiness.ready}
-                aria-valuetext={`${readiness.ready} of ${readiness.total} Players ready`}
-              >
-                <span style={{ width: `${readiness.total ? (readiness.ready / readiness.total) * 100 : 0}%` }} />
-                {readiness.total > 1 &&
-                  readiness.total <= 12 &&
-                  Array.from({ length: readiness.total - 1 }, (_, i) => (
-                    <i key={i} style={{ left: `${((i + 1) / readiness.total) * 100}%` }} />
-                  ))}
-              </div>
-              <div className="muster-ready-count">
-                {readiness.ready} / {readiness.total} Ready
-              </div>
-            </section>
-            <div className="muster-launch-area">
-              {viewer.isCaptain && gathering ? (
-                <button
-                  className="muster-launch"
-                  disabled={!viewer.canLaunch || Boolean(busy)}
-                  onClick={() =>
-                    void command(
-                      "launch",
-                      `${captainPath}/launch`,
-                      "Begin the Voyage",
-                      "Ready Crew receive access to the Voyage. This changes the shared Voyage state.",
-                    )
-                  }
+              <section className="muster-readiness" aria-labelledby="muster-readiness-title">
+                <h3 id="muster-readiness-title">Voyage Readiness</h3>
+                <p>{readinessCopy(room)}</p>
+                <div
+                  className="muster-progress"
+                  role="progressbar"
+                  aria-label="Player readiness"
+                  aria-valuemin={0}
+                  aria-valuemax={Math.max(readiness.total, 1)}
+                  aria-valuenow={readiness.ready}
+                  aria-valuetext={`${readiness.ready} of ${readiness.total} Players ready`}
                 >
-                  <Anchor />
-                  {busy === "launch" ? "Beginning Voyage…" : "Begin the Voyage"}
-                </button>
-              ) : viewer.runtimeHref ? (
-                <Link className="muster-launch" href={viewer.runtimeHref}>
-                  <Anchor />
-                  Open Voyage
-                </Link>
-              ) : viewer.isCaptain && !gathering ? (
-                <Link className="muster-launch" href={`/captain/sessions/${voyageId}`}>
-                  <Anchor />
-                  Open Captain’s Console
-                </Link>
-              ) : (
-                <button className="muster-launch" disabled>
-                  <Anchor />
-                  {["CANCELLED", "COMPLETED", "ABANDONED"].includes(voyage.status)
-                    ? "Voyage ended"
-                    : voyage.authorityState === "VACANT"
-                      ? "Awaiting a Captain"
-                      : "Waiting for the Captain"}
-                </button>
-              )}
-              <p>
-                {viewer.isCaptain
-                  ? !readiness.total
-                    ? "Captain authority is separate from Player readiness."
-                    : !readiness.allReady && viewer.canLaunch
-                      ? "Ready Players can begin; preparing crew can join later."
-                      : "Good company. A new horizon."
-                  : !gathering
-                    ? "Your access follows the current Voyage state."
-                    : viewer.ready
-                      ? "You're ready. The Captain will begin the Voyage."
-                      : "Your readiness follows your current participation."}
-              </p>
-            </div>
-            <MusterOptions label={viewer.isCaptain ? "Captain & Voyage options" : "Your Voyage options"}>
-              <div className="muster-option-buttons">
-                {viewer.isCaptain && (
-                  <>
-                    <button
-                      disabled={Boolean(busy) || !viewer.canRelinquish}
-                      onClick={() =>
-                        void command(
-                          "relinquish",
-                          `${captainPath}/captain/relinquish`,
-                          "Relinquish Captaincy",
-                          "Place this Voyage in Succession Hold. A joined Player may take Captaincy. Your Player participation, if any, is retained.",
-                          {
-                            idempotent: true,
-                            destination: viewer.participates ? `/player/playthroughs/${voyageId}` : "/captain/library",
-                          },
-                        )
-                      }
-                    >
-                      Relinquish Captaincy
-                    </button>
-                    {!viewer.canRelinquish && <p>This Voyage cannot currently change Captain authority.</p>}
-                    {gathering && (
+                  <span style={{ width: `${readiness.total ? (readiness.ready / readiness.total) * 100 : 0}%` }} />
+                  {readiness.total > 1 &&
+                    readiness.total <= 12 &&
+                    Array.from({ length: readiness.total - 1 }, (_, i) => (
+                      <i key={i} style={{ left: `${((i + 1) / readiness.total) * 100}%` }} />
+                    ))}
+                </div>
+                <div className="muster-ready-count">
+                  {readiness.ready} / {readiness.total} Ready
+                </div>
+              </section>
+              <div className="muster-launch-area">
+                {viewer.isCaptain && gathering ? (
+                  <button
+                    className="muster-launch"
+                    disabled={!viewer.canLaunch || Boolean(busy)}
+                    onClick={() =>
+                      void command(
+                        "launch",
+                        `${captainPath}/launch`,
+                        "Begin the Voyage",
+                        "Ready Crew receive access to the Voyage. This changes the shared Voyage state.",
+                      )
+                    }
+                  >
+                    <Anchor />
+                    {busy === "launch" ? "Beginning Voyage…" : "Begin the Voyage"}
+                  </button>
+                ) : viewer.runtimeHref ? (
+                  <Link className="muster-launch" href={viewer.runtimeHref}>
+                    <Anchor />
+                    Open Voyage
+                  </Link>
+                ) : viewer.isCaptain && !gathering ? (
+                  <Link className="muster-launch" href={`/captain/sessions/${voyageId}`}>
+                    <Anchor />
+                    Open Captain’s Console
+                  </Link>
+                ) : (
+                  <button className="muster-launch" disabled>
+                    <Anchor />
+                    {["CANCELLED", "COMPLETED", "ABANDONED"].includes(voyage.status)
+                      ? "Voyage ended"
+                      : voyage.authorityState === "VACANT"
+                        ? "Awaiting a Captain"
+                        : "Waiting for the Captain"}
+                  </button>
+                )}
+                <p>
+                  {viewer.isCaptain
+                    ? !readiness.total
+                      ? "Captain authority is separate from Player readiness."
+                      : !readiness.allReady && viewer.canLaunch
+                        ? "Ready Players can begin; preparing crew can join later."
+                        : "Good company. A new horizon."
+                    : !gathering
+                      ? "Your access follows the current Voyage state."
+                      : viewer.ready
+                        ? "You're ready. The Captain will begin the Voyage."
+                        : "Your readiness follows your current participation."}
+                </p>
+              </div>
+              <MusterOptions label={viewer.isCaptain ? "Captain & Voyage options" : "Your Voyage options"}>
+                <div className="muster-option-buttons">
+                  {viewer.isCaptain && (
+                    <>
                       <button
-                        disabled={Boolean(busy)}
+                        disabled={Boolean(busy) || !viewer.canRelinquish}
                         onClick={() =>
                           void command(
-                            "cancel",
-                            `${captainPath}/cancel`,
-                            "Cancel Voyage for Everyone",
-                            "End current access for everyone and revoke outstanding invitations. Participation history is preserved. This cannot be undone.",
-                            { destructive: true, destination: "/captain/library" },
+                            "relinquish",
+                            `${captainPath}/captain/relinquish`,
+                            "Relinquish Captaincy",
+                            "Place this Voyage in Succession Hold. A joined Player may take Captaincy. Your Player participation, if any, is retained.",
+                            {
+                              idempotent: true,
+                              destination: viewer.participates
+                                ? `/player/playthroughs/${voyageId}`
+                                : "/captain/library",
+                            },
                           )
                         }
                       >
-                        Cancel Voyage for Everyone
+                        Relinquish Captaincy
                       </button>
-                    )}
-                  </>
-                )}
-                {viewer.canTakeCaptaincy && (
-                  <button
-                    disabled={Boolean(busy)}
-                    onClick={() =>
-                      void command(
-                        "takeover",
-                        `${playerPath}/captain/takeover`,
-                        "Take Captaincy",
-                        "Become the Captain of this Voyage. The first confirmed claim takes the helm.",
-                        { idempotent: true },
-                      )
-                    }
-                  >
-                    Take Captaincy
-                  </button>
-                )}
-                {soloDestination && <Link href={soloDestination}>Open solo Voyage</Link>}
-                {viewer.canContinueSolo && !soloDestination && (
-                  <button
-                    disabled={Boolean(busy)}
-                    onClick={() =>
-                      void command(
-                        "solo",
-                        `${playerPath}/continue-solo`,
-                        "Continue Solo",
-                        "Create a separate personal Voyage. This shared Voyage and everyone else's private state remain unchanged.",
-                        { idempotent: true },
-                      )
-                    }
-                  >
-                    Continue Solo
-                  </button>
-                )}
-                {viewer.canLeave && (
-                  <button
-                    disabled={Boolean(busy)}
-                    onClick={() =>
-                      void command(
-                        "leave",
-                        `${playerPath}/leave`,
-                        "Leave Voyage",
-                        "End your Player access to this shared Voyage. Other Players and retained history are unchanged.",
-                        { destructive: true, destination: "/player/library" },
-                      )
-                    }
-                  >
-                    Leave Voyage
-                  </button>
-                )}
-                <Link href={viewer.isCaptain ? "/captain/library" : "/player/library"}>Leave Waiting Room</Link>
-                <button onClick={() => void load()}>Refresh room</button>
-              </div>
-            </MusterOptions>
+                      {!viewer.canRelinquish && <p>This Voyage cannot currently change Captain authority.</p>}
+                      {gathering && (
+                        <button
+                          disabled={Boolean(busy)}
+                          onClick={() =>
+                            void command(
+                              "cancel",
+                              `${captainPath}/cancel`,
+                              "Cancel Voyage for Everyone",
+                              "End current access for everyone and revoke outstanding invitations. Participation history is preserved. This cannot be undone.",
+                              { destructive: true, destination: "/captain/library" },
+                            )
+                          }
+                        >
+                          Cancel Voyage for Everyone
+                        </button>
+                      )}
+                    </>
+                  )}
+                  {viewer.canTakeCaptaincy && (
+                    <button
+                      disabled={Boolean(busy)}
+                      onClick={() =>
+                        void command(
+                          "takeover",
+                          `${playerPath}/captain/takeover`,
+                          "Take Captaincy",
+                          "Become the Captain of this Voyage. The first confirmed claim takes the helm.",
+                          { idempotent: true },
+                        )
+                      }
+                    >
+                      Take Captaincy
+                    </button>
+                  )}
+                  {soloDestination && <Link href={soloDestination}>Open solo Voyage</Link>}
+                  {viewer.canContinueSolo && !soloDestination && (
+                    <button
+                      disabled={Boolean(busy)}
+                      onClick={() =>
+                        void command(
+                          "solo",
+                          `${playerPath}/continue-solo`,
+                          "Continue Solo",
+                          "Create a separate personal Voyage. This shared Voyage and everyone else's private state remain unchanged.",
+                          { idempotent: true },
+                        )
+                      }
+                    >
+                      Continue Solo
+                    </button>
+                  )}
+                  {viewer.canLeave && (
+                    <button
+                      disabled={Boolean(busy)}
+                      onClick={() =>
+                        void command(
+                          "leave",
+                          `${playerPath}/leave`,
+                          "Leave Voyage",
+                          "End your Player access to this shared Voyage. Other Players and retained history are unchanged.",
+                          { destructive: true, destination: "/player/library" },
+                        )
+                      }
+                    >
+                      Leave Voyage
+                    </button>
+                  )}
+                  <Link href={viewer.isCaptain ? "/captain/library" : "/player/library"}>Leave Waiting Room</Link>
+                  <button onClick={() => void load()}>Refresh room</button>
+                </div>
+              </MusterOptions>
+            </div>
+          </aside>
+          <CrewChat
+            voyageId={voyageId}
+            csrfToken={room.csrfToken}
+            messages={messages}
+            connected={connection}
+            onSent={load}
+            disabled={!gathering || revoked || (!viewer.isCaptain && !viewer.participates)}
+          />
+          <div className="muster-quote">
+            <blockquote>
+              “Not all who wait are idle -<br />
+              some are simply gathering a better story.”
+            </blockquote>
+            <span aria-hidden="true">
+              <i />
+              <Compass size={24} />
+              <i />
+            </span>
           </div>
-        </aside>
-        <CrewChat
-          voyageId={voyageId}
-          csrfToken={room.csrfToken}
-          messages={messages}
-          connected={connection}
-          onSent={load}
-          disabled={!gathering || revoked || (!viewer.isCaptain && !viewer.participates)}
-        />
-        <div className="muster-quote">
-          <blockquote>
-            “Not all who wait are idle -<br />
-            some are simply gathering a better story.”
-          </blockquote>
-          <span aria-hidden="true">
-            <i />
-            <Compass size={24} />
-            <i />
-          </span>
-        </div>
-        <div className="muster-announcements" aria-live="polite">
-          {notice}
-        </div>
-        {error && (
-          <div className="muster-error" role="alert">
-            {error}
-            <button onClick={() => void load()}>Try again</button>
+          <div className="muster-announcements" aria-live="polite">
+            {notice}
           </div>
-        )}
-      </main>
+          {error && (
+            <div className="muster-error" role="alert">
+              {error}
+              <button onClick={() => void load()}>Try again</button>
+            </div>
+          )}
+        </main>
+      </Embarkation>
       {dialog}
     </>
   );

@@ -115,6 +115,21 @@
         "../../Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/adjudication.json"
       ],
       "notes": "KG owner-directed after Crossdeck/Parallax protected integration. Only residual editorial R17-R8-B1 hierarchy in three contracts transfers; original severity/history and all Crossdeck functional/accessibility/security/continuity obligations remain. Approval Sentinel_6dd5d7e3d8288191bb9a543c9db63739, 2026-10-19T19:06Z; Refit owner acceptance remains outstanding."
+    },
+    {
+      "id": "embarkation",
+      "name": "Embarkation - Crossing the Threshold",
+      "productArea": "Captain_Helm",
+      "routePatterns": ["/captain/voyages/[playthroughId]/muster", "/player/playthroughs/[playthroughId]"],
+      "treatment": "MAJOR_STRATEGY_RETHINK",
+      "status": "IMPLEMENTATION_ITERATING",
+      "branch": "codex/refit-v1-embarkation",
+      "designPacket": "embarkation/design-packet.md",
+      "ownerAccepted": false,
+      "preserveReferences": ["muster/owner-acceptance.md", "muster/accepted-reference/manifest.json"],
+      "notes": "Owner-directed 35.8-second film with material support/failure, coherent rear-origin weather, independent Stage B depth planes, continuous fog, backward room entry, live DOM anchor catches and persistent living room/water. Isolated preview on 3138; owner acceptance and integration remain pending.",
+      "screeningDelta": "Owner Screening Delta 2 - motion/fog/exterior correction",
+      "currentProof": "embarkation/correction-proof.json"
     }
   ]
 }

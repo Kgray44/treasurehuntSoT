@@ -1,0 +1,547 @@
+{
+  "classification": "engineering-evidence",
+  "status": "IMPLEMENTATION_ITERATING",
+  "ownerAccepted": false,
+  "merged": false,
+  "authoredRuntimeSeconds": 35.8,
+  "referenceTier": "CINEMATIC",
+  "seed": 2595989206,
+  "programVersion": "embarkation-1.0.0",
+  "preview": "http://127.0.0.1:3138/dev/embarkation",
+  "requirements": [
+    {
+      "id": 1,
+      "requirement": "JOIN BUTTON MUST PHYSICALLY LEAVE WITH THE PAGE",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "src/animation/embarkation/page-material.ts",
+        "delta2/screening/0.45.png",
+        "delta2/screening/7.2.png"
+      ],
+      "implementation": "Captured committed button remains on its own supported mesh until the 8.25-second release; real interaction is inert."
+    },
+    {
+      "id": 2,
+      "requirement": "UNIFY THE PAGE TITLE WITH THE CINEMATIC FOCUS TITLE",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "src/animation/embarkation/page-material.ts",
+        "src/animation/embarkation/renderer.ts",
+        "delta2/screening/4.5.png"
+      ],
+      "implementation": "One captured original heading arcs into the focus surface; capitalization resolves during its edge-on turn."
+    },
+    {
+      "id": 3,
+      "requirement": "ORIGINAL PAGE FAILURE — SUPPORT-PLANE PHYSICS",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "src/animation/embarkation/page-material.ts",
+        "src/animation/embarkation/program.ts",
+        "delta2/screening/6.5.png"
+      ],
+      "implementation": "Subdivided surfaces retain central support while free edges peel; differentiated corner anchors fail in sequence."
+    },
+    {
+      "id": 4,
+      "requirement": "COMPONENTS MUST TUMBLE / CURL / REORIENT AFTER RELEASE",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "delta2/screening/8.5.png"],
+      "implementation": "Released surfaces carry material-dependent angular momentum, curl and yaw/pitch/roll; heavier panels resist rotation."
+    },
+    {
+      "id": 5,
+      "requirement": "SPATIALLY COHERENT WIND",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "src/animation/embarkation/atmosphere.ts"],
+      "implementation": "Two world-position vortex tubes and a shared rear-origin velocity field drive neighboring materials coherently."
+    },
+    {
+      "id": 6,
+      "requirement": "DO NOT FADE OBJECTS WHILE THEY ARE STILL NEARBY",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "src/animation/embarkation/renderer.ts"],
+      "implementation": "Opaque physical pieces leave through perspective/frustum or atmospheric depth; no per-lifetime near-object fade."
+    },
+    {
+      "id": 7,
+      "requirement": "INCREASE PARCHMENT / SMALL PHYSICAL MATERIAL DENSITY",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "delta2/screening/12.15.png"],
+      "implementation": "118 varied small paper/material actors supplement the authored heroes and begin behind the eye."
+    },
+    {
+      "id": 8,
+      "requirement": "CONTINUE MATERIAL THROUGH STAGE B",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "delta2/screening/18.png", "delta2/screening/21.5.png"],
+      "implementation": "Integrated trajectories continue through landscape reveal; no Stage B position, velocity or angular reset."
+    },
+    {
+      "id": 9,
+      "requirement": "REMOVE THE CURRENT ROPE PROP",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["asset-manifest.json", "src/animation/embarkation/program.ts"],
+      "implementation": "The isolated P5 rope prop and its scheduled event are omitted; source and provenance remain preserved."
+    },
+    {
+      "id": 10,
+      "requirement": "MORE REALISTIC MIST — DO NOT USE VISIBLE ART AS THE EFFECT",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/atmosphere.ts", "delta2/playback-final/normal.webm"],
+      "implementation": "Advected multiscale world-space density, gaps, vortex distortion and near/far integration replace literal mist artwork."
+    },
+    {
+      "id": 11,
+      "requirement": "MUCH MORE REALISTIC WATER SPRAY",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/atmosphere.ts", "delta2/screening/12.15.png"],
+      "implementation": "2100 seeded instanced spray droplets use velocity stretch, clustered breakup, distance, focus and blur."
+    },
+    {
+      "id": 12,
+      "requirement": "WATER MAY ACTUALLY HIT THE VIRTUAL LENS",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/atmosphere.ts", "delta2/playback-final/normal.webm"],
+      "implementation": "Twelve sparse drops across three impact events refract the rendered scene, adhere, elongate, merge and drain before 19.3 seconds."
+    },
+    {
+      "id": 13,
+      "requirement": "MAP HERO PASS — SMALLER AND SLOWER",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "delta2/screening/14.png", "delta2/screening/16.png"],
+      "implementation": "The writing/map hero has a smaller physical size and longer near-camera passage with flexible deformation."
+    },
+    {
+      "id": 14,
+      "requirement": "STAGE B MUST BECOME A REAL CINEMATIC ENVIRONMENT",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "scripts/refit/derive-embarkation-stage.mjs",
+        "scripts/refit/refine-embarkation-mattes.py",
+        "src/animation/embarkation/environment.ts"
+      ],
+      "implementation": "Four original-pixel island/shore mattes occupy separate perspective planes over reconstructed sky/water; camera explores forward and laterally."
+    },
+    {
+      "id": 15,
+      "requirement": "DELAY THE STAGE B → FINAL EXTERIOR TRANSITION",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "delta2/playback-final/normal.webm"],
+      "implementation": "16–22 seconds belong to landscape exploration and calming weather before fog transport begins."
+    },
+    {
+      "id": 16,
+      "requirement": "GIVE THE STAGE B MOON REAL LIGHTING PRESENCE",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "src/animation/embarkation/environment.ts",
+        "src/animation/embarkation/atmosphere.ts",
+        "src/animation/embarkation/renderer.ts"
+      ],
+      "implementation": "World-space moon anchors material lighting, restrained scattering and existing water-reflection modulation."
+    },
+    {
+      "id": 17,
+      "requirement": "NEW STAGE B → FINAL EXTERIOR FOG TRANSITION",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/atmosphere.ts", "delta2/threshold-motion/0.25x.webm"],
+      "implementation": "22–27 seconds use continuously advected patchy fog with gradual density buildup/clearance and density-gradient illumination."
+    },
+    {
+      "id": 18,
+      "requirement": "MOON CONTINUITY THROUGH THE FOG",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/environment.ts", "delta2/threshold-motion/0.5x.webm"],
+      "implementation": "A single celestial body reconciles between registered positions behind dense fog; duplicate painted discs are removed from support backings."
+    },
+    {
+      "id": 19,
+      "requirement": "FINAL EXTERIOR MOON / WATER RESPONSE",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/living-material.ts", "environment-correction/handoff-proof.json"],
+      "implementation": "Existing silver/warm reflections deform with masked water and sparse irregular glints; camera stays fixed after arrival."
+    },
+    {
+      "id": 20,
+      "requirement": "STAGE B / FINAL EXTERIOR TRANSITION MUST NOT HAVE A DISCERNIBLE SWAP FRAME",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "delta2/threshold-motion/1x.webm",
+        "delta2/threshold-motion/0.5x.webm",
+        "delta2/threshold-motion/0.25x.webm"
+      ],
+      "implementation": "Final moving review at 1×, 0.5× and 0.25× found the landscape reconciliation concealed by continuous fog; perceptual owner acceptance remains pending."
+    },
+    {
+      "id": 21,
+      "requirement": "FINAL EXTERIOR → MUSTER ENTRY: MORE TRAVEL, LESS WARPING",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "src/animation/embarkation/environment.ts",
+        "delta2/threshold-seam/29.3.png",
+        "delta2/threshold-motion/0.25x.webm"
+      ],
+      "implementation": "27–31-second backward camera translation uses deeper fixed architecture, physical aperture, expanded room/exterior backing and a fixed near lantern."
+    },
+    {
+      "id": 22,
+      "requirement": "MOVING FINAL ENVIRONMENT ELEMENTS MUST BE TRUE SEPARATE LAYERS",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "scripts/refit/derive-embarkation-live-layers.py",
+        "public/images/embarkation/derived/room-live-props.png",
+        "public/images/embarkation/derived/room-live-flames.png",
+        "public/images/embarkation/derived/room-static.webp"
+      ],
+      "implementation": "Original-pixel lantern/attachment and flame RGBA layers sit over filled static backing; wick and suspension pivots avoid moving neighboring wood/sky."
+    },
+    {
+      "id": 23,
+      "requirement": "LANTERN / CANDLE AMBIENCE REMAINS LIVING",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "src/animation/embarkation/living-material.ts",
+        "verification/living-results.json",
+        "environment-correction/handoff-proof.json"
+      ],
+      "implementation": "Continuous phase and residual damping preserve restrained ambient character; camera, sign and cushion remain fixed."
+    },
+    {
+      "id": 24,
+      "requirement": "INCOMING MUSTER UI — DO NOT ARRIVE ALL AT ONCE",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/dom.ts", "delta2/mobile/33.8.png"],
+      "implementation": "Independent measured targets have staggered 30.9–34.35-second flight/catch/settle intervals, including Invite Crew where canonical authority allows it."
+    },
+    {
+      "id": 25,
+      "requirement": "INCOMING MUSTER UI MUST TRAVEL THROUGH REAL SPACE",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/dom.ts", "verification/results.json"],
+      "implementation": "Actual mounted DOM elements begin behind the perspective eye, cross into the near field and travel to their measured layout locations without proxy swaps."
+    },
+    {
+      "id": 26,
+      "requirement": "ANCHOR-CATCH EVENTS MUST BE READABLE",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "src/animation/embarkation/dom.ts",
+        "src/animation/embarkation/dom-material.ts",
+        "delta2/screening/33.png"
+      ],
+      "implementation": "Support-point rotation, catch impulse, asymmetric membrane tension and material-dependent damping make arrival visibly catch before relaxing."
+    },
+    {
+      "id": 27,
+      "requirement": "PRESERVE PHYSICAL SYMMETRY",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "src/animation/embarkation/program.ts",
+        "src/animation/embarkation/page-material.ts",
+        "src/animation/embarkation/dom-material.ts"
+      ],
+      "implementation": "Outgoing support/failure and incoming free-flight/catch share material pressure and the coherent wind envelope."
+    },
+    {
+      "id": 28,
+      "requirement": "VELOCITY CONTINUITY ACROSS ENVIRONMENT BOUNDARIES",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "src/animation/embarkation/program.test.ts"],
+      "implementation": "One seekable integrated trajectory cache and continuously advected field span all environment beats."
+    },
+    {
+      "id": 29,
+      "requirement": "ATMOSPHERIC / OBJECT DENSITY SHOULD FOLLOW NARRATIVE ENERGY",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["src/animation/embarkation/program.ts", "src/animation/embarkation/atmosphere.ts"],
+      "implementation": "Storm crest at 12.15 precedes Stage B; water and hard clutter decline into wonder, fog is low-clutter, cinematic material clears before stillness."
+    },
+    {
+      "id": 30,
+      "requirement": "NO EFFECT SHOULD LOOK LIKE AN ASSET",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["asset-manifest.json", "src/animation/embarkation/atmosphere.ts", "delta2/screening/12.15.png"],
+      "implementation": "Effects are procedural or isolated material derivatives; no full P10/P11/P13/P14/P15 source sheet is a runtime scene layer."
+    },
+    {
+      "id": 31,
+      "requirement": "SELF-REVIEW / OWNER IS NOT FIRST QA",
+      "status": "implemented-and-self-reviewed",
+      "evidence": [
+        "delta2/playback-final/normal.webm",
+        "delta2/playback/half.webm",
+        "delta2/playback/slow.webm",
+        "delta2/screening/diagnostics.json",
+        "delta2/threshold-motion/0.25x.webm"
+      ],
+      "implementation": "Full-film 1×/0.5×/0.25× playback, exact-time scrubber, final targeted fog/threshold replays and desktop/tablet/phone inspection completed; defects corrected before owner screening."
+    },
+    {
+      "id": 32,
+      "requirement": "STOP POINT",
+      "status": "implemented-and-self-reviewed",
+      "evidence": ["preview.md", "../refit-registry.json"],
+      "implementation": "Owned preview remains running at port 3138; report supplied; no merge, OWNER_ACCEPTED or adjacent Refit work."
+    }
+  ],
+  "reviewStatus": "SELF_REVIEW_COMPLETE_OWNER_SCREENING_READY",
+  "environment": {
+    "thresholdConvergence": {
+      "mean": 0.023364774788841303,
+      "over20": 0.00010200117475612658,
+      "over2": 0.0017054410540090412,
+      "max": 42
+    },
+    "canonicalRoom": {
+      "mean": 0.6870501724958363,
+      "over20": 0.001788389617535094,
+      "over2": 0.07038011353497502,
+      "max": 30
+    },
+    "livingHandoff": {
+      "mean": 0,
+      "over20": 0,
+      "over2": 0,
+      "max": 0
+    },
+    "livingChange": {
+      "mean": 0.27681515621282415,
+      "over20": 0.002645757122888413,
+      "over2": 0.020057752646918867,
+      "max": 242
+    },
+    "fixedCushion": {
+      "mean": 0,
+      "over20": 0,
+      "over2": 0,
+      "max": 0
+    },
+    "fixedSign": {
+      "mean": 0,
+      "over20": 0,
+      "over2": 0,
+      "max": 0
+    },
+    "water": {
+      "mean": 1.8279012345679013,
+      "over20": 0.003539094650205761,
+      "over2": 0.21290123456790122,
+      "max": 50
+    },
+    "candle": {
+      "mean": 8.161111111111111,
+      "over20": 0.08270202020202021,
+      "over2": 0.26464646464646463,
+      "max": 242
+    },
+    "state": {
+      "time": 44.713,
+      "camera": [0, 0, 0],
+      "rect": {
+        "x": 0,
+        "y": 76,
+        "width": 1536,
+        "height": 948,
+        "top": 76,
+        "right": 1536,
+        "bottom": 1024,
+        "left": 0
+      }
+    },
+    "errors": []
+  },
+  "sourcePreservation": {
+    "suppliedMasters": 23,
+    "hashesMatch": true,
+    "manifest": "asset-manifest.json",
+    "supportingPrompts": "delta2-derived-art-prompts.json",
+    "sourceFilesOverwritten": false
+  },
+  "derivationPrompts": "delta2-derived-art-prompts.json",
+  "featureCatalog": "NO CHANGE REQUIRED: unaccepted branch; no mainline availability change",
+  "reviewedAt": "2026-09-21",
+  "evidencePathConventions": {
+    "source": "Repository root unless a sibling document",
+    "runtime": "Paths beginning delta2/, verification/, environment-correction/ resolve under .runtime/embarkation/; local screening evidence, not committed production assets."
+  },
+  "performance": {
+    "source": ".runtime/embarkation/delta2/playback-final/normal-playback.json",
+    "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5070 Laptop GPU (0x00002D18) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "viewport": {
+      "width": 1536,
+      "height": 1024,
+      "dpr": 1
+    },
+    "authoredSeconds": 35.8,
+    "elapsedMs": 35905,
+    "ambientSeconds": 8,
+    "preloadMs": 3784.699999988079,
+    "frameCount": 1769,
+    "frameP50Ms": 16.699999999999818,
+    "frameP95Ms": 33.400000000001455,
+    "frameP99Ms": 66.79999999999927,
+    "cpuRenderP95Ms": 16.69999998807907,
+    "gpuP95Ms": 18.023456,
+    "textureBytes": 117178368.00000003,
+    "loadedAssetBytes": 27315893,
+    "errors": [],
+    "referenceQualityPreserved": true,
+    "scope": "Local development browser with video recording; not broad-device or production qualification. No claim of locked 60 fps."
+  },
+  "validation": {
+    "focusedTests": {
+      "status": "passed",
+      "files": 4,
+      "tests": 22,
+      "log": ".runtime/embarkation/delta2/focused-tests.txt"
+    },
+    "browserScenarios": [
+      {
+        "name": "cinematic-full",
+        "status": "passed"
+      },
+      {
+        "name": "short-return-and-replay",
+        "status": "passed"
+      },
+      {
+        "name": "skip-hold-cancel",
+        "status": "passed"
+      },
+      {
+        "name": "reduced-motion",
+        "status": "passed"
+      },
+      {
+        "name": "renderer-unavailable",
+        "status": "passed"
+      },
+      {
+        "name": "context-loss",
+        "status": "passed"
+      },
+      {
+        "name": "optional-material-absent",
+        "status": "passed"
+      },
+      {
+        "name": "guest-mobile",
+        "status": "passed"
+      },
+      {
+        "name": "landing-convergence",
+        "status": "passed"
+      },
+      {
+        "name": "tier-BALANCED",
+        "status": "passed"
+      },
+      {
+        "name": "tier-PERFORMANCE",
+        "status": "passed"
+      }
+    ],
+    "living": [
+      {
+        "reduced": false,
+        "status": "passed",
+        "continuousClock": true,
+        "stationaryCamera": true,
+        "liveQualityChanges": true,
+        "hiddenClockDelta": 0,
+        "ambientContextLossRestoresCSS": true,
+        "replayAndNavigationDispose": true,
+        "initialTextureBytes": 117178368.00000001
+      },
+      {
+        "reduced": true,
+        "status": "passed",
+        "continuousClock": true,
+        "stationaryCamera": true,
+        "liveQualityChanges": true,
+        "hiddenClockDelta": 0,
+        "ambientContextLossRestoresCSS": true,
+        "replayAndNavigationDispose": true,
+        "initialTextureBytes": 117440512
+      },
+      {
+        "status": "passed",
+        "preparationHoldSkip": true,
+        "incompleteCompositorDisposed": true
+      }
+    ],
+    "replay": [
+      {
+        "status": "passed",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "scrolledFrom": 328,
+        "finalScroll": 0,
+        "titleHandoffDelta": 0,
+        "errors": []
+      },
+      {
+        "status": "passed",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "scrolledFrom": 1179,
+        "finalScroll": 0,
+        "titleHandoffDelta": 0,
+        "errors": []
+      }
+    ],
+    "typecheck": "passed",
+    "lint": "passed",
+    "docs": "passed",
+    "featureSync": "passed",
+    "featureValidate": "passed",
+    "lastResponsiveShellFix": {
+      "scenario": "guest-mobile",
+      "status": "passed",
+      "log": ".runtime/embarkation/delta2/mobile-shell-validation.txt"
+    }
+  },
+  "screening": {
+    "normal": ".runtime/embarkation/delta2/playback-final/normal.webm",
+    "half": ".runtime/embarkation/delta2/playback/half.webm",
+    "quarter": ".runtime/embarkation/delta2/playback/slow.webm",
+    "finalThreshold": [
+      ".runtime/embarkation/delta2/threshold-motion/1x.webm",
+      ".runtime/embarkation/delta2/threshold-motion/0.5x.webm",
+      ".runtime/embarkation/delta2/threshold-motion/0.25x.webm"
+    ],
+    "exactTimeFrames": ".runtime/embarkation/delta2/screening",
+    "desktop": [1536, 1024],
+    "tablet": [1024, 768],
+    "phone": [390, 844],
+    "ambientSecondsAfterEachFullPlayback": 8,
+    "revisionNote": "Full normal recording and targeted fog/threshold replays include final backing-edge correction. Earlier full half/quarter runs cover unchanged early material and assembly behavior."
+  },
+  "knownLimits": [
+    "Owner perceptual acceptance remains pending; this report is local engineering/self-screening evidence.",
+    "Painted 2.5D projection is calibrated to the authored camera path, not arbitrary free-camera exploration.",
+    "The current screened Chronicle landscape uses registered mattes. A different art-directed environment requires its own registration and backing.",
+    "Local CINEMATIC recording has occasional long frames; full reference fidelity is retained and measured, not automatically downgraded.",
+    "Audio remains optional and event-synchronized; current moving-screening recordings are silent. No new auditory owner-quality claim is made.",
+    "No new server-side role or crew mutation is part of Delta 2. Current fixture authority (Sera Captain, Kato crew), canonical live DOM and permissions are preserved."
+  ],
+  "deviations": [
+    {
+      "type": "owner-directed",
+      "change": "35.8-second re-authored film supersedes earlier 15/25-second timing."
+    },
+    {
+      "type": "owner-directed",
+      "change": "Screened Chronicle artwork is the Stage B authority; supplied alternate Stage B master remains preserved reference."
+    },
+    {
+      "type": "owner-directed",
+      "change": "Isolated rope prop omitted; attached room suspension remains."
+    }
+  ]
+}

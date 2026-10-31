@@ -1,0 +1,102 @@
+{
+  "classification": "engineering-evidence",
+  "finding": "EMB-AUD-11",
+  "domain": "R8 linear data mask derived from original encoded 8-bit art; not color managed",
+  "source": "public/images/muster/lantern-room.png",
+  "sourceSha256": "b7ff4a97b4476084fb09bcf47f110f4a725b9ba7e2d7eb905f64898c62f5b9e7",
+  "aperture": "public/images/embarkation/derived/room-aperture.png",
+  "apertureSha256": "6bb5c107d28d30675e0f79b6818c155a5f2f639a7ae185bbf909988012eef20c",
+  "output": "public/images/embarkation/derived/room-reconciliation-mask.png",
+  "sha256": "cbad85dd3473a6583b89cb1b07bb4eb7c96daa74ebd5208ccd99cfe8e036bfad",
+  "coolThresholdBytes": [
+    8,
+    32
+  ],
+  "samples": [
+    {
+      "x": 950,
+      "y": 150,
+      "label": "sky",
+      "original": [
+        8,
+        57,
+        112
+      ],
+      "aperture": 255,
+      "mask": 255
+    },
+    {
+      "x": 950,
+      "y": 345,
+      "label": "water",
+      "original": [
+        12,
+        50,
+        98
+      ],
+      "aperture": 255,
+      "mask": 255
+    },
+    {
+      "x": 1080,
+      "y": 295,
+      "label": "island",
+      "original": [
+        8,
+        49,
+        89
+      ],
+      "aperture": 255,
+      "mask": 255
+    },
+    {
+      "x": 1167,
+      "y": 240,
+      "label": "moon",
+      "original": [
+        232,
+        218,
+        205
+      ],
+      "aperture": 255,
+      "mask": 255
+    },
+    {
+      "x": 660,
+      "y": 250,
+      "label": "timber",
+      "original": [
+        46,
+        14,
+        6
+      ],
+      "aperture": 0,
+      "mask": 0
+    },
+    {
+      "x": 380,
+      "y": 80,
+      "label": "lantern",
+      "original": [
+        77,
+        31,
+        8
+      ],
+      "aperture": 0,
+      "mask": 0
+    },
+    {
+      "x": 400,
+      "y": 700,
+      "label": "cushion",
+      "original": [
+        18,
+        19,
+        20
+      ],
+      "aperture": 0,
+      "mask": 0
+    }
+  ],
+  "filmReview": "Pending same-revision full threshold screening; pixel classification alone does not qualify the edit."
+}

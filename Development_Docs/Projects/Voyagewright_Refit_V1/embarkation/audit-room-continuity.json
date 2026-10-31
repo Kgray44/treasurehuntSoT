@@ -1,0 +1,402 @@
+{
+  "classification": "engineering-evidence",
+  "status": "PARTIAL - broader audit remains open",
+  "auditIds": [
+    "EMB-AUD-06",
+    "EMB-AUD-07",
+    "EMB-AUD-09",
+    "EMB-AUD-10",
+    "EMB-AUD-11",
+    "EMB-AUD-19"
+  ],
+  "recordedAt": "2026-09-29T15:46:06.823Z",
+  "baseHead": "bf0a41f8ed984df6c068cb1a0a5919e12267ef22",
+  "sourceState": "Uncommitted owned candidate. No publication or owner acceptance.",
+  "sourceSha256": {
+    "src/animation/embarkation/adhesion.ts": "00e0cba81bdaab92256983e7d746ed390974142a98672b9329a078dca31c9eb1",
+    "src/animation/embarkation/aperture-mask.test.ts": "827369836ddf504d2654434418d5268fec46c5c228baf1b17bbe25e3e6a225e7",
+    "src/animation/embarkation/aperture-mask.ts": "cbf4428492a58c323fd7b3881362ead6456cb9e1cf566a32598b7be09b6b99aa",
+    "src/animation/embarkation/arrival-material.test.ts": "9b5ead7d125d804c64478f7d2a39736ff717a00eae20a5bbca676c16bda15635",
+    "src/animation/embarkation/arrival-material.ts": "79f24c2073ed4d11e01366c6adfd2919ec1c6acee4f7ce7a5a29a21fbfe6a995",
+    "src/animation/embarkation/arrival.test.ts": "e5ca9a6d2c387390df5bfbb7fa8d2115367cd3a91dcec376cf30659e32d63107",
+    "src/animation/embarkation/arrival.ts": "df26c551ffc1c2c6f40424d480f8e9a6bf0e859d6499f877b34972f13c24dc08",
+    "src/animation/embarkation/atmosphere.ts": "31119cd9550516a36bb3e9505411ae83a92de4abb52ef29af1be60ea4f9a6bb6",
+    "src/animation/embarkation/audio.ts": "a36fae01febc957a7bcc15840b51f3fdde793db6f1c9c60226f0a8876e95b18a",
+    "src/animation/embarkation/cloth-worker.ts": "4a29730dd5f443a592a68b1c59ef60d647b2ae20080fcf2a4ad6a9881966caa2",
+    "src/animation/embarkation/cloth.test.ts": "448ac6e56671dd47052df20bcfd09f3a610b203160f74a9d559ee466ada9dae8",
+    "src/animation/embarkation/cloth.ts": "610fd30b3ebc723c02dd5720515ce7cefb318df6ca68c1cd89a7719b98d25152",
+    "src/animation/embarkation/depth-compositor.ts": "778fa9b126c62fd5421c768844b8168df8b9a9a6a1ea67369bcda68d374f9893",
+    "src/animation/embarkation/depth-qualification.ts": "a19f98a56e87b19e5f52b31fb69972cc0a8db7f7f9d590f8e60f512fcd858c98",
+    "src/animation/embarkation/dom-paint.ts": "8c7c70b644f875416dc0fe22d32c2d4dfc9e6d78fe4eea8bc449d8cb70b144c8",
+    "src/animation/embarkation/dom.test.ts": "3a05a44e285c4213266e47ed4c0c483f9cfb798703d18faf909ab90d9d201b42",
+    "src/animation/embarkation/dom.ts": "de0f29772787f547addca3758babc4bd1a4fcab27376e766fb634b821a53136f",
+    "src/animation/embarkation/dynamics.test.ts": "83d5f9d01ab0c99eefe179912262256478e9e4e0918c8a5c25e28f4b94a95646",
+    "src/animation/embarkation/dynamics.ts": "6b0d1c8cad4b92bb9f092de986c108c25c0f661355819c722f5c418594fdf463",
+    "src/animation/embarkation/embarkation.css": "e0661e981d271271352e67ab299f18e9bb24d89b07fbbf7abaeb430c93ddbf1b",
+    "src/animation/embarkation/Embarkation.tsx": "694f7f7ec5ac89be9a2802170582ffbb2c1ca3c2d8dec07237b06c20dc2b8c33",
+    "src/animation/embarkation/environment-set.test.ts": "c7bfc088ccc1aff883c51ac984b35bc7f63c5a5008179e628f47bf7c1951549b",
+    "src/animation/embarkation/environment-set.ts": "95ad636e6980b458622c4f80429a017a15d1bf16bcfed90741af3d25fa4770bc",
+    "src/animation/embarkation/environment.ts": "430506ca72be33d380852c1bd72f77307c77a5dcd546b070f5ce2115b06a818d",
+    "src/animation/embarkation/exposure-qualification.ts": "4c8a7cf2c242192565fca9367953f24d797ccb44a14c10b043be88b095a5d53a",
+    "src/animation/embarkation/exposure.test.ts": "93c94d85c35288d7462b25c941419d73cd99b6e4dd1f64a0ff84509f415fb7fb",
+    "src/animation/embarkation/exposure.ts": "ef9acbc8a99315aaf1f5d96bc0d4f0b7f5ec8d47eb72251564b21e2011459663",
+    "src/animation/embarkation/GenericStage.tsx": "39e9831538933e7ec85ee3aee5812a93b9a3077ca63c2fded68f0d08bd6707ed",
+    "src/animation/embarkation/input-ownership.test.ts": "9670a7063ba0761ef1fc625aa9702515572e6f02df357332240f430dbf5678e0",
+    "src/animation/embarkation/input-ownership.ts": "181835d45e6e718d7241ee268911ed6fe93232f7347107b4f1084022e610094f",
+    "src/animation/embarkation/Inspector.tsx": "706677372c9be453cde0bf1b270b09ea9658aaf8c831c8291d2f471ac2882787",
+    "src/animation/embarkation/landscape-space.test.ts": "279afcb09e3929e1d44f143d5be8fbd9cc7d8b212b435eaf060b800aeb5a9093",
+    "src/animation/embarkation/landscape-space.ts": "878f33b22c01f5d4999d32632603e66869b96cc4b0131e192c26e81789990684",
+    "src/animation/embarkation/lens-qualification.ts": "6288743a9c296a66ae237ae6ae4cb4f2a88071ee95baf77e3bdd15122043b4b6",
+    "src/animation/embarkation/lens-water.test.ts": "6ff60c136d7247d9c9dc376427b959dd2841bae417746bed2ac891e9f8284439",
+    "src/animation/embarkation/lens-water.ts": "571b2f6f4eb378c8af5dbab86ea7948fb49df7c99f1b4144924f3e4d57d05ec6",
+    "src/animation/embarkation/live-paint-binding.test.ts": "5eaaf4869e73b6256041df1f4eaa0d9cf3769748640445024144660b64cb7985",
+    "src/animation/embarkation/live-paint-binding.ts": "1bb89be62a163334ac0ec31c86794cf90e7a5dc735d3c35e017588f9fc9b4344",
+    "src/animation/embarkation/live-paint.test.ts": "ac87f159d4a50cc1856701d03ae552ff2a17292a84d62371022fd6561802a449",
+    "src/animation/embarkation/live-paint.ts": "b2e18f29a2957af9bd68f458d46b61181125061d9726b92d620e42e3eb17b594",
+    "src/animation/embarkation/living-material.ts": "33cf7ab6f0dd20dc818641e0a48fbddc2f8b913974a46557866e9903c5fcae2b",
+    "src/animation/embarkation/material-backdrop.test.ts": "eca9fac3bf83627a7561a7cc019248bca304dfd0928aa83f05a69c3eeef06a2d",
+    "src/animation/embarkation/material-backdrop.ts": "33f5979bcfa2070d785d1fdb0c26a543d42595152ed7184bff271e82b6265ac7",
+    "src/animation/embarkation/navigation.tsx": "aad139e244f2639d6e5cd4103c051aa8d820579d60ab7f4c109f915b9c4a4284",
+    "src/animation/embarkation/page-material.test.ts": "182be2f9aee3106e96fa8c7a812940702f165ed0fe36245d59ee7b7ff4013318",
+    "src/animation/embarkation/page-material.ts": "b2958d6bb4ee9bf7ed9fd4acdc4ca3c3839f9b49f4ccbaf63ee3ed8f118d2a4c",
+    "src/animation/embarkation/paint-mesh.test.ts": "914aec1a749eebd8cd87fea02ab9542353048205c8b3847e4b893f656ae80366",
+    "src/animation/embarkation/paint-mesh.ts": "672e5c92088c4ea98a8838e99d0497522cf501f302579151da43d6fe47079855",
+    "src/animation/embarkation/paint-raster.test.ts": "6dc1b11658f07e9c4a9462bc7bf6f10f735381abf27d86ecda129b6c93c2bedc",
+    "src/animation/embarkation/paint-raster.ts": "3431825b1d9ce1cb1037d16f732b8e01dacb3281df3b74c5343b04c04ecbb6e5",
+    "src/animation/embarkation/paint-surface.ts": "f9f970377c0b91237e60fcba88c9756ff714f476110e27edf420a1c65ac039f5",
+    "src/animation/embarkation/particle-sampler.test.ts": "f45dc0eaab06c77a47e15a5d9a584c28334fa5b56220715aefe6ecdba50c1605",
+    "src/animation/embarkation/particle-sampler.ts": "56be9ef2577aa08793ce979a8908ad8b40e30e981ad7f127df769fbf3baecd65",
+    "src/animation/embarkation/prepare-materials.ts": "b5218b52ac53db86a12b0bc75933b1184f7a87e2ae1a87de7619aeb1daed033f",
+    "src/animation/embarkation/program.test.ts": "65552cc1eb6eb63d042e8ac16a1ef25c13fe8ffe2916719f03f6e28022c60d9f",
+    "src/animation/embarkation/program.ts": "700e7adaf7564bffed2f10e7e23b1ef1230d13283d49ecca2018b925d81dfa04",
+    "src/animation/embarkation/projection.test.ts": "5bac8286df33725517ffc9fd2be805dbfb7e4e44edac337f40e51b11fc8ab5b3",
+    "src/animation/embarkation/projection.ts": "c3ec2085ad10a46d2a69b1e260fd9b60a102ccb759b09f6e33170cba8e8259d2",
+    "src/animation/embarkation/renderer.ts": "406ee15f182ccbef530a16bedab6c991df6e2f7451c9f8ea106fbb8e55c1184f",
+    "src/animation/embarkation/room-extension.test.ts": "19a717fea602d69c73de0ceb662f4f4f844898c2c11bccc28942d6c3ee68e902",
+    "src/animation/embarkation/room-extension.ts": "a0c57ff2013fb46daaa48768114cac1b54f2f8543f5de4ecdc6b0cab192e985a",
+    "src/animation/embarkation/scene-space.test.ts": "226ab6c860c5658499a0c4c15dd0e9227c33ac776a285afed77d097877e750ac",
+    "src/animation/embarkation/scene-space.ts": "1ad5869ac5f97bf84cf2dfc44241f9f405f3a336c6a32178752b062acd17f66c",
+    "src/animation/embarkation/title-snag.test.ts": "28b7f0de2910615932e198c6ce5742e27d84a40300402a0f867419036f6f7b7b",
+    "src/animation/embarkation/title-snag.ts": "10e7fbdc5bbab760809074c80599c1847645bbc260dc30bd9c2bd6a517380470"
+  },
+  "assetSha256": {
+    "public/images/muster/lantern-room.png": "b7ff4a97b4476084fb09bcf47f110f4a725b9ba7e2d7eb905f64898c62f5b9e7",
+    "public/images/embarkation/derived/room-overscan.webp": "98697cb757aabc5975a6221d2524fb87b37ac49a53fae4ca1c297a8c3e5ff9e3",
+    "public/images/embarkation/derived/room-reconciliation-mask.png": "cbad85dd3473a6583b89cb1b07bb4eb7c96daa74ebd5208ccd99cfe8e036bfad"
+  },
+  "repairs": [
+    "Focus follows the visible opening while the threshold lamp lies behind the eye. Stop down continuously over 29.3-31s before the spatial scene becomes the canonical room projection; retain temporal exposure on incoming material.",
+    "Reuse the preserved clean ceiling/wall continuation and its measured source registration. The prior 56px upper margin exhausted at the 1280x720 crop (V=1.08444 required versus 1.06707 supported); the clean backing has 125px above the source.",
+    "Place the nearest room lantern at Z=490 in front of the ceiling's Z<=480. Its former Z=-1782 hid its upper housing until the room flattened. The accepted source painting and final geometry stay unchanged.",
+    "Preserve ceiling continuation beneath the restoring application shell until 32.3s; no black header-sized cut at 31s. Preserve the separated lantern's material ownership across that mask.",
+    "Apply late aperture reconciliation on the existing water, sky and pier geometry. Their opaque depths blocked the previous far-plane correction. The original data mask still confines the residual to the opening; there is no new whole-frame environment dissolve.",
+    "Register the moon quad diameter to the 24px painted source disc through the actual room crop. Transfer disc ownership to the matching sky material at convergence rather than doubling the disc."
+  ],
+  "native": {
+    "path": ".runtime/embarkation/audit-repair/embarkation-room-final-qualification-20260929.json",
+    "sha256": "31248f8afdb9f320e0f61f33c9c4c193a245c33ed43bd041b4cff26107e3de6b",
+    "boundary": {
+      "height": 900,
+      "maximum": 113,
+      "mean": 0.09014809027777776,
+      "over8": 12973,
+      "peaks": [
+        {
+          "peak": 107,
+          "x": 1392,
+          "y": 896
+        },
+        {
+          "peak": 113,
+          "x": 1393,
+          "y": 896
+        }
+      ],
+      "width": 1600,
+      "from": 30.9955,
+      "to": 31.0045,
+      "livingFrozen": true,
+      "layer": "environment",
+      "viewport": [
+        1280,
+        720,
+        1.25
+      ]
+    },
+    "coverage": [
+      {
+        "canvas": [
+          488,
+          1055
+        ],
+        "failure": null,
+        "roomUV": [
+          0.24761904761904763,
+          0.8038095238095239,
+          0.32614476357111855,
+          0.26095238095238094
+        ],
+        "samples": [
+          {
+            "time": 27.8,
+            "uncovered": 0
+          },
+          {
+            "time": 28.6,
+            "uncovered": 0
+          },
+          {
+            "time": 29.6,
+            "uncovered": 0
+          },
+          {
+            "time": 30.8,
+            "uncovered": 0
+          },
+          {
+            "time": 30.995,
+            "uncovered": 0
+          }
+        ],
+        "viewport": {
+          "dpr": 1.25,
+          "height": 844,
+          "width": 390
+        }
+      },
+      {
+        "canvas": [
+          1280,
+          960
+        ],
+        "failure": null,
+        "roomUV": [
+          0.7585185185185185,
+          0.8533333333333334,
+          0.11448888888888888,
+          0.23111111111111116
+        ],
+        "samples": [
+          {
+            "time": 27.8,
+            "uncovered": 0
+          },
+          {
+            "time": 28.6,
+            "uncovered": 0
+          },
+          {
+            "time": 29.6,
+            "uncovered": 0
+          },
+          {
+            "time": 30.8,
+            "uncovered": 0
+          },
+          {
+            "time": 30.995,
+            "uncovered": 0
+          }
+        ],
+        "viewport": {
+          "dpr": 1.25,
+          "height": 768,
+          "width": 1024
+        }
+      },
+      {
+        "canvas": [
+          3200,
+          1350
+        ],
+        "failure": null,
+        "roomUV": [
+          1.003921568627451,
+          0.6352941176470588,
+          0,
+          0.2047058823529412
+        ],
+        "samples": [
+          {
+            "time": 27.8,
+            "uncovered": 0
+          },
+          {
+            "time": 28.6,
+            "uncovered": 0
+          },
+          {
+            "time": 29.6,
+            "uncovered": 0
+          },
+          {
+            "time": 30.8,
+            "uncovered": 0
+          },
+          {
+            "time": 30.995,
+            "uncovered": 0
+          }
+        ],
+        "viewport": {
+          "dpr": 1.25,
+          "height": 1080,
+          "width": 2560
+        }
+      }
+    ]
+  },
+  "captures": [
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-room-final-half-20260929.json",
+      "player": ".runtime/embarkation/audit-repair/embarkation-room-final-half-20260929.html",
+      "sha256": "eab5ba611b49ac4b3afbd237b9d9076f1d3a44fc44c72da559b92a407c29b7cc",
+      "frames": 87,
+      "method": "Native Chromium Page.screencastFrame JPEG90 everyNthFrame2; continuous playback, frame timestamps do not encode exact film time",
+      "from": 27,
+      "rate": 0.5,
+      "audio": "muted",
+      "start": {
+        "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+        "snapshot": {
+          "active": [
+            "props",
+            "particles"
+          ],
+          "duration": 35.8,
+          "filmTime": 27,
+          "fps": 0,
+          "mute": true,
+          "p95": 0,
+          "reduced": false,
+          "renderMs": 2.800000011920929,
+          "seed": 2595989206,
+          "tier": "CINEMATIC",
+          "time": 27
+        },
+        "viewport": {
+          "dpr": 1.25,
+          "height": 720,
+          "width": 1280
+        }
+      },
+      "end": {
+        "failure": null,
+        "snapshot": {
+          "active": [],
+          "duration": 35.8,
+          "filmTime": 31.51670000000002,
+          "fps": 42.86020430030734,
+          "mute": true,
+          "p95": 116.59999999999128,
+          "reduced": false,
+          "renderMs": 5.200000017881393,
+          "seed": 2595989206,
+          "tier": "CINEMATIC",
+          "time": 31.51670000000002
+        }
+      },
+      "timestampSpanSeconds": 8.932488918304443
+    },
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-room-final-quarter-20260929.json",
+      "player": ".runtime/embarkation/audit-repair/embarkation-room-final-quarter-20260929.html",
+      "sha256": "9d4680e169ba5bc882e4393c5b97f5927f5821d31b14036586e7fa2d779cae54",
+      "frames": 155,
+      "method": "Native Chromium Page.screencastFrame JPEG90 everyNthFrame2; continuous playback, frame timestamps do not encode exact film time",
+      "from": 27,
+      "rate": 0.25,
+      "audio": "muted",
+      "start": {
+        "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+        "snapshot": {
+          "active": [
+            "props",
+            "particles"
+          ],
+          "duration": 35.8,
+          "filmTime": 27,
+          "fps": 42.86020430030734,
+          "mute": true,
+          "p95": 116.59999999999128,
+          "reduced": false,
+          "renderMs": 5.200000017881393,
+          "seed": 2595989206,
+          "tier": "CINEMATIC",
+          "time": 27
+        },
+        "viewport": {
+          "dpr": 1.25,
+          "height": 720,
+          "width": 1280
+        }
+      },
+      "end": {
+        "failure": null,
+        "snapshot": {
+          "active": [],
+          "duration": 35.8,
+          "filmTime": 31.254250000000027,
+          "fps": 46.15029613106715,
+          "mute": true,
+          "p95": 116.59999999999128,
+          "reduced": false,
+          "renderMs": 5.600000023841858,
+          "seed": 2595989206,
+          "tier": "CINEMATIC",
+          "time": 31.254250000000027
+        }
+      },
+      "timestampSpanSeconds": 16.77022910118103
+    },
+    {
+      "path": ".runtime/embarkation/audit-repair/embarkation-room-final-full-1x-20260929.json",
+      "player": ".runtime/embarkation/audit-repair/embarkation-room-final-full-1x-20260929.html",
+      "sha256": "cd99bf1fcdce93e8eeb249b7086637d7361f5240f0e5df17370a179bf72e2de3",
+      "frames": 577,
+      "method": "Native Chromium Page.screencastFrame JPEG90 everyNthFrame2; continuous playback, frame timestamps do not encode exact film time",
+      "from": 0,
+      "rate": 1,
+      "audio": "muted",
+      "start": {
+        "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+        "snapshot": {
+          "active": [],
+          "duration": 35.8,
+          "filmTime": 0,
+          "fps": 46.15029613106715,
+          "mute": true,
+          "p95": 116.59999999999128,
+          "reduced": false,
+          "renderMs": 5.600000023841858,
+          "seed": 2595989206,
+          "tier": "CINEMATIC",
+          "time": 0
+        },
+        "viewport": {
+          "dpr": 1.25,
+          "height": 720,
+          "width": 1280
+        }
+      },
+      "end": {
+        "completion": "completed"
+      },
+      "timestampSpanSeconds": 44.97866201400757
+    }
+  ],
+  "observations": [
+    "Native threshold frames at 27, 27.8, 28.6, 29.4, 30.2 and 30.9 exposed the focus/ceiling defects; current corrected frames and selected moving-capture frames were inspected again.",
+    "Current full recording completed the 35.8s program and continued to roughly 45s of native timestamps, retaining more than eight seconds of living room ambience.",
+    "No out-of-range magenta coverage pixels in fifteen environment-only samples across 390x844, 1024x768 and 2560x1080 at DPR1.25. These are renderer resize samples, not complete fresh responsive-entry qualification.",
+    "Frozen environment boundary differs by approximately 0.09 mean RGBA byte; residual high differences are localized at alpha-matte contours. This is not a claim of exact pixel equality or canonical-DOM handoff qualification."
+  ],
+  "limitations": [
+    "Coverage checks resize the renderer in an existing session. They are not fresh mobile-entry or incoming-DOM qualification.",
+    "Boundary difference includes alpha-mask edges and the small remaining camera displacement; it is not exact pixel equality.",
+    "Silent captures and selected-frame inspection do not establish auditory quality or uninterrupted perceptual screening.",
+    "Earlier storm/fog concealment, moon bearing/reflection continuity, hero material backfaces, global linear lighting, event audio, responsive live DOM and production profiling still require repair/qualification.",
+    "The nine-sample aperture remains a bounded approximation. These captures are Chromium154 on the RTX5070 Laptop, development mode, not universal hardware or browser acceptance.",
+    "No data, role, readiness or owner-fixture mutation was used to improve the screening."
+  ]
+}

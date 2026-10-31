@@ -1,7 +1,15 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { useEffect, type ReactNode } from "react";
 import { PlayerVoyageRoom } from "./PlayerVoyageRoom";
 import { FakeEventSource, member, mockNetwork, response, room } from "../muster/test-support";
+// These cases exercise room commands after arrival; the film has its own tests.
+vi.mock("@/animation/embarkation/Embarkation", () => ({
+  Embarkation: ({ children, onActiveChange }: { children: ReactNode; onActiveChange: (active: boolean) => void }) => {
+    useEffect(() => onActiveChange(false), [onActiveChange]);
+    return children;
+  },
+}));
 const navigation = vi.hoisted(() => ({ push: vi.fn(), replace: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => navigation }));
 vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: "reduced" }) }));

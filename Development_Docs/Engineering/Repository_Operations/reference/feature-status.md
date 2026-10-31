@@ -10,6 +10,8 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+Embarkation is **IMPLEMENTATION_ITERATING** on draft PR #665. Its 35.8-second cinematic, replay, short return, global experience controls and living room/water are branch behavior with [retained focused evidence](../../../Projects/Voyagewright_Refit_V1/embarkation/preview.md). The [independent-audit repair ledger](../../../Projects/Voyagewright_Refit_V1/embarkation/audit-reconciliation.json) records current proof and remaining limits across nineteen findings; earlier screening remains historical. The rebase does not establish protected integration or owner acceptance.
+
 PR #776 remains the sole combined Studio integration candidate. Its tested source
 `abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096` includes accepted main
 `bbdd5412b842e1984c131398f23b6a3ccacb01ff`. All four desktop/mobile,

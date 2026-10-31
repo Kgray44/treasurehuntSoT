@@ -22,6 +22,19 @@ The current protected baseline and its source-bound Brightwork evidence are inpu
 
 ## Canonical records
 
+- [Embarkation audit publication](embarkation/publication.md) — complete draft candidate source map, retained evidence, and local-only exclusions; owner acceptance and integration remain pending.
+- [Embarkation design packet](embarkation/design-packet.md) — the owner-directed cinematic crossing into accepted Muster, with [screening and focused evidence](embarkation/preview.md). Its registry status remains `IMPLEMENTATION_ITERATING`.
+
+- [Outgoing page momentum](embarkation/audit-departure-momentum.json) — continuous world-space strain/release/flight, moving support registration, cached deterministic material, native opening recordings and responsive capture limitations.
+- [Linear color pipeline](embarkation/audit-color-pipeline.json) — explicit art/data inputs, float and sRGB fallback targets, canonical CSS boundary, native pixel references and full silent playback; broader optical qualification remains open.
+
+- [Owner wind/moon correction](embarkation/audit-owner-wind-moon.json) — native unobstructed moon regression measurements, earlier shared-gust page release, and normal/quarter-speed opening captures. Broader audit qualification remains open.
+
+- [Production fog performance](embarkation/audit-production-performance.json) — separately sealed production builds, concurrent preparation, bounded shader work, native reference comparisons and remaining frame-cost limits.
+
+- [Embarkation independent-audit repairs](embarkation/audit-reconciliation.json) — all nineteen findings retained; implementation and same-revision qualification remain in progress. [Depth and optical checks](embarkation/audit-depth-and-optics.json), [geometry exposure checks](embarkation/audit-exposure.json), [measured shader/particle cost recovery](embarkation/audit-exposure-performance.json) and [room continuity repairs](embarkation/audit-room-continuity.json), and [hero reverse/edge checks](embarkation/audit-prop-materials.json), and [event-audio execution](embarkation/audit-event-audio.json) retain source-bound native evidence and remaining limits. Earlier publication and screenings are historical evidence.
+
+
 - [Muster design packet](muster/design-packet.md) — MAJOR_STRATEGY_RETHINK, MERGED on protected main; Refit V1 remains open; [explicit owner acceptance](muster/owner-acceptance.md), [accepted visual reference](muster/accepted-reference/manifest.json), [retained fixture matrix](muster/accepted-reference/fixture-matrix.json), and [final validation/integration](muster/final-validation.md). Earlier [source mapping](muster/iteration-2-delta.md) and [positioning delta](muster/iteration-3-delta.md) remain historical implementation evidence.
 - [Player Journal and Crossdeck editorial hierarchy](player-journal-crossdeck/design-packet.md) — UNASSESSED and PLANNED after Crossdeck/Parallax protected integration. The approved three-instance B1 editorial transfer preserves functional obligations and original review history; it grants no Refit design or owner acceptance.
 
