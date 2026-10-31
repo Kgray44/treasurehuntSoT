@@ -291,7 +291,7 @@ These 45 source-bound acceptance criteria were added in **Part II** of the expan
 | ARX-044 | Drydock / security / SC-05                  | No unrestricted model-authorized database writes, direct publication, hidden invitation, arbitrary script execution or secret cross-account retrieval.                                                                 | [SC-05 Part II](./Project_Chronicle_Architect_Governing_Document_v1.0.md) · Proposed |
 | ARX-045 | Product Owner + Sounding Line               | Full Creator journey receives explicit owner visual/UX acceptance on real representative displays, with source-bound Sounding Line and protected-main review.                                                          | [SC-05 Part II](./Project_Chronicle_Architect_Governing_Document_v1.0.md) · Proposed |
 
-**Traceability count:** 76 original rows + 45 Architect Part II requirements = **165 proposed requirement entries**, not implemented/accepted features. Source image custody is separately controlled in [SC05 Visual Asset Manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md). Current PR remains draft; no mainline integration while PR #776 remains under work.
+**Traceability count:** 76 original cross-project rows + 45 Architect Part II requirements + 44 SC-06 Story Adaptation requirements = **165 proposed requirement entries**, not implemented/accepted features. Source image custody is separately controlled in [SC05 Visual Asset Manifest](./SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md). Current PR remains draft; PR #776 has since been merged, but that does not bypass current protected-main review or authorize merging PR #805.
 
 ## 9. SC-06 Adaptation Requirements and Acceptance Traceability (October 31, 2026)
 
