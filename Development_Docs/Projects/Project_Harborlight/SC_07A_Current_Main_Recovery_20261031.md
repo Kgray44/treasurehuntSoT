@@ -21,6 +21,7 @@ Before this branch, the three `/api/community/spatial-publication/*` Creator end
 - Focused Vitest: 16/16 passed (two files).
 - Targeted ESLint: passed.
 - Full TypeScript check: passed after restoring the source JSON registries needed by the sparse checkout.
+- Product Experience planner on this current-main delta: `PRODUCT_EXPERIENCE_INTEGRATION_SCOPE_REQUIRED:parallax.integration.pilot-owner-boundary`. Combined capture and independent experience review remain with Spatial Integration; this focused branch does not claim that gate.
 - Current-main production Chromium publishing journey: record result and exact candidate in the PR handoff after the isolated run.
 
 The first TypeScript attempt failed only because the sparse worktree omitted imported registry JSON. Those small tracked directories were restored; the passing rerun used the same product changes. This recovery does not claim physical-device privacy, live scanner-provider behavior, formal Product Experience acceptance or owner approval.
