@@ -36,11 +36,13 @@ export async function verificationPreflight({ root, authorityRoot, baseSha, cand
   }
   git(["merge-base", "--is-ancestor", baseSha, candidateSha]);
   const tree = git(["rev-parse", `${candidateSha}^{tree}`]);
+  let sourceInputBytes = 0;
   const boundedRead = async (file) => {
     const fullPath = path.join(authorityRoot, file);
     if ((await stat(fullPath)).size > 2 * 1024 * 1024) fail("INPUT_TOO_LARGE");
     const bytes = await readFile(fullPath);
     if (bytes.length > 2 * 1024 * 1024) fail("INPUT_TOO_LARGE");
+    sourceInputBytes += bytes.length;
     return bytes;
   };
   const policyBytes = await boundedRead("testing/sounding-line-authority.json");
@@ -87,6 +89,7 @@ export async function verificationPreflight({ root, authorityRoot, baseSha, cand
     ...identity,
     executionId: createHash("sha256").update(JSON.stringify(identity)).digest("hex"),
     availableBytes: availableBytes.toString(),
+    sourceInputBytes,
     gitSubprocesses: 5,
     qualification: false,
   };

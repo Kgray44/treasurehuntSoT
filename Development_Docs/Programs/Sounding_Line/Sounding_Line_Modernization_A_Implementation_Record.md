@@ -16,7 +16,10 @@ This record is not qualification, owner acceptance or a release decision.
 
 The October 25 audit used protected main
 `696ecec0fd89293074b271ab33d9256709158700`. Implementation refreshed protected
-main at `f7ef7de4b606eec734d04eeaed316fea959cf80e`. The source-bound incident
+main at `f7ef7de4b606eec734d04eeaed316fea959cf80e`, then reconciled the complete
+landed #805 tree at `809b6d54025fb66000960f30dc750b44ee056d49`. The only shared
+index conflict was resolved from that landed index plus A's single new record;
+all #805 records, assets and metadata were preserved. The source-bound incident
 proposal remains [PR #819](https://github.com/Kgray44/treasurehuntSoT/pull/819),
 original candidate `ee7f6b68173fdaa9a726db824fb5184a35fc1df1`.
 Its failed [run 40541578392, attempt 2](https://github.com/Kgray44/treasurehuntSoT/actions/runs/40541578392/attempts/2)

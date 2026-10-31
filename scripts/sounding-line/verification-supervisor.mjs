@@ -27,6 +27,7 @@ export async function superviseVerification({
     throw new Error("SOUNDING_LINE_VERIFICATION_BUDGET_INVALID");
   await mkdir(directory, { recursive: true });
   const began = performance.now();
+  const cpuBegan = process.cpuUsage();
   const initial = { version: 1, identity, executionMs, tailMs, qualification: false };
   await publish(path.join(directory, "initial.json"), JSON.stringify(initial) + "\n", { flag: "wx" });
   let child,
@@ -81,6 +82,8 @@ export async function superviseVerification({
     }
   }
   const cleanupPassed = ["PASS", "NOT_STARTED"].includes(cleanup.status) && cleanup.treeReaped && cleanup.streamsClosed;
+  const parentCpu = process.cpuUsage(cpuBegan);
+  const parentPeak = process.resourceUsage().maxRSS;
   const receipt = {
     ...initial,
     status: originalFailure || !cleanupPassed ? "FAIL" : "PASS",
@@ -91,6 +94,14 @@ export async function superviseVerification({
     elapsedMs: Math.round(performance.now() - began),
     metrics: {
       ownedSubprocesses: child ? 1 : 0,
+      totalSubprocesses: null,
+      preflightGitSubprocesses: identity?.gitSubprocesses ?? null,
+      knownApiCalls: identity?.jobLookupCalls ?? null,
+      totalApiCalls: null,
+      preflightSourceBytes: identity?.sourceInputBytes ?? null,
+      transferredBytes: null,
+      parentProcessCpuMs: (parentCpu.user + parentCpu.system) / 1000,
+      parentProcessPeakMemoryBytes: parentPeak > 0 ? parentPeak * 1024 : null,
       childCpuMs: null,
       childPeakMemoryBytes: null,
       freshWork: null,
