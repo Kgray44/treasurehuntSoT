@@ -3,6 +3,41 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
+      "path": "src/components/studio/StudioHome.tsx",
+      "suiteIds": ["static.core", "component.studio", "browser.studio"],
+      "contractIds": ["chronicle.creation"]
+    },
+    {
+      "path": "src/components/studio/TaleEditor.tsx",
+      "suiteIds": ["static.core", "component.studio", "browser.studio"],
+      "contractIds": ["chronicle.creation"]
+    },
+    {
+      "path": "src/components/studio/StudioStatusHeader.tsx",
+      "suiteIds": ["static.core", "component.studio", "browser.studio"],
+      "contractIds": ["chronicle.creation"]
+    },
+    {
+      "path": "src/components/studio/ChronicleAuthoring.module.css",
+      "suiteIds": ["static.core", "component.studio", "browser.studio"],
+      "contractIds": ["chronicle.creation"]
+    },
+    {
+      "path": "src/components/studio/ChronicleDetails.tsx",
+      "suiteIds": ["static.core", "component.studio", "browser.studio"],
+      "contractIds": ["chronicle.creation"]
+    },
+    {
+      "path": "src/components/studio/NewTaleForm.tsx",
+      "suiteIds": ["static.core", "component.studio", "browser.studio"],
+      "contractIds": ["chronicle.creation"]
+    },
+    {
+      "path": "tests/e2e/chronicle-creation.spec.ts",
+      "suiteIds": ["browser.studio"],
+      "contractIds": ["chronicle.creation"]
+    },
+    {
       "path": "src/lib/browser-uuid.ts",
       "suiteIds": ["unit.crossdeck", "browser.spatial-pilot", "static.core"],
       "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity", "spatial-pilot.experience"]

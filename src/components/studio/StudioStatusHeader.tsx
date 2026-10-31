@@ -1,6 +1,9 @@
 "use client";
 
+import styles from "./ChronicleAuthoring.module.css";
+
 import Link from "next/link";
+import { useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { studioCopy } from "@/language/studio-copy";
 
@@ -22,7 +25,6 @@ export function StudioStatusHeader({
   moreOpen,
   reducedMotion,
   layoutDuration,
-  stateDuration,
   ceremonyDuration,
   onUndo,
   onRedo,
@@ -35,6 +37,9 @@ export function StudioStatusHeader({
   onCloseMore,
   onDuplicate,
   onArchive,
+  onTitleChange,
+  detailsOpen,
+  onToggleDetails,
 }: {
   taleId: string;
   title: string;
@@ -51,7 +56,6 @@ export function StudioStatusHeader({
   moreOpen: boolean;
   reducedMotion: boolean;
   layoutDuration: number;
-  stateDuration: number;
   ceremonyDuration: number;
   onUndo: () => void;
   onRedo: () => void;
@@ -64,17 +68,103 @@ export function StudioStatusHeader({
   onCloseMore: () => void;
   onDuplicate: () => void;
   onArchive: () => void;
+  onTitleChange: (title: string) => void;
+  detailsOpen: boolean;
+  onToggleDetails: () => void;
 }) {
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [workingTitle, setWorkingTitle] = useState(title);
+  const [titleError, setTitleError] = useState("");
+  const titleButton = useRef<HTMLButtonElement>(null);
+  const header = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const element = header.current;
+    const shell = document.querySelector<HTMLElement>(".product-shell-header");
+    if (!element) return;
+    const update = () => {
+      element.parentElement?.style.setProperty("--chronicle-shell-offset", `${shell?.offsetHeight ?? 0}px`);
+      element.parentElement?.style.setProperty("--chronicle-header-height", `${element.offsetHeight}px`);
+    };
+    update();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    if (shell) observer.observe(shell);
+    return () => observer.disconnect();
+  }, []);
+  function finishTitle(commit: boolean) {
+    const next = workingTitle.trim();
+    if (commit && !next) {
+      setTitleError("Give your Chronicle a title.");
+      return;
+    }
+    if (commit && next !== title) onTitleChange(next);
+    setEditingTitle(false);
+    setTitleError("");
+    requestAnimationFrame(() => titleButton.current?.focus());
+  }
   return (
     <motion.header
-      className="editor-topbar"
+      ref={header}
+      className={`editor-topbar ${styles["chronicle-status-header"]}`}
       layoutId={`studio-editor-shell-${taleId}`}
       transition={{ duration: layoutDuration }}
     >
       <div>
         <Link href="/studio/library">← Studio</Link>
         <span className="draft-mark">Draft</span>
-        <h1>{title}</h1>
+        {editingTitle ? (
+          <form
+            className={styles["chronicle-title-form"]}
+            onSubmit={(event) => {
+              event.preventDefault();
+              finishTitle(true);
+            }}
+          >
+            <label>
+              <span className="sr-only">Chronicle title</span>
+              <input
+                autoFocus
+                value={workingTitle}
+                maxLength={160}
+                aria-invalid={Boolean(titleError)}
+                aria-describedby={titleError ? "chronicle-title-error" : undefined}
+                onChange={(event) => setWorkingTitle(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    event.preventDefault();
+                    finishTitle(false);
+                  }
+                }}
+              />
+            </label>
+            <button type="submit">Apply title</button>
+            <button type="button" onClick={() => finishTitle(false)}>
+              Cancel
+            </button>
+            {titleError && (
+              <span id="chronicle-title-error" role="alert" aria-label="Chronicle title error">
+                {titleError}
+              </span>
+            )}
+          </form>
+        ) : (
+          <h1 aria-label={title}>
+            <button
+              type="button"
+              className={styles["chronicle-title-button"]}
+              ref={titleButton}
+              aria-label={`Rename Chronicle: ${title}`}
+              onClick={() => {
+                setWorkingTitle(title);
+                setEditingTitle(true);
+              }}
+            >
+              {title}
+              <span aria-hidden="true"> ✎</span>
+            </button>
+          </h1>
+        )}
       </div>
       <div className="editor-history">
         <button disabled={!canUndo} onClick={onUndo} aria-label="Undo last edit">
@@ -89,20 +179,11 @@ export function StudioStatusHeader({
           className={`save-state ${saveState.includes("failed") || saveState.includes("Conflict") ? "error" : ""}`}
           data-save-state={saveVisualState}
           role="status"
+          aria-label="Chronicle save status"
           aria-live="polite"
         >
           <span className="studio-status-label">Save</span>
-          <AnimatePresence initial={false} mode="wait">
-            <motion.span
-              key={saveState}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: stateDuration }}
-            >
-              {saveState}
-            </motion.span>
-          </AnimatePresence>
+          <span>{saveState}</span>
         </p>
         <button
           type="button"
@@ -132,6 +213,15 @@ export function StudioStatusHeader({
         ) : null}
       </AnimatePresence>
       <div className="editor-primary-actions">
+        <button
+          id="chronicle-details-trigger"
+          type="button"
+          aria-expanded={detailsOpen}
+          aria-controls="chronicle-details"
+          onClick={onToggleDetails}
+        >
+          Chronicle Details
+        </button>
         <button type="button" onClick={onOpenCommands} aria-label="Open Studio command palette">
           Commands <kbd>Ctrl K</kbd>
         </button>

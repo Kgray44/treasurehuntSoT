@@ -55,11 +55,15 @@ test("Drydock Phase 4 exposes current launch and compatibility decisions without
     .getByRole("link", { name: "Create Chronicle" })
     .click();
   expect((await studioReady).ok()).toBeTruthy();
-  await expect(page.getByRole("button", { name: "Create and open Chronicle" })).toBeEnabled();
+  await page.getByRole("button", { name: /Create Manually/ }).click();
+  await expect(page.getByRole("button", { name: /Rename Chronicle: Untitled Chronicle/ })).toBeVisible();
+  await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
   await page.getByLabel("Title", { exact: true }).fill("Synthetic Drydock browser Chronicle");
   await page.getByLabel(/Address/).fill(identifier);
   await page.getByLabel("Short description", { exact: true }).fill("A task-owned browser acceptance Chronicle.");
-  await page.getByRole("button", { name: "Create and open Chronicle" }).click();
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.locator(".save-state")).toContainText("Saved at");
+  await page.getByRole("button", { name: "Close Chronicle Details" }).click();
   await expect(page).toHaveURL(/\/studio\/tales\/(?!new(?:\/|$))[^/]+\/?$/u, { timeout: 30_000 });
   const taleId = new URL(page.url()).pathname.split("/")[3];
   if (!taleId) throw new Error("Synthetic Chronicle identifier was missing from the Studio URL.");

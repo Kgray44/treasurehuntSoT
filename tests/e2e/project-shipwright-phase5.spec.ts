@@ -26,10 +26,15 @@ test("Shipwright Phase 5 lets a synthetic Creator review and publish an immutabl
   );
   await page.getByLabel("Studio destinations").getByRole("link", { name: "Create Chronicle" }).click();
   await studioReady;
+  await page.getByRole("button", { name: /Create Manually/ }).click();
+  await expect(page.getByRole("button", { name: /Rename Chronicle: Untitled Chronicle/ })).toBeVisible();
+  await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
   await page.getByLabel("Title", { exact: true }).fill("Shipwright Phase 5 browser proof");
   await page.getByLabel(/Address/).fill(taleSlug);
   await page.getByLabel("Short description", { exact: true }).fill("A disposable staged-publication proof.");
-  await page.getByRole("button", { name: "Create and open Chronicle" }).click();
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(page.locator(".save-state")).toContainText("Saved at");
+  await page.getByRole("button", { name: "Close Chronicle Details" }).click();
   await expect(page.getByRole("tab", { name: "Passages" })).toBeVisible({ timeout: 90_000 });
 
   await page.getByRole("button", { name: "Add Narrative to first chapter" }).click();
