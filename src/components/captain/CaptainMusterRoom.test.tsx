@@ -1,7 +1,12 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import type { ReactNode } from "react";
 import { CaptainMusterRoom } from "./CaptainMusterRoom";
 import { member, mockNetwork, room } from "../muster/test-support";
+// These cases exercise room commands after arrival; the film has its own tests.
+vi.mock("@/animation/embarkation/Embarkation", () => ({
+  Embarkation: ({ children }: { children: ReactNode }) => children,
+}));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: "reduced" }) }));
 afterEach(() => {
