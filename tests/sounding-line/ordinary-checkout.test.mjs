@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import { ordinaryCheckoutProfile } from "../../scripts/sounding-line/ordinary-checkout.mjs";
 
 const baseSha = "a".repeat(40),
@@ -15,7 +16,8 @@ test("PR819 transport is exact-source-bound and keeps the existing ten-minute ce
   const profile = ordinaryCheckoutProfile({ baseSha, candidateSha, env, event });
   assert.equal(profile.budgetMs, 600000);
   assert.equal(profile.stallBudgetMs, 600000);
-  assert.equal(profile.readerPaths.length, 2);
+  assert.equal(profile.readerPaths.length, 4);
+  assert(profile.readerPaths.some((reader) => reader.path.endsWith("Documentation_Migration_Matrix.csv")));
   assert.deepEqual(await profile.preservation(), { preservationPins: 0, historicalManifestPinsRetained: [] });
 });
 test("ordinary transport cannot select finite campaign routes or an untrusted event", () => {
@@ -56,4 +58,19 @@ test("pull_request_target must bind both repository identities and both exact so
         event: { pull_request: { ...pull, [side]: { ...pull[side], repo: { full_name: "attacker/fork" } } } },
       }),
     );
+});
+test("the installed workflow uses exact ordinary transport and an explicit always-running required gate", () => {
+  const workflow = readFileSync(new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url), "utf8");
+  const gate = workflow.split("\n  mainline-decision:\n")[1];
+  assert(gate);
+  const condition = gate.split("\n").find((line) => line.startsWith("    if:"));
+  assert.match(condition, /always\(\)/u);
+  assert.doesNotMatch(condition, /draft/u);
+  assert.match(gate, /test "\$CUSTODY_RESULT" = success && test "\$VERIFICATION_RESULT" = success/u);
+  assert.match(gate, /protected-merge-transaction\.mjs --operation gate/u);
+  assert.doesNotMatch(workflow, /fetch-depth: 0|continue-on-error|filter: blob:none/u);
+  assert.equal(workflow.match(/ordinary-checkout\.mjs --workspace candidate/gu).length, 4);
+  assert.equal(workflow.match(/experience-selected-checkout\.mjs --workspace candidate/gu).length, 8);
+  assert.match(workflow, /ordinary-supervised\.mjs --mode ordinary/u);
+  assert.match(workflow, /always\(\).*verification_supervision_path/u);
 });

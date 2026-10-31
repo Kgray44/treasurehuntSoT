@@ -46,9 +46,16 @@ export function ordinaryCheckoutProfile({ baseSha, candidateSha, env = process.e
     ],
     budgetMs: 600000,
     stallBudgetMs: 600000,
-    readerPaths: ["e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab", "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5"].map(
-      (revision) => ({ revision, path: ".github/workflows/sounding-line-ordinary.yml" }),
-    ),
+    readerPaths: [
+      ...["e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab", "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5"].map((revision) => ({
+        revision,
+        path: ".github/workflows/sounding-line-ordinary.yml",
+      })),
+      ...[
+        "Development_Docs/document-index.json",
+        "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      ].map((file) => ({ revision: PR776_CONTROLLER.ancestor, path: file })),
+    ],
     // This is the ordinary checkout's previous contract: full current snapshots
     // and readable history. Evidence preservation is still decided by the verifier;
     // a Crossdeck-specific transport assertion cannot grant ordinary acceptance.

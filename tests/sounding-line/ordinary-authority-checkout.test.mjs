@@ -18,6 +18,8 @@ test("sparse authority has byte-equivalent actual ordinary and finite reader clo
     sparse = path.join(owned, "sparse");
   await mkdir(seed);
   const copied = [];
+  await copyFile(path.join(source, ".nvmrc"), path.join(seed, ".nvmrc"));
+  copied.push(".nvmrc");
   for (const directory of ["scripts/sounding-line", "testing", engineering]) {
     await mkdir(path.join(seed, directory), { recursive: true });
     for (const entry of await readdir(path.join(source, directory), { withFileTypes: true })) {
