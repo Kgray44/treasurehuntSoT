@@ -78,6 +78,15 @@ export async function runShadowContextWorker({ root = process.cwd(), rawDirector
     shadowAuthenticationCache: cache,
   });
   need(evidence.partialContext.contextId === input.contextId && evidence.journeys.length === 1);
+  // The optional legacy observer may fail without changing a full capture.
+  // This explicitly partial worker needs the journal for a future state join.
+  const journalPath = path.resolve(root, rawDirectory, "closed-contexts", input.contextId, input.contextId + ".json");
+  const journalBytes = await readBoundedRawCaptureFile({
+    root,
+    rawDirectory,
+    file: journalPath,
+    maximumBytes: 2 * 1024 * 1024,
+  });
   const resultBytes = Buffer.from(
     JSON.stringify({
       kind: "PARTIAL_SHADOW_CONTEXT_RESULT",
@@ -85,6 +94,7 @@ export async function runShadowContextWorker({ root = process.cwd(), rawDirector
       reuseAuthorized: false,
       contextId: input.contextId,
       privateAuthenticationCache: evidence.shadowPrivateState,
+      closedContextJournal: { path: journalPath, bytes: journalBytes.length, sha256: hash(journalBytes) },
       capturePath: path.posix.join(input.outputDirectory, "capture.json"),
     }),
   );

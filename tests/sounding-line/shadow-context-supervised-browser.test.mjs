@@ -192,6 +192,13 @@ test(
     );
     assert.equal(result.kind, "PARTIAL_SHADOW_CONTEXT_RESULT");
     assert.equal(result.qualification, false);
+    const journalBytes = await readBoundedRawCaptureFile({
+      root,
+      rawDirectory,
+      file: result.closedContextJournal.path,
+      maximumBytes: 2 * 1024 * 1024,
+    });
+    assert.equal(hash(journalBytes), result.closedContextJournal.sha256);
     const authenticationCache = await readBoundedRawCaptureFile({
       root,
       rawDirectory,

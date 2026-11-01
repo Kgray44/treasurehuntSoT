@@ -5,7 +5,10 @@ import path from "node:path";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
 import { createRawOutputDirectory } from "../../scripts/sounding-line/experience-raw-output.mjs";
-import { createOwnedRuntimeStateRetentionFactory } from "../../scripts/sounding-line/owned-runtime-state-retention.mjs";
+import {
+  createOwnedRuntimeStateRetentionFactory,
+  inspectOwnedRuntimeStateCut,
+} from "../../scripts/sounding-line/owned-runtime-state-retention.mjs";
 import { restoreRuntimeSnapshotRetention } from "../../scripts/sounding-line/runtime-snapshot-retention.mjs";
 import { processExit, spawnOwnedProcess, stopOwnedProcess } from "../../scripts/sounding-line/owned-process.mjs";
 import { authenticatedCompletedReceipt } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
@@ -207,6 +210,18 @@ test(
     assert.equal(observed.qualification, false);
     assert.equal(observed.reuseAuthorized, false);
     assert.equal(authenticatedCompletedReceipt(observed, {}), null);
+    assert(inspectOwnedRuntimeStateCut(observed, { root: f.root, expectedOriginalBinding: binding }));
+    assert.equal(
+      inspectOwnedRuntimeStateCut(structuredClone(observed), { root: f.root, expectedOriginalBinding: binding }),
+      null,
+    );
+    assert.equal(
+      inspectOwnedRuntimeStateCut(observed, {
+        root: f.root,
+        expectedOriginalBinding: { ...binding, contextId: "f".repeat(64) },
+      }),
+      null,
+    );
     const restored = await restoreRuntimeSnapshotRetention({
       ...f,
       id: observed.retained.id,
@@ -230,6 +245,8 @@ test(
     );
     await assert.rejects(f.owner.checkpoint(state()), /CHECKPOINT/u);
     await assert.rejects(f.owner.launch("capture", { entrypoint: f.capture }), /LAUNCH/u);
+    observed.originalBinding.candidateSha = "0".repeat(40);
+    assert.equal(inspectOwnedRuntimeStateCut(observed, { root: f.root, expectedOriginalBinding: binding }), null);
   },
 );
 test(

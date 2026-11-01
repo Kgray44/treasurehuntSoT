@@ -16,6 +16,7 @@ import {
   inspectOwnedProcessCreation,
 } from "./owned-process.mjs";
 const MARKER = "CREATION_BOUND_DECLARED_SQLITE_RUNTIME_RETENTION_NOT_FULL_ISOLATION";
+const stateCuts = new WeakMap();
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const need = (condition, code) => {
   if (!condition) throw Error(`SOUNDING_LINE_OWNED_RUNTIME_STATE_${code}`);
@@ -220,7 +221,7 @@ async function createOwner({ root, rawDirectory, databasePath, originalBinding, 
             need(phase === "CLOSING", "CANCELLED");
             phase = "RETAINED";
             notify();
-            return Object.freeze({
+            const result = Object.freeze({
               classification: MARKER,
               qualification: false,
               reuseAuthorized: false,
@@ -230,6 +231,13 @@ async function createOwner({ root, rawDirectory, databasePath, originalBinding, 
               launches: Object.freeze([...launches.values()].map((value) => value.metadata)),
               cleanup: Object.freeze({ capture: captureClosed.cleanup, application: applicationClosed.cleanup }),
             });
+            stateCuts.set(result, {
+              root,
+              rawDirectory,
+              binding: canonicalJson(binding),
+              original: canonicalJson(result),
+            });
+            return result;
           }),
         );
       } finally {
@@ -242,6 +250,27 @@ async function createOwner({ root, rawDirectory, databasePath, originalBinding, 
     },
     close,
   });
+}
+export function inspectOwnedRuntimeStateCut(receipt, { root, expectedOriginalBinding }) {
+  try {
+    const value = stateCuts.get(receipt);
+    if (
+      !value ||
+      value.root !== root ||
+      value.binding !== canonicalJson(expectedOriginalBinding) ||
+      value.original !== canonicalJson(receipt)
+    )
+      return null;
+    return Object.freeze({
+      root: value.root,
+      rawDirectory: value.rawDirectory,
+      receipt: JSON.parse(value.original),
+      qualification: false,
+      reuseAuthorized: false,
+    });
+  } catch {
+    return null;
+  }
 }
 export async function createOwnedRuntimeStateRetentionFactory({ root, rawDirectory, prNumber }) {
   need(Number.isSafeInteger(prNumber) && prNumber > 0 && ![721, 776, 805].includes(prNumber), "BINDING");
