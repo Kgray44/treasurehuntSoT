@@ -471,6 +471,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Product_Experience_SC00A_Homeport_Journey_Authority_20261031.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": "sc00a-homeport-journey-migration"
+    },
+    {
       "path": "Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -768,6 +774,24 @@
       "path": "Development_Docs/Engineering/Workspace_Lifecycle/Implementation_Record.md",
       "record_type": "engineering-record",
       "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/original-homeport-contract.json",
+      "record_type": "engineering-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/approved-registration.json",
+      "record_type": "engineering-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/original-candidate-review.json",
+      "record_type": "engineering-record",
+      "status": "preserved",
       "canonical_for": null
     },
     {

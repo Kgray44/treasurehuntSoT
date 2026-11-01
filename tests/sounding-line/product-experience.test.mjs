@@ -5,6 +5,7 @@ import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import "./homeport-journey-migration.test.mjs";
 import { pathToFileURL } from "node:url";
 import sharp from "sharp";
 import {

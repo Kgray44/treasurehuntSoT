@@ -1526,8 +1526,16 @@ export async function buildPlan({
         jsonAtRevision(root, candidateSha, "package.json", "SOUNDING_LINE_PACKAGE_JSON_INVALID"),
       )
     : [];
+  const registryAuthority =
+    changedPaths.includes("testing/contracts.json") &&
+    canonicalJson(jsonAtRevision(root, baseSha, "testing/contracts.json")?.experiencePolicy ?? null) !==
+      canonicalJson(jsonAtRevision(root, candidateSha, "testing/contracts.json")?.experiencePolicy ?? null);
   const controlPlanePaths = [
-    ...new Set([...classification.controlPlanePaths, ...(packageAuthority.length ? ["package.json"] : [])]),
+    ...new Set([
+      ...classification.controlPlanePaths,
+      ...(packageAuthority.length ? ["package.json"] : []),
+      ...(registryAuthority ? ["testing/contracts.json"] : []),
+    ]),
   ].sort();
   const candidateClassification =
     classification.productPaths.length && controlPlanePaths.length
