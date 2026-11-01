@@ -12,12 +12,12 @@ last_reviewed: 2026-10-26
 
 ## Immutable source and event identities
 
-| Item | Identity |
-| --- | --- |
+| Item                     | Identity                                   |
+| ------------------------ | ------------------------------------------ |
 | Qualified base requested | `7dee007617084e2ecb31aff06dc326d0a735b506` |
-| PR head | `2d6e8a62d54e7897c6390d7e87afbadf493a0115` |
-| Landed merge on `main` | `f7ef7de4b606eec734d04eeaed316fea959cf80e` |
-| Head and landed tree | `08d7097459f7880313047162227a0ef560922e7e` |
+| PR head                  | `2d6e8a62d54e7897c6390d7e87afbadf493a0115` |
+| Landed merge on `main`   | `f7ef7de4b606eec734d04eeaed316fea959cf80e` |
+| Head and landed tree     | `08d7097459f7880313047162227a0ef560922e7e` |
 
 The [draft-triggered run 40418550781](https://github.com/Kgray44/treasurehuntSoT/actions/runs/40418550781) began at 2026-10-26 23:15:59 UTC. Its [required decision job](https://github.com/Kgray44/treasurehuntSoT/actions/runs/40418550781/job/121906869340) concluded `skipped` at 23:16:01. The PR became ready at 23:16:15 and merged at 23:16:18. The [active run 40418600190](https://github.com/Kgray44/treasurehuntSoT/actions/runs/40418600190) began only at 23:16:25. Its custody job compared requested base `7dee0076` with trusted workflow SHA `f7ef7de4` and failed at 23:16:30; the [required decision job](https://github.com/Kgray44/treasurehuntSoT/actions/runs/40418600190/job/121907054612) concluded `failure` at 23:16:37. The active run therefore never qualified the pre-merge transaction. Preserve both runs and their failed/skipped conclusions.
 
