@@ -137,6 +137,7 @@ export async function selectedCheckout({
   stallBudgetMs = 600000,
   signal,
   progress = true,
+  selectReadSet,
 }) {
   need(
     oid(baseSha) &&
@@ -154,7 +155,7 @@ export async function selectedCheckout({
     commands = [];
   const advance = () => clock.advance();
   const allRoots = [...new Set([baseSha, candidateSha, ...roots])];
-  let operationalEnv;
+  let operationalEnv, readSetSummary;
   const command = async (args, executable = gitExecutable()) => {
     need(!signal?.aborted, "CANCELLED");
     clock.assertLive();
@@ -276,6 +277,29 @@ export async function selectedCheckout({
       ...allRoots.map((sha) => `+${sha}:refs/sounding-line/selected/${sha}`),
     ]);
     need((await command(["rev-parse", "--is-shallow-repository"])) === "false", "SHALLOW");
+    const readSet = selectReadSet ? await selectReadSet({ command, baseSha, candidateSha }) : null;
+    const exclusions = readSet?.applied ? readSet.proposal?.omissions : [];
+    need(
+      !readSet?.applied ||
+        (readSet.proposal?.profile === "DOCUMENTATION_ONLY_SOURCE_BOUND_V1" &&
+          Array.isArray(exclusions) &&
+          exclusions.length <= 100000),
+      "READ_SET_INVALID",
+    );
+    readSetSummary = readSet
+      ? {
+          applied: readSet.applied === true,
+          profile: readSet.proposal?.profile,
+          anchor: readSet.proposal?.anchor,
+          reason: readSet.proposal?.reason,
+          changedPaths: readSet.proposal?.changedPaths,
+          proposedOmissions: readSet.proposal?.omissions?.length ?? 0,
+          omittedInventoryDigest: readSet.proposal?.omittedInventoryDigest,
+          retainedInventoryDigest: readSet.proposal?.retainedInventoryDigest,
+          completePathnameInventoryDigest: readSet.proposal?.completePathnameInventoryDigest,
+          qualification: false,
+        }
+      : { profile: "FULL_SNAPSHOT", applied: false };
     const closureFile = path.join(root, ".git", "selected-required-objects.json"),
       hydrationScript = fileURLToPath(new URL("./experience-checkout-hydration.mjs", import.meta.url));
     const operation = async (name, extra) => {
@@ -289,6 +313,7 @@ export async function selectedCheckout({
       objects: readerObjects,
       readerPaths,
       output: closureFile,
+      snapshotExclusions: exclusions,
     });
     stage("EXPLICIT_READER_CLOSURE_HYDRATION");
     const hydration = await operation("hydrate", { closure: closureFile });
@@ -300,8 +325,30 @@ export async function selectedCheckout({
       lockTransport: true,
     });
     stage("EXACT_CANDIDATE_CHECKOUT");
+    if (exclusions.length) {
+      await command(["config", "--local", "core.sparseCheckout", "true"]);
+      await command(["config", "--local", "core.sparseCheckoutCone", "false"]);
+      const escape = (file) => file.replace(/[\\*?\[\] !#]/gu, "\\$&");
+      await writeFile(
+        path.join(root, ".git/info/sparse-checkout"),
+        "/*\n" + exclusions.map((entry) => "!/" + escape(entry.path)).join("\n") + "\n",
+        { flag: "wx" },
+      );
+    }
     await command(["checkout", "--progress", "--detach", candidateSha]);
     need((await command(["rev-parse", "HEAD"])) === candidateSha, "HEAD_CHANGED");
+    if (exclusions.length) {
+      const skipped = (await command(["ls-files", "-t", "-z"]))
+        .split("\0")
+        .filter((row) => row.startsWith("S "))
+        .map((row) => row.slice(2))
+        .sort();
+      need(
+        JSON.stringify(skipped) === JSON.stringify(exclusions.map((entry) => entry.path).sort()),
+        "SPARSE_MATERIALIZATION_CHANGED",
+      );
+      need((await command(["status", "--porcelain", "--untracked-files=no"])) === "", "WORKING_TREE_CHANGED");
+    }
     let preservationPins, historicalManifestPinsRetained;
     if (preservation) {
       const preserved = await preservation({ command, baseSha, candidateSha });
@@ -342,6 +389,7 @@ export async function selectedCheckout({
     clock.assertLive();
     result = {
       status: "PASS",
+      readSet: readSetSummary,
       baseSha,
       candidateSha,
       roots: allRoots,
@@ -368,6 +416,7 @@ export async function selectedCheckout({
   } catch (error) {
     result = {
       status: "FAIL",
+      readSet: readSetSummary,
       error: error.message,
       baseSha,
       candidateSha,

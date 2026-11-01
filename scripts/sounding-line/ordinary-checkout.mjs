@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { selectedCheckout } from "./experience-selected-checkout.mjs";
 import { EXPERIENCE_CHECKOUT_ROOTS, EXPERIENCE_READER_REVISIONS } from "./experience-checkout-roots.mjs";
 import { PR776_CONTROLLER } from "./experience-pr776-controller-reconciliation.mjs";
+import { documentationCheckoutReadSet } from "./ordinary-documentation-checkout-profile.mjs";
 
 const repository = "Kgray44/treasurehuntSoT";
 const need = (value, code) => {
@@ -32,6 +33,8 @@ export function ordinaryCheckoutProfile({ baseSha, candidateSha, env = process.e
   const pr = dispatch ? Number(event.inputs?.pr_number) : pull?.number;
   need(Number.isSafeInteger(pr) && pr > 0 && ![721, 776].includes(pr), "FINITE_PROFILE_REQUIRED");
   return {
+    selectReadSet: ({ command, baseSha, candidateSha }) =>
+      documentationCheckoutReadSet({ command, baseSha, candidateSha, prNumber: pr }),
     roots: [
       ...EXPERIENCE_CHECKOUT_ROOTS,
       PR776_CONTROLLER.ancestor,

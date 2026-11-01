@@ -137,17 +137,12 @@ export async function documentationCheckoutReadSet({ command, baseSha, candidate
           [mode, type, sha] = metadata.split(" ");
         return { path, mode, type, sha };
       });
-  let proposal;
-  try {
-    proposal = documentationCheckoutProposal({
-      baseEntries: await tree(baseSha),
-      candidateEntries: await tree(candidateSha),
-      anchorEntries: await tree(DOCUMENTATION_CHECKOUT_ANCHOR),
-      prNumber,
-    });
-  } catch {
-    proposal = { profile: "FULL_SNAPSHOT", reason: "UNAVAILABLE_READ_SET_PROOF", qualification: false };
-  }
+  const proposal = documentationCheckoutProposal({
+    baseEntries: await tree(baseSha),
+    candidateEntries: await tree(candidateSha),
+    anchorEntries: await tree(DOCUMENTATION_CHECKOUT_ANCHOR),
+    prNumber,
+  });
   return {
     applied: DOCUMENTATION_CHECKOUT_MODE === "ACTIVE" && proposal.profile === "DOCUMENTATION_ONLY_SOURCE_BOUND_V1",
     proposal,
