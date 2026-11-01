@@ -52,7 +52,7 @@ async function entrypointBytes(file) {
     await handle.close();
   }
 }
-export async function createOwnedRuntimeStateRetention({ root, rawDirectory, databasePath, originalBinding }) {
+async function createOwner({ root, rawDirectory, databasePath, originalBinding, store, onClosed }) {
   need(
     originalBinding &&
       Number.isSafeInteger(originalBinding.prNumber) &&
@@ -75,16 +75,24 @@ export async function createOwnedRuntimeStateRetention({ root, rawDirectory, dat
   root = await realpath(root);
   databasePath = path.resolve(root, databasePath);
   await readBoundedRawCaptureFile({ root, rawDirectory, file: databasePath, maximumBytes: 32 * 1024 * 1024 });
-  const databaseIdentity = await lstat(databasePath),
-    store = await createRuntimeSnapshotRetention({ root, rawDirectory });
+  const databaseIdentity = await lstat(databasePath);
   const launches = new Map();
   let phase = "OPEN";
+  let notified = false;
+  const notify = () => {
+    if (!notified) {
+      notified = true;
+      onClosed();
+    }
+  };
   async function stopAll() {
     return await Promise.all([...launches.values()].map(async ({ child }) => await stopOwnedProcess(child)));
   }
   async function close() {
     phase = "CLOSED_WITHOUT_CHECKPOINT";
-    return await stopAll();
+    const receipts = await stopAll();
+    if (receipts.every((receipt) => receipt.status === "PASS")) notify();
+    return receipts;
   }
   return Object.freeze({
     async launch(role, { entrypoint, args = [], environment = {} }) {
@@ -172,6 +180,7 @@ export async function createOwnedRuntimeStateRetention({ root, rawDirectory, dat
             });
             need(phase === "CLOSING", "CANCELLED");
             phase = "RETAINED";
+            notify();
             return Object.freeze({
               classification: MARKER,
               qualification: false,
@@ -187,10 +196,69 @@ export async function createOwnedRuntimeStateRetention({ root, rawDirectory, dat
       } finally {
         if (phase !== "RETAINED") {
           phase = "FAILED";
-          await stopAll();
+          const receipts = await stopAll();
+          if (receipts.every((receipt) => receipt.status === "PASS")) notify();
         }
       }
     },
     close,
   });
+}
+export async function createOwnedRuntimeStateRetentionFactory({ root, rawDirectory, prNumber }) {
+  need(Number.isSafeInteger(prNumber) && prNumber > 0 && ![721, 776, 805].includes(prNumber), "BINDING");
+  const store = await createRuntimeSnapshotRetention({ root, rawDirectory });
+  const contexts = new Set(),
+    owners = [];
+  let closed = false,
+    active = false;
+  return Object.freeze({
+    async forContext({ databasePath, originalBinding }) {
+      need(
+        !closed &&
+          !active &&
+          contexts.size < 128 &&
+          originalBinding?.prNumber === prNumber &&
+          typeof originalBinding?.contextId === "string" &&
+          /^[a-f0-9]{64}$/u.test(originalBinding?.contextId ?? "") &&
+          !contexts.has(originalBinding.contextId),
+        "CONTEXT",
+      );
+      contexts.add(originalBinding.contextId); // Failed admissions retain their original ordinal identity.
+      active = true;
+      let owner;
+      try {
+        owner = await createOwner({
+          root,
+          rawDirectory,
+          databasePath,
+          originalBinding,
+          store,
+          onClosed: () => {
+            active = false;
+          },
+        });
+      } catch (error) {
+        active = false;
+        throw error;
+      }
+      if (closed) {
+        await owner.close();
+        throw Error("SOUNDING_LINE_OWNED_RUNTIME_STATE_CONTEXT");
+      }
+      owners.push(owner);
+      return owner;
+    },
+    async close() {
+      closed = true;
+      return await Promise.all(owners.map((owner) => owner.close()));
+    },
+  });
+}
+export async function createOwnedRuntimeStateRetention(options) {
+  const factory = await createOwnedRuntimeStateRetentionFactory({
+    root: options.root,
+    rawDirectory: options.rawDirectory,
+    prNumber: options.originalBinding?.prNumber,
+  });
+  return await factory.forContext(options);
 }

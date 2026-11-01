@@ -5,7 +5,7 @@ import path from "node:path";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
 import { createRawOutputDirectory } from "../../scripts/sounding-line/experience-raw-output.mjs";
-import { createOwnedRuntimeStateRetention } from "../../scripts/sounding-line/owned-runtime-state-retention.mjs";
+import { createOwnedRuntimeStateRetentionFactory } from "../../scripts/sounding-line/owned-runtime-state-retention.mjs";
 import { restoreRuntimeSnapshotRetention } from "../../scripts/sounding-line/runtime-snapshot-retention.mjs";
 import { processExit } from "../../scripts/sounding-line/owned-process.mjs";
 import { authenticatedCompletedReceipt } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
@@ -49,9 +49,14 @@ async function fixture(t, originalBinding = binding) {
     { windowsHide: true, timeout: 10000 },
   );
   fs.chmodSync(databasePath, 0o600);
-  const owner = await createOwnedRuntimeStateRetention({ root, rawDirectory, databasePath, originalBinding });
+  const factory = await createOwnedRuntimeStateRetentionFactory({
+    root,
+    rawDirectory,
+    prNumber: originalBinding.prNumber,
+  });
+  const owner = await factory.forContext({ databasePath, originalBinding });
   t.after(async () => {
-    await owner.close();
+    await factory.close();
     fs.rmSync(root, { recursive: true, force: true });
   });
   const application = path.join(root, "application.cjs"),
@@ -61,12 +66,75 @@ async function fixture(t, originalBinding = binding) {
     `const {DatabaseSync}=require('node:sqlite');const db=new DatabaseSync(process.env.DATABASE_URL.slice(5));db.exec("PRAGMA journal_mode=WAL;PRAGMA wal_autocheckpoint=0;INSERT INTO fixture VALUES ('actual owned committed state')");require('node:fs').writeFileSync(process.argv[2],'ready');setInterval(()=>{},1000);`,
   );
   fs.writeFileSync(capture, `require('node:fs').writeFileSync(process.argv[2],'ready');setInterval(()=>{},1000);`);
-  return { root, rawDirectory, databasePath, owner, application, capture };
+  return { root, rawDirectory, databasePath, factory, owner, application, capture };
 }
 const state = () => ({
   authenticationCache: Buffer.from('{"cookies":[]}'),
   fixtureState: Buffer.from('{"fixture":"original"}'),
 });
+test(
+  "two context cuts share a finite store while preserving both original bindings and the first immutable database",
+  engine,
+  async (t) => {
+    const f = await fixture(t);
+    await assert.rejects(
+      f.factory.forContext({
+        databasePath: f.databasePath,
+        originalBinding: { ...binding, contextId: "f".repeat(64) },
+      }),
+      /CONTEXT/u,
+    );
+    const run = async (owner, suffix) => {
+      const appReady = path.join(f.root, `application-ready-${suffix}`),
+        captureReady = path.join(f.root, `capture-ready-${suffix}`);
+      await owner.launch("application", { entrypoint: f.application, args: [appReady] });
+      await owner.launch("capture", { entrypoint: f.capture, args: [captureReady] });
+      await Promise.all([ready(appReady), ready(captureReady)]);
+      return await owner.checkpoint(state());
+    };
+    const first = await run(f.owner, "first"),
+      firstManifest = fs.readFileSync(first.retained.path);
+    const databasePath = path.join(f.root, rawDirectory, "second-runtime.db"),
+      secondBinding = { ...binding, contextId: "f".repeat(64) };
+    fs.writeFileSync(databasePath, fs.readFileSync(first.snapshot.path), { flag: "wx", mode: 0o600 });
+    const next = await f.factory.forContext({ databasePath, originalBinding: secondBinding });
+    await assert.rejects(f.factory.forContext({ databasePath, originalBinding: secondBinding }), /CONTEXT/u);
+    await assert.rejects(
+      f.factory.forContext({ databasePath, originalBinding: { ...binding, prNumber: 805 } }),
+      /CONTEXT/u,
+    );
+    const second = await run(next, "second");
+    assert(
+      second.retained.measurements.newBytes < second.retained.measurements.inputBytes + second.retained.bytes,
+      "identical authentication and fixture chunks are retained once",
+    );
+    assert(fs.readFileSync(first.retained.path).equals(firstManifest));
+    for (const [result, expectedOriginalBinding, count] of [
+      [first, binding, 1],
+      [second, secondBinding, 2],
+    ]) {
+      const restored = await restoreRuntimeSnapshotRetention({ ...f, id: result.retained.id, expectedOriginalBinding });
+      const sqlite = path.join(f.root, `restored-${count}.db`);
+      fs.writeFileSync(sqlite, restored.files.get("sqlite-backup"));
+      assert.equal(
+        Number(
+          execFileSync(
+            "python",
+            [
+              "-c",
+              "import sqlite3,sys;c=sqlite3.connect(sys.argv[1]);print(c.execute('select count(*) from fixture').fetchone()[0]);c.close()",
+              sqlite,
+            ],
+            { encoding: "utf8", windowsHide: true, timeout: 10000 },
+          ).trim(),
+        ),
+        count,
+      );
+      assert.equal(result.qualification, false);
+      assert.equal(result.reuseAuthorized, false);
+    }
+  },
+);
 test(
   "creation-owned application and capture trees close before an independently readable SQLite/cache checkpoint is retained",
   engine,

@@ -50,6 +50,7 @@ const MODULES = [
     "ordinary-custody-probe.mjs",
     "experience-exception.mjs",
     "product-experience.mjs",
+    "homeport-source-amendment.mjs",
     "source-snapshot-batches.mjs",
     "source-diagnostics.mjs",
   ].map((name) => `scripts/sounding-line/${name}`),
