@@ -3,10 +3,22 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-24
+last_reviewed: 2026-10-31
 ---
 
 # Current status
+
+The dependent [Admiralty AI economics and capability intelligence candidate](../../../Projects/Project_Admiralty/AI_Economics_Capability_Intelligence_20261014.md)
+extends Parallax A1 with versioned provider-attempt accounting, cost and attempts
+per useful result, UTC request-day quality, effective person allowances, and
+audited capability and pricing controls. The historical 138 focused cases, 102
+regression cases and independent browser review retain their original source
+identity. On accepted main `cf1e5ad7`, the [current development evidence](../../../Projects/Project_Admiralty/evidence/ai-economics-current-main-cf1e-20261031/independent-review.md)
+records 183 passing focused cases, TypeScript and SQLite/MySQL schema validation,
+two passing task-owned browser cases, and independent confirmation that the
+mobile policy preview is readable at 390px and 320px. The experience planner
+selects 15 cross-project contracts and 37 browser paths. Protected qualification
+and integration are pending; this increment is not yet available on main.
 
 PR #776 remains the sole combined Studio integration candidate. Its tested source
 `abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096` includes accepted main

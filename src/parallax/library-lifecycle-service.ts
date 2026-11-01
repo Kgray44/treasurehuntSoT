@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import type { Prisma, PrismaClient } from "@prisma/client";
 import { canonicalChecksum } from "@/drydock/canonical";
+import { recordAICanonicalSave } from "./ai-outcomes";
 import { DraftConflictError } from "@/chronicle/studio-service";
 import { draftSchema, forkSpatialDraft, type SpatialDraft } from "./authoring";
 import {
@@ -159,6 +160,7 @@ export async function saveEnvironmentDraftInTransaction(
     where: { itemId_versionNumber: { itemId: document.id, versionNumber: 0 } },
     data: { envelope, checksum },
   });
+  await recordAICanonicalSave(tx, accountId, document.id, canonicalChecksum(document.room), checksum);
   return next;
 }
 

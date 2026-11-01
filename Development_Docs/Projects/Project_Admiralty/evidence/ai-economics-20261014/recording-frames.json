@@ -1,0 +1,41 @@
+{
+  "method": "Unaltered frames decoded from the actual browser recording in Chromium, sampled every two seconds. Frame sequence supplements the complete recording and visible-journey assertions.",
+  "durationSeconds": 13.6,
+  "frames": [
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-000s.png",
+      "seconds": 0,
+      "sha256": "a319944fee807edf277813730144fed8f9733bfefc1ab64ef81c0a35a463a102"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-002s.png",
+      "seconds": 2,
+      "sha256": "c207440fefb8a7678f4312d5a56a9baa00139bab6825f6e29583967442bde39c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-004s.png",
+      "seconds": 4,
+      "sha256": "f98e2d223efdd514226cb9fd14dbd7424561917a71d8e006b511d7f8eb86034c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-006s.png",
+      "seconds": 6,
+      "sha256": "c346e91d7b33d47166736e595fea250291287bc00e11097b7ddfa956d4f9564e"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-008s.png",
+      "seconds": 8,
+      "sha256": "fc09034cacf10d95d8ad7e26184a11f0ee01fb46d78115fbc0c62cc88b680209"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-010s.png",
+      "seconds": 10,
+      "sha256": "2059a5a16cda6a3ec887046ee204670fe13b406bcb39ec9e48944f4dd9831d17"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/recording-frames/at-012s.png",
+      "seconds": 12,
+      "sha256": "ab971a7f3c16a578accd04c1d1ee810e4df47d25905b9f5022ae6d6555f7b847"
+    }
+  ]
+}

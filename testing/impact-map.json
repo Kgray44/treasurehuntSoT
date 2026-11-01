@@ -3,6 +3,56 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "pathMappings": [
     {
+      "path": "src/components/admiralty/AIPolicyChangeSummary.tsx",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "scripts/admiralty/ai-economics-fixture.ts",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "tests/e2e/admiralty-ai-economics.spec.ts",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "src/app/api/admin/ai-economics/**",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "src/components/admiralty/AICapabilityPolicyFields*",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "src/components/admiralty/AIEconomics*",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "src/parallax/ai-capabilities*",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "src/parallax/ai-outcomes*",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "src/parallax/ai-attempts*",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
+      "path": "src/parallax/ai-economics*",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics"]
+    },
+    {
       "path": "src/lib/browser-uuid.ts",
       "suiteIds": ["unit.crossdeck", "browser.spatial-pilot", "static.core"],
       "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity", "spatial-pilot.experience"]
@@ -6851,6 +6901,10 @@
     {
       "contractId": "crossdeck.phase2.continuity",
       "suiteIds": ["unit.crossdeck", "browser.crossdeck"]
+    },
+    {
+      "contractId": "admiralty.ai-economics",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"]
     }
   ],
   "impactClasses": [

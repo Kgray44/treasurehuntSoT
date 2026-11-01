@@ -77,6 +77,16 @@ Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides
 Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve reviewed Admiralty packets, verbatim originals and execution receipts.
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Console receipts retain the producer's original spacing and final blank lines.
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-20261014/*.log -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/*.log -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/*.log -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/failed-13cf91d3/*.log -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/reviewer-account-search.ts.raw -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab,cr-at-eol
 # Unified patches encode unchanged empty lines as a single context space.
 Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/*.patch whitespace=-blank-at-eol
 # Preserve combined-candidate raw receipts, reviews and logs across Windows checkouts.

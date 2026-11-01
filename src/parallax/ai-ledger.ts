@@ -9,15 +9,26 @@ import {
   aiUTCPeriod,
   chooseAIModel,
   aiPricing,
+  effectiveAIPricing,
   aiMaximumExposureNano,
-  aiUsageCostNano,
+  aiReportedCost,
   aiUsageSchema,
   creatorAIUsageSchema,
   type AIGlobalPolicy,
   type AIUsage,
   type AIModelPricing,
+  type AIReportedUsage,
 } from "./ai-policy";
 import { SpatialAssistantError } from "./spatial-assistant";
+import { AI_CAPABILITY_VERSION, classifyAICapability, failureOutcome } from "./ai-capabilities";
+
+export function recordedAIOutcome(result: unknown, category: string) {
+  const value = result as { status?: string; code?: string } | undefined;
+  if (value?.status === "PROPOSED") return category === "ROOM_RECONSTRUCTION" ? "GENERATED" : "PROPOSED";
+  if (value?.status === "FAILED") return failureOutcome(value.code ?? "APPLICATION_FAILURE", true);
+  if (value?.status === "CLARIFICATION") return "PARTIAL";
+  return undefined;
+}
 
 export const AI_CONTROL_ID = "PARALLAX_SPATIAL_ASSISTANT";
 const consuming = ["RESERVED", "DISPATCHED", "UNKNOWN", "SETTLED"];
@@ -44,13 +55,16 @@ async function expireReservations(tx: Transaction, now: Date) {
       status: "RELEASED",
       exposureNano: BigInt(0),
       settledCostNano: BigInt(0),
+      costBasis: "NO_CHARGE",
+      outcome: "CANCELLED_BEFORE_EXECUTION",
+      outcomeAt: now,
       failureCode: "UNDISPATCHED_EXPIRED",
       settledAt: now,
     },
   });
   await tx.aIUsageLedger.updateMany({
     where: { status: "DISPATCHED", leaseExpiresAt: { lte: now } },
-    data: { status: "UNKNOWN", failureCode: "DISPATCHED_EXPIRED" },
+    data: { status: "UNKNOWN", failureCode: "DISPATCHED_EXPIRED", outcome: "TIMEOUT", outcomeAt: now },
   });
   await tx.aIUsageLedger.updateMany({
     where: { resultExpiresAt: { lte: now }, result: { not: null } },
@@ -71,11 +85,14 @@ export async function readAIPolicy(store: PrismaClient = db) {
 }
 async function effectiveFor(tx: Transaction | PrismaClient, global: AIGlobalPolicy, accountId: string, now: Date) {
   const override = await tx.aIQuotaUserPolicy.findUnique({ where: { accountId } });
-  return effectiveAIUserPolicy(
-    global,
-    override ? aiUserPolicySchema.nullable().parse(JSON.parse(override.policy)) : null,
-    now,
-  );
+  return {
+    ...effectiveAIUserPolicy(
+      global,
+      override ? aiUserPolicySchema.nullable().parse(JSON.parse(override.policy)) : null,
+      now,
+    ),
+    revision: override?.revision ?? 0,
+  };
 }
 function exceeded(code: string, message: string): never {
   throw new SpatialAssistantError(code, message, 429);
@@ -89,6 +106,7 @@ export async function reserveAIUsage(
     fingerprint: string;
     definitionId: string;
     operationCategory: string;
+    logicalParentId?: string;
     mode: "STANDARD" | "ADVANCED";
   },
   store: PrismaClient = db,
@@ -112,7 +130,9 @@ export async function reserveAIUsage(
       }
       const effective = await effectiveFor(tx, policy, input.accountId, now);
       const model = chooseAIModel(policy, effective, input.mode, input.operationCategory);
-      const price = aiPricing[model],
+      const capabilityId = classifyAICapability(input.operationCategory, input.mode);
+      const capabilityPolicy = effective.capabilities[capabilityId];
+      const price = effectiveAIPricing(policy, model, now),
         reservationNano = aiMaximumExposureNano(price, policy.maximumInputTokens, policy.maximumOutputTokens);
       if (reservationNano > BigInt(policy.maximumRequestSpendNano))
         exceeded("REQUEST_BUDGET", "This request exceeds the configured assistance allowance.");
@@ -125,6 +145,11 @@ export async function reserveAIUsage(
         _sum: { exposureNano: true },
       });
       const user = await tx.aIUsageLedger.aggregate({ where: userWhere, _count: true, _sum: { exposureNano: true } });
+      const capabilityUsage = await tx.aIUsageLedger.aggregate({
+        where: { ...userWhere, capabilityId },
+        _count: true,
+        _sum: { exposureNano: true },
+      });
       if (user._count >= effective.monthlyRequests)
         exceeded(
           "USER_MONTHLY_REQUESTS",
@@ -145,6 +170,16 @@ export async function reserveAIUsage(
           "GLOBAL_MONTHLY_BUDGET",
           "Spatial Assistant is temporarily unavailable because the platform AI budget has been reached.",
         );
+      if (capabilityUsage._count >= capabilityPolicy.monthlyRequests)
+        exceeded(
+          "CAPABILITY_ALLOWANCE",
+          "This capability's monthly allowance has been reached. Manual editing remains available.",
+        );
+      if (
+        (capabilityUsage._sum.exposureNano ?? BigInt(0)) + reservationNano >
+        BigInt(capabilityPolicy.monthlySpendNano)
+      )
+        exceeded("CAPABILITY_BUDGET", "This capability's monthly spending allowance has been reached.");
       const recentWhere = { createdAt: { gt: new Date(now.getTime() - 60000) }, status: { in: consuming } };
       if (
         (await tx.aIUsageLedger.count({ where: { ...recentWhere, accountId: input.accountId } })) >=
@@ -165,12 +200,28 @@ export async function reserveAIUsage(
         data: {
           id: randomUUID(),
           ...input,
+          capabilityId,
+          capabilityVersion: AI_CAPABILITY_VERSION,
+          outcome: "IN_PROGRESS",
+          utcDay: now.toISOString().slice(0, 10),
+          applicationVersion: /^[a-f0-9]{40}$/i.test(process.env.VOYAGEWRIGHT_SOURCE_SHA ?? "")
+            ? process.env.VOYAGEWRIGHT_SOURCE_SHA
+            : null,
           period: period.id,
           provider: policy.provider,
           model,
           pricingRevision: price.revision,
           pricing: JSON.stringify(price),
           policyRevision: control.revision,
+          userPolicyRevision: effective.revision,
+          policySnapshot: JSON.stringify({
+            globalRevision: control.revision,
+            userRevision: effective.revision,
+            capability: capabilityPolicy,
+            combinedMonthlyRequests: effective.monthlyRequests,
+            combinedMonthlySpendNano: effective.monthlySpendNano,
+            advancedEnabled: effective.advancedEnabled,
+          }),
           status: "RESERVED",
           reservationNano,
           exposureNano: reservationNano,
@@ -190,7 +241,12 @@ export async function markAIDispatched(id: string, store: PrismaClient = db, now
     const row = await tx.aIUsageLedger.findUniqueOrThrow({ where: { id } });
     const effective = await effectiveFor(tx, policy, row.accountId, now);
     chooseAIModel(policy, effective, row.mode as "STANDARD" | "ADVANCED", row.operationCategory);
-    if (!policy.allowedModels.includes(row.model as keyof typeof aiPricing))
+    if (
+      !policy.allowedModels.includes(row.model as keyof typeof aiPricing) ||
+      !effective.capabilities[classifyAICapability(row.operationCategory, row.mode)].allowedModels.includes(
+        row.model as keyof typeof aiPricing,
+      )
+    )
       throw new SpatialAssistantError("MODEL_UNAVAILABLE", "The configured model is no longer allowed.", 503);
     const changed = await tx.aIUsageLedger.updateMany({
       where: { id, status: "RESERVED", leaseExpiresAt: { gt: now } },
@@ -202,12 +258,32 @@ export async function markAIDispatched(id: string, store: PrismaClient = db, now
         "This request has already been dispatched or expired.",
         409,
       );
+    await tx.aIProviderAttempt.create({
+      data: {
+        id: `${id}:1`,
+        operationId: id,
+        sequence: 1,
+        provider: row.provider,
+        model: row.model,
+        pricingRevision: row.pricingRevision,
+        pricing: row.pricing,
+        status: "DISPATCHED",
+        exposureNano: row.reservationNano,
+        startedAt: now,
+      },
+    });
   });
 }
 
 export async function settleAIUsage(
   id: string,
-  input: { usage: AIUsage; providerResponseId: string; result?: unknown; timings?: Record<string, number> },
+  input: {
+    usage: AIUsage;
+    reportedUsage?: AIReportedUsage | null;
+    providerResponseId: string;
+    result?: unknown;
+    timings?: Record<string, number>;
+  },
   store: PrismaClient = db,
   now = new Date(),
 ) {
@@ -216,7 +292,8 @@ export async function settleAIUsage(
     const { control, policy } = await lockAIControl(tx);
     const row = await tx.aIUsageLedger.findUniqueOrThrow({ where: { id } });
     const price = JSON.parse(row.pricing) as AIModelPricing,
-      costNano = aiUsageCostNano(price, usage);
+      calculated = aiReportedCost(price, usage, input.reportedUsage ?? undefined),
+      costNano = calculated.costNano;
     if (row.status === "SETTLED") {
       if (row.providerResponseId !== input.providerResponseId || row.settledCostNano !== costNano)
         throw new SpatialAssistantError(
@@ -237,13 +314,70 @@ export async function settleAIUsage(
         status: "SETTLED",
         exposureNano: costNano,
         settledCostNano: costNano,
+        costBasis: calculated.basis,
+        ...(recordedAIOutcome(input.result, row.operationCategory) &&
+        !["PREVIEWED", "REJECTED", "ACCEPTED", "ACCEPTED_THEN_EDITED", "APPLIED", "UNDONE"].includes(row.outcome)
+          ? {
+              outcome: recordedAIOutcome(input.result, row.operationCategory),
+              outcomeAt: now,
+            }
+          : {}),
+        ...((input.result as { status?: string } | undefined)?.status === "PROPOSED"
+          ? { generatedAt: row.generatedAt ?? now }
+          : {}),
         ...usage,
+        ...(input.reportedUsage
+          ? {
+              cachedInputTokens: input.reportedUsage.cachedInputTokens,
+              cacheWriteTokens: input.reportedUsage.cacheWriteTokens,
+              reasoningTokens: input.reportedUsage.reasoningTokens,
+            }
+          : {}),
         providerResponseId: input.providerResponseId,
         settledAt: now,
         result,
         resultExpiresAt: result ? new Date(now.getTime() + policy.retentionDays * 86400000) : null,
         timings: input.timings ? JSON.stringify(input.timings) : undefined,
-        failureCode: costNano > row.reservationNano ? "EXPOSURE_EXCEEDED" : null,
+        failureCode:
+          costNano > row.reservationNano
+            ? "EXPOSURE_EXCEEDED"
+            : ((input.result as { code?: string } | undefined)?.code ?? row.failureCode),
+      },
+    });
+    await tx.aIProviderAttempt.upsert({
+      where: { operationId_sequence: { operationId: id, sequence: 1 } },
+      create: {
+        id: `${id}:1`,
+        operationId: id,
+        sequence: 1,
+        provider: row.provider,
+        model: row.model,
+        pricingRevision: row.pricingRevision,
+        pricing: row.pricing,
+        startedAt: row.dispatchedAt ?? now,
+        status: (input.result as { status?: string } | undefined)?.status === "FAILED" ? "FAILED" : "COMPLETED",
+        failureCode:
+          (input.result as { code?: string } | undefined)?.code ??
+          ((input.result as { status?: string } | undefined)?.status === "PROPOSED" ? null : row.failureCode),
+        costBasis: calculated.basis,
+        costNano,
+        exposureNano: costNano,
+        usage: JSON.stringify(input.reportedUsage ?? usage),
+        providerResponseId: input.providerResponseId,
+        completedAt: now,
+      },
+      update: {
+        status: (input.result as { status?: string } | undefined)?.status === "FAILED" ? "FAILED" : "COMPLETED",
+        failureCode:
+          (input.result as { code?: string } | undefined)?.code ??
+          ((input.result as { status?: string } | undefined)?.status === "PROPOSED" ? null : row.failureCode),
+        costBasis: calculated.basis,
+        costNano,
+        exposureNano: costNano,
+        usage: JSON.stringify(input.reportedUsage ?? usage),
+        providerResponseId: input.providerResponseId,
+        completedAt: now,
+        reconciledAt: now,
       },
     });
     // Unexpected billing never disappears; fail closed for subsequent paid calls.
@@ -285,7 +419,12 @@ export async function failAIUsage(
   definitelyUnbilled: boolean,
   store: PrismaClient = db,
   now = new Date(),
-  retained?: { result: unknown; timings: Record<string, number> },
+  retained?: {
+    result: unknown;
+    timings: Record<string, number>;
+    reportedUsage?: AIReportedUsage | null;
+    providerResponseId?: string;
+  },
 ) {
   return store.$transaction(async (tx) => {
     const { policy } = await lockAIControl(tx);
@@ -300,14 +439,44 @@ export async function failAIUsage(
       data: {
         status: unbilled ? "RELEASED" : "UNKNOWN",
         failureCode: code,
+        outcome:
+          recordedAIOutcome(retained?.result, row.operationCategory) ?? failureOutcome(code, Boolean(row.dispatchedAt)),
+        outcomeAt: now,
+        ...((retained?.result as { status?: string } | undefined)?.status === "PROPOSED" ? { generatedAt: now } : {}),
+        costBasis: unbilled ? "NO_CHARGE" : "UNKNOWN",
         ...(unbilled ? { exposureNano: BigInt(0), settledCostNano: BigInt(0), settledAt: now } : {}),
         ...(retained
           ? {
               result,
               resultExpiresAt: new Date(now.getTime() + policy.retentionDays * 86400000),
               timings: JSON.stringify(retained.timings),
+              ...(retained.providerResponseId ? { providerResponseId: retained.providerResponseId } : {}),
+              ...(retained.reportedUsage
+                ? {
+                    inputTokens: retained.reportedUsage.inputTokens,
+                    outputTokens: retained.reportedUsage.outputTokens,
+                    cachedInputTokens: retained.reportedUsage.cachedInputTokens,
+                    cacheWriteTokens: retained.reportedUsage.cacheWriteTokens,
+                    reasoningTokens: retained.reportedUsage.reasoningTokens,
+                  }
+                : {}),
             }
           : {}),
+      },
+    });
+    await tx.aIProviderAttempt.updateMany({
+      where: { operationId: id, status: "DISPATCHED" },
+      data: {
+        status: unbilled ? "FAILED" : "UNKNOWN",
+        failureCode:
+          code === "UNKNOWN_PROVIDER_USAGE" &&
+          (retained?.result as { status?: string } | undefined)?.status === "PROPOSED"
+            ? null
+            : code,
+        completedAt: now,
+        ...(retained?.reportedUsage ? { usage: JSON.stringify(retained.reportedUsage) } : {}),
+        ...(retained?.providerResponseId ? { providerResponseId: retained.providerResponseId } : {}),
+        ...(unbilled ? { costNano: BigInt(0), exposureNano: BigInt(0), costBasis: "NO_CHARGE" } : {}),
       },
     });
     await tx.aIQuotaControl.update({

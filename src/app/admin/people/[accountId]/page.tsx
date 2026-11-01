@@ -193,7 +193,7 @@ export default async function AccountDossierPage({ params }: { params: Promise<{
             key={account.id}
             initial={aiUsage}
             csrfToken={operator.csrfToken}
-            canManage={operator.capabilities.includes("CONFIG_OPERATE")}
+            canManage={operator.roles.includes("ADMINISTRATOR") && operator.capabilities.includes("CONFIG_OPERATE")}
           />
         </Panel>
       )}

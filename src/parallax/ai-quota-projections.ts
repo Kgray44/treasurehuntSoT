@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { aiUTCPeriod, aiUserPolicySchema, effectiveAIUserPolicy, aiPricing } from "./ai-policy";
 import { readAIPolicy } from "./ai-ledger";
 import { openAIProviderConfiguration } from "./openai-provider";
+import { aiCapabilities } from "./ai-capabilities";
 
 const consuming = ["RESERVED", "DISPATCHED", "UNKNOWN", "SETTLED"];
 export async function aiQuotaOverview(store: PrismaClient = db, now = new Date()) {
@@ -92,6 +93,12 @@ export async function aiQuotaUserDetail(accountId: string, store: PrismaClient =
   if (!account) return null;
   const userPolicy = override ? aiUserPolicySchema.nullable().parse(JSON.parse(override.policy)) : null,
     effective = effectiveAIUserPolicy(policy, userPolicy, now);
+  const capabilities = await store.aIUsageLedger.groupBy({
+    by: ["capabilityId"],
+    where: { accountId, period: period.id, status: { in: consuming } },
+    _count: true,
+    _sum: { exposureNano: true },
+  });
   const change =
     override && userPolicy
       ? await store.aIQuotaPolicyRevision.findFirst({
@@ -106,6 +113,26 @@ export async function aiQuotaUserDetail(accountId: string, store: PrismaClient =
     policy: userPolicy,
     revision: override?.revision ?? 0,
     effective,
+    capabilityUsage: aiCapabilities.map((capability) => {
+      const total = capabilities.find((item) => item.capabilityId === capability.id),
+        limit = effective.capabilities[capability.id];
+      return {
+        id: capability.id,
+        name: capability.name,
+        ...limit,
+        used: total?._count ?? 0,
+        remaining:
+          !limit.enabled ||
+          (total?._sum.exposureNano ?? BigInt(0)) >= BigInt(limit.monthlySpendNano) ||
+          (usage._sum.exposureNano ?? BigInt(0)) >= BigInt(effective.monthlySpendNano)
+            ? 0
+            : Math.max(
+                0,
+                Math.min(limit.monthlyRequests - (total?._count ?? 0), effective.monthlyRequests - usage._count),
+              ),
+        exposureNano: (total?._sum.exposureNano ?? BigInt(0)).toString(),
+      };
+    }),
     overrideReason: userPolicy ? (change?.reason ?? "No reason recorded in the retained audit.") : null,
     overrideChangedAt: userPolicy
       ? (change?.createdAt.toISOString() ?? override?.updatedAt.toISOString() ?? null)

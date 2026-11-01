@@ -176,6 +176,7 @@ export function createSpatialAssistantPort(host: {
     return data;
   }
   return {
+    reportOutcome: (requestId, decision) => post({ action: "AI_OUTCOME", requestId, decision }),
     async prepareBase() {
       assertScope();
       const saved = baseSchema.parse(await host.prepareBase());

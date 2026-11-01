@@ -1,0 +1,250 @@
+{
+  "kind": "ADMIRALTY_CURRENT_MAIN_DEVELOPMENT_EVIDENCE_1",
+  "base": "cf1e5ad78b3e2b633d4ed691f396a4bab0191217",
+  "candidate": "1f97ca2891fb614d2113abe790e61cc2569f08fe",
+  "candidateTree": "d975244dbd14b2dbcd44fae2e3f00c9f084a6d77",
+  "experienceSourceDigest": "e7b5051d1ab3b7c3734a3a9d2175928e892bb78e2264bb85f5b8b5e452928064",
+  "selectedContracts": 15,
+  "selectedBrowserPaths": 37,
+  "qualification": false,
+  "focusedTests": {
+    "suites": 15,
+    "cases": 183,
+    "status": "PASS"
+  },
+  "typecheck": "PASS",
+  "focusedEslint": "PASS",
+  "sqliteSchema": "PASS",
+  "mysqlSchema": "PASS",
+  "admiraltyBrowser": {
+    "startTime": "2026-11-01T01:43:37.774Z",
+    "duration": 38109.923,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "parallaxOwnerBoundaryBrowser": {
+    "startTime": "2026-11-01T01:45:19.190Z",
+    "duration": 13546.044,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "runnerReceiptSha256": "eaf31f9e0f8ab4fb2b85419e3e3d37385b885d107a231b27ab0edd650ba9cf60",
+  "reviewerTaskPath": "/root/admiralty_visual_review",
+  "review": "independent-review.md",
+  "files": [
+    {
+      "path": "browser-journey.webm",
+      "sha256": "1be10b397d3961da12140736e7573234b9681bae0577f5106672b7461d19c48f",
+      "bytes": 3439466
+    },
+    {
+      "path": "browser/allowance-applied-desktop.png",
+      "sha256": "8e95fdb9e7fa7df4d517eb3198ac4070818c6d86e6335242c172a6330020e370",
+      "bytes": 2124895
+    },
+    {
+      "path": "browser/allowance-applied-mobile.png",
+      "sha256": "e1e6ccb88b820f7516cfd0d70590786dc5f1fe98cae450fcfe2cd84729843e95",
+      "bytes": 1342621
+    },
+    {
+      "path": "browser/allowance-effective-desktop.png",
+      "sha256": "3669278bd9494aa68512d828db656aa2746e3dbef190ffc3524cee2c5aaaefbf",
+      "bytes": 1956940
+    },
+    {
+      "path": "browser/allowance-effective-mobile.png",
+      "sha256": "eec55d31d7bf56fac0c8161f0e03fd9bacb55cc96bd5763769007bd3e743aa65",
+      "bytes": 1334910
+    },
+    {
+      "path": "browser/allowance-preview-320-mobile.png",
+      "sha256": "89ebb57f73875e1cde148e0ae9f5da8eab788961d9d7ae04f7df766dc22905a4",
+      "bytes": 54207
+    },
+    {
+      "path": "browser/allowance-preview-desktop.png",
+      "sha256": "b0173d08390d4c4a7ff4b1a10ce4c650977bb2fcb6fa237be066e48ac24105f1",
+      "bytes": 2343649
+    },
+    {
+      "path": "browser/allowance-preview-detail-mobile.png",
+      "sha256": "2330bce4fd4c11459e90ed67cd0a03b4e28f184e29a7f33c1d1986edda74b5ed",
+      "bytes": 66183
+    },
+    {
+      "path": "browser/allowance-preview-mobile.png",
+      "sha256": "9ed11bea0ab72ce6fa07e95b754c09d5cd3bc8b7de6dec8dd09303f6f50dc7a6",
+      "bytes": 1421571
+    },
+    {
+      "path": "browser/attempt-coverage-mobile.png",
+      "sha256": "4d2ad57381c2bd2cf6b031665458c383dd17a290a34b8fd71eadd8fbd417be92",
+      "bytes": 56318
+    },
+    {
+      "path": "browser/attempt-ratios-desktop.png",
+      "sha256": "055a5e736ddd79f2cf3c1c66d824cfaae997f169048f33616def50d08c48c9f9",
+      "bytes": 98438
+    },
+    {
+      "path": "browser/attempt-ratios-mobile.png",
+      "sha256": "985407c8754a071541ac6817e25490f5513fa353705acd7ea8aac2447293b2b2",
+      "bytes": 58058
+    },
+    {
+      "path": "browser/capabilities-desktop.png",
+      "sha256": "b68cd618c9f01c2109d91b3478b8519766a72e76e20252fa20440c6d75c58bc3",
+      "bytes": 755565
+    },
+    {
+      "path": "browser/capabilities-mobile.png",
+      "sha256": "5b39d067f7e8e63e5e8c4d51dbfad683c922ec1cf73b8b3ba90378f5e8629085",
+      "bytes": 455298
+    },
+    {
+      "path": "browser/comparison-scroll-keyboard-mobile.png",
+      "sha256": "a81f96df962f702b82ea9bf863eb51505c55cad11e272139b775143633161be1",
+      "bytes": 57831
+    },
+    {
+      "path": "browser/configuration-desktop.png",
+      "sha256": "75f6b3637f321f504c371cc13d6591a8bba1fad670a3b31483bcba49aedd7640",
+      "bytes": 957071
+    },
+    {
+      "path": "browser/daily-fallback-keyboard-desktop.png",
+      "sha256": "723465de80fd617f5ff9254377613a62ad3da328ce500954ae3de83984ef5bc3",
+      "bytes": 131254
+    },
+    {
+      "path": "browser/empty-mobile.png",
+      "sha256": "c6c884128d6b1f3ea1a37fe9c2b5cc7454523134ca4ece00b96197beaab886c3",
+      "bytes": 524918
+    },
+    {
+      "path": "browser/error-mobile.png",
+      "sha256": "8f09b5c178a31894ac1c4d1393c15ed208d53075f3b254ef44454663ce5821e9",
+      "bytes": 548040
+    },
+    {
+      "path": "browser/history-mobile.png",
+      "sha256": "12a4d9c56a7c81a65277b433676e8f6d20328c17dd84e70047f59aa508f6dd5f",
+      "bytes": 526549
+    },
+    {
+      "path": "browser/investigation-history-desktop.png",
+      "sha256": "d822a74419ba5eb1fa3f19b8c7a1594a454a0ac3c7bc1f32b25e16a5450c682c",
+      "bytes": 918091
+    },
+    {
+      "path": "browser/loading-mobile.png",
+      "sha256": "b7afd8d84043a627feee81e4dd490b4dd2c96fb98946c70fcacb921bf75c44f2",
+      "bytes": 537132
+    },
+    {
+      "path": "browser/operation-inspector.png",
+      "sha256": "c2b0e59393f58722955c2ebf1593f1bcf669379d55efe451be8affad344b25a5",
+      "bytes": 726122
+    },
+    {
+      "path": "browser/overview-desktop.png",
+      "sha256": "1e8baaf1539f37c6f298a802b6aeaa295cb880b603b274584ecd1212cfdab365",
+      "bytes": 716864
+    },
+    {
+      "path": "browser/overview-mobile.png",
+      "sha256": "3bec8bc9ee0819bc64202a782603b6da856e378850ae25e6ea485385c862a194",
+      "bytes": 438499
+    },
+    {
+      "path": "browser/people-desktop.png",
+      "sha256": "ec4cbb3b416e48e5f1ad190aa0e9f1f4354a4c4f7767ced30d4142f0540e7deb",
+      "bytes": 702745
+    },
+    {
+      "path": "browser/quality-desktop.png",
+      "sha256": "9e4a14d0b99ddb137aea833bd86bfcc7f949f354930eab380722e26b9877d530",
+      "bytes": 692809
+    },
+    {
+      "path": "browser/quality-keyboard-desktop.png",
+      "sha256": "4b201840a0e04171cbfdbf19cef9701f3e4823a8f64dc3b6f5cf6229b6b8792f",
+      "bytes": 239316
+    },
+    {
+      "path": "browser/quality-mobile.png",
+      "sha256": "d4c19c2d20cde151fcfb850c57ce9edab1a7ec7299e8a8589d69b81a959b4807",
+      "bytes": 499377
+    },
+    {
+      "path": "browser/quality-trend-desktop.png",
+      "sha256": "16cc6218ebab793bf4813aabf3183a451badd62ec5cf3616ea6530e7e674f2a7",
+      "bytes": 781844
+    },
+    {
+      "path": "browser/quality-trend-keyboard-desktop.png",
+      "sha256": "bdc4362a446d8797070602fedab08c71c07f61660d32499afd3f30da394cef08",
+      "bytes": 90859
+    },
+    {
+      "path": "browser/quality-trend-keyboard-mobile.png",
+      "sha256": "96e1b6e75bec7e3a03f82842052b77494f22a0ca18d0ee3f72d5a75fef35d355",
+      "bytes": 60492
+    },
+    {
+      "path": "browser/quality-trend-mobile.png",
+      "sha256": "d27ce131444b233344ca33b4449daeafded8a56341e465b32cda9ce879e543e7",
+      "bytes": 526836
+    },
+    {
+      "path": "browser/recovered-mobile.png",
+      "sha256": "d27ce131444b233344ca33b4449daeafded8a56341e465b32cda9ce879e543e7",
+      "bytes": 526836
+    },
+    {
+      "path": "focused-eslint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "focused-tests.log",
+      "sha256": "a3283fe46a9860a9934a10cd13f8c9fc709ab1ce6f726f2ce43b2e4cb59fc870",
+      "bytes": 2671
+    },
+    {
+      "path": "independent-review.md",
+      "sha256": "8ff1a978aaf0036d277e03e1cf30d6308bef38295e65ccd7e1eb8f73f7e40821",
+      "bytes": 2180
+    },
+    {
+      "path": "mysql-schema.log",
+      "sha256": "57a95d6fed0c8565ccec14844a8dfddf60c99bc53587cd2cb974240ddedfb340",
+      "bytes": 96
+    },
+    {
+      "path": "parallax-owner-boundary-report.original.json",
+      "sha256": "d3e9522d2d2f714799abbec32f6f0e29fe3d51e7e16628b338555bc3ebdf4261",
+      "bytes": 7750
+    },
+    {
+      "path": "playwright-report.original.json",
+      "sha256": "c1c4e965215734bd7d4ae57ef94644abdd7d3cee77775de21e076af3ddc41b72",
+      "bytes": 7796
+    },
+    {
+      "path": "sqlite-schema.log",
+      "sha256": "1ac58769ae5f3df33b39c12d424864f29fe05900c63c78e0d8ebff14df40c34c",
+      "bytes": 110
+    },
+    {
+      "path": "typecheck.log",
+      "sha256": "4b21373e9bdf883fd66aa070ea37001b05735232ff529a0397da02f5b48b33f5",
+      "bytes": 61
+    }
+  ]
+}
