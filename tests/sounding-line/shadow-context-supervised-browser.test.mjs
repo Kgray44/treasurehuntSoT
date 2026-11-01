@@ -251,7 +251,7 @@ require('node:http').createServer((q,s)=>{
     const journalObservation = {
       journal: JSON.parse(journalBytes),
       bytes: journalBytes,
-      path: result.closedContextJournal.path,
+      path: path.relative(root, result.closedContextJournal.path).split(path.sep).join("/"),
       completedAt: new Date().toISOString(),
     };
     const registryInput = {
@@ -323,6 +323,7 @@ require('node:http').createServer((q,s)=>{
       altered.contexts[0].bytes = Buffer.from(altered.contexts[0].bytes);
       altered.cleanup.bytes = Buffer.from(altered.cleanup.bytes);
       change(altered);
+      altered.contexts[0].bytes = Buffer.from(JSON.stringify(altered.contexts[0].journal));
       assert.throws(() => buildClosedContextRegistryShadow(altered), /SOUNDING_LINE_CONTEXT_REGISTRY_PRODUCER_/u);
     }
     const authenticationCache = await readBoundedRawCaptureFile({
