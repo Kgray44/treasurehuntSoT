@@ -1,0 +1,196 @@
+// Shadow parent-side ownership of two declared runtime launches and retained
+// state. This does not prove external dependency closure or authorize resume.
+import { lstat, realpath, open } from "node:fs/promises";
+import { constants } from "node:fs";
+import path from "node:path";
+import { createHash } from "node:crypto";
+import { canonicalJson } from "./evidence.mjs";
+import { readBoundedRawCaptureFile } from "./experience-raw-output.mjs";
+import { createRuntimeSnapshotRetention } from "./runtime-snapshot-retention.mjs";
+import { captureSqliteRuntimeSnapshot } from "./sqlite-runtime-snapshot.mjs";
+import {
+  spawnOwnedProcess,
+  stopOwnedProcess,
+  stopOwnedProcessWithClosureProof,
+  consumeOwnedProcessClosure,
+} from "./owned-process.mjs";
+const MARKER = "CREATION_BOUND_DECLARED_SQLITE_RUNTIME_RETENTION_NOT_FULL_ISOLATION";
+const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const need = (condition, code) => {
+  if (!condition) throw Error(`SOUNDING_LINE_OWNED_RUNTIME_STATE_${code}`);
+};
+async function entrypointBytes(file) {
+  const handle = await open(file, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+  try {
+    const stat = await handle.stat();
+    need(stat.isFile() && stat.nlink === 1 && stat.size <= 1024 * 1024, "ENTRYPOINT");
+    const bytes = Buffer.alloc(1024 * 1024 + 1);
+    let count = 0,
+      result;
+    while ((result = await handle.read(bytes, count, bytes.length - count, null)).bytesRead > 0) {
+      count += result.bytesRead;
+      need(count <= 1024 * 1024, "ENTRYPOINT");
+    }
+    const after = await handle.stat(),
+      named = await lstat(file);
+    need(
+      count === stat.size &&
+        [after, named].every(
+          (value) =>
+            value.ino === stat.ino &&
+            value.dev === stat.dev &&
+            value.size === stat.size &&
+            value.mtimeMs === stat.mtimeMs &&
+            value.ctimeMs === stat.ctimeMs &&
+            value.nlink === 1,
+        ) &&
+        !named.isSymbolicLink(),
+      "ENTRYPOINT",
+    );
+    return Buffer.from(bytes.subarray(0, count));
+  } finally {
+    await handle.close();
+  }
+}
+export async function createOwnedRuntimeStateRetention({ root, rawDirectory, databasePath, originalBinding }) {
+  need(
+    originalBinding &&
+      Number.isSafeInteger(originalBinding.prNumber) &&
+      originalBinding.prNumber > 0 &&
+      ![721, 776, 805].includes(originalBinding.prNumber),
+    "BINDING",
+  );
+  need(
+    Object.keys(originalBinding).sort().join() ===
+      ["prNumber", "baseSha", "candidateSha", "sourceDigest", "runtimeDigest", "contextId"].sort().join() &&
+      [originalBinding.baseSha, originalBinding.candidateSha].every(
+        (v) => typeof v === "string" && /^[a-f0-9]{40}$/u.test(v),
+      ) &&
+      [originalBinding.sourceDigest, originalBinding.runtimeDigest, originalBinding.contextId].every(
+        (v) => typeof v === "string" && /^[a-f0-9]{64}$/u.test(v),
+      ),
+    "BINDING",
+  );
+  const binding = JSON.parse(canonicalJson(originalBinding));
+  root = await realpath(root);
+  databasePath = path.resolve(root, databasePath);
+  await readBoundedRawCaptureFile({ root, rawDirectory, file: databasePath, maximumBytes: 32 * 1024 * 1024 });
+  const databaseIdentity = await lstat(databasePath),
+    store = await createRuntimeSnapshotRetention({ root, rawDirectory });
+  const launches = new Map();
+  let phase = "OPEN";
+  async function stopAll() {
+    return await Promise.all([...launches.values()].map(async ({ child }) => await stopOwnedProcess(child)));
+  }
+  async function close() {
+    phase = "CLOSED_WITHOUT_CHECKPOINT";
+    return await stopAll();
+  }
+  return Object.freeze({
+    async launch(role, { entrypoint, args = [], environment = {} }) {
+      need(phase === "OPEN" && ["application", "capture"].includes(role) && !launches.has(role), "LAUNCH");
+      need(
+        typeof entrypoint === "string" &&
+          Array.isArray(args) &&
+          args.length <= 64 &&
+          args.every((v) => typeof v === "string" && Buffer.byteLength(v) <= 8192) &&
+          Buffer.byteLength(JSON.stringify(args)) <= 65536,
+        "LAUNCH",
+      );
+      const selected = await realpath(path.resolve(root, entrypoint)),
+        stat = await lstat(selected);
+      need(selected.startsWith(root + path.sep) && stat.isFile() && stat.size <= 1024 * 1024, "ENTRYPOINT");
+      const source = await entrypointBytes(selected);
+      // Recheck after asynchronous source inspection so parallel calls cannot
+      // replace an already admitted launch or race a closing checkpoint.
+      need(phase === "OPEN" && !launches.has(role), "LAUNCH");
+      const env = { ...process.env, ...environment, DATABASE_URL: `file:${databasePath}` };
+      delete env.NODE_OPTIONS;
+      delete env.NODE_PATH;
+      for (const key of ["GH_TOKEN", "GITHUB_TOKEN", "ACTIONS_RUNTIME_TOKEN", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"])
+        delete env[key];
+      const child = spawnOwnedProcess(process.execPath, [selected, ...args], {
+        root,
+        env,
+        cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
+      });
+      const metadata = Object.freeze({
+        role,
+        entrypoint: path.relative(root, selected),
+        entrypointSha256: hash(source),
+        argumentsSha256: hash(JSON.stringify(args)),
+      });
+      launches.set(role, { child, metadata });
+      return Object.freeze({ child, metadata, qualification: false, reuseAuthorized: false });
+    },
+    async checkpoint({ authenticationCache, fixtureState }) {
+      need(phase === "OPEN" && launches.size === 2, "CHECKPOINT");
+      need(
+        [authenticationCache, fixtureState].every(
+          (bytes) => Buffer.isBuffer(bytes) && bytes.length > 0 && bytes.length <= 2 * 1024 * 1024,
+        ),
+        "STATE_BOUND",
+      );
+      const authentication = Buffer.from(authenticationCache),
+        fixture = Buffer.from(fixtureState);
+      phase = "CLOSING"; // Terminal even if a later snapshot or retention fails.
+      const capture = launches.get("capture"),
+        application = launches.get("application");
+      try {
+        const captureClosed = await stopOwnedProcessWithClosureProof(capture.child);
+        const applicationClosed = await stopOwnedProcessWithClosureProof(application.child);
+        return await consumeOwnedProcessClosure(captureClosed.proof, capture.child, () =>
+          consumeOwnedProcessClosure(applicationClosed.proof, application.child, async () => {
+            const current = await lstat(databasePath);
+            need(
+              current.ino === databaseIdentity.ino &&
+                current.dev === databaseIdentity.dev &&
+                current.nlink === 1 &&
+                !current.isSymbolicLink(),
+              "DATABASE_CHANGED",
+            );
+            const snapshot = await captureSqliteRuntimeSnapshot({
+              root,
+              rawDirectory,
+              databasePath,
+              prNumber: binding.prNumber,
+            });
+            const sqlite = await readBoundedRawCaptureFile({
+              root,
+              rawDirectory,
+              file: snapshot.path,
+              maximumBytes: 32 * 1024 * 1024,
+            });
+            need(phase === "CLOSING", "CANCELLED");
+            const retained = await store.append({
+              originalBinding: binding,
+              files: new Map([
+                ["sqlite-backup", sqlite],
+                ["browser-authentication-cache", authentication],
+                ["fixture-state", fixture],
+              ]),
+            });
+            need(phase === "CLOSING", "CANCELLED");
+            phase = "RETAINED";
+            return Object.freeze({
+              classification: MARKER,
+              qualification: false,
+              reuseAuthorized: false,
+              originalBinding: JSON.parse(canonicalJson(binding)),
+              retained,
+              snapshot,
+              launches: Object.freeze([...launches.values()].map((value) => value.metadata)),
+              cleanup: Object.freeze({ capture: captureClosed.cleanup, application: applicationClosed.cleanup }),
+            });
+          }),
+        );
+      } finally {
+        if (phase !== "RETAINED") {
+          phase = "FAILED";
+          await stopAll();
+        }
+      }
+    },
+    close,
+  });
+}

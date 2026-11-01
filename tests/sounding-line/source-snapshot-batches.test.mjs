@@ -36,6 +36,7 @@ test("the protected regression script includes every incremental registry and co
     "runtime-snapshot-retention",
     "owned-process-closure",
     "sqlite-runtime-snapshot",
+    "owned-runtime-state-retention",
   ])
     assert.equal(files.filter((file) => file === `tests/sounding-line/${name}.test.mjs`).length, 1, name);
 });
