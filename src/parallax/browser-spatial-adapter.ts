@@ -1,7 +1,7 @@
 import * as T from "three";
 import { paperSheetGeometry, compassProp, footprintProp } from "@/components/studio/parallax/spatial-props";
 import { applySpatialOpacity, disposeSpatialOpacity } from "@/components/studio/parallax/spatial-opacity";
-import { previewReferenceFrame } from "./authoring";
+import { browserReferenceFrame } from "./browser-reference-frame";
 import { type Anchor, type SpatialMoment, type SpatialVersion, type Transform } from "./contracts";
 import { BrowserScenePresentation } from "./browser-scene-presentation";
 import { sceneRequirements, type SceneDelivery } from "./scene-delivery";
@@ -185,7 +185,7 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
     const frame =
       anchor.kind === "SURFACE_RELATIVE"
         ? composeTransform(
-            previewReferenceFrame(this.moment.version, anchor, room.id, { ...room, horizontal: true, vertical: true }),
+            browserReferenceFrame(this.moment.version, anchor, room.id, { ...room, horizontal: true, vertical: true }),
             anchor.transform,
           )
         : anchor.transform;
