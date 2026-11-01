@@ -1,7 +1,18 @@
 // Raw browser output is retained diagnostic material, never publication evidence.
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { chmod, constants, copyFile, lstat, mkdir, readFile, readdir, realpath, writeFile } from "node:fs/promises";
+import {
+  chmod,
+  constants,
+  copyFile,
+  lstat,
+  mkdir,
+  open,
+  readFile,
+  readdir,
+  realpath,
+  writeFile,
+} from "node:fs/promises";
 import path from "node:path";
 
 export const EXPERIENCE_RAW_OUTPUT = "SOUNDING_LINE_EXPERIENCE_RAW_OUTPUT";
@@ -107,6 +118,59 @@ export async function createRawOutputDirectory({ root, directory }) {
   const target = await owned(root, directory, true);
   await mkdir(target, { mode: 0o700 }); // Exclusive final directory: no prior producer output.
   return target;
+}
+
+export async function readBoundedRawCaptureFile({ root, rawDirectory, file, maximumBytes }) {
+  if (!Number.isSafeInteger(maximumBytes) || maximumBytes < 1 || maximumBytes > 64 * 1024 * 1024) fail("READ_BOUND");
+  root = await ownedRoot(root);
+  rawDirectory = repoPath(root, rawDirectory);
+  if (scope(rawDirectory).rawRoot !== rawDirectory) fail("SEAL_ROOT_REQUIRED");
+  file = repoPath(root, file);
+  if (!file.startsWith(rawDirectory + "/")) fail("READ_SCOPE");
+  const target = await owned(root, file);
+  const handle = await open(target, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+  try {
+    const before = await handle.stat(),
+      named = await lstat(target);
+    if (
+      !before.isFile() ||
+      named.isSymbolicLink() ||
+      before.nlink !== 1 ||
+      before.dev !== named.dev ||
+      before.ino !== named.ino ||
+      (await realpath(target)) !== target ||
+      before.size > maximumBytes ||
+      (before.mode & 0o7111) !== 0
+    )
+      fail("READ_FILE");
+    const bytes = Buffer.alloc(maximumBytes + 1);
+    let count = 0,
+      result;
+    while ((result = await handle.read(bytes, count, bytes.length - count, null)).bytesRead > 0) {
+      count += result.bytesRead;
+      if (count > maximumBytes) fail("READ_BOUND");
+    }
+    const after = await handle.stat(),
+      current = await lstat(target);
+    if ((await realpath(target)) !== target) fail("READ_CHANGED");
+    if (
+      count !== before.size ||
+      ![after, current].every(
+        (stat) =>
+          stat.isFile() &&
+          stat.dev === before.dev &&
+          stat.ino === before.ino &&
+          stat.size === before.size &&
+          stat.mtimeMs === before.mtimeMs &&
+          stat.ctimeMs === before.ctimeMs &&
+          stat.nlink === 1,
+      )
+    )
+      fail("READ_CHANGED");
+    return Buffer.from(bytes.subarray(0, count));
+  } finally {
+    await handle.close();
+  }
 }
 
 // Shadow observation never changes the canonical capture outcome. A failure
