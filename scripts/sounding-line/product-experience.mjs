@@ -9,6 +9,7 @@ import { REVIEW_DIMENSIONS } from "./experience-review-dimensions.mjs";
 import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { readSourceSnapshotBatches } from "./source-snapshot-batches.mjs";
 import { createHash } from "node:crypto";
+import { resolveHomeportSourceAmendment, validateHomeportAmendedRegistration } from "./homeport-source-amendment.mjs";
 import { execFileSync } from "node:child_process";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { R20_DEFERRED_DISPOSITION, validateScopedR20Finding } from "./experience-scope-adjudication.mjs";
@@ -608,7 +609,8 @@ export function bindSC00AHomeportMigration({
   trustedRegistry,
   candidateRegistry,
 }) {
-  const record = trustedRegistry.experiencePolicy?.journeyMigration;
+  const originalRecord = trustedRegistry.experiencePolicy?.journeyMigration;
+  let record = originalRecord;
   if (!record) return null;
   if (experienceDigest(record) !== "a816a0a7d804594f5f2d29960be6be3497c73b6edd48317d6552309ec4cbf236")
     fail("HOMEPORT_MIGRATION_RECORD_INVALID");
@@ -617,6 +619,8 @@ export function bindSC00AHomeportMigration({
   const oldJourney = trusted?.experience?.journeys.find((journey) => journey.id === record.journeyId);
   const newJourney = proposed?.experience?.journeys.find((journey) => journey.id === record.journeyId);
   if (!oldJourney || !newJourney || experienceDigest(oldJourney) === experienceDigest(newJourney)) return null;
+  const amendment = trustedRegistry.experiencePolicy?.journeyMigrationSourceAmendment;
+  record = resolveHomeportSourceAmendment(originalRecord, amendment);
   if (Date.now() >= Date.parse(record.expiresAt)) fail("HOMEPORT_MIGRATION_EXPIRED");
   if (
     experienceDigest(trusted) !== record.oldContractDigest ||
@@ -672,6 +676,11 @@ export function bindSC00AHomeportMigration({
   git(root, ["merge-base", "--is-ancestor", record.acceptedSource, baseSha]);
   git(root, ["merge-base", "--is-ancestor", baseSha, candidateSha]);
   git(root, ["merge-base", "--is-ancestor", record.reviewedAncestor, candidateSha]);
+  if (amendment) {
+    git(root, ["merge-base", "--is-ancestor", originalRecord.acceptedSource, record.acceptedSource]);
+    git(root, ["merge-base", "--is-ancestor", originalRecord.reviewedAncestor, record.reviewedAncestor]);
+    git(root, ["merge-base", "--is-ancestor", record.acceptedSource, record.reviewedAncestor]);
+  }
   if (git(root, ["rev-parse", `${record.reviewedAncestor}^{tree}`]).trim() !== record.reviewedTree)
     fail("HOMEPORT_MIGRATION_REVIEWED_SOURCE_MISMATCH");
   const inventory = (revision) =>
@@ -697,7 +706,8 @@ export function bindSC00AHomeportMigration({
     [...expected].some(([file, metadata]) => reviewed.get(file) !== metadata)
   )
     fail("HOMEPORT_MIGRATION_REVIEWED_SOURCE_MISMATCH");
-  const proofs = record.immutableProofs.map((proof) => {
+  const retainedProofs = new Map();
+  for (const proof of [...originalRecord.immutableProofs, ...(amendment ? [record.immutableProofs[1]] : [])]) {
     const bytes = artifactBytes({ root, revision: baseSha, file: proof.path });
     if (
       baseline.get(proof.path)?.startsWith("100644 blob ") !== true ||
@@ -707,10 +717,17 @@ export function bindSC00AHomeportMigration({
       !bytes.equals(artifactBytes({ root, revision: candidateSha, file: proof.path }))
     )
       fail("HOMEPORT_MIGRATION_HISTORY_MISMATCH");
-    return bytes;
-  });
+    retainedProofs.set(proof.path, bytes);
+  }
+  const proofs = record.immutableProofs.map((proof) => retainedProofs.get(proof.path));
   const original = JSON.parse(proofs[0]),
     approved = JSON.parse(proofs[1]);
+  if (amendment)
+    validateHomeportAmendedRegistration(
+      JSON.parse(retainedProofs.get(originalRecord.immutableProofs[1].path)),
+      approved,
+      amendment,
+    );
   const approvedBlob = createHash("sha1").update(`blob ${proofs[1].length}\0`).update(proofs[1]).digest("hex");
   if (expected.get("testing/contracts.json") !== `100644 blob ${approvedBlob}`)
     fail("HOMEPORT_MIGRATION_REVIEWED_SOURCE_MISMATCH");
@@ -1189,7 +1206,7 @@ export function artifactBytes({ root, revision, file }) {
   if (revision) {
     const entry = git(root, ["ls-tree", revision, "--", file]).trim();
     if (!/^100(?:644|755) blob /u.test(entry)) fail("ARTIFACT_NOT_TRACKED_REGULAR_FILE", file);
-    return git(root, ["show", `${revision}:${file}`], { encoding: null });
+    return git(root, ["show", `${revision}:${file}`, "--"], { encoding: null });
   }
   const rootPath = realpathSync(root);
   const resolved = realpathSync(path.join(rootPath, file));
