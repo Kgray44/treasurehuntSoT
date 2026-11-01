@@ -1,0 +1,246 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
+import { createHash } from "node:crypto";
+import {
+  retainMediaTransportShadow,
+  verifyRetainedMediaShadow,
+  MEDIA_SHADOW_LIMITS,
+} from "../../scripts/sounding-line/bounded-media-shadow.mjs";
+
+const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
+function fixture(t) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "bounded-media-shadow-"));
+  t.after(() => {
+    assert(path.resolve(root).startsWith(path.resolve(os.tmpdir()) + path.sep));
+    assert(path.basename(root).startsWith("bounded-media-shadow-"));
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  const directory = path.join(root, "private");
+  fs.mkdirSync(directory, { mode: 0o700 });
+  return { root, directory };
+}
+function response(chunks, options = {}) {
+  return new Response(
+    new ReadableStream({
+      start(controller) {
+        for (const chunk of chunks) controller.enqueue(chunk);
+        controller.close();
+      },
+    }),
+    options,
+  );
+}
+const options = (directory, bytes, extra = {}) => ({
+  directory,
+  expectedBytes: bytes.length,
+  expectedSha256: hash(bytes),
+  ...extra,
+});
+
+test("bounded streaming retains exact bytes without calling whole-response buffering", async (t) => {
+  const { directory } = fixture(t);
+  const chunks = [Buffer.alloc(1024 * 1024, 0xa5), Buffer.from([0, 255, 13, 10]), Buffer.alloc(1024 * 1024, 0x4b)];
+  const bytes = Buffer.concat(chunks),
+    r = response(chunks, { headers: { "content-length": String(bytes.length) } });
+  r.arrayBuffer = () => assert.fail("whole response must not be buffered");
+  const result = await retainMediaTransportShadow({ ...options(directory, bytes), response: r });
+  assert.equal(result.status, "PASS");
+  assert(fs.readFileSync(result.rawPath).equals(bytes));
+  assert.equal(JSON.parse(fs.readFileSync(result.initialPath)).status, "INCOMPLETE");
+  assert.equal(JSON.parse(fs.readFileSync(result.terminalPath)).status, "PASS");
+  assert.deepEqual(verifyRetainedMediaShadow(result), {
+    bytes: bytes.length,
+    sha256: hash(bytes),
+    qualification: false,
+    reuseAuthorized: false,
+  });
+  assert.equal(verifyRetainedMediaShadow(JSON.parse(JSON.stringify(result))), null);
+  assert.equal(result.authentication, "DECLARED_EXPECTATIONS_NOT_PROVIDER_AUTHENTICATED");
+  assert.equal(result.reuseAuthorized, false);
+  assert.equal(result.originalError, undefined);
+});
+
+test("original stream failures keep their identity, exact prefix and failed receipts", async (t) => {
+  const { directory } = fixture(t),
+    prefix = Buffer.from("original prefix"),
+    error = Error("private synthetic network failure");
+  let pulls = 0;
+  const r = new Response(
+    new ReadableStream({
+      pull(controller) {
+        if (pulls++ === 0) controller.enqueue(prefix);
+        else controller.error(error);
+      },
+    }),
+  );
+  const result = await retainMediaTransportShadow({
+    ...options(directory, Buffer.concat([prefix, Buffer.from(" tail")])),
+    response: r,
+  });
+  assert.equal(result.status, "FAIL");
+  assert.equal(result.originalError, error);
+  assert(fs.readFileSync(result.rawPath).equals(prefix));
+  assert.equal(result.sha256, hash(prefix));
+  assert.equal(result.failureRetained, true);
+  const failed = JSON.parse(fs.readFileSync(result.failurePath));
+  assert.equal(failed.original.message, error.message);
+  assert.equal(failed.original.stack, error.stack);
+  assert.equal(JSON.parse(fs.readFileSync(result.terminalPath)).status, "FAIL");
+  assert.equal(verifyRetainedMediaShadow(result), null);
+  assert(!JSON.stringify(result).includes(error.message));
+});
+
+test("oversize, truncated and wrong-digest bodies never become complete media", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("expected");
+  for (const [chunks, expectedSha256, code] of [
+    [[Buffer.from("expected extra")], hash(bytes), "OVERFLOW"],
+    [[Buffer.from("short")], hash(bytes), "TRUNCATED"],
+    [[bytes], "0".repeat(64), "DIGEST_MISMATCH"],
+  ]) {
+    const result = await retainMediaTransportShadow({
+      ...options(directory, bytes),
+      expectedSha256,
+      response: response(chunks),
+    });
+    assert.equal(result.status, "FAIL");
+    assert.match(result.originalError.message, new RegExp(code, "u"));
+    assert.equal(verifyRetainedMediaShadow(result), null);
+    assert(fs.existsSync(result.initialPath));
+    assert(fs.existsSync(result.terminalPath));
+    assert(result.bytes <= bytes.length);
+  }
+});
+
+test("HTTP/header denials close the original reader and retain incomplete custody", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("ok");
+  for (const opts of [
+    { status: 500 },
+    { status: 206 },
+    { headers: { "content-length": "3" } },
+    { headers: { "content-length": "02" } },
+  ]) {
+    let cancelled = 0;
+    const r = new Response(
+      new ReadableStream({
+        cancel() {
+          cancelled++;
+        },
+      }),
+      opts,
+    );
+    const result = await retainMediaTransportShadow({ ...options(directory, bytes), response: r });
+    assert.equal(result.status, "FAIL");
+    assert.equal(result.bytes, 0);
+    assert.equal(cancelled, 1);
+    assert.equal(result.readerCleanup.cancelled, true);
+    assert.equal(result.readerCleanup.lockReleased, true);
+    assert.equal(result.rawClosed, true);
+  }
+});
+
+test("pending reads and zero-byte hot streams cannot escape the wall-clock bound", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("x");
+  for (const source of [
+    {},
+    {
+      pull(controller) {
+        controller.enqueue(new Uint8Array(0));
+      },
+    },
+  ]) {
+    const result = await retainMediaTransportShadow({
+      ...options(directory, bytes),
+      deadlineMs: 20,
+      response: new Response(new ReadableStream(source)),
+    });
+    assert.equal(result.status, "FAIL");
+    assert.match(result.originalError.message, /DEADLINE/u);
+    assert.equal(result.readerCleanup.cancelled, true);
+    assert.equal(result.readerCleanup.lockReleased, true);
+    assert.equal(result.rawClosed, true);
+  }
+});
+
+test("pre-aborted and in-flight cancellation do not reset allowance or mask failure", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("x");
+  for (const pre of [true, false]) {
+    const controller = new AbortController();
+    let timer;
+    if (pre) controller.abort();
+    else timer = setTimeout(() => controller.abort(), 10);
+    try {
+      const result = await retainMediaTransportShadow({
+        ...options(directory, bytes),
+        signal: controller.signal,
+        response: new Response(new ReadableStream({})),
+      });
+      assert.equal(result.status, "FAIL");
+      assert.match(result.originalError.message, /CANCELLED/u);
+      assert.equal(result.rawClosed, true);
+      assert.equal(result.readerCleanup.cancelled, true);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+});
+
+test("fixed byte/deadline limits reject expansion before creating files", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("x");
+  for (const extra of [
+    { maximumBytes: MEDIA_SHADOW_LIMITS.bytes + 1 },
+    { deadlineMs: MEDIA_SHADOW_LIMITS.deadlineMs + 1 },
+    { expectedBytes: MEDIA_SHADOW_LIMITS.bytes + 1 },
+    { expectedBytes: 0 },
+    { expectedSha256: "caller-says-authenticated" },
+  ])
+    await assert.rejects(
+      retainMediaTransportShadow({ ...options(directory, bytes, extra), response: response([bytes]) }),
+      /MEDIA_SHADOW_/u,
+    );
+  assert.deepEqual(fs.readdirSync(directory), []);
+});
+
+test("directory aliases cannot redirect transport and later byte drift invalidates the opaque handle", async (t) => {
+  const { root, directory } = fixture(t),
+    bytes = Buffer.from("original");
+  const alias = path.join(root, "alias");
+  fs.symlinkSync(directory, alias, process.platform === "win32" ? "junction" : "dir");
+  await assert.rejects(
+    retainMediaTransportShadow({ ...options(alias, bytes), response: response([bytes]) }),
+    /DIRECTORY_ALIAS/u,
+  );
+  assert.deepEqual(fs.readdirSync(directory), []);
+  const result = await retainMediaTransportShadow({ ...options(directory, bytes), response: response([bytes]) });
+  assert.equal(result.status, "PASS");
+  fs.writeFileSync(result.rawPath, Buffer.from("mutation"));
+  assert.equal(verifyRetainedMediaShadow(result), null);
+  assert.equal(JSON.parse(fs.readFileSync(result.terminalPath)).status, "PASS");
+});
+
+test("empty-chunk floods stop at a fixed read count without expanding the byte budget", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("x");
+  const result = await retainMediaTransportShadow({
+    ...options(directory, bytes),
+    response: new Response(
+      new ReadableStream({
+        pull(controller) {
+          controller.enqueue(new Uint8Array(0));
+        },
+      }),
+    ),
+  });
+  assert.equal(result.status, "FAIL");
+  assert.match(result.originalError.message, /READ_LIMIT/u);
+  assert.equal(result.reads, MEDIA_SHADOW_LIMITS.reads);
+  assert.equal(result.bytes, 0);
+  assert.equal(result.rawClosed, true);
+});
