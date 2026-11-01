@@ -29,7 +29,7 @@ test("the capture-only registry lane defaults off, is bounded and cannot change 
   assert(start > preparation.indexOf("id: capture-raw-artifact"));
   assert.equal((steps.match(/inputs\.incremental_evidence_shadow == true/gu) ?? []).length, 2);
   assert.equal((steps.match(/inputs\.experience_mode == 'capture'/gu) ?? []).length, 2);
-  assert.equal((steps.match(/continue-on-error: true/gu) ?? []).length, 2);
+  assert.doesNotMatch(steps, /continue-on-error/u);
   assert.match(steps, /timeout-minutes: 2/u);
   assert.match(steps, /name: Retain encrypted v2 context registry/u);
   assert.match(steps, /if-no-files-found: error/u);

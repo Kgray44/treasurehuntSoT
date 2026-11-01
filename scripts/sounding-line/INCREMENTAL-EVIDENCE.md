@@ -8,7 +8,9 @@ authorize browser reuse, review credit, a release, or a protected merge.
 The ordinary workflow input `incremental_evidence_shadow` defaults to `false`.
 When explicitly enabled for capture, the protected producer runs after preparation,
 parent cleanup, raw retention, and lifecycle retention. Its additional steps are
-nonfatal and bounded. The existing Mainline Decision authority is unchanged.
+bounded. Handled unavailable observations return explicit data without credit;
+step timeouts and opt-in publication failures fail the workflow. No step uses
+`continue-on-error`. The existing Mainline Decision authority is unchanged.
 
 The producer verifies its installed source, exact original run and candidate,
 owner restrictions, parent closure, and provider artifact identities. Each runtime

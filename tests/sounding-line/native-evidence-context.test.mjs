@@ -168,7 +168,7 @@ test("new shadow steps precede candidate checkout and cannot change protected Ma
       job.indexOf("path: authority") < observed && observed < job.indexOf("name: Checkout exact ordinary ancestry"),
     );
     const step = job.slice(observed, job.indexOf("      - ", observed + 8));
-    assert.match(step, /continue-on-error: true/u);
+    assert.doesNotMatch(step, /continue-on-error/u);
     assert.match(step, /timeout-minutes: 1/u);
     assert.match(step, /working-directory: authority/u);
     assert.match(step, /run: node scripts\/sounding-line\/native-evidence-context\.mjs/u);
