@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-21
 ---
 
 # Engineering-record index
@@ -16,6 +16,7 @@ last_reviewed: 2026-10-15
 - [Programs](Programs/) — grouped project and program records.
 - [Architecture decisions](Architecture_Decisions/) — durable technical decisions.
 - [Engineering](Engineering/) — repository operations, documentation guidance, and current status references.
+- [Workspace lifecycle](Engineering/Workspace_Lifecycle/Implementation_Record.md) — storage admission, preservation, retirement, and host reconciliation evidence.
 - [Testing](Testing/) and [Validation](Validation/) — test plans, ledgers, audits, and validation evidence.
 - [Migrations](Migrations/) — migration, rollback, and compatibility records.
 - [Completion receipts](Completion_Receipts/) — accepted implementation receipts.
@@ -27,6 +28,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 
 - [Voyagewright Spatial Experience Architecture v1.0](Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md) — master ownership and integration baseline for device context, multi-surface Voyages, spatial computing, AR, adaptive staging, and the platform-wide Device Lab.
 - [Spatial Experience program home](Programs/Spatial_Experience/README.md) — implementation status, canonical owners, Device Lab rule, and required derived governing work.
+- [Native Chronicle Lens Series Charter v1.0](Programs/Spatial_Experience/NCL_Native_Chronicle_Lens_Program_Charter_v1.0.md) — subordinate Parallax native program governance candidate, physical acceptance requirements and explicitly proposed future increments; no implementation authorization.
 - [Spatial Experience Wave 4 Implementation Launch Manifest](Programs/Spatial_Experience/Voyagewright_Spatial_Experience_Wave_4_Implementation_Launch_Manifest_v1.0.md) — machine-readable architecture contract baseline, dependency graph, phase entry conditions, and implementation sequencing.
 - [Spatial Experience machine-readable registries](Spatial_Experience/) — ownership, device capability, provider, surface, event, and Device Lab scenario registries.
 - [Landfall v1.2 Spatial Ownership and Integration Boundaries](Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md) — post-closure Landfall/Sextant/Parallax/Crossdeck/Device Lab boundary.
@@ -78,6 +80,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Landfall](Projects/Project_Landfall/README.md): [accepted Phase 4 capsule](Projects/Project_Landfall/Project_Landfall_Phase_4_Accepted_Capsule.md) and [completion receipt](Projects/Project_Landfall/Project_Landfall_Phase_4_Completion_Receipt.md), with qualified source and external production gates.
 - [Project Sextant](Projects/Project_Sextant/README.md)
 - [Project Parallax](Projects/Project_Parallax/README.md)
+- [NCL-01 implementation and acceptance status](Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) — exact #741/TestFlight ancestry, virtual proof, owner physical observations, classroom fidelity limits and open acceptance gates.
 - [Project Crossdeck](Projects/Project_Crossdeck/README.md)
 - [Crossdeck R2 capture and final-review blocker](Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md)
 - [Crossdeck R3 phone-return repair and verification](Projects/Project_Crossdeck/Spatial_Experience_Refit_R3_Verification_20261015.md)

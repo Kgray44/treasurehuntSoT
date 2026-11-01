@@ -385,6 +385,8 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   padding: 2rem;
 }
 .new-tale-sheet {
+  --text-heading: var(--parchment-ink);
+  --text-body: var(--parchment-ink);
   width: min(900px, 100%);
   border: 1px solid rgba(201, 169, 95, 0.35);
   border-radius: 24px;

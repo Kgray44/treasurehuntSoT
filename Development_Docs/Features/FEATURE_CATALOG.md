@@ -2248,6 +2248,7 @@ Creators build, preview, validate and version spatial scenes in a dedicated Stud
 - Spatial Assistant requires server-side OpenAI configuration and enabled administrator policy; its bounded model study and accepted owner presentation are documented in A1, while representative-device and universal live quality remain unqualified.
 - Synthetic previews and complexity estimates do not establish measured device frame rates or shared-anchor synchronization.
 - Unsupported imported renderer assets block release; richer rendering, recognition, shared physical anchors and Reach manipulation remain governed by their owning phases.
+- Candidate #776 has a bounded software acceptance scope: 39 expanded authored-Library states and nine photo-reconstruction states remain pending acceptance. Community Profile prerequisite/recovery remains required; see Development_Docs/Projects/Project_Parallax/PR776_Bounded_Software_Acceptance_and_Pending_Coverage.md. Existing implementation and development tests remain available; fresh qualification and product acceptance remain open.
 
 ### Evidence
 
@@ -2470,6 +2471,41 @@ A consented local camera laboratory distinguishes tracked joints, active-hand co
 - test: `src/reach/acquisition.test.ts`
 - test: `tests/e2e/reach-laboratory.spec.ts`
 - completion-record: `Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md`
+
+---
+
+## FT-B114 - Owned Development Workspace Lifecycle
+
+**Status:** MAINLINE
+**Program or subsystem:** Development infrastructure
+
+One external ownership registry admits finite temporary workspaces and automatically reconciles expired tasks, verified protected merges, evidence preservation, generated-resource release and recoverable checkout retirement.
+
+### Important subfeatures
+
+- Reuse before allocation, one workspace per task, finite peak budgets and a 75 GiB aggregate admission ceiling
+- Independent 30 GiB C: and D: reserve admission through the host guard
+- Protected merge and normal, squash or rebase source verification with executable landed-source smoke
+- Hash-verified external evidence custody and immutable cleanup receipts
+- Windows process and handle holds, Git-aware retirement, and junction and shared-store protection
+- Limited per-user logon and periodic reconciliation with crash recovery and automatic PR discovery
+
+### Primary surfaces
+
+`scripts/workspaces/cli.mjs`, `scripts/workspaces/install.ps1`, `.agents/workspace-lifecycle.md`
+
+### Meaningful limitations
+
+- Unknown legacy ownership, unfinished source, active usage and platform denials remain exact tracked blockers until their dependency clears.
+- Codex lifecycle hook definitions require platform trust review; Windows scheduling operates independently.
+- Admission rules do not impose an OS quota on external applications, cloud jobs or existing uninstrumented writers.
+- Legacy storage above the aggregate ceiling blocks new environments; suitable registered workspace reuse remains available.
+
+### Evidence
+
+- path: `scripts/workspaces/lifecycle.mjs`
+- test: `tests/workspaces/lifecycle.test.mjs`
+- completion-record: `Development_Docs/Engineering/Workspace_Lifecycle/Implementation_Record.md`
 
 ---
 

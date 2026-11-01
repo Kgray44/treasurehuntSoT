@@ -1,21 +1,21 @@
 {
   "motion": "no-preference",
   "timings": {
-    "connectToQRMs": 266,
-    "claimToCompanionMs": 938,
-    "sendToVisibleOfferMs": 499,
-    "acceptToRenderedAcknowledgedMs": 429
+    "connectToQRMs": 250,
+    "claimToCompanionMs": 988,
+    "sendToVisibleOfferMs": 570,
+    "acceptToRenderedAcknowledgedMs": 436
   },
   "recordings": {
-    "desktop": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-TuABKr/raw/generic/paired/refit-no-preference/0f6e388183ed450c5395cd9fcc042dfa.webm",
-    "phone": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-TuABKr/raw/generic/paired/refit-no-preference/2bcdcd2cbb5f3552468dbc9e49bb79b6.webm"
+    "desktop": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-txoZA5/raw/generic/paired/refit-no-preference/4b55830acf49ba685a7008a734b2804d.webm",
+    "phone": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-txoZA5/raw/generic/paired/refit-no-preference/338052eb16b79b896848d2b0e81aa320.webm"
   },
   "hardware": "CHROMIUM_EMULATION",
   "personAndMembershipUnchanged": true,
   "continuation": {
     "beforeSequence": 4,
     "afterSequence": 7,
-    "nextBlockId": "next-15e34189-0725-4b74-92ce-c31e29210d04"
+    "nextBlockId": "next-e52b27f8-54bb-4b74-b45e-a12de2699f5e"
   },
   "ownerAcceptance": "NOT_CLAIMED"
 }

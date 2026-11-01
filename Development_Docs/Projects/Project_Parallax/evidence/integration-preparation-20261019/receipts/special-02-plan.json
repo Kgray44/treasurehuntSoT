@@ -1,0 +1,13 @@
+{
+  "candidate": "4bea69d4926db127808f4bbc938a80a3f3a4ab94",
+  "mode": "menu",
+  "startedAt": "2026-10-19T20:16:49.002Z",
+  "tests": [
+    "tests/e2e/parallax-reusable-assets.spec.ts",
+    "tests/e2e/parallax-sc02.spec.ts",
+    "tests/e2e/parallax-workstation.spec.ts",
+    "tests/e2e/parallax-sc00c-library-context-menu.spec.ts"
+  ],
+  "resultRoot": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-02-results",
+  "qualification": false
+}

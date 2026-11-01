@@ -1,0 +1,61 @@
+[
+  {
+    "data": {
+      "EffectiveState": "5",
+      "TargetState": "5",
+      "WakeDuration": "2012",
+      "WakeTime": "2026-10-22T17:47:21.5137697Z",
+      "HiberWriteDuration": "21320",
+      "SleepTime": "2026-10-22T17:15:49.7331358Z",
+      "HiberReadDuration": "6611",
+      "SleepDuration": "7043"
+    },
+    "provider": "Microsoft-Windows-Power-Troubleshooter",
+    "eventId": 1,
+    "timeUtc": "2026-10-22T17:47:22.5384255Z",
+    "eventRecordId": 58003
+  },
+  {
+    "data": {
+      "OldTime": "2026-10-22T17:15:59.6282083Z",
+      "Reason": "2",
+      "NewTime": "2026-10-22T17:47:19.5000000Z"
+    },
+    "provider": "Microsoft-Windows-Kernel-General",
+    "eventId": 1,
+    "timeUtc": "2026-10-22T17:47:19.5009513Z",
+    "eventRecordId": 57983
+  },
+  {
+    "data": {
+      "EffectiveState": "5",
+      "TargetState": "5"
+    },
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "eventId": 107,
+    "timeUtc": "2026-10-22T17:15:59.6282415Z",
+    "eventRecordId": 57982
+  },
+  {
+    "data": {
+      "OldTime": "2026-10-22T17:15:56.7759206Z",
+      "Reason": "2",
+      "NewTime": "2026-10-22T17:15:55.5000000Z"
+    },
+    "provider": "Microsoft-Windows-Kernel-General",
+    "eventId": 1,
+    "timeUtc": "2026-10-22T17:15:56.7780659Z",
+    "eventRecordId": 57981
+  },
+  {
+    "data": {
+      "EffectiveState": "5",
+      "Reason": "6",
+      "TargetState": "5"
+    },
+    "provider": "Microsoft-Windows-Kernel-Power",
+    "eventId": 42,
+    "timeUtc": "2026-10-22T17:15:55.9472981Z",
+    "eventRecordId": 57979
+  }
+]

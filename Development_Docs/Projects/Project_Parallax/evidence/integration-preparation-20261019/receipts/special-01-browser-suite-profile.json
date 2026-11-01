@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-reusable-assets.spec.ts",
+    "tests/e2e/parallax-sc02.spec.ts",
+    "tests/e2e/parallax-workstation.spec.ts",
+    "tests/e2e/parallax-sc00c-library-context-menu.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=list,json,html",
+    "--grep",
+    "Creator saves and reuses|SC-02 Creator places|workspace docks|populated 3D workstation|Library card menus",
+    "--output",
+    "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-01-results"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED"
+}

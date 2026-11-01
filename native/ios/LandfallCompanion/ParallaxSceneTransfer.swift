@@ -66,7 +66,8 @@ final class ParallaxSceneTransfer {
         guard (1...32).contains(input.count) else { return false }
         var ids = Set<String>()
         for j in input {
-            guard j.count == 5, let id = j["id"] as? String, id.range(of:"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",options:.regularExpression) != nil, ids.insert(id).inserted,
+            if j["opacity"] != nil { guard let opacity = numeric(j["opacity"]), opacity.isFinite, (0...1).contains(opacity) else { return false } }
+            guard j.count == (j["opacity"] == nil ? 5 : 6), let id = j["id"] as? String, id.range(of:"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",options:.regularExpression) != nil, ids.insert(id).inserted,
                   let text = j["content"] as? String, (1...2000).contains(text.utf16.count), let kind = j["kind"] as? String, ["PARCHMENT","TEXT","MARKER"].contains(kind),
                   let width = numeric(j["widthMeters"]), (0.01...5).contains(width), let t = j["transform"] as? [String:Any], t.count == 3,
                   let p = t["position"] as? [String:Any], p.count == 3, let q = t["rotation"] as? [String:Any], q.count == 4,

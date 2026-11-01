@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "classification": "generated-engineering-evidence",
+  "status": "ACCEPTED_INDEPENDENT_REVIEW_NOT_OWNER_ACCEPTANCE",
+  "productCandidate": "f265f062767d40618df9152aa8900eaf17bfa92d",
+  "baseSha": "819c992fb15ef0b87299ddaaed143427bd00a13d",
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "contractDigest": "7dc2911fb58ef2d1794bb7d2e28d7dd175a34fa82f89b0ff7e715ec55ddf8da3",
+  "captureRunId": 40155440070,
+  "captureArtifactId": 12585174268,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "reviewArtifactIdAssigned": false,
+  "independentReviewRowsUnaltered": true,
+  "contracts": 32,
+  "dimensionObservations": 544,
+  "accepted": 32,
+  "blocked": 0,
+  "reviewOrdinals": {
+    "fourth": 9,
+    "second": 23
+  },
+  "historicalReportSetsPreserved": 8,
+  "pendingAuthoredPhotoStates": 48,
+  "sourceFilesUnchanged": true,
+  "mediaSelection": {
+    "files": 931,
+    "bytes": 2088160526,
+    "inventorySha256": "c5bff70114de16636b05820d3ad478ca803c7099627ede08704b3632a2185253"
+  },
+  "ownerContinuationDecisionSha256": "311b4d8ea06696f271bb32bdcfc85634e5b208673947e0897aed00ded87eeb92",
+  "rawFiles": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/candidate-review.json",
+      "bytes": 1451392,
+      "sha256": "cc081df079b0e8a646eec071ef263f5c2261d14ea776b9185a39e5ffe4baadcb"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/pr776-f265-review4-accepted-20261025/reviews.json",
+      "bytes": 897977,
+      "sha256": "2a689c7f2c3f404e22cb3e69418fbad41c062284a4917496b62ee2566a0e38df"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/pr776-f265-review4-accepted-20261025/inspection-manifest.json",
+      "bytes": 3502142,
+      "sha256": "843147602699d769079c9fe3bae5e73fff25047e3cd8bd4fecbcc03846d4067c"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/pr776-f265-review4-accepted-20261025/inspection-chronology.json",
+      "bytes": 418121,
+      "sha256": "fe133aaac53e7b858b721c24e7da4092736654dbc46920af3df62713fcb1a2f9"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/pr776-f265-review4-accepted-20261025/seal.json",
+      "bytes": 1932,
+      "sha256": "e05cbff4cfb26da593e279cbe81784afd60dce9c6a91eb6b5ecbc063d7aa4a72"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/pr776-f265-review4-accepted-20261025/captured-plan.json",
+      "bytes": 2258019,
+      "sha256": "bd0fd9565d87c050224a8c38b9f936d811884d305115f686609da0fddfa56850"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/pr776-f265-review4-accepted-20261025/capture-before-independent-review.json",
+      "bytes": 976074,
+      "sha256": "b4b206682d4a349cd6267ccb8b5fae237975370d3e75c6354bbd1081dac7eda1"
+    }
+  ],
+  "canonicalPrecheckSha256": "3e4ee266fafe58fd39d1a7a26c34044a65735c76af78456b5489d2e12d8ba630",
+  "oldBlockedMediaCommitRetainedLocally": "bc318aafb6aa4864f3807af45a9e367cd26e7246",
+  "oldBlockedMediaAncestryPublished": false,
+  "authenticatedReviewDispatches": 0
+}

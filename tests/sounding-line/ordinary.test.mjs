@@ -9,10 +9,11 @@ import path from "node:path";
 import test from "node:test";
 import "./ordinary-consumer-policy.test.mjs";
 import "./incremental-browser-evidence.test.mjs";
-import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
+import { splitMigrationStatements, sqliteBootstrapDatabaseUrl } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBrowserAuthorityTopology,
   browserRuntimeReceipt,
+  browserAuthorityExecutionTimeoutMs,
   runBrowserAuthority,
   startTaskOwnedHttpProxy,
   stopProxy,
@@ -28,6 +29,8 @@ import {
   buildEvidenceObligations,
   trackedEntries,
   boundedVitestCommands,
+  boundedFormatterCommands,
+  boundedLintCommands,
   classifyChanges,
   packageAuthorityChanges,
   requiresMigrationValidation,
@@ -42,6 +45,7 @@ import {
   verificationCommands,
   verificationObligationGroups,
   WINDOWS_SAFE_VITEST_COMMAND_LENGTH,
+  WINDOWS_SAFE_PATH_COMMAND_BYTES,
 } from "../../scripts/sounding-line/ordinary.mjs";
 import {
   isolatedBrowserFixtureCredentials,
@@ -628,6 +632,187 @@ test("docs and catalog candidates keep directly changed static tests without sel
   assert.deepEqual(selection.unitTests, ["scripts/features/feature-catalog.test.ts"]);
   assert.deepEqual(selection.browserTests, []);
   assert.equal(selection.widened, false);
+});
+
+test("bounded path checks preserve every ordered formatter and lint argument", () => {
+  const paths = Array.from(
+    { length: 600 },
+    (_, i) => "Development_Docs/" + i.toString().padStart(4, "0") + "-" + "x".repeat(32) + ".json",
+  );
+  paths.splice(
+    200,
+    0,
+    "Development_Docs/a spaced é path.json",
+    ...['"', "'", "&", "|", "^", "%", "!", "\u0060", "\\"].map(
+      (char) => "Development_Docs/" + char.repeat(20) + ".json",
+    ),
+  );
+  for (const [make, prefix] of [
+    [boundedFormatterCommands, ["--no-install", "prettier", "--check"]],
+    [boundedLintCommands, ["--no-install", "eslint"]],
+  ]) {
+    const commands = make(paths);
+    assert(commands.length > 1);
+    assert.deepEqual(commands, make(paths));
+    assert.deepEqual(
+      commands.flatMap(([, args]) => args.slice(prefix.length)),
+      paths,
+    );
+    assert(
+      commands.every(
+        ([name, args]) =>
+          name === "npx" &&
+          JSON.stringify(args.slice(0, prefix.length)) === JSON.stringify(prefix) &&
+          Buffer.byteLength(JSON.stringify([name, ...args]), "utf8") <= WINDOWS_SAFE_PATH_COMMAND_BYTES,
+      ),
+    );
+    assert.deepEqual(make([]), []);
+    assert.throws(() => make(["'".repeat(800)]), /SOUNDING_LINE_PATH_CHECK_EXCEEDS_COMMAND_LIMIT/u);
+    assert.throws(
+      () => make(["x".repeat(WINDOWS_SAFE_PATH_COMMAND_BYTES)]),
+      /SOUNDING_LINE_PATH_CHECK_EXCEEDS_COMMAND_LIMIT/u,
+    );
+  }
+  const release = verificationCommands({
+    mode: "release",
+    safetyPaths: paths,
+    lintPaths: paths,
+    selected: { unitTests: [], browserTests: [] },
+    migrationScripts: [],
+    buildRequired: false,
+  });
+  assert.deepEqual(release.slice(0, 2), [
+    ["npx", ["--no-install", "prettier", "--check", "."]],
+    ["npx", ["--no-install", "eslint", "."]],
+  ]);
+});
+
+test("path batches retain original browser and migration obligation partitions", () => {
+  const paths = Array.from({ length: 180 }, (_, i) => `src/selected-${i}-${"x".repeat(40)}.ts`);
+  const base = {
+    mode: "ordinary",
+    candidateSha: "a".repeat(40),
+    selected: { unitTests: ["src/fixture.test.ts"], browserTests: ["tests/e2e/project-helm-phase1.spec.ts"] },
+    migrationRequired: true,
+    registrationValidationRequired: true,
+    migrationScripts: [],
+    buildRequired: true,
+  };
+  for (const index of [0, 90, paths.length]) {
+    const selected = [...paths];
+    selected.splice(index, 0, "prisma/seed.ts");
+    const plan = { ...base, safetyPaths: selected, lintPaths: selected };
+    const format = boundedFormatterCommands(selected),
+      lint = boundedLintCommands(selected);
+    assert(format.length > 1 && lint.length > 1);
+    const groups = verificationObligationGroups(plan);
+    const browser = groups.find((group) => group.kind === "browser");
+    assert.deepEqual(browser.commands.slice(0, format.length + lint.length), [...format, ...lint]);
+    assert(
+      groups
+        .filter((group) => group !== browser)
+        .every((group) => group.commands.every(([, args]) => !["prettier", "eslint"].includes(args[1]))),
+    );
+    const originalShape = verificationObligationGroups({
+      ...base,
+      safetyPaths: ["prisma/seed.ts"],
+      lintPaths: ["prisma/seed.ts"],
+    });
+    assert.deepEqual(
+      groups.map(({ kind }) => kind),
+      originalShape.map(({ kind }) => kind),
+    );
+  }
+  const migrationPaths = [...paths, "src/migration-check.ts"];
+  const migration = verificationObligationGroups({
+    ...base,
+    safetyPaths: migrationPaths,
+    lintPaths: migrationPaths,
+    selected: { unitTests: [], browserTests: [] },
+    buildRequired: false,
+    migrationRequired: false,
+    registrationValidationRequired: false,
+  });
+  assert.equal(migration[0].kind, "migration");
+  assert.equal(migration[1].kind, "migration");
+  assert.deepEqual(migration[0].commands, boundedFormatterCommands(migrationPaths));
+  assert.deepEqual(migration[1].commands, boundedLintCommands(migrationPaths));
+});
+
+test("path batches keep one whole obligation per tool and every selected closure member", async () => {
+  await withEvidenceFixture(async ({ root, baseSha }) => {
+    const formatPaths = Array.from(
+      { length: 180 },
+      (_, i) => "Development_Docs/formatter-" + i.toString().padStart(3, "0") + "-" + "x".repeat(24) + ".md",
+    );
+    const lintPaths = Array.from(
+      { length: 180 },
+      (_, i) => "src/lint-" + i.toString().padStart(3, "0") + "-" + "x".repeat(24) + ".ts",
+    );
+    for (const file of [...formatPaths, ...lintPaths]) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      writeFileSync(path.join(root, file), file.endsWith(".md") ? "# Preserved path\n" : "export {};\n");
+    }
+    const candidateSha = commit(root, "complete path check fixture");
+    const plan = {
+      mode: "ordinary",
+      baseSha,
+      candidateSha,
+      safetyPaths: formatPaths,
+      lintPaths,
+      selected: { unitTests: [], browserTests: [] },
+      migrationRequired: false,
+      migrationScripts: [],
+      buildRequired: false,
+    };
+    const format = boundedFormatterCommands(formatPaths),
+      lint = boundedLintCommands(lintPaths),
+      commands = verificationCommands(plan);
+    assert(format.length > 1 && lint.length > 1);
+    assert.deepEqual(commands.slice(0, format.length + lint.length), [...format, ...lint]);
+    const obligations = await buildEvidenceObligations(root, plan);
+    const formatObligation = obligations.find((group) =>
+      group.commandLabels[0].startsWith("npx --no-install prettier --check "),
+    );
+    const lintObligation = obligations.find((group) => group.commandLabels[0].startsWith("npx --no-install eslint "));
+    assert.deepEqual(formatObligation.commands, format);
+    assert.deepEqual(lintObligation.commands, lint);
+    for (const [files, group] of [
+      [formatPaths, formatObligation],
+      [lintPaths, lintObligation],
+    ])
+      for (const file of files)
+        assert(
+          group.fingerprint.semanticClosureMembers.some((entry) => entry.startsWith(file + "@")),
+          file,
+        );
+    const failure = new Error("LATER_FORMAT_BATCH_FAILED");
+    let formatterCalls = 0;
+    await assert.rejects(
+      () =>
+        runReconciledVerification(root, plan, (_root, command, args) => {
+          assert.equal(command, "npx");
+          assert.equal(args[1], "prettier");
+          if (++formatterCalls === 2) throw failure;
+        }),
+      (error) => error === failure,
+    );
+    assert.equal(formatterCalls, 2);
+    const observedRoot = path.join(root, "artifacts", "sounding-line", "parent-observed-evidence");
+    assert.deepEqual(
+      readdirSync(observedRoot, { recursive: true }).filter((file) => file.endsWith(".json")),
+      [],
+    );
+    const calls = [];
+    const completed = await runReconciledVerification(root, plan, (_root, command, args) =>
+      calls.push([command, args]),
+    );
+    assert.deepEqual(calls.slice(0, format.length + lint.length), [...format, ...lint]);
+    const receipt = completed.receipts.filter((entry) => entry.obligationId === formatObligation.id);
+    assert.equal(receipt.length, 1);
+    assert.deepEqual(receipt[0].commands, formatObligation.commandLabels);
+    assert.equal(completed.finalization.decision, "PASS");
+  });
 });
 
 test("Windows-safe Vitest chunks preserve the complete ordered unit selection as one obligation", () => {
@@ -1345,6 +1530,19 @@ test("SQLite bootstrap preserves quoted semicolons while ignoring migration comm
   );
 });
 
+test("SQLite bootstrap pins migration connection state while preserving database and other options", () => {
+  for (const database of ["file:/tmp/owned fixture.db", "file:D:/owned fixture/fixture.db", "file:./fixture.db"])
+    assert.equal(sqliteBootstrapDatabaseUrl(database), `${database}?connection_limit=1`);
+  assert.equal(
+    sqliteBootstrapDatabaseUrl("file:./fixture.db?socket_timeout=30&connection_limit=5&max_connection_lifetime=0"),
+    "file:./fixture.db?socket_timeout=30&connection_limit=1&max_connection_lifetime=0",
+  );
+  assert.equal(
+    sqliteBootstrapDatabaseUrl("file:./fixture.db?connection_limit=2&connection_limit=5&socket_timeout=30"),
+    "file:./fixture.db?connection_limit=1&socket_timeout=30",
+  );
+});
+
 test("migration rehearsal changes receive schema validation", () => {
   assert.equal(
     requiresMigrationValidation({ changedPaths: ["scripts/rehearse-harborlight-phase3-migrations.ts"] }),
@@ -1687,6 +1885,7 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     "sounding-line-exhaustive-release.yml",
     "sounding-line-focused-repair.yml",
     "sounding-line-ordinary.yml",
+    "sounding-line-preparation-probe.yml",
     "sounding-line-replay-admission-diagnostic.yml",
     "sounding-line-replay-historical-validation-diagnostic.yml",
     "sounding-line-replay-posttechnical-diagnostic.yml",
@@ -1714,6 +1913,50 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     /pull_request_target|pull_request:|push:|workflow_call|schedule:|Mainline Decision|experience-exception\.mjs|--mode (?:ordinary|release)|PROTECTED_FINAL_VERIFICATION/u,
   );
   assert.doesNotMatch(ordinaryWorkflow, /sounding-line-focused-repair|develop-browser-suite\.mjs/u);
+  const probeWorkflow = readFileSync(".github/workflows/sounding-line-preparation-probe.yml", "utf8");
+  assert.match(probeWorkflow, /on:\n  workflow_dispatch:\n    inputs:\n/u);
+  assert.deepEqual(
+    [...probeWorkflow.split("\npermissions:\n")[0].matchAll(/^      ([a-z_]+):$/gmu)].map((match) => match[1]),
+    ["expected_sha"],
+  );
+  assert.doesNotMatch(
+    probeWorkflow,
+    /pull_request_target|pull_request:|push:|workflow_call|schedule:|Mainline Decision/u,
+  );
+  assert.deepEqual(
+    [...probeWorkflow.split("\njobs:\n")[1].matchAll(/^  ([a-z-]+):$/gmu)].map((match) => match[1]),
+    ["synthetic"],
+  );
+  assert.match(probeWorkflow, /permissions:\n  contents: read\n/u);
+  assert.match(probeWorkflow, /    permissions:\n      contents: read\n      statuses: write\n/u);
+  assert.equal((probeWorkflow.match(/^\s*permissions:/gmu) ?? []).length, 2);
+  assert.equal((probeWorkflow.match(/: write$/gmu) ?? []).length, 1);
+  assert(probeWorkflow.includes('test "$INSTALLED_REF" = refs/heads/main'));
+  assert(probeWorkflow.includes('test "$EXPECTED_SHA" = "$INSTALLED_SHA"'));
+  assert(
+    probeWorkflow.indexOf('test "$EXPECTED_SHA" = "$INSTALLED_SHA"') <
+      probeWorkflow.indexOf("uses: actions/checkout@v4"),
+  );
+  assert(probeWorkflow.includes("ref: ${{ github.sha }}"));
+  assert.match(probeWorkflow, /persist-credentials: false/u);
+  assert.deepEqual(
+    [...probeWorkflow.matchAll(/run: (node [^\n]+)/gu)].map((match) => match[1]),
+    ['node authority/scripts/sounding-line/preparation-supervisor-probe.mjs --source "$EXPECTED_SHA"'],
+  );
+  assert.deepEqual(
+    [...probeWorkflow.matchAll(/^            (\$\{\{[^\n]+\}\})$/gmu)].map((match) => match[1]),
+    ["${{ steps.probe.outputs.probe_progress_paths }}", "${{ steps.probe.outputs.probe_summary_path }}"],
+  );
+  assert.doesNotMatch(
+    probeWorkflow,
+    /transport|experience-exception\.mjs|experience-prepare\.mjs|ordinary\.mjs|campaign-custody/u,
+  );
+  const probeSource = readFileSync("scripts/sounding-line/preparation-supervisor-probe.mjs", "utf8");
+  assert.deepEqual(
+    [...probeSource.matchAll(/from "(\.\/[^"]+)"/gu)].map((match) => match[1]),
+    ["./preparation-phases.mjs", "./preparation-supervisor.mjs"],
+  );
+  assert.match(probeSource, /\["hosted-advance", "hosted-silent"\]\.entries\(\)/u);
   const releaseWorkflow = readFileSync(".github/workflows/sounding-line-exhaustive-release.yml", "utf8");
   assert.match(releaseWorkflow, /--mode release/u);
   const controlPlaneWorkflow = readFileSync(".github/workflows/sounding-line-control-plane.yml", "utf8");
@@ -2058,3 +2301,43 @@ test("generic browser credentials are ephemeral and restricted to the isolated p
     assert.deepEqual(isolatedBrowserFixtureCredentials(profile), {});
 });
 import "./experience-checkout-recovery.test.mjs";
+import "../workspaces/lifecycle.test.mjs";
+
+test("only exact PR776 generic browser authority receives its fixed 45-minute CLI budget", () => {
+  const rows = [
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic", SOUNDING_LINE_PR_NUMBER: "776" }, 45 * 60_000],
+    [{}, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic" }, 15 * 60_000],
+    [{ SOUNDING_LINE_PR_NUMBER: "776" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic", SOUNDING_LINE_PR_NUMBER: "721" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic", SOUNDING_LINE_PR_NUMBER: "0776" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "generic", SOUNDING_LINE_PR_NUMBER: 776 }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "harborlight-phase3", SOUNDING_LINE_PR_NUMBER: "776" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "unknown", SOUNDING_LINE_PR_NUMBER: "776" }, 15 * 60_000],
+    [{ SOUNDING_LINE_SUITE_PROFILE: "GENERIC", SOUNDING_LINE_PR_NUMBER: "776" }, 15 * 60_000],
+  ];
+  for (const [environment, expected] of rows) {
+    const unchanged = structuredClone(environment);
+    assert.equal(browserAuthorityExecutionTimeoutMs(environment), expected);
+    assert.deepEqual(environment, unchanged);
+    assert.equal(
+      browserAuthorityExecutionTimeoutMs({
+        ...environment,
+        SOUNDING_LINE_BROWSER_EXECUTION_TIMEOUT_MS: "999999999",
+        executionTimeoutMs: 1,
+      }),
+      expected,
+      "unrecognized caller durations never change the finite selector",
+    );
+  }
+});
+test("browser authority CLI uses the scoped selector while API and experience capture retain their budgets", () => {
+  const authority = readFileSync("scripts/sounding-line/browser-authority.mjs", "utf8");
+  const capture = readFileSync("scripts/sounding-line/experience-browser.mjs", "utf8");
+  assert.match(authority, /executionTimeoutMs = 15 \* 60_000/u);
+  assert.match(
+    authority,
+    /async function main\(\)[\s\S]*?const receipt = await runBrowserAuthority\(\{\s*root,\s*executionTimeoutMs: browserAuthorityExecutionTimeoutMs\(process.env\),/u,
+  );
+  assert.match(capture, /executionTimeoutMs: PREPARATION_PHASES\.CAPTURE/u);
+});

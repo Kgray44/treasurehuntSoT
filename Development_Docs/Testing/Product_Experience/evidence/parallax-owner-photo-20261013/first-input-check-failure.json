@@ -1,0 +1,16 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "82a9ccd57a6d0485c797840396e6057f9e8221ca",
+  "onePhoto": "INPUT_COUNT_UNAVAILABLE_BEFORE_GENERATION",
+  "twoPhoto": "INPUT_COUNT_UNAVAILABLE_BEFORE_GENERATION",
+  "paidGenerationCalls": 0,
+  "diagnostic": {
+    "minimalTokenCountHTTP": 200,
+    "fullRoomSchemaTokenCountHTTP": 400,
+    "errorCode": "invalid_json_schema",
+    "errorParam": "text.format.schema"
+  },
+  "captureSourceBinding": "INVALIDATED_NEXT_DEV_GENERATED_AGENTS",
+  "repair": "Emit fixed-length array.items in OpenAI schema; retain strict canonical tuple/axis parsing. Disable Next agent-file generation in the task-owned live-photo runtime, as already done for synthetic photo validation.",
+  "privateArtifacts": "Original owner-photo UI captures and request results remain in ignored task-local artifacts; no owner photos published to Git."
+}

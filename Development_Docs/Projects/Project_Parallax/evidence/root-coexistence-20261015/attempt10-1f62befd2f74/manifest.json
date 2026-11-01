@@ -1,0 +1,96 @@
+{
+  "source": "1f62befd2f744fb033b5853ef2fcf387e34545b6",
+  "tree": "c2545e27517654aed18e2425283b0a62a57ab3e0",
+  "unchangedProductSource": "1170f2217084ff5bdff5b0f0b039c49ce791f5f2",
+  "outcome": "1 PASS focused responsive Library/filter/recovery journey; not a repeat of18 cases",
+  "provider": "GUARDED_SYNTHETIC_UNPAID",
+  "sourceBinding": "VALID",
+  "buildAndFullTypeScript": "PASS",
+  "capture": "PASS",
+  "cleanup": "PASS; serverexit1 owned escalation",
+  "coverage": [
+    "narrow desktop and light reduced-motion rendering",
+    "390px open phone Filters and Source private vs builtin predicate",
+    "Show working-only empty result and active-result restoration",
+    "SortName and Source retention across collapse and reopen",
+    "phone selected details and503 refresh recovery"
+  ],
+  "limits": [
+    "Initial17PASS1FAIL receipt remains unchanged; no combined18/18 current-source claim.",
+    "No physical phone, protected, owner or wholecontract acceptance."
+  ],
+  "files": [
+    {
+      "path": "browser.original.log",
+      "originalPath": "tmp/root-phone-filters-1f62befd2f74.log",
+      "bytes": 47243,
+      "sha256": "cc913e3e9b180c2fa8c2ad3733485dbd8db2200322856109c6d6338a9521d5af"
+    },
+    {
+      "path": "browser-runtime.original.json",
+      "originalPath": "artifacts/sounding-line/browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "90a07e2fa2ec952b2548c30252dee05eb836adddc77d41605a0a952f052ed89f"
+    },
+    {
+      "path": "browser-suite-profile.original.json",
+      "originalPath": "artifacts/sounding-line/browser-suite-profile.json",
+      "bytes": 411,
+      "sha256": "be4bbd270bbaf95a62bc6304b6d80d909495c4d0b1c5b21004455602dc1f3464"
+    },
+    {
+      "path": "r000.json",
+      "originalPath": "artifacts/root-phone-filters-1f62befd2f74/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "r001.webm",
+      "originalPath": "artifacts/root-phone-filters-1f62befd2f74/parallax-sc00c-expanded-li-ec467-d-motion-and-catalog-errors-chromium/video.webm",
+      "bytes": 366918,
+      "sha256": "5e3f73ca380ac0da964d6457317599b7b41f3613f63dfbce4337c44044310b44"
+    },
+    {
+      "path": "a000.json",
+      "originalPath": "artifacts/parallax-a1/browser/1f62befd2f74/run.json",
+      "bytes": 610,
+      "sha256": "8e9ed075bda98f73761e5c481c27657d965e22d51c86f20b9c6f00c8b40ee3de"
+    },
+    {
+      "path": "l000.png",
+      "originalPath": "artifacts/sc00c/expanded-library/1f62befd2f74/expanded-light-reduced.png",
+      "bytes": 97755,
+      "sha256": "72c16888a199a721be35fb91fa021d59f25c38db7154a9d5453e434ebad6774b"
+    },
+    {
+      "path": "l001.png",
+      "originalPath": "artifacts/sc00c/expanded-library/1f62befd2f74/expanded-narrow.png",
+      "bytes": 95009,
+      "sha256": "a1f41c57ef2325db79795a397fea9bf257d382bb73f289a9c544822dceabe947"
+    },
+    {
+      "path": "l002.png",
+      "originalPath": "artifacts/sc00c/expanded-library/1f62befd2f74/expanded-phone-filters-built-in.png",
+      "bytes": 49815,
+      "sha256": "e2d61d86607631a64c3ac035e7ee427800788313fb2a22ccf625f9a6b0e24d6c"
+    },
+    {
+      "path": "l003.png",
+      "originalPath": "artifacts/sc00c/expanded-library/1f62befd2f74/expanded-phone-filters-private.png",
+      "bytes": 28494,
+      "sha256": "793c7cb628c7444062642b5cf00e7fc2a7409b6ce11a7e8bf87171a42d9a9f07"
+    },
+    {
+      "path": "l004.png",
+      "originalPath": "artifacts/sc00c/expanded-library/1f62befd2f74/expanded-phone-selected.png",
+      "bytes": 56073,
+      "sha256": "91290ff29f3ff1388aa454aca580ea6349d5b94955cbd8793557f32f140c65aa"
+    },
+    {
+      "path": "l005.png",
+      "originalPath": "artifacts/sc00c/expanded-library/1f62befd2f74/expanded-phone.png",
+      "bytes": 63504,
+      "sha256": "64e4c102094f3b0e6e02b6768a3ccdb5635d67c48bc0be2ad9577532a24ae5ae"
+    }
+  ]
+}

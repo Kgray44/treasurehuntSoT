@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "classification": "SOURCE_BOUND_BUILD_ATTEMPT_TEST_FIXTURE_TYPE_FAILURE",
+  "candidate": "08094ba1ed23d1754c3e804af2f84c0201b57b92",
+  "tree": "5a89c653c9b0cd5d92e7d326c9c366375be07805",
+  "sourceBinding": "VALID",
+  "productionCompilation": "PASS",
+  "productionTypeScript": "FAIL",
+  "failure": {
+    "file": "src/components/studio/parallax/SceneManager.test.tsx",
+    "line": 118,
+    "code": "TS2769",
+    "observed": "Testing Library ByRoleOptions does not support the Playwright exact option",
+    "classification": "TEST_FIXTURE_TYPE_ERROR",
+    "repair": "Remove unsupported exact: true; retain the string role name and all recovery assertions"
+  },
+  "browserExecution": "NOT_STARTED",
+  "recordings": [],
+  "history": "NO_PRIOR_PASS_OR_FAILURE_RELABELLED_AND_NO_REVIEW_BUDGET_RESET",
+  "qualification": "NOT_ESTABLISHED",
+  "visualAcceptance": "NOT_ESTABLISHED",
+  "artifacts": [
+    {
+      "path": "production-build.log",
+      "bytes": 23148,
+      "sha256": "e7d293223cf887227e214082ede3cc698bf09757462705934ab392452a2c5d77"
+    },
+    {
+      "path": "browser-helper-run.json",
+      "bytes": 414,
+      "sha256": "b282fca7fd7f0aeb7990b0c6554e4898eaf664368bed0b9f18ba0937ce0a9bc7"
+    },
+    {
+      "path": "fixture-checked-types.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "followup": {
+    "sourceCommit": "5ec45d4f1a10f7359738acfb7d44989634fa1026",
+    "fullTypeScript": "PASS",
+    "browserRecapture": "PENDING",
+    "zeroByteLogMeans": "Successful no-emit command observed with exit code zero"
+  }
+}

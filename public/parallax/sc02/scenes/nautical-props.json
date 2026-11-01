@@ -1,0 +1,320 @@
+{
+  "content": {
+    "id": "sc02-Nautical-Props:draft",
+    "definitionId": "sc02-Nautical-Props",
+    "semanticVersion": "1.0.0",
+    "schemaVersion": 1,
+    "title": "Nautical Props collection",
+    "studio": {
+      "schemaVersion": 1,
+      "layers": [
+        {
+          "entityId": "sc02-Nautical-Props:asset0",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Nautical-Props:asset1",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Nautical-Props:asset2",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Nautical-Props:asset3",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Nautical-Props:asset4",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Nautical-Props:support",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        }
+      ],
+      "behaviors": [],
+      "assets": [],
+      "visionReferences": [],
+      "minimumRuntime": "PARALLAX_2",
+      "capabilityDependencies": [],
+      "compatibilityNotes": "Guided View preserves the authored meaning. Asset dependencies require a compatible renderer.",
+      "provenance": {
+        "origin": "PRESET",
+        "generator": "Parallax Spatial Studio",
+        "license": "Creator owned"
+      }
+    },
+    "anchors": [
+      {
+        "id": "sc02-Nautical-Props:elements",
+        "kind": "LOCAL_WORLD",
+        "frameId": "sc02-local",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      }
+    ],
+    "entities": [
+      {
+        "id": "sc02-Nautical-Props:asset0",
+        "name": "Brass compass",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "brass-compass",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Nautical-Props:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -0.55,
+            "y": 0.76,
+            "z": -0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.16,
+        "content": "Turned brass bezel, engraved rose, directional needle, tick marks and suspension ring.",
+        "alternativeText": "Turned brass bezel, engraved rose, directional needle, tick marks and suspension ring.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Nautical-Props:asset1",
+        "name": "Lantern",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "lantern",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Nautical-Props:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0.76,
+            "z": -0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.22,
+        "content": "Hexagonal framed glass lantern with a turned oil reservoir, flame and wire carrying handle.",
+        "alternativeText": "Hexagonal framed glass lantern with a turned oil reservoir, flame and wire carrying handle.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Nautical-Props:asset2",
+        "name": "Treasure map",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "treasure-map",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Nautical-Props:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0.55,
+            "y": 0.76,
+            "z": -0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.55,
+        "content": "Curled parchment with an original coastline, compass rose, route and marked destination.",
+        "alternativeText": "Curled parchment with an original coastline, compass rose, route and marked destination.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Nautical-Props:asset3",
+        "name": "Rolled nautical chart",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "nautical-chart",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Nautical-Props:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -0.325,
+            "y": 0.76,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.46,
+        "content": "Partially unrolled chart with layered paper rolls, navigation rules and ribbon tie.",
+        "alternativeText": "Partially unrolled chart with layered paper rolls, navigation rules and ribbon tie.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Nautical-Props:asset4",
+        "name": "Spyglass",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "spyglass",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Nautical-Props:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0.325,
+            "y": 0.76,
+            "z": 0.2
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.38,
+        "content": "Telescoping brass barrels, leather grip, raised collars and recessed blue glass.",
+        "alternativeText": "Telescoping brass barrels, leather grip, raised collars and recessed blue glass.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Nautical-Props:support",
+        "name": "Showcase support table",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "dining-table",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Nautical-Props:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.7,
+        "content": "Oval plank table on a turned pedestal and four swept feet.",
+        "alternativeText": "Oval plank table on a turned pedestal and four swept feet.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      }
+    ],
+    "placementPolicy": "FIXED",
+    "privacyClass": "LOCAL_EPHEMERAL",
+    "fallback": {
+      "mode": "GUIDED",
+      "narrative": "Read and inspect the same clue here, without a camera or precision movement.",
+      "preservesMeaning": true
+    },
+    "accessibility": {
+      "seated": true,
+      "keyboard": true,
+      "reducedMotion": true,
+      "soundIndependent": true
+    }
+  },
+  "scope": "MY_LIBRARY",
+  "chronicleId": null,
+  "category": "MOMENT",
+  "tags": [],
+  "collection": "",
+  "favorite": false,
+  "lineage": null
+}

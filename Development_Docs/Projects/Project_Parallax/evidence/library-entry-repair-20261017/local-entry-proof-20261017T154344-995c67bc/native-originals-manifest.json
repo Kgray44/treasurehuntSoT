@@ -1,0 +1,184 @@
+{
+  "kind": "NATIVE_LOCAL_FOCUSED_PROOF_ORIGINALS",
+  "candidate": "b96d78364ff3e0ebad0062d0b6049ab6415ef942",
+  "tree": "9b8fc7e8143e692de70b6d6d7bccc774bedb9bf9",
+  "finishedAt": "2026-10-17T15:44:43.879Z",
+  "exitCode": 0,
+  "sourceHeadUnchanged": true,
+  "workingTreeClean": true,
+  "files": [
+    {
+      "path": "run-artifacts/animation-end.png",
+      "bytes": 201277,
+      "sha256": "148e156812407b2bef20919df9c328f58f58139c2dab45d7a441957053358ac1"
+    },
+    {
+      "path": "run-artifacts/animation-phone-layout.json",
+      "bytes": 422,
+      "sha256": "5b51e4b815800de895f0b294938178d942500fa00bb061cb6f136990f20520dd"
+    },
+    {
+      "path": "run-artifacts/animation-phone-timeline-controls.png",
+      "bytes": 80482,
+      "sha256": "bd0c259114d09895338117989b9cce06462d237a9567a2c77386e40ca7d3a546"
+    },
+    {
+      "path": "run-artifacts/animation-phone-viewport.png",
+      "bytes": 113943,
+      "sha256": "d0fd428ec99566b6e534ff2847710c08f837376403a9fee634f82d66363bddb1"
+    },
+    {
+      "path": "run-artifacts/animation-phone.png",
+      "bytes": 115262,
+      "sha256": "9d25e6f1c9ac271907d4d7fe28276dd8abe73a21c99a1e2705ccd8cbdd02dcb5"
+    },
+    {
+      "path": "run-artifacts/animation-reloaded-zoom.png",
+      "bytes": 246343,
+      "sha256": "1322b42d834dc2917db2532be96a2ac23ba84267990933dd6a7a3bcafddbf951"
+    },
+    {
+      "path": "run-artifacts/animation-start.png",
+      "bytes": 206155,
+      "sha256": "fd7b804fa8dd1ea7d99896c21c4578d2992301364c6796e4b253d027df8a10a6"
+    },
+    {
+      "path": "run-artifacts/cinematic-first-take.png",
+      "bytes": 232365,
+      "sha256": "33703fcf78e5b4d28e90e1c5e5bab5a5e97ec9b7cd827ada75fcb213ec0e7936"
+    },
+    {
+      "path": "run-artifacts/cinematic-live-duration-resize.png",
+      "bytes": 234679,
+      "sha256": "7109e0e5c6bc7ef4ed3a033635db7fb79ad2f4769c4b9f44d2a94c73933d21a7"
+    },
+    {
+      "path": "run-artifacts/cinematic-reduced-motion.png",
+      "bytes": 231460,
+      "sha256": "8c55296f8ee912917daaf5a9616705b0bb6fc71b0add85f6381426f5809e1925"
+    },
+    {
+      "path": "run-artifacts/cinematic-renderer-proof.json",
+      "bytes": 50334,
+      "sha256": "6e4471bb2a56ca6409b2a1611134bf5f36e1e98952fbb26b044ae68ada9d3de3"
+    },
+    {
+      "path": "run-artifacts/cinematic-second-take.png",
+      "bytes": 234836,
+      "sha256": "50792753776a8632dc5adde1d1ca615290d644775f78f8c9d8dac3c7a2c9abe1"
+    },
+    {
+      "path": "run-artifacts/cinematic-selected-keyframe-settings.png",
+      "bytes": 234707,
+      "sha256": "14bf5a6684d1413e49e4e1eedef6181dfa7ee7263a4f59d4b91d78f5bc4d67cd"
+    },
+    {
+      "path": "run-artifacts/construction-corrected-reloaded-phone.png",
+      "bytes": 73249,
+      "sha256": "5e442f4b60e4d1f01639adc166f22aa2c8c3f2645e310faff514eee171117ac6"
+    },
+    {
+      "path": "run-artifacts/construction-scale-review-phone.png",
+      "bytes": 64546,
+      "sha256": "9d8c8024f4c5b6cf8cf648a94c898efe824c7254cf96c3b678267980e69d4aa4"
+    },
+    {
+      "path": "run-artifacts/construction-wall-and-scale-findings.png",
+      "bytes": 283894,
+      "sha256": "4ecd70eac8066fbb77fb8e6cca4bdecf5991b896541ab51b60afce216b21ced8"
+    },
+    {
+      "path": "run-artifacts/parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "bytes": 460609,
+      "sha256": "b0c60ce76f30cf7ac6153a6420e801815b31a8c06a8a8d8816e204cbab1095aa"
+    },
+    {
+      "path": "run-artifacts/parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "bytes": 261080,
+      "sha256": "027e3fbc3a55c281227d042948e9546aebad0ec961b6ec256e69ce7851030ccc"
+    },
+    {
+      "path": "run-artifacts/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "bytes": 722543,
+      "sha256": "fb303746c96fba3692310e66f8556159c5fe612e15d8969697160782241039cc"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "bytes": 557339,
+      "sha256": "45b3c059b32735d0d384092d452e0f149aeda4fed006a5c224fb8d303d361119"
+    },
+    {
+      "path": "run-artifacts/renderer-context-loss.png",
+      "bytes": 190015,
+      "sha256": "febac61f059bd2e9a331a102a0c195065babffd71507fb119643b44b4f96d47f"
+    },
+    {
+      "path": "run-artifacts/renderer-isolated-framed.png",
+      "bytes": 215679,
+      "sha256": "6a77c240a243c645214f270108e839368ef1402d337038399c407a3e1eb8b138"
+    },
+    {
+      "path": "run-artifacts/renderer-recovered.png",
+      "bytes": 215196,
+      "sha256": "e3c366a8a3b91c500777505427620fc4905ed597faa967aeab1d0bc81654fc42"
+    },
+    {
+      "path": "run-artifacts/room-edit-controls-open-after-click.png",
+      "bytes": 270930,
+      "sha256": "4ce09135e7be78d821e85965928506024f318134f270d0853e8b1831b6309c59"
+    },
+    {
+      "path": "run-artifacts/run.json",
+      "bytes": 1192,
+      "sha256": "bb4ec4f1479450e608bc783257f3aa9694ff1f744e7047330aca0e19b1fbd026"
+    },
+    {
+      "path": "run-artifacts/timeline-live-playhead-scrub.png",
+      "bytes": 233040,
+      "sha256": "a1c806fae46f3d721225082798fda51d843197dbd34aac409d7aa7787e1657c3"
+    },
+    {
+      "path": "test-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "test-results/header-menu-events.json",
+      "bytes": 2565,
+      "sha256": "1d6a0374bc6c42b7ced57c24ba24f868696551c9c52ed4389a7f3374287f96ff"
+    },
+    {
+      "path": "test-results/parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium/video.webm",
+      "bytes": 460609,
+      "sha256": "b0c60ce76f30cf7ac6153a6420e801815b31a8c06a8a8d8816e204cbab1095aa"
+    },
+    {
+      "path": "test-results/parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium/video.webm",
+      "bytes": 261080,
+      "sha256": "027e3fbc3a55c281227d042948e9546aebad0ec961b6ec256e69ce7851030ccc"
+    },
+    {
+      "path": "test-results/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium/video.webm",
+      "bytes": 722543,
+      "sha256": "fb303746c96fba3692310e66f8556159c5fe612e15d8969697160782241039cc"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/video.webm",
+      "bytes": 557339,
+      "sha256": "45b3c059b32735d0d384092d452e0f149aeda4fed006a5c224fb8d303d361119"
+    },
+    {
+      "path": "browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "49dcc702e45a6ddeaf7cd045cca85b4af0b019764f7cdbf013864ee46659d586"
+    },
+    {
+      "path": "browser-suite-profile.json",
+      "bytes": 497,
+      "sha256": "198cf3c49e9637ceb6d39c9a576321c6ddbe9f8009164dc5d0e306da575aefa6"
+    }
+  ],
+  "protectedQualification": false,
+  "crossdeckExecution": false,
+  "physicalAcceptance": false
+}

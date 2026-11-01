@@ -1,0 +1,557 @@
+Prisma schema loaded from prisma\schema.sqlite.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\node_modules\@prisma\client in 658ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.23                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+Development preset 'awaiting-first-release' ready for development-forever-treasure; GM user: kato. Credentials come from local environment values.
+{
+  "mode": "execute",
+  "campaignsInspected": 1,
+  "chroniclesCreated": 1,
+  "publishedVersionsCreated": 1,
+  "sessionsCreated": 1,
+  "playersMigrated": 1,
+  "membershipsMigrated": 1,
+  "invitationsMigrated": 0,
+  "chaptersTranslated": 5,
+  "storyBlocksCreated": 5,
+  "artifactsMigrated": 5,
+  "sideQuestsMigrated": 4,
+  "locationsMigrated": 5,
+  "routesMigrated": 2,
+  "eventsMigrated": 0,
+  "auditRecordsMigrated": 2,
+  "legacyIdentifiersMapped": 61,
+  "warnings": [],
+  "failures": [],
+  "unmappedFields": [],
+  "checksumMismatches": []
+}
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+▲ Next.js 16.3.8 (Turbopack)
+✓ Running next.config.ts took 20ms
+- Experiments (use with caution):
+  · cpus: 1
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.1s
+  Running TypeScript ...
+tests/e2e/parallax-cinematic.spec.ts(137,9): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+tests/e2e/parallax-click-surface.spec.ts(75,9): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+tests/e2e/parallax-construction-checks.spec.ts(84,9): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+tests/e2e/parallax-direct-placement.spec.ts(132,9): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+tests/e2e/parallax-exclusion-zones.spec.ts(66,11): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+tests/e2e/parallax-opacity.spec.ts(60,9): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+tests/e2e/parallax-parametric-room.spec.ts(112,9): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+tests/e2e/parallax-parametric-room.spec.ts(136,9): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+tests/e2e/parallax-simulation.spec.ts(83,9): error TS2304: Cannot find name 'saveCurrentWorkingDraft'.
+Failed to type check.
+
+Turbopack build encountered 16 warnings:
+./src/community/operations.ts:46:22
+Warning: The file pattern '/ROOT/' matches 15050 files in [project]/
+  44 |   if (!value || !path.isAbsolute(value)) return null;
+  45 |   const root = path.resolve(value);
+> 46 |   const repository = path.resolve(process.cwd());
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  47 |   return root === repository || root.startsWith(`${repository}${path.sep}`) ? null : root;
+  48 | }
+  49 |
+
+Overly broad patterns can lead to build performance issues and over bundling.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/operations.ts:258:22
+Warning: The file pattern '/ROOT/' matches 15050 files in [project]/
+  256 |     throw new CommunityError("COMMUNITY_BACKUP_NOT_CONFIGURED", "An isolated backup targe...
+  257 |   const root = path.resolve(value);
+> 258 |   const repository = path.resolve(process.cwd());
+      |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  259 |   if (root === repository || root.startsWith(`${repository}${path.sep}`))
+  260 |     throw new CommunityError("COMMUNITY_BACKUP_TARGET_UNSAFE", "Backup target must be out...
+  261 |   return root;
+
+Overly broad patterns can lead to build performance issues and over bundling.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/operations.ts:269:22
+Warning: The file pattern '/ROOT/' matches 15050 files in [project]/
+  267 |     throw new CommunityError("COMMUNITY_RESTORE_NOT_CONFIGURED", "An isolated restore tar...
+  268 |   const root = path.resolve(value);
+> 269 |   const repository = path.resolve(process.cwd());
+      |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  270 |   if (root === repository || root.startsWith(`${repository}${path.sep}`))
+  271 |     throw new CommunityError("COMMUNITY_RESTORE_TARGET_UNSAFE", "Restore target must be o...
+  272 |   if (root === backupRoot())
+
+Overly broad patterns can lead to build performance issues and over bundling.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/sealed-hold-public-media.ts:58:22
+Warning: The file pattern '/ROOT/' matches 15050 files in [project]/
+  56 |   if (!value || !path.isAbsolute(value)) return null;
+  57 |   const root = path.resolve(value);
+> 58 |   const repository = path.resolve(process.cwd());
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  59 |   if (root === repository || root.startsWith(`${repository}${path.sep}`)) return null;
+  60 |   return root;
+  61 | }
+
+Overly broad patterns can lead to build performance issues and over bundling.
+
+Import traces:
+  #1 [App Route]:
+    ./src/community/sealed-hold-public-media.ts
+    ./src/app/api/community/voyage-logs/media/route.ts
+
+  #2 [App Route]:
+    ./src/community/sealed-hold-public-media.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+
+./src/private-content/provider-storage.ts:35:22
+Warning: The file pattern '/ROOT/' matches 15050 files in [project]/
+  33 |     );
+  34 |   const root = path.resolve(value);
+> 35 |   const repository = path.resolve(process.cwd());
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  36 |   if (
+  37 |     [repository, path.join(repository, "public"), path.join(repository, ".next"), path.joi...
+  38 |       (forbidden) => isWithin(forbidden, root) || isWithin(root, forbidden),
+
+Overly broad patterns can lead to build performance issues and over bundling.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/uploads.ts
+    ./src/app/api/studio/private-content/uploads/[uploadId]/parts/[partNumber]/route.ts
+
+  #3 [Server Component]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/providers.ts
+    ./src/admiralty/ports/operations-admin-read.ts
+    ./src/app/admin/configuration/page.tsx
+
+
+./src/private-content/service.ts:576:22
+Warning: The file pattern '/ROOT/' matches 15050 files in [project]/
+  574 | function assertPrivateOutputPath(outputPath: string) {
+  575 |   const destination = path.resolve(outputPath);
+> 576 |   const repository = path.resolve(process.cwd());
+      |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  577 |   if (!path.isAbsolute(outputPath) || isWithin(repository, destination))
+  578 |     throw privateFailure(
+  579 |       "PRIVATE_CONTENT_CONFIGURATION_INVALID",
+
+Overly broad patterns can lead to build performance issues and over bundling.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/inspect/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/service.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+
+./src/private-content/storage.ts:21:22
+Warning: The file pattern '/ROOT/' matches 15050 files in [project]/
+  19 |     throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID", `${label} is not configu...
+  20 |   const resolved = path.resolve(value);
+> 21 |   const repository = path.resolve(process.cwd());
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  22 |   const forbidden = [
+  23 |     repository,
+  24 |     path.join(repository, "public"),
+
+Overly broad patterns can lead to build performance issues and over bundling.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/inspect/route.ts
+
+
+./src/community/worker-runtime.ts:37:23
+Warning: The file pattern (<dynamic> | 'null') matches 15050 files in [project]/
+  35 |   if (!file) return null;
+  36 |   try {
+> 37 |     const raw = await readFile(file, "utf8");
+     |                       ^^^^^^^^^^^^^^^^^^^^^^
+  38 |     if (Buffer.byteLength(raw, "utf8") > maxStateBytes) return null;
+  39 |     const candidate = JSON.parse(raw) as Record<string, unknown>;
+  40 |     const state = typeof candidate.state === "string" ? candidate.state : "";
+
+Overly broad patterns can lead to build performance issues and over bundling.
+
+Import traces:
+  #1 [App Route]:
+    ./src/community/worker-runtime.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [Server Component]:
+    ./src/community/worker-runtime.ts
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #3 [App Route]:
+    ./src/community/worker-runtime.ts
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/operations.ts:46:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  44 |   if (!value || !path.isAbsolute(value)) return null;
+  45 |   const root = path.resolve(value);
+> 46 |   const repository = path.resolve(process.cwd());
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  47 |   return root === repository || root.startsWith(`${repository}${path.sep}`) ? null : root;
+  48 | }
+  49 |
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/operations.ts:258:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  256 |     throw new CommunityError("COMMUNITY_BACKUP_NOT_CONFIGURED", "An isolated backup targe...
+  257 |   const root = path.resolve(value);
+> 258 |   const repository = path.resolve(process.cwd());
+      |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  259 |   if (root === repository || root.startsWith(`${repository}${path.sep}`))
+  260 |     throw new CommunityError("COMMUNITY_BACKUP_TARGET_UNSAFE", "Backup target must be out...
+  261 |   return root;
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/operations.ts:269:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  267 |     throw new CommunityError("COMMUNITY_RESTORE_NOT_CONFIGURED", "An isolated restore tar...
+  268 |   const root = path.resolve(value);
+> 269 |   const repository = path.resolve(process.cwd());
+      |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  270 |   if (root === repository || root.startsWith(`${repository}${path.sep}`))
+  271 |     throw new CommunityError("COMMUNITY_RESTORE_TARGET_UNSAFE", "Restore target must be o...
+  272 |   if (root === backupRoot())
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/sealed-hold-public-media.ts:58:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  56 |   if (!value || !path.isAbsolute(value)) return null;
+  57 |   const root = path.resolve(value);
+> 58 |   const repository = path.resolve(process.cwd());
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  59 |   if (root === repository || root.startsWith(`${repository}${path.sep}`)) return null;
+  60 |   return root;
+  61 | }
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/community/sealed-hold-public-media.ts
+    ./src/app/api/community/voyage-logs/media/route.ts
+
+  #2 [App Route]:
+    ./src/community/sealed-hold-public-media.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+
+./src/community/worker-runtime.ts:37:23
+Warning: Dynamic filesystem access causes tracing of the whole project
+  35 |   if (!file) return null;
+  36 |   try {
+> 37 |     const raw = await readFile(file, "utf8");
+     |                       ^^^^^^^^^^^^^^^^^^^^^^
+  38 |     if (Buffer.byteLength(raw, "utf8") > maxStateBytes) return null;
+  39 |     const candidate = JSON.parse(raw) as Record<string, unknown>;
+  40 |     const state = typeof candidate.state === "string" ? candidate.state : "";
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: fs.readFile(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/community/worker-runtime.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [Server Component]:
+    ./src/community/worker-runtime.ts
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #3 [App Route]:
+    ./src/community/worker-runtime.ts
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/private-content/provider-storage.ts:35:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  33 |     );
+  34 |   const root = path.resolve(value);
+> 35 |   const repository = path.resolve(process.cwd());
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  36 |   if (
+  37 |     [repository, path.join(repository, "public"), path.join(repository, ".next"), path.joi...
+  38 |       (forbidden) => isWithin(forbidden, root) || isWithin(root, forbidden),
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/uploads.ts
+    ./src/app/api/studio/private-content/uploads/[uploadId]/parts/[partNumber]/route.ts
+
+  #3 [Server Component]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/providers.ts
+    ./src/admiralty/ports/operations-admin-read.ts
+    ./src/app/admin/configuration/page.tsx
+
+
+./src/private-content/service.ts:576:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  574 | function assertPrivateOutputPath(outputPath: string) {
+  575 |   const destination = path.resolve(outputPath);
+> 576 |   const repository = path.resolve(process.cwd());
+      |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  577 |   if (!path.isAbsolute(outputPath) || isWithin(repository, destination))
+  578 |     throw privateFailure(
+  579 |       "PRIVATE_CONTENT_CONFIGURATION_INVALID",
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/inspect/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/service.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+
+./src/private-content/storage.ts:21:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  19 |     throw privateFailure("PRIVATE_CONTENT_CONFIGURATION_INVALID", `${label} is not configu...
+  20 |   const resolved = path.resolve(value);
+> 21 |   const repository = path.resolve(process.cwd());
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  22 |   const forbidden = [
+  23 |     repository,
+  24 |     path.join(repository, "public"),
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/inspect/route.ts
+
+
+file:///D:/CodexWorktrees/parallax-root-integration/scripts/sounding-line/run-browser-suite.mjs:220
+  if (result.status !== 0) throw new Error(`SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:${profile.id}`);
+                                 ^
+
+Error: SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:generic
+    at run (file:///D:/CodexWorktrees/parallax-root-integration/scripts/sounding-line/run-browser-suite.mjs:220:34)
+    at ensureProductionBuild (file:///D:/CodexWorktrees/parallax-root-integration/scripts/sounding-line/run-browser-suite.mjs:141:3)
+    at file:///D:/CodexWorktrees/parallax-root-integration/scripts/sounding-line/run-browser-suite.mjs:92:3
+
+Node.js v24.18.0

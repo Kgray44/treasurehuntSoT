@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "candidate": "5dfc742303850055ea79debb833bbe9ae26d2abd",
+  "tree": "873fb0fccfc88e3517ca09ee5892bef2860d1319",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T01:24:02.336Z",
+  "finishedAt": "2026-10-13T01:27:26.064Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "fe93076bb2b1ab9dd32dac0016fbc9e03eef2c3b3ded00b98db79505201b4b0e"
+    },
+    {
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "809d17c911884ab1e10a5b1c06966248102b5695fa6b289006279073a7837e82"
+    },
+    {
+      "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video-1.webm",
+      "sha256": "557155c6d8893d569e6186dd2d7b3d11f765d5990a4de066c9a9ccef5a41100e"
+    },
+    {
+      "file": "parallax-context-menu-Crea-410d8-ross-saved-scenes-and-phone-chromium-video.webm",
+      "sha256": "a0e15c8d1ae2b0a854bb2f4124b1b1436ec2bd71a5825c5091dd13d15b8a2ae1"
+    },
+    {
+      "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "95eff0ad633eb517366dbc376c2b24db5b62ecf1357b2e24701a37bc789bba4a"
+    },
+    {
+      "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+      "sha256": "1abf4ef6763542074f68664b29bf087160b3ac1a74a6d3145d7339144d8e6d20"
+    },
+    {
+      "file": "parallax-rooms-Creator-exp-57140--without-changing-the-scene-chromium-video.webm",
+      "sha256": "52ecfa30f86b330d18422d0eafed78f34370abcbf56b2f31fa82f05f5e8d052d"
+    },
+    {
+      "file": "parallax-simulation-Creato-caf6b-nd-replays-saved-simulation-chromium-video.webm",
+      "sha256": "bcbccbcbefff7d742ac0e0210077265ec0cce591b30c220c6d802958e7b8a8ce"
+    },
+    {
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video-1.webm",
+      "sha256": "56b164109525622bc683291031d0f253b7a83cc02c3cf78c44c76f5b082a5e1e"
+    },
+    {
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video.webm",
+      "sha256": "2cd9713c0c39a39cf30faf93a8a9a990fa8c611c4395d882f81954b5d8b4675a"
+    },
+    {
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video-1.webm",
+      "sha256": "1d2bd30be842a4ca64f4d6b5780bd467dd663d99240d8e845d776b155931e50f"
+    },
+    {
+      "file": "parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium-video.webm",
+      "sha256": "6f9442d86f57d5a3383898bc779d259aa4f0d43cd5960d6b6d7c5bd3a9619c6e"
+    },
+    {
+      "file": "parallax-surfaces-Hidden-W-84986-igns-when-switched-to-table-chromium-video.webm",
+      "sha256": "d3e96e3107dcfca58419a70860e0396fe667942feb752b31907cc109da19ac9b"
+    }
+  ]
+}

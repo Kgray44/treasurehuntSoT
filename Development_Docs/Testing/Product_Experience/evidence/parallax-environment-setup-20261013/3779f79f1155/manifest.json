@@ -1,0 +1,83 @@
+{
+  "documentClassification": "engineering-evidence",
+  "source": "3779f79f1155a5990ff8de3b71509605dac0fb56",
+  "tree": "3aeadd62ed362cdde91f5fc6a3015872fa18ecc0",
+  "contract": "parallax.authored-library-and-simulation.experience",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automatedJourneys": 5,
+  "physicalDeviceAcceptance": false,
+  "ownerAcceptance": "PENDING",
+  "files": [
+    {
+      "file": "environment-setup-choices.png",
+      "sha256": "c594d06d259214e60f8e8a538f043dd532fc02ace6f85ec60d84f0bf9a0231b1",
+      "bytes": 206092
+    },
+    {
+      "file": "environment-setup-empty-editor.png",
+      "sha256": "4de9b7f7da23f6e1dab4b8e964bdfde28e2206345814365f383dd5ddc75d4221",
+      "bytes": 246284
+    },
+    {
+      "file": "environment-photo-cancelled.png",
+      "sha256": "20381a2656498de02425b8ad41929f6e3e3c1a534d62880ee23ac69d5c7ec4b4",
+      "bytes": 43713
+    },
+    {
+      "file": "environment-photo-processing.png",
+      "sha256": "6301576d99eca69348169ab8dd74ed579855b35a086e56bb39ce82b42edc7207",
+      "bytes": 163842
+    },
+    {
+      "file": "environment-photo-1-view-demo.png",
+      "sha256": "f3143c1bac6d41d483c1ae6c379fbf50ac7c3567312819e060beebf1c74d6a44",
+      "bytes": 56350
+    },
+    {
+      "file": "environment-photo-2-view-demo.png",
+      "sha256": "551eaec7f027a9f3ba263513d7b6784e87fcb3ae2e8c31b57c289928a3e59fe2",
+      "bytes": 162770
+    },
+    {
+      "file": "environment-library-renamed.png",
+      "sha256": "2811a9e2d1d25f60513bd0e57bf871184cfb6842079be47ffab9f23c0b5df90e",
+      "bytes": 267480
+    },
+    {
+      "file": "environment-library-phone.png",
+      "sha256": "975a512c1b3235d99d93c0c2901501e79c6dd5409dfb228e335fdbc635dcf610",
+      "bytes": 59464
+    },
+    {
+      "file": "photo-parallax-environment-creat-4ece2-e-and-starts-an-empty-shell-chromium-video.webm",
+      "sha256": "47114327423d442ce965c5b07e3c49dc8e09958d4b0430b9891086eb887fbce2",
+      "bytes": 315679
+    },
+    {
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "sha256": "feca53e42b592c0a91852d4eccd022f1b2b6985194458b8ed60a9953b6e10251",
+      "bytes": 277247
+    },
+    {
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "sha256": "468503953d45879c4abb1cb5621b49ae331adc277689ddabb69527f6f1aae481",
+      "bytes": 351201
+    },
+    {
+      "file": "photo-parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "sha256": "9ddbc713bc06af7f6ed660e736b011c95b1af83b8c6e6a902e422575f1b73a74",
+      "bytes": 563851
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "sha256": "0553be6926c9271c36e0698569f32f3fe7faf36f8dd9303c9de69688cdf00a32",
+      "bytes": 1423589
+    },
+    {
+      "file": "photo-run.json",
+      "sha256": "3ab965d9e1a5fb3a6c8dba340d17d383949db72892525d24b1fcc99c038109b6",
+      "bytes": 1331
+    }
+  ]
+}

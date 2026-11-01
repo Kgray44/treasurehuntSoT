@@ -1,0 +1,41 @@
+{
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "screenshotsViewed": 11,
+  "recordingsInspected": [
+    {
+      "id": "parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium-video.webm",
+      "duration": 13.72,
+      "frames": 56,
+      "last": 13.71
+    },
+    {
+      "id": "parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium-video.webm",
+      "duration": 4,
+      "frames": 17,
+      "last": 3.99
+    },
+    {
+      "id": "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "duration": 9.56,
+      "frames": 40,
+      "last": 9.55
+    }
+  ],
+  "coverage": "All three recordings complete at0.25-second intervals plus final frame;113frames andnine timestamped sheets. Original full-size11PNGs before source.",
+  "observations": [
+    "Parallax left title and centered scene retained; established blue workstation. Assets/Groupings tabs and top Group icon inScene graph.",
+    "Empty Groups help visible;20footprints grouped asGhost route, inspectorandtree agree20then19items. Pink/blue outlined members andone Movegizmo showwhole selection.",
+    "Current locked image has explicitunlockguidance anddisabled numericapply, noactivegizmo; latermembershipedit19doesnotremove twentiethasset.",
+    "Phoneimage390x844groupdiscovery fits leftpane; no mobiletransform gesture observed. Light screenshothasfullpanels andwhite/paleblue preview, selectedpinkoutlines remainvisible.",
+    "Mixed asset/desk group namedWriting station remainsupright; paper anddeskgroupshighlight. Numeric rotation/scalecontrols visible; do not infer draggedmixed rotation/scale. Invalidscale0visiblemessagefinite/0.01..10, geometry stays.",
+    "Assistant groupproposal namesGhost route5items; appliesbefore group appears. Moveproposal saysmove together,rotate0°,scalex1 but doesnotshow numericaltranslation inreviewrow;composerrequesthalfmeterrightvisible. Finalcentrex.476 vs-.024 andright-shiftedfootprints. Potentialminor review-summaryspecificity issue; sourceconfirmationpending.",
+    "Twenty-recording entry0..2s;groupchooserabout2.76s;multiselection/groupname3..4;liveMove/transform/history/lock4..8.5;reload8.76..9.5;context/editmembers10..10.5;phone10.76..11.26;darkreloadthenlight12..13.71.",
+    "Mixed-recording entry0..2s;roomfeatureselection/chooser2.26..2.51;group/numericcontrols2.76..3.99.",
+    "Assistant-recordingentry0..2.5s;composer/send2.76..3.76;proposal4..5.26;apply/close5.51..6.01;moveprompt6.26..7.51;review7.76..9.01;applyandclose9.26..9.55."
+  ],
+  "acceptedReferenceImagesViewed": [
+    "parallax-environment-library-20261013/afb8d2f2aa72/environment-library-renamed.png",
+    "parallax-environment-library-20261013/afb8d2f2aa72/room-feature-phone.png"
+  ],
+  "sourceInspected": false
+}

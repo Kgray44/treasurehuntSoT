@@ -1,0 +1,89 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "540b86e71078c229701dade20e45c0424ba2dc11",
+  "tree": "4d7d2b2eaa527e1cdd77b5fcd11e3379d9f4609f",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "status": "NINE_FOCUSED_PRODUCTION_JOURNEYS_PASS_PENDING_INDEPENDENT_REVIEW",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "objective": "Creator authors a bounded material fade through the existing property/keyframe controls; blank input restores its value with plain feedback; the same actual compass fades in dark/light, zero and faint alpha remain recoverable, Undo restores the track, Editor restores original material without changing saved content, and saved fading plays again after reload with phone recovery.",
+  "artifacts": [
+    {
+      "file": "opacity-actual-material-proof.original.json.txt",
+      "bytes": 1701,
+      "sha256": "3ed70252ed737ad12dc9559c29b3541a956e47789f6cfc23a245b20662a46793"
+    },
+    {
+      "file": "opacity-editor-recovery-dark.png",
+      "bytes": 194031,
+      "sha256": "24d0aa45d79ded510eab3751d973af11f4db8d40b4ef1af909eac4062cbc9f69"
+    },
+    {
+      "file": "opacity-faint-material-recovery-dark.png",
+      "bytes": 185541,
+      "sha256": "c40e738eca45a54cfc28742f0d99a34904787e6fd8e530d1c6264ac07d5aef66"
+    },
+    {
+      "file": "opacity-full-material-dark.png",
+      "bytes": 194642,
+      "sha256": "ff31726848653bcf49f333c9c8df5f83d1861b75c9f83adc429e8062770294d2"
+    },
+    {
+      "file": "opacity-full-material-light.png",
+      "bytes": 249949,
+      "sha256": "bfef47de376e131f981928f0d1562c3bd059a713f794586764b3507d29e77da6"
+    },
+    {
+      "file": "opacity-invalid-entry-restored.png",
+      "bytes": 194644,
+      "sha256": "d4b459a46de81b555306080306d2af5d113d743a3b563910ea4a12ff6d562135"
+    },
+    {
+      "file": "opacity-partial-material-dark.png",
+      "bytes": 193501,
+      "sha256": "7e6541b9dde2095a9b564046ca50e831146d0d502f28bd74321b75a899b9dc16"
+    },
+    {
+      "file": "opacity-partial-material-light.png",
+      "bytes": 249691,
+      "sha256": "db344420ada9f795ee1d4cb47b662892751eb407d9907965f30f84b96532b340"
+    },
+    {
+      "file": "opacity-phone-editor-recovery.png",
+      "bytes": 93808,
+      "sha256": "77860e404ef93d9c5b606066f713f5b4a20f45afaf9d4059ee8b6c77a56701a5"
+    },
+    {
+      "file": "opacity-saved-replay-dark.png",
+      "bytes": 228667,
+      "sha256": "6ae9f02ef3c0b8ad4eedf5438a485c8dcda05460a18a0088586286f82b1a1eda"
+    },
+    {
+      "file": "opacity-zero-material-dark.png",
+      "bytes": 171011,
+      "sha256": "6f60dffa44f171938b857b9fd88e2ea67fa123b2309ad4073148d613c7b425f8"
+    },
+    {
+      "file": "opacity-zero-material-light.png",
+      "bytes": 247900,
+      "sha256": "2c143efad8863af47317659438ba30d52249a271a8bd79287807cd4613fffd5c"
+    },
+    {
+      "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "bytes": 557241,
+      "sha256": "5c897a56bda6d6450bf3aa93e0fee82590e44160ef436c442041d0a26be05ff8"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 2162,
+      "sha256": "a2a63266e4b68a271c465a824168b92ef857562522d90d56d4d1bb5278b1dce2"
+    }
+  ],
+  "limitations": [
+    "This packet retains the opacity originals from the nine-test run; the eight other successful journey artifacts remain in their ignored source-bound output and are not substituted for this bounded review.",
+    "Native capability/parser/shader source is separately tested or inspected; no Java/Swift compilation or physical native rendering is claimed.",
+    "Isolated compass closeups do not establish directional-shadow appearance on a room floor; owned depth material state/disposal has unit proof, not new shadow-pixel acceptance.",
+    "No hardware GPU timing, full scenarioN, full overhaul or owner acceptance."
+  ]
+}

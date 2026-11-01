@@ -172,6 +172,7 @@ export function createSceneDelivery(input: {
   blockId: string;
   transforms: ReadonlyMap<string, Transform>;
   visibleEntityIds: readonly string[];
+  opacityByEntityId?: ReadonlyMap<string, number>;
   elapsedMs: number;
   reducedMotion?: boolean;
 }): SceneDelivery {
@@ -201,7 +202,7 @@ export function createSceneDelivery(input: {
       interactions: e.interactions,
       visible: presentable.has(e.id) && input.visibleEntityIds.includes(e.id),
       selectable: presentable.has(e.id) && v.studio?.layers.find((l) => l.entityId === e.id)?.selectable !== false,
-      opacity: 1,
+      opacity: input.opacityByEntityId?.get(e.id) ?? 1,
       ...(e.element ? { element: presentable.has(e.id) ? e.element : { ...e.element, enabled: false } } : {}),
       ...(presentable.has(e.id) &&
       e.element?.enabled &&

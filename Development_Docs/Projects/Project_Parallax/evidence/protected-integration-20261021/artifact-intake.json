@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "records": [
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\landed-main-delta.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/landed-main-delta.json",
+      "bytes": 674310,
+      "sha256": "cb8d2e8057eec451d357b34181726032ae9f7d04d6d4b6053d1c8977eda43702"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\contracts-union-audit.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/contracts-union-audit.json",
+      "bytes": 921,
+      "sha256": "a95e6c4b0513ac58d8a540c5ffd7ccffc81b19642df13203deef1fb30ca390d9"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\new-working-byte-estimate.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/new-working-byte-estimate.json",
+      "bytes": 1089397,
+      "sha256": "b33c0c71d6f023414b168853287e64777ed5baea34bbb013d5827a1580fd3368"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\actual-merge-storage-preflight.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/actual-merge-storage-preflight.json",
+      "bytes": 457,
+      "sha256": "16b6df87c40801c28d40933d07c9b3254c4317be76751c61c61630eabfeea5f0"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\actual-conflict-resolution.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/actual-conflict-resolution.json",
+      "bytes": 2989,
+      "sha256": "53676a294fdd1ab8f46552ab05aee9627ff4017cda09dda01b8856232e1e4377"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\resolution-preview-manifest.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/resolution-preview-manifest.json",
+      "bytes": 2808,
+      "sha256": "b5a0a21dad950929a44e4c987982a9460a7db04d31460169ed0d198a708e5087"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\preview-syntax-verification.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/preview-syntax-verification.json",
+      "bytes": 712,
+      "sha256": "d609184ec865db4d899cda69ba4f3a26b5ce899d8d47febbeeed07280ebde148"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\root-domain-static-review-observation.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/root-domain-static-review-observation.json",
+      "bytes": 2004,
+      "sha256": "038a93cd861b4d20bd9acb518e23d1d82d100782c5888c7bf93796d6882636cc"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\agreed-pr-queue.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/agreed-pr-queue.json",
+      "bytes": 2774,
+      "sha256": "0694f76614477aeca47c51fd3ce6cc4d67bf52be930bdb74c4c38d031a91c828"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\owned-cache-compression-receipt.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/owned-cache-compression-receipt.json",
+      "bytes": 4921,
+      "sha256": "b072b406042cb533d25e9b0943c1b193ba79b012c64bdf08df8e47026d2fc3bc"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\large-module-compression-receipt.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/large-module-compression-receipt.json",
+      "bytes": 22242,
+      "sha256": "9e6cff88b091f1c17417d795c6eef3b768c1410b309e49105f899e93ff56169a"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\accepted-main-merge.original.log",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/accepted-main-merge.original.log",
+      "bytes": 2293,
+      "sha256": "6c67bf90d9ec68efe32368032eb3eca0cfff40a9f4d73f180dc4ab7514d2906d"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\features-sync-precheckout.log",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/features-sync-precheckout.log",
+      "bytes": 156,
+      "sha256": "614ff75bc8c058c0bb2e34184c35ce5106f3fca7a3dd9d65725ab8050f6376a5"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\features-validate-precheckout.log",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/features-validate-precheckout.log",
+      "bytes": 146,
+      "sha256": "7d11fb632475739e55ea6c7020e410a3fe00753023e9a2a2c74f1fe110e7df3a"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\human-before-reconciliation\\current-status.md",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/historical-human/current-status.md.original.txt",
+      "bytes": 64294,
+      "sha256": "ce26d320f3210d3e423ec264023b8133df158aabf6aa94e6d271febd91fa871d"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\human-before-reconciliation\\feature-status.md",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/historical-human/feature-status.md.original.txt",
+      "bytes": 55895,
+      "sha256": "34b442f3000b56bca138103940e019edc81fd421a8f51fe1193588ef4e7a689a"
+    },
+    {
+      "original": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\resume-20261021\\human-before-reconciliation\\features.md",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/historical-human/features.md.original.txt",
+      "bytes": 21954,
+      "sha256": "9ff4bbe47bc780011383555a61110fc0a3dfab7acb0011dfeaf2d0cedb2e454a"
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\crossdeck-landed-pr721.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/crossdeck-landed-pr721.json",
+      "bytes": 6954,
+      "sha256": "1cb976667287d2ee8c00afbae6d565b1954c1c8cc27aa2768b946bd161e2f6d2"
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\protected-main.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/protected-main.json",
+      "bytes": 344,
+      "sha256": "73304636e8ca84aa97677499ac5e4632c309d4b7551cc8d55927eca11d3598c3"
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\main-protection.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/main-protection.json",
+      "bytes": 374,
+      "sha256": "6c376b89eda87891a58c36aff591c050136290b5183d03ebe6c44ac34de5a3da"
+    },
+    {
+      "original": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\open-pr-queue.json",
+      "destination": "Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/intake/open-pr-queue.json",
+      "bytes": 20548,
+      "sha256": "824c7691d2e8938ebe7d0bcc2370f8c2ceb178a674a2e5abcb85075a5960f470"
+    }
+  ]
+}

@@ -1,0 +1,1345 @@
+{
+  "objective": "Explore ten meaningfully distinct room previews and align a clue to whole room surfaces",
+  "contract": {
+    "id": "parallax.rooms-and-surfaces.experience",
+    "name": "Named room previews and surface-aligned Creator placement",
+    "authority": "one-voyage",
+    "owners": [
+      "spatial-pilot",
+      "one-voyage",
+      "project-crossdeck",
+      "reach"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+      "objective": "Explore ten meaningfully distinct room previews and align a clue to whole room surfaces",
+      "visibleOutcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
+      "integrationOwner": "Parallax rooms and surface placement integration",
+      "systems": [
+        "project-parallax",
+        "project-crossdeck",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/components/studio/parallax",
+        "src/app/studio/parallax"
+      ],
+      "projectionPaths": [
+        "src/parallax"
+      ],
+      "entryPoint": "/studio/library",
+      "states": [
+        "EDITOR_READY",
+        "RETURNED",
+        "SURFACES_READY",
+        "SURFACE_SNAPPED",
+        "ROOM_LIVING_ROOM",
+        "ROOM_DORM",
+        "ROOM_OFFICE",
+        "ROOM_CLASSROOM",
+        "ROOM_GALLERY",
+        "ROOM_TRAIL",
+        "ROOM_PLAZA",
+        "ROOM_EMPTY",
+        "ROOM_CLUTTERED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
+      "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+      "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+      "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content. The Surfaces control outlines complete current room planes and offers a compact accessible picker. Selecting a wall or furniture aligns the object to its normal, with clear manual/automatic placement language and ordinary Undo. Each named synthetic environment has its own meaningful layout and furnishings, an empty room contains only its shell, and changing environments frames the complete scene. The strengthened construction candidate must show complete thick architecture with true window/door apertures, grounded or explicitly supported/mounted furnishings, legitimate stacks, and continuous trail terrain/path geometry. Independent exact-feature findings remain separate from confidence and visual quality. Compare all ten reference rooms at normal working sizes and retain actual renderer cost and instance-bound measurements.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+          "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+          "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-studio-library",
+        "screen-page-studio"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-surfaces.spec.ts",
+        "tests/e2e/parallax-rooms.spec.ts",
+        "tests/e2e/parallax-direct-placement.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "limitations": [
+        "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+      ],
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-rooms-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "text": "Voyagewright Studio"
+          }
+        }
+      },
+      "continuity": {
+        "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+        "checks": [
+          {
+            "id": "creator-identity",
+            "role": "button",
+            "name": "Synthetic Parallax Rooms Creator",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+        "feedbackBudgetMs": 3000
+      },
+      "journeys": [
+        {
+          "id": "creator-named-rooms-surface-snap-and-return",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Spatial Studio"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Working draft saved",
+              "path": "/studio/parallax",
+              "state": "EDITOR_READY",
+              "kind": "outcome",
+              "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Toggle spatial overlays"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Room surfaces",
+              "path": "/studio/parallax",
+              "state": "SURFACES_READY",
+              "kind": "outcome",
+              "meaning": "Full room surfaces and a keyboard-accessible picker are available without an AI call.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "wall left"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "snapped and aligned to wall left",
+              "path": "/studio/parallax",
+              "state": "SURFACE_SNAPPED",
+              "kind": "outcome",
+              "meaning": "The selected object snaps and aligns to the side wall through the visible manual placement control.",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Toggle spatial overlays",
+              "devices": [
+                "DESKTOP"
+              ],
+              "kind": "navigation"
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Living room",
+              "path": "/studio/parallax",
+              "state": "ROOM_LIVING_ROOM",
+              "kind": "outcome",
+              "meaning": "The Creator selects Living room through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Small dorm",
+              "path": "/studio/parallax",
+              "state": "ROOM_DORM",
+              "kind": "outcome",
+              "meaning": "The Creator selects Small dorm through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Office",
+              "path": "/studio/parallax",
+              "state": "ROOM_OFFICE",
+              "kind": "outcome",
+              "meaning": "The Creator selects Office through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Classroom",
+              "path": "/studio/parallax",
+              "state": "ROOM_CLASSROOM",
+              "kind": "outcome",
+              "meaning": "The Creator selects Classroom through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Gallery",
+              "path": "/studio/parallax",
+              "state": "ROOM_GALLERY",
+              "kind": "outcome",
+              "meaning": "The Creator selects Gallery through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Outdoor trail",
+              "path": "/studio/parallax",
+              "state": "ROOM_TRAIL",
+              "kind": "outcome",
+              "meaning": "The Creator selects Outdoor trail through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Plaza",
+              "path": "/studio/parallax",
+              "state": "ROOM_PLAZA",
+              "kind": "outcome",
+              "meaning": "The Creator selects Plaza through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Empty room",
+              "path": "/studio/parallax",
+              "state": "ROOM_EMPTY",
+              "kind": "outcome",
+              "meaning": "The Creator selects Empty room through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Environment"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Spatial canvas",
+              "text": "Preview: Cluttered room",
+              "path": "/studio/parallax",
+              "state": "ROOM_CLUTTERED",
+              "kind": "outcome",
+              "meaning": "The Creator selects Cluttered room through the ordinary environment control and sees its named room-specific scene."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Creator Studio"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "RETURNED",
+              "returnPath": true
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1.png",
+      "sha256": "9798676c895f2ff08b1afbec146f4446899ccc0014dffc980b28b521923bcbb5",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-SURFACES_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-SURFACES_READY-3.png",
+      "sha256": "2f43e6c83ac7ec79a15fb2d9dd95a36037ddecfc138a7919e02bdd84a245888e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "SURFACES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-SURFACE_SNAPPED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-SURFACE_SNAPPED-5.png",
+      "sha256": "38770d38349dc8e633e43695f5d76448842e7496650e81e75048a77c5ea88c0f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "SURFACE_SNAPPED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_LIVING_ROOM-11",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_LIVING_ROOM-11.png",
+      "sha256": "634a20ba5aff794affb1ad8052d757c310018ce064eec0d2d16c3ee35cd6695f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_LIVING_ROOM",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_DORM-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_DORM-17.png",
+      "sha256": "8cfc075489c74a13a0001bfcdde897c8ab5fd3767b966239ec6f5efbb2ca1eda",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_DORM",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_OFFICE-24",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_OFFICE-24.png",
+      "sha256": "2315fdb47fcaaeffacb6f93e295dd275bb2a6d3a47198c1a38860f497dded88d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_OFFICE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_CLASSROOM-32",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_CLASSROOM-32.png",
+      "sha256": "a96343e5ff9b52bfe80c5ce3418d92b78789bff9914cce2445a2f6b47d20b12e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_CLASSROOM",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_GALLERY-41",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_GALLERY-41.png",
+      "sha256": "9b11ebcc95593902d7cba9f686f42424c11268f00e87a6a60756d5e2c224a299",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_GALLERY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_TRAIL-51",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_TRAIL-51.png",
+      "sha256": "ba498ef9ec19a8a638bd640ebe83965d4afa0a50f8260e9d518b4482042a1d2f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_TRAIL",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_PLAZA-62",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_PLAZA-62.png",
+      "sha256": "6917bffe50fb8382fb89e7666ee6a693c9c354cb37dab4923de185910f51c70e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_PLAZA",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_EMPTY-74",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_EMPTY-74.png",
+      "sha256": "26132dec1ad9804a09ae198c47875c176c1304ef762edd6b19b798355c1fa70f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_EMPTY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_CLUTTERED-87",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-ROOM_CLUTTERED-87.png",
+      "sha256": "71634b44e7947d77c9ff4c36ff989b0ecf557ca3b709f839cc5a7ee161f8ed54",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_CLUTTERED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-89",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-89.png",
+      "sha256": "087500683dc9693d7e9e3c3a6bdce60f59760f93b2180c7d510d62e3a2315e6d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "0ee22202958b93ef3c0260246ffd6fac24979273598588c1dc8986cdbc4bf7fc",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0fa795a3e79c128cf4e15573f9b431b4.webm",
+      "sha256": "00a5dcca69dbd7096c67c92b89137b0af1cba196c0b153ed92d928e3cc6035f4",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-EDITOR_READY-1.png",
+      "sha256": "6bee76ac1368c83adc6cc29226e7b9f34d519bc6e7af21508506d33e632197b0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "EDITOR_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-SURFACES_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-SURFACES_READY-3.png",
+      "sha256": "76e0e2e64b22be3b7a0343922efedb076751b328a92b4f6eb4f3fbcce6337aff",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "SURFACES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-SURFACE_SNAPPED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-SURFACE_SNAPPED-5.png",
+      "sha256": "f15cca527579cd214d4d97290a15e012e5d5bea280a7e348a69e20878e5962c7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "SURFACE_SNAPPED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_LIVING_ROOM-11",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_LIVING_ROOM-11.png",
+      "sha256": "89a2f3e4b7edeb6b951db5f280551c2b3003fad019a4ec6b15de32e5e7917419",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_LIVING_ROOM",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_DORM-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_DORM-17.png",
+      "sha256": "16c659e3fed4b97c1db22dc86a11004c790eb666b5af4df07c668546e8d84ba9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_DORM",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_OFFICE-24",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_OFFICE-24.png",
+      "sha256": "52d7850066ceb13a7d97f5163310dbd25e40f3094cb7652babee16ecb5b9b244",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_OFFICE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_CLASSROOM-32",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_CLASSROOM-32.png",
+      "sha256": "9960e6c2b1700a8b108e3662069ab71921789c4ca54cddc62f6350a8d9db83b1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_CLASSROOM",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_GALLERY-41",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_GALLERY-41.png",
+      "sha256": "1b4d3405bd1b41df2f35a641a5b842515c7831e2f60fd11dfabe85c228e75696",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_GALLERY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_TRAIL-51",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_TRAIL-51.png",
+      "sha256": "695617b78d076404b654c9d4c2657c38654348056a8d48de041406722a0f6fd7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_TRAIL",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_PLAZA-62",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_PLAZA-62.png",
+      "sha256": "31c28c22adb3c802227a733cf26265a19ec9b670a9bfa7470cca056bc3c68ada",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_PLAZA",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_EMPTY-74",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_EMPTY-74.png",
+      "sha256": "e119dbf7faca730f60aee23643a5c9eb2814a687b7c883bdb5102dce58d877e9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_EMPTY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_CLUTTERED-87",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-ROOM_CLUTTERED-87.png",
+      "sha256": "a46807803868066d12b7c43c50b25e35403bb98d2206617a5499843d3b24c322",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_CLUTTERED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-89",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-89.png",
+      "sha256": "087500683dc9693d7e9e3c3a6bdce60f59760f93b2180c7d510d62e3a2315e6d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "1ebc20e6d29d7c445996b2bed726d05c7f9e21c3fd24101bc7c4a7268502dca5",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/70b880d2228be753436f42cf97934aae.webm",
+      "sha256": "1c70c226a21f2611dbd80fb1a14c9efd601d9bd9ea68f881f3a766ecde110b51",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-EDITOR_READY-1.png",
+      "sha256": "9166823758e43b1a4c10bf90057490ad684557076b3b08e580a8f19ab4882d34",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-SURFACES_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-SURFACES_READY-3.png",
+      "sha256": "0415dced3fca5d4f6459beaf38b951f19f46d173713ca8080000d23e5d90df70",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "SURFACES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-SURFACE_SNAPPED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-SURFACE_SNAPPED-5.png",
+      "sha256": "ada503259d2c46ab7540fc7595b60e7a00f6102026a3a25a8e952787549a6038",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "SURFACE_SNAPPED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_LIVING_ROOM-11",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_LIVING_ROOM-11.png",
+      "sha256": "8daf345dd5c753ea48b7dc2257d1a8efa1c1695f1baf7f73c814f69761698933",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_LIVING_ROOM",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_DORM-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_DORM-17.png",
+      "sha256": "a22549d2fac267134da6978c07a7a1aa7110952a22f7cf1a07aafa793a744957",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_DORM",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_OFFICE-24",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_OFFICE-24.png",
+      "sha256": "c0937b1de04762afbf1db2de9a26ccff0bc19af020b6982c58ef2bc5e7250a2e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_OFFICE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_CLASSROOM-32",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_CLASSROOM-32.png",
+      "sha256": "95948d6d45f0c65ca39796cdf85e6165daef788c9001bf5f5fa0cae96e4ad1d2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_CLASSROOM",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_GALLERY-41",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_GALLERY-41.png",
+      "sha256": "b3f4be6f8f12541e2c8b1db814461fc4f2b562d767aaf0603c3ad8e756af2da7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_GALLERY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_TRAIL-51",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_TRAIL-51.png",
+      "sha256": "7353e72980d3f18359b676aeb2ac3d758a47fa83fa3b5467ad0f49b6a2d4fb22",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_TRAIL",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_PLAZA-62",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_PLAZA-62.png",
+      "sha256": "bc9c850ef77238453872b6d3803596f988c20fb71fb806a9f05162a98d231ab2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_PLAZA",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_EMPTY-74",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_EMPTY-74.png",
+      "sha256": "4a3cb4b46ca9db46af52f86b2b456a60b6e0a613f16261f00c9ea3bd5f918202",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_EMPTY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_CLUTTERED-87",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-ROOM_CLUTTERED-87.png",
+      "sha256": "2ac2ce65e25954e37443c8cef48565da9dab7a4d7ab659de179a85d6ad24ca16",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_CLUTTERED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-RETURNED-89",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-RETURNED-89.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "dca11bb6487ffb06db04a682b7c07f73c5ce6ee0815466c8272c5b449b893f77",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/9d6cbdf170f6941a2930ca68847a72ec.webm",
+      "sha256": "ca7e7aa82be916abe4491ccca4c6583f839aa6924ab7d28dd5eb59e297dec7df",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-EDITOR_READY-1.png",
+      "sha256": "9166823758e43b1a4c10bf90057490ad684557076b3b08e580a8f19ab4882d34",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "EDITOR_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-SURFACES_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-SURFACES_READY-3.png",
+      "sha256": "406ced7193d19f956588023880f97207a0c1beb5d4809b8550419a1ff95c7824",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "SURFACES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-SURFACE_SNAPPED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-SURFACE_SNAPPED-5.png",
+      "sha256": "d4989b23db03cee910e5fb15fcd263db4249edd68157fcc488cb4ab3f27e6c57",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "SURFACE_SNAPPED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_LIVING_ROOM-11",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_LIVING_ROOM-11.png",
+      "sha256": "d1d8378886267bd3239c6a587d0294ac1060c94fbdac82f50f4e030eca7ebba7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_LIVING_ROOM",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_DORM-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_DORM-17.png",
+      "sha256": "df147eff514d36de38a6c97bcc24b75208fc9bc3330f1a52cb2050e937dd31c3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_DORM",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_OFFICE-24",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_OFFICE-24.png",
+      "sha256": "b0a16408ad88081e39b24c3d6617bd2c6d9f5de094aa035773ba921d3d82f37a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_OFFICE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_CLASSROOM-32",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_CLASSROOM-32.png",
+      "sha256": "8a66b6f916187f453dcf5993892d87bc6cedacc86706e1ecfb366247c3f4b5a7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_CLASSROOM",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_GALLERY-41",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_GALLERY-41.png",
+      "sha256": "90d4860e38e3d765c93ae8c4aaf5a86dff08b6fb02ef8c5c032f163a515ebfd1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_GALLERY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_TRAIL-51",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_TRAIL-51.png",
+      "sha256": "55e0c269388a6df4856743de7819c66b2ad3b2a8089ec55c48f4cd36facee614",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_TRAIL",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_PLAZA-62",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_PLAZA-62.png",
+      "sha256": "2ffecd1e31c0bd725f4d1c9920105f2dcd49336575ed9faf39577229bf5bffcc",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_PLAZA",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_EMPTY-74",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_EMPTY-74.png",
+      "sha256": "8bd972373f3600da82a4bd54e767f96e70db2b485d62676dc29400b2b51fe77f",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_EMPTY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_CLUTTERED-87",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-ROOM_CLUTTERED-87.png",
+      "sha256": "e693208ae10c5fcb38cd55341361d418a715357593a9edd7d645542d406909ff",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "ROOM_CLUTTERED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-RETURNED-89",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-RETURNED-89.png",
+      "sha256": "7e621d0eb1f5e6cdc00f0c0f87d8388123dcb447a08d30d7b5afce10930c7f14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "220c46fc2179fb21ab88f8eec1ad5a0bdba2d9c9ac854f8d9e0397de86955437",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience-creator-named-rooms-surface-snap-and-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/225a88d752899a9f5d9a41ee6a5d36fb.webm",
+      "sha256": "58a9733cfe5b0339ce201c5be1092f5fd005ea70bd05e02962d31c32f6c10a33",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "parallax.rooms-and-surfaces.experience",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "c091785e96370770883ae75ee1e9d301f432ef6ce4810b66d8eed2ed9c284c4a",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

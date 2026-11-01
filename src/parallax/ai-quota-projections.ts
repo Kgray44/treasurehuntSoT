@@ -92,12 +92,30 @@ export async function aiQuotaUserDetail(accountId: string, store: PrismaClient =
   if (!account) return null;
   const userPolicy = override ? aiUserPolicySchema.nullable().parse(JSON.parse(override.policy)) : null,
     effective = effectiveAIUserPolicy(policy, userPolicy, now);
+  const change =
+    override && userPolicy
+      ? await store.aIQuotaPolicyRevision.findFirst({
+          where: { targetAccountId: accountId, resultingRevision: override.revision },
+          orderBy: { createdAt: "desc" },
+          select: { reason: true, createdAt: true },
+        })
+      : null;
   return {
     accountId: account.id,
     displayName: account.profile?.displayName ?? "Voyagewright account",
     policy: userPolicy,
     revision: override?.revision ?? 0,
     effective,
+    overrideReason: userPolicy ? (change?.reason ?? "No reason recorded in the retained audit.") : null,
+    overrideChangedAt: userPolicy
+      ? (change?.createdAt.toISOString() ?? override?.updatedAt.toISOString() ?? null)
+      : null,
+    globalModels: {
+      standardModel: policy.standardModel,
+      advancedModel: policy.advancedModel,
+      roomModel: policy.roomModel ?? "gpt-6.1-sol",
+      allowedModels: policy.allowedModels,
+    },
     globalCeiling: { requests: policy.monthlyRequests, spendNano: policy.monthlySpendNano },
     used: usage._count,
     remaining: Math.max(0, effective.monthlyRequests - usage._count),
@@ -107,6 +125,49 @@ export async function aiQuotaUserDetail(accountId: string, store: PrismaClient =
     lastActivity: lastActivity?.createdAt.toISOString() ?? null,
     resetAt: period.reset.toISOString(),
   };
+}
+
+/** Privileged, paginated exception inventory. No prompts, scenes, credentials or provider payloads. */
+export async function aiQuotaOverrides(cursor?: string, store: PrismaClient = db, now = new Date()) {
+  const where = { policy: { not: "null" } };
+  const [rows, total] = await Promise.all([
+    store.aIQuotaUserPolicy.findMany({
+      where: { ...where, ...(cursor ? { accountId: { gt: cursor } } : {}) },
+      orderBy: { accountId: "asc" },
+      take: 51,
+    }),
+    store.aIQuotaUserPolicy.count({ where }),
+  ]);
+  const page = rows.slice(0, 50);
+  const items = await Promise.all(
+    page.map(async (row) => {
+      const policy = aiUserPolicySchema.parse(JSON.parse(row.policy));
+      const [account, change] = await Promise.all([
+        store.userAccount.findUnique({
+          where: { id: row.accountId },
+          select: { profile: { select: { displayName: true } } },
+        }),
+        store.aIQuotaPolicyRevision.findFirst({
+          where: { targetAccountId: row.accountId, resultingRevision: row.revision },
+          orderBy: { createdAt: "desc" },
+          select: { reason: true },
+        }),
+      ]);
+      return {
+        accountId: row.accountId,
+        displayName: account?.profile?.displayName ?? "Voyagewright account",
+        revision: row.revision,
+        policy,
+        expired: Boolean(policy.expiresAt && Date.parse(policy.expiresAt) <= now.getTime()),
+        changedAt: row.updatedAt.toISOString(),
+        reason: change?.reason ?? "No reason recorded in the retained audit.",
+        fields: Object.entries(policy)
+          .filter(([key, value]) => key !== "expiresAt" && value != null && (key !== "suspended" || value === true))
+          .map(([key]) => key),
+      };
+    }),
+  );
+  return { items, total, nextCursor: rows.length > 50 ? page.at(-1)!.accountId : null };
 }
 
 /** Deliberate select: private request fingerprints, retained proposals and authored scene content never enter admin history. */

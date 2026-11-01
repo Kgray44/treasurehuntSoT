@@ -1,0 +1,3 @@
+# Immutable byte receipts; formatted counterparts remain reviewable.
+**/*.original.json.txt -text -diff
+*.original.json.txt -text -diff

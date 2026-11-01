@@ -1,0 +1,613 @@
+{
+  "status": "SOURCE_CUSTODY_PASS",
+  "generatedAt": "2026-10-16T05:05:10.253Z",
+  "rootParent": "325a0c5d2f37ee975d16527960048815ee8edcf9",
+  "inheritedProductSource": "6bea21300369db4598d0e746b63f2f5cfcebc517",
+  "inheritedArtifacts": 139,
+  "intakeFiles": 143,
+  "verifiedNativeManifestReferences": 119,
+  "originalDiagnosticFields": {
+    "trustedCapture": false,
+    "independentReview": false,
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "newBrowserProof": false,
+  "physicalAcceptance": false,
+  "references": [
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/ambient-context-engineering.png",
+      "sha256": "49ca34750feaea6cd2cf419f18661847e799b9d1a3a2f7ce4aa80731bc38934e"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/effects-observations.json",
+      "sha256": "8fbbec5950e7fbd22311562182b7c66250a3868d0f486a8a4d4ad6141f85ec87"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/empty-selection-engineering.png",
+      "sha256": "f016442c4595aa99f665e33d98a6488cba603d644d732e1df630ec7a3114363c"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/empty-selection-guided.png",
+      "sha256": "2fcc0f5dac5d30e1e5a3fbe262d7ebcc7aaae060b49499fc9c939d65e5f0b32e"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/empty-selection-standard.png",
+      "sha256": "2d98be2b0d3cd645b705dcaa6a8c4a790de19be16141fa572507dea1538d394b"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/environment-engineering.png",
+      "sha256": "16da8a4cb886d4e7b622abc7806cc02a0d85251650f967a45f678a4ea01e9113"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/environment-from-asset-guided.png",
+      "sha256": "f3da673c06a0c28fbffa64c88a8c8334d6183bf2ea489933fda3a83a89caa03b"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/environment-guided.png",
+      "sha256": "c01beafc072a776ab2dd0bdb962f86a3aea099a60202b5662e1b1e4fa5125f28"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/environment-standard.png",
+      "sha256": "3e4a140737e14bfbaaefb670259ef43f2cb313040c157aa0e0a86a45098f27a7"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/exclusion-zone-engineering.png",
+      "sha256": "bdc4d24273246d8bfa1276e82464d2e64405b4aea6c770038f5cfa185e98c036"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/exclusion-zone-guided.png",
+      "sha256": "56948171e0eb39027d9aafd276d143942754b4e68a37721e649c68be22918676"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/exclusion-zone-standard.png",
+      "sha256": "66ad56c5b7cb53c6a23e2b1ee7f0287db2b6dcfd0fca3a398e06df6138dac3ac"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/furniture-engineering.png",
+      "sha256": "a659c7cf29c63bc798257cf955d347246ada99fc65a884430249b8a6b318c170"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/furniture-guided.png",
+      "sha256": "ffcb49b99f83befe7caac8e650aa6370868ab07fe9eb63cf3327c2fcde738921"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/furniture-standard.png",
+      "sha256": "b7a5f0b055db5d5a53fd44aed0ee249473bef90fc810717527b2fc05c71d7f9e"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/group-engineering.png",
+      "sha256": "b862d3081f43376920d234e239fa69a52272f4a81a9bebd4afa225910473c289"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/group-guided.png",
+      "sha256": "df41e350ae2953b9c686da5b6499be52619e6e92ff0f987ae9c4132018258aa1"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/group-standard.png",
+      "sha256": "88965c26ba5306f1d50224602251f3249652cf1f99109d182824801a4629f9b3"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/interaction-trigger-engineering.png",
+      "sha256": "1b141708873da72f25169b9a1c2d4aa288d80cf9e5fee339d12c765ce3656f67"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/interaction-trigger-guided.png",
+      "sha256": "f55d7e5ef65c583e70565dd5a32fec0bc04c0d589d8121ffbc689bdd9bc66219"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/interaction-trigger-standard.png",
+      "sha256": "487d122248ea6d12d00064dc7ba51f7f353ae9a5421742398f7aae92075b2e70"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/library-return-desktop.png",
+      "sha256": "b021ba60b9ff2ae0b6566a8d0a659d58e192521dea45fb5852947aa59aabda53"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/library-return-phone.png",
+      "sha256": "64659098e7555129c0a5ec3172266d3762d965e6abec2f84d7acfa6f7ad708af"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/light-engineering-scrolled-resized.png",
+      "sha256": "88481b4d6085567954f0855d73c2462ecb2c4404ed8112607de185b32308aff2"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/light-engineering.png",
+      "sha256": "850dea2ff90de5635f8c0967268aad61a6f43d96bc6774179473d29ac7a40b77"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/light-guided.png",
+      "sha256": "25329009b9d2a6e0dd76853657eb5544e1f45d7f23041472ffa2e5d9c3f80680"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/light-standard.png",
+      "sha256": "6dcb8e82ac3565c2c7807afeda4315f53947c8cca41455175769bfbdf28ed6e4"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mist-engineering-light.png",
+      "sha256": "b4846d335dbe70444f1c40dda567a38a1bcc88d4765e55d2f6e95ad0d3505a2f"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mist-guided-light.png",
+      "sha256": "51cf462af5f3a20aae3ebab23bc59d7a0e52bf559a0bf1726747d71812f9fba7"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mist-standard-light.png",
+      "sha256": "05ca4ad2a4e29ac68e5911c0c1fea5a0c9d78804b9ea01d09c5ce2bbc0414374"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mixed-selection-engineering.png",
+      "sha256": "a66bf79465e82944c6f7d554658d1471134f48e251ca50e7ef03c78a36aa39b4"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mixed-selection-guided.png",
+      "sha256": "2d5b6f9a73e66c84013d585efe5610f5d14c28f9ea19df540aa6e8991f2d16d7"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/mixed-selection-standard.png",
+      "sha256": "92cf4d8244eee680b263d2c3c4b243d342c2c6e766c691f18d2ac90f69ffd076"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/observations.json",
+      "sha256": "25adbe5a90388d8cde78e746525e7434b8592c3fcedc736bc7d4604e951273d5"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/parchment-engineering.png",
+      "sha256": "3534b516a54c4bfc1333aa0fe71475e378f1c5151e32b6360f40bddee93b6be1"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/parchment-guided.png",
+      "sha256": "b4be36d9028b96ac157122bf86e957309a47b2cb2b0d42dcac7b0b7cefddd9d5"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/parchment-standard.png",
+      "sha256": "ed295f4347820baf662500778926d29992fa96c3b5aa04094e0c1763064c9353"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/particles-engineering-light.png",
+      "sha256": "540fa6e2bed947ee0b01c3ebd9c59f677817dee6269b497b6553259b56c276f4"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/particles-guided-light.png",
+      "sha256": "36976ce9114beb19b3ddfe8a2730ec951d166c2a757be8e4724d5569dd596312"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/particles-standard-light.png",
+      "sha256": "5142cb3bbfc5d3e1016797f09d23041c57c06da94c08d1dfb55c01f1480c6a12"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/phenomenon-engineering-light.png",
+      "sha256": "02c091c3e0f576c087870fd12d2fb10e37d76bbbd90b6de7ea2895425c70e1ec"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/phenomenon-guided-light.png",
+      "sha256": "3c79d612e00b0cde3adc90b104846f0193a183c44f3033d594d7ba4098e8aebb"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/phenomenon-standard-light.png",
+      "sha256": "787be885b424c19c5753d369feea8b3cf8f24a1d989361834c1560caed34e1e7"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/phone-edit-return.png",
+      "sha256": "b8eff0c6622dac8ea2460dffe735dfa52ef4942384875fc64a61e4140e6f7053"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/projection-engineering-light.png",
+      "sha256": "b1b71b28620e51ea8147defde76c64f276d91594c6378ac67165cfc7f058ec9b"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/projection-guided-light.png",
+      "sha256": "1d5037891a847525e8a349bbc1f2b5aeba4b19535261eb4deb8e119b7f2393c8"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/projection-standard-light.png",
+      "sha256": "9fa19aba7addcdbb376a2cb6c33e8f1d7e64ab6bb05c1c6faa3eec640ebff594"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-room-feature-engineering.png",
+      "sha256": "028f0a0f5db6e070f61c086f5921b8e0dbbc4f6b471a3e8789981b4da6ac97df"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-room-feature-guided.png",
+      "sha256": "be7807cfaba8c1dffd6961e35cd5b665278972b8b55fd14497904e54ee771dc1"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-room-feature-scene.png",
+      "sha256": "5394dfc3921b961335c307d3d0eac1dc3f6e406397e3ac8e9ea971783e24170b"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-room-feature-standard.png",
+      "sha256": "31fd7c2958ca4ed42fc84ca45620cbd1a182aedbabe93220560c91afad5fea91"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-selection-engineering.png",
+      "sha256": "c1c64ff354baab07323be0398a1af234289a12514f86cdccaf70fc62c916ee08"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-selection-guided.png",
+      "sha256": "c9a4cf0bda8f796b7021bc186c2116fbe29eed5e7f195aa5dc856844d2144c88"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-selection-scene.png",
+      "sha256": "70e11db595ca565cde6c662f34af632a6416cfba99e54b86ba199c6baf2d427a"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/removed-selection-standard.png",
+      "sha256": "eb7b5f847e2d4b531bac9d698907af8795afafede9479a1dbbd862f4d06a369c"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-context-dimensions-guided-scrolled.png",
+      "sha256": "d33ac64b81a8ebdc5e276be7f91daec94c0c4aee3807e9f1bffbd7a3ab4815ea"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-context-guided.png",
+      "sha256": "82d3e486fdd90cd95c4dfd9f7ede3ebb29f8618155195a25721a593e32883871"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-engineering.png",
+      "sha256": "fbf615897b91fe406726ea3db5d99d21e4ed003be54c317116ad04124dab2836"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-guided.png",
+      "sha256": "10f242f2627f9b9b82ba25bb453ca397e59f9e2dae0e6d1a0da36edbda12da3c"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/room-feature-standard.png",
+      "sha256": "6468a1aa03b013c479d4ef087438b4a8f8f0fda6632fe7e2bd6e1d181d90646f"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scale-live-preview.png",
+      "sha256": "c7ce1d472b255ee8303e5add3fef16df70d9165ac6baa670d53e5b4d038ac884"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scene-engineering.png",
+      "sha256": "25ac3a9a2fe10472fb99fcae270930538ae24d6373db6eda3faf2e199392b89e"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scene-guided.png",
+      "sha256": "bdbbfc3b9f90c5582289a09c90d28e2ffdd7fb38ab23d1babeb3d7aa644690ca"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scene-phone.png",
+      "sha256": "0838b0169c52f1d0b23b4130fa4ebd21ba8b7964e84acfd7f8cdc1ac03f24d52"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/scene-standard.png",
+      "sha256": "8a414c7674b7a6239455a50aff63cf6d80060b2145d198dc51b37e3f6e9f8042"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/selection-edges-observations.json",
+      "sha256": "776488c45eb3e3b0a7c9483de075b6f089a8e6712ee439a5ee89793ca0360815"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/spot-direction-engineering.png",
+      "sha256": "4a7161b93a3a3224f1e3759ce42355912be6801531b533b0e5192954c93b2b62"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/support-surface-engineering.png",
+      "sha256": "7973cf5f797ff78a197e3a3d52ffffe8b390c2f3e9daff4770044f5a8562567d"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/support-surface-guided.png",
+      "sha256": "c0a1caf4267c0f730f72a3e62099ff27d904e5cd8dbbf1b20ceae105e75e84b0"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/support-surface-standard.png",
+      "sha256": "4927e4b6a034adf7e141e9453fbd94bd3b9542d986caf55175ec801fe451be91"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/timeline-audio-engineering.png",
+      "sha256": "467e08fc23625eb065465f2ae777a4bf3d0375bd37f6f262c1bcc304d181e105"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/timeline-audio-guided.png",
+      "sha256": "c05386c68a81f49652386e4fca834c13feb2f43485025b3ff38f9e779760d342"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/capture-manifest.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/captures/timeline-audio-standard.png",
+      "sha256": "5a7de59c883907d2392f1552261eee2bdc56c84cf908e745a23b9d3b05b5823d"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video-1.webm",
+      "sha256": "9caa0fd8000d1a586308c4a8908e437129f8d94a6babde1f626cf87cc3bf7318"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-16216-nd-keyboard-rail-navigation-chromium-video.webm",
+      "sha256": "61b363ee072ad1fe4e39487f11719b32bc8b16e46c9ddc1b95378b3e1d3bf765"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-320d1-s-before-one-history-commit-chromium-video.webm",
+      "sha256": "3b7de8ef685c11bd160f705f819e885ceb4b2609d95a3c3a12c741c08e6d335f"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video-1.webm",
+      "sha256": "4b6c7cdcaa99291bb67cd56d6076779aaa15bc698439959cc56c573421ac644a"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-596c9-room-recovery-at-each-depth-chromium-video.webm",
+      "sha256": "c9cf69fba5f45ab22dcdeb7f18e45cf82b6a1ab493023f772f3e8624799af47d"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-61d4b-d-selections-at-every-depth-chromium-video.webm",
+      "sha256": "7bc42516d296e5b22fc7b46c961c6654467653002730a335fc70e15d1c48ef0d"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-7bafa-d-Inspector-return-on-phone-chromium-video.webm",
+      "sha256": "ef8969bdd7e96dbc6516e1765a85d21e9950df11226471d245a279cb00a74a20"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-c8eb8-ode-travel-and-saved-reload-chromium-video.webm",
+      "sha256": "f75806bbc57943a26620877294e68e473dec1dea63acaa1564366ba96305f1a5"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/recordings/parallax-sc00b-combined-SC-d36c9-Inspector-return-on-desktop-chromium-video.webm",
+      "sha256": "88661fefba70eb8c282f203b1ac5e3d2e3d0dfbb991a6abd2936db919a5414ff"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/run.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "sha256": "3ae52ee595113bb1590163272540d8ac75aef83fe26b2324715538c2fc219f56"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-SCENE-4.png",
+      "sha256": "6ccf5aa1c765daea4d82dd8453fba07cd67594ae001e26ae1b6fc9dc9b4e80fd"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-PROPERTIES-6.png",
+      "sha256": "3cb66eff385352643540dfc47c188cc032d3dbed5c75494905e3b466fc02c166"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-CONTEXT-8.png",
+      "sha256": "3d3d391c2010a1e9a9dffcebe0213bcb57ea070ef475c166fb60adb0797750f9"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-10.png",
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/4fa127e1f6ce18221d7ca1ab4f0ec779.webm",
+      "sha256": "0ee0b68b8aae0c0c88b61e33fba4a29ebaf432bf66efedb6a9dabe36d34f87fa"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-SCENE-4.png",
+      "sha256": "f5e1fe46c5fd8c08f2d6567f5a48362dfc9db27ed04aef6dc5597034d172a288"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-PROPERTIES-6.png",
+      "sha256": "350991b5b044e756d1e24288dff044f4f2c68bd37b8054c9f12612441fe85908"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-CONTEXT-8.png",
+      "sha256": "3600e24d8af03f89b0c97881b95f2eb941cfa37fae7e9f507466844684ed11ab"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-10.png",
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/c77d1204982f6068af594366a59dde0f.webm",
+      "sha256": "287bc0996f74bb0747be33001476001392c61905ae2ab8b3c58f180444648356"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-INVALID_SELECTION-6.png",
+      "sha256": "8f8d53b6663dada3b9a3a993e58f075a299790a1deab8ffbeae8131b87bfd0db"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-RESTORED_SELECTION-8.png",
+      "sha256": "7bb6c016d9a811a2bc435898cb944b2277c7c6c983bee8206c5f9346a6703c3c"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-NORMAL-RETURNED-10.png",
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/e07f6e4cb027b7e4201a35f643d61334.webm",
+      "sha256": "d325c3e47173f960d4829919cb7c324289ba6e739ab7d54cd027071f0a437b87"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-INVALID_SELECTION-6.png",
+      "sha256": "836faac693e9fdc733c934bcb467f4b196ef18603258eec072239c8b8f1b2e42"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-RESTORED_SELECTION-8.png",
+      "sha256": "02c4acdd457e3255fb7ae8f7b1363f9b31576446adc748421819a026cb786d6b"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-DESKTOP-CREATOR-REDUCED-RETURNED-10.png",
+      "sha256": "ba50b7ec256464fc1ecaecb36afcf25a03af5d19678df758debe41b15f5fabdc"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/f0f52bd817d6e37653e6f6bfbc9c115c.webm",
+      "sha256": "41629247f3175be261fad77103d8b4e757b0365fdffdadb6779816394182fc10"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-SCENE-4.png",
+      "sha256": "9dcbdec72aa1f3cf5eece0e7a570bbe12c511df55489e05713ccfa74ccf77238"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-PROPERTIES-6.png",
+      "sha256": "603c4903b24b496a7129b5cb75ed06f868e8d71f0e283bc76899fda6a4c89031"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-CONTEXT-8.png",
+      "sha256": "d42a6cb809b88981a9fab0f68ee08838ca5dd3bccbd8f924445cba3cef26b5f4"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-NORMAL-RETURNED-10.png",
+      "sha256": "5ad13c4fb61bb07ad606fc03a680b128ec4e63d4f9043c6900625bc61b9ea966"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/b17be095c87c90d21ddebae7e7e53c1a.webm",
+      "sha256": "872a29b2abf3d2143bf8759724307202c53ef24a13abafbd95e726d0f410c8bd"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-SCENE-4.png",
+      "sha256": "655a2b5e0477970caf79dd0741a48fdbec7fbfac376e8a28866b99475305c3ae"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-PROPERTIES-6.png",
+      "sha256": "603c4903b24b496a7129b5cb75ed06f868e8d71f0e283bc76899fda6a4c89031"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-CONTEXT-8.png",
+      "sha256": "d42a6cb809b88981a9fab0f68ee08838ca5dd3bccbd8f924445cba3cef26b5f4"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-context-and-return-MOBILE-CREATOR-REDUCED-RETURNED-10.png",
+      "sha256": "792b0fe2a9fcc715f79410d2069ba79194aa37528b26cca12012ced8d961fe62"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/d9706b02cf73930438322d58726911c8.webm",
+      "sha256": "b1ae0cc268bac099f264ec54bd24d2fb5f0897c8e72846934b945e94eab2637e"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-INVALID_SELECTION-6.png",
+      "sha256": "36123190e4fba39b584eb1b0da0ae857dc703f9ecb378b981ae1d6d3f210a37a"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-RESTORED_SELECTION-8.png",
+      "sha256": "b9a4e1857affe513337f696d594f313092e84de3a9f581c20baa1aca83fdefa8"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-NORMAL-RETURNED-10.png",
+      "sha256": "792b0fe2a9fcc715f79410d2069ba79194aa37528b26cca12012ced8d961fe62"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/aa423fc728ad61ff67a1fa8a9425b98d.webm",
+      "sha256": "32df1c6aa8e5ba716ba4d12f9b12f7b0972f2906e2c5ade885cf5368d9c6a253"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-INVALID_SELECTION-6.png",
+      "sha256": "c876e1fa1bf644b8a5852698fd95cb84e9c8e469b3ecb90946ac81583c5e736b"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-RESTORED_SELECTION-8.png",
+      "sha256": "1230948c4c5a89af303d38519e80d0dd5dce4ba63c13fce9a876922db4fb387b"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/parallax.sc00b.inspector.experience-creator-inspector-removal-recovery-and-return-MOBILE-CREATOR-REDUCED-RETURNED-10.png",
+      "sha256": "1c3b29c8eddcb886f659bf2024d953d08e274d5ae83a501175357ca0be5d9922"
+    },
+    {
+      "manifest": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/local-diagnostic.json",
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/60a04c10d697a25792ff07bc178131cd.webm",
+      "sha256": "650dfae1aa705773c181bd5d6a2fc28d97560098d5e87d8872892c00039cac68"
+    }
+  ]
+}

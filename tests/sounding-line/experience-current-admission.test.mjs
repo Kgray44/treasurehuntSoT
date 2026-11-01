@@ -2089,8 +2089,11 @@ for (const [metadata, makeRecord, adoption] of [
   [CURRENT_R26, r26RecordFixture, r26Adoption],
 ])
   test(`R${metadata.version} finalizer and seal reject substituted retained artifacts or custody before any qualified create`, async (t) => {
-    if (metadata.version === 26)
-      t.mock.timers.enable({ apis: ["Date"], now: Date.parse(metadata.ownerApproval.executionNotBeforeUtc) });
+    const fixtureNow = Date.parse(
+      metadata.version === 26 ? metadata.ownerApproval.executionNotBeforeUtc : metadata.ownerApproval.approvedAtUtc,
+    );
+    assert(Number.isFinite(fixtureNow));
+    t.mock.timers.enable({ apis: ["Date"], now: fixtureNow });
     const record = makeRecord();
     const f = finalFixture(
       t,

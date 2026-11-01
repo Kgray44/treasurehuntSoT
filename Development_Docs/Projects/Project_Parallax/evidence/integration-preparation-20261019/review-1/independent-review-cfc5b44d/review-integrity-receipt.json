@@ -1,0 +1,13 @@
+{
+  "candidate": "cfc5b44d031f27a9878febc44d61a6dcebb11f63",
+  "base": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "packetSha256": "32fa1145d98ca3ba258dc9e3a012f66251aa7fd5d0221e59ac71140f7e75eabb",
+  "mediaBindingsReverified": 252,
+  "mismatches": [],
+  "dimensions": 17,
+  "reportSha256": {
+    "independent-review.md": "f570be5422eaae71868b02c5bf714ddc1717e293232c490654761354ea8bd9db",
+    "independent-review.json": "811b6f6ff4ec00c3f6356e3b0df09d9fbc6f000e3f4d5117409665bc22b4f649"
+  },
+  "outputClassification": "Engineering evidence outside the repository; no product or repository mutation"
+}

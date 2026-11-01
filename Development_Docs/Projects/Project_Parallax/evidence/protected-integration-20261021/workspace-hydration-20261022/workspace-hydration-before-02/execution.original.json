@@ -1,0 +1,39 @@
+{
+  "name": "workspace-hydration-before-02",
+  "at": "2026-10-23T01:31:56.269Z",
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 4,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37306851328,
+  "minimumD": 111816110080,
+  "monitorSamples": 7,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 408,
+      "sha256": "b925e6294ec1f4c383d207b198452d01f44659249a4f3691ddb8fb650e9431a1"
+    },
+    "stderr": {
+      "bytes": 1121,
+      "sha256": "b60ffcfeb241ca97be5fa8f28e44003379b12bbc0ac5be2dc5b5b603b9cec454"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

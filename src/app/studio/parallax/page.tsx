@@ -21,11 +21,23 @@ export default async function SpatialStudioPage({
     );
   return (
     <SpatialStudio
-      key={[chronicleId, value("definition"), value("entity"), value("block")].join(":")}
+      key={[
+        chronicleId,
+        value("definition"),
+        value("entity"),
+        value("block"),
+        value("environment"),
+        value("library"),
+        value("libraryVersion"),
+      ].join(":")}
       chronicleId={chronicleId}
       definitionId={value("definition")}
       entityId={value("entity")}
       blockId={value("block")}
+      environmentDefinitionId={value("environment")}
+      libraryEntryId={value("library")}
+      libraryEntryKind={value("libraryKind")}
+      libraryEntryVersionId={value("libraryVersion")}
     />
   );
 }

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "kind": "BOUNDED_ROOT_DOMAIN_STATIC_REVIEW",
+  "reviewingOwner": "01a12c32-ea0a-70d3-a918-5f9f735fa107",
+  "candidateBeforeMerge": "6119eb58ae06a50236c396d4a6d27f9d9ae36f7c",
+  "acceptedMain": "aaff919428ef9ab421579415ce3409949724760d",
+  "scope": [
+    "Canonical accepted CrossdeckDevices implementation",
+    "Single above-book Journal provider with VoyageContext and presentation callbacks",
+    "Explicit canonical companion opening and manual ordinary/historical entry",
+    "Root BrowserRoomView/motion/browser lifecycle preserved",
+    "Accepted test criteria plus current expiry/renewal regression"
+  ],
+  "decision": "NO_CONFIRMED_SOURCE_CONFLICT_IN_INSPECTED_PREVIEWS",
+  "currentPreviewSha256": {
+    "src/components/crossdeck/CrossdeckDevices.test.tsx": "31954ed320c2fc1ef011c89e85f11abdc119b360a05d0f34fb90fe089047a090",
+    "src/components/crossdeck/CrossdeckDevices.tsx": "2255b42466ef0364029ba01e3b9a81bdeeca4c7e8d78ee75896c8174f042eb37",
+    "src/components/player/journal/ChronicleJournalSession.test.ts": "a7a8f3b3f675aa9ea41cb329957aedf0bb818153fc563edd0f2ef8bf959fd44e",
+    "src/components/player/journal/ChronicleJournalSession.tsx": "22de034ed5c18142b709055be09dc5ad6832af244fb750fc229715d0fd383275",
+    "src/components/player/parallax/ChronicleLens.test.tsx": "4472c5975d1eef5fceade6aa3a69e3f5e75aebc8137741a350f698cd328f40d8",
+    "src/components/player/parallax/ChronicleLens.tsx": "62831d18fc339c044eaf372d1305ae5204357e8a4053454165239156e0857e40"
+  },
+  "correction": "CrossdeckDevices.tsx is accepted-main exact; its test additionally includes expiry/renewal regression and real-timer cleanup. No byte-exact claim for the augmented test.",
+  "limits": [
+    "Static source/criterion review only",
+    "No type/runtime or rendered review result",
+    "No authenticated or protected acceptance",
+    "Phone alignment and empty-plane prototypes remain unqualified"
+  ],
+  "recordedAt": "2026-10-21T23:02:07.887026+00:00"
+}

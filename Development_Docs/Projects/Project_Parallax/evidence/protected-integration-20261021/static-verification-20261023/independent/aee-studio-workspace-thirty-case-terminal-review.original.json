@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "kind": "INDEPENDENT_AEE_CURRENT_SOURCE_STUDIO_WORKSPACE_THIRTY_CASE_TERMINAL_REVIEW",
+  "at": "2026-10-23T03:57:48.7017095Z",
+  "status": "PASS_THIRTY_CURRENT_SOURCE_CASES_CLEANUP_AND_IDENTITY_ONLY",
+  "source": {
+    "commit": "aee0cd823fc105ff3efc14363ce8f1f98b3e3876",
+    "base": "b2d901af5646ce76b3b2bd5a88e1ad8563c2db57",
+    "hook": "274ceb72d933c3434d244819a6b3388f4105853de97351c31205bba3f9520258",
+    "hookTests": "6caf779f12094a857546774ff5048308d1a15c2c18efdef6efb88440f00eaf3e",
+    "studioTests": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c",
+    "postRunHeadCleanAndThreeHashesIndependentlyVerified": true
+  },
+  "result": {
+    "filesPassed": 2,
+    "casesPassed": 30,
+    "casesFailed": 0,
+    "casesSkipped": 0,
+    "studioCases": 21,
+    "workspaceCases": 9,
+    "workerCount": 1,
+    "fileParallelism": false,
+    "originalCaseLimitsPreserved": true,
+    "outerLimitSeconds": 180,
+    "deadline": false,
+    "vitestTotalSeconds": 53.22,
+    "testsSeconds": 16.77,
+    "helperExit": 0,
+    "payloadExit": 0,
+    "terminalAt": "2026-10-23T03:56:10.260Z",
+    "cleanup": "PASS",
+    "cleanupMs": 2,
+    "directExitObserved": true,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "ownership": "WINDOWS_JOB_OBJECT",
+    "stderr": "Existing Vite config warning only"
+  },
+  "records": [
+    {
+      "name": "execution.original.json",
+      "bytes": 921,
+      "sha256": "46fdd3ccf0516d07484d5039dbdbb15c76d5402d33c51602dac79fc420dabaca"
+    },
+    {
+      "name": "request.original.json",
+      "bytes": 738,
+      "sha256": "83bbc2b47ecf825a98930655498f932c2d8ef1d5c2efc3255ce8428a35e397a2"
+    },
+    {
+      "name": "stdout.original.log",
+      "bytes": 242,
+      "sha256": "a067d301eb87c272c3fa54dd09633cf808d1c5067fcf45c64c3cc5c27faa0b62"
+    },
+    {
+      "name": "stderr.original.log",
+      "bytes": 375,
+      "sha256": "b4acd4f819050212c4fe3b3ed8416421330f7ff8c72cb9bb667c335f3e24a94e"
+    }
+  ],
+  "limits": [
+    "This is a new actual30-case run on exact merged aee/274/6caf/Studio802; older d966/c121, original failure, observer failure and deadline receipts remain unchanged.",
+    "Two selected software test files passing does not establish all609 selected unit files,66 browser files,118 experience contexts, build/migration, rendered review3 or protected acceptance.",
+    "No browser/camera/capture/reservation/paid provider call/physical AR was executed or accepted by this result.",
+    "Root independently read original execution/stdout/stderr/request and postsource; root did not execute tests or mutate owner source.",
+    "Any next eligibility or capture step needs actual current controller/PR776 authority and coordinator direction; absence of finite exception in a plan is not a grant."
+  ],
+  "qualification": false,
+  "protectedAcceptance": false,
+  "physicalAcceptance": false
+}

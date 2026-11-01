@@ -7,6 +7,14 @@ const initial = {
   displayName: "Synthetic Creator",
   policy: null,
   revision: 0,
+  overrideReason: null,
+  overrideChangedAt: null,
+  globalModels: {
+    standardModel: defaultAIGlobalPolicy.standardModel,
+    advancedModel: defaultAIGlobalPolicy.advancedModel,
+    roomModel: "gpt-6.1-sol" as const,
+    allowedModels: defaultAIGlobalPolicy.allowedModels,
+  },
   effective: effectiveAIUserPolicy(defaultAIGlobalPolicy, null),
   globalCeiling: { requests: 10000, spendNano: 10000000000 },
   used: 12,
@@ -79,6 +87,6 @@ describe("AI allowance inside the canonical account dossier", () => {
   it("keeps account policy read-only for observers", () => {
     render(<AIQuotaUserPanel initial={initial} csrfToken="synthetic-csrf" canManage={false} />);
     expect(screen.getByLabelText("Monthly request allowance (blank inherits)")).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Preview restore inherited policy" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Reset to global" })).toBeDisabled();
   });
 });

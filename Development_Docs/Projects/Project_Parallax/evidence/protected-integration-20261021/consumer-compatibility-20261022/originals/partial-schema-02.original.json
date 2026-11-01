@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-22T15:20:36.308Z",
+  "checked": 22,
+  "errors": [
+    {
+      "id": "homeport.community.public-projection",
+      "error": "PRODUCT_EXPERIENCE_ROLE_WITNESS_REQUIRED:homeport.community.public-projection.CREATOR"
+    }
+  ],
+  "runtimeExecuted": false
+}

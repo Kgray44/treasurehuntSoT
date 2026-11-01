@@ -1,0 +1,14 @@
+{
+  "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+  "finishedAt": "2026-10-19T20:57:03.968Z",
+  "qualification": false,
+  "status": "STOPPED_ON_FAILURE",
+  "completed": [
+    "special-04",
+    "browser-09",
+    "browser-10",
+    "browser-11"
+  ],
+  "failedPhase": "special-05",
+  "failure": "Runner failed with exit 1"
+}

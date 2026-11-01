@@ -1,6 +1,7 @@
 "use client";
+import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { createBrowserUuid } from "@/lib/browser-uuid";
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useCallback, useId, type ReactNode } from "react";
 import { ParallaxLensRuntime, type LensSnapshot, type SpatialRuntimeAdapter } from "@/parallax/runtime";
 import { unknownState, type CapabilityState } from "@/sextant/contracts";
 import type { InstanceBinding, InteractionReceipt, SpatialMoment } from "@/parallax/contracts";
@@ -8,6 +9,7 @@ import { NativeSpatialAdapter } from "@/parallax/native";
 import { landfallNativeHost } from "@/landfall/native-bridge";
 import styles from "./ChronicleLens.module.css";
 import { fieldConsentDisclosure, type FieldMetadata } from "@/parallax/field-contracts";
+import { BrowserRoomView } from "./BrowserRoomView";
 import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 
 class LensAccessError extends Error {}
@@ -97,25 +99,58 @@ export function ChronicleLensEntry({
   blockId,
   replayOnly,
   initiallyOpen = false,
+  compact = false,
 }: {
   moment: SpatialMoment;
   blockId: string;
   replayOnly: boolean;
   initiallyOpen?: boolean;
+  compact?: boolean;
 }) {
   const voyage = useContext(context);
+  const descriptionId = useId();
   const [open, setOpen] = useState(initiallyOpen);
   return (
-    <div className={styles.entry}>
-      <span aria-hidden="true" className={styles.mark}>
-        <LensMark />
-      </span>
-      <div>
-        <strong>{moment.version.title}</strong>
-        <p>A spatial moment is tucked into this passage.</p>
-      </div>
-      <button type="button" onClick={() => setOpen(true)}>
-        Open Chronicle Lens
+    <div className={compact ? styles.compactEntry : styles.entry}>
+      {!compact && (
+        <>
+          <span aria-hidden="true" className={styles.mark}>
+            <LensMark />
+          </span>
+          <div>
+            <strong>{moment.version.title}</strong>
+            <p>
+              {replayOnly
+                ? "Revisit this released scene in view-only mode."
+                : "Open this passage’s scene in your room."}
+            </p>
+          </div>
+        </>
+      )}
+      {compact && (
+        <span id={descriptionId} className="sr-only">
+          {moment.version.title}.{" "}
+          {replayOnly ? "Revisit this released scene in view-only mode." : "Open this passage’s scene in your room."}
+        </span>
+      )}
+      <button
+        type="button"
+        aria-label={compact ? "Open Chronicle Lens" : undefined}
+        aria-describedby={compact ? descriptionId : undefined}
+        onClick={() => {
+          setOpen(true);
+        }}
+      >
+        {compact ? (
+          <>
+            <span className={styles.compactLabelPrefix} aria-hidden="true">
+              Open Chronicle{" "}
+            </span>
+            Lens
+          </>
+        ) : (
+          "Open Chronicle Lens"
+        )}
       </button>
       {open && (
         <ChronicleLens
@@ -165,7 +200,9 @@ export function ChronicleLensEntry({
                 }
               : undefined
           }
-          onClose={() => setOpen(false)}
+          onClose={() => {
+            setOpen(false);
+          }}
           field={
             voyage
               ? async (body) => {
@@ -227,6 +264,11 @@ export function ChronicleLens({
   onPresentationChange,
 }: ChronicleLensProps) {
   const createLabAdapter = useContext(deviceLabContext);
+  const motionPolicy = useOptionalMotionPolicyContext();
+  const motionPreference = useRef(motionPolicy?.mode ?? "full");
+  useEffect(() => {
+    motionPreference.current = motionPolicy?.mode ?? "full";
+  }, [motionPolicy?.mode]);
   const dialog = useRef<HTMLDialogElement>(null),
     runtime = useRef<ParallaxLensRuntime | null>(null);
   const [state, setState] = useState<LensSnapshot | null>(null),
@@ -256,6 +298,8 @@ export function ChronicleLens({
     !!createLabAdapter,
   ]);
   const [nativeAvailable, setNativeAvailable] = useState(false);
+  const [browserRequested, setBrowserRequested] = useState(false);
+  const browserRuntime = useCallback(() => runtime.current, []);
   const [replay, setReplay] = useState(replayOnly);
   const [pending, setPending] = useState<Awaited<ReturnType<ParallaxLensRuntime["interact"]>> | null>(null);
   const [consent, setConsent] = useState(false),
@@ -308,6 +352,7 @@ export function ChronicleLens({
             replayOnly: bound.replayOnly,
             environment: createLabAdapter ? "DEVICE_LAB" : "PRODUCTION",
             searchClock: () => performance.now(),
+            motionPreference: () => motionPreference.current,
             searchTimeStore:
               loadBinding && !bound.replayOnly
                 ? {
@@ -362,7 +407,10 @@ export function ChronicleLens({
       runtime.current?.updateSearchActivity({ foreground: document.visibilityState !== "hidden" });
       // Native presentation can hide its WebView while the app remains foreground.
       // The companion's canonical lifecycle event owns camera shutdown in that case.
-      if (document.visibilityState === "hidden" && !landfallNativeHost()) void runtime.current?.useGuidedView();
+      if (document.visibilityState === "hidden" && !landfallNativeHost()) {
+        if (runtime.current?.read().mode === "BROWSER") void runtime.current.close();
+        else void runtime.current?.useGuidedView();
+      }
     };
     document.addEventListener("visibilitychange", pause);
     const lock = () => runtime.current?.updateSearchActivity({ unlocked: false });
@@ -567,26 +615,57 @@ export function ChronicleLens({
         </button>
       </header>
       <div className={styles.stage}>
-        <div className={styles.compass} aria-hidden="true">
-          <LensMark />
-        </div>
-        <p className={styles.viewLabel}>
-          {state?.mode === "SIMULATED"
-            ? "Camera-free Device Lab"
-            : state?.mode === "NATIVE"
-              ? "Camera View"
-              : state?.mode === "BROWSER"
-                ? "Browser Camera View"
-                : "Guided View"}
-        </p>
-        <p className={styles.narrative}>
-          {accessLost
-            ? "This Lens is no longer available. Return to your Journal."
-            : (activeMoment.attachment.overrides.narrative ?? activeMoment.version.fallback.narrative)}
-        </p>
-        <div className={styles.objects}>
+        {state && !accessLost && (
+          <BrowserRoomView
+            key={activeMoment.version.checksum}
+            moment={activeMoment}
+            runtime={browserRuntime}
+            activeChanged={setBrowserRequested}
+            select={(id) => {
+              const entity = activeMoment.version.entities.find((candidate) => candidate.id === id);
+              if (
+                !entity ||
+                !state.visibleEntityIds.includes(id) ||
+                activeMoment.version.studio?.layers.find((layer) => layer.entityId === id)?.selectable === false
+              ) return;
+              const action = entity.interactions.includes("PICK")
+                ? "PICK"
+                : entity.interactions.includes("INSPECT")
+                  ? "INSPECT"
+                  : null;
+              if (action) void interact(id, action);
+            }}
+          />
+        )}
+        {(!browserRequested || accessLost) && (
+          <>
+            <div className={styles.compass} aria-hidden="true">
+              <LensMark />
+            </div>
+            <p className={styles.viewLabel}>
+              {state?.mode === "SIMULATED"
+                ? "Camera-free Device Lab"
+                : state?.mode === "NATIVE"
+                  ? "Camera View"
+                  : state?.mode === "BROWSER"
+                    ? "Browser Camera View"
+                    : "Guided View"}
+            </p>
+            <p className={styles.narrative}>
+              {accessLost
+                ? "This Lens is no longer available. Return to your Journal."
+                : (activeMoment.attachment.overrides.narrative ?? activeMoment.version.fallback.narrative)}
+            </p>
+          </>
+        )}
+        <div className={styles.objects} aria-label={browserRequested ? "Selected spatial object" : "Spatial objects"}>
           {activeMoment.version.entities
-            .filter((e) => !accessLost && state?.visibleEntityIds.includes(e.id))
+            .filter(
+              (entity) =>
+                !accessLost &&
+                state?.visibleEntityIds.includes(entity.id) &&
+                (!browserRequested || state.selectedEntityId === entity.id),
+            )
             .map((e) => (
               <article
                 key={e.id}
@@ -610,7 +689,12 @@ export function ChronicleLens({
                     <button
                       type="button"
                       key={type}
-                      disabled={busy || !state || !["READY", "GUIDED_FALLBACK"].includes(state.state)}
+                      disabled={
+                        busy ||
+                        !state ||
+                        !["READY", "GUIDED_FALLBACK"].includes(state.state) ||
+                        (browserRequested && type === "PLACE")
+                      }
                       onClick={() => void interact(e.id, type)}
                     >
                       {type === "PICK"
@@ -788,16 +872,18 @@ export function ChronicleLens({
             {createLabAdapter ? "Open camera-free Device Lab" : "Use camera for local placement"}
           </button>
         )}
-        <p role="status">
-          {observed
-            ? replay
-              ? "Revisited. Your Voyage progress stays the same."
-              : "Interaction recorded. Continue through the passage when you are ready."
-            : accessLost
-              ? "This Lens is closed. Return to your Journal."
-              : (state?.guidance ?? "Opening this passage’s spatial moment…")}
-        </p>
-        <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>
+        {(!browserRequested || state?.mode === "BROWSER" || observed || accessLost) && (
+          <p role="status">
+            {observed
+              ? replay
+                ? "Revisited. Your Voyage progress stays the same."
+                : "Interaction recorded. Continue through the passage when you are ready."
+              : accessLost
+                ? "This Lens is closed. Return to your Journal."
+                : (state?.guidance ?? "Opening this passage’s spatial moment…")}
+          </p>
+        )}
+        {(!browserRequested || accessLost) && <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>}
         {error && <p role="alert">{error}</p>}
         {pending && (
           <button disabled={busy} type="button" onClick={() => void retry()}>

@@ -1,0 +1,36 @@
+[WebServer] (node:49780) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 25 tests using 1 worker
+
+(node:34948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:34948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 [chromium] › tests\e2e\parallax-environment-entry.spec.ts:20:5 › Environment plus opens keyboard-friendly choices, duplicates a source and starts an empty shell (6.3s)
+  ok  2 [chromium] › tests\e2e\parallax-environment-library.spec.ts:22:5 › pinned room editing creates an explicit independent Environment copy and preserves the Scene release pin (5.9s)
+  ok  3 [chromium] › tests\e2e\parallax-environment-library.spec.ts:123:5 › Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots (7.2s)
+  ok  4 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:21:5 › durable working scene, explicit saved membership, named Save As, metadata and version history (10.9s)
+  ok  5 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:92:5 › independent environment creation, editing and reuse do not manufacture scene definitions (4.5s)
+  ok  6 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:187:5 › pending save retry and reload retain one stable definition and visible failure (4.1s)
+  ok  7 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:223:5 › lost Save As response replays one copy and two tabs preserve conflicting edits deliberately (5.7s)
+  ok  8 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:283:5 › light and dark Library views remain typed, responsive and keyboard reachable (5.4s)
+  ok  9 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:351:5 › stale environment recovery keeps the original CAS base after reload (3.4s)
+  ok 10 [chromium] › tests\e2e\parallax-library-lifecycle.spec.ts:386:5 › failed historical copy cannot substitute an earlier version for a newly selected version (1.8s)
+  ok 11 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:19:5 › SC-00B combined Inspector covers eleven selection contexts at each authoring depth (14.1s)
+  ok 12 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:184:5 › SC-00B typed light and room feature edits survive undo, mode travel, and saved reload (6.1s)
+  ok 13 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:261:5 › SC-00B scale drag previews on the combined canvas before one history commit (2.1s)
+  ok 14 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:306:5 › SC-00B typed effects retain three depths, light theme, and keyboard rail navigation (7.5s)
+  ok 15 [chromium] › tests\e2e\parallax-sc00b-combined.spec.ts:433:5 › SC-00B combined Inspector handles removed and mixed selections at every depth (4.3s)
+  ok 16 [chromium] › tests\e2e\parallax-sc00c-drop-placement.spec.ts:15:5 › Library physical drag uses the pointed support and selects the inserted instance (3.3s)
+  ok 17 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:24:5 › Creator searches, previews and inserts a built-in asset with immediate selection (2.4s)
+  ok 18 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:54:5 › keyboard opens a card's relevant actions and inserts its asset (3.6s)
+  ok 19 [chromium] › tests\e2e\parallax-sc00c-library-journeys.spec.ts:91:5 › Creator follows a saved Environment to two Scenes, opens one, returns and renames it (7.0s)
+  ok 20 [chromium] › tests\e2e\parallax-sc02-integration.spec.ts:12:5 › combined Library places typed elements, saves and independently reuses a composition with rendered playback (20.5s)
+  ok 21 [chromium] › tests\e2e\parallax-sc02-integration.spec.ts:134:5 › physical Library insertion uses Bedroom supports, preserves Undo and refuses an occupied room (16.3s)
+  ok 22 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:58:5 › Creator authors three independent Haunted Bedroom Scenes, reviews an explicit shared revision and retains immutable references (1.5m)
+  ok 23 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:279:5 › built-in copies use a distinct legacy working editor and explicit release before independent Scene reuse (10.5s)
+  ok 24 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:388:5 › a reviewed synthetic reconstructed Environment is selectable and another Scene duplicates without changing its pin (3.7s)
+  ok 25 [chromium] › tests\e2e\parallax-scene-manager.spec.ts:431:5 › a retained autosave failure stays visible inside Scene Manager and retries the same working identity (3.6s)
+
+  25 passed (4.3m)

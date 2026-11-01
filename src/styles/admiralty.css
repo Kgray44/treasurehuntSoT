@@ -775,6 +775,13 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
+.chartroom-support > * {
+  min-width: 0;
+}
+.chartroom-support :is(input, select, textarea) {
+  min-width: 0;
+  max-width: 100%;
+}
 .chartroom-support > form {
   display: grid;
   align-content: start;
@@ -792,6 +799,7 @@
 }
 .chartroom-support label {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.3rem;
 }
 .chartroom-support fieldset {
@@ -932,9 +940,15 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .chartroom-operator {
-    display: none;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-width: 0;
+    text-align: left;
+    overflow-wrap: anywhere;
   }
   .chartroom-actions {
+    grid-column: 1;
+    grid-row: 3;
     flex-wrap: wrap;
   }
   .chartroom-heading {
@@ -942,9 +956,11 @@
     flex-direction: column;
   }
   .chartroom-grid,
-  .chartroom-grid--wide,
-  .chartroom-support {
+  .chartroom-grid--wide {
     grid-template-columns: 1fr;
+  }
+  .chartroom-support {
+    grid-template-columns: minmax(0, 1fr);
   }
   .chartroom-investigation > section {
     grid-template-columns: 1fr;

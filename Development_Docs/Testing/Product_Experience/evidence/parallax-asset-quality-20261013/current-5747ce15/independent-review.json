@@ -1,0 +1,605 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewer": {
+    "identity": "/root/owner_experience_review",
+    "builderContext": "root/main",
+    "reviewerContext": "owner_experience_review",
+    "independence": "SEPARATE_CONTEXT",
+    "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+    "builderRationaleExcluded": true,
+    "productOrOriginalsModified": false
+  },
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "scenario": "N - Production visual quality, bounded five-prop desktop subset",
+  "candidate": "5747ce15104ef734ce67aac41e073a85023b8323",
+  "tree": "b4bdf74a460ce4a02b7f9a5e8f2da7f8c21d8eb5",
+  "runtime": "PRODUCTION",
+  "manifestPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/manifest.json",
+  "packetDigest": "1cd29c1541e7315d3a16b91d1934e4e4e5e04d90d2ae17c06741c71af5eb7b5f",
+  "packetDigestMeaning": "SHA256 of exact original bounded manifest bytes; this manifest is not the generated full-contract review packet.",
+  "contractMetadata": {
+    "originalManifestNamesContract": false,
+    "source": "Candidate-owned testing/contracts.json registers parallax.authored-library-and-simulation.experience and tests/e2e/parallax-asset-quality.spec.ts. Contract ID appended in review only; original manifest/capture identity untouched."
+  },
+  "objective": "Creator opens the saved synthetic scene from ordinary Library, inspects the actual map, folded letter, wall message, ghost footprint and compass at useful viewing distances in dark and light, with readable identity, selectable framing and persistent scene unchanged. Inspect the modeled forms, material/dial/paper detail, normals/lighting/scale and rendering cost evidence. Room context captures supplement isolated prop closeups.",
+  "status": "REPAIR_REQUIRED",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "fullScenarioNAcceptance": "NOT_CLAIMED",
+  "dimensions": {
+    "composition": {
+      "observation": "All five isolated assets are centered between the left tool rail and right selected-object inspector without cropping their modeled silhouettes. Map and letter span roughly416screen pixels horizontally in1042x670canvas crops; room context restores bed, desk, chair, wardrobe and wall/window. This is actual working editor framing rather than a mockup.",
+      "evidenceIds": [
+        "asset-quality-map-dark-canvas.png",
+        "asset-quality-letter-light-canvas.png",
+        "asset-quality-room-dark.png",
+        "asset-quality-room-light.png"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "hierarchy": {
+      "observation": "Asset material study and Working draft saved occupy separate header rows. Each selected prop name appears in inspector and canvas card, ahead of transform and Engineering coordinates. Show room clearly distinguishes isolated-object state; ordinary saved Library entry is visible in recording before selection.",
+      "evidenceIds": [
+        "asset-quality-map-dark.png",
+        "asset-quality-compass-light.png",
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "typography": {
+      "observation": "The wall message The Captain left a clue for you is legible at framed size; its object name is also legible. In contrast, the same letter sentence is pale and difficult to read despite a larger paper footprint. Compass W/E and tick marks are visible, while N/S coincide with the needle axis. DOM selected-object labels remain crisp in both themes.",
+      "evidenceIds": [
+        "asset-quality-text-dark-canvas.png",
+        "asset-quality-text-light-canvas.png",
+        "asset-quality-letter-dark-canvas.png",
+        "asset-quality-compass-dark-canvas.png"
+      ],
+      "status": "CONFIRMED_DEFECT"
+    },
+    "spacing": {
+      "observation": "The canvas keeps the framed prop clear of its selected-object card and tool rail. Inspector groups retain distinct rows and labels. The wall-message texture has an inset border and separates clue sentence from its name. Paper detail occupies broad open area but is too faint to establish useful visual hierarchy.",
+      "evidenceIds": [
+        "asset-quality-text-light.png",
+        "asset-quality-letter-dark.png",
+        "asset-quality-compass-light.png"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "controls": {
+      "observation": "Recording spans actual canonical Library entry, saved scene opening, hierarchy selection, dock collapse, isolate and Frame selection for all five assets in both themes. Reset view returns the whole room before each theme pass. Original passing step receipt supports these clicks; transform/edit controls are visible but this read-only asset journey does not exercise editing or every command.",
+      "evidenceIds": [
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "asset-quality-test-result.original.json.txt",
+        "asset-quality-room-light.png",
+        "asset-quality-footprint-dark.png"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "contrast": {
+      "observation": "Paper front is nearly ivory-white; map coast/rose/name and letter sentence/name are washed out in both dark/light originals. Working-size letter/map regions contain only subtle ink-paper luminance separation, unlike the clear wall message and red compass needle. Sampled candidate ink/paper pixels yielded approximately1.6\u20131.7local contrast, corroborating the visual issue rather than constituting a formal WCAG audit.",
+      "evidenceIds": [
+        "asset-quality-map-dark-canvas.png",
+        "asset-quality-map-light-canvas.png",
+        "asset-quality-letter-dark-canvas.png",
+        "asset-quality-letter-light-canvas.png",
+        "asset-quality-text-dark-canvas.png"
+      ],
+      "status": "CONFIRMED_DEFECT"
+    },
+    "consistency": {
+      "observation": "Both appearances preserve the established owner-approved Studio header/tool rail/inspector/timeline composition. Compared with prior asset-context-dark and room-bedroom-light references, the revised compass/paper forms occupy the same authoring shell. Theme changes chiefly alter UI/background; the asset surfaces themselves retain the same palette, including the same paper washout.",
+      "evidenceIds": [
+        "asset-quality-map-dark.png",
+        "asset-quality-map-light.png",
+        "asset-quality-room-dark.png",
+        "asset-quality-room-light.png"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "states": {
+      "observation": "The recording establishes Library, loading/preparing renderer, room-ready, selected/isolated/framed prop and a second Light pass. Brief blank canvas frames occur while loading or switching selections, followed by actual visible assets; no terminal disappearance is seen. Inspector and selected-object names identify map, letter, text, footprint and compass consistently. This packet does not cover renderer-loss recovery or other adverse journeys.",
+      "evidenceIds": [
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "asset-quality-test-result.original.json.txt",
+        "asset-quality-observations.original.json.txt"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "responsive": {
+      "observation": "Original full screenshots are1440x1000; canvas originals are1042x670 at pixelRatio1. Framing leaves prop silhouettes visible within those bounds and keeps desktop inspector accessible. There is no mobile/narrow-screen asset-quality capture in this packet, so supported device diversity and physical readability are not established.",
+      "evidenceIds": [
+        "asset-quality-map-light.png",
+        "asset-quality-compass-dark.png",
+        "asset-quality-observations.original.json.txt"
+      ],
+      "status": "NOT_ESTABLISHED_BEYOND_DESKTOP"
+    },
+    "keyboard": {
+      "observation": "Tool controls and object identities are present with ordinary semantic control labels in the retained test. The actual asset-quality steps use clicks/selectOption and reduced-motion setup; no keyboard-only Library, hierarchy, isolate or Frame selection sequence is retained. Source tabindex and accessibility declarations alone cannot substitute for that actual journey.",
+      "evidenceIds": [
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "asset-quality-test-result.original.json.txt"
+      ],
+      "status": "NOT_ESTABLISHED_BY_THIS_JOURNEY"
+    },
+    "focus": {
+      "observation": "Selection is clearly shown by blue bounding edges, selected-object card and matching inspector heading. These are object-selection indicators; none of the retained original states proves keyboard focus restoration or focus traversal. No whole-contract keyboard acceptance is inferred from selected-object outlines.",
+      "evidenceIds": [
+        "asset-quality-letter-light.png",
+        "asset-quality-footprint-dark.png",
+        "asset-quality-test-result.original.json.txt"
+      ],
+      "status": "NOT_ESTABLISHED_BY_THIS_JOURNEY"
+    },
+    "feedback": {
+      "observation": "IN_VIEW receipts agree with terminal framed prop images and selected-object cards; the original observations have errors[]. Preparation messages appear during initial loading. No formal action-to-render timing boundary is measured here; the12.8second recording and10.452second test duration are evidence durations rather than per-action latency or a performance SLO.",
+      "evidenceIds": [
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "asset-quality-observations.original.json.txt",
+        "asset-quality-test-result.original.json.txt"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "motion": {
+      "observation": "The complete retained asset-quality WebM was decoded across its whole12.8second duration, from first blank frame through canonical Library, dark five-asset pass, appearance reload and light five-asset pass to final compass.65frames at0.2second intervals plus endpoint were inspected. Reduced-motion preference was requested; this temporal review establishes transition meaning, not native continuous-playback smoothness or GPU frame cadence.",
+      "evidenceIds": [
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "asset-quality-test-result.original.json.txt",
+        "asset-quality-observations.original.json.txt"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "continuity": {
+      "observation": "The actual recording shows the same synthetic Creator header and saved Asset material study across both theme passes. The original expected/passed asset test includes saved-draft equality checks after every selected asset; all ten observations preserve objectBuildCount10 and fixed authored poses/widths. This supports unchanged saved authoring data, not a cryptographic account-continuity receipt or Player progression proof.",
+      "evidenceIds": [
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "asset-quality-test-result.original.json.txt",
+        "asset-quality-observations.original.json.txt"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "complexity": {
+      "observation": "An isolated selected object and Show room provide a direct way to inspect material form without surrounding furniture occlusion. Paper shows shallow curled map and stronger letter folds/thickness; compass shows brass housing, dial ticks and two-color raised needle. Footprint remains four overlapping flattened oval volumes with very limited anatomical/sole detail; added triangle count alone does not establish higher artistic quality.",
+      "evidenceIds": [
+        "asset-quality-map-dark-canvas.png",
+        "asset-quality-letter-dark-canvas.png",
+        "asset-quality-compass-dark-canvas.png",
+        "asset-quality-footprint-light-canvas.png",
+        "asset-quality-observations.original.json.txt"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    },
+    "role-outcomes": {
+      "observation": "The Creator actually opens a saved synthetic scene through Library, selects the five representative props, frames them and reads identity in both themes. Housing/paper geometry and correct selected identity are supported. Paper readability fails the useful-distance quality objective. This bounded subset cannot qualify all scenarioN environments/assets or the full authored-library/simulation contract.",
+      "evidenceIds": [
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+        "asset-quality-test-result.original.json.txt",
+        "asset-quality-letter-dark-canvas.png",
+        "asset-quality-compass-light-canvas.png"
+      ],
+      "status": "PARTIAL_OUTCOME_WITH_CONFIRMED_DEFECT"
+    },
+    "fallbacks": {
+      "observation": "Manual placement, Show room, Edit selected object and Navigation help remain visible; the footer honestly marks synthetic geometry/cutaway and physical qualification pending. These are available paths and truthful status, not executed nonvisual fallback or context-loss recovery proof. Isolated views omit receiving surfaces; room context shows furniture/wall shadows but does not establish each prop contact shadow.",
+      "evidenceIds": [
+        "asset-quality-room-dark.png",
+        "asset-quality-room-light.png",
+        "asset-quality-map-light.png",
+        "asset-quality-test-result.original.json.txt"
+      ],
+      "status": "SUPPORTED_WITH_SCOPE_LIMITS"
+    }
+  },
+  "findings": [
+    {
+      "id": "AQ-01",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "VISUAL_NONCONFORMITY",
+      "priority": 2,
+      "confirmed": true,
+      "disposition": "OPEN_BLOCKING",
+      "observation": "Map texture linework/rose/name and the letter clue text are visibly washed out against their paper in both original themes at framed working size. The sentence is materially harder to read than the same wall-message sentence, even though the paper spans about416screen pixels. Existence of512px authored texture and a passing renderer-state test does not fulfill useful-distance paper detail/readability.",
+      "evidenceIds": [
+        "asset-quality-map-dark-canvas.png",
+        "asset-quality-map-light-canvas.png",
+        "asset-quality-letter-dark-canvas.png",
+        "asset-quality-letter-light-canvas.png",
+        "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm"
+      ],
+      "sourceConfirmation": [
+        "5747ce15:src/components/studio/parallax/spatial-workstation.ts:279\u2013334 authors dark paper ink;413\u2013423 shades that texture with MeshStandardMaterial.",
+        "5747ce15:src/components/studio/parallax/spatial-props.ts:7\u201357 provides actual curled/folded closed paper volume."
+      ],
+      "rootCause": "Exact cause not fully isolated. Current shading/lighting/tone mapping is a plausible contributor; diagnosis follows actual pixels rather than proving a specific shader defect.",
+      "requiredRepair": "Preserve authored placement/form/scene identity and restore readable rendered letter ink and map detail at useful working size in both themes; recapture actual affected props and their room context before visual qualification.",
+      "repairEvidenceIds": []
+    },
+    {
+      "id": "AQ-02",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "SUBJECTIVE_DESIGN_OPPORTUNITY",
+      "priority": 2,
+      "confirmed": false,
+      "disposition": "RECORDED_NONBLOCKING_DESIGN_CONCERN",
+      "observation": "Ghost footprint is a pale translucent stack of four overlapping oval lobes rather than a richly articulated footprint. At working size its faceted lobe overlaps are prominent and sole/toe detail is minimal. Source confirms four flattened SphereGeometry primitives. This documents a design-quality concern under the higher-quality asset target; it is not independently treated as a proven interaction or placement failure.",
+      "evidenceIds": [
+        "asset-quality-footprint-dark-canvas.png",
+        "asset-quality-footprint-light-canvas.png",
+        "asset-quality-room-light.png"
+      ],
+      "requiredRepair": "Owner/design review may require a more intentional footprint silhouette/material treatment. Do not infer such acceptance from its672triangles."
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "asset-quality-compass-dark-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-compass-dark-canvas.png",
+      "type": "screenshot",
+      "sha256": "b3098fa3813a5740ea3f6f399d7eeb1eaba62694ecfb0980aa80ca364792cc39",
+      "actualSha256": "b3098fa3813a5740ea3f6f399d7eeb1eaba62694ecfb0980aa80ca364792cc39"
+    },
+    {
+      "id": "asset-quality-compass-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-compass-dark.png",
+      "type": "screenshot",
+      "sha256": "bbbdf63cf33dd2bc0756361d948112d1e53cf27cf9d1a480ad6db3bc46f42806",
+      "actualSha256": "bbbdf63cf33dd2bc0756361d948112d1e53cf27cf9d1a480ad6db3bc46f42806"
+    },
+    {
+      "id": "asset-quality-compass-light-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-compass-light-canvas.png",
+      "type": "screenshot",
+      "sha256": "d05777acacc81b1c088897828cabc9db2dd3e5ded3dd28f1725ae9607a7cdd67",
+      "actualSha256": "d05777acacc81b1c088897828cabc9db2dd3e5ded3dd28f1725ae9607a7cdd67"
+    },
+    {
+      "id": "asset-quality-compass-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-compass-light.png",
+      "type": "screenshot",
+      "sha256": "eda5b24a602998cee3d91c8fb8b084a29ea73ea05f976bb03b070824fd048905",
+      "actualSha256": "eda5b24a602998cee3d91c8fb8b084a29ea73ea05f976bb03b070824fd048905"
+    },
+    {
+      "id": "asset-quality-footprint-dark-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-footprint-dark-canvas.png",
+      "type": "screenshot",
+      "sha256": "d631dae0da3035a229cf1191cc6e4b12d530d682569f0ec760d01880d7cfcf78",
+      "actualSha256": "d631dae0da3035a229cf1191cc6e4b12d530d682569f0ec760d01880d7cfcf78"
+    },
+    {
+      "id": "asset-quality-footprint-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-footprint-dark.png",
+      "type": "screenshot",
+      "sha256": "6f8ea184df248a557a59bf32e4514d39fed4472735b33b1a247d1c40423fa6a3",
+      "actualSha256": "6f8ea184df248a557a59bf32e4514d39fed4472735b33b1a247d1c40423fa6a3"
+    },
+    {
+      "id": "asset-quality-footprint-light-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-footprint-light-canvas.png",
+      "type": "screenshot",
+      "sha256": "6d38f29ee32968f478199169f2597973545a33e490b5a9d9be9c4ee5e42394c9",
+      "actualSha256": "6d38f29ee32968f478199169f2597973545a33e490b5a9d9be9c4ee5e42394c9"
+    },
+    {
+      "id": "asset-quality-footprint-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-footprint-light.png",
+      "type": "screenshot",
+      "sha256": "209a3135da4af92c2876cbfa5404f89789c376da25644a07dc1303de86a721ca",
+      "actualSha256": "209a3135da4af92c2876cbfa5404f89789c376da25644a07dc1303de86a721ca"
+    },
+    {
+      "id": "asset-quality-letter-dark-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-letter-dark-canvas.png",
+      "type": "screenshot",
+      "sha256": "3c66e0493dba07ec39f9014455349234ee97eb7fc26989f6a077caab0b2c73a7",
+      "actualSha256": "3c66e0493dba07ec39f9014455349234ee97eb7fc26989f6a077caab0b2c73a7"
+    },
+    {
+      "id": "asset-quality-letter-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-letter-dark.png",
+      "type": "screenshot",
+      "sha256": "0b627b12a1b41a18ade54c246e92953e64218b6bced13de3e2f7e637dc5f9052",
+      "actualSha256": "0b627b12a1b41a18ade54c246e92953e64218b6bced13de3e2f7e637dc5f9052"
+    },
+    {
+      "id": "asset-quality-letter-light-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-letter-light-canvas.png",
+      "type": "screenshot",
+      "sha256": "9582cf4945dd914b2c47d58e7946b092ae818e2a675b139c84c774a1c4d581f3",
+      "actualSha256": "9582cf4945dd914b2c47d58e7946b092ae818e2a675b139c84c774a1c4d581f3"
+    },
+    {
+      "id": "asset-quality-letter-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-letter-light.png",
+      "type": "screenshot",
+      "sha256": "79c9aa24e5d217f4b9c3da632e2211d014407cfb38d7ca2a8c4c25245e321656",
+      "actualSha256": "79c9aa24e5d217f4b9c3da632e2211d014407cfb38d7ca2a8c4c25245e321656"
+    },
+    {
+      "id": "asset-quality-map-dark-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-map-dark-canvas.png",
+      "type": "screenshot",
+      "sha256": "cbb1096d14cb9462c73852439b319ac1c7c1625e2255ff299cc5e0e259fb3537",
+      "actualSha256": "cbb1096d14cb9462c73852439b319ac1c7c1625e2255ff299cc5e0e259fb3537"
+    },
+    {
+      "id": "asset-quality-map-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-map-dark.png",
+      "type": "screenshot",
+      "sha256": "ebd292bbb079f43ff484308ed2c88735d242b54bac50e6a54e718a16fb423948",
+      "actualSha256": "ebd292bbb079f43ff484308ed2c88735d242b54bac50e6a54e718a16fb423948"
+    },
+    {
+      "id": "asset-quality-map-light-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-map-light-canvas.png",
+      "type": "screenshot",
+      "sha256": "a7e173ce07bc8919e9d88589a7e776ddc03f13a3c33fe8eb6a01675820736f98",
+      "actualSha256": "a7e173ce07bc8919e9d88589a7e776ddc03f13a3c33fe8eb6a01675820736f98"
+    },
+    {
+      "id": "asset-quality-map-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-map-light.png",
+      "type": "screenshot",
+      "sha256": "483da634edda38535ae1c71a637d99f6399c7b4e84ed1ab1a3a65f05f2ba0911",
+      "actualSha256": "483da634edda38535ae1c71a637d99f6399c7b4e84ed1ab1a3a65f05f2ba0911"
+    },
+    {
+      "id": "asset-quality-observations.original.json.txt",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-observations.original.json.txt",
+      "type": "original-receipt",
+      "sha256": "94842371b9b8034abf458608e9f01329a4ea1769d7ccf93e2b1af82a6ec5a804",
+      "actualSha256": "94842371b9b8034abf458608e9f01329a4ea1769d7ccf93e2b1af82a6ec5a804"
+    },
+    {
+      "id": "asset-quality-room-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-room-dark.png",
+      "type": "screenshot",
+      "sha256": "5582441ce844052b61e93c0e727f3acbeb43c3f37b06a5dfa7af18a2beb6bf6c",
+      "actualSha256": "5582441ce844052b61e93c0e727f3acbeb43c3f37b06a5dfa7af18a2beb6bf6c"
+    },
+    {
+      "id": "asset-quality-room-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-room-light.png",
+      "type": "screenshot",
+      "sha256": "72305688efb5d1982bb6dd82d0736f0257faa695674827f092d814e8fc0cf58c",
+      "actualSha256": "72305688efb5d1982bb6dd82d0736f0257faa695674827f092d814e8fc0cf58c"
+    },
+    {
+      "id": "asset-quality-text-dark-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-text-dark-canvas.png",
+      "type": "screenshot",
+      "sha256": "f5daca02c6e4a7ad198b1da0c8fb5946ee723df9abb97a45785c107e3ddd36e5",
+      "actualSha256": "f5daca02c6e4a7ad198b1da0c8fb5946ee723df9abb97a45785c107e3ddd36e5"
+    },
+    {
+      "id": "asset-quality-text-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-text-dark.png",
+      "type": "screenshot",
+      "sha256": "bd12020b556acee38b66a9bbefe80900cb33f1c8d1c57d37f3ded2ed8c4ce57b",
+      "actualSha256": "bd12020b556acee38b66a9bbefe80900cb33f1c8d1c57d37f3ded2ed8c4ce57b"
+    },
+    {
+      "id": "asset-quality-text-light-canvas.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-text-light-canvas.png",
+      "type": "screenshot",
+      "sha256": "3ec1225a6c9530da8f4a4c8610a6d015d9386ab18f5fe86e29073155841ff806",
+      "actualSha256": "3ec1225a6c9530da8f4a4c8610a6d015d9386ab18f5fe86e29073155841ff806"
+    },
+    {
+      "id": "asset-quality-text-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-text-light.png",
+      "type": "screenshot",
+      "sha256": "5aa2b56b9bc690113b371c928429245d42afc5ef2b339c5277c4d74d7f44e8d9",
+      "actualSha256": "5aa2b56b9bc690113b371c928429245d42afc5ef2b339c5277c4d74d7f44e8d9"
+    },
+    {
+      "id": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+      "type": "recording",
+      "sha256": "5d8555ed3bde125ecfef34c62bda3246c6412853498558a844f3dfd13fe5e6e2",
+      "actualSha256": "5d8555ed3bde125ecfef34c62bda3246c6412853498558a844f3dfd13fe5e6e2"
+    },
+    {
+      "id": "combined-run.original.json.txt",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/combined-run.original.json.txt",
+      "type": "original-receipt",
+      "sha256": "693e329240661d65fe1c3cc9ede5262dd0cbdb52ef7634bb2457691e97a1654d",
+      "actualSha256": "693e329240661d65fe1c3cc9ede5262dd0cbdb52ef7634bb2457691e97a1654d"
+    },
+    {
+      "id": "asset-quality-test-result.original.json.txt",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/asset-quality-test-result.original.json.txt",
+      "type": "original-receipt",
+      "sha256": "1505cac6ebc3ef8133af8672657d182fafba4ff611960a5e31bb3367b99b84fb",
+      "actualSha256": "1505cac6ebc3ef8133af8672657d182fafba4ff611960a5e31bb3367b99b84fb"
+    }
+  ],
+  "inspection": {
+    "originalPngsInspected": 22,
+    "originalRecordingsInspected": 1,
+    "originalReceiptFilesInspected": 3,
+    "originalHashesMatch": 26,
+    "videoFile": "parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium-video.webm",
+    "videoDurationSeconds": 12.8,
+    "videoFramesInspected": 65,
+    "videoIntervalSeconds": 0.2,
+    "wholeDurationCovered": true,
+    "continuousNativePlayback": false,
+    "videoFrameManifest": "tmp/asset-quality-independent/video-frames/manifest.json",
+    "referenceImages": [
+      "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5ad0dd413bf0/asset-context-dark.png",
+      "Development_Docs/Testing/Product_Experience/evidence/parallax-construction-20261012/5ad0dd413bf0/room-bedroom-light.png"
+    ],
+    "referenceScope": "Preserved owner-approved layout reference only. It does not grant current asset/full-overhaul acceptance."
+  },
+  "testEvidence": {
+    "asset": {
+      "testId": "0766fd074224b84ae5fc-0f3aaf80d3572bcb412a",
+      "title": "Creator inspects representative actual asset materials at useful distances in both appearances without altering the saved scene",
+      "outcome": "expected",
+      "ok": true,
+      "status": "passed",
+      "retry": 0,
+      "durationMs": 10452,
+      "errors": []
+    },
+    "combinedRun": {
+      "candidate": "5747ce15104ef734ce67aac41e073a85023b8323",
+      "tree": "b4bdf74a460ce4a02b7f9a5e8f2da7f8c21d8eb5",
+      "exitCode": 1,
+      "sourceBinding": "VALID"
+    },
+    "combinedRunBoundary": "Asset result independently proves this bounded test passed. Combined exit1 is preserved and is not relabeled PASS. Manifest attributes it to a separate direct-cancellation selection assertion; that other result/recording is outside this packet, so its root cause and resolution are not independently qualified here."
+  },
+  "renderingCostEvidence": {
+    "mode": "Actual software-renderer counters, not GPU/native hardware measurements",
+    "observations": [
+      {
+        "asset": "Desk Map",
+        "theme": "DARK",
+        "widthMeters": 0.5,
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5999999940395355,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Peeking Letter",
+        "theme": "DARK",
+        "widthMeters": 0.25,
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Hidden Wall Message",
+        "theme": "DARK",
+        "widthMeters": 0.25,
+        "calls": 3,
+        "triangles": 4,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Footprint 1",
+        "theme": "DARK",
+        "widthMeters": 0.16,
+        "calls": 5,
+        "triangles": 672,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Floating Compass",
+        "theme": "DARK",
+        "widthMeters": 0.25,
+        "calls": 11,
+        "triangles": 1880,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5999999940395355,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Desk Map",
+        "theme": "LIGHT",
+        "widthMeters": 0.5,
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 1.300000011920929,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Peeking Letter",
+        "theme": "LIGHT",
+        "widthMeters": 0.25,
+        "calls": 5,
+        "triangles": 272,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.3999999761581421,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Hidden Wall Message",
+        "theme": "LIGHT",
+        "widthMeters": 0.25,
+        "calls": 3,
+        "triangles": 4,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.4000000059604645,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Footprint 1",
+        "theme": "LIGHT",
+        "widthMeters": 0.16,
+        "calls": 5,
+        "triangles": 672,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.4000000059604645,
+        "objectBuildCount": "10"
+      },
+      {
+        "asset": "Floating Compass",
+        "theme": "LIGHT",
+        "widthMeters": 0.25,
+        "calls": 11,
+        "triangles": 1880,
+        "geometries": 34,
+        "textures": 9,
+        "cpuSubmitMs": 0.5999999940395355,
+        "objectBuildCount": "10"
+      }
+    ],
+    "summary": "Across ten isolated observations, geometries34/textures9/objectBuildCount10 remain stable. Calls range3\u201311, triangles4\u20131880, CPU submission0.4\u20131.3ms at pixelRatio1 and1042x670. Passing test checks positive draws/triangles, not an upper budget, memory stress, GPU frame time or representative hardware.",
+    "limitsDeclaredByCapture": [
+      "Combined-run exit1 belongs to a separate direct-cancellation test reading the wrong first saved definition; the asset test passed as its original result proves. The other recording is retained separately and not part of this bounded visual objective.",
+      "Actual software-renderer counters and CPU submission are not GPU frame-time or representative hardware/native proof.",
+      "No full-overhaul owner acceptance; isolated prop views alone do not prove contact shadows."
+    ]
+  },
+  "geometryAndLighting": {
+    "map": "0.5m map retains closed thickness and curled perimeter, supported worldy approximately0.76\u20130.7745m, with selection/world placement intact.",
+    "letter": "0.25m letter has raised fold/curl profile, underside approximately0.76m and top0.7797m. Form is supported; washed-out ink prevents useful readable content.",
+    "text": "0.25m vertical wall-message plane has visible dark face and turquoise inset border; readable sentence. This is intentionally text presentation, not evidence of volumetric prop detail.",
+    "compass": "0.25m authored width yields approximately0.23m visible housing bounds, with brass rim highlight, cream face/ticks, red/gray needle and center pin. At captured angle the needle partly occludes N/S axis. No magnetic/navigation operation is demonstrated.",
+    "footprint": "0.16m authored marker remains an upright flattened lobe pattern in the fixture; receiptbounds worldy\u22120.0312..0.116m. Isolated view provides no contact plane, so correct floor attachment/contact shadow is not qualified.",
+    "room": "Room views show lamp/furniture/wall directional shadows and room-scale relationships. Per-prop contact shadows and physical normals/material behavior require additional representative receiving-surface views; do not infer them from isolated background."
+  },
+  "limitations": [
+    "Bounded desktop Engineering/reduced-motion five-prop subset, not the entire scenarioN asset/environment acceptance matrix or full authored-library/simulation contract.",
+    "Keyboard-only operation, focus restoration, mobile layout, nonvisual fallback and adverse recovery are not exercised by this read-only quality test.",
+    "No physical device/GPU/native/model-import/GLB loading/license/performance-stress proof is supplied. No paid model call was made.",
+    "Whole recording temporal coverage uses decoded0.2second intervals plus final endpoint; not continuous native playback or frame-cadence acceptance.",
+    "Contact shadows cannot be accepted from isolated prop views; two room contexts do not separately show every selected prop receiving surface.",
+    "Combined browser-run exit1 remains unresolved outside this bounded packet.",
+    "Full owner product acceptance is NOT_CLAIMED."
+  ],
+  "sourceInspection": {
+    "order": "After22originalimages and full-duration recording sequence",
+    "candidatePinned": true,
+    "paths": [
+      "tests/e2e/parallax-asset-quality.spec.ts",
+      "testing/contracts.json (named contract only)",
+      "src/components/studio/parallax/spatial-props.ts",
+      "src/components/studio/parallax/spatial-workstation.ts (paper/footprint/material/lighting portions)",
+      "src/parallax/authoring.ts (preset identity/pose only)"
+    ],
+    "noCodeEdits": true
+  }
+}

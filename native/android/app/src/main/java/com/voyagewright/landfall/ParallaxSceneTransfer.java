@@ -95,7 +95,8 @@ final class ParallaxSceneTransfer {
       for (int i = 0; i < input.length(); i++) {
         JSONObject j = input.getJSONObject(i), t = j.getJSONObject("transform"), p = t.getJSONObject("position"), q = t.getJSONObject("rotation");
         String id = j.getString("id"), content = j.getString("content"), kind = j.getString("kind");
-        if (!(j.opt("id") instanceof String) || !(j.opt("content") instanceof String) || !(j.opt("kind") instanceof String) || !number(j,"widthMeters") || !number(t,"scale") || j.length() != 5 || t.length() != 3 || p.length() != 3 || q.length() != 4 || !id.matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,127}") || !ids.add(id) || content.length() < 1 || content.length() > 2000 || !(kind.equals("TEXT") || kind.equals("PARCHMENT") || kind.equals("MARKER"))) return false;
+        if (!(j.opt("id") instanceof String) || !(j.opt("content") instanceof String) || !(j.opt("kind") instanceof String) || !number(j,"widthMeters") || !number(t,"scale") || j.length() != (j.has("opacity") ? 6 : 5) || t.length() != 3 || p.length() != 3 || q.length() != 4 || !id.matches("[A-Za-z0-9][A-Za-z0-9._:-]{0,127}") || !ids.add(id) || content.length() < 1 || content.length() > 2000 || !(kind.equals("TEXT") || kind.equals("PARCHMENT") || kind.equals("MARKER"))) return false;
+        if (j.has("opacity") && (!number(j,"opacity") || !Double.isFinite(j.getDouble("opacity")) || j.getDouble("opacity") < 0 || j.getDouble("opacity") > 1)) return false;
         double width = j.getDouble("widthMeters"), scale = t.getDouble("scale"), effective = width * scale, norm = 0;
         if (!Double.isFinite(width) || width < 0.01 || width > 5 || !Double.isFinite(scale) || scale <= 0 || scale > 100000000 || !Double.isFinite(effective) || effective < 0.000001 || effective > 100) return false;
         for (String axis : new String[]{"x", "y", "z"}) { double v = p.getDouble(axis); if (!number(p,axis) || !Double.isFinite(v) || Math.abs(v) > 1000000) return false; }

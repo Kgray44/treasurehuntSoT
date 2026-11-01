@@ -1,0 +1,208 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "4ed06f1dfeee7ad495298350c7e07b76a5b2f271",
+  "tree": "cf94ac0283b4ef81292db4d6fb4b9e0040482128",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "manifestPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/manifest.json",
+  "manifestSha256": "5b2c9a8816e83d478343cfc13d5b8b56abe18781a7ff701983ca48fd734a0ae0",
+  "rawReviewPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/independent-review.original.json.txt",
+  "rawReviewSha256": "1521db2360c19269aae8dc34fa7407da97b74179cbed83ab2301c7185417c53c",
+  "normalizedReviewPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/independent-review.json",
+  "normalizedReviewSha256": "1521db2360c19269aae8dc34fa7407da97b74179cbed83ab2301c7185417c53c",
+  "exactSemanticCounterpart": true,
+  "artifactCount": 17,
+  "artifacts": [
+    {
+      "file": "opacity-actual-material-proof.original.json.txt",
+      "bytes": 1711,
+      "sha256": "af3fe1008a36442fc29f6d91c6864427006ebbfc5dc64a8800313cdd96f34356",
+      "id": "opacity-actual-material-proof.original.json.txt",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-actual-material-proof.original.json.txt",
+      "verified": true
+    },
+    {
+      "file": "opacity-editor-recovery-dark.png",
+      "bytes": 192600,
+      "sha256": "311e374ab5cab5a0fca05d144bc975eaf5c6cd79fa726ef5026cbf43eb49ab75",
+      "id": "opacity-editor-recovery-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-editor-recovery-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-faint-material-recovery-dark.png",
+      "bytes": 184097,
+      "sha256": "7b1f155e7c0968df4c0a1e2028efe21225e8f44a400263083dd38e5414ad004d",
+      "id": "opacity-faint-material-recovery-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-faint-material-recovery-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-full-material-dark.png",
+      "bytes": 193367,
+      "sha256": "0361ce52a02a4885ebf0192514192486e59265ce31029c5fe059369cd61371a4",
+      "id": "opacity-full-material-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-full-material-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-full-material-light.png",
+      "bytes": 220225,
+      "sha256": "c2891b0240ce209cd570a63ebc9c959315d6fa0d0bdc6f2c983adefd77f8c31c",
+      "id": "opacity-full-material-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-full-material-light.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-invalid-entry-restored.png",
+      "bytes": 195169,
+      "sha256": "75258dbfecebd38b626a3a5346f30d302eb77c5391aa1b00ccb2cc0eddd41862",
+      "id": "opacity-invalid-entry-restored.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-invalid-entry-restored.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-partial-material-dark.png",
+      "bytes": 192443,
+      "sha256": "59c50117278781f55292e76dbd003e34ef261874aa4d74b9befec96103785f23",
+      "id": "opacity-partial-material-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-partial-material-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-partial-material-light.png",
+      "bytes": 216791,
+      "sha256": "fa5ed9f2f490ea4dc6005c5675e52b1187b051e0585458ea13c041b8556f2c37",
+      "id": "opacity-partial-material-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-partial-material-light.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-phone-editor-recovery.png",
+      "bytes": 93060,
+      "sha256": "d9ab5cf49cc71f3ddda4dbf8c61a4b31167ebe2caa7bfc2c2d20736bf567fab8",
+      "id": "opacity-phone-editor-recovery.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-phone-editor-recovery.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-room-full-dark.png",
+      "bytes": 222355,
+      "sha256": "014614c408476ed7626a27f6ee62fb2ef45023ae2a622194d8900935171ada41",
+      "id": "opacity-room-full-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-room-full-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-room-partial-dark.png",
+      "bytes": 222243,
+      "sha256": "12d69de49d7daa264ca6d42af81d408e97c9e3e1d0717dca067e90659986515b",
+      "id": "opacity-room-partial-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-room-partial-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-room-zero-dark.png",
+      "bytes": 223778,
+      "sha256": "d8591e3df5f7bd2a183971ccaf3c443b1e6e431988900486d015ff2d3d2a3254",
+      "id": "opacity-room-zero-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-room-zero-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-saved-replay-dark.png",
+      "bytes": 228579,
+      "sha256": "9d723e529fb532c18bdc0890a593a1adfde5c061ef5aa7c434455f351607655e",
+      "id": "opacity-saved-replay-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-saved-replay-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-zero-material-dark.png",
+      "bytes": 169700,
+      "sha256": "3453a68af6255385f875285bf4ff55841cec243b2596b25082b10b92794ec879",
+      "id": "opacity-zero-material-dark.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-zero-material-dark.png",
+      "verified": true
+    },
+    {
+      "file": "opacity-zero-material-light.png",
+      "bytes": 193374,
+      "sha256": "5825631642747da86ee840cf8eef603b78721407263342757f385a00f7d06f63",
+      "id": "opacity-zero-material-light.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/opacity-zero-material-light.png",
+      "verified": true
+    },
+    {
+      "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "bytes": 746763,
+      "sha256": "f9784ca00c0e73de1734b30743664e01051643aca5e0e335953d8da00029c9e2",
+      "id": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "verified": true
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 610,
+      "sha256": "b751ac939c7dcf596f43f7fa5cb99bfdcbb8855eab6eebea343350c1b55fdfd9",
+      "id": "run.original.json.txt",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/field-feedback-and-comparable-views/run.original.json.txt",
+      "verified": true
+    }
+  ],
+  "preservation": {
+    "firstOpacityRawReview": {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/independent-review.original.json.txt",
+      "sha256": "aeb7ab7acd01393a1377a5fd73c21bc76e3a355393275895bb8eef50dfe9769d",
+      "unchanged": true
+    },
+    "priorCaptures": [
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/first-reload-tab-toggle/manifest.json",
+        "sha256": "73817aea08aad4a6a2eb7fb91d8229d71e0f30170246228958f8ea40a106ec78",
+        "allOriginalBytesAndHashesStillValid": true
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-opacity-20261013/qualified-fading-and-recovery/manifest.json",
+        "sha256": "d542ddb541d08c0a3c6754e12ee563d14144330d43399e5def1a11382b3dd752",
+        "allOriginalBytesAndHashesStillValid": true
+      }
+    ],
+    "paperBootNavigationRawReviews": [
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/independent-review.original.json.txt",
+        "sha256": "8802b799f25e94eb5b4949343e090961d955bfead6dc1127196df9dbdef70bd3",
+        "preserved": true,
+        "currentSha256": "8802b799f25e94eb5b4949343e090961d955bfead6dc1127196df9dbdef70bd3",
+        "unchanged": true
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/paper-readability-repair/independent-review.original.json.txt",
+        "sha256": "defcf5e78594bf73b9a9057f420165625e8b4699f9cfe0ecc884b1c2f87281e4",
+        "preserved": true,
+        "currentSha256": "defcf5e78594bf73b9a9057f420165625e8b4699f9cfe0ecc884b1c2f87281e4",
+        "unchanged": true
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/paper-type-readability-repair/independent-review.original.json.txt",
+        "sha256": "b3bfc6528cfff2837e617370901401c70486525cb1b910de27a0de399bef8818",
+        "preserved": true,
+        "currentSha256": "b3bfc6528cfff2837e617370901401c70486525cb1b910de27a0de399bef8818",
+        "unchanged": true
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/boot-reuse-and-responsiveness/independent-review.original.json.txt",
+        "sha256": "210ba88ef10091d409d10836c5dcede8101709232df8ea5e818838f4214d28bb",
+        "preserved": true,
+        "currentSha256": "210ba88ef10091d409d10836c5dcede8101709232df8ea5e818838f4214d28bb",
+        "unchanged": true
+      },
+      {
+        "path": "Development_Docs/Testing/Product_Experience/evidence/parallax-footprint-quality-20261013/authoring-and-live-navigation/independent-review.original.json.txt",
+        "sha256": "76765f39fd8fe2a14206e5052d847f998eda80b07f66371b176d504b63f54ad4",
+        "preserved": true,
+        "currentSha256": "76765f39fd8fe2a14206e5052d847f998eda80b07f66371b176d504b63f54ad4",
+        "unchanged": true
+      }
+    ]
+  }
+}

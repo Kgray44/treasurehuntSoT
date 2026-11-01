@@ -1,0 +1,308 @@
+{
+  "objective": "Preview a case-attached moderation target with a distinct reviewer without applying quarantine.",
+  "contract": {
+    "id": "homeport.community.quarantine",
+    "name": "Community Harbor quarantine",
+    "authority": "project-homeport",
+    "owners": [
+      "project-homeport",
+      "harborlight"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A canonically signed-in synthetic Administrator using the existing governed Admiralty and Community tasks.",
+      "objective": "Preview a case-attached moderation target with a distinct reviewer without applying quarantine.",
+      "visibleOutcome": "Preview a case-attached moderation target with a distinct reviewer without applying quarantine.",
+      "integrationOwner": "Existing Parallax integration owner #776; Admiralty and Harborlight retain authorization, redaction, support consent and command authority.",
+      "accessibility": "Preserve labelled inputs, semantic outcomes, readable constrained layouts and the same parent return in desktop and phone motion variants.",
+      "fallback": "Keep real capability denial, bounded no-match results, missing data, privileged confirmation, scoped consent and second-reviewer requirements. No fake healthy provider or approved command is supplied.",
+      "navigation": "Use the existing visible task controls, observe the real result, and follow the advertised return.",
+      "designTarget": "Preserve current Admiralty/Community task composition and the accepted shared Homeport identity and return frame.",
+      "entryPoint": "/admin/community/parallax-compat-moderation-listing",
+      "systems": [
+        "project-admiralty",
+        "harborlight"
+      ],
+      "sourcePaths": [
+        "src/components/admiralty/ModerationActionPanel.tsx",
+        "src/styles/admiralty.css"
+      ],
+      "projectionPaths": [
+        "src/admiralty/projections.ts",
+        "src/admiralty/investigation.ts",
+        "src/admiralty/ports/harborlight-admin-read.ts",
+        "src/admiralty/ports/operations-admin-read.ts"
+      ],
+      "states": [
+        "MODERATION_PREVIEW_READABLE",
+        "HOME_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "ADMINISTRATOR"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "ADMINISTRATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fadmin%2Fcommunity%2Fparallax-compat-moderation-listing",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-operator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Synthetic moderation compatibility target",
+            "text": "Synthetic moderation compatibility target"
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry/recovery frame only; no standalone Admiralty or moderation-body visual acceptance is asserted.",
+          "preserve": "Readable identity, clear role destinations and a usable return; review the actual governed task body independently."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry/recovery frame only; no standalone Admiralty or moderation-body visual acceptance is asserted.",
+          "preserve": "Readable identity, clear role destinations and a usable return; review the actual governed task body independently."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "homeport-community-quarantine-compatibility",
+          "roles": [
+            "ADMINISTRATOR"
+          ],
+          "outcome": "Preview a case-attached moderation target with a distinct reviewer without applying quarantine.",
+          "steps": [
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Case and target"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Second reviewer account ID",
+              "value": "00000000-0000-4000-8000-00000000a111"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Reason",
+              "value": "Synthetic compatibility preview; no moderation action is approved."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Preview moderation action"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Before you apply this action",
+              "state": "MODERATION_PREVIEW_READABLE",
+              "path": "/admin/community/parallax-compat-moderation-listing",
+              "text": "Before you apply this action",
+              "kind": "outcome",
+              "meaning": "The actual case-attached target and distinct reviewer produce an owner-governed preview while privileged confirmation remains required."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Safe return"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Home"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "state": "HOME_RETURNED",
+              "path": "/",
+              "returnPath": true
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-admiralty-compatibility.spec.ts",
+        "tests/e2e/admiralty-phase2.spec.ts"
+      ],
+      "limitations": [
+        "Actual moderation-command preview only. The synthetic listing remains ACTIVE, the case revision remains unchanged and unassured confirmation is disabled in the new browser cases.",
+        "No private report prose, real report, actual quarantine, reviewer approval or owner acceptance is inferred from a preview. Existing full moderation command/dual-review/authorization obligations remain separate.",
+        "Accepted references cover shared entry and recovery framing only, not a curated task-body baseline. Current captured media and independent review remain required.",
+        "Browser cases retain these separate domain assertions: The actual signed-in account retains its canonical role/capability boundary across navigation. Private prose, credential material and unsupported provider/deployment authority are not promoted by aggregate data or previews. The visible return preserves the canonical account; previews do not become command execution or owner consent."
+      ],
+      "continuity": {
+        "objective": "Observe the same visible synthetic account identity at entry, task outcomes and return. Separate browser cases verify canonical IDs, capabilities and domain privacy; this aria-label alone does not prove them.",
+        "checks": [
+          {
+            "id": "visible-account-identity",
+            "role": "group",
+            "name": "Synthetic Parallax Operator",
+            "attribute": "aria-label"
+          }
+        ]
+      }
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "homeport.community.quarantine-homeport-community-quarantine-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-MODERATION_PREVIEW_READABLE-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.community.quarantine-homeport-community-quarantine-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-MODERATION_PREVIEW_READABLE-7.png",
+      "sha256": "4f8078dd404fe71accfb8b86e5ce17fa488aba727b765d1a4024821b5a25ffe6",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.community.quarantine",
+      "state": "MODERATION_PREVIEW_READABLE",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.community.quarantine-homeport-community-quarantine-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-HOME_RETURNED-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.community.quarantine-homeport-community-quarantine-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-HOME_RETURNED-10.png",
+      "sha256": "6d91a099c2ab4361bb504f10302069c9605502528f518404a55c52ecf8360997",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.community.quarantine",
+      "state": "HOME_RETURNED",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.community.quarantine-homeport-community-quarantine-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.community.quarantine-homeport-community-quarantine-compatibility-DESKTOP-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "2751af656e5771d26139f76f03fb092b71868e3b24738eecf13e05b078dec47c",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.community.quarantine",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.community.quarantine-homeport-community-quarantine-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d4dedd991d61e40c240097b5267a3319.webm",
+      "sha256": "92c36838b9b2426b4b836d02ab496610e1580abbaffd118ebf0e5e95bc509940",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.community.quarantine",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.community.quarantine-homeport-community-quarantine-compatibility-MOBILE-ADMINISTRATOR-REDUCED-MODERATION_PREVIEW_READABLE-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.community.quarantine-homeport-community-quarantine-compatibility-MOBILE-ADMINISTRATOR-REDUCED-MODERATION_PREVIEW_READABLE-7.png",
+      "sha256": "a6efe70caed54755abc291111c0c5adf17b87f24e0f97f5bcd63c5a97bfba658",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.community.quarantine",
+      "state": "MODERATION_PREVIEW_READABLE",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.community.quarantine-homeport-community-quarantine-compatibility-MOBILE-ADMINISTRATOR-REDUCED-HOME_RETURNED-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.community.quarantine-homeport-community-quarantine-compatibility-MOBILE-ADMINISTRATOR-REDUCED-HOME_RETURNED-10.png",
+      "sha256": "298e269f67e2ed969f53b68460d1c1a329e1396cefa00f424531f677829d066b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.community.quarantine",
+      "state": "HOME_RETURNED",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.community.quarantine-homeport-community-quarantine-compatibility-MOBILE-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.community.quarantine-homeport-community-quarantine-compatibility-MOBILE-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "0dd5bf985e7555c0bc972a52dc0e12bc6b84b70409243b296ca307a7c209dfba",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.community.quarantine",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.community.quarantine-homeport-community-quarantine-compatibility-MOBILE-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/216794b19e2862e9bc418db89abe01db.webm",
+      "sha256": "fa49e752955823a75c1551fc70f1070121d6a76d6d7d0cfe8bdd8a0b42050163",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.community.quarantine",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "d2191f0989fac8a8f07e6181af8a9bca368ce1b9bb7157c4c58d64b68ccc674e",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

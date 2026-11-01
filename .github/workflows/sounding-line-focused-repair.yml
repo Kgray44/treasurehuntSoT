@@ -42,6 +42,7 @@ jobs:
               !/^tests\/e2e\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_-]+\.spec\.ts(?::[1-9][0-9]*)?$/u.test(process.env.TEST_SELECTOR ?? ""))
             throw new Error("DEVELOPMENT_SOURCE_OR_SELECTOR_INVALID");
           await appendFile(process.env.GITHUB_OUTPUT, `private_failure_publication_nonce=${randomUUID()}\n`);
+          await appendFile(process.env.GITHUB_OUTPUT, `preparation_failure_publication_nonce=${randomUUID()}\n`);
           EOF
       - uses: actions/checkout@v4
         with:
@@ -69,6 +70,8 @@ jobs:
           npx --no-install playwright install --with-deps chromium
       - name: Prepare the source-bound development runtime
         id: prepare
+        env:
+          SOUNDING_LINE_PREPARATION_FAILURE_PUBLICATION_NONCE: ${{ steps.development-source.outputs.preparation_failure_publication_nonce }}
         run: |
           test "$(git -C candidate rev-parse HEAD)" = "$CANDIDATE_SHA"
           mkdir -p "$GITHUB_WORKSPACE/authority/artifacts/focused-development-private"
@@ -90,6 +93,14 @@ jobs:
             throw new Error("DEVELOPMENT_PREPARATION_INCOMPLETE");
           await appendFile(process.env.GITHUB_OUTPUT, `manifest=${result.preparedManifest.file}\nmanifest_sha256=${result.preparedManifest.sha256}\n`);
           EOF
+      - name: Retain encrypted preparation failure diagnostics
+        if: ${{ always() && steps.development-source.outputs.preparation_failure_publication_nonce != '' && steps.prepare.outputs.private_preparation_failure_publish == steps.development-source.outputs.preparation_failure_publication_nonce && steps.prepare.outputs.private_preparation_failure_paths != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-preparation-failures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ steps.prepare.outputs.private_preparation_failure_paths }}
+          if-no-files-found: error
+          retention-days: 90
       - name: Run the selected development case without qualification
         id: development-execution
         env:

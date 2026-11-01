@@ -158,7 +158,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     JSONObject payload = request.optJSONObject("payload");
     if (payload == null) payload = new JSONObject();
     switch (operation) {
-      case "SPATIAL_STATE": reply(proxy,id,spatialState()); break;
+      case "SPATIAL_STATE": { JSONObject state=spatialState(); if (Boolean.TRUE.equals(payload.opt("sceneCapabilities"))) state.put("sceneOpacity",true); reply(proxy,id,state); break; }
       case "SPATIAL_PERMISSION":
         if(!foreground || spatialPermissionReply!=null){reply(proxy,id,new JSONObject().put("supported",false).put("permission","RESTRICTED"));break;}
         if(cameraFreeFixture()){reply(proxy,id,spatialState());break;}

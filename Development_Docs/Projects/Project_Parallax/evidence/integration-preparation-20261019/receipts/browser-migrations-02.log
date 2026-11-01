@@ -1,0 +1,14 @@
+Prisma schema loaded from prisma\schema.sqlite.prisma
+Error: 
+EPERM: operation not permitted, rename 'C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\node_modules\.prisma\client\query_engine-windows.dll.node.tmp128732' -> 'C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\node_modules\.prisma\client\query_engine-windows.dll.node'
+
+
+file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/run-browser-suite.mjs:344
+  if (result.status !== 0) throw new Error(`SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:${profile.id}`);
+                                 ^
+
+Error: SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:generic
+    at run (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/run-browser-suite.mjs:344:34)
+    at file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/run-browser-suite.mjs:139:3
+
+Node.js v24.18.0

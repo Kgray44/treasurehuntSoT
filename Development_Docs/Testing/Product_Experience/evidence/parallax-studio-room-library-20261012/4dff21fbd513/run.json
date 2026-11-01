@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "4dff21fbd51359eed017d5efdc8d37602e06f620",
+  "tree": "745375bdc6acea9bd822e5c1a0d599df6ff0e13f",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-12T23:18:54.206Z",
+  "finishedAt": "2026-10-12T23:19:38.973Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm",
+      "sha256": "266ce802e0fa022185b997ec89d0a47f1ca234575c4c94ac1a9a2f65e95d5f8b"
+    }
+  ]
+}

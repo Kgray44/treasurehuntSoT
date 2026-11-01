@@ -1,0 +1,211 @@
+{
+  "at": "2026-10-23T00:27:03.5084573Z",
+  "run": 39875668380,
+  "archives": [
+    {
+      "id": 12467794954,
+      "archive": "D:/CodexTemp/parallax-resume-20261021-01a15554/governed-capture-25a-01/retained-artifacts/12467794954.original.zip",
+      "zipBytes": 7948,
+      "sha256": "f51d8fa847d83ba18b50b34623964ccf7af6617ae099126f95a5e873f12aa58d",
+      "providerDigestVerified": true,
+      "uncompressedBytes": null,
+      "members": [
+        {
+          "path": "000000.json",
+          "bytes": 444,
+          "compressedBytes": 305,
+          "directory": false
+        },
+        {
+          "path": "000002.json",
+          "bytes": 435,
+          "compressedBytes": 301,
+          "directory": false
+        },
+        {
+          "path": "000001.json",
+          "bytes": 435,
+          "compressedBytes": 303,
+          "directory": false
+        },
+        {
+          "path": "000003.json",
+          "bytes": 621,
+          "compressedBytes": 419,
+          "directory": false
+        },
+        {
+          "path": "000004.json",
+          "bytes": 628,
+          "compressedBytes": 430,
+          "directory": false
+        },
+        {
+          "path": "000005.json",
+          "bytes": 631,
+          "compressedBytes": 431,
+          "directory": false
+        },
+        {
+          "path": "000006.json",
+          "bytes": 626,
+          "compressedBytes": 428,
+          "directory": false
+        },
+        {
+          "path": "000007.json",
+          "bytes": 630,
+          "compressedBytes": 429,
+          "directory": false
+        },
+        {
+          "path": "000008.json",
+          "bytes": 630,
+          "compressedBytes": 431,
+          "directory": false
+        },
+        {
+          "path": "000009.json",
+          "bytes": 630,
+          "compressedBytes": 430,
+          "directory": false
+        },
+        {
+          "path": "000010.json",
+          "bytes": 631,
+          "compressedBytes": 432,
+          "directory": false
+        },
+        {
+          "path": "000011.json",
+          "bytes": 623,
+          "compressedBytes": 424,
+          "directory": false
+        },
+        {
+          "path": "000012.json",
+          "bytes": 623,
+          "compressedBytes": 423,
+          "directory": false
+        },
+        {
+          "path": "000013.json",
+          "bytes": 625,
+          "compressedBytes": 421,
+          "directory": false
+        },
+        {
+          "path": "terminal.json",
+          "bytes": 963,
+          "compressedBytes": 605,
+          "directory": false
+        }
+      ]
+    },
+    {
+      "id": 12469265727,
+      "archive": "D:/CodexTemp/parallax-resume-20261021-01a15554/governed-capture-25a-01/retained-artifacts/12469265727.original.zip",
+      "zipBytes": 150463,
+      "sha256": "e522bcc5cc8975dc557116220096f7dbb4dd83db3c15160dd5ac3f98739cbad2",
+      "providerDigestVerified": true,
+      "uncompressedBytes": null,
+      "members": [
+        {
+          "path": "browser-diagnostics/b17003eb-d961-4e5a-959d-b6e121612b54/4511412b-9c1d-4663-b9c4-2ce9f120d86d/browser-runtime.json",
+          "bytes": 1759,
+          "compressedBytes": 731,
+          "directory": false
+        },
+        {
+          "path": "browser-diagnostics/b17003eb-d961-4e5a-959d-b6e121612b54/4511412b-9c1d-4663-b9c4-2ce9f120d86d/browser-suite-profile.json",
+          "bytes": 565,
+          "compressedBytes": 378,
+          "directory": false
+        },
+        {
+          "path": "product-experience-submission/plan.json",
+          "bytes": 2180038,
+          "compressedBytes": 148510,
+          "directory": false
+        }
+      ]
+    },
+    {
+      "id": 12468538553,
+      "archive": "D:/CodexTemp/parallax-resume-20261021-01a15554/governed-capture-25a-01/retained-artifacts/12468538553.original.zip",
+      "zipBytes": 640534,
+      "sha256": "cb62bc27774af675ad1d0d97015bbf42cb99a42f43570067acc7ee617017c51e",
+      "providerDigestVerified": true,
+      "uncompressedBytes": null,
+      "members": [
+        {
+          "path": "product-experience-submission/plan.json",
+          "bytes": 2180038,
+          "compressedBytes": 148510,
+          "directory": false
+        },
+        {
+          "path": "product-experience-capture-staging/capture-Q27rzl/capture/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-ASSISTANT_READY-3.png",
+          "bytes": 235012,
+          "compressedBytes": 231078,
+          "directory": false
+        },
+        {
+          "path": "product-experience-capture-staging/capture-Q27rzl/capture/generic/spatial-pilot.experience-creator-assistance-and-return-DESKTOP-CREATOR-NORMAL-EDITOR_READY-1.png",
+          "bytes": 263872,
+          "compressedBytes": 259916,
+          "directory": false
+        }
+      ]
+    },
+    {
+      "id": 12468608168,
+      "archive": "D:/CodexTemp/parallax-resume-20261021-01a15554/governed-capture-25a-01/retained-artifacts/12468608168.original.zip",
+      "zipBytes": 993612,
+      "sha256": "5d03a84f19683da04c8791c43caed3216e2d99d97e97a51a7043bba76e221a53",
+      "providerDigestVerified": true,
+      "uncompressedBytes": null,
+      "members": [
+        {
+          "path": "part-000001.encrypted",
+          "bytes": 1291474,
+          "compressedBytes": 972724,
+          "directory": false
+        },
+        {
+          "path": "part-000003.encrypted",
+          "bytes": 6438,
+          "compressedBytes": 4852,
+          "directory": false
+        },
+        {
+          "path": "part-000002.encrypted",
+          "bytes": 6378,
+          "compressedBytes": 4805,
+          "directory": false
+        },
+        {
+          "path": "part-000004.encrypted",
+          "bytes": 6458,
+          "compressedBytes": 4867,
+          "directory": false
+        },
+        {
+          "path": "index.encrypted",
+          "bytes": 6530,
+          "compressedBytes": 4926,
+          "directory": false
+        },
+        {
+          "path": "retention.json",
+          "bytes": 1349,
+          "compressedBytes": 638,
+          "directory": false
+        }
+      ]
+    }
+  ],
+  "totalUncompressedBytes": null,
+  "extracted": false,
+  "decrypted": false
+}

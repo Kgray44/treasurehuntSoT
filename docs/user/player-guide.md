@@ -3,52 +3,10 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-22
 ---
 
 # Player guide
-
-The NCL-01 native 3D candidate is still in validation. A supported candidate
-companion can load a released chest or compass, place it on a detected surface
-and inspect the actual object; unsupported scenes retain Guided View.
-
-Build **0.1.0 (7)** is available in internal TestFlight with the approved official
-dark brass compass icon, made only by cropping/resizing the original artwork.
-The app uses the stable address
-[ncl01.absoluterelativesystems.com](https://ncl01.absoluterelativesystems.com).
-Choose **Update → Open** and use the same account. No new invitation or certificate
-profile is required. Changing Wi-Fi no longer itself requires another app build;
-the laptop must stay awake and online with its preview services running. The
-[deployment instructions](../../Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
-include saved start/stop procedures.
-
-Build 7 changes the artwork only. The account, stable address and AR controls
-are the same. The separate October 21 completion candidate is in qualification
-and has not replaced that installed beta.
-
-In that candidate, the native Lens explains model preparation, surface search
-and limited tracking. Tap a visible object, or aim at it and choose **Select
-object at center**, then choose **Inspect selected
-object** to open the result in the Player. During an active passage, the Player
-records an authorized observation before showing accepted inspection. Revisiting
-a passage shows its inspection without recording a new observation or changing
-progress. A connection or access failure stays visible and does not advance the
-Voyage. **Return to Guided View** remains
-available while the camera is preparing or waiting. These changes still require
-physical acceptance and protected integration; current software results are in the
-[post-Crossdeck record](../../Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md),
-with earlier results in the [completion ledger](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
-These records describe the candidate; the installed beta 7 has not changed.
-
-Find **The Classroom Compass Trail — NCL01** under **My Chronicle Library → Active
-Voyages**. The owner reports objects appearing when looking around in an earlier
-native camera trial, following an initially empty view. The current layout uses
-manual floor alignment; its authored appearance/placement has not been accepted.
-Automatic room registration belongs to later spatial-fidelity work. NCL-01
-preserves the authored relative layout at the selected local surface origin. Exact
-build-7 installation/native behavior, all three objects and tracking/interaction
-quality are unverified. The [native engineering record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md)
-preserves the remaining acceptance gates.
 
 In the active Journal, choose **Connect another device** and scan the code with
 your phone, or choose **Use a code instead**. Sign in with the same Voyagewright
@@ -83,6 +41,23 @@ Use Personal Harbor's device preferences and security controls to review or
 remove account sessions. See [account security](account-security.md).
 
 When a released passage includes a spatial moment, choose **Open Chronicle Lens** to read and interact with its clue in Guided View. The same clue stays readable without a camera, while seated or using a keyboard. A compatible native companion can offer local camera placement. Closing the camera, using Android Back, or losing its permission returns the moment to Guided View; reopen it explicitly for a fresh camera session. Lens interactions are recorded separately from Voyage progression. Revisited passages preserve their meaning without changing progress.
+
+The active browser candidate keeps **Open Chronicle Lens** in the Journal header,
+above the book. On phones, the compact action reads **Lens**. Scene details and
+earlier released scenes remain below the book;
+earlier scenes open in view-only mode. **Continue Voyage** inside the Journal
+advances the story; keep the spatial passage open while testing its interactions.
+On the explicitly enabled local browser prototype, choose **Start browser AR**
+and grant camera/motion permissions. Its tracking and room alignment remain
+experimental: the owner phone test has not achieved reliable calibration.
+An authored Environment version remains pinned to its released Scene; editing a
+separate Environment copy does not recalibrate or move an already released room.
+Tracking-loss notices explain cleared taps; calibration errors appear above the
+camera and in its corner-step hint. Tap inside the live camera image. A stalled
+scene opening reports a recovery message after 15 seconds; if the previous scene
+cannot close, close Chronicle Lens and reopen it. Surface-assisted alignment is disabled unless the selected provider
+supplies verified detected geometry. Guided View is a deliberate camera-free
+alternative and does not establish world anchoring.
 
 Where signed region preparation is enabled, an optional offline region panel appears in the Journal map.
 Select **Prepare offline region** to check availability, size, included released

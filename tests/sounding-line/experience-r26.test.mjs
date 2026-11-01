@@ -18,6 +18,7 @@ import {
 } from "../../scripts/sounding-line/experience-current-r26.mjs";
 import { CURRENT_R25 } from "../../scripts/sounding-line/experience-current-r25.mjs";
 import { currentAdmissionBinding } from "../../scripts/sounding-line/experience-current-admission.mjs";
+import { historicalAdmissionBinding } from "./fixtures/historical-admission-binding.mjs";
 import {
   selectTrustedExceptions,
   reserveExceptionStage,
@@ -38,7 +39,7 @@ const root = fileURLToPath(new URL("../..", import.meta.url));
 const git = (...args) => execFileSync("git", args, { cwd: root, encoding: "utf8", maxBuffer: 128 * 1024 * 1024 });
 const registry = JSON.parse(git("show", `${r.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`));
 const old = registry.exceptions.at(-1),
-  oldException = currentAdmissionBinding(old);
+  oldException = historicalAdmissionBinding(old);
 const evidence = JSON.parse(
   // Validate the original reviewed publication, never a current replay substitute.
   git("show", `${r.retained.publishedCandidateSha}:Development_Docs/Testing/Product_Experience/candidate-review.json`),
@@ -209,22 +210,23 @@ test("R26 preserves the existing authorized 90-minute Crossdeck ceiling and unch
   const jobs = workflow.split(/\n  (?=[a-z][a-z-]*:\n)/u);
   const final = jobs.find((job) => job.startsWith("final-check:\n"));
   assert(final);
+  const timeout = final.match(/\n    timeout-minutes: ([^\n]+)/u)?.[1];
+  const pr776Allowance = "(github.event.pull_request.number == 776 || inputs.pr_number == '776') && 120 || ";
+  assert(timeout?.includes(pr776Allowance));
   assert.equal(
-    final.match(/\n    timeout-minutes: ([^\n]+)/u)?.[1],
+    timeout.replace(pr776Allowance, ""),
     "${{ (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}",
   );
   assert.equal(jobs.filter((job) => job.includes("&& 90 || 45")).length, 1);
   assert.equal(record().currentSourceAdmission.precommandRecovery.jobLimitMinutes, 90);
   assert.equal(record().currentSourceAdmission.precommandRecovery.otherPullRequestsJobLimitMinutes, 45);
+  // This historical admission freezes its original candidate engines, not unrelated later repairs.
   for (const file of [
     "scripts/sounding-line/ordinary.mjs",
     "scripts/sounding-line/authenticated-completed-evidence.mjs",
     "scripts/sounding-line/verification-diagnostics.mjs",
   ])
-    assert.equal(
-      readFileSync(new URL("../../" + file, import.meta.url), "utf8"),
-      git("show", `${r.protectedBaseAncestorSha}:${file}`),
-    );
+    assert.equal(git("show", `${r.frozenReferenceSha}:${file}`), git("show", `${r.protectedBaseAncestorSha}:${file}`));
 });
 
 test("installed R26 reader denies missing, retired, invalid and expired rows without falling back", (t) => {

@@ -1,15 +1,97 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ChronicleLens, ChronicleLensEntry, ParallaxJournalProvider } from "./ChronicleLens";
+import { storageKey } from "@/crossdeck/client";
 import { syntheticSpatialMoment, syntheticBinding } from "@/parallax/fixtures";
 beforeEach(() => {
   cleanup();
+  sessionStorage.clear();
   HTMLDialogElement.prototype.showModal = function () {
     this.setAttribute("open", "");
   };
   HTMLDialogElement.prototype.close = function () {
     this.removeAttribute("open");
   };
+});
+
+it("opens an explicitly selected companion Lens once and respects explicit close", async () => {
+  const moment = syntheticSpatialMoment();
+  sessionStorage.setItem(storageKey("voyage"), "phone");
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (url: string) => {
+      if (url.startsWith("/api/crossdeck"))
+        return Response.json({
+          surfaces: [
+            {
+              surfaceId: "phone",
+              voyageId: "voyage",
+              thisSession: true,
+              role: "CHRONICLE_LENS",
+              presence: "ACTIVE",
+            },
+          ],
+        });
+      if (url.includes("/parallax?")) return Response.json({ moment, binding: syntheticBinding, replayOnly: false });
+      return new Response(null, { status: 404 });
+    }),
+  );
+  render(
+    <ParallaxJournalProvider sessionId="voyage" csrfToken="csrf">
+      <ChronicleLensEntry moment={moment} blockId="block" replayOnly={false} initiallyOpen />
+    </ParallaxJournalProvider>,
+  );
+  await screen.findByRole("dialog", { name: moment.version.title });
+  fireEvent.click(screen.getByRole("button", { name: "Close Chronicle Lens" }));
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  expect(screen.getByRole("button", { name: "Open Chronicle Lens" })).toBeVisible();
+});
+
+it("keeps ordinary and historical entries manual instead of trusting a stored legacy Lens role", async () => {
+  const moment = syntheticSpatialMoment();
+  sessionStorage.setItem(storageKey("voyage"), "phone");
+  const request = vi.fn(async () =>
+    Response.json({
+      surfaces: [
+        {
+          surfaceId: "phone",
+          voyageId: "voyage",
+          thisSession: false,
+          role: "CHRONICLE_LENS",
+          presence: "ACTIVE",
+        },
+      ],
+    }),
+  );
+  vi.stubGlobal("fetch", request);
+  const view = render(
+    <ParallaxJournalProvider sessionId="voyage" csrfToken="csrf">
+      <ChronicleLensEntry moment={moment} blockId="block" replayOnly={false} />
+    </ParallaxJournalProvider>,
+  );
+  expect(request).not.toHaveBeenCalled();
+  expect(screen.queryByRole("dialog")).toBeNull();
+  request.mockImplementation(async () =>
+    Response.json({
+      surfaces: [
+        {
+          surfaceId: "phone",
+          voyageId: "other",
+          thisSession: true,
+          role: "CHRONICLE_LENS",
+          presence: "ACTIVE",
+        },
+      ],
+    }),
+  );
+  sessionStorage.setItem(storageKey("other"), "phone");
+  view.rerender(
+    <ParallaxJournalProvider sessionId="other" csrfToken="csrf">
+      <ChronicleLensEntry moment={moment} blockId="historical" replayOnly />
+    </ParallaxJournalProvider>,
+  );
+  expect(request).not.toHaveBeenCalled();
+  expect(screen.queryByRole("dialog")).toBeNull();
 });
 it("opens camera-free Guided View with readable meaning and keyboard controls", async () => {
   const record = vi.fn().mockResolvedValue(undefined),

@@ -41,6 +41,8 @@ export async function checkoutHydration(file) {
   if (input.operation === "compile") {
     const required = new Map(input.objects.map((value) => [value.sha, value]));
     const fullSnapshots = new Set(input.snapshots);
+    const explicitPaths = input.readerPaths ?? [];
+    const foundPaths = new Set();
     const historicalMetadata = new Set([
       ".agents/README.md",
       "Development_Docs/INDEX.md",
@@ -57,12 +59,25 @@ export async function checkoutHydration(file) {
         const [metadata, file] = row.split("\t");
         const [mode, type, sha] = metadata.split(" ");
         need(type === "blob" && ["100644", "100755", "120000"].includes(mode), "UNSUPPORTED_TREE_ENTRY");
-        if (!fullSnapshots.has(revision) && !sourceSnapshotReadsPath(file) && !historicalMetadata.has(file)) continue;
+        const explicit = explicitPaths.some((value) => value.revision === revision && value.path === file);
+        if (explicit) foundPaths.add(`${revision}:${file}`);
+        if (
+          !fullSnapshots.has(revision) &&
+          !sourceSnapshotReadsPath(file) &&
+          !historicalMetadata.has(file) &&
+          !explicit
+        )
+          continue;
         need(!required.has(sha) || required.get(sha).type === type, "OBJECT_TYPE_CHANGED");
         required.set(sha, { sha, type });
       }
     }
+    need(
+      explicitPaths.every((value) => foundPaths.has(`${value.revision}:${value.path}`)),
+      "MISSING_READER_PATH",
+    );
     const value = {
+      readerPaths: explicitPaths,
       objects: [...required.values()].sort((a, b) => a.sha.localeCompare(b.sha)),
       snapshots: input.snapshots,
       readerSnapshots: input.readerSnapshots ?? [],

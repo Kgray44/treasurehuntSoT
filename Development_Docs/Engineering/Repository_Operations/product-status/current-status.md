@@ -3,51 +3,50 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-22
+last_reviewed: 2026-10-24
 ---
 
 # Current status
 
-The [post-Crossdeck NCL-01 record](../../../Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md)
-tracks the candidate consuming the accepted continuity interfaces. Fresh iOS
-native/joined evidence and Android `39e28ff`'s 16-test, original-model/input,
-joined and permission checks retain their exact source scopes. The corrected
-consumer browser workflow at `80a3f2ff` passed guarded production execution and
-cleanup; its exact executed count is unpublished. Earlier hosted and separate
-Windows failures remain preserved. Windows checks identified Profile preview
-accessibility markup and new test-selector/readiness defects; corrections keep
-the original accessibility, identity, return and authorization obligations.
-The candidate also consumes accepted Sounding Line repair787 and accepted
-inventory publication786. The corrected local journey passes seven cases,
-including Player detail/return/authorization checks; its separate failure to
-honor the capacity stop remains recorded. The secure hosted read-only Apple
-preflight verifies matching signing material and app/group read access without
-uploading a beta. Accepted diagnostic-retention repair789 is also preserved.
-Accepted shared classification repair790 removes the earlier unrelated-expiry
-block. The current39/be9 protected plan selects eighteen contracts and74
-planned contexts. Capture39788400044 is cancelled without media; its cause
-and hosted application cleanup remain unproved. Independent review, ordinary
-protected integration, physical and owner acceptance remain open. Internal beta 7
-has not been replaced.
+PR #776 remains the sole combined Studio integration candidate. Its tested source
+`abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096` includes accepted main
+`bbdd5412b842e1984c131398f23b6a3ccacb01ff`. All four desktop/mobile,
+normal/reduced SC02 contexts passed in hosted capture `40056411611`; that whole
+capture subsequently failed at Admin identity continuity. The scoped correction
+keeps the canonical operator visible on mobile and fits moderation controls and
+consequence previews to the screen. A fresh production build and ten focused
+Admin contexts pass with zero failures, skips or flaky results, retaining the
+original outcomes, account return, motion and accessibility requirements.
 
-The earlier [October 21 NCL-01 completion ledger](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
-records the completed pre-integration checkpoint `347a401c` with all approved TestFlight descendants,
-native Inspect/placement/lifecycle corrections and source-bound shared, Android,
-iOS native/joined and unsigned Release development evidence. Independent iOS
-presentation at that checkpoint passes 31/0/1 on the supported ARM profile; partial Intel failures
-remain preserved. Crossdeck [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721)
-has landed at `aaff9194`; the accepted continuity interface is now available. Fresh
-qualification of the combined NCL integration is pending. An admitted browser
-metric-spatial provider, physical and owner acceptance remain separate gates.
-Existing beta 7 is unchanged.
+Full capture `40064951146` on documentation descendant `f5221fe8` completed
+62 contexts before an empty-library workspace journey found two exact
+`Create Chronicle` links. Its owned cleanup passed; the failure was not a timeout.
+The empty-state shortcut now says `Create your first Chronicle`, preserving the
+standard navigation action and both destinations. A component negative control
+reproduced the ambiguity; four focused component/copy tests pass after the
+correction. All governed journey and outcome requirements remain unchanged.
 
-NCL-01 shared/native 3D work remains an unaccepted implementation candidate. Existing companion and One Voyage authorities are preserved. The [private beta deployment record](../../../Projects/Project_Parallax/NCL01_TestFlight_Deployment.md) records available internal TestFlight **0.1.0 (7)** with the owner-approved original-artwork crop as the official compass logo/icon, at the approved stable Cloudflare address and with the preserved classroom fixture. Build 6's generative artwork/color changes were owner-rejected and are no longer official. The original beta readiness receipt passed public TLS, auth/assets/Journal streaming, repaired CSS/JS delivery and desktop sign-in presentation. Current preview health is tracked separately in the completion ledger. The owner reports cellular reachability. Existing staging, audit and LAN services are preserved; exact build-7 installation/icon appearance/native behavior remain unverified.
+The authoritative plan still requires 32 contracts and 118 contexts. Fresh full
+capture, independent rendered review 3, ordinary protected qualification, normal
+merge and landed product smoke remain pending. Existing component, Studio and
+Crossdeck evidence retains its producing source and limits. The
+[current verification record](../../../Projects/Project_Parallax/Protected_Integration_20261021.md)
+preserves every original failed capture and diagnostic, including the corrected
+harness's six-pass/four-rate-limit-failure predecessor. These local corrections
+do not promote feature availability, physical/browser AR accuracy, native delivery,
+field reliability or owner acceptance.
 
-The saved official logo and iOS icon are the exact same owner-approved 1024-pixel PNG, made only by cropping/resizing the unchanged original. Build 7 signed archive/export/upload, Apple processing/internal availability and actual compiled-icon verification/visual review passed. Historical build-6 signed/compiled/distribution proof and its rejected artwork evidence are preserved. This cosmetic correction leaves AR and runtime behavior unchanged and does not change NCL-01 acceptance.
-
-The owner earlier reported the classroom Lens title, native camera and objects appearing when panning after an initially empty view, but does not accept authored appearance/placement. All three objects and measured tracking/interactions remain unverified. NCL-01 preserves the authored relative layout at a selected local surface origin; automatic room registration is a later capability. The [native Scene record](../../../Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) retains these acceptance limits; no native capability is promoted by this partial beta work.
-
-The Crossdeck refit is integrated on protected main through [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) at `aaff9194`, after [pre-merge Sounding Line PASS](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105). It connects a phone from the active Chronicle and provides browser Guided Lens, Voyage Chart, Journal, released artifact and restricted crew views. Contextual pairing, acknowledged handoff, continuation and recovery retain the authorized Voyage. The [R11 source record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), original 38-context capture and seven-contract/119-judgment independent review remain historical source-bound evidence. [Ordinary5](../../../Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) and [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) remain consumed failures. Fresh combined NCL integration qualification is pending. Unsupported companion purposes explain their limits; admitted browser metric-spatial capability, physical/native, field, assistive-technology and owner acceptance remain separate.
+The software-qualified Crossdeck refit connects a phone from the active Chronicle
+and offers distinct browser Guided Lens, Voyage Chart, Journal, released artifact
+and restricted crew views. Contextual pairing, acknowledged handoff, continuation
+and recovery retain the authorized Voyage. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721)
+landed normally on protected main at `aaff9194` after successful
+[R26 qualification](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105)
+and independent landed documentation, Feature Catalog and evidence smoke. The
+[R11 source record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md),
+original captures/reviews and consumed failures remain historical, source-bound
+evidence. Unsupported dedicated purposes explain their limits. Physical/native,
+field, assistive-technology and product-owner acceptance remain separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
@@ -327,4 +326,4 @@ inputs, Chronicle Passport, Personal Harbor, and workspace navigation were
 observed. A physical-phone run is still mandatory, so staging desktop evidence
 does not establish owner acceptance or deployment.
 
-Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance. The [Crossdeck R8 record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) supplies the refit's current source-bound experience evidence; exact qualification and integration remain bound to PR #721.
+Product Experience Engineering extends ordinary Sounding Line with selective experience contracts, task-owned browser captures, separate criticism and authenticated review evidence. [Operations and campaign proof](../../../Testing/Product_Experience/README.md) distinguish installed enforcement, technical acceptance and owner acceptance. The [Crossdeck R8 record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md) retains its historical source-bound evidence; the accepted R26 source and landing are recorded above.

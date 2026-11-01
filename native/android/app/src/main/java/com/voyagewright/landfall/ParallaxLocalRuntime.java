@@ -71,7 +71,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
 
   private static final class Entity {
     String id, content;
-    float width, scale;
+    float width, scale, opacity;
     int texture;
     Anchor anchor;
     Pose authoredPose, localDelta = Pose.IDENTITY;
@@ -222,7 +222,8 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     float nearest = Float.MAX_VALUE;
     synchronized (entities) {
       for (Entity e : entities) {
-        if (e.model || !e.visible || !e.selectable || e.anchor.getTrackingState() != TrackingState.TRACKING) continue;
+        if (e.model || !e.visible || !e.selectable || e.opacity <= 0
+            || e.anchor.getTrackingState() != TrackingState.TRACKING) continue;
         geometryPose(e).toMatrix(model, 0);
         Matrix.scaleM(model, 0, e.width * e.scale / 2, e.width * 0.7f * e.scale / 2, 1);
         Matrix.multiplyMM(mv, 0, view, 0, model, 0);
@@ -252,7 +253,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   }
 
   private boolean selectable(String id) {
-    synchronized (entities) { for (Entity e : entities) if (e.id.equals(id)) return e.visible && e.selectable && entityTracked(e); }
+    synchronized (entities) { for (Entity e : entities) if (e.id.equals(id)) return e.visible && e.opacity > 0 && e.selectable && entityTracked(e); }
     return false;
   }
 
@@ -270,7 +271,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     boolean found = false;
     synchronized (entities) {
       for (Entity e : entities) if (e.id.equals(id)) {
-        if (!e.visible || !e.selectable || !entityTracked(e)) return;
+        if (!e.visible || e.opacity <= 0 || !e.selectable || !entityTracked(e)) return;
         JSONArray actions = e.definition.optJSONArray("interactions");
         if (actions != null) { boolean allowed = false; for (int i = 0; i < actions.length(); i++) if (actions.optString(i).equals(action)) allowed = true; if (!allowed) return; }
         found = true;
@@ -296,7 +297,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
       if (controls == null || !active) return;
       Set<String> actions = new HashSet<>();
       synchronized (entities) {
-        for (Entity entity : entities) if (entity.id.equals(selected) && entity.visible && entity.selectable
+        for (Entity entity : entities) if (entity.id.equals(selected) && entity.visible && entity.opacity > 0 && entity.selectable
             && entityTracked(entity)) {
           JSONArray allowed = entity.definition.optJSONArray("interactions");
           if (allowed == null) actions.addAll(Arrays.asList("PICK", "INSPECT", "PLACE"));
@@ -513,8 +514,8 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
                 + " main(){gl_FragColor=texture2D(image,tex);}");
     entityProgram =
         program(
-            "precision mediump float;uniform sampler2D image;varying vec2 tex;void"
-                + " main(){gl_FragColor=texture2D(image,tex);}");
+            "precision mediump float;uniform sampler2D image;uniform float opacity;varying vec2 tex;void"
+                + " main(){vec4 color=texture2D(image,tex);gl_FragColor=vec4(color.rgb,color.a*opacity);}");
   }
 
   @Override
@@ -562,6 +563,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
       e.definition = j;
       e.content = j.getString("content");
       e.width = (float) j.getDouble("widthMeters");
+      e.opacity = (float) j.optDouble("opacity", 1);
       e.scale = (float) t.getDouble("scale");
       e.model = j.has("model"); e.visible = j.optBoolean("visible", true); e.selectable = j.optBoolean("selectable", true);
       e.surfaceQuad = pendingSurfaceQuads.contains(e.id);
@@ -637,7 +639,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
         float[] matrix = new float[16]; entity.anchor.getPose().compose(entity.localDelta).toMatrix(matrix, 0);
         Matrix.scaleM(matrix, 0, entity.scale, entity.scale, entity.scale);
         snapshot.transforms.put(entity.id, matrix);
-        if (entity.visible && entity.anchor.getTrackingState() == TrackingState.TRACKING) snapshot.visible.add(entity.id);
+        if (entity.visible && entity.opacity > 0 && entity.anchor.getTrackingState() == TrackingState.TRACKING) snapshot.visible.add(entity.id);
       }
     }
     latestModelFrame = snapshot;
@@ -675,7 +677,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
           for (Entity entity : entities) {
             float[] matrix = new float[16]; entityPose(entity).toMatrix(matrix, 0);
             Matrix.scaleM(matrix, 0, entity.scale, entity.scale, entity.scale);
-            transforms.put(entity.id, matrix); if (entity.visible) visible.add(entity.id);
+            transforms.put(entity.id, matrix); if (entity.visible && entity.opacity > 0) visible.add(entity.id);
           }
         }
         // This flag controls renderer visibility only; the lab never publishes world-tracking observations.
@@ -735,11 +737,14 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
             tracking("RELOCALIZING");
             continue;
           }
-          if (e.model || !e.visible) continue;
+          if (e.model || !e.visible || e.opacity <= 0) continue;
           geometryPose(e).toMatrix(model, 0);
           Matrix.scaleM(model, 0, e.width * e.scale / 2, e.width * 0.7f * e.scale / 2, 1);
           Matrix.multiplyMM(mv, 0, view, 0, model, 0);
           Matrix.multiplyMM(mvp, 0, projection, 0, mv, 0);
+          if (e.opacity < 1) { GLES20.glEnable(GLES20.GL_BLEND); GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA); GLES20.glDepthMask(false); }
+          GLES20.glUseProgram(entityProgram);
+          GLES20.glUniform1f(GLES20.glGetUniformLocation(entityProgram, "opacity"), e.opacity);
           quad(
               entityProgram,
               GLES20.GL_TEXTURE_2D,
@@ -747,6 +752,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
               mvp,
               floats(-1, -1, 1, -1, -1, 1, 1, 1),
               floats(0, 1, 1, 1, 0, 0, 1, 0));
+          GLES20.glDepthMask(true); GLES20.glDisable(GLES20.GL_BLEND);
         }
       }
       publishModels(camera, System.nanoTime());

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "candidate": "79ea73eedea18d0b83967b13fd7cb50176edee8c",
+  "tree": "b5678c81518354dc7d8361a7a661bdddacc5a261",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T16:45:25.982Z",
+  "finishedAt": "2026-10-15T16:48:40.689Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "sha256": "c99abc20733f3392c133e869654d5d14a3e95529818e999dc0c727921014b55e"
+    },
+    {
+      "file": "parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "sha256": "85213c6630af3393aa2406559b73f0b6922b2dce06a110c4781ebe777c128963"
+    }
+  ]
+}

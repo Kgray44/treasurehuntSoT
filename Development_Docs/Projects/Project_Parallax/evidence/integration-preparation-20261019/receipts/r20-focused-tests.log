@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: generation20 retains nineteen literal rows, seven reconciliations, original capture success and blocked review9
+ok 1 - generation20 retains nineteen literal rows, seven reconciliations, original capture success and blocked review9
+  ---
+  duration_ms: 1688.1776
+  type: 'test'
+  ...
+# Subtest: generation20 fixed sentinel denies missing, retired, disguised, premature and expired rows without fallback
+ok 2 - generation20 fixed sentinel denies missing, retired, disguised, premature and expired rows without fallback
+  ---
+  duration_ms: 3175.4007
+  type: 'test'
+  ...
+# Subtest: generation20 existing contract planning derives the exact approved digest while retaining every functional field
+ok 3 - generation20 existing contract planning derives the exact approved digest while retaining every functional field
+  ---
+  duration_ms: 215.2061
+  type: 'test'
+  ...
+# Subtest: generation20 accepts only the approved three contract strings and rejects runtime, mode or functional deltas
+ok 4 - generation20 accepts only the approved three contract strings and rejects runtime, mode or functional deltas
+  ---
+  duration_ms: 326.5176
+  type: 'test'
+  ...
+# Subtest: generation20 narrowly accepts the three approved B1 component splits while retaining all B2 gates
+ok 5 - generation20 narrowly accepts the three approved B1 component splits while retaining all B2 gates
+  ---
+  duration_ms: 36.423
+  type: 'test'
+  ...
+# Subtest: generation20 requires a real Refit packet and three transfers while preserving the prior registry and ledger
+ok 6 - generation20 requires a real Refit packet and three transfers while preserving the prior registry and ledger
+  ---
+  duration_ms: 329.8789
+  type: 'test'
+  ...
+# Subtest: generation20 consumes the exact successful R19 capture and blocked raw review without inventing success seals
+ok 7 - generation20 consumes the exact successful R19 capture and blocked raw review without inventing success seals
+  ---
+  duration_ms: 65.9702
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6228.7996

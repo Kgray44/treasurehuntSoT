@@ -1,0 +1,23 @@
+{
+  "documentClassification": "engineering-evidence",
+  "acceptedOn": "2026-10-13",
+  "authority": "DIRECT_OWNER_REPLY",
+  "statement": "Accept groups and exclusion zones",
+  "scope": [
+    "Named group controls and presentation in supplied gallery",
+    "Exclusion zone controls and presentation in supplied gallery"
+  ],
+  "gallery": "review.html",
+  "exclusionSource": "265de11ba6c1a0201b300737b34f8c6e4497114a",
+  "groupSources": [
+    "7d3b436c2e5e2fba9fd5a44fe66f43b85bee7d21",
+    "b724a9c0268c04f2b732cd8d8a1268c470f67c7c"
+  ],
+  "notAccepted": [
+    "Whole Studio overhaul",
+    "Universal reconstruction fidelity",
+    "Physical AR accuracy",
+    "iPhone device acceptance",
+    "Protected software integration"
+  ]
+}

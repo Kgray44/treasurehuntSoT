@@ -1,0 +1,85 @@
+{
+  "source": "0d7a5bed92c75949e60eed8287b578b861aece2f",
+  "runtime": "PRODUCTION",
+  "start": {
+    "id": "direct-placement:entity-0",
+    "status": "IN_VIEW",
+    "position": [
+      -1.2,
+      0.56,
+      1.52
+    ],
+    "rotation": [
+      -0.7071067811865477,
+      0,
+      0,
+      0.7071067811865477
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "bounds": {
+      "min": [
+        -1.2900000035762786,
+        0.56,
+        1.452499997317791
+      ],
+      "max": [
+        -1.1099999964237213,
+        0.565220000166446,
+        1.587500002682209
+      ]
+    }
+  },
+  "free": {
+    "id": "direct-placement:entity-0",
+    "status": "IN_VIEW",
+    "position": [
+      -1.2,
+      0.5886726435504399,
+      1.52
+    ],
+    "rotation": [
+      -0.7071067811865477,
+      0,
+      0,
+      0.7071067811865477
+    ],
+    "scale": [
+      1,
+      1,
+      1
+    ],
+    "bounds": {
+      "min": [
+        -1.2900000035762786,
+        0.5886726435504399,
+        1.452499997317791
+      ],
+      "max": [
+        -1.1099999964237213,
+        0.5938926437168859,
+        1.587500002682209
+      ]
+    }
+  },
+  "savedPose": {
+    "position": {
+      "x": -1.2,
+      "y": 0.56,
+      "z": 1.52
+    },
+    "rotation": {
+      "x": -0.7071067811865477,
+      "y": 0,
+      "z": 0,
+      "w": 0.7071067811865477
+    },
+    "scale": 1
+  },
+  "surfaceId": "table-left",
+  "errors": [],
+  "limits": "Actual pointer gestures in a synthetic software-rendered room; no physical surface tracking or hardware performance claim."
+}

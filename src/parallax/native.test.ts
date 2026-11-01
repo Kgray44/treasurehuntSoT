@@ -3,13 +3,25 @@ import { NativeSpatialAdapter } from "./native";
 import { identityTransform } from "./contracts";
 import { ParallaxLensRuntime } from "./runtime";
 import { guidedContext, syntheticBinding, syntheticSpatialMoment } from "./fixtures";
-function host(permission = "GRANTED", accepted = true) {
+function host(permission = "GRANTED", accepted = true, sceneOpacity = false) {
   const request = vi.fn(async (message: string) => {
     const { operation, payload } = JSON.parse(message);
     if (operation === "SPATIAL_START")
-      return { accepted, sceneTransferVersion: 1, sessionId: payload.sessionId, epoch: payload.epoch };
+      return {
+        accepted,
+        sceneTransferVersion: 1,
+        sessionId: payload.sessionId,
+        epoch: payload.epoch,
+      };
     if (operation === "SPATIAL_STATE" || operation === "SPATIAL_PERMISSION")
-      return { supported: true, permission, sceneTransferVersion: 1 };
+      return {
+        supported: true,
+        permission,
+        sceneTransferVersion: 1,
+        ...(operation === "SPATIAL_STATE" && payload.sceneCapabilities === true && sceneOpacity
+          ? { sceneOpacity: true }
+          : {}),
+      };
     if (operation === "SPATIAL_PLACE") return { pose: identityTransform() };
     return { accepted };
   });
@@ -20,6 +32,37 @@ afterEach(() => {
   delete window.LandfallNative;
 });
 describe("Parallax native bridge boundary (mock transport, no hardware qualification)", () => {
+  it.each([false, true])(
+    "negotiates material opacity without silently dropping it (capability=%s)",
+    async (supported) => {
+      const request = host("GRANTED", true, supported),
+        adapter = new NativeSpatialAdapter();
+      await adapter.start({
+        signal: new AbortController().signal,
+        emit: () => {},
+        sceneIdentity: { versionChecksum: "a".repeat(64), instanceId: "test" },
+      });
+      const entity = {
+        id: "fading",
+        kind: "TEXT",
+        content: "Visible clue",
+        widthMeters: 0.25,
+        transform: identityTransform(),
+        opacity: 0.5,
+      };
+      if (supported) {
+        await adapter.render([entity]);
+        expect(request.mock.calls.some(([m]) => JSON.parse(m).operation === "SPATIAL_SCENE_COMMIT")).toBe(true);
+      } else {
+        await expect(adapter.render([entity])).rejects.toThrow("PARALLAX_NATIVE_OPACITY_UNSUPPORTED");
+        expect(request.mock.calls.some(([m]) => JSON.parse(m).operation === "SPATIAL_SCENE_BEGIN")).toBe(false);
+        const legacy: Omit<typeof entity, "opacity"> & { opacity?: number } = { ...entity };
+        delete legacy.opacity;
+        await adapter.render([legacy]);
+      }
+      await adapter.stop();
+    },
+  );
   it("discovers capability without asking for camera permission", async () => {
     const request = host("PROMPT"),
       adapter = new NativeSpatialAdapter();
@@ -39,6 +82,7 @@ describe("Parallax native bridge boundary (mock transport, no hardware qualifica
   it("converts plane normal to the entity quad frame", async () => {
     host();
     const adapter = new NativeSpatialAdapter();
+    expect(await adapter.discover()).toEqual({ supported: true, permission: "GRANTED", sceneTransferVersion: 1 });
     await adapter.start({
       signal: new AbortController().signal,
       emit: () => {},

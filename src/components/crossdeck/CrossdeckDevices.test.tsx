@@ -63,6 +63,7 @@ beforeEach(() => {
 });
 afterEach(() => {
   cleanup();
+  vi.useRealTimers();
   sessionStorage.clear();
   history.replaceState(null, "", location.pathname);
   vi.restoreAllMocks();
@@ -394,3 +395,47 @@ it.each(["JOURNAL", "SHARED_CREW_DISPLAY"])(
     expect(sessionStorage.getItem(storageKey("voyage"))).toBe(claimed!.surfaceId);
   },
 );
+
+it("retains code renewal after the accepted connection countdown expires", async () => {
+  vi.useFakeTimers();
+  let issued = 0;
+  const requests = vi.fn(async (url: RequestInfo | URL, init?: RequestInit) => {
+    if (init?.method === "POST") {
+      const body = JSON.parse(String(init.body));
+      return Response.json(
+        body.action === "challenge"
+          ? {
+              code: ++issued === 1 ? "123456789ABC" : "ABCDEF123456",
+              expiresAt: new Date(Date.now() + 2000).toISOString(),
+            }
+          : {},
+      );
+    }
+    return Response.json(
+      String(url).startsWith("/api/crossdeck")
+        ? { csrfToken: "csrf", voyages: [], surfaces: [savedSurface] }
+        : { available: false, journal: { chapters: [] } },
+    );
+  });
+  vi.stubGlobal("fetch", requests);
+  await act(async () => {
+    render(<CrossdeckDevices initialVoyage="voyage" compact />);
+  });
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Connect another device" }));
+  });
+  expect(screen.getByText("This code expires in 2 seconds.")).toBeVisible();
+  expect(issued).toBe(1);
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(2100);
+  });
+  expect(screen.getByText(/That code expired/)).toBeVisible();
+  expect(screen.queryByAltText("Scan with your phone to join this Chronicle")).toBeNull();
+  const renew = screen.getByRole("button", { name: "Create a new code" });
+  expect(renew).toBeEnabled();
+  await act(async () => {
+    fireEvent.click(renew);
+  });
+  expect(issued).toBe(2);
+  expect(screen.getByText("This code expires in 2 seconds.")).toBeVisible();
+});

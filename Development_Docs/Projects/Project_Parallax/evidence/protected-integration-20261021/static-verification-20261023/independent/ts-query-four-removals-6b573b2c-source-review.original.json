@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "kind": "FROZEN_FOUR_UNSUPPORTED_ROLE_QUERY_OPTION_REMOVALS_SOURCE_REVIEW",
+  "at": "2026-10-23T04:15:19.2827197Z",
+  "status": "PASS_EXACT_SOURCE_ONLY_NO_CHANGED_SOURCE_RUNTIME",
+  "base": "aee0cd823fc105ff3efc14363ce8f1f98b3e3876",
+  "path": "src/components/studio/parallax/SpatialStudio.test.tsx",
+  "before": {
+    "bytes": 39487,
+    "sha256": "802043a06de8283e819bcb1dcbde56683cbd6b023a1aa4cab585a4a36222f56c",
+    "equalsCommittedBase": true
+  },
+  "after": {
+    "bytes": 39435,
+    "sha256": "6b573b2cccc3a1deff7f6a20d7d9890232c766a38000f946af9a1200ce5c21fd",
+    "equalsFrozenAndWorking": true
+  },
+  "verified": {
+    "exactlyFourTargetedOptionRemovals": true,
+    "regionCallCount": 1,
+    "dockCallCount": 2,
+    "floatCallCount": 1,
+    "allOtherFileBytesPreserved": true,
+    "literalNamesActionsAssertionsTimeoutsPreserved": true,
+    "validGetByLabelTextExactRetained": true,
+    "hook274Unchanged": true,
+    "workspaceTest6cafUnchanged": true
+  },
+  "sourceReason": "Installed testing-library role query passes accessible name to matches(); string matcher uses strict equality. Unsupported exact option was ignored at runtime and invalid in types.",
+  "frozenFiles": [
+    "D:/CodexTemp/parallax-resume-20261021-01a15554/ts-query-fix-01/SpatialStudio.before.original.tsx.txt",
+    "D:/CodexTemp/parallax-resume-20261021-01a15554/ts-query-fix-01/SpatialStudio.after.original.tsx.txt"
+  ],
+  "limits": [
+    "No actual TypeScript, lint or test check was run on6b by root or established by this source verdict.",
+    "Actualold802TSfailure and aee30case pass remain separate original results, not rebound to6b.",
+    "Product warning corrections and their tests need separately frozen review; this verdict covers only four test option removals.",
+    "No compiler/lint rule suppression, threshold weakening, source-runtime authorization, capture or userapproval granted."
+  ],
+  "qualification": false,
+  "rootRuntimeExecuted": false,
+  "captureAuthorized": false
+}

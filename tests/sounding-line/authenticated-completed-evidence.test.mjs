@@ -19,6 +19,7 @@ import {
 } from "../../scripts/sounding-line/evidence.mjs";
 import {
   buildEvidenceObligations,
+  createSnapshotSourceReader,
   runReconciledVerification,
   soundingLineDatabaseUrl,
 } from "../../scripts/sounding-line/ordinary.mjs";
@@ -1249,5 +1250,157 @@ test("current accepted base or candidate working-tree drift fails closed", async
     );
     put(state.root, "src/example.ts", "export const value = false;\n");
     await assert.rejects(state.authenticate());
+  });
+});
+
+test("snapshot source reader preserves raw delegate semantics, scope and failed-read retries", () => {
+  const root = path.resolve("inert-snapshot"),
+    sha = "a".repeat(40),
+    calls = [];
+  const error = new Error("same delegate error");
+  let failures = 1;
+  const execute = (binary, args, options) => {
+    calls.push({ binary, args, options });
+    if (args[1].endsWith(":src/failure.ts") && failures-- > 0) throw error;
+    return "  export const same = true;\n";
+  };
+  const read = createSnapshotSourceReader(root, sha, execute);
+  assert.equal(read("src/a.ts"), "export const same = true;");
+  assert.equal(read("src/a.ts"), "export const same = true;");
+  assert.equal(calls.length, 1);
+  assert.deepEqual(calls[0], {
+    binary: "git",
+    args: ["show", sha + ":src/a.ts"],
+    options: { cwd: root, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 },
+  });
+  assert.throws(
+    () => read("src/failure.ts"),
+    (caught) => caught === error,
+  );
+  assert.equal(read("src/failure.ts"), "export const same = true;");
+  assert.equal(read("src/failure.ts"), "export const same = true;");
+  assert.equal(calls.length, 3);
+  createSnapshotSourceReader(root, sha, execute)("src/a.ts");
+  createSnapshotSourceReader(root, "b".repeat(40), execute)("src/a.ts");
+  assert.equal(calls.length, 5);
+  assert.equal(calls.at(-1).args[1], "b".repeat(40) + ":src/a.ts");
+  let mutable = 0;
+  const moving = createSnapshotSourceReader(root, "HEAD", () => String(++mutable));
+  assert.equal(moving("src/a.ts"), "1");
+  assert.equal(moving("src/a.ts"), "2");
+});
+
+test("snapshot source reader keeps fixed entry and byte caps with uncached fallback", () => {
+  let calls = 0;
+  const execute = () => {
+    calls++;
+    return "x";
+  };
+  const read = createSnapshotSourceReader(path.resolve("inert-snapshot"), "a".repeat(40), execute);
+  for (let n = 0; n < 4097; n++) read("src/" + n + ".ts");
+  read("src/0.ts");
+  read("src/4096.ts");
+  assert.equal(calls, 4098);
+  let largeCalls = 0;
+  const large = "x".repeat(64 * 1024 * 1024),
+    bounded = createSnapshotSourceReader(path.resolve("inert-snapshot"), "c".repeat(40), () => {
+      largeCalls++;
+      return large;
+    });
+  assert.equal(bounded("src/full.ts"), large);
+  bounded("src/full.ts");
+  assert.equal(largeCalls, 1);
+  bounded("src/other.ts");
+  bounded("src/other.ts");
+  assert.equal(largeCalls, 3);
+});
+
+function emptyDiscoveryRequest(state, beforeReturn = () => {}) {
+  return async (endpoint) => {
+    state.calls.push(endpoint);
+    beforeReturn(endpoint);
+    if (endpoint === "branches/main") return { name: "main", protected: true, commit: { sha: state.baseSha } };
+    if (endpoint.includes("/runs?event="))
+      return { total_count: 1000, workflow_runs: Array.from({ length: 5 }, (_, n) => ({ id: n + 1, run_attempt: 1 })) };
+    if (/^actions\/runs\/[1-5]\/artifacts\?per_page=100$/u.test(endpoint)) return { total_count: 0, artifacts: [] };
+    throw new Error("unexpected empty-window endpoint");
+  };
+}
+
+test("empty discovered producer window skips intake fingerprints and executes every verification command fresh", async () => {
+  await fixture(async (state) => {
+    const selected = state.plan.selected;
+    Object.defineProperty(state.plan, "selected", {
+      configurable: true,
+      get() {
+        throw new Error("empty intake must not build fingerprints");
+      },
+    });
+    const proof = await state.authenticate({ producers: undefined, request: emptyDiscoveryRequest(state) });
+    Object.defineProperty(state.plan, "selected", { configurable: true, writable: true, value: selected });
+    assert.equal(proof.admitted, 0);
+    assert.deepEqual(proof.provenance, []);
+    assert.deepEqual(proof.rejections, []);
+    assert.equal(state.lookup(proof), null);
+    assert.equal(state.calls.length, 7);
+    assert.equal(state.calls.filter((x) => x.includes("/artifacts?")).length, 5);
+    const executed = [];
+    const result = await runReconciledVerification(
+      state.root,
+      state.plan,
+      async (_root, command, args) => {
+        executed.push([command, args]);
+      },
+      { authenticatedEvidence: proof },
+    );
+    assert.deepEqual(
+      executed,
+      state.obligations.flatMap((o) => o.commands),
+    );
+    assert.equal(result.freshObligations, state.obligations.length);
+    assert(result.reconciliation.every((x) => x.freshExecuted && !x.producerProvenance));
+    assert(result.receipts.every((x) => x.disposition === "FRESH" && x.originalReceiptId === null));
+    assert.deepEqual(
+      await buildEvidenceObligations(state.root, state.plan),
+      state.obligations,
+      "new snapshot returns identical complete fingerprints",
+    );
+  });
+});
+
+test("empty discovery still rejects changed protected base, dirty source and post-discovery HEAD drift", async () => {
+  await fixture(async (state) => {
+    const request = emptyDiscoveryRequest(state);
+    await assert.rejects(
+      state.authenticate({
+        producers: undefined,
+        request: async (endpoint) =>
+          endpoint === "branches/main"
+            ? { name: "main", protected: true, commit: { sha: "f".repeat(40) } }
+            : request(endpoint),
+      }),
+      /CURRENT_ACCEPTED_BASE_CHANGED/u,
+    );
+    put(state.root, "src/example.ts", "export const changed = true;\n");
+    await assert.rejects(state.authenticate({ producers: undefined, request }));
+    put(state.root, "src/example.ts", "export const value = true;\n");
+    let dirtied = false;
+    const postDirty = emptyDiscoveryRequest(state, (endpoint) => {
+      if (!dirtied && endpoint.includes("/runs?event=")) {
+        dirtied = true;
+        put(state.root, "src/example.ts", "export const changed = true;\n");
+      }
+    });
+    await assert.rejects(state.authenticate({ producers: undefined, request: postDirty }));
+    put(state.root, "src/example.ts", "export const value = true;\n");
+    let changed = false;
+    const drift = emptyDiscoveryRequest(state, (endpoint) => {
+      if (!changed && endpoint.includes("/runs?event=")) {
+        changed = true;
+        put(state.root, "Development_Docs/drift.md", "drift\n");
+        commit(state.root, "inert drift");
+      }
+    });
+    await assert.rejects(state.authenticate({ producers: undefined, request: drift }), /CURRENT_HEAD_CHANGED/u);
   });
 });

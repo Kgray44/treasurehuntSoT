@@ -88,13 +88,20 @@ test("formatter preserves only exact paired originals while checking nearby meta
     .split(/\r?\n/u)
     .filter((line) => line.includes("/paired"));
   assert.deepEqual([...declared].sort(), rawPaths.map((file) => `/${file}`).sort());
-  const negatives = [
-    `${canonical}/capture.json`,
+  const frozenPR776Paths = [
     "Development_Docs/Testing/Product_Experience/evidence/capture.json",
     "Development_Docs/Testing/Product_Experience/evidence/generic/capture.json",
     "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-review-packet.json",
     "Development_Docs/Testing/Product_Experience/evidence/crossdeck.phase2.continuity-review-packet.json",
     "Development_Docs/Testing/Product_Experience/candidate-review.json",
+  ];
+  const negatives = [
+    `${canonical}/capture.json`,
+    "Development_Docs/Testing/Product_Experience/evidence/capture.copy.json",
+    "Development_Docs/Testing/Product_Experience/evidence/generic/capture.copy.json",
+    "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-review-packet.copy.json",
+    "Development_Docs/Testing/Product_Experience/evidence/crossdeck.phase2.continuity-review-packet.copy.json",
+    "Development_Docs/Testing/Product_Experience/candidate-review.copy.json",
     `${local}/paired-local-execution/capture.json`,
     `${canonical}/refit-recovery/paired-witness.copy.json`,
     `${canonical}/refit-recovery/observations.copy.json`,
@@ -135,6 +142,15 @@ test("formatter preserves only exact paired originals while checking nearby meta
       true,
     );
   }
+  for (const file of frozenPR776Paths) {
+    write(file);
+    assert.equal(
+      (await getFileInfo(path.join(root, file), { ignorePath: path.join(root, ".prettierignore") })).ignored,
+      true,
+    );
+  }
+  const frozenHashes = frozenPR776Paths.map(digest);
+  assert.equal(check(...frozenPR776Paths).status, 0);
   const hashes = rawPaths.map(digest);
   assert.equal(check(...rawPaths).status, 0);
   assert.equal(check(".").status, 0);
@@ -150,6 +166,7 @@ test("formatter preserves only exact paired originals while checking nearby meta
   for (const file of negatives) assert(explicit.stderr.replaceAll("\\", "/").includes(file), file);
   assert.equal(check(".").status, 1);
   assert.deepEqual(rawPaths.map(digest), hashes);
+  assert.deepEqual(frozenPR776Paths.map(digest), frozenHashes);
 });
 
 const contracts = () =>

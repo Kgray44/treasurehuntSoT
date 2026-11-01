@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-23T03:51:09.542Z",
+  "root": "D:/CodexWorktrees/parallax-776-final39-20261022",
+  "command": "C:\\Users\\kkids\\AppData\\Local\\Microsoft\\WinGet\\Packages\\OpenJS.NodeJS.LTS_Microsoft.Winget.Source_8wekyb3d8bbwe\\node-v24.18.0-win-x64\\node.exe",
+  "args": [
+    "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\installed-plan-aee-b2.mjs",
+    "D:/CodexTemp/parallax-root-accepted39-review-20261022-01a12c32/committed-aee0cd82-accepted-main-identity-preservation.original.json",
+    "47925afab3cb5078cf65f9c8fecc3a96c4bed68edfd0febd0f96d2df5e215a51"
+  ],
+  "cFree": 56050679808,
+  "dFree": 111553130496,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "qualification": false,
+  "protectedCapture": false
+}

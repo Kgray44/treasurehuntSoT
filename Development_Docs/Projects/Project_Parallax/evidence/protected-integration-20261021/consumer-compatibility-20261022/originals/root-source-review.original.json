@@ -1,0 +1,66 @@
+{
+  "kind": "BOUNDED_CONSUMER_COMPATIBILITY_SOURCE_REVIEW",
+  "at": "2026-10-22T15:48:38.1379149Z",
+  "reviewerThread": "01a12c32-ea0a-70d3-a918-5f9f735fa107",
+  "candidate": "PR776 sole writer",
+  "sourceHead": "28ece6275ad51a23008e1301964a3eb8a9c0ab8d",
+  "checkout": "D:/CodexWorktrees/parallax-776-final39-20261022",
+  "status": "NO_CONFIRMED_REMAINING_FINDING_IN_REVIEWED_SOURCE_GROUPS",
+  "files": {
+    "testing/contracts.json": "431bd61b5ce2bb9855f93639fa38e54275b4f6de6690be968641e53201eb3779",
+    "tests/e2e/parallax-shared-consumers.spec.ts": "c0ee51bb0128d783fcf24fed6d35a9a88fed4c37c6e21b2097d2618b7189de27",
+    "tests/e2e/parallax-passport-compatibility.spec.ts": "3fcb0d79021920febb5b32755ad7277b7ddf0dba0f6d77885954fc0bd517e700",
+    "tests/e2e/parallax-community-compatibility.spec.ts": "41f77e1ececcf3c1aa3976461b34439a4f4b1c4d1d9b46086a243eeda7d55dbe",
+    "tests/e2e/parallax-workspace-compatibility.spec.ts": "b992f9f46935af6a56da2d39651f2884958022930137dc8ec587a5fef4fd9ea4",
+    "tests/e2e/parallax-access-availability.spec.ts": "6b0fa1284e13ea61e41a0f854d74bef82e5828fd1fcb8755fcf1122ede3eb9ff",
+    "tests/e2e/parallax-admiralty-compatibility.spec.ts": "04ff73e05fe6c02a15195f37b98c9226e340be03afb5f0d83a638188302edf1d",
+    "tests/e2e/fixtures/parallax-experience.ts": "7b74548262c9357b8bf7c141dfcab5dedd323d192bfd6ef7be436deef3aa71fe",
+    "tests/e2e/fixtures/parallax-compatibility-archive.ts": "b01514a8d196e521feff1712c4b73ae98cfdda7176c5299517f7dbcaf8f8ebf0",
+    "tests/e2e/fixtures/parallax-compatibility-governance.ts": "e39eab4f61a323b27ddd2ebb7f76d96ca5e7cdbd808e6690b534a1a18c368600"
+  },
+  "groups": [
+    "Account identity and keyboard return",
+    "Passport owner archive and pinned edition",
+    "Community public/private projection and owner draft return",
+    "Canonical workspace identity and private draft visibility",
+    "Motion and unavailable pilot boundaries",
+    "Admiralty read, support scope, command preview and moderation self-review"
+  ],
+  "resolvedFindings": [
+    "Account editable route and authenticated Home identity",
+    "Passport journey H and positive private-memory/pinned-edition witnesses",
+    "Community signed-in viewing Creator and actual drafts return",
+    "Invalid PLAYER activation calls removed",
+    "Guest denial fixture uses genuinely unclaimed status",
+    "Owned private draft visible in Creator library",
+    "Unnecessary People label edit removed",
+    "Support ACCOUNT_STATE target projection and active-grant category denial",
+    "Independent moderation self-review rejection before valid distinct preview"
+  ],
+  "preservation": {
+    "originalContractIDs": 501,
+    "totalContracts": 502,
+    "onlyAddedID": "parallax.integration.pilot-owner-boundary",
+    "productAndPrismaDeltaEmpty": true,
+    "peopleGitBlob": "8a4464ebfcd45a4e5599044258ebde638ef34505",
+    "existingOwnerSuitesUnchanged": true
+  },
+  "runtime": {
+    "rootExecutedBuildOrBrowser": false,
+    "newDeclaredCases": 39,
+    "combinedCurrentFreezeRun": "NOT_EXECUTED",
+    "earlierAccountResult": "7 of 7 development cases passed on their producing manifest; not rebound to current freeze",
+    "failureCollector": "INCOMPLETE/SETUP_FAILED Windows limitation retained separately"
+  },
+  "boundaries": [
+    "Source review only, not Product Experience capture or a critique iteration",
+    "No qualification, protected merge, owner acceptance or physical acceptance granted",
+    "Static source bindings do not mean all 173 surfaces were exercised",
+    "Cookie fixture setup does not establish visible sign-in proof",
+    "Shared-frame references do not establish task-body visual acceptance",
+    "Pilot surface detection and physical iPhone alignment remain unproved; reported calibration negative",
+    "No paid provider, private photo, cloud key, native tracker or deployment evidence supplied"
+  ],
+  "rootMutations": "This external original receipt only; no candidate source changes",
+  "memoryUse": "Ownership context refreshed from current source and native messages"
+}

@@ -1,0 +1,236 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "b15bca335b028565ee2190a79eccfa6f5e6e47c6",
+  "tree": "33ca774d32420e4f51ec56e3bfb174065903b64c",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "objective": "Real pointer dragging previews a clear table target, commits clamped placement on release, retains free positioning when clamping is off, and preserves Undo/Redo/save/reload. Graph selection and direct viewport raycast agree with selected identity and Inspector. Domain query is shared for preview and release.",
+  "reviewScope": "Final direct-placement screenshots and complete recording plus proof/run receipts. Historical failures were fixture identity, wrong fallback room identity, and a closed Inspector group; no product failure was waived. Earlier authoring regression recordings retain results only, not renewed review.",
+  "artifacts": [
+    {
+      "phase": "first-harness-failure",
+      "file": "first-harness-failure/checks-parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+      "bytes": 588466,
+      "sha256": "ab97575f7ee00b9abe1231a4a3e2232d13d43a9295c035fb000f4f8f0e4eea8a",
+      "review": false
+    },
+    {
+      "phase": "first-harness-failure",
+      "file": "first-harness-failure/checks-parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+      "bytes": 215752,
+      "sha256": "5bcce3ef97063aead805adc43a31ce92bd3e08d934dff62dd920e282cfe99bb8",
+      "review": false
+    },
+    {
+      "phase": "first-harness-failure",
+      "file": "first-harness-failure/checks-parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+      "bytes": 462315,
+      "sha256": "93d7624e5acbbc3fdeafe63ec050626fb1ce2de85f3d89f8f52ea765dc25bfd9",
+      "review": false
+    },
+    {
+      "phase": "first-harness-failure",
+      "file": "first-harness-failure/checks-parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "bytes": 223846,
+      "sha256": "7375a21cc3da3d1a73768f1866a36d6e414b9c7b690bc0f601e58a2321e2d409",
+      "review": false
+    },
+    {
+      "phase": "first-harness-failure",
+      "file": "first-harness-failure/direct-placement-error-context.original.txt",
+      "bytes": 17853,
+      "sha256": "c5604d8a6b256139c1269af770cde62e3c9492d99b358e59359e17afd9f7bb80",
+      "review": false
+    },
+    {
+      "phase": "first-harness-failure",
+      "file": "first-harness-failure/direct-placement-run.original.json.txt",
+      "bytes": 1135,
+      "sha256": "8c4aad90020ac78f4b17c665de833fc2b85f680642d3c3cac093678a4b12b9a1",
+      "review": false
+    },
+    {
+      "phase": "first-harness-failure",
+      "file": "first-harness-failure/direct-placement-test-failed.png",
+      "bytes": 353541,
+      "sha256": "c64cbd639c7e05a76c5d3e24fd46b235a673213246e53232f680f519fb81a427",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/checks-parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+      "bytes": 635087,
+      "sha256": "209f2220430286d3943ea3136a334867b1f903e5017fea25ab7bf0c3a7c8eb1c",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/checks-parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+      "bytes": 217628,
+      "sha256": "61dd6d161764cc16f67b7530c7c9e93b00d3884000c7037afc63ea670efae584",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/checks-parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+      "bytes": 465954,
+      "sha256": "8cacb03e820b97e2ffca78e4cf65ddb2ffce86ad7f2d77939120cf3bc3089937",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/checks-parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "bytes": 343786,
+      "sha256": "ea4096a77e8ac630c06a4d347a75ff304097eae4e84532e5d58ab6fff5732313",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/direct-clamp-held-preview.png",
+      "bytes": 353560,
+      "sha256": "1048fd6427d1c188302048481253a037f3ed8e43f1aeaca07b2f8815d01b8f23",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/direct-clamped-release.png",
+      "bytes": 365279,
+      "sha256": "f4722ab95deab2a4f3d56b90e453565f61f0090b62888c6b602c88c6d1ccf31f",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/direct-free-held-preview.png",
+      "bytes": 362732,
+      "sha256": "178632490c68d74861663ba5db843f1995ba1c140f531079559314866c0e6a6c",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/direct-free-release.png",
+      "bytes": 363110,
+      "sha256": "6b0ee748dd6cf40280839967f5c8187a98e16ce9c4508ed23ecf0a239771431a",
+      "review": false
+    },
+    {
+      "phase": "room-harness-failure",
+      "file": "room-harness-failure/direct-placement-run.original.json.txt",
+      "bytes": 1135,
+      "sha256": "60d13aede683b40ec6227a7f91ad7f27e021bff966ba7ba118015fae3fa93ab6",
+      "review": false
+    },
+    {
+      "phase": "inspector-harness-failure",
+      "file": "inspector-harness-failure/checks-parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "bytes": 572716,
+      "sha256": "a9a4d75fa54d48eb16c33332e7023779c1eb2a05cef6442137cf7d3b3f2f6073",
+      "review": false
+    },
+    {
+      "phase": "inspector-harness-failure",
+      "file": "inspector-harness-failure/direct-clamp-held-preview.png",
+      "bytes": 353560,
+      "sha256": "1048fd6427d1c188302048481253a037f3ed8e43f1aeaca07b2f8815d01b8f23",
+      "review": false
+    },
+    {
+      "phase": "inspector-harness-failure",
+      "file": "inspector-harness-failure/direct-clamped-release.png",
+      "bytes": 365279,
+      "sha256": "f4722ab95deab2a4f3d56b90e453565f61f0090b62888c6b602c88c6d1ccf31f",
+      "review": false
+    },
+    {
+      "phase": "inspector-harness-failure",
+      "file": "inspector-harness-failure/direct-free-held-preview.png",
+      "bytes": 362732,
+      "sha256": "178632490c68d74861663ba5db843f1995ba1c140f531079559314866c0e6a6c",
+      "review": false
+    },
+    {
+      "phase": "inspector-harness-failure",
+      "file": "inspector-harness-failure/direct-free-release.png",
+      "bytes": 363110,
+      "sha256": "6b0ee748dd6cf40280839967f5c8187a98e16ce9c4508ed23ecf0a239771431a",
+      "review": false
+    },
+    {
+      "phase": "inspector-harness-failure",
+      "file": "inspector-harness-failure/direct-placement-error-context.original.txt",
+      "bytes": 17823,
+      "sha256": "55c5016de5dc2227f459ed6332dec7983d0dd0e76da81e22ccc2f8d0eb0ede9b",
+      "review": false
+    },
+    {
+      "phase": "inspector-harness-failure",
+      "file": "inspector-harness-failure/direct-placement-run.original.json.txt",
+      "bytes": 532,
+      "sha256": "7a2bcd9a60f662dd9293f05a1d72504e2c55765ed84c2ec2cf7ef416e37242f4",
+      "review": false
+    },
+    {
+      "phase": "inspector-harness-failure",
+      "file": "inspector-harness-failure/direct-placement-test-failed.png",
+      "bytes": 360350,
+      "sha256": "a169bd25451b5a9e7dc420739fb5a490da1ddb2472cdf7b681dbdaa05ec02ceb",
+      "review": false
+    },
+    {
+      "phase": "final",
+      "file": "final/checks-parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "bytes": 496977,
+      "sha256": "3663626ca14d3b52a262a7d994119891762b9496863bd34468870bc7789c0981",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/direct-clamp-held-preview.png",
+      "bytes": 353560,
+      "sha256": "6ca4ecdae684bb1c2838c7632b93806fca1da8769544d09b70e66560bcb923cf",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/direct-clamped-release.png",
+      "bytes": 365276,
+      "sha256": "dc9a1d70a9cba013e1b008ac77db51d27b86fb0442b8f2f6d482256f5c2d1ec8",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/direct-free-held-preview.png",
+      "bytes": 362730,
+      "sha256": "c7eb564c398e009bdbdcab1267105e53c6dcbd62a54d2f64b34aa3458f9a7a41",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/direct-free-release.png",
+      "bytes": 363110,
+      "sha256": "6b0ee748dd6cf40280839967f5c8187a98e16ce9c4508ed23ecf0a239771431a",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/direct-placement-proof.original.json.txt",
+      "bytes": 1534,
+      "sha256": "3c732690e1fddeb372b8b592119a2a2042950664fca45e44e49d6336d60bd745",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/direct-placement-run.original.json.txt",
+      "bytes": 532,
+      "sha256": "4a2d5d3e97e15fcf6e78ce303cc37636298ef39ab0927c78a0bb743fc6a3f53d",
+      "review": true
+    },
+    {
+      "phase": "final",
+      "file": "final/direct-viewport-selection.png",
+      "bytes": 368185,
+      "sha256": "4716923bd4ef18fd55f6f4afc06576ba92a3fd04aac981c24ba96480a6e22f99",
+      "review": true
+    }
+  ]
+}

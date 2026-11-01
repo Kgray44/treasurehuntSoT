@@ -68,9 +68,65 @@ Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-pro
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/consumer-seam-confirmation.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-review-cancellation-20261015/*.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/*.original.raw.txt -text -whitespace
+# Keep reviewed Studio receipts and media byte-identical to their recorded hashes.
+Development_Docs/Testing/Product_Experience/evidence/parallax-environment-setup-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-exclusions-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-groups-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-studio-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Unified patches encode unchanged empty lines as a single context space.
+Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/*.patch whitespace=-blank-at-eol
+# Preserve combined-candidate raw receipts, reviews and logs across Windows checkouts.
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/** -text
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-*.log.txt -text
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-direct-library/keyboard-context/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-pr736-final/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+# Original local tracker diagnostics, failed attempts and rendered recovery evidence.
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Source-bound loading captures and original runtime receipts.
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# The original build progress output includes padding; preserve its bytes.
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser.log -text whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/*.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Retain original inherited build progress padding in source-bound receipts.
+Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-collection-filter/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-natural-entry/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/a77a2c71-scaled-browser/run.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/run.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Keep the source-bound Inspector originals byte-identical on Windows.
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Preserve new preparation diagnostics without recasting them as runtime proof.
+Development_Docs/Projects/Project_Parallax/evidence/cohort-preparation-20261016/*.original.* -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Original local test diagnostics must retain their byte identity on Windows.
+Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/** -text -whitespace
+# Preserve original local correction receipts and exact SC-00C evidence bytes.
+Development_Docs/Projects/Project_Parallax/evidence/library-entry-repair-20261017/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/** -text -whitespace
+
+# Preserve newly adopted historical publisher captures at original byte hashes.
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/** -text -whitespace
+
+# Original October 11 owner-review baseline: preserve its producing bytes.
+Experience_Images/Spatial_Studio_20261011/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/Spatial_Studio_Visual_Review_20261011.md -text -whitespace
 
 /Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/** -text -whitespace
 # Preserve exact NCL receipt/capture bytes and original emitted log whitespace.
 Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/** -text -whitespace
 Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/** -text -whitespace
 Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/** -text -whitespace
+
+# Additive accepted-main reconciliation receipts retain original producer bytes.
+Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/** -text -whitespace

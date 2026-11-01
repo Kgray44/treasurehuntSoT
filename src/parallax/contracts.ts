@@ -1,8 +1,12 @@
 import { z } from "zod";
+import { spatialElementSchema } from "./element-contracts";
 import { studioContentSchema, type StudioContent } from "./studio-contracts";
 import { adaptiveContentSchema, placementPolicies, type AdaptiveContent } from "./adaptive-contracts";
-import { spatialElementSchema } from "./element-contracts";
-import { environmentReferenceSchema, type EnvironmentReference } from "./environment-reference";
+import {
+  environmentReferenceSchema,
+  environmentPlacementsSchema,
+  type EnvironmentReference,
+} from "./environment-reference";
 
 export const spatialId = z
   .string()
@@ -71,6 +75,8 @@ export const entitySchema = z.strictObject({
   id: spatialId,
   name: copy(160),
   kind: z.enum(["PARCHMENT", "MARKER", "TEXT"]),
+  propStyle: z.enum(["MAP", "LETTER", "FOOTPRINT", "COMPASS", "TEXT"]).optional(),
+  footprintSide: z.enum(["LEFT", "RIGHT"]).optional(),
   element: spatialElementSchema.optional(),
   parentEntityId: spatialId.optional(),
   anchorId: spatialId,
@@ -100,11 +106,14 @@ export const versionContentSchema = z
     schemaVersion: z.literal(1),
     title: copy(240),
     studio: studioContentSchema.optional(),
+    environment: environmentReferenceSchema.optional(),
+    sceneDescription: z.string().trim().max(2000).optional(),
+    scenePresentation: z.strictObject({ lighting: z.enum(["INHERIT", "NORMAL", "LOW"]) }).optional(),
+    environmentPlacements: environmentPlacementsSchema.optional(),
     anchors: z.array(anchorSchema).min(1).max(16),
     entities: z.array(entitySchema).min(1).max(32),
     placementPolicy: z.enum(placementPolicies),
     adaptive: adaptiveContentSchema.optional(),
-    environment: environmentReferenceSchema.optional(),
     privacyClass: z.literal("LOCAL_EPHEMERAL"),
     fallback: z.strictObject({ mode: z.literal("GUIDED"), narrative: copy(4000), preservesMeaning: z.literal(true) }),
     accessibility: z.strictObject({
@@ -118,6 +127,17 @@ export const versionContentSchema = z
     const fail = (message: string) => ctx.addIssue({ code: "custom", message });
     const anchors = new Map(v.anchors.map((a) => [a.id, a]));
     const entities = new Map(v.entities.map((e) => [e.id, e]));
+    if (v.environmentPlacements?.length && !v.environment) fail("PARALLAX_ENVIRONMENT_REQUIRED");
+    if (new Set(v.environmentPlacements?.map((p) => p.entityId)).size !== (v.environmentPlacements?.length ?? 0))
+      fail("PARALLAX_ENVIRONMENT_PLACEMENT_DUPLICATE");
+    for (const p of v.environmentPlacements ?? [])
+      if (!entities.has(p.entityId)) fail("PARALLAX_ENVIRONMENT_ENTITY_MISSING");
+    const previewFrames = v.studio?.surfacePreviewFrames ?? [];
+    if (
+      new Set(previewFrames.map((f) => f.anchorId)).size !== previewFrames.length ||
+      previewFrames.some((f) => anchors.get(f.anchorId)?.kind !== "SURFACE_RELATIVE")
+    )
+      fail("PARALLAX_PREVIEW_SURFACE_INVALID");
     if (v.placementPolicy !== "FIXED" && !v.adaptive) fail("PARALLAX_ADAPTIVE_RECIPE_REQUIRED");
     if (v.adaptive) {
       const a = v.adaptive;
@@ -152,8 +172,68 @@ export const versionContentSchema = z
     }
     if (v.studio) {
       const s = v.studio;
+      const groups = s.editingGroups ?? [];
+      if (new Set(groups.map((group) => group.id)).size !== groups.length) fail("PARALLAX_GROUP_ID_DUPLICATE");
+      const members = groups.flatMap((group) => group.members);
+      const keys = members.map((member) => `${member.kind}:${member.id}`);
+      if (new Set(keys).size !== keys.length) fail("PARALLAX_GROUP_MEMBERSHIP_DUPLICATE");
+      if (
+        members.some((member) =>
+          member.kind === "ASSET"
+            ? !entities.has(member.id)
+            : !s.environment?.features.some((feature) => feature.id === member.id),
+        )
+      )
+        fail("PARALLAX_GROUP_MEMBER_MISSING");
+      if (s.environment) {
+        const supportIds = new Set(
+          s.environment.features.flatMap((feature) =>
+            feature.parts.filter((part) => part.surface !== null).map((part) => part.id),
+          ),
+        );
+        if (
+          previewFrames.some((frame) => frame.environmentId === s.environment!.id && !supportIds.has(frame.surfaceId))
+        )
+          fail("PARALLAX_ROOM_SUPPORT_MISSING");
+      }
+      if (s.libraryDefinition && !entities.has(s.libraryDefinition.rootEntityId)) fail("PARALLAX_LIBRARY_ROOT_MISSING");
+      if (s.libraryDefinition) {
+        const root = s.libraryDefinition.rootEntityId;
+        if (
+          v.adaptive ||
+          v.environment ||
+          v.environmentPlacements?.length ||
+          s.environment ||
+          s.assets.length ||
+          s.visionReferences.length ||
+          s.assetInstances?.length ||
+          v.anchors.length !== 1 ||
+          v.anchors[0].kind !== "LOCAL_WORLD" ||
+          v.entities.filter((e) => !e.parentEntityId).some((e) => e.id !== root) ||
+          (s.libraryDefinition.kind === "ASSET" && v.entities.length !== 1)
+        )
+          fail("PARALLAX_LIBRARY_ASSET_NOT_SELF_CONTAINED");
+      }
+      const instances = s.assetInstances ?? [];
+      if (new Set(instances.map((i) => i.id)).size !== instances.length) fail("PARALLAX_ASSET_INSTANCE_DUPLICATE");
+      const instanceEntities = instances.flatMap((i) => i.entityIds);
+      if (
+        new Set(instanceEntities).size !== instanceEntities.length ||
+        instanceEntities.some((id) => !entities.has(id))
+      )
+        fail("PARALLAX_ASSET_INSTANCE_ENTITY_INVALID");
       if (new Set(s.layers.map((l) => l.entityId)).size !== s.layers.length) fail("PARALLAX_LAYER_DUPLICATE");
       if (new Set(s.behaviors.map((b) => b.id)).size !== s.behaviors.length) fail("PARALLAX_BEHAVIOR_DUPLICATE");
+      const tracks = s.animationTracks ?? [];
+      if (new Set(tracks.map((t) => t.id)).size !== tracks.length) fail("PARALLAX_ANIMATION_DUPLICATE");
+      const activeProperties = new Set<string>();
+      for (const track of tracks) {
+        if (!entities.has(track.entityId)) fail("PARALLAX_ANIMATION_ENTITY_MISSING");
+        const key = `${track.entityId}/${track.property}`;
+        if (track.enabled && activeProperties.has(key)) fail("PARALLAX_ANIMATION_PROPERTY_CONFLICT");
+        if (track.enabled) activeProperties.add(key);
+        if (v.adaptive && track.property === "POSITION") fail("PARALLAX_ADAPTIVE_ANIMATION_POSITION_FORBIDDEN");
+      }
       for (const l of s.layers) if (!entities.has(l.entityId)) fail("PARALLAX_LAYER_ENTITY_MISSING");
       for (const b of s.behaviors) {
         if (!entities.has(b.targetEntityId) || (b.sourceEntityId && !entities.has(b.sourceEntityId)))
@@ -234,8 +314,11 @@ export type SpatialVersion = {
   checksum: string;
   title: string;
   studio?: StudioContent;
-  adaptive?: AdaptiveContent;
   environment?: EnvironmentReference;
+  sceneDescription?: string;
+  scenePresentation?: { lighting: "INHERIT" | "NORMAL" | "LOW" };
+  environmentPlacements?: { entityId: string; featureId: string }[];
+  adaptive?: AdaptiveContent;
   anchors: Anchor[];
   entities: SpatialEntity[];
   placementPolicy: (typeof placementPolicies)[number];

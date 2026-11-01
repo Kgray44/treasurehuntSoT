@@ -1,0 +1,561 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewType": "BOUNDED_INDEPENDENT_EXPERIENCE_REREVIEW",
+  "reviewerContext": "owner_experience_review",
+  "builderContext": "root",
+  "independence": "SEPARATE_CONTEXT",
+  "builderRationaleConsumed": false,
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "source": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+  "tree": "6bf2662e5d42be7db90ef155f1d7ce060f7a205e",
+  "contract": "parallax.authored-library-and-simulation.experience",
+  "objective": "A Creator creates an independent environment from a saved room/preset, an empty editable shell, or one/two photos through a rounded setup dialog, sees honest progress/cancel and an actual orbitable room proposal, then saves and edits it without changing the source scene.",
+  "packetSha256": "c86737ffbd0d2eb4f4597a48eb6861008d95f9bfdc9cbfa28832e4da1cd56946",
+  "manifestSha256": "b729ff92777ea8050c2647c87d8cd5238b818c4c91df5a724f5dc8548d42ae42",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "outcome": "VERIFY_FINAL_EVIDENCE",
+  "acceptanceScope": "Bounded dark GUIDED environment setup experience in authenticated DEVELOPMENT Chrome, with synthetic unpaid photo inference: independent saved-room copy/empty shell, one/two-view import/cancel/retry/rendered proposal, mouse orbit/wheel/Plan/Frame room/Reset navigation, Apply/reload and ordinary keyboard return. No whole-contract or production qualification.",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalDeviceAcceptance": "NOT_CLAIMED",
+  "wholeStudioAcceptance": "NOT_CLAIMED",
+  "productionQualification": "NOT_CLAIMED",
+  "inferenceFidelity": "NOT_CLAIMED",
+  "priorReview": {
+    "path": "C:/Users/kkids/.codex/worktrees/px-surface/Codex_TreasureHunt/Development_Docs/Testing/Product_Experience/evidence/parallax-environment-setup-20261013/3779f79f1155/independent-review.json",
+    "sha256": "284b14bf106055dd219ae2521e6b244bc60961e1a1ff2e07de2f743b01c1452f",
+    "unchanged": true,
+    "finding": "ENVSETUP-01",
+    "historicalOutcome": "REPAIR_AND_RECAPTURE"
+  },
+  "preSourceNotes": {
+    "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-90a4a2be/pre-source-visual-notes.original.json",
+    "sha256": "ab4425cea0d00148d84200f3db867bf70e957b98ba348f6f5749f64bab7f5424",
+    "observations": [
+      "Current3-choice dialog preserves centered rounded blue container/blurredStudio; Existing environment/Empty environment/From photos explanatory cards and focusedClose remain readable. Sourcecopy/emptyEditor andLibrary desktop/phone originals match priorcomposition without relyingonpriorapproval.",
+      "Currentcancelled phone form retainsfile andcheckbox, showscancelmessage/retry/Back, stickytitleClose andscrollviewport. Desktopprocessingstage nowImportingandcheckingprivatephotograph; actual2views labels/disabledform/cancelremain.",
+      "One-photo demo showsusefulangledroomwithwindow/table/paper. Orbitedoriginal isactualviewportcrop324x337 showinglowfrontangle/window centered/tablelegs, differentfromdemo. Zoomedcrop haslargerroomextent. Plan/orthographiccrop showsfloorandtablefromabove. Camera controls remain atupperright.",
+      "Two-photo demo full1440x1000 hassameactualroomproposal andApply/Discard. Orbitedcrop828x359 rotatesaroundroomtowardotherwall sooriginalwindowhidden; zoomcropenlargesshell/table; Plan/orthographiccropshowsfloor/tablefromabove. This occludedwindowis view-anglechange, not geometry omission.",
+      "Video0 phone10.16s: startup .01-2.51; choices2.76/photoform3.01;cancel3.76-4.26;retry/import4.51-5.01;rendererload5.26;renderedproposal5.51-5.76;gesturechanges5.76-6.51lowview;zoom~6.76-7.01;frame~7.26;Plan7.51;Perspective/reset7.76-8.01;Applysuccess8.26-8.51;reload8.76-9.76;renderedphotoenvironment10.01-10.15.",
+      "Video1 desktop8.84s: startup .01-2.01; photoform2.26/2views2.51;processing2.76-3.51;rendererload3.76/render4.01-4.26;orbit4.51-5.01lowoppositesideview;zoom5.26-5.76;frame~6.01;Plan6.26;Perspective/reset6.51;Apply6.76-7.26;reload7.51-8.51;renderedroom8.76-8.83.",
+      "Video2 entry5.48s: startup .01-2.01;choice2.26/existinglist2.51/filter2.76-3.01;editablecopy3.26;choices3.51-3.76;emptyEditor4.01;reload4.26-5.26;restoredemptyroom5.47.",
+      "Video3 Library10.44s: startup .01-2.26;sourceA2.51-3.26/rename3.51;B/openedit4.01-4.26;apply4.51;delete/edit5.01-5.51;reload5.76-7.26;phone7.51-8.01;desktop8.26/deletedemptyLibrary8.51-9.01retainsroom;editrestore9.26-10.43.",
+      "Video4 refinement35.72s: startup .01-2.26;import/reconstruct2.51-3.51;actualproposedroom3.76-5.26;edit/refine5.51-7.01;reload7.26-8.51;refine/withdraw8.76-11.51;reload11.76-13.01/withdraw13.26;reload13.51-14.76;Assistant15.01-18.01;close/selecttablepaper18.26-18.76;Simulation19.01-26.01;reload26.26-27.51;room+Simulation27.76-35.71. Adjacentcontinuity, notallnewmodalcoverage.",
+      "Bothnewnavigationsequences recoverusefulwindow/tablePerspectiveview beforeApply, andsuccessfulEditor/reloadfollow. No visible blocking new defect. Camera navigation inphoneviewportusesmousehere; no touch,pinch,light,reducedmotion,realphotoaccuracy,productionprovider orwholeStudioacceptance."
+    ]
+  },
+  "originalEvidence": [
+    {
+      "file": "photo-run.json",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\photo-run.json",
+      "bytes": 1331,
+      "sha256": "77e547c718fa7dbe02424aa1e3969e6c10520a942a826dd06e0aae55a5867366"
+    },
+    {
+      "file": "environment-setup-choices.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-setup-choices.png",
+      "bytes": 205890,
+      "sha256": "6edb59b13a5d41c56bddededee0cc5a2cf64d863833ec27731ec4299c93a2304"
+    },
+    {
+      "file": "environment-setup-empty-editor.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-setup-empty-editor.png",
+      "bytes": 245998,
+      "sha256": "1391cb8c27be8eaf70069b09ee5a3f758818942f9c9e5b616f7c6bca0a3bfb80"
+    },
+    {
+      "file": "environment-photo-cancelled.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-cancelled.png",
+      "bytes": 43699,
+      "sha256": "06d983226d422555650df17944c58c328da86abce104e5a88c39b7be868328bd"
+    },
+    {
+      "file": "environment-photo-processing.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-processing.png",
+      "bytes": 164631,
+      "sha256": "650e55dba0fe59af602808201265f099e3d7816f5c6981387aa0ad2bf7eba9c8"
+    },
+    {
+      "file": "environment-photo-1-view-demo.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-1-view-demo.png",
+      "bytes": 56421,
+      "sha256": "7e20d66f6eb0d1a33d99c497557a7841e70231eafb2764bb82fd704e9cf187da"
+    },
+    {
+      "file": "environment-photo-2-view-demo.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-2-view-demo.png",
+      "bytes": 162869,
+      "sha256": "1f3ade8d4826176eb5b689a27c137c9c977ff778eebbd404d4e1708089a23b05"
+    },
+    {
+      "file": "environment-library-renamed.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-library-renamed.png",
+      "bytes": 267480,
+      "sha256": "3594d9d7ffbf54c111f71897eb205b862ecdf78699fb7cd777869f3ad44040fb"
+    },
+    {
+      "file": "environment-library-phone.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-library-phone.png",
+      "bytes": 59479,
+      "sha256": "23dbc33eefad9baf554881fd8436d025a66fc1d1371b1d93ab916a72bebba2d4"
+    },
+    {
+      "file": "environment-photo-1-view-orbited.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-1-view-orbited.png",
+      "bytes": 10726,
+      "sha256": "8607283994e6c53052d5e6fe265ec11dfc93ec5de1fcde9d9f53d1b555504d23"
+    },
+    {
+      "file": "environment-photo-1-view-zoomed.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-1-view-zoomed.png",
+      "bytes": 12450,
+      "sha256": "a2680b69df307a5728d45a2ed06388247c7532340c038084602fcb1ceb7ec351"
+    },
+    {
+      "file": "environment-photo-1-view-plan.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-1-view-plan.png",
+      "bytes": 35919,
+      "sha256": "c9cca805606e0c513c0011a4d93269f982650e21e4020b72c7111479b9d95802"
+    },
+    {
+      "file": "environment-photo-2-view-orbited.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-2-view-orbited.png",
+      "bytes": 9447,
+      "sha256": "b32fcf5eeb35266a690880c40d46f4a034c1ce24ef3252bb31a5e5c5673cb115"
+    },
+    {
+      "file": "environment-photo-2-view-zoomed.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-2-view-zoomed.png",
+      "bytes": 9424,
+      "sha256": "c850c75bf1f8a8ef8722adf8e025d0266b1466b1523c0294b4f1be67847c1295"
+    },
+    {
+      "file": "environment-photo-2-view-plan.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\environment-photo-2-view-plan.png",
+      "bytes": 43641,
+      "sha256": "e12a47c11b275b874c70666b1cdd44d8f786941ee43251268a3f107f1f34b895"
+    },
+    {
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "bytes": 362063,
+      "sha256": "50ad5cb5681cddd92f916311fcfebac72164731988c32a681b5e4b3cacbdeb45"
+    },
+    {
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "bytes": 479313,
+      "sha256": "09085fdad59d1fa35082d61f2b45ddc95bc09c38e18e39f1bb8a0ec427d24681"
+    },
+    {
+      "file": "photo-parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\photo-parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium-video.webm",
+      "bytes": 337042,
+      "sha256": "b8ac3bded8e6d62637d6c5ea0dac4b948c067f33bea7b9025a140cd948c1e245"
+    },
+    {
+      "file": "photo-parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\photo-parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "bytes": 618162,
+      "sha256": "a4469c4de5fa6a140a81138161af406eaa558852a79a465e5dd1e0684ff7c6c4"
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-environment-setup-20261013\\90a4a2bed788\\photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "bytes": 1448025,
+      "sha256": "7ee7cad4904360cf278cd9d3c74ae3ee93842500f1158e3a2b843b81683794f4"
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "file": "testing/contracts.json",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "18e71d82face55bf79064c535ba346bcc67633d453cfc100643751ed1517c616",
+      "inspection": "Current owning fragment/entry registration inspected"
+    },
+    {
+      "file": "tests/e2e/parallax-environment-entry.spec.ts",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "8bbc17e197441cc431c14cbaa72e41700088fe85aaca4de0aec30fc5dfae1650",
+      "inspection": "Current pinned test inspected"
+    },
+    {
+      "file": "tests/e2e/parallax-environment-creation.spec.ts",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "3b7750b73ac54667e73ff140398b325b35086cb55758919dd59d8d5cba564446",
+      "inspection": "Current pinned test inspected"
+    },
+    {
+      "file": "tests/e2e/parallax-environment-library.spec.ts",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "bb712865926528ca1e82f60c12f68ca287fb76d18a3b8cec4466a270bc6441e7",
+      "inspection": "Prior supporting test bytes hashed/current source-bound"
+    },
+    {
+      "file": "tests/e2e/parallax-room-photo.spec.ts",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "22e6b440e4e3e24783e3ad333de45cc0968522d1eba32d13a95e82c6d442eded",
+      "inspection": "Prior supporting test bytes hashed/current source-bound"
+    },
+    {
+      "file": "src/components/studio/parallax/EnvironmentCreateDialog.tsx",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "04ae76b547b3059454d2b3333e650da4dc3adcb3868bbb7ffd7e0a5238784f89",
+      "inspection": "Prior inspected implementation bytes reverified identical against prior pinned commit; no current source change"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialStudio.module.css",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "6b3f5a8374ff23de1f89ca9f647501b62dd948b659e9d650f29768c05ba43db5",
+      "inspection": "Prior inspected implementation bytes reverified identical against prior pinned commit; no current source change"
+    },
+    {
+      "file": "src/components/studio/parallax/RoomPhotoPanel.tsx",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "733803bb56f15b3c91e6549ca307cc9b1d5ec090c6456154a3510286be0da417",
+      "inspection": "Prior inspected implementation bytes reverified identical against prior pinned commit; no current source change"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialStudio.tsx",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "a070a4bd629d08cac801aa4383b1911728662d10579fc19ef2672adddbaf3b61",
+      "inspection": "Prior inspected implementation bytes reverified identical against prior pinned commit; no current source change"
+    },
+    {
+      "file": "src/parallax/environment-library-authoring.ts",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "d89ca13d67767c3b24fd5f15c4c97233e1db080b8b785f71ebbd01285c7d9aaa",
+      "inspection": "Prior inspected implementation bytes reverified identical against prior pinned commit; no current source change"
+    },
+    {
+      "file": "src/components/studio/parallax/SpatialCanvas.tsx",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "6da2f21e75e26700fa4f2e83e844a0c121e6f3fb3d487947496b5e93764a9233",
+      "inspection": "Prior inspected implementation bytes reverified identical against prior pinned commit; no current source change"
+    },
+    {
+      "file": "src/components/studio/parallax/spatial-workstation.ts",
+      "revision": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+      "sha256": "67933ccd86d14b9874a3dd8862849462fea45e4e8a45fb653a5f2bd175bd58a5",
+      "inspection": "Prior inspected implementation bytes reverified identical against prior pinned commit; no current source change"
+    }
+  ],
+  "verification": {
+    "sourceTreeMatches": true,
+    "all20OriginalManifestHashesMatch": true,
+    "all5RunVideoHashesMatch": true,
+    "sourceBinding": "VALID",
+    "exitCode": 0,
+    "runtime": "DEVELOPMENT",
+    "provider": "SYNTHETIC_UNPAID",
+    "declaredPassingJourneys": 5,
+    "startedAt": "2026-10-13T22:12:49.018Z",
+    "finishedAt": "2026-10-13T22:13:59.306Z",
+    "reviewedProductImplementationUnchanged": true
+  },
+  "recordingCoverage": {
+    "method": "All14originalPNGs inspected native size; all289samples from five entire temporal spans (.01 to each last endpoint, .25second steps plus last),20timestamped sheets. No every-frame or continuous playback claim.",
+    "recordings": [
+      {
+        "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+        "sha256": "50ad5cb5681cddd92f916311fcfebac72164731988c32a681b5e4b3cacbdeb45",
+        "durationSeconds": 10.16,
+        "first": 0.01,
+        "last": 10.15,
+        "intervalSeconds": 0.25,
+        "frameCount": 42,
+        "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-90a4a2be/sampling/video-0/manifest.json",
+        "samplingManifestSha256": "6af6e25fbe8006cef0331582d90ffd178d38d58c5a5c3161b333dac82921b6c2",
+        "allSamplesInspected": true
+      },
+      {
+        "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+        "sha256": "09085fdad59d1fa35082d61f2b45ddc95bc09c38e18e39f1bb8a0ec427d24681",
+        "durationSeconds": 8.84,
+        "first": 0.01,
+        "last": 8.83,
+        "intervalSeconds": 0.25,
+        "frameCount": 37,
+        "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-90a4a2be/sampling/video-1/manifest.json",
+        "samplingManifestSha256": "c0e6173a5ff387822cf476f63e337ec60f64eaa45e220ebaff3e8acbfa138d34",
+        "allSamplesInspected": true
+      },
+      {
+        "file": "photo-parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium-video.webm",
+        "sha256": "b8ac3bded8e6d62637d6c5ea0dac4b948c067f33bea7b9025a140cd948c1e245",
+        "durationSeconds": 5.48,
+        "first": 0.01,
+        "last": 5.470000000000001,
+        "intervalSeconds": 0.25,
+        "frameCount": 23,
+        "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-90a4a2be/sampling/video-2/manifest.json",
+        "samplingManifestSha256": "f5a79d48cfad072cbf03b7dfbba68bc9dc1d25426a228122bbc8bfc03cb726c2",
+        "allSamplesInspected": true
+      },
+      {
+        "file": "photo-parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+        "sha256": "a4469c4de5fa6a140a81138161af406eaa558852a79a465e5dd1e0684ff7c6c4",
+        "durationSeconds": 10.44,
+        "first": 0.01,
+        "last": 10.43,
+        "intervalSeconds": 0.25,
+        "frameCount": 43,
+        "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-90a4a2be/sampling/video-3/manifest.json",
+        "samplingManifestSha256": "1d6ba539d8e86cca17053e9bc7baa60063f71fcabb5798f9b807a7c3ab673de4",
+        "allSamplesInspected": true
+      },
+      {
+        "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+        "sha256": "7ee7cad4904360cf278cd9d3c74ae3ee93842500f1158e3a2b843b81683794f4",
+        "durationSeconds": 35.72,
+        "first": 0.01,
+        "last": 35.71,
+        "intervalSeconds": 0.25,
+        "frameCount": 144,
+        "samplingManifestPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\tmp\\asset-quality-independent\\environment-setup-90a4a2be/sampling/video-4/manifest.json",
+        "samplingManifestSha256": "645072f23b1e5189bbe21676e38fb85cd8b11bc10c846119fc367377de2791b7",
+        "allSamplesInspected": true
+      }
+    ],
+    "all289SamplesInspected": true,
+    "sheetCount": 20,
+    "completeTemporalSpanSampling": true,
+    "continuousEveryFramePlayback": false,
+    "chronology": [
+      "Video0 phone10.16s: startup .01-2.51; choices2.76/photoform3.01;cancel3.76-4.26;retry/import4.51-5.01;rendererload5.26;renderedproposal5.51-5.76;gesturechanges5.76-6.51lowview;zoom~6.76-7.01;frame~7.26;Plan7.51;Perspective/reset7.76-8.01;Applysuccess8.26-8.51;reload8.76-9.76;renderedphotoenvironment10.01-10.15.",
+      "Video1 desktop8.84s: startup .01-2.01; photoform2.26/2views2.51;processing2.76-3.51;rendererload3.76/render4.01-4.26;orbit4.51-5.01lowoppositesideview;zoom5.26-5.76;frame~6.01;Plan6.26;Perspective/reset6.51;Apply6.76-7.26;reload7.51-8.51;renderedroom8.76-8.83.",
+      "Video2 entry5.48s: startup .01-2.01;choice2.26/existinglist2.51/filter2.76-3.01;editablecopy3.26;choices3.51-3.76;emptyEditor4.01;reload4.26-5.26;restoredemptyroom5.47.",
+      "Video3 Library10.44s: startup .01-2.26;sourceA2.51-3.26/rename3.51;B/openedit4.01-4.26;apply4.51;delete/edit5.01-5.51;reload5.76-7.26;phone7.51-8.01;desktop8.26/deletedemptyLibrary8.51-9.01retainsroom;editrestore9.26-10.43.",
+      "Video4 refinement35.72s: startup .01-2.26;import/reconstruct2.51-3.51;actualproposedroom3.76-5.26;edit/refine5.51-7.01;reload7.26-8.51;refine/withdraw8.76-11.51;reload11.76-13.01/withdraw13.26;reload13.51-14.76;Assistant15.01-18.01;close/selecttablepaper18.26-18.76;Simulation19.01-26.01;reload26.26-27.51;room+Simulation27.76-35.71. Adjacentcontinuity, notallnewmodalcoverage."
+    ]
+  },
+  "dimensions": {
+    "composition": {
+      "observation": "Current rounded centered dialog and blurred workstation preserve the originating room context. Three choice cards remain balanced. Large desktop proposal preview and single-column phone preview present actual room geometry while retaining camera controls.",
+      "evidenceIds": [
+        "environment-setup-choices.png",
+        "environment-photo-2-view-demo.png",
+        "environment-photo-1-view-demo.png"
+      ],
+      "limits": ""
+    },
+    "hierarchy": {
+      "observation": "Library/Environments breadcrumb and title precede Existing/Empty/Photos choices; photo steps precede estimate/preview/notes and distinct Apply/Discard. Centered scene title changes to Empty/Photo environment after successful setup.",
+      "evidenceIds": [
+        "environment-setup-choices.png",
+        "environment-photo-2-view-demo.png",
+        "environment-setup-empty-editor.png"
+      ],
+      "limits": ""
+    },
+    "typography": {
+      "observation": "Labels and explanatory copy remain legible at desktop and390px phone width. Approximate geometry and source-unchanged language are explicit; Plan/orthographic and Perspective labels match the changed camera views.",
+      "evidenceIds": [
+        "environment-photo-cancelled.png",
+        "environment-photo-1-view-demo.png",
+        "environment-photo-1-view-plan.png",
+        "environment-photo-2-view-plan.png"
+      ],
+      "limits": "No long-name/localization/Light text matrix."
+    },
+    "spacing": {
+      "observation": "Choice margins are consistent, tall photo body scrolls within viewport and Close/title stays at top. Phone preview camera instrument is compact; Apply/Discard fit in supplied scrolled original. Permission withdrawal remains below that visible fold, with no inaccessible-control inference.",
+      "evidenceIds": [
+        "environment-setup-choices.png",
+        "environment-photo-1-view-demo.png",
+        "environment-photo-cancelled.png"
+      ],
+      "limits": ""
+    },
+    "controls": {
+      "observation": "Real mouse drag changes room orientation, wheel zoom enlarges projected room, Plan exposes floor/table from above, and Frame room plus Reset restore useful Perspective before Apply in both proposal flows. The near-front/behind-wall orbit view is recoverable, not saved geometry loss.",
+      "evidenceIds": [
+        "environment-photo-1-view-orbited.png",
+        "environment-photo-1-view-zoomed.png",
+        "environment-photo-1-view-plan.png",
+        "environment-photo-2-view-orbited.png",
+        "environment-photo-2-view-zoomed.png",
+        "environment-photo-2-view-plan.png",
+        "video-0@5.76-8.01s",
+        "video-1@4.51-6.51s"
+      ],
+      "limits": "Mouse input even atphone size. No touch,pinch or broader gesture equivalence."
+    },
+    "contrast": {
+      "observation": "Current dark blue dialog, raised choices, pale text and focus ring remain distinct. Processing form is muted while Cancel stays readable. Camera view outlines/table/floor remain visible after orbit and zoom.",
+      "evidenceIds": [
+        "environment-setup-choices.png",
+        "environment-photo-processing.png",
+        "environment-photo-2-view-orbited.png"
+      ],
+      "limits": "Light/contrast-ratio/axe metrics not supplied."
+    },
+    "consistency": {
+      "observation": "Blue Studio shell, left Parallax title/rail, centered scene identity and familiar Library/Inspector tools remain preserved. Camera controls in proposal match existing view instrument rather than introducing a separate room authority.",
+      "evidenceIds": [
+        "environment-setup-empty-editor.png",
+        "environment-library-renamed.png",
+        "environment-library-phone.png",
+        "environment-photo-2-view-demo.png"
+      ],
+      "limits": ""
+    },
+    "states": {
+      "observation": "Current packet covers entry choices, saved-source copy, empty shell, cancellation/retry, real processing stage, rendered1/2-view proposal, deliberate navigation and successfulApply/reload. Library deletion retainsroom andediting restoresdiscovery in thirdsupportingjourney.",
+      "evidenceIds": [
+        "environment-photo-cancelled.png",
+        "environment-photo-processing.png",
+        "video-2@2.26-5.47s",
+        "video-0@3.01-10.15s",
+        "video-1@2.26-8.83s",
+        "video-3@8.26-10.43s"
+      ],
+      "limits": "No rendered unmatched search/provider unavailable/import denial/error matrix."
+    },
+    "responsive": {
+      "observation": "390x844 current browser stacks choice cards, scrolls phoneform, preservesstickyClose andcamera instrument, andallowsmouse proposalnavigation/Apply. LibrarycardTeachingLabfitsphonepane. Desktop uses three choices/two thumbnails.",
+      "evidenceIds": [
+        "environment-library-phone.png",
+        "environment-photo-cancelled.png",
+        "environment-photo-1-view-demo.png",
+        "video-0@2.76-10.15s"
+      ],
+      "limits": "No actual phone/native/touch; narrow2-photo path not captured."
+    },
+    "keyboard": {
+      "observation": "Current ordinary entry test exercises focused Add withEnter, Escape dismissal and Add focus return. Native search/fields supporttextentry. This is bounded keyboard entry/return proof, not full keyboard-only photo/camera workflow.",
+      "evidenceIds": [
+        "environment-setup-choices.png",
+        "tests/e2e/parallax-environment-entry.spec.ts"
+      ],
+      "limits": ""
+    },
+    "focus": {
+      "observation": "Close has visible focus ring in choicesoriginal, headerremainsvisible duringphone scroll. Pinned ordinary test confirmsfocusreturns toAddafterEscape; unchangednative dialog cleanuprestores priorfocus.",
+      "evidenceIds": [
+        "environment-setup-choices.png",
+        "environment-photo-cancelled.png",
+        "tests/e2e/parallax-environment-entry.spec.ts",
+        "src/components/studio/parallax/EnvironmentCreateDialog.tsx"
+      ],
+      "limits": "Full Tabloop andbusy dismissalnotmeasured."
+    },
+    "feedback": {
+      "observation": "Currentprocessing saysImportingandcheckingprivatephotograph, not inventedpercentage; Cancelled messageconfirmssourceunchanged andallowsretry. Review explainsestimatedscale/approximation andunchangeduntilApply; Apply closesmodal andopensRoomeditor.",
+      "evidenceIds": [
+        "environment-photo-processing.png",
+        "environment-photo-cancelled.png",
+        "environment-photo-2-view-demo.png",
+        "video-0@8.26-10.15s",
+        "video-1@6.76-8.83s"
+      ],
+      "limits": "Synthetic stage/recording timingdoesnotestablishproductioninference latency."
+    },
+    "motion": {
+      "observation": "Complete photo spans show actualdeliberate orbitandzoom response, topviewselection andPerspective recovery. No new obstructive transitionobserved. Currentruntime suppliesdark/default motiononly.",
+      "evidenceIds": [
+        "video-0@5.76-8.01s",
+        "video-1@4.51-6.51s",
+        "environment-photo-1-view-orbited.png",
+        "environment-photo-2-view-zoomed.png"
+      ],
+      "limits": "No reduced-motion capture/hardware/FPS claim; CSS fallback alone notacceptedbehavior."
+    },
+    "continuity": {
+      "observation": "Currenttests compareoriginal savedsource equality before andaftercamera navigation, thenApply createsdistinctPhotoenvironment andreloadretainsit. Ordinaryentry provesdistinctcopyroomID/sourceequal/empty shell reload. CurrentLibrary/refinement recordingretainroomandscenecontentthroughdiscoverydeletion,permissionwithdrawalandSimulation replay.",
+      "evidenceIds": [
+        "tests/e2e/parallax-environment-creation.spec.ts",
+        "tests/e2e/parallax-environment-entry.spec.ts",
+        "video-0@8.26-10.15s",
+        "video-1@6.76-8.83s",
+        "video-2@3.26-5.47s",
+        "video-3@4.01-10.43s",
+        "video-4@3.76-35.71s"
+      ],
+      "limits": "Syntheticfixtureassertions andsampledmediaonly, notexhaustiveconcurrency/retentionaudit."
+    },
+    "complexity": {
+      "observation": "Three intentchoicesleadintoappropriate existingchooser/emptyEditor/photowizard. CamerainstrumentletsCreator inspectproposalwithouteditoroverlay; notes remain disclosedandApply/Discardseparate. Longprivacycopy groupedwithconsent/fileinput.",
+      "evidenceIds": [
+        "environment-setup-choices.png",
+        "environment-photo-processing.png",
+        "environment-photo-2-view-demo.png"
+      ],
+      "limits": ""
+    },
+    "role-outcomes": {
+      "observation": "Synthetic authenticatedCreator inGUIDED demonstrablycreatesindependentenvironment, navigatesactualproposal andsavestoeditableRoomeditor. Ordinarysourceisretained. Model-producedgeometryherecomesfromsyntheticinterception, soitsqualitycannotbejudgedagainstrealphotos.",
+      "evidenceIds": [
+        "photo-run.json",
+        "environment-setup-empty-editor.png",
+        "environment-photo-1-view-demo.png",
+        "environment-photo-2-view-demo.png",
+        "tests/e2e/parallax-environment-creation.spec.ts"
+      ],
+      "limits": "No other-role/mode,realphotoaccuracy,productionprovider/device/owner/wholeStudioacceptance."
+    },
+    "fallbacks": {
+      "observation": "Cancel/retry/Back/Close remainavailable, ordinaryExisting/Empty alternativeswork, andFrame room/Reset recoverusefulproposal viewafternavigation. Priorwithdrawal/refinement continuationisretainedinnewfullrecording. Unconfiguredphotofallbackbranchisnowregisteredtestsourcebutnotexecutedinsyntheticruntime.",
+      "evidenceIds": [
+        "environment-photo-cancelled.png",
+        "environment-setup-choices.png",
+        "video-0@7.51-8.01s",
+        "video-1@6.26-6.51s",
+        "video-4@8.76-14.76s",
+        "tests/e2e/parallax-environment-entry.spec.ts"
+      ],
+      "limits": "Unavailableprovider/renderer/error/discardandphonewithdrawalnotfullycaptured."
+    }
+  },
+  "findings": [
+    {
+      "id": "ENVSETUP-01",
+      "contract": "parallax.authored-library-and-simulation.experience",
+      "status": "RESOLVED",
+      "type": "EVIDENCE_GAP_CLOSED",
+      "productDefectConfirmed": false,
+      "priorReviewSha256": "284b14bf106055dd219ae2521e6b244bc60961e1a1ff2e07de2f743b01c1452f",
+      "observation": "New native-resolution viewport captures showchangedlow-angleorientation, largerzoomedprojection andPlanfloor/tableview inboth photo journeys. Fullrecordings showdeliberate navigationandreturntousefulPerspectivebeforeApply. Pinnedtests specify16-step mouseorbit,wheel-240,Plan,Frame room,Resetview, changedcanvaspixeldigests andsavedoriginalsourceequalityafter navigation.",
+      "evidenceIds": [
+        "environment-photo-1-view-demo.png",
+        "environment-photo-1-view-orbited.png",
+        "environment-photo-1-view-zoomed.png",
+        "environment-photo-1-view-plan.png",
+        "environment-photo-2-view-demo.png",
+        "environment-photo-2-view-orbited.png",
+        "environment-photo-2-view-zoomed.png",
+        "environment-photo-2-view-plan.png",
+        "video-0@5.76-8.01s",
+        "video-1@4.51-6.51s",
+        "tests/e2e/parallax-environment-creation.spec.ts"
+      ],
+      "closureScope": "Mouse/wheel/camera-control proof inactualChromeproposal atdesktopandphone-sizedviewport, not touch,pinch orphysicaldeviceproof."
+    }
+  ],
+  "confirmedBlockingProductDefects": [],
+  "requiredRepairs": [],
+  "contractMetadata": {
+    "ordinaryEntryBrowserTest": "tests/e2e/parallax-environment-entry.spec.ts",
+    "registeredInOwningContract": true,
+    "configuredPhotoJourneys": "Explicitdevelopment-only tests/e2e/parallax-environment-creation.spec.ts",
+    "unconfiguredFallbackBranch": "Presentinregisteredtestbutnotexecutedinthesesyntheticcaptures",
+    "qualificationLimit": "Registrationandlocaldevelopmentpassarenotprotectedproductionorfull-contractqualification."
+  },
+  "limits": [
+    "No inference fidelity or real photographs in this packet",
+    "No production private-provider availability claim",
+    "No iPhone camera/world tracking/touch claim",
+    "No whole Studio acceptance",
+    "Light theme and complete keyboard-only/narrow adverse paths not exhaustively captured",
+    "ActualLight,reducedmotion,completekeyboard-only,narrowadverseandtouch/pinchnotaccepted.",
+    "Fivevideos reviewedusingcompletetemporal-spansampling, notcontinuousevery-frameplayback.",
+    "ManifestowneracceptanceclaimisnotreviewauthorizationtoassertPRODUCT_ACCEPTED; reviewretainsNOT_CLAIMED.",
+    "Consent/retentioncopy isvisible; nosecurity/physicalscale/fidelityaudit."
+  ],
+  "preservation": {
+    "priorOriginalUnchanged": true,
+    "priorSha256": "284b14bf106055dd219ae2521e6b244bc60961e1a1ff2e07de2f743b01c1452f",
+    "originalMediaUnchanged": true
+  },
+  "reviewActions": "Read-only actualmediaandpinnedsource; ownedlocaldecode/sampling; immutablewxnewreviewwrite. No product/docs/contracts changes, tests/builds/generators, sharedapplicationruntime, paidcallsorrealphotos."
+}

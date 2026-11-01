@@ -1,0 +1,262 @@
+{
+  "documentClass": "engineering-evidence",
+  "kind": "POST_OUTCOME_LIBRARY_OBSERVATION",
+  "diagnosticOnly": true,
+  "qualification": false,
+  "observedAt": "2026-10-23T02:42:13.086Z",
+  "sourceHead": "6bbf875d31457103b6d2881bacde6631cbfa0923",
+  "reportedTaskState": "fail",
+  "physicalOrBrowserVisibilityProof": false,
+  "publicQueryMetadataOnly": true,
+  "privateActiveQueryKeyObserved": false,
+  "projectionOnly": true,
+  "panelHidden": false,
+  "openPressed": "true",
+  "workspaceLibrary": "open",
+  "assetsPanelHidden": false,
+  "searchInputPresent": true,
+  "search": "",
+  "selectedTabsCount": 1,
+  "selectedTabsDropped": 0,
+  "selectedTabs": [
+    "Assets"
+  ],
+  "statusCount": 1,
+  "statusDropped": 0,
+  "status": [
+    {
+      "role": "status",
+      "text": "Loading Library results…"
+    }
+  ],
+  "inspectExists": false,
+  "inspectHiddenAncestorPresent": false,
+  "inspectHiddenAncestor": null,
+  "inspectButtonsCount": 0,
+  "inspectButtonsDropped": 0,
+  "inspectButtons": [],
+  "ancestors": [
+    {
+      "tag": "SECTION",
+      "id": "",
+      "label": "Spatial content library",
+      "hidden": false,
+      "ariaHidden": null,
+      "display": "block",
+      "visibility": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "left-panel-ASSETS",
+      "labelledBy": "left-tab-ASSETS",
+      "hidden": false,
+      "ariaHidden": null,
+      "display": "block",
+      "visibility": "visible"
+    },
+    {
+      "tag": "ASIDE",
+      "id": "",
+      "label": "Spatial Library",
+      "hidden": false,
+      "ariaHidden": null,
+      "display": "block",
+      "visibility": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "hidden": false,
+      "ariaHidden": null,
+      "display": "block",
+      "visibility": "visible"
+    },
+    {
+      "tag": "MAIN",
+      "id": "",
+      "hidden": false,
+      "ariaHidden": null,
+      "display": "block",
+      "visibility": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "hidden": false,
+      "ariaHidden": null,
+      "display": "block",
+      "visibility": "visible"
+    },
+    {
+      "tag": "BODY",
+      "id": "",
+      "hidden": false,
+      "ariaHidden": null,
+      "display": "block",
+      "visibility": "visible"
+    },
+    {
+      "tag": "HTML",
+      "id": "",
+      "hidden": false,
+      "ariaHidden": null,
+      "display": "block",
+      "visibility": "visible"
+    }
+  ],
+  "ancestorChainTruncated": false,
+  "requestCount": 6,
+  "requestsDropped": 0,
+  "requests": [
+    {
+      "path": "/api/studio/parallax",
+      "method": "GET",
+      "query": {
+        "view": null,
+        "kind": null,
+        "search": null,
+        "collection": null,
+        "origin": null,
+        "state": null,
+        "sort": null,
+        "environmentId": null
+      },
+      "abortedAtPostOutcome": null
+    },
+    {
+      "path": "/api/studio/parallax/room-photo",
+      "method": "GET",
+      "query": {
+        "view": null,
+        "kind": null,
+        "search": null,
+        "collection": null,
+        "origin": null,
+        "state": null,
+        "sort": null,
+        "environmentId": null
+      },
+      "abortedAtPostOutcome": false
+    },
+    {
+      "path": "/api/studio/parallax",
+      "method": "POST",
+      "query": {
+        "view": null,
+        "kind": null,
+        "search": null,
+        "collection": null,
+        "origin": null,
+        "state": null,
+        "sort": null,
+        "environmentId": null
+      },
+      "abortedAtPostOutcome": null
+    },
+    {
+      "path": "/api/studio/parallax",
+      "method": "GET",
+      "query": {
+        "view": null,
+        "kind": null,
+        "search": null,
+        "collection": null,
+        "origin": null,
+        "state": null,
+        "sort": null,
+        "environmentId": null
+      },
+      "abortedAtPostOutcome": null
+    },
+    {
+      "path": "/api/studio/parallax",
+      "method": "POST",
+      "query": {
+        "view": null,
+        "kind": null,
+        "search": null,
+        "collection": null,
+        "origin": null,
+        "state": null,
+        "sort": null,
+        "environmentId": null
+      },
+      "abortedAtPostOutcome": null
+    },
+    {
+      "path": "/api/studio/parallax",
+      "method": "GET",
+      "query": {
+        "view": "library-catalog",
+        "kind": "ASSETS",
+        "search": "",
+        "collection": "",
+        "origin": "ALL",
+        "state": "ACTIVE",
+        "sort": "NAME",
+        "environmentId": null
+      },
+      "abortedAtPostOutcome": true
+    }
+  ],
+  "catalog": [
+    {
+      "at": "2026-10-23T02:42:11.778Z",
+      "query": {
+        "view": "library-catalog",
+        "kind": "ASSETS",
+        "search": "",
+        "collection": "",
+        "origin": "ALL",
+        "state": "ACTIVE",
+        "sort": "NAME",
+        "environmentId": null
+      },
+      "count": 35,
+      "total": 35,
+      "names": [
+        "Antique book",
+        "Articulated chest",
+        "Bookshelf",
+        "Brass compass",
+        "Cabinet",
+        "Candelabra",
+        "Curtains",
+        "Decorative vase",
+        "Desk Map",
+        "Dining table",
+        "Dresser",
+        "Exclusion Zone",
+        "Floating Compass",
+        "Folded parchment note",
+        "Framed painting",
+        "Hanging banner",
+        "Hidden Wall Message",
+        "Hinged door",
+        "Lantern",
+        "Opening drawer",
+        "Ornate key",
+        "Peeking Letter",
+        "Puzzle box",
+        "Rolled nautical chart",
+        "Rug",
+        "Sealed letter",
+        "Sofa",
+        "Spyglass",
+        "Travel trunk",
+        "Treasure chest",
+        "Treasure map",
+        "Upholstered chair",
+        "Wall sign",
+        "Wardrobe",
+        "Writing desk"
+      ],
+      "namesDropped": 0,
+      "schemaValid": true,
+      "issuesDropped": 0,
+      "issues": []
+    }
+  ],
+  "catalogObservationsDropped": 0,
+  "requestResponseCaptureComplete": true
+}

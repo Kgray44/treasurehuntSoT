@@ -1,0 +1,3 @@
+# Exact immutable receipt bytes; normalized JSON stays reviewable.
+**/*.original.json.txt -text -diff
+*.original.json.txt -text -diff

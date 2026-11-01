@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+  "tree": "8f1c741a0d03227ac1822a569eec8814bc06d8f9",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-19T20:53:10.735Z",
+  "finishedAt": "2026-10-19T20:57:03.722Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-ai-enforcement-Pe-4cf39-ern-actual-Creator-requests-chromium-video.webm",
+      "sha256": "3e1eed10f78fa35559124a7f25d9613664b3c180fad793242343e6c3cc9a5631"
+    },
+    {
+      "file": "parallax-spatial-community-0369e--as-a-read-only-Environment-chromium-video-1.webm",
+      "sha256": "abde28c75c3f22687a3cce8970bfdf9385bb169aa4282b2de7662f7fcaae3986"
+    },
+    {
+      "file": "parallax-spatial-community-0369e--as-a-read-only-Environment-chromium-video.webm",
+      "sha256": "3884e8dcc1a8f55a801a7a29d4a8184fd206948c60b874eee824680c3533c622"
+    },
+    {
+      "file": "parallax-spatial-community-0f048-version-after-Profile-setup-chromium-video.webm",
+      "sha256": "ca062971921eb00a7325c6c4cdf624ac019038ea2423fd6b21d892a346472b0e"
+    },
+    {
+      "file": "parallax-spatial-community-14d06--retry-recovers-one-release-chromium-video.webm",
+      "sha256": "14e808325b05e2510c3c591bd9be427cc6013bb1f8299fdb6db4a6e03fbfc8a7"
+    },
+    {
+      "file": "parallax-spatial-community-1f615-ut-private-Library-metadata-chromium-video.webm",
+      "sha256": "7a9ae87407ff8d3f7af9ffa1966529b7db9246ae167787cf139f74da7822486d"
+    },
+    {
+      "file": "parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium-video.webm",
+      "sha256": "62d8b08848403e131724f071e9f50aca50d5c50bcaa2f92723005609b2e3c48e"
+    },
+    {
+      "file": "parallax-spatial-community-28f02-rewriting-its-first-release-chromium-video.webm",
+      "sha256": "15744adf660931e8cb480f57b600f00a0306ea555ebf964084e148c40179da07"
+    },
+    {
+      "file": "parallax-spatial-community-478f7-returns-to-the-saved-source-chromium-video-1.webm",
+      "sha256": "06a244d7a2b59c8469e0191b5129b35f47fbfd8fb731878bfe4287f9f79d347d"
+    },
+    {
+      "file": "parallax-spatial-community-478f7-returns-to-the-saved-source-chromium-video.webm",
+      "sha256": "5e471e5a84a8b087945fff76cdbabd47d8106e51562e1e826241556a4b513c32"
+    },
+    {
+      "file": "parallax-spatial-community-5b28c-refusal-and-remains-private-chromium-video.webm",
+      "sha256": "9224b7b9737071d475559e26e20c515dc562a9a8c53c6daa23f13aa7f8530083"
+    },
+    {
+      "file": "parallax-spatial-community-a2b06-n-immutable-Library-release-chromium-video-1.webm",
+      "sha256": "52c521042884a730aeaed9a2280ef78299ef1054a9069c0fa930bb15868b182c"
+    },
+    {
+      "file": "parallax-spatial-community-a2b06-n-immutable-Library-release-chromium-video.webm",
+      "sha256": "1a5ffda9ef9357df83c349ac24f0a027713b21300e84dec1b295f12ed8c0ead8"
+    },
+    {
+      "file": "parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium-video.webm",
+      "sha256": "e5e834eb41a4784deac3e0c7806a85e6a81144a41b8ce4cfac9eb1115395bbb0"
+    },
+    {
+      "file": "parallax-spatial-community-fea16-io-entry-without-publishing-chromium-video.webm",
+      "sha256": "fdf7d3616550d4ea582b139751b1a2cb3ad4161ca9c5403db4a203b166a7ac4c"
+    }
+  ]
+}

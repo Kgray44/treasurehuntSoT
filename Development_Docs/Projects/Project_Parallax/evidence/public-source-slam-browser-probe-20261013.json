@@ -1,0 +1,181 @@
+{
+  "documentClassification": "engineering-evidence",
+  "runtime": "ACTUAL_HEADLESS_CHROMIUM_WEBASSEMBLY",
+  "browserVersion": "141.0.7390.37",
+  "wasmSha256": "36986c605c38e63e791c7f91cd721ced7cd749bfbd538663032d1f1dc2529e12",
+  "elapsedMs": 149815.24910000002,
+  "physicalAcceptance": false,
+  "cameraTested": false,
+  "motionSensorTested": false,
+  "licenseAdoption": false,
+  "truthOrientationProvided": true,
+  "truthTranslationProvided": false,
+  "truthDepthProvided": false,
+  "test": "SYNTHETIC_TEXTURED_PLANES_WITH_GROUND_TRUTH_ORIENTATION_INPUT",
+  "summaries": [
+    {
+      "name": "lateral_hold",
+      "frames": 120,
+      "freshMappedPnP": 95,
+      "firstMappedFrame": 25,
+      "relativeBestFitScale": 1.1014989382339941,
+      "trajectoryRms": 0.012328352446493735,
+      "maxRotationErrorDegrees": 1.0178843334588894,
+      "medianProcessMs": 71.19999998807907,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": null,
+      "lastWorld": [
+        0.41237517248176875,
+        0.002088655432321023,
+        0.0045140375034387545
+      ]
+    },
+    {
+      "name": "reverse_return",
+      "frames": 180,
+      "freshMappedPnP": 155,
+      "firstMappedFrame": 25,
+      "relativeBestFitScale": 1.0853618349575365,
+      "trajectoryRms": 0.010376275368862037,
+      "maxRotationErrorDegrees": 1.0178843334588894,
+      "medianProcessMs": 52.30000001192093,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": null,
+      "lastWorld": [
+        -0.0014048575422511004,
+        -0.0022052943265747594,
+        -0.0008928102033376942
+      ]
+    },
+    {
+      "name": "forward_hold",
+      "frames": 120,
+      "freshMappedPnP": 81,
+      "firstMappedFrame": 39,
+      "relativeBestFitScale": 3.3782623173738373,
+      "trajectoryRms": 0.024596939176815623,
+      "maxRotationErrorDegrees": 0.8741911885839537,
+      "medianProcessMs": 77.2000000178814,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": null,
+      "lastWorld": [
+        0.003262273643288847,
+        -0.0016805549147381781,
+        0.13629030686079904
+      ]
+    },
+    {
+      "name": "diagonal_hold",
+      "frames": 120,
+      "freshMappedPnP": 95,
+      "firstMappedFrame": 25,
+      "relativeBestFitScale": 1.2573267560304495,
+      "trajectoryRms": 0.04315964796031473,
+      "maxRotationErrorDegrees": 1.1438088660737287,
+      "medianProcessMs": 57.400000005960464,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": null,
+      "lastWorld": [
+        0.32424713536678423,
+        0.11406100925456539,
+        0.19796826121471697
+      ]
+    },
+    {
+      "name": "yaw_only",
+      "frames": 120,
+      "freshMappedPnP": 0,
+      "firstMappedFrame": null,
+      "relativeBestFitScale": null,
+      "trajectoryRms": null,
+      "maxRotationErrorDegrees": null,
+      "medianProcessMs": 149.39999997615814,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": null,
+      "lastWorld": [
+        -0.00994002517462881,
+        -0.025457324243625234,
+        0.14748939128589106
+      ]
+    },
+    {
+      "name": "lateral_yaw",
+      "frames": 150,
+      "freshMappedPnP": 125,
+      "firstMappedFrame": 25,
+      "relativeBestFitScale": 1.1837125491683678,
+      "trajectoryRms": 0.03164383911838741,
+      "maxRotationErrorDegrees": 1.190883540147092,
+      "medianProcessMs": 51.5,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": null,
+      "lastWorld": [
+        0.37291571614885366,
+        -0.016231857746772032,
+        -0.016265938246829807
+      ]
+    },
+    {
+      "name": "blank_loss_recovery",
+      "frames": 150,
+      "freshMappedPnP": 109,
+      "firstMappedFrame": 25,
+      "relativeBestFitScale": 1.105504250601353,
+      "trajectoryRms": 0.01781118756330437,
+      "maxRotationErrorDegrees": 1.0178843334588894,
+      "medianProcessMs": 61.19999998807907,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": true,
+      "lastWorld": [
+        0.4078108180474916,
+        0.017614574971360663,
+        -0.007371775700065262
+      ]
+    },
+    {
+      "name": "blank_only",
+      "frames": 80,
+      "freshMappedPnP": 0,
+      "firstMappedFrame": null,
+      "relativeBestFitScale": null,
+      "trajectoryRms": null,
+      "maxRotationErrorDegrees": null,
+      "medianProcessMs": 2.699999988079071,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": null,
+      "lastWorld": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "planar_lateral",
+      "frames": 120,
+      "freshMappedPnP": 93,
+      "firstMappedFrame": 27,
+      "relativeBestFitScale": 1.8456887866520288,
+      "trajectoryRms": 0.01928389569559695,
+      "maxRotationErrorDegrees": 0.8065376186620468,
+      "medianProcessMs": 58.400000005960464,
+      "blankAdmittedFrames": 0,
+      "recoveredAfterBlank": null,
+      "lastWorld": [
+        0.25156478235388025,
+        -0.015253722423103279,
+        -0.003576561645332747
+      ]
+    }
+  ],
+  "harnessSha256": "5da74ae787ddee3d7c4a6d870ddf6568f96e5307ea70641c9fecfe371bff45b4",
+  "portableScenarioHarnessSha256": "951c3085f2e14e3c8183122cde289bb86873a7af9be2dac3bbd4e918214b5233",
+  "sourceCommitAtObservation": "6a3b2eda454dccf5290bc55bc884c3ffab4d7dcb",
+  "uncommittedBrowserHarness": true,
+  "limitations": [
+    "Synthetic orientation oracle, not real IMU or camera acquisition.",
+    "Best-fit relative scale, not metric SLAM or physical alignment proof.",
+    "Browser timing was observed while dependency restoration was running on the host; not a clean performance benchmark.",
+    "The rotation-only raw translation must not be admitted without mapped pose confidence.",
+    "Source and transitive license audit and real Safari qualification remain required before adoption."
+  ]
+}

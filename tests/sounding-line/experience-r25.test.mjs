@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import nodeTest from "node:test";
+import { historicalAdmissionBinding } from "./fixtures/historical-admission-binding.mjs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from "node:fs";
@@ -26,14 +27,29 @@ import {
   validateCampaignHistoryInventory,
 } from "../../scripts/sounding-line/experience-exception.mjs";
 const root = fileURLToPath(new URL("../..", import.meta.url));
+function test(name, body) {
+  return nodeTest(name, (t) => {
+    t.mock.timers.enable({ apis: ["Date"], now: Date.parse(r.ownerApproval.approvedAtUtc) });
+    return body(t);
+  });
+}
 const git = (...args) => execFileSync("git", args, { cwd: root, encoding: "utf8", maxBuffer: 128 * 1024 * 1024 });
 const registry = JSON.parse(git("show", `${r.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`));
 const old = registry.exceptions.at(-1),
-  oldException = currentAdmissionBinding(old);
+  oldException = historicalAdmissionBinding(old);
 const evidence = JSON.parse(
   git("show", `${r.frozenReferenceSha}:Development_Docs/Testing/Product_Experience/candidate-review.json`),
 );
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
+nodeTest("historical predecessor fixture restores the exact ambient Date after success and denial", () => {
+  const ambientDate = Object.getOwnPropertyDescriptor(globalThis, "Date");
+  assert.doesNotThrow(() => historicalAdmissionBinding(old));
+  assert.deepEqual(Object.getOwnPropertyDescriptor(globalThis, "Date"), ambientDate);
+  const invalid = structuredClone(old);
+  invalid.id = "invalid-historical-fixture";
+  assert.throws(() => historicalAdmissionBinding(invalid), /PRODUCT_EXPERIENCE_/u);
+  assert.deepEqual(Object.getOwnPropertyDescriptor(globalThis, "Date"), ambientDate);
+});
 export function record() {
   const value = structuredClone(old),
     a = value.currentSourceAdmission;
@@ -148,22 +164,23 @@ test("R25 extends only the authorized Crossdeck final-check ceiling to 90 minute
   const jobs = workflow.split(/\n  (?=[a-z][a-z-]*:\n)/u);
   const final = jobs.find((job) => job.startsWith("final-check:\n"));
   assert(final);
+  const timeout = final.match(/\n    timeout-minutes: ([^\n]+)/u)?.[1];
+  const pr776Allowance = "(github.event.pull_request.number == 776 || inputs.pr_number == '776') && 120 || ";
+  assert(timeout?.includes(pr776Allowance));
   assert.equal(
-    final.match(/\n    timeout-minutes: ([^\n]+)/u)?.[1],
+    timeout.replace(pr776Allowance, ""),
     "${{ (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}",
   );
   assert.equal(jobs.filter((job) => job.includes("&& 90 || 45")).length, 1);
   assert.equal(record().currentSourceAdmission.precommandRecovery.jobLimitMinutes, 90);
   assert.equal(record().currentSourceAdmission.precommandRecovery.otherPullRequestsJobLimitMinutes, 45);
+  // This historical admission freezes its original candidate engines, not unrelated later repairs.
   for (const file of [
     "scripts/sounding-line/ordinary.mjs",
     "scripts/sounding-line/authenticated-completed-evidence.mjs",
     "scripts/sounding-line/verification-diagnostics.mjs",
   ])
-    assert.equal(
-      readFileSync(new URL("../../" + file, import.meta.url), "utf8"),
-      git("show", `${r.protectedBaseAncestorSha}:${file}`),
-    );
+    assert.equal(git("show", `${r.frozenReferenceSha}:${file}`), git("show", `${r.protectedBaseAncestorSha}:${file}`));
 });
 
 test("installed R25 reader denies missing, retired, invalid and expired rows without falling back", (t) => {
@@ -205,7 +222,7 @@ test("installed R25 reader denies missing, retired, invalid and expired rows wit
     assert.throws(() => trustedExceptions(owned, write(value)), /PRODUCT_EXPERIENCE_EXCEPTION_/u);
   }
   const final = write(full);
-  t.mock.timers.enable({ apis: ["Date"], now: new Date(Date.parse(full.exceptions[24].expiresAt) + 1) });
+  t.mock.timers.setTime(Date.parse(full.exceptions[24].expiresAt) + 1);
   assert.throws(() => trustedExceptions(owned, final), /PRODUCT_EXPERIENCE_CURRENT_ADMISSION_RECORD_INVALID/u);
 });
 

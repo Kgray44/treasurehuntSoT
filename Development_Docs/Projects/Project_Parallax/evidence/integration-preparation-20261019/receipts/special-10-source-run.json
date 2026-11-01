@@ -1,0 +1,80 @@
+{
+  "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+  "tree": "221f78f38a1beb47430d051ba02a21e5ef68bc22",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-19T21:07:02.518Z",
+  "finishedAt": "2026-10-19T21:10:46.328Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "cleanup": {
+    "status": "PASS",
+    "browser": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": 1,
+      "elapsedMs": 3,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "server": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": null,
+      "elapsedMs": 185,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "portReleased": true
+  },
+  "recordings": [
+    {
+      "file": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+      "sha256": "4a6f4c3eb96e0a29c38b4aa1b7377d313d45cf76c43fb164d0247a511d81533b"
+    },
+    {
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "sha256": "565b9913b9b065740fa1e75fac5f0efabda0c5f64798927a7b5ccc45de8f0a4f"
+    },
+    {
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "sha256": "385a78b71bbc754df7da05560050fdcfacc4848dd48aadd79573d947da5b98ee"
+    },
+    {
+      "file": "photo-parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium-video.webm",
+      "sha256": "5662a8b87eb6f803666c702f879ced501d7c59b317d3d20b885f50d256347eb8"
+    },
+    {
+      "file": "photo-parallax-environment-libra-07741-erves-the-Scene-release-pin-chromium-video.webm",
+      "sha256": "d3dda170ef63fc35d33c9d29e51dca165cd49b604fb95b3200a90d452f22f168"
+    },
+    {
+      "file": "photo-parallax-environment-libra-e13e5--preserving-scene-snapshots-chromium-video.webm",
+      "sha256": "c0b6024d19f457db9cb5dddc17e85b7fa98d23396fba83f0ed0b09fed86b15ba"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "db579879b46bae56470839d82d1ff9f079596ba0152aca594843106fb595064b"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "610df80dc63ae5109a97f076a0d17eeaa1df85504efb2441920daedf323a8318"
+    },
+    {
+      "file": "photo-parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium-video.webm",
+      "sha256": "a3b0631ea29b4d1072e7da6e9eb2775690cc27b915459c6a05baee9bfd836c0b"
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "sha256": "ec6b0fd7ddb55c00e2623c0e9e27dfa3e06c99f29cf138b83aa1aa7fce0348a9"
+    }
+  ]
+}

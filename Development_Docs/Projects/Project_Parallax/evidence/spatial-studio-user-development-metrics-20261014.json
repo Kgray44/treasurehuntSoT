@@ -1,0 +1,75 @@
+{
+  "documentClassification": "engineering-evidence",
+  "recordedAt": "2026-10-14",
+  "sourceScope": "Retained numeric metadata only; no pixels, observations, room geometry, user identities, credential or private content",
+  "assistant": {
+    "sample": "26 historical synthetic room-grounded Luna requests across changing instruction rounds; includes rejected and clarified proposals",
+    "calls": 26,
+    "meanInputTokens": 3994.5384615384614,
+    "meanOutputTokens": 438.6923076923077,
+    "totalSettledUsd": 0.011679915,
+    "meanSettledUsd": 0.0004492275000000001,
+    "meanProviderSeconds": 5.578149242307691
+  },
+  "historicalControlledSolAstraPair": [
+    {
+      "model": "gpt-6.1-sol",
+      "photos": 1,
+      "inputTokens": 5811,
+      "outputTokens": 3930,
+      "settledUsd": 0.0470844,
+      "reportedElapsedSeconds": 63.08,
+      "outcome": "PROPOSED"
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "photos": 2,
+      "inputTokens": 8785,
+      "outputTokens": 4026,
+      "settledUsd": 0.0554794,
+      "reportedElapsedSeconds": 62.729,
+      "outcome": "PROPOSED"
+    },
+    {
+      "model": "gpt-6-astra",
+      "photos": 1,
+      "inputTokens": 5812,
+      "outputTokens": 3951,
+      "settledUsd": 0.237889,
+      "reportedElapsedSeconds": 84.508,
+      "outcome": "PROPOSED"
+    },
+    {
+      "model": "gpt-6-astra",
+      "photos": 2,
+      "inputTokens": 8783,
+      "outputTokens": 4079,
+      "settledUsd": 0.2814265,
+      "reportedElapsedSeconds": 91.43,
+      "outcome": "CLARIFICATION"
+    }
+  ],
+  "earlierLunaPair": [
+    {
+      "model": "gpt-6-luna",
+      "photos": 1,
+      "inputTokens": 5554,
+      "outputTokens": 2112,
+      "settledUsd": 0.001750175,
+      "outcome": "PROPOSED",
+      "failureCode": null,
+      "providerSeconds": 19.284
+    },
+    {
+      "model": "gpt-6-luna",
+      "photos": 2,
+      "inputTokens": 8530,
+      "outputTokens": 2310,
+      "settledUsd": 0.001927695,
+      "outcome": "FAILED",
+      "failureCode": "ROOM_EVIDENCE_REJECTED",
+      "providerSeconds": 19.387
+    }
+  ],
+  "interpretation": "Mixed historical sources and prompt revisions are not a statistical benchmark or universal quality proof. Original ledger pricing revisions are preserved."
+}

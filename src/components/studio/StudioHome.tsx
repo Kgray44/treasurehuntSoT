@@ -212,7 +212,7 @@ export function StudioHome({ authenticated }: { authenticated: boolean }) {
           <EmptyState
             title="No Chronicles yet"
             detail="Start with a title, premise, and first Chapter."
-            action={{ label: studioCopy.createChronicle.value, href: "/studio/tales/new" }}
+            action={{ label: "Create your first Chronicle", href: "/studio/tales/new" }}
           />
         ) : !visible.length ? (
           <EmptyState

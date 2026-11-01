@@ -1,0 +1,16 @@
+{
+  "documentClass": "engineering-evidence",
+  "kind": "EXCLUSION_OBSERVER_PRELAUNCH_RESOURCE_HOLD",
+  "utc": "2026-10-23T02:26:07.828Z",
+  "sourceHead": "6bbf875d31457103b6d2881bacde6631cbfa0923",
+  "cpuBusyPercent": 95.1993245280743,
+  "cpuSampleMs": 1000,
+  "freePhysicalBytes": 4878970880,
+  "cFreeBytes": 37317750784,
+  "dFreeBytes": 111732658176,
+  "storageGuardPass": true,
+  "sourceCopied": false,
+  "productRuntimeStarted": false,
+  "reason": "Fresh CPU rebounded to severe saturation; final GO required HOLD",
+  "qualification": false
+}

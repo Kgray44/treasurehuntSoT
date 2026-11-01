@@ -1,0 +1,11 @@
+{
+  "candidate": "b74d94c0c154e02e7b1250883fbeab426e017b09",
+  "tree": "2e84d53815e5cd0f760a8c02ad5dce24a190a187",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T03:52:42.016Z",
+  "finishedAt": "2026-10-13T03:54:16.866Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": []
+}

@@ -1,0 +1,15 @@
+{
+  "kind": "LOCAL_REPAIR_CHECK_DISPOSITION_04",
+  "timeUtc": "2026-10-22T05:25:11.9406769Z",
+  "unitPassed": 40,
+  "unitFailed": 2,
+  "keyRegressionPredicatePassed": true,
+  "primaryReopenLocatorResolved": true,
+  "remainingFailure": "New binding used next block but old moment.attachment.storyMomentId; runtime correctly rejected PARALLAX_ATTACHMENT_BLOCK_MISMATCH",
+  "resolution": "Use existing syntheticSpatialMoment(nextBlockId) factory and distinct attachment identity in authoritative next-state/binding response",
+  "guardWeakened": false,
+  "contentAssertionsRemoved": false,
+  "wholeTypeScript": "PASS",
+  "strictLint": "PASS_ZERO_WARNINGS",
+  "browserRuntime": "UNPROVEN"
+}

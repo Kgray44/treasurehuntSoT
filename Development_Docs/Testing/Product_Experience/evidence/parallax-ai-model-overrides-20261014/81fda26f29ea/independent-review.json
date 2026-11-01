@@ -1,0 +1,430 @@
+{
+  "documentClassification": "engineering-evidence",
+  "immutable": true,
+  "reviewer": {
+    "agent": "/root/studio_foundation_review",
+    "independentFromBuilder": true,
+    "authority": ".agents/product-experience-workflow.md step5"
+  },
+  "createdAtUTC": "2026-10-14T14:56:05.008410+00:00",
+  "candidate": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+  "tree": "ce0fa969bcbcd5124b07afd8da08ab20db232633",
+  "sourceBindingReported": "VALID",
+  "sourceTreeIndependentlyVerified": true,
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "owningExperienceContract": "admiralty.phase1.registry",
+  "domainCommandContract": "parallax-a1-ai-quota-v1",
+  "objective": "Separate job defaults/person selectors, exact exception inventory/filter, canonical reset to inheritance, narrow keyboard access and existing People navigation.",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "boundedVerifiedOutcomes": [
+    "Fixture defaults: standardgpt-6-luna, advancedgpt-6.1-sol, roomgpt-6.1-sol. Source chooses roomModel forROOM_RECONSTRUCTION and standard/advanced models for assistance.",
+    "Existing People dossier authors standardgpt-6.1-sol, roomgpt-6-luna and monthly250 with reason; advanced remains inherited.",
+    "Inventory shows exact authored values, reason, Active/noexpiry and reset action. Model filter retains row.",
+    "Individual change and reset use preview, password assurance, explicit confirmation and durable revisions. Reset restores global models/500 quota, removes inventory row and does not erase zero usage.",
+    "Global roommodel/spendcap change at end also uses canonical gate; room changes togpt-6-luna, capto$8 and enabled remainsfalse. Source routing supports job model semantics; no paid dispatch acceptance."
+  ],
+  "findings": [
+    {
+      "id": "PX-ADMIN-INVENTORY-KEYBOARD-01",
+      "severity": "BLOCKING_EVIDENCE_GAP_FOR_NEW_NARROW_INVENTORY",
+      "observation": "390px inventory still shows only Person/Overrides/Reason. Status/Actions are offscreen. Browser case focuses newinventory and checks width, then switches todesktop. Its ArrowRight/scrollLeft check targets separate Account AI request history. No actual newinventory keyboardscroll orreset-action focus is evidenced.",
+      "evidenceIds": [
+        "owner-ai-overrides-phone.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+        "tests/e2e/parallax-ai-quotas.spec.ts"
+      ],
+      "smallestRepair": "At390px, ArrowRight-scroll Individual AI policies, assert scrollLeft change, expose Status/Actions, Tab-focus actual Review/reset and capture viewport/action. Obtain source-bound re-review. Missing proof does not by itself establish a product defect."
+    },
+    {
+      "id": "PX-ADMIN-POLICY-CAPTURE-LABEL-01",
+      "severity": "EVIDENCE_LIMITATION",
+      "observation": "owner-ai-model-policy-desktop.png is390x4266 because browser remained phone-width. It cannot qualify desktop global-policy layout.",
+      "evidenceIds": [
+        "owner-ai-model-policy-desktop.png",
+        "tests/e2e/parallax-ai-quotas.spec.ts"
+      ],
+      "smallestRepair": "Restore1440px before desktop policy capture; preserve original true-size evidence."
+    },
+    {
+      "id": "PX-ADMIN-AUXILIARY-VIDEO-LIMIT-01",
+      "severity": "EVIDENCE_LIMITATION",
+      "observation": "Both1234byte auxiliary videos last0.12seconds and are blank white. Preserve as non-evidence; onlymain22.04s video supplies chronology.",
+      "evidenceIds": [
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-1.webm",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-2.webm"
+      ]
+    }
+  ],
+  "reviewDimensions": [
+    {
+      "dimension": "composition",
+      "observation": "Green/gold Admiralty shell, grouped navigation, large title and console cards remain coherent. Individual AI controls belong to the existing People dossier; exception inventory is a compact separate operational view.",
+      "evidenceIds": [
+        "owner-daily-empty.png",
+        "owner-people-ai-dossier-desktop.png",
+        "owner-ai-overrides-desktop.png"
+      ]
+    },
+    {
+      "dimension": "hierarchy",
+      "observation": "Three independent job labels distinguish Spatial Assistant, Advanced Assistant and Room reconstruction. Use global options name actual inherited models. Inventory aligns Person, Overrides, Reason, Status and Actions in one row.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-people-ai-dossier-mobile.png",
+        "owner-ai-overrides-desktop.png",
+        "owner-ai-model-policy-desktop.png"
+      ]
+    },
+    {
+      "dimension": "typography",
+      "observation": "Exact model IDs and allowance are legible in native dossier crops. Labels wrap within390px. Tall full-page dossier previews are heavily resized, so they were supplemented with native crops.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-people-ai-dossier-mobile.png",
+        "owner-ai-overrides-desktop.png"
+      ]
+    },
+    {
+      "dimension": "spacing",
+      "observation": "User fields use two columns on desktop and one on phone. Dossier is long because identity/security/history/support context remains. Tables use bounded horizontal overflow rather than stretching the page.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-people-ai-dossier-mobile.png",
+        "owner-ai-overrides-phone.png"
+      ]
+    },
+    {
+      "dimension": "controls",
+      "observation": "Per-person job selectors, allowance, reason, Preview user policy and Reset to global are clear. Model filter keeps the exception; Review/reset opens the same policy panel. Reset opens a preview, not an immediate mutation.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-ai-overrides-desktop.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "contrast",
+      "observation": "Cream text and gold accents are distinct on darkgreen. Focus outlines appear on native controls/history region. Red Next development issue badge appears in dossier/media; its diagnostic was not opened and no error-free claim is made.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-people-ai-dossier-mobile.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "consistency",
+      "observation": "Existing People search selects the same target. No duplicate Users/Search users UI appears in AI console. Model IDs and allowance in inventory agree with the authored effective policy preview.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-ai-overrides-desktop.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "states",
+      "observation": "Inherited initial state, individual override, gated preview, applied revision, populated inventory, filtered row and empty inventory after reset are observed. Expired overrides, stale preview and API failure are not freshly captured.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-ai-overrides-desktop.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "responsive",
+      "observation": "Dossier and inventory phone are390px; desktop stills1280px, reset sequence1440px. Status/Actions sit offscreen in phone inventory. The policy-desktop-named still is actually390x4266 and does not qualify desktop global-policy layout.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-mobile.png",
+        "owner-ai-overrides-phone.png",
+        "owner-ai-model-policy-desktop.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "keyboard",
+      "observation": "Separate account request-history region is focused and ArrowRight scrolling asserted. NEW inventory is focused and width checked, then test returns to desktop without scrolling it or focusing reset while narrow. Keyboard access to its offscreen Status/Actions remains unproved.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-mobile.png",
+        "owner-ai-overrides-phone.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+        "tests/e2e/parallax-ai-quotas.spec.ts"
+      ],
+      "limit": "PX-ADMIN-INVENTORY-KEYBOARD-01"
+    },
+    {
+      "dimension": "focus",
+      "observation": "Phone history region visibly focused. Inventory source provides labeled tabindex0 overflow region and focus-visible outline; actual phone reset-action focus not captured. Fixed header/skiplinks in full-page images are capture-scroll-position composites, not alone proof of persistent viewport obstruction.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-mobile.png",
+        "owner-ai-overrides-phone.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "feedback",
+      "observation": "Preview displays current/resulting effective policies and revision transitions. Confirmation is disabled until privileged password verification. Application produces revision/audit notice; reset restores inherited500 allowance and removes inventory row.",
+      "evidenceIds": [
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+        "tests/e2e/parallax-ai-quotas.spec.ts"
+      ]
+    },
+    {
+      "dimension": "motion",
+      "observation": "Main22.04s video supplies meaningful chronology; two0.12s auxiliary videos are blank white. All inspected before source; main sampled at2fps with selected native frames around policy/reset. No all-motion or precise latency qualification.",
+      "evidenceIds": [
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "continuity",
+      "observation": "Same person survives dossier change, inventory review, reset and reopened People dossier. Browser assertions confirm policynull, user revisions1then2, restored500 quota and zero ledger rows. Global change at end has its own preview/assurance/commit.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-ai-overrides-desktop.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+        "tests/e2e/parallax-ai-quotas.spec.ts"
+      ]
+    },
+    {
+      "dimension": "complexity",
+      "observation": "Inventory avoids a second People search and shows exact values/reason/status together. Effective-policy rawJSON is dense but exposes exact high-impact differences. Canonical preview/assurance/confirmation remains separate from ordinary field edits.",
+      "evidenceIds": [
+        "owner-ai-overrides-desktop.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "role-outcomes",
+      "observation": "Synthetic Administrator can set person model/allowance exceptions, inventory them, reset inheritance and update global roommodel/spendcap. No read-only/non-admin visible journey or actual changed-model inference dispatch is qualified.",
+      "evidenceIds": [
+        "owner-people-ai-dossier-desktop.png",
+        "owner-ai-overrides-desktop.png",
+        "owner-ai-model-policy-desktop.png",
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm"
+      ]
+    },
+    {
+      "dimension": "fallbacks",
+      "observation": "Reset restores ordinary inheritance without resetting usage/audit. Browser source includes unauthorized preview403; server source enforces allowedmodels/revision. Expired/suspended exceptions, fault recovery and large pagination remain unexercised.",
+      "evidenceIds": [
+        "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+        "src/parallax/ai-quota-commands.ts",
+        "tests/e2e/parallax-ai-quotas.spec.ts"
+      ]
+    }
+  ],
+  "visualFirst": {
+    "allSixStillsBeforeSource": true,
+    "nativeDossierCropsInspected": true,
+    "allThreeVideosBeforeSource": true,
+    "substantiveVideoCount": 1,
+    "mainSamplingFPS": 2,
+    "mainSamples": 46,
+    "preSourceNotesPath": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\pre-source-notes.json",
+    "preSourceSHA256": "a6272dd90ae428469b228426edd100adf9dfa642a8276696468bbdf9e85ecf3b",
+    "methodLimit": "Whole chronology sampled, not uninterrupted/every-frame playback. Key native frames supplement contact sheets; exact gates/data corroborated by pinned browser source."
+  },
+  "recordings": [
+    {
+      "id": "V1",
+      "file": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-1.webm",
+      "duration": 0.12,
+      "samples": 2,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-admin-81f\\v1-sheet1.jpg"
+      ]
+    },
+    {
+      "id": "V2",
+      "file": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-2.webm",
+      "duration": 0.12,
+      "samples": 2,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-admin-81f\\v2-sheet1.jpg"
+      ]
+    },
+    {
+      "id": "V3",
+      "file": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+      "duration": 22.04,
+      "samples": 46,
+      "sheets": [
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-admin-81f\\v3-sheet1.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-admin-81f\\v3-sheet2.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-admin-81f\\v3-sheet3.jpg",
+        "C:\\Users\\kkids\\AppData\\Local\\Temp\\px-admin-81f\\v3-sheet4.jpg"
+      ]
+    }
+  ],
+  "sourceReferences": [
+    {
+      "path": "src/components/admiralty/AIQuotaConsole.tsx",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "5362f163da2b977ecc43f950f693e62e48e2a8cc"
+    },
+    {
+      "path": "src/components/admiralty/AIQuotaUserPanel.tsx",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "7a1f8696a4f0e11f435c2f4be913f68bf66668c4"
+    },
+    {
+      "path": "src/components/admiralty/AIQuotaOverrides.tsx",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "60a8e4d961511153ddbfa4ca7b697445642cd908"
+    },
+    {
+      "path": "src/components/admiralty/AIQuotaConsole.module.css",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "d7f6657075023fbd21a15b86da6de9218ad5dd4a"
+    },
+    {
+      "path": "src/parallax/ai-policy.ts",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "4636444ca3a86c5b585988067b1e41cbcbe38f55"
+    },
+    {
+      "path": "src/parallax/ai-ledger.ts",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "82fd4a678ea0092c2c9a0af4be1225bce4a8f65e"
+    },
+    {
+      "path": "src/parallax/ai-quota-projections.ts",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "a59ad187615dd542f1acb351102cd30ae8825b6f"
+    },
+    {
+      "path": "src/parallax/ai-quota-commands.ts",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "96fe59c15b7169436368e8a77f2710e28230293d"
+    },
+    {
+      "path": "src/admiralty/ports/parallax-ai-quota-command.ts",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "0ff0e7144763cb26f538f507636a4abdfe8e434d"
+    },
+    {
+      "path": "tests/e2e/parallax-ai-quotas.spec.ts",
+      "commit": "81fda26f29ea96e1149e5e2e1979b4ef274f6a3a",
+      "gitBlob": "edc1c7e49da2fe5f6695d32d2afc1dbe205b02e6"
+    }
+  ],
+  "receiptChecks": {
+    "manifestSHA256": "3bc1511806121c7dee31b9c7896b802ecbde40c949ca7c01791bd26674f21f8c",
+    "runSHA256": "0a0172e2c15965182771c10e092bc9ee0d529d4ec46d3d835d9554028a427734",
+    "allNineSelectedArtifactHashesMatch": true,
+    "allThreeSuppliedVideoHashesMatchRun": true,
+    "sevenJourneysPassReported": true,
+    "reviewedJourneyCount": 1,
+    "runExitCode": 0,
+    "independentRuntimeActions": 0,
+    "independentPaidCalls": 0,
+    "unselectedSixJourneyVideos": "Named in aggregate run but not supplied in this gallery; not independently requalified."
+  },
+  "ownerAcceptance": {
+    "parentRelayedLaterReport": "Owner directly accepted81f presentation after initial review request.",
+    "scope": "Presentation report stays separate from independent evidence-gap disposition. No transfer to later source or complete product acceptance."
+  },
+  "laterSourceBoundary": "43154267 room verbosity/timing changes are outside this exact81f admin review.",
+  "artifacts": [
+    {
+      "evidenceId": "owner-daily-empty.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\owner-daily-empty.png",
+      "sha256": "623581748d419927c8252d1c5a201d7d1b43b71af3d7cda875c3b963190873f5",
+      "bytes": 550130,
+      "dimensions": [
+        1280,
+        1912
+      ],
+      "match": true
+    },
+    {
+      "evidenceId": "owner-people-ai-dossier-desktop.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\owner-people-ai-dossier-desktop.png",
+      "sha256": "aa2789c1139a8bbf0eee504192ddfcfa240d458eccce3df3d97aed69f7af9540",
+      "bytes": 1913398,
+      "dimensions": [
+        1280,
+        5784
+      ],
+      "match": true
+    },
+    {
+      "evidenceId": "owner-people-ai-dossier-mobile.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\owner-people-ai-dossier-mobile.png",
+      "sha256": "4fdd98ad79b5b126c423dc18c940f8c2a2779a45a9197f8dd67344fd15f59318",
+      "bytes": 1240808,
+      "dimensions": [
+        390,
+        8998
+      ],
+      "match": true
+    },
+    {
+      "evidenceId": "owner-ai-overrides-desktop.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\owner-ai-overrides-desktop.png",
+      "sha256": "aee5fdfd9cbcdc18c68bf37e79375d3c3c7e93727571202dc6660a17f468f5e1",
+      "bytes": 498093,
+      "dimensions": [
+        1280,
+        1103
+      ],
+      "match": true
+    },
+    {
+      "evidenceId": "owner-ai-overrides-phone.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\owner-ai-overrides-phone.png",
+      "sha256": "e1f000a43e6d21db5ec5faa65ebd04903be2dadb2755d7447f2b93d3ad00d4dd",
+      "bytes": 208769,
+      "dimensions": [
+        390,
+        2023
+      ],
+      "match": true
+    },
+    {
+      "evidenceId": "owner-ai-model-policy-desktop.png",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\owner-ai-model-policy-desktop.png",
+      "sha256": "c9c01f3796a7d0aacbcf606ba268e37a1d4b33249e8eef029789ab59436cf305",
+      "bytes": 297485,
+      "dimensions": [
+        390,
+        4266
+      ],
+      "match": true
+    },
+    {
+      "evidenceId": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-1.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-1.webm",
+      "sha256": "48588256584c9826b32f11c520a178549d7eb445598890b5b2b954dbdc18eec0",
+      "bytes": 1234,
+      "dimensions": null,
+      "match": true
+    },
+    {
+      "evidenceId": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-2.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video-2.webm",
+      "sha256": "02a950c7feda973c519910a2b709b62c69e0459a4fed49459139a859270b82ac",
+      "bytes": 1234,
+      "dimensions": null,
+      "match": true
+    },
+    {
+      "evidenceId": "photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+      "path": "C:\\Users\\kkids\\.codex\\worktrees\\px-surface\\Codex_TreasureHunt\\Development_Docs\\Testing\\Product_Experience\\evidence\\parallax-ai-model-overrides-20261014\\81fda26f29ea\\photo-parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium-video.webm",
+      "sha256": "c82d55305ea8e11aa4d0048960364059c3de467692875ede55c67b3765a72837",
+      "bytes": 2148509,
+      "dimensions": null,
+      "match": true
+    }
+  ],
+  "limitations": [
+    "Synthetic Administrator/person fixtures andDEVELOPMENT only.",
+    "No paid calls,live model quality/provider-dispatch,protected integration,native,physical orcomplete product acceptance.",
+    "Only one selectedAdministrator journey reviewed within reportedsevenPASS run.",
+    "No expired/suspendedexception,quota-onlyfilter,largepagination,stalepreview/failure,read-onlyrole orlight/motionmatrix renewed.",
+    "Two blank auxiliary recordings explicitly non-evidence.",
+    "Visible Next issue badge diagnostic not inspected; no zero-error claim.",
+    "Only newreview/notes written; prior reviews,source,Git andsharedruntimes preserved."
+  ],
+  "featureCatalogDecision": "NO CHANGE REQUIRED - independent evidence review only; parent owns generator checks."
+}

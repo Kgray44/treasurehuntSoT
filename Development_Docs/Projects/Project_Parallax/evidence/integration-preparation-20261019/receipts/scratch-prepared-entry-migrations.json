@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "sourceNotChanged": true,
+  "qualification": false,
+  "results": [
+    {
+      "name": "parallax-asset-quality",
+      "entries": 3
+    },
+    {
+      "name": "parallax-authoring-refinements",
+      "entries": 3
+    },
+    {
+      "name": "parallax-room-photo",
+      "entries": 1
+    }
+  ]
+}

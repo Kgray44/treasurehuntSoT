@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-23T02:50:30.5740239Z",
+  "installedBaselineSha256": "c1a63e49dec4dcf81fba3d71ea4cdaf2fb2d68be52d0a6a24b1e60a923c0483d",
+  "restoredFixSha256": "d966fb24361a3e33b8d5ae724a772ffad89d6ef58882a4045c2bec1de9bf830f",
+  "testSha256": "c12173fcf9a87f8ff8c5ec158585442f09187d64167f195e51fbfbf898a32f55",
+  "helperExit": 1,
+  "cleanupStatus": "PASS",
+  "resultNotYetInterpreted": true,
+  "gitStatus": [
+    " M src/components/studio/parallax/useWorkspaceLayout.test.tsx",
+    " M src/components/studio/parallax/useWorkspaceLayout.ts"
+  ],
+  "qualification": false
+}

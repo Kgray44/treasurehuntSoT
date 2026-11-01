@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "sealedAt": "2026-10-25T04:00:21.867Z",
+  "reviewerContext": "01a170b4-29b6-79b3-b308-766a09828cee /root/pr776_review3_c742",
+  "status": "ACCEPTED",
+  "summary": {
+    "contracts": 32,
+    "dimensionObservations": 544,
+    "accepted": 32,
+    "blocked": 0,
+    "priorFindingsResolved": 2,
+    "unresolvedBlockers": [],
+    "selectedContexts": 118,
+    "artifactReferences": 926,
+    "uniqueOriginalMediaPaths": 856,
+    "originalMedia": {
+      "screenshot": {
+        "references": 678,
+        "uniquePaths": 620
+      },
+      "trace": {
+        "references": 124,
+        "uniquePaths": 118
+      },
+      "recording": {
+        "references": 124,
+        "uniquePaths": 118
+      }
+    },
+    "traceTemporalFrameReferences": 496,
+    "uniqueTraceTemporalResources": 472,
+    "uniqueRecordingFramesDecoded": 236,
+    "pendingAuthoredPhotoStates": 48,
+    "historicalReportSetsPreserved": 8,
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "files": [
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\capture40155440070-success-intake-01\\independent-review-04\\reviews.json",
+      "bytes": 897977,
+      "sha256": "2a689c7f2c3f404e22cb3e69418fbad41c062284a4917496b62ee2566a0e38df"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\capture40155440070-success-intake-01\\independent-review-04\\inspection-manifest.json",
+      "bytes": 3502142,
+      "sha256": "843147602699d769079c9fe3bae5e73fff25047e3cd8bd4fecbcc03846d4067c"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\capture40155440070-success-intake-01\\independent-review-04\\inspection-chronology.json",
+      "bytes": 418121,
+      "sha256": "fe133aaac53e7b858b721c24e7da4092736654dbc46920af3df62713fcb1a2f9"
+    }
+  ],
+  "derivedBytesIncludingFinalFiles": 33173694,
+  "productWrites": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "singleAdditionalPassConsumed": true
+}

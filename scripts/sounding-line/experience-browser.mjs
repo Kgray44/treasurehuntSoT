@@ -1,5 +1,11 @@
 import { createHash, randomBytes } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
+import {
+  emitPreparationPhase,
+  PREPARATION_CHANNEL,
+  PREPARATION_PHASES,
+  PREPARATION_PROFILE,
+} from "./preparation-phases.mjs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -34,6 +40,10 @@ import {
   planProductExperience,
   REVIEW_DIMENSIONS,
   validateExperienceEvidence,
+  validateRoomReloadJourney,
+  validateRoomsSurfaceNavigation,
+  validateRoomNativeDisclosures,
+  validateSceneSavedConfirmation,
   validateExperienceArtifacts,
   artifactBytes,
   revisionJson,
@@ -123,6 +133,234 @@ function experienceDiagnostic(startedAt, event, context, { stepIndex, actionKind
   }
 }
 
+function sc02JourneyContext(contract, journey, device, motionMode) {
+  const authoredAsset =
+    contract.id === "parallax.authored-library-and-simulation.experience" &&
+    journey.id === "creator-reusable-definition-and-scene-copy";
+  if (authoredAsset && journey.steps.some((step) => ["devices", "when"].some((key) => Object.hasOwn(step, key))))
+    fail("JOURNEY_NAVIGATION_CONDITION_INVALID");
+  const optedIn = journey.steps.some((step) =>
+    ["devices", "contextValue", "contextName"].some((key) => Object.hasOwn(step, key)),
+  );
+  if (!optedIn)
+    return { steps: journey.steps.map((step, index) => ({ step, index, applicable: true })), evidence: null };
+  const name = authoredAsset
+    ? `Reusable review clue ${device} ${motionMode}`
+    : `SC02 synthetic composition ${device} ${motionMode}`;
+  const applicability = [];
+  const substitutions = [];
+  const steps = journey.steps.map((source, index) => {
+    const step = { ...source };
+    if (
+      Object.hasOwn(step, "when") ||
+      [
+        step.name,
+        step.value,
+        step.role,
+        step.path,
+        step.text,
+        step.key,
+        step.absentRole?.name,
+        step.expectFocus?.name,
+      ].some((value) => typeof value === "string" && /\{\{|\}\}/u.test(value))
+    )
+      fail("JOURNEY_CONTEXT_FIELD_UNSUPPORTED");
+    const contextual = ["devices", "contextValue", "contextName"].some((key) => Object.hasOwn(step, key));
+    if (!contextual) return { step, index, applicable: true };
+    if (
+      (!authoredAsset &&
+        (contract.id !== "spatial-pilot.experience" || journey.id !== "sc02-assets-and-reusable-composition")) ||
+      !["DESKTOP", "MOBILE"].includes(device) ||
+      !["NORMAL", "REDUCED"].includes(motionMode)
+    )
+      fail("JOURNEY_CONTEXT_INVALID");
+    let applicable = true;
+    if (Object.hasOwn(step, "devices")) {
+      const navigationName =
+        step.name === "Open object properties" ||
+        /^Filters & view(?: Source, status, sort| [1-6] active)?$/u.test(step.name ?? "");
+      if (
+        step.action !== "click" ||
+        step.role !== "button" ||
+        !navigationName ||
+        !Array.isArray(step.devices) ||
+        step.devices.length < 1 ||
+        step.devices.length > 2 ||
+        new Set(step.devices).size !== step.devices.length ||
+        step.devices.some((d) => !["DESKTOP", "MOBILE"].includes(d)) ||
+        [
+          "state",
+          "feedbackBoundary",
+          "returnPath",
+          "meaning",
+          "path",
+          "text",
+          "absentRole",
+          "contextValue",
+          "contextName",
+        ].some((key) => Object.hasOwn(step, key)) ||
+        (Object.hasOwn(step, "kind") && step.kind !== "navigation")
+      )
+        fail("JOURNEY_NAVIGATION_CONDITION_INVALID");
+      applicable = step.devices.includes(device);
+      applicability.push({ step: index, devices: [...step.devices], applicable });
+    }
+    if (Object.hasOwn(step, "contextValue")) {
+      if (
+        step.contextValue !== (authoredAsset ? "PARALLAX_REUSABLE_ASSET_NAME" : "SC02_COMPOSITION_NAME") ||
+        step.action !== "fill" ||
+        Object.hasOwn(step, "value") ||
+        !(authoredAsset
+          ? (step.role === "textbox" && step.name === "Asset name") ||
+            (step.role === "searchbox" && step.name === "Search assets")
+          : (step.role === "textbox" && step.name === "Object name") ||
+            (step.role === "searchbox" && step.name === "Search compositions"))
+      )
+        fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      step.value = name;
+      substitutions.push({ step: index, field: "value", token: step.contextValue, value: name });
+    }
+    if (Object.hasOwn(step, "contextName")) {
+      if (authoredAsset) {
+        if (
+          step.contextName === "PARALLAX_REUSABLE_ASSET_INSPECT_NAME" &&
+          step.role === "button" &&
+          step.action === "click" &&
+          step.name === "Inspect PARALLAX_REUSABLE_ASSET_NAME"
+        )
+          step.name = "Inspect " + name;
+        else if (
+          step.contextName === "PARALLAX_REUSABLE_ASSET_DETAILS_NAME" &&
+          step.role === "complementary" &&
+          step.action === "assert" &&
+          step.kind === "outcome" &&
+          step.name === "PARALLAX_REUSABLE_ASSET_NAME details"
+        )
+          step.name = name + " details";
+        else fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      } else {
+        if (
+          step.contextName !== "SC02_COMPOSITION_INSPECT_NAME" ||
+          step.role !== "button" ||
+          step.action !== "click" ||
+          step.name !== "Inspect SC02_COMPOSITION_NAME"
+        )
+          fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+        step.name = "Inspect " + name;
+      }
+      substitutions.push({ step: index, field: "name", token: step.contextName, value: step.name });
+    }
+    return { step, index, applicable };
+  });
+  return {
+    steps,
+    evidence:
+      applicability.length || substitutions.length
+        ? { version: 1, device, motionMode, applicability, substitutions }
+        : null,
+  };
+}
+
+function communityJourneyContext(contract, journey, device, motionMode, role) {
+  if (
+    contract.id !== "parallax.spatial-community-publishing.experience" ||
+    journey.id !== "creator-saved-scene-community-package-review" ||
+    role !== "CREATOR" ||
+    !["DESKTOP", "MOBILE"].includes(device) ||
+    motionMode !== "REDUCED"
+  )
+    fail("JOURNEY_CONTEXT_INVALID");
+  const name = "Community review Scene " + device + " " + motionMode;
+  const substitutions = [];
+  const steps = journey.steps.map((source, index) => {
+    const step = { ...source };
+    if (
+      Object.keys(step).some((key) => key.startsWith("context") && !["contextValue", "contextName"].includes(key)) ||
+      Object.entries(step).some(
+        ([key, value]) =>
+          JSON.stringify(value)?.includes("PARALLAX_COMMUNITY_SCENE_") &&
+          !(["contextValue", "contextName"].includes(key) || (key === "name" && Object.hasOwn(step, "contextName"))),
+      )
+    )
+      fail("JOURNEY_CONTEXT_FIELD_UNSUPPORTED");
+    if (["devices", "when"].some((key) => Object.hasOwn(step, key))) fail("JOURNEY_NAVIGATION_CONDITION_INVALID");
+    if (
+      [
+        step.name,
+        step.value,
+        step.role,
+        step.path,
+        step.text,
+        step.key,
+        step.absentRole?.name,
+        step.expectFocus?.name,
+      ].some((value) => typeof value === "string" && /\{\{|\}\}/u.test(value))
+    )
+      fail("JOURNEY_CONTEXT_FIELD_UNSUPPORTED");
+    if (Object.hasOwn(step, "contextValue")) {
+      if (
+        step.contextValue !== "PARALLAX_COMMUNITY_SCENE_NAME" ||
+        step.action !== "fill" ||
+        step.role !== "textbox" ||
+        step.name !== "Experience title" ||
+        Object.hasOwn(step, "value") ||
+        Object.hasOwn(step, "contextName")
+      )
+        fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      step.value = name;
+      substitutions.push({ step: index, field: "value", token: step.contextValue, value: name });
+    }
+    if (Object.hasOwn(step, "contextName")) {
+      if (
+        step.contextName === "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME" &&
+        step.action === "click" &&
+        step.role === "button" &&
+        step.name === "Inspect PARALLAX_COMMUNITY_SCENE_NAME"
+      )
+        step.name = "Inspect " + name;
+      else if (
+        step.contextName === "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME" &&
+        step.action === "assert" &&
+        step.role === "complementary" &&
+        step.kind === "outcome" &&
+        step.name === "PARALLAX_COMMUNITY_SCENE_NAME details"
+      )
+        step.name = name + " details";
+      else fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+      substitutions.push({ step: index, field: "name", token: step.contextName, value: step.name });
+    }
+    return { step, index, applicable: true };
+  });
+  if (
+    ![3, 4].includes(substitutions.length) ||
+    substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_NAME").length !== 1 ||
+    ![1, 2].includes(substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_INSPECT_NAME").length) ||
+    substitutions.filter((row) => row.token === "PARALLAX_COMMUNITY_SCENE_DETAILS_NAME").length !== 1
+  )
+    fail("JOURNEY_SYNTHETIC_NAME_INVALID");
+  return { steps, evidence: { version: 1, device, motionMode, applicability: [], substitutions } };
+}
+
+function savedRoomReloadURL(page, origin) {
+  const value = page.url();
+  let saved;
+  try {
+    saved = new URL(value);
+  } catch {
+    fail("JOURNEY_RELOAD_URL_INVALID");
+  }
+  const definitions = saved.searchParams.getAll("definition");
+  if (
+    saved.origin !== origin ||
+    saved.pathname !== "/studio/parallax" ||
+    definitions.length !== 1 ||
+    !definitions[0].trim() ||
+    ["library", "libraryKind", "libraryVersion"].some((key) => saved.searchParams.has(key))
+  )
+    fail("JOURNEY_RELOAD_URL_INVALID");
+  return value;
+}
+
 // Use semantic visible controls. API setup may provision identities/data; it
 // cannot replace entry, action, destination, or return-path proof.
 export async function runExperienceJourney({
@@ -134,8 +372,79 @@ export async function runExperienceJourney({
   root,
   role = "ANONYMOUS",
   motionMode = "REDUCED",
+  baseURL,
   accessibilityCheck,
 }) {
+  const roomsSurfaceNavigation = validateRoomsSurfaceNavigation(contract, journey);
+  if (
+    roomsSurfaceNavigation &&
+    (role !== "CREATOR" || !["DESKTOP", "MOBILE"].includes(device) || !["NORMAL", "REDUCED"].includes(motionMode))
+  )
+    fail("ROOMS_SURFACE_NAVIGATION_INVALID");
+  const confirmation = validateSceneSavedConfirmation(contract, journey);
+  if (
+    confirmation &&
+    (role !== "CREATOR" || !["DESKTOP", "MOBILE"].includes(device) || !["NORMAL", "REDUCED"].includes(motionMode))
+  )
+    fail("SCENE_SAVE_CONFIRMATION_SCOPE_INVALID");
+  const reload = validateRoomReloadJourney(contract, journey);
+  let reloadOrigin;
+  if (reload) {
+    if (role !== "CREATOR" || !["DESKTOP", "MOBILE"].includes(device) || !["NORMAL", "REDUCED"].includes(motionMode))
+      fail("JOURNEY_RELOAD_SCOPE_INVALID");
+    try {
+      if (typeof baseURL !== "string") fail("JOURNEY_RELOAD_BASE_REQUIRED");
+      const base = new URL(baseURL);
+      if (!["http:", "https:"].includes(base.protocol) || new URL(page.url()).origin !== base.origin)
+        fail("JOURNEY_RELOAD_BASE_REQUIRED");
+      reloadOrigin = base.origin;
+    } catch {
+      fail("JOURNEY_RELOAD_BASE_REQUIRED");
+    }
+  }
+  const savedSceneReloads = [];
+  const nativeDisclosures = [];
+  // Resolve once before any browser interaction. Both loops consume the same
+  // applicability and literals while evidence retains original step indices.
+  const contextual = journey.steps.some((step) => JSON.stringify(step).includes("PARALLAX_COMMUNITY_SCENE_"))
+    ? communityJourneyContext(contract, journey, device, motionMode, role)
+    : roomsSurfaceNavigation
+      ? {
+          steps: journey.steps.map((step, index) => ({
+            step,
+            index,
+            applicable: index !== roomsSurfaceNavigation.index || device === "DESKTOP",
+          })),
+          evidence: {
+            version: 1,
+            device,
+            motionMode,
+            applicability: [
+              { step: roomsSurfaceNavigation.index, devices: ["DESKTOP"], applicable: device === "DESKTOP" },
+            ],
+            substitutions: [],
+          },
+        }
+      : reload?.mobileDisclosureIndices
+        ? {
+            steps: journey.steps.map((step, index) => ({
+              step,
+              index,
+              applicable: !reload.mobileDisclosureIndices.includes(index) || device === "MOBILE",
+            })),
+            evidence: {
+              version: 1,
+              device,
+              motionMode,
+              applicability: reload.mobileDisclosureIndices.map((step) => ({
+                step,
+                devices: ["MOBILE"],
+                applicable: device === "MOBILE",
+              })),
+              substitutions: [],
+            },
+          }
+        : sc02JourneyContext(contract, journey, device, motionMode);
   const captures = [];
   const observations = [];
   const stateAccessibility = [];
@@ -145,6 +454,16 @@ export async function runExperienceJourney({
   let returnPathVerified = false;
   let observedDeparture = false;
   let actionPredicates = new Map();
+  const sceneSavedStatus = () =>
+    page.getByRole("dialog", { name: "Environments & Scenes", exact: true }).getByRole("status");
+  const readNativeSummary = (target) =>
+    target.evaluate((element) => ({
+      tagName: element.tagName,
+      parentTagName: element.parentElement?.tagName,
+      firstChild: element.parentElement?.firstElementChild === element,
+      text: element.textContent?.trim(),
+      open: element.parentElement?.open,
+    }));
   const predicateSatisfied = async (step) => {
     const target = page.getByRole(step.role, { name: step.name, exact: true });
     if (!(await target.isVisible()) || (step.path && new URL(page.url()).pathname !== step.path)) return false;
@@ -154,6 +473,15 @@ export async function runExperienceJourney({
       (await page.getByRole(step.absentRole.role, { name: step.absentRole.name, exact: true }).isVisible())
     )
       return false;
+    if (step.confirmation) {
+      const status = sceneSavedStatus();
+      if (
+        (await status.count()) !== 1 ||
+        !(await status.isVisible()) ||
+        (await status.innerText()).trim() !== step.confirmation
+      )
+        return false;
+    }
     return true;
   };
   let actionStarted = null;
@@ -170,23 +498,53 @@ export async function runExperienceJourney({
     );
   const beforeContinuity = await readContinuity();
   const unobscuredActions = [];
-  for (const [index, step] of journey.steps.entries()) {
-    if (step.action === "keyboard") {
+  for (const { index, step, applicable } of contextual.steps) {
+    if (!applicable) continue;
+    if (step.action === "reload") {
+      const savedURL = savedRoomReloadURL(page, reloadOrigin);
+      await page.reload({ waitUntil: "domcontentloaded", timeout: 30000 });
+      if (page.url() !== savedURL) fail("JOURNEY_RELOAD_DESTINATION_CHANGED");
+      actionPredicates = new Map();
+      savedSceneReloads.push({
+        step: index,
+        urlSHA256: digest(Buffer.from(savedURL)),
+        sameFullURL: true,
+        timeoutMs: 30000,
+      });
+    } else if (step.action === "keyboard") {
       await page.keyboard.press(step.key);
       if (step.expectFocus) {
         const target = page.getByRole(step.expectFocus.role, { name: step.expectFocus.name, exact: true });
         if (!(await target.evaluate((element) => element === document.activeElement))) fail("KEYBOARD_FOCUS_FAILED");
       }
     } else {
-      const target = page.getByRole(step.role, { name: step.name, exact: true });
-      await target.waitFor({ state: "visible" });
-      if (step.action === "click") {
-        actionPredicates = new Map();
-        for (let following = index + 1; following < journey.steps.length; following++) {
-          const predicate = journey.steps[following];
-          if (predicate.action === "click" || predicate.action === "fill") break;
-          if (predicate.action === "assert") actionPredicates.set(following, await predicateSatisfied(predicate));
+      const nativeSummary = Object.hasOwn(step, "nativeSummary");
+      const target = nativeSummary
+        ? page.locator("details > summary").filter({ hasText: /^View & audio$/u })
+        : page.getByRole(step.role, { name: step.name, exact: true });
+      if (nativeSummary) {
+        await page
+          .locator("details:not([open]) > summary")
+          .filter({ hasText: /^View & audio$/u })
+          .waitFor({ state: "visible", timeout: 30000 });
+        if ((await target.count()) !== 1) fail("NATIVE_DISCLOSURE_IDENTITY_INVALID");
+        await target.click({ trial: true, timeout: 5000 });
+      } else await target.waitFor({ state: "visible" });
+      if (step.action === "click" || step.action === "fill") {
+        // A navigation followed by typing is one declared action group. Keep
+        // its pre-navigation predicates through consecutive fills, while a
+        // fill without a preceding click records its own before-state.
+        if (step.action === "click") actionPredicates = new Map();
+        for (let following = index + 1; following < contextual.steps.length; following++) {
+          const entry = contextual.steps[following];
+          if (!entry.applicable) continue;
+          const predicate = entry.step;
+          if (predicate.action === "click" || predicate.action === "reload") break;
+          if (predicate.action === "assert" && !actionPredicates.has(following))
+            actionPredicates.set(following, await predicateSatisfied(predicate));
         }
+      }
+      if (step.action === "click") {
         let reachable = await target.evaluate((element) => element === document.activeElement);
         for (let attempt = 0; attempt < 128 && !reachable; attempt++) {
           await page.keyboard.press("Tab");
@@ -194,8 +552,38 @@ export async function runExperienceJourney({
         }
         if (!reachable) fail("KEYBOARD_REACHABILITY_FAILED");
         // Keyboard activation proves the ordinary action is not pointer-only.
+        let nativeBefore;
+        if (nativeSummary) {
+          nativeBefore = await readNativeSummary(target);
+          if (
+            nativeBefore.tagName !== "SUMMARY" ||
+            nativeBefore.parentTagName !== "DETAILS" ||
+            !nativeBefore.firstChild ||
+            nativeBefore.text !== "View & audio"
+          )
+            fail("NATIVE_DISCLOSURE_IDENTITY_INVALID");
+          if (nativeBefore.open !== false) fail("NATIVE_DISCLOSURE_NOT_CLOSED");
+        }
         actionStarted = performance.now();
         await target.press("Enter");
+        if (nativeSummary) {
+          const after = await readNativeSummary(target);
+          if (
+            after.tagName !== "SUMMARY" ||
+            after.parentTagName !== "DETAILS" ||
+            !after.firstChild ||
+            after.text !== "View & audio" ||
+            after.open !== true
+          )
+            fail("NATIVE_DISCLOSURE_NOT_OPENED");
+          nativeDisclosures.push({
+            step: index,
+            nativeSummary: "View & audio",
+            before: nativeBefore,
+            after,
+            keyboard: "Enter",
+          });
+        }
         visibleActions++;
       } else if (step.action === "fill") {
         await target.fill(step.value);
@@ -240,7 +628,16 @@ export async function runExperienceJourney({
         }
         if (step.text) {
           try {
-            await target.filter({ hasText: step.text }).waitFor({ state: "visible", timeout: 5000 });
+            if (step.confirmation) {
+              await Promise.all([
+                target.filter({ hasText: step.text }).waitFor({ state: "visible", timeout: 5000 }),
+                sceneSavedStatus()
+                  .filter({ hasText: /^Scene saved\.$/u })
+                  .waitFor({ state: "visible", timeout: 5000 }),
+              ]);
+            } else {
+              await target.filter({ hasText: step.text }).waitFor({ state: "visible", timeout: 5000 });
+            }
           } catch {
             fail("USER_OUTCOME_FAILED");
           }
@@ -299,6 +696,7 @@ export async function runExperienceJourney({
       });
     }
   }
+  validateRoomNativeDisclosures(contract, journey, { nativeDisclosures }, device);
   if (!observations.length || !returnPathVerified || !visibleActions) fail("SEMANTIC_JOURNEY_FAILED");
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   const afterContinuity = await readContinuity();
@@ -329,6 +727,9 @@ export async function runExperienceJourney({
       outcome: journey.outcome,
       observations,
       visibleActions,
+      ...(savedSceneReloads.length ? { savedSceneReloads } : {}),
+      ...(nativeDisclosures.length ? { nativeDisclosures } : {}),
+      ...(contextual.evidence ? { stepContext: contextual.evidence } : {}),
       ...(unobscuredActions.length ? { unobscuredActions } : {}),
       returnPathVerified,
       status: "PASS",
@@ -503,6 +904,7 @@ export async function captureProductExperience({
                 progress("operation.result", { actionKind: "navigate-journey-entry" });
                 const observed = await runExperienceJourney({
                   page,
+                  baseURL,
                   contract,
                   journey,
                   device,
@@ -635,6 +1037,7 @@ async function main() {
     if (!profile || profile.dedicatedRunner) fail("PROFILE_ADAPTER_REQUIRED");
     const receipt = await runBrowserAuthority({
       root,
+      executionTimeoutMs: PREPARATION_PHASES.CAPTURE,
       browserArguments: [],
       browserScriptArguments: [fileURLToPath(import.meta.url), "--workspace", root, "--replay", options["run-server"]],
       fixtureArguments: profile.fixtureArguments ?? [],
@@ -772,7 +1175,7 @@ export async function runTrustedExperienceReplay({
     reviews: [],
   };
   const isolatedFixtures = [];
-  for (const profile of profiles) {
+  for (const [profileIndex, profile] of profiles.entries()) {
     const diagnosticEnvironment = diagnostics?.beginScope();
     if (diagnosticEnvironment && onDiagnosticScope)
       await onDiagnosticScope(browserReceiptPaths(root, diagnosticEnvironment));
@@ -808,6 +1211,7 @@ export async function runTrustedExperienceReplay({
           cwd: root,
           env: {
             ...isolatedEnvironment,
+            ...(isolatedEnvironment[PREPARATION_CHANNEL] ? { [PREPARATION_PROFILE]: String(profileIndex + 1) } : {}),
             ...diagnosticEnvironment,
             ...(isolatedEnvironment[EXPERIENCE_RAW_OUTPUT]
               ? { [EXPERIENCE_RAW_OUTPUT]: `${isolatedEnvironment[EXPERIENCE_RAW_OUTPUT]}/${profile}` }
@@ -860,6 +1264,7 @@ export async function runTrustedExperienceReplay({
   );
   // Capture preparation deliberately omits human review validation. Paired case
   // completeness and terminal cleanup are still mandatory before publication.
+  emitPreparationPhase("VALIDATION");
   if (plan.paired) {
     await withVerificationStage("REPLAY_PAIRED_VALIDATE", () => {
       validateExperienceArtifacts({ root, plan, evidence: combined });

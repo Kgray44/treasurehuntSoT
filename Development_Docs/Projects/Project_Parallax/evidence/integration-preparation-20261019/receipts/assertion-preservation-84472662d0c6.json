@@ -1,0 +1,1153 @@
+{
+  "before": "c293af18d56e7bf29c02a7667b23d9a3fe658646",
+  "after": "84472662d0c66001a5bb4f3dd1f5d268252bcd26",
+  "qualification": false,
+  "scope": "Matcher name, negation and arguments; subject navigation and fixture identity require source review. Changed assertions are listed, never silently treated as retained.",
+  "results": [
+    {
+      "file": "tests/e2e/fixtures/parallax-current-library.ts",
+      "originalAssertions": 5,
+      "currentAssertions": 7,
+      "retainedInOrder": 5,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toBeEnabled",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-adaptive.spec.ts",
+      "originalAssertions": 66,
+      "currentAssertions": 66,
+      "retainedInOrder": 66,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-ai-enforcement.spec.ts",
+      "originalAssertions": 48,
+      "currentAssertions": 48,
+      "retainedInOrder": 48,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-ai-quotas.spec.ts",
+      "originalAssertions": 47,
+      "currentAssertions": 50,
+      "retainedInOrder": 47,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toHaveURL",
+          "negative": false,
+          "arguments": [
+            "(url) => url.pathname === \"/admin/people\" && url.searchParams.get(\"q\") === creator.id"
+          ]
+        },
+        {
+          "matcher": "toBeFocused",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toHaveURL",
+          "negative": false,
+          "arguments": [
+            "`/admin/people/${creator.id}`"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-animation.spec.ts",
+      "originalAssertions": 31,
+      "currentAssertions": 42,
+      "retainedInOrder": 31,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "7"
+          ]
+        },
+        {
+          "matcher": "toBeGreaterThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "regionBounds.y"
+          ]
+        },
+        {
+          "matcher": "toBeLessThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "regionBounds.y + regionBounds.height"
+          ]
+        },
+        {
+          "matcher": "toBeInViewport",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeGreaterThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "regionBounds.x"
+          ]
+        },
+        {
+          "matcher": "toBeGreaterThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "regionBounds.y"
+          ]
+        },
+        {
+          "matcher": "toBeLessThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "regionBounds.x + regionBounds.width"
+          ]
+        },
+        {
+          "matcher": "toBeLessThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "rendererBounds.y + rendererBounds.height"
+          ]
+        },
+        {
+          "matcher": "toHaveAttribute",
+          "negative": false,
+          "arguments": [
+            "\"aria-pressed\"",
+            "String(wasOverlaid !== \"true\")"
+          ]
+        },
+        {
+          "matcher": "toHaveAttribute",
+          "negative": false,
+          "arguments": [
+            "\"aria-pressed\"",
+            "wasOverlaid!"
+          ]
+        },
+        {
+          "matcher": "toBeInViewport",
+          "negative": false,
+          "arguments": []
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-asset-quality.spec.ts",
+      "originalAssertions": 46,
+      "currentAssertions": 49,
+      "retainedInOrder": 45,
+      "removed": [
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Independent asset copy added and saved; its definition is unchanged\""
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "duplicated"
+          ]
+        },
+        {
+          "matcher": "toBeHidden",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Independent released copy added\""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-authoring-refinements.spec.ts",
+      "originalAssertions": 57,
+      "currentAssertions": 57,
+      "retainedInOrder": 57,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-context-menu.spec.ts",
+      "originalAssertions": 32,
+      "currentAssertions": 32,
+      "retainedInOrder": 32,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-environment-creation.spec.ts",
+      "originalAssertions": 21,
+      "currentAssertions": 25,
+      "retainedInOrder": 20,
+      "removed": [
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Photo environment\""
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "source"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "\"New environment\""
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "rooms[0].draft"
+          ]
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "source"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-environment-library.spec.ts",
+      "originalAssertions": 31,
+      "currentAssertions": 33,
+      "retainedInOrder": 31,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toBeDefined",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "\"Edited original furnishing\""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-groups.spec.ts",
+      "originalAssertions": 112,
+      "currentAssertions": 112,
+      "retainedInOrder": 112,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-guided.spec.ts",
+      "originalAssertions": 17,
+      "currentAssertions": 17,
+      "retainedInOrder": 17,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-owner-refinements.spec.ts",
+      "originalAssertions": 62,
+      "currentAssertions": 63,
+      "retainedInOrder": 60,
+      "removed": [
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Saved Spatial Library\""
+          ]
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "saved.draft.content.title"
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toHaveAttribute",
+          "negative": false,
+          "arguments": [
+            "\"aria-selected\"",
+            "\"true\""
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-photo-feedback.spec.ts",
+      "originalAssertions": 35,
+      "currentAssertions": 35,
+      "retainedInOrder": 35,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-reusable-assets.spec.ts",
+      "originalAssertions": 24,
+      "currentAssertions": 28,
+      "retainedInOrder": 23,
+      "removed": [
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Independent pinned copy added\""
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toHaveAttribute",
+          "negative": false,
+          "arguments": [
+            "\"viewBox\"",
+            "\"0 0 160 96\""
+          ]
+        },
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "asset.draft.content.entities.length + 1"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeHidden",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Independent released copy added\""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-room-features.spec.ts",
+      "originalAssertions": 58,
+      "currentAssertions": 63,
+      "retainedInOrder": 54,
+      "removed": [
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "movedX"
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "0.6"
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "0.75"
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "0.65"
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "\"reference-desk\""
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "initialClueX + movedX - initialX"
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "initialClueX"
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "initialClueX + movedX - initialX"
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "initialClueX + movedX - initialX"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "\"reference-desk\""
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "attachedX(0.6, 0)"
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "attachedX(0.75, 45)"
+          ]
+        },
+        {
+          "matcher": "toBeCloseTo",
+          "negative": false,
+          "arguments": [
+            "attachedX(0.65, 45)"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-room-photo.spec.ts",
+      "originalAssertions": 62,
+      "currentAssertions": 62,
+      "retainedInOrder": 62,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-sc00b-combined.spec.ts",
+      "originalAssertions": 179,
+      "currentAssertions": 179,
+      "retainedInOrder": 179,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-sc00c-drop-placement.spec.ts",
+      "originalAssertions": 15,
+      "currentAssertions": 15,
+      "retainedInOrder": 15,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+      "originalAssertions": 131,
+      "currentAssertions": 131,
+      "retainedInOrder": 131,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-sc00c-scale-browser.spec.ts",
+      "originalAssertions": 39,
+      "currentAssertions": 39,
+      "retainedInOrder": 39,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-sc02-integration.spec.ts",
+      "originalAssertions": 32,
+      "currentAssertions": 38,
+      "retainedInOrder": 32,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toBeEnabled",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "before.draft.content.entities"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-sc02.spec.ts",
+      "originalAssertions": 76,
+      "currentAssertions": 79,
+      "retainedInOrder": 75,
+      "removed": [
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Preview audio is unavailable\""
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Desk Map\""
+          ]
+        },
+        {
+          "matcher": "toHaveAttribute",
+          "negative": false,
+          "arguments": [
+            "\"aria-selected\"",
+            "\"true\""
+          ]
+        },
+        {
+          "matcher": "toHaveValue",
+          "negative": false,
+          "arguments": [
+            "\"MY_CREATIONS\""
+          ]
+        },
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Audio could not start. Allow audio in this browser, then try again.\""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-spatial-assistant.spec.ts",
+      "originalAssertions": 47,
+      "currentAssertions": 49,
+      "retainedInOrder": 45,
+      "removed": [
+        {
+          "matcher": "toMatchObject",
+          "negative": false,
+          "arguments": [
+            "{\n    action: \"AI\",\n    kind: \"ASSISTANT\",\n    request: createRequest,\n    mode: \"STANDARD\",\n    revision: 1,\n}"
+          ]
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "[\n    \"action\",\n    \"draft\",\n    \"editorGeneration\",\n    \"idempotencyKey\",\n    \"kind\",\n    \"mode\",\n    \"previousRequestId\",\n    \"request\",\n    \"requestId\",\n    \"revision\",\n    \"selectedEntityId\",\n].sort()"
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toBeGreaterThan",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "base.draft"
+          ]
+        },
+        {
+          "matcher": "toMatchObject",
+          "negative": false,
+          "arguments": [
+            "{\n    action: \"AI\",\n    kind: \"ASSISTANT\",\n    request: createRequest,\n    mode: \"STANDARD\",\n    revision: base.revision,\n    selectedEntityId: base.draft.content.entities[0].id,\n    selectedGroupId: null,\n    selectedMembers: [{ kind: \"ASSET\", id: base.draft.content.entities[0].id }],\n}"
+          ]
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "[\n    \"action\",\n    \"draft\",\n    \"editorGeneration\",\n    \"idempotencyKey\",\n    \"kind\",\n    \"mode\",\n    \"previousRequestId\",\n    \"request\",\n    \"requestId\",\n    \"revision\",\n    \"selectedEntityId\",\n    \"selectedGroupId\",\n    \"selectedMembers\",\n].sort()"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-spatial-community.spec.ts",
+      "originalAssertions": 218,
+      "currentAssertions": 218,
+      "retainedInOrder": 218,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-studio.spec.ts",
+      "originalAssertions": 23,
+      "currentAssertions": 23,
+      "retainedInOrder": 23,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-surfaces.spec.ts",
+      "originalAssertions": 28,
+      "currentAssertions": 28,
+      "retainedInOrder": 27,
+      "removed": [
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Hidden Wall Message\""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-workstation.spec.ts",
+      "originalAssertions": 44,
+      "currentAssertions": 49,
+      "retainedInOrder": 42,
+      "removed": [
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "aiAvailable ? \"Configured provider available in AI assistance\" : \"AI provider unavailable\""
+          ]
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"draft unchanged\""
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toBeEnabled",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeDisabled",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "aiUsage.enabled ? \"Monthly allowance reached\" : \"Spatial Assistant is unavailable\""
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "storedBefore"
+          ]
+        },
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/reach-device-return.spec.ts",
+      "originalAssertions": 0,
+      "currentAssertions": 19,
+      "retainedInOrder": 0,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toBeFocused",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": [
+            "{ timeout: 7000 }"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": [
+            "{ timeout: 7000 }"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Your hand is ready\""
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"2 detected\""
+          ]
+        },
+        {
+          "matcher": "toHaveValue",
+          "negative": false,
+          "arguments": [
+            "\"EDGE\""
+          ]
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Move your hand slightly toward the center\""
+          ]
+        },
+        {
+          "matcher": "toHaveURL",
+          "negative": false,
+          "arguments": [
+            "/\\/devices\\/pair$/"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "\"settled\""
+          ]
+        },
+        {
+          "matcher": "toBeGreaterThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "layout.header.bottom"
+          ]
+        },
+        {
+          "matcher": "toBeGreaterThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toBeLessThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "layout.viewport.width"
+          ]
+        },
+        {
+          "matcher": "toBeLessThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "layout.viewport.height"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "true"
+          ]
+        },
+        {
+          "matcher": "toHaveURL",
+          "negative": false,
+          "arguments": [
+            "/\\/devices\\/reach$/"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/reach-page-accessibility.spec.ts",
+      "originalAssertions": 0,
+      "currentAssertions": 37,
+      "retainedInOrder": 0,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toHaveURL",
+          "negative": false,
+          "arguments": [
+            "new RegExp(`${pathname}$`)"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "\"settled\""
+          ]
+        },
+        {
+          "matcher": "toBeFocused",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "1"
+          ]
+        },
+        {
+          "matcher": "toBeFocused",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "[]"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "1"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "true"
+          ]
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "[true]"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "true"
+          ]
+        },
+        {
+          "matcher": "toBe",
+          "negative": false,
+          "arguments": [
+            "true"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Your hand is ready\""
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": [
+            "{ timeout: 7000 }"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": [
+            "{ timeout: 7000 }"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeFocused",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeFocused",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"2 detected\""
+          ]
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Move your hand slightly toward the center\""
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Camera access was declined\""
+          ]
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Your hand is ready\""
+          ]
+        },
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Choose a Voyage or enter the code from your other screen.\""
+          ]
+        },
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        }
+      ]
+    }
+  ]
+}

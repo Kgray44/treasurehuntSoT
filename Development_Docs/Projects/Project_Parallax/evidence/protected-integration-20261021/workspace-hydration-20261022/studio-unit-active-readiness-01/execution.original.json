@@ -1,0 +1,39 @@
+{
+  "name": "studio-unit-active-readiness-01",
+  "at": "2026-10-23T01:18:20.539Z",
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 10,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "minimumC": 37295964160,
+  "minimumD": 117301776384,
+  "monitorSamples": 13,
+  "reserveFloorEach": 32212254720,
+  "cStopAt": 32346472448,
+  "dStopAt": 32346472448,
+  "streams": {
+    "stdout": {
+      "bytes": 476,
+      "sha256": "2e2623b48f7a91652cd310e68a6afbc05b4251111b954da110cec59c9acd8164"
+    },
+    "stderr": {
+      "bytes": 15506,
+      "sha256": "827e5eac15a530006c24718767671e04055c7c2add62678b31b40d0635f4a54b"
+    }
+  },
+  "qualification": false,
+  "protectedCapture": false
+}

@@ -1,0 +1,280 @@
+{
+  "before": "86fa610275062ff5dc1c608fabc1832a10017b13",
+  "after": "71ae3d1c6d43df818ce2542cce96d1b9e55e76d7",
+  "qualification": false,
+  "scope": "Matcher name, negation and arguments; subject navigation and fixture identity require source review. Changed assertions are listed, never silently treated as retained.",
+  "results": [
+    {
+      "file": "tests/e2e/fixtures/parallax-current-library.ts",
+      "originalAssertions": 5,
+      "currentAssertions": 5,
+      "retainedInOrder": 5,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-animation.spec.ts",
+      "originalAssertions": 31,
+      "currentAssertions": 37,
+      "retainedInOrder": 31,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "7"
+          ]
+        },
+        {
+          "matcher": "toBeInViewport",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toBeGreaterThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "regionBounds.x"
+          ]
+        },
+        {
+          "matcher": "toBeGreaterThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "regionBounds.y"
+          ]
+        },
+        {
+          "matcher": "toBeLessThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "regionBounds.x + regionBounds.width"
+          ]
+        },
+        {
+          "matcher": "toBeLessThanOrEqual",
+          "negative": false,
+          "arguments": [
+            "rendererBounds.y + rendererBounds.height"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-asset-quality.spec.ts",
+      "originalAssertions": 46,
+      "currentAssertions": 46,
+      "retainedInOrder": 46,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-authoring-refinements.spec.ts",
+      "originalAssertions": 57,
+      "currentAssertions": 57,
+      "retainedInOrder": 57,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-context-menu.spec.ts",
+      "originalAssertions": 32,
+      "currentAssertions": 32,
+      "retainedInOrder": 32,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-groups.spec.ts",
+      "originalAssertions": 112,
+      "currentAssertions": 112,
+      "retainedInOrder": 112,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-owner-refinements.spec.ts",
+      "originalAssertions": 62,
+      "currentAssertions": 63,
+      "retainedInOrder": 60,
+      "removed": [
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Saved Spatial Library\""
+          ]
+        },
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "saved.draft.content.title"
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toHaveAttribute",
+          "negative": false,
+          "arguments": [
+            "\"aria-selected\"",
+            "\"true\""
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-reusable-assets.spec.ts",
+      "originalAssertions": 24,
+      "currentAssertions": 24,
+      "retainedInOrder": 23,
+      "removed": [
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Independent pinned copy added\""
+          ]
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toHaveText",
+          "negative": false,
+          "arguments": [
+            "\"Independent asset copy added and saved; its definition is unchanged\""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-room-features.spec.ts",
+      "originalAssertions": 58,
+      "currentAssertions": 58,
+      "retainedInOrder": 58,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-room-photo.spec.ts",
+      "originalAssertions": 62,
+      "currentAssertions": 62,
+      "retainedInOrder": 62,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-sc00c-scale-browser.spec.ts",
+      "originalAssertions": 39,
+      "currentAssertions": 39,
+      "retainedInOrder": 39,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-sc02-integration.spec.ts",
+      "originalAssertions": 32,
+      "currentAssertions": 38,
+      "retainedInOrder": 32,
+      "removed": [],
+      "added": [
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toBeEnabled",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toHaveCount",
+          "negative": false,
+          "arguments": [
+            "0"
+          ]
+        },
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        },
+        {
+          "matcher": "toEqual",
+          "negative": false,
+          "arguments": [
+            "before.draft.content.entities"
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-sc02.spec.ts",
+      "originalAssertions": 79,
+      "currentAssertions": 79,
+      "retainedInOrder": 79,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-spatial-assistant.spec.ts",
+      "originalAssertions": 47,
+      "currentAssertions": 47,
+      "retainedInOrder": 47,
+      "removed": [],
+      "added": []
+    },
+    {
+      "file": "tests/e2e/parallax-surfaces.spec.ts",
+      "originalAssertions": 28,
+      "currentAssertions": 28,
+      "retainedInOrder": 27,
+      "removed": [
+        {
+          "matcher": "toBeVisible",
+          "negative": false,
+          "arguments": []
+        }
+      ],
+      "added": [
+        {
+          "matcher": "toContainText",
+          "negative": false,
+          "arguments": [
+            "\"Hidden Wall Message\""
+          ]
+        }
+      ]
+    },
+    {
+      "file": "tests/e2e/parallax-workstation.spec.ts",
+      "originalAssertions": 44,
+      "currentAssertions": 44,
+      "retainedInOrder": 44,
+      "removed": [],
+      "added": []
+    }
+  ]
+}

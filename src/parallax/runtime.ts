@@ -12,7 +12,7 @@ import {
   type Anchor,
 } from "./contracts";
 import { composeTransform } from "./transforms";
-import { evaluateSpatialBehavior, runtimePresentableEntityIds, type SpatialInput } from "./behavior";
+import { evaluateSpatialScene, runtimePresentableEntityIds, type SpatialInput } from "./behavior";
 import type { CapabilityState } from "@/sextant/contracts";
 import {
   resolveAdaptiveScene,
@@ -56,7 +56,14 @@ export interface SpatialRuntimeAdapter {
   resolve(anchor: Anchor): Promise<Transform | null>;
   place(alignment: "HORIZONTAL" | "VERTICAL", anchor?: Anchor): Promise<Transform | null>;
   render(
-    entities: readonly { id: string; kind: string; content: string; widthMeters: number; transform: Transform }[],
+    entities: readonly {
+      id: string;
+      kind: string;
+      content: string;
+      widthMeters: number;
+      transform: Transform;
+      opacity?: number;
+    }[],
   ): Promise<void>;
   stop(): Promise<void>;
   supportsScene?(scene: SpatialVersion): boolean;
@@ -73,6 +80,7 @@ export type SpatialContext = {
     save: (key: string, value: SceneResolution) => void;
   };
   searchClock?: () => number;
+  motionPreference?: () => "full" | "gentle" | "reduced";
   searchTimeStore?: { load: (key: string) => number; save: (key: string, seconds: number) => void };
 };
 export type LensState =
@@ -145,6 +153,9 @@ export class ParallaxLensRuntime {
   private spatialInputs: SpatialInput[] = [];
   private timers: ReturnType<typeof setTimeout>[] = [];
   private renderTail: Promise<void> = Promise.resolve();
+  private cinematicTake = 0;
+  private animationTimer: ReturnType<typeof setTimeout> | undefined;
+  private animationGeneration = 0;
   private readonly ledger = new Map<string, InteractionReceipt>();
   private readonly assistance = new Map<string, DiscoveryAssistance>();
   private resolution: SceneResolution | null = null;
@@ -224,6 +235,7 @@ export class ParallaxLensRuntime {
     this.abort = new AbortController();
     this.startedAt = this.now().getTime();
     this.renderedBehaviorAt = 0;
+    this.cinematicTake = Math.floor(Math.random() * 2147483647);
     this.spatialInputs = [
       { trigger: "SCENE_ENTER", atMs: 0 },
       { trigger: "TIMER", atMs: 0 },
@@ -246,6 +258,8 @@ export class ParallaxLensRuntime {
       anchors: {},
     });
     try {
+      if (this.adapter.mode === "BROWSER" && (!this.adapter.worldTracking || !this.usableCamera()))
+        throw new Error("Browser AR requires an active authorized camera and world-tracking provider.");
       await this.adapter.start({
         signal: this.abort.signal,
         sceneIdentity: { versionChecksum: this.moment.version.checksum, instanceId: this.instanceId },
@@ -256,6 +270,10 @@ export class ParallaxLensRuntime {
       });
       if (epoch !== this.epoch) return;
       const anchors: Record<string, ResolvedAnchor> = {};
+      if (this.adapter.mode === "BROWSER" && this.moment.version.adaptive)
+        throw new Error(
+          "Browser tracking currently requires a room-aligned authored scene. Adaptive physical surface evidence is not available.",
+        );
       if (this.moment.version.adaptive && this.adapter.mode !== "GUIDED") {
         const evidence = await this.adapter.environmentEvidence?.();
         if (epoch !== this.epoch) return;
@@ -312,7 +330,8 @@ export class ParallaxLensRuntime {
         else if (this.resolution && this.moment.version.adaptive) {
           const root = this.moment.version.entities.find((e) => e.anchorId === a.id && !e.parentEntityId);
           t = root ? (this.resolution.placements[root.id]?.transform ?? null) : null;
-        } else if (a.kind === "FIXED_WORLDSPACE") {
+        } else if (this.adapter.mode === "BROWSER") t = await this.adapter.resolve(a);
+        else if (a.kind === "FIXED_WORLDSPACE") {
           const w = this.context.worldspace;
           t =
             w && w.id === a.worldspaceId && w.frameId === a.frameId
@@ -321,6 +340,8 @@ export class ParallaxLensRuntime {
         } else t = await this.adapter.resolve(a);
         if (epoch !== this.epoch) return;
         if (!t) {
+          if (this.adapter.mode === "BROWSER")
+            throw new Error("Room alignment must be completed before opening this spatial scene.");
           await this.useGuidedView();
           return;
         }
@@ -346,8 +367,8 @@ export class ParallaxLensRuntime {
         tracking: this.snapshot.state === "READY" || this.snapshot.mode === "GUIDED",
         inSearchRegion: true,
       });
-    } catch {
-      if (epoch === this.epoch) await this.useGuidedView();
+    } catch (cause) {
+      if (epoch === this.epoch) await this.presentationFailure(cause);
     }
   }
   private onEvent(e: SpatialRuntimeEvent) {
@@ -360,7 +381,7 @@ export class ParallaxLensRuntime {
       void this.useGuidedView();
       return;
     }
-    if (e.type === "TRACKING" && e.state === "INTERRUPTED") {
+    if (e.type === "TRACKING" && e.state === "INTERRUPTED" && this.adapter.mode !== "BROWSER") {
       void this.useGuidedView();
       return;
     }
@@ -394,7 +415,29 @@ export class ParallaxLensRuntime {
       });
     }
   }
-  async useGuidedView(options: { inspection?: InteractionReceipt } = {}) {
+  /** Browser AR attempts remain explicit. A failed or interrupted attempt never silently becomes Guided. */
+  private async presentationFailure(cause?: unknown) {
+    if (this.adapter.mode !== "BROWSER") return this.useGuidedView({ cause });
+    const epoch = this.epoch;
+    clearTimeout(this.animationTimer);
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
+    this.normalSamples = 0;
+    this.updateSearchActivity({ tracking: false });
+    await this.adapter.stop().catch(() => undefined);
+    if (epoch !== this.epoch) return;
+    this.update({
+      state: "DEGRADED",
+      tracking: "LOST",
+      guidance:
+        cause instanceof Error
+          ? cause.message
+          : "Browser tracking stopped. Restart and align again, or choose Guided View.",
+      anchors: {},
+      visibleEntityIds: [],
+    });
+  }
+  async useGuidedView(options: { inspection?: InteractionReceipt; cause?: unknown } = {}) {
     if (this.snapshot.state === "CLOSED") return;
     const parsed = receiptSchema.safeParse(options.inspection);
     const inspection = parsed.success ? parsed.data : undefined;
@@ -407,6 +450,7 @@ export class ParallaxLensRuntime {
       JSON.stringify(retained) === JSON.stringify(inspection)
         ? retained.entityId
         : null;
+    clearTimeout(this.animationTimer);
     this.timers.forEach(clearTimeout);
     this.timers = [];
     const epoch = ++this.epoch;
@@ -435,7 +479,10 @@ export class ParallaxLensRuntime {
       state: "GUIDED_FALLBACK",
       mode: "GUIDED",
       tracking: "UNSUPPORTED",
-      guidance: guidance.UNSUPPORTED,
+      guidance:
+        options.cause instanceof Error && options.cause.message === "PARALLAX_NATIVE_OPACITY_UNSUPPORTED"
+          ? "This companion cannot preview opacity animation. Guided View keeps the clue available; update the companion to preview fading."
+          : guidance.UNSUPPORTED,
       anchors,
     });
     await this.draw();
@@ -466,7 +513,10 @@ export class ParallaxLensRuntime {
     for (const [id, state] of Object.entries(states))
       this.context.searchTimeStore?.save(this.searchTimeKey(id), state.meaningfulSeconds);
     this.update({ discovery: states });
-    if (Object.values(states).some((s) => s.recovery === "GUIDED") && this.snapshot.mode !== "GUIDED")
+    if (
+      Object.values(states).some((s) => s.recovery === "GUIDED") &&
+      !["GUIDED", "BROWSER"].includes(this.snapshot.mode)
+    )
       await this.useGuidedView();
   }
   async reveal() {
@@ -477,45 +527,55 @@ export class ParallaxLensRuntime {
     if (["NATIVE", "BROWSER"].includes(this.adapter.mode) && !this.usableCamera()) await this.useGuidedView();
   }
   private presentation(elapsed = this.now().getTime() - this.startedAt) {
-    const states = evaluateSpatialBehavior(this.moment.version, this.spatialInputs, elapsed);
-    const a = this.moment.version.adaptive;
-    const currentReveal = a?.revealOrder.find((id) => !this.discovered.has(id)) ?? a?.revealOrder.at(-1);
-    const presentable = runtimePresentableEntityIds(this.moment.version);
-    const visible = this.moment.version.entities.filter((e) =>
-      this.snapshot.mode === "GUIDED"
-        ? presentable.has(e.id)
-        : states[e.id].visible && (!currentReveal || !a?.revealOrder.includes(e.id) || e.id === currentReveal),
+    const { states } = evaluateSpatialScene(
+      this.moment.version,
+      this.spatialInputs,
+      elapsed,
+      false,
+      { take: this.cinematicTake, motion: this.context.motionPreference?.() },
     );
-    return { visible, highlightedEntityIds: visible.filter((e) => states[e.id].highlighted).map((e) => e.id) };
+    const adaptive = this.moment.version.adaptive;
+    const currentReveal = adaptive?.revealOrder.find((id) => !this.discovered.has(id)) ?? adaptive?.revealOrder.at(-1);
+    const presentable = runtimePresentableEntityIds(this.moment.version);
+    const visible = this.moment.version.entities.filter((entity) =>
+      this.snapshot.mode === "GUIDED"
+        ? presentable.has(entity.id)
+        : presentable.has(entity.id) &&
+          states[entity.id].visible &&
+          states[entity.id].opacity !== 0 &&
+          (!currentReveal || !adaptive?.revealOrder.includes(entity.id) || entity.id === currentReveal),
+    );
+    return { visible, states, highlightedEntityIds: visible.filter((entity) => states[entity.id].highlighted).map((entity) => entity.id) };
   }
-  private draw() {
+  private draw(): Promise<void> {
+    if (this.adapter.mode === "BROWSER" && !Object.keys(this.snapshot.anchors).length) return Promise.resolve();
     const epoch = this.epoch,
       adapter = this.adapter,
       signal = this.abort.signal;
     const current = () => epoch === this.epoch && !signal.aborted;
     const render = this.renderTail.then(async () => {
-      // Model loading can outlive stop/reopen. Old queued work never reads a new
-      // session's anchors or adapter, and close never waits on this queue.
+      // A staged model can outlive stop or reopen. Obsolete work never observes
+      // a later session's anchors or adapter, and close does not wait on it.
       while (current()) {
-        const { visible, highlightedEntityIds } = this.presentation();
-        const visibleEntityIds = visible.map((e) => e.id);
+        const { visible, states, highlightedEntityIds } = this.presentation();
+        const visibleEntityIds = visible.map((entity) => entity.id);
         this.update({ visibleEntityIds, highlightedEntityIds });
         if (!current()) return;
         const transforms = new Map<string, Transform>();
         const resolve = (id: string): Transform => {
           const found = transforms.get(id);
           if (found) return found;
-          const e = this.moment.version.entities.find((x) => x.id === id)!;
-          const t = composeTransform(
-            e.parentEntityId ? resolve(e.parentEntityId) : this.snapshot.anchors[e.anchorId].transform,
-            e.transform,
+          const entity = this.moment.version.entities.find((candidate) => candidate.id === id)!;
+          const transform = composeTransform(
+            entity.parentEntityId ? resolve(entity.parentEntityId) : this.snapshot.anchors[entity.anchorId].transform,
+            states[id].transform,
           );
-          transforms.set(id, t);
-          return t;
+          transforms.set(id, transform);
+          return transform;
         };
-        // Resolve every entity, including hidden parents, once in the canonical runtime.
-        for (const e of this.moment.version.entities) resolve(e.id);
-        if (adapter.renderScene) {
+        // Hidden parents still contribute their canonical transforms.
+        for (const entity of this.moment.version.entities) resolve(entity.id);
+        if (adapter.renderScene && (adapter.mode === "NATIVE" || this.moment.version.entities.some((e) => e.element?.enabled))) {
           await adapter.renderScene(
             createSceneDelivery({
               version: this.moment.version,
@@ -523,30 +583,32 @@ export class ParallaxLensRuntime {
               playthroughId: this.binding.sessionId,
               blockId: this.binding.blockId,
               transforms,
-              visibleEntityIds: visible.map((e) => e.id),
+              visibleEntityIds,
+              opacityByEntityId: new Map(Object.entries(states).map(([id, state]) => [id, state.opacity ?? 1])),
               elapsedMs: this.now().getTime() - this.startedAt,
               reducedMotion: typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches,
             }),
           );
-        } else
+        } else {
           await adapter.render(
-            visible.map((e) => ({
-              id: e.id,
-              kind: e.kind,
-              content: e.content,
-              widthMeters: e.widthMeters,
-              transform: resolve(e.id),
+            visible.map((entity) => ({
+              id: entity.id,
+              kind: entity.kind,
+              content: entity.content,
+              widthMeters: entity.widthMeters,
+              ...(states[entity.id].opacity !== undefined ? { opacity: states[entity.id].opacity } : {}),
+              transform: resolve(entity.id),
             })),
           );
+        }
         if (!current()) return;
         const latestAt = this.now().getTime() - this.startedAt;
         const latest = this.presentation(latestAt);
-        // A delayed SHOW/HIDE may mature while the initial GLB is staging. Catch
-        // up before arming future timers rather than dropping elapsed deadlines.
-        if (
-          JSON.stringify([visibleEntityIds, highlightedEntityIds]) ===
-          JSON.stringify([latest.visible.map((e) => e.id), latest.highlightedEntityIds])
-        ) {
+        const signature = (view: typeof latest) => JSON.stringify([
+          view.visible.map((entity) => [entity.id, view.states[entity.id].transform, view.states[entity.id].opacity]),
+          view.highlightedEntityIds,
+        ]);
+        if (signature({ visible, states, highlightedEntityIds }) === signature(latest)) {
           this.renderedBehaviorAt = latestAt;
           return;
         }
@@ -556,10 +618,38 @@ export class ParallaxLensRuntime {
     return render;
   }
   private scheduleBehavior() {
+    clearTimeout(this.animationTimer);
+    const animationGeneration = ++this.animationGeneration;
     this.timers.forEach(clearTimeout);
     this.timers = [];
     const epoch = this.epoch;
     const elapsed = this.now().getTime() - this.startedAt;
+    const lastFrame = Math.max(
+      0,
+      ...(this.moment.version.studio?.animationTracks ?? [])
+        .filter((t) => t.enabled)
+        .flatMap((t) => t.keyframes.map((f) => f.atMs)),
+    );
+    const animate = () => {
+      if (
+        epoch !== this.epoch ||
+        animationGeneration !== this.animationGeneration ||
+        this.abort.signal.aborted ||
+        this.snapshot.mode === "GUIDED"
+      )
+        return;
+      this.animationTimer = setTimeout(async () => {
+        if (epoch !== this.epoch || animationGeneration !== this.animationGeneration || this.abort.signal.aborted)
+          return;
+        try {
+          await this.draw();
+          if (this.now().getTime() - this.startedAt < lastFrame) animate();
+        } catch (cause) {
+          if (epoch === this.epoch) await this.presentationFailure(cause);
+        }
+      }, 33);
+    };
+    if (lastFrame > elapsed) animate();
     const due = new Set(
       (this.moment.version.studio?.behaviors ?? [])
         .flatMap((b) =>
@@ -574,8 +664,8 @@ export class ParallaxLensRuntime {
         setTimeout(
           () => {
             if (epoch === this.epoch && !this.abort.signal.aborted)
-              void this.draw().catch(() => {
-                if (epoch === this.epoch && !this.abort.signal.aborted) return this.useGuidedView();
+              void this.draw().catch((cause) => {
+                if (epoch === this.epoch) return this.presentationFailure(cause);
               });
           },
           Math.max(0, time - elapsed + 1),
@@ -630,7 +720,7 @@ export class ParallaxLensRuntime {
         } catch (error) {
           if (epoch === this.epoch) {
             Object.assign(anchor, original);
-            await this.useGuidedView();
+            await this.presentationFailure(error);
           }
           throw error;
         }
@@ -685,6 +775,7 @@ export class ParallaxLensRuntime {
     this.abort.abort();
     this.renderTail = Promise.resolve();
     this.timers.forEach(clearTimeout);
+    clearTimeout(this.animationTimer);
     this.timers = [];
     this.normalSamples = 0;
     this.interactionPending = false;

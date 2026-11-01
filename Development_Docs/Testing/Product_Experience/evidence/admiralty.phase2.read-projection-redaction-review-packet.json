@@ -1,0 +1,455 @@
+{
+  "objective": "Read actual bounded owner projections and preserve redaction, capability partitions and return.",
+  "contract": {
+    "id": "admiralty.phase2.read-projection-redaction",
+    "name": "Bounded typed owner projections and secret redaction",
+    "authority": "project-admiralty",
+    "owners": [
+      "project-admiralty"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A canonically signed-in synthetic Administrator using the existing governed Admiralty and Community tasks.",
+      "objective": "Read actual bounded owner projections and preserve redaction, capability partitions and return.",
+      "visibleOutcome": "Read actual bounded owner projections and preserve redaction, capability partitions and return.",
+      "integrationOwner": "Existing Parallax integration owner #776; Admiralty and Harborlight retain authorization, redaction, support consent and command authority.",
+      "accessibility": "Preserve labelled inputs, semantic outcomes, readable constrained layouts and the same parent return in desktop and phone motion variants.",
+      "fallback": "Keep real capability denial, bounded no-match results, missing data, privileged confirmation, scoped consent and second-reviewer requirements. No fake healthy provider or approved command is supplied.",
+      "navigation": "Use the existing visible task controls, observe the real result, and follow the advertised return.",
+      "designTarget": "Preserve current Admiralty/Community task composition and the accepted shared Homeport identity and return frame.",
+      "entryPoint": "/admin",
+      "systems": [
+        "project-admiralty",
+        "harborlight"
+      ],
+      "sourcePaths": [
+        "src/app/admin/page.tsx",
+        "src/app/admin/layout.tsx",
+        "src/app/admin/community/page.tsx",
+        "src/app/admin/providers/page.tsx",
+        "src/app/admin/releases/page.tsx",
+        "src/app/admin/investigate/page.tsx",
+        "src/components/admiralty/AdmiraltyShell.tsx",
+        "src/styles/admiralty.css"
+      ],
+      "projectionPaths": [
+        "src/admiralty/projections.ts",
+        "src/admiralty/investigation.ts",
+        "src/admiralty/ports/harborlight-admin-read.ts",
+        "src/admiralty/ports/operations-admin-read.ts"
+      ],
+      "states": [
+        "OVERVIEW_READABLE",
+        "COMMUNITY_NO_MATCH",
+        "PROVIDERS_READABLE",
+        "RELEASE_AUTHORITY_READABLE",
+        "INVESTIGATION_NO_MATCH",
+        "HOME_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "ADMINISTRATOR"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "ADMINISTRATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Fadmin",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-operator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "Platform Overview",
+            "text": "Platform Overview"
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry/recovery frame only; no standalone Admiralty or moderation-body visual acceptance is asserted.",
+          "preserve": "Readable identity, clear role destinations and a usable return; review the actual governed task body independently."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport entry/recovery frame only; no standalone Admiralty or moderation-body visual acceptance is asserted.",
+          "preserve": "Readable identity, clear role destinations and a usable return; review the actual governed task body independently."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "admiralty-phase2-read-projection-redaction-compatibility",
+          "roles": [
+            "ADMINISTRATOR"
+          ],
+          "outcome": "Read actual bounded owner projections and preserve redaction, capability partitions and return.",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Platform Overview",
+              "state": "OVERVIEW_READABLE",
+              "path": "/admin"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Community"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Search Community content",
+              "value": "parallax-compat-no-matching-content"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Search"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "state": "COMMUNITY_NO_MATCH",
+              "path": "/admin/community",
+              "text": "No matching Community content",
+              "kind": "outcome",
+              "meaning": "The real bounded Community query reports no eligible matching content instead of inventing public or protected data."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Providers"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Providers",
+              "state": "PROVIDERS_READABLE",
+              "path": "/admin/providers"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Releases"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Deployment authority",
+              "state": "RELEASE_AUTHORITY_READABLE",
+              "path": "/admin/releases",
+              "text": "Deployment authority",
+              "kind": "outcome",
+              "meaning": "The existing read projection keeps deployment ownership explicit and does not expose unsupported promotion or rollback actions."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Investigate"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "What are you investigating?",
+              "value": "parallax-compat-no-authorized-match"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Search"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "state": "INVESTIGATION_NO_MATCH",
+              "path": "/admin/investigate",
+              "text": "No authorized match",
+              "kind": "outcome",
+              "meaning": "The actual capability-scoped fan-out reports a bounded authorized no-match state without revealing private data."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Safe return"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Home"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "state": "HOME_RETURNED",
+              "path": "/",
+              "returnPath": true
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-admiralty-compatibility.spec.ts",
+        "tests/e2e/admiralty-phase2.spec.ts"
+      ],
+      "limitations": [
+        "Read-only projections only. The separate command, support and moderation facets retain their own journeys; AI economics and #725 acceptance remain independent.",
+        "The new browser tests exercise real ordinary/anonymous page 404, audit-role partition, no-match states, private canary absence, and no unsupported deployment controls. Provider configuration is not live-provider readiness.",
+        "Accepted references cover shared entry and recovery framing only, not a curated task-body baseline. Current captured media and independent review remain required.",
+        "Browser cases retain these separate domain assertions: The actual signed-in account retains its canonical role/capability boundary across navigation. Private prose, credential material and unsupported provider/deployment authority are not promoted by aggregate data or previews. The visible return preserves the canonical account; previews do not become command execution or owner consent."
+      ],
+      "continuity": {
+        "objective": "Observe the same visible synthetic account identity at entry, task outcomes and return. Separate browser cases verify canonical IDs, capabilities and domain privacy; this aria-label alone does not prove them.",
+        "checks": [
+          {
+            "id": "visible-account-identity",
+            "role": "group",
+            "name": "Synthetic Parallax Operator",
+            "attribute": "aria-label"
+          }
+        ]
+      }
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-OVERVIEW_READABLE-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-OVERVIEW_READABLE-0.png",
+      "sha256": "03be225004d98567cc806f373582d0fe893f6eff7453be8e7ff2f4667152ec05",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "OVERVIEW_READABLE",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-COMMUNITY_NO_MATCH-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-COMMUNITY_NO_MATCH-4.png",
+      "sha256": "dd9b335f697a7c721189c22a3a55627a5d006e48b03a8974574f4cbcc32fe4ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "COMMUNITY_NO_MATCH",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-PROVIDERS_READABLE-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-PROVIDERS_READABLE-6.png",
+      "sha256": "d375775150c227f1ab0a8ea714ae7d38ef3d6cce0616df12db183f43886c197e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "PROVIDERS_READABLE",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-RELEASE_AUTHORITY_READABLE-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-RELEASE_AUTHORITY_READABLE-8.png",
+      "sha256": "0e2d7709923c451d2da541f153cacea04ba25d5c1f604c797e59fcaba702af8c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "RELEASE_AUTHORITY_READABLE",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-INVESTIGATION_NO_MATCH-12",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-INVESTIGATION_NO_MATCH-12.png",
+      "sha256": "8f74ea68bb2cea3c6163c4daf21189644346ddd2cf03879237e56885a9ec8c42",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "INVESTIGATION_NO_MATCH",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-HOME_RETURNED-15",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-HOME_RETURNED-15.png",
+      "sha256": "6d91a099c2ab4361bb504f10302069c9605502528f518404a55c52ecf8360997",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "HOME_RETURNED",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "865435710e73527e6897aed441eae1842f8b4ced2bbd7af9ec5f42c9a0ac80b9",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-DESKTOP-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6164e4b486bcac09cc6fc670dcdf58f9.webm",
+      "sha256": "eea3b3ec5075274af2ed7be621aae6ef2832bf20e4e13ced76835a2c7b9d5e70",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "device": "DESKTOP",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-OVERVIEW_READABLE-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-OVERVIEW_READABLE-0.png",
+      "sha256": "b515e7bf45968e2e6b578d1c4f36735817237479ab77349c3fe6db6e890674d6",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "OVERVIEW_READABLE",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-COMMUNITY_NO_MATCH-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-COMMUNITY_NO_MATCH-4.png",
+      "sha256": "175f6c98aaec914aadbb6eb9cce72a2b527a4f120b05dd37d95244ed6c510a55",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "COMMUNITY_NO_MATCH",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-PROVIDERS_READABLE-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-PROVIDERS_READABLE-6.png",
+      "sha256": "10efcd427c951437803c03358c68aa2f5894866f4e2d539748e00c8b196a7382",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "PROVIDERS_READABLE",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-RELEASE_AUTHORITY_READABLE-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-RELEASE_AUTHORITY_READABLE-8.png",
+      "sha256": "a1a8ff1678d03adf451364daf9ceacf6b5c16886dfd59380122b2846023d764d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "RELEASE_AUTHORITY_READABLE",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-INVESTIGATION_NO_MATCH-12",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-INVESTIGATION_NO_MATCH-12.png",
+      "sha256": "f227d27fc7cc507ec3bb9abd6d36249ec58ea7ae827398245172f61e76a1a2a1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "INVESTIGATION_NO_MATCH",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-HOME_RETURNED-15",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-HOME_RETURNED-15.png",
+      "sha256": "298e269f67e2ed969f53b68460d1c1a329e1396cefa00f424531f677829d066b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "state": "HOME_RETURNED",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED.trace.zip",
+      "sha256": "625d2b82c2d9a821ead3c2020c668ef0a4250df817d7b6b181c031f185add7b0",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "admiralty.phase2.read-projection-redaction-admiralty-phase2-read-projection-redaction-compatibility-MOBILE-ADMINISTRATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/751149180beb34ea398b9782297ea4f3.webm",
+      "sha256": "caed44a5c15779a5a5e01d6a9163ce70e5ed6b6e575ac28bece34b6ec67735e2",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "admiralty.phase2.read-projection-redaction",
+      "device": "MOBILE",
+      "role": "ADMINISTRATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "f5eb4ae853ab3eef96fed6838033c515223a23f122d16eb7cd536e7d9e20eeb7",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

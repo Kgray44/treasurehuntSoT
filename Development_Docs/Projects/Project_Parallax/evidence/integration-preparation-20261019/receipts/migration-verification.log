@@ -1,0 +1,1 @@
+{"schemaVersion":1,"qualification":false,"status":"PASS","engine":"Node SQLite","migration":"202610150001_spatial_publication_licenses","checks":["fresh schema accepts exact migration","three license rows created","second application is idempotent","existing customized display/rights/active values retained"],"mysql":"Schema validated; no live MySQL engine claimed"}

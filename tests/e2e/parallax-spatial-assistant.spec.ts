@@ -1,3 +1,8 @@
+import {
+  currentStudioStatus,
+  openCurrentScenePublication,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -135,7 +140,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await expect(page).toHaveURL(/\/studio\/parallax/);
   await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   await expect(canvas.locator('[data-renderer="READY"]')).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
@@ -152,12 +157,18 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect(createResponse.ok(), JSON.stringify(createdBody)).toBe(true);
   const proposal = createdBody.proposal as AssistantProposal;
   const request = createResponse.request().postDataJSON();
+  const base = await ownedWorking(account.id, request.draft.content.definitionId);
+  expect(base.revision).toBeGreaterThan(0);
+  expect(request.draft).toEqual(base.draft);
   expect(request).toMatchObject({
     action: "AI",
     kind: "ASSISTANT",
     request: createRequest,
     mode: "STANDARD",
-    revision: 1,
+    revision: base.revision,
+    selectedEntityId: base.draft.content.entities[0].id,
+    selectedGroupId: null,
+    selectedMembers: [{ kind: "ASSET", id: base.draft.content.entities[0].id }],
   });
   expect(Object.keys(request).sort()).toEqual(
     [
@@ -172,9 +183,10 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
       "requestId",
       "revision",
       "selectedEntityId",
+      "selectedGroupId",
+      "selectedMembers",
     ].sort(),
   );
-  const base = await ownedWorking(account.id, request.draft.content.definitionId);
   expect(base.draft.content.entities).toHaveLength(1);
   const expected = await materializeAssistantProposal(
     base.draft,
@@ -191,7 +203,10 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await expect(canvas.locator("canvas")).toBeVisible();
   expect((await ownedWorking(account.id, request.draft.content.definitionId)).revision).toBe(base.revision);
   await capture(page, "proposed-canvas");
-  await assistant.getByRole("button", { name: "Locate object", exact: true }).click();
+  const proposedMap = assistant.getByRole("article").filter({
+    has: page.getByRole("checkbox", { name: "New spatial object Pirate map · on a horizontal surface", exact: true }),
+  });
+  await proposedMap.getByRole("button", { name: "Locate object", exact: true }).click();
   await expect(mapButton).toHaveAttribute("aria-pressed", "true");
   await capture(page, "object-highlight");
   await assistant.getByRole("button", { name: "Current scene", exact: true }).click();
@@ -205,6 +220,10 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect(savedResponse.ok(), JSON.stringify(savedBody)).toBe(true);
   expect(savedBody.draft).toEqual(expected);
   await expect(assistant).toContainText("Your changes are saved");
+  const canvasCheck = assistant.getByRole("region", { name: "Saved scene canvas check", exact: true });
+  await expect(canvasCheck).toBeVisible();
+  await expect(canvasCheck).not.toContainText("Canvas confirmation is pending");
+  await expect(canvasCheck).toContainText(/rendered in the current view|saved, but|saved hidden as authored/);
   const saved = await ownedWorking(account.id, request.draft.content.definitionId);
   expect(saved).toEqual({ draft: expected, revision: base.revision + 1 });
   const ledger = await db.aIUsageLedger.findFirstOrThrow({
@@ -219,7 +238,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await expect(mapButton).toHaveCount(0);
   await assistant.getByRole("button", { name: "Redo", exact: true }).click();
   await expect(mapButton).toBeVisible();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect
     .poll(async () => (await ownedWorking(account.id, request.draft.content.definitionId)).draft)
     .toEqual(expected);
@@ -245,16 +264,16 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
     widthMeters: 0.45,
   });
   await page.getByRole("button", { name: "Close assistance", exact: true }).click();
-  await page.getByText("Library, reuse & publication", { exact: true }).click();
+  await openCurrentScenePublication(page);
   await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
   await page.getByText("Scene actions", { exact: true }).click();
   await page.getByRole("button", { name: "Validate in Drydock", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Drydock spatial checks complete" })).toBeVisible();
+  await expect(currentStudioStatus(page).filter({ hasText: "Drydock spatial checks complete" })).toBeVisible();
   await page.getByText("Scene actions", { exact: true }).click();
   await page.getByRole("button", { name: "Create immutable version", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Immutable version created" })).toBeVisible();
+  await expect(currentStudioStatus(page).filter({ hasText: "Immutable version created" })).toBeVisible();
   await page.getByRole("button", { name: "Attach exact version", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Pinned spatial version attached" })).toBeVisible();
+  await expect(currentStudioStatus(page).filter({ hasText: "Pinned spatial version attached" })).toBeVisible();
   const attached = await getStudioTale(tale.id);
   const capsule = validateSpatialMoment(attached.draft.chapters[0].blocks[0].presentation.spatialMoment, blockId);
   expect(capsule.version.entities.find((entity) => entity.id === "synthetic-pirate-map")?.widthMeters).toBe(0.45);
@@ -263,9 +282,8 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
     `/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&entity=synthetic-pirate-map&block=${blockId}`,
   );
   await expect(page.getByLabel("Clue or message")).toHaveValue("Follow the northern harbor bearing.");
-  await page.getByLabel("Workspace layout").selectOption("SPATIAL");
-  const library = page.getByText("Library, reuse & publication", { exact: true });
-  if ((await library.locator("..").getAttribute("open")) === null) await library.click();
+  await page.getByRole("combobox", { name: "Workspace layout", exact: true }).selectOption("SPATIAL");
+  await openCurrentScenePublication(page);
   await page.getByRole("button", { name: /v1.0.0 · 2 objects/ }).click();
   await expect(page.getByText(`Pinned ${pin.slice(0, 16)}…`, { exact: true })).toBeVisible();
   expect({

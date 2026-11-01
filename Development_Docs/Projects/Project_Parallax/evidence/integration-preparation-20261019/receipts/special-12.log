@@ -1,0 +1,720 @@
+Prisma schema loaded from prisma\schema.sqlite.prisma
+
+✔ Generated Prisma Client (v6.19.3) to .\node_modules\@prisma\client in 658ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+▲ Next.js 16.3.8 (Turbopack)
+- Local:         http://127.0.0.1:49862
+- Network:       http://127.0.0.1:49862
+✓ Ready in 364ms
+✓ Running next.config.ts took 33ms
+
+ GET / 200 in 309ms (next.js: 61ms, proxy.ts: 44ms, application-code: 203ms)
+(node:111548) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Running 10 tests using 1 worker
+
+(node:130008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:130008) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:130008) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /admin/ai-usage 200 in 497ms (next.js: 109ms, proxy.ts: 6ms, application-code: 382ms)
+ GET /api/auth/context 200 in 104ms (next.js: 65ms, proxy.ts: 4ms, application-code: 35ms)
+ GET /api/passport/preferences 200 in 243ms (next.js: 64ms, proxy.ts: 5ms, application-code: 173ms)
+ GET /api/admin/ai-usage 200 in 147ms (next.js: 76ms, proxy.ts: 10ms, application-code: 60ms)
+ POST /api/admin/commands/ai-quota-policy/preview 403 in 75ms (next.js: 46ms, proxy.ts: 7ms, application-code: 22ms)
+ GET /admin/people 200 in 103ms (next.js: 30ms, proxy.ts: 5ms, application-code: 69ms)
+ GET /api/auth/context 200 in 32ms (next.js: 4ms, proxy.ts: 4ms, application-code: 24ms)
+ GET /api/passport/preferences 200 in 25ms (next.js: 4ms, proxy.ts: 6ms, application-code: 15ms)
+ GET /admin/people?q=cmvfr1hxs000525bc91b7tksq 200 in 131ms (next.js: 5ms, proxy.ts: 6ms, application-code: 121ms)
+ GET /api/auth/context 200 in 31ms (next.js: 4ms, proxy.ts: 5ms, application-code: 22ms)
+ GET /api/passport/preferences 200 in 25ms (next.js: 3ms, proxy.ts: 5ms, application-code: 17ms)
+ GET /admin/people/cmvfr1hxs000525bc91b7tksq 200 in 775ms (next.js: 561ms, proxy.ts: 13ms, application-code: 200ms)
+ GET /api/auth/context 200 in 20ms (next.js: 3ms, proxy.ts: 5ms, application-code: 12ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+      <LoadingBoundary name="cmvfr1hxs0..." loading={null}>
+        <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+          <RedirectBoundary>
+            <RedirectErrorBoundary router={{...}}>
+              <InnerLayoutRouter url="/admin/peo..." tree={[...]} params={{...}} cacheNode={{rsc:{...}, ...}} ...>
+                <SegmentViewNode type="page" pagePath="admin/peop...">
+                  <SegmentTrieNode>
+                  <AccountDossierPage>
+                    <ChartroomPage>
+                      <div className="chartroom-...">
+                        <header>
+                        <div>
+                        <div>
+                        <section>
+                        <section>
+                        <Panel>
+                          <section className="chartroom-...">
+                            <header>
+                            <SessionActionPanel targetAccountId="cmvfr1hxs0..." csrfToken="wsx_nqME1y..." ...>
+                              <section className="chartroom-..." aria-labelledby="session-ac...">
+                                <h3>
+                                <p>
+                                <label>
+                                <label>
+                                  <textarea
+                                    value=""
+                                    minLength={8}
+                                    maxLength={240}
+                                    required={true}
+                                    onChange={function onChange}
+                                    placeholder="Describe why the session must be revoked."
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                <label>
+                                  <input
+                                    type="password"
+                                    autoComplete="current-password"
+                                    value=""
+                                    onChange={function onChange}
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                ...
+                        ...
+                          <div className="AIQuotaCon...">
+                            <button>
+                            <div>
+                            <section className="AIQuotaCon..." aria-label="Synthetic ...">
+                              <header>
+                              <p>
+                              <progress>
+                              <p>
+                              <form onSubmit={function onSubmit}>
+                                <div className="AIQuotaCon...">
+                                  <label>
+                                  <label>
+                                  <label>
+                                  <label>
+                                    <input
+                                      type="number"
+                                      min={0}
+                                      max={1000000}
+                                      value=""
+                                      disabled={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                  <label>
+                                    <input
+                                      type="number"
+                                      min={0}
+                                      step="0.000000001"
+                                      value=""
+                                      disabled={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                  <label>
+                                    <input
+                                      type="number"
+                                      min={1}
+                                      max={100}
+                                      value=""
+                                      disabled={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                  <label>
+                                  <label>
+                                    <input
+                                      type="datetime-local"
+                                      disabled={false}
+                                      value=""
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      disabled={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                <label>
+                                  <textarea
+                                    maxLength={240}
+                                    minLength={8}
+                                    required={true}
+                                    value=""
+                                    disabled={false}
+                                    onChange={function onChange}
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                ...
+                            <section className="AIQuotaCon...">
+                              <h2>
+                              <form className="AIQuotaCon..." onSubmit={function onSubmit}>
+                                <label>
+                                  <input
+                                    type="date"
+                                    value="2026-10-01"
+                                    required={true}
+                                    onChange={function onChange}
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                <label>
+                                  <input
+                                    type="date"
+                                    value="2026-11-01"
+                                    required={true}
+                                    onChange={function onChange}
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                ...
+                              ...
+                        <Panel>
+                          <section className="chartroom-...">
+                            <header>
+                            <AccountLifecycleActionPanel targetAccountId="cmvfr1hxs0..." ...>
+                              <section className="chartroom-..." aria-labelledby="account-li...">
+                                <h3>
+                                <p>
+                                <label>
+                                  <textarea
+                                    value=""
+                                    minLength={8}
+                                    maxLength={240}
+                                    required={true}
+                                    onChange={function onChange}
+                                    placeholder="Describe why this account must be suspended."
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                <label>
+                                  <input
+                                    type="password"
+                                    autoComplete="current-password"
+                                    value=""
+                                    onChange={function onChange}
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                ...
+                        <div>
+                        ...
+                          <DossierSupportPanel targetAccountId="cmvfr1hxs0..." csrfToken="wsx_nqME1y..." ...>
+                            <div className="chartroom-...">
+                              <form onSubmit={function onSubmit}>
+                                <h3>
+                                <p>
+                                <label>
+                                  <input
+                                    type="password"
+                                    autoComplete="current-password"
+                                    required={true}
+                                    value=""
+                                    onChange={function onChange}
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                ...
+                              <form onSubmit={function onSubmit}>
+                                <h3>
+                                <p>
+                                <label>
+                                  <textarea
+                                    required={true}
+                                    minLength={8}
+                                    maxLength={240}
+                                    value=""
+                                    onChange={function onChange}
+                                    placeholder="Describe the support reason visible to the account owner."
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                <fieldset>
+                                  <legend>
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={true}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                  <label>
+                                    <input
+                                      type="checkbox"
+                                      checked={false}
+                                      onChange={function onChange}
+-                                     style={{caret-color:"transparent"}}
+                                    >
+                                    ...
+                                ...
+                              <form onSubmit={function onSubmit}>
+                                <h3>
+                                <p>
+                                <label>
+                                  <input
+                                    required={true}
+                                    value=""
+                                    onChange={function onChange}
+-                                   style={{caret-color:"transparent"}}
+                                  >
+                                ...
+                        ...
+                ...
+              ...
+ 
+ GET /api/passport/preferences 200 in 31ms (next.js: 10ms, proxy.ts: 5ms, application-code: 15ms)
+ POST /api/admin/commands/ai-quota-policy/preview 200 in 45ms (next.js: 3ms, proxy.ts: 6ms, application-code: 36ms)
+ POST /api/admin/assurance 200 in 166ms (next.js: 52ms, proxy.ts: 5ms, application-code: 109ms)
+ POST /api/admin/commands/ai-quota-policy/execute 200 in 102ms (next.js: 56ms, proxy.ts: 5ms, application-code: 41ms)
+ GET /api/admin/ai-usage?accountId=cmvfr1hxs000525bc91b7tksq&section=user 200 in 38ms (next.js: 4ms, proxy.ts: 8ms, application-code: 26ms)
+ GET /admin/ai-usage 200 in 135ms (next.js: 4ms, proxy.ts: 5ms, application-code: 125ms)
+ GET /api/auth/context 200 in 18ms (next.js: 3ms, proxy.ts: 5ms, application-code: 10ms)
+ GET /api/passport/preferences 200 in 27ms (next.js: 4ms, proxy.ts: 5ms, application-code: 18ms)
+ GET /api/admin/ai-usage?section=overrides 200 in 52ms (next.js: 5ms, proxy.ts: 8ms, application-code: 39ms)
+ GET /api/admin/ai-usage?section=user&accountId=cmvfr1hxs000525bc91b7tksq 200 in 47ms (next.js: 3ms, proxy.ts: 5ms, application-code: 39ms)
+ POST /api/admin/commands/ai-quota-policy/preview 200 in 36ms (next.js: 3ms, proxy.ts: 6ms, application-code: 27ms)
+ POST /api/admin/assurance 200 in 125ms (next.js: 3ms, proxy.ts: 6ms, application-code: 116ms)
+ POST /api/admin/commands/ai-quota-policy/execute 200 in 48ms (next.js: 3ms, proxy.ts: 5ms, application-code: 40ms)
+ GET /api/admin/ai-usage?accountId=cmvfr1hxs000525bc91b7tksq&section=user 200 in 28ms (next.js: 3ms, proxy.ts: 5ms, application-code: 20ms)
+ GET /api/admin/ai-usage?section=overrides 200 in 25ms (next.js: 3ms, proxy.ts: 4ms, application-code: 18ms)
+ GET /admin/people 200 in 73ms (next.js: 4ms, proxy.ts: 5ms, application-code: 65ms)
+ GET /api/auth/context 200 in 38ms (next.js: 3ms, proxy.ts: 5ms, application-code: 30ms)
+ GET /api/passport/preferences 200 in 29ms (next.js: 3ms, proxy.ts: 5ms, application-code: 22ms)
+ GET /admin/people?q=cmvfr1hxs000525bc91b7tksq 200 in 107ms (next.js: 12ms, proxy.ts: 5ms, application-code: 89ms)
+ GET /api/auth/context 200 in 19ms (next.js: 3ms, proxy.ts: 5ms, application-code: 12ms)
+ GET /api/passport/preferences 200 in 29ms (next.js: 3ms, proxy.ts: 6ms, application-code: 20ms)
+ GET /admin/people/cmvfr1hxs000525bc91b7tksq 200 in 94ms (next.js: 25ms, proxy.ts: 7ms, application-code: 62ms)
+ GET /admin/ai-usage 200 in 165ms (next.js: 6ms, proxy.ts: 5ms, application-code: 154ms)
+ GET /api/auth/context 200 in 26ms (next.js: 4ms, proxy.ts: 6ms, application-code: 17ms)
+ GET /api/passport/preferences 200 in 35ms (next.js: 3ms, proxy.ts: 4ms, application-code: 28ms)
+ POST /api/admin/commands/ai-quota-policy/preview 200 in 48ms (next.js: 3ms, proxy.ts: 5ms, application-code: 40ms)
+ POST /api/admin/assurance 200 in 115ms (next.js: 3ms, proxy.ts: 5ms, application-code: 107ms)
+ POST /api/admin/commands/ai-quota-policy/execute 200 in 47ms (next.js: 4ms, proxy.ts: 5ms, application-code: 39ms)
+ GET /api/admin/ai-usage?section=overview 200 in 33ms (next.js: 3ms, proxy.ts: 6ms, application-code: 24ms)
+  ok  1 [chromium] › tests\e2e\parallax-ai-quotas.spec.ts:14:5 › Admiralty changes an AI allowance through the existing People dossier (19.6s)
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /studio/parallax?definition=photo-setup-source-cmvfr1x0u000e25bccdfpu5hb 200 in 189ms (next.js: 46ms, proxy.ts: 4ms, application-code: 138ms)
+ GET /api/auth/context 200 in 218ms (next.js: 3ms, proxy.ts: 6ms, application-code: 209ms)
+ GET /api/studio/parallax 200 in 250ms (next.js: 100ms, proxy.ts: 6ms, application-code: 144ms)
+ GET /api/passport/preferences 200 in 48ms (next.js: 3ms, proxy.ts: 22ms, application-code: 23ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 227ms (next.js: 10ms, proxy.ts: 11ms, application-code: 206ms)
+ POST /api/studio/parallax 200 in 291ms (next.js: 8ms, proxy.ts: 18ms, application-code: 265ms)
+ GET /api/studio/parallax/room-photo?definitionId=photo-setup-source-cmvfr1x0u000e25bccdfpu5hb 200 in 291ms (next.js: 94ms, proxy.ts: 11ms, application-code: 186ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 79ms (next.js: 16ms, proxy.ts: 20ms, application-code: 42ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 36ms (next.js: 3ms, proxy.ts: 5ms, application-code: 29ms)
+ GET /api/studio/parallax/room-photo?definitionId=eca866c0-ccc3-4f9a-be96-b5f453a6eae6 200 in 14ms (next.js: 3ms, proxy.ts: 4ms, application-code: 7ms)
+ GET /api/studio/parallax/room-photo?definitionId=eca866c0-ccc3-4f9a-be96-b5f453a6eae6 200 in 52ms (next.js: 4ms, proxy.ts: 10ms, application-code: 38ms)
+ POST /api/studio/parallax 200 in 50ms (next.js: 3ms, proxy.ts: 6ms, application-code: 42ms)
+ POST /api/studio/parallax/room-photo 201 in 107ms (next.js: 3ms, proxy.ts: 6ms, application-code: 99ms)
+ POST /api/studio/parallax/room-photo 200 in 144ms (next.js: 4ms, proxy.ts: 6ms, application-code: 135ms)
+ POST /api/studio/parallax 200 in 48ms (next.js: 3ms, proxy.ts: 5ms, application-code: 40ms)
+ POST /api/studio/parallax/room-photo 201 in 98ms (next.js: 3ms, proxy.ts: 5ms, application-code: 91ms)
+ POST /api/studio/parallax/room-photo 200 in 628ms (next.js: 3ms, proxy.ts: 7ms, application-code: 618ms)
+ POST /api/studio/parallax/room-photo 200 in 72ms (next.js: 3ms, proxy.ts: 4ms, application-code: 65ms)
+ GET /api/studio/parallax 200 in 69ms (next.js: 3ms, proxy.ts: 6ms, application-code: 60ms)
+ POST /api/studio/parallax 200 in 35ms (next.js: 3ms, proxy.ts: 5ms, application-code: 28ms)
+ GET /studio/parallax?definition=photo-setup-source-cmvfr1x0u000e25bccdfpu5hb&environment=eca866c0-ccc3-4f9a-be96-b5f453a6eae6 200 in 78ms (next.js: 4ms, proxy.ts: 4ms, application-code: 69ms)
+ GET /api/auth/context 200 in 27ms (next.js: 10ms, proxy.ts: 6ms, application-code: 11ms)
+ GET /api/studio/parallax 200 in 46ms (next.js: 4ms, proxy.ts: 6ms, application-code: 36ms)
+ GET /api/passport/preferences 200 in 26ms (next.js: 3ms, proxy.ts: 8ms, application-code: 15ms)
+ POST /api/studio/parallax 200 in 55ms (next.js: 3ms, proxy.ts: 10ms, application-code: 41ms)
+  ok  2 [chromium] › tests\e2e\parallax-environment-creation.spec.ts:21:7 › Environment photo setup imports 1 views, renders the proposal and saves an independent editable room (8.9s)
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /studio/parallax?definition=photo-setup-source-cmvfr23uy000j25bcxptq7yr9 200 in 64ms (next.js: 3ms, proxy.ts: 4ms, application-code: 57ms)
+ GET /api/auth/context 200 in 19ms (next.js: 3ms, proxy.ts: 6ms, application-code: 10ms)
+ GET /api/studio/parallax 200 in 40ms (next.js: 3ms, proxy.ts: 4ms, application-code: 33ms)
+ GET /api/passport/preferences 200 in 30ms (next.js: 3ms, proxy.ts: 4ms, application-code: 23ms)
+ POST /api/studio/parallax 200 in 67ms (next.js: 8ms, proxy.ts: 19ms, application-code: 39ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 64ms (next.js: 18ms, proxy.ts: 11ms, application-code: 34ms)
+ GET /api/studio/parallax/room-photo?definitionId=photo-setup-source-cmvfr23uy000j25bcxptq7yr9 200 in 67ms (next.js: 13ms, proxy.ts: 11ms, application-code: 42ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 40ms (next.js: 2ms, proxy.ts: 4ms, application-code: 34ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 99ms (next.js: 9ms, proxy.ts: 27ms, application-code: 63ms)
+ GET /api/studio/parallax/room-photo?definitionId=07f62d64-a916-4a27-b4be-06348ccc56d6 200 in 32ms (next.js: 3ms, proxy.ts: 5ms, application-code: 24ms)
+ GET /api/studio/parallax/room-photo?definitionId=07f62d64-a916-4a27-b4be-06348ccc56d6 200 in 28ms (next.js: 4ms, proxy.ts: 5ms, application-code: 19ms)
+ POST /api/studio/parallax 200 in 54ms (next.js: 3ms, proxy.ts: 4ms, application-code: 47ms)
+ POST /api/studio/parallax/room-photo 201 in 83ms (next.js: 3ms, proxy.ts: 5ms, application-code: 75ms)
+ POST /api/studio/parallax/room-photo 201 in 109ms (next.js: 2ms, proxy.ts: 4ms, application-code: 103ms)
+ POST /api/studio/parallax/room-photo 200 in 629ms (next.js: 4ms, proxy.ts: 5ms, application-code: 620ms)
+ POST /api/studio/parallax/room-photo 200 in 65ms (next.js: 3ms, proxy.ts: 7ms, application-code: 54ms)
+ GET /api/studio/parallax 200 in 61ms (next.js: 3ms, proxy.ts: 4ms, application-code: 54ms)
+ POST /api/studio/parallax 200 in 45ms (next.js: 4ms, proxy.ts: 6ms, application-code: 36ms)
+ GET /studio/parallax?definition=photo-setup-source-cmvfr23uy000j25bcxptq7yr9&environment=07f62d64-a916-4a27-b4be-06348ccc56d6 200 in 78ms (next.js: 4ms, proxy.ts: 5ms, application-code: 69ms)
+ GET /api/auth/context 200 in 28ms (next.js: 9ms, proxy.ts: 7ms, application-code: 12ms)
+ GET /api/studio/parallax 200 in 57ms (next.js: 6ms, proxy.ts: 9ms, application-code: 41ms)
+ GET /api/passport/preferences 200 in 20ms (next.js: 3ms, proxy.ts: 5ms, application-code: 13ms)
+ POST /api/studio/parallax 200 in 83ms (next.js: 3ms, proxy.ts: 10ms, application-code: 70ms)
+  ok  3 [chromium] › tests\e2e\parallax-environment-creation.spec.ts:21:7 › Environment photo setup imports 2 views, renders the proposal and saves an independent editable room (8.1s)
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /studio/parallax?definition=fb1170d3-dffd-497d-89ed-dea123c05aa3 200 in 54ms (next.js: 3ms, proxy.ts: 5ms, application-code: 46ms)
+ GET /api/auth/context 200 in 28ms (next.js: 10ms, proxy.ts: 8ms, application-code: 10ms)
+ GET /api/studio/parallax 200 in 45ms (next.js: 7ms, proxy.ts: 7ms, application-code: 31ms)
+ GET /api/passport/preferences 200 in 27ms (next.js: 2ms, proxy.ts: 6ms, application-code: 19ms)
+ POST /api/studio/parallax 200 in 65ms (next.js: 8ms, proxy.ts: 17ms, application-code: 40ms)
+ GET /api/studio/parallax/room-photo?definitionId=fb1170d3-dffd-497d-89ed-dea123c05aa3 200 in 63ms (next.js: 11ms, proxy.ts: 11ms, application-code: 41ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 65ms (next.js: 15ms, proxy.ts: 11ms, application-code: 39ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 32ms (next.js: 3ms, proxy.ts: 4ms, application-code: 25ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 65ms (next.js: 9ms, proxy.ts: 21ms, application-code: 35ms)
+ POST /api/studio/parallax 200 in 49ms (next.js: 5ms, proxy.ts: 5ms, application-code: 39ms)
+ GET /api/studio/parallax 200 in 43ms (next.js: 3ms, proxy.ts: 4ms, application-code: 36ms)
+ POST /api/studio/parallax 200 in 37ms (next.js: 3ms, proxy.ts: 5ms, application-code: 29ms)
+ GET /api/studio/parallax 200 in 31ms (next.js: 2ms, proxy.ts: 4ms, application-code: 25ms)
+ GET /api/studio/parallax/room-photo?definitionId=fb1170d3-dffd-497d-89ed-dea123c05aa3 200 in 32ms (next.js: 3ms, proxy.ts: 4ms, application-code: 25ms)
+ GET /api/studio/parallax/room-photo?definitionId=fb1170d3-dffd-497d-89ed-dea123c05aa3 200 in 28ms (next.js: 3ms, proxy.ts: 4ms, application-code: 22ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 39ms (next.js: 3ms, proxy.ts: 5ms, application-code: 31ms)
+ POST /api/studio/parallax 200 in 51ms (next.js: 3ms, proxy.ts: 5ms, application-code: 43ms)
+ POST /api/studio/parallax 200 in 54ms (next.js: 3ms, proxy.ts: 4ms, application-code: 47ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 48ms (next.js: 3ms, proxy.ts: 7ms, application-code: 38ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 70ms (next.js: 4ms, proxy.ts: 8ms, application-code: 57ms)
+ POST /api/studio/parallax 200 in 44ms (next.js: 3ms, proxy.ts: 6ms, application-code: 35ms)
+ GET /api/studio/parallax 200 in 35ms (next.js: 4ms, proxy.ts: 5ms, application-code: 26ms)
+ POST /api/studio/parallax 200 in 50ms (next.js: 3ms, proxy.ts: 4ms, application-code: 44ms)
+ GET /studio/parallax?definition=fb1170d3-dffd-497d-89ed-dea123c05aa3&environment=7394bada-d37c-4266-9c53-e48599dbec72 200 in 63ms (next.js: 4ms, proxy.ts: 4ms, application-code: 55ms)
+ GET /api/auth/context 200 in 29ms (next.js: 7ms, proxy.ts: 11ms, application-code: 10ms)
+ GET /api/studio/parallax 200 in 49ms (next.js: 5ms, proxy.ts: 12ms, application-code: 32ms)
+ GET /api/passport/preferences 200 in 29ms (next.js: 4ms, proxy.ts: 10ms, application-code: 15ms)
+ POST /api/studio/parallax 200 in 47ms (next.js: 4ms, proxy.ts: 11ms, application-code: 32ms)
+ GET /api/studio/parallax/room-photo?definitionId=7394bada-d37c-4266-9c53-e48599dbec72 200 in 21ms (next.js: 4ms, proxy.ts: 4ms, application-code: 13ms)
+ GET /api/studio/parallax/room-photo?definitionId=7394bada-d37c-4266-9c53-e48599dbec72 200 in 46ms (next.js: 5ms, proxy.ts: 7ms, application-code: 34ms)
+  ok  4 [chromium] › tests\e2e\parallax-environment-entry.spec.ts:20:5 › Environment plus opens keyboard-friendly choices, duplicates a source and starts an empty shell (6.3s)
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /studio/parallax?definition=940807c0-85f3-4bb9-8000-0d5810fe4b97 200 in 70ms (next.js: 4ms, proxy.ts: 5ms, application-code: 61ms)
+ GET /api/auth/context 200 in 24ms (next.js: 3ms, proxy.ts: 10ms, application-code: 11ms)
+ GET /api/studio/parallax 200 in 74ms (next.js: 6ms, proxy.ts: 5ms, application-code: 64ms)
+ GET /api/passport/preferences 200 in 38ms (next.js: 4ms, proxy.ts: 6ms, application-code: 29ms)
+ POST /api/studio/parallax 200 in 72ms (next.js: 8ms, proxy.ts: 17ms, application-code: 46ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 68ms (next.js: 16ms, proxy.ts: 10ms, application-code: 42ms)
+ GET /api/studio/parallax/room-photo?definitionId=940807c0-85f3-4bb9-8000-0d5810fe4b97 200 in 74ms (next.js: 11ms, proxy.ts: 11ms, application-code: 52ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 37ms (next.js: 3ms, proxy.ts: 5ms, application-code: 28ms)
+ GET /api/studio/parallax 200 in 34ms (next.js: 2.0ms, proxy.ts: 4ms, application-code: 28ms)
+ POST /api/studio/parallax 200 in 42ms (next.js: 8ms, proxy.ts: 5ms, application-code: 29ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 47ms (next.js: 3ms, proxy.ts: 11ms, application-code: 33ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 45ms (next.js: 3ms, proxy.ts: 4ms, application-code: 38ms)
+ POST /api/studio/parallax 200 in 46ms (next.js: 3ms, proxy.ts: 5ms, application-code: 38ms)
+ GET /api/studio/parallax 200 in 41ms (next.js: 3ms, proxy.ts: 6ms, application-code: 32ms)
+ POST /api/studio/parallax 200 in 44ms (next.js: 3ms, proxy.ts: 5ms, application-code: 37ms)
+ POST /api/studio/parallax 200 in 53ms (next.js: 2ms, proxy.ts: 5ms, application-code: 46ms)
+ GET /api/studio/parallax 200 in 45ms (next.js: 3ms, proxy.ts: 4ms, application-code: 39ms)
+ GET /api/studio/parallax/room-photo?definitionId=940807c0-85f3-4bb9-8000-0d5810fe4b97 200 in 31ms (next.js: 2ms, proxy.ts: 4ms, application-code: 24ms)
+ GET /api/studio/parallax/room-photo?definitionId=940807c0-85f3-4bb9-8000-0d5810fe4b97 200 in 31ms (next.js: 3ms, proxy.ts: 4ms, application-code: 24ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 48ms (next.js: 3ms, proxy.ts: 4ms, application-code: 40ms)
+ POST /api/studio/parallax 200 in 39ms (next.js: 3ms, proxy.ts: 6ms, application-code: 29ms)
+ POST /api/studio/parallax 200 in 62ms (next.js: 3ms, proxy.ts: 4ms, application-code: 54ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 88ms (next.js: 3ms, proxy.ts: 6ms, application-code: 79ms)
+ GET /studio/parallax?definition=940807c0-85f3-4bb9-8000-0d5810fe4b97 200 in 85ms (next.js: 18ms, proxy.ts: 10ms, application-code: 58ms)
+ GET /api/auth/context 200 in 26ms (next.js: 9ms, proxy.ts: 7ms, application-code: 10ms)
+ GET /api/studio/parallax 200 in 46ms (next.js: 6ms, proxy.ts: 6ms, application-code: 34ms)
+ GET /api/passport/preferences 200 in 33ms (next.js: 3ms, proxy.ts: 10ms, application-code: 20ms)
+ GET /api/studio/parallax/room-photo?definitionId=940807c0-85f3-4bb9-8000-0d5810fe4b97 200 in 44ms (next.js: 3ms, proxy.ts: 9ms, application-code: 32ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 51ms (next.js: 15ms, proxy.ts: 9ms, application-code: 27ms)
+ POST /api/studio/parallax 200 in 84ms (next.js: 5ms, proxy.ts: 13ms, application-code: 66ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 37ms (next.js: 3ms, proxy.ts: 10ms, application-code: 24ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 51ms (next.js: 3ms, proxy.ts: 5ms, application-code: 44ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3Af113bafb-4a90-41ff-8136-8b516fa6b210 200 in 42ms (next.js: 3ms, proxy.ts: 5ms, application-code: 34ms)
+ GET /api/studio/parallax 200 in 46ms (next.js: 3ms, proxy.ts: 5ms, application-code: 38ms)
+ POST /api/studio/parallax 200 in 47ms (next.js: 1.7ms, proxy.ts: 4ms, application-code: 41ms)
+  ok  5 [chromium] › tests\e2e\parallax-environment-library.spec.ts:22:5 › pinned room editing creates an explicit independent Environment copy and preserves the Scene release pin (8.0s)
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /studio/parallax?definition=1003767a-d62a-4cbf-81a9-fadfdc1ac89c 200 in 60ms (next.js: 4ms, proxy.ts: 4ms, application-code: 53ms)
+ GET /api/auth/context 200 in 16ms (next.js: 2ms, proxy.ts: 6ms, application-code: 8ms)
+ GET /api/studio/parallax 200 in 65ms (next.js: 3ms, proxy.ts: 4ms, application-code: 58ms)
+ GET /api/passport/preferences 200 in 30ms (next.js: 4ms, proxy.ts: 5ms, application-code: 21ms)
+ POST /api/studio/parallax 200 in 67ms (next.js: 9ms, proxy.ts: 18ms, application-code: 39ms)
+ GET /api/studio/parallax/room-photo?definitionId=1003767a-d62a-4cbf-81a9-fadfdc1ac89c 200 in 58ms (next.js: 11ms, proxy.ts: 10ms, application-code: 38ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 63ms (next.js: 14ms, proxy.ts: 9ms, application-code: 39ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 32ms (next.js: 3ms, proxy.ts: 3ms, application-code: 26ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 81ms (next.js: 8ms, proxy.ts: 18ms, application-code: 54ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 45ms (next.js: 3ms, proxy.ts: 5ms, application-code: 37ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A83face70-d28a-4b69-9266-47240b4e972d 200 in 32ms (next.js: 4ms, proxy.ts: 4ms, application-code: 24ms)
+ POST /api/studio/parallax 200 in 48ms (next.js: 3ms, proxy.ts: 5ms, application-code: 40ms)
+ GET /api/studio/parallax 200 in 37ms (next.js: 3ms, proxy.ts: 5ms, application-code: 29ms)
+ POST /api/studio/parallax 200 in 61ms (next.js: 6ms, proxy.ts: 11ms, application-code: 44ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A83face70-d28a-4b69-9266-47240b4e972d 200 in 71ms (next.js: 14ms, proxy.ts: 11ms, application-code: 46ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 72ms (next.js: 10ms, proxy.ts: 11ms, application-code: 52ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 36ms (next.js: 3ms, proxy.ts: 10ms, application-code: 23ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A83face70-d28a-4b69-9266-47240b4e972d 200 in 43ms (next.js: 7ms, proxy.ts: 9ms, application-code: 27ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A8157fca7-4d9c-4acc-8afe-274ad83a3517 200 in 34ms (next.js: 3ms, proxy.ts: 4ms, application-code: 27ms)
+ POST /api/studio/parallax 200 in 69ms (next.js: 3ms, proxy.ts: 5ms, application-code: 61ms)
+ GET /api/studio/parallax 200 in 34ms (next.js: 3ms, proxy.ts: 4ms, application-code: 27ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A8157fca7-4d9c-4acc-8afe-274ad83a3517 200 in 49ms (next.js: 14ms, proxy.ts: 7ms, application-code: 28ms)
+ POST /api/studio/parallax 200 in 54ms (next.js: 4ms, proxy.ts: 7ms, application-code: 43ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 58ms (next.js: 8ms, proxy.ts: 7ms, application-code: 43ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 41ms (next.js: 4ms, proxy.ts: 6ms, application-code: 31ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A8157fca7-4d9c-4acc-8afe-274ad83a3517 200 in 43ms (next.js: 8ms, proxy.ts: 6ms, application-code: 28ms)
+ POST /api/studio/parallax 200 in 38ms (next.js: 2ms, proxy.ts: 4ms, application-code: 32ms)
+ GET /api/studio/parallax 200 in 43ms (next.js: 3ms, proxy.ts: 4ms, application-code: 37ms)
+ POST /api/studio/parallax 200 in 45ms (next.js: 3ms, proxy.ts: 5ms, application-code: 37ms)
+ POST /api/studio/parallax 200 in 50ms (next.js: 3ms, proxy.ts: 4ms, application-code: 42ms)
+ POST /api/studio/parallax 200 in 35ms (next.js: 3ms, proxy.ts: 4ms, application-code: 28ms)
+ GET /api/studio/parallax 200 in 35ms (next.js: 2ms, proxy.ts: 5ms, application-code: 28ms)
+ POST /api/studio/parallax 200 in 55ms (next.js: 3ms, proxy.ts: 6ms, application-code: 46ms)
+ GET /api/studio/parallax 200 in 47ms (next.js: 3ms, proxy.ts: 4ms, application-code: 40ms)
+ GET /api/studio/parallax/room-photo?definitionId=1003767a-d62a-4cbf-81a9-fadfdc1ac89c 200 in 49ms (next.js: 3ms, proxy.ts: 4ms, application-code: 42ms)
+ GET /api/studio/parallax/room-photo?definitionId=1003767a-d62a-4cbf-81a9-fadfdc1ac89c 200 in 29ms (next.js: 2ms, proxy.ts: 4ms, application-code: 23ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 36ms (next.js: 3ms, proxy.ts: 5ms, application-code: 29ms)
+ POST /api/studio/parallax 200 in 38ms (next.js: 3ms, proxy.ts: 4ms, application-code: 30ms)
+ POST /api/studio/parallax 200 in 40ms (next.js: 2ms, proxy.ts: 5ms, application-code: 33ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 47ms (next.js: 5ms, proxy.ts: 6ms, application-code: 36ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 45ms (next.js: 3ms, proxy.ts: 5ms, application-code: 37ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 33ms (next.js: 3ms, proxy.ts: 5ms, application-code: 25ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A83face70-d28a-4b69-9266-47240b4e972d 200 in 43ms (next.js: 3ms, proxy.ts: 4ms, application-code: 36ms)
+ POST /api/studio/parallax 200 in 45ms (next.js: 3ms, proxy.ts: 4ms, application-code: 38ms)
+ GET /api/studio/parallax 200 in 36ms (next.js: 3ms, proxy.ts: 4ms, application-code: 29ms)
+ POST /api/studio/parallax 200 in 25ms (next.js: 2ms, proxy.ts: 3ms, application-code: 20ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A83face70-d28a-4b69-9266-47240b4e972d 200 in 44ms (next.js: 13ms, proxy.ts: 9ms, application-code: 21ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 49ms (next.js: 10ms, proxy.ts: 9ms, application-code: 29ms)
+ POST /api/studio/parallax 200 in 65ms (next.js: 8ms, proxy.ts: 9ms, application-code: 48ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A83face70-d28a-4b69-9266-47240b4e972d 200 in 36ms (next.js: 7ms, proxy.ts: 5ms, application-code: 24ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 45ms (next.js: 3ms, proxy.ts: 5ms, application-code: 36ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ARCHIVED&sort=NAME&limit=48 200 in 48ms (next.js: 3ms, proxy.ts: 6ms, application-code: 39ms)
+ POST /api/studio/parallax 200 in 42ms (next.js: 3ms, proxy.ts: 4ms, application-code: 35ms)
+ GET /api/studio/parallax 200 in 43ms (next.js: 3ms, proxy.ts: 4ms, application-code: 35ms)
+ POST /api/studio/parallax 200 in 41ms (next.js: 3ms, proxy.ts: 12ms, application-code: 27ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A83face70-d28a-4b69-9266-47240b4e972d 200 in 44ms (next.js: 14ms, proxy.ts: 8ms, application-code: 23ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ARCHIVED&sort=NAME&limit=48 200 in 57ms (next.js: 9ms, proxy.ts: 9ms, application-code: 39ms)
+ POST /api/studio/parallax 200 in 71ms (next.js: 7ms, proxy.ts: 10ms, application-code: 54ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=ARCHIVED&sort=NAME&limit=48 200 in 21ms (next.js: 4ms, proxy.ts: 6ms, application-code: 11ms)
+ GET /api/studio/parallax?view=library-item&entryId=environment%3A83face70-d28a-4b69-9266-47240b4e972d 200 in 50ms (next.js: 8ms, proxy.ts: 6ms, application-code: 36ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=MY_CREATIONS&state=SAVED&sort=NAME&limit=48 200 in 50ms (next.js: 5ms, proxy.ts: 9ms, application-code: 36ms)
+ GET /studio/parallax?definition=1003767a-d62a-4cbf-81a9-fadfdc1ac89c 200 in 60ms (next.js: 4ms, proxy.ts: 5ms, application-code: 51ms)
+ GET /api/auth/context 200 in 29ms (next.js: 9ms, proxy.ts: 7ms, application-code: 13ms)
+ GET /api/studio/parallax 200 in 45ms (next.js: 4ms, proxy.ts: 8ms, application-code: 33ms)
+ GET /api/passport/preferences 200 in 32ms (next.js: 4ms, proxy.ts: 7ms, application-code: 21ms)
+ POST /api/studio/parallax 200 in 54ms (next.js: 8ms, proxy.ts: 14ms, application-code: 32ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 51ms (next.js: 7ms, proxy.ts: 11ms, application-code: 32ms)
+ GET /api/studio/parallax/room-photo?definitionId=1003767a-d62a-4cbf-81a9-fadfdc1ac89c 200 in 54ms (next.js: 4ms, proxy.ts: 12ms, application-code: 38ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 32ms (next.js: 3ms, proxy.ts: 4ms, application-code: 25ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 57ms (next.js: 3ms, proxy.ts: 6ms, application-code: 48ms)
+  ok  6 [chromium] › tests\e2e\parallax-environment-library.spec.ts:123:5 › Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots (10.2s)
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /studio/parallax?definition=photo-feedback-cmvfr2t2e001325bc98mdlr7b 200 in 90ms (next.js: 3ms, proxy.ts: 5ms, application-code: 82ms)
+ GET /api/auth/context 200 in 26ms (next.js: 9ms, proxy.ts: 7ms, application-code: 10ms)
+ GET /api/studio/parallax 200 in 56ms (next.js: 6ms, proxy.ts: 7ms, application-code: 43ms)
+ GET /api/passport/preferences 200 in 27ms (next.js: 3ms, proxy.ts: 4ms, application-code: 20ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 47ms (next.js: 16ms, proxy.ts: 9ms, application-code: 21ms)
+ GET /api/studio/parallax/room-photo?definitionId=photo-feedback-cmvfr2t2e001325bc98mdlr7b 200 in 57ms (next.js: 12ms, proxy.ts: 12ms, application-code: 34ms)
+ POST /api/studio/parallax 200 in 72ms (next.js: 9ms, proxy.ts: 16ms, application-code: 46ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 71ms (next.js: 3ms, proxy.ts: 4ms, application-code: 64ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 33ms (next.js: 3ms, proxy.ts: 5ms, application-code: 26ms)
+ GET /api/studio/parallax/room-photo?definitionId=5e257fa4-18e7-4594-9610-7f8b277155c2 200 in 38ms (next.js: 3ms, proxy.ts: 5ms, application-code: 31ms)
+ GET /api/studio/parallax/room-photo?definitionId=5e257fa4-18e7-4594-9610-7f8b277155c2 200 in 39ms (next.js: 3ms, proxy.ts: 4ms, application-code: 32ms)
+ POST /api/studio/parallax 200 in 79ms (next.js: 3ms, proxy.ts: 6ms, application-code: 70ms)
+ POST /api/studio/parallax/room-photo 201 in 138ms (next.js: 3ms, proxy.ts: 6ms, application-code: 129ms)
+ POST /api/studio/parallax/room-photo 201 in 150ms (next.js: 3ms, proxy.ts: 5ms, application-code: 142ms)
+ POST /api/studio/parallax 200 in 52ms (next.js: 4ms, proxy.ts: 6ms, application-code: 42ms)
+ POST /api/studio/parallax/room-photo 201 in 155ms (next.js: 2ms, proxy.ts: 5ms, application-code: 148ms)
+ POST /api/studio/parallax/room-photo 201 in 133ms (next.js: 3ms, proxy.ts: 6ms, application-code: 124ms)
+ POST /api/studio/parallax/room-photo 200 in 36ms (next.js: 3ms, proxy.ts: 4ms, application-code: 28ms)
+ POST /api/studio/parallax/room-photo 200 in 48ms (next.js: 3ms, proxy.ts: 6ms, application-code: 40ms)
+  ok  7 [chromium] › tests\e2e\parallax-photo-feedback.spec.ts:18:7 › Photo setup timeout-dark keeps processing and recovery visible without modifying the source (27.9s)
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /api/studio/parallax 200 in 53ms (next.js: 2ms, proxy.ts: 4ms, application-code: 46ms)
+ GET /api/passport/preferences 200 in 40ms (next.js: 2ms, proxy.ts: 4ms, application-code: 34ms)
+ PUT /api/passport/preferences 200 in 43ms (next.js: 3ms, proxy.ts: 6ms, application-code: 34ms)
+ GET /studio/parallax?definition=photo-feedback-cmvfr3ell001825bc5bj623m2 200 in 60ms (next.js: 3ms, proxy.ts: 5ms, application-code: 52ms)
+ GET /api/auth/context 200 in 27ms (next.js: 9ms, proxy.ts: 7ms, application-code: 10ms)
+ GET /api/studio/parallax 200 in 49ms (next.js: 7ms, proxy.ts: 7ms, application-code: 34ms)
+ GET /api/passport/preferences 200 in 21ms (next.js: 2ms, proxy.ts: 7ms, application-code: 12ms)
+ POST /api/studio/parallax 200 in 82ms (next.js: 11ms, proxy.ts: 16ms, application-code: 55ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 93ms (next.js: 12ms, proxy.ts: 14ms, application-code: 66ms)
+ GET /api/studio/parallax/room-photo?definitionId=photo-feedback-cmvfr3ell001825bc5bj623m2 200 in 102ms (next.js: 11ms, proxy.ts: 12ms, application-code: 79ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 55ms (next.js: 4ms, proxy.ts: 5ms, application-code: 46ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 94ms (next.js: 15ms, proxy.ts: 23ms, application-code: 56ms)
+ GET /api/studio/parallax/room-photo?definitionId=762fa15d-e179-410e-88e9-d2c7a738915f 200 in 15ms (next.js: 3ms, proxy.ts: 5ms, application-code: 7ms)
+ GET /api/studio/parallax/room-photo?definitionId=762fa15d-e179-410e-88e9-d2c7a738915f 200 in 46ms (next.js: 3ms, proxy.ts: 10ms, application-code: 33ms)
+ POST /api/studio/parallax 200 in 43ms (next.js: 2ms, proxy.ts: 5ms, application-code: 36ms)
+ POST /api/studio/parallax/room-photo 201 in 97ms (next.js: 5ms, proxy.ts: 7ms, application-code: 85ms)
+ POST /api/studio/parallax/room-photo 200 in 55ms (next.js: 3ms, proxy.ts: 5ms, application-code: 47ms)
+  ok  8 [chromium] › tests\e2e\parallax-photo-feedback.spec.ts:18:7 › Photo setup clarification-phone-light keeps processing and recovery visible without modifying the source (4.6s)
+{"status":"SOUNDING_LINE_SUITE_ISOLATION_READY","profile":"generic"}
+ GET /api/studio/parallax 200 in 49ms (next.js: 3ms, proxy.ts: 4ms, application-code: 42ms)
+ GET /api/passport/preferences 200 in 32ms (next.js: 2ms, proxy.ts: 5ms, application-code: 25ms)
+ PUT /api/passport/preferences 200 in 29ms (next.js: 1.7ms, proxy.ts: 4ms, application-code: 23ms)
+ GET /studio/parallax?definition=photo-feedback-cmvfr3i6h001d25bczbryff9s 200 in 65ms (next.js: 4ms, proxy.ts: 5ms, application-code: 57ms)
+ GET /api/auth/context 200 in 31ms (next.js: 5ms, proxy.ts: 11ms, application-code: 14ms)
+ GET /api/studio/parallax 200 in 49ms (next.js: 6ms, proxy.ts: 4ms, application-code: 39ms)
+ GET /api/passport/preferences 200 in 38ms (next.js: 3ms, proxy.ts: 8ms, application-code: 27ms)
+ POST /api/studio/parallax 200 in 85ms (next.js: 12ms, proxy.ts: 20ms, application-code: 52ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 74ms (next.js: 17ms, proxy.ts: 13ms, application-code: 43ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /api/studio/parallax/room-photo?definitionId=photo-feedback-cmvfr3i6h001d25bczbryff9s 200 in 84ms (next.js: 13ms, proxy.ts: 14ms, application-code: 57ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 33ms (next.js: 3ms, proxy.ts: 5ms, application-code: 26ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ENVIRONMENTS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 63ms (next.js: 7ms, proxy.ts: 4ms, application-code: 53ms)
+ GET /api/studio/parallax/room-photo?definitionId=266ea9a7-b460-4272-83d6-92c49a1a962e 200 in 42ms (next.js: 3ms, proxy.ts: 4ms, application-code: 35ms)
+ GET /api/studio/parallax/room-photo?definitionId=266ea9a7-b460-4272-83d6-92c49a1a962e 200 in 37ms (next.js: 3ms, proxy.ts: 5ms, application-code: 28ms)
+ POST /api/studio/parallax 200 in 42ms (next.js: 3ms, proxy.ts: 4ms, application-code: 36ms)
+ POST /api/studio/parallax/room-photo 201 in 148ms (next.js: 3ms, proxy.ts: 6ms, application-code: 139ms)
+ POST /api/studio/parallax/room-photo 200 in 47ms (next.js: 3ms, proxy.ts: 5ms, application-code: 39ms)
+  ok  9 [chromium] › tests\e2e\parallax-photo-feedback.spec.ts:18:7 › Photo setup network-desktop-light keeps processing and recovery visible without modifying the source (5.3s)
+ GET /studio/library 200 in 490ms (next.js: 407ms, proxy.ts: 5ms, application-code: 78ms)
+ GET /api/auth/context 200 in 31ms (next.js: 4ms, proxy.ts: 9ms, application-code: 19ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /studio/parallax 200 in 94ms (next.js: 6ms, proxy.ts: 8ms, application-code: 81ms)
+ GET /api/passport/preferences 200 in 90ms (next.js: 19ms, proxy.ts: 19ms, application-code: 52ms)
+ GET /api/studio/tales 200 in 412ms (next.js: 370ms, proxy.ts: 11ms, application-code: 31ms)
+ GET /api/studio/tales 200 in 413ms (next.js: 360ms, proxy.ts: 10ms, application-code: 43ms)
+ GET /api/studio/parallax 200 in 81ms (next.js: 11ms, proxy.ts: 20ms, application-code: 50ms)
+ POST /api/studio/parallax 200 in 73ms (next.js: 11ms, proxy.ts: 16ms, application-code: 46ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 69ms (next.js: 18ms, proxy.ts: 11ms, application-code: 39ms)
+ GET /api/studio/parallax/room-photo?definitionId=d40864f3-a536-4300-ac6d-bfc6bdef85b1 200 in 74ms (next.js: 14ms, proxy.ts: 11ms, application-code: 49ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 53ms (next.js: 4ms, proxy.ts: 5ms, application-code: 45ms)
+ POST /api/studio/parallax 200 in 76ms (next.js: 4ms, proxy.ts: 5ms, application-code: 68ms)
+ GET /api/studio/parallax?view=library-catalog&kind=SCENES&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 39ms (next.js: 3ms, proxy.ts: 4ms, application-code: 32ms)
+ GET /api/studio/parallax?view=library-catalog&kind=SCENES&search=&collection=&origin=MY_CREATIONS&state=ACTIVE&sort=NAME&limit=48 200 in 32ms (next.js: 4ms, proxy.ts: 6ms, application-code: 22ms)
+ GET /api/studio/parallax?view=library-catalog&kind=SCENES&search=&collection=&origin=MY_CREATIONS&state=WORKING&sort=NAME&limit=48 200 in 30ms (next.js: 3ms, proxy.ts: 12ms, application-code: 15ms)
+ GET /api/studio/parallax?view=library-catalog&kind=SCENES&search=Fixture+synthetic-room-photograph&collection=&origin=MY_CREATIONS&state=WORKING&sort=NAME&limit=48 200 in 31ms (next.js: 3ms, proxy.ts: 4ms, application-code: 23ms)
+ GET /api/studio/parallax?view=library-item&entryId=saved%3Asynthetic-room-photograph 200 in 40ms (next.js: 3ms, proxy.ts: 4ms, application-code: 32ms)
+ GET /api/studio/parallax 200 in 37ms (next.js: 2ms, proxy.ts: 5ms, application-code: 30ms)
+ GET /api/studio/parallax/room-photo?definitionId=synthetic-room-photograph 200 in 37ms (next.js: 4ms, proxy.ts: 8ms, application-code: 24ms)
+ POST /api/studio/parallax 200 in 64ms (next.js: 7ms, proxy.ts: 8ms, application-code: 49ms)
+ GET /api/studio/parallax/room-photo?definitionId=synthetic-room-photograph 200 in 43ms (next.js: 5ms, proxy.ts: 13ms, application-code: 25ms)
+ GET /api/studio/parallax?view=library-item&entryId=saved%3Asynthetic-room-photograph 200 in 25ms (next.js: 3ms, proxy.ts: 4ms, application-code: 18ms)
+ GET /api/studio/parallax?view=library-catalog&kind=SCENES&search=Fixture+synthetic-room-photograph&collection=&origin=MY_CREATIONS&state=WORKING&sort=NAME&limit=48 200 in 37ms (next.js: 3ms, proxy.ts: 5ms, application-code: 30ms)
+ GET /api/studio/parallax?view=library-item&entryId=saved%3Asynthetic-room-photograph 200 in 46ms (next.js: 3ms, proxy.ts: 4ms, application-code: 39ms)
+ GET /api/studio/parallax?view=library-catalog&kind=SCENES&search=Fixture+synthetic-room-photograph&collection=&origin=MY_CREATIONS&state=WORKING&sort=NAME&limit=48 200 in 53ms (next.js: 3ms, proxy.ts: 5ms, application-code: 46ms)
+ POST /api/studio/parallax/room-photo 201 in 126ms (next.js: 3ms, proxy.ts: 6ms, application-code: 117ms)
+ POST /api/studio/parallax/room-photo 200 in 611ms (next.js: 3ms, proxy.ts: 5ms, application-code: 603ms)
+ POST /api/studio/parallax/room-photo 200 in 56ms (next.js: 3ms, proxy.ts: 5ms, application-code: 49ms)
+ GET /api/studio/parallax 200 in 37ms (next.js: 4ms, proxy.ts: 4ms, application-code: 28ms)
+ GET /api/studio/parallax?view=library-item&entryId=saved%3Asynthetic-room-photograph 200 in 29ms (next.js: 3ms, proxy.ts: 12ms, application-code: 13ms)
+ POST /api/studio/parallax 200 in 58ms (next.js: 8ms, proxy.ts: 5ms, application-code: 45ms)
+ GET /api/studio/parallax?view=library-item&entryId=saved%3Asynthetic-room-photograph 200 in 35ms (next.js: 3ms, proxy.ts: 5ms, application-code: 27ms)
+ GET /api/studio/parallax?view=library-catalog&kind=SCENES&search=Fixture+synthetic-room-photograph&collection=&origin=MY_CREATIONS&state=WORKING&sort=NAME&limit=48 200 in 31ms (next.js: 3ms, proxy.ts: 5ms, application-code: 23ms)
+ POST /api/studio/parallax 200 in 64ms (next.js: 4ms, proxy.ts: 6ms, application-code: 54ms)
+ GET /studio/parallax?definition=synthetic-room-photograph 200 in 75ms (next.js: 8ms, proxy.ts: 6ms, application-code: 62ms)
+ GET /api/auth/context 200 in 35ms (next.js: 9ms, proxy.ts: 12ms, application-code: 15ms)
+ GET /api/studio/parallax 200 in 57ms (next.js: 7ms, proxy.ts: 7ms, application-code: 43ms)
+ GET /api/passport/preferences 200 in 33ms (next.js: 4ms, proxy.ts: 5ms, application-code: 24ms)
+ POST /api/studio/parallax 200 in 74ms (next.js: 9ms, proxy.ts: 18ms, application-code: 46ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 61ms (next.js: 4ms, proxy.ts: 14ms, application-code: 43ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /api/studio/parallax/room-photo?definitionId=synthetic-room-photograph 200 in 69ms (next.js: 11ms, proxy.ts: 14ms, application-code: 45ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 36ms (next.js: 3ms, proxy.ts: 5ms, application-code: 28ms)
+ POST /api/studio/parallax/room-photo 201 in 92ms (next.js: 3ms, proxy.ts: 5ms, application-code: 84ms)
+ POST /api/studio/parallax/room-photo 200 in 618ms (next.js: 2ms, proxy.ts: 6ms, application-code: 609ms)
+ POST /api/studio/parallax/room-photo 200 in 52ms (next.js: 3ms, proxy.ts: 5ms, application-code: 45ms)
+ GET /api/studio/parallax 200 in 32ms (next.js: 3ms, proxy.ts: 5ms, application-code: 24ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 44ms (next.js: 11ms, proxy.ts: 9ms, application-code: 25ms)
+ POST /api/studio/parallax 200 in 58ms (next.js: 6ms, proxy.ts: 10ms, application-code: 42ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 46ms (next.js: 3ms, proxy.ts: 4ms, application-code: 39ms)
+ POST /api/studio/parallax/room-photo 200 in 40ms (next.js: 4ms, proxy.ts: 6ms, application-code: 30ms)
+ GET /studio/parallax?definition=synthetic-room-photograph 200 in 76ms (next.js: 4ms, proxy.ts: 4ms, application-code: 67ms)
+ GET /api/auth/context 200 in 22ms (next.js: 3ms, proxy.ts: 10ms, application-code: 9ms)
+ GET /api/studio/parallax 200 in 52ms (next.js: 5ms, proxy.ts: 6ms, application-code: 41ms)
+ GET /api/passport/preferences 200 in 32ms (next.js: 6ms, proxy.ts: 10ms, application-code: 15ms)
+ POST /api/studio/parallax 200 in 61ms (next.js: 11ms, proxy.ts: 18ms, application-code: 31ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 51ms (next.js: 7ms, proxy.ts: 19ms, application-code: 25ms)
+ GET /api/studio/parallax/room-photo?definitionId=synthetic-room-photograph 200 in 59ms (next.js: 10ms, proxy.ts: 14ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 31ms (next.js: 3ms, proxy.ts: 5ms, application-code: 23ms)
+ POST /api/studio/parallax/room-photo 200 in 36ms (next.js: 4ms, proxy.ts: 4ms, application-code: 29ms)
+ GET /studio/parallax?definition=synthetic-room-photograph 200 in 71ms (next.js: 4ms, proxy.ts: 5ms, application-code: 62ms)
+ GET /api/auth/context 200 in 29ms (next.js: 8ms, proxy.ts: 8ms, application-code: 14ms)
+ GET /api/studio/parallax 200 in 47ms (next.js: 4ms, proxy.ts: 8ms, application-code: 35ms)
+ GET /api/passport/preferences 200 in 32ms (next.js: 3ms, proxy.ts: 8ms, application-code: 21ms)
+ POST /api/studio/parallax 200 in 58ms (next.js: 16ms, proxy.ts: 13ms, application-code: 28ms)
+ GET /api/studio/parallax/room-photo?definitionId=synthetic-room-photograph 200 in 52ms (next.js: 4ms, proxy.ts: 20ms, application-code: 29ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 55ms (next.js: 6ms, proxy.ts: 19ms, application-code: 29ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 28ms (next.js: 2ms, proxy.ts: 5ms, application-code: 21ms)
+ POST /api/studio/parallax 200 in 1420ms (next.js: 3ms, proxy.ts: 4ms, application-code: 1413ms)
+ POST /api/studio/parallax 200 in 89ms (next.js: 3ms, proxy.ts: 6ms, application-code: 81ms)
+ GET /studio/parallax?definition=synthetic-room-photograph 200 in 72ms (next.js: 5ms, proxy.ts: 6ms, application-code: 62ms)
+ GET /api/auth/context 200 in 30ms (next.js: 11ms, proxy.ts: 7ms, application-code: 12ms)
+ GET /api/studio/parallax 200 in 65ms (next.js: 5ms, proxy.ts: 8ms, application-code: 52ms)
+ GET /api/passport/preferences 200 in 30ms (next.js: 8ms, proxy.ts: 8ms, application-code: 14ms)
+ POST /api/studio/parallax 200 in 65ms (next.js: 12ms, proxy.ts: 16ms, application-code: 38ms)
+ GET /api/studio/parallax/room-photo?definitionId=synthetic-room-photograph 200 in 56ms (next.js: 5ms, proxy.ts: 16ms, application-code: 35ms)
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 65ms (next.js: 8ms, proxy.ts: 16ms, application-code: 41ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /api/studio/parallax?view=library-catalog&kind=ASSETS&search=&collection=&origin=ALL&state=ACTIVE&sort=NAME&limit=48 200 in 73ms (next.js: 3ms, proxy.ts: 4ms, application-code: 66ms)
+  ok 10 [chromium] › tests\e2e\parallax-room-photo.spec.ts:22:5 › Creator privately imports a room photo, confirms measurement, preserves it through refinement, creates a hidden letter and replays its reveal (39.4s)
+
+  10 passed (2.3m)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

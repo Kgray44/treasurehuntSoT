@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "candidate": "66ff1dbc1bab5faeee7e88252c69a1a743c5709e",
+  "tree": "a693aa43a6a0184c3bf61893334cd90d84177b75",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T09:29:38.331Z",
+  "finishedAt": "2026-10-15T09:33:35.883Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-scene-manager-a-r-77a61-s-the-same-working-identity-chromium-video.webm",
+      "sha256": "dd13adea2b1193272720847f671f3fc268a04205be293c030b53275516ac251e"
+    },
+    {
+      "file": "parallax-scene-manager-a-r-8c509-es-without-changing-its-pin-chromium-video.webm",
+      "sha256": "5405c957b31a16954fd3f21dfd1160dad041391d5917ab4043a1df18d1b73a24"
+    },
+    {
+      "file": "parallax-scene-manager-bui-fe8d0-ore-independent-Scene-reuse-chromium-video.webm",
+      "sha256": "0ef4373764cb73c9b93eddab618b2743e25c02bcd09e956a0f49bfa3e78d3c32"
+    },
+    {
+      "file": "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video-1.webm",
+      "sha256": "d465ec188278bca3104003c61b6e72984b586e8c40d7a2b4d063744a1ccd41f0"
+    },
+    {
+      "file": "parallax-scene-manager-Cre-e8996-etains-immutable-references-chromium-video.webm",
+      "sha256": "7d8cf6556dba6b3ca44e81c6e922e4685a6fc83bde916eb8dae931033ea9012a"
+    }
+  ]
+}

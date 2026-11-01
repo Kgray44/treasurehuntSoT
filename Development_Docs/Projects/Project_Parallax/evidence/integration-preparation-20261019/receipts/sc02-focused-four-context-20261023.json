@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_DEVELOPMENT_ONLY",
+  "status": "PASS_ALL_FOUR_FOCUSED_CONTEXTS_INTEGRITY_AND_OWNED_CLEANUP",
+  "recordedUtc": "2026-10-24T02:29:56.716084+00:00",
+  "sourceHead": "2133c53b2c874cbcb49b7cddf6902062a3472d37",
+  "sourceTree": "8685f427332a4c76688ea16ea9ba7d0431480aff",
+  "sourceRegistrySHA256": "74c8683bf63e86973eaca9843d7b7ca6ddb0b9357568b1f82ce31fa8f748a184",
+  "controllerAcceptedHead": "4d6dea03a5637f662e46cb081688d6a9f5f693be",
+  "preparedManifestSHA256": "b0aa3a551fd360c23e8a467d7ac42fd3842e6e1f6621996e6b42b04dabb25f96",
+  "report": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\emergency-sc02-four-context-output-01\\playwright-report.original.json",
+  "reportSHA256": "e138764026d8b71870e751a709d3c9c64f0cc2c57b8a458822b94a2fc1b6d997",
+  "developmentReceipt": "D:\\CodexTemp\\parallax-resume-20261021-01a15554\\emergency-sc02-four-context-output-01\\development-result.private.json",
+  "developmentReceiptSHA256": "5e8f14b09e25e4f597ad7b4dcc3a89886259e578ae0ee9388bb8fcb4028b43b5",
+  "stats": {
+    "startTime": "2026-10-24T02:25:27.374Z",
+    "duration": 152676.289,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "contexts": [
+    "DESKTOP/NORMAL",
+    "DESKTOP/REDUCED",
+    "MOBILE/NORMAL",
+    "MOBILE/REDUCED"
+  ],
+  "outcomes": "Saved one new four-child composition; retained original Scene graph and kinds; independently reused new entity IDs; persisted independent renamed instance; return and motion checks retained. All original five published outcome assertions and all eight current registry assertions retained.",
+  "buildReusedWithoutRebuild": true,
+  "postSourceBuildDependenciesIntegrity": "PASS",
+  "ownedExecution": {
+    "declaredAdditionalCBytes": 8589934592,
+    "declaredAdditionalDBytes": 4294967296,
+    "cAllocationStop": 65523834880,
+    "dAllocationStop": 113111506944,
+    "coverage": "Point-in-time instruction monitor; not an OS quota or external/cloud writer control",
+    "name": "emergency-sc02-four-context-run-01",
+    "at": "2026-10-24T02:28:25.738Z",
+    "exit": {
+      "code": 0,
+      "signal": null,
+      "guardianExitCode": 0
+    },
+    "cleanup": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": 0,
+      "elapsedMs": 1,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "minimumC": 73793220608,
+    "minimumD": 115691356160,
+    "monitorSamples": 76,
+    "reserveFloorEach": 32212254720,
+    "cStopAt": 32346472448,
+    "dStopAt": 32346472448,
+    "streams": {
+      "stdout": {
+        "bytes": 197,
+        "sha256": "4f4ae20aae3e0e033cdad8736d26d75fdc19bdc7ca18b7f6a6d4762c6bff8769"
+      },
+      "stderr": {
+        "bytes": 8089,
+        "sha256": "93bcfea9cbb372f362ce92a3cccaf39a6fea3729e75166819e42b642a1f9d0a7"
+      }
+    },
+    "qualification": false,
+    "protectedCapture": false
+  },
+  "runtimeTimings": {
+    "serverPreparationMs": 16,
+    "serverReadinessMs": 2624,
+    "browserExecutionMs": 155388,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 156
+  },
+  "browserLifecycle": {
+    "capture": "PASS",
+    "fixture": "NOT_STARTED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 3,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 153,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "privateFailureDiagnostics": {
+      "browser": {
+        "retention": "INCOMPLETE",
+        "issues": [
+          "SETUP_FAILED"
+        ],
+        "qualification": false
+      }
+    },
+    "cancelled": false
+  },
+  "activeLockAbsent": true,
+  "warnings": "Original MaxListenersExceededWarning retained. Optional private browser diagnostic setup incomplete SETUP_FAILED; public publication not configured. No product failure observed.",
+  "qualification": false,
+  "protectedCapture": false,
+  "physicalOrOwnerAcceptance": false,
+  "subsequentKeyboardOnlyCorrection": {
+    "oldRegistrySHA256": "74c8683bf63e86973eaca9843d7b7ca6ddb0b9357568b1f82ce31fa8f748a184",
+    "newRegistrySHA256": "b35685c1f6501b0b118b40f678aa361e4deda5472fa9b0dfa815b81c83afba57",
+    "allOtherRegistryDataAndAssertionsUnchanged": true,
+    "addedKeyboardSteps": 3,
+    "optionsSourceReceipt": "D:/CodexTaskOutputs/emergency-recovery-20261023-01a16b74/fleet-integrations/sc02-source-options-keyboard-proposal.json",
+    "oldPreparedManifestRemainsImmutableNotRebound": true,
+    "finalSourceEvidenceRequired": "Mandatory final-source capture and browser qualification; prior2133 focused proof is historical development evidence."
+  }
+}

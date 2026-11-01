@@ -1,0 +1,59 @@
+name: Sounding Line preparation supervisor probe
+run-name: Non-consuming preparation supervisor probe ${{ inputs.expected_sha }}
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Exact installed protected-main source; no product or capture input
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: sounding-line-preparation-probe
+  cancel-in-progress: false
+jobs:
+  synthetic:
+    name: Sounding Line / Non-consuming preparation supervisor probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      statuses: write
+    steps:
+      - name: Bind to installed protected main before executing any fixture
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+          INSTALLED_SHA: ${{ github.sha }}
+          INSTALLED_REF: ${{ github.ref }}
+        run: |
+          test "$INSTALLED_REF" = refs/heads/main
+          test "$EXPECTED_SHA" = "$INSTALLED_SHA"
+          [[ "$EXPECTED_SHA" =~ ^[a-f0-9]{40}$ ]]
+      - uses: actions/checkout@v4
+        timeout-minutes: 7
+        with:
+          ref: ${{ github.sha }}
+          path: authority
+          fetch-depth: 1
+          fetch-tags: false
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Exercise only fixed inert advancing and no-progress fixtures
+        id: probe
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: node authority/scripts/sounding-line/preparation-supervisor-probe.mjs --source "$EXPECTED_SHA"
+      - name: Retain public synthetic progress and original terminal receipts
+        if: always() && steps.probe.outputs.probe_progress_paths != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: preparation-supervisor-probe-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ steps.probe.outputs.probe_progress_paths }}
+            ${{ steps.probe.outputs.probe_summary_path }}
+          if-no-files-found: error
+          retention-days: 90

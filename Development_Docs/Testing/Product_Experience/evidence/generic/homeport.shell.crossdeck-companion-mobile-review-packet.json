@@ -4,12 +4,20 @@
     "id": "homeport.shell.crossdeck-companion-mobile",
     "name": "Homeport immersive companion contextual exit and same-Voyage re-entry · handheld",
     "authority": "project-homeport",
-    "owners": ["project-homeport", "project-crossdeck", "one-voyage"],
+    "owners": [
+      "project-homeport",
+      "project-crossdeck",
+      "one-voyage"
+    ],
     "critical": true,
     "experience": {
       "persona": "An authorized Player leaving a companion purpose and returning to the same active Voyage",
       "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
-      "systems": ["project-homeport", "project-crossdeck", "one-voyage"],
+      "systems": [
+        "project-homeport",
+        "project-crossdeck",
+        "one-voyage"
+      ],
       "sourcePaths": [
         "src/navigation",
         "src/components/shell",
@@ -18,11 +26,20 @@
         "src/app/devices/display",
         "src/app/player/library/page.tsx",
         "src/components/platform/PlayerLibrary.tsx",
-        "src/styles/platform.css"
+        "src/styles/platform.css",
+        "src/styles/personal-harbor.css"
       ],
-      "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
-      "devices": ["MOBILE"],
-      "roles": ["PLAYER"],
+      "projectionPaths": [
+        "src/app/api/auth/context",
+        "src/app/api/player/library",
+        "src/app/api/play/sessions"
+      ],
+      "devices": [
+        "MOBILE"
+      ],
+      "roles": [
+        "PLAYER"
+      ],
       "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
       "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
       "references": [
@@ -43,7 +60,9 @@
           "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
         }
       ],
-      "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+      "homeportScreenIds": [
+        "screen-page-player-playthroughs-playthroughid-journal"
+      ],
       "browserTests": [
         "tests/e2e/homeport-phase2.spec.ts",
         "tests/e2e/crossdeck-experience-refit.spec.ts",
@@ -78,7 +97,11 @@
       "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
       "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
       "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
-      "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
+      "states": [
+        "COMPANION_READY",
+        "LIBRARY_READY",
+        "RETURNED"
+      ],
       "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure restores the same current Voyage.",
       "designTarget": "Keep account/context controls and safe library exit and same-Voyage re-entry readable, discoverable and operable on desktop and phone in both motion modes. Relative passage/chrome composition after return and editorial appearance refinement are assigned to Project Refit; no functional, accessibility or continuity defect is deferred.",
       "roleSetup": {
@@ -139,7 +162,9 @@
       "journeys": [
         {
           "id": "companion-context-exit-return",
-          "roles": ["PLAYER"],
+          "roles": [
+            "PLAYER"
+          ],
           "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage",
           "steps": [
             {
@@ -225,10 +250,11 @@
             "meaning": "The Player activates the unobscured Continue Voyage control and the same authorized Voyage Journal visibly advances from Follow the lanterns to Voyage complete."
           }
         ]
-      }
+      },
+      "homeportJourneyIds": []
     }
   },
-  "sourceDigest": "e6cf2d544efc36fce2ccfee7f16334296a1f82e783726e7dfd067a67d3a7debf",
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
   "artifacts": [
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
@@ -245,7 +271,7 @@
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3.png",
-      "sha256": "6fe2b4b429cf745914a687cd6aa635834417f34974d4c51b2120f725ac603842",
+      "sha256": "067f219938b59cad2a575babf32d7fe6d04dbbbaa5fb7384722c13c2ba43c90c",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.shell.crossdeck-companion-mobile",
@@ -257,7 +283,7 @@
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7.png",
-      "sha256": "357b7d25a8bb984e021b1005b5fc0ee3f892fb4565df2d2c7ce4026c8fdf4792",
+      "sha256": "2358e9f121a101774d4caa773e07d9e9312f32ce5701903263866030550e9eb0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.shell.crossdeck-companion-mobile",
@@ -269,7 +295,7 @@
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
-      "sha256": "ca198bbefe696f5812ef251d0da1ee8f233d008082c07f1674398a00a1f8407f",
+      "sha256": "cc53f5ce11e00b9abaee77a94be24df2e7e16e9add5b020e84b343db9eae4378",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.shell.crossdeck-companion-mobile",
@@ -279,8 +305,8 @@
     },
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/97b725f01605734a1a0c0381501e0f02.webm",
-      "sha256": "c09887beac057fad1c642c7a8f968fe432333d845537ecc741636f40a14cfac3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c6426e5e28a695cb7d38ba2d8b01d20d.webm",
+      "sha256": "7d979619ba9dd554e97b331e89851aaf106a6a6d6cf340c263c5b543377438f1",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.shell.crossdeck-companion-mobile",
@@ -303,7 +329,7 @@
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3.png",
-      "sha256": "0b057e6a454d65b4d8921197271a47f18915b4d393a98b4ab49e4a0698cd3a01",
+      "sha256": "13ba3f0f8ab37311aa7191ad1196403cd735d734f5fcecaf097b71d541256ef0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.shell.crossdeck-companion-mobile",
@@ -315,7 +341,7 @@
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7.png",
-      "sha256": "97a9f4006b790d7be531b615c9f9fd32b6ef80893af068e19144e3fe8253151f",
+      "sha256": "d2121920a64b66adff584b4a817f28b62b8a2fb9f4d74ded408006abe7952c50",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.shell.crossdeck-companion-mobile",
@@ -327,7 +353,7 @@
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
-      "sha256": "213523df86c89b7a7553f2a6c01e8e4cb1d25e9c1fa804c59790193af255753a",
+      "sha256": "3463824620e8a5f44651f83713f53917f72eab894693e52f06b94b3a7e4209fd",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.shell.crossdeck-companion-mobile",
@@ -337,8 +363,8 @@
     },
     {
       "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/cf4be85a79402c5be146fa01fba08f77.webm",
-      "sha256": "2c450d39dd4f3ff11c08186d5bb11e01e4fd13adac628b63f292caed3302a3f9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3634bfcfa5a07dfae0cb2a5a7dbe3ce1.webm",
+      "sha256": "6b6271cc79a55b69bb9c380d6ec06afa7daa98d5b1d00a337d89b94f03221736",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.shell.crossdeck-companion-mobile",
@@ -347,7 +373,7 @@
       "motionMode": "REDUCED"
     }
   ],
-  "packetDigest": "e101444b52b5d14a35baff40ee16c6bfd755329405a73e065c3a1e0dc7ca8830",
+  "packetDigest": "fc3f2ee5b651ae83cb4fc6ab824a3badb3194ca8bfea8c7e0f2e4ea858ee6546",
   "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
   "reviewDimensions": [
     "composition",

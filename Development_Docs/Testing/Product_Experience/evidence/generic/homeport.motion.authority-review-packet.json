@@ -1,0 +1,325 @@
+{
+  "objective": "Open the real Showcase from its visible Home link, select reduced motion, and return to the same Home account.",
+  "contract": {
+    "id": "homeport.motion.authority",
+    "name": "Project Homeport Motion Authority",
+    "authority": "project-homeport",
+    "owners": [
+      "project-homeport"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "A synthetic signed-in Creator in the explicitly enabled, task-owned animation harness.",
+      "objective": "Open the real Showcase from its visible Home link, select reduced motion, and return to the same Home account.",
+      "visibleOutcome": "The guarded owned build opens its actual harness and playback controls, then follows Return to harbor without entering the owner-only spatial pilot.",
+      "integrationOwner": "Existing Parallax integration owner #776; Homeport and the animation runtime retain their current identity and playback authority.",
+      "accessibility": "Use the visible named harness link, native playback buttons and ordinary Home return on desktop and phone in both motion modes.",
+      "fallback": "The accepted task-owned build deliberately enables NEXT_PUBLIC_ENABLE_ANIMATION_LAB. This proves harness availability only; normal-production lab unavailability and physical/provider acceptance are not established here.",
+      "navigation": "Home → TEST ANIMATIONS → actual Showcase controls → Return to harbor → Home.",
+      "designTarget": "Preserve the existing synthetic development harness composition and truthful harness-only notice.",
+      "entryPoint": "/",
+      "systems": [
+        "project-homeport"
+      ],
+      "sourcePaths": [
+        "src/components/animation/AnimationControls.tsx",
+        "src/components/dev/AnimationShowcase.tsx",
+        "src/app/dev/animations/page.tsx"
+      ],
+      "projectionPaths": [
+        "src/animation/motion/useMotionMode.ts"
+      ],
+      "states": [
+        "HARNESS_HOME_READY",
+        "OWNED_SHOWCASE_READABLE",
+        "HARNESS_CONTROLS_READABLE",
+        "HARNESS_HOME_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2F",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "button",
+            "name": "Synthetic Parallax Creator",
+            "text": "Synthetic Parallax Creator"
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport gateway frame and return hierarchy; this is not a claim that uncurated Account screenshots were accepted.",
+          "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport gateway frame and return hierarchy; this is not a claim that uncurated Account screenshots were accepted.",
+          "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "owned-showcase-controls-and-home-return",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "The actual explicitly enabled Showcase opens from Home and preserves a visible return after selecting reduced motion; this remains synthetic harness evidence.",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Synthetic Parallax Creator",
+              "state": "HARNESS_HOME_READY"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "TEST ANIMATIONS - open the development animation showcase"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Forever Treasure Animation Showcase",
+              "text": "Forever Treasure Animation Showcase",
+              "path": "/dev/animations",
+              "kind": "outcome",
+              "meaning": "The actual Home harness link opens the real explicitly enabled Showcase rather than fabricating a normal-production 404.",
+              "state": "OWNED_SHOWCASE_READABLE"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "reduced"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Animation playback controls",
+              "text": "Motion",
+              "path": "/dev/animations",
+              "state": "HARNESS_CONTROLS_READABLE"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to harbor"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Synthetic Parallax Creator",
+              "path": "/",
+              "returnPath": true,
+              "state": "HARNESS_HOME_RETURNED"
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-access-availability.spec.ts"
+      ],
+      "limitations": [
+        "Synthetic guarded harness controls and navigation only. Browser cases assert the selected reduced button aria-pressed state; the capture engine does not support attribute assertions in journey steps.",
+        "No normal-production lab availability, progression, camera, physical AR, owner pilot, native or live-provider success is claimed. Shared references cover Home entry/return only; actual harness media still needs independent review."
+      ]
+    }
+  },
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
+  "artifacts": [
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_READY-0.png",
+      "sha256": "e501e13f1f15eb177e848c7275d6fc8710afe0d35faecde15bf5f3dd4471e93e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "state": "HARNESS_HOME_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2.png",
+      "sha256": "9b3231464e9b2210b43f5c0501f9f83008773be72817a41c0e73b5b9befb614d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "state": "OWNED_SHOWCASE_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4.png",
+      "sha256": "01f353252e5b971dbaec064d3facb578f0b41a773f6deedfce13216f2c50d774",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "state": "HARNESS_CONTROLS_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6.png",
+      "sha256": "49e7fbf987a8e51eeae4338aaf9ac8c62aaa1eb834cc85d59d7b34dcdde190d9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "state": "HARNESS_HOME_RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "b28472b0132a6c091b37eb54ddaf90f62c376e063fbb5a921c768d081b7b00c5",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/490b112e7f8ea6e8a7341e5076d35391.webm",
+      "sha256": "584907a11df0f051dd0d774fac6b74b8b39d185648e5438b384e9103dcdaed98",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_READY-0.png",
+      "sha256": "74d97a14edfeac0375814098d7ce4ff8a8b61b0a966bd23749c7d21cd67353ce",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "state": "HARNESS_HOME_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-OWNED_SHOWCASE_READABLE-2.png",
+      "sha256": "c1fbd41a3d893ec326239eeb3ef68fea549cd18f5218ca781f8cdbf55582d896",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "state": "OWNED_SHOWCASE_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_CONTROLS_READABLE-4.png",
+      "sha256": "d6beedd5982babf3aaa873f4f5fdc49f92ab981d8968bae8373bf5eacc6afa9b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "state": "HARNESS_CONTROLS_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-HARNESS_HOME_RETURNED-6.png",
+      "sha256": "c673370ed938a3ed929cd86d7e1bd330ce6068e6d78c99964940a9394d1b5323",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "state": "HARNESS_HOME_RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "93d66393bb087ddcdfdf466ad7c10faae32da2e8d6ad459d21e80f8b2a456332",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.motion.authority-owned-showcase-controls-and-home-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/4ae1abf3d7eebadb7ccdc1445d62295d.webm",
+      "sha256": "aa699337a192ce73e2c11530390c5191cc8023b3a4e8dd9a5b113975faed07b8",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.motion.authority",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "83caba406d889ce1f02d75b2e5b5b5d2b39d29cc33bde7cd3696c854d397106f",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

@@ -1,0 +1,9 @@
+{
+  "crossdeckExecution": false,
+  "attemptRoot": "D:/CodexTemp/parallax-cohort-prep-20261016/local-entry-proof-20261017T155823-d4f53cfa",
+  "results": "D:/CodexWorktrees/parallax-root-integration/artifacts/entry-migration-local/local-entry-proof-20261017T155823-d4f53cfa",
+  "scope": "four exact-path correction cases; no early stop; synthetic only",
+  "protectedQualification": false,
+  "candidate": "43171b3a6bdd0e863cb56f6dd52b55161429aaa3",
+  "kind": "LOCAL_FOCUSED_SYNTHETIC_UNPAID"
+}

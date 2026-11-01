@@ -1,0 +1,689 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "createdAt": "2026-10-22T22:39:51.498Z",
+  "status": "PASS_EXACT_SOURCE_READY_FOR_NORMAL_PROTECTED_QUALIFICATION",
+  "scope": "Fresh exact committed integration-source review for PR792 normal protected qualification only. No protected acceptance, installation, provider-visible progress, consumer capture or product review is approved or inferred.",
+  "repository": "Kgray44/treasurehuntSoT",
+  "root": "D:/CodexWorktrees/sounding-line-capture-preparation-observability-20261022",
+  "base": "1a7653c3d6f3476b38f789c9b7a017b4e529243c",
+  "head": "c48c56e652e993463702a05b6a466aea7fa734b3",
+  "tree": "d134ad7b9c27283c0e7a356a1ff571a6a7531296",
+  "clean": true,
+  "orderedParents": [
+    "154dd9b65eb29ecfbc38434971431b2a6ac6b0ff"
+  ],
+  "findings": [],
+  "sourcePacket": {
+    "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\candidate-source-review-integration.original.json",
+    "bytes": 11073,
+    "sha256": "5517157f44d2e91137e35411fa0f3fa6877c832bc4f36d7bcc91dffd8e39b0e6"
+  },
+  "sourceManifest": [
+    {
+      "path": ".agents/README.md",
+      "bytes": 5421,
+      "sha256": "95291e8ec68482bef73a3455a9b44c44d579655227ca70c4a9497e52df7dfcba",
+      "mode": "100644",
+      "blob": "8cfad94904cdeccabdc8cedad10dbce647f786b7"
+    },
+    {
+      "path": ".agents/capture-preparation-observability-repair.md",
+      "bytes": 2051,
+      "sha256": "47944b7653b624699bb58492662fda520b0430c38df1c3e49cf4213fee4dbc60",
+      "mode": "100644",
+      "blob": "3ed42b32394d074c5b2ed1755ebb1b06d7d45745"
+    },
+    {
+      "path": ".github/workflows/sounding-line-ordinary.yml",
+      "bytes": 27403,
+      "sha256": "aea50cb986e7c2bff76a25c5bf3f9ff5e4a2814a284b61c293785d7a9e4f6bdd",
+      "mode": "100644",
+      "blob": "9d961ce895348b213729f59307254ad47b52f804"
+    },
+    {
+      "path": ".github/workflows/sounding-line-preparation-probe.yml",
+      "bytes": 2152,
+      "sha256": "01aee40503f9b9f62496ccca0141d5b6acb445f3197aa274001ab223a01b530e",
+      "mode": "100644",
+      "blob": "bf83f3f8abe3215417361f90a8d454f31c7557fa"
+    },
+    {
+      "path": "Development_Docs/Engineering/Capture_Preparation_Supervisor_Repair.md",
+      "bytes": 8994,
+      "sha256": "7c2b89e991f855b7f187c3eaff7ad5086d74de7a3e1a54e42f505cc89da1f9e4",
+      "mode": "100644",
+      "blob": "e0d97c750a347603fdae2b38137b2b0399a9d707"
+    },
+    {
+      "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "bytes": 3439739,
+      "sha256": "350c66cb2e7bef16e299a57efa63f8a7f5c035a28205defad12f8d5e0c429986",
+      "mode": "100644",
+      "blob": "ba1b92353b5c413676bebd36accce3433f6225d8"
+    },
+    {
+      "path": "Development_Docs/document-index.json",
+      "bytes": 546654,
+      "sha256": "e706be6f5071f2b3acc91a8ff3d4908f65172da1084ef7a627ba24daaff114dc",
+      "mode": "100644",
+      "blob": "64ea47b0769c15b68c84a0479e878995ef59845a"
+    },
+    {
+      "path": "package.json",
+      "bytes": 31550,
+      "sha256": "78046bec28657847a3873092765a9985d129cb6bdedd79b5af7e9a57bdf54e48",
+      "mode": "100644",
+      "blob": "352c116c1aa5d716157f9f596431f355df03e1b4"
+    },
+    {
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "bytes": 28133,
+      "sha256": "40c81f7065db833a2b4d92bb9027193f8832a8d1e8452cd586ab058589576cb4",
+      "mode": "100644",
+      "blob": "a7ef989e90006f43dd98e6e671285dc252cf00b3"
+    },
+    {
+      "path": "scripts/sounding-line/experience-browser.mjs",
+      "bytes": 40028,
+      "sha256": "99c0c2bc79bee109d85b1466c587adf5993eae6fec44e6bad91c6ab3ab8eaf6c",
+      "mode": "100644",
+      "blob": "c84544f86c4be2769793efaf3f9f7337ddd54c55"
+    },
+    {
+      "path": "scripts/sounding-line/experience-capture-publication.mjs",
+      "bytes": 20026,
+      "sha256": "2d8b2796b72c5093dd52f298185bc56fbdc76dc65ce58166e10fe51029637d26",
+      "mode": "100644",
+      "blob": "d0453047152709f0b3081785c87e4c2f818a37fd"
+    },
+    {
+      "path": "scripts/sounding-line/experience-prepare-supervised.mjs",
+      "bytes": 5230,
+      "sha256": "626f4ece9dc4d4f878816e82cea63f7e060de49c4fc41a37b927677618f5603b",
+      "mode": "100644",
+      "blob": "918492890cf2b10894f06dba22db0a5ab4ee375c"
+    },
+    {
+      "path": "scripts/sounding-line/experience-prepare.mjs",
+      "bytes": 10522,
+      "sha256": "138c63ee0eae093b442571e8165e6874fb3162e1e0eca2a0ff1857a27e4ad63a",
+      "mode": "100644",
+      "blob": "4a30cf039a1791d40f6ebeb645234f6134fb68d1"
+    },
+    {
+      "path": "scripts/sounding-line/preparation-phases.mjs",
+      "bytes": 4934,
+      "sha256": "9366cc672de5278379e89ffd2ce2074296d7d4e360d70b43c83be6544d934c4e",
+      "mode": "100644",
+      "blob": "97e7be3420ede19c1870a1f628fdc3c1c8e76ad2"
+    },
+    {
+      "path": "scripts/sounding-line/preparation-supervisor-probe.mjs",
+      "bytes": 4925,
+      "sha256": "aa1706e12e300f9f71c90e7d54d0ff7239dad2c9f133ce51b3a0d0c1b742926f",
+      "mode": "100644",
+      "blob": "4801fba2a2283f272277d27c6dc5268cf745c544"
+    },
+    {
+      "path": "scripts/sounding-line/preparation-supervisor.mjs",
+      "bytes": 16550,
+      "sha256": "a94a0c2c79e4db43c5945459247396de36cde81e4d625944bfb1d2b2ffc8df81",
+      "mode": "100644",
+      "blob": "b938944d0db9e96720be51ab729c19fd9141abc3"
+    },
+    {
+      "path": "scripts/sounding-line/run-browser-suite.mjs",
+      "bytes": 17243,
+      "sha256": "6c0d8793a2bac06d8e1be0d01821d14720d1208eba6ec5377823e03944d43978",
+      "mode": "100644",
+      "blob": "26992beecaafd3d09272449be9ad514710bea016"
+    },
+    {
+      "path": "tests/sounding-line/experience-capture-publication.test.mjs",
+      "bytes": 53666,
+      "sha256": "dd26e4f46776f93c599f856d093ced0551134b9f32faf9c614ed88c1207b1c82",
+      "mode": "100644",
+      "blob": "41381d33d817e26476b4a4a00d38eb1853204114"
+    },
+    {
+      "path": "tests/sounding-line/fixtures/preparation-runtime.mjs",
+      "bytes": 3324,
+      "sha256": "c164cd7175ef33036d3219e0c638cd4852071fd8c92562e4d778322a607119c1",
+      "mode": "100644",
+      "blob": "cad9a316357dfbdfc287f6cdc31e1980680750bd"
+    },
+    {
+      "path": "tests/sounding-line/ordinary.test.mjs",
+      "bytes": 90613,
+      "sha256": "466b5a3691840ebef8b49776f42161c64303ef71fa06f96f3527a6174aba9afd",
+      "mode": "100644",
+      "blob": "183ac9542f6eabac08cb5ee7b269b47aa6874467"
+    },
+    {
+      "path": "tests/sounding-line/preparation-supervisor.test.mjs",
+      "bytes": 16251,
+      "sha256": "6ed2809f6c4aeb266fb3a4f7e3d619fe3a5b8a4fefd947cf7a52d19b93bc1a03",
+      "mode": "100644",
+      "blob": "4fbe777d8a8219ea0ff6e1a0f7393d403e042878"
+    }
+  ],
+  "fullDiff": {
+    "bytes": 97879,
+    "sha256": "6a40d32823e1a5bf0d046e5643fa4f8ce927a14a561381294afd72152ad0b520"
+  },
+  "unchangedProtectedBindings": [
+    {
+      "path": "testing/contracts.json",
+      "blob": "ddf7a990800adf9febe328b8eaf1204fb3fb62f1"
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "blob": "089308bf475a2b22bfdc64ac46164996855e7010"
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "blob": "7d9f5073425188b377d980b422b4df5783a1723d"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r26.mjs",
+      "blob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-admission.mjs",
+      "blob": "540ba2ea53d30535fc34c6d19dda578776cc9a11"
+    },
+    {
+      "path": "scripts/sounding-line/owned-process.mjs",
+      "blob": "d2051a5f5809e634c1b2c1a99a052edbcd060c3d"
+    },
+    {
+      "path": "scripts/sounding-line/owned-process-windows.ps1",
+      "blob": "63221fa37a288fb1f1c18161aef2146a83117171"
+    },
+    {
+      "path": "scripts/sounding-line/owned-process-linux.py",
+      "blob": "1d386a61f8d60c418e1458f9b40a3dd016675a32"
+    },
+    {
+      "path": "scripts/sounding-line/immutable-recognition-reads.mjs",
+      "blob": "2f59d86a5a38bebb779b46a6f73bf619d3c6edaa"
+    },
+    {
+      "path": "scripts/sounding-line/source-diagnostics.mjs",
+      "blob": "68904a0540c5ac6b06ce9c7169854abbda6d9eb4"
+    }
+  ],
+  "resolvedReviewFindings": [
+    {
+      "id": "RAW_RETENTION_BEFORE_PROGRESS_FAILURE",
+      "resolution": "RETENTION channel errors are held separately while original raw sealing and retention execute. The synthetic regression preserves exact original replay-error identity and verified retained raw paths; retention failure aggregation is unchanged."
+    },
+    {
+      "id": "STICKY_DEADLINES",
+      "resolution": "Monotonic executionBoundary checks run before/after event reads, before deadline renewal, after publication/outcome and after cleanup/finalization; a queued late event cannot reset an expired phase/absolute bound."
+    },
+    {
+      "id": "CANCELLATION_THROUGH_FINALIZATION",
+      "resolution": "External cancellation remains observed through owned stop, provider terminal publication and durable terminal writing. Late failure returns FAIL; an earlier terminal/provider observation is preserved and a distinct corrective failure is produced."
+    },
+    {
+      "id": "BOUNDED_EVENT_SNAPSHOT",
+      "resolution": "Reader allocates a fixed4097-byte Buffer, validates <=4096 bytes plus exact read size, and checks handle/path identity, timestamps and size around reading. Growth/replacement test controls exercise real files."
+    },
+    {
+      "id": "TERMINAL_WRITE_BRANCH_COVERAGE",
+      "resolution": "Final fourteen-case test calls actual supervisor with a writeCheckpoint barrier that writes terminal.json then aborts. It asserts original PASS remains, terminal-correction.json is FAIL/CANCELLED, returned outcome is FAIL, same binding/sequence and last published observation is FAIL. Engineering documentation mandates correction-file precedence."
+    },
+    {
+      "id": "HARDLINK_PUBLICATION_CTIME_RACE",
+      "resolution": "Producer retains create-only pending hardlink aliases while observer may read. At most256 published aliases share payload blocks; only directory entries are added. Strict dev/ino/size/mtime/ctime reader is byte-identical to cc1; no reader exception promoted. Actual emit/read regression verifies two stable hardlinks, same dev/ino, data and timestamps. Existing growth/replacement denials remain unchanged."
+    },
+    {
+      "id": "ORIGINAL_BUILD_HELPER_INTEGRATION",
+      "resolution": "PRODUCTION_BUILD emits conditionally immediately before ensureProductionBuild() with identical profile.taskOwnedProductionHttp predicate. Original helper body and first failing email-adapter test/assertion are byte-identical to accepted base. Build arguments, environment, ordering and budgets are preserved."
+    },
+    {
+      "id": "EXACT_WORKFLOW_INVENTORY_INTEGRATION",
+      "resolution": "Exact sorted workflow inventory retains every previous7entry and adds only sounding-line-preparation-probe.yml. After removing that one new list entry and the new governance block, the complete ordinary.test.mjs equals accepted-base bytes. No original assertions were relaxed or dropped."
+    }
+  ],
+  "sourceAssessment": {
+    "supervision": "The existing protected experience-prepare CLI is launched through unchanged creation-bound owned-process implementation and retains its actual PID-owned admission/lease. The outer async watchdog is not blocked by synchronous trusted-child setup/profile calls. Existing launcher pipes stdout/stderr; stop requires verified owned tree and stream closure.",
+    "budgets": "Existing40-minute preparation job unchanged. API-bound current job age is debited; two-minute finalization/upload tail retained. Fixed phase bounds120s, except build/browser-fixture/capture900s; existing browser runtime15min and readiness120s remain. These newly imposed phase policy bounds are not measured workload guarantees.",
+    "phaseAndSourceBinding": "Closed schema binds repository/base/candidate/run/attempt/session nonce, contiguous sequence/profile/preparer order and stable source/contract/plan digests. No heartbeat-based extension. Source/plan digests are protected controller declarations; no cryptographic producer-identity or universal non-disclosure claim is made.",
+    "publication": "A distinct non-required progress status context contains run/attempt/session nonce. Descriptions/state/target URL are fixed and redacted; one bounded request per observation, no automatic retry. A corrective failure is a distinct observation, not erasure of the original. Mainline Decision is not replaced.",
+    "permissionBoundary": "Only experience-preparation job adds statuses:write alongside its existing read permissions. The protected original CLI shares that job credential; the capability is truthfully job-scoped trusted-controller authority, not outer-only. Setup/server/browser/fixture product launch paths remove GH_TOKEN, GITHUB_TOKEN and preparation channel/profile. Existing GITHUB_OUTPUT/private-publication nonce stripping remains.",
+    "workflowRouting": "Only capture switches to the supervised entrypoint. Review/other preparation modes retain original entrypoint. Original preparation/capture arguments, candidate-history checkout, finite authority/custody gates, publication and evidence upload gates remain. New upload contains public checkpoint directory only, excluding raw transport.",
+    "inertProbe": "Separate workflow binds refs/heads/main and exact expected_sha==github.sha before checkout/fixture execution. Its only fixed modes are hosted-advance and hosted-silent. It calls supervisor/status publisher and synthetic fixture, not admission/planner/capture/custody engines. Child credentials are stripped; synthetic listener/blocked descendant cleanup, port reuse and environment stripping are checked. Producer summary alone cannot prove provider-visible mid-run progress.",
+    "authorityPreservation": "Registry/contracts/R26/admission/recognition/source diagnostic/owned lifecycle modules are unchanged. No new record, counter, grant, refund, reset, compatibility bypass, capture reuse or expired-authority extension.",
+    "package": {
+      "canonicalAddedTest": 1,
+      "allOtherFieldsIdentical": true
+    },
+    "documentation": {
+      "allOldCSVRowsRetainedInOrder": true,
+      "newOwnRows": 1,
+      "indexOwnRecords": 1
+    },
+    "stableAliases": "Only producer unlink behavior changed; aliases remain in bounded private transport and are not uploaded. No-clobber publication, strict snapshot, phase schemas/order/digests, deadlines/cancellation, privilege and finite-authority guards are preserved.",
+    "integrationDelta": "Three files only relative154dd9: build phase placement/restored helper; ordinary-test named inventory and additive probe guards; appended engineering disclosure of failed whole run. Other18full-diff bindings match the previously reviewed successor.",
+    "newProbeGovernanceAssertions": "Manual workflow_dispatch with only expected_sha input; no PR/push/schedule/workflow-call triggers/Mainline Decision. Exactly synthetic job; global contents:read, job contents:read/statuses:write and one total write capability. Main-ref/equal expected/source guards precede checkout; exact github.sha/persist-credentials:false; one fixed inert probe command; only emitted public progress/summary upload paths; excludes admission/capture/custody entrypoints and restricts relative imports to phase/supervisor helpers."
+  },
+  "localEvidence": {
+    "results": [
+      {
+        "label": "ordinary-integration-01",
+        "node": "v24.18.0",
+        "argv": [
+          "--max-old-space-size=384",
+          "--test",
+          "--test-timeout=15000",
+          "--test-name-pattern=task-owned browser suites configure a task-owned synthetic email adapter|ordinary admission has no orchestration or generated-state prerequisites",
+          "tests/sounding-line/ordinary.test.mjs"
+        ],
+        "elapsedMsIncludingCleanup": 2942,
+        "cleanup": {
+          "status": "PASS",
+          "directExitObserved": true,
+          "exitCode": 0,
+          "signal": null,
+          "treeReaped": true,
+          "streamsClosed": true,
+          "escalated": true,
+          "payloadExitCode": 0,
+          "elapsedMs": 6,
+          "ownership": "WINDOWS_JOB_OBJECT"
+        },
+        "allClaimedFinalBytesMatch": true
+      },
+      {
+        "label": "supervisor-unit-06",
+        "node": "v24.18.0",
+        "argv": [
+          "--max-old-space-size=384",
+          "--test",
+          "--test-timeout=20000",
+          "tests/sounding-line/preparation-supervisor.test.mjs"
+        ],
+        "elapsedMsIncludingCleanup": 22530,
+        "cleanup": {
+          "status": "PASS",
+          "directExitObserved": true,
+          "exitCode": 0,
+          "signal": null,
+          "treeReaped": true,
+          "streamsClosed": true,
+          "escalated": true,
+          "payloadExitCode": 0,
+          "elapsedMs": 2,
+          "ownership": "WINDOWS_JOB_OBJECT"
+        },
+        "allClaimedFinalBytesMatch": true
+      },
+      {
+        "label": "retention-progress-03",
+        "node": "v24.18.0",
+        "argv": [
+          "--max-old-space-size=384",
+          "--test",
+          "--test-timeout=30000",
+          "--test-name-pattern=^failed progress emission still retains raw output",
+          "tests/sounding-line/experience-capture-publication.test.mjs"
+        ],
+        "elapsedMsIncludingCleanup": 4113,
+        "cleanup": {
+          "status": "PASS",
+          "directExitObserved": true,
+          "exitCode": 0,
+          "signal": null,
+          "treeReaped": true,
+          "streamsClosed": true,
+          "escalated": true,
+          "payloadExitCode": 0,
+          "elapsedMs": 3,
+          "ownership": "WINDOWS_JOB_OBJECT"
+        },
+        "allClaimedFinalBytesMatch": true
+      },
+      {
+        "label": "quality-05",
+        "node": "v24.18.0",
+        "argv": [
+          "--max-old-space-size=384",
+          "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/quality-check-final-01.mjs"
+        ],
+        "elapsedMsIncludingCleanup": 11369,
+        "cleanup": {
+          "status": "PASS",
+          "directExitObserved": true,
+          "exitCode": 0,
+          "signal": null,
+          "treeReaped": true,
+          "streamsClosed": true,
+          "escalated": true,
+          "payloadExitCode": 0,
+          "elapsedMs": 2,
+          "ownership": "WINDOWS_JOB_OBJECT"
+        },
+        "allClaimedFinalBytesMatch": true
+      }
+    ],
+    "counts": {
+      "ordinary": {
+        "tests": 2,
+        "pass": 2,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "supervisor": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      },
+      "retention": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    "claims": [
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\ordinary-integration-01.claim.original.json",
+        "bytes": 5057,
+        "sha256": "dd263999c7ca3ef3828381e1126517a939b22e7ee215f273bdd41c796113ce3f"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\supervisor-unit-06.claim.original.json",
+        "bytes": 5052,
+        "sha256": "6708023b5d45c725aeb63999cd44a3786dac167fab79f92f06d4d0e81bd4179f"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\retention-progress-03.claim.original.json",
+        "bytes": 5055,
+        "sha256": "1b7c68bb03713e926e5c44179269661cb909bdcc5fc6471f7c04797497574555"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\quality-05.claim.original.json",
+        "bytes": 5044,
+        "sha256": "b1fc87923e6be1598928de4fd7a10a91650db3329e945d900fe7509e07af3716"
+      }
+    ],
+    "evidence": [
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/ordinary-integration-01.owned-result.original.json",
+        "bytes": 1642,
+        "sha256": "9ed6172d44a3c532d29c3eb63624033ec86e6ab16bf7fccbcc178b39855f12e5"
+      },
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/supervisor-unit-06.owned-result.original.json",
+        "bytes": 1471,
+        "sha256": "5b0fcbe08cbc48cbb0770f00ccd094b283cc1408d6885f7b25990b337b06c6f4"
+      },
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/retention-progress-03.owned-result.original.json",
+        "bytes": 1563,
+        "sha256": "3d13042ad46c5745f6636fe0fb8fe23798b257213540b24e8f165ac651e9f64f"
+      },
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/quality-05.owned-result.original.json",
+        "bytes": 1451,
+        "sha256": "c8b9b084623de871234422c1a3ab06b33f76370214b8461524aff09bef551963"
+      },
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/corrected-run-39863418213.failed-terminal.original.json",
+        "bytes": 13220,
+        "sha256": "2e6fb54f891660969c09a9ec1372645154430aada75345aca96b2f9c946e1307"
+      },
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/corrected-run-39863418213.failed-jobs.original.json",
+        "bytes": 13913,
+        "sha256": "64cfc511dce13c9c22dccbc7700db45fad6212936ef58ae74482ea4dd786ff5b"
+      },
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/corrected-focused-120123147791.failed.captured.original.txt",
+        "bytes": 363443,
+        "sha256": "f190b73e229646b70f61e7b35716332103018ad95d2549d4b3a730d00ac0e9aa"
+      },
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/corrected-decision-120127326350.failed.captured.original.txt",
+        "bytes": 2882,
+        "sha256": "02bdd7ed10364c9b4cf5c6627dbde7b21980c0a53d9c30bbcc4bf52bcc793246"
+      },
+      {
+        "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/independent-source-review-corrected.original.json",
+        "bytes": 28591,
+        "sha256": "61b512a077874f5661b7b52a0316196e554b51ebbf934a41507c62833d32d9bc"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\ordinary-integration-01.stdout.original",
+        "bytes": 289,
+        "sha256": "dd1c18fbb608cd94640a3e05f41ae80f607d79ef9f0c4294e05869f5b5f0a4bb"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\ordinary-integration-01.stderr.original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\ordinary-integration-01.recipe.original.json",
+        "bytes": 1564,
+        "sha256": "38e2d7fd73b2cf0248dd5213d074e563dbf7de0216d0d658998b33e1b975017a"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\supervisor-unit-06.stdout.original",
+        "bytes": 1632,
+        "sha256": "4161396a76d6766ef79ae16c67b5602098f29cacceb6cefd159bfb3c1049ab2d"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\supervisor-unit-06.stderr.original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\supervisor-unit-06.recipe.original.json",
+        "bytes": 1341,
+        "sha256": "ef06f3607023055e17cbeda8a1cffa89b8ce6e49c39d114d5008f67f6e79f99a"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\retention-progress-03.stdout.original",
+        "bytes": 214,
+        "sha256": "d3c39a7e02c4fa86a42638761cf813e20697b382345865dd5cbea337ad518e62"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\retention-progress-03.stderr.original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\retention-progress-03.recipe.original.json",
+        "bytes": 1421,
+        "sha256": "6829e5fe5a36d2970333d201d8479d71cf400551727f9998a906764b437f5251"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\quality-05.stdout.original",
+        "bytes": 263,
+        "sha256": "745d4d7b8436ef02fccda561b6e63c3debcdb3a3f6406d481f4fd14822736d6e"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\quality-05.stderr.original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "D:\\CodexTemp\\studio-capture-preparation-observability-20261022-01a13d1d\\quality-05.recipe.original.json",
+        "bytes": 1347,
+        "sha256": "9b1c3ca8e89a499ec79cf417f6b4104eb4383653e0064e17840002e495730757"
+      }
+    ],
+    "attribution": [
+      "All4fresh claim sets, recipes and raw stdout/stderr/result bindings rehash against final claimed source bytes. Each records sourceFilesUnchanged true and owned process/tree/streams cleanup PASS.",
+      "Ordinary-integration-01 runs the exact2previously failing named cases:2/2PASS,0fail/cancel/skip. Original build assertion unchanged; every original ordinary-test byte is retained except the one new inventory entry and additive governance block.",
+      "Supervisor-unit-06:15/15PASS; retention-progress-03:1/1PASS;0fail/cancel/skip. These are separate focused selections, not a full local-suite or protected qualification result.",
+      "Quality-05 stdout and script/recipe show docs:index/docs:validate, features:sync/features:validate and changed-source/test lint including ordinary.test.mjs. Catalog68entries unchanged. No local typecheck/full-suite/Linux-current-head result is claimed.",
+      "Claims bind executed source bytes and recipes rather than execution-time Git HEAD; exact committed tuple/head/tree/parent/clean status is independently checked during this review.",
+      "Retained failed provider job logs are captured/decoded text, and provider JSON is locally serialized response metadata. No original HTTP-wire/ZIP verification or fresh provider call by reviewer."
+    ]
+  },
+  "remainingGates": [
+    "One fresh normal protected qualification at the exact candidate head/tree: canonical full Sounding Line, existing rendered fixtures, typecheck, applicable lint/privacy/docs/features and required exact app/context. This candidate/workflow cannot approve itself.",
+    "Normal protected installation, exact landed-tree/source verification and meaningful landed smoke before using newly installed workflow.",
+    "Exactly one authorized inert installed-main probe plus independent retrieval of bound provider progress before child completion; local mock observations do not prove this.",
+    "Consumer capture/retry or any finite-stage action remains with its explicit owner and authority; none is approved or consumed by this source review."
+  ],
+  "limits": [
+    "Studio39835375376/1 internal cancellation cause remains UNKNOWN; finite-slot consumption remains UNPROVEN. Originals preserved, encrypted consumer archives unopened.",
+    "No full local suite, typecheck, Linux, live GitHub progress, product browser/capture, owner acceptance or historical-root-cause claim.",
+    "Closed phase events/checkpoints provide bounded trusted-controller observability; no OS security isolation from arbitrary same-user activity or guaranteed durability under uncatchable termination/storage failure is asserted.",
+    "terminal-correction.json takes precedence over terminal.json; provider publication failure stays explicit and cannot confer qualification.",
+    "Source review does not reset counters, authorize an unchanged retry, widen product-child token access or alter branch protection.",
+    "The cc1 source review and cancelled/failed39852093716 decision remain immutable/nonaccepting for promotion. No fresh successor protected result exists yet.",
+    "Stable aliases resolve this concrete false rejection; no claim that they explain historical Studio cancellation.",
+    "The source fixes two concrete integration failures without weakening historical assertions, production safety guards, timeout, suite selection, frozen package policy, registry or finite allowances.",
+    "Failed current-source integration outcome is not explained away by local positives. Fresh exact c48normalLinuxrequired qualification and strict native merge eligibility remain mandatory.",
+    "SC proposal work is outside this review and supplies no authority. No competing product repair/capture performed."
+  ],
+  "storagePreflight": {
+    "utc": "2026-10-22T22:39:06.0321870Z",
+    "allowed": true,
+    "floorBytesEach": 32212254720,
+    "cFreeBytes": 56198819840,
+    "dFreeBytes": 104172916736,
+    "estimatedCBytes": 0,
+    "estimatedDBytes": 2097152,
+    "reason": "Both drives remain above reserve after estimated writes"
+  },
+  "reviewerActivity": {
+    "readOnlyGitAndFileInspection": true,
+    "tests": 0,
+    "probes": 0,
+    "recognizerInvocations": 0,
+    "providerRequests": 0,
+    "custodyOperations": 0,
+    "captureOrBrowserRuns": 0,
+    "sourceOrGitMutations": 0,
+    "storageGuardInvocations": 1,
+    "exclusiveExternalReceiptWrites": 1
+  },
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "parent": "154dd9b65eb29ecfbc38434971431b2a6ac6b0ff",
+  "baseIsVerifiedAncestor": true,
+  "correctionDiff": {
+    "bytes": 6629,
+    "sha256": "34b25bca60bb666fad3b4d0d8cb52e9574741f787331a2a1007560f799617cbb"
+  },
+  "correctionPaths": [
+    "Development_Docs/Engineering/Capture_Preparation_Supervisor_Repair.md",
+    "scripts/sounding-line/run-browser-suite.mjs",
+    "tests/sounding-line/ordinary.test.mjs"
+  ],
+  "strictReaderByteIdenticalToPredecessor": true,
+  "supersession": {
+    "priorHead": "154dd9b65eb29ecfbc38434971431b2a6ac6b0ff",
+    "priorReview": {
+      "path": "D:/CodexTemp/studio-capture-preparation-observability-20261022-01a13d1d/independent-source-review-corrected.original.json",
+      "bytes": 28591,
+      "sha256": "61b512a077874f5661b7b52a0316196e554b51ebbf934a41507c62833d32d9bc"
+    },
+    "disposition": "Historical source review remains immutable. Actual whole qualification39863418213/1 failed and is nonaccepting; this receipt approves only the new integration successor for fresh qualification.",
+    "unchangedPredecessorBindingsReverified": 18
+  },
+  "obsoleteQualification": {
+    "run": 39852093716,
+    "attempt": 1,
+    "head": "cc1dba85fdb91f958a0e375d68a18b6f0b208b01",
+    "status": "CANCELLED_NONACCEPTING",
+    "jobs": [
+      {
+        "id": 120080678819,
+        "name": "Sounding Line / Finite campaign custody",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 120084395307,
+        "name": "Sounding Line / Focused verification",
+        "status": "completed",
+        "conclusion": "cancelled"
+      },
+      {
+        "id": 120084398120,
+        "name": "Sounding Line / Experience preparation (no mainline decision)",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 120086873275,
+        "name": "Sounding Line / Mainline Decision",
+        "status": "completed",
+        "conclusion": "failure"
+      }
+    ],
+    "mainlineDecision": "FAILURE",
+    "focused": "CANCELLED_DURING_CHECKOUT",
+    "preparation": "SKIPPED",
+    "scope": "Retained run/jobs metadata and all3captured job logs rehashed. Parent reports one normal cancellation; reviewer performed no provider/cancellation operation and makes no actor attribution from these fields. No prior run/result is inherited as qualification."
+  },
+  "integrationInvariants": {
+    "originalEnsureProductionBuildFunctionByteIdenticalToBase": true,
+    "entireOriginalOrdinaryTestFilePreservedAfterRemovingOnlyNewInventoryEntryAndGovernanceBlock": true,
+    "exactWorkflowInventory": [
+      "sounding-line-control-plane.yml",
+      "sounding-line-exhaustive-release.yml",
+      "sounding-line-focused-repair.yml",
+      "sounding-line-ordinary.yml",
+      "sounding-line-preparation-probe.yml",
+      "sounding-line-replay-admission-diagnostic.yml",
+      "sounding-line-replay-historical-validation-diagnostic.yml",
+      "sounding-line-replay-posttechnical-diagnostic.yml"
+    ],
+    "unchangedPredecessorBindings": 18
+  },
+  "failedIntegrationQualification": {
+    "id": 39863418213,
+    "attempt": 1,
+    "head": "154dd9b65eb29ecfbc38434971431b2a6ac6b0ff",
+    "tests": 901,
+    "pass": 898,
+    "fail": 2,
+    "skip": 1,
+    "status": "FAILED_NONACCEPTING_NO_RETRY",
+    "findings": [
+      "ordinary.test1242 exact original ensureProductionBuild run call rejected extra phase argument",
+      "ordinary.test1682 exact7workflow inventory rejected new named manual probe"
+    ],
+    "newLinuxSupervisorCases": "15PASS within failed whole run; not protected acceptance",
+    "jobs": [
+      {
+        "id": 120119537751,
+        "name": "Sounding Line / Finite campaign custody",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 120123147791,
+        "name": "Sounding Line / Focused verification",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 120123149540,
+        "name": "Sounding Line / Experience preparation (no mainline decision)",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 120127326350,
+        "name": "Sounding Line / Mainline Decision",
+        "status": "completed",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  "priorFailureDisposition": "Preserve both cc1cancelled39852093716/MainlineFAIL and154dd9failed39863418213/MainlineFAIL. The failed901whole result remains901total/898PASS/2FAIL/1platformskip; native15supervisor passes within it are supporting only. Neither old run is retried, refunded, erased or relabeled as new-head acceptance."
+}

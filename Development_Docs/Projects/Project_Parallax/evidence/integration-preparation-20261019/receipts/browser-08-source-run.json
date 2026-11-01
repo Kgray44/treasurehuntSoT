@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "candidate": "b6dec33f3aded5d82634107e389cfb40770095e4",
+  "tree": "8e14c48a6924d8475c4fb25ceded265078de0c03",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-19T19:59:53.025Z",
+  "finishedAt": "2026-10-19T20:07:46.237Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "sha256": "c1071a941e8191e439608cdcc619fafbc04bafd8670f9f0bf6d473ce7fe885ce"
+    },
+    {
+      "file": "parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "sha256": "9d1cace0c878b644544a80e2e6cecf182e648a7c6f73d1f41593607bec65e6de"
+    },
+    {
+      "file": "parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium-video.webm",
+      "sha256": "4db260ce6404a5c7cdc9da09b578d92a9642930ded71556d04aeab15dd69fccc"
+    },
+    {
+      "file": "parallax-sc02-SC-02-actual-170db-with-finite-instrumentation-chromium-video.webm",
+      "sha256": "97731b1abce344bdeae4485a8defb3879162cac773f3cc016b0897f0c3b85f84"
+    },
+    {
+      "file": "parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium-video.webm",
+      "sha256": "d134e76446271b8d674d0a33d8df436cceb30f0b415c73274eb6de57a22fe3d4"
+    },
+    {
+      "file": "parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium-video.webm",
+      "sha256": "56bb27e44957656acb1bba301ca372bd008b8b143685502426f2670bacab9b11"
+    },
+    {
+      "file": "parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium-video.webm",
+      "sha256": "cb5aa09f8e6148297b8f15b2ff23a15f4b0aacd2f7d31837e963beb55f744105"
+    },
+    {
+      "file": "parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium-video.webm",
+      "sha256": "48ee7395679013b9a24aa52f735332bd85cb7b9b65d32c6c0701fe7cad127b1e"
+    },
+    {
+      "file": "parallax-sc02-SC-02-Studio-0e25d--and-additional-light-types-chromium-video.webm",
+      "sha256": "c56256a73b381c0f27962dee1500e2bf7dde9a90034722456aa0807cbbdc224a"
+    },
+    {
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video-1.webm",
+      "sha256": "c5e6bf0079b419ddf793ed30a4bfd7b558e264edb6c87e07556caa96d81742a4"
+    },
+    {
+      "file": "parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium-video.webm",
+      "sha256": "6703b7b1695803bd92c5bacd9f9da8d9b14447b54bc57999c46b80a06fb281c2"
+    },
+    {
+      "file": "parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video.webm",
+      "sha256": "4d1010ec1dd0669203293d2f9481866caf49a1b3f690771250d6420d9b862c9d"
+    }
+  ]
+}

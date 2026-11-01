@@ -1,0 +1,19 @@
+{
+  "source": "4ed06f1dfeee7ad495298350c7e07b76a5b2f271",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "measurements": [
+    {
+      "docked": false,
+      "responseHeight": 145,
+      "scrollTop": 700
+    },
+    {
+      "docked": true,
+      "responseHeight": 145,
+      "scrollTop": 700
+    }
+  ],
+  "unchangedDefinition": "1ce2a575-1ee9-4804-bf86-958dc59b99ea",
+  "automaticPaidCalls": 0
+}

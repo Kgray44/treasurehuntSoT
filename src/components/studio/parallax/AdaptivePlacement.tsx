@@ -49,14 +49,22 @@ export function AdaptivePlacement({
   const bound = JSON.stringify([draft, selectedId]);
   return (
     <section aria-label="Adaptive placement" className={styles.adaptive}>
-      <h3>Let the room adapt</h3>
+      <h3>{a ? "Automatic placement" : "Manual placement"}</h3>
       {!a ? (
         <>
-          <p>Describe where the clue belongs, then compare believable placements in different rooms.</p>
+          <p>
+            You choose the exact position. Surfaces snaps and aligns an object to a wall, floor or furniture. Switch to
+            automatic placement to let each room find a safe match.
+          </p>
           <button onClick={() => replace(enableAdaptiveAuthoring(draft))}>Author remotely</button>
+          <small>Author remotely enables automatic placement for this scene.</small>
         </>
       ) : (
         <>
+          <p>
+            The room chooses a safe surface and aligns each object to it. Move changes surface preferences; Rotate and
+            Scale adjust the object on that surface.
+          </p>
           <label>
             Authoring approach
             <select
@@ -169,6 +177,7 @@ export function AdaptivePlacement({
                   onChange={(e) =>
                     changeRecipe({
                       preferredSurfaces: [e.target.value as SemanticRecipe["preferredSurfaces"][number]],
+                      orientation: "SURFACE",
                       alternateSurfaces: recipe.alternateSurfaces.filter((s) => s !== e.target.value),
                       minimumHeightMeters: e.target.value === "FLOOR" ? 0 : 0.4,
                       maximumHeightMeters: e.target.value === "FLOOR" ? 0.3 : 1.8,

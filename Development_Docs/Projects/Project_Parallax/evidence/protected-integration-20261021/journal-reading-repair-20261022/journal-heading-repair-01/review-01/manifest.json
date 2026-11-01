@@ -1,0 +1,48 @@
+{
+  "kind": "JOURNAL_READING_AREA_REPAIR_SOURCE_PROPOSAL",
+  "parent": "ae52b7e05c57301d85dbe52d0189896df9e1a075",
+  "qualification": false,
+  "status": "SOURCE_PROPOSAL_RUNTIME_UNPROVEN",
+  "timeUtc": "2026-10-22T05:12:06.6532472Z",
+  "files": [
+    {
+      "path": "src/components/player/journal/ChronicleJournalSession.tsx",
+      "bytes": 71131,
+      "sha256": "ec5414f6a8068f2c77457474ccd9375acc2e0af209bd937c09ed8705973ce4c6"
+    },
+    {
+      "path": "src/components/player/journal/ChronicleJournalSession.test.ts",
+      "bytes": 58860,
+      "sha256": "c376236547f703d574e35b98719716dad7f44e6b40e19199de20b0f1a136d91a"
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.tsx",
+      "bytes": 24834,
+      "sha256": "a6a27a83f0688703783fd3625c3595f9b136102a7e02ede04b6caf2d5c02517f"
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.module.css",
+      "bytes": 5949,
+      "sha256": "ce74f1f1370579c64b3f4f7bc358d8ce7e8de7fed78b8b6a8cc0c63ae2b536f4"
+    },
+    {
+      "path": "src/styles/chronicle.css",
+      "bytes": 67055,
+      "sha256": "4d4714737cd2d8b8e753418188e0f844fa0f0ad513bd967d3f43524389e037ef"
+    }
+  ],
+  "originalFailingRun": 39721702762,
+  "proof": "Authenticated heading obstruction, normal-motion390x844, minimum280x211,10s unchanged",
+  "underlyingCause": "Normal-flow full spatial card above workspace is a source-supported hypothesis, not established sole cause",
+  "design": "Compact current/recent Lens control beside existing header identity; full scene descriptions/history below workspace; one provider remains; primary dialog outside identity inert container",
+  "e2eSha256": "399e882bf639631c70a2a2dc267bd24f4ed0b03ccfc49c764bdbfdd8e91f07ca",
+  "geometryHelperSha256": "c357f82adc02231936f180f72a03951bb973de514373821a00a1ebf068a49be2",
+  "browserRun": false,
+  "newCommit": false,
+  "checks": "Independent owned local unit/type/lint running; see sibling checks.json when completed",
+  "requests": [
+    "Confirm preserved current/history replay rights and identity/dialog lifecycle",
+    "Review header layout, accessibility, mobile/zoom risks and independent source findings",
+    "Do not treat source review or geometry hypothesis as runtime/product acceptance"
+  ]
+}

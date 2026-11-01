@@ -1,0 +1,14 @@
+{
+  "kind": "EXACT_DISPATCH_RUN_READBACK",
+  "id": 39721702762,
+  "attempt": 1,
+  "candidate": "2e1ea05caa88e790f9b6f4f7a36981efed5826a3",
+  "actualAuthoritySHA": "408f37389e6dd358b1ab005d91f3f588405f61db",
+  "displayTitle": "Focused development 2e1ea05caa88e790f9b6f4f7a36981efed5826a3 tests/e2e/crossdeck-experience-refit.spec.ts",
+  "event": "workflow_dispatch",
+  "path": ".github/workflows/sounding-line-focused-repair.yml",
+  "createdAt": "2026-10-22T04:19:07Z",
+  "status": "in_progress",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39721702762",
+  "qualification": false
+}

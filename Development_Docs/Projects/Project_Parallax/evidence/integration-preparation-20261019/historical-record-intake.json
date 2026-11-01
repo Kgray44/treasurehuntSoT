@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "adopted": [
+    {
+      "pr": 727,
+      "source": "401f29bb65b2be55d1d9bd124425ba359db1bddb",
+      "file": "Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md",
+      "gitBlob": "002b55d2c46774b95fe4a4dd5e3fa9b19a9881f5",
+      "bytes": 17506,
+      "sha256": "51e02826b7cfba084ff439fa7bb92af14d89840f870f7e02ad00010717ab8d06"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/16-journey-browser-runtime.json",
+      "gitBlob": "e152d6a2ea93cee1f718e9cb9917863c1904ed7f",
+      "bytes": 1316,
+      "sha256": "4a9ec0d6360135b4f0fcc22894b445c2b23d4f1fa09b49310dc2c8dcc63020bd"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/16-journey-browser.log.txt",
+      "gitBlob": "72f944a3a54e121603890d84759da55c7420d944",
+      "bytes": 53212,
+      "sha256": "c502f2c4a48208b26ed21675b88b6235288f12c58e982b3e0cf8adfa211606a4"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/16-journey-media-manifest.json",
+      "gitBlob": "eb7885dcfd5bb91f87ebecb7d17233d6f481e791",
+      "bytes": 13252,
+      "sha256": "d9ba75b5d549ef43e1db65cab678266f0628e3f2411616168d36daf656e2faf5"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/README.md",
+      "gitBlob": "e2ed978b3201f4c14d5958f002e2e4840fcb30df",
+      "bytes": 4049,
+      "sha256": "50adeea19fcda472d6d3a8f10bc4f26382140bee826ea5e675d7e376b4e42a82"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/asset-installed-details.png",
+      "gitBlob": "03ce31140e758015c76c8a336f722c51e39da1b3",
+      "bytes": 23795,
+      "sha256": "c0fbe5f630fb977c5876fd0a588f36808b9585f5826613d033bd789fabbf7003"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/asset-listing-desktop.png",
+      "gitBlob": "5d0f2f5eb21b382fd3b9d6802389c365b9b7e392",
+      "bytes": 711617,
+      "sha256": "94a71eb09b69ba8760f0502861c32dc42b5512012518dcc0a5f091a7d51c7cc9"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/compact-browser-runtime.json",
+      "gitBlob": "e94e3b540fb4fff6935f52e01e0f69a81e835f73",
+      "bytes": 1316,
+      "sha256": "d1c4cc381ed60f4a41ec9b7eec9f310da8638fc2b75dd05722a896821d775df4"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/compact-browser.log.txt",
+      "gitBlob": "703bf45e4d7dfc6a387d8f208ef5d1e513076e48",
+      "bytes": 47887,
+      "sha256": "a16f7bb669849c1974cefb99719d6fa91312f7931bacbf0f49e4e1383f97194f"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/compact-evidence-manifest.json",
+      "gitBlob": "1aecd234f8424c984cfe8cbe5fdfbb0da56184e5",
+      "bytes": 3037,
+      "sha256": "ba176740dc776e992ee090d4557636810e47f65505c9c4e73c2bfbd070688316"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/natural-studio-content.png",
+      "gitBlob": "20d83e75363b66b6d10f7cc7e528440ba05e4fb3",
+      "bytes": 88974,
+      "sha256": "9c5d6f86a0e5b39d02da32ea6fcd9125140b312acee4af15ef7e4433edb04f0d"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/natural-studio-package-review.png",
+      "gitBlob": "3b03b5d6f4869cb368ba76218ec5443cccfec306",
+      "bytes": 92585,
+      "sha256": "47a52546217a81b04e3f106fc6d33b3a61e5b44a47c9caa40f3edeab573a6fde"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/rights-refusal-mobile.png",
+      "gitBlob": "0f37caf965f5756f75d0241bd9592e69f85f42d7",
+      "bytes": 47327,
+      "sha256": "39759f5a26f8bdf4e39849a7b350fb1810ba0a3111685de59d23d59525fd9945"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/scale-browser-runtime.json",
+      "gitBlob": "63eef5ce501fc4e04e9d604f9ca614bd8ae8d471",
+      "bytes": 1316,
+      "sha256": "ec58dc538c5a1b265692be3cfca098696904ede4a1dab3ec67d0d315ecd6e680"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/scale-browser.json",
+      "gitBlob": "93e5d05d6c90fa42f84df7a42b9ffc0c1212d90c",
+      "bytes": 981,
+      "sha256": "31382e025f44b6996b551da8b3d65ed530fdfc18ef0b0daa2ff579ddf2271906"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/scale-browser.log.txt",
+      "gitBlob": "be12b9a5bd34fffef248bdcd766bea059d029bec",
+      "bytes": 46721,
+      "sha256": "9d8263e30950224f7a77fe6a3e8c0628a0bcec5f5199c3e14a730b8bffdb4d1b"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/scale-manifest.json",
+      "gitBlob": "f65ed3656748cd5f8f336307f44c5a232d14f246",
+      "bytes": 1420,
+      "sha256": "bc2ded795b6d8dcbf5bba29bdd6141e2f4822b062e5cc1ce78ecd76b99d879d9"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/README.md",
+      "gitBlob": "ef8ce9fecb64cfb5b2d58a39768469e606dde87c",
+      "bytes": 2240,
+      "sha256": "5803ee691aaaa5e9b23ec65b9e23372abda9e2bbbd3fdd1a05f15378ba8e404a"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/asset-content-mobile.png",
+      "gitBlob": "ade018a190604fc89e67e278c4d2a38a2f7f3ecd",
+      "bytes": 47365,
+      "sha256": "225ffd17ce081403e72c8cb2b3604fb8f958e159e1e36a7d729ed0b53b596476"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/browser-attempt1.log.txt",
+      "gitBlob": "0970a896796fabb9569bef2390c663a763caae14",
+      "bytes": 57898,
+      "sha256": "63ff420c2136fb2edbc845bc67abfe1a44987eb8064c23f85b5e207ac03807f8"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/browser-runtime.json",
+      "gitBlob": "99246603201efcde8b146a8f58545084faa9e624",
+      "bytes": 1316,
+      "sha256": "02a1b32058548cebaeb74d82f181189db51ca7950f70a347830eac33cac5cdb1"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/browser-suite-profile.json",
+      "gitBlob": "3dfe0aa9d27798e897a317840c6302f4a61aea64",
+      "bytes": 189,
+      "sha256": "435ede83cf54b1241c8cdeaf9dde4ea502d31de107f6f351c008c7201e8b521c"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/browser.log.txt",
+      "gitBlob": "5edd7640e9fd3c4d8d28b2131d61ade198d40c79",
+      "bytes": 54111,
+      "sha256": "970a271b2cd553baa5d765f9d9a9b749d3f3a4fa7f9ea340fddd5141b4013c62"
+    },
+    {
+      "pr": 739,
+      "source": "a4fd2da9fabbd6c1d9dec7d836ed451ccf843abc",
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/scene-content-desktop.png",
+      "gitBlob": "e247de16046a56c1dcac230692ab91bdd8dce6c6",
+      "bytes": 89149,
+      "sha256": "d4cc4de33513d528d80c34c5ea570face5da5ee6b0e10b278887edfa8fec91dd"
+    }
+  ],
+  "excluded": "Unmerged Crossdeck product/automation/authority and superseded historical implementations remain in their original PRs; no duplicate runtime or history is merged."
+}

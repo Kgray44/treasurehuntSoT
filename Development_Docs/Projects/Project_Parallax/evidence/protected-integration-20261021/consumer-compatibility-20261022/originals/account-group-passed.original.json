@@ -1,0 +1,89 @@
+{
+  "kind": "ACCOUNT_GROUP_DEVELOPMENT_CHECKPOINT",
+  "at": "2026-10-22T15:05:44.298148+00:00",
+  "status": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+  "cases": [
+    {
+      "title": "Personal Harbor preserves private owner reads and Home return \u00b7 desktop \u00b7 no-preference",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Personal Harbor preserves private owner reads and Home return \u00b7 desktop \u00b7 reduce",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Changing system motion preserves an unsaved account draft and focus \u00b7 desktop",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Personal Harbor preserves private owner reads and Home return \u00b7 phone \u00b7 no-preference",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Personal Harbor preserves private owner reads and Home return \u00b7 phone \u00b7 reduce",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "Changing system motion preserves an unsaved account draft and focus \u00b7 phone",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "title": "An anonymous account projection and account page retain their real access boundary",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    }
+  ],
+  "protectedQualification": false,
+  "experienceCapture": false,
+  "sourceHead": "28ece6275ad51a23008e1301964a3eb8a9c0ab8d",
+  "sourceHashes": {
+    "testing/contracts.json": "82056375c805d5fcce758e6bc0f63d75a946a232184fe18c12c67c648997a564",
+    "tests/e2e/parallax-shared-consumers.spec.ts": "c0ee51bb0128d783fcf24fed6d35a9a88fed4c37c6e21b2097d2618b7189de27"
+  },
+  "outputs": {
+    "playwright-report.original.json": "97cd5fbc532582c451c91645f4797d1daa5f1e2bb857575da7aeef96c4d02674",
+    "development-result.private.json": "7ec85672192a6056302907e9ad5c3be7c68f48c68a35d24635f1fdfb19d127c6",
+    "browser-runtime.private.json": "b4c86aa2472a2626052b757a2ab6fe6400f0f52a94f3388bfef2c09a37ae0ee3"
+  }
+}

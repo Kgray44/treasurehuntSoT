@@ -1,0 +1,21 @@
+{
+  "kind": "COMBINED_BUILD_AND_SIX_RUNS_ALLOCATION_ADMISSION",
+  "at": "2026-10-22T15:51:39.631125+00:00",
+  "lastPreparedBuildPhysicalFiles": 6257,
+  "lastPreparedBuildLogicalBytes": 673723745,
+  "lastPreparedBuildAllocatedBytes": 679616680,
+  "reparseTargetsNotDoubleCounted": 3,
+  "additionalDBudget": 17179869184,
+  "budgetBasis": "Eight measured build copies plus4GiB build-cache/fixture/artifact reserve; minimum16GiB. One new build, six browser files.",
+  "freeC": 32426471424,
+  "freeD": 115492917248,
+  "reserveC": 32212254720,
+  "proactiveCStopAt": 32346472448,
+  "admitted": true,
+  "sourceReview": {
+    "path": "D:/CodexTemp/parallax-root-accepted39-review-20261022-01a12c32/consumer-compatibility-source-review-20261022.original.json",
+    "sha256": "9b92655e32556720efaedd11299b1b20c434ba4e47e8a9ef2c48c9253e45e041"
+  },
+  "qualification": false,
+  "capture": false
+}

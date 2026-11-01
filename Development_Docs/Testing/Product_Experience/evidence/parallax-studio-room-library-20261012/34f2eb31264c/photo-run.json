@@ -1,0 +1,16 @@
+{
+  "candidate": "34f2eb31264c1a5a3d7368e36b1da5eb1fcd364a",
+  "tree": "a49bb13c6888cd9561e4a0c04183827eb9770daa",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-12T23:01:17.141Z",
+  "finishedAt": "2026-10-12T23:01:32.597Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "photo-parallax-room-photo-Creato-fc92a-raws-permission-and-reloads-chromium-video.webm",
+      "sha256": "8398d922ca709bdc627e14892e914213c97de9a6213409a69a75d3d342515ff3"
+    }
+  ]
+}

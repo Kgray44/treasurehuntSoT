@@ -1,0 +1,753 @@
+{
+  "manifest": "C:\\Users\\kkids\\.codex\\worktrees\\px-production-qualification\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\sc-00c\\20261015-expanded-library\\d8acfb958cfa-owner-status\\native-output-manifest.json",
+  "manifestSha256": "bd14bcb929fea8b49ac04ff3183a5dc144b1d765f1e1c623f720c13b6114f929",
+  "originalFilesVerified": [
+    {
+      "name": "video.webm",
+      "bytes": 958765,
+      "sha256": "f555abef60cea0e0b463c2fefb9d87eefc442f8db12c1af537ad7a95a66bf6a3"
+    },
+    {
+      "name": "video-1.webm",
+      "bytes": 1202,
+      "sha256": "1573f6c293080126d5500f8b7cdeea0b50610aced2e078833e4cbb7afd3e59d8"
+    },
+    {
+      "name": "8d183e5d1f897b6484dff6d79c114c43.webm",
+      "bytes": 789162,
+      "sha256": "336f1918d0a17864ad22daf27a1b48c6c3422c458772cb01f07db5daa6e7fe70"
+    },
+    {
+      "name": "asset-installer.webm",
+      "bytes": 789162,
+      "sha256": "336f1918d0a17864ad22daf27a1b48c6c3422c458772cb01f07db5daa6e7fe70"
+    },
+    {
+      "name": "browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "d1d21c1311661bb2518f58b62622080212138ef50e211928f3ed794caafa93f7"
+    },
+    {
+      "name": "browser-suite-profile.json",
+      "bytes": 254,
+      "sha256": "57ca79ef0df684136ba1e9035d3b8ac63117bce21c5c69389fd5e169a090ea54"
+    },
+    {
+      "name": "playwright-last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "name": "owner-pending-compact.png",
+      "bytes": 20473,
+      "sha256": "b26b941de345031b530a7c31501db9d2a9dd284f49061d3cf2681446438bc53f"
+    },
+    {
+      "name": "owner-published-phone.png",
+      "bytes": 126175,
+      "sha256": "c29a8b1a6bb919b4883cdf7e297e2ae2b2810c0f6cefe0773238aec9f1d76954"
+    },
+    {
+      "name": "owner-published-phone-light.png",
+      "bytes": 51968,
+      "sha256": "6189ef137068ccc7ed792ffa0ed8b1496f93be17bd023a445023ff5532423691"
+    }
+  ],
+  "includedVideo": "video.webm",
+  "excludedVideos": [
+    "video-1.webm",
+    "asset-installer.webm",
+    "8d183e5d1f897b6484dff6d79c114c43.webm"
+  ],
+  "width": 800,
+  "height": 450,
+  "fps": 25,
+  "decodedFrameCount": 399,
+  "sampledFrameCount": 134,
+  "lastFrameSeconds": 15.92,
+  "maxGapSeconds": 0.12,
+  "method": "Complete decoded video span, every third frame plus final frame in contact sheets; not realtime/every-frame inspection. Native stills and selected native frame spots also inspected.",
+  "samples": [
+    {
+      "frame": 1,
+      "seconds": 0.0,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0001.png"
+    },
+    {
+      "frame": 4,
+      "seconds": 0.12,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0004.png"
+    },
+    {
+      "frame": 7,
+      "seconds": 0.24,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0007.png"
+    },
+    {
+      "frame": 10,
+      "seconds": 0.36,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0010.png"
+    },
+    {
+      "frame": 13,
+      "seconds": 0.48,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0013.png"
+    },
+    {
+      "frame": 16,
+      "seconds": 0.6,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0016.png"
+    },
+    {
+      "frame": 19,
+      "seconds": 0.72,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0019.png"
+    },
+    {
+      "frame": 22,
+      "seconds": 0.84,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0022.png"
+    },
+    {
+      "frame": 25,
+      "seconds": 0.96,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0025.png"
+    },
+    {
+      "frame": 28,
+      "seconds": 1.08,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0028.png"
+    },
+    {
+      "frame": 31,
+      "seconds": 1.2,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0031.png"
+    },
+    {
+      "frame": 34,
+      "seconds": 1.32,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0034.png"
+    },
+    {
+      "frame": 37,
+      "seconds": 1.44,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0037.png"
+    },
+    {
+      "frame": 40,
+      "seconds": 1.56,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0040.png"
+    },
+    {
+      "frame": 43,
+      "seconds": 1.68,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0043.png"
+    },
+    {
+      "frame": 46,
+      "seconds": 1.8,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0046.png"
+    },
+    {
+      "frame": 49,
+      "seconds": 1.92,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0049.png"
+    },
+    {
+      "frame": 52,
+      "seconds": 2.04,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0052.png"
+    },
+    {
+      "frame": 55,
+      "seconds": 2.16,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0055.png"
+    },
+    {
+      "frame": 58,
+      "seconds": 2.28,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0058.png"
+    },
+    {
+      "frame": 61,
+      "seconds": 2.4,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0061.png"
+    },
+    {
+      "frame": 64,
+      "seconds": 2.52,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0064.png"
+    },
+    {
+      "frame": 67,
+      "seconds": 2.64,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0067.png"
+    },
+    {
+      "frame": 70,
+      "seconds": 2.76,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0070.png"
+    },
+    {
+      "frame": 73,
+      "seconds": 2.88,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0073.png"
+    },
+    {
+      "frame": 76,
+      "seconds": 3.0,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0076.png"
+    },
+    {
+      "frame": 79,
+      "seconds": 3.12,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0079.png"
+    },
+    {
+      "frame": 82,
+      "seconds": 3.24,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0082.png"
+    },
+    {
+      "frame": 85,
+      "seconds": 3.36,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0085.png"
+    },
+    {
+      "frame": 88,
+      "seconds": 3.48,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0088.png"
+    },
+    {
+      "frame": 91,
+      "seconds": 3.6,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0091.png"
+    },
+    {
+      "frame": 94,
+      "seconds": 3.72,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0094.png"
+    },
+    {
+      "frame": 97,
+      "seconds": 3.84,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0097.png"
+    },
+    {
+      "frame": 100,
+      "seconds": 3.96,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0100.png"
+    },
+    {
+      "frame": 103,
+      "seconds": 4.08,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0103.png"
+    },
+    {
+      "frame": 106,
+      "seconds": 4.2,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0106.png"
+    },
+    {
+      "frame": 109,
+      "seconds": 4.32,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0109.png"
+    },
+    {
+      "frame": 112,
+      "seconds": 4.44,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0112.png"
+    },
+    {
+      "frame": 115,
+      "seconds": 4.56,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0115.png"
+    },
+    {
+      "frame": 118,
+      "seconds": 4.68,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0118.png"
+    },
+    {
+      "frame": 121,
+      "seconds": 4.8,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0121.png"
+    },
+    {
+      "frame": 124,
+      "seconds": 4.92,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0124.png"
+    },
+    {
+      "frame": 127,
+      "seconds": 5.04,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0127.png"
+    },
+    {
+      "frame": 130,
+      "seconds": 5.16,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0130.png"
+    },
+    {
+      "frame": 133,
+      "seconds": 5.28,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0133.png"
+    },
+    {
+      "frame": 136,
+      "seconds": 5.4,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0136.png"
+    },
+    {
+      "frame": 139,
+      "seconds": 5.52,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0139.png"
+    },
+    {
+      "frame": 142,
+      "seconds": 5.64,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0142.png"
+    },
+    {
+      "frame": 145,
+      "seconds": 5.76,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0145.png"
+    },
+    {
+      "frame": 148,
+      "seconds": 5.88,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0148.png"
+    },
+    {
+      "frame": 151,
+      "seconds": 6.0,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0151.png"
+    },
+    {
+      "frame": 154,
+      "seconds": 6.12,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0154.png"
+    },
+    {
+      "frame": 157,
+      "seconds": 6.24,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0157.png"
+    },
+    {
+      "frame": 160,
+      "seconds": 6.36,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0160.png"
+    },
+    {
+      "frame": 163,
+      "seconds": 6.48,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0163.png"
+    },
+    {
+      "frame": 166,
+      "seconds": 6.6,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0166.png"
+    },
+    {
+      "frame": 169,
+      "seconds": 6.72,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0169.png"
+    },
+    {
+      "frame": 172,
+      "seconds": 6.84,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0172.png"
+    },
+    {
+      "frame": 175,
+      "seconds": 6.96,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0175.png"
+    },
+    {
+      "frame": 178,
+      "seconds": 7.08,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0178.png"
+    },
+    {
+      "frame": 181,
+      "seconds": 7.2,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0181.png"
+    },
+    {
+      "frame": 184,
+      "seconds": 7.32,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0184.png"
+    },
+    {
+      "frame": 187,
+      "seconds": 7.44,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0187.png"
+    },
+    {
+      "frame": 190,
+      "seconds": 7.56,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0190.png"
+    },
+    {
+      "frame": 193,
+      "seconds": 7.68,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0193.png"
+    },
+    {
+      "frame": 196,
+      "seconds": 7.8,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0196.png"
+    },
+    {
+      "frame": 199,
+      "seconds": 7.92,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0199.png"
+    },
+    {
+      "frame": 202,
+      "seconds": 8.04,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0202.png"
+    },
+    {
+      "frame": 205,
+      "seconds": 8.16,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0205.png"
+    },
+    {
+      "frame": 208,
+      "seconds": 8.28,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0208.png"
+    },
+    {
+      "frame": 211,
+      "seconds": 8.4,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0211.png"
+    },
+    {
+      "frame": 214,
+      "seconds": 8.52,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0214.png"
+    },
+    {
+      "frame": 217,
+      "seconds": 8.64,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0217.png"
+    },
+    {
+      "frame": 220,
+      "seconds": 8.76,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0220.png"
+    },
+    {
+      "frame": 223,
+      "seconds": 8.88,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0223.png"
+    },
+    {
+      "frame": 226,
+      "seconds": 9.0,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0226.png"
+    },
+    {
+      "frame": 229,
+      "seconds": 9.12,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0229.png"
+    },
+    {
+      "frame": 232,
+      "seconds": 9.24,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0232.png"
+    },
+    {
+      "frame": 235,
+      "seconds": 9.36,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0235.png"
+    },
+    {
+      "frame": 238,
+      "seconds": 9.48,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0238.png"
+    },
+    {
+      "frame": 241,
+      "seconds": 9.6,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0241.png"
+    },
+    {
+      "frame": 244,
+      "seconds": 9.72,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0244.png"
+    },
+    {
+      "frame": 247,
+      "seconds": 9.84,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0247.png"
+    },
+    {
+      "frame": 250,
+      "seconds": 9.96,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0250.png"
+    },
+    {
+      "frame": 253,
+      "seconds": 10.08,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0253.png"
+    },
+    {
+      "frame": 256,
+      "seconds": 10.2,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0256.png"
+    },
+    {
+      "frame": 259,
+      "seconds": 10.32,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0259.png"
+    },
+    {
+      "frame": 262,
+      "seconds": 10.44,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0262.png"
+    },
+    {
+      "frame": 265,
+      "seconds": 10.56,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0265.png"
+    },
+    {
+      "frame": 268,
+      "seconds": 10.68,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0268.png"
+    },
+    {
+      "frame": 271,
+      "seconds": 10.8,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0271.png"
+    },
+    {
+      "frame": 274,
+      "seconds": 10.92,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0274.png"
+    },
+    {
+      "frame": 277,
+      "seconds": 11.04,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0277.png"
+    },
+    {
+      "frame": 280,
+      "seconds": 11.16,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0280.png"
+    },
+    {
+      "frame": 283,
+      "seconds": 11.28,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0283.png"
+    },
+    {
+      "frame": 286,
+      "seconds": 11.4,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0286.png"
+    },
+    {
+      "frame": 289,
+      "seconds": 11.52,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0289.png"
+    },
+    {
+      "frame": 292,
+      "seconds": 11.64,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0292.png"
+    },
+    {
+      "frame": 295,
+      "seconds": 11.76,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0295.png"
+    },
+    {
+      "frame": 298,
+      "seconds": 11.88,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0298.png"
+    },
+    {
+      "frame": 301,
+      "seconds": 12.0,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0301.png"
+    },
+    {
+      "frame": 304,
+      "seconds": 12.12,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0304.png"
+    },
+    {
+      "frame": 307,
+      "seconds": 12.24,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0307.png"
+    },
+    {
+      "frame": 310,
+      "seconds": 12.36,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0310.png"
+    },
+    {
+      "frame": 313,
+      "seconds": 12.48,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0313.png"
+    },
+    {
+      "frame": 316,
+      "seconds": 12.6,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0316.png"
+    },
+    {
+      "frame": 319,
+      "seconds": 12.72,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0319.png"
+    },
+    {
+      "frame": 322,
+      "seconds": 12.84,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0322.png"
+    },
+    {
+      "frame": 325,
+      "seconds": 12.96,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0325.png"
+    },
+    {
+      "frame": 328,
+      "seconds": 13.08,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0328.png"
+    },
+    {
+      "frame": 331,
+      "seconds": 13.2,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0331.png"
+    },
+    {
+      "frame": 334,
+      "seconds": 13.32,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0334.png"
+    },
+    {
+      "frame": 337,
+      "seconds": 13.44,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0337.png"
+    },
+    {
+      "frame": 340,
+      "seconds": 13.56,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0340.png"
+    },
+    {
+      "frame": 343,
+      "seconds": 13.68,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0343.png"
+    },
+    {
+      "frame": 346,
+      "seconds": 13.8,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0346.png"
+    },
+    {
+      "frame": 349,
+      "seconds": 13.92,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0349.png"
+    },
+    {
+      "frame": 352,
+      "seconds": 14.04,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0352.png"
+    },
+    {
+      "frame": 355,
+      "seconds": 14.16,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0355.png"
+    },
+    {
+      "frame": 358,
+      "seconds": 14.28,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0358.png"
+    },
+    {
+      "frame": 361,
+      "seconds": 14.4,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0361.png"
+    },
+    {
+      "frame": 364,
+      "seconds": 14.52,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0364.png"
+    },
+    {
+      "frame": 367,
+      "seconds": 14.64,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0367.png"
+    },
+    {
+      "frame": 370,
+      "seconds": 14.76,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0370.png"
+    },
+    {
+      "frame": 373,
+      "seconds": 14.88,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0373.png"
+    },
+    {
+      "frame": 376,
+      "seconds": 15.0,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0376.png"
+    },
+    {
+      "frame": 379,
+      "seconds": 15.12,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0379.png"
+    },
+    {
+      "frame": 382,
+      "seconds": 15.24,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0382.png"
+    },
+    {
+      "frame": 385,
+      "seconds": 15.36,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0385.png"
+    },
+    {
+      "frame": 388,
+      "seconds": 15.48,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0388.png"
+    },
+    {
+      "frame": 391,
+      "seconds": 15.6,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0391.png"
+    },
+    {
+      "frame": 394,
+      "seconds": 15.72,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0394.png"
+    },
+    {
+      "frame": 397,
+      "seconds": 15.84,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0397.png"
+    },
+    {
+      "frame": 399,
+      "seconds": 15.92,
+      "path": "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\native-0399.png"
+    }
+  ],
+  "sheets": [
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-00.jpg",
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-01.jpg",
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-02.jpg",
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-03.jpg",
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-04.jpg",
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-05.jpg",
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-06.jpg",
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-07.jpg",
+    "D:\\CodexTemp\\px-surface-independent-review-cache-20261014\\owner-status-d8ac\\primary\\sheet-08.jpg"
+  ]
+}

@@ -108,6 +108,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "SPATIAL_STATE":
             var state=ParallaxLocalRuntime.state()
             if ParallaxLocalRuntime.softwareFixtureEnabled(origin:origin) {state["softwareFixture"]="SCENEKIT_CAMERA_FREE_V1"}
+            if payload["sceneCapabilities"] as? Bool == true {state["sceneOpacity"]=true}
             replyHandler(state,nil)
         case "SPATIAL_PERMISSION":
             guard foreground else {replyHandler(["supported":false,"permission":"RESTRICTED"],nil);return}

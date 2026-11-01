@@ -1,0 +1,16 @@
+{
+  "candidate": "d501540db5875a236280e8c94ca6049cb7f1aa90",
+  "tree": "a1050adf7669780978d26716b942a052a2189bea",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T04:55:20.195Z",
+  "finishedAt": "2026-10-13T04:56:01.216Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "sha256": "36bfb0df8c0da4603cc8fb51129c9eb71ab475140c5bc85e333567ea4ffc3f58"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "classification": "LOCAL_SUPPLEMENTAL_ENGINEERING_REVIEW_NOT_PROTECTED_ACCEPTANCE",
+  "reviewer": "/root/studio_foundation_review",
+  "candidate": "ce13ff5d394d42a1c3a8c3172584d2454933390b",
+  "tree": "27063f8c3514808b3095614f83a0e84e3c5a774b",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "inspection": "All 85 PNGs and full-duration timelines of nine recordings before frozen source; one-second chronology with denser animation/recovery/simulation sampling. All recording hashes matched manifest.",
+  "findings": [
+    {
+      "id": "PX-CONSTRUCT-01",
+      "status": "VERIFY_FINAL_EVIDENCE",
+      "message": "Whiteboard/gallery opaque depth interference repaired in all relevant views and four front angles.",
+      "evidence": [
+        "room-classroom-dark-front.png",
+        "room-classroom-light-front.png",
+        "room-gallery-dark-front.png",
+        "room-gallery-light-front.png"
+      ]
+    },
+    {
+      "id": "PX-PHONE-WALL-COMPOSITION",
+      "status": "OBSERVATION",
+      "message": "Compact viewport toolbar crosses upper classroom/gallery wall details. Reserve clear control space or adjust phone framing."
+    }
+  ],
+  "dimensions": {
+    "composition": "Recognizable constructed layouts and supported furniture; phone toolbar crosses upper classroom/gallery wall features.",
+    "hierarchy": "Blue Studio identity retained; primary commands, grouped Inspector and shared graph actions improve information order.",
+    "typography": "Inspector names, measurements, classifications and headings readable at captured sizes; phone icon labels require accessible alternatives.",
+    "spacing": "Asset rows clearly separated; Inspector groups divided; desktop menus fit; phone toolbar lacks wall clearance.",
+    "controls": "Graph rows contain asset selection; shared visibility, lock, copy and remove toolbar; relevant desktop context actions observed.",
+    "contrast": "Blue selection/focus distinct, Remove red and separated, disabled actions dim; rooms distinguishable in both themes.",
+    "consistency": "Graph and viewport menus share vocabulary; broader menu paths incomplete.",
+    "states": "Locked/hidden, removal Undo, invalid measurements, renderer Retry, simulation waiting/hidden/reset and unavailable-photo states observed.",
+    "responsive": "Phone room fields usable and Inspector collapse returns to scene; static phone timeline captured; phone menu and surface completion not reached.",
+    "keyboard": "Desktop Shift+F10, arrow navigation and Escape restore observed in recording 3; touch and wider paths unverified.",
+    "focus": "Identifiable desktop menu focus path; completed phone focus evidence absent.",
+    "feedback": "Named Assistant placement/save, measurements, layer states and simulation outcomes visible; final Drydock status not demonstrated.",
+    "motion": "Actual transform playback, pause and restart in recording 1; timed hide/reset in recording 7; phone playback unverified.",
+    "continuity": "Room and attached clue survive reload/phone edits; library return/archive preserves copy; Retry retains isolated framing.",
+    "complexity": "Disclosures/shared graph/grouped Inspector reduce simultaneous density; desktop context menu lengthy but bounded.",
+    "roleOutcomes": "Creator edits rooms/objects, reuses library, animates and simulates; failed whole journeys leave final menu/Chronicle/surface outcomes incomplete.",
+    "fallbacks": "Renderer Retry, Undo hide/removal, measurement preservation and unavailable-photo manual route observed; successful production inference absent."
+  },
+  "remainingJourneys": [
+    "Asset selector category assumption stopped remaining menus; no product defect established.",
+    "Drydock final status and immutable Chronicle reopening not reached.",
+    "Responsive surface scroll stopped on detached canvas locator."
+  ],
+  "costs": {
+    "calls": [21, 109],
+    "triangles": [488, 25052],
+    "geometries": [13, 56],
+    "cpuSubmitMs": [0.5, 2.5],
+    "limitation": "Desktop CPU submission observations, not GPU timing or phone FPS."
+  },
+  "evidenceDigests": {
+    "run.json": "bdcff0442bb72bedd7894371eafbdd98f494bf1eb8ed83a71226f596c6a85414",
+    "room-render-costs.json": "1e273d751c00b70b07cb37fab98aa1309d83aaafbc32f28294fd18f80c13861b"
+  },
+  "limitations": [
+    "No complete overhaul/menu matrix/live-provider/protected/native/physical/owner acceptance.",
+    "Whole packet failed: six passed, three failed, one skipped."
+  ]
+}

@@ -4,26 +4,45 @@
     "id": "admiralty.phase1.registry",
     "name": "Living capability-floor registry",
     "authority": "project-admiralty",
-    "owners": ["project-admiralty"],
+    "owners": [
+      "project-admiralty"
+    ],
     "critical": true,
     "experience": {
       "persona": "An authorized Admiralty operator observing daily AI spending and existing account allowances",
       "objective": "Compare daily requests and costs, then inspect a user allowance through the normal People search",
       "visibleOutcome": "A selectable daily chart distinguishes requests, settled cost and accounted exposure; per-user controls remain in the existing People dossier",
       "integrationOwner": "Admiralty AI usage experience integration",
-      "systems": ["project-admiralty"],
+      "systems": [
+        "project-admiralty"
+      ],
       "sourcePaths": [
         "src/components/admiralty/AIQuotaConsole.tsx",
         "src/components/admiralty/AIQuotaConsole.module.css",
         "src/components/admiralty/AIQuotaUserPanel.tsx",
         "src/app/admin/ai-usage",
-        "src/app/admin/people"
+        "src/app/admin/people",
+        "src/components/admiralty/AIQuotaOverrides.tsx",
+        "src/styles/admiralty.css"
       ],
-      "projectionPaths": ["src/parallax/ai-quota-projections.ts"],
+      "projectionPaths": [
+        "src/parallax/ai-quota-projections.ts"
+      ],
       "entryPoint": "/admin/ai-usage",
-      "states": ["SETTLED_CHART", "ACCOUNTED_CHART", "RETURNED", "DOSSIER_READY", "PEOPLE_RETURNED"],
-      "devices": ["DESKTOP", "MOBILE"],
-      "roles": ["ADMINISTRATOR"],
+      "states": [
+        "SETTLED_CHART",
+        "ACCOUNTED_CHART",
+        "RETURNED",
+        "DOSSIER_READY",
+        "PEOPLE_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "ADMINISTRATOR"
+      ],
       "accessibility": "A labeled keyboard-operable metric selector and exact daily table preserve access beyond visual bars, with visible focus and narrow-screen overflow contained.",
       "fallback": "An empty month reports honest zero activity, missing provider credentials remain safely diagnosed, and read-only observation never changes quota policy.",
       "navigation": "AI Usage & Quotas opens its existing chart; the canonical People navigation searches one account and returns through existing navigation.",
@@ -46,9 +65,17 @@
           "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
         }
       ],
-      "homeportScreenIds": ["screen-page-admin", "screen-page-admin-people"],
-      "homeportJourneyIds": ["B"],
-      "browserTests": ["tests/e2e/parallax-owner-refinements.spec.ts", "tests/e2e/parallax-ai-quotas.spec.ts"],
+      "homeportScreenIds": [
+        "screen-page-admin",
+        "screen-page-admin-people"
+      ],
+      "homeportJourneyIds": [
+        "B"
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-owner-refinements.spec.ts",
+        "tests/e2e/parallax-ai-quotas.spec.ts"
+      ],
       "fixtureProfile": "generic",
       "recordingRequired": true,
       "limitations": [
@@ -86,7 +113,9 @@
       "journeys": [
         {
           "id": "daily-chart-metrics",
-          "roles": ["ADMINISTRATOR"],
+          "roles": [
+            "ADMINISTRATOR"
+          ],
           "outcome": "An operator compares daily requests with settled and accounted costs, then restores the request chart without policy mutation",
           "steps": [
             {
@@ -165,7 +194,9 @@
         },
         {
           "id": "canonical-people-allowance",
-          "roles": ["ADMINISTRATOR"],
+          "roles": [
+            "ADMINISTRATOR"
+          ],
           "outcome": "The ordinary People search opens the existing account allowance controls and returns without adding a separate AI user search",
           "steps": [
             {
@@ -218,12 +249,12 @@
       ]
     }
   },
-  "sourceDigest": "8102b782bad8dab20b665832d5f1b939c0bbe9bab9a0b54b53cf963610791c74",
+  "sourceDigest": "9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5",
   "artifacts": [
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-SETTLED_CHART-4.png",
-      "sha256": "3ddccf415ac32957189b6cbae3acb25ee1b9bc1e9d9680f0edbd9598c5e5a811",
+      "sha256": "bf9a36721ff11c92d2e6e91ab60e62be566cff704100b8d4ed76e5498b94b2b2",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -235,7 +266,7 @@
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8.png",
-      "sha256": "d66f76dbc4e92e30898e006b268c68e42a22ddb0c36e2aa5b092267b3fdcf0e9",
+      "sha256": "7b7149abd82ef9f86bad16c89cc1c483e6d83facf08c9c230c3f8b1f7a540d8a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -247,7 +278,7 @@
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-RETURNED-12.png",
-      "sha256": "7bffb228851ddb18283114dc04445ce298fe93759f52ac44d3ce83d4221922bb",
+      "sha256": "76d3ef2766b2a858a191691afa7c09768c5518a09d45a2053a128004a60f3298",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -259,7 +290,7 @@
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED.trace.zip",
-      "sha256": "b9f4e2afc9f6044f6671e937fe323c9202b5e5391fbd0d29cde3cc49a719c2af",
+      "sha256": "0acc683782a2a68c52c5e046df24ac45d89fe281375b690fe4861834d940ee02",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -269,8 +300,8 @@
     },
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-DESKTOP-ADMINISTRATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c32d04f031bfa6b86a0fb6de85f63a83.webm",
-      "sha256": "f722eaa889bf626ca6cf28af78e6e9d8bb9cb74977518e1a2e886653c9887b7f",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/80e1c8f221043d7d01f005b9a6092e9c.webm",
+      "sha256": "6f97698e4fa045bf61d86b8fc170c306a70aeceb25f5723b6e88d0ac492a5d92",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -281,7 +312,7 @@
     {
       "id": "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-DOSSIER_READY-4.png",
-      "sha256": "6565128668033fbe17255eb1781cebec4cb563ad9882b32bb5e667ba29403941",
+      "sha256": "c030ff18527dbf29aa3054be03ad45f07b5e32d111d085d88c0d72d3a731425e",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -293,7 +324,7 @@
     {
       "id": "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6.png",
-      "sha256": "3b3616605495193f7c73f49a16540668d8d842bb6cb607665b6eceb2c3756cfd",
+      "sha256": "dfaf76271f21cfab2ff75fef791df8bc58f57e78a7288e8025ba2f7c45e7ecfa",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -305,7 +336,7 @@
     {
       "id": "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED.trace.zip",
-      "sha256": "30eac463333f6f6b9d1ba15745c55cdf544db9d580a93ed94814f1903723af60",
+      "sha256": "cfcb5ea45000522d5736f80d344e378f8b094f1fed7a75edde28ee43a3b5b398",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -315,8 +346,8 @@
     },
     {
       "id": "admiralty.phase1.registry-canonical-people-allowance-DESKTOP-ADMINISTRATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/4d2260c15d3a91fad35f56979450ee75.webm",
-      "sha256": "2356b8c04a40182486aeffc064227a86ac986cdb5e59fec83df39791e7cbe78f",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2219140d87f7de994226396b81cbd7e3.webm",
+      "sha256": "e429c5bd31879bfde4c04041d00c1deaf2342eab9abcd6de9a93aba3fcf96a18",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -327,7 +358,7 @@
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-SETTLED_CHART-4.png",
-      "sha256": "43a3ec5b474bfa42e6483b58bc960065ef77c72a12b7bc2eeeb7b66379044ae8",
+      "sha256": "91dd13d0a3442b318796cf1d3cca29ec830e8a99c766e8ee9f14cae3bdaf7d1d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -339,7 +370,7 @@
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-ACCOUNTED_CHART-8.png",
-      "sha256": "a1e5a38274314e5fb15ad3c42b4087dc705156fb855124060e71c33029a418ae",
+      "sha256": "c844fb6383c7edad3181195ff7b73c86fab3bd1355efc8081f3bbc2863464829",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -351,7 +382,7 @@
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-RETURNED-12",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-RETURNED-12.png",
-      "sha256": "8758a7b0457b9568c6c7f97153e104dd6592fdb8f4cac733d6e5de7903621ddf",
+      "sha256": "38c238c156619b5698690127c1fd005f851a76dc0909d5639e167a868aa2dd4f",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -363,7 +394,7 @@
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED.trace.zip",
-      "sha256": "b3e30ffaef9ee04ad99663445641240ec2e0d7dad10935cfbd4153c0f46fb6f1",
+      "sha256": "10dfdc9cb6fe53b196299874910dc365eaa3330f64f729a030d3e82e9dbfeb9b",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -373,8 +404,8 @@
     },
     {
       "id": "admiralty.phase1.registry-daily-chart-metrics-MOBILE-ADMINISTRATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a74d64e3a92497bf7689295ad64c51f4.webm",
-      "sha256": "f809a10316e23a4bf0c8a499729cf33ad542f4f7b85c4e3c2db6c0b49e1acbf4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/2ad4ee820095f2298d5ed40066f3e937.webm",
+      "sha256": "13c5d640448adf47151b44258d6d691eac52ad84c0974f2c054870c883a20313",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -385,7 +416,7 @@
     {
       "id": "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-DOSSIER_READY-4.png",
-      "sha256": "30f059ee651dfffb6cc7a4e9e14bce07346ce5aede97ef07dc7b72290104d57f",
+      "sha256": "c7551b4b41f495a537b3d9d72e72a39c34ccb95af3547f69944f2ad2a519d3ca",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -397,7 +428,7 @@
     {
       "id": "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-PEOPLE_RETURNED-6.png",
-      "sha256": "12074768af192203ee5f58ea3c070e603e912f3da7860ea9f80293b0e76d9748",
+      "sha256": "a0828d8e4fbe0d80183b887e117b39c065747cb7885f6c0ef11faee936245bee",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -409,7 +440,7 @@
     {
       "id": "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED.trace.zip",
-      "sha256": "371c4b89a0841cf7f24fcd14fbfbe03de3c7e9d402537a434c117a102fd27d5f",
+      "sha256": "615bf16ec3cf67c92e3f06c0702e8e2c3303bd8168cceb8b4a855c99ed94b8df",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -419,8 +450,8 @@
     },
     {
       "id": "admiralty.phase1.registry-canonical-people-allowance-MOBILE-ADMINISTRATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/abd716992b019b2add672923f1362043.webm",
-      "sha256": "eaf015491731bd367d045cf2e9acb073d6b6e9cf6f2ada9f639ea4f14cb5ad0b",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d336be5bd2328f3f5071662d31d0d1ed.webm",
+      "sha256": "5c4bba28e6cc9c614e2f310e1caa6968ace2103664e94c1e437a7fd70b1af8ab",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "admiralty.phase1.registry",
@@ -429,7 +460,7 @@
       "motionMode": "REDUCED"
     }
   ],
-  "packetDigest": "ecbd6f855ca6f8b5089ec1dae88da1647356c4dc2222115f492ad00befe05a1e",
+  "packetDigest": "06fcabc9ea2b9af31bf97fc33407d9eac54a0212ed28ca4b6ef920d0243afec6",
   "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
   "reviewDimensions": [
     "composition",

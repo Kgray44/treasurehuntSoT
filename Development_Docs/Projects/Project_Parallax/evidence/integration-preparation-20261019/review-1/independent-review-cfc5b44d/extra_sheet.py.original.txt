@@ -1,0 +1,9 @@
+import json
+from pathlib import Path
+from PIL import Image,ImageDraw
+out=Path(r'D:\CodexTemp\parallax-integration-20261019-01a15554\independent-review-cfc5b44d');p=json.loads((out/'sampled-recordings.json').read_text());extra=[(s['id'],f) for s in p for f in s['frames'] if Path(f['file']).name.startswith('extra-')]
+im=Image.new('RGB',(1440,1800),'#e7eaf0');d=ImageDraw.Draw(im)
+for k,(ident,fr) in enumerate(extra):
+ f=Image.open(fr['file']).convert('RGB');f.thumbnail((476,267));x=(k%3)*480;y=(k//3)*300;im.paste(f,(x+(480-f.width)//2,y));d.text((x+4,y+270),f"{ident} t={fr['time']:.2f}s",fill='black')
+im.save(out/'extra-recording-frames.jpg',quality=94)
+print(len(extra))

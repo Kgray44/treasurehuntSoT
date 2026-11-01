@@ -1,0 +1,16 @@
+{
+  "candidate": "c206229d14726e5d506b83a2be30837ba7e4beae",
+  "tree": "46e000b949815e9576d6c6e4ca1b91f55ab575e6",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T07:12:42.283Z",
+  "finishedAt": "2026-10-13T07:13:18.760Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "sha256": "c7bb32b93af692dce794b9a3f3254579230b81b08daf6567cbcc39885149214f"
+    }
+  ]
+}

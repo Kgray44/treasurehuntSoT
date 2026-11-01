@@ -1,0 +1,221 @@
+{
+  "artifactRoot": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\artifacts\\sounding-line\\generic-961b1a82a1e2",
+  "measures": [
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 1262,
+        "height": 665,
+        "area": 839230
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1562,
+        "height": 665,
+        "area": 1038730
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1806,
+        "height": 665,
+        "area": 1200990
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 782,
+        "height": 485,
+        "area": 379270
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1082,
+        "height": 485,
+        "area": 524770
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1326,
+        "height": 485,
+        "area": 643110
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 708,
+        "height": 448,
+        "area": 317184
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1008,
+        "height": 448,
+        "area": 451584
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1252,
+        "height": 448,
+        "area": 560896
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 622,
+        "height": 448,
+        "area": 278656
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 922,
+        "height": 448,
+        "area": 413056
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1166,
+        "height": 448,
+        "area": 522368
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 924,
+        "height": 448,
+        "area": 413952
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 924,
+        "height": 448,
+        "area": 413952
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 924,
+        "height": 448,
+        "area": 413952
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 294,
+        "height": 448,
+        "area": 131712
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 294,
+        "height": 448,
+        "area": 131712
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 294,
+        "height": 448,
+        "area": 131712
+      }
+    }
+  ]
+}
