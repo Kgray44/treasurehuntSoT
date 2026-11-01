@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "baseSha": "b20199feee2a82129f1527a9c0099eca5c98be5a",
-  "sourceDigest": "2c00cb867fe526182ef1413a7feba606db671756786862b8fd845253266f273e",
+  "baseSha": "3f1eddb1f990ecad9b5a119236d73bdd0c9ecdbd",
+  "sourceDigest": "fccf3692c9e0ada306b6a564cc7831e76e35a7909bebadadc64bfead9358137c",
   "contractDigest": "155d1bf5382c99427bb690cb29b937e57131795c227b2af09d10ed8e018924f2",
   "ownerAcceptance": "NOT_CLAIMED",
   "artifacts": [
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0.png",
       "sha256": "a8fe21d09d9a894def0527b42ae5272d521702dda172bce7e1686a7b616b5390",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -19,7 +19,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2.png",
       "sha256": "df134a4f9e21ac136d6e580972f4804d14ef50ff64e6297c1eada686bc54f27d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -31,7 +31,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4.png",
       "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -43,7 +43,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5.png",
       "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -55,7 +55,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6.png",
       "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -67,7 +67,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7.png",
       "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -79,7 +79,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8.png",
       "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -91,7 +91,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10.png",
       "sha256": "df134a4f9e21ac136d6e580972f4804d14ef50ff64e6297c1eada686bc54f27d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -103,8 +103,8 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14.png",
-      "sha256": "ce96f2af8d691bba35e335e91b7de890fbd3f21cf771d9dcb65628b5005212bb",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14.png",
+      "sha256": "c14f654b3d0184f2e2ece410ebbfe5d47513760c3ee44e8d45b893e1c17df5e0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.owner-correction.round1.workspaces",
@@ -115,8 +115,8 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19.png",
-      "sha256": "ea6a008d4d43074decd55d592545e540de2dd749e93e853150d6009357c1d0d1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19.png",
+      "sha256": "74b1ed88eab31a036771e8812896e143fecd2fdf1f1ab1affda2b442afbb8f92",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.owner-correction.round1.workspaces",
@@ -127,7 +127,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22.png",
       "sha256": "62e88a2dad1b35a19fe522a1e7a11d0056bb43d1677489ce0ed9b265dc8825f0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -139,8 +139,8 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "220bf856d9e295e2b483ee6d5eb57ad6720c3e1d5fdcfd8391430a8624b2a189",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "f795462810df59bff0b5ebd7e25cc44d92a7f750bd135c7c60e28c3ca11f6509",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.owner-correction.round1.workspaces",
@@ -150,8 +150,8 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/71fd7e943d08883b7bbaea66c482ccd0.webm",
-      "sha256": "1fc80a02921e3bc141ad8d57b59aadfdf699b1fdb71d0c8d3c32ef38ffeacf30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/286c0f0a19debfddeaa3f7c0761f1cca.webm",
+      "sha256": "ea020eefbb25fb363daf7a898bbc102d4fd51557f5896eccc53ae4107cea2877",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.owner-correction.round1.workspaces",
@@ -161,7 +161,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0.png",
       "sha256": "b5b21c67ee580ebddda3fec0265543069ec92f74b3e9db1f5d59d35a5b63a296",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -173,8 +173,8 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2.png",
-      "sha256": "25c067a51d2cf28bc55aae082f788b9a0acf7843c2375f300ae8b44ad2f98ac3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2.png",
+      "sha256": "081729e53e800e74a0c3f3ccdaab79cb6f89cb9e37fb4afe4981931d20cad681",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.owner-correction.round1.workspaces",
@@ -185,7 +185,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4.png",
       "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -197,7 +197,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5.png",
       "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -209,7 +209,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6.png",
       "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -221,7 +221,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7.png",
       "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -233,7 +233,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8.png",
       "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -245,7 +245,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10.png",
       "sha256": "65bd0700dbd4abc1f9733fbfa08606a5bee3beb48133e3496260b5a51732fde4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -257,7 +257,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14.png",
       "sha256": "0dac05e019f378baad73db73fa367851b0232e1cd406d56f57fb51b298f07c20",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -269,8 +269,8 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19.png",
-      "sha256": "ca7409ca9689d32be681196c40fe46931f9946c83ceff72e51c7327fa0249d99",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19.png",
+      "sha256": "80d06bbd201236f6916d16ad8a506d570955b5426ce6e05d41b872bab513ae74",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.owner-correction.round1.workspaces",
@@ -281,7 +281,7 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22.png",
       "sha256": "aacd324819a63c7caf8469cf2582dc5734d977b19361daa0c81d9124689f1a0a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -293,8 +293,8 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "b714cb46a17c86377e7d4947ee569b7551efc9884f880440e14c6fd6e3893a82",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "e92a1e06bc86b3480ae225d4eaa9679b81c1647a0e5dc02617ca4d4e03178702",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.owner-correction.round1.workspaces",
@@ -304,8 +304,8 @@
     },
     {
       "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/cef52eaf1b0ac6246a32288712330f3c.webm",
-      "sha256": "6b482d6814dd903b5c75d06a6bae6aad82aa7214f643705b754c110702179fcc",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/821adbc0c1f94c4503ca1dd70d316bdc.webm",
+      "sha256": "45c5f551c86e8247e0de764464766ab163d348b9067bf6c60882823201ad487b",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "homeport.owner-correction.round1.workspaces",
@@ -315,7 +315,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1.png",
       "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -327,7 +327,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-2.png",
       "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -339,8 +339,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4.png",
-      "sha256": "2d1aab8ff9cb336e8340f6c05d2abb662571fb73036d0ff2eb08936f68f4bbe0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-4.png",
+      "sha256": "0153240d67d5db6c20163ded941c3bd600ef23e2fd34b6915a49c9a921997260",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -351,7 +351,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-6.png",
       "sha256": "5a51971e05f4277e4ad0ccae0e85aabf4cbd03835b7e5142e443b76c9922263f",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -363,8 +363,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8.png",
-      "sha256": "0853293015ee53e1a4ebde338a7eb3272fe4ca047b298f2f7cf9c7c235d6c223",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8.png",
+      "sha256": "9e752779347be2bbcc5a30e66c2851e714a3425f01cb4009140e0feedc84e2a6",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -375,8 +375,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15.png",
-      "sha256": "313001f111b76216f61e8c2cfbd5423c095e1881660ef7b47bb5840cd408ca44",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15.png",
+      "sha256": "8822866a651636ff6e9bf8f8c26de6c2bc5b0d802bb363782baf4848a7d54096",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -387,8 +387,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
-      "sha256": "f4ceee8762d66ace8e6eb5f6cb795525cdb9b8464c1b13b93aa387ae223a52e8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
+      "sha256": "426f70287622e3157701689b42b1e494aea12efdcf784614b3a06d1a023897ef",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -399,7 +399,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-RETURNED-20.png",
       "sha256": "db939ca7153c92cdb9f4c992489c091db693aeeb336d5c4b3605d8966b3431e9",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -411,8 +411,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL.trace.zip",
-      "sha256": "d4e1b4bf4a0637bd95331243f627187402b02e5a66db6af5a35826c4c7fed2fa",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL.trace.zip",
+      "sha256": "596f14c1e45097aea6c81569078f72c9ace085a83f6f6d533a629f72e6a2776a",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -422,8 +422,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/ab4730e28337c1eef3a99660b482189f.webm",
-      "sha256": "80bccb4f8fc5a641450a6d9228c9614be78d2b3115eef733f17221c093edfe1f",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/1f8d1555bcf3aeb376fdca676795e84a.webm",
+      "sha256": "0f13137425dddd6a6812de242afa59f421bf99c4e7700360d15d5c5a6672785d",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -433,7 +433,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-1.png",
       "sha256": "8f2496159ee67e4b1176dfb969c04abf876db0d1e03cb1f7bddd39590dc8b650",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -445,7 +445,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-2.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-2.png",
       "sha256": "8f2496159ee67e4b1176dfb969c04abf876db0d1e03cb1f7bddd39590dc8b650",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -457,8 +457,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4.png",
-      "sha256": "f4ceee8762d66ace8e6eb5f6cb795525cdb9b8464c1b13b93aa387ae223a52e8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-4.png",
+      "sha256": "27aa4d0757be232ac4c4b70f525f73e1908f8015a9800ee59aec3e2500c476d5",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -469,7 +469,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-CHOICES_READY-6.png",
       "sha256": "8f2496159ee67e4b1176dfb969c04abf876db0d1e03cb1f7bddd39590dc8b650",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -481,8 +481,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8.png",
-      "sha256": "9832878df09664970b1421b7cbc5ed7bf454e1dcaa3171dbc0ed10cb0536a916",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8.png",
+      "sha256": "b45f35b4266711863c7684674b09eac1fbd0c3c27f1d6aa25032c59a22d8e6a7",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -493,8 +493,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15.png",
-      "sha256": "043f7d81eb7bf2916d5a991fca3d58f88cf93a575808ea69a42777ac30517b5d",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15.png",
+      "sha256": "26c085014ce9b00d7de0b7b2a35b7504f864b72ccee4888d978c118b2c2ac24b",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -505,8 +505,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
-      "sha256": "98e8f20af789cc21abca14c90d418c740b9d378e43e6befa9fc2c2118068b0ab",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
+      "sha256": "828c78e6ae81c0fce81348912ce6cd89c5870eaf45eb8abc9e7ffff37bff6925",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -517,7 +517,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-20",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-20.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-RETURNED-20.png",
       "sha256": "d44d1f8b904db7a3602f6d512486d65bbca854df0500c76b0b3bf65eab4f43ad",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -529,8 +529,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED.trace.zip",
-      "sha256": "b2bc2861844cc9c563f12c979160e8928c3c464947f9477071747c3cc8c49d2f",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "c98f7a528d7d338c33cd8065b7b3b97874648a38230aa9cb938bcf2eea18b8e6",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -540,8 +540,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/15c97b234ccbb27767da66e7a04ac43f.webm",
-      "sha256": "5e99ff81dd424a35677f87a41e4072d04eef547dfd0e047a2e4807a7d765cfad",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/d20f845e1dea4b27540520602defbb7e.webm",
+      "sha256": "632cd613ac14006fac9dd82109f290fde2a202479e6281a8a8590e0f56d21909",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -551,7 +551,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1.png",
       "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -563,7 +563,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-2.png",
       "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -575,8 +575,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4.png",
-      "sha256": "f83fc724525512647c26ce32dd873f22fb99e2cef0788d67056e805311524fce",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-4.png",
+      "sha256": "bf111d1c6ae9797d34c2566ae9130b1a1ee538034b6aa4a4b1edb8d49e76431a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -587,8 +587,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6.png",
-      "sha256": "849e8c182ba35336a52f029723e470243b33691c0fbaf80403d5f77956b25eba",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-6.png",
+      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -599,8 +599,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8.png",
-      "sha256": "daab6ce2317f03a419ca4bcd6f90896a4ff60c45513c889551573eb3a19aa921",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8.png",
+      "sha256": "c6f45fe942c78a5422aa0593730a36820912139d5b14d78062d52fc607d63ebb",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -611,8 +611,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15.png",
-      "sha256": "99d041ec9e5362cc4f595f259467a0e88fb68f4f39f76cca7ff11cfac29c5c5f",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15.png",
+      "sha256": "b8cbbf2dce48d1e20711ed548ed96eea96c8970854246c635b91e6c397c09fc5",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -623,8 +623,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
-      "sha256": "639befbcb01e1107afbf11b637bdc0eac1ca106f1f60794a3d90740ee0dd9dbd",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18.png",
+      "sha256": "a28ecc122e0efe88c3ef1a75e722441a18d3cdf8fc2298ba42dee07bfe4c0002",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -635,7 +635,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-RETURNED-20.png",
       "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -647,8 +647,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL.trace.zip",
-      "sha256": "ec9db9610455f76894341d6771d3c6130d45c44a5d1b673f7277c19240defdf0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL.trace.zip",
+      "sha256": "df8d69ecb6f94a83316df1245826256b41a10f48eaaac5019898a5eca9514cc0",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -658,8 +658,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/0c6490c32801ea9f679531fe6bb3b03b.webm",
-      "sha256": "d07001b1562741721eff61395b1d31ec214b9e367abd0fed8cc3af0ac56c2d5b",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/1238521c133f3c9063e90bd0664da7e6.webm",
+      "sha256": "7ef9be1a53463d271fb31d7aeb79fa78694504aec80da3fe463339be284dad8c",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -669,7 +669,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1.png",
       "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -681,7 +681,7 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-2",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-2.png",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-2.png",
       "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
@@ -693,8 +693,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4.png",
-      "sha256": "6307c2fd5446fa7ef57044401d99fa975937412a5da2f2f3b3b9434c421f79d1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-4.png",
+      "sha256": "a28ecc122e0efe88c3ef1a75e722441a18d3cdf8fc2298ba42dee07bfe4c0002",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -705,8 +705,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6.png",
-      "sha256": "bd344825dacdc42360bac34894d7f31ce6f4b5584a5273045d058ebe65ad5ef1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-6.png",
+      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -717,8 +717,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8.png",
-      "sha256": "0d7db08c2c13fdb75f10cf0c2e56139af1f1907c471b1c858f16ce28b61b8174",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8.png",
+      "sha256": "74af27948807a076ead210568569b0481e728b2886ccf9bfd0ccdd364561fa52",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -729,8 +729,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15.png",
-      "sha256": "526cc7a0ba72806ddc462db9496c62a670e302d1f40d7e9567cbf9a31e11a450",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15.png",
+      "sha256": "60728ee6cedcc88ff8e710f9dd2087b2df97c99830680dabe2153a69b9528d00",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -741,8 +741,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
-      "sha256": "8d33d7a9f75599782305cd6b782e356a6fc26d24fd992bb4237aa3269665592f",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18.png",
+      "sha256": "5c9353dc97c37233bba0861f04dbd5922b04a87e7312c593033d6a0125aea1ca",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -753,8 +753,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20.png",
-      "sha256": "3d9ebfc8836fc1abc570fa3058ab8477abad4c1e28953086c324f809b62eb60a",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20.png",
+      "sha256": "bc93ff8e79bd51fb8d58a8b5b470bc9ceb7ad5e7658466a86d4a0d5c6bb2749a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -765,8 +765,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED.trace.zip",
-      "sha256": "7400feb7b86aace48416a8f39d0bab5c5abb7c431acdccfcb4e2f5a008bc1568",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "2d8de307b4584de4c8670c7ae6983650622c116297972b9b09465d14b3b62db5",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -776,8 +776,8 @@
     },
     {
       "id": "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/9865867bdac7cfd57b67b76aeb31bbdb.webm",
-      "sha256": "65dc1c912c4295a3f821aad70468672b92ac2f3fdedd09ce8fb3798dd78019f2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/base-3f1eddb1-41350661707/136aee45ec8c2639ad78595993394dc0.webm",
+      "sha256": "416d4a7749b71ca5d48f1083f8865583b9d950b4c82b7f52f3a1515528ebae64",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "chronicle.creation",
@@ -1061,7 +1061,7 @@
       "returnPathVerified": true,
       "status": "PASS",
       "continuity": [],
-      "feedbackMs": 186.93942699999025,
+      "feedbackMs": 123.98428699999931,
       "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
       "accessibility": {
         "keyboard": true,
@@ -1143,7 +1143,7 @@
       "returnPathVerified": true,
       "status": "PASS",
       "continuity": [],
-      "feedbackMs": 153.4016369999881,
+      "feedbackMs": 95.12471200000437,
       "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
       "accessibility": {
         "keyboard": true,
@@ -1225,7 +1225,7 @@
       "returnPathVerified": true,
       "status": "PASS",
       "continuity": [],
-      "feedbackMs": 206.5220590000099,
+      "feedbackMs": 152.05559800000628,
       "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
       "accessibility": {
         "keyboard": true,
@@ -1307,7 +1307,7 @@
       "returnPathVerified": true,
       "status": "PASS",
       "continuity": [],
-      "feedbackMs": 116.89598200000182,
+      "feedbackMs": 90.37999100000889,
       "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
       "accessibility": {
         "keyboard": true,
@@ -1364,68 +1364,74 @@
   ],
   "reviews": [
     {
-      "contractId": "chronicle.creation",
       "builderContext": "sc00a-builder:/root",
       "reviewerContext": "independent-subagent:/root/sc00a_protected_experience_review",
       "independence": "SEPARATE_CONTEXT",
       "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
-      "packetDigest": "5d3ebe7219ec21baa4fea67415c52b4bbfe48d8b335b0fb01e50566ca7247d9b",
-      "iterations": 2,
+      "sourceDigest": "fccf3692c9e0ada306b6a564cc7831e76e35a7909bebadadc64bfead9358137c",
+      "baseSha": "3f1eddb1f990ecad9b5a119236d73bdd0c9ecdbd",
+      "candidateSha": "a72d3503440470ff3cbcd5193a2ff7f17512b94a",
+      "captureArtifactId": "13101790692",
+      "iterations": 1,
       "status": "ACCEPTED",
       "ownerAcceptance": "NOT_CLAIMED",
+      "contractId": "chronicle.creation",
+      "packetDigest": "5f5cc4f59d0aa73af511fc9834c5878114449d7106f4f7c8381e96bed75b9858",
       "dimensions": {
         "composition": {
-          "observation": "The four-choice entry uses a spacious desktop grid and stacked mobile cards; the editor separates passage library, flow, and inspector.",
+          "observation": "The creation page places four large intention cards in a balanced desktop grid and a vertical mobile sequence; the editor retains distinct work regions.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8"
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8"
           ]
         },
         "hierarchy": {
-          "observation": "The large entry heading leads to the manual action; the editor foregrounds draft title, Details, and save status.",
+          "observation": "A prominent creation heading and gold manual cue lead directly to the draft title and Chronicle Details controls in the real editor.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8"
           ]
         },
         "typography": {
-          "observation": "Serif headings, sans-serif explanations, and labeled controls remain readable at the captured desktop and mobile sizes.",
+          "observation": "Serif headings and sans-serif instructions remain legible at both captured widths; the small editor toolbar labels are still discernible.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8"
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-EDITOR_READY-8"
           ]
         },
         "spacing": {
-          "observation": "Choice cards have usable breathing room while the narrow editor toolbar wraps into distinct rows without overlap.",
+          "observation": "The choice cards have generous padding, and the narrow editor wraps its action buttons into separated rows without visible collision.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8"
           ]
         },
         "controls": {
-          "observation": "Manual creation, title rename, Chronicle Details, Save details, and Studio return are discernible; unavailable paths say Coming soon.",
+          "observation": "The manual card, title rename, Details, Save details, and Studio return are named and visually actionable; unavailable choices are marked Coming soon.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
           ]
         },
         "contrast": {
-          "observation": "Cream body text, gold primary actions, and status text remain legible against the dark teal editor and cards.",
+          "observation": "Cream headings, muted explanatory copy, and gold active actions remain readable on the dark teal cards and editor surfaces.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
           ]
         },
         "consistency": {
-          "observation": "The creation entry, editor, and returned Library retain the Studio shell, palette, account control, and draft vocabulary.",
+          "observation": "The shared Studio shell, account control, dark palette, and draft terminology persist from choice entry through editor and Library return.",
           "evidenceIds": [
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18"
           ]
         },
         "states": {
-          "observation": "The capture shows creation choices, a real untitled editor, saved details, and the named private draft in Library.",
+          "observation": "Fresh media shows choice entry, untitled draft editor, renamed and saved Details, then a named private draft card in the Creator Library.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
@@ -1434,29 +1440,31 @@
           ]
         },
         "responsive": {
-          "observation": "The entry cards stack on mobile, toolbar controls wrap, and the saved confirmation remains within the mobile viewport.",
+          "observation": "The mobile choice cards stack, editor controls wrap, and Save details plus Saved at stay within the mobile normal and reduced viewports.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-CHOICES_READY-1",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15"
           ]
         },
         "keyboard": {
-          "observation": "Protected traces demonstrate Tab and Enter activation through creation, save, and return; the forward-only route is lengthy.",
+          "observation": "All four protected Chronicle traces activate the route with Tab and Enter; the same traces show a long forward-only focus sequence after save.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
           ]
         },
         "focus": {
-          "observation": "Visible focus outlines track the active controls; the protected trace reaches Close and Studio by forward Tab, while a shorter Escape route is local-only proof.",
+          "observation": "Outlines make the current title and controls visible; trace navigation reaches Close Details and Studio, while this protected run does not exercise Escape.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-EDITOR_READY-8",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
           ]
         },
         "feedback": {
-          "observation": "Saved at is visible beside or below Save details within the viewport in desktop and mobile, normal and reduced motion.",
+          "observation": "Saved at is visibly placed beneath or beside Save details in all four desktop/mobile and normal/reduced saved screenshots; transition measurements are under 153 ms.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-DETAILS_SAVED-15",
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-DETAILS_SAVED-15",
@@ -1465,66 +1473,50 @@
           ]
         },
         "motion": {
-          "observation": "Normal and reduced-motion traces reach stable editor and saved states; manifest feedback measurements are about 117 to 207 milliseconds.",
+          "observation": "Normal and reduced WebM samples and trace frames reach stable editor, saved, and returned states without an observed disruptive transition.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-trace",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-trace",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-REDUCED-recording",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-recording",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-recording"
           ]
         },
         "continuity": {
-          "observation": "Manual creation opens the real editor, return shows the named private draft with its saved description, and the creation entry remains reachable.",
+          "observation": "Manual selection opens an owned untitled editor; the same named private Chronicle and saved description appear on return to Library.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-RETURNED-20"
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-LIBRARY_RETURNED-18"
           ]
         },
         "complexity": {
-          "observation": "Manual entry requires no setup form; the mature editor is dense on mobile but keeps controls sectioned and named.",
+          "observation": "The manual path asks for no preliminary metadata, although the full editor presents many controls after entry; primary actions remain separated.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-EDITOR_READY-8"
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-EDITOR_READY-8"
           ]
         },
         "role-outcomes": {
-          "observation": "The Creator can begin manually, edit and save details, and find the named private draft in the Library.",
+          "observation": "The Creator can start manually, edit title and details, save, and see a private unpublished draft with the new description in Library.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-LIBRARY_RETURNED-18"
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-LIBRARY_RETURNED-18"
           ]
         },
         "fallbacks": {
-          "observation": "Manual creation remains available while AI, adaptation, and whole-Chronicle template intentions are presented as Coming soon.",
+          "observation": "AI, Adapt a Story, and Start from a Template are fully shown as Coming soon in the desktop recording while manual creation remains operational.",
           "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-recording",
+            "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-CHOICES_READY-1"
           ]
         }
       },
       "findings": [
         {
-          "id": "SC00A-MOBILE-REDUCED-SAVE-FEEDBACK-OFFSCREEN",
-          "classification": "INTERACTION_DEFECT",
-          "contractId": "chronicle.creation",
-          "observation": "The previous protected capture placed mobile reduced-motion Saved at feedback below the viewport after Save details; the current capture shows that confirmation within the viewport.",
-          "evidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
-          ],
-          "disposition": "RESOLVED",
-          "repairEvidenceIds": [
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-DETAILS_SAVED-15",
-            "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-NORMAL-DETAILS_SAVED-15"
-          ],
-          "resolution": "The current mobile normal and reduced saved-state screenshots show Save details and Saved at together within the captured viewport."
-        },
-        {
-          "id": "SC00A-FORWARD-TAB-BURDEN",
+          "id": "SC00A-FORWARD-FOCUS-ROUTE-LONG-41350661707",
           "classification": "MINOR_POLISH",
           "contractId": "chronicle.creation",
-          "observation": "The protected forward-only trace traverses more than 100 Tab stops from Save details to Close Details and again toward Studio; a shorter Escape and reverse route was verified only in a separate exact-source local probe.",
+          "observation": "After Save details, the captured forward-only keyboard route traverses over 100 Tab stops to Close Details and about 100 more toward Studio. This capture does not exercise the coded Escape shortcut.",
           "evidenceIds": [
             "chronicle.creation-creation-and-inline-details-DESKTOP-CREATOR-NORMAL-trace",
             "chronicle.creation-creation-and-inline-details-MOBILE-CREATOR-REDUCED-trace"
@@ -1532,121 +1524,132 @@
         }
       ],
       "limits": [
-        "This protected journey shows the draft after Library navigation but does not show a fresh reload, reopen, or subsequent edit.",
-        "Semantic browser actions and zero serious axe findings do not establish screen-reader speech.",
-        "The shorter Escape and reverse route was verified separately in an exact-source local probe, not in this protected capture.",
-        "No physical-device or owner acceptance is inferred."
+        "The protected journey returns to the Library but does not freshly reload, reopen, or re-edit the saved draft.",
+        "The six protected traces use Tab and Enter; Escape and reverse-Tab behavior are not demonstrated by this capture. Matching candidate source was inspected only after media and contains an Escape close handler and trigger focus restoration; source is supporting evidence, not an observed interaction.",
+        "Zero reported serious axe findings and visible skip links do not establish screen-reader speech.",
+        "Visual ownership labels do not alone prove canonical identity or privacy isolation.",
+        "This is a fresh media pass in the same reviewer task path, which had prior task history; prior judgments were not reused. No physical device or owner acceptance is claimed."
       ]
     },
     {
-      "contractId": "homeport.owner-correction.round1.workspaces",
       "builderContext": "sc00a-builder:/root",
       "reviewerContext": "independent-subagent:/root/sc00a_protected_experience_review",
       "independence": "SEPARATE_CONTEXT",
       "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
-      "packetDigest": "6db5d64486d13a0dcd0a2f0d6141ff3700e61a06c6a02a7060a56cc9c67edec1",
+      "sourceDigest": "fccf3692c9e0ada306b6a564cc7831e76e35a7909bebadadc64bfead9358137c",
+      "baseSha": "3f1eddb1f990ecad9b5a119236d73bdd0c9ecdbd",
+      "candidateSha": "a72d3503440470ff3cbcd5193a2ff7f17512b94a",
+      "captureArtifactId": "13101790692",
       "iterations": 1,
       "status": "ACCEPTED",
       "ownerAcceptance": "NOT_CLAIMED",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "packetDigest": "fcb007493e88413a8e2b9f4908ae1ed1fd1f8c4e11853f61158de1bdfb8b6222",
       "dimensions": {
         "composition": {
-          "observation": "Three equal desktop workspace cards become a readable mobile stack; destination pages retain distinct task bodies.",
+          "observation": "All Workspaces presents three balanced desktop capability cards that become a readable single-column mobile route.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0"
           ]
         },
         "hierarchy": {
-          "observation": "All Workspaces introduces the account capabilities and each card names a clear Enter action; destination headings lead their task.",
+          "observation": "The shared account message leads to Player, Captain, and Creator entry actions; each destination foregrounds its own primary task.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14"
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
           ]
         },
         "typography": {
-          "observation": "Workspace labels, large serif destination headings, and explanatory sans-serif copy remain readable at captured sizes.",
+          "observation": "Large destination headings, card names, and empty-state explanations remain legible at desktop and mobile capture sizes.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
           ]
         },
         "spacing": {
-          "observation": "Workspace cards have useful internal room; focused Creator, Captain, and Player headings sit close to their descriptions.",
+          "observation": "Capability cards have ample room and mobile controls wrap; focused destination heading outlines sit close to the next descriptive line.",
           "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14"
           ]
         },
         "controls": {
-          "observation": "Enter Creator, Captain, and Player, account disclosure, creation intentions, and Captain tabs have discernible names and states.",
+          "observation": "Enter actions, account disclosure, Captain tabs, and Chronicle choice cards have discernible labels and active or unavailable states.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14"
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
           ]
         },
         "contrast": {
-          "observation": "Light text and gold primary actions remain legible on the dark shared frame and destination empty states.",
+          "observation": "Gold primary actions, light labels, and muted supporting copy remain readable against dark workspace and destination backgrounds.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
           ]
         },
         "consistency": {
-          "observation": "Shared navigation, account indicator, palette, and return vocabulary persist through Creator, Captain, Player, and All Workspaces.",
+          "observation": "The same Voyagewright frame and synthetic account indicator persist through Creator, Captain, Player, and return to All Workspaces.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22"
           ]
         },
         "states": {
-          "observation": "The capture shows available capabilities, empty Creator and Captain workspaces, creation choices, Player empty state, and return.",
+          "observation": "The captured journey includes available workspace entry, empty Creator and Captain states, creation choices, Player empty state, and final return.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
           ]
         },
         "responsive": {
-          "observation": "Workspace cards stack, Captain tabs wrap, and empty-state calls to action fit the mobile viewport without reported overflow.",
+          "observation": "Workspace cards stack on mobile and Captain tabs wrap without a visible horizontal scroll or clipped primary action.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14"
           ]
         },
         "keyboard": {
-          "observation": "The protected desktop and mobile traces show keyboard focus and activation across account disclosure, workspace entry, and return.",
+          "observation": "The desktop and mobile reduced-motion traces record Tab and Enter activation through Creator, account menu, Captain, Player, and return.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
           ]
         },
         "focus": {
-          "observation": "Visible focus outlines identify headings and actions during navigation; outline spacing at some destination descriptions is tight.",
+          "observation": "A visible focus outline and Skip to main content link appear during keyboard traversal; a few large heading outlines closely touch body copy.",
           "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
           ]
         },
         "feedback": {
-          "observation": "Available badges, no-content explanations, and Player server-confirmed status explain the captured capability and empty states.",
+          "observation": "Available badges, no-content guidance, and Player server-confirmed state explain each observed capability and empty-state outcome.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19"
           ]
         },
         "motion": {
-          "observation": "Reduced-motion trace frames show stable transitions among the shared workspace destinations without an observed jarring jump.",
+          "observation": "Both reduced-motion recordings and traces move among the shared destinations without an observed animation-dependent step.",
           "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-recording",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-recording"
           ]
         },
         "continuity": {
-          "observation": "The same synthetic account indicator appears at entry, Creator, Captain, Player, and return to All Workspaces.",
+          "observation": "The synthetic account remains visible at entry and each role destination, then returns to the same All Workspaces screen.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
@@ -1656,38 +1659,37 @@
           ]
         },
         "complexity": {
-          "observation": "Three capability cards and task-specific empty states make the route understandable without adding a duplicate authoring surface.",
+          "observation": "Three role cards and task-specific empty states keep entry understandable; the account menu offers a direct All Workspaces return.",
           "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14"
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
           ]
         },
         "role-outcomes": {
-          "observation": "The account reaches Creator Library and creation intentions, then Captain and Player, and returns to the shared workspace entry.",
+          "observation": "The same account reaches Creator Library, previews the creation intentions, then reaches Captain and Player before returning.",
           "evidenceIds": [
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
-            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22"
           ]
         },
         "fallbacks": {
-          "observation": "Empty Creator, Captain, and Player states give next actions; all three unavailable creation intentions are marked Coming soon.",
+          "observation": "Empty workspaces provide next actions, while AI, adaptation, and template intentions visibly say Coming soon in scrolled trace frames.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+            "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace"
           ]
         }
       },
       "findings": [
         {
-          "id": "HOMEPORT-FOCUSED-HEADING-DESCRIPTION-SPACING",
+          "id": "HOMEPORT-HEADING-OUTLINE-SPACING-41350661707",
           "classification": "MINOR_POLISH",
           "contractId": "homeport.owner-correction.round1.workspaces",
-          "observation": "Focused Creator, Captain, and Player page-heading outlines closely touch the following description line in mobile captures; text remains readable and the task proceeds.",
+          "observation": "Focused Creator, Captain, and Player headings have outlines that nearly meet the following description line on mobile; the text remains readable and navigation succeeds.",
           "evidenceIds": [
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
             "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
@@ -1696,15 +1698,16 @@
         }
       ],
       "limits": [
-        "Visible account continuity does not independently prove canonical identity IDs, capability isolation, or private-resource exclusion.",
-        "The capture samples workspace navigation and empty states, not a live Voyage or published Chronicle.",
-        "No physical-device or owner acceptance is inferred."
+        "The visible account indicator does not itself prove canonical account IDs, capability isolation, or another owner private-resource exclusion.",
+        "This capture samples empty workspace navigation, not a live Voyage or physical-device use.",
+        "The Homeport contract is reduced-motion only in this packet; normal-motion Homeport behavior was not captured.",
+        "No owner acceptance is claimed."
       ]
     }
   ],
-  "captureArtifactId": 13089108463,
+  "captureArtifactId": 13101790692,
   "completionClaims": [
-    "chronicle.creation"
-  ],
-  "reviewArtifactId": 13090324395
+    "chronicle.creation",
+    "homeport.owner-correction.round1.workspaces"
+  ]
 }
