@@ -106,3 +106,17 @@ test("malformed graph, forged digest, missing root and duplicated context cannot
     planArtifactInvalidation({ base: graph, candidate: graph, contexts: [contexts[0], contexts[0]] }),
   );
 });
+
+test("many individually valid contexts cannot amplify aggregate traversal without a bound", () => {
+  const leaves = Array.from({ length: 1000 }, (_, index) => node(`leaf-${index}`, "SOURCE"));
+  const graph = createArtifactDependencyGraph([
+    ...leaves,
+    node(
+      "root",
+      "CONTEXT",
+      leaves.map((entry) => entry.id),
+    ),
+  ]);
+  const contexts = Array.from({ length: 1000 }, (_, index) => ({ id: `context-${index}`, dependencies: ["root"] }));
+  assert.throws(() => planArtifactInvalidation({ base: graph, candidate: graph, contexts }), /TOTAL_TRAVERSAL_BOUND/u);
+});

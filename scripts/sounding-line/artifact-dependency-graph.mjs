@@ -71,8 +71,8 @@ function checkedGraph(graph) {
   return new Map(checked.nodes.map((node) => [node.id, node]));
 }
 
-function reachable(graphs, roots) {
-  need(Array.isArray(roots) && roots.length > 0 && roots.every(identifier), "ROOTS");
+function reachable(graphs, roots, budget = { remaining: 5000000 }) {
+  need(Array.isArray(roots) && roots.length > 0 && roots.length <= 100000 && roots.every(identifier), "ROOTS");
   const found = new Set(),
     queue = [...new Set(roots)];
   let unknown = false;
@@ -83,6 +83,8 @@ function reachable(graphs, roots) {
     const entries = graphs.map((graph) => graph.get(id)).filter(Boolean);
     if (!entries.length) unknown = true;
     for (const node of entries) {
+      budget.remaining -= 1 + node.dependencies.length;
+      need(budget.remaining >= 0, "TOTAL_TRAVERSAL_BOUND");
       unknown ||= node.unknown;
       for (const dependency of node.dependencies) if (!found.has(dependency)) queue.push(dependency);
     }
@@ -91,13 +93,20 @@ function reachable(graphs, roots) {
   return { ids: [...found].sort(compare), unknown };
 }
 
-function closureFromNodes(nodes, roots) {
-  const closure = reachable([nodes], roots);
+function closureFromNodes(nodes, roots, budget) {
+  const closure = reachable([nodes], roots, budget);
   const members = closure.ids.map((id) => nodes.get(id) ?? { id, missing: true });
   return { ...closure, closureDigest: digest(members) };
 }
 export function artifactDependencyClosure(graph, roots) {
   return closureFromNodes(checkedGraph(graph), roots);
+}
+// Validate/copy once; later input mutation cannot change the private snapshot.
+// The shared traversal budget bounds aggregate work across all contexts.
+export function compileArtifactDependencyClosures(graph) {
+  const nodes = checkedGraph(graph),
+    budget = { remaining: 5000000 };
+  return Object.freeze({ closure: (roots) => closureFromNodes(nodes, roots, budget) });
 }
 
 // The union is essential: a deleted node or removed edge remains visible from
@@ -107,13 +116,13 @@ export function reconcileArtifactDependencyGraphs({ base, candidate, roots }) {
     current = checkedGraph(candidate);
   return reconcileCompiled({ base, candidate, roots, prior, current });
 }
-function reconcileCompiled({ base, candidate, roots, prior, current }) {
-  const union = reachable([prior, current], roots);
+function reconcileCompiled({ base, candidate, roots, prior, current, budget = { remaining: 5000000 } }) {
+  const union = reachable([prior, current], roots, budget);
   const changed = union.ids.filter(
     (id) => canonicalJson(prior.get(id) ?? null) !== canonicalJson(current.get(id) ?? null),
   );
-  const before = closureFromNodes(prior, roots),
-    after = closureFromNodes(current, roots);
+  const before = closureFromNodes(prior, roots, budget),
+    after = closureFromNodes(current, roots, budget);
   const unknown = union.unknown || before.unknown || after.unknown;
   return {
     disposition: unknown ? "CONSERVATIVE_FRESH" : changed.length ? "INVALIDATED" : "UNCHANGED_COMPLETE_CLOSURE",
@@ -137,10 +146,14 @@ export function planArtifactInvalidation({ base, candidate, contexts }) {
   const seen = new Set();
   const prior = checkedGraph(base),
     current = checkedGraph(candidate);
+  const budget = { remaining: 5000000 };
   const outcomes = contexts.map((context) => {
     need(identifier(context.id) && !seen.has(context.id), "CONTEXT_IDENTITY");
     seen.add(context.id);
-    return { id: context.id, ...reconcileCompiled({ base, candidate, roots: context.dependencies, prior, current }) };
+    return {
+      id: context.id,
+      ...reconcileCompiled({ base, candidate, roots: context.dependencies, prior, current, budget }),
+    };
   });
   return {
     version: ARTIFACT_GRAPH_VERSION,
