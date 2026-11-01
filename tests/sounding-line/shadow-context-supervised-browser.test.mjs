@@ -27,7 +27,7 @@ import { createClosedContextResumeShadow } from "../../scripts/sounding-line/clo
 import { authenticatedCompletedReceipt } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 test(
-  "existing supervisor owns the private single-context worker and application before SQLite and private cache retention",
+  "owned SQLite restart restores an authenticated browser session and completed context without another sign-in",
   { timeout: 90000 },
   async (t) => {
     // Keep fabricated plans outside Git exactly as the existing synthetic browser
@@ -54,14 +54,26 @@ test(
       experience: {
         entryPoint: "/",
         devices: ["DESKTOP"],
-        roles: ["ANONYMOUS"],
+        roles: ["OWNER"],
         motion: true,
         states: ["READY", "RETURNED"],
         recordingRequired: true,
+        roleSetup: {
+          OWNER: {
+            entryPoint: "/sign-in?returnTo=/",
+            witness: { role: "heading", name: "Owned fixture", text: "Owned fixture" },
+            steps: [
+              { action: "fill", role: "textbox", name: "Email or Player name", value: "owner@example.invalid" },
+              { action: "fill", role: "textbox", name: "Password", value: "synthetic-owner-password" },
+              { action: "click", role: "button", name: "Sign in" },
+              { action: "assert", role: "heading", name: "Owned fixture" },
+            ],
+          },
+        },
         journeys: [
           {
             id: "roundtrip",
-            roles: ["ANONYMOUS"],
+            roles: ["OWNER"],
             steps: [
               { action: "assert", role: "heading", name: "Owned fixture", state: "READY" },
               { action: "click", role: "link", name: "Leave fixture" },
@@ -119,7 +131,30 @@ test(
     const serverFile = absolute(rawDirectory + "/fixture-server.cjs");
     await fs.writeFile(
       serverFile,
-      `const{DatabaseSync}=require('node:sqlite');const db=new DatabaseSync(process.env.DATABASE_URL.slice(5));db.exec("PRAGMA journal_mode=WAL;PRAGMA wal_autocheckpoint=0;INSERT INTO fixture VALUES ('owned supervised state')");require('node:http').createServer((q,s)=>{const body=q.url==='/away'?'<h1>Outside fixture</h1><a href="/">Return to fixture</a>':'<h1>Owned fixture</h1><a href="/away">Leave fixture</a>';s.setHeader('Content-Type','text/html');s.end('<!doctype html><html lang="en"><head><title>Owned fixture</title><style>body{font:18px Arial;margin:24px;color:#111;background:white}a{display:inline-block;padding:14px}:focus-visible{outline:3px solid #164fc0}</style></head><body><main>'+body+'</main></body></html>')}).listen(Number(process.argv[process.argv.indexOf('-p')+1]),'127.0.0.1');`,
+      `const{DatabaseSync}=require('node:sqlite');
+const db=new DatabaseSync(process.env.DATABASE_URL.slice(5));
+db.exec("PRAGMA journal_mode=WAL;PRAGMA wal_autocheckpoint=0;INSERT INTO fixture VALUES ('owned supervised state');CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY);CREATE TABLE IF NOT EXISTS logins(owner TEXT)");
+const token='synthetic-private-authenticated-session';
+const page=body=>'<!doctype html><html lang="en"><head><title>Owned fixture</title><style>body{font:18px Arial;margin:24px;color:#111;background:white}a,button{display:inline-block;padding:14px}:focus-visible{outline:3px solid #164fc0}</style></head><body><main>'+body+'</main></body></html>';
+require('node:http').createServer((q,s)=>{
+ const url=new URL(q.url,'http://fixture.invalid');
+ s.setHeader('Content-Type','text/html');
+ if(url.pathname==='/sign-in'){
+  if(q.method==='POST'){
+   let body='';q.on('data',part=>{body+=part;if(body.length>4096)q.destroy()});q.on('end',()=>{
+    const form=new URLSearchParams(body);
+    if(form.get('email')!=='owner@example.invalid'||form.get('password')!=='synthetic-owner-password'){s.statusCode=403;s.end('Rejected');return}
+    db.prepare('INSERT OR IGNORE INTO sessions VALUES (?)').run(token);db.prepare('INSERT INTO logins VALUES (?)').run('owner');
+    s.setHeader('Set-Cookie','fixture_session='+token+'; Path=/; HttpOnly; SameSite=Lax');s.statusCode=303;s.setHeader('Location','/');s.end();
+   });return;
+  }
+  s.end(page('<h1>Sign in</h1><form method="post" action="/sign-in"><label>Email or Player name<input type="email" name="email"></label><label>Password<input role="textbox" type="password" name="password"></label><button>Sign in</button></form>'));return;
+ }
+ const cookie=(q.headers.cookie||'').split(';').map(v=>v.trim()).includes('fixture_session='+token);
+ if(!cookie||!db.prepare('SELECT token FROM sessions WHERE token=?').get(token)){s.statusCode=302;s.setHeader('Location','/sign-in?returnTo=/');s.end();return}
+ const body=url.pathname==='/away'?'<h1>Outside fixture</h1><a href="/">Return to fixture</a>':'<h1>Owned fixture</h1><a href="/away">Leave fixture</a>';
+ s.end(page(body));
+}).listen(Number(process.argv[process.argv.indexOf('-p')+1]),'127.0.0.1');`,
       { flag: "wx", mode: 0o600 },
     );
     const planBytes = Buffer.from(JSON.stringify(plan)),
@@ -397,6 +432,23 @@ test(
       (await resume.restore(firstPrefix, { plan, runtimeDigest: binding.runtimeDigest })).completedContexts,
       1,
     );
+    assert.equal(JSON.parse(authenticationCache).length, 1);
+    assert.equal(JSON.parse(resumedAuthentication).length, 1);
+    const persistedAuth = execFileSync(
+      "python",
+      [
+        "-c",
+        "import sqlite3,sys,json;c=sqlite3.connect(sys.argv[1]);print(json.dumps([c.execute('select count(*) from logins').fetchone()[0],c.execute('select count(*) from sessions').fetchone()[0]]));c.close()",
+        finalDatabase,
+      ],
+      { encoding: "utf8", windowsHide: true, timeout: 10000 },
+    ).trim();
+    assert.deepEqual(JSON.parse(persistedAuth), [1, 1]);
+    for (const output of [input.outputDirectory, resumedInput.outputDirectory]) {
+      const capture = await fs.readFile(absolute(output + "/capture.json"), "utf8");
+      assert(!capture.includes("synthetic-private-authenticated-session"));
+      assert(!capture.includes("synthetic-owner-password"));
+    }
     // A failed optional journal must not become a resumable worker result even
     // though its actual browser journey and immutable partial capture completed.
     const negativePlan = structuredClone(plan);
