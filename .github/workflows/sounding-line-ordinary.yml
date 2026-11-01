@@ -70,11 +70,11 @@ jobs:
         with:
           ref: ${{ github.sha }}
           path: authority
+          fetch-depth: 1
           sparse-checkout: |
             scripts
             testing
             Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
-          fetch-depth: 1
           fetch-tags: false
           show-progress: true
           persist-credentials: false
@@ -155,11 +155,11 @@ jobs:
         with:
           ref: ${{ inputs.base_sha }}
           path: authority
+          fetch-depth: 1
           sparse-checkout: |
             scripts
             testing
             Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
-          fetch-depth: 1
           fetch-tags: false
           show-progress: true
           persist-credentials: false
@@ -321,11 +321,11 @@ jobs:
         with:
           ref: ${{ steps.source.outputs.base }}
           path: authority
+          fetch-depth: 1
           sparse-checkout: |
             scripts
             testing
             Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
-          fetch-depth: 1
           fetch-tags: false
           show-progress: true
       - name: Set up ordinary checkout runtime
@@ -520,11 +520,11 @@ jobs:
         with:
           ref: ${{ github.sha }}
           path: authority
+          fetch-depth: 1
           sparse-checkout: |
             scripts
             testing
             Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
-          fetch-depth: 1
           fetch-tags: false
           show-progress: true
           persist-credentials: false

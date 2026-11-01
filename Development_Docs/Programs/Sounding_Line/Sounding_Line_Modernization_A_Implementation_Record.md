@@ -87,6 +87,34 @@ receipts. The matched baseline does not turn any failed assertion into a pass.
 Linux protected qualification remains required. Test counts do not establish
 billing savings or human/product acceptance.
 
+## First protected qualification and focused repair
+
+Candidate `8c1d76b7aff8fe369c31de3a34f0fca9967b0b8a` against protected base
+`809b6d54025fb66000960f30dc750b44ee056d49` failed ordinary run
+[41255214433/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/41255214433).
+The control-plane regression step reported 11 failures among 1,067 tests; the
+Mainline Decision failed closed.
+No merge or protection-setting change followed. The original 417,864-byte failed
+job log has SHA-256 `cd1eab96bfdb70486608cb032df70e6e81bba2d6927767041ebd6aa2f2114aa1`.
+
+That run executed the existing protected-base checkout workflow, not the proposed
+checkout changes. Custody authority/candidate checkouts took 423/174 seconds;
+verification authority/candidate checkouts took 426/175 seconds. These are
+pre-installation observations and do not establish modernization savings.
+
+Focused repairs authenticate the supervised exporter and all seven supporting
+modules against installed bytes, protected Git identities and provider blobs.
+They retain the legacy exporter route, opaque proof, exact candidate binding and
+fresh browser obligations. Substitution of each supervisor module is rejected.
+Checkout assertions now require the bounded ordinary helper and sparse authority.
+
+The R3 fixture also failed unchanged on exact protected base `809b6d54` and the
+candidate. Its synthetic historical base inherited later runtime assets and
+configuration. The fixture now reconstructs the recorded historical closure and
+frozen configuration before exercising admission. The production freeze remains
+unchanged, and an unlisted public asset is explicitly rejected. Original failed
+reproductions remain retained alongside the repaired test receipts.
+
 ## Remaining integration proof
 
 The startup live audit found strict required app-15368 checks, administrator
