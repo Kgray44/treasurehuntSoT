@@ -199,24 +199,52 @@ export async function documentationCheckoutReadSet({
         return { path, mode, type, sha };
       });
   const baseEntries = await tree(baseSha),
-    candidateEntries = await tree(candidateSha),
-    anchorEntries = await tree(DOCUMENTATION_CHECKOUT_ANCHOR);
+    candidateEntries = await tree(candidateSha);
+  // Candidate scope is decided entirely from existing commit/tree metadata.
+  // Unrelated work must not acquire a certificate transport dependency.
+  const scope = documentationCheckoutProposal({
+    baseEntries,
+    candidateEntries,
+    anchorEntries: baseEntries,
+    prNumber,
+    purpose,
+  });
+  if (scope.profile === "FULL_SNAPSHOT") return { applied: false, proposal: scope };
+  const anchorEntries = await tree(DOCUMENTATION_CHECKOUT_ANCHOR);
   const base = inventory(baseEntries),
     anchor = inventory(anchorEntries);
+  const drift =
+    base && anchor
+      ? [...new Set([...base.keys(), ...anchor.keys()])].filter(
+          (file) => key(base.get(file) ?? {}) !== key(anchor.get(file) ?? {}),
+        )
+      : [];
+  if (drift.some((file) => !allowedAuthorityChanges.has(file)))
+    return {
+      applied: false,
+      proposal: { profile: "FULL_SNAPSHOT", reason: "READER_OR_BASE_POLICY_DRIFT", qualification: false },
+    };
   let reviewedEntries,
     certificateReader,
     profileSourceMatchesReviewed = false;
-  if (
-    base &&
-    anchor &&
-    [...new Set([...base.keys(), ...anchor.keys()])].some(
-      (file) => key(base.get(file) ?? {}) !== key(anchor.get(file) ?? {}),
-    ) &&
-    /^[a-f0-9]{40}$/u.test(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION)
-  ) {
+  if (base && anchor && drift.length > 0 && /^[a-f0-9]{40}$/u.test(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION)) {
     const ancestors = (await command(["rev-list", baseSha])).split(/\r?\n/u);
     if (ancestors.includes(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION)) {
       reviewedEntries = await tree(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION);
+      const reviewed = inventory(reviewedEntries);
+      if (
+        drift.some(
+          (file) =>
+            file !== profilePath &&
+            (base.get(file)?.mode !== "100644" ||
+              reviewed?.get(file)?.mode !== "100644" ||
+              key(base.get(file)) !== key(reviewed.get(file))),
+        )
+      )
+        return {
+          applied: false,
+          proposal: { profile: "FULL_SNAPSHOT", reason: "REVIEWED_TRANSPORT_SOURCE_CHANGED", qualification: false },
+        };
       const installed = readFileSync(fileURLToPath(import.meta.url));
       const normalized = normalizedProfileSource(installed.toString("utf8"));
       const expectedBytes = normalized === null ? null : Buffer.from(normalized, "utf8");

@@ -18,7 +18,14 @@ const git = (root, args, input) =>
     stdio: ["pipe", "pipe", "pipe"],
   });
 const objectId = (root, revision, file) => git(root, ["rev-parse", `${revision}:${file}`]).trim();
-for (const scenario of ["cold-valid", "altered-transport", "historical-reader-preserved", "absent-certificate-blob"])
+for (const scenario of [
+  "cold-valid",
+  "altered-transport",
+  "historical-reader-preserved",
+  "absent-certificate-blob",
+  "unrelated-source-missing-certificate",
+  "base-reader-drift-missing-certificate",
+])
   test(`inert real certificate ancestry: ${scenario}`, async (t) => {
     const owner = mkdtempSync(path.join(tmpdir(), "documentation-certificate-"));
     t.after(() => rmSync(owner, { recursive: true, force: true }));
@@ -73,17 +80,21 @@ for (const scenario of ["cold-valid", "altered-transport", "historical-reader-pr
     git(seed, ["rm", "src/only-in-certificate.ts"]);
     if (scenario === "altered-transport")
       put(".github/workflows/sounding-line-ordinary.yml", "# arbitrary later transport bytes\n");
+    if (scenario === "base-reader-drift-missing-certificate")
+      put("src/new-base-reader.ts", "export const changedReader=true;\n");
     git(seed, ["add", "."]);
     git(seed, ["commit", "-qm", "inert protected base with fixed certificate literal"]);
     const baseSha = git(seed, ["rev-parse", "HEAD"]).trim();
     put("Development_Docs/new.md", "# inert candidate\n");
+    if (scenario === "unrelated-source-missing-certificate")
+      put("src/unrelated-feature.ts", "export const unrelated=true;\n");
     git(seed, ["add", "."]);
     git(seed, ["commit", "-qm", "inert documented candidate"]);
     const candidateSha = git(seed, ["rev-parse", "HEAD"]).trim();
     const authority = path.join(owner, "protected-profile.mjs");
     writeFileSync(authority, installed);
-    const module = await import(pathToFileURL(authority).href);
-    if (scenario === "absent-certificate-blob") {
+    const protectedProfile = await import(pathToFileURL(authority).href);
+    if (scenario === "absent-certificate-blob" || scenario.endsWith("missing-certificate")) {
       const loose = path.join(seed, ".git/objects", certificateBlob.slice(0, 2), certificateBlob.slice(2));
       assert(existsSync(loose));
       unlinkSync(loose);
@@ -97,7 +108,7 @@ for (const scenario of ["cold-valid", "altered-transport", "historical-reader-pr
       candidateSha,
       roots: [],
       readerRevisions: scenario === "historical-reader-preserved" ? [certificate] : [],
-      readerObjects: [],
+      readerObjects: scenario.endsWith("missing-certificate") ? [{ sha: historicalBlob, type: "blob" }] : [],
       budgetMs: 120000,
       stallBudgetMs: 60000,
       progress: false,
@@ -108,7 +119,12 @@ for (const scenario of ["cold-valid", "altered-transport", "historical-reader-pr
           .split(/\r?\n/u)
           .includes(`?${certificateBlob}`);
         assert(missingBefore, "certificate must be absent after real blob:none transport");
-        const result = await module.documentationCheckoutReadSet({ ...context, baseSha, candidateSha, prNumber: 819 });
+        const result = await protectedProfile.documentationCheckoutReadSet({
+          ...context,
+          baseSha,
+          candidateSha,
+          prNumber: 819,
+        });
         return { ...result, applied: result.proposal.profile === "DOCUMENTATION_ONLY_SOURCE_BOUND_V1" };
       },
     };
@@ -125,6 +141,16 @@ for (const scenario of ["cold-valid", "altered-transport", "historical-reader-pr
     assert.equal(receipt.status, "PASS");
     assert(missingBefore);
     assert.equal(receipt.lateGitTransport, "DISABLED");
+    if (scenario === "altered-transport" || scenario.endsWith("missing-certificate")) {
+      assert.equal(receipt.readSet.applied, false);
+      assert(!receipt.certificateReader);
+      assert(!receipt.commands.some((command) => command.args.includes(certificateBlob)));
+      assert(existsSync(path.join(root, "Development_Docs/archive.png")));
+      assert.throws(() => git(root, ["cat-file", "-t", certificateBlob]));
+      if (scenario.endsWith("missing-certificate"))
+        assert.equal(git(root, ["cat-file", "-t", historicalBlob]).trim(), "blob");
+      return;
+    }
     assert.equal(git(root, ["cat-file", "-t", certificateBlob]).trim(), "blob");
     assert.equal(readFileSync(path.join(root, "Development_Docs/new.md"), "utf8"), "# inert candidate\n");
     const closure = JSON.parse(readFileSync(path.join(root, ".git/selected-required-objects.json")));
