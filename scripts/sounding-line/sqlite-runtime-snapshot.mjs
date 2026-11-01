@@ -135,7 +135,7 @@ async function worker(configPath, expectedHash) {
   const { DatabaseSync, backup } = await import("node:sqlite");
   need(typeof backup === "function", "ENGINE_UNAVAILABLE");
   const destination = await open(config.output, "wx", 0o600);
-  const source = new DatabaseSync(config.databasePath, { readOnly: true, timeout: 1000 });
+  const source = new DatabaseSync(path.toNamespacedPath(config.databasePath), { readOnly: true, timeout: 1000 });
   try {
     source.exec("PRAGMA query_only=ON; PRAGMA trusted_schema=OFF; BEGIN");
     source.prepare("SELECT count(*) FROM sqlite_schema").get();
@@ -148,7 +148,7 @@ async function worker(configPath, expectedHash) {
         pages * pageSize <= config.maximumBytes,
       "BOUND",
     );
-    await backup(source, config.output, {
+    await backup(source, path.toNamespacedPath(config.output), {
       rate: 128,
       progress({ totalPages }) {
         need(totalPages * pageSize <= config.maximumBytes, "BOUND");
@@ -173,7 +173,7 @@ async function worker(configPath, expectedHash) {
     source.close();
     await destination.close();
   }
-  const verify = new DatabaseSync(config.output, { readOnly: true, timeout: 1000 });
+  const verify = new DatabaseSync(path.toNamespacedPath(config.output), { readOnly: true, timeout: 1000 });
   try {
     need(verify.prepare("PRAGMA quick_check").get().quick_check === "ok", "INTEGRITY");
   } finally {

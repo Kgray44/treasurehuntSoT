@@ -36,6 +36,41 @@ async function fixture(t) {
   return { root, rawDirectory, databasePath, prNumber: 900, database };
 }
 test(
+  "SQLite engine paths beyond the Windows legacy limit retain logical names and independent database readability",
+  engine,
+  async (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "sqlite-long-path-"));
+    t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+    const rawDirectory =
+      "artifacts/sounding-line/product-experience-capture-staging/capture-" + "a".repeat(120) + "/raw";
+    await createRawOutputDirectory({ root, directory: rawDirectory });
+    const databasePath = path.join(root, rawDirectory, "runtime.db"),
+      database = new sqlite.DatabaseSync(path.toNamespacedPath(databasePath));
+    database.exec("CREATE TABLE fixture(value TEXT); INSERT INTO fixture VALUES ('long path original');");
+    database.close();
+    fs.chmodSync(databasePath, 0o600);
+    const result = await captureSqliteRuntimeSnapshot({ root, rawDirectory, databasePath, prNumber: 900 });
+    assert(result.path.length > 260);
+    assert(!result.path.startsWith("\\\\?\\"));
+    const restored = path.join(root, "short-restored.db");
+    fs.writeFileSync(restored, fs.readFileSync(result.path));
+    assert.equal(
+      execFileSync(
+        "python",
+        [
+          "-c",
+          "import sqlite3,sys;c=sqlite3.connect(sys.argv[1]);print(c.execute('select value from fixture').fetchone()[0]);c.close()",
+          restored,
+        ],
+        { encoding: "utf8", windowsHide: true, timeout: 10000 },
+      ).trim(),
+      "long path original",
+    );
+    assert.equal(result.cleanup.status, "PASS");
+    assert.equal(result.reuseAuthorized, false);
+  },
+);
+test(
   "engine snapshot includes committed WAL data but excludes a pending transaction, independently readable by Python",
   engine,
   async (t) => {
