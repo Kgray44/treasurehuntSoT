@@ -3,6 +3,147 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "contracts": [
     {
+      "id": "harborlight.sc07.creator-community.experience",
+      "name": "Saved Creator work to moderated Community reuse",
+      "authority": "one-voyage",
+      "owners": ["harborlight", "project-homeport"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator sharing saved work, an independent moderator, and a second Creator reusing it",
+        "objective": "Share an eligible saved Chronicle, Chapter template, or Passage preset through exact package review, then let another Creator install the approved release into private Studio work",
+        "visibleOutcome": "The owner sees the exact saved source, license, credits, included content and submission state; the moderator inspects that pinned package; the second Creator sees safe public metadata and installs a private, credited copy of the approved release",
+        "integrationOwner": "Harborlight SC-07 Creator Community integration",
+        "systems": ["harborlight", "project-homeport", "one-voyage"],
+        "sourcePaths": [
+          "src/components/community/CreatorPublicationConsole.tsx",
+          "src/components/community/StudioExchangeConsole.tsx",
+          "src/components/community/CreatorCommunityInstall.tsx",
+          "src/components/community/CreatorInstalledCommunityLibrary.tsx",
+          "src/components/community/CreatorPublicationReviewPanel.tsx",
+          "src/app/studio/exchange/page.tsx",
+          "src/app/community/[slug]/page.tsx",
+          "src/app/admin/community/[listingId]/page.tsx"
+        ],
+        "projectionPaths": [
+          "src/community/creator-reusable-publication.ts",
+          "src/community/creator-reusable-installation.ts",
+          "src/community/creator-installed-library.ts",
+          "src/community/creator-chronicle-publication.ts",
+          "src/community/creator-chronicle-installation.ts",
+          "src/community/homeport.ts"
+        ],
+        "entryPoint": "/studio/exchange",
+        "states": [
+          "SOURCE_SELECTED",
+          "PACKAGE_REVIEWED",
+          "MODERATION_PENDING",
+          "PUBLIC_APPROVED",
+          "INSTALL_REVIEWED",
+          "PRIVATE_COPY_OPENED",
+          "INELIGIBLE_SOURCE"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR", "MODERATOR"],
+        "accessibility": "Labeled controls, keyboard operable package disclosure, visible errors and status messages, and readable narrow layouts support every review and install step.",
+        "fallback": "An ineligible or stale source stays private and yields a specific correction; a signed-out visitor receives a Creator sign-in return link; a failed installation leaves the approved public release intact.",
+        "navigation": "Creator Studio opens Exchange; the submitted listing becomes discoverable only after independent moderation; public detail opens an install review; the installed private item returns to the Exchange's owner-only installed panel with a link to open a Chronicle for insertion. Moderator detail preserves the separate spatial review path.",
+        "designTarget": "Keep the saved source and exact package visible before submission. Present safe public metadata and release rights before install, then show the pinned private item, license and credit in Studio after success. Preserve Community Harbor and Admiralty visual hierarchy and make long package content scroll within its panel.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted entry establishes readable destinations and account continuity.",
+            "preserve": "Readable hierarchy and clear account context."
+          }
+        ],
+        "browserTests": ["tests/e2e/sc07-creator-community.spec.ts"],
+        "recordingRequired": true,
+        "limitations": [
+          "The isolated browser fixture uses synthetic saved content and accounts. Chronicle Drydock certification and SC-07A spatial publication are independently owned; media-bearing and future unsupported types remain gated."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/studio/exchange",
+            "witness": { "role": "heading", "name": "Open the Exchange", "text": "Open the Exchange" }
+          },
+          "MODERATOR": {
+            "entryPoint": "/admin/community",
+            "witness": {
+              "role": "heading",
+              "name": "Review exact Creator release",
+              "text": "Review exact Creator release"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The owned saved version, moderated release and private installed copy retain the same pinned package checksum and Creator credit across Studio, Admiralty and public Community Harbor.",
+          "checks": [{ "id": "pinned-source-and-credit", "role": "main", "name": "", "text": "Credits" }]
+        },
+        "journeys": [
+          {
+            "id": "creator-submit-exact-saved-package",
+            "roles": ["CREATOR"],
+            "outcome": "The owner reviews the exact saved package and submits it for independent moderation without making it public immediately",
+            "steps": [
+              { "action": "click", "role": "button", "name": "Review exact package" },
+              { "action": "click", "role": "summary", "name": "Inspect every included field" },
+              { "action": "click", "role": "button", "name": "Submit for moderation" },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Submitted for independent moderation",
+                "path": "/studio/exchange",
+                "kind": "outcome",
+                "meaning": "The saved package is pending independent approval and remains absent from public discovery.",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "moderator-approve-exact-creator-release",
+            "roles": ["MODERATOR"],
+            "outcome": "A distinct moderator inspects the exact package, license and credits before publishing the pinned release",
+            "steps": [
+              { "action": "click", "role": "summary", "name": "Inspect every included field" },
+              { "action": "click", "role": "button", "name": "Approve and publish release" },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "",
+                "text": "Release approved",
+                "path": "/admin/community",
+                "kind": "outcome",
+                "meaning": "The independently moderated package is now publicly discoverable.",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "second-creator-install-private-copy",
+            "roles": ["CREATOR"],
+            "outcome": "A second Creator installs the exact approved release and reaches a private, credited Studio copy",
+            "steps": [
+              { "action": "click", "role": "button", "name": "Install to my reusable Library" },
+              { "action": "click", "role": "link", "name": "View my installed item" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Installed from Community",
+                "text": "Installed from Community",
+                "path": "/studio/exchange",
+                "kind": "outcome",
+                "meaning": "The second Creator sees the private installed item with pinned release, license and creator credit in Studio.",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "spatial-pilot.experience",
       "name": "Synthetic Spatial Chronicle publication, multi-device adventure and gated owner trials",
       "authority": "one-voyage",

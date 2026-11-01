@@ -6,6 +6,7 @@ import { CommunityCommentThread } from "@/components/community/CommunityCommentT
 import { CommunityReviewList } from "@/components/community/CommunityReviewList";
 import { CommunitySocialControls } from "@/components/community/CommunitySocialControls";
 import { SpatialCommunityInstall } from "@/components/community/SpatialCommunityInstall";
+import { CreatorCommunityInstall } from "@/components/community/CreatorCommunityInstall";
 import type { CommunityDistrictId } from "@/community/districts";
 import { getHomeportListingDetail } from "@/community/homeport";
 import { harborSharingMetadata } from "@/community/sharing-metadata";
@@ -101,21 +102,32 @@ export default async function CommunityListingPage({ params }: Props) {
               <p>{detail.warnings.join(", ")}</p>
             </section>
           ) : null}
-          {!detail.card.itemType.startsWith("SPATIAL_") && (
-            <section className="community-detail__action" aria-labelledby="community-use-title">
-              <p className="community-eyebrow">Next action</p>
-              <h3 id="community-use-title">{detail.useAction.label}</h3>
-              <p>{detail.useAction.detail}</p>
-              {detail.useAction.kind === "LINK" ? (
-                <Link className="community-button community-button--primary" href={detail.useAction.href}>
-                  {detail.useAction.label}
-                </Link>
-              ) : (
-                <span className="community-availability">Not currently supported from public Community Harbor</span>
-              )}
-            </section>
-          )}
+          {!detail.card.itemType.startsWith("SPATIAL_") &&
+            (detail.useAction.kind === "LINK" || !detail.creatorInstallEligible) && (
+              <section className="community-detail__action" aria-labelledby="community-use-title">
+                <p className="community-eyebrow">Next action</p>
+                <h3 id="community-use-title">{detail.useAction.label}</h3>
+                <p>{detail.useAction.detail}</p>
+                {detail.useAction.kind === "LINK" ? (
+                  <Link className="community-button community-button--primary" href={detail.useAction.href}>
+                    {detail.useAction.label}
+                  </Link>
+                ) : (
+                  <span className="community-availability">Not currently supported from public Community Harbor</span>
+                )}
+              </section>
+            )}
           {detail.card.itemType.startsWith("SPATIAL_") && <SpatialCommunityInstall listingId={detail.card.id} />}
+          {detail.creatorInstallEligible &&
+            (detail.card.itemType === "CHRONICLE" ||
+              detail.card.itemType === "CHRONICLE_TEMPLATE" ||
+              detail.card.itemType === "STORY_BLOCK_PRESET") && (
+              <CreatorCommunityInstall
+                listingId={detail.card.id}
+                itemType={detail.card.itemType}
+                returnTo={detail.card.destination}
+              />
+            )}
           <CommunitySocialControls
             creatorProfileId={detail.card.creator.id}
             subjectType="LISTING"
@@ -123,10 +135,12 @@ export default async function CommunityListingPage({ params }: Props) {
           />
         </div>
       </article>
-      <section className="community-detail-reviews" aria-labelledby="community-reviews-title">
-        <h2 id="community-reviews-title">Community reviews</h2>
-        <CommunityReviewList listingId={detail.card.id} spatial={detail.card.itemType.startsWith("SPATIAL_")} />
-      </section>
+      {detail.card.itemType !== "CHRONICLE_TEMPLATE" && detail.card.itemType !== "STORY_BLOCK_PRESET" && (
+        <section className="community-detail-reviews" aria-labelledby="community-reviews-title">
+          <h2 id="community-reviews-title">Community reviews</h2>
+          <CommunityReviewList listingId={detail.card.id} spatial={detail.card.itemType.startsWith("SPATIAL_")} />
+        </section>
+      )}
       <CommunityCommentThread subjectType="LISTING" subjectId={detail.card.id} returnTo={detail.card.destination} />
       <p className="community-detail-return">
         <Link href={districtRoute}>Return to {districtLabel(detail.card.variant)}</Link>
