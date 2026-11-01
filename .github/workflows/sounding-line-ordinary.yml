@@ -384,6 +384,7 @@ jobs:
         id: route
         working-directory: authority
         env:
+          GH_TOKEN: ${{ github.token }}
           BASE_SHA: ${{ steps.source.outputs.base }}
           CANDIDATE_SHA: ${{ steps.source.outputs.candidate }}
         run: |

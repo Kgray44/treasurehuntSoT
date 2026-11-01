@@ -1,0 +1,322 @@
+{
+  "id": "homeport.owner-correction.round1.workspaces",
+  "name": "Project Homeport Owner Correction Round1 Workspaces",
+  "authority": "project-homeport",
+  "owners": [
+    "project-homeport"
+  ],
+  "critical": true,
+  "experience": {
+    "persona": "One canonical account using its existing Creator, Captain and Player capabilities.",
+    "objective": "Preserve private Chronicle ownership, capability-scoped workspace entry, existing authoring and live-Voyage boundaries through the expanded shared content models.",
+    "visibleOutcome": "The same owner reaches Creator, previews an unsaved creation form, returns to the library, then opens Captain and Player through All Workspaces without granting access to another owner private content.",
+    "integrationOwner": "Existing Parallax integration owner #776; Homeport, Chronicle, Landfall and One Voyage retain their separate workspace, publication and live-session authorities.",
+    "accessibility": "Use the actual account disclosure, semantic workspace cards, labelled creation fields and pressed-state tabs on desktop and phone in both motion modes.",
+    "fallback": "Preserve actual sign-in redirects, permission-required states, private-resource 404, empty libraries and active-Chronicle transition locks.",
+    "navigation": "All Workspaces → Creator Library → Create Chronicle → Back to Studio → All Workspaces → Captain → Player → All Workspaces.",
+    "designTarget": "Preserve the current three workspace task compositions and the accepted shared Homeport identity and navigation hierarchy.",
+    "entryPoint": "/account/roles",
+    "systems": [
+      "project-homeport",
+      "one-voyage",
+      "project-landfall"
+    ],
+    "sourcePaths": [
+      "src/app/captain/library/page.tsx",
+      "src/app/captain/sessions/[sessionId]/page.tsx",
+      "src/app/captain/tales/[taleId]/page.tsx",
+      "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+      "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+      "src/app/chronicles/[taleSlug]/compare/page.tsx",
+      "src/app/chronicles/[taleSlug]/page.tsx",
+      "src/app/page.tsx",
+      "src/app/play/[taleSlug]/history/page.tsx",
+      "src/app/play/[taleSlug]/page.tsx",
+      "src/app/player/invitation/page.tsx",
+      "src/app/player/landfall-return/page.tsx",
+      "src/app/player/playthroughs/[playthroughId]/page.tsx",
+      "src/app/studio/library/page.tsx",
+      "src/app/studio/private-content/page.tsx",
+      "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+      "src/app/studio/tales/[taleId]/assets/page.tsx",
+      "src/app/studio/tales/[taleId]/landfall/page.tsx",
+      "src/app/studio/tales/[taleId]/locations/page.tsx",
+      "src/app/studio/tales/[taleId]/page.tsx",
+      "src/app/studio/tales/[taleId]/settings/page.tsx",
+      "src/app/studio/tales/[taleId]/trials/page.tsx",
+      "src/app/studio/tales/[taleId]/versions/page.tsx",
+      "src/app/studio/tales/new/page.tsx",
+      "src/app/tale/[campaignSlug]/page.tsx",
+      "src/app/tales/page.tsx",
+      "src/components/captain/CaptainCommandConsole.tsx",
+      "src/components/captain/CaptainDashboard.tsx",
+      "src/components/captain/CaptainMusterRoom.tsx",
+      "src/components/captain/CaptainOperationalPanel.tsx",
+      "src/components/captain/CaptainSessionControl.tsx",
+      "src/components/gm/Quartermaster.tsx",
+      "src/components/homeport/WorkspaceCapabilityDashboard.tsx",
+      "src/components/landing/HarborLanding.tsx",
+      "src/components/muster/CrewChat.tsx",
+      "src/components/muster/MusterRoom.tsx",
+      "src/components/platform/CaptainLibrary.tsx",
+      "src/components/platform/InvitationCeremony.tsx",
+      "src/components/platform/PlayerSafePreview.tsx",
+      "src/components/platform/PlayerVoyageRoom.tsx",
+      "src/components/platform/StaffSignIn.tsx",
+      "src/components/player/AccessGate.tsx",
+      "src/components/player/PlayerExperience.tsx",
+      "src/components/studio/DrydockCompatibilityPanel.tsx",
+      "src/components/studio/DrydockLaunchGate.tsx",
+      "src/components/studio/DrydockScenarioLab.tsx",
+      "src/components/studio/LandfallContextEditor.tsx",
+      "src/components/studio/LandfallFieldTestPanel.tsx",
+      "src/components/studio/LandfallInstallationPanel.tsx",
+      "src/components/studio/LandfallOnlinePlacePanel.tsx",
+      "src/components/studio/LandfallWorkspace.tsx",
+      "src/components/studio/NewTaleForm.tsx",
+      "src/components/studio/PrivateContentConsole.tsx",
+      "src/components/studio/ShipwrightPublishingReview.tsx",
+      "src/components/studio/StudioHome.tsx",
+      "src/components/studio/StudioValidationPanel.tsx",
+      "src/components/studio/TaleEditor.tsx",
+      "src/components/studio/TaleEditorSection.tsx",
+      "src/components/studio/inspector/ContractAwareInspector.tsx",
+      "src/components/tales/PublishedBlockView.tsx",
+      "src/components/tales/TaleCatalog.tsx",
+      "src/components/tales/TaleStart.tsx",
+      "src/components/tideglass/TideglassPassage.tsx",
+      "src/styles/studio.css"
+    ],
+    "projectionPaths": [
+      "src/chronicle/types.ts",
+      "src/chronicle/journal-contract.ts",
+      "src/homeport/workspace-capabilities.ts",
+      "src/chronicle/studio-service.ts"
+    ],
+    "states": [
+      "WORKSPACES_READY",
+      "CREATOR_READABLE",
+      "CREATION_FORM_READABLE",
+      "CREATOR_RETURNED",
+      "CAPTAIN_READABLE",
+      "PLAYER_READABLE",
+      "WORKSPACES_RETURNED"
+    ],
+    "devices": [
+      "DESKTOP",
+      "MOBILE"
+    ],
+    "roles": [
+      "CREATOR"
+    ],
+    "fixtureProfile": "generic",
+    "roleSetup": {
+      "CREATOR": {
+        "entryPoint": "/sign-in?returnTo=%2Faccount%2Froles",
+        "steps": [
+          {
+            "action": "fill",
+            "role": "textbox",
+            "name": "Email or Player name",
+            "value": "parallax-review-workspace-creator@example.test"
+          },
+          {
+            "action": "fill",
+            "role": "textbox",
+            "name": "Password",
+            "value": "Synthetic-Parallax-Review-2026!"
+          },
+          {
+            "action": "click",
+            "role": "button",
+            "name": "Sign in"
+          }
+        ],
+        "witness": {
+          "role": "heading",
+          "name": "All Workspaces",
+          "text": "All Workspaces"
+        }
+      }
+    },
+    "references": [
+      {
+        "family": "Gateway / public entry",
+        "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+        "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+        "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+        "reason": "Accepted shared Homeport identity and workspace-entry frame only; no standalone task-body acceptance is asserted.",
+        "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+      },
+      {
+        "family": "Gateway / public entry",
+        "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+        "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+        "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+        "reason": "Accepted shared Homeport identity and workspace-entry frame only; no standalone task-body acceptance is asserted.",
+        "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+      }
+    ],
+    "journeys": [
+      {
+        "id": "canonical-three-workspace-and-creation-return",
+        "roles": [
+          "CREATOR"
+        ],
+        "outcome": "One canonical account returns across the existing three workspaces without persisting its unsaved form or acquiring another owner private Chronicle.",
+        "steps": [
+          {
+            "action": "assert",
+            "role": "heading",
+            "name": "All Workspaces",
+            "state": "WORKSPACES_READY"
+          },
+          {
+            "action": "click",
+            "role": "link",
+            "name": "Enter Creator"
+          },
+          {
+            "action": "assert",
+            "kind": "outcome",
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "path": "/studio/library",
+            "meaning": "A real canonical capability opens the existing owner-scoped Creator library.",
+            "state": "CREATOR_READABLE",
+            "text": "Voyagewright Studio"
+          },
+          {
+            "action": "click",
+            "role": "link",
+            "name": "Create Chronicle"
+          },
+          {
+            "action": "fill",
+            "role": "textbox",
+            "name": "Title",
+            "value": "Unsaved compatibility draft"
+          },
+          {
+            "action": "assert",
+            "kind": "outcome",
+            "role": "heading",
+            "name": "Create Chronicle",
+            "path": "/studio/tales/new",
+            "meaning": "The unchanged Chronicle creation task still accepts a local draft without creating or publishing a record.",
+            "state": "CREATION_FORM_READABLE",
+            "text": "Create Chronicle"
+          },
+          {
+            "action": "click",
+            "role": "link",
+            "name": "← Back to Studio"
+          },
+          {
+            "action": "assert",
+            "role": "heading",
+            "name": "Voyagewright Studio",
+            "path": "/studio/library",
+            "state": "CREATOR_RETURNED"
+          },
+          {
+            "action": "click",
+            "role": "button",
+            "name": "Synthetic Parallax Workspace Creator"
+          },
+          {
+            "action": "click",
+            "role": "link",
+            "name": "All Workspaces"
+          },
+          {
+            "action": "click",
+            "role": "link",
+            "name": "Enter Captain"
+          },
+          {
+            "action": "assert",
+            "kind": "outcome",
+            "role": "heading",
+            "name": "Captain's Console",
+            "path": "/captain/library",
+            "meaning": "The existing Captain capability opens the live-Voyage workspace without turning a private draft into a published Chronicle.",
+            "state": "CAPTAIN_READABLE",
+            "text": "Captain's Console"
+          },
+          {
+            "action": "click",
+            "role": "button",
+            "name": "Published Chronicles"
+          },
+          {
+            "action": "click",
+            "role": "button",
+            "name": "Synthetic Parallax Workspace Creator"
+          },
+          {
+            "action": "click",
+            "role": "link",
+            "name": "All Workspaces"
+          },
+          {
+            "action": "click",
+            "role": "link",
+            "name": "Enter Player"
+          },
+          {
+            "action": "assert",
+            "kind": "outcome",
+            "role": "heading",
+            "name": "My Chronicle Library",
+            "path": "/player/library",
+            "meaning": "The same session enters its Player library while preserving owner identity and independent capability boundaries.",
+            "state": "PLAYER_READABLE",
+            "text": "My Chronicle Library"
+          },
+          {
+            "action": "click",
+            "role": "button",
+            "name": "Synthetic Parallax Workspace Creator"
+          },
+          {
+            "action": "click",
+            "role": "link",
+            "name": "All Workspaces"
+          },
+          {
+            "action": "assert",
+            "role": "heading",
+            "name": "All Workspaces",
+            "path": "/account/roles",
+            "returnPath": true,
+            "state": "WORKSPACES_RETURNED"
+          }
+        ]
+      }
+    ],
+    "browserTests": [
+      "tests/e2e/parallax-workspace-compatibility.spec.ts",
+      "tests/e2e/chronicle-studio.spec.ts",
+      "tests/e2e/chronicle-platform.spec.ts"
+    ],
+    "limitations": [
+      "Representative cross-workspace compatibility only. Existing extended Chronicle authoring, publishing, Captain control, invitation, Player play, Landfall and active-session safety obligations retain their own test and owner authority.",
+      "The creation form is deliberately left unsaved; no Chronicle publication, Crew creation, live session, external inference or physical acceptance is implied.",
+      "Legacy wrappers in the source set retain their current canonical route/dependency adapters; their presence is not a claim of a second implementation or a newly accepted legacy UI.",
+      "Accepted visual references cover the shared entry/navigation frame only; every newly captured task body still requires independent review.",
+      "Browser cases retain these separate domain assertions: The named signed-in actor remains the same canonical account and retains its capability boundary. Private source content remains excluded from another actor and the anonymous public projection. The advertised task return reaches its real parent destination without creating a replacement owner or publishing a private draft."
+    ],
+    "continuity": {
+      "objective": "Observe the same visible synthetic account identity at entry, task outcomes and return. Separate browser cases verify canonical IDs, capabilities and domain privacy; this aria-label alone does not prove them.",
+      "checks": [
+        {
+          "id": "visible-account-identity",
+          "role": "button",
+          "name": "Synthetic Parallax Workspace Creator",
+          "attribute": "aria-label"
+        }
+      ]
+    }
+  }
+}
