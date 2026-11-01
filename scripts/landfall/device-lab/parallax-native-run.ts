@@ -59,6 +59,9 @@ async function main() {
   let androidPageAttachmentSettled = true;
   let androidPage: Page | undefined;
   let androidTeardown = false;
+  let lastAndroidWindowFocus: string | null = null;
+  const androidReleaseRecovery: string[] = [];
+  const androidReleaseFailures: { operation: string; reason: string }[] = [];
   const adb = (args: string[], timeout = 30000) =>
     labTool(
       host.android.adb!,
@@ -430,12 +433,28 @@ async function main() {
       const observe = async (control: "SCENE" | "INSPECT", timeout = 20000) => {
         observedControl = control;
         const until = Date.now() + timeout;
+        let priorBounds: string | null = null;
         while (Date.now() < until) {
           const xml = await hierarchy();
           if (Date.now() >= until) throw new Error("PARALLAX_ANDROID_CONTROL_DEADLINE_EXCEEDED");
           try {
-            return nativeLensControl(xml, control);
+            const target = nativeLensControl(xml, control);
+            const bounds = JSON.stringify(target.bounds);
+            if (bounds !== priorBounds) {
+              priorBounds = bounds;
+              continue;
+            }
+            const windowState = await adb(["shell", "dumpsys", "window"], 10000);
+            lastAndroidWindowFocus =
+              windowState
+                .split(/\r?\n/)
+                .find((line) => line.includes("mCurrentFocus="))
+                ?.trim()
+                .slice(0, 256) ?? null;
+            if (lastAndroidWindowFocus?.includes("com.voyagewright.landfall")) return target;
+            priorBounds = null;
           } catch (error) {
+            priorBounds = null;
             if (Date.now() >= until) throw error;
           }
         }
@@ -683,6 +702,7 @@ async function main() {
                 sha256: createHash("sha256").update(hierarchyBytes).digest("hex"),
               }
             : null,
+          androidWindowFocus: android ? lastAndroidWindowFocus : null,
           physicalTrackingProven: false,
         },
         null,
@@ -773,23 +793,53 @@ async function main() {
       (async () => {
         if (!androidSerial) return;
         await connectionCleanup.catch(() => undefined);
-        const released = await Promise.allSettled([
-          (async () => {
-            await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
-            assert.ok((await adb(["shell", "pm", "clear", "com.voyagewright.landfall"])).includes("Success"));
-          })(),
-          adb(["shell", "rm", "-f", "/sdcard/ncl01-owned-lens.xml"]),
-          (async () => {
-            if (!androidReverse) return;
-            await adb(["reverse", "--remove", androidReverse]);
-            assert.ok(
-              !(await adb(["reverse", "--list"]))
-                .split(/\r?\n/)
-                .some((line) => line.split(/\s+/).includes(androidReverse!)),
-            );
-          })(),
-        ]);
-        androidReleased = released.every((operation) => operation.status === "fulfilled");
+        // ADB cleanup on the same emulator is serialized. Each idempotent step
+        // gets one bounded retry, with both recovery and final failure retained.
+        const releaseSteps: { name: string; run: () => Promise<void> }[] = [
+          {
+            name: "force-stop-and-clear",
+            run: async () => {
+              await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
+              assert.ok((await adb(["shell", "pm", "clear", "com.voyagewright.landfall"])).includes("Success"));
+            },
+          },
+          {
+            name: "remove-owned-hierarchy",
+            run: async () => {
+              await adb(["shell", "rm", "-f", "/sdcard/ncl01-owned-lens.xml"]);
+            },
+          },
+          {
+            name: "remove-owned-reverse",
+            run: async () => {
+              if (!androidReverse) return;
+              await adb(["reverse", "--remove", androidReverse]).catch(() => undefined);
+              assert.ok(
+                !(await adb(["reverse", "--list"]))
+                  .split(/\r?\n/)
+                  .some((line) => line.split(/\s+/).includes(androidReverse!)),
+              );
+            },
+          },
+        ];
+        for (const step of releaseSteps) {
+          try {
+            await step.run();
+            continue;
+          } catch {
+            /* One bounded retry follows this retained recovery path. */
+          }
+          try {
+            await step.run();
+            androidReleaseRecovery.push(step.name);
+          } catch (error) {
+            androidReleaseFailures.push({
+              operation: step.name,
+              reason: error instanceof Error ? error.message.slice(0, 180) : "UNKNOWN",
+            });
+          }
+        }
+        androidReleased = androidReleaseFailures.length === 0;
         assert.ok(androidReleased, "PARALLAX_ANDROID_LAB_CLEANUP_FAILED");
       })(),
       connectionCleanup,
@@ -812,6 +862,8 @@ async function main() {
           ownedSimulatorDeleted: simulatorRemoved,
           ownedAndroidReleased: androidReleased,
           ownedAndroidConnectionsClosed: androidConnectionsClosed,
+          androidReleaseRecovery,
+          androidReleaseFailures,
           failedCleanupOperations: outcomes.flatMap((outcome, index) => (outcome.status === "rejected" ? [index] : [])),
         },
         null,
