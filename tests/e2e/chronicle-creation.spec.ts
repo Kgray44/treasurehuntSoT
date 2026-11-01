@@ -245,7 +245,7 @@ test("Chronicle metadata conflict preserves edits and supports cancel or latest-
 });
 
 // @sounding-line-registration owner=one-voyage suite=browser.studio contracts=chronicle.creation browserProject=chromium sourceProject=chromium
-test("Chronicle details survive a failed save and recover through the visible retry", async ({ page }) => {
+test("Chronicle details survive a failed save and recover with keyboard retry", async ({ page }) => {
   await signIn(page);
   const taleId = await createManual(page);
   await page.getByRole("button", { name: "Chronicle Details", exact: true }).click();
@@ -262,8 +262,10 @@ test("Chronicle details survive a failed save and recover through the visible re
   await expect(page.locator(".save-state")).toContainText("Save failed");
   await expect(page.getByLabel("Title", { exact: true })).toHaveValue("Recovered SC-00A draft");
   expect((await browserJson(page, `/api/studio/tales/${taleId}`)).tale.title).toBe("Untitled Chronicle");
+  const retry = page.getByRole("button", { name: "Retry save", exact: true });
+  await expect(retry).toBeVisible();
   await page.unroute(`**/api/studio/tales/${taleId}/draft`);
-  await page.getByRole("button", { name: "Retry save", exact: true }).click();
+  await retry.press("Enter");
   await expect(page.locator(".save-state")).toContainText("Saved at");
   await page.reload();
   await expect(page.getByRole("heading", { name: "Recovered SC-00A draft", exact: true })).toBeVisible();
