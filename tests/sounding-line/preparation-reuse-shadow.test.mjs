@@ -1,10 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { digest } from "../../scripts/sounding-line/evidence.mjs";
 import {
   createPreparationShadowRecord,
   comparePreparationReuseShadow,
   PREPARATION_FINGERPRINT_FIELDS,
+  PREPARATION_LAYER_IDENTITIES,
 } from "../../scripts/sounding-line/preparation-reuse-shadow.mjs";
 
 function input() {
@@ -12,6 +14,8 @@ function input() {
     prNumber: 900,
     producer: { runId: 123, attempt: 1 },
     source: { baseSha: "a".repeat(40), candidateSha: "b".repeat(40), treeSha: "c".repeat(40) },
+    layer: "dependency",
+    layerIdentities: Object.fromEntries(PREPARATION_LAYER_IDENTITIES.dependency.map((name) => [name, digest(name)])),
     fingerprints: Object.fromEntries(PREPARATION_FINGERPRINT_FIELDS.map((name) => [name, digest(name)])),
     outputs: { inventoryDigest: digest("inventory"), contentDigest: digest("content"), fileCount: 5, byteLength: 100 },
   };
@@ -58,7 +62,7 @@ test("different source identities and nondeterministic output bytes cannot be no
     assert.deepEqual(result.inputDifferences, [`source.${name}`]);
   }
   const next = input();
-  next.outputs.contentDigest = digest("different BUILD_ID or compiled bytes");
+  next.outputs.contentDigest = digest("nondeterministic generated metadata");
   const result = comparePreparationReuseShadow({ original, fresh: createPreparationShadowRecord(next) });
   assert.equal(result.disposition, "MATCHING_INPUTS_DISTINCT_OUTPUTS");
   assert.deepEqual(result.outputDifferences, ["contentDigest"]);
@@ -84,6 +88,40 @@ test("serialized context claims and caller authorization flags cannot mint a pre
     () => comparePreparationReuseShadow({ original: { ...original, reuseAuthorized: true }, fresh: original }),
     /RECORD_INTEGRITY/u,
   );
+});
+
+test("declared immutable layers match policy and every run-owned shared exclusion is rejected", () => {
+  const policy = JSON.parse(readFileSync(new URL("../../testing/prepared-artifacts.json", import.meta.url), "utf8"));
+  assert.deepEqual(
+    Object.fromEntries(policy.layers.map((layer) => [layer.id, layer.identityFamilies])),
+    PREPARATION_LAYER_IDENTITIES,
+  );
+  assert(policy.runOwnedExclusions.includes("build-output"));
+  for (const layer of policy.runOwnedExclusions)
+    assert.throws(() => createPreparationShadowRecord({ ...input(), layer }), /SHARED_LAYER_EXCLUDED/u);
+  for (const [layer, families] of Object.entries(PREPARATION_LAYER_IDENTITIES)) {
+    const record = createPreparationShadowRecord({
+      ...input(),
+      layer,
+      layerIdentities: Object.fromEntries(families.map((name) => [name, digest(name)])),
+    });
+    assert.equal(record.layer, layer);
+    assert.equal(comparePreparationReuseShadow({ original: record, fresh: record }).action, "RUN_FRESH_PREPARATION");
+  }
+});
+
+test("each policy-required identity family independently changes the preparation comparison", () => {
+  const original = createPreparationShadowRecord(input());
+  for (const name of PREPARATION_LAYER_IDENTITIES.dependency) {
+    const next = input();
+    next.layerIdentities[name] = digest(`changed:${name}`);
+    const result = comparePreparationReuseShadow({ original, fresh: createPreparationShadowRecord(next) });
+    assert.deepEqual(result.inputDifferences, [`layerIdentities.${name}`]);
+    assert.equal(result.action, "RUN_FRESH_PREPARATION");
+  }
+  const next = input();
+  delete next.layerIdentities.lockfile;
+  assert.throws(() => createPreparationShadowRecord(next), /LAYER_IDENTITIES/u);
 });
 
 test("incomplete, corrupted, oversized, cross-PR and held-owner metadata fail closed", () => {

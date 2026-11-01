@@ -323,3 +323,50 @@ test("missing or changed initial/terminal receipts invalidate otherwise identica
       assert(fs.readFileSync(result.rawPath).equals(bytes));
     }
 });
+
+test("generated 2 GiB and 4 GiB archive declarations are explicitly rejected before reader acquisition", async (t) => {
+  const { directory } = fixture(t);
+  for (const boundary of [2 * 1024 ** 3, 4 * 1024 ** 3])
+    for (const offset of [-1, 0, 1]) {
+      const expectedBytes = boundary + offset;
+      let remaining = expectedBytes,
+        generated = 0,
+        acquired = 0,
+        cancelled = false;
+      const body = new ReadableStream({
+        pull(controller) {
+          const size = Math.min(65536, remaining);
+          remaining -= size;
+          generated += size;
+          controller.enqueue(new Uint8Array(size));
+        },
+        cancel() {
+          cancelled = true;
+        },
+      });
+      try {
+        await assert.rejects(
+          retainMediaTransportShadow({
+            directory,
+            expectedBytes,
+            expectedSha256: "a".repeat(64),
+            response: {
+              body: {
+                getReader() {
+                  acquired++;
+                  return body.getReader();
+                },
+              },
+            },
+          }),
+          /MEDIA_SHADOW_SIZE/u,
+        );
+        assert.equal(acquired, 0);
+        assert(generated <= 65536);
+        assert.deepEqual(fs.readdirSync(directory), []);
+      } finally {
+        await body.cancel();
+      }
+      assert.equal(cancelled, true);
+    }
+});

@@ -16,6 +16,15 @@ export const PREPARATION_FINGERPRINT_FIELDS = Object.freeze([
   "profile",
   "coverage",
 ]);
+// Exact declared identity families from the protected source cut's preparation
+// policy. A matching declaration remains observation data, never a certificate.
+export const PREPARATION_LAYER_IDENTITIES = Object.freeze({
+  dependency: Object.freeze(["package", "lockfile", "node-npm", "os-arch", "install-policy"]),
+  "prisma-client": Object.freeze(["dependency", "prisma", "schema", "generator", "os-arch"]),
+  "browser-chromium": Object.freeze(["playwright", "browser-revision", "os-arch", "browser-policy"]),
+  "browser-webkit": Object.freeze(["playwright", "browser-revision", "os-arch", "browser-policy"]),
+  "sqlite-baseline": Object.freeze(["schema", "migrations", "seed-fixture", "prisma-client", "baseline-policy"]),
+});
 const sha256 = (value) => typeof value === "string" && /^[a-f0-9]{64}$/u.test(value);
 const oid = (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
@@ -31,8 +40,21 @@ const need = (condition, code) => {
 // Metadata for comparing two complete fresh preparations. This function does not
 // measure those preparations, authenticate the supplied fields, package a build,
 // or issue a cache certificate. No secret values or private paths are accepted.
-export function createPreparationShadowRecord({ prNumber, producer, source, fingerprints, outputs }) {
+export function createPreparationShadowRecord({
+  prNumber,
+  producer,
+  source,
+  layer,
+  layerIdentities,
+  fingerprints,
+  outputs,
+}) {
   need(positive(prNumber) && ![721, 776, 805].includes(prNumber), "SCOPE");
+  need(typeof layer === "string" && Object.hasOwn(PREPARATION_LAYER_IDENTITIES, layer), "SHARED_LAYER_EXCLUDED");
+  need(
+    keys(layerIdentities, PREPARATION_LAYER_IDENTITIES[layer]) && Object.values(layerIdentities).every(sha256),
+    "LAYER_IDENTITIES",
+  );
   need(keys(producer, ["runId", "attempt"]) && positive(producer.runId) && positive(producer.attempt), "PRODUCER");
   need(keys(source, ["baseSha", "candidateSha", "treeSha"]) && Object.values(source).every(oid), "SOURCE");
   need(keys(fingerprints, PREPARATION_FINGERPRINT_FIELDS) && Object.values(fingerprints).every(sha256), "FINGERPRINTS");
@@ -53,6 +75,8 @@ export function createPreparationShadowRecord({ prNumber, producer, source, fing
       prNumber,
       producer,
       source,
+      layer,
+      layerIdentities,
       fingerprints,
       outputs,
       qualification: false,
@@ -70,6 +94,8 @@ function checked(record) {
       "prNumber",
       "producer",
       "source",
+      "layer",
+      "layerIdentities",
       "fingerprints",
       "outputs",
       "qualification",
@@ -98,6 +124,9 @@ export function comparePreparationReuseShadow({ original, fresh, nativeOriginalP
     current = checked(fresh);
   need(prior.prNumber === current.prNumber, "CROSS_PR_SCOPE");
   const inputDifferences = [];
+  if (prior.layer !== current.layer) inputDifferences.push("layer");
+  for (const name of new Set([...Object.keys(prior.layerIdentities), ...Object.keys(current.layerIdentities)]))
+    if (prior.layerIdentities[name] !== current.layerIdentities[name]) inputDifferences.push(`layerIdentities.${name}`);
   for (const name of ["baseSha", "candidateSha", "treeSha"])
     if (prior.source[name] !== current.source[name]) inputDifferences.push(`source.${name}`);
   for (const name of PREPARATION_FINGERPRINT_FIELDS)
@@ -121,6 +150,8 @@ export function comparePreparationReuseShadow({ original, fresh, nativeOriginalP
   const requiredCertificates = [
     ...(!originalContextAuthenticated ? ["NATIVE_ORIGINAL_PREPARATION_CONTEXT"] : []),
     "NATIVE_PREPARATION_PAYLOAD_AUTHENTICATION",
+    "INSTALLED_POLICY_SOURCE_DESTINATION_REHASH_REVOCATION_EXPIRY_AND_USAGE",
+    "RUN_OWNED_EXCLUSIONS_AND_PRIVATE_DATA_CLASSIFICATION",
     "IMMUTABLE_PREPARATION_RECEIPT_CUSTODY",
     "EXTERNAL_RUNTIME_AND_INPUT_CLOSURE_ISOLATION",
     "NATIVE_CACHE_EQUIVALENCE_AND_ADVERSARIAL_TESTS",
@@ -130,8 +161,10 @@ export function comparePreparationReuseShadow({ original, fresh, nativeOriginalP
     originalRecordDigest: prior.recordDigest,
     freshRecordDigest: current.recordDigest,
     originalProducer: prior.producer,
+    originalLayer: prior.layer,
     originalSource: prior.source,
     freshProducer: current.producer,
+    freshLayer: current.layer,
     freshSource: current.source,
     disposition: inputDifferences.length
       ? "CHANGED_INPUTS"

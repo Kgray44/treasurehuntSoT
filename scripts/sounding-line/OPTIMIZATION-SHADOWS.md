@@ -42,10 +42,19 @@ proposal. Complete commit/tree metadata and disabled late transport remain
 mandatory. Mathematical closure over caller-supplied data is not a completeness
 certificate for actual filesystem readers.
 
-Preparation comparison covers source identities and 13 fingerprints: source
+Preparation comparison explicitly names the policy's immutable dependency,
+Prisma-client, Chromium, WebKit or SQLite-baseline layer and every required
+identity family for that layer. All run-owned shared exclusions, including
+build output, workspace, mutable database, browser context/profile and ports,
+are rejected. Existing build reuse within an authorized source-bound owned
+runtime remains separate; no shared-build permission is introduced.
+The policy's existing `candidate-pending-protected-mainline-acceptance` status is
+unchanged; these records do not activate that policy or any cache.
+
+The comparison also covers source identities and 13 fingerprints: source
 closure, controller, policy, commands, inputs, dependencies, toolchain, browser,
 environment, fixture, schema, profile and coverage. Output inventory/content
-identities, file counts and byte counts remain separate. Different build bytes,
+identities, file counts and byte counts remain separate. Different prepared bytes,
 including nondeterministic output, are reported rather than normalized away.
 Original and fresh run/candidate identities remain distinct. An opaque original
 native-context proof can corroborate that context only; it cannot authenticate
@@ -72,6 +81,9 @@ observations; the opaque verifier independently rereads the raw file and exact
 initial/terminal bytes. A changed or missing receipt invalidates that local
 handle even if the payload bytes still match. A serialized copy is not a handle.
 These checks do not authenticate a provider or prove external runtime isolation.
+Generated archive declarations around the 2 GiB and 4 GiB boundaries are explicitly
+rejected before reader acquisition by this lane's fixed 256 MiB cap; they are not
+silently truncated or admitted through partial verification.
 
 At source `dbca7289daa9094fe2ffc8b0abf15676349670ba`, a local comparison used the
 unchanged retained artifact `13080399234` from run `41298652051/1`: 3,756,836 bytes,
