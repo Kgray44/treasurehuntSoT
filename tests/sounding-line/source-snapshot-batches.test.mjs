@@ -30,6 +30,7 @@ test("the protected regression script includes every incremental registry and co
     "artifact-registry-archive",
     "artifact-registry-provenance",
     "completed-evidence-v2",
+    "provider-event-binding-shadow",
   ])
     assert.equal(files.filter((file) => file === `tests/sounding-line/${name}.test.mjs`).length, 1, name);
 });
