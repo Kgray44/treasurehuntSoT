@@ -15,6 +15,7 @@ import {
 } from "@/components/admiralty/AdminPrimitives";
 import { ModerationActionPanel } from "@/components/admiralty/ModerationActionPanel";
 import { SpatialPublicationReviewPanel } from "@/components/admiralty/SpatialPublicationReviewPanel";
+import { CreatorPublicationReviewPanel } from "@/components/community/CreatorPublicationReviewPanel";
 
 function stringList(value: string) {
   try {
@@ -34,8 +35,11 @@ export default async function CommunityListingPage({ params }: { params: Promise
   const spatialPending =
     ["SPATIAL_ASSET", "SPATIAL_SCENE", "SPATIAL_ENVIRONMENT"].includes(listing.itemType) &&
     ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
+  const creatorPending =
+    ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType) &&
+    listing.publicationStatus === "READY_FOR_REVIEW";
   const assuranceActive =
-    spatialPending && operator.capabilities.includes("COMMUNITY_MODERATE")
+    (spatialPending || creatorPending) && operator.capabilities.includes("COMMUNITY_MODERATE")
       ? (await privilegedAssuranceState(operator)).recent
       : false;
   return (
@@ -96,6 +100,21 @@ export default async function CommunityListingPage({ params }: { params: Promise
         <Panel title="Spatial publication review" kicker="Exact package, rights and privacy before public release">
           <SpatialPublicationReviewPanel
             listingId={listing.id}
+            csrfToken={operator.csrfToken}
+            enabled={operator.capabilities.includes("COMMUNITY_MODERATE")}
+            assuranceActive={assuranceActive}
+          />
+        </Panel>
+      )}
+      {creatorPending && (
+        <Panel
+          title="Creator publication review"
+          kicker="Exact saved content, rights and spoilers before public release"
+        >
+          <CreatorPublicationReviewPanel
+            listingId={listing.id}
+            slug={listing.slug}
+            itemType={listing.itemType as "CHRONICLE" | "CHRONICLE_TEMPLATE" | "STORY_BLOCK_PRESET"}
             csrfToken={operator.csrfToken}
             enabled={operator.capabilities.includes("COMMUNITY_MODERATE")}
             assuranceActive={assuranceActive}
