@@ -115,13 +115,41 @@ frozen configuration before exercising admission. The production freeze remains
 unchanged, and an unlisted public asset is explicitly rejected. Original failed
 reproductions remain retained alongside the repaired test receipts.
 
-## Remaining integration proof
+## Protected integration and installed-path correction
 
-The startup live audit found strict required app-15368 checks, administrator
-enforcement disabled and no rulesets. Source tests alone do not close A0.
-Record actual protection correction, actor permissions, an effective protected
-transaction, exact candidate/base/run/attempt, hosted before/after timings,
-successful protected integration and landed smoke before completing this record.
+PR [#821](https://github.com/Kgray44/treasurehuntSoT/pull/821) qualified exact
+candidate `083bb327042d472a87d687bbf13d6e005399d114` on base
+`809b6d54025fb66000960f30dc750b44ee056d49` in run `41258855297/1`, required
+Mainline Decision `124715022477`. Administrator enforcement strengthened from
+false to true; every other protection field, strict app-15368 decision, owner
+permission and ruleset state remained unchanged. The frozen source-bound guard
+performed the actual server merge to `cf1e5ad78b3e2b633d4ed691f396a4bab0191217`,
+verified those exact two parents, and observed tree
+`38fe042789fd18983c5f364e604e1b26a0f8d25c` equal to the qualified candidate tree.
+The quick landed smoke passed 13/13 tests in 256.9187 ms. Original provider
+response and sanitized immutable transaction receipts are retained. This is real
+protected integration proof, not product/device acceptance.
+
+The first genuine installed-A #819 run `41262595666/1` checked exact candidate
+`12887b28fab42c18cc5601c1a28165c0fee2d70c` on base `cf1e5ad7`. Custody checkout
+took 145,404.861 ms; verification checkout took 146,858.238 ms, with one hydration
+fetch and 19,244 required blobs (9,157,307,346 bytes), nonshallow. These are partial
+checkout observations, not successful end-to-end acceptance or billed savings.
+
+That run failed CLASSIFICATION with ENOENT before verification commands: the
+supervisor changed cwd to `candidate` but forwarded relative `--workspace
+candidate`, causing the child to resolve `candidate/candidate`. Its supervisor
+terminal receipt (artifact `13066335151`) has SHA-256
+`0de13cf2f6198134c8f717b75fbec1131e9446d5f44dd40339f281a62287169a`; the child
+exited 1 and owned cleanup succeeded. The failed required decision remains failed.
+
+The corrective adapter normalizes the workspace once, then uses that identical
+absolute root for preflight, guardian cwd and child argv. A real-child regression
+reproduces the original nested decision/ENOENT and proves the repaired invocation
+writes its canonical decision in the intended repository. It still rejects a
+forbidden control-plane candidate before executing tools. Existing source binding,
+job-clock debit, timeouts, failure retention and protected merge authority remain
+in force. A fresh prepared corrective PR must qualify and land before #819 retries.
 
 The ordinary ten-minute objective and fifteen-minute governing ceiling remain
 the performance target. A retains the installed job ceilings while debiting setup

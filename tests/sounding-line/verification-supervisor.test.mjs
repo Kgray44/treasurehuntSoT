@@ -1,14 +1,108 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createServer } from "node:net";
 import { superviseVerification } from "../../scripts/sounding-line/verification-supervisor.mjs";
+import { ordinaryVerificationInvocation } from "../../scripts/sounding-line/ordinary-supervised.mjs";
 import { assertTerminated } from "./fixtures/process-state.mjs";
 const runtime = fileURLToPath(new URL("./fixtures/verification-runtime.mjs", import.meta.url));
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+async function candidateWorkspace(t) {
+  const parent = await mkdtemp(path.join(tmpdir(), "verification-workspace-"));
+  assert(parent.startsWith(path.resolve(tmpdir()) + path.sep));
+  t.after(() => rm(parent, { recursive: true, force: true }));
+  const root = path.join(parent, "candidate");
+  await mkdir(path.join(root, "testing"), { recursive: true });
+  await writeFile(path.join(root, "testing/contracts.json"), "{}\n");
+  await writeFile(path.join(root, "package.json"), '{"scripts":{}}\n');
+  const git = (...args) =>
+    execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+  git("init", "-q");
+  git("config", "user.name", "Workspace fixture");
+  git("config", "user.email", "fixture@example.invalid");
+  git("add", ".");
+  git("commit", "-qm", "fixture base");
+  const baseSha = git("rev-parse", "HEAD");
+  await mkdir(path.join(root, "scripts/sounding-line"), { recursive: true });
+  await writeFile(path.join(root, "scripts/sounding-line/cwd-fixture.mjs"), "export const fixture = true;\n");
+  git("add", ".");
+  git("commit", "-qm", "control-plane candidate");
+  return { parent, root, baseSha, candidateSha: git("rev-parse", "HEAD") };
+}
+
+test("supervised ordinary CLI keeps one canonical workspace after the guardian changes cwd", async (t) => {
+  const entry = fileURLToPath(new URL("../../scripts/sounding-line/ordinary.mjs", import.meta.url));
+  const environment = { ...process.env, GITHUB_ACTIONS: "false", SOUNDING_LINE_PR_NUMBER: "0" };
+  const original = await candidateWorkspace(t);
+  const failed = await superviseVerification({
+    root: original.root,
+    command: process.execPath,
+    args: [
+      entry,
+      "--mode",
+      "ordinary",
+      "--workspace",
+      "candidate",
+      "--base",
+      original.baseSha,
+      "--candidate",
+      original.candidateSha,
+    ],
+    environment,
+    identity: { qualification: false },
+    directory: path.join(original.parent, "old-receipts"),
+    executionMs: 30000,
+  });
+  assert.equal(failed.status, "FAIL");
+  const nested = JSON.parse(
+    await readFile(path.join(original.root, "candidate/artifacts/sounding-line/ordinary-decision.json"), "utf8"),
+  );
+  assert.equal(nested.failureObservation.code, "ENOENT");
+  await assert.rejects(readFile(path.join(original.root, "artifacts/sounding-line/ordinary-decision.json")), {
+    code: "ENOENT",
+  });
+
+  const fixed = await candidateWorkspace(t);
+  const invocation = ordinaryVerificationInvocation({
+    workspace: "candidate",
+    workingDirectory: fixed.parent,
+    baseSha: fixed.baseSha,
+    candidateSha: fixed.candidateSha,
+  });
+  assert.equal(invocation.root, fixed.root);
+  const receipt = await superviseVerification({
+    ...invocation,
+    environment,
+    identity: { qualification: false },
+    directory: path.join(fixed.parent, "fixed-receipts"),
+    executionMs: 30000,
+  });
+  // A deliberately forbidden controller edit proves classification ran in the
+  // right repository; it must still fail qualification, rather than run tools.
+  assert.equal(receipt.status, "FAIL");
+  assert.equal(receipt.cleanupFailure, null);
+  const decision = JSON.parse(
+    await readFile(path.join(fixed.root, "artifacts/sounding-line/ordinary-decision.json"), "utf8"),
+  );
+  assert.match(decision.error, /SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE/u);
+  assert.notEqual(decision.failureObservation.code, "ENOENT");
+  await assert.rejects(readFile(path.join(fixed.root, "candidate/artifacts/sounding-line/ordinary-decision.json")), {
+    code: "ENOENT",
+  });
+  assert.equal(
+    ordinaryVerificationInvocation({
+      workspace: fixed.root,
+      workingDirectory: original.parent,
+      baseSha: fixed.baseSha,
+      candidateSha: fixed.candidateSha,
+    }).root,
+    fixed.root,
+  );
+});
 async function observe(root, file) {
   const end = performance.now() + 15000;
   while (performance.now() < end) {

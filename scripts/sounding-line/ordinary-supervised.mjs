@@ -8,6 +8,38 @@ import { superviseVerification } from "./verification-supervisor.mjs";
 const fail = (code) => {
   throw new Error(`SOUNDING_LINE_VERIFICATION_${code}`);
 };
+export function ordinaryVerificationInvocation({
+  workspace,
+  baseSha,
+  candidateSha,
+  authorityRoot = fileURLToPath(new URL("../../", import.meta.url)),
+  workingDirectory = process.cwd(),
+}) {
+  if (
+    typeof workspace !== "string" ||
+    !workspace ||
+    workspace.includes("\0") ||
+    !/^[a-f0-9]{40}$/u.test(baseSha ?? "") ||
+    !/^[a-f0-9]{40}$/u.test(candidateSha ?? "")
+  )
+    fail("ARGUMENTS_INVALID");
+  const root = path.resolve(workingDirectory, workspace);
+  return {
+    root,
+    command: process.execPath,
+    args: [
+      path.join(authorityRoot, "scripts/sounding-line/ordinary.mjs"),
+      "--mode",
+      "ordinary",
+      "--workspace",
+      root,
+      "--base",
+      baseSha,
+      "--candidate",
+      candidateSha,
+    ],
+  };
+}
 export async function currentVerificationJob({ env = process.env, request = fetch, now = Date.now }) {
   if (
     env.GITHUB_ACTIONS !== "true" ||
@@ -70,6 +102,12 @@ async function main() {
   }
   if (options.mode !== "ordinary" || process.env.GITHUB_SHA !== options.base) fail("UNTRUSTED_BASE");
   const authorityRoot = fileURLToPath(new URL("../../", import.meta.url));
+  const invocation = ordinaryVerificationInvocation({
+    workspace: options.workspace,
+    baseSha: options.base,
+    candidateSha: options.candidate,
+    authorityRoot,
+  });
   const parent = path.join(authorityRoot, "artifacts/sounding-line/verification-supervision");
   await mkdir(parent, { recursive: true });
   const directory = await mkdtemp(path.join(parent, "session-"));
@@ -85,7 +123,7 @@ async function main() {
     const budget = await currentVerificationJob({});
     const began = performance.now();
     const identity = await verificationPreflight({
-      root: options.workspace,
+      root: invocation.root,
       authorityRoot,
       baseSha: options.base,
       candidateSha: options.candidate,
@@ -103,9 +141,7 @@ async function main() {
     const executionMs = Math.floor(budget.executionMs - (performance.now() - began));
     if (executionMs < 1) fail("JOB_BUDGET_EXHAUSTED");
     const receipt = await superviseVerification({
-      root: path.resolve(options.workspace),
-      command: process.execPath,
-      args: [fileURLToPath(new URL("./ordinary.mjs", import.meta.url)), ...args],
+      ...invocation,
       identity,
       directory,
       executionMs,
