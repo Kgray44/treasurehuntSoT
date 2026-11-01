@@ -9,6 +9,7 @@ import { REVIEW_DIMENSIONS } from "./experience-review-dimensions.mjs";
 import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { readSourceSnapshotBatches } from "./source-snapshot-batches.mjs";
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { R20_DEFERRED_DISPOSITION, validateScopedR20Finding } from "./experience-scope-adjudication.mjs";
 import { readFileSync, realpathSync } from "node:fs";
@@ -598,6 +599,178 @@ export function productSourceDigest(snapshot) {
       .sort((a, b) => a.path.localeCompare(b.path)),
   );
 }
+// One reviewed Homeport transition. This is not a general contract override.
+export function bindSC00AHomeportMigration({
+  root,
+  baseSha,
+  candidateSha,
+  prNumber,
+  trustedRegistry,
+  candidateRegistry,
+}) {
+  const record = trustedRegistry.experiencePolicy?.journeyMigration;
+  if (!record) return null;
+  if (experienceDigest(record) !== "a816a0a7d804594f5f2d29960be6be3497c73b6edd48317d6552309ec4cbf236")
+    fail("HOMEPORT_MIGRATION_RECORD_INVALID");
+  const trusted = trustedRegistry.contracts.find((contract) => contract.id === record.contractId);
+  const proposed = candidateRegistry.contracts.find((contract) => contract.id === record.contractId);
+  const oldJourney = trusted?.experience?.journeys.find((journey) => journey.id === record.journeyId);
+  const newJourney = proposed?.experience?.journeys.find((journey) => journey.id === record.journeyId);
+  if (!oldJourney || !newJourney || experienceDigest(oldJourney) === experienceDigest(newJourney)) return null;
+  if (Date.now() >= Date.parse(record.expiresAt)) fail("HOMEPORT_MIGRATION_EXPIRED");
+  if (
+    experienceDigest(trusted) !== record.oldContractDigest ||
+    experienceDigest(oldJourney) !== record.oldJourneyDigest ||
+    experienceDigest(proposed) !== record.newContractDigest ||
+    experienceDigest(newJourney) !== record.newJourneyDigest
+  )
+    fail("HOMEPORT_MIGRATION_CONTRACT_MISMATCH");
+  let event;
+  if (process.env.GITHUB_ACTIONS === "true") {
+    event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
+    const dispatched = process.env.GITHUB_EVENT_NAME === "workflow_dispatch";
+    const pull = event.pull_request;
+    prNumber ??= dispatched ? event.inputs?.pr_number : pull?.number;
+    if (
+      process.env.GITHUB_REPOSITORY !== record.repository ||
+      process.env.GITHUB_REF !== "refs/heads/main" ||
+      process.env.GITHUB_SHA !== baseSha ||
+      process.env.GITHUB_WORKFLOW_REF !==
+        `${record.repository}/.github/workflows/sounding-line-ordinary.yml@refs/heads/main` ||
+      (dispatched
+        ? String(event.inputs?.pr_number) !== String(record.prNumber) ||
+          event.inputs?.base_sha !== baseSha ||
+          event.inputs?.candidate_sha !== candidateSha
+        : process.env.GITHUB_EVENT_NAME !== "pull_request_target" ||
+          pull?.number !== record.prNumber ||
+          pull?.base?.repo?.full_name !== record.repository ||
+          pull?.base?.sha !== baseSha ||
+          pull?.head?.sha !== candidateSha)
+    )
+      fail("HOMEPORT_MIGRATION_EVENT_MISMATCH");
+  }
+  if (String(prNumber) !== String(record.prNumber)) fail("HOMEPORT_MIGRATION_PR_MISMATCH");
+  const live = JSON.parse(
+    execFileSync("gh", ["api", `repos/${record.repository}/pulls/${record.prNumber}`], {
+      encoding: "utf8",
+      timeout: 15000,
+      maxBuffer: 1024 * 1024,
+      windowsHide: true,
+    }),
+  );
+  if (
+    live.number !== record.prNumber ||
+    live.state !== "open" ||
+    live.merged !== false ||
+    live.base?.ref !== "main" ||
+    live.base?.repo?.full_name !== record.repository ||
+    live.head?.repo?.full_name !== record.repository ||
+    live.base?.sha !== baseSha ||
+    live.head?.sha !== candidateSha
+  )
+    fail("HOMEPORT_MIGRATION_LIVE_SOURCE_MISMATCH");
+  git(root, ["merge-base", "--is-ancestor", record.acceptedSource, baseSha]);
+  git(root, ["merge-base", "--is-ancestor", baseSha, candidateSha]);
+  git(root, ["merge-base", "--is-ancestor", record.reviewedAncestor, candidateSha]);
+  if (git(root, ["rev-parse", `${record.reviewedAncestor}^{tree}`]).trim() !== record.reviewedTree)
+    fail("HOMEPORT_MIGRATION_REVIEWED_SOURCE_MISMATCH");
+  const inventory = (revision) =>
+    new Map(
+      git(root, ["ls-tree", "-rz", revision])
+        .split("\0")
+        .filter(Boolean)
+        .map((line) => {
+          const [metadata, file] = line.split("\t");
+          return [file, metadata];
+        }),
+    );
+  const baseline = inventory(baseSha),
+    candidate = inventory(candidateSha),
+    reviewed = inventory(record.reviewedAncestor);
+  const expected = new Map(record.approvedChanges.map(({ path: file, mode, blob }) => [file, `${mode} blob ${blob}`]));
+  const changes = git(root, ["diff", "--name-only", "--no-renames", record.acceptedSource, record.reviewedAncestor])
+    .trim()
+    .split(/\r?\n/u)
+    .sort();
+  if (
+    experienceDigest(changes) !== experienceDigest([...expected.keys()].sort()) ||
+    [...expected].some(([file, metadata]) => reviewed.get(file) !== metadata)
+  )
+    fail("HOMEPORT_MIGRATION_REVIEWED_SOURCE_MISMATCH");
+  const proofs = record.immutableProofs.map((proof) => {
+    const bytes = artifactBytes({ root, revision: baseSha, file: proof.path });
+    if (
+      baseline.get(proof.path)?.startsWith("100644 blob ") !== true ||
+      candidate.get(proof.path) !== baseline.get(proof.path) ||
+      bytes.length !== proof.bytes ||
+      createHash("sha256").update(bytes).digest("hex") !== proof.sha256 ||
+      !bytes.equals(artifactBytes({ root, revision: candidateSha, file: proof.path }))
+    )
+      fail("HOMEPORT_MIGRATION_HISTORY_MISMATCH");
+    return bytes;
+  });
+  const original = JSON.parse(proofs[0]),
+    approved = JSON.parse(proofs[1]);
+  const approvedBlob = createHash("sha1").update(`blob ${proofs[1].length}\0`).update(proofs[1]).digest("hex");
+  if (expected.get("testing/contracts.json") !== `100644 blob ${approvedBlob}`)
+    fail("HOMEPORT_MIGRATION_REVIEWED_SOURCE_MISMATCH");
+  const approvedHomeport = approved.contracts.find((contract) => contract.id === record.contractId);
+  const patched = JSON.parse(JSON.stringify(original));
+  for (const field of record.permittedExperienceFields) patched.experience[field] = approvedHomeport.experience[field];
+  if (experienceDigest(original) !== record.oldContractDigest || experienceDigest(patched) !== record.newContractDigest)
+    fail("HOMEPORT_MIGRATION_UNAPPROVED_FIELD");
+  if (!artifactBytes({ root, revision: baseSha, file: record.reviewPath }).equals(proofs[2]))
+    fail("HOMEPORT_MIGRATION_HISTORY_MISMATCH");
+  const approvedContracts = new Map(trustedRegistry.contracts.map((contract) => [contract.id, contract]));
+  approvedContracts.set(record.contractId, approvedHomeport);
+  for (const id of record.approvedAdditiveContractIds) {
+    const addition = approved.contracts.find((contract) => contract.id === id);
+    if (
+      !addition ||
+      (approvedContracts.has(id) && experienceDigest(approvedContracts.get(id)) !== experienceDigest(addition))
+    )
+      fail("HOMEPORT_MIGRATION_REGISTRATION_MISMATCH");
+    approvedContracts.set(id, addition);
+  }
+  const approvedRegistration = { ...trustedRegistry, contracts: [...approvedContracts.values()] };
+  const registryIdentity = (value) =>
+    experienceDigest({ ...value, contracts: [...value.contracts].sort((a, b) => a.id.localeCompare(b.id)) });
+  if (
+    new Set(candidateRegistry.contracts.map((contract) => contract.id)).size !== candidateRegistry.contracts.length ||
+    registryIdentity(candidateRegistry) !== registryIdentity(approvedRegistration) ||
+    candidate.get("testing/contracts.json")?.startsWith("100644 blob ") !== true
+  )
+    fail("HOMEPORT_MIGRATION_REGISTRATION_MISMATCH");
+  for (const pin of record.browserFixtureAndVisualPins) {
+    const bytes = artifactBytes({ root, revision: candidateSha, file: pin.path });
+    if (
+      candidate.get(pin.path)?.startsWith("100644 blob ") !== true ||
+      createHash("sha256").update(bytes).digest("hex") !== pin.sha256
+    )
+      fail("HOMEPORT_MIGRATION_BROWSER_FIXTURE_MISMATCH", pin.path);
+  }
+  for (const [file, metadata] of expected) {
+    if (file !== "testing/contracts.json" && candidate.get(file) !== metadata)
+      fail("HOMEPORT_MIGRATION_APPROVED_SOURCE_CHANGED", file);
+  }
+  for (const file of new Set([...baseline.keys(), ...candidate.keys()])) {
+    if (baseline.get(file) === candidate.get(file) || expected.has(file)) continue;
+    if (file === record.reviewPath && candidate.get(file)?.startsWith("100644 blob ")) continue;
+    const tail = file.startsWith(record.publicationRoot) ? file.slice(record.publicationRoot.length) : "";
+    if (
+      tail &&
+      tail.length <= 1024 &&
+      /^[A-Za-z0-9_./-]+$/u.test(tail) &&
+      !tail.split("/").some((part) => !part || part === "." || part === "..") &&
+      !baseline.has(file) &&
+      candidate.get(file)?.startsWith("100644 blob ")
+    )
+      continue;
+    fail("HOMEPORT_MIGRATION_UNAPPROVED_TAIL", file);
+  }
+  return approvedHomeport;
+}
+
 export function mergeExperienceContracts(trustedContracts, candidateContracts) {
   const known = new Map(trustedContracts.map((contract) => [contract.id, contract]));
   const merged = trustedContracts.map((contract) => {
@@ -867,7 +1040,18 @@ function unboundProductExperiencePlan({
   if (policy.version !== 1 || !policy.evidencePath?.startsWith("Development_Docs/")) fail("TRUSTED_POLICY_INVALID");
   const candidateRegistry = revisionJson(root, candidateSha, "testing/contracts.json");
   const trustedContracts = (trustedRegistry.contracts ?? []).filter((contract) => contract.experience);
-  const contracts = mergeExperienceContracts(trustedContracts, candidateRegistry.contracts ?? []).map(
+  const migratedHomeport = bindSC00AHomeportMigration({
+    root,
+    baseSha,
+    candidateSha,
+    prNumber,
+    trustedRegistry,
+    candidateRegistry,
+  });
+  const effectiveTrusted = migratedHomeport
+    ? trustedContracts.map((contract) => (contract.id === migratedHomeport.id ? migratedHomeport : contract))
+    : trustedContracts;
+  const contracts = mergeExperienceContracts(effectiveTrusted, candidateRegistry.contracts ?? []).map(
     validateExperienceContract,
   );
   // Pure records/control-plane work must not scan the product graph or trigger captures.

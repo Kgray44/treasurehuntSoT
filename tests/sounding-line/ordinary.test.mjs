@@ -414,6 +414,11 @@ test("ordinary admission distinguishes the field candidates from release authori
       "package.json",
     ],
     ["unknown test registration", { "testing/unknown-registration.json": "{}\n" }, "testing/unknown-registration.json"],
+    [
+      "candidate migration authority",
+      { "testing/contracts.json": JSON.stringify({ experiencePolicy: { journeyMigration: { prNumber: 820 } } }) },
+      "testing/contracts.json",
+    ],
   ]) {
     await withCandidate(changes, async (fixture) => {
       await assert.rejects(
@@ -445,6 +450,39 @@ test("ordinary admission distinguishes the field candidates from release authori
       );
     },
   );
+});
+
+test("candidate cannot remove or mutate installed experience authority through product registration", async () => {
+  await withCandidate({ "docs/fixture.md": "fixture\n" }, async ({ root }) => {
+    const file = path.join(root, "testing/contracts.json");
+    const policy = { version: 1, journeyMigration: { prNumber: 820, expiresAt: "2026-11-14T23:59:59Z" } };
+    writeFileSync(file, JSON.stringify({ experiencePolicy: policy }));
+    git(root, ["add", "."]);
+    git(root, ["commit", "-qm", "synthetic installed authority"]);
+    const baseSha = git(root, ["rev-parse", "HEAD"]);
+    for (const proposed of [
+      {},
+      { experiencePolicy: { ...policy, journeyMigration: null } },
+      { experiencePolicy: { ...policy, journeyMigration: { ...policy.journeyMigration, prNumber: 999 } } },
+    ]) {
+      writeFileSync(file, JSON.stringify(proposed));
+      git(root, ["add", "."]);
+      git(root, ["commit", "-qm", "candidate policy mutation"]);
+      const candidateSha = git(root, ["rev-parse", "HEAD"]);
+      await assert.rejects(
+        () => buildPlan({ root, baseSha, candidateSha, mode: "ordinary", prNumber: 820 }),
+        /CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:testing\/contracts.json/u,
+      );
+    }
+    writeFileSync(path.join(root, "src/product.ts"), "export const product = false;\n");
+    git(root, ["add", "."]);
+    git(root, ["commit", "-qm", "mixed product and authority"]);
+    const candidateSha = git(root, ["rev-parse", "HEAD"]);
+    await assert.rejects(
+      () => buildPlan({ root, baseSha, candidateSha, mode: "ordinary", prNumber: 820 }),
+      /PRODUCT_AND_CONTROL_PLANE_MIXED:product=src\/product.ts;control-plane=testing\/contracts.json/u,
+    );
+  });
 });
 
 test("ordinary selection finds Harborlight browser proof structurally", () => {
