@@ -11,7 +11,9 @@ final class NativeLifecycleTests: XCTestCase {
                 web.isHittable && web.descendants(matching:.any)
                     .matching(NSPredicate(format:"label == %@",label)).count == 1
             }
-            return matches.count == 1 ? matches[0] : nil
+            // The player embeds nested WebViews. Each ancestor owns this same
+            // exact label; accessibility order leaves the inner scroll view last.
+            return matches.last
         }
         // Reuse the original ten-second target window while the native overlay
         // releases the actual WebView. An existing but covered label is not ready.
