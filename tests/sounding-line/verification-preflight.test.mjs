@@ -24,6 +24,7 @@ async function fixture(t) {
     "verification-job-clock.mjs",
     "verification-preflight.mjs",
     "verification-supervisor.mjs",
+    "verification-capacity-820.mjs",
     "owned-process.mjs",
     "owned-process-linux.py",
     "owned-process-windows.ps1",
@@ -101,4 +102,24 @@ test("tool, resource, transport and unknown failures are not classified as produ
     failureCategoryFor(new Error("SOUNDING_LINE_VERIFICATION_COMMAND_BUDGET_EXHAUSTED")),
     "EXECUTION_BUDGET_FAILURE",
   );
+});
+
+test("controller fingerprint binds the capacity grant source and rejects dirty installed authority", async (t) => {
+  const input = await fixture(t),
+    original = await verificationPreflight(input);
+  const file = path.join(input.authorityRoot, "scripts/sounding-line/verification-capacity-820.mjs");
+  await writeFile(file, (await readFile(file, "utf8")) + "\n// inert capacity source fixture change\n");
+  await assert.rejects(verificationPreflight(input), /AUTHORITY_CONTENT_CHANGED/u);
+  git(input.authorityRoot, "add", ".");
+  git(input.authorityRoot, "commit", "-qm", "changed capacity authority");
+  const baseSha = git(input.authorityRoot, "rev-parse", "HEAD");
+  git(input.root, "merge", "--no-edit", baseSha);
+  const changed = await verificationPreflight({
+    ...input,
+    baseSha,
+    candidateSha: git(input.root, "rev-parse", "HEAD"),
+  });
+  assert.notEqual(changed.controllerDigest, original.controllerDigest);
+  assert.equal(changed.policyDigest, original.policyDigest);
+  assert.equal(changed.qualification, false);
 });

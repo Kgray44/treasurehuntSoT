@@ -170,7 +170,7 @@ test("R25 extends only the authorized Crossdeck final-check ceiling to 90 minute
   assert(timeout?.includes(pr776Allowance));
   assert.equal(
     timeout.replace(pr776Allowance, ""),
-    "${{ (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}",
+    "${{ fromJSON(needs.campaign-custody.outputs.verification_job_minutes || '0') || ((github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45) }}",
   );
   assert.equal(jobs.filter((job) => job.includes("&& 90 || 45")).length, 1);
   assert.equal(record().currentSourceAdmission.precommandRecovery.jobLimitMinutes, 90);
