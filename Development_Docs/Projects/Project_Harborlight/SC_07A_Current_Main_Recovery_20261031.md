@@ -1,6 +1,6 @@
 # SC-07A Spatial Publishing recovery on protected main
 
-**Source:** protected `main` `f7ef7de4b606eec734d04eeaed316fea959cf80e` (the #776 merge); source PR #736 head `9c6de12a34f7391607eb26df37752dcdc82c60ed`.
+**Source:** protected `main` `809b6d54025fb66000960f30dc750b44ee056d49` (including the #776 merge at `f7ef7de4b606eec734d04eeaed316fea959cf80e`); source PR #736 head `9c6de12a34f7391607eb26df37752dcdc82c60ed`.
 
 ## Current-main disposition
 
@@ -21,10 +21,11 @@ Before this branch, the three `/api/community/spatial-publication/*` Creator end
 - Focused Vitest: 16/16 passed (two files).
 - Targeted ESLint: passed.
 - Full TypeScript check: passed after restoring the source JSON registries needed by the sparse checkout.
-- Product Experience planner on this current-main delta: `PRODUCT_EXPERIENCE_INTEGRATION_SCOPE_REQUIRED:parallax.integration.pilot-owner-boundary`. Combined capture and independent experience review remain with Spatial Integration; this focused branch does not claim that gate.
-- Current-main production Chromium publishing journey: record result and exact candidate in the PR handoff after the isolated run.
+- Product Experience planner on the initial #776-main candidate: `PRODUCT_EXPERIENCE_INTEGRATION_SCOPE_REQUIRED:parallax.integration.pilot-owner-boundary`. Combined capture and independent experience review remain with Spatial Integration; this focused branch does not claim that gate.
+- Production build on recovery candidate `2fb8c9098a281bfe519884494d6dc23a4ed2e996`: passed after the sparse checkout's `bridgewatch` workspace dependencies were installed.
+- Development Chromium smoke on that candidate, with a task-owned isolated SQLite database and default scanner setting: `tests/e2e/parallax-spatial-community.spec.ts` passed 10 cases and skipped one generic-profile-only case. It exercised Asset, Effect, Composition, synthetic Environment, pinned Scene, moderation, approved discovery, immutable update, pinned read-only install, permitted reuse, refusal, retry, and Profile return flows. Browser JSON, HTML, video, and traces are retained under `artifacts/sc07a-recovery-browser-2fb8c9098a28/attempt2/` in the owned workspace.
 
-The first TypeScript attempt failed only because the sparse worktree omitted imported registry JSON. Those small tracked directories were restored; the passing rerun used the same product changes. This recovery does not claim physical-device privacy, live scanner-provider behavior, formal Product Experience acceptance or owner approval.
+The first TypeScript attempt failed only because the sparse worktree omitted imported registry JSON. Those small tracked directories were restored; the passing rerun used the same product changes. The first Chromium attempt used a synthetic scanner in a production server and correctly refused it; its diagnostics are retained separately in the owned workspace. The passing run used the normal scanner setting. This recovery does not claim physical-device privacy, live scanner-provider behavior, formal Product Experience acceptance or owner approval.
 
 ## Spatial Integration handoff
 
