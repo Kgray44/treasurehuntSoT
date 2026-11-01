@@ -115,13 +115,69 @@ frozen configuration before exercising admission. The production freeze remains
 unchanged, and an unlisted public asset is explicitly rejected. Original failed
 reproductions remain retained alongside the repaired test receipts.
 
-## Remaining integration proof
+## Protected integration and installed-path correction
 
-The startup live audit found strict required app-15368 checks, administrator
-enforcement disabled and no rulesets. Source tests alone do not close A0.
-Record actual protection correction, actor permissions, an effective protected
-transaction, exact candidate/base/run/attempt, hosted before/after timings,
-successful protected integration and landed smoke before completing this record.
+PR [#821](https://github.com/Kgray44/treasurehuntSoT/pull/821) qualified exact
+candidate `083bb327042d472a87d687bbf13d6e005399d114` on base
+`809b6d54025fb66000960f30dc750b44ee056d49` in run `41258855297/1`, required
+Mainline Decision `124715022477`. Administrator enforcement strengthened from
+false to true; every other protection field, strict app-15368 decision, owner
+permission and ruleset state remained unchanged. The frozen source-bound guard
+performed the actual server merge to `cf1e5ad78b3e2b633d4ed691f396a4bab0191217`,
+verified those exact two parents, and observed tree
+`38fe042789fd18983c5f364e604e1b26a0f8d25c` equal to the qualified candidate tree.
+The quick landed smoke passed 13/13 tests in 256.9187 ms. Original provider
+response and sanitized immutable transaction receipts are retained. This is real
+protected integration proof, not product/device acceptance.
+
+The first genuine installed-A #819 run `41262595666/1` checked exact candidate
+`12887b28fab42c18cc5601c1a28165c0fee2d70c` on base `cf1e5ad7`. Custody checkout
+took 145,404.861 ms; verification checkout took 146,858.238 ms, with one hydration
+fetch and 19,244 required blobs (9,157,307,346 bytes), nonshallow. These are partial
+checkout observations, not successful end-to-end acceptance or billed savings.
+
+That run failed CLASSIFICATION with ENOENT before verification commands: the
+supervisor changed cwd to `candidate` but forwarded relative `--workspace
+candidate`, causing the child to resolve `candidate/candidate`. Its supervisor
+terminal receipt (artifact `13066335151`) has SHA-256
+`0de13cf2f6198134c8f717b75fbec1131e9446d5f44dd40339f281a62287169a`; the child
+exited 1 and owned cleanup succeeded. The failed required decision remains failed.
+
+The corrective adapter normalizes the workspace once, then uses that identical
+absolute root for preflight, guardian cwd and child argv. A real-child regression
+reproduces the original nested decision/ENOENT and proves the repaired invocation
+writes its canonical decision in the intended repository. It still rejects a
+forbidden control-plane candidate before executing tools. Existing source binding,
+job-clock debit, timeouts, failure retention and protected merge authority remain
+in force. A fresh prepared corrective PR must qualify and land before #819 retries.
+
+The corrective PR [#828](https://github.com/Kgray44/treasurehuntSoT/pull/828),
+original candidate `6fc44839424cf3d1e3ed18c0912322718a64db0a`, failed ordinary
+run `41263942352/1`: 1,063 regression passes, nine failures and four skips. Its
+original 241,274-byte log archive has SHA-256
+`cadbbc5e63c7e2aca5d8b033d91f41104e3e637f7af65d627cc69af49e5bfd74`.
+The missing historical script and unit-test payloads were test-data assumptions
+outside the installed runtime reader predicate. No failed decision was waived.
+
+The follow-up includes a 95,661-byte, 29-object blob-only test fixture with SHA-256
+`36be0bca3bddeb464cecc110ef16befe48339c63aa841ec29a1f634fa68660b2`.
+The importer verifies that digest, the exact object count/type/set and each
+original revision/path identity. It imports no commits, trees, refs, ancestry or
+release authority. R3 and R4–R8 synthetic tree construction permits missing
+unread historical payloads while retaining their exact object IDs; production
+admission and every positive/negative assertion remain unchanged. The local
+selected-reader reproduction disables transport during testing. Its intentionally
+omitted declared media pins are recorded separately from the hosted failures;
+they cannot establish a passing full checkout or a qualification result.
+
+All nine affected regressions subsequently passed against the existing full
+object store in 215,801.4791 ms. Five adversarial manifest mutations were denied:
+omitted/substituted origins, altered size, altered pack metadata and object-set
+substitution. Independent review cleared the fixture-integrity and synthetic-tree
+scope after pinning all 32 origin rows with canonical mapping digest
+`3c434f3fe45d4ab0bbf9f620426f51ea861474ca0ed700ab4edd8487de2ab040`.
+These focused development results prepare the next candidate; they do not replace
+its required protected check.
 
 The ordinary ten-minute objective and fifteen-minute governing ceiling remain
 the performance target. A retains the installed job ceilings while debiting setup
