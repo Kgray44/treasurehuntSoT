@@ -4,8 +4,10 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawnSync } from "node:child_process";
-import { createHash } from "node:crypto";
+import { execFileSync, spawnSync } from "node:child_process";
+import { createHash, randomUUID } from "node:crypto";
+import { shadowCaptureContextSchedule } from "../../scripts/sounding-line/experience-browser.mjs";
+import { rawCaptureBinding } from "../../scripts/sounding-line/experience-raw-output.mjs";
 import {
   readBoundedRegistryFile,
   sealClosedContextRegistryFiles,
@@ -109,4 +111,302 @@ test("held owner scope cannot enter registry file inspection", async () => {
       sealClosedContextRegistryFiles({ root: "NO_FILESYSTEM_ACCESS", plan: { prNumber } }),
       /SHADOW_CONTEXT_SCOPE/u,
     );
+});
+
+test("independently committed synthetic authority exercises CLI sealing, parent cleanup denial and no overwrite", (t) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "native-registry-installed-"));
+  let success = false;
+  t.after(() => {
+    if (success) fs.rmSync(directory, { recursive: true, force: true });
+    else console.error("SYNTHETIC_NATIVE_REGISTRY_FIXTURE_RETAINED:" + path.basename(directory));
+  });
+  const authority = path.join(directory, "authority"),
+    candidateRoot = path.join(directory, "candidate");
+  fs.mkdirSync(path.join(authority, "scripts/sounding-line"), { recursive: true });
+  for (const item of fs.readdirSync(path.join(root, "scripts/sounding-line"), { withFileTypes: true })) {
+    if (item.isFile())
+      fs.copyFileSync(
+        path.join(root, "scripts/sounding-line", item.name),
+        path.join(authority, "scripts/sounding-line", item.name),
+      );
+  }
+  // Only this separately committed fixture replaces provider transport. The
+  // production CLI has no transport argument; no actual provider claim is made.
+  const producerPath = path.join(authority, "scripts/sounding-line/native-registry-producer.mjs");
+  const source = fs.readFileSync(producerPath, "utf8");
+  const begin = source.search(/  const bytes = execFileSync\(\r?\n    "gh",/u),
+    finish = source.indexOf("  const artifact =", begin);
+  assert(begin > 0 && finish > begin);
+  fs.writeFileSync(
+    producerPath,
+    source.slice(0, begin) +
+      '  const bytes = execFileSync(process.execPath, ["-e", "process.stdout.write(require(\'fs\').readFileSync(process.argv[1]))", path.join(root, "provider", id + ".json")], {timeout:5000,windowsHide:true,maxBuffer:1048576});\n' +
+      source.slice(finish),
+  );
+  const git = (cwd, ...args) =>
+    execFileSync("git", ["-c", "gc.auto=0", "-c", "core.autocrlf=false", ...args], {
+      cwd,
+      encoding: "utf8",
+      windowsHide: true,
+      stdio: ["ignore", "pipe", "pipe"],
+      timeout: 10000,
+    }).trim();
+  git(authority, "init", "-q");
+  git(authority, "config", "user.name", "Synthetic installed registry");
+  git(authority, "config", "user.email", "fixture@example.invalid");
+  git(authority, "add", ".");
+  git(authority, "commit", "-qm", "Synthetic protected authority");
+  const baseSha = git(authority, "rev-parse", "HEAD");
+  git(directory, "clone", "--shared", "--quiet", authority, candidateRoot);
+  git(candidateRoot, "config", "user.name", "Synthetic candidate");
+  git(candidateRoot, "config", "user.email", "fixture@example.invalid");
+  fs.writeFileSync(
+    path.join(candidateRoot, "candidate-marker.txt"),
+    "Synthetic candidate, not a product qualification\n",
+  );
+  git(candidateRoot, "add", ".");
+  git(candidateRoot, "commit", "-qm", "Synthetic candidate identity");
+  const candidateSha = git(candidateRoot, "rev-parse", "HEAD");
+  const write = (workspace, relative, bytes) => {
+    const target = path.join(workspace, relative);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, bytes, { flag: "wx", mode: 0o600 });
+  };
+  const contract = {
+    id: "synthetic.native-registry",
+    experience: {
+      entryPoint: "/",
+      devices: ["DESKTOP"],
+      roles: ["ANONYMOUS"],
+      motion: false,
+      journeys: [
+        {
+          id: "synthetic-journey",
+          roles: ["ANONYMOUS"],
+          steps: [
+            { action: "assert", state: "READY" },
+            { action: "assert", state: "RETURNED" },
+          ],
+        },
+      ],
+    },
+  };
+  const plan = {
+    applicable: true,
+    prNumber: 900,
+    baseSha,
+    candidateSha,
+    sourceDigest: "b".repeat(64),
+    contractDigest: "c".repeat(64),
+    contracts: [contract],
+    contractIds: [contract.id],
+  };
+  const target = shadowCaptureContextSchedule(plan)[0],
+    stage = "artifacts/sounding-line/product-experience-capture-staging/capture-native-fixture/capture",
+    raw = stage.slice(0, -7) + "raw";
+  const artifacts = [],
+    rawFiles = [];
+  for (const [index, type] of ["screenshot", "screenshot", "trace", "recording"].entries()) {
+    const state = index === 0 ? "READY" : "RETURNED",
+      bytes = Buffer.from(`Explicitly synthetic ${type} bytes ${index}`);
+    const id =
+      type === "screenshot"
+        ? `${contract.id}-synthetic-journey-DESKTOP-ANONYMOUS-REDUCED-${state}-${index}`
+        : `synthetic-original-${type}`;
+    const originalPath = `${stage}/generic/${id}.data`,
+      retainedPath = `${raw}/closed-media/${target.contextId}/${index}`;
+    write(candidateRoot, retainedPath, bytes);
+    const sha256 = createHash("sha256").update(bytes).digest("hex");
+    artifacts.push({
+      id,
+      type,
+      state,
+      path: originalPath,
+      sha256,
+      contractId: contract.id,
+      device: "DESKTOP",
+      role: "ANONYMOUS",
+      motionMode: "REDUCED",
+    });
+    rawFiles.push({ originalPath, path: retainedPath, bytes: bytes.length, sha256 });
+  }
+  const journal = {
+    version: 1,
+    classification: "CLOSED_BROWSER_CONTEXT_OBSERVATION_NOT_RUNTIME_CLEANUP",
+    binding: rawCaptureBinding(plan),
+    context: target.context,
+    artifacts,
+    rawFiles,
+    journey: { id: "synthetic-journey", status: "PASS", accessibility: { states: [{ state: "READY" }] } },
+    mutableStateClass: "UNATTESTED_SHARED_TASK_RUNTIME",
+    parentRuntimeCleanup: "UNAVAILABLE_UNTIL_PARENT_REAP",
+    qualification: false,
+    reuseAuthorized: false,
+  };
+  write(candidateRoot, `${raw}/closed-contexts/${target.contextId}.json`, JSON.stringify(journal));
+  const diagnosticRun = randomUUID(),
+    scopeId = randomUUID(),
+    runtimePath = `artifacts/sounding-line/browser-diagnostics/${diagnosticRun}/${scopeId}/browser-runtime.json`;
+  const closed = { status: "PASS", treeReaped: true, streamsClosed: true };
+  write(
+    candidateRoot,
+    runtimePath,
+    JSON.stringify({
+      diagnosticBinding: {
+        version: 1,
+        runId: diagnosticRun,
+        scopeId,
+        baseSha,
+        candidateSha,
+        planDigest: "e".repeat(64),
+      },
+      lifecycle: {
+        cleanup: {
+          status: "PASS",
+          portsReleased: true,
+          browser: closed,
+          server: closed,
+          fixture: { status: "NOT_STARTED" },
+          proxy: { status: "NOT_STARTED" },
+        },
+      },
+    }),
+  );
+  const planPath = "artifacts/sounding-line/product-experience-submission/plan.json";
+  write(candidateRoot, planPath, JSON.stringify(plan));
+  const supervision = "artifacts/sounding-line/preparation-supervision/session-fixture/public";
+  const terminal = {
+    version: 1,
+    binding: {
+      repository: "Kgray44/treasurehuntSoT",
+      base: baseSha,
+      candidate: candidateSha,
+      runId: "4444",
+      attempt: "1",
+    },
+    observerClosed: true,
+    cleanup: { ...closed, directExitObserved: true, ownership: "LINUX_SUBREAPER_AND_PIDFD" },
+  };
+  write(authority, `${supervision}/terminal.json`, JSON.stringify(terminal));
+  for (const [id, name] of [
+    [11, `product-experience-raw-${candidateSha}-4444`],
+    [22, `product-experience-lifecycle-${candidateSha}-4444`],
+  ])
+    write(
+      authority,
+      `provider/${id}.json`,
+      JSON.stringify({
+        id,
+        name,
+        expired: false,
+        size_in_bytes: 1234,
+        digest: `sha256:${"f".repeat(64)}`,
+        workflow_run: {
+          id: 4444,
+          repository_id: 1303074266,
+          head_repository_id: 1303074266,
+          head_sha: baseSha,
+          head_branch: "main",
+        },
+      }),
+    );
+  const owner = { id: 64373011, login: "Kgray44" },
+    repo = { id: 1303074266, full_name: "Kgray44/treasurehuntSoT", owner };
+  const eventPath = path.join(directory, "event.json");
+  fs.writeFileSync(
+    eventPath,
+    JSON.stringify({
+      ref: "refs/heads/main",
+      repository: repo,
+      sender: owner,
+      inputs: {
+        base_sha: baseSha,
+        candidate_sha: candidateSha,
+        pr_number: "900",
+        experience_mode: "capture",
+        experience_diagnostic: "false",
+        incremental_evidence_shadow: "true",
+      },
+      privateUnselectedValue: "PRIVATE_DO_NOT_EMIT",
+    }),
+  );
+  const environment = {
+    ...process.env,
+    GITHUB_ACTIONS: "true",
+    GITHUB_REPOSITORY: repo.full_name,
+    GITHUB_REPOSITORY_ID: String(repo.id),
+    GITHUB_REF: "refs/heads/main",
+    GITHUB_WORKFLOW_REF: `${repo.full_name}/.github/workflows/sounding-line-ordinary.yml@refs/heads/main`,
+    GITHUB_SHA: baseSha,
+    GITHUB_WORKFLOW_SHA: baseSha,
+    GITHUB_ACTOR: owner.login,
+    GITHUB_TRIGGERING_ACTOR: owner.login,
+    GITHUB_ACTOR_ID: String(owner.id),
+    GITHUB_RUN_ID: "4444",
+    GITHUB_RUN_ATTEMPT: "1",
+    GITHUB_JOB: "experience-preparation",
+    GITHUB_EVENT_NAME: "workflow_dispatch",
+    GITHUB_EVENT_PATH: eventPath,
+    SOUNDING_LINE_INCREMENTAL_EVIDENCE_SHADOW: "true",
+  };
+  const args = [
+    producerPath,
+    "--workspace",
+    "candidate",
+    "--plan",
+    `candidate/${planPath}`,
+    "--stage",
+    `candidate/${stage}`,
+    "--runtimes",
+    `candidate/${runtimePath}`,
+    "--supervision",
+    `authority/${supervision}`,
+    "--raw-artifact",
+    "11",
+    "--lifecycle-artifact",
+    "22",
+  ];
+  const run = (output) =>
+    spawnSync(process.execPath, args, {
+      cwd: directory,
+      encoding: "utf8",
+      windowsHide: true,
+      timeout: 30000,
+      env: { ...environment, GITHUB_OUTPUT: output },
+    });
+  const output = path.join(directory, "output"),
+    first = run(output);
+  assert.equal(first.status, 0);
+  assert.equal(first.stderr, "");
+  assert(!first.stdout.includes("PRIVATE_"));
+  assert.equal(JSON.parse(first.stdout).classification, "SHADOW_CONTEXT_REGISTRY_SEALED_NOT_ACCEPTANCE", first.stdout);
+  assert.equal(JSON.parse(first.stdout).completedContexts, 1);
+  assert.equal(JSON.parse(first.stdout).artifactCount, 7);
+  assert.equal(JSON.parse(first.stdout).reuseAuthorized, false);
+  const encryptedPath = path.join(
+      authority,
+      "artifacts/sounding-line/context-registry-shadow/run-4444-1/registry-v2.encrypted",
+    ),
+    encrypted = fs.readFileSync(encryptedPath);
+  const header = JSON.parse(Buffer.from(JSON.parse(encrypted).aad, "base64"));
+  assert.equal(header.binding.candidateSha, candidateSha);
+  assert.equal(header.binding.baseSha, baseSha);
+  assert(!encrypted.includes(Buffer.from(artifacts[0].id)));
+  const second = run(path.join(directory, "second-output"));
+  assert.equal(JSON.parse(second.stdout).classification, "SHADOW_CONTEXT_REGISTRY_UNAVAILABLE");
+  assert(fs.readFileSync(encryptedPath).equals(encrypted));
+  fs.writeFileSync(
+    path.join(authority, supervision, "terminal.json"),
+    JSON.stringify({ ...terminal, cleanup: { ...terminal.cleanup, treeReaped: false } }),
+  );
+  const denied = run(path.join(directory, "denied-output"));
+  assert.equal(JSON.parse(denied.stdout).code, "SOUNDING_LINE_NATIVE_REGISTRY_PRODUCER_PARENT_CLEANUP");
+  assert(!fs.existsSync(path.join(directory, "denied-output")));
+  const installedProducer = fs.readFileSync(producerPath);
+  fs.appendFileSync(producerPath, "\n// Synthetic installed-source drift\n");
+  const drift = run(path.join(directory, "drift-output"));
+  assert.equal(JSON.parse(drift.stdout).code, "SOUNDING_LINE_NATIVE_REGISTRY_PRODUCER_SOURCE_CONTENT");
+  fs.writeFileSync(producerPath, installedProducer);
+  assert(fs.readFileSync(encryptedPath).equals(encrypted));
+  success = true;
 });
