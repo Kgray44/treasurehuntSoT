@@ -232,7 +232,7 @@ export async function createClosedContextJournal({
         const existingRecording = artifact.type === "recording" && recordingSource !== undefined;
         const rawPath = existingRecording
           ? repoPath(root, recordingSource)
-          : `${rawDirectory}/closed-media/${contextId}/${path.posix.basename(artifact.path)}`;
+          : `${rawDirectory}/closed-media/${contextId}/${hash(artifact.path)}`;
         if (existingRecording) {
           if (!rawPath.startsWith(`${rawDirectory}/recordings/`)) fail("CLOSED_CONTEXT_ARTIFACT_INVALID");
           if (json(await fingerprint(await owned(root, rawPath))) !== json(observed))
@@ -249,7 +249,11 @@ export async function createClosedContextJournal({
         binding: boundBinding,
         ...original,
         files,
-        rawFiles: media.map(({ copyRequired: _copy, ...file }) => file),
+        rawFiles: media.map((file) => {
+          const retained = { ...file };
+          delete retained.copyRequired;
+          return retained;
+        }),
         mutableStateClass: "UNATTESTED_SHARED_TASK_RUNTIME",
         parentRuntimeCleanup: "UNAVAILABLE_UNTIL_PARENT_REAP",
         coverage: "REQUIRES_INDEPENDENT_COMPLETE_CONTEXT_VALIDATION",

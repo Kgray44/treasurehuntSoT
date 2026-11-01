@@ -176,6 +176,23 @@ test("existing finalized raw recording is bound byte-for-byte without another vi
   assert.equal(saved.rawFiles.find((file) => file.originalPath === recording.path).path, recordingSource);
 });
 
+test("equal basenames in different original paths retain separate immutable byte bindings", async (t) => {
+  const f = await fixture(t);
+  const first = f.artifacts[0];
+  const file = first.path.replace("/generic/", "/another/");
+  mkdirSync(path.dirname(path.join(f.root, file)), { recursive: true });
+  const bytes = Buffer.from("a different logical capture with the same basename");
+  writeFileSync(path.join(f.root, file), bytes);
+  f.artifacts.push({ ...first, id: "another-screenshot", path: file, sha256: hash(bytes) });
+  const receipt = await f.journal.append(f);
+  const saved = JSON.parse(readFileSync(path.join(f.root, receipt.path)));
+  const a = saved.rawFiles.find((entry) => entry.originalPath === first.path);
+  const b = saved.rawFiles.find((entry) => entry.originalPath === file);
+  assert.notEqual(a.path, b.path);
+  assert.notEqual(a.sha256, b.sha256);
+  assert(readFileSync(path.join(f.root, b.path)).equals(bytes));
+});
+
 test("media size and aggregate allowance fail closed before copying and cannot raise the hard cap", async (t) => {
   const f = await fixture(t);
   const limited = await createClosedContextJournal({
