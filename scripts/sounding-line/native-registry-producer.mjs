@@ -248,6 +248,7 @@ async function main() {
     completedContexts: sealed.completedContexts,
     artifactCount: sealed.artifactCount,
     failedContextObservations: sealed.failedContextObservations,
+    unverifiedFailedContextObservations: sealed.unverifiedFailedContextObservations,
     bytes: sealed.encrypted.length,
     encryptedSha256: hash(sealed.encrypted),
     qualification: false,

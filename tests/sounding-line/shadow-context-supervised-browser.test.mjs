@@ -350,8 +350,45 @@ require('node:http').createServer((q,s)=>{
     });
     assert.equal(partialRegistry.completedContexts, 1);
     assert.equal(partialRegistry.failedContextObservations, 1);
+    assert.equal(partialRegistry.unverifiedFailedContextObservations, 0);
     assert.equal(partialRegistry.reuseAuthorized, false);
     assert((await fs.readFile(absolute(interruptedJournalPath))).equals(interruptedBytes));
+    const failedObservation = {
+      path: interruptedJournalPath,
+      bytes: interruptedBytes.length,
+      sha256: hash(interruptedBytes),
+      code: "INCOMPLETE_JOURNAL",
+      disposition: "HASH_VERIFIED_LOCAL_OBSERVATION_NO_CREDIT",
+    };
+    const observed = buildClosedContextRegistryShadow({
+      ...registryInput,
+      failedContextObservations: [failedObservation],
+    });
+    assert.equal(observed.manifest.failedContextObservations[0].immutableLocation, undefined);
+    assert.equal(
+      observed.manifest.failedContextObservations[0].declaredProviderLocation.memberVerification,
+      "UNVERIFIED",
+    );
+    const unknown = {
+      ...failedObservation,
+      bytes: null,
+      sha256: null,
+      disposition: "UNVERIFIED_OBSERVATION_NO_CREDIT",
+    };
+    const unverified = buildClosedContextRegistryShadow({ ...registryInput, failedContextObservations: [unknown] });
+    assert.equal(unverified.manifest.failedContextObservations[0].declaredProviderLocation, undefined);
+    assert.equal(unverified.manifest.failedContextObservations[0].immutableLocation, undefined);
+    await fs.link(absolute(interruptedJournalPath), absolute(`${rawDirectory}/closed-contexts/${"e".repeat(64)}.json`));
+    const unreadableRegistry = await sealClosedContextRegistryFiles({
+      ...fileRegistryInput,
+      root,
+      rawDirectory,
+      cleanupPath: diagnosticPath,
+    });
+    assert.equal(unreadableRegistry.completedContexts, 1);
+    assert.equal(unreadableRegistry.failedContextObservations, 2);
+    assert.equal(unreadableRegistry.unverifiedFailedContextObservations, 2);
+    assert.equal(unreadableRegistry.reuseAuthorized, false);
     const mediaFile = absolute(journalObservation.journal.rawFiles[0].path),
       originalMedia = await fs.readFile(mediaFile);
     try {

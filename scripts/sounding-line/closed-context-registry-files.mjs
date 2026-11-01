@@ -235,7 +235,7 @@ export async function sealClosedContextRegistryFiles({
         bytes: bytes?.length ?? null,
         sha256: bytes ? hash(bytes) : null,
         code,
-        disposition: "ORIGINAL_RAW_RETAINED_NO_CREDIT",
+        disposition: bytes ? "HASH_VERIFIED_LOCAL_OBSERVATION_NO_CREDIT" : "UNVERIFIED_OBSERVATION_NO_CREDIT",
       });
     }
   }
@@ -267,6 +267,9 @@ export async function sealClosedContextRegistryFiles({
     completedContexts: registry.manifest.completedContexts.length,
     artifactCount: registry.manifest.artifacts.length,
     failedContextObservations: failedContextObservations.length,
+    unverifiedFailedContextObservations: failedContextObservations.filter(
+      (value) => value.disposition === "UNVERIFIED_OBSERVATION_NO_CREDIT",
+    ).length,
     metadataBytes,
     mediaBytes,
     qualification: false,

@@ -60,14 +60,19 @@ export function buildClosedContextRegistryShadow({
       failedContextObservations.every(
         (value) =>
           typeof value?.path === "string" &&
+          !Array.isArray(value) &&
+          value.path.length <= 2048 &&
+          equal(Object.keys(value).sort(), ["path", "bytes", "sha256", "code", "disposition"].sort()) &&
           /^artifacts\/sounding-line\/product-experience-capture-staging\/capture-[A-Za-z0-9_-]+\/raw\/closed-contexts\/(?:[a-f0-9]{64}\/)?[a-f0-9]{64}[.]json$/u.test(
             value.path,
           ) &&
           (value.bytes === null ||
             (Number.isSafeInteger(value.bytes) && value.bytes >= 0 && value.bytes <= 2 * 1024 * 1024)) &&
           (value.sha256 === null || sha256(value.sha256)) &&
+          (value.bytes === null) === (value.sha256 === null) &&
           /^[A-Z0-9_]+$/u.test(value.code ?? "") &&
-          value.disposition === "ORIGINAL_RAW_RETAINED_NO_CREDIT",
+          value.disposition ===
+            (value.bytes === null ? "UNVERIFIED_OBSERVATION_NO_CREDIT" : "HASH_VERIFIED_LOCAL_OBSERVATION_NO_CREDIT"),
       ),
     "FAILED_OBSERVATION_BINDING",
   );
@@ -332,15 +337,20 @@ export function buildClosedContextRegistryShadow({
     producerMode: captureMode,
     failedContextObservations: failedContextObservations.map((value) => ({
       ...value,
-      immutableLocation: {
-        kind: "PROVIDER_ARTIFACT",
-        repository: producer.repository,
-        artifactId: rawArtifact.id,
-        archiveSha256: rawArtifact.archiveSha256,
-        path: value.path,
-        representation: "ENCRYPTED_RAW_INDEX_MEMBER",
-        encryptedIndexPath: "index.encrypted",
-      },
+      ...(value.bytes === null
+        ? {}
+        : {
+            declaredProviderLocation: {
+              kind: "PROVIDER_ARTIFACT",
+              repository: producer.repository,
+              artifactId: rawArtifact.id,
+              archiveSha256: rawArtifact.archiveSha256,
+              path: value.path,
+              representation: "ENCRYPTED_RAW_INDEX_MEMBER",
+              encryptedIndexPath: "index.encrypted",
+              memberVerification: "UNVERIFIED",
+            },
+          }),
     })),
     repository: producer.repository,
     producerIdentity,

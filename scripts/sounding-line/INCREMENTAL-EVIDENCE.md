@@ -19,7 +19,9 @@ Closed journals retain original screenshot, trace, and recording IDs and hashes.
 Accessibility and journey observations reference the original journal bytes;
 cleanup observations reference the lifecycle member. Encrypted raw locations
 explicitly identify their `index.encrypted` representation and original inner
-path. Failed journal observations remain referenced without completion credit.
+path. Readable failed journals retain their local byte hash and an explicitly
+unverified provider-member reference. Unreadable observations claim no immutable
+location or verified custody. Neither receives completion credit.
 An incomplete prefix cannot satisfy a complete manifest.
 
 All production registry observations currently retain
