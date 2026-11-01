@@ -24,13 +24,18 @@ final class NativeLifecycleTests: XCTestCase {
             print("NCL01_LENS_TARGET_READINESS: targetExists=\(target.exists) targetHittable=\(target.isHittable) webViewCount=\(app.webViews.count) owningWebView=\(owningWebView() != nil)")
             return false
         }
-        // The real dialog footer may be below the phone viewport. Scroll only
-        // toward this exact observed target, with one original three-swipe cap.
+        // The real dialog footer may be below the phone viewport. WebKit's
+        // nested WebView swipe can move the page behind the modal, so perform
+        // the bounded gesture inside the visible dialog body instead.
         for index in 0...3 {
             if target.isHittable {return true}
             guard index < 3,let web=owningWebView() else {return false}
-            if !target.frame.isEmpty,target.frame.maxY <= web.frame.minY {web.swipeDown()} else {web.swipeUp()}
+            let above = !target.frame.isEmpty && target.frame.maxY <= web.frame.minY
+            let from=app.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:above ? 0.24 : 0.82))
+            let to=app.coordinate(withNormalizedOffset:CGVector(dx:0.5,dy:above ? 0.82 : 0.24))
+            from.press(forDuration:0.05,thenDragTo:to)
         }
+        print("NCL01_LENS_TARGET_SCROLL: label=\(target.label) targetExists=\(target.exists) targetHittable=\(target.isHittable) targetFrame=\(target.frame) webViewCount=\(app.webViews.count)")
         return false
     }
     @MainActor private func keepNoticeUi(_ springboard:XCUIApplication,_ name:String) {
@@ -189,11 +194,13 @@ final class NativeLifecycleTests: XCTestCase {
                 var result="FAIL"
                 if operation == "OPEN" {
                     let button=app.buttons.matching(identifier:"Open camera-free Lens")
-                    if button.firstMatch.waitForExistence(timeout:10),button.count == 1,button.firstMatch.isHittable {
+                    let openReady=NSPredicate {_,_ in button.count == 1 && button.firstMatch.isHittable && button.firstMatch.isEnabled}
+                    if XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:openReady,object:app)],timeout:10) == .completed {
                         button.firstMatch.tap()
                         let start=app.buttons.matching(identifier:"Open camera-free Device Lab")
                         if start.firstMatch.waitForExistence(timeout:10),start.count == 1,revealLensTarget(start.firstMatch,in:app),start.firstMatch.isEnabled {start.firstMatch.tap();result="PASS"}
                     }
+                    if result == "FAIL" {print("NCL01_LENS_OPEN: buttonCount=\(button.count) buttonHittable=\(button.firstMatch.isHittable)")}
                 } else if operation == "TAP" {
                     guard let x=action["x"] as? Double,let y=action["y"] as? Double,x.isFinite,y.isFinite,(0...1).contains(x),(0...1).contains(y) else {throw NSError(domain:"LandfallLab",code:5)}
                     let viewport=app.otherElements["parallax.native.scene"]
@@ -219,8 +226,11 @@ final class NativeLifecycleTests: XCTestCase {
                         let returned=NSPredicate {_,_ in
                             !nativeReturn.exists && (operation != "INSPECT" || rejection.count == 1)
                         }
-                        if XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:returned,object:app)],timeout:20) == .completed,
-                           operation != "INSPECT" || revealLensTarget(rejection.firstMatch,in:app) {result="PASS"}
+                        let returnObserved=XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:returned,object:app)],timeout:20) == .completed
+                        if returnObserved {
+                            if operation != "INSPECT" || revealLensTarget(rejection.firstMatch,in:app) {result="PASS"}
+                        }
+                        if result == "FAIL" {print("NCL01_LENS_RETURN: operation=\(operation) nativeReturnExists=\(nativeReturn.exists) rejectionCount=\(rejection.count) rejectionHittable=\(rejection.firstMatch.isHittable)")}
                     }
                 }
                 // This proves only public UIKit/SceneKit input. The independent
