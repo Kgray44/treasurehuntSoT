@@ -278,18 +278,38 @@ export async function selectedCheckout({
     ]);
     need((await command(["rev-parse", "--is-shallow-repository"])) === "false", "SHALLOW");
     const readSet = selectReadSet ? await selectReadSet({ command, baseSha, candidateSha }) : null;
+    need(readSet === null || typeof readSet.applied === "boolean", "READ_SET_INVALID");
     const exclusions = readSet?.applied ? readSet.proposal?.omissions : [];
+    const metadataCustody = readSet?.applied && readSet.proposal?.profile === "DOCUMENTATION_CUSTODY_METADATA_V1";
     need(
       !readSet?.applied ||
-        (readSet.proposal?.profile === "DOCUMENTATION_ONLY_SOURCE_BOUND_V1" &&
+        (["DOCUMENTATION_ONLY_SOURCE_BOUND_V1", "DOCUMENTATION_CUSTODY_METADATA_V1"].includes(
+          readSet.proposal?.profile,
+        ) &&
           Array.isArray(exclusions) &&
           exclusions.length <= 100000),
       "READ_SET_INVALID",
+    );
+    need(
+      !metadataCustody ||
+        (Array.isArray(readSet.proposal.metadataPaths) &&
+          readSet.proposal.metadataPaths.includes("testing/contracts.json") &&
+          readSet.proposal.metadataPaths.includes("testing/product-experience-exceptions.json") &&
+          readSet.proposal.metadataPaths.every(
+            (file) =>
+              file === "testing/contracts.json" ||
+              file === "testing/product-experience-exceptions.json" ||
+              file === ".gitattributes" ||
+              file.endsWith("/.gitattributes"),
+          )),
+      "CUSTODY_READ_SET_INVALID",
     );
     readSetSummary = readSet
       ? {
           applied: readSet.applied === true,
           profile: readSet.proposal?.profile,
+          purpose: readSet.proposal?.purpose,
+          metadataPaths: readSet.proposal?.metadataPaths,
           anchor: readSet.proposal?.anchor,
           reason: readSet.proposal?.reason,
           changedPaths: readSet.proposal?.changedPaths,
@@ -308,12 +328,19 @@ export async function selectedCheckout({
       return JSON.parse(await command([hydrationScript, file], process.execPath));
     };
     const compiled = await operation("compile", {
-      snapshots: [...new Set([baseSha, candidateSha])],
-      readerSnapshots: [...new Set([...roots, ...readerRevisions])],
-      objects: readerObjects,
-      readerPaths,
+      snapshots: metadataCustody ? [] : [...new Set([baseSha, candidateSha])],
+      readerSnapshots: metadataCustody
+        ? [...new Set([baseSha, candidateSha])]
+        : [...new Set([...roots, ...readerRevisions])],
+      objects: metadataCustody ? [] : readerObjects,
+      readerPaths: metadataCustody
+        ? [baseSha, candidateSha].flatMap((revision) =>
+            readSet.proposal.metadataPaths.map((path) => ({ revision, path })),
+          )
+        : readerPaths,
+      exactReaderOnly: metadataCustody === true,
       output: closureFile,
-      snapshotExclusions: exclusions,
+      snapshotExclusions: metadataCustody ? [] : exclusions,
     });
     stage("EXPLICIT_READER_CLOSURE_HYDRATION");
     const hydration = await operation("hydrate", { closure: closureFile });

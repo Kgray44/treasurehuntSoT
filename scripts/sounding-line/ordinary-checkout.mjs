@@ -13,7 +13,9 @@ const need = (value, code) => {
   if (!value) throw new Error(`SOUNDING_LINE_ORDINARY_CHECKOUT_${code}`);
 };
 const oid = (value) => /^[a-f0-9]{40}$/u.test(value ?? "");
-export function ordinaryCheckoutProfile({ baseSha, candidateSha, env = process.env, event }) {
+export function ordinaryCheckoutProfile({ baseSha, candidateSha, env = process.env, event, purpose = "verification" }) {
+  need(["verification", "campaign-custody"].includes(purpose), "INVALID_PURPOSE");
+  need(purpose !== "campaign-custody" || env.GITHUB_JOB === "campaign-custody", "CUSTODY_JOB_REQUIRED");
   need(oid(baseSha) && oid(candidateSha), "INVALID_IDENTITY");
   need(env.GITHUB_REPOSITORY === repository && env.GITHUB_SHA === baseSha, "UNTRUSTED_BASE");
   need(env.GITHUB_REF === "refs/heads/main", "UNTRUSTED_REF");
@@ -34,7 +36,7 @@ export function ordinaryCheckoutProfile({ baseSha, candidateSha, env = process.e
   need(Number.isSafeInteger(pr) && pr > 0 && ![721, 776].includes(pr), "FINITE_PROFILE_REQUIRED");
   return {
     selectReadSet: ({ command, baseSha, candidateSha }) =>
-      documentationCheckoutReadSet({ command, baseSha, candidateSha, prNumber: pr }),
+      documentationCheckoutReadSet({ command, baseSha, candidateSha, prNumber: pr, purpose }),
     roots: [
       ...EXPERIENCE_CHECKOUT_ROOTS,
       PR776_CONTROLLER.ancestor,
@@ -66,8 +68,8 @@ export function ordinaryCheckoutProfile({ baseSha, candidateSha, env = process.e
   };
 }
 
-export async function ordinaryCheckout({ root, baseSha, candidateSha, env, event, signal }) {
-  const profile = ordinaryCheckoutProfile({ baseSha, candidateSha, env, event });
+export async function ordinaryCheckout({ root, baseSha, candidateSha, env, event, signal, purpose }) {
+  const profile = ordinaryCheckoutProfile({ baseSha, candidateSha, env, event, purpose });
   return selectedCheckout({
     ...profile,
     root,
@@ -85,7 +87,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     const key = args[index]?.slice(2);
     need(
       args[index]?.startsWith("--") &&
-        ["workspace", "base", "candidate"].includes(key) &&
+        ["workspace", "base", "candidate", "purpose"].includes(key) &&
         !Object.hasOwn(options, key) &&
         typeof args[index + 1] === "string",
       "INVALID_ARGUMENTS",
@@ -104,6 +106,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
           root: path.resolve(options.workspace),
           baseSha: options.base,
           candidateSha: options.candidate,
+          purpose: options.purpose,
           signal: controller.signal,
         }),
       ),

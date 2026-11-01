@@ -4,7 +4,7 @@ import { execFileSync } from "node:child_process";
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { pathToFileURL, fileURLToPath } from "node:url";
 import { selectedCheckout } from "../../scripts/sounding-line/experience-selected-checkout.mjs";
 import { documentationCheckoutProposal } from "../../scripts/sounding-line/ordinary-documentation-checkout-profile.mjs";
 const git = (root, args, input, encoding = "utf8") =>
@@ -45,6 +45,16 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
   const ancestor = git(seed, ["rev-parse", "HEAD"]).trim();
   git(seed, ["rm", "unread-history.bin"]);
   put("src/example.ts", "export const value=1;\n");
+  put("testing/contracts.json", '{"contracts":[]}\n');
+  put(
+    "testing/product-experience-exceptions.json",
+    readFileSync(new URL("../../testing/product-experience-exceptions.json", import.meta.url)),
+  );
+  put(
+    "scripts/sounding-line/experience-current-r26.mjs",
+    "// Inert presence marker; executed authority remains outside this fixture.\n",
+  );
+  put(".gitattributes", "* -text\n");
   put("public/required-runtime.png", Buffer.alloc(8192, 11));
   put("tests/required-fixture.zip", Buffer.alloc(4096, 19));
   put("Development_Docs/.next-keep/preserve.png", Buffer.from("generated-directory-shape"));
@@ -114,4 +124,66 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
   assert.equal(selected.lateGitTransport, "DISABLED");
   assert(selected.verified.requiredBlobBytes < full.verified.requiredBlobBytes);
   assert.equal(git(selectedRoot, ["status", "--porcelain", "--untracked-files=no"]).trim(), "");
+  const custodyRoot = path.join(owner, "custody");
+  const custody = await selectedCheckout({
+    ...options,
+    root: custodyRoot,
+    selectReadSet: async ({ command }) => {
+      const baseline = entries(await command(["ls-tree", "-rz", base])),
+        current = entries(await command(["ls-tree", "-rz", candidate]));
+      const proposal = documentationCheckoutProposal({
+        baseEntries: baseline,
+        candidateEntries: current,
+        anchorEntries: baseline,
+        prNumber: 819,
+        purpose: "campaign-custody",
+      });
+      assert.equal(proposal.profile, "DOCUMENTATION_CUSTODY_METADATA_V1");
+      return { applied: true, proposal };
+    },
+  });
+  assert.equal(custody.status, "PASS");
+  assert.equal(custody.lateGitTransport, "DISABLED");
+  assert.equal(git(custodyRoot, ["ls-tree", "-rz", candidate]), git(fullRoot, ["ls-tree", "-rz", candidate]));
+  git(custodyRoot, ["merge-base", "--is-ancestor", ancestor, candidate]);
+  for (const file of ["testing/contracts.json", "testing/product-experience-exceptions.json", ".gitattributes"])
+    assert(readFileSync(path.join(fullRoot, file)).equals(readFileSync(path.join(custodyRoot, file))));
+  assert.equal(existsSync(path.join(custodyRoot, "src/example.ts")), false);
+  assert.throws(() => git(custodyRoot, ["cat-file", "-t", pin]));
+  assert(custody.verified.requiredBlobBytes < selected.verified.requiredBlobBytes);
+  const eventFile = path.join(owner, "event.json");
+  writeFileSync(eventFile, JSON.stringify({ inputs: { pr_number: "819", base_sha: base, candidate_sha: candidate } }));
+  const reserve = (workspace, label) => {
+    const output = path.join(owner, `${label}.output`);
+    execFileSync(
+      process.execPath,
+      [
+        fileURLToPath(new URL("../../scripts/sounding-line/experience-exception.mjs", import.meta.url)),
+        "--operation",
+        "reserve",
+        "--workspace",
+        workspace,
+        "--base",
+        base,
+        "--candidate",
+        candidate,
+      ],
+      {
+        timeout: 60000,
+        maxBuffer: 1024 * 1024,
+        env: {
+          ...process.env,
+          GH_TOKEN: "",
+          GITHUB_TOKEN: "",
+          GITHUB_SHA: base,
+          GITHUB_EVENT_PATH: eventFile,
+          GITHUB_OUTPUT: output,
+        },
+        stdio: ["ignore", "pipe", "pipe"],
+      },
+    );
+    return readFileSync(output, "utf8");
+  };
+  assert.equal(reserve(fullRoot, "full"), "campaign=false\n");
+  assert.equal(reserve(custodyRoot, "custody"), "campaign=false\n");
 });

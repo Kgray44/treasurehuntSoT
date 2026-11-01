@@ -39,6 +39,12 @@ export async function checkoutHydration(file) {
     });
   };
   if (input.operation === "compile") {
+    need(input.exactReaderOnly === undefined || typeof input.exactReaderOnly === "boolean", "INVALID_READER_MODE");
+    need(
+      !input.exactReaderOnly ||
+        (input.snapshots.length === 0 && input.objects.length === 0 && (input.snapshotExclusions ?? []).length === 0),
+      "INVALID_EXACT_READER_CLOSURE",
+    );
     const required = new Map(input.objects.map((value) => [value.sha, value]));
     const fullSnapshots = new Set(input.snapshots);
     const exclusions = new Map();
@@ -87,8 +93,7 @@ export async function checkoutHydration(file) {
         }
         if (
           !fullSnapshots.has(revision) &&
-          !sourceSnapshotReadsPath(file) &&
-          !historicalMetadata.has(file) &&
+          (input.exactReaderOnly || (!sourceSnapshotReadsPath(file) && !historicalMetadata.has(file))) &&
           !explicit
         )
           continue;

@@ -29,6 +29,52 @@ test("documentation names requiring migration validation retain the full route",
   );
 });
 
+test("custody metadata proposals preserve exact JSON readers and attribute bodies only", () => {
+  const base = [
+    ...original,
+    entry("testing/contracts.json"),
+    entry("testing/product-experience-exceptions.json"),
+    entry(".gitattributes"),
+  ];
+  const candidate = [...base, entry("Development_Docs/incident.md", "b".repeat(40))];
+  const proposal = documentationCheckoutProposal({
+    baseEntries: base,
+    candidateEntries: candidate,
+    anchorEntries: base,
+    prNumber: 819,
+    purpose: "campaign-custody",
+  });
+  assert.equal(proposal.profile, "DOCUMENTATION_CUSTODY_METADATA_V1");
+  assert.deepEqual(proposal.metadataPaths, [
+    ".gitattributes",
+    "testing/contracts.json",
+    "testing/product-experience-exceptions.json",
+  ]);
+  assert.equal(proposal.omissions.length, candidate.length - 3);
+  assert(proposal.omissions.some((x) => x.path === "src/app/page.tsx"));
+  assert.equal(proposal.qualification, false);
+  assert.equal(
+    documentationCheckoutProposal({
+      baseEntries: original,
+      candidateEntries: proposed(),
+      anchorEntries: original,
+      prNumber: 819,
+      purpose: "campaign-custody",
+    }).reason,
+    "CUSTODY_READER_CHANGED_OR_MISSING",
+  );
+  assert.equal(
+    documentationCheckoutProposal({
+      baseEntries: base,
+      candidateEntries: candidate,
+      anchorEntries: base,
+      prNumber: 819,
+      purpose: "unknown",
+    }).reason,
+    "UNKNOWN_CHECKOUT_PURPOSE",
+  );
+});
+
 test("new documentation mechanism starts in shadow; its data proposal grants no authority", () => {
   assert.equal(DOCUMENTATION_CHECKOUT_MODE, "SHADOW");
   const result = plan();
@@ -74,6 +120,7 @@ test("reader/policy drift, duplicate and control-character names cannot close th
     entry("Development_Docs/incident.md"),
     entry("Development_Docs/bad\tname.md"),
     entry("../outside.md"),
+    entry("Development_Docs/bad\ufffd.md"),
   ])
     assert.equal(plan([...proposed(), extra]).profile, "FULL_SNAPSHOT");
   for (const pr of [0, 721, 776]) assert.equal(plan(proposed(), original, original, pr).profile, "FULL_SNAPSHOT");

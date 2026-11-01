@@ -23,6 +23,24 @@ test("PR819 transport is exact-source-bound and keeps the existing ten-minute ce
   assert.deepEqual(await profile.preservation(), { preservationPins: 0, historicalManifestPinsRetained: [] });
 });
 test("ordinary transport cannot select finite campaign routes or an untrusted event", () => {
+  assert.throws(
+    () => ordinaryCheckoutProfile({ baseSha, candidateSha, env, event, purpose: "campaign-custody" }),
+    /CUSTODY_JOB_REQUIRED/u,
+  );
+  assert.throws(
+    () => ordinaryCheckoutProfile({ baseSha, candidateSha, env, event, purpose: "unknown" }),
+    /INVALID_PURPOSE/u,
+  );
+  assert.equal(
+    ordinaryCheckoutProfile({
+      baseSha,
+      candidateSha,
+      env: { ...env, GITHUB_JOB: "campaign-custody" },
+      event,
+      purpose: "campaign-custody",
+    }).budgetMs,
+    600000,
+  );
   for (const pr_number of ["721", "776", "0", "NaN"])
     assert.throws(() =>
       ordinaryCheckoutProfile({ baseSha, candidateSha, env, event: { inputs: { ...event.inputs, pr_number } } }),

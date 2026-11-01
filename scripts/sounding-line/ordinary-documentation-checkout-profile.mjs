@@ -26,6 +26,7 @@ const safe = (file) =>
   file.length > 0 &&
   file.length < 4096 &&
   !/[\\\u0000-\u001f\u007f]/u.test(file) &&
+  !file.includes("\ufffd") &&
   !file.startsWith("/") &&
   file.split("/").every((part) => part && part !== "." && part !== "..");
 const inventory = (entries) => {
@@ -59,8 +60,15 @@ export function ordinaryPrivatePathViolation(file) {
   );
 }
 
-export function documentationCheckoutProposal({ baseEntries, candidateEntries, anchorEntries, prNumber }) {
+export function documentationCheckoutProposal({
+  baseEntries,
+  candidateEntries,
+  anchorEntries,
+  prNumber,
+  purpose = "verification",
+}) {
   const full = (reason) => ({ profile: "FULL_SNAPSHOT", reason, qualification: false });
+  if (!["verification", "campaign-custody"].includes(purpose)) return full("UNKNOWN_CHECKOUT_PURPOSE");
   if (!Number.isSafeInteger(prNumber) || prNumber < 1 || [721, 776].includes(prNumber))
     return full("FINITE_OR_UNBOUND_PROFILE");
   const base = inventory(baseEntries),
@@ -96,8 +104,28 @@ export function documentationCheckoutProposal({ baseEntries, candidateEntries, a
   // binary's contents would never be read. Untracked files remain on disk and
   // are still scanned by the unchanged private-content implementation.
   if ([...candidate.keys()].some(ordinaryPrivatePathViolation)) return full("FORBIDDEN_PATH_REQUIRES_FULL_SCAN");
+  const custody = purpose === "campaign-custody";
+  const metadataPaths = custody
+    ? [
+        "testing/contracts.json",
+        "testing/product-experience-exceptions.json",
+        ...[...candidate.keys()].filter((file) => file === ".gitattributes" || file.endsWith("/.gitattributes")),
+      ].sort()
+    : [];
+  if (
+    custody &&
+    metadataPaths.some(
+      (file) => candidate.get(file)?.mode !== "100644" || key(base.get(file) ?? {}) !== key(candidate.get(file) ?? {}),
+    )
+  )
+    return full("CUSTODY_READER_CHANGED_OR_MISSING");
+  const metadataSet = new Set(metadataPaths);
   const omissions = [];
   for (const [file, entry] of candidate) {
+    if (custody) {
+      if (!metadataSet.has(file)) omissions.push({ path: file, mode: entry.mode, blob: entry.sha ?? entry.blob });
+      continue;
+    }
     if (
       entry.mode !== "100644" ||
       !file.startsWith("Development_Docs/") ||
@@ -116,7 +144,9 @@ export function documentationCheckoutProposal({ baseEntries, candidateEntries, a
     .map((entry) => [entry.path, key(entry)])
     .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
   return {
-    profile: "DOCUMENTATION_ONLY_SOURCE_BOUND_V1",
+    profile: custody ? "DOCUMENTATION_CUSTODY_METADATA_V1" : "DOCUMENTATION_ONLY_SOURCE_BOUND_V1",
+    purpose,
+    metadataPaths,
     anchor: DOCUMENTATION_CHECKOUT_ANCHOR,
     changedPaths: changed,
     omissions,
@@ -129,7 +159,13 @@ export function documentationCheckoutProposal({ baseEntries, candidateEntries, a
   };
 }
 
-export async function documentationCheckoutReadSet({ command, baseSha, candidateSha, prNumber }) {
+export async function documentationCheckoutReadSet({
+  command,
+  baseSha,
+  candidateSha,
+  prNumber,
+  purpose = "verification",
+}) {
   const tree = async (revision) =>
     (await command(["ls-tree", "-rz", revision]))
       .split("\0")
@@ -146,9 +182,12 @@ export async function documentationCheckoutReadSet({ command, baseSha, candidate
     candidateEntries: await tree(candidateSha),
     anchorEntries: await tree(DOCUMENTATION_CHECKOUT_ANCHOR),
     prNumber,
+    purpose,
   });
   return {
-    applied: DOCUMENTATION_CHECKOUT_MODE === "ACTIVE" && proposal.profile === "DOCUMENTATION_ONLY_SOURCE_BOUND_V1",
+    applied:
+      DOCUMENTATION_CHECKOUT_MODE === "ACTIVE" &&
+      ["DOCUMENTATION_ONLY_SOURCE_BOUND_V1", "DOCUMENTATION_CUSTODY_METADATA_V1"].includes(proposal.profile),
     proposal,
   };
 }
