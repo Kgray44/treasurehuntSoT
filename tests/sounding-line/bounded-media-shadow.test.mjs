@@ -244,3 +244,66 @@ test("empty-chunk floods stop at a fixed read count without expanding the byte b
   assert.equal(result.bytes, 0);
   assert.equal(result.rawClosed, true);
 });
+
+test("caller-defined stack and name getters are never executed during failed retention", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("x");
+  for (const property of ["stack", "name"]) {
+    let invoked = 0;
+    const error = Error("original data message");
+    Object.defineProperty(error, property, {
+      configurable: true,
+      get() {
+        invoked++;
+        throw Error("caller getter");
+      },
+    });
+    const result = await retainMediaTransportShadow({
+      ...options(directory, bytes),
+      response: new Response(
+        new ReadableStream({
+          start(c) {
+            c.error(error);
+          },
+        }),
+      ),
+    });
+    assert.equal(result.status, "FAIL");
+    assert.equal(result.originalError, error);
+    assert.equal(invoked, 0);
+    const record = JSON.parse(fs.readFileSync(result.failurePath));
+    assert(record.omittedFields.includes(property));
+    assert(record.omittedFields.includes("stack"));
+  }
+});
+
+test("later stack formatter substitution cannot execute inside failure retention", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("x"),
+    original = Object.getOwnPropertyDescriptor(Error, "prepareStackTrace");
+  let invoked = 0,
+    result;
+  try {
+    Error.prepareStackTrace = () => {
+      invoked++;
+      return "caller formatter";
+    };
+    const error = Error("original data message");
+    result = await retainMediaTransportShadow({
+      ...options(directory, bytes),
+      response: new Response(
+        new ReadableStream({
+          start(c) {
+            c.error(error);
+          },
+        }),
+      ),
+    });
+  } finally {
+    if (original) Object.defineProperty(Error, "prepareStackTrace", original);
+    else delete Error.prepareStackTrace;
+  }
+  assert.equal(result.status, "FAIL");
+  assert.equal(invoked, 0);
+  assert(JSON.parse(fs.readFileSync(result.failurePath)).omittedFields.includes("stack"));
+});

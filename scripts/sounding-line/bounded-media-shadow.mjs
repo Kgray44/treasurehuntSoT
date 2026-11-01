@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { createHash, randomUUID } from "node:crypto";
+import { types } from "node:util";
 
 export const MEDIA_SHADOW_LIMITS = Object.freeze({
   bytes: 256 * 1024 * 1024,
@@ -9,6 +10,43 @@ export const MEDIA_SHADOW_LIMITS = Object.freeze({
   deadlineMs: 120000,
 });
 const completed = new WeakMap();
+const NativeError = Error;
+const nativeStackGetter = Object.getOwnPropertyDescriptor(new NativeError(), "stack")?.get;
+const prepareStackTrace = Object.getOwnPropertyDescriptor(NativeError, "prepareStackTrace");
+const nativeErrorPrototypes = new Map(
+  [Error, EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError, AggregateError].map((ctor) => [
+    ctor.prototype,
+    Object.getOwnPropertyDescriptor(ctor.prototype, "name")?.value,
+  ]),
+);
+function boundedNativeStack(error, descriptor) {
+  // Node 24 lazily formats native Error stacks. Recognize only the original
+  // intrinsic accessor and formatter, with ordinary bounded data properties.
+  // Custom getters, subclasses and later formatter substitutions stay omitted.
+  if (!nativeStackGetter || descriptor?.get !== nativeStackGetter || !types.isNativeError(error)) return null;
+  const prototype = Object.getPrototypeOf(error),
+    expectedName = nativeErrorPrototypes.get(prototype);
+  const name = Object.getOwnPropertyDescriptor(error, "name"),
+    message = Object.getOwnPropertyDescriptor(error, "message");
+  const actualName = Object.getOwnPropertyDescriptor(prototype, "name");
+  const formatter = Object.getOwnPropertyDescriptor(NativeError, "prepareStackTrace");
+  const limit = Object.getOwnPropertyDescriptor(NativeError, "stackTraceLimit");
+  if (
+    expectedName === undefined ||
+    actualName?.value !== expectedName ||
+    (name && (typeof name.value !== "string" || name.value.length > 1024)) ||
+    typeof message?.value !== "string" ||
+    message.value.length > 16384 ||
+    formatter?.value !== prepareStackTrace?.value ||
+    formatter?.get ||
+    !Number.isSafeInteger(limit?.value) ||
+    limit.value < 0 ||
+    limit.value > 128
+  )
+    return null;
+  const value = nativeStackGetter.call(error);
+  return typeof value === "string" && value.length <= 16384 ? value : null;
+}
 const need = (condition, code) => {
   if (!condition) throw Error(`SOUNDING_LINE_MEDIA_SHADOW_${code}`);
 };
@@ -219,7 +257,11 @@ export async function retainMediaTransportShadow({
             descriptor.value.length <= 16384
           )
             original[key] = descriptor.value;
-          else omittedFields.push(key);
+          else {
+            const stack = key === "stack" ? boundedNativeStack(error, descriptor) : null;
+            if (stack !== null) original[key] = stack;
+            else omittedFields.push(key);
+          }
         }
       } catch {
         omittedFields.push(key);
