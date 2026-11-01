@@ -54,6 +54,7 @@ test("bounded streaming retains exact bytes without calling whole-response buffe
   assert.deepEqual(verifyRetainedMediaShadow(result), {
     bytes: bytes.length,
     sha256: hash(bytes),
+    receiptBytesVerified: true,
     qualification: false,
     reuseAuthorized: false,
   });
@@ -306,4 +307,19 @@ test("later stack formatter substitution cannot execute inside failure retention
   assert.equal(result.status, "FAIL");
   assert.equal(invoked, 0);
   assert(JSON.parse(fs.readFileSync(result.failurePath)).omittedFields.includes("stack"));
+});
+
+test("missing or changed initial/terminal receipts invalidate otherwise identical raw bytes", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.from("unchanged original payload");
+  for (const key of ["initialPath", "terminalPath"])
+    for (const operation of ["alter", "delete"]) {
+      const result = await retainMediaTransportShadow({ ...options(directory, bytes), response: response([bytes]) });
+      assert(verifyRetainedMediaShadow(result)?.receiptBytesVerified);
+      assert(fs.readFileSync(result.rawPath).equals(bytes));
+      if (operation === "alter") fs.writeFileSync(result[key], "{}\n");
+      else fs.unlinkSync(result[key]);
+      assert.equal(verifyRetainedMediaShadow(result), null);
+      assert(fs.readFileSync(result.rawPath).equals(bytes));
+    }
 });

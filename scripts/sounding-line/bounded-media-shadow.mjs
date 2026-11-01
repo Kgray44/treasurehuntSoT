@@ -88,6 +88,51 @@ const sameFile = (fd, filename) => {
   );
   return actual;
 };
+function retainJSON(filename, value) {
+  const bytes = Buffer.from(JSON.stringify(value) + "\n");
+  need(bytes.length <= 256 * 1024, "RECEIPT_BOUND");
+  fs.writeFileSync(filename, bytes, { flag: "wx", mode: 0o600 });
+  const stat = fs.lstatSync(filename);
+  need(stat.isFile() && !stat.isSymbolicLink() && stat.nlink === 1 && stat.size === bytes.length, "RECEIPT_DRIFT");
+  return {
+    path: filename,
+    bytes: bytes.length,
+    sha256: createHash("sha256").update(bytes).digest("hex"),
+    dev: stat.dev,
+    ino: stat.ino,
+  };
+}
+function verifyReceipt(reference) {
+  let fd;
+  try {
+    need(reference && reference.bytes <= 256 * 1024, "RECEIPT_BOUND");
+    fd = fs.openSync(reference.path, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW | fs.constants.O_NONBLOCK);
+    const before = sameFile(fd, reference.path);
+    need(
+      before.dev === reference.dev && before.ino === reference.ino && before.size === reference.bytes,
+      "RECEIPT_DRIFT",
+    );
+    const buffer = Buffer.alloc(reference.bytes + 1),
+      hash = createHash("sha256");
+    let bytes = 0,
+      count;
+    while ((count = fs.readSync(fd, buffer, bytes, buffer.length - bytes, null)) > 0) {
+      bytes += count;
+      need(bytes <= reference.bytes, "RECEIPT_DRIFT");
+    }
+    hash.update(buffer.subarray(0, bytes));
+    const after = sameFile(fd, reference.path);
+    need(
+      bytes === reference.bytes &&
+        hash.digest("hex") === reference.sha256 &&
+        before.mtimeMs === after.mtimeMs &&
+        before.ctimeMs === after.ctimeMs,
+      "RECEIPT_DRIFT",
+    );
+  } finally {
+    if (fd !== undefined) fs.closeSync(fd);
+  }
+}
 async function closeReader(reader) {
   if (!reader) return { started: false, cancelled: false, lockReleased: false };
   let timer,
@@ -151,7 +196,9 @@ export async function retainMediaTransportShadow({
     eof = false,
     rawClosed = false,
     timer,
-    abortHandler;
+    abortHandler,
+    initialRecord,
+    terminalRecord;
   let readerCleanup = { cancelled: false, lockReleased: false };
   try {
     sameDirectory(identity);
@@ -161,18 +208,14 @@ export async function retainMediaTransportShadow({
       0o600,
     );
     sameFile(fd, rawPath);
-    fs.writeFileSync(
-      initialPath,
-      JSON.stringify({
-        kind: "MEDIA_TRANSPORT_SHADOW",
-        status: "INCOMPLETE",
-        ...expectations,
-        authentication: "DECLARED_EXPECTATIONS_NOT_PROVIDER_AUTHENTICATED",
-        qualification: false,
-        reuseAuthorized: false,
-      }) + "\n",
-      { flag: "wx", mode: 0o600 },
-    );
+    initialRecord = retainJSON(initialPath, {
+      kind: "MEDIA_TRANSPORT_SHADOW",
+      status: "INCOMPLETE",
+      ...expectations,
+      authentication: "DECLARED_EXPECTATIONS_NOT_PROVIDER_AUTHENTICATED",
+      qualification: false,
+      reuseAuthorized: false,
+    });
     reader = response?.body?.getReader?.();
     need(response?.ok === true && response.status === 200 && reader, "RESPONSE");
     const length = response.headers.get("content-length");
@@ -309,7 +352,7 @@ export async function retainMediaTransportShadow({
   };
   try {
     sameDirectory(identity);
-    fs.writeFileSync(terminalPath, JSON.stringify(terminal) + "\n", { flag: "wx", mode: 0o600 });
+    terminalRecord = retainJSON(terminalPath, terminal);
   } catch (failure) {
     error ??= failure;
     terminal.status = "FAIL";
@@ -317,7 +360,7 @@ export async function retainMediaTransportShadow({
     terminal.failureRetained = false;
   }
   const result = Object.freeze(Object.defineProperty(terminal, "originalError", { value: error, enumerable: false }));
-  if (!error) completed.set(result, { identity, rawPath, bytes, sha256 });
+  if (!error) completed.set(result, { identity, rawPath, bytes, sha256, initialRecord, terminalRecord });
   return result;
 }
 
@@ -327,6 +370,8 @@ export function verifyRetainedMediaShadow(receipt) {
   let fd;
   try {
     sameDirectory(value.identity);
+    verifyReceipt(value.initialRecord);
+    verifyReceipt(value.terminalRecord);
     fd = fs.openSync(value.rawPath, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW | fs.constants.O_NONBLOCK);
     const before = sameFile(fd, value.rawPath);
     need(before.size === value.bytes, "FILE_DRIFT");
@@ -348,7 +393,15 @@ export function verifyRetainedMediaShadow(receipt) {
       "FILE_DRIFT",
     );
     sameDirectory(value.identity);
-    return Object.freeze({ bytes, sha256: value.sha256, qualification: false, reuseAuthorized: false });
+    verifyReceipt(value.initialRecord);
+    verifyReceipt(value.terminalRecord);
+    return Object.freeze({
+      bytes,
+      sha256: value.sha256,
+      receiptBytesVerified: true,
+      qualification: false,
+      reuseAuthorized: false,
+    });
   } catch {
     return null;
   } finally {
