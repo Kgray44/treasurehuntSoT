@@ -26,6 +26,7 @@ import { experienceDigest } from "../../scripts/sounding-line/product-experience
 import { createClosedContextResumeShadow } from "../../scripts/sounding-line/closed-context-resume-shadow.mjs";
 import { authenticatedCompletedReceipt } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
 import { buildClosedContextRegistryShadow } from "../../scripts/sounding-line/closed-context-registry-producer.mjs";
+import { sealClosedContextRegistryFiles } from "../../scripts/sounding-line/closed-context-registry-files.mjs";
 import { validateArtifactManifest } from "../../scripts/sounding-line/artifact-evidence-registry.mjs";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 test(
@@ -296,6 +297,52 @@ require('node:http').createServer((q,s)=>{
       1,
     );
     assert.throws(() => validateArtifactManifest(registry.manifest), /PARTIAL_MANIFEST_NOT_ACCEPTANCE/u);
+    assert.equal(registry.manifest.artifacts[0].immutableLocation.representation, "ENCRYPTED_RAW_INDEX_MEMBER");
+    assert.equal(registry.manifest.completedContexts[0].originalScheduleOrdinal, 1);
+    const diagnosticRun = randomUUID(),
+      diagnosticScope = randomUUID();
+    const diagnosticPath = `artifacts/sounding-line/browser-diagnostics/${diagnosticRun}/${diagnosticScope}/browser-runtime.json`;
+    await fs.mkdir(path.dirname(absolute(diagnosticPath)), { recursive: true });
+    await fs.writeFile(
+      absolute(diagnosticPath),
+      JSON.stringify({
+        ...runtime,
+        diagnosticBinding: {
+          version: 1,
+          runId: diagnosticRun,
+          scopeId: diagnosticScope,
+          baseSha: plan.baseSha,
+          candidateSha: plan.candidateSha,
+          planDigest: experienceDigest(plan),
+        },
+      }),
+      { flag: "wx", mode: 0o600 },
+    );
+    const { contexts: _contexts, cleanup: _cleanup, ...fileRegistryInput } = registryInput;
+    const sealedRegistry = await sealClosedContextRegistryFiles({
+      ...fileRegistryInput,
+      root,
+      rawDirectory,
+      cleanupPath: diagnosticPath,
+    });
+    assert.equal(sealedRegistry.completedContexts, 1);
+    assert.equal(sealedRegistry.artifactCount, journalObservation.journal.artifacts.length + 3);
+    assert(sealedRegistry.encrypted.length < 8 * 1024 * 1024);
+    assert(!sealedRegistry.encrypted.includes(Buffer.from(journalObservation.journal.artifacts[0].id)));
+    assert.equal(sealedRegistry.reuseAuthorized, false);
+    const mediaFile = absolute(journalObservation.journal.rawFiles[0].path),
+      originalMedia = await fs.readFile(mediaFile);
+    try {
+      const corrupt = Buffer.from(originalMedia);
+      corrupt[0] ^= 1;
+      await fs.writeFile(mediaFile, corrupt);
+      await assert.rejects(
+        sealClosedContextRegistryFiles({ ...fileRegistryInput, root, rawDirectory, cleanupPath: diagnosticPath }),
+        /MEDIA_CHANGED/u,
+      );
+    } finally {
+      await fs.writeFile(mediaFile, originalMedia);
+    }
     for (const change of [
       (value) => {
         value.cleanup.portsClosed = false;

@@ -53,6 +53,12 @@ export function buildClosedContextRegistryShadow({
   need(plan && Buffer.byteLength(canonicalJson(plan)) <= 2 * 1024 * 1024, "PLAN_BOUND");
   const schedule = shadowCaptureContextSchedule(plan);
   need(Array.isArray(contexts) && contexts.length > 0 && contexts.length <= 128, "CONTEXT_BOUND");
+  for (const observation of contexts) need(observation?.journal?.context?.viewport, "CONTEXT_IDENTITY");
+  contexts = [...contexts].sort(
+    (a, b) =>
+      schedule.findIndex((value) => value.contextId === closedContextIdentity(a.journal.context)) -
+      schedule.findIndex((value) => value.contextId === closedContextIdentity(b.journal.context)),
+  );
   need(
     producer?.repository === "Kgray44/treasurehuntSoT" &&
       positive(producer.runId) &&
@@ -64,17 +70,26 @@ export function buildClosedContextRegistryShadow({
   );
   for (const artifact of [rawArtifact, lifecycleArtifact])
     need(positive(artifact?.id) && sha256(artifact.archiveSha256), "PROVIDER_LOCATION");
+  const cleanups = Array.isArray(cleanup) ? cleanup : [cleanup];
   need(
-    Buffer.isBuffer(cleanup?.bytes) &&
-      cleanup.bytes.length > 0 &&
-      cleanup.bytes.length <= 1024 * 1024 &&
-      typeof cleanup.path === "string",
-    "CLEANUP_BYTES",
+    cleanups.length > 0 &&
+      cleanups.length <= 16 &&
+      new Set(cleanups.map((value) => value?.fixtureProfile ?? "generic")).size === cleanups.length,
+    "CLEANUP_PROFILES",
   );
-  need(
-    cleanup.processTreeClosed === true && cleanup.portsClosed === true && cleanup.streamsClosed === true,
-    "CLEANUP_INCOMPLETE",
-  );
+  for (const cleanup of cleanups) {
+    need(
+      Buffer.isBuffer(cleanup?.bytes) &&
+        cleanup.bytes.length > 0 &&
+        cleanup.bytes.length <= 1024 * 1024 &&
+        typeof cleanup.path === "string",
+      "CLEANUP_BYTES",
+    );
+    need(
+      cleanup.processTreeClosed === true && cleanup.portsClosed === true && cleanup.streamsClosed === true,
+      "CLEANUP_INCOMPLETE",
+    );
+  }
   const observationKeys = ["fixtureDigest", "toolchainDigest", "browserDigest", "environmentDigest"];
   need(
     definitionObservations &&
@@ -128,6 +143,10 @@ export function buildClosedContextRegistryShadow({
       target = schedule.find((value) => value.contextId === closedContextIdentity(journal?.context));
     need(target && !seenContexts.has(target.contextId), "CONTEXT_IDENTITY");
     seenContexts.add(target.contextId);
+    const profile =
+      plan.contracts.find((value) => value.id === target.context.contractId).experience.fixtureProfile ?? "generic";
+    const cleanup = cleanups.find((value) => (value.fixtureProfile ?? "generic") === profile);
+    need(cleanup, "CLEANUP_PROFILE_MISSING");
     need(
       journal.classification === "CLOSED_BROWSER_CONTEXT_OBSERVATION_NOT_RUNTIME_CLEANUP" &&
         equal(journal.binding, rawCaptureBinding(plan)) &&
@@ -192,6 +211,9 @@ export function buildClosedContextRegistryShadow({
           artifactId: location.id,
           archiveSha256: location.archiveSha256,
           path,
+          ...(location === rawArtifact
+            ? { representation: "ENCRYPTED_RAW_INDEX_MEMBER", encryptedIndexPath: "index.encrypted" }
+            : {}),
         },
         retentionIdentity: `provider-run-${producer.runId}-${producer.attempt}-artifact-${location.id}`,
         producerIdentity,
@@ -251,6 +273,7 @@ export function buildClosedContextRegistryShadow({
       runtimeCleanupReceiptDigest: cleanupReceipt.cleanupDigest,
       captureSession,
       completedAt: observation.completedAt,
+      originalScheduleOrdinal: schedule.findIndex((value) => value.contextId === target.contextId) + 1,
       artifactIds: selected.map((value) => value.id),
       artifactBindingsDigest: artifactContextBindingsDigest(selected),
       originalBaseSha: plan.baseSha,

@@ -211,6 +211,17 @@ function validLocation(location) {
     location.path.split("/").some((part) => !part || part === "." || part === "..")
   )
     return false;
+  if (location.representation !== undefined) {
+    if (
+      location.kind !== "PROVIDER_ARTIFACT" ||
+      location.representation !== "ENCRYPTED_RAW_INDEX_MEMBER" ||
+      location.encryptedIndexPath !== "index.encrypted" ||
+      !/^artifacts\/sounding-line\/product-experience-capture-staging\/capture-[A-Za-z0-9_-]+\/raw\//u.test(
+        location.path,
+      )
+    )
+      return false;
+  } else if (location.encryptedIndexPath !== undefined) return false;
   return location.kind === "GIT"
     ? sha.test(location.commit ?? "") && sha.test(location.blob ?? "")
     : Number.isSafeInteger(location.artifactId) && location.artifactId > 0 && sha256.test(location.archiveSha256 ?? "");
