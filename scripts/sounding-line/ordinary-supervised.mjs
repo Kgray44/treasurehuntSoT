@@ -69,10 +69,15 @@ export async function currentVerificationJob({
     providerHttpDate: null,
   };
   try {
+    const lookupBegan = monotonic();
     const response = await request(
       `https://api.github.com/repos/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}/attempts/${env.GITHUB_RUN_ATTEMPT}/jobs?per_page=100`,
       {
-        headers: { Authorization: `Bearer ${env.GH_TOKEN}`, Accept: "application/vnd.github+json" },
+        headers: {
+          Authorization: `Bearer ${env.GH_TOKEN}`,
+          Accept: "application/vnd.github+json",
+          "Cache-Control": "no-cache",
+        },
         signal: AbortSignal.timeout(5000),
       },
     );
@@ -83,6 +88,7 @@ export async function currentVerificationJob({
       fail("JOB_BINDING_INVALID");
     }
     const data = await response.json();
+    const lookupMs = monotonic() - lookupBegan;
     // A truncated page or an ambiguous job is not a fresh clock.
     if (
       !Number.isSafeInteger(data.total_count) ||
@@ -120,6 +126,31 @@ export async function currentVerificationJob({
     if (!Number.isSafeInteger(localNow)) fail("JOB_BINDING_INVALID");
     const providerSetupMs = localNow - Date.parse(job.started_at);
     Object.assign(observation, { localNow, providerSetupMs });
+    const setupSteps = Array.isArray(job.steps)
+      ? job.steps.filter((step) => step.number === 1 && step.name === "Set up job")
+      : [];
+    const first = setupSteps[0],
+      httpNow = Date.parse(observation.providerHttpDate);
+    observation.setupStep = first
+      ? { number: first.number, name: first.name, started_at: first.started_at, status: first.status }
+      : null;
+    const firstStarted = Date.parse(first?.started_at);
+    const fraction = typeof first?.started_at === "string" ? /\.(\d{1,3})Z$/u.exec(first.started_at)?.[1] : undefined;
+    const timestampQuantumMs = fraction ? 10 ** (3 - fraction.length) : 1000;
+    if (
+      !Number.isFinite(lookupMs) ||
+      lookupMs < 0 ||
+      setupSteps.length !== 1 ||
+      !["completed", "in_progress"].includes(first.status) ||
+      !Number.isFinite(firstStarted) ||
+      !Number.isFinite(httpNow) ||
+      httpNow > localNow + 1000 ||
+      localNow - httpNow > lookupMs + 1000 ||
+      firstStarted > localNow
+    )
+      fail("NATIVE_CLOCK_UNAVAILABLE");
+    observation.setupStepElapsedMs = localNow - firstStarted;
+    observation.timestampRoundingDebitMs = timestampQuantumMs;
     const began = monotonic(),
       native = clock(),
       captureMs = monotonic() - began;
@@ -135,7 +166,10 @@ export async function currentVerificationJob({
     // The complete Listener execution age is always debited. A coherent provider
     // age can only increase the debit. A future header is retained, not clamped,
     // corrected by a timezone offset, or used as a fresh execution allowance.
-    const nativeSetupMs = native.setupMs + Math.ceil(captureMs);
+    const nativeSetupMs = native.setupMs + Math.ceil(captureMs) + timestampQuantumMs;
+    // The step clock is only a runtime ordering check. It is never substituted
+    // for the complete pre-worker execution debit from the older Listener.
+    if (observation.setupStepElapsedMs > nativeSetupMs) fail("NATIVE_CLOCK_UNAVAILABLE");
     const setupMs = providerSetupMs >= 0 ? Math.max(nativeSetupMs, providerSetupMs) : nativeSetupMs;
     observation.nativeClock = native;
     observation.clockDisposition =

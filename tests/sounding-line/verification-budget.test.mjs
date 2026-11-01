@@ -45,35 +45,59 @@ test("job allowance uses the authenticated current attempt and refuses absent, a
     run_attempt: 2,
     head_sha: "b".repeat(40),
     started_at: "2026-10-31T00:00:00Z",
+    steps: [{ number: 1, name: "Set up job", started_at: "2026-10-31T00:00:00Z", status: "completed" }],
   };
   let requested;
   const request = async (url) => {
     requested = url;
-    return { status: 200, json: async () => ({ total_count: 1, jobs: [job] }) };
+    return {
+      status: 200,
+      headers: { get: () => "Sat, 31 Oct 2026 00:10:00 GMT" },
+      json: async () => ({ total_count: 1, jobs: [job] }),
+    };
   };
   const clock = () => ({
     kind: "ANCESTRAL_HOSTED_LISTENER_EXECUTION_UPPER_BOUND",
     setupMs: 600000,
     originPid: process.pid,
   });
-  const input = { env, request, candidateSha: job.head_sha, clock, monotonic: () => 1 };
+  const input = {
+    env,
+    request,
+    candidateSha: job.head_sha,
+    clock,
+    monotonic: () => 1,
+    now: () => Date.parse("2026-10-31T00:10:00Z"),
+  };
   const result = await currentVerificationJob({ ...input, now: () => Date.parse("2026-10-31T00:10:00Z") });
   assert.match(requested, /\/runs\/42\/attempts\/2\/jobs\?/u);
-  assert.equal(result.setupMs, 600000);
+  assert.equal(result.setupMs, 601000);
   const skewed = await currentVerificationJob({
     ...input,
     request: async () => ({
       status: 200,
+      headers: { get: () => "Sat, 31 Oct 2026 00:10:00 GMT" },
       json: async () => ({ total_count: 1, jobs: [{ ...job, started_at: "2026-10-31T01:00:00Z" }] }),
     }),
     now: () => Date.parse("2026-10-31T00:10:00Z"),
   });
-  assert.equal(skewed.setupMs, 600000, "the complete execution age is debited even with a future provider header");
+  assert.equal(
+    skewed.setupMs,
+    601000,
+    "the complete execution age and timestamp precision are debited even with a future header",
+  );
   assert.equal(skewed.clockObservation.providerSetupMs, -3000000);
   assert.equal(skewed.clockObservation.providerJob.started_at, "2026-10-31T01:00:00Z");
   assert.equal(skewed.tailMs, 120000);
   assert.equal(skewed.limitMs, 2700000);
-  const olderProvider = await currentVerificationJob({ ...input, now: () => Date.parse("2026-10-31T00:15:00Z") });
+  const olderProvider = await currentVerificationJob({
+    ...input,
+    request: async () => ({
+      status: 200,
+      headers: { get: () => "Sat, 31 Oct 2026 00:10:00 GMT" },
+      json: async () => ({ total_count: 1, jobs: [{ ...job, started_at: "2026-10-30T23:55:00Z" }] }),
+    }),
+  });
   assert.equal(olderProvider.setupMs, 900000, "an older coherent provider age cannot buy more allowance");
   for (const data of [
     { total_count: 0, jobs: [] },
@@ -115,6 +139,35 @@ test("job allowance uses the authenticated current attempt and refuses absent, a
     },
   ])
     await assert.rejects(currentVerificationJob({ ...input, ...bad }), /NATIVE_CLOCK_UNAVAILABLE/u);
+  for (const changed of [
+    { ...job, steps: [] },
+    { ...job, steps: [job.steps[0], job.steps[0]] },
+    { ...job, steps: [{ ...job.steps[0], started_at: "2026-10-31T00:11:00Z" }] },
+    { ...job, steps: [{ ...job.steps[0], started_at: "2026-10-30T23:59:00Z" }] },
+  ])
+    await assert.rejects(
+      currentVerificationJob({
+        ...input,
+        request: async () => ({
+          status: 200,
+          headers: { get: () => "Sat, 31 Oct 2026 00:10:00 GMT" },
+          json: async () => ({ total_count: 1, jobs: [changed] }),
+        }),
+      }),
+      /NATIVE_CLOCK_UNAVAILABLE/u,
+    );
+  for (const date of [null, "invalid", "Sat, 31 Oct 2026 01:10:00 GMT", "Sat, 31 Oct 2026 00:09:00 GMT"])
+    await assert.rejects(
+      currentVerificationJob({
+        ...input,
+        request: async () => ({
+          status: 200,
+          headers: { get: () => date },
+          json: async () => ({ total_count: 1, jobs: [job] }),
+        }),
+      }),
+      /NATIVE_CLOCK_UNAVAILABLE/u,
+    );
   await assert.rejects(
     currentVerificationJob({
       ...input,

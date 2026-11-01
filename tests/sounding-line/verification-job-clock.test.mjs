@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { readNativeVerificationClock } from "../../scripts/sounding-line/verification-job-clock.mjs";
 import { currentVerificationJob } from "../../scripts/sounding-line/ordinary-supervised.mjs";
 import { verificationBudgetFromElapsed } from "../../scripts/sounding-line/verification-budget.mjs";
@@ -149,6 +150,25 @@ test("no native age can extend an exhausted fixed execution budget or remove its
   assert.equal(budget.setupMs + budget.executionMs + budget.tailMs, budget.limitMs);
 });
 
+test("retained native proc wire format is readable without mistaking replay for live clock authority", () => {
+  const recorded = JSON.parse(readFileSync(new URL("./fixtures/native-clock-41290027284.json", import.meta.url)));
+  const records = new Map(recorded.processes.map((value) => [value.pid, value]));
+  const samples = [recorded.uptimeBefore, recorded.uptimeAfter];
+  const clock = readNativeVerificationClock({
+    platform: "linux",
+    pid: recorded.processes[0].pid,
+    filesystem: () => 0x9fa0,
+    ticks: () => recorded.clockTicksPerSecond,
+    read: (file) => (file === "/proc/uptime" ? samples.shift() : records.get(Number(file.split("/")[2])).stat),
+    link: (file) => records.get(Number(file.split("/")[2])).executable,
+  });
+  assert.equal(clock.setupMs, 3350);
+  assert.equal(clock.workerPid, 2431);
+  assert.equal(clock.listenerPid, 2403);
+  assert.equal(recorded.classification, "RECORDED_WIRE_FORMAT_NOT_LIVE_ATTESTATION");
+  assert.equal(clock.qualification, false);
+});
+
 test(
   "actual hosted kernel ancestry and current exact job bind a conservative clock despite provider header skew",
   {
@@ -162,7 +182,11 @@ test(
     const result = await currentVerificationJob({
       candidateSha,
       env: { ...process.env, GH_TOKEN: "public-read-fixture-no-credential" },
-      request: (url, options) => fetch(url, { ...options, headers: { Accept: "application/vnd.github+json" } }),
+      request: (url, options) => {
+        const headers = new Headers(options.headers);
+        headers.delete("Authorization");
+        return fetch(url, { ...options, headers });
+      },
     });
     assert.equal(result.clockObservation.providerJob.candidateSha, candidateSha);
     assert.equal(result.clockObservation.nativeClock.originPid, process.pid);
