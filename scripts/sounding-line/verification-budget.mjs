@@ -25,6 +25,23 @@ export function verificationBudget({
   const started = Date.parse(jobStartedAt);
   const setupMs = now - started;
   if (!Number.isFinite(setupMs) || setupMs < 0) fail("JOB_BINDING_INVALID");
+  return verificationBudgetFromElapsed({ setupMs, limitMs, tailMs });
+}
+export function verificationBudgetFromElapsed({
+  setupMs,
+  limitMs = VERIFICATION_JOB_MS,
+  tailMs = VERIFICATION_TAIL_MS,
+}) {
+  if (!Number.isSafeInteger(setupMs) || setupMs < 0) fail("JOB_BINDING_INVALID");
+  if (
+    !Number.isSafeInteger(limitMs) ||
+    limitMs < 1 ||
+    limitMs > 120 * 60000 ||
+    !Number.isSafeInteger(tailMs) ||
+    tailMs < 1 ||
+    tailMs >= limitMs
+  )
+    fail("BUDGET_INVALID");
   const executionMs = limitMs - setupMs - tailMs;
   if (executionMs <= 0) fail("JOB_BUDGET_EXHAUSTED");
   return Object.freeze({ limitMs, setupMs, tailMs, executionMs });

@@ -34,6 +34,7 @@ const MODULES = [
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
   "scripts/sounding-line/ordinary-supervised.mjs",
   "scripts/sounding-line/verification-budget.mjs",
+  "scripts/sounding-line/verification-job-clock.mjs",
   "scripts/sounding-line/verification-preflight.mjs",
   "scripts/sounding-line/verification-supervisor.mjs",
   "scripts/sounding-line/owned-process.mjs",

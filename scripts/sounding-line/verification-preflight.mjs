@@ -59,6 +59,7 @@ export async function verificationPreflight({ root, authorityRoot, baseSha, cand
     "ordinary.mjs",
     "ordinary-supervised.mjs",
     "verification-budget.mjs",
+    "verification-job-clock.mjs",
     "verification-preflight.mjs",
     "verification-supervisor.mjs",
     "owned-process.mjs",

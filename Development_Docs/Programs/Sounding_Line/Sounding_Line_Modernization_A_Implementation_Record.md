@@ -259,3 +259,53 @@ Independent source review cleared shadow commit
 bootstrap. The immutable bootstrap contains ACTIVE with certificate PENDING;
 its final child changes only the certificate literal. Installation follows the
 ordinary protected check, guarded merge transaction and landed verification.
+
+## Verification clock-domain correction preparation
+
+The first #819 installed selected-route run `41285871235/1` passed custody and
+verification checkout in approximately 7 and 63 seconds, then failed one strict
+photo-recovery focus unit assertion. It did not qualify. The separate test-only
+candidate #830 `84ee90484e7366f2c309d4d5c68c324990ea33e6` passed both full
+checkouts in run `41287548617/1`, but its supervisor failed before starting a
+child. Original artifact `13076305949`, SHA-256
+`5aab90790ee8ebae0bd280ecc63881a97c89d758f812ff67e7400dbd1ab8b722`,
+records `SOUNDING_LINE_VERIFICATION_JOB_BINDING_INVALID`. Its job header starts
+at `09:10:49Z`, while its own verifier step starts at `08:15:00Z`; the installed
+wall-clock subtraction reproduces a negative setup debit. No failed receipt or
+decision was waived.
+
+One independently reviewed, read-only three-minute development observation
+`41290027284/1`, source `016e99606a7cd870a18a508a9a9f3c6abb3d969a`, retained
+artifact `13077046068`, SHA-256
+`9f95c6d6831487a014181d06869d06fa5a7b78bf693affba947ccafe48886073`.
+It confirms the native Worker-to-Listener ancestry, 100 Hz process-start ticks,
+and the header/step clock discrepancy. Live timing API responses provide no
+usable duration. This observation issues no qualification or release authority.
+
+GitHub distinguishes queue time from job execution in its
+[limits](https://docs.github.com/en/actions/reference/limits) and
+[workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax).
+Runner `2.338.2`, commit
+[`d1eb12d4`](https://github.com/actions/runner/blob/d1eb12d4b115c301201de27d667284e1a80f2ab5/src/Runner.Listener/JobDispatcher.cs),
+receives the job in Listener before spawning Worker. The explicit inference is
+that a validated live Listener age conservatively bounds this hosted job's
+runner execution. An older Listener spends more allowance; unsupported forms,
+missing records, changed ancestry, reused PIDs and inconsistent ticks fail closed.
+
+The prepared repair verifies the exact current run, attempt, job and head,
+re-reads process edges, executable identities and start ticks, and debits kernel
+tick/uptime rounding. It always debits the complete native execution bound and
+uses the larger provider age when that age is coherent. A future provider header
+is retained as inconsistent; it is neither timezone-adjusted nor clamped to a
+fresh allowance. The ordinary 45-minute execution limit, two-minute cleanup tail,
+finite campaign limits and protected merge authority remain unchanged. Hosted
+source-bound proof, independent final review, ordinary qualification and landed
+verification are still required before installation.
+
+The first repair candidate `c7bc55530ed2a3c50fc94b0acae1a228681a6327`
+received a successful protected decision in run `41293056581/1`, but its explicit
+`test:sounding-line` package script omitted the new native clock test file. The
+original log has no native clock proof. This run is retained as incomplete proof
+and cannot authorize this repair's merge. The correction adds that file once to
+the existing test list and adds a membership regression in an already executed
+budget test. It does not change clock behavior or any protected release authority.
