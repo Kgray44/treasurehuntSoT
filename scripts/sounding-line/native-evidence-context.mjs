@@ -98,7 +98,7 @@ export function observeNativeEvidenceContext({ environment, event }) {
   });
 }
 
-function commandLineObservation() {
+export function readInstalledNativeEvidenceContext() {
   try {
     const filename = process.env.GITHUB_EVENT_PATH;
     need(typeof filename === "string" && path.isAbsolute(filename), "EVENT_FILE");
@@ -184,4 +184,6 @@ function commandLineObservation() {
   }
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url))
-  process.stdout.write(`SOUNDING_LINE_NATIVE_EVIDENCE_CONTEXT_V2 ${JSON.stringify(commandLineObservation())}\n`);
+  process.stdout.write(
+    `SOUNDING_LINE_NATIVE_EVIDENCE_CONTEXT_V2 ${JSON.stringify(readInstalledNativeEvidenceContext())}\n`,
+  );

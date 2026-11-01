@@ -34,6 +34,7 @@ test("the protected regression script includes every incremental registry and co
     "provider-run-log-archive",
     "native-evidence-context",
     "native-original-context-auth",
+    "native-registry-producer",
     "runtime-snapshot-retention",
     "owned-process-closure",
     "sqlite-runtime-snapshot",
