@@ -5,6 +5,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnOwnedProcess, processExit, stopOwnedProcess } from "./owned-process.mjs";
+import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
 import {
   EXPERIENCE_CHECKOUT_ROOTS,
   EXPERIENCE_READER_REVISIONS,
@@ -137,6 +138,7 @@ export async function selectedCheckout({
   stallBudgetMs = 600000,
   signal,
   progress = true,
+  selectReadSet,
 }) {
   need(
     oid(baseSha) &&
@@ -154,8 +156,8 @@ export async function selectedCheckout({
     commands = [];
   const advance = () => clock.advance();
   const allRoots = [...new Set([baseSha, candidateSha, ...roots])];
-  let operationalEnv;
-  const command = async (args, executable = gitExecutable()) => {
+  let operationalEnv, readSetSummary;
+  const command = async (args, executable = gitExecutable(), raw = false, readOnly = false) => {
     need(!signal?.aborted, "CANCELLED");
     clock.assertLive();
     const remaining = deadline - performance.now() - 5000;
@@ -163,7 +165,7 @@ export async function selectedCheckout({
     const commandBegan = performance.now();
     const child = spawnOwnedProcess(executable, args, {
       root,
-      env: operationalEnv,
+      env: readOnly ? custodyProbeEnvironment(operationalEnv, gitExecutable()) : operationalEnv,
       cleanupOptions: { gracefulMs: 500, forceMs: 1000 },
     });
     child.stdout.unpipe(process.stdout);
@@ -203,7 +205,17 @@ export async function selectedCheckout({
         processExit(child),
         new Promise((_, reject) => {
           rejectClock = reject;
-          timer = setTimeout(() => reject(new Error("SOUNDING_LINE_SELECTED_CHECKOUT_DEADLINE")), remaining);
+          timer = setTimeout(
+            () =>
+              reject(
+                new Error(
+                  readOnly && remaining > 90000
+                    ? "SOUNDING_LINE_SELECTED_CHECKOUT_PROBE_DEADLINE"
+                    : "SOUNDING_LINE_SELECTED_CHECKOUT_DEADLINE",
+                ),
+              ),
+            readOnly ? Math.min(remaining, 90000) : remaining,
+          );
           abort = () => reject(new Error("SOUNDING_LINE_SELECTED_CHECKOUT_CANCELLED"));
           signal?.addEventListener("abort", abort, { once: true });
           if (signal?.aborted) abort();
@@ -232,7 +244,8 @@ export async function selectedCheckout({
     }
     need(size <= 128 * 1024 * 1024, "OUTPUT_LIMIT");
     advance();
-    return Buffer.concat(chunks).toString("utf8").trim();
+    const output = Buffer.concat(chunks).toString("utf8");
+    return raw ? output : output.trim();
   };
   await mkdir(root); // Fresh owned directory only; never reuse a shallow checkout.
   const emptyConfig = path.join(root, "..", `${path.basename(root)}.empty-git-config`);
@@ -276,6 +289,77 @@ export async function selectedCheckout({
       ...allRoots.map((sha) => `+${sha}:refs/sounding-line/selected/${sha}`),
     ]);
     need((await command(["rev-parse", "--is-shallow-repository"])) === "false", "SHALLOW");
+    const readSet = selectReadSet
+      ? await selectReadSet({
+          command,
+          readOnlyCommand: (args, executable) => command(args, executable, false, true),
+          root,
+          git: gitExecutable(),
+          baseSha,
+          candidateSha,
+        })
+      : null;
+    need(readSet === null || typeof readSet.applied === "boolean", "READ_SET_INVALID");
+    const exclusions = readSet?.applied ? readSet.proposal?.omissions : [];
+    const metadataCustody = readSet?.applied && readSet.proposal?.profile === "DOCUMENTATION_CUSTODY_METADATA_V1";
+    const certificateReader = readSet?.certificateReader;
+    need(
+      !certificateReader ||
+        (oid(certificateReader.revision) &&
+          oid(certificateReader.blob) &&
+          certificateReader.path === "scripts/sounding-line/ordinary-documentation-checkout-profile.mjs"),
+      "CERTIFICATE_READER_INVALID",
+    );
+    need(
+      !metadataCustody ||
+        (readSet.custodyProbe?.status === "PASS" &&
+          readSet.custodyProbe.campaign === false &&
+          readSet.custodyProbe.baseSha === baseSha &&
+          readSet.custodyProbe.candidateSha === candidateSha),
+      "CUSTODY_PROBE_REQUIRED",
+    );
+    need(
+      !readSet?.applied ||
+        (["DOCUMENTATION_ONLY_SOURCE_BOUND_V1", "DOCUMENTATION_CUSTODY_METADATA_V1"].includes(
+          readSet.proposal?.profile,
+        ) &&
+          Array.isArray(exclusions) &&
+          exclusions.length <= 100000),
+      "READ_SET_INVALID",
+    );
+    need(
+      !metadataCustody ||
+        (Array.isArray(readSet.proposal.metadataPaths) &&
+          readSet.proposal.metadataPaths.includes("testing/contracts.json") &&
+          readSet.proposal.metadataPaths.includes("testing/product-experience-exceptions.json") &&
+          readSet.proposal.metadataPaths.every(
+            (file) =>
+              file === "testing/contracts.json" ||
+              file === "testing/product-experience-exceptions.json" ||
+              file === ".gitattributes" ||
+              file.endsWith("/.gitattributes"),
+          )),
+      "CUSTODY_READ_SET_INVALID",
+    );
+    readSetSummary = readSet
+      ? {
+          applied: readSet.applied === true,
+          profile: readSet.proposal?.profile,
+          purpose: readSet.proposal?.purpose,
+          metadataPaths: readSet.proposal?.metadataPaths,
+          custodyProbe: readSet.custodyProbe,
+          certificateReader,
+          anchor: readSet.proposal?.anchor,
+          transportCertificate: readSet.proposal?.transportCertificate,
+          reason: readSet.proposal?.reason,
+          changedPaths: readSet.proposal?.changedPaths,
+          proposedOmissions: readSet.proposal?.omissions?.length ?? 0,
+          omittedInventoryDigest: readSet.proposal?.omittedInventoryDigest,
+          retainedInventoryDigest: readSet.proposal?.retainedInventoryDigest,
+          completePathnameInventoryDigest: readSet.proposal?.completePathnameInventoryDigest,
+          qualification: false,
+        }
+      : { profile: "FULL_SNAPSHOT", applied: false };
     const closureFile = path.join(root, ".git", "selected-required-objects.json"),
       hydrationScript = fileURLToPath(new URL("./experience-checkout-hydration.mjs", import.meta.url));
     const operation = async (name, extra) => {
@@ -284,11 +368,23 @@ export async function selectedCheckout({
       return JSON.parse(await command([hydrationScript, file], process.execPath));
     };
     const compiled = await operation("compile", {
-      snapshots: [...new Set([baseSha, candidateSha])],
-      readerSnapshots: [...new Set([...roots, ...readerRevisions])],
-      objects: readerObjects,
-      readerPaths,
+      snapshots: metadataCustody ? [] : [...new Set([baseSha, candidateSha])],
+      readerSnapshots: metadataCustody
+        ? [...new Set([baseSha, candidateSha])]
+        : [...new Set([...roots, ...readerRevisions])],
+      objects: metadataCustody ? [] : readerObjects,
+      readerPaths: [
+        ...(metadataCustody
+          ? [baseSha, candidateSha].flatMap((revision) =>
+              readSet.proposal.metadataPaths.map((path) => ({ revision, path })),
+            )
+          : readerPaths),
+        ...(certificateReader ? [{ revision: certificateReader.revision, path: certificateReader.path }] : []),
+      ],
+      pathOnlySnapshots: certificateReader ? [certificateReader.revision] : [],
+      exactReaderOnly: metadataCustody === true,
       output: closureFile,
+      snapshotExclusions: metadataCustody ? [] : exclusions,
     });
     stage("EXPLICIT_READER_CLOSURE_HYDRATION");
     const hydration = await operation("hydrate", { closure: closureFile });
@@ -300,8 +396,31 @@ export async function selectedCheckout({
       lockTransport: true,
     });
     stage("EXACT_CANDIDATE_CHECKOUT");
+    if (exclusions.length) {
+      await command(["config", "--local", "core.sparseCheckout", "true"]);
+      await command(["config", "--local", "core.sparseCheckoutCone", "false"]);
+      const escape = (file) => file.replace(/[\\*?\[\] !#]/gu, "\\$&");
+      await mkdir(path.join(root, ".git/info"), { recursive: true });
+      await writeFile(
+        path.join(root, ".git/info/sparse-checkout"),
+        "/*\n" + exclusions.map((entry) => "!/" + escape(entry.path)).join("\n") + "\n",
+        { flag: "wx" },
+      );
+    }
     await command(["checkout", "--progress", "--detach", candidateSha]);
     need((await command(["rev-parse", "HEAD"])) === candidateSha, "HEAD_CHANGED");
+    if (exclusions.length) {
+      const skipped = (await command(["ls-files", "-t", "-z"]))
+        .split("\0")
+        .filter((row) => row.startsWith("S "))
+        .map((row) => row.slice(2))
+        .sort();
+      need(
+        JSON.stringify(skipped) === JSON.stringify(exclusions.map((entry) => entry.path).sort()),
+        "SPARSE_MATERIALIZATION_CHANGED",
+      );
+      need((await command(["status", "--porcelain", "--untracked-files=no"])) === "", "WORKING_TREE_CHANGED");
+    }
     let preservationPins, historicalManifestPinsRetained;
     if (preservation) {
       const preserved = await preservation({ command, baseSha, candidateSha });
@@ -342,6 +461,7 @@ export async function selectedCheckout({
     clock.assertLive();
     result = {
       status: "PASS",
+      readSet: readSetSummary,
       baseSha,
       candidateSha,
       roots: allRoots,
@@ -368,6 +488,7 @@ export async function selectedCheckout({
   } catch (error) {
     result = {
       status: "FAIL",
+      readSet: readSetSummary,
       error: error.message,
       baseSha,
       candidateSha,
