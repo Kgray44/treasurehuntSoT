@@ -28,6 +28,20 @@ for (const file of files) {
   fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
   fs.copyFileSync(new URL(`../../${file}`, import.meta.url), path.join(root, file));
 }
+// Instrument only the independently committed synthetic installed source.
+// Production has no caller-supplied transport or test globals.
+const fixtureReader = path.join(root, files[0]);
+const productionReader = fs.readFileSync(fixtureReader, "utf8");
+const transportBody =
+  /function providerRequest\(endpoint, \{ maximumBytes, timeoutMs \}\) \{[\s\S]*?\n\}\nexport async function/u;
+assert(transportBody.test(productionReader));
+fs.writeFileSync(
+  fixtureReader,
+  productionReader.replace(
+    transportBody,
+    "function providerRequest(endpoint, options) { return globalThis.__syntheticOriginalContextProvider(endpoint, options); }\nexport async function",
+  ),
+);
 git("add", ".");
 git("commit", "-qm", "Synthetic installed producer");
 const base = git("rev-parse", "HEAD");
@@ -186,13 +200,21 @@ function fixture(jobKey = "experience-preparation", event = "workflow_dispatch")
     prNumber: 900,
     jobKey,
     expectedOriginalSource: { baseSha: base, candidateSha: candidate },
-    request,
   };
+  globalThis.__syntheticOriginalContextProvider = request;
   return f;
 }
 const runKey = "actions/runs/4444/attempts/1",
   jobsKey = "actions/runs/4444/attempts/1/jobs?per_page=100";
 test.after(() => fs.rmSync(root, { recursive: true, force: true }));
+test("callers cannot supply an authentication transport", async () => {
+  const f = fixture();
+  await assert.rejects(
+    api.authenticateNativeOriginalContext({ ...f.input, request: () => Buffer.from("{}") }),
+    /TRANSPORT_OVERRIDE/u,
+  );
+  assert.equal(f.calls.length, 0);
+});
 test("original provider log survives later checkout failure and moving PR associations; proof is opaque", async () => {
   for (const [job, event] of [
     ["experience-preparation", "workflow_dispatch"],
@@ -385,7 +407,7 @@ for (const [name, change] of [
 test("bounded asynchronous provider wait and frozen input binding", async () => {
   const stalled = fixture();
   stalled.input.budgetMs = 20;
-  stalled.input.request = () => new Promise(() => {});
+  globalThis.__syntheticOriginalContextProvider = () => new Promise(() => {});
   await assert.rejects(api.authenticateNativeOriginalContext(stalled.input), /DEADLINE/u);
   const f = fixture();
   f.override = () => {

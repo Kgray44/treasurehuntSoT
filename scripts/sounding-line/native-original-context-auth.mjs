@@ -106,17 +106,8 @@ function providerRequest(endpoint, { maximumBytes, timeoutMs }) {
 }
 export async function authenticateNativeOriginalContext(input) {
   try {
-    let {
-      root,
-      acceptedBaseSha,
-      runId,
-      attempt,
-      prNumber,
-      jobKey,
-      expectedOriginalSource,
-      request = providerRequest,
-      budgetMs = 60000,
-    } = input;
+    let { root, acceptedBaseSha, runId, attempt, prNumber, jobKey, expectedOriginalSource, budgetMs = 60000 } = input;
+    need(!Object.hasOwn(input, "request"), "TRANSPORT_OVERRIDE");
     need([runId, attempt, prNumber].every(positive) && ![721, 776, 805].includes(prNumber), "ORDINARY_SCOPE");
     need(
       oid(acceptedBaseSha) &&
@@ -146,7 +137,7 @@ export async function authenticateNativeOriginalContext(input) {
       try {
         bytes = await Promise.race([
           Promise.resolve().then(() =>
-            request(endpoint, { maximumBytes, timeoutMs: Math.max(1, Math.min(20000, Math.floor(remaining))) }),
+            providerRequest(endpoint, { maximumBytes, timeoutMs: Math.max(1, Math.min(20000, Math.floor(remaining))) }),
           ),
           new Promise((_, reject) => {
             timer = setTimeout(() => reject(Error("SOUNDING_LINE_NATIVE_ORIGINAL_DEADLINE")), remaining);
