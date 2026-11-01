@@ -29,6 +29,7 @@ test("command transport rejects overflow before execution and accounts for Unico
 test("job allowance uses the authenticated current attempt and refuses absent, ambiguous or truncated jobs", async () => {
   const env = {
     GITHUB_ACTIONS: "true",
+    GITHUB_JOB: "final-check",
     GITHUB_REPOSITORY: "Kgray44/treasurehuntSoT",
     GITHUB_RUN_ID: "42",
     GITHUB_RUN_ATTEMPT: "2",
@@ -37,9 +38,12 @@ test("job allowance uses the authenticated current attempt and refuses absent, a
     GITHUB_WORKFLOW_REF: "Kgray44/treasurehuntSoT/.github/workflows/sounding-line-ordinary.yml@refs/heads/main",
   };
   const job = {
+    id: 101,
     name: "Sounding Line / Focused verification",
     status: "in_progress",
     run_id: 42,
+    run_attempt: 2,
+    head_sha: "b".repeat(40),
     started_at: "2026-10-31T00:00:00Z",
   };
   let requested;
@@ -47,21 +51,79 @@ test("job allowance uses the authenticated current attempt and refuses absent, a
     requested = url;
     return { status: 200, json: async () => ({ total_count: 1, jobs: [job] }) };
   };
-  const result = await currentVerificationJob({ env, request, now: () => Date.parse("2026-10-31T00:10:00Z") });
+  const clock = () => ({
+    kind: "ANCESTRAL_HOSTED_LISTENER_EXECUTION_UPPER_BOUND",
+    setupMs: 600000,
+    originPid: process.pid,
+  });
+  const input = { env, request, candidateSha: job.head_sha, clock, monotonic: () => 1 };
+  const result = await currentVerificationJob({ ...input, now: () => Date.parse("2026-10-31T00:10:00Z") });
   assert.match(requested, /\/runs\/42\/attempts\/2\/jobs\?/u);
   assert.equal(result.setupMs, 600000);
+  const skewed = await currentVerificationJob({
+    ...input,
+    request: async () => ({
+      status: 200,
+      json: async () => ({ total_count: 1, jobs: [{ ...job, started_at: "2026-10-31T01:00:00Z" }] }),
+    }),
+    now: () => Date.parse("2026-10-31T00:10:00Z"),
+  });
+  assert.equal(skewed.setupMs, 600000, "the complete execution age is debited even with a future provider header");
+  assert.equal(skewed.clockObservation.providerSetupMs, -3000000);
+  assert.equal(skewed.clockObservation.providerJob.started_at, "2026-10-31T01:00:00Z");
+  assert.equal(skewed.tailMs, 120000);
+  assert.equal(skewed.limitMs, 2700000);
+  const olderProvider = await currentVerificationJob({ ...input, now: () => Date.parse("2026-10-31T00:15:00Z") });
+  assert.equal(olderProvider.setupMs, 900000, "an older coherent provider age cannot buy more allowance");
   for (const data of [
     { total_count: 0, jobs: [] },
     { total_count: 2, jobs: [job, job] },
     { total_count: 101, jobs: [job] },
     { total_count: 1, jobs: [{ ...job, run_id: 41 }] },
+    { total_count: 1, jobs: [{ ...job, run_attempt: 1 }] },
+    { total_count: 1, jobs: [{ ...job, head_sha: "c".repeat(40) }] },
+    { total_count: 1, jobs: [{ ...job, id: 0 }] },
+    { total_count: 1, jobs: [{ ...job, started_at: "invalid" }] },
   ])
     await assert.rejects(
-      currentVerificationJob({ env, request: async () => ({ status: 200, json: async () => data }) }),
+      currentVerificationJob({ ...input, request: async () => ({ status: 200, json: async () => data }) }),
       /JOB_BINDING_INVALID/u,
     );
   await assert.rejects(
-    currentVerificationJob({ env: { ...env, GITHUB_REF: "refs/heads/candidate" }, request }),
+    currentVerificationJob({ ...input, env: { ...env, GITHUB_REF: "refs/heads/candidate" } }),
     /JOB_BINDING_INVALID/u,
+  );
+  for (const bad of [
+    {
+      clock: () => ({
+        kind: "ANCESTRAL_HOSTED_LISTENER_EXECUTION_UPPER_BOUND",
+        setupMs: 1,
+        originPid: process.pid + 1,
+      }),
+    },
+    { clock: () => ({ kind: "ANCESTRAL_HOSTED_LISTENER_EXECUTION_UPPER_BOUND", setupMs: -1, originPid: process.pid }) },
+    {
+      clock: () => {
+        throw Error("SOUNDING_LINE_VERIFICATION_NATIVE_CLOCK_UNAVAILABLE");
+      },
+    },
+    {
+      monotonic: (() => {
+        let value = 2;
+        return () => value--;
+      })(),
+    },
+  ])
+    await assert.rejects(currentVerificationJob({ ...input, ...bad }), /NATIVE_CLOCK_UNAVAILABLE/u);
+  await assert.rejects(
+    currentVerificationJob({
+      ...input,
+      clock: () => ({
+        kind: "ANCESTRAL_HOSTED_LISTENER_EXECUTION_UPPER_BOUND",
+        setupMs: 2700000,
+        originPid: process.pid,
+      }),
+    }),
+    /JOB_BUDGET_EXHAUSTED/u,
   );
 });
