@@ -12147,7 +12147,7 @@
         "navigation": "Owner-only pilot denial → visible development Return → Home account disclosure → Personal Harbor → Return to Home.",
         "designTarget": "Preserve truthful unavailability and the accepted shared Homeport recovery frame.",
         "entryPoint": "/dev/spatial-pilot",
-        "systems": ["project-parallax"],
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
         "sourcePaths": ["src/app/dev/spatial-pilot/page.tsx", "src/spatial-pilot/OwnerSeaTrials.tsx"],
         "projectionPaths": ["src/spatial-pilot/authorization.ts"],
         "states": [
@@ -12158,6 +12158,17 @@
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["CREATOR"],
+        "continuity": {
+          "objective": "The owner-only denial, canonical account and Home return retain the same visible Voyagewright home destination without granting pilot access.",
+          "checks": [
+            {
+              "id": "canonical-home-return",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ]
+        },
         "fixtureProfile": "generic",
         "roleSetup": {
           "CREATOR": {
