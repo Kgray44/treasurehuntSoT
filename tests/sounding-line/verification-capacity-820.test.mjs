@@ -125,11 +125,30 @@ test("workflow output chain and fixed receipt paths do not depend on a verifier 
   assert(
     workflow.includes("verification_job_minutes: ${{ steps.verification-capacity.outputs.verification_job_minutes }}"),
   );
-  assert(workflow.includes("needs.campaign-custody.outputs.verification_job_minutes || (("));
+  assert(workflow.includes("fromJSON(needs.campaign-custody.outputs.verification_job_minutes || '0') || (("));
   const block = workflow.split("- name: Retain verification supervision after every outcome")[1].split("- name:")[0];
   assert(block.includes("always() && steps.route.outputs.kind == 'ordinary'"));
   assert(!block.includes("steps.ordinary-verifier.outputs"));
   for (const name of ["initial", "preflight", "terminal", "controller-failure"])
     assert(block.includes(`session-*/${name}.json`));
   assert(block.includes("if-no-files-found: error"));
+});
+
+test("timeout output conversion produces integers for the grant and every legacy fallback", () => {
+  for (const [pr, fallback] of [
+    [721, 90],
+    [776, 120],
+    [819, 45],
+    [820, 45],
+    [833, 45],
+  ]) {
+    for (const raw of ["", "65"]) {
+      // GitHub documents fromJSON for timeout string-to-integer conversion.
+      const timeout = JSON.parse(raw || "0") || fallback;
+      assert.equal(typeof timeout, "number");
+      assert.equal(timeout, raw ? 65 : fallback);
+      assert.equal(Number.isSafeInteger(timeout), true);
+    }
+  }
+  assert.throws(() => JSON.parse("invalid-output"));
 });

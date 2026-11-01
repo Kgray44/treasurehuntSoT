@@ -95,5 +95,12 @@ test("the installed workflow uses exact ordinary transport and an explicit alway
   assert.equal(workflow.match(/ordinary-checkout\.mjs --workspace candidate/gu).length, 4);
   assert.equal(workflow.match(/experience-selected-checkout\.mjs --workspace candidate/gu).length, 8);
   assert.match(workflow, /ordinary-supervised\.mjs --mode ordinary/u);
-  assert.match(workflow, /always\(\).*verification_supervision_path/u);
+  const retention = workflow
+    .split("- name: Retain verification supervision after every outcome")[1]
+    .split("- name:")[0];
+  assert.match(retention, /always\(\).*steps\.route\.outputs\.kind == 'ordinary'/u);
+  assert.doesNotMatch(retention, /steps\.ordinary-verifier\.outputs/u);
+  for (const file of ["initial", "preflight", "terminal", "controller-failure"])
+    assert(retention.includes(`session-*/${file}.json`));
+  assert.match(retention, /if-no-files-found: error/u);
 });
