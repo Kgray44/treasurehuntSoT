@@ -11,6 +11,7 @@ type Review = {
   included: unknown;
   license: {
     key?: string;
+    displayName?: string;
     version?: number;
     allowsPrivateUse?: boolean;
     allowsPublicUse?: boolean;
@@ -109,12 +110,18 @@ export function CreatorPublicationReviewPanel({
     >
       <h3 id="creator-publication-review-title">Review exact Creator release</h3>
       <p>
-        <strong>{review.title}</strong> · {itemType.replaceAll("_", " ")}. Approval makes this pinned package public and
-        installable.
+        <strong>{review.title}</strong> ·{" "}
+        {itemType === "STORY_BLOCK_PRESET"
+          ? "Passage preset"
+          : itemType === "CHRONICLE_TEMPLATE"
+            ? "Chapter template"
+            : "Chronicle"}
+        . Approval makes this pinned package public and installable.
       </p>
       {review.description && <p>{review.description}</p>}
       <p>
-        License: {review.license.key?.replaceAll("_", " ") ?? "Unavailable"} · version {review.license.version ?? "?"}.
+        License: {review.license.displayName ?? review.license.key?.replaceAll("_", " ") ?? "Unavailable"} · version{" "}
+        {review.license.version ?? "?"}.
       </p>
       <p>
         Rights: private use {review.license.allowsPrivateUse ? "allowed" : "blocked"}; public use{" "}

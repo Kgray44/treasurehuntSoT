@@ -15,6 +15,7 @@ import { installCreatorReusableRelease, reviewCreatorReusableInstallation } from
 import { preflightCreatorReusablePublication, submitCreatorReusablePublication } from "./creator-reusable-publication";
 import { getPublicListingBySlug } from "./services";
 import { getHomeportListingDetail } from "./homeport";
+import { listCreatorInstalledCommunityItems } from "./creator-installed-library";
 
 const isolated = /^file:.*validation-isolated-sc07-[^/\\]*\.db$/i.test(process.env.DATABASE_URL ?? "");
 
@@ -175,7 +176,19 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
       });
       expect(installed.status).toBe("COMMITTED");
       expect((await reviewCreatorReusableInstallation(installerId, pending.listingId)).studioUrl).toBe(
-        "/studio/library",
+        "/studio/exchange#installed-community",
+      );
+      const installedList = await listCreatorInstalledCommunityItems(installerId);
+      expect(installedList).toContainEqual(
+        expect.objectContaining({
+          itemId: installed.itemId,
+          releaseId: pending.releaseId,
+          packageChecksum: installReview.packageChecksum,
+          credits: ["Synthetic Creator"],
+        }),
+      );
+      expect(await listCreatorInstalledCommunityItems(ownerId)).not.toContainEqual(
+        expect.objectContaining({ itemId: installed.itemId }),
       );
       const privateItem = await getReusableAuthoringItemVersion(installerId, installed.itemId);
       expect(privateItem.envelope.ownerId).toBe(installerId);

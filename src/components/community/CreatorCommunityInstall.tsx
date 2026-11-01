@@ -10,7 +10,7 @@ type Review = {
   semanticVersion: string;
   releaseId: string;
   packageChecksum: string;
-  license: { key: string; allowsModification: boolean; requiresAttribution: boolean };
+  license: { key: string; displayName?: string; allowsModification: boolean; requiresAttribution: boolean };
   attribution: Array<{ displayName: string; contributionType: string }>;
   included: { chapters: number; passages: number } | { name: string; description: string };
   alreadyInstalled: boolean;
@@ -79,7 +79,9 @@ export function CreatorCommunityInstall({
       });
       const result = (await response.json()) as { error?: string; studioUrl?: string };
       if (!response.ok) throw new Error(result.error ?? "The private installation could not finish.");
-      setOpened(result.studioUrl ?? "/studio/library");
+      setOpened(
+        result.studioUrl ?? (itemType === "CHRONICLE" ? "/studio/library" : "/studio/exchange#installed-community"),
+      );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The private installation could not finish.");
     } finally {
@@ -112,7 +114,7 @@ export function CreatorCommunityInstall({
               : `${review.included.name}: ${review.included.description}`}
           </p>
           <p>
-            License: {review.license.key.replaceAll("_", " ")}.{" "}
+            License: {review.license.displayName ?? review.license.key.replaceAll("_", " ")}.{" "}
             {review.license.allowsModification
               ? "Private editing is allowed; preserve the release credit."
               : "Private use only; editing is restricted."}
@@ -122,7 +124,7 @@ export function CreatorCommunityInstall({
           )}
           {destination ? (
             <Link className="community-button community-button--primary" href={destination}>
-              {itemType === "CHRONICLE" ? "Open my private Chronicle" : "Open Creator Studio"}
+              {itemType === "CHRONICLE" ? "Open my private Chronicle" : "View my installed item"}
             </Link>
           ) : (
             <button

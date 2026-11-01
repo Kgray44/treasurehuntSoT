@@ -30,6 +30,9 @@ const slugify = (value: string) =>
     .replace(/^-|-$/g, "")
     .slice(0, 80);
 
+const sourceLabel = (type: Source["type"]) =>
+  type === "STORY_BLOCK_PRESET" ? "Passage preset" : type === "CHRONICLE_TEMPLATE" ? "Chapter template" : "Chronicle";
+
 export function CreatorPublicationConsole() {
   const [options, setOptions] = useState<Options | null>(null);
   const [sourceKey, setSourceKey] = useState("");
@@ -159,7 +162,7 @@ export function CreatorPublicationConsole() {
             <option value="">Choose a saved source</option>
             {options.sources.map((entry) => (
               <option key={`${entry.type}:${entry.id}`} value={`${entry.type}:${entry.id}`}>
-                {entry.title} · {entry.type.replaceAll("_", " ")}
+                {entry.title} · {sourceLabel(entry.type)}
               </option>
             ))}
           </select>

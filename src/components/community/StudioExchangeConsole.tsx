@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { CreatorPublicationConsole } from "./CreatorPublicationConsole";
+import { CreatorInstalledCommunityLibrary } from "./CreatorInstalledCommunityLibrary";
 
 export function StudioExchangeConsole({ authenticated }: { authenticated: boolean }) {
   if (!authenticated)
@@ -41,6 +42,7 @@ export function StudioExchangeConsole({ authenticated }: { authenticated: boolea
           <Link href="/community">Browse Community Harbor</Link>
         </aside>
       </div>
+      <CreatorInstalledCommunityLibrary />
     </main>
   );
 }

@@ -193,10 +193,14 @@ test("second Creator installs the approved release from public detail and opens 
   await expect(page.getByText(/Credits: Synthetic owner Creator/)).toBeVisible();
   await page.screenshot({ path: test.info().outputPath("public-install-review.png"), fullPage: true });
   await page.getByRole("button", { name: "Install to my reusable Library" }).click();
-  await expect(page.getByRole("link", { name: "Open Creator Studio" })).toBeVisible();
-  await page.getByRole("link", { name: "Open Creator Studio" }).click();
-  await expect(page).toHaveURL(/\/studio\/library/u);
-  await page.screenshot({ path: test.info().outputPath("installed-private-studio.png"), fullPage: true });
+  await expect(page.getByRole("link", { name: "View my installed item" })).toBeVisible();
+  await page.getByRole("link", { name: "View my installed item" }).click();
+  await expect(page).toHaveURL(/\/studio\/exchange#installed-community/u);
+  const installedPanel = page.locator("#installed-community");
+  await expect(installedPanel.getByRole("heading", { name: "Installed from Community" })).toBeVisible();
+  await expect(installedPanel.getByText("Credits: Synthetic owner Creator.")).toBeVisible();
+  await expect(installedPanel.getByText(review.packageChecksum!)).toBeVisible();
+  await installedPanel.screenshot({ path: test.info().outputPath("installed-private-studio.png") });
   const receipt = await db.communityInstallation.findFirstOrThrow({
     where: {
       accountId: installer.accountId,
@@ -206,7 +210,7 @@ test("second Creator installs the approved release from public detail and opens 
   expect(receipt.installedPackageChecksum).toBe(review.packageChecksum);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`/community/${listingSlug}`);
-  await expect(page.getByRole("link", { name: "Open Creator Studio" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "View my installed item" })).toBeVisible();
   await page.screenshot({ path: test.info().outputPath("mobile-installed-return.png"), fullPage: true });
 });
 

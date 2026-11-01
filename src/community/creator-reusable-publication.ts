@@ -236,6 +236,7 @@ export async function submitCreatorReusablePublication(accountId: string, raw: u
         packageChecksum: verified.checksum,
         licenseSnapshot: JSON.stringify({
           key: license.key,
+          displayName: review.policy.displayName,
           version: license.version,
           allowsPrivateUse: review.policy.allowsPrivateUse,
           allowsPublicUse: review.policy.allowsPublicUse,

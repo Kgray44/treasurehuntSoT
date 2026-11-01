@@ -237,6 +237,7 @@ export async function submitCreatorChroniclePublication(accountId: string, raw: 
         packageChecksum: verified.checksum,
         licenseSnapshot: JSON.stringify({
           key: license.key,
+          displayName: review.policy.displayName,
           version: license.version,
           allowsPrivateUse: review.policy.allowsPrivateUse,
           allowsPublicUse: review.policy.allowsPublicUse,

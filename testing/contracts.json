@@ -18,6 +18,7 @@
           "src/components/community/CreatorPublicationConsole.tsx",
           "src/components/community/StudioExchangeConsole.tsx",
           "src/components/community/CreatorCommunityInstall.tsx",
+          "src/components/community/CreatorInstalledCommunityLibrary.tsx",
           "src/components/community/CreatorPublicationReviewPanel.tsx",
           "src/app/studio/exchange/page.tsx",
           "src/app/community/[slug]/page.tsx",
@@ -26,6 +27,7 @@
         "projectionPaths": [
           "src/community/creator-reusable-publication.ts",
           "src/community/creator-reusable-installation.ts",
+          "src/community/creator-installed-library.ts",
           "src/community/creator-chronicle-publication.ts",
           "src/community/creator-chronicle-installation.ts",
           "src/community/homeport.ts"
@@ -44,8 +46,8 @@
         "roles": ["CREATOR", "MODERATOR"],
         "accessibility": "Labeled controls, keyboard operable package disclosure, visible errors and status messages, and readable narrow layouts support every review and install step.",
         "fallback": "An ineligible or stale source stays private and yields a specific correction; a signed-out visitor receives a Creator sign-in return link; a failed installation leaves the approved public release intact.",
-        "navigation": "Creator Studio opens Exchange; the submitted listing becomes discoverable only after independent moderation; public detail opens an install review; the installed private copy returns to Creator Studio. Moderator detail preserves the separate spatial review path.",
-        "designTarget": "Keep the saved source and exact package visible before submission. Present safe public metadata and release rights before install, with a clear private Studio destination after success. Preserve Community Harbor and Admiralty visual hierarchy and make long package content scroll within its panel.",
+        "navigation": "Creator Studio opens Exchange; the submitted listing becomes discoverable only after independent moderation; public detail opens an install review; the installed private item returns to the Exchange's owner-only installed panel with a link to open a Chronicle for insertion. Moderator detail preserves the separate spatial review path.",
+        "designTarget": "Keep the saved source and exact package visible before submission. Present safe public metadata and release rights before install, then show the pinned private item, license and credit in Studio after success. Preserve Community Harbor and Admiralty visual hierarchy and make long package content scroll within its panel.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -125,15 +127,15 @@
             "outcome": "A second Creator installs the exact approved release and reaches a private, credited Studio copy",
             "steps": [
               { "action": "click", "role": "button", "name": "Install to my reusable Library" },
-              { "action": "click", "role": "link", "name": "Open Creator Studio" },
+              { "action": "click", "role": "link", "name": "View my installed item" },
               {
                 "action": "assert",
                 "role": "heading",
-                "name": "Voyagewright Studio",
-                "text": "Voyagewright Studio",
-                "path": "/studio/library",
+                "name": "Installed from Community",
+                "text": "Installed from Community",
+                "path": "/studio/exchange",
                 "kind": "outcome",
-                "meaning": "The second Creator can use the private installed item from their own Library.",
+                "meaning": "The second Creator sees the private installed item with pinned release, license and creator credit in Studio.",
                 "returnPath": true
               }
             ]

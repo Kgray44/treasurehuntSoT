@@ -26,6 +26,12 @@ function stringList(value: string) {
   }
 }
 
+function creatorTypeLabel(type: string) {
+  if (type === "STORY_BLOCK_PRESET") return "Passage preset";
+  if (type === "CHRONICLE_TEMPLATE") return "Chapter template";
+  return humanize(type);
+}
+
 export default async function CommunityListingPage({ params }: { params: Promise<{ listingId: string }> }) {
   const operator = await admiraltyPageOperator("COMMUNITY_OBSERVE");
   const result = await getCommunityListingDetail(operator, (await params).listingId);
@@ -59,7 +65,7 @@ export default async function CommunityListingPage({ params }: { params: Promise
         <Panel title="Catalog state">
           <DetailList
             items={[
-              { label: "Type", value: humanize(listing.itemType) },
+              { label: "Type", value: creatorTypeLabel(listing.itemType) },
               { label: "Visibility", value: humanize(listing.visibility) },
               { label: "Moderation", value: <StatusBadge state={listing.moderationStatus} /> },
               { label: "Spoiler level", value: humanize(listing.spoilerLevel) },

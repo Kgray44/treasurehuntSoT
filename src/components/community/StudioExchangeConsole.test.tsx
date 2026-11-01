@@ -27,6 +27,7 @@ describe("Studio Exchange Console", () => {
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
         const url = String(input);
         calls.push({ url, ...(init?.body ? { body: JSON.parse(String(init.body)) as Record<string, unknown> } : {}) });
+        if (url.endsWith("/installed")) return response({ items: [] });
         if (url.endsWith("/options"))
           return response({
             sources: [

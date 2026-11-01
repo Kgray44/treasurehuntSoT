@@ -50,6 +50,7 @@ async function loadRelease(listingId: string) {
   });
   const license = JSON.parse(release.licenseSnapshot) as {
     key?: string;
+    displayName?: string;
     version?: number;
     allowsPrivateUse?: boolean;
     allowsModification?: boolean;
@@ -106,7 +107,7 @@ export async function reviewCreatorReusableInstallation(accountId: string, listi
     included: { name: source.verified.envelope.name, description: source.verified.envelope.description },
     alreadyInstalled: Boolean(prior),
     itemId: prior?.target.id ?? null,
-    studioUrl: prior ? "/studio/library" : null,
+    studioUrl: prior ? "/studio/exchange#installed-community" : null,
   };
 }
 
@@ -129,7 +130,13 @@ export async function installCreatorReusableRelease(input: {
       "The release changed. Review its current package before installing.",
     );
   const prior = await installedTarget(input.accountId, input.releaseId);
-  if (prior) return { status: "ALREADY_INSTALLED" as const, itemId: prior.target.id, releaseId: input.releaseId };
+  if (prior)
+    return {
+      status: "ALREADY_INSTALLED" as const,
+      itemId: prior.target.id,
+      releaseId: input.releaseId,
+      studioUrl: "/studio/exchange#installed-community",
+    };
   const itemId = randomUUID();
   const versionId = randomUUID();
   const operationId = randomUUID();
@@ -152,7 +159,12 @@ export async function installCreatorReusableRelease(input: {
         where: { operationId: existing.id, sourceId: "creator-item" },
       });
       if (!mapping) throw new CommunityError("COMMUNITY_INSTALLATION_STALE", "The prior installation is incomplete.");
-      return { status: "ALREADY_INSTALLED" as const, itemId: mapping.targetId, releaseId: input.releaseId };
+      return {
+        status: "ALREADY_INSTALLED" as const,
+        itemId: mapping.targetId,
+        releaseId: input.releaseId,
+        studioUrl: "/studio/exchange#installed-community",
+      };
     }
     const stillPublic = await tx.communityListing.findFirst({
       where: {
@@ -218,6 +230,11 @@ export async function installCreatorReusableRelease(input: {
         upstreamReleaseId: input.releaseId,
       },
     });
-    return { status: "COMMITTED" as const, itemId, releaseId: input.releaseId };
+    return {
+      status: "COMMITTED" as const,
+      itemId,
+      releaseId: input.releaseId,
+      studioUrl: "/studio/exchange#installed-community",
+    };
   });
 }

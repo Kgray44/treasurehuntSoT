@@ -86,6 +86,7 @@ export async function loadCreatorChronicleCandidate(listingId: string, pendingOn
     );
   const license = JSON.parse(release.licenseSnapshot) as {
     key?: string;
+    displayName?: string;
     version?: number;
     allowsPrivateUse?: boolean;
     allowsPublicUse?: boolean;
