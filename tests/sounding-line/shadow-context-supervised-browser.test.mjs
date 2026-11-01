@@ -339,6 +339,19 @@ require('node:http').createServer((q,s)=>{
     assert(sealedRegistry.encrypted.length < 8 * 1024 * 1024);
     assert(!sealedRegistry.encrypted.includes(Buffer.from(journalObservation.journal.artifacts[0].id)));
     assert.equal(sealedRegistry.reuseAuthorized, false);
+    const interruptedJournalPath = `${rawDirectory}/closed-contexts/${"f".repeat(64)}.json`,
+      interruptedBytes = Buffer.from('{"originalInterruptedWrite":');
+    await fs.writeFile(absolute(interruptedJournalPath), interruptedBytes, { flag: "wx", mode: 0o600 });
+    const partialRegistry = await sealClosedContextRegistryFiles({
+      ...fileRegistryInput,
+      root,
+      rawDirectory,
+      cleanupPath: diagnosticPath,
+    });
+    assert.equal(partialRegistry.completedContexts, 1);
+    assert.equal(partialRegistry.failedContextObservations, 1);
+    assert.equal(partialRegistry.reuseAuthorized, false);
+    assert((await fs.readFile(absolute(interruptedJournalPath))).equals(interruptedBytes));
     const mediaFile = absolute(journalObservation.journal.rawFiles[0].path),
       originalMedia = await fs.readFile(mediaFile);
     try {

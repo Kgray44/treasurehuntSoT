@@ -50,9 +50,27 @@ export function buildClosedContextRegistryShadow({
   cleanup,
   definitionObservations,
   captureMode = "capture",
+  failedContextObservations = [],
 }) {
   need(plan && Buffer.byteLength(canonicalJson(plan)) <= 2 * 1024 * 1024, "PLAN_BOUND");
   const schedule = shadowCaptureContextSchedule(plan);
+  need(
+    Array.isArray(failedContextObservations) &&
+      failedContextObservations.length <= 128 &&
+      failedContextObservations.every(
+        (value) =>
+          typeof value?.path === "string" &&
+          /^artifacts\/sounding-line\/product-experience-capture-staging\/capture-[A-Za-z0-9_-]+\/raw\/closed-contexts\/(?:[a-f0-9]{64}\/)?[a-f0-9]{64}[.]json$/u.test(
+            value.path,
+          ) &&
+          (value.bytes === null ||
+            (Number.isSafeInteger(value.bytes) && value.bytes >= 0 && value.bytes <= 2 * 1024 * 1024)) &&
+          (value.sha256 === null || sha256(value.sha256)) &&
+          /^[A-Z0-9_]+$/u.test(value.code ?? "") &&
+          value.disposition === "ORIGINAL_RAW_RETAINED_NO_CREDIT",
+      ),
+    "FAILED_OBSERVATION_BINDING",
+  );
   need(
     ["capture", "capture-diagnostic"].includes(captureMode) &&
       (captureMode !== "capture-diagnostic" || plan.baseSha === plan.candidateSha),
@@ -312,6 +330,18 @@ export function buildClosedContextRegistryShadow({
     qualification: false,
     manifestId: `original-context-prefix-${producer.runId}-${producer.attempt}`,
     producerMode: captureMode,
+    failedContextObservations: failedContextObservations.map((value) => ({
+      ...value,
+      immutableLocation: {
+        kind: "PROVIDER_ARTIFACT",
+        repository: producer.repository,
+        artifactId: rawArtifact.id,
+        archiveSha256: rawArtifact.archiveSha256,
+        path: value.path,
+        representation: "ENCRYPTED_RAW_INDEX_MEMBER",
+        encryptedIndexPath: "index.encrypted",
+      },
+    })),
     repository: producer.repository,
     producerIdentity,
     originalBaseSha: plan.baseSha,

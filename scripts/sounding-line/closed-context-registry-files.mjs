@@ -182,44 +182,68 @@ export async function sealClosedContextRegistryFiles({
   );
   const cleanups = await readRegistryRuntimeCleanups({ root, plan: input.plan, cleanupPaths });
   const contexts = [],
+    failedContextObservations = [],
     paths = await journalPaths(root, `${rawDirectory}/closed-contexts`),
     seenPaths = new Set();
   let metadataBytes = 0,
     mediaBytes = 0;
+  let firstFailure;
   for (const file of paths) {
-    const bytes = await readBoundedRawCaptureFile({ root, rawDirectory, file, maximumBytes: 2 * 1024 * 1024 });
-    need((metadataBytes += bytes.length) <= 64 * 1024 * 1024, "METADATA_BOUND");
-    const journal = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
-    need(Array.isArray(journal.rawFiles) && journal.rawFiles.length <= 512, "MEDIA_BOUND");
-    for (const descriptor of journal.rawFiles) {
-      need(
-        typeof descriptor.path === "string" &&
-          descriptor.path.startsWith(rawDirectory + "/") &&
-          !seenPaths.has(descriptor.path) &&
-          seenPaths.size < 8192 &&
-          Number.isSafeInteger(descriptor.bytes) &&
-          descriptor.bytes > 0 &&
-          descriptor.bytes <= 64 * 1024 * 1024 &&
-          /^[a-f0-9]{64}$/u.test(descriptor.sha256 ?? ""),
-        "MEDIA_BINDING",
-      );
-      seenPaths.add(descriptor.path);
-      mediaBytes += descriptor.bytes;
-      need(mediaBytes <= 256 * 1024 * 1024, "MEDIA_BOUND");
-      const original = await readBoundedRawCaptureFile({
-        root,
-        rawDirectory,
-        file: descriptor.path,
-        maximumBytes: descriptor.bytes,
+    let bytes;
+    try {
+      bytes = await readBoundedRawCaptureFile({ root, rawDirectory, file, maximumBytes: 2 * 1024 * 1024 });
+      need((metadataBytes += bytes.length) <= 64 * 1024 * 1024, "METADATA_BOUND");
+      const journal = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+      need(Array.isArray(journal.rawFiles) && journal.rawFiles.length <= 512, "MEDIA_BOUND");
+      for (const descriptor of journal.rawFiles) {
+        need(
+          typeof descriptor.path === "string" &&
+            descriptor.path.startsWith(rawDirectory + "/") &&
+            !seenPaths.has(descriptor.path) &&
+            seenPaths.size < 8192 &&
+            Number.isSafeInteger(descriptor.bytes) &&
+            descriptor.bytes > 0 &&
+            descriptor.bytes <= 64 * 1024 * 1024 &&
+            /^[a-f0-9]{64}$/u.test(descriptor.sha256 ?? ""),
+          "MEDIA_BINDING",
+        );
+        seenPaths.add(descriptor.path);
+        mediaBytes += descriptor.bytes;
+        need(mediaBytes <= 256 * 1024 * 1024, "MEDIA_BOUND");
+        const original = await readBoundedRawCaptureFile({
+          root,
+          rawDirectory,
+          file: descriptor.path,
+          maximumBytes: descriptor.bytes,
+        });
+        need(original.length === descriptor.bytes && hash(original) === descriptor.sha256, "MEDIA_CHANGED");
+      }
+      const named = await lstat(path.join(root, file));
+      const observation = { journal, bytes, path: file, completedAt: named.mtime.toISOString() };
+      buildClosedContextRegistryShadow({ ...input, contexts: [observation], cleanup: cleanups });
+      const reread = await readBoundedRawCaptureFile({ root, rawDirectory, file, maximumBytes: 2 * 1024 * 1024 });
+      need(reread.equals(bytes), "JOURNAL_CHANGED");
+      contexts.push(observation);
+    } catch (error) {
+      if (/SOUNDING_LINE_CONTEXT_REGISTRY_FILES_(?:MEDIA|METADATA)_BOUND$/u.test(error?.message ?? "")) throw error;
+      firstFailure ??= error;
+      const code = /^(?:SOUNDING_LINE|PRODUCT_EXPERIENCE)_[A-Z0-9_]+$/u.test(error?.message ?? "")
+        ? error.message
+        : "INCOMPLETE_JOURNAL";
+      failedContextObservations.push({
+        path: file,
+        bytes: bytes?.length ?? null,
+        sha256: bytes ? hash(bytes) : null,
+        code,
+        disposition: "ORIGINAL_RAW_RETAINED_NO_CREDIT",
       });
-      need(original.length === descriptor.bytes && hash(original) === descriptor.sha256, "MEDIA_CHANGED");
     }
-    const named = await lstat(path.join(root, file));
-    contexts.push({ journal, bytes, path: file, completedAt: named.mtime.toISOString() });
   }
+  if (!contexts.length && firstFailure) throw firstFailure;
   const registry = buildClosedContextRegistryShadow({
     ...input,
     contexts,
+    failedContextObservations,
     cleanup: cleanups,
   });
   const binding = {
@@ -242,6 +266,7 @@ export async function sealClosedContextRegistryFiles({
     manifestDigest: registry.manifest.manifestDigest,
     completedContexts: registry.manifest.completedContexts.length,
     artifactCount: registry.manifest.artifacts.length,
+    failedContextObservations: failedContextObservations.length,
     metadataBytes,
     mediaBytes,
     qualification: false,
