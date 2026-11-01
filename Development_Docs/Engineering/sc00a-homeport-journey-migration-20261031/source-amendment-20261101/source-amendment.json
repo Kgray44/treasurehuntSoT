@@ -1,0 +1,34 @@
+{
+  "id": "SC00A_EXACT_SOURCE_REPAIR_20261101",
+  "version": 1,
+  "repository": "Kgray44/treasurehuntSoT",
+  "prNumber": 820,
+  "originalRecordDigest": "a816a0a7d804594f5f2d29960be6be3497c73b6edd48317d6552309ec4cbf236",
+  "acceptedSource": "0194edbc905a3443eea622b3a1c97b80a8425545",
+  "reviewedAncestor": "7281ef3cc419ed7457b212b3a4a4f56cf0f2efbc",
+  "reviewedTree": "88d40031c2fe95dac46236f4218f45656d09d11e",
+  "expiresAt": "2026-11-14T23:59:59Z",
+  "replacements": [
+    {
+      "path": "src/components/studio/ChronicleDetails.tsx",
+      "mode": "100644",
+      "previousBlob": "703fd19dd03db4045ccfc82f49f3dac03f02182c",
+      "blob": "9b2b1c21c470f9cf8d26e4a36c6916cde37da32a",
+      "sha256": "171125bd96b4ada3e7f58a455ce6a7d4dbff0b242668fda6172a444d28b88cf1"
+    },
+    {
+      "path": "tests/e2e/chronicle-creation.spec.ts",
+      "mode": "100644",
+      "previousBlob": "9c5b1dca88cd8ff96fe40f30b29d3f90ed214f1e",
+      "blob": "ea9450f3722974b6c013f73964f35dd6c457de60",
+      "sha256": "aeb98177b26cd98060ff698840fc80cf7bd0299478ff6b5e4105fbc5c59ecbc7"
+    }
+  ],
+  "registrationProof": {
+    "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/source-amendment-20261101/reviewed-registration.json",
+    "bytes": 513157,
+    "sha256": "a3419fa414024bda41ac3e757e32c16ee3a1fa8aa08204626d241d7f8f0f1d30",
+    "blob": "bed388422cab2e33a32dc42d50b77a411b157a26"
+  },
+  "reviewedRegistrationPolicyDigest": "d488bce6d62825948135926512b16a0ead587ce9925a504b9a7add5c473d12f6"
+}

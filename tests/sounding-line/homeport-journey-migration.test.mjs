@@ -7,19 +7,53 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
+import "./homeport-source-amendment.test.mjs";
 import {
   bindSC00AHomeportMigration,
   experienceDigest,
   mergeExperienceContracts,
 } from "../../scripts/sounding-line/product-experience.mjs";
+import { resolveHomeportSourceAmendment } from "../../scripts/sounding-line/homeport-source-amendment.mjs";
 
 const repo = fileURLToPath(new URL("../../", import.meta.url));
-const current = JSON.parse(readFileSync(path.join(repo, "testing/contracts.json"), "utf8"));
-const record = current.experiencePolicy.journeyMigration;
-const approved = JSON.parse(readFileSync(path.join(repo, record.immutableProofs[1].path), "utf8"));
+const originalRecord = JSON.parse(
+  readFileSync(
+    path.join(
+      repo,
+      "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/original-grant-record.json",
+    ),
+    "utf8",
+  ),
+);
+const originalApproved = JSON.parse(readFileSync(path.join(repo, originalRecord.immutableProofs[1].path), "utf8"));
+const originalHomeport = JSON.parse(readFileSync(path.join(repo, originalRecord.immutableProofs[0].path), "utf8"));
+const amendment = JSON.parse(
+  readFileSync(
+    path.join(
+      repo,
+      "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/source-amendment-20261101/source-amendment.json",
+    ),
+    "utf8",
+  ),
+);
 const originalExec = execFileSync;
 
-test("finite Homeport migration binds reviewed source and accepts only the protected merge and evidence tail", (t) => {
+function migrationScenario(t, amended) {
+  // Historical fixtures stay independent of later accepted product registrations.
+  // They preserve the old Title baseline even after the product transition lands.
+  const current = {
+    ...structuredClone(originalApproved),
+    experiencePolicy: {
+      ...structuredClone(originalApproved.experiencePolicy),
+      journeyMigration: structuredClone(originalRecord),
+    },
+    contracts: structuredClone(originalApproved.contracts)
+      .filter((contract) => !originalRecord.approvedAdditiveContractIds.includes(contract.id))
+      .map((contract) => (contract.id === originalRecord.contractId ? structuredClone(originalHomeport) : contract)),
+  };
+  if (amended) current.experiencePolicy.journeyMigrationSourceAmendment = structuredClone(amendment);
+  const record = resolveHomeportSourceAmendment(originalRecord, amended ? amendment : undefined);
+  const approved = JSON.parse(readFileSync(path.join(repo, record.immutableProofs[1].path), "utf8"));
   const workflow = readFileSync(path.join(repo, ".github/workflows/sounding-line-ordinary.yml"), "utf8");
   const routing = workflow.slice(
     workflow.indexOf("      - name: Route through trusted protected-main classification"),
@@ -60,9 +94,19 @@ test("finite Homeport migration binds reviewed source and accepts only the prote
     run(["index-pack", "--stdin"], bytes);
   };
   unpack(sourceFixture.baseSnapshotObjects, "38b305ed6d15851209779f3ba9d945eab7f973bde3891effe5b51b9c46c01a63");
-  writeFileSync(path.join(root, ".git/shallow"), `${record.acceptedSource}\n`);
+  writeFileSync(path.join(root, ".git/shallow"), `${originalRecord.acceptedSource}\n`);
   assert.throws(() => run(["cat-file", "-e", record.reviewedAncestor]));
   unpack(sourceFixture, "a8c33a5b45238ee75ba57cf5d5b31a256d42f069b12201cbe2dd1213de80f908");
+  if (amended) {
+    const source = JSON.parse(
+      readFileSync(
+        path.join(repo, "tests/sounding-line/fixtures/homeport-source-amendment-reviewed-source.json"),
+        "utf8",
+      ),
+    );
+    unpack(source, "a71257c6cebe5cf672a72d5d9a307ba22d98c9e1b8228ed21f69467fae5db62f");
+    writeFileSync(path.join(root, ".git/shallow"), source.shallowBoundaries.join("\n") + "\n");
+  }
   const put = (file, bytes, mode = "100644") =>
     run(["update-index", "--add", "--cacheinfo", `${mode},${run(["hash-object", "-w", "--stdin"], bytes)},${file}`]);
   const commit = (parents) =>
@@ -82,7 +126,10 @@ test("finite Homeport migration binds reviewed source and accepts only the prote
   baseRegistry.contracts.push(unrelated);
   run(["read-tree", record.acceptedSource]);
   put("testing/contracts.json", JSON.stringify(baseRegistry));
-  for (const proof of record.immutableProofs) put(proof.path, readFileSync(path.join(repo, proof.path)));
+  for (const proof of new Map(
+    [...originalRecord.immutableProofs, ...record.immutableProofs].map((proof) => [proof.path, proof]),
+  ).values())
+    put(proof.path, readFileSync(path.join(repo, proof.path)));
   // Accepted authority may advance while the reviewed product projection stays frozen.
   put("scripts/sounding-line/accepted-authority-fixture.mjs", "export const accepted = true;\n");
   const baseSha = commit([record.acceptedSource]);
@@ -136,6 +183,21 @@ test("finite Homeport migration binds reviewed source and accepts only the prote
   };
   const replacement = bind();
   assert.equal(experienceDigest(replacement), record.newContractDigest);
+  if (amended) {
+    assert.equal(
+      experienceDigest(current.experiencePolicy.journeyMigration),
+      "a816a0a7d804594f5f2d29960be6be3497c73b6edd48317d6552309ec4cbf236",
+    );
+    const withoutAmendment = structuredClone(baseRegistry);
+    delete withoutAmendment.experiencePolicy.journeyMigrationSourceAmendment;
+    assert.throws(
+      () => bind(candidateSha, { trustedRegistry: withoutAmendment }),
+      /MIGRATION_(?:REGISTRATION|BROWSER_FIXTURE)_MISMATCH/u,
+    );
+    const alteredAmendment = structuredClone(baseRegistry);
+    alteredAmendment.experiencePolicy.journeyMigrationSourceAmendment.replacements[0].blob = "0".repeat(40);
+    assert.throws(() => bind(candidateSha, { trustedRegistry: alteredAmendment }), /SOURCE_AMENDMENT_INVALID/u);
+  }
   assert.equal(replacement.experience.journeys.find((journey) => journey.id === record.journeyId).steps.length, 23);
   assert.equal(bind(candidateSha, { candidateRegistry: baseRegistry }), null, "unchanged main keeps its Title journey");
   assert.equal(
@@ -285,4 +347,7 @@ test("finite Homeport migration binds reviewed source and accepts only the prote
   assert.throws(() => bind(altered(publication, "../target", "120000")), /MIGRATION_UNAPPROVED_TAIL/u);
   assert.throws(() => bind(altered("Development_Docs/unbounded-publication.json", "{}")), /MIGRATION_UNAPPROVED_TAIL/u);
   assert(providerCalls > 10);
-});
+}
+for (const amended of [false, true])
+  test(`finite Homeport migration ${amended ? "with exact-source amendment" : "original historical record"} binds reviewed source and the protected merge/evidence tail`, (t) =>
+    migrationScenario(t, amended));
