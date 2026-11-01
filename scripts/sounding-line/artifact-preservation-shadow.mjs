@@ -7,6 +7,14 @@ import { artifactLogicalKey, artifactContextKey, validateArtifactManifest } from
 export function planArtifactPreservationShadow({ original, current, manifest, prNumber, spentReviewOrdinals = {} }) {
   if (!Number.isSafeInteger(prNumber) || prNumber <= 0 || [721, 776].includes(prNumber))
     throw new Error("SOUNDING_LINE_ARTIFACT_SHADOW_ORDINARY_SCOPE_REQUIRED");
+  if (
+    !Array.isArray(current?.requiredCoverage) ||
+    !Array.isArray(current?.artifactDefinitions) ||
+    current.requiredCoverage.length > 8192 ||
+    current.artifactDefinitions.length > 8192 ||
+    new Set(current.requiredCoverage.map(artifactLogicalKey)).size !== current.requiredCoverage.length
+  )
+    throw new Error("SOUNDING_LINE_ARTIFACT_SHADOW_CURRENT_COVERAGE_MISMATCH");
   validateArtifactManifest(manifest, {
     expectedCoverage: original.requiredCoverage,
     spentReviewOrdinals,

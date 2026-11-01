@@ -31,6 +31,21 @@ const SUPERVISED_MODULES = [
   "owned-process-linux.py",
   "owned-process-windows.ps1",
 ].map((name) => `scripts/sounding-line/${name}`);
+const CHECKOUT_MODULES = [
+  "ordinary-checkout.mjs",
+  "experience-selected-checkout.mjs",
+  "experience-checkout-hydration.mjs",
+  "experience-checkout-roots.mjs",
+  "experience-pr776-controller-reconciliation.mjs",
+  "ordinary-documentation-checkout-profile.mjs",
+  "ordinary-custody-probe.mjs",
+  "experience-exception.mjs",
+  "product-experience.mjs",
+  "source-snapshot-batches.mjs",
+  "source-diagnostics.mjs",
+].map((name) => `scripts/sounding-line/${name}`);
+const CHECKOUT_COMMAND = "node authority/scripts/sounding-line/ordinary-checkout.mjs --workspace candidate --base";
+const CHECKOUT_STEP = "Checkout exact ordinary ancestry and installed reader closure";
 const LIMITS = Object.freeze({
   producers: 3,
   runs: 5,
@@ -349,7 +364,12 @@ async function acceptedSource(root, baseSha, authoritySha, api) {
     "node authority/scripts/sounding-line/ordinary-supervised.mjs --mode ordinary --workspace candidate --base",
   );
   requireValue(direct !== supervised, "WORKFLOW_CONTRACT_UNSUPPORTED");
-  for (const name of [...MODULES, ...(supervised ? SUPERVISED_MODULES : [])]) {
+  const selectedCheckout = workflow.includes(CHECKOUT_COMMAND);
+  for (const name of [
+    ...MODULES,
+    ...(supervised ? SUPERVISED_MODULES : []),
+    ...(selectedCheckout ? CHECKOUT_MODULES : []),
+  ]) {
     requireValue(
       git(root, ["ls-tree", authoritySha, "--", name]).startsWith("100644 blob ") &&
         git(root, ["ls-tree", baseSha, "--", name]).startsWith("100644 blob "),
@@ -398,7 +418,7 @@ async function acceptedSource(root, baseSha, authoritySha, api) {
     requireValue(workflow.includes(fragment), "WORKFLOW_CONTRACT_UNSUPPORTED");
   const commit = await api(`git/commits/${authoritySha}`);
   requireValue(commit?.sha === authoritySha && SHA.test(commit.tree?.sha ?? ""), "AUTHORITY_COMMIT_INVALID");
-  return { ordinarySha256: rawHash(source.get(MODULES[1])) };
+  return { ordinarySha256: rawHash(source.get(MODULES[1])), selectedCheckout };
 }
 
 function validateRun(run, producer) {
@@ -438,7 +458,7 @@ function validateRun(run, producer) {
   return pr.base.sha;
 }
 
-function validateJobs(value, run) {
+function validateJobs(value, run, source) {
   requireValue(
     Number.isSafeInteger(value?.total_count) &&
       Array.isArray(value.jobs) &&
@@ -483,6 +503,26 @@ function validateJobs(value, run) {
   );
   const checkouts = job.steps.filter(
     (item) => item.name === "Run actions/checkout@v4" && item.number > bind.number && item.number < route.number,
+  );
+  if (source.selectedCheckout) {
+    const helper = step(CHECKOUT_STEP);
+    const authority = checkouts.filter((item) => item.conclusion === "success");
+    requireValue(
+      helper.conclusion === "success" &&
+        bind.number < helper.number &&
+        helper.number < route.number &&
+        checkouts.length >= 1 &&
+        checkouts.length <= 2 &&
+        authority.length === 1 &&
+        authority[0].number < helper.number &&
+        checkouts.every((item) => item.status === "completed" && ["success", "skipped"].includes(item.conclusion)),
+      "PROVIDER_CHECKOUT_INVALID",
+    );
+    return;
+  }
+  requireValue(
+    !job.steps.some((item) => item.name === CHECKOUT_STEP && item.conclusion !== "skipped"),
+    "PROVIDER_CHECKOUT_INVALID",
   );
   requireValue(
     checkouts.length === 2 && checkouts.every((item) => item.status === "completed" && item.conclusion === "success"),
@@ -683,7 +723,7 @@ async function authenticateProducer(root, plan, producer, api, download) {
     workflow?.id === run.workflow_id && workflow.path === WORKFLOW && workflow.state === "active",
     "PROVIDER_WORKFLOW_INVALID",
   );
-  validateJobs(await api(`actions/runs/${producer.runId}/attempts/${producer.attempt}/jobs?per_page=100`), run);
+  validateJobs(await api(`actions/runs/${producer.runId}/attempts/${producer.attempt}/jobs?per_page=100`), run, source);
   const commit = await api(`git/commits/${run.head_sha}`);
   requireValue(commit?.sha === run.head_sha && SHA.test(commit.tree?.sha ?? ""), "CANDIDATE_COMMIT_INVALID");
   const artifact = await api(`actions/artifacts/${producer.artifactId}`);

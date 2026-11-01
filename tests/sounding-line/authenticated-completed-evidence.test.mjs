@@ -39,6 +39,19 @@ const MODULES = [
   "scripts/sounding-line/owned-process.mjs",
   "scripts/sounding-line/owned-process-linux.py",
   "scripts/sounding-line/owned-process-windows.ps1",
+  ...[
+    "ordinary-checkout.mjs",
+    "experience-selected-checkout.mjs",
+    "experience-checkout-hydration.mjs",
+    "experience-checkout-roots.mjs",
+    "experience-pr776-controller-reconciliation.mjs",
+    "ordinary-documentation-checkout-profile.mjs",
+    "ordinary-custody-probe.mjs",
+    "experience-exception.mjs",
+    "product-experience.mjs",
+    "source-snapshot-batches.mjs",
+    "source-diagnostics.mjs",
+  ].map((name) => `scripts/sounding-line/${name}`),
 ];
 const installed = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -256,7 +269,7 @@ async function fixture(action, { browser = false, dedicated = false, workflowTra
           steps: [
             step(1, "Bind the event to exact source identities"),
             step(2, "Run actions/checkout@v4"),
-            step(3, "Run actions/checkout@v4"),
+            step(3, "Checkout exact ordinary ancestry and installed reader closure"),
             step(4, "Route through trusted protected-main classification"),
             step(5, "Run the trusted focused verifier against the exact candidate tree", "failure"),
             step(6, UPLOAD),
@@ -602,6 +615,42 @@ test("legacy direct exporter remains authenticated without accepting an ambiguou
     },
     { workflowTransform: (bytes) => Buffer.from(bytes.toString() + `\n# ${direct}\n`) },
   );
+});
+
+test("pinned ordinary helper authenticates a skipped legacy checkout but rejects failed, duplicated or competing transport", async () => {
+  await fixture(async (state) => {
+    const job = state.jobs.jobs[0];
+    job.steps.splice(3, 0, { name: "Run actions/checkout@v4", status: "completed", conclusion: "skipped" });
+    job.steps.forEach((step, index) => {
+      step.number = index + 1;
+    });
+    const original = clone(job.steps);
+    assert.equal((await state.authenticate()).admitted, 1);
+    for (const mutate of [
+      (steps) => {
+        steps.find(
+          (value) => value.name === "Checkout exact ordinary ancestry and installed reader closure",
+        ).conclusion = "failure";
+      },
+      (steps) => {
+        steps.push({
+          ...steps.find((value) => value.name === "Checkout exact ordinary ancestry and installed reader closure"),
+          number: 8,
+        });
+      },
+      (steps) => {
+        steps.find((value) => value.name === "Run actions/checkout@v4" && value.conclusion === "skipped").conclusion =
+          "success";
+      },
+    ]) {
+      job.steps = clone(original);
+      mutate(job.steps);
+      const proof = await state.authenticate();
+      assert.equal(proof.admitted, 0);
+      assert.equal(state.lookup(proof), null);
+      assert.match(proof.rejections[0].reason, /PROVIDER_(?:CHECKOUT|STEP)_INVALID/u);
+    }
+  });
 });
 
 test("completed nonbrowser PASS remains reusable after later producer failure; opaque proof is candidate-bound", async () => {
