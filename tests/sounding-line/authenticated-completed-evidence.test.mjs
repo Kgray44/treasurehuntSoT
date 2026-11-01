@@ -38,6 +38,7 @@ const MODULES = [
   "scripts/sounding-line/verification-preflight.mjs",
   "scripts/sounding-line/verification-supervisor.mjs",
   "scripts/sounding-line/verification-capacity-820.mjs",
+  "scripts/sounding-line/verification-source-join-820.mjs",
   "scripts/sounding-line/owned-process.mjs",
   "scripts/sounding-line/owned-process-linux.py",
   "scripts/sounding-line/owned-process-windows.ps1",
