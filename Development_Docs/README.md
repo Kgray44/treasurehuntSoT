@@ -12,6 +12,16 @@ This repository intentionally preserves Voyagewright's governing documents, deci
 
 Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](document-index.json) for the machine-readable inventory. Historical records retain their own claims; this index identifies their current location without rewriting them.
 
+## Spatial Chronicle Creation program (proposed)
+
+- [SC-00–SC-11 master roadmap](Programs/Spatial_Chronicle_Creation/Voyagewright_Spatial_Chronicle_Creation_Program_Roadmap_v1.0.md) — proposed integrated Creator/Spatial Studio roadmap, ownership, dependencies and acceptance gates.
+- [SC-05 Chronicle Architect governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Architect_Governing_Document_v1.0.md) — expanded creative-partner constitution: full/docked/ambient glass UI, real supplied background assets, unified Parallax AI, protected Creator intent, source-aware memory, Story Bible, Insights, scoped edits, cinematic direction, Free/Paid/Pro limits and Admiralty accounting.
+- [SC-04 Puzzle Composition governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Puzzle_Composition_Governing_Document_v1.0.md) — detailed proposed Puzzle Workshop, universal 2D baseline, alternative variants, crew/Captain logic and analytics.
+- [Creator Experience cross-project amendment](Programs/Spatial_Chronicle_Creation/Voyagewright_Creator_Experience_Cross_Project_Integration_Amendment_v1.0.md) — equal-standing tools, named branch editing, contextual navigation and universal Playtest.
+- [Cross-project requirements traceability ledger](Programs/Spatial_Chronicle_Creation/SC_Requirements_Traceability_Ledger_v1.0.md) — 165 proposed requirements including 45 SC-05 and 44 SC-06 acceptance gates, owners, dependencies and evidence status.
+- [SC-05 owner visual reference image manifest](Programs/Spatial_Chronicle_Creation/SC05_Architect_Visual_Reference_Asset_Manifest_v1.0.md) — all ten original PNGs checked into this draft branch with verified SHA-256 hashes; two distinct required background originals. See the [individual image previews](Programs/Spatial_Chronicle_Creation/visual_references/README.md).
+- [SC-06 Story Import & Adaptation governing specification](Programs/Spatial_Chronicle_Creation/Project_Chronicle_Story_Import_and_Adaptation_Governing_Document_v1.0.md) — 901-line proposed owner-grounded design: editable fidelity presets, Player roles, versioned sources, Architect-native UI, mapping, source reconciliation and cost-efficient AI. The **original four-document SC plan is drafted**; all new specifications remain proposed, not integrated functionality.
+
 ## Current project homes
 
 - [NCL-01 native Scene vertical slice](Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) — source-bound delivery, original model identity and native validation limits.
