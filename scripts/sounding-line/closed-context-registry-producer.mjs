@@ -186,6 +186,8 @@ export function buildClosedContextRegistryShadow({
       sourceTreeDigest: digest({ sourceTree }),
       ...definitionObservations,
       mutableStateClass: "UNATTESTED_SHARED_TASK_RUNTIME",
+      fixtureProfile: profile,
+      fixtureProfileReceiptSha256: cleanup.profileReceiptSha256 ?? null,
     };
     const runtime = { ...runtimeBody, attestationDigest: digest(runtimeBody) };
     const cleanupBody = {

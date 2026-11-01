@@ -11,6 +11,7 @@ import { rawCaptureBinding } from "../../scripts/sounding-line/experience-raw-ou
 import {
   readBoundedRegistryFile,
   sealClosedContextRegistryFiles,
+  readRegistryRuntimeCleanups,
 } from "../../scripts/sounding-line/closed-context-registry-files.mjs";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 test("the capture-only registry lane defaults off, is bounded and cannot change Mainline Decision", () => {
@@ -111,6 +112,100 @@ test("held owner scope cannot enter registry file inspection", async () => {
       sealClosedContextRegistryFiles({ root: "NO_FILESYSTEM_ACCESS", plan: { prNumber } }),
       /SHADOW_CONTEXT_SCOPE/u,
     );
+});
+
+test("two fixture profiles bind to their own runtime receipts regardless of path order", async (t) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "registry-profile-binding-"));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const profiles = ["generic", "synthetic-second-profile"];
+  const plan = {
+    applicable: true,
+    prNumber: 900,
+    baseSha: "a".repeat(40),
+    candidateSha: "b".repeat(40),
+    sourceDigest: "c".repeat(64),
+    contractDigest: "d".repeat(64),
+    contracts: profiles.map((fixtureProfile, i) => ({
+      id: `contract-${i}`,
+      experience: {
+        fixtureProfile,
+        devices: ["DESKTOP"],
+        roles: ["ANONYMOUS"],
+        motion: false,
+        journeys: [{ id: `journey-${i}`, roles: ["ANONYMOUS"], steps: [{ state: "READY" }] }],
+      },
+    })),
+  };
+  const paths = [],
+    profilePaths = [],
+    originals = [];
+  for (const profile of profiles) {
+    const runId = randomUUID(),
+      scopeId = randomUUID(),
+      binding = {
+        version: 1,
+        runId,
+        scopeId,
+        baseSha: plan.baseSha,
+        candidateSha: plan.candidateSha,
+        planDigest: "e".repeat(64),
+      };
+    const file = `artifacts/sounding-line/browser-diagnostics/${runId}/${scopeId}/browser-runtime.json`,
+      metadata = file.replace(/browser-runtime[.]json$/u, "browser-suite-profile.json");
+    fs.mkdirSync(path.dirname(path.join(directory, file)), { recursive: true });
+    const closed = { status: "PASS", treeReaped: true, streamsClosed: true };
+    fs.writeFileSync(
+      path.join(directory, file),
+      JSON.stringify({
+        diagnosticBinding: binding,
+        lifecycle: {
+          cleanup: {
+            status: "PASS",
+            portsReleased: true,
+            browser: closed,
+            server: closed,
+            fixture: { status: "NOT_STARTED" },
+            proxy: { status: "NOT_STARTED" },
+          },
+        },
+      }),
+      { mode: 0o600 },
+    );
+    const original = JSON.stringify({ version: 1, profile, diagnosticBinding: binding });
+    fs.writeFileSync(path.join(directory, metadata), original, { mode: 0o600 });
+    paths.push(file);
+    profilePaths.push(metadata);
+    originals.push(original);
+  }
+  const result = await readRegistryRuntimeCleanups({ root: directory, plan, cleanupPaths: [...paths].reverse() });
+  assert.deepEqual(
+    result.map((value) => value.fixtureProfile),
+    [...profiles].reverse(),
+  );
+  for (const [i, profile] of profiles.entries()) {
+    const receipt = result.find((value) => value.fixtureProfile === profile);
+    assert.equal(receipt.path, paths[i].slice("artifacts/sounding-line/".length));
+    assert.equal(receipt.profileReceiptSha256, createHash("sha256").update(originals[i]).digest("hex"));
+  }
+  for (const change of [
+    (value) => {
+      value.profile = "generic";
+    },
+    (value) => {
+      value.profile = "unregistered-profile";
+    },
+    (value) => {
+      value.diagnosticBinding.scopeId = randomUUID();
+    },
+  ]) {
+    const value = JSON.parse(originals[1]);
+    change(value);
+    fs.writeFileSync(path.join(directory, profilePaths[1]), JSON.stringify(value));
+    await assert.rejects(
+      readRegistryRuntimeCleanups({ root: directory, plan, cleanupPaths: paths }),
+      /PROFILE_RUNTIME_BINDING/u,
+    );
+  }
 });
 
 test("independently committed synthetic authority exercises CLI sealing, parent cleanup denial and no overwrite", (t) => {
@@ -273,6 +368,15 @@ test("independently committed synthetic authority exercises CLI sealing, parent 
     }),
   );
   const planPath = "artifacts/sounding-line/product-experience-submission/plan.json";
+  write(
+    candidateRoot,
+    runtimePath.replace(/browser-runtime[.]json$/u, "browser-suite-profile.json"),
+    JSON.stringify({
+      version: 1,
+      profile: "generic",
+      diagnosticBinding: JSON.parse(fs.readFileSync(path.join(candidateRoot, runtimePath))).diagnosticBinding,
+    }),
+  );
   write(candidateRoot, planPath, JSON.stringify(plan));
   const supervision = "artifacts/sounding-line/preparation-supervision/session-fixture/public";
   const terminal = {

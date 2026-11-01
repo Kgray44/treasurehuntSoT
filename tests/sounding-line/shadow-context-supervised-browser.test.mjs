@@ -319,6 +319,15 @@ require('node:http').createServer((q,s)=>{
       { flag: "wx", mode: 0o600 },
     );
     const { contexts: _contexts, cleanup: _cleanup, ...fileRegistryInput } = registryInput;
+    await fs.writeFile(
+      absolute(diagnosticPath.replace(/browser-runtime[.]json$/u, "browser-suite-profile.json")),
+      JSON.stringify({
+        version: 1,
+        profile: "generic",
+        diagnosticBinding: JSON.parse(await fs.readFile(absolute(diagnosticPath), "utf8")).diagnosticBinding,
+      }),
+      { flag: "wx", mode: 0o600 },
+    );
     const sealedRegistry = await sealClosedContextRegistryFiles({
       ...fileRegistryInput,
       root,

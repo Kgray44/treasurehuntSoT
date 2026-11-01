@@ -2,6 +2,7 @@
 import path from "node:path";
 import { constants, lstat, open, opendir, realpath } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { canonicalJson } from "./evidence.mjs";
 import { readBoundedRawCaptureFile } from "./experience-raw-output.mjs";
 import { buildClosedContextRegistryShadow } from "./closed-context-registry-producer.mjs";
 import { shadowCaptureContextSchedule } from "./experience-browser.mjs";
@@ -93,6 +94,77 @@ async function journalPaths(root, directory) {
   await visit(directory, false);
   return result.sort();
 }
+export async function readRegistryRuntimeCleanups({ root, plan, cleanupPaths }) {
+  shadowCaptureContextSchedule(plan);
+  root = await realpath(root);
+  const profiles = [...new Set(plan.contracts.map((value) => value.experience.fixtureProfile ?? "generic"))];
+  need(
+    Array.isArray(cleanupPaths) &&
+      cleanupPaths.length > 0 &&
+      cleanupPaths.length <= 16 &&
+      cleanupPaths.length === profiles.length &&
+      new Set(cleanupPaths).size === cleanupPaths.length,
+    "CLEANUP_PROFILES",
+  );
+  const cleanups = [];
+  const uuid = "[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}";
+  const pattern = new RegExp(
+    "^artifacts/sounding-line/browser-diagnostics/(" + uuid + ")/(" + uuid + ")/browser-runtime[.]json$",
+    "u",
+  );
+  for (const cleanupPath of cleanupPaths) {
+    const match = pattern.exec(cleanupPath ?? "");
+    need(match, "CLEANUP_SCOPE");
+    const cleanupBytes = await readBoundedRegistryFile({ root, file: cleanupPath, maximumBytes: 1024 * 1024 });
+    const runtime = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(cleanupBytes));
+    const cleanup = runtime.lifecycle?.cleanup,
+      binding = runtime.diagnosticBinding;
+    need(
+      binding?.version === 1 &&
+        binding.runId === match[1] &&
+        binding.scopeId === match[2] &&
+        binding.baseSha === plan.baseSha &&
+        binding.candidateSha === plan.candidateSha &&
+        /^[a-f0-9]{64}$/u.test(binding.planDigest ?? ""),
+      "RUNTIME_BINDING",
+    );
+    const profileBytes = await readBoundedRegistryFile({
+      root,
+      file: cleanupPath.replace(/browser-runtime[.]json$/u, "browser-suite-profile.json"),
+      maximumBytes: 1024 * 1024,
+    });
+    const profile = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(profileBytes));
+    need(
+      profile.version === 1 &&
+        profiles.includes(profile.profile) &&
+        !cleanups.some((value) => value.fixtureProfile === profile.profile) &&
+        canonicalJson(profile.diagnosticBinding) === canonicalJson(binding),
+      "PROFILE_RUNTIME_BINDING",
+    );
+    need(
+      cleanup?.status === "PASS" &&
+        cleanup.portsReleased === true &&
+        ["browser", "server"].every(
+          (role) =>
+            cleanup[role]?.status === "PASS" &&
+            cleanup[role].treeReaped === true &&
+            cleanup[role].streamsClosed === true,
+        ) &&
+        ["fixture", "proxy"].every((role) => ["PASS", "NOT_STARTED"].includes(cleanup[role]?.status)),
+      "CLEANUP_INCOMPLETE",
+    );
+    cleanups.push({
+      fixtureProfile: profile.profile,
+      profileReceiptSha256: hash(profileBytes),
+      bytes: cleanupBytes,
+      path: cleanupPath.slice("artifacts/sounding-line/".length),
+      processTreeClosed: true,
+      portsClosed: true,
+      streamsClosed: true,
+    });
+  }
+  return cleanups;
+}
 export async function sealClosedContextRegistryFiles({
   root,
   rawDirectory,
@@ -108,58 +180,7 @@ export async function sealClosedContextRegistryFiles({
     ),
     "RAW_SCOPE",
   );
-  const profiles = [...new Set(input.plan.contracts.map((value) => value.experience.fixtureProfile ?? "generic"))];
-  need(
-    Array.isArray(cleanupPaths) &&
-      cleanupPaths.length > 0 &&
-      cleanupPaths.length <= 16 &&
-      cleanupPaths.length === profiles.length &&
-      new Set(cleanupPaths).size === cleanupPaths.length,
-    "CLEANUP_PROFILES",
-  );
-  const cleanups = [];
-  const uuid = "[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}";
-  const pattern = new RegExp(
-    "^artifacts/sounding-line/browser-diagnostics/(" + uuid + ")/(" + uuid + ")/browser-runtime[.]json$",
-    "u",
-  );
-  for (const [index, cleanupPath] of cleanupPaths.entries()) {
-    const match = pattern.exec(cleanupPath ?? "");
-    need(match, "CLEANUP_SCOPE");
-    const cleanupBytes = await readBoundedRegistryFile({ root, file: cleanupPath, maximumBytes: 1024 * 1024 });
-    const runtime = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(cleanupBytes));
-    const cleanup = runtime.lifecycle?.cleanup,
-      binding = runtime.diagnosticBinding;
-    need(
-      binding?.version === 1 &&
-        binding.runId === match[1] &&
-        binding.scopeId === match[2] &&
-        binding.baseSha === input.plan.baseSha &&
-        binding.candidateSha === input.plan.candidateSha &&
-        /^[a-f0-9]{64}$/u.test(binding.planDigest ?? ""),
-      "RUNTIME_BINDING",
-    );
-    need(
-      cleanup?.status === "PASS" &&
-        cleanup.portsReleased === true &&
-        ["browser", "server"].every(
-          (role) =>
-            cleanup[role]?.status === "PASS" &&
-            cleanup[role].treeReaped === true &&
-            cleanup[role].streamsClosed === true,
-        ) &&
-        ["fixture", "proxy"].every((role) => ["PASS", "NOT_STARTED"].includes(cleanup[role]?.status)),
-      "CLEANUP_INCOMPLETE",
-    );
-    cleanups.push({
-      fixtureProfile: profiles[index],
-      bytes: cleanupBytes,
-      path: cleanupPath.slice("artifacts/sounding-line/".length),
-      processTreeClosed: true,
-      portsClosed: true,
-      streamsClosed: true,
-    });
-  }
+  const cleanups = await readRegistryRuntimeCleanups({ root, plan: input.plan, cleanupPaths });
   const contexts = [],
     paths = await journalPaths(root, `${rawDirectory}/closed-contexts`),
     seenPaths = new Set();
