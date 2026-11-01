@@ -173,6 +173,11 @@ test("child failure and passing supervision remain separate from release qualifi
 test("retention failure preserves the original child failure and cannot produce passing supervision", async (t) => {
   const { pending } = await owned(t, "fail", {
     publish: async (file, bytes, options) => {
+      if (file.endsWith("initial.json")) {
+        const initial = JSON.parse(bytes);
+        assert.equal(initial.status, "INCOMPLETE");
+        assert.equal(initial.qualification, false);
+      }
       if (file.endsWith("terminal.json")) throw Object.assign(new Error("synthetic disk full"), { code: "ENOSPC" });
       return writeFile(file, bytes, options);
     },
@@ -195,4 +200,19 @@ test("a command timeout keeps its original cause and the enclosing OS ownership 
   assert.equal(receipt.status, "FAIL");
   assert.equal(receipt.cleanupFailure, null);
   await assertTerminated([await observe(root, "parent.json")]);
+});
+
+test("supervision records known capacity and job lookups without inventing a total", async (t) => {
+  for (const [identity, expected] of [
+    [{ jobLookupCalls: 1, capacityLookupCalls: 3 }, 4],
+    [{ jobLookupCalls: 1, capacityLookupCalls: 0 }, 1],
+    [{}, null],
+  ]) {
+    const { pending } = await owned(t, "pass", { identity });
+    const receipt = await pending;
+    assert.equal(receipt.status, "PASS");
+    assert.equal(receipt.metrics.knownApiCalls, expected);
+    assert.equal(receipt.metrics.totalApiCalls, null);
+    assert.equal(receipt.qualification, false);
+  }
 });

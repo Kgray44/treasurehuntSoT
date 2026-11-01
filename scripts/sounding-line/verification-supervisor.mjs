@@ -28,7 +28,7 @@ export async function superviseVerification({
   await mkdir(directory, { recursive: true });
   const began = performance.now();
   const cpuBegan = process.cpuUsage();
-  const initial = { version: 1, identity, executionMs, tailMs, qualification: false };
+  const initial = { version: 1, status: "INCOMPLETE", identity, executionMs, tailMs, qualification: false };
   await publish(path.join(directory, "initial.json"), JSON.stringify(initial) + "\n", { flag: "wx" });
   let child,
     outcome = null,
@@ -96,7 +96,8 @@ export async function superviseVerification({
       ownedSubprocesses: child ? 1 : 0,
       totalSubprocesses: null,
       preflightGitSubprocesses: identity?.gitSubprocesses ?? null,
-      knownApiCalls: identity?.jobLookupCalls ?? null,
+      knownApiCalls:
+        identity?.jobLookupCalls == null ? null : identity.jobLookupCalls + (identity.capacityLookupCalls ?? 0),
       totalApiCalls: null,
       preflightSourceBytes: identity?.sourceInputBytes ?? null,
       transferredBytes: null,
