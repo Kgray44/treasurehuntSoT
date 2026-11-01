@@ -21,6 +21,7 @@ export function ChronicleDetails({
   saveState: string;
 }) {
   const heading = useRef<HTMLHeadingElement>(null);
+  const footer = useRef<HTMLElement>(null);
   useEffect(() => {
     heading.current?.focus({ preventScroll: true });
   }, []);
@@ -54,6 +55,7 @@ export function ChronicleDetails({
         onSubmit={(event) => {
           event.preventDefault();
           onSave();
+          requestAnimationFrame(() => footer.current?.scrollIntoView({ block: "center", behavior: "auto" }));
         }}
       >
         <div className="settings-grid">
@@ -193,7 +195,7 @@ export function ChronicleDetails({
             />
           </label>
         </div>
-        <footer>
+        <footer ref={footer}>
           <button type="submit" className="brass-button">
             Save details
           </button>

@@ -143,8 +143,13 @@ for (const device of ["desktop", "mobile"] as const) {
     await details.getByLabel("Estimated minutes", { exact: true }).fill("45");
     await details.getByLabel("Theme", { exact: true }).selectOption("MOONLIT_JOURNAL");
     await details.getByLabel("Content warnings", { exact: true }).fill("Fictional storms");
-    await details.getByRole("button", { name: "Save details" }).click();
+    await page.keyboard.press("Tab");
+    await expect(details.getByRole("button", { name: "Save details" })).toBeFocused();
+    await page.keyboard.press("Enter");
     await expect(page.locator(".save-state")).toContainText("Saved at");
+    await expect(details.getByRole("status")).toContainText("Saved at");
+    await expect(details.getByRole("status")).toBeInViewport();
+    await page.screenshot({ path: `artifacts/screenshots/sc-00a-${device}-saved-details.png` });
     const persisted = await browserJson(page, `/api/studio/tales/${taleId}`);
     expect(persisted.tale).toMatchObject({
       title,
@@ -155,7 +160,7 @@ for (const device of ["desktop", "mobile"] as const) {
       theme: "MOONLIT_JOURNAL",
       contentWarnings: "Fictional storms",
     });
-    await details.getByRole("button", { name: "Close Chronicle Details" }).click();
+    await page.keyboard.press("Escape");
     await expect(page.getByRole("button", { name: "Chronicle Details", exact: true })).toBeFocused();
     await page
       .getByRole("navigation", { name: "Chronicle authoring sections" })
