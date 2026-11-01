@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-31",
+  "generated_at": "2026-11-01",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -477,6 +477,12 @@
       "canonical_for": "sc00a-homeport-journey-migration"
     },
     {
+      "path": "Development_Docs/Engineering/Product_Experience_SC00A_Source_Repair_Authority_20261101.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -724,6 +730,24 @@
     },
     {
       "path": "Development_Docs/Engineering/Repository_Operations/templates/operator-runbook-template.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/original-grant-record.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/source-amendment-20261101/reviewed-registration.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/source-amendment-20261101/source-amendment.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

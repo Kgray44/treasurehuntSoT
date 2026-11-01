@@ -419,6 +419,15 @@ test("ordinary admission distinguishes the field candidates from release authori
       { "testing/contracts.json": JSON.stringify({ experiencePolicy: { journeyMigration: { prNumber: 820 } } }) },
       "testing/contracts.json",
     ],
+    [
+      "candidate source amendment",
+      {
+        "testing/contracts.json": JSON.stringify({
+          experiencePolicy: { journeyMigrationSourceAmendment: { prNumber: 820 } },
+        }),
+      },
+      "testing/contracts.json",
+    ],
   ]) {
     await withCandidate(changes, async (fixture) => {
       await assert.rejects(

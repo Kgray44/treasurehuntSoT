@@ -1,0 +1,186 @@
+{
+  "id": "sc00a-homeport-journey-migration-20261031",
+  "version": 1,
+  "repository": "Kgray44/treasurehuntSoT",
+  "prNumber": 820,
+  "acceptedSource": "809b6d54025fb66000960f30dc750b44ee056d49",
+  "reviewedAncestor": "d83e81c9468363b09d1d776fa279c38cc2226ca9",
+  "reviewedTree": "2617baf5c14cce300a4e44fde6ae0725654c1ebb",
+  "expiresAt": "2026-11-14T23:59:59Z",
+  "contractId": "homeport.owner-correction.round1.workspaces",
+  "journeyId": "canonical-three-workspace-and-creation-return",
+  "oldContractDigest": "8b5bdb5a5b3e64ec4eb59ff279d5d5ec7b39ea5773c784670b118b5dfcb0b038",
+  "newContractDigest": "42a4dc0ebf55eb81c3bc80180f86025ec167270d37a4c092f27ab09f4375f3b7",
+  "oldJourneyDigest": "39ae8df7cab4fe2287ac3a16dc0c7e9bef1faf2fe2496cab9577b9b8a81a22ad",
+  "newJourneyDigest": "dd65fb049e6c396c8ea24fd25c774c5289d26f5aa64545bd2d735886abb879d1",
+  "permittedExperienceFields": ["visibleOutcome", "accessibility", "navigation", "states", "journeys", "limitations"],
+  "immutableProofs": [
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/original-homeport-contract.json",
+      "sha256": "92eb51db1bec5627f0bc51673800784147ec046f36746805464fa431a9112dcc",
+      "bytes": 13723
+    },
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/approved-registration.json",
+      "sha256": "a5c4f2f2bbae240af52e57e73328ece7894ffe94cdcf6a803756c012b938c6da",
+      "bytes": 505632
+    },
+    {
+      "path": "Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/original-candidate-review.json",
+      "sha256": "a421bd707bdd25685760b1139cf5a26056ca4369a8fb8812056a92ff0e3c24d8",
+      "bytes": 1451427
+    }
+  ],
+  "approvedChanges": [
+    {
+      "path": "docs/user/creator-guide.md",
+      "mode": "100644",
+      "blob": "49676da9f04c63c1441e845d8fba4c2916ab10ff"
+    },
+    {
+      "path": "src/components/studio/ChronicleAuthoring.module.css",
+      "mode": "100644",
+      "blob": "3550894a001c5413e8f195b3bf4e08e9e5b5fd45"
+    },
+    {
+      "path": "src/components/studio/ChronicleDetails.tsx",
+      "mode": "100644",
+      "blob": "703fd19dd03db4045ccfc82f49f3dac03f02182c"
+    },
+    {
+      "path": "src/components/studio/NewTaleForm.test.tsx",
+      "mode": "100644",
+      "blob": "5c6c26be5c64d54a986176f5c6f500fd37f676c8"
+    },
+    {
+      "path": "src/components/studio/NewTaleForm.tsx",
+      "mode": "100644",
+      "blob": "9dc137f0f0309fa154deb36f46ac3c262557c21a"
+    },
+    {
+      "path": "src/components/studio/StudioHome.tsx",
+      "mode": "100644",
+      "blob": "5c67976dadd0355288d1912cda59bd520ce2ec31"
+    },
+    {
+      "path": "src/components/studio/StudioStatusHeader.tsx",
+      "mode": "100644",
+      "blob": "e5b46ef635f8ff2509abec5af8d64a73729e4beb"
+    },
+    {
+      "path": "src/components/studio/TaleEditor.test.tsx",
+      "mode": "100644",
+      "blob": "1f75649da9d8acfe9ce407274fe78039010488a5"
+    },
+    {
+      "path": "src/components/studio/TaleEditor.tsx",
+      "mode": "100644",
+      "blob": "02998baabd63fea848ce42671698b3cbb9ecc6ed"
+    },
+    {
+      "path": "testing/contracts.json",
+      "mode": "100644",
+      "blob": "ca1735c6f7c8d0e8229d6ffb2b67cf389c9b2bf2"
+    },
+    {
+      "path": "testing/impact-map.json",
+      "mode": "100644",
+      "blob": "b8b75ec16ac5303e7825cdd60dca63cd174daf81"
+    },
+    {
+      "path": "testing/suites.json",
+      "mode": "100644",
+      "blob": "7127dd7b1e40c0d3f8b59db0f349979d0cc92f5c"
+    },
+    {
+      "path": "tests/e2e/brightwork-stage8-wave4.spec.ts",
+      "mode": "100644",
+      "blob": "3e0fb4a632c51374cc0bd1a562069d9754eeacf9"
+    },
+    {
+      "path": "tests/e2e/chronicle-creation.spec.ts",
+      "mode": "100644",
+      "blob": "9c5b1dca88cd8ff96fe40f30b29d3f90ed214f1e"
+    },
+    {
+      "path": "tests/e2e/chronicle-studio.spec.ts",
+      "mode": "100644",
+      "blob": "f966f6b3e25092f001a3ffb47c24e58418f8ca08"
+    },
+    {
+      "path": "tests/e2e/drydock-phase4.spec.ts",
+      "mode": "100644",
+      "blob": "6ee4d7ebeaae3ffe40e154c6459dc3f468fa2fcb"
+    },
+    {
+      "path": "tests/e2e/homeport-phase7-owner-correction-round3-patch-a.spec.ts",
+      "mode": "100644",
+      "blob": "06dcc5d234c73d2f8c32a93462a3562f2b573876"
+    },
+    {
+      "path": "tests/e2e/parallax-workspace-compatibility.spec.ts",
+      "mode": "100644",
+      "blob": "09769811de6b9ac4f44cd5eaef9a15aedb9e782f"
+    },
+    {
+      "path": "tests/e2e/project-shipwright-phase2.spec.ts",
+      "mode": "100644",
+      "blob": "43f751d1b0d1d3e2dff3b786333f46a904436daa"
+    },
+    {
+      "path": "tests/e2e/project-shipwright-phase3.spec.ts",
+      "mode": "100644",
+      "blob": "ae93c0108c6d1a7958f14c8c33f6fba2b6c74f20"
+    },
+    {
+      "path": "tests/e2e/project-shipwright-phase5.spec.ts",
+      "mode": "100644",
+      "blob": "c66738dc1d8891a85989d122dba9cc8a3cbe349d"
+    }
+  ],
+  "browserFixtureAndVisualPins": [
+    {
+      "path": "tests/e2e/parallax-workspace-compatibility.spec.ts",
+      "sha256": "b88eeca18016866c65cd37cb6800a6c2cec26ec2ea6e19cafa60644255e9ca22"
+    },
+    {
+      "path": "tests/e2e/chronicle-creation.spec.ts",
+      "sha256": "8c2212d9c83345bdeec4f5171baad61eb43a0e73eaefa0bb98719fa947ed7de5"
+    },
+    {
+      "path": "tests/e2e/fixtures/landfall-closure.ts",
+      "sha256": "7f4d296139b5a0dbeba3d6b483075f367e8569972db6aedfaaaa25bb1daaf114"
+    },
+    {
+      "path": "tests/e2e/fixtures/sounding-line-isolation.ts",
+      "sha256": "fc3464843de49233190f2432a806572bd280afeece182090e42170af0d8f94ab"
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "9dd00e6d1d9b914a50da93bf30f0d8a3b05e8bcc217dfa1865d7306106057e3d"
+    },
+    {
+      "path": "prisma/seed.ts",
+      "sha256": "99ebbfc4a30cece2853de032b87aa6e4a4bb37d470010665bce4715480f06538"
+    },
+    {
+      "path": "scripts/sounding-line/prepare-validation-isolation.mjs",
+      "sha256": "37fd9a28452f67992a6839a9630d819be56727eefddabdcc7746738cdd5f542b"
+    },
+    {
+      "path": "src/components/studio/ChronicleAuthoring.module.css",
+      "sha256": "7eedfd4f1c9e9a5fcb665bbe944f0ba13f6b038c413f6ddfc273b2634647d611"
+    },
+    {
+      "path": "src/components/studio/ChronicleDetails.tsx",
+      "sha256": "f301b0503e016a81ec7b4ebcdd9b298e647b88586a2bf7697d623329492b156d"
+    },
+    {
+      "path": "src/components/studio/StudioStatusHeader.tsx",
+      "sha256": "bb246eb9d84162abb2912c55b2467a8cc48c51884015f2644835df78df073786"
+    }
+  ],
+  "publicationRoot": "Development_Docs/Testing/Product_Experience/evidence/sc00a-20261031/",
+  "reviewPath": "Development_Docs/Testing/Product_Experience/candidate-review.json",
+  "approvedAdditiveContractIds": ["chronicle.creation"]
+}
