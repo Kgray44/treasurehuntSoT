@@ -89,7 +89,7 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
-        run: node authority/scripts/sounding-line/ordinary-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
+        run: node authority/scripts/sounding-line/ordinary-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --purpose campaign-custody
       - name: Set up protected checkout runtime
         if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
         uses: actions/setup-node@v4
@@ -136,6 +136,14 @@ jobs:
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
         run: node authority/scripts/sounding-line/experience-checkout-probe.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
+      - name: Retain exact checkout receipt after every outcome
+        if: ${{ always() && hashFiles('candidate.checkout.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-checkout-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: candidate.checkout.json
+          if-no-files-found: error
+          retention-days: 90
   experience-preparation:
     needs: campaign-custody
     name: Sounding Line / Experience preparation (no mainline decision)
@@ -292,6 +300,14 @@ jobs:
         with:
           name: product-experience-activation-${{ steps.experience.outputs.source_digest }}
           path: candidate/artifacts/sounding-line/product-experience-submission/activation.json
+          retention-days: 90
+      - name: Retain exact checkout receipt after every outcome
+        if: ${{ always() && hashFiles('candidate.checkout.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-checkout-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: candidate.checkout.json
+          if-no-files-found: error
           retention-days: 90
   final-check:
     name: Sounding Line / Focused verification
@@ -493,6 +509,14 @@ jobs:
           path: candidate/artifacts/sounding-line/current-admission-observation.encrypted
           if-no-files-found: error
           retention-days: 90
+      - name: Retain exact checkout receipt after every outcome
+        if: ${{ always() && hashFiles('candidate.checkout.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-checkout-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: candidate.checkout.json
+          if-no-files-found: error
+          retention-days: 90
   mainline-decision:
     name: Sounding Line / Mainline Decision
     needs: [campaign-custody, final-check]
@@ -588,3 +612,11 @@ jobs:
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
           SOUNDING_LINE_CURRENT_OBSERVATION_PUBLICATION_NONCE: ${{ needs.final-check.outputs.current_observation_nonce }}
         run: node authority/scripts/sounding-line/experience-exception.mjs --operation seal --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --decision decision/ordinary-decision.json
+      - name: Retain exact checkout receipt after every outcome
+        if: ${{ always() && hashFiles('candidate.checkout.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-checkout-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: candidate.checkout.json
+          if-no-files-found: error
+          retention-days: 90
