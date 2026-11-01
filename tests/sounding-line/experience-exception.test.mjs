@@ -1,3 +1,4 @@
+import "./fixtures/historical-reader-blobs.mjs";
 import { CURRENT_R26 } from "../../scripts/sounding-line/experience-current-r26.mjs";
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -2716,7 +2717,10 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     const blob = run(["hash-object", "-w", "--stdin"], bytes);
     run(["update-index", "--add", "--cacheinfo", `${mode},${blob},${file}`]);
   };
-  const commit = (parent) => run(["commit-tree", run(["write-tree"]), "-p", parent, "-m", "isolated R3 fixture"]);
+  // These synthetic trees preserve unread historical entries by immutable ID.
+  // Admission still reads and validates its complete declared byte closure.
+  const commit = (parent) =>
+    run(["commit-tree", run(["write-tree", "--missing-ok"]), "-p", parent, "-m", "isolated R3 fixture"]);
   const baseInput = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
   run(["read-tree", baseInput]);
   put(
@@ -5022,7 +5026,10 @@ for (const record of [r4Template, r5Template, r6Template, r7Template, r8Template
       const blob = git(["hash-object", "-w", "--stdin"], bytes);
       git(["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`]);
     };
-    const commit = (parent) => git(["commit-tree", git(["write-tree"]), "-p", parent, "-m", "R4 fixture"]);
+    // Do not demand payloads for unrelated entries merely to retain their IDs.
+    // This affects fixture construction only, never production admission.
+    const commit = (parent) =>
+      git(["commit-tree", git(["write-tree", "--missing-ok"]), "-p", parent, "-m", "R4 fixture"]);
     // A consumer checkout already contains the frozen product. Seed this fake
     // protected base from known main so its product interval stays nonempty.
     const head = "2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed";
