@@ -1,0 +1,83 @@
+# Source, preparation and transport shadows
+
+These components depend on the incremental evidence model. They have no
+production call sites, issue no certificate, and grant no reuse, qualification,
+review credit or merge authority. Their focused tests run in `test:sounding-line`;
+an existing source-snapshot test checks that each new test is registered once.
+The existing checkout profiles, preparation commands and Mainline Decision retain
+their authority. Protected integration and native activation remain outstanding.
+
+| Component                      | Current behavior                                                                                                                                    | Activation boundary                                                                                                                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source-batch-shadow.mjs`      | Compare complete tree/blob batches with original outcomes; return the original outcome references unchanged.                                        | Independent production equivalence and adversarial review before replacing a read.                                                                                                  |
+| `selected-source-shadow.mjs`   | Propose a versioned read set from both dependency closures, all changed/deleted paths, installed readers, root policy and original historical pins. | Authenticated complete source/read closure and independently certified materialization; production remains full.                                                                    |
+| `preparation-reuse-shadow.mjs` | Compare a strict metadata schema for two fresh preparations. This does not measure or package either preparation.                                   | Native preparation payload authentication, receipt custody, external isolation and cache equivalence. No hosted preparation certificate or cache producer exists in this component. |
+| `bounded-media-shadow.mjs`     | Retain bounded streamed bytes and private receipts; verify an opaque local handle by rereading raw bytes and both initial/terminal receipts.        | Provider-authenticated expectations and external isolation. Caller-declared hashes cannot establish provider identity.                                                              |
+
+## Source comparison
+
+The comparison bounds requests at 8,192, revisions at 16, total entries at
+100,000, each read at 8 MiB, and tree/blob payloads at 64 MiB. Unsupported quoting,
+pathspec syntax, malformed metadata, missing parents, source-reader failure and
+bad blob hashes remain unavailable. An original failed query retains its exact
+error object and is never retried or upgraded to a successful comparison.
+
+At local source `35c454c2262da1d03cf9431c1c43a31491b23636`, the comparison covered
+321 original queries over immutable revisions
+`b20199feee2a82129f1527a9c0099eca5c98be5a`,
+`5fce13d00211d45116cc93ae143f24889834380c` and
+`3f1eddb1f990ecad9b5a119236d73bdd0c9ecdbd`. All 309 successful outcomes matched;
+12 original failures retained their identity. The individual reads took
+56,788.4301 ms; five batch reads and comparison took 1,443.5384 ms. Both paths ran
+in this local experiment. Production reads replaced: **zero**. These sequential
+Windows observations do not establish hosted runtime or billing savings.
+
+## Selection and preparation
+
+The selected-source proposal checks inventory and graph digests without treating
+them as authentication. It preserves base bytes for deletions and both sides of
+mode/content changes. An unknown closure, source/graph mismatch, missing reader,
+changed historical pin or exceeded bound returns `FULL_SNAPSHOT`, with no partial
+proposal. Complete commit/tree metadata and disabled late transport remain
+mandatory. Mathematical closure over caller-supplied data is not a completeness
+certificate for actual filesystem readers.
+
+Preparation comparison covers source identities and 13 fingerprints: source
+closure, controller, policy, commands, inputs, dependencies, toolchain, browser,
+environment, fixture, schema, profile and coverage. Output inventory/content
+identities, file counts and byte counts remain separate. Different build bytes,
+including nondeterministic output, are reported rather than normalized away.
+Original and fresh run/candidate identities remain distinct. An opaque original
+native-context proof can corroborate that context only; it cannot authenticate
+the supplied preparation record or cached outputs. Every result still says
+`RUN_FRESH_PREPARATION` and `NOT_ISSUED`.
+
+## Private byte retention
+
+The transport bounds a response at 256 MiB, private copies at 64 KiB, reads at
+65,536, the stream deadline at 120 seconds and reader cleanup at one additional second.
+Blocking filesystem operations still require the existing owned external supervisor.
+It creates exclusive files, checks directory/file identity, bounds content length
+and handles cancellation, hot empty streams, truncation and digest mismatch.
+Initial receipts remain `INCOMPLETE`; a failed stream retains its prefix and
+separate terminal/private failure record. Error records contain bounded own
+string fields, with omissions explicit; they do not claim a complete serialized
+exception. Recognized native lazy stacks require the original accessor,
+prototype, unchanged formatter and bounded data properties. Caller-defined
+getters and substituted formatters are not executed.
+
+The entire retention directory is private. Neither its payloads nor its original
+error records belong in product output. Successful write hashes describe write
+observations; the opaque verifier independently rereads the raw file and exact
+initial/terminal bytes. A changed or missing receipt invalidates that local
+handle even if the payload bytes still match. A serialized copy is not a handle.
+These checks do not authenticate a provider or prove external runtime isolation.
+
+At source `dbca7289daa9094fe2ffc8b0abf15676349670ba`, a local comparison used the
+unchanged retained artifact `13080399234` from run `41298652051/1`: 3,756,836 bytes,
+SHA-256 `6503755918c74c46aa8f70b214095f5d7a73a8cad67da0f66359b686fc135c4a`.
+Whole-response buffering took 7.5421 ms. Streamed disk retention took 31.7993 ms,
+with 64 KiB input/copy chunks and exact raw-byte readback. This is a bounded-memory
+tradeoff with additional disk I/O, not a speedup or a new native transport
+authentication. The later receipt-custody strengthening has separate focused
+tests; this original measurement remains bound to its original source.
