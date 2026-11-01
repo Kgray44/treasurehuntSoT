@@ -6,7 +6,7 @@ import path from "node:path";
 import { createServer } from "node:net";
 import { createHash, randomUUID } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { runBrowserAuthority } from "../../scripts/sounding-line/browser-authority.mjs";
 import { spawnOwnedProcess } from "../../scripts/sounding-line/owned-process.mjs";
 import { createOwnedRuntimeStateRetentionFactory } from "../../scripts/sounding-line/owned-runtime-state-retention.mjs";
@@ -22,8 +22,11 @@ test(
   "existing supervisor owns the private single-context worker and application before SQLite and private cache retention",
   { timeout: 90000 },
   async (t) => {
-    const root = process.cwd(),
-      invocation = `artifacts/sounding-line/product-experience-capture-staging/capture-supervised-${randomUUID()}`,
+    // Keep fabricated plans outside Git exactly as the existing synthetic browser
+    // fixtures do. The real protected-source recognizer must remain intact.
+    const repository = process.cwd();
+    const root = await fs.mkdtemp(path.join(repository, "artifacts/shadow-supervised-fixture-"));
+    const invocation = `artifacts/sounding-line/product-experience-capture-staging/capture-supervised-${randomUUID()}`,
       rawDirectory = invocation + "/raw";
     await createRawOutputDirectory({ root, directory: rawDirectory });
     const absolute = (relative) => path.join(root, relative),
@@ -97,10 +100,12 @@ test(
     };
     const factory = await createOwnedRuntimeStateRetentionFactory({ root, rawDirectory, prNumber: 900 }),
       owner = await factory.forContext({ databasePath, originalBinding: binding });
+    let success = false;
     t.after(async () => {
       await factory.close();
       assert(absolute(invocation).startsWith(root + path.sep));
-      await fs.rm(absolute(invocation), { recursive: true, force: true });
+      if (success) await fs.rm(root, { recursive: true, force: true });
+      else console.error("SYNTHETIC_SHADOW_FIXTURE_RETAINED:" + path.relative(repository, root));
     });
     const serverFile = absolute(rawDirectory + "/fixture-server.cjs");
     await fs.writeFile(
@@ -136,6 +141,15 @@ test(
       });
     });
     const registrations = [];
+    const workerEntrypoint = absolute("shadow-worker-fixture.mjs");
+    const workerSource = fileURLToPath(
+      new URL("../../scripts/sounding-line/shadow-context-worker.mjs", import.meta.url),
+    );
+    await fs.writeFile(
+      workerEntrypoint,
+      `import {runShadowContextWorker} from ${JSON.stringify(pathToFileURL(workerSource).href)};try{await runShadowContextWorker({rawDirectory:process.argv[3],inputPath:process.argv[5],inputSha256:process.argv[7]});}catch(error){console.error('SYNTHETIC_SHADOW_WORKER_FAILED');process.exitCode=1;}`,
+      { flag: "wx", mode: 0o600 },
+    );
     const runtime = await runBrowserAuthority({
       root,
       port,
@@ -147,7 +161,7 @@ test(
       },
       serverArguments: [serverFile, "start", "-p", String(port)],
       browserScriptArguments: [
-        fileURLToPath(new URL("../../scripts/sounding-line/shadow-context-worker.mjs", import.meta.url)),
+        workerEntrypoint,
         "--raw-directory",
         rawDirectory,
         "--input",
@@ -214,5 +228,6 @@ test(
       "owned supervised state",
     );
     assert.equal(restored.files.get("browser-authentication-cache").toString(), "[]");
+    success = true;
   },
 );
