@@ -17,7 +17,7 @@ jobs:
         shell: bash
         run: |
           python3 -I -S <<'PY'
-          import os, sys, json, time, datetime, pathlib, urllib.request, hashlib, re, base64
+          import os, sys, json, time, datetime, pathlib, urllib.request, urllib.error, hashlib, re, base64
           repo = "Kgray44/treasurehuntSoT"
           run, attempt = os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"]
           assert os.environ["GITHUB_REPOSITORY"] == repo
@@ -34,14 +34,24 @@ jobs:
               began, wall = time.monotonic_ns(), utc()
               request = urllib.request.Request("https://api.github.com/repos/" + repo + "/" + endpoint,
                   headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"], "Accept": "application/vnd.github+json"})
-              with client.open(request, timeout=10) as response:
-                  body = response.read(1024 * 1024 + 1)
-                  assert response.status == 200 and len(body) <= 1024 * 1024
-                  result["observations"].append({"endpoint": endpoint, "localUtcBefore": wall, "localUtcAfter": utc(),
-                      "monotonicBeforeNs": began, "monotonicAfterNs": time.monotonic_ns(),
-                      "httpDate": response.headers.get("Date"), "requestId": response.headers.get("X-GitHub-Request-Id"),
-                      "bodySha256": hashlib.sha256(body).hexdigest(), "providerBodyBase64": base64.b64encode(body).decode("ascii"),
-                      "providerBody": json.loads(body)})
+              record = {"endpoint": endpoint, "localUtcBefore": wall, "monotonicBeforeNs": began}
+              try:
+                  try: response = client.open(request, timeout=10)
+                  except urllib.error.HTTPError as error: response = error
+                  with response:
+                      limit = 4096 if endpoint.endswith("/timing") else (16384 if "/jobs?" in endpoint else 20480)
+                      body = response.read(limit + 1)
+                      record.update({"httpStatus": response.status, "httpDate": response.headers.get("Date"),
+                          "requestId": response.headers.get("X-GitHub-Request-Id"), "bodySha256": hashlib.sha256(body).hexdigest(),
+                          "providerBodyBase64": base64.b64encode(body).decode("ascii"), "originalBodyComplete": len(body) <= limit})
+                      try: json.loads(body); record["providerJsonValid"] = True
+                      except ValueError as error: record["parseErrorClass"] = type(error).__name__
+              except Exception as error:
+                  record["transportErrorClass"] = type(error).__name__
+              finally:
+                  record.update({"localUtcAfter": utc(), "monotonicAfterNs": time.monotonic_ns()})
+                  result["observations"].append(record)
+              return record.get("httpStatus") == 200 and record.get("providerJsonValid") and record.get("originalBodyComplete")
           def small(path):
               with open(path, "r", encoding="utf-8") as handle:
                   value = handle.read(8193)
@@ -69,12 +79,13 @@ jobs:
                   if pid == 1: break
                   pid = entry["parentPid"]
               result["uptimeAfter"] = small("/proc/uptime")
-              observe("actions/runs/" + run)
-              observe("actions/runs/" + run + "/attempts/" + attempt + "/jobs?per_page=100")
+              run_ok = observe("actions/runs/" + run)
+              jobs_before_ok = observe("actions/runs/" + run + "/attempts/" + attempt + "/jobs?per_page=100")
               observe("actions/runs/" + run + "/timing")
               time.sleep(2)
               observe("actions/runs/" + run + "/timing")
-              observe("actions/runs/" + run + "/attempts/" + attempt + "/jobs?per_page=100")
+              jobs_after_ok = observe("actions/runs/" + run + "/attempts/" + attempt + "/jobs?per_page=100")
+              if not all([run_ok, jobs_before_ok, jobs_after_ok]): raise RuntimeError("REQUIRED_API_OBSERVATION_INCOMPLETE")
               result["status"] = "OBSERVATION_COMPLETE_NOT_QUALIFICATION"
           except Exception as error:
               result["status"] = "OBSERVATION_INCOMPLETE_NOT_QUALIFICATION"
@@ -82,7 +93,11 @@ jobs:
               raise
           finally:
               body = json.dumps(result, indent=2).encode()
-              assert len(body) <= 128 * 1024
+              if len(body) > 128 * 1024:
+                  body = json.dumps({"classification": "DEVELOPMENT_OBSERVATION_NOT_QUALIFICATION", "qualification": False,
+                      "runId": run, "attempt": attempt, "source": os.environ["GITHUB_SHA"],
+                      "status": "OBSERVATION_RETENTION_BOUND_DENIED", "originalBytes": len(body),
+                      "originalSha256": hashlib.sha256(body).hexdigest()}).encode()
               with output.open("xb") as handle: handle.write(body)
           PY
       - name: Retain original clock observation after every outcome
