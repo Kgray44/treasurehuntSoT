@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { readFileSync } from "node:fs";
 import {
   CAPACITY_820,
@@ -15,7 +17,8 @@ const input = () => ({
   candidateTree: "c".repeat(40),
   runId: "123",
   attempt: "1",
-  sourceDigest: CAPACITY_820.sourceDigest,
+  sourceDigest: "d".repeat(64),
+  sourceJoinDigest: "e".repeat(64),
   createdAt: "2026-11-01T19:00:00Z",
   now: Date.parse("2026-11-01T19:01:00Z"),
 });
@@ -44,7 +47,8 @@ test("capacity is canonical, finite, exact-source and never qualification", () =
 test("expiry cannot renew itself and attempts cannot reset capacity", () => {
   for (const patch of [
     { attempt: "2" },
-    { sourceDigest: "0".repeat(64) },
+    { sourceDigest: "invalid" },
+    { sourceJoinDigest: "invalid" },
     { baseSha: "main" },
     { now: Date.parse(CAPACITY_820.expiresAt) },
     { now: Date.parse(CAPACITY_820.notBefore) - 1 },
@@ -151,4 +155,23 @@ test("timeout output conversion produces integers for the grant and every legacy
     }
   }
   assert.throws(() => JSON.parse("invalid-output"));
+});
+
+test("capacity CLI rejects caller-provided digests and publication exceptions before provider access", () => {
+  const cli = fileURLToPath(new URL("../../scripts/sounding-line/verification-capacity-820.mjs", import.meta.url));
+  for (const key of ["--source-digest", "--source-join-digest", "--publication-root"]) {
+    const result = spawnSync(
+      process.execPath,
+      [cli, "--workspace", ".", "--base", "a".repeat(40), "--candidate", "b".repeat(40), key, "injected"],
+      {
+        encoding: "utf8",
+        timeout: 10000,
+        maxBuffer: 65536,
+        env: { ...process.env, GITHUB_ACTIONS: "false", GH_TOKEN: "private-caller-input-must-not-print" },
+      },
+    );
+    assert.equal(result.status, 1);
+    assert.equal(result.stdout, "");
+    assert.equal(result.stderr, "SOUNDING_LINE_VERIFICATION_CAPACITY_BINDING_INVALID\n");
+  }
 });
