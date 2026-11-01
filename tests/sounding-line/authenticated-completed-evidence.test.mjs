@@ -653,6 +653,28 @@ test("pinned ordinary helper authenticates a skipped legacy checkout but rejects
   });
 });
 
+test("historical full-checkout workflow fixture retains its two successful action checkout gate", async () => {
+  await fixture(
+    async (state) => {
+      // Synthetic authority fixture: original workflow bytes, current pinned
+      // modules. This does not requalify the original historical producer.
+      const candidateCheckout = state.jobs.jobs[0].steps[2];
+      candidateCheckout.name = "Run actions/checkout@v4";
+      assert.equal((await state.authenticate()).admitted, 1);
+      candidateCheckout.name = "Checkout exact ordinary ancestry and installed reader closure";
+      assert.equal((await state.authenticate()).admitted, 0);
+    },
+    {
+      workflowTransform: () =>
+        execFileSync(
+          "git",
+          ["show", "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab:.github/workflows/sounding-line-ordinary.yml"],
+          { cwd: installed, timeout: 15000, maxBuffer: 2 * 1024 * 1024 },
+        ),
+    },
+  );
+});
+
 test("completed nonbrowser PASS remains reusable after later producer failure; opaque proof is candidate-bound", async () => {
   await fixture(async (state) => {
     const proof = await state.authenticate(),
