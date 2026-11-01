@@ -237,6 +237,7 @@ async function main() {
       workflowSource: process.env.GITHUB_SHA,
     };
     identity.jobLookupCalls = 1;
+    identity.capacityLookupCalls = budget.capacityGrant ? 3 : 0;
     await writeFile(path.join(directory, "preflight.json"), JSON.stringify({ ...identity, budget }) + "\n", {
       flag: "wx",
     });

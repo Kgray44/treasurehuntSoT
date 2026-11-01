@@ -201,3 +201,18 @@ test("a command timeout keeps its original cause and the enclosing OS ownership 
   assert.equal(receipt.cleanupFailure, null);
   await assertTerminated([await observe(root, "parent.json")]);
 });
+
+test("supervision records known capacity and job lookups without inventing a total", async (t) => {
+  for (const [identity, expected] of [
+    [{ jobLookupCalls: 1, capacityLookupCalls: 3 }, 4],
+    [{ jobLookupCalls: 1, capacityLookupCalls: 0 }, 1],
+    [{}, null],
+  ]) {
+    const { pending } = await owned(t, "pass", { identity });
+    const receipt = await pending;
+    assert.equal(receipt.status, "PASS");
+    assert.equal(receipt.metrics.knownApiCalls, expected);
+    assert.equal(receipt.metrics.totalApiCalls, null);
+    assert.equal(receipt.qualification, false);
+  }
+});

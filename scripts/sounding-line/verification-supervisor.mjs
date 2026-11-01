@@ -96,7 +96,8 @@ export async function superviseVerification({
       ownedSubprocesses: child ? 1 : 0,
       totalSubprocesses: null,
       preflightGitSubprocesses: identity?.gitSubprocesses ?? null,
-      knownApiCalls: identity?.jobLookupCalls ?? null,
+      knownApiCalls:
+        identity?.jobLookupCalls == null ? null : identity.jobLookupCalls + (identity.capacityLookupCalls ?? 0),
       totalApiCalls: null,
       preflightSourceBytes: identity?.sourceInputBytes ?? null,
       transferredBytes: null,
