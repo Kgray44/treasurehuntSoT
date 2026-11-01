@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 
 // The reader must be installed in the Git root whose exact bytes the provider attests.
 const files = [
@@ -12,6 +13,8 @@ const files = [
   "scripts/sounding-line/provider-run-log-archive.mjs",
   "scripts/sounding-line/native-evidence-context.mjs",
   ".github/workflows/sounding-line-ordinary.yml",
+  "scripts/sounding-line/artifact-registry-archive.mjs",
+  "scripts/sounding-line/artifact-registry-provenance.mjs",
 ];
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "original-context-auth-"));
 const git = (...args) =>
@@ -42,6 +45,7 @@ fs.writeFileSync(
     "function providerRequest(endpoint, options) { return globalThis.__syntheticOriginalContextProvider(endpoint, options); }\nexport async function",
   ),
 );
+fs.writeFileSync(path.join(root, "scripts/sounding-line/synthetic-controller.mjs"), "export const synthetic = true;\n");
 git("add", ".");
 git("commit", "-qm", "Synthetic installed producer");
 const base = git("rev-parse", "HEAD");
@@ -458,3 +462,135 @@ test("dirty installed reader is refused before provider access", async () => {
     fs.writeFileSync(file, original);
   }
 });
+
+function registryFixture() {
+  const f = fixture();
+  const job = f.values[jobsKey].jobs[0];
+  job.steps.at(-1).conclusion = "success";
+  job.steps.push(
+    step("Prepare through protected-base authority", 5),
+    step("Seal completed-context registry after parent cleanup", 6),
+    step("Retain encrypted v2 context registry", 7),
+  );
+  f.registryArchive = zip("registry-v2.encrypted", "Inert synthetic encrypted registry envelope");
+  f.artifact = {
+    id: 88,
+    name: "sounding-line-context-registry-v2-4444-1",
+    expired: false,
+    size_in_bytes: f.registryArchive.length,
+    digest: `sha256:${createHash("sha256").update(f.registryArchive).digest("hex")}`,
+    workflow_run: {
+      id: 4444,
+      repository_id: repository.id,
+      head_repository_id: repository.id,
+      head_sha: base,
+      head_branch: "main",
+    },
+  };
+  f.override = (endpoint) =>
+    endpoint === "actions/artifacts/88"
+      ? Buffer.from(JSON.stringify(f.artifact))
+      : endpoint === "actions/artifacts/88/zip"
+        ? f.registryArchive
+        : undefined;
+  f.registryInput = { input: f.input, artifactId: 88, sourceBindingsDigest: "f".repeat(64) };
+  return f;
+}
+test("registry transport requires the opaque original event, installed source closure and exact provider archive", async () => {
+  const f = registryFixture();
+  const originalProof = await api.authenticateNativeOriginalContext(f.input);
+  const proof = await api.authenticateNativeRegistryArchive({ ...f.registryInput, originalProof });
+  const value = api.inspectNativeRegistryArchive(proof, f.input);
+  assert.equal(proof.kind, "PROVIDER_BOUND_REGISTRY_ARCHIVE_NOT_VALIDATED_CONTENT");
+  assert.equal(value.envelope.toString(), "Inert synthetic encrypted registry envelope");
+  assert.equal(value.binding.candidateSha, candidate);
+  assert.equal(value.reuseAuthorized, false);
+  assert.equal(api.inspectNativeOriginalContext(proof, f.input), null);
+  assert.equal(api.inspectNativeRegistryArchive({ ...proof }, f.input), null);
+  assert.equal(api.inspectNativeRegistryArchive(proof, { ...f.input, runId: 5555 }), null);
+  value.envelope.fill(0);
+  assert.equal(
+    api.inspectNativeRegistryArchive(proof, f.input).envelope.toString(),
+    "Inert synthetic encrypted registry envelope",
+  );
+  assert.equal(api.retainedNativeOriginalContextEvidence(proof, f.input).responses.length, 4);
+});
+for (const [name, change] of [
+  [
+    "copied original proof",
+    (f, args) => {
+      args.originalProof = { ...args.originalProof };
+    },
+  ],
+  [
+    "missing seal",
+    (f) => {
+      f.values[jobsKey].jobs[0].steps.splice(5, 1);
+    },
+  ],
+  [
+    "failed upload",
+    (f) => {
+      f.values[jobsKey].jobs[0].steps.at(-1).conclusion = "failure";
+    },
+  ],
+  [
+    "artifact owner run",
+    (f) => {
+      f.artifact.workflow_run.id++;
+    },
+  ],
+  [
+    "artifact digest",
+    (f) => {
+      f.artifact.digest = `sha256:${"0".repeat(64)}`;
+    },
+  ],
+  [
+    "artifact size",
+    (f) => {
+      f.artifact.size_in_bytes++;
+    },
+  ],
+  [
+    "expired artifact",
+    (f) => {
+      f.artifact.expired = true;
+    },
+  ],
+  [
+    "artifact alias",
+    (f) => {
+      f.artifact.name = "other";
+    },
+  ],
+  [
+    "unrelated controller source drift",
+    (f) => {
+      const tree = f.values[`git/trees/${sources[`git/commits/${base}`].tree.sha}?recursive=1`];
+      tree.tree.find((e) => e.path.endsWith("synthetic-controller.mjs")).sha = "e".repeat(40);
+    },
+  ],
+])
+  test(`registry transport rejects ${name}`, async () => {
+    const f = registryFixture();
+    // Metadata mutations precede original authentication so private observations
+    // are immutable snapshots, never aliases of the mock response objects.
+    const args = { ...f.registryInput };
+    if (name !== "copied original proof") change(f, args);
+    args.originalProof = await api.authenticateNativeOriginalContext(f.input);
+    if (name === "copied original proof") change(f, args);
+    let denied;
+    try {
+      await api.authenticateNativeRegistryArchive(args);
+    } catch (error) {
+      denied = error;
+    }
+    assert(denied, name);
+    assert.equal(api.inspectNativeRegistryArchive(denied, f.input), null);
+    if (!["copied original proof", "unrelated controller source drift"].includes(name)) {
+      const retained = api.retainedNativeOriginalContextEvidence(denied, f.input);
+      assert(retained.responses.length >= 2);
+      assert.equal(retained.qualification, false);
+    }
+  });

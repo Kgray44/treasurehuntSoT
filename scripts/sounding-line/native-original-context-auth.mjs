@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readNativeEvidenceContextStepLog, PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM } from "./provider-run-log-archive.mjs";
+import { readArtifactRegistryArchive, ARTIFACT_REGISTRY_ARCHIVE_MAXIMUM } from "./artifact-registry-archive.mjs";
+import { validateRegistryProviderMetadata } from "./artifact-registry-provenance.mjs";
 const REPOSITORY = "Kgray44/treasurehuntSoT",
   REPOSITORY_ID = 1303074266,
   OWNER_ID = 64373011;
@@ -15,8 +17,11 @@ const WORKFLOW = ".github/workflows/sounding-line-ordinary.yml",
 const READERS = [
   "scripts/sounding-line/native-original-context-auth.mjs",
   "scripts/sounding-line/provider-run-log-archive.mjs",
+  "scripts/sounding-line/artifact-registry-archive.mjs",
+  "scripts/sounding-line/artifact-registry-provenance.mjs",
 ];
 const proofs = new WeakMap(),
+  registryProofs = new WeakMap(),
   failedObservations = new WeakMap(),
   hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const oid = (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
@@ -416,6 +421,7 @@ export async function authenticateNativeOriginalContext(input) {
       nativeStepLogSha256: hash(log),
       nativeStepLogBytes: log.length,
       originals,
+      provider: { run, jobs, workflow, current, producer },
     });
     return proof;
   } catch (error) {
@@ -435,6 +441,7 @@ export function inspectNativeOriginalContext(proof, input) {
         ...value,
         tuple: undefined,
         originals: undefined,
+        provider: undefined,
         qualification: false,
         reuseAuthorized: false,
       }),
@@ -446,12 +453,13 @@ export function inspectNativeOriginalContext(proof, input) {
 // Copies for private immutable custody. Failed observations never become proofs.
 export function retainedNativeOriginalContextEvidence(handle, input) {
   try {
-    const value = proofs.get(handle) ?? failedObservations.get(handle);
+    const value = proofs.get(handle) ?? registryProofs.get(handle) ?? failedObservations.get(handle);
     if (!value || value.tuple !== tuple(input)) return null;
     return {
-      classification: proofs.has(handle)
-        ? "ORIGINAL_PROVIDER_EVIDENCE_RETENTION"
-        : "FAILED_ORIGINAL_PROVIDER_OBSERVATION_RETENTION",
+      classification:
+        proofs.has(handle) || registryProofs.has(handle)
+          ? "ORIGINAL_PROVIDER_EVIDENCE_RETENTION"
+          : "FAILED_ORIGINAL_PROVIDER_OBSERVATION_RETENTION",
       qualification: false,
       reuseAuthorized: false,
       responses: value.originals.map(({ endpoint, bytes }) => ({
@@ -459,6 +467,153 @@ export function retainedNativeOriginalContextEvidence(handle, input) {
         bytes: Buffer.from(bytes),
         sha256: hash(bytes),
       })),
+    };
+  } catch {
+    return null;
+  }
+}
+
+// Provider identity and archive transport only. Decrypted content, coverage,
+// runtime isolation, review credit and resume authority remain separate checks.
+export async function authenticateNativeRegistryArchive({
+  originalProof,
+  input,
+  artifactId,
+  sourceBindingsDigest,
+  budgetMs = 60000,
+}) {
+  const original = proofs.get(originalProof);
+  need(original && original.tuple === tuple(input), "ORIGINAL_PROOF_REQUIRED");
+  need(!Object.hasOwn(input, "request"), "TRANSPORT_OVERRIDE");
+  need(original.context.jobKey === "experience-preparation" && original.context.mode === "capture", "REGISTRY_SCOPE");
+  need(positive(artifactId) && /^[a-f0-9]{64}$/u.test(sourceBindingsDigest ?? ""), "REGISTRY_BINDING");
+  need(Number.isSafeInteger(budgetMs) && budgetMs >= 20 && budgetMs <= 60000, "BUDGET");
+  const originals = [],
+    observations = [],
+    began = performance.now();
+  const bindingTuple = original.tuple;
+  const read = async (endpoint, maximumBytes) => {
+    const remaining = budgetMs - (performance.now() - began);
+    need(remaining > 0, "DEADLINE");
+    let timer, bytes;
+    try {
+      bytes = await Promise.race([
+        Promise.resolve().then(() =>
+          providerRequest(endpoint, { maximumBytes, timeoutMs: Math.max(1, Math.min(20000, Math.floor(remaining))) }),
+        ),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(Error("SOUNDING_LINE_NATIVE_ORIGINAL_DEADLINE")), remaining);
+        }),
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+    need(Buffer.isBuffer(bytes) && bytes.length > 0 && bytes.length <= maximumBytes, "BYTE_BOUND");
+    bytes = Buffer.from(bytes);
+    originals.push({ endpoint, bytes });
+    observations.push({ endpoint, bytes: bytes.length, sha256: hash(bytes) });
+    return bytes;
+  };
+  try {
+    // Candidate data cannot shorten this conservative control-plane closure.
+    const { current, producer, run, jobs, workflow } = original.provider;
+    const control = (entries) =>
+      [...entries].filter(([file, entry]) => file.startsWith("scripts/sounding-line/") && entry.type !== "tree");
+    const before = control(producer.entries),
+      after = control(current.entries);
+    need(before.length > 0 && before.length === after.length && after.length <= 4096, "REGISTRY_SOURCE_CLOSURE");
+    let sourceBytes = 0;
+    const root = fs.realpathSync(input.root);
+    need(nativeGit(root, ["rev-parse", "HEAD"]) === original.acceptedBaseSha, "INSTALLED_BASE");
+    for (const [file, entry] of after) {
+      const prior = producer.entries.get(file);
+      need(
+        entry.type === "blob" &&
+          entry.mode === "100644" &&
+          prior?.mode === entry.mode &&
+          prior.type === entry.type &&
+          prior.sha === entry.sha,
+        "REGISTRY_SOURCE_CLOSURE",
+      );
+      const bytes = localBytes(path.join(root, file));
+      sourceBytes += bytes.length;
+      need(
+        sourceBytes <= 16 * 1024 * 1024 &&
+          createHash("sha1").update(`blob ${bytes.length}\0`).update(bytes).digest("hex") === entry.sha,
+        "REGISTRY_SOURCE_CLOSURE",
+      );
+    }
+    need(
+      parse(await read("git/ref/heads/main", 65536), 65536).object?.sha === original.acceptedBaseSha,
+      "ACCEPTED_BASE_MOVED",
+    );
+    const binding = {
+      repository: REPOSITORY,
+      prNumber: original.context.prNumber,
+      runId: original.context.runId,
+      attempt: original.context.attempt,
+      baseSha: original.context.baseSha,
+      candidateSha: original.context.candidateSha,
+      jobKey: "experience-preparation",
+      sourceBindingsDigest,
+    };
+    const artifact = parse(await read(`actions/artifacts/${artifactId}`, 1024 * 1024), 1024 * 1024);
+    validateRegistryProviderMetadata({
+      binding,
+      artifactId,
+      artifact,
+      run,
+      jobs,
+      workflow,
+      trustedActors: ["Kgray44"],
+    });
+    const archive = await read(`actions/artifacts/${artifactId}/zip`, ARTIFACT_REGISTRY_ARCHIVE_MAXIMUM);
+    need(
+      archive.length === artifact.size_in_bytes && `sha256:${hash(archive)}` === artifact.digest,
+      "REGISTRY_ARCHIVE_DIGEST",
+    );
+    const envelope = readArtifactRegistryArchive(archive);
+    need(
+      parse(await read("git/ref/heads/main", 65536), 65536).object?.sha === original.acceptedBaseSha &&
+        nativeGit(root, ["rev-parse", "HEAD"]) === original.acceptedBaseSha,
+      "ACCEPTED_BASE_MOVED",
+    );
+    nativeGit(root, ["diff", "--quiet", "HEAD", "--"]);
+    const proof = Object.freeze({
+      kind: "PROVIDER_BOUND_REGISTRY_ARCHIVE_NOT_VALIDATED_CONTENT",
+      qualification: false,
+      reuseAuthorized: false,
+    });
+    registryProofs.set(proof, {
+      tuple: bindingTuple,
+      originalProof,
+      binding,
+      artifactId,
+      archiveSha256: hash(archive),
+      envelope: Buffer.from(envelope),
+      originals,
+      observations,
+    });
+    return proof;
+  } catch (error) {
+    const denied = /^SOUNDING_LINE_NATIVE_ORIGINAL_[A-Z0-9_]+$/u.test(error?.message ?? "")
+      ? error
+      : Error("SOUNDING_LINE_NATIVE_ORIGINAL_REGISTRY_UNAVAILABLE");
+    failedObservations.set(denied, { tuple: bindingTuple, originals, observations });
+    throw denied;
+  }
+}
+export function inspectNativeRegistryArchive(proof, input) {
+  try {
+    const value = registryProofs.get(proof);
+    if (!value || value.tuple !== tuple(input)) return null;
+    return {
+      binding: structuredClone(value.binding),
+      artifactId: value.artifactId,
+      archiveSha256: value.archiveSha256,
+      envelope: Buffer.from(value.envelope),
+      qualification: false,
+      reuseAuthorized: false,
     };
   } catch {
     return null;
