@@ -27,7 +27,7 @@ function extras(archive, start, length) {
   }
   need(start === end);
 }
-export function readOriginalEventStepLog(archive) {
+function readSelectedNativeStepLog(archive, target) {
   try {
     need(Buffer.isBuffer(archive) && archive.length >= 22 && archive.length <= PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM);
     let end = -1;
@@ -120,7 +120,7 @@ export function readOriginalEventStepLog(archive) {
             archive.readUInt32LE(local + 22) === size,
         );
       regions.push({ start: local, end: regionEnd });
-      if (name === TARGET) {
+      if (name === target) {
         need(selected === undefined && size > 0 && size <= SELECTED_MAXIMUM && compressed <= 65536);
         const payload = archive.subarray(start, dataEnd);
         if (method === 0) {
@@ -146,4 +146,16 @@ export function readOriginalEventStepLog(archive) {
   } catch {
     throw Error("SOUNDING_LINE_PROVIDER_RUN_LOG_ARCHIVE_INVALID");
   }
+}
+export function readOriginalEventStepLog(archive) {
+  return readSelectedNativeStepLog(archive, TARGET);
+}
+export function readNativeEvidenceContextStepLog(archive, { jobKey }) {
+  const targets = {
+    "final-check": "Sounding Line _ Focused verification/4_Observe immutable original evidence context.txt",
+    "experience-preparation":
+      "Sounding Line _ Experience preparation (no mainline decision)/3_Observe immutable original evidence context.txt",
+  };
+  need(Object.hasOwn(targets, jobKey));
+  return readSelectedNativeStepLog(archive, targets[jobKey]);
 }
