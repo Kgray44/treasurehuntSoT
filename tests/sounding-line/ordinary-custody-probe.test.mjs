@@ -87,9 +87,15 @@ test("profile certificate normalization permits only its one bootstrap literal, 
   ])
     assert.equal(check(changed), false);
   assert.equal(reviewedProfileSourceMatches(Buffer.from(installed), original, "b".repeat(40)), false);
-  const actualModule=readFileSync(new URL("../../scripts/sounding-line/ordinary-documentation-checkout-profile.mjs",import.meta.url),"utf8");
-  const pinnedModule=actualModule.replace(/^export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "PENDING";$/mu,'export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "'+"a".repeat(40)+'";');
-  assert(check(pinnedModule,actualModule),"the complete module permits only the actual declaration line");
+  const actualModule = readFileSync(
+    new URL("../../scripts/sounding-line/ordinary-documentation-checkout-profile.mjs", import.meta.url),
+    "utf8",
+  );
+  const pinnedModule = actualModule.replace(
+    /^export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "(?:PENDING|[a-f0-9]{40})";$/mu,
+    'export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "' + "a".repeat(40) + '";',
+  );
+  assert(check(pinnedModule, actualModule), "the complete module permits only the actual declaration line");
 });
 test("read-only campaign child has no token, output channel, ambient Git redirection or transport authority", () => {
   const env = custodyProbeEnvironment(

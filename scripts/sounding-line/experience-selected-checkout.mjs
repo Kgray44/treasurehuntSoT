@@ -302,6 +302,14 @@ export async function selectedCheckout({
     need(readSet === null || typeof readSet.applied === "boolean", "READ_SET_INVALID");
     const exclusions = readSet?.applied ? readSet.proposal?.omissions : [];
     const metadataCustody = readSet?.applied && readSet.proposal?.profile === "DOCUMENTATION_CUSTODY_METADATA_V1";
+    const certificateReader = readSet?.certificateReader;
+    need(
+      !certificateReader ||
+        (oid(certificateReader.revision) &&
+          oid(certificateReader.blob) &&
+          certificateReader.path === "scripts/sounding-line/ordinary-documentation-checkout-profile.mjs"),
+      "CERTIFICATE_READER_INVALID",
+    );
     need(
       !metadataCustody ||
         (readSet.custodyProbe?.status === "PASS" &&
@@ -340,6 +348,7 @@ export async function selectedCheckout({
           purpose: readSet.proposal?.purpose,
           metadataPaths: readSet.proposal?.metadataPaths,
           custodyProbe: readSet.custodyProbe,
+          certificateReader,
           anchor: readSet.proposal?.anchor,
           reason: readSet.proposal?.reason,
           changedPaths: readSet.proposal?.changedPaths,
@@ -363,11 +372,15 @@ export async function selectedCheckout({
         ? [...new Set([baseSha, candidateSha])]
         : [...new Set([...roots, ...readerRevisions])],
       objects: metadataCustody ? [] : readerObjects,
-      readerPaths: metadataCustody
-        ? [baseSha, candidateSha].flatMap((revision) =>
-            readSet.proposal.metadataPaths.map((path) => ({ revision, path })),
-          )
-        : readerPaths,
+      readerPaths: [
+        ...(metadataCustody
+          ? [baseSha, candidateSha].flatMap((revision) =>
+              readSet.proposal.metadataPaths.map((path) => ({ revision, path })),
+            )
+          : readerPaths),
+        ...(certificateReader ? [{ revision: certificateReader.revision, path: certificateReader.path }] : []),
+      ],
+      pathOnlySnapshots: certificateReader ? [certificateReader.revision] : [],
       exactReaderOnly: metadataCustody === true,
       output: closureFile,
       snapshotExclusions: metadataCustody ? [] : exclusions,

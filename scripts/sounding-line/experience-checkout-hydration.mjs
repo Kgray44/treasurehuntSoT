@@ -47,6 +47,16 @@ export async function checkoutHydration(file) {
     );
     const required = new Map(input.objects.map((value) => [value.sha, value]));
     const fullSnapshots = new Set(input.snapshots);
+    const pathOnlySnapshots = input.pathOnlySnapshots ?? [];
+    need(
+      Array.isArray(pathOnlySnapshots) &&
+        pathOnlySnapshots.length <= 64 &&
+        pathOnlySnapshots.every((value) => /^[a-f0-9]{40}$/u.test(value)),
+      "INVALID_PATH_ONLY_ROOT",
+    );
+    const pathOnly = new Set(
+      pathOnlySnapshots.filter((value) => !fullSnapshots.has(value) && !(input.readerSnapshots ?? []).includes(value)),
+    );
     const exclusions = new Map();
     const excludedSeen = new Set();
     for (const entry of input.snapshotExclusions ?? []) {
@@ -74,7 +84,7 @@ export async function checkoutHydration(file) {
     // Full candidate/base working trees; other commits supply only the actual
     // sourceSnapshot byte predicate and exact R8-R14 metadata merge/ignore reads.
     // Immutable media/proof/producer blob pins remain explicit typed objects.
-    for (const revision of new Set([...input.snapshots, ...(input.readerSnapshots ?? [])])) {
+    for (const revision of new Set([...input.snapshots, ...(input.readerSnapshots ?? []), ...pathOnlySnapshots])) {
       need(/^[a-f0-9]{40}$/u.test(revision), "INVALID_ROOT");
       required.set(revision, { sha: revision, type: "commit" });
       for (const row of git(["ls-tree", "-rz", revision]).split("\0").filter(Boolean)) {
@@ -93,7 +103,9 @@ export async function checkoutHydration(file) {
         }
         if (
           !fullSnapshots.has(revision) &&
-          (input.exactReaderOnly || (!sourceSnapshotReadsPath(file) && !historicalMetadata.has(file))) &&
+          (input.exactReaderOnly ||
+            pathOnly.has(revision) ||
+            (!sourceSnapshotReadsPath(file) && !historicalMetadata.has(file))) &&
           !explicit
         )
           continue;
@@ -117,6 +129,7 @@ export async function checkoutHydration(file) {
       objects: [...required.values()].sort((a, b) => a.sha.localeCompare(b.sha)),
       snapshots: input.snapshots,
       readerSnapshots: input.readerSnapshots ?? [],
+      ...(pathOnlySnapshots.length ? { pathOnlySnapshots } : {}),
     };
     writeFileSync(input.output, JSON.stringify(value), { flag: "wx" });
     return {

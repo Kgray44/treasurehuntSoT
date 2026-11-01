@@ -5,6 +5,7 @@ import { ordinaryCheckoutProfile } from "../../scripts/sounding-line/ordinary-ch
 import "./ordinary-documentation-checkout.test.mjs";
 import "./ordinary-documentation-materialization.test.mjs";
 import "./ordinary-custody-probe.test.mjs";
+import "./ordinary-documentation-certificate.test.mjs";
 
 const baseSha = "a".repeat(40),
   candidateSha = "b".repeat(40);

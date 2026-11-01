@@ -247,7 +247,7 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
       reserve(workspace, label, eventPath, subject);
       assert.fail("Original reservation must retain its denial");
     } catch (error) {
-      const code = error.stderr?.toString().match(/PRODUCT_EXPERIENCE_EXCEPTION_[A-Z_]+/u)?.[0];
+      const code = error.stderr?.toString().match(/PRODUCT_EXPERIENCE_(?:EXCEPTION|CURRENT_ADMISSION)_[A-Z_]+/u)?.[0];
       assert(code, error.message);
       return code;
     }
@@ -261,6 +261,14 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
   git(seed, ["commit", "-qm", "inert copied campaign signal"]);
   const copied = git(seed, ["rev-parse", "HEAD"]).trim(),
     copiedRoot = path.join(owner, "copied-full");
+  const { campaignComparison, CROSSDECK_CAMPAIGN } = await import(
+    "../../scripts/sounding-line/experience-exception.mjs"
+  );
+  assert.equal(
+    campaignComparison({ root: seed, baseSha: base, candidateSha: copied, prNumber: 819 })(CROSSDECK_CAMPAIGN),
+    true,
+    "copied contracts are a real positive campaign signal on the wrong PR",
+  );
   const copiedReceipt = await selectedCheckout({
     ...options,
     root: copiedRoot,

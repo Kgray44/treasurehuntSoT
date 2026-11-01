@@ -23,6 +23,7 @@ const allowedAuthorityChanges = new Set([
   "tests/sounding-line/ordinary-checkout.test.mjs",
   "tests/sounding-line/ordinary-documentation-checkout.test.mjs",
   "tests/sounding-line/ordinary-documentation-materialization.test.mjs",
+  "tests/sounding-line/ordinary-documentation-certificate.test.mjs",
   "tests/sounding-line/ordinary-custody-probe.test.mjs",
   "Development_Docs/Programs/Sounding_Line/Sounding_Line_Modernization_A_Implementation_Record.md",
 ]);
@@ -203,6 +204,7 @@ export async function documentationCheckoutReadSet({
   const base = inventory(baseEntries),
     anchor = inventory(anchorEntries);
   let reviewedEntries,
+    certificateReader,
     profileSourceMatchesReviewed = false;
   if (
     base &&
@@ -215,16 +217,39 @@ export async function documentationCheckoutReadSet({
     const ancestors = (await command(["rev-list", baseSha])).split(/\r?\n/u);
     if (ancestors.includes(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION)) {
       reviewedEntries = await tree(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION);
-      const expected = await command(
-        ["show", `${DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION}:${profilePath}`],
-        undefined,
-        true,
-      );
-      profileSourceMatchesReviewed = reviewedProfileSourceMatches(
-        readFileSync(fileURLToPath(import.meta.url)),
-        expected,
-        base.get(profilePath)?.sha,
-      );
+      const installed = readFileSync(fileURLToPath(import.meta.url));
+      const normalized = normalizedProfileSource(installed.toString("utf8"));
+      const expectedBytes = normalized === null ? null : Buffer.from(normalized, "utf8");
+      const expectedBlob = expectedBytes && gitBlob(expectedBytes);
+      const reviewedProfile = inventory(reviewedEntries)?.get(profilePath);
+      if (reviewedProfile?.mode === "100644" && reviewedProfile.sha === expectedBlob) {
+        // Metadata fetch is blob:none and lazy transport is forbidden. Fetch
+        // this exact, locally size-bound certificate reader before reading it.
+        await command([
+          "fetch",
+          "--filter=blob:none",
+          "--no-tags",
+          "--no-recurse-submodules",
+          "--no-write-fetch-head",
+          "origin",
+          expectedBlob,
+        ]);
+        const type = await command(["cat-file", "-t", expectedBlob]);
+        const expected = await command(["cat-file", "blob", expectedBlob], undefined, true);
+        if (
+          type === "blob" &&
+          Buffer.byteLength(expected, "utf8") === expectedBytes.length &&
+          gitBlob(Buffer.from(expected, "utf8")) === expectedBlob
+        ) {
+          profileSourceMatchesReviewed = reviewedProfileSourceMatches(installed, expected, base.get(profilePath)?.sha);
+          if (profileSourceMatchesReviewed)
+            certificateReader = {
+              revision: DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION,
+              path: profilePath,
+              blob: expectedBlob,
+            };
+        }
+      }
     }
   }
   let proposal = documentationCheckoutProposal({
@@ -259,27 +284,30 @@ export async function documentationCheckoutReadSet({
       ["DOCUMENTATION_ONLY_SOURCE_BOUND_V1", "DOCUMENTATION_CUSTODY_METADATA_V1"].includes(proposal.profile),
     proposal,
     custodyProbe,
+    certificateReader,
   };
 }
 
 // The immutable reviewed commit contains the bootstrap literal PENDING. Only
 // that one literal may differ; mode, whitespace and every executable byte stay exact.
+const gitBlob = (bytes) =>
+  createHash("sha1")
+    .update(Buffer.from(`blob ${bytes.length}\0`))
+    .update(bytes)
+    .digest("hex");
+function normalizedProfileSource(value) {
+  const expression = /^export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "(?:PENDING|[a-f0-9]{40})";$/gmu;
+  return [...value.matchAll(expression)].length === 1
+    ? value.replace(expression, 'export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "PENDING";')
+    : null;
+}
 export function reviewedProfileSourceMatches(installedBytes, reviewedSource, expectedBlob) {
   const bytes = Buffer.from(installedBytes),
     source = bytes.toString("utf8");
   if (!Buffer.from(source, "utf8").equals(bytes)) return false;
-  const blob = createHash("sha1")
-    .update(Buffer.from(`blob ${bytes.length}\0`))
-    .update(bytes)
-    .digest("hex");
-  const normalize = (value) => {
-    const expression = /^export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "(?:PENDING|[a-f0-9]{40})";$/gmu;
-    return [...value.matchAll(expression)].length === 1
-      ? value.replace(expression, 'export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "PENDING";')
-      : null;
-  };
-  const actual = normalize(source),
-    expected = normalize(reviewedSource);
+  const blob = gitBlob(bytes);
+  const actual = normalizedProfileSource(source),
+    expected = normalizedProfileSource(reviewedSource);
   return blob === expectedBlob && actual !== null && expected !== null && actual === expected;
 }
 
