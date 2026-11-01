@@ -235,6 +235,57 @@ test(
       "owned supervised state",
     );
     assert.equal(restored.files.get("browser-authentication-cache").toString(), "[]");
+    // A failed optional journal must not become a resumable worker result even
+    // though its actual browser journey and immutable partial capture completed.
+    const negativePlan = structuredClone(plan);
+    negativePlan.contracts[0].experience.journeys[0].id = "missing-journal";
+    negativePlan.contractDigest = experienceDigest(negativePlan.contracts);
+    const negativeTarget = shadowCaptureContextSchedule(negativePlan)[0];
+    const negativePlanPath = rawDirectory + "/negative-plan.json",
+      negativePlanBytes = Buffer.from(JSON.stringify(negativePlan));
+    await fs.writeFile(absolute(negativePlanPath), negativePlanBytes, { flag: "wx", mode: 0o600 });
+    await fs.mkdir(absolute(rawDirectory + "/closed-contexts/" + negativeTarget.contextId), { mode: 0o700 });
+    const negativeInput = {
+      ...input,
+      planPath: negativePlanPath,
+      planSha256: hash(negativePlanBytes),
+      contextId: negativeTarget.contextId,
+      outputDirectory: invocation + "/capture/" + negativeTarget.contextId,
+      resultPath: rawDirectory + `/shadow-context-result-${negativeTarget.contextId}.json`,
+    };
+    const negativeInputPath = rawDirectory + "/negative-input.json",
+      negativeBytes = Buffer.from(JSON.stringify(negativeInput));
+    await fs.writeFile(absolute(negativeInputPath), negativeBytes, { flag: "wx", mode: 0o600 });
+    const negative = await runBrowserAuthority({
+      root,
+      port,
+      environment: {
+        ...process.env,
+        DATABASE_URL: `file:${databasePath}`,
+        NEXT_DIST_DIR: ".next",
+        SOUNDING_LINE_TASK_OWNED_HTTP: "0",
+      },
+      serverArguments: [serverFile, "start", "-p", String(port)],
+      browserScriptArguments: [
+        workerEntrypoint,
+        "--raw-directory",
+        rawDirectory,
+        "--input",
+        negativeInputPath,
+        "--input-sha256",
+        hash(negativeBytes),
+      ],
+      executionTimeoutMs: 45000,
+      cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
+    });
+    assert.equal(negative.failureCategory, "PRODUCT_FAILURE");
+    assert.equal(negative.lifecycle.cleanup.status, "PASS");
+    assert.equal(negative.lifecycle.cleanup.portsReleased, true);
+    await assert.rejects(fs.stat(absolute(negativeInput.resultPath)), (error) => error.code === "ENOENT");
+    const incomplete = JSON.parse(await fs.readFile(absolute(negativeInput.outputDirectory + "/capture.json")));
+    assert.equal(incomplete.journeys[0].status, "PASS");
+    assert.equal(incomplete.partialContext.qualification, false);
+    assert.equal(hash(await fs.readFile(retained.snapshot.path)), retained.snapshot.sha256);
     success = true;
   },
 );
