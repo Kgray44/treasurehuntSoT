@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* Focused candidate verification. The workflow supplies a trusted copy of this file. */
 import { execFileSync } from "node:child_process";
+import { commandDeadline, commandTransport } from "./verification-budget.mjs";
 import { createHash } from "node:crypto";
 import { builtinModules } from "node:module";
 import { validateR8RawOriginals } from "./experience-r8-format.mjs";
@@ -1316,6 +1317,7 @@ function registrationChangesAreValid(root, candidateSha, paths) {
 }
 
 export function run(root, command, argumentsList, { env = {}, ...options } = {}) {
+  if (process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS) commandTransport(command, argumentsList);
   process.stdout.write(`\n> ${command} ${argumentsList.join(" ")}\n`);
   const candidateEnvironment = { ...process.env, ...env };
   if (!Object.hasOwn(env, BROWSER_DIAGNOSTIC_CONTEXT)) delete candidateEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
@@ -1325,13 +1327,27 @@ export function run(root, command, argumentsList, { env = {}, ...options } = {})
     delete candidateEnvironment.GITHUB_OUTPUT;
     delete candidateEnvironment.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
   }
-  execFileSync(command, argumentsList, {
-    cwd: root,
-    stdio: "inherit",
-    shell: process.platform === "win32",
-    env: candidateEnvironment,
-    ...options,
-  });
+  try {
+    execFileSync(command, argumentsList, {
+      cwd: root,
+      stdio: "inherit",
+      shell: process.platform === "win32",
+      env: candidateEnvironment,
+      ...options,
+      ...(process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS
+        ? {
+            timeout: Math.min(
+              options.timeout ?? Infinity,
+              commandDeadline(process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS),
+            ),
+          }
+        : {}),
+    });
+  } catch (cause) {
+    if (cause?.code === "ETIMEDOUT" && (process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS || options.timeout))
+      throw new Error("SOUNDING_LINE_VERIFICATION_COMMAND_BUDGET_EXHAUSTED", { cause });
+    throw cause;
+  }
 }
 
 export function soundingLineDatabaseUrl(candidateSha, profile = null) {
@@ -1526,8 +1542,16 @@ export async function buildPlan({
         jsonAtRevision(root, candidateSha, "package.json", "SOUNDING_LINE_PACKAGE_JSON_INVALID"),
       )
     : [];
+  const registryAuthority =
+    changedPaths.includes("testing/contracts.json") &&
+    canonicalJson(jsonAtRevision(root, baseSha, "testing/contracts.json")?.experiencePolicy ?? null) !==
+      canonicalJson(jsonAtRevision(root, candidateSha, "testing/contracts.json")?.experiencePolicy ?? null);
   const controlPlanePaths = [
-    ...new Set([...classification.controlPlanePaths, ...(packageAuthority.length ? ["package.json"] : [])]),
+    ...new Set([
+      ...classification.controlPlanePaths,
+      ...(packageAuthority.length ? ["package.json"] : []),
+      ...(registryAuthority ? ["testing/contracts.json"] : []),
+    ]),
   ].sort();
   const candidateClassification =
     classification.productPaths.length && controlPlanePaths.length
@@ -1740,7 +1764,31 @@ export function runVerificationCommands(root, plan, runCommand = run) {
 }
 
 export function failureCategoryFor(error) {
-  const message = error instanceof Error ? error.message : String(error);
+  const property = (key) => {
+    try {
+      return error?.[key];
+    } catch {
+      return undefined;
+    }
+  };
+  let message = "";
+  try {
+    message = error instanceof Error ? error.message : String(error);
+  } catch {
+    /* unknown remains unknown */
+  }
+  if (typeof message !== "string") message = "";
+  const code = property("code"),
+    status = property("status");
+  if (["ENOSPC", "ENOMEM", "EMFILE", "ENFILE", "ENOBUFS"].includes(code)) return "RESOURCE_FAILURE";
+  if (["ENOENT", "EACCES", "EPERM"].includes(code)) return "TOOL_FAILURE";
+  if (["ETIMEDOUT", "ECONNRESET", "ENETUNREACH", "EAI_AGAIN"].includes(code)) return "TRANSPORT_FAILURE";
+  if (message.startsWith("SOUNDING_LINE_VERIFICATION_") && /TIMEOUT|BUDGET_EXHAUSTED/u.test(message))
+    return "EXECUTION_BUDGET_FAILURE";
+  if (message.startsWith("SOUNDING_LINE_VERIFICATION_COMMAND_TRANSPORT_")) return "TOOL_TRANSPORT_FAILURE";
+  if (status === 249) return "TOOL_TRANSPORT_FAILURE";
+  const observation = verificationFailureObservation(error);
+  if (observation.replayAdmission?.git?.classification === "NOT_ANCESTOR") return "PROVENANCE_FAILURE";
   if (message.startsWith("PRODUCT_EXPERIENCE_")) return "PRODUCT_EXPERIENCE_FAILURE";
   if (message.startsWith("SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:")) return "INVALID_SERVER_TOPOLOGY";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:")) return "INFRASTRUCTURE_STARTUP_FAILURE";
@@ -1753,7 +1801,7 @@ export function failureCategoryFor(error) {
     message.startsWith("SOUNDING_LINE_CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:")
   )
     return "CANDIDATE_CLASSIFICATION_FAILURE";
-  return "PRODUCT_FAILURE";
+  return Number.isInteger(status) ? "VERIFICATION_FAILURE" : "EXECUTION_UNKNOWN";
 }
 
 // Fixed tokens only: contract names, integration owners and other suffix details

@@ -1244,3 +1244,6 @@ Development_Docs/Project_Harborlight_Phase_4_Implementation_Manifest.txt
 /Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/f4a1dac871de/run.json
 /Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/f663ef857069/run.json
 /Development_Docs/Testing/Product_Experience/evidence/parallax-studio-room-library-20261012/f663ef857069/viewport-observations.json
+# Immutable historical Homeport evidence: preserve the exact retained bytes.
+/Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/original-homeport-contract.json
+/Development_Docs/Engineering/sc00a-homeport-journey-migration-20261031/original-candidate-review.json
