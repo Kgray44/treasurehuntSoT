@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import {
   verificationBudget,
   verificationJobLimit,
@@ -7,6 +8,14 @@ import {
   commandTransport,
 } from "../../scripts/sounding-line/verification-budget.mjs";
 import { currentVerificationJob } from "../../scripts/sounding-line/ordinary-supervised.mjs";
+
+test("the protected regression entry point executes the mandatory native clock test exactly once", () => {
+  const { scripts } = JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8"));
+  const command = scripts["test:sounding-line"].split(/\s+/u);
+  assert.deepEqual(command.slice(0, 2), ["node", "--test"]);
+  assert.equal(command.filter((item) => item === "tests/sounding-line/verification-job-clock.test.mjs").length, 1);
+  assert(command.slice(2).every((item) => /^tests\/sounding-line\/[a-z0-9-]+\.test\.mjs$/u.test(item)));
+});
 test("setup is debited once and finalization retains its reserved tail", () => {
   const budget = verificationBudget({ jobStartedAt: "2026-10-31T00:00:00Z", now: Date.parse("2026-10-31T00:10:00Z") });
   assert.deepEqual(budget, { limitMs: 2700000, setupMs: 600000, tailMs: 120000, executionMs: 1980000 });

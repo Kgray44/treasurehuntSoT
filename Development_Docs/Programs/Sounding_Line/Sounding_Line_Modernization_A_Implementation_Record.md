@@ -301,3 +301,11 @@ fresh allowance. The ordinary 45-minute execution limit, two-minute cleanup tail
 finite campaign limits and protected merge authority remain unchanged. Hosted
 source-bound proof, independent final review, ordinary qualification and landed
 verification are still required before installation.
+
+The first repair candidate `c7bc55530ed2a3c50fc94b0acae1a228681a6327`
+received a successful protected decision in run `41293056581/1`, but its explicit
+`test:sounding-line` package script omitted the new native clock test file. The
+original log has no native clock proof. This run is retained as incomplete proof
+and cannot authorize this repair's merge. The correction adds that file once to
+the existing test list and adds a membership regression in an already executed
+budget test. It does not change clock behavior or any protected release authority.
