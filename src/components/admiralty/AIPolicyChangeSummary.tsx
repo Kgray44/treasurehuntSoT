@@ -80,8 +80,8 @@ export function AIPolicyChangeSummary({ current, proposed }: { current: unknown;
     <>
       <h3>What will change</h3>
       {changed.length ? (
-        <div className={styles.scroll} tabIndex={0} role="region" aria-label="Policy changes">
-          <table>
+        <div className={`${styles.scroll} ${styles.policyChanges}`} tabIndex={0} role="region" aria-label="Policy changes">
+          <table className={styles.desktopPolicyChanges}>
             <caption>Changed values only. All other effective settings stay the same.</caption>
             <thead>
               <tr>
@@ -100,6 +100,24 @@ export function AIPolicyChangeSummary({ current, proposed }: { current: unknown;
               ))}
             </tbody>
           </table>
+          <div className={styles.mobilePolicyChanges} role="list">
+            <p>Changed values only. All other effective settings stay the same.</p>
+            {changed.map((key) => (
+              <div key={key} role="listitem" className={styles.mobilePolicyChange}>
+                <h4>{key.split(".").map(name).join(" · ")}</h4>
+                <dl>
+                  <div>
+                    <dt>Current</dt>
+                    <dd>{before.get(key) ?? "Not set"}</dd>
+                  </div>
+                  <div>
+                    <dt>Proposed</dt>
+                    <dd>{after.get(key) ?? "Not set"}</dd>
+                  </div>
+                </dl>
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <p>No effective values change. The reviewed override and its audit reason will still be recorded.</p>

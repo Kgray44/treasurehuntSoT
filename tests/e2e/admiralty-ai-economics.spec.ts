@@ -193,9 +193,18 @@ test("Administrator investigates AI economics and changes capability allowances 
   await panel.getByRole("button", { name: "Preview user policy", exact: true }).click();
   const changes = panel.getByRole("region", { name: "Policy changes", exact: true });
   await expect(changes).toContainText("Room Reconstruction · Monthly operation allowance");
-  await expect(changes.getByRole("cell", { name: "3", exact: true })).toBeVisible();
+  const mobileChange = changes.getByRole("listitem").filter({
+    hasText: "Room Reconstruction · Monthly operation allowance",
+  });
+  await expect(mobileChange.getByText("Current", { exact: true })).toBeVisible();
+  await expect(mobileChange.getByText("Proposed", { exact: true })).toBeVisible();
+  await expect(mobileChange.getByText("3", { exact: true })).toBeVisible();
   await capture("allowance-preview-mobile");
   await capture("allowance-preview-detail-mobile", changes);
+  await page.setViewportSize({ width: 320, height: 720 });
+  await expect.poll(() => changes.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
+  await expect(mobileChange.getByText("3", { exact: true })).toBeVisible();
+  await capture("allowance-preview-320-mobile", changes);
   await page.setViewportSize({ width: 1440, height: 900 });
   await capture("allowance-preview-desktop");
   await page.setViewportSize({ width: 390, height: 844 });
