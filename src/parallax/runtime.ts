@@ -527,13 +527,10 @@ export class ParallaxLensRuntime {
     if (["NATIVE", "BROWSER"].includes(this.adapter.mode) && !this.usableCamera()) await this.useGuidedView();
   }
   private presentation(elapsed = this.now().getTime() - this.startedAt) {
-    const { states } = evaluateSpatialScene(
-      this.moment.version,
-      this.spatialInputs,
-      elapsed,
-      false,
-      { take: this.cinematicTake, motion: this.context.motionPreference?.() },
-    );
+    const { states } = evaluateSpatialScene(this.moment.version, this.spatialInputs, elapsed, false, {
+      take: this.cinematicTake,
+      motion: this.context.motionPreference?.(),
+    });
     const adaptive = this.moment.version.adaptive;
     const currentReveal = adaptive?.revealOrder.find((id) => !this.discovered.has(id)) ?? adaptive?.revealOrder.at(-1);
     const presentable = runtimePresentableEntityIds(this.moment.version);
@@ -545,7 +542,11 @@ export class ParallaxLensRuntime {
           states[entity.id].opacity !== 0 &&
           (!currentReveal || !adaptive?.revealOrder.includes(entity.id) || entity.id === currentReveal),
     );
-    return { visible, states, highlightedEntityIds: visible.filter((entity) => states[entity.id].highlighted).map((entity) => entity.id) };
+    return {
+      visible,
+      states,
+      highlightedEntityIds: visible.filter((entity) => states[entity.id].highlighted).map((entity) => entity.id),
+    };
   }
   private draw(): Promise<void> {
     if (this.adapter.mode === "BROWSER" && !Object.keys(this.snapshot.anchors).length) return Promise.resolve();
@@ -575,7 +576,10 @@ export class ParallaxLensRuntime {
         };
         // Hidden parents still contribute their canonical transforms.
         for (const entity of this.moment.version.entities) resolve(entity.id);
-        if (adapter.renderScene && (adapter.mode === "NATIVE" || this.moment.version.entities.some((e) => e.element?.enabled))) {
+        if (
+          adapter.renderScene &&
+          (adapter.mode === "NATIVE" || this.moment.version.entities.some((e) => e.element?.enabled))
+        ) {
           await adapter.renderScene(
             createSceneDelivery({
               version: this.moment.version,
@@ -604,10 +608,11 @@ export class ParallaxLensRuntime {
         if (!current()) return;
         const latestAt = this.now().getTime() - this.startedAt;
         const latest = this.presentation(latestAt);
-        const signature = (view: typeof latest) => JSON.stringify([
-          view.visible.map((entity) => [entity.id, view.states[entity.id].transform, view.states[entity.id].opacity]),
-          view.highlightedEntityIds,
-        ]);
+        const signature = (view: typeof latest) =>
+          JSON.stringify([
+            view.visible.map((entity) => [entity.id, view.states[entity.id].transform, view.states[entity.id].opacity]),
+            view.highlightedEntityIds,
+          ]);
         if (signature({ visible, states, highlightedEntityIds }) === signature(latest)) {
           this.renderedBehaviorAt = latestAt;
           return;

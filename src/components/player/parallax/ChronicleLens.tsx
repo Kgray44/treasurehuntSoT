@@ -627,7 +627,8 @@ export function ChronicleLens({
                 !entity ||
                 !state.visibleEntityIds.includes(id) ||
                 activeMoment.version.studio?.layers.find((layer) => layer.entityId === id)?.selectable === false
-              ) return;
+              )
+                return;
               const action = entity.interactions.includes("PICK")
                 ? "PICK"
                 : entity.interactions.includes("INSPECT")
@@ -883,7 +884,9 @@ export function ChronicleLens({
                 : (state?.guidance ?? "Opening this passage’s spatial moment…")}
           </p>
         )}
-        {(!browserRequested || accessLost) && <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>}
+        {(!browserRequested || accessLost) && (
+          <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>
+        )}
         {error && <p role="alert">{error}</p>}
         {pending && (
           <button disabled={busy} type="button" onClick={() => void retry()}>

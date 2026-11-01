@@ -52,9 +52,7 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
       sceneRequirements(version).every((requirement) => ["WORLD_TRACKING", "MODEL_GLB"].includes(requirement)) &&
       enabled.every(
         (entity) =>
-          entity.element?.kind === "PHYSICAL_ASSET" &&
-          entity.element.articulation === 0 &&
-          !entity.element.playback,
+          entity.element?.kind === "PHYSICAL_ASSET" && entity.element.articulation === 0 && !entity.element.playback,
       )
     );
   }
@@ -260,7 +258,8 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
       delivery.identity.versionId !== this.moment.version.id ||
       delivery.identity.versionChecksum !== this.identity.versionChecksum ||
       delivery.identity.instanceId !== this.identity.instanceId
-    ) throw new Error("PARALLAX_BROWSER_SCENE_IDENTITY_MISMATCH");
+    )
+      throw new Error("PARALLAX_BROWSER_SCENE_IDENTITY_MISMATCH");
     this.modelSceneActive = true;
     await this.presentation.renderScene(delivery);
   }
