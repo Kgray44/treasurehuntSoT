@@ -3969,7 +3969,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/SL-INC-PR776-20261026_Protected_Decision_Missing.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_Modernization_A_Implementation_Record.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_Modernization_PR_A0_Protected_Merge_Transaction_Integrity.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
