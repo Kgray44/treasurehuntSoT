@@ -27,6 +27,7 @@ import {
   copyDeclaredCaptureFile,
   rawCaptureBinding,
   createClosedContextJournal,
+  observeClosedContextShadow,
 } from "./experience-raw-output.mjs";
 import {
   assertExceptionExecution,
@@ -788,10 +789,13 @@ export async function captureProductExperience({
     rawOutputDirectory && !plan.pairedOnly
       ? await createRawOutputDirectory({ root, directory: `${rawOutputDirectory}/recordings` })
       : null;
-  const closedContexts =
-    rawRecordings && !plan.exception
-      ? await createClosedContextJournal({ root, rawDirectory: rawOutputDirectory, binding: rawCaptureBinding(plan) })
-      : null;
+  let closedContexts = null;
+  if (rawRecordings && !plan.exception) {
+    const observed = await observeClosedContextShadow(() =>
+      createClosedContextJournal({ root, rawDirectory: rawOutputDirectory, binding: rawCaptureBinding(plan) }),
+    );
+    if (observed.status === "OBSERVED") closedContexts = observed.value;
+  }
   const browser = plan.pairedOnly ? null : await chromium.launch({ headless: true });
   const evidence = {
     version: 1,
@@ -981,12 +985,16 @@ export async function captureProductExperience({
                   role,
                   motionMode,
                 });
-                if (closedContexts)
-                  await closedContexts.append({
-                    context: { ...diagnosticContext, viewport: EXPERIENCE_VIEWPORTS[device] },
-                    artifacts: evidence.artifacts.slice(contextArtifactStart),
-                    journey: observed.result,
-                  });
+                if (closedContexts) {
+                  const observation = await observeClosedContextShadow(() =>
+                    closedContexts.append({
+                      context: { ...diagnosticContext, viewport: EXPERIENCE_VIEWPORTS[device] },
+                      artifacts: evidence.artifacts.slice(contextArtifactStart),
+                      journey: observed.result,
+                    }),
+                  );
+                  if (observation.status !== "OBSERVED") closedContexts = null;
+                }
               } finally {
                 await context.close();
               }

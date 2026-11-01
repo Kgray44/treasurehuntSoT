@@ -109,6 +109,43 @@ export async function createRawOutputDirectory({ root, directory }) {
   return target;
 }
 
+// Shadow observation never changes the canonical capture outcome. A failure
+// remains explicit and ineligible, without publishing paths or arbitrary errors.
+export async function observeClosedContextShadow(operation) {
+  try {
+    return { status: "OBSERVED", value: await operation(), qualification: false, reuseAuthorized: false };
+  } catch (error) {
+    let reason = "UNCLASSIFIED_SHADOW_FAILURE";
+    try {
+      if (
+        new Set(["EACCES", "EPERM", "ENOENT", "EEXIST", "EIO", "ENOSPC", "EMFILE", "ENFILE", "EROFS", "EBUSY"]).has(
+          error?.code,
+        )
+      )
+        reason = error.code;
+      else if (
+        new Set([
+          "PRODUCT_EXPERIENCE_RAW_OUTPUT_CLOSED_CONTEXT_INVALID",
+          "PRODUCT_EXPERIENCE_RAW_OUTPUT_CLOSED_CONTEXT_BOUND",
+          "PRODUCT_EXPERIENCE_RAW_OUTPUT_CLOSED_CONTEXT_ARTIFACT_INVALID",
+          "PRODUCT_EXPERIENCE_RAW_OUTPUT_CLOSED_CONTEXT_ARTIFACT_CHANGED",
+          "PRODUCT_EXPERIENCE_RAW_OUTPUT_CLOSED_CONTEXT_ORDINARY_SCOPE_REQUIRED",
+        ]).has(error?.message)
+      )
+        reason = error.message;
+    } catch {
+      /* Even a hostile error accessor cannot alter capture. */
+    }
+    const result = { status: "INCOMPLETE", reason, qualification: false, reuseAuthorized: false };
+    try {
+      console.error(JSON.stringify({ namespace: "SOUNDING_LINE_CLOSED_CONTEXT_SHADOW", ...result }));
+    } catch {
+      /* The returned incomplete result also disables further observation. */
+    }
+    return result;
+  }
+}
+
 // Retain closed browser contexts inside the existing encrypted raw-output lane.
 // These observations do not attest parent runtime cleanup or authorize resume.
 // The browser calls append only after trace.stop, context.close and video.path.

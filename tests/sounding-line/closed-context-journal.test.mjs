@@ -9,12 +9,74 @@ import {
   createRawOutputDirectory,
   createClosedContextJournal,
   sealRawCaptureOutput,
+  observeClosedContextShadow,
 } from "../../scripts/sounding-line/experience-raw-output.mjs";
 import {
   retainRawCaptureOutput,
   verifiedRawCapturePaths,
 } from "../../scripts/sounding-line/experience-raw-retention.mjs";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
+
+test("shadow IO failures remain ineligible without changing canonical capture or leaking private errors", async (t) => {
+  const logs = [];
+  t.mock.method(console, "error", (value) => logs.push(value));
+  let operations = 0;
+  const value = Object.freeze({ original: "unchanged" });
+  const pass = await observeClosedContextShadow(() => {
+    operations++;
+    return value;
+  });
+  assert.equal(pass.value, value);
+  assert.equal(operations, 1);
+  assert.equal(pass.reuseAuthorized, false);
+  const failure = Object.assign(Error("PRIVATE_CAPTURE_PATH_AND_CONTENT"), { code: "ENOSPC" });
+  const result = await observeClosedContextShadow(() => {
+    throw failure;
+  });
+  assert.deepEqual(result, { status: "INCOMPLETE", reason: "ENOSPC", qualification: false, reuseAuthorized: false });
+  assert.equal(logs.join("").includes("PRIVATE_CAPTURE"), false);
+  assert.equal(failure.message, "PRIVATE_CAPTURE_PATH_AND_CONTENT");
+  assert.equal(value.original, "unchanged");
+});
+
+test("untrusted error tags, accessors and failed shadow logging cannot become capture failures", async (t) => {
+  const logs = [];
+  t.mock.method(console, "error", (value) => logs.push(value));
+  const secret = { code: "PRIVATE_SECRET_TOKEN", message: "PRIVATE_CAPTURE_PATH" };
+  assert.equal(
+    (
+      await observeClosedContextShadow(() => {
+        throw secret;
+      })
+    ).reason,
+    "UNCLASSIFIED_SHADOW_FAILURE",
+  );
+  assert(!logs.join("").includes("PRIVATE_"));
+  const hostile = {
+    get code() {
+      throw Error("private accessor");
+    },
+  };
+  assert.equal(
+    (
+      await observeClosedContextShadow(() => {
+        throw hostile;
+      })
+    ).status,
+    "INCOMPLETE",
+  );
+  t.mock.method(console, "error", () => {
+    throw Error("closed log stream");
+  });
+  assert.equal(
+    (
+      await observeClosedContextShadow(() => {
+        throw Error("original");
+      })
+    ).qualification,
+    false,
+  );
+});
 async function fixture(t) {
   const root = mkdtempSync(path.join(tmpdir(), "closed-context-journal-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
