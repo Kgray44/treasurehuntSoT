@@ -632,6 +632,20 @@ async function main() {
       ),
     );
   } catch (error) {
+    if (!android && runner) {
+      // Let the owned XCTest driver consume STOP and seal its result bundle
+      // before teardown. A failed action remains failed; this only retains its
+      // native screenshot and hierarchy diagnostics within a finite wait.
+      stopped = true;
+      let settleTimer: ReturnType<typeof setTimeout> | undefined;
+      await Promise.race([
+        runner.catch(() => undefined),
+        new Promise<void>((resolve) => {
+          settleTimer = setTimeout(resolve, 15000);
+        }),
+      ]);
+      clearTimeout(settleTimer);
+    }
     // Keep the actual last owned UI observation before cleanup destroys it.
     // This diagnostic cannot authorize a target, supply substitute coordinates,
     // relax a deadline or turn a failed journey into a passing receipt. Raw XML

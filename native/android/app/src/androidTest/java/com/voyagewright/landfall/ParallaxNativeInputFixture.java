@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.Gravity;
 import android.view.ContextThemeWrapper;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -121,7 +122,12 @@ final class ParallaxNativeInputFixture {
         && fullyVisible && localPointInside && pointInsideWindow && pointInsideDisplay;
     try {
       return new JSONObject().put("ready", ready).put("elapsedMs", elapsedMs).put("preDrawObserved", preDrawObserved)
-          .put("attached", attached).put("laidOut", laidOut).put("windowFocused", focused).put("layoutPending", layoutPending)
+          .put("attached", attached).put("laidOut", laidOut).put("windowFocused", focused)
+          .put("activityWindowFocused", view.getContext() instanceof Activity
+              && ((Activity) view.getContext()).getWindow().getDecorView().hasWindowFocus())
+          .put("windowFlags", root.getLayoutParams() instanceof WindowManager.LayoutParams
+              ? ((WindowManager.LayoutParams) root.getLayoutParams()).flags : -1)
+          .put("layoutPending", layoutPending)
           .put("shown", view.isShown()).put("enabled", view.isEnabled()).put("clickable", view.isClickable()).put("ownerAttached", ownerAttached)
           .put("ownerGeneration", view instanceof ObservedTarget ? ((ObservedTarget) view).generation : 0)
           .put("ownerPhase", view instanceof ObservedTarget ? ((ObservedTarget) view).phase : "CONTROL")

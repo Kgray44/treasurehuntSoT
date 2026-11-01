@@ -4,7 +4,15 @@ import UIKit
 
 final class NativeLifecycleTests: XCTestCase {
     @MainActor private func revealLensTarget(_ target:XCUIElement,in app:XCUIApplication) -> Bool {
-        guard target.waitForExistence(timeout:10) else {return false}
+        // Reuse the original ten-second target window while the native overlay
+        // releases the actual WebView. An existing but covered label is not ready.
+        let ready=NSPredicate {_,_ in
+            target.exists && (target.isHittable || (app.webViews.count == 1 && app.webViews.firstMatch.isHittable))
+        }
+        guard XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:ready,object:app)],timeout:10) == .completed else {
+            print("NCL01_LENS_TARGET_READINESS: targetExists=\(target.exists) targetHittable=\(target.isHittable) webViewCount=\(app.webViews.count) webViewHittable=\(app.webViews.count == 1 && app.webViews.firstMatch.isHittable)")
+            return false
+        }
         // The real dialog footer may be below the phone viewport. Scroll only
         // toward this exact observed target, with one original three-swipe cap.
         for index in 0...3 {
