@@ -4,15 +4,15 @@
 
 ## Exact source and evidence identities
 
-| Item | Protected main | Proposed SC-00A candidate |
-| --- | --- | --- |
-| Source | `809b6d54025fb66000960f30dc750b44ee056d49` | PR #820 ancestor `48c8104bda89f255da01605ab19328360fd92cf9` |
-| Contract | `homeport.owner-correction.round1.workspaces` | Same identity, authority `project-homeport`, owner and criticality |
-| Contract digest (`experienceDigest(contract)`) | `8b5bdb5a5b3e64ec4eb59ff279d5d5ec7b39ea5773c784670b118b5dfcb0b038` | `42a4dc0ebf55eb81c3bc80180f86025ec167270d37a4c092f27ab09f4375f3b7` |
-| Experience digest | `fb3bc166ac0d9aeab1a3ab7f95a775b4a715ef67e2642ec75831147fdebfe753` | `fe2539cea26602dd5373fabc453f0674b1c159065f4c82d22b63780763585654` |
-| Journey | `canonical-three-workspace-and-creation-return`, 20 steps | Same identity, 23 steps |
-| Journey digest | `39ae8df7cab4fe2287ac3a16dc0c7e9bef1faf2fe2496cab9577b9b8a81a22ad` | `dd65fb049e6c396c8ea24fd25c774c5289d26f5aa64545bd2d735886abb879d1` |
-| Browser test | `tests/e2e/parallax-workspace-compatibility.spec.ts` | Same test, exact creation-preview segment updated |
+| Item                                           | Protected main                                                     | Proposed SC-00A candidate                                                                                         |
+| ---------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| Source                                         | `809b6d54025fb66000960f30dc750b44ee056d49`                         | PR #820 reviewed head `d83e81c9468363b09d1d776fa279c38cc2226ca9`, tree `2617baf5c14cce300a4e44fde6ae0725654c1ebb` |
+| Contract                                       | `homeport.owner-correction.round1.workspaces`                      | Same identity, authority `project-homeport`, owner and criticality                                                |
+| Contract digest (`experienceDigest(contract)`) | `8b5bdb5a5b3e64ec4eb59ff279d5d5ec7b39ea5773c784670b118b5dfcb0b038` | `42a4dc0ebf55eb81c3bc80180f86025ec167270d37a4c092f27ab09f4375f3b7`                                                |
+| Experience digest                              | `fb3bc166ac0d9aeab1a3ab7f95a775b4a715ef67e2642ec75831147fdebfe753` | `fe2539cea26602dd5373fabc453f0674b1c159065f4c82d22b63780763585654`                                                |
+| Journey                                        | `canonical-three-workspace-and-creation-return`, 20 steps          | Same identity, 23 steps                                                                                           |
+| Journey digest                                 | `39ae8df7cab4fe2287ac3a16dc0c7e9bef1faf2fe2496cab9577b9b8a81a22ad` | `dd65fb049e6c396c8ea24fd25c774c5289d26f5aa64545bd2d735886abb879d1`                                                |
+| Browser test                                   | `tests/e2e/parallax-workspace-compatibility.spec.ts`               | Same test, exact creation-preview segment updated                                                                 |
 
 The accepted historical evidence is `Development_Docs/Testing/Product_Experience/candidate-review.json` at protected main, SHA-256 `a421bd707bdd25685760b1139cf5a26056ca4369a8fb8812056a92ff0e3c24d8` (1,451,427 bytes). Its recorded base is `819c992fb15ef0b87299ddaaed143427bd00a13d`, source digest `9f4af409dd681c5b984bef3a1c97b221db0e413a0bf386eb86bed79298617fb5`, contract digest `7dc2911fb58ef2d1794bb7d2e28d7dd175a34fa82f89b0ff7e715ec55ddf8da3`. Keep its accepted artifacts, reviews, ordinals, original source binding and Git history. Before new evidence replaces the shared review path, retain an exact byte copy at a versioned Homeport evidence path and record its hash; do not treat old evidence as proof of the new UI.
 
@@ -22,25 +22,35 @@ The old journey starts at **All Workspaces**, enters the owner-scoped Creator li
 
 PR #820's replacement keeps the same account, privacy checks, Creator/Captain/Player route, library return, and no-creation preview outcome. The intentional changes are confined to the creation segment: the heading becomes **Create a Chronicle**; four named intentions appear (**Create Manually**, **Create with AI**, **Adapt a Story**, **Start from a Template**); the last three show **Coming soon** and are disabled; the return link becomes **← Your Chronicles**. The journey checks all four choices and still leaves the route without creating or publishing a record. Its state changes from `CREATION_FORM_READABLE` to `CREATION_CHOICES_READABLE`. The Homeport contract's `visibleOutcome`, `accessibility`, `navigation` and one `limitations` sentence change to describe that exact behavior. No other contract identity, role setup, source path, reference, continuity check, workspace outcome, device, role or ownership obligation is changed.
 
-The separate additive `chronicle.creation` contract in PR #820 covers manual creation, Untitled Chronicle, inline rename/details and return to the Studio; its contract digest at candidate ancestor `48c8104b` is `335471aa60c0877a3d075f2d88276613098b8c0355059bbca69d2a847e93ef86`, and its `creation-and-inline-details` journey digest is `fd41ce8d4a026a995bb010cb23ec9199c2e7608c3e8185bd746ffc7b91be4581`. This complements the Homeport preview and does not replace it. The final browser acceptance must additionally prove persistence, refresh, reopen, continued editing, revision/conflict behavior and permission boundaries with an isolated fixture.
+The separate additive `chronicle.creation` contract in PR #820 covers manual creation, Untitled Chronicle, inline rename/details and return to the Studio; its contract digest at candidate head `d83e81c946` is `335471aa60c0877a3d075f2d88276613098b8c0355059bbca69d2a847e93ef86`, and its `creation-and-inline-details` journey digest is `fd41ce8d4a026a995bb010cb23ec9199c2e7608c3e8185bd746ffc7b91be4581`. This complements the Homeport preview and does not replace it. The final browser acceptance must additionally prove persistence, refresh, reopen, continued editing, revision/conflict behavior and permission boundaries with an isolated fixture.
 
 ## Existing mechanism and necessary authority
 
 `mergeExperienceContracts` in `scripts/sounding-line/product-experience.mjs` keeps the protected journey and fails any changed same-ID journey with `TRUSTED_OBLIGATION_CHANGED`. It also keeps protected scalar descriptions and unions states. The protected `reviewContinuation` handles a finite fourth review for a different PR; the experience exception handles execution circumstances. Neither authorizes a journey replacement. The October 22 SC-00A exception is expired and cannot be reused. A contract-only PR cannot truthfully qualify the new UI against old main, and adding the new journey beside the old one would demand both incompatible interfaces.
 
-The smallest safe authority change is one **protected-base-only, candidate-specific** `experiencePolicy.journeyMigration` record plus a narrowly guarded merge path. The Sounding Line owner should implement and independently qualify it in a separate authority PR, without editing the active modernization branch. The record must bind all old/new digests above, repository `Kgray44/treasurehuntSoT`, PR `820`, ancestor `48c8104bda89f255da01605ab19328360fd92cf9`, the historical evidence path/hash, the single contract/journey identities, and a finite expiry (proposed `2026-11-14T23:59:59Z`). Renewal needs a new protected review. The source binding and GitHub event checks must establish the exact PR/base/head and candidate ancestry. Candidate-supplied authorization cannot activate the path. Treat malformed, expired, mismatched or reused authority as a hard failure.
+The smallest safe authority change is one **protected-base-only, candidate-specific** `experiencePolicy.journeyMigration` record plus a narrowly guarded merge path. The Sounding Line owner should implement and independently qualify it in a separate authority PR, without editing the active modernization branch. The record must bind all old/new digests above, repository `Kgray44/treasurehuntSoT`, PR `820`, reviewed ancestor `d83e81c9468363b09d1d776fa279c38cc2226ca9`, reviewed tree `2617baf5c14cce300a4e44fde6ae0725654c1ebb`, the historical evidence path/hash, the single contract/journey identities, and a finite expiry (proposed `2026-11-14T23:59:59Z`). Renewal needs a new protected review. The source binding and GitHub event checks must establish the exact PR/base/head and candidate ancestry. Candidate-supplied authorization cannot activate the path. Treat malformed, expired, mismatched or reused authority as a hard failure.
 
-Ancestry alone is insufficient: a descendant could weaken browser definitions or change product behavior while retaining the pinned ancestor. Bind the approved product/test tree closure at `48c8104b` and require any later candidate source or test change to undergo explicit Homeport/Sounding Line review and a protected record update before qualification. Allow only immutable evidence publication and the merge of the independently accepted protected authority as ordinary tails. The reviewed browser/fixture closure includes at minimum these SHA-256 file hashes at `48c8104b`:
+Ancestry alone is insufficient: a descendant could weaken browser definitions or change product behavior while retaining the pinned ancestor. Bind the approved product/test tree closure at `d83e81c946` and require any later candidate source or test change to undergo explicit Homeport/Sounding Line review and a protected record update before qualification. Allow only immutable evidence publication and the merge of the independently accepted protected authority as ordinary tails. The reviewed browser/fixture closure includes at minimum these SHA-256 file hashes at `d83e81c946`:
 
-| Browser definition or fixture | SHA-256 |
-| --- | --- |
-| `tests/e2e/parallax-workspace-compatibility.spec.ts` | `b88eeca18016866c65cd37cb6800a6c2cec26ec2ea6e19cafa60644255e9ca22` |
-| `tests/e2e/chronicle-creation.spec.ts` | `8c2212d9c83345bdeec4f5171baad61eb43a0e73eaefa0bb98719fa947ed7de5` |
-| `tests/e2e/fixtures/landfall-closure.ts` | `7f4d296139b5a0dbeba3d6b483075f367e8569972db6aedfaaaa25bb1daaf114` |
-| `tests/e2e/fixtures/sounding-line-isolation.ts` | `fc3464843de49233190f2432a806572bd280afeece182090e42170af0d8f94ab` |
-| `playwright.config.ts` | `9dd00e6d1d9b914a50da93bf30f0d8a3b05e8bcc217dfa1865d7306106057e3d` |
-| `prisma/seed.ts` | `99ebbfc4a30cece2853de032b87aa6e4a4bb37d470010665bce4715480f06538` |
+| Browser definition or fixture                            | SHA-256                                                            |
+| -------------------------------------------------------- | ------------------------------------------------------------------ |
+| `tests/e2e/parallax-workspace-compatibility.spec.ts`     | `b88eeca18016866c65cd37cb6800a6c2cec26ec2ea6e19cafa60644255e9ca22` |
+| `tests/e2e/chronicle-creation.spec.ts`                   | `8c2212d9c83345bdeec4f5171baad61eb43a0e73eaefa0bb98719fa947ed7de5` |
+| `tests/e2e/fixtures/landfall-closure.ts`                 | `7f4d296139b5a0dbeba3d6b483075f367e8569972db6aedfaaaa25bb1daaf114` |
+| `tests/e2e/fixtures/sounding-line-isolation.ts`          | `fc3464843de49233190f2432a806572bd280afeece182090e42170af0d8f94ab` |
+| `playwright.config.ts`                                   | `9dd00e6d1d9b914a50da93bf30f0d8a3b05e8bcc217dfa1865d7306106057e3d` |
+| `prisma/seed.ts`                                         | `99ebbfc4a30cece2853de032b87aa6e4a4bb37d470010665bce4715480f06538` |
 | `scripts/sounding-line/prepare-validation-isolation.mjs` | `37fd9a28452f67992a6839a9630d819be56727eefddabdcc7746738cdd5f542b` |
+
+The only product changes after the earlier `48c8104b` review repaired mobile title overflow, save-status grouping, Details heading focus spacing, and Address guidance. Their reviewed SHA-256 closure at `d83e81c946` is:
+
+| Product source                                        | SHA-256                                                            |
+| ----------------------------------------------------- | ------------------------------------------------------------------ |
+| `src/components/studio/ChronicleAuthoring.module.css` | `7eedfd4f1c9e9a5fcb665bbe944f0ba13f6b038c413f6ddfc273b2634647d611` |
+| `src/components/studio/ChronicleDetails.tsx`          | `f301b0503e016a81ec7b4ebcdd9b298e647b88586a2bf7697d623329492b156d` |
+| `src/components/studio/StudioStatusHeader.tsx`        | `bb246eb9d84162abb2912c55b2467a8cc48c51884015f2644835df78df073786` |
+
+The isolated SQLite developmental browser run against the repaired product tree passed four Chronicle creation cases. Six Homeport cross-workspace cases passed against its immediately preceding product tree; the later repair changed only the three visual source files listed above. The repaired screenshots received an independent visual re-review. These local results guide the migration review; source-bound protected capture remains required after authority lands.
 
 For this one record, verify the protected old contract and journey digests, candidate replacement contract and journey digests, and an exact allowlist of differences: `visibleOutcome`, `accessibility`, `navigation`, the one state substitution, the one journey replacement, and the one limitations sentence. Preserve the complete original contract separately and verify all other Homeport fields are equal in parsed form. Replace only this Homeport experience for PR #820. Keep every unaffected journey and contract under the existing additive trusted merge. Do not add a general override parameter, disable the digest check, alter review ordinals, modify `experience-exception.mjs`, or have Sounding Line accept an arbitrary replacement from a product branch. Once #820 is merged, the PR/ancestor guard makes the record inert; retire it through a separate reviewed cleanup if desired.
 
