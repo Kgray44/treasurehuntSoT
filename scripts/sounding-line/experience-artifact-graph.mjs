@@ -158,6 +158,10 @@ export function buildExperienceArtifactGraph({
     const bytes = Buffer.isBuffer(value) ? value : Buffer.from(value);
     const actual = createHash("sha1").update(`blob ${bytes.length}\0`).update(bytes).digest("hex");
     need(actual === entry.blob, "SOURCE_BYTES_MISMATCH");
+    if (!Buffer.from(bytes.toString("utf8")).equals(bytes)) {
+      node.unknown = true;
+      continue;
+    }
     const source = bytes.toString("utf8"),
       dependencies = new Set();
     for (const match of source.matchAll(imports)) {

@@ -17,6 +17,29 @@ const frame = (blob, body) => Buffer.concat([Buffer.from(`${blob} blob ${body.le
 const inputIds = (options) => options.input.trimEnd().split("\n");
 const invalid = /PRODUCT_EXPERIENCE_SOURCE_SNAPSHOT_INVALID/u;
 
+test("raw-byte mode preserves invalid UTF-8 while aggregate byte bounds reject before payload", () => {
+  const bytes = Buffer.from([255, 0, 10]);
+  const read = (args) => (args[1] === "--batch-check" ? Buffer.from(`${oid} blob 3\n`) : frame(oid, bytes));
+  assert(
+    readSourceSnapshotBatches([entry()], read, { encoding: null, maxTotalBytes: 3 }).get("source.json").equals(bytes),
+  );
+  let payloads = 0;
+  assert.throws(
+    () =>
+      readSourceSnapshotBatches(
+        [entry(), entry(oid, "second.json")],
+        (args) => {
+          if (args[1] === "--batch") payloads++;
+          return Buffer.from(`${oid} blob 3\n${oid} blob 3\n`);
+        },
+        { maxTotalBytes: 5 },
+      ),
+    invalid,
+  );
+  assert.equal(payloads, 0);
+  assert.throws(() => readSourceSnapshotBatches([], read, { encoding: "latin1" }), invalid);
+});
+
 test("real Git bounded reads preserve all ordered aliases, empty blobs and opaque UTF-8 decoding after monolithic ENOBUFS", (t) => {
   const root = mkdtempSync(path.join(tmpdir(), "snapshot-batch-real-git-"));
   assert(root.startsWith(path.resolve(tmpdir()) + path.sep));

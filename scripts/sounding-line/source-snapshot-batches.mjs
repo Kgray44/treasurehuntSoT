@@ -6,17 +6,25 @@ const invalid = () => {
   throw new Error("PRODUCT_EXPERIENCE_SOURCE_SNAPSHOT_INVALID");
 };
 
-export function readSourceSnapshotBatches(sources, read, { maxBuffer = SOURCE_SNAPSHOT_MAX_BUFFER } = {}) {
+export function readSourceSnapshotBatches(
+  sources,
+  read,
+  { maxBuffer = SOURCE_SNAPSHOT_MAX_BUFFER, encoding = "utf8", maxTotalBytes = Number.MAX_SAFE_INTEGER } = {},
+) {
   if (
     !Number.isSafeInteger(maxBuffer) ||
     maxBuffer < 128 ||
     maxBuffer > SOURCE_SNAPSHOT_MAX_BUFFER ||
+    (encoding !== "utf8" && encoding !== null) ||
+    !Number.isSafeInteger(maxTotalBytes) ||
+    maxTotalBytes < 0 ||
     !Array.isArray(sources) ||
     typeof read !== "function" ||
     sources.some((entry) => typeof entry?.blob !== "string" || !/^[a-f0-9]{40}$/u.test(entry.blob))
   )
     invalid();
   const records = [];
+  let decodedBytes = 0;
   const chunkSize = Math.min(metadataObjects, Math.floor(maxBuffer / metadataLineBytes));
   const request = (kind, entries) =>
     read(["cat-file", kind], {
@@ -35,6 +43,8 @@ export function readSourceSnapshotBatches(sources, read, { maxBuffer = SOURCE_SN
       const match = /^([a-f0-9]{40}) blob (0|[1-9][0-9]*)$/u.exec(bytes.subarray(offset, newline).toString("utf8"));
       if (!match || match[1] !== entry.blob) invalid();
       const size = Number(match[2]);
+      decodedBytes += size;
+      if (!Number.isSafeInteger(decodedBytes) || decodedBytes > maxTotalBytes) invalid();
       const header = Buffer.from(`${entry.blob} blob ${match[2]}\n`);
       const frameBytes = header.length + size + 1;
       if (!Number.isSafeInteger(size) || !Number.isSafeInteger(frameBytes) || frameBytes > maxBuffer) invalid();
@@ -66,7 +76,8 @@ export function readSourceSnapshotBatches(sources, read, { maxBuffer = SOURCE_SN
       const body = offset + entry.header.length;
       const end = body + entry.size;
       if (!bytes.subarray(offset, body).equals(entry.header) || end >= bytes.length || bytes[end] !== 10) invalid();
-      contents.set(entry.path, bytes.subarray(body, end).toString("utf8"));
+      const payload = bytes.subarray(body, end);
+      contents.set(entry.path, encoding === null ? Buffer.from(payload) : payload.toString("utf8"));
       offset = end + 1;
     }
     if (offset !== bytes.length) invalid();
