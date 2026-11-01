@@ -3523,11 +3523,11 @@
       "experience": {
         "persona": "One canonical account using its existing Creator, Captain and Player capabilities.",
         "objective": "Preserve private Chronicle ownership, capability-scoped workspace entry, existing authoring and live-Voyage boundaries through the expanded shared content models.",
-        "visibleOutcome": "The same owner reaches Creator, previews an unsaved creation form, returns to the library, then opens Captain and Player through All Workspaces without granting access to another owner private content.",
+        "visibleOutcome": "The same owner reaches Creator, previews four Chronicle creation intentions without creating a record, returns to the library, then opens Captain and Player through All Workspaces without granting access to another owner private content.",
         "integrationOwner": "Existing Parallax integration owner #776; Homeport, Chronicle, Landfall and One Voyage retain their separate workspace, publication and live-session authorities.",
-        "accessibility": "Use the actual account disclosure, semantic workspace cards, labelled creation fields and pressed-state tabs on desktop and phone in both motion modes.",
+        "accessibility": "Use the actual account disclosure, semantic workspace cards, named Chronicle creation choices with unavailable choices identified, and pressed-state tabs on desktop and phone in both motion modes.",
         "fallback": "Preserve actual sign-in redirects, permission-required states, private-resource 404, empty libraries and active-Chronicle transition locks.",
-        "navigation": "All Workspaces → Creator Library → Create Chronicle → Back to Studio → All Workspaces → Captain → Player → All Workspaces.",
+        "navigation": "All Workspaces → Creator Library → Create Chronicle choices → Your Chronicles → All Workspaces → Captain → Player → All Workspaces.",
         "designTarget": "Preserve the current three workspace task compositions and the accepted shared Homeport identity and navigation hierarchy.",
         "entryPoint": "/account/roles",
         "systems": ["project-homeport", "one-voyage", "project-landfall"],
@@ -3606,7 +3606,7 @@
         "states": [
           "WORKSPACES_READY",
           "CREATOR_READABLE",
-          "CREATION_FORM_READABLE",
+          "CREATION_CHOICES_READABLE",
           "CREATOR_RETURNED",
           "CAPTAIN_READABLE",
           "PLAYER_READABLE",
@@ -3666,7 +3666,7 @@
           {
             "id": "canonical-three-workspace-and-creation-return",
             "roles": ["CREATOR"],
-            "outcome": "One canonical account returns across the existing three workspaces without persisting its unsaved form or acquiring another owner private Chronicle.",
+            "outcome": "One canonical account previews four Chronicle creation intentions, returns across the existing three workspaces without creating a Chronicle, and cannot acquire another owner's private Chronicle.",
             "steps": [
               {
                 "action": "assert",
@@ -3695,25 +3695,46 @@
                 "name": "Create Chronicle"
               },
               {
-                "action": "fill",
-                "role": "textbox",
-                "name": "Title",
-                "value": "Unsaved compatibility draft"
-              },
-              {
                 "action": "assert",
                 "kind": "outcome",
                 "role": "heading",
-                "name": "Create Chronicle",
+                "name": "Create a Chronicle",
                 "path": "/studio/tales/new",
-                "meaning": "The unchanged Chronicle creation task still accepts a local draft without creating or publishing a record.",
-                "state": "CREATION_FORM_READABLE",
-                "text": "Create Chronicle"
+                "meaning": "The Chronicle creation entry presents four named intentions without creating or publishing a record.",
+                "state": "CREATION_CHOICES_READABLE",
+                "text": "Create a Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Create Manually Begin with a blank canvas. Shape your Chapters and Passages as inspiration strikes. Begin creating →",
+                "state": "CREATION_CHOICES_READABLE"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Create with AI Build alongside the future Chronicle Architect, from a first spark to a story worth sharing. Coming soon",
+                "text": "Coming soon",
+                "state": "CREATION_CHOICES_READABLE"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Adapt a Story Bring an existing story or document into a new interactive adventure. Coming soon",
+                "text": "Coming soon",
+                "state": "CREATION_CHOICES_READABLE"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Start from a Template Begin with a ready-made Chronicle structure and make it your own. Coming soon",
+                "text": "Coming soon",
+                "state": "CREATION_CHOICES_READABLE"
               },
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Back to Studio"
+                "name": "← Your Chronicles"
               },
               {
                 "action": "assert",
@@ -3805,7 +3826,7 @@
         ],
         "limitations": [
           "Representative cross-workspace compatibility only. Existing extended Chronicle authoring, publishing, Captain control, invitation, Player play, Landfall and active-session safety obligations retain their own test and owner authority.",
-          "The creation form is deliberately left unsaved; no Chronicle publication, Crew creation, live session, external inference or physical acceptance is implied.",
+          "The four-choice creation entry is deliberately left without choosing manual creation; no Chronicle publication, Crew creation, live session, external inference or physical acceptance is implied.",
           "Legacy wrappers in the source set retain their current canonical route/dependency adapters; their presence is not a claim of a second implementation or a newly accepted legacy UI.",
           "Accepted visual references cover the shared entry/navigation frame only; every newly captured task body still requires independent review.",
           "Browser cases retain these separate domain assertions: The named signed-in actor remains the same canonical account and retains its capability boundary. Private source content remains excluded from another actor and the anonymous public projection. The advertised task return reaches its real parent destination without creating a replacement owner or publishing a private draft."
