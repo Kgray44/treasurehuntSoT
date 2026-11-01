@@ -1,5 +1,6 @@
 // A transport read-set proposal, never a verification/custody grant. Production
-// starts in shadow mode. The independently tested materialization path retains
+// activation follows shadow equivalence, adversarial tests and source review.
+// The independently tested materialization path retains
 // every commit/tree, every changed path, all source/config/public/fixture bytes,
 // and all existing historical reader pins.
 import { createHash } from "node:crypto";
@@ -8,7 +9,7 @@ import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 export const DOCUMENTATION_CHECKOUT_ANCHOR = "caf86f42461201db8e6fe88e46a69c7c9e347d25";
-export const DOCUMENTATION_CHECKOUT_MODE = "SHADOW";
+export const DOCUMENTATION_CHECKOUT_MODE = "ACTIVE";
 export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "PENDING";
 const profilePath = "scripts/sounding-line/ordinary-documentation-checkout-profile.mjs";
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");

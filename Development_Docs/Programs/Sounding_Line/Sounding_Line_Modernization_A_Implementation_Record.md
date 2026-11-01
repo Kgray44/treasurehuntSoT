@@ -253,3 +253,9 @@ cancellation and process cleanup, missing certificate denial, locked late
 transport, immutable historical pins and failed-receipt upload conditions.
 These development receipts provide preparation evidence. Protected qualification,
 guarded integration and landed verification retain their existing authorities.
+
+Independent source review cleared shadow commit
+`cebc17eb9d6c79cdab72c7ad698592ce6f684f2f` for preparation of the ACTIVE
+bootstrap. The immutable bootstrap contains ACTIVE with certificate PENDING;
+its final child changes only the certificate literal. Installation follows the
+ordinary protected check, guarded merge transaction and landed verification.

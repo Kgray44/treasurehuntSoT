@@ -75,8 +75,8 @@ test("custody metadata proposals preserve exact JSON readers and attribute bodie
   );
 });
 
-test("new documentation mechanism starts in shadow; its data proposal grants no authority", () => {
-  assert.equal(DOCUMENTATION_CHECKOUT_MODE, "SHADOW");
+test("reviewed documentation transport retains source-bound proposals without verification authority", () => {
+  assert.equal(DOCUMENTATION_CHECKOUT_MODE, "ACTIVE");
   const result = plan();
   assert.equal(result.profile, "DOCUMENTATION_ONLY_SOURCE_BOUND_V1");
   assert.equal(result.qualification, false);
