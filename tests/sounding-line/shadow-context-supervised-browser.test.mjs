@@ -296,7 +296,7 @@ require('node:http').createServer((q,s)=>{
       ).trim(),
       "owned supervised state",
     );
-    assert.equal(restored.files.get("browser-authentication-cache").toString(), "[]");
+    assert(restored.files.get("browser-authentication-cache").equals(authenticationCache));
     const resume = await createClosedContextResumeShadow({
       root,
       plan,
