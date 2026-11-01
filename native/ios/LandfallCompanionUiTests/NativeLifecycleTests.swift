@@ -4,21 +4,29 @@ import UIKit
 
 final class NativeLifecycleTests: XCTestCase {
     @MainActor private func revealLensTarget(_ target:XCUIElement,in app:XCUIApplication) -> Bool {
+        let owningWebView:() -> XCUIElement? = {
+            guard target.exists else {return nil}
+            let label=target.label
+            let matches=app.webViews.allElementsBoundByIndex.filter { web in
+                web.isHittable && web.descendants(matching:.any)
+                    .matching(NSPredicate(format:"label == %@",label)).count == 1
+            }
+            return matches.count == 1 ? matches[0] : nil
+        }
         // Reuse the original ten-second target window while the native overlay
         // releases the actual WebView. An existing but covered label is not ready.
         let ready=NSPredicate {_,_ in
-            target.exists && (target.isHittable || (app.webViews.count == 1 && app.webViews.firstMatch.isHittable))
+            target.exists && (target.isHittable || owningWebView() != nil)
         }
         guard XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:ready,object:app)],timeout:10) == .completed else {
-            print("NCL01_LENS_TARGET_READINESS: targetExists=\(target.exists) targetHittable=\(target.isHittable) webViewCount=\(app.webViews.count) webViewHittable=\(app.webViews.count == 1 && app.webViews.firstMatch.isHittable)")
+            print("NCL01_LENS_TARGET_READINESS: targetExists=\(target.exists) targetHittable=\(target.isHittable) webViewCount=\(app.webViews.count) owningWebView=\(owningWebView() != nil)")
             return false
         }
         // The real dialog footer may be below the phone viewport. Scroll only
         // toward this exact observed target, with one original three-swipe cap.
         for index in 0...3 {
             if target.isHittable {return true}
-            guard index < 3,app.webViews.count == 1,app.webViews.firstMatch.isHittable else {return false}
-            let web=app.webViews.firstMatch
+            guard index < 3,let web=owningWebView() else {return false}
             if !target.frame.isEmpty,target.frame.maxY <= web.frame.minY {web.swipeDown()} else {web.swipeUp()}
         }
         return false
