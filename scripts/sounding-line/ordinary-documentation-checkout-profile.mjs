@@ -10,7 +10,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 export const DOCUMENTATION_CHECKOUT_ANCHOR = "caf86f42461201db8e6fe88e46a69c7c9e347d25";
 export const DOCUMENTATION_CHECKOUT_MODE = "ACTIVE";
-export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "PENDING";
+export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "c58c9cc033faaeae8c4a5a2c1302093ab5dae4eb";
 const profilePath = "scripts/sounding-line/ordinary-documentation-checkout-profile.mjs";
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const allowedAuthorityChanges = new Set([
