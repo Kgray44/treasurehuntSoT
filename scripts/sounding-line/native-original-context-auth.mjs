@@ -318,7 +318,10 @@ export async function authenticateNativeOriginalContext(input) {
         ? jobKey === "final-check" && context.mode === "ordinary" && run.head_sha === context.candidateSha
         : run.head_branch === "main" &&
             run.head_sha === context.baseSha &&
-            context.mode === (jobKey === "final-check" ? "ordinary" : "capture"),
+            (context.mode === (jobKey === "final-check" ? "ordinary" : "capture") ||
+              (jobKey === "experience-preparation" &&
+                context.mode === "capture-diagnostic" &&
+                context.baseSha === context.candidateSha)),
       "EVENT_SOURCE",
     );
     const trees = new Map();
@@ -517,7 +520,11 @@ export async function authenticateNativeRegistryArchive({
   const original = proofs.get(originalProof);
   need(original && original.tuple === tuple(input), "ORIGINAL_PROOF_REQUIRED");
   need(!Object.hasOwn(input, "request"), "TRANSPORT_OVERRIDE");
-  need(original.context.jobKey === "experience-preparation" && original.context.mode === "capture", "REGISTRY_SCOPE");
+  need(
+    original.context.jobKey === "experience-preparation" &&
+      ["capture", "capture-diagnostic"].includes(original.context.mode),
+    "REGISTRY_SCOPE",
+  );
   need(positive(artifactId) && /^[a-f0-9]{64}$/u.test(sourceBindingsDigest ?? ""), "REGISTRY_BINDING");
   need(Number.isSafeInteger(budgetMs) && budgetMs >= 20 && budgetMs <= 60000, "BUDGET");
   const originals = [],
@@ -593,6 +600,7 @@ export async function authenticateNativeRegistryArchive({
     registryProofs.set(proof, {
       tuple: bindingTuple,
       originalProof,
+      producerMode: original.context.mode,
       binding,
       artifactId,
       archiveSha256: hash(archive),
@@ -615,6 +623,7 @@ export function inspectNativeRegistryArchive(proof, input) {
     if (!value || value.tuple !== tuple(input)) return null;
     return {
       binding: structuredClone(value.binding),
+      producerMode: value.producerMode,
       artifactId: value.artifactId,
       archiveSha256: value.archiveSha256,
       envelope: Buffer.from(value.envelope),
@@ -657,6 +666,7 @@ export async function openNativeRegistryRetention({
       privateKey: keyCopy,
       validation,
     });
+    need(opened.manifest.producerMode === retained.producerMode, "REGISTRY_PRODUCER_MODE");
   } finally {
     if (Buffer.isBuffer(keyCopy)) keyCopy.fill(0);
   }
@@ -669,6 +679,7 @@ export async function openNativeRegistryRetention({
   registryContentProofs.set(proof, {
     tuple: retained.tuple,
     registryProof,
+    producerMode: retained.producerMode,
     binding: structuredClone(retained.binding),
     artifactId: retained.artifactId,
     archiveSha256: retained.archiveSha256,
@@ -682,6 +693,7 @@ export function inspectNativeRegistryRetention(proof, input) {
     if (!value || value.tuple !== tuple(input)) return null;
     return structuredClone({
       binding: value.binding,
+      producerMode: value.producerMode,
       artifactId: value.artifactId,
       archiveSha256: value.archiveSha256,
       manifest: value.manifest,

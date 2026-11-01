@@ -56,6 +56,34 @@ function fixture(dispatch = false) {
   };
 }
 const invalid = /SOUNDING_LINE_NATIVE_CONTEXT_/u;
+
+test("installed-main shadow diagnostics are explicitly marked and cannot be ordinary candidate observations", () => {
+  const input = fixture(true);
+  input.event.inputs.experience_diagnostic = true;
+  input.event.inputs.incremental_evidence_shadow = true;
+  input.event.inputs.candidate_sha = base;
+  const context = observeNativeEvidenceContext(input);
+  assert.equal(context.mode, "capture-diagnostic");
+  assert.equal(context.candidateSha, context.baseSha);
+  assert.equal(context.qualification, false);
+  assert.equal(context.reuseAuthorized, false);
+  for (const change of [
+    (value) => {
+      value.event.inputs.candidate_sha = candidate;
+    },
+    (value) => {
+      value.event.inputs.incremental_evidence_shadow = false;
+    },
+    (value) => {
+      value.environment.GITHUB_JOB = "final-check";
+      value.event.inputs.experience_mode = "ordinary";
+    },
+  ]) {
+    const altered = structuredClone(input);
+    change(altered);
+    assert.throws(() => observeNativeEvidenceContext(altered), invalid);
+  }
+});
 test("original native event context is data-only and exposes only source and owner identifiers", () => {
   for (const dispatch of [false, true]) {
     const input = fixture(dispatch),

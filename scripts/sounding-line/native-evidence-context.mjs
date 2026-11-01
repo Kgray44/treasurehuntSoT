@@ -62,14 +62,20 @@ export function observeNativeEvidenceContext({ environment, event }) {
     prNumber = pr.number;
     mode = "ordinary";
   } else {
-    need(
-      e.GITHUB_EVENT_NAME === "workflow_dispatch" &&
-        ["main", "refs/heads/main"].includes(event.ref) &&
-        [undefined, false, "false", ""].includes(event.inputs?.experience_diagnostic),
-      "DISPATCH",
-    );
+    need(e.GITHUB_EVENT_NAME === "workflow_dispatch" && ["main", "refs/heads/main"].includes(event.ref), "DISPATCH");
     mode = event.inputs?.experience_mode;
     need(e.GITHUB_JOB === "final-check" ? mode === "ordinary" : mode === "capture", "MODE");
+    const diagnostic = [true, "true"].includes(event.inputs?.experience_diagnostic);
+    need([undefined, false, "false", "", true, "true"].includes(event.inputs?.experience_diagnostic), "DISPATCH");
+    if (diagnostic) {
+      need(
+        e.GITHUB_JOB === "experience-preparation" &&
+          [true, "true"].includes(event.inputs?.incremental_evidence_shadow) &&
+          event.inputs.base_sha === event.inputs.candidate_sha,
+        "DISPATCH",
+      );
+      mode = "capture-diagnostic";
+    }
     baseSha = event.inputs.base_sha;
     candidateSha = event.inputs.candidate_sha;
     prNumber = number(event.inputs.pr_number);

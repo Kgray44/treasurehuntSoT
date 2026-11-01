@@ -121,7 +121,7 @@ async function main() {
   need(
     context.kind === "NATIVE_ORIGINAL_EVIDENCE_CONTEXT_SHADOW" &&
       context.jobKey === "experience-preparation" &&
-      context.mode === "capture" &&
+      ["capture", "capture-diagnostic"].includes(context.mode) &&
       process.env.SOUNDING_LINE_INCREMENTAL_EVIDENCE_SHADOW === "true",
     "OPT_IN_CONTEXT",
   );
@@ -212,6 +212,7 @@ async function main() {
   const sourceTree = git(workspace, ["rev-parse", "HEAD^{tree}"]).trim();
   const declared = (classification) => hash(JSON.stringify({ classification, sourceDigest: plan.sourceDigest }));
   const sealed = await sealClosedContextRegistryFiles({
+    captureMode: context.mode,
     root: workspace,
     rawDirectory: stagePath.slice(0, -"capture".length) + "raw",
     cleanupPaths,

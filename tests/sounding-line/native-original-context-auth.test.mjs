@@ -239,6 +239,18 @@ function fixture(jobKey = "experience-preparation", event = "workflow_dispatch")
 const runKey = "actions/runs/4444/attempts/1",
   jobsKey = "actions/runs/4444/attempts/1/jobs?per_page=100";
 test.after(() => fs.rmSync(root, { recursive: true, force: true }));
+test("provider-bound installed-main diagnostics retain their distinct non-qualifying source identity", async () => {
+  const f = fixture();
+  f.context.mode = "capture-diagnostic";
+  await assert.rejects(api.authenticateNativeOriginalContext(f.input), /EVENT_SOURCE/u);
+  f.context.candidateSha = base;
+  f.input.expectedOriginalSource.candidateSha = base;
+  const proof = await api.authenticateNativeOriginalContext(f.input);
+  const observation = api.inspectNativeOriginalContext(proof, f.input);
+  assert.equal(observation.context.mode, "capture-diagnostic");
+  assert.equal(observation.context.baseSha, observation.context.candidateSha);
+  assert.equal(observation.reuseAuthorized, false);
+});
 test("callers cannot supply an authentication transport", async () => {
   const f = fixture();
   await assert.rejects(
@@ -553,6 +565,7 @@ test("provider transport and owner decryption preserve original IDs and review o
     pathToFileURL(path.join(root, "scripts/sounding-line/artifact-evidence-registry.mjs")).href
   );
   const original = artifactRegistryFixture({ baseSha: base, candidateSha: candidate, runId: 4444 });
+  original.producerMode = "capture";
   original.reviewReceipts.push({
     id: "original-independent-review",
     contractId: "contract",

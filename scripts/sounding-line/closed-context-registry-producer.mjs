@@ -49,9 +49,15 @@ export function buildClosedContextRegistryShadow({
   lifecycleArtifact,
   cleanup,
   definitionObservations,
+  captureMode = "capture",
 }) {
   need(plan && Buffer.byteLength(canonicalJson(plan)) <= 2 * 1024 * 1024, "PLAN_BOUND");
   const schedule = shadowCaptureContextSchedule(plan);
+  need(
+    ["capture", "capture-diagnostic"].includes(captureMode) &&
+      (captureMode !== "capture-diagnostic" || plan.baseSha === plan.candidateSha),
+    "CAPTURE_MODE",
+  );
   need(Array.isArray(contexts) && contexts.length > 0 && contexts.length <= 128, "CONTEXT_BOUND");
   for (const observation of contexts) need(observation?.journal?.context?.viewport, "CONTEXT_IDENTITY");
   contexts = [...contexts].sort(
@@ -303,6 +309,7 @@ export function buildClosedContextRegistryShadow({
     kind: "CLOSED_CONTEXT_PREFIX",
     qualification: false,
     manifestId: `original-context-prefix-${producer.runId}-${producer.attempt}`,
+    producerMode: captureMode,
     repository: producer.repository,
     producerIdentity,
     originalBaseSha: plan.baseSha,
