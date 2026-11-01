@@ -107,6 +107,8 @@ async function createOwner({ root, rawDirectory, databasePath, originalBinding, 
     );
     need(
       creation?.command === process.execPath &&
+        creation.nodeOptionsCleared === true &&
+        creation.nodePathCleared === true &&
         creation.root === root &&
         creation.argumentsSha256 === hash(JSON.stringify([selected, ...args])) &&
         creation.databaseUrlSha256 === hash(`file:${databasePath}`),
@@ -236,6 +238,8 @@ async function createOwner({ root, rawDirectory, databasePath, originalBinding, 
               rawDirectory,
               binding: canonicalJson(binding),
               original: canonicalJson(result),
+              application: application.child,
+              capture: capture.child,
             });
             return result;
           }),
@@ -251,7 +255,7 @@ async function createOwner({ root, rawDirectory, databasePath, originalBinding, 
     close,
   });
 }
-export function inspectOwnedRuntimeStateCut(receipt, { root, expectedOriginalBinding }) {
+export function inspectOwnedRuntimeStateCut(receipt, { root, expectedOriginalBinding, runtimeReferences }) {
   try {
     const value = stateCuts.get(receipt);
     if (
@@ -259,6 +263,11 @@ export function inspectOwnedRuntimeStateCut(receipt, { root, expectedOriginalBin
       value.root !== root ||
       value.binding !== canonicalJson(expectedOriginalBinding) ||
       value.original !== canonicalJson(receipt)
+    )
+      return null;
+    if (
+      runtimeReferences !== undefined &&
+      (runtimeReferences.application !== value.application || runtimeReferences.capture !== value.capture)
     )
       return null;
     return Object.freeze({
@@ -271,6 +280,13 @@ export function inspectOwnedRuntimeStateCut(receipt, { root, expectedOriginalBin
   } catch {
     return null;
   }
+}
+export async function fingerprintOwnedRuntimeEntrypoint({ root, entrypoint }) {
+  root = await realpath(root);
+  const selected = path.resolve(root, entrypoint);
+  need(selected.startsWith(root + path.sep) && (await realpath(selected)) === selected, "ENTRYPOINT");
+  const bytes = await entrypointBytes(selected);
+  return Object.freeze({ entrypoint: path.relative(root, selected), sha256: hash(bytes) });
 }
 export async function createOwnedRuntimeStateRetentionFactory({ root, rawDirectory, prNumber }) {
   need(Number.isSafeInteger(prNumber) && prNumber > 0 && ![721, 776, 805].includes(prNumber), "BINDING");

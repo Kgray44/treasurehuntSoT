@@ -114,6 +114,8 @@ export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {
     forceMs,
     creation: Object.freeze({
       command,
+      nodeOptionsCleared: !env.NODE_OPTIONS,
+      nodePathCleared: !env.NODE_PATH,
       argumentsSha256: createHash("sha256").update(JSON.stringify(args)).digest("hex"),
       root: path.resolve(root),
       databaseUrlSha256: createHash("sha256")

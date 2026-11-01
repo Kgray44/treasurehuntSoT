@@ -7,9 +7,15 @@ import { createServer } from "node:net";
 import { createHash, randomUUID } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { runBrowserAuthority } from "../../scripts/sounding-line/browser-authority.mjs";
+import {
+  runBrowserAuthority,
+  inspectOwnedBrowserAuthorityReceipt,
+} from "../../scripts/sounding-line/browser-authority.mjs";
 import { spawnOwnedProcess } from "../../scripts/sounding-line/owned-process.mjs";
-import { createOwnedRuntimeStateRetentionFactory } from "../../scripts/sounding-line/owned-runtime-state-retention.mjs";
+import {
+  createOwnedRuntimeStateRetentionFactory,
+  inspectOwnedRuntimeStateCut,
+} from "../../scripts/sounding-line/owned-runtime-state-retention.mjs";
 import { restoreRuntimeSnapshotRetention } from "../../scripts/sounding-line/runtime-snapshot-retention.mjs";
 import {
   createRawOutputDirectory,
@@ -17,6 +23,8 @@ import {
 } from "../../scripts/sounding-line/experience-raw-output.mjs";
 import { shadowCaptureContextSchedule } from "../../scripts/sounding-line/experience-browser.mjs";
 import { experienceDigest } from "../../scripts/sounding-line/product-experience.mjs";
+import { createClosedContextResumeShadow } from "../../scripts/sounding-line/closed-context-resume-shadow.mjs";
+import { authenticatedCompletedReceipt } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 test(
   "existing supervisor owns the private single-context worker and application before SQLite and private cache retention",
@@ -47,6 +55,7 @@ test(
         entryPoint: "/",
         devices: ["DESKTOP"],
         roles: ["ANONYMOUS"],
+        motion: true,
         states: ["READY", "RETURNED"],
         recordingRequired: true,
         journeys: [
@@ -187,6 +196,9 @@ test(
     assert.equal(runtime.failureCategory, null);
     assert.equal(runtime.lifecycle.cleanup.status, "PASS");
     assert.equal(runtime.lifecycle.cleanup.portsReleased, true);
+    const closedRuntime = inspectOwnedBrowserAuthorityReceipt(runtime, { root });
+    assert(closedRuntime);
+    assert.equal(inspectOwnedBrowserAuthorityReceipt(structuredClone(runtime), { root }), null);
     const result = JSON.parse(
       await readBoundedRawCaptureFile({ root, rawDirectory, file: input.resultPath, maximumBytes: 32768 }),
     );
@@ -214,6 +226,21 @@ test(
     assert.equal(retained.cleanup.application.status, "PASS");
     assert.equal(retained.qualification, false);
     assert.equal(retained.reuseAuthorized, false);
+    assert(
+      inspectOwnedRuntimeStateCut(retained, {
+        root,
+        expectedOriginalBinding: binding,
+        runtimeReferences: closedRuntime.references,
+      }),
+    );
+    assert.equal(
+      inspectOwnedRuntimeStateCut(retained, {
+        root,
+        expectedOriginalBinding: binding,
+        runtimeReferences: { application: {}, capture: {} },
+      }),
+      null,
+    );
     const restored = await restoreRuntimeSnapshotRetention({
         root,
         rawDirectory,
@@ -235,6 +262,141 @@ test(
       "owned supervised state",
     );
     assert.equal(restored.files.get("browser-authentication-cache").toString(), "[]");
+    const resume = await createClosedContextResumeShadow({
+      root,
+      plan,
+      runtimeDigest: binding.runtimeDigest,
+      fixtureStateDigest: hash(Buffer.from('{"syntheticFixture":true}')),
+      workerEntrypoint,
+      applicationEntrypoint: serverFile,
+    });
+    const prefixInput = {
+      stateCut: retained,
+      runtimeReceipt: runtime,
+      workerInputPath: inputPath,
+      workerInputSha256: hash(bytes),
+    };
+    await assert.rejects(resume.append({ ...prefixInput, stateCut: structuredClone(retained) }), /STATE_PROOF/u);
+    await assert.rejects(resume.append({ ...prefixInput, runtimeReceipt: structuredClone(runtime) }), /RUNTIME_PROOF/u);
+    await resume.append(prefixInput);
+    const firstPrefix = resume.snapshot(),
+      firstRestore = await resume.restore(firstPrefix, { plan, runtimeDigest: binding.runtimeDigest });
+    assert.equal(firstRestore.completedContexts, 1);
+    assert.equal(firstRestore.nextContext.context.motionMode, "REDUCED");
+    assert.equal(authenticatedCompletedReceipt(firstPrefix, {}), null);
+    await assert.rejects(
+      resume.restore({ ...firstPrefix }, { plan, runtimeDigest: binding.runtimeDigest }),
+      /PREFIX_PROOF/u,
+    );
+    await assert.rejects(
+      resume.restore(firstPrefix, {
+        plan: { ...plan, candidateSha: "0".repeat(40) },
+        runtimeDigest: binding.runtimeDigest,
+      }),
+      /PREFIX_PROOF/u,
+    );
+    const resumedTarget = firstRestore.nextContext,
+      resumedDatabase = absolute(rawDirectory + "/resumed-runtime.db");
+    await fs.writeFile(resumedDatabase, firstRestore.files.get("sqlite-backup"), { flag: "wx", mode: 0o600 });
+    const resumedBinding = { ...binding, contextId: resumedTarget.contextId },
+      resumedOwner = await factory.forContext({ databasePath: resumedDatabase, originalBinding: resumedBinding });
+    const resumedCachePath = rawDirectory + "/resumed-cache.json";
+    await fs.writeFile(absolute(resumedCachePath), firstRestore.files.get("browser-authentication-cache"), {
+      flag: "wx",
+      mode: 0o600,
+    });
+    const resumedInput = {
+      ...input,
+      contextId: resumedTarget.contextId,
+      outputDirectory: invocation + "/capture/" + resumedTarget.contextId,
+      authenticationCachePath: resumedCachePath,
+      authenticationCacheSha256: hash(firstRestore.files.get("browser-authentication-cache")),
+      resultPath: rawDirectory + `/shadow-context-result-${resumedTarget.contextId}.json`,
+    };
+    const resumedInputPath = rawDirectory + "/resumed-input.json",
+      resumedBytes = Buffer.from(JSON.stringify(resumedInput));
+    await fs.writeFile(absolute(resumedInputPath), resumedBytes, { flag: "wx", mode: 0o600 });
+    const resumedRegistrations = [];
+    const resumedRuntime = await runBrowserAuthority({
+      root,
+      port,
+      environment: {
+        ...process.env,
+        DATABASE_URL: `file:${resumedDatabase}`,
+        NEXT_DIST_DIR: ".next",
+        SOUNDING_LINE_TASK_OWNED_HTTP: "0",
+      },
+      serverArguments: [serverFile, "start", "-p", String(port)],
+      browserScriptArguments: [
+        workerEntrypoint,
+        "--raw-directory",
+        rawDirectory,
+        "--input",
+        resumedInputPath,
+        "--input-sha256",
+        hash(resumedBytes),
+      ],
+      executionTimeoutMs: 45000,
+      cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
+      launch(command, args, options) {
+        const child = spawnOwnedProcess(command, args, options),
+          role = resumedRegistrations.length === 0 ? "application" : "capture";
+        resumedRegistrations.push(
+          resumedOwner.adoptCreatedProcess(role, { child, entrypoint: args[0], args: args.slice(1) }).then(
+            () => null,
+            (error) => error,
+          ),
+        );
+        return child;
+      },
+    });
+    assert.deepEqual(await Promise.all(resumedRegistrations), [null, null]);
+    assert.equal(resumedRuntime.failureCategory, null);
+    const resumedResult = JSON.parse(
+        await readBoundedRawCaptureFile({ root, rawDirectory, file: resumedInput.resultPath, maximumBytes: 32768 }),
+      ),
+      resumedAuthentication = await readBoundedRawCaptureFile({
+        root,
+        rawDirectory,
+        file: resumedResult.privateAuthenticationCache.path,
+        maximumBytes: 2 * 1024 * 1024,
+      });
+    const resumedCut = await resumedOwner.checkpoint({
+      authenticationCache: resumedAuthentication,
+      fixtureState: firstRestore.files.get("fixture-state"),
+    });
+    await resume.append({
+      stateCut: resumedCut,
+      runtimeReceipt: resumedRuntime,
+      workerInputPath: resumedInputPath,
+      workerInputSha256: hash(resumedBytes),
+    });
+    const complete = await resume.restore(resume.snapshot(), { plan, runtimeDigest: binding.runtimeDigest });
+    assert.equal(complete.completedContexts, 2);
+    assert.equal(complete.nextContext, null);
+    assert.equal(complete.reuseAuthorized, false);
+    assert.deepEqual(
+      complete.originalArtifacts.filter((artifact) => artifact.motionMode === "NORMAL").map((artifact) => artifact.id),
+      firstRestore.originalArtifacts.map((artifact) => artifact.id),
+    );
+    const finalDatabase = absolute(rawDirectory + "/two-contexts.db");
+    await fs.writeFile(finalDatabase, complete.files.get("sqlite-backup"), { flag: "wx", mode: 0o600 });
+    assert.equal(
+      execFileSync(
+        "python",
+        [
+          "-c",
+          "import sqlite3,sys;c=sqlite3.connect(sys.argv[1]);print(c.execute('select count(*) from fixture').fetchone()[0]);c.close()",
+          finalDatabase,
+        ],
+        { encoding: "utf8", windowsHide: true, timeout: 10000 },
+      ).trim(),
+      "2",
+    );
+    assert.equal(
+      (await resume.restore(firstPrefix, { plan, runtimeDigest: binding.runtimeDigest })).completedContexts,
+      1,
+    );
     // A failed optional journal must not become a resumable worker result even
     // though its actual browser journey and immutable partial capture completed.
     const negativePlan = structuredClone(plan);
@@ -281,6 +443,7 @@ test(
     assert.equal(negative.failureCategory, "PRODUCT_FAILURE");
     assert.equal(negative.lifecycle.cleanup.status, "PASS");
     assert.equal(negative.lifecycle.cleanup.portsReleased, true);
+    assert.equal(inspectOwnedBrowserAuthorityReceipt(negative, { root }), null);
     await assert.rejects(fs.stat(absolute(negativeInput.resultPath)), (error) => error.code === "ENOENT");
     const incomplete = JSON.parse(await fs.readFile(absolute(negativeInput.outputDirectory + "/capture.json")));
     assert.equal(incomplete.journeys[0].status, "PASS");

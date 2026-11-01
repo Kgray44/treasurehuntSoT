@@ -39,6 +39,7 @@ test("the protected regression script includes every incremental registry and co
     "owned-runtime-state-retention",
     "shadow-context-schedule",
     "shadow-context-worker",
+    "closed-context-resume-shadow",
   ])
     assert.equal(files.filter((file) => file === `tests/sounding-line/${name}.test.mjs`).length, 1, name);
 });
