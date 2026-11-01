@@ -337,7 +337,7 @@ export async function probeDocumentationCustody({
     !base ||
     !candidate ||
     !Array.isArray(proposal.metadataPaths) ||
-    proposal.metadataPaths.length > 32 ||
+    proposal.metadataPaths.length > 64 ||
     !proposal.metadataPaths.includes("testing/contracts.json") ||
     !proposal.metadataPaths.includes("testing/product-experience-exceptions.json")
   )

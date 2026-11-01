@@ -166,6 +166,46 @@ for (const scenario of ["positive", "uncertain", "invalid-json", "payload-failur
     });
     assert.equal(result.proposal.profile, "FULL_SNAPSHOT");
   });
+test("the protected source's 49 metadata and attribute paths fit the bounded precheck", async (t) => {
+  const root = mkdtempSync(path.join(tmpdir(), "custody-attributes-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  mkdirSync(path.join(root, ".git"));
+  const attributes = Array.from({ length: 47 }, (_, i) =>
+    entry(`Development_Docs/archive-${i}/.gitattributes`, (i + 1).toString(16).padStart(40, "0")),
+  );
+  const metadataPaths = [
+    "testing/contracts.json",
+    "testing/product-experience-exceptions.json",
+    ...attributes.map((x) => x.path),
+  ];
+  const baseSha = "a".repeat(40),
+    candidateSha = "b".repeat(40),
+    proposal = { profile: "DOCUMENTATION_CUSTODY_METADATA_V1", metadataPaths };
+  const result = await probeDocumentationCustody({
+    proposal,
+    root,
+    git: process.execPath,
+    baseSha,
+    candidateSha,
+    prNumber: 819,
+    baseEntries: [...base, ...attributes],
+    candidateEntries: [...base, ...attributes],
+    command: async () => "",
+    readOnlyCommand: async () =>
+      JSON.stringify({
+        status: "PASS",
+        campaign: false,
+        baseSha,
+        candidateSha,
+        prNumber: 819,
+        registryBlob: "a".repeat(40),
+        transport: "DISABLED",
+        authority: "READ_ONLY_FULL_ROUTE_HINT",
+      }),
+  });
+  assert.equal(result.proposal.profile, "DOCUMENTATION_CUSTODY_METADATA_V1");
+  assert.equal(result.custodyProbe.campaign, false);
+});
 test("failed checkout emits a complete uploadable receipt and all four jobs retain it after failure", async (t) => {
   const owner = mkdtempSync(path.join(tmpdir(), "checkout-failed-receipt-"));
   t.after(() => rmSync(owner, { recursive: true, force: true }));
