@@ -29,6 +29,7 @@ const SUPERVISED_MODULES = [
   "verification-preflight.mjs",
   "verification-supervisor.mjs",
   "verification-capacity-820.mjs",
+  "verification-source-join-820.mjs",
   "owned-process.mjs",
   "owned-process-linux.py",
   "owned-process-windows.ps1",

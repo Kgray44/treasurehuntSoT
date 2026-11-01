@@ -5,18 +5,24 @@ import { appendFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { planProductExperience } from "./product-experience.mjs";
+import {
+  verifySourceJoin820,
+  SOURCE_JOIN_TREE_BYTES,
+  HOMEPORT_820_REVIEW,
+  HOMEPORT_820_PUBLICATION,
+} from "./verification-source-join-820.mjs";
 
 export const CAPACITY_820 = Object.freeze({
-  version: 1,
+  version: 2,
   repository: "Kgray44/treasurehuntSoT",
   repositoryId: 1303074266,
   ownerId: 64373011,
   pr: 820,
   originalBase: "b20199feee2a82129f1527a9c0099eca5c98be5a",
   originalCandidate: "5fce13d00211d45116cc93ae143f24889834380c",
-  sourceDigest: "2c00cb867fe526182ef1413a7feba606db671756786862b8fd845253266f273e",
+  originalSourceDigest: "2c00cb867fe526182ef1413a7feba606db671756786862b8fd845253266f273e",
   notBefore: "2026-11-01T18:00:00Z",
-  expiresAt: "2026-11-02T12:00:00Z",
+  expiresAt: "2026-11-03T12:00:00Z",
   minutes: 65,
   attempt: 1,
 });
@@ -31,6 +37,7 @@ export function capacity820Grant({
   runId,
   attempt,
   sourceDigest,
+  sourceJoinDigest,
   createdAt,
   now,
 }) {
@@ -38,10 +45,19 @@ export function capacity820Grant({
     end = Date.parse(CAPACITY_820.expiresAt);
   need(oid(baseSha) && oid(candidateSha) && oid(candidateTree));
   need(/^[1-9]\d*$/u.test(runId ?? "") && String(attempt) === "1");
-  need(sourceDigest === CAPACITY_820.sourceDigest);
+  need(/^[a-f0-9]{64}$/u.test(sourceDigest ?? "") && /^[a-f0-9]{64}$/u.test(sourceJoinDigest ?? ""));
   need(Number.isSafeInteger(now) && now >= start && now + CAPACITY_820.minutes * 60000 <= end);
   need(Number.isFinite(Date.parse(createdAt)) && Date.parse(createdAt) >= start && Date.parse(createdAt) <= now);
-  return Object.freeze({ ...CAPACITY_820, baseSha, candidateSha, candidateTree, runId, qualification: false });
+  return Object.freeze({
+    ...CAPACITY_820,
+    baseSha,
+    candidateSha,
+    candidateTree,
+    runId,
+    sourceDigest,
+    sourceJoinDigest,
+    qualification: false,
+  });
 }
 export function encodeCapacity820Grant(grant) {
   const json = JSON.stringify(grant);
@@ -115,20 +131,31 @@ export async function installedCapacity820Grant({ root, baseSha, candidateSha, e
     providerJson("git/ref/heads/main", env),
   ]);
   validateCapacity820Provider({ pull, run, main, env, baseSha, candidateSha });
-  const git = (args) =>
+  const git = (args, raw = false) =>
     execFileSync("git", ["-c", "gc.auto=0", "-c", "maintenance.auto=false", ...args], {
       cwd: root,
-      encoding: "utf8",
+      encoding: raw ? null : "utf8",
       timeout: 30000,
-      maxBuffer: 1024 * 1024,
+      maxBuffer: SOURCE_JOIN_TREE_BYTES,
       env: { ...env, GIT_NO_LAZY_FETCH: "1", GIT_NO_REPLACE_OBJECTS: "1", GIT_TERMINAL_PROMPT: "0" },
       stdio: ["ignore", "pipe", "pipe"],
-    }).trim();
-  need(git(["rev-parse", "HEAD"]) === candidateSha);
+    });
+  const text = (args) => git(args).trim();
+  need(text(["rev-parse", "HEAD"]) === candidateSha);
   git(["merge-base", "--is-ancestor", CAPACITY_820.originalBase, baseSha]);
   git(["merge-base", "--is-ancestor", baseSha, candidateSha]);
   git(["merge-base", "--is-ancestor", CAPACITY_820.originalCandidate, candidateSha]);
-  const candidateTree = git(["rev-parse", `${candidateSha}^{tree}`]);
+  const candidateTree = text(["rev-parse", `${candidateSha}^{tree}`]);
+  const registry = JSON.parse(text(["show", `${baseSha}:testing/contracts.json`]));
+  need(registry.experiencePolicy?.journeyMigration?.reviewPath === HOMEPORT_820_REVIEW);
+  need(registry.experiencePolicy?.journeyMigration?.publicationRoot === HOMEPORT_820_PUBLICATION);
+  const tree = (revision) => git(["ls-tree", "-rz", "--full-tree", revision], true);
+  const sourceJoin = verifySourceJoin820({
+    originalBase: tree(CAPACITY_820.originalBase),
+    originalCandidate: tree(CAPACITY_820.originalCandidate),
+    currentBase: tree(baseSha),
+    candidate: tree(candidateSha),
+  });
   const changedPaths = git(["diff", "--name-only", "--no-renames", "-z", baseSha, candidateSha, "--"])
     .split("\0")
     .filter(Boolean);
@@ -141,6 +168,7 @@ export async function installedCapacity820Grant({ root, baseSha, candidateSha, e
     runId: env.GITHUB_RUN_ID,
     attempt: env.GITHUB_RUN_ATTEMPT,
     sourceDigest: plan.sourceDigest,
+    sourceJoinDigest: sourceJoin.digest,
     createdAt: run.created_at,
     now: Date.now(),
   });
