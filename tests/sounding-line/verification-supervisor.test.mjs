@@ -173,6 +173,11 @@ test("child failure and passing supervision remain separate from release qualifi
 test("retention failure preserves the original child failure and cannot produce passing supervision", async (t) => {
   const { pending } = await owned(t, "fail", {
     publish: async (file, bytes, options) => {
+      if (file.endsWith("initial.json")) {
+        const initial = JSON.parse(bytes);
+        assert.equal(initial.status, "INCOMPLETE");
+        assert.equal(initial.qualification, false);
+      }
       if (file.endsWith("terminal.json")) throw Object.assign(new Error("synthetic disk full"), { code: "ENOSPC" });
       return writeFile(file, bytes, options);
     },
