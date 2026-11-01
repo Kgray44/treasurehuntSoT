@@ -219,6 +219,16 @@ export function closedContextShadowAllowed(plan, prNumber = plan?.prNumber) {
   const pr = Number(prNumber);
   return Number.isSafeInteger(pr) && pr > 0 && ![721, 776, 805].includes(pr) && !plan?.exception;
 }
+export function closedContextIdentity(context) {
+  return hash(
+    json({
+      ...Object.fromEntries(
+        ["contractId", "journeyId", "device", "role", "motionMode"].map((key) => [key, context[key]]),
+      ),
+      viewport: { width: context.viewport.width, height: context.viewport.height },
+    }),
+  );
+}
 export async function createClosedContextJournal({
   root,
   rawDirectory,
@@ -271,11 +281,7 @@ export async function createClosedContextJournal({
       const original = JSON.parse(originalBytes);
       if (["trace", "recording"].some((type) => original.artifacts.filter((item) => item.type === type).length !== 1))
         fail("CLOSED_CONTEXT_ARTIFACT_INVALID");
-      const contextIdentity = json({
-        ...Object.fromEntries(contextFields.map((key) => [key, original.context[key]])),
-        viewport: { width: original.context.viewport.width, height: original.context.viewport.height },
-      });
-      const contextId = hash(contextIdentity);
+      const contextId = closedContextIdentity(original.context);
       const ids = new Set(),
         paths = new Set(),
         files = [],

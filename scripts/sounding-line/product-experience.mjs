@@ -1253,6 +1253,7 @@ export function validateExperienceEvidence({
   automatedOnly = false,
 }) {
   const currentPlan = plan;
+  if (evidence?.partialContext !== undefined) fail("SHADOW_CONTEXT_CAPTURE_NOT_QUALIFICATION");
   if (!automatedOnly) {
     if (isReviewedEvidenceAdoption(plan)) {
       validateReviewedIdentity(plan, evidence, { root: baselineRoot });
