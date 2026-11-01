@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { digest } from "../../scripts/sounding-line/evidence.mjs";
+import { planArtifactPreservationShadow } from "../../scripts/sounding-line/artifact-preservation-shadow.mjs";
+import {
+  createArtifactDependencyGraph,
+  artifactDependencyClosure,
+} from "../../scripts/sounding-line/artifact-dependency-graph.mjs";
 import {
   ARTIFACT_TYPES,
   artifactLogicalKey,
@@ -12,7 +17,11 @@ import {
 
 const base = "a".repeat(40),
   candidate = "b".repeat(40);
-function fixture({ secondScreenshot = false } = {}) {
+function fixture({
+  secondScreenshot = false,
+  graphDigest = digest("graph"),
+  dependencyClosureDigest = digest("closed dependency graph"),
+} = {}) {
   const producerIdentity = {
     repository: "Kgray44/treasurehuntSoT",
     runId: 101,
@@ -62,7 +71,7 @@ function fixture({ secondScreenshot = false } = {}) {
       { screenshot: "image/png", recording: "video/webm", trace: "application/zip" }[logicalKey.type] ??
       "application/json",
     definitionFingerprint: digest(logicalKey),
-    dependencyClosureDigest: digest("closed dependency graph"),
+    dependencyClosureDigest,
     runtimeAttestationDigest: runtime.attestationDigest,
     captureSession: runtime.captureSession,
     completedContextReceiptDigest: digest("pending seal"),
@@ -109,7 +118,7 @@ function fixture({ secondScreenshot = false } = {}) {
     controllerDigest: producerIdentity.controllerDigest,
     policyDigest: producerIdentity.policyDigest,
     contractDigest: digest("contract"),
-    graphDigest: digest("graph"),
+    graphDigest,
     requiredCoverage,
     fullRequiredCoverageDigest: digest(requiredCoverage.map(artifactLogicalKey).sort()),
     artifacts,
@@ -138,6 +147,72 @@ test("a complete v2 registry validates only as untrusted retention data", () => 
   assert.equal(result.completedContexts, 1);
   assert.equal(result.authentication, "RETENTION_ONLY_NOT_AUTHENTICATED");
   assert.equal(result.qualification, false);
+});
+
+test("shadow preservation joins complete closure and byte bindings without granting reuse or rewriting originals", () => {
+  const graph = createArtifactDependencyGraph([
+    { id: "context", type: "CONTEXT", digest: digest("context"), dependencies: [] },
+  ]);
+  const closure = artifactDependencyClosure(graph, ["context"]);
+  const manifest = fixture({ graphDigest: graph.graphDigest, dependencyClosureDigest: closure.closureDigest });
+  const model = {
+    graph,
+    requiredCoverage: manifest.requiredCoverage,
+    contexts: [{ id: "context", dependencies: ["context"], requiredCoverage: manifest.requiredCoverage }],
+    artifactDefinitions: manifest.artifacts.map((value) => ({
+      contextId: "context",
+      logicalKey: value.logicalKey,
+      definitionFingerprint: value.definitionFingerprint,
+      dependencyClosureDigest: closure.closureDigest,
+    })),
+  };
+  const result = planArtifactPreservationShadow({ original: model, current: model, manifest, prNumber: 900 });
+  assert.equal(result.plans[0].disposition, "WOULD_PRESERVE_COMPLETE_CONTEXT");
+  assert.deepEqual(result.plans[0].originalArtifacts, manifest.artifacts);
+  assert.deepEqual(result.plans[0].originalContext, manifest.completedContexts[0]);
+  assert.equal(result.reuseAuthorized, false);
+  assert.equal(result.plans[0].differentialReviewRequired, true);
+  result.plans[0].originalArtifacts[0].id = "mutated";
+  assert.equal(manifest.artifacts[0].id, "original-artifact-0");
+  for (const mutation of [
+    (value) => {
+      value.artifactDefinitions[0].definitionFingerprint = digest("changed");
+    },
+    (value) => {
+      value.artifactDefinitions[0].dependencyClosureDigest = digest("changed");
+    },
+    (value) => {
+      value.graph = createArtifactDependencyGraph([
+        { id: "context", type: "CONTEXT", digest: digest("changed"), dependencies: [] },
+      ]);
+    },
+    (value) => {
+      value.graph = createArtifactDependencyGraph([
+        { id: "context", type: "CONTEXT", digest: digest("context"), dependencies: [], unknown: true },
+      ]);
+    },
+  ]) {
+    const current = structuredClone(model);
+    mutation(current);
+    assert.equal(
+      planArtifactPreservationShadow({ original: model, current, manifest, prNumber: 900 }).plans[0].disposition,
+      "FRESH",
+    );
+  }
+  assert.throws(
+    () => planArtifactPreservationShadow({ original: model, current: model, manifest, prNumber: 776 }),
+    /ORDINARY_SCOPE_REQUIRED/u,
+  );
+  assert.throws(
+    () =>
+      planArtifactPreservationShadow({
+        original: { ...model, graph: { ...graph, graphDigest: digest("forged") } },
+        current: model,
+        manifest,
+        prNumber: 900,
+      }),
+    /ORIGINAL_GRAPH_MISMATCH/u,
+  );
 });
 
 test("a closed checkpoint preserves original identities while excluding unfinished contexts", () => {
