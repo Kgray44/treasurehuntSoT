@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -16,6 +16,21 @@ const entry = (blob = oid, name = "source.json") => ({ path: name, blob });
 const frame = (blob, body) => Buffer.concat([Buffer.from(`${blob} blob ${body.length}\n`), body, Buffer.from("\n")]);
 const inputIds = (options) => options.input.trimEnd().split("\n");
 const invalid = /PRODUCT_EXPERIENCE_SOURCE_SNAPSHOT_INVALID/u;
+
+test("the protected regression script includes every incremental registry and context boundary test", () => {
+  const { scripts } = JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8"));
+  const files = scripts["test:sounding-line"].split(/\s+/u);
+  for (const name of [
+    "artifact-dependency-graph",
+    "artifact-evidence-registry",
+    "experience-artifact-graph",
+    "experience-artifact-snapshot",
+    "artifact-registry-retention",
+    "closed-context-journal",
+    "artifact-registry-archive",
+  ])
+    assert.equal(files.filter((file) => file === `tests/sounding-line/${name}.test.mjs`).length, 1, name);
+});
 
 test("raw-byte mode preserves invalid UTF-8 while aggregate byte bounds reject before payload", () => {
   const bytes = Buffer.from([255, 0, 10]);
