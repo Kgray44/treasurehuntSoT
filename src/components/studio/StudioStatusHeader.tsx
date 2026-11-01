@@ -160,7 +160,7 @@ export function StudioStatusHeader({
                 setEditingTitle(true);
               }}
             >
-              {title}
+              <span className={styles["chronicle-title-text"]}>{title}</span>
               <span aria-hidden="true"> ✎</span>
             </button>
           </h1>

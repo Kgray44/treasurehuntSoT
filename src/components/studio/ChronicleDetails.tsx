@@ -79,7 +79,8 @@ export function ChronicleDetails({
               onChange={(event) => onChange({ slug: event.target.value.toLowerCase() })}
             />
             <small id="chronicle-address-help">
-              The published link uses this address. Renaming the title keeps the address.
+              We created this address for you. It becomes part of the link if you publish. You can change it now;
+              renaming the title will not change it.
             </small>
           </label>
           <label>

@@ -111,13 +111,23 @@
   line-height: 1.65;
 }
 :global(.editor-topbar) .chronicle-title-button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  max-width: 100%;
+  min-width: 0;
   padding: 0;
   border: 0;
   background: transparent;
   color: inherit;
   font: inherit;
   text-align: left;
-  overflow-wrap: anywhere;
+}
+.chronicle-title-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .chronicle-status-header {
   top: var(--chronicle-shell-offset, 0px);
@@ -133,6 +143,23 @@
 .chronicle-status-header .chronicle-title-form {
   flex: 1 1 100%;
   max-width: none;
+}
+.chronicle-status-header h1 {
+  min-width: 0;
+  overflow: visible;
+}
+.chronicle-status-header :global(.studio-status-cluster) :global(.save-state) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.35rem;
+  grid-row: auto;
+  min-width: 0;
+  white-space: normal;
+}
+.chronicle-status-header :global(.studio-status-cluster) :global(.save-state)::before {
+  flex: none;
+  margin-right: 0;
 }
 .chronicle-status-header :global(.editor-primary-actions) {
   grid-column: 1 / -1;
@@ -242,7 +269,7 @@
     flex-wrap: wrap;
   }
 }
-.chronicle-title-button > span {
+.chronicle-title-button > span:last-child {
   font-size: 0.65em;
   color: var(--accent-primary);
 }
@@ -274,6 +301,14 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
+}
+.chronicle-details h2 {
+  margin-bottom: 0.65rem;
+  outline-offset: 0.3rem;
+}
+.chronicle-details h2:focus {
+  outline: 2px solid var(--accent-primary);
+  border-radius: 0.2rem;
 }
 .chronicle-details header p:last-child,
 .chronicle-details small,
