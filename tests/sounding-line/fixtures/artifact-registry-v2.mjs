@@ -5,16 +5,21 @@ import {
   artifactContextBindingsDigest,
   sealArtifactManifest,
 } from "../../../scripts/sounding-line/artifact-evidence-registry.mjs";
-const base = "a".repeat(40),
-  candidate = "b".repeat(40);
+const defaultBase = "a".repeat(40),
+  defaultCandidate = "b".repeat(40);
 export function artifactRegistryFixture({
+  baseSha = defaultBase,
+  candidateSha = defaultCandidate,
+  runId = 101,
   secondScreenshot = false,
   graphDigest = digest("graph"),
   dependencyClosureDigest = digest("closed dependency graph"),
 } = {}) {
+  const base = baseSha,
+    candidate = candidateSha;
   const producerIdentity = {
     repository: "Kgray44/treasurehuntSoT",
-    runId: 101,
+    runId,
     attempt: 1,
     workflowSha: base,
     controllerDigest: digest("controller"),

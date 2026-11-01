@@ -22,6 +22,7 @@ const READERS = [
 ];
 const proofs = new WeakMap(),
   registryProofs = new WeakMap(),
+  registryContentProofs = new WeakMap(),
   failedObservations = new WeakMap(),
   hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const oid = (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
@@ -473,6 +474,37 @@ export function retainedNativeOriginalContextEvidence(handle, input) {
   }
 }
 
+function verifyRegistrySourceClosure(original, suppliedRoot) {
+  // Candidate data cannot shorten this conservative control-plane closure.
+  const { current, producer } = original.provider;
+  const control = (entries) =>
+    [...entries].filter(([file, entry]) => file.startsWith("scripts/sounding-line/") && entry.type !== "tree");
+  const before = control(producer.entries),
+    after = control(current.entries);
+  need(before.length > 0 && before.length === after.length && after.length <= 4096, "REGISTRY_SOURCE_CLOSURE");
+  let sourceBytes = 0;
+  const root = fs.realpathSync(suppliedRoot);
+  need(nativeGit(root, ["rev-parse", "HEAD"]) === original.acceptedBaseSha, "INSTALLED_BASE");
+  for (const [file, entry] of after) {
+    const prior = producer.entries.get(file);
+    need(
+      entry.type === "blob" &&
+        entry.mode === "100644" &&
+        prior?.mode === entry.mode &&
+        prior.type === entry.type &&
+        prior.sha === entry.sha,
+      "REGISTRY_SOURCE_CLOSURE",
+    );
+    const bytes = localBytes(path.join(root, file));
+    sourceBytes += bytes.length;
+    need(
+      sourceBytes <= 16 * 1024 * 1024 &&
+        createHash("sha1").update(`blob ${bytes.length}\0`).update(bytes).digest("hex") === entry.sha,
+      "REGISTRY_SOURCE_CLOSURE",
+    );
+  }
+  return root;
+}
 // Provider identity and archive transport only. Decrypted content, coverage,
 // runtime isolation, review credit and resume authority remain separate checks.
 export async function authenticateNativeRegistryArchive({
@@ -515,34 +547,8 @@ export async function authenticateNativeRegistryArchive({
     return bytes;
   };
   try {
-    // Candidate data cannot shorten this conservative control-plane closure.
-    const { current, producer, run, jobs, workflow } = original.provider;
-    const control = (entries) =>
-      [...entries].filter(([file, entry]) => file.startsWith("scripts/sounding-line/") && entry.type !== "tree");
-    const before = control(producer.entries),
-      after = control(current.entries);
-    need(before.length > 0 && before.length === after.length && after.length <= 4096, "REGISTRY_SOURCE_CLOSURE");
-    let sourceBytes = 0;
-    const root = fs.realpathSync(input.root);
-    need(nativeGit(root, ["rev-parse", "HEAD"]) === original.acceptedBaseSha, "INSTALLED_BASE");
-    for (const [file, entry] of after) {
-      const prior = producer.entries.get(file);
-      need(
-        entry.type === "blob" &&
-          entry.mode === "100644" &&
-          prior?.mode === entry.mode &&
-          prior.type === entry.type &&
-          prior.sha === entry.sha,
-        "REGISTRY_SOURCE_CLOSURE",
-      );
-      const bytes = localBytes(path.join(root, file));
-      sourceBytes += bytes.length;
-      need(
-        sourceBytes <= 16 * 1024 * 1024 &&
-          createHash("sha1").update(`blob ${bytes.length}\0`).update(bytes).digest("hex") === entry.sha,
-        "REGISTRY_SOURCE_CLOSURE",
-      );
-    }
+    const { run, jobs, workflow } = original.provider;
+    const root = verifyRegistrySourceClosure(original, input.root);
     need(
       parse(await read("git/ref/heads/main", 65536), 65536).object?.sha === original.acceptedBaseSha,
       "ACCEPTED_BASE_MOVED",
@@ -615,6 +621,73 @@ export function inspectNativeRegistryArchive(proof, input) {
       qualification: false,
       reuseAuthorized: false,
     };
+  } catch {
+    return null;
+  }
+}
+
+// No key discovery, file reads for keys, key provisioning, alternate public-key
+// policy or CI secret transport. The owner must supply the existing private key.
+export async function openNativeRegistryRetention({
+  registryProof,
+  input,
+  privateKey,
+  expectedCoverage,
+  spentReviewOrdinals = {},
+  allowedDeferrals = [],
+}) {
+  const retained = registryProofs.get(registryProof);
+  need(retained && retained.tuple === tuple(input), "REGISTRY_PROOF_REQUIRED");
+  need(
+    Array.isArray(expectedCoverage) && expectedCoverage.length > 0 && expectedCoverage.length <= 8192,
+    "REGISTRY_EXPECTED_COVERAGE",
+  );
+  const validationBytes = Buffer.from(JSON.stringify({ expectedCoverage, spentReviewOrdinals, allowedDeferrals }));
+  need(validationBytes.length <= 2 * 1024 * 1024, "REGISTRY_VALIDATION_BOUND");
+  const validation = parse(validationBytes, 2 * 1024 * 1024);
+  const original = proofs.get(retained.originalProof);
+  verifyRegistrySourceClosure(original, input.root);
+  const keyCopy = Buffer.isBuffer(privateKey) ? Buffer.from(privateKey) : privateKey;
+  let opened;
+  try {
+    const { openArtifactRegistryRetention } = await import("./artifact-registry-retention.mjs");
+    opened = openArtifactRegistryRetention({
+      bytes: retained.envelope,
+      binding: retained.binding,
+      privateKey: keyCopy,
+      validation,
+    });
+  } finally {
+    if (Buffer.isBuffer(keyCopy)) keyCopy.fill(0);
+  }
+  verifyRegistrySourceClosure(original, input.root);
+  const proof = Object.freeze({
+    kind: "PROVIDER_BOUND_DECRYPTED_REGISTRY_NOT_REUSE_AUTHORITY",
+    qualification: false,
+    reuseAuthorized: false,
+  });
+  registryContentProofs.set(proof, {
+    tuple: retained.tuple,
+    registryProof,
+    binding: structuredClone(retained.binding),
+    artifactId: retained.artifactId,
+    archiveSha256: retained.archiveSha256,
+    manifest: structuredClone(opened.manifest),
+  });
+  return proof;
+}
+export function inspectNativeRegistryRetention(proof, input) {
+  try {
+    const value = registryContentProofs.get(proof);
+    if (!value || value.tuple !== tuple(input)) return null;
+    return structuredClone({
+      binding: value.binding,
+      artifactId: value.artifactId,
+      archiveSha256: value.archiveSha256,
+      manifest: value.manifest,
+      qualification: false,
+      reuseAuthorized: false,
+    });
   } catch {
     return null;
   }
