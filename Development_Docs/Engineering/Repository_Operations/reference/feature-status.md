@@ -14,8 +14,10 @@ Admiralty AI economics and capability intelligence is a dependent integration
 candidate. It adds provider-attempt and capability accounting, UTC-day outcome
 trends, cost and attempts per useful result, effective person allowances, and
 audited policy controls to the existing A1 workspace. Historical focused and
-browser evidence remains source-bound to the earlier branch. Current-main
-qualification and protected integration are pending; availability is unchanged.
+browser evidence remains source-bound to the earlier branch. On accepted main
+`cf1e5ad7`, 183 focused cases and two task-owned browser cases pass, with
+independent visual re-review of the repaired mobile policy confirmation.
+Protected qualification and integration are pending; availability is unchanged.
 
 PR #776 remains the sole combined Studio integration candidate. Its tested source
 `abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096` includes accepted main

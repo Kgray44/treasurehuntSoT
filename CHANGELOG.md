@@ -72,8 +72,11 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
   versioned capability and provider-attempt accounting, UTC request-day quality,
   cost and attempts per useful result, effective person allowances, and audited
   capability and pricing controls. Missing provider usage and incomplete attempt
-  history remain explicit. Historical focused, regression and browser evidence
-  retains its original source identity; current-main qualification is pending.
+  history remain explicit. On accepted main `cf1e5ad7`, 183 focused cases,
+  TypeScript, both Prisma schemas, and two task-owned production-browser cases
+  pass local development checks. Independent review confirms the repaired
+  mobile policy preview at 390px and 320px. Historical evidence retains its
+  original source identity; protected qualification remains pending.
 
 - Avoid restarting Studio loading when saved account workspace preferences
   arrive. Nine focused hook cases and the unchanged exclusion-zone Library
