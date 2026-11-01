@@ -93,3 +93,27 @@ with 64 KiB input/copy chunks and exact raw-byte readback. This is a bounded-mem
 tradeoff with additional disk I/O, not a speedup or a new native transport
 authentication. The later receipt-custody strengthening has separate focused
 tests; this original measurement remains bound to its original source.
+
+## Whole retained archives
+
+The separate read-only `attestation-archive-shadow.mjs` experiment accepts an
+already-retained regular file up to 5 GiB. This does not increase the media
+retainer's 256 MiB cap or implement a larger downloader. It hashes the complete
+file in reusable 64 KiB buffers before seeking the directory. Bounds are 16 MiB
+for that directory, 32 MiB total metadata reads, 16,384 members and 8 MiB for a
+selected manifest and its compressed payload. ZIP64 is explicitly unsupported.
+Traversal, duplicate/aliased selected members, symlinks/non-files, overlapping or
+hidden regions, local/directory disagreement, CRC failures and unconsumed
+compressed bytes are rejected. Native read and close failures remain separate
+originals. Blocking filesystem calls require the owned external supervisor.
+
+At source `2e14f39b75e7814266ba9d65f8c09fea12354495`, the first, middle and last
+checkpoint members of retained artifact `13080399234` matched Python `zipfile`
+byte-for-byte and the accepted reader semantically. Every lookup hashed all
+3,756,836 archive bytes. Measured metadata reads were 66,645 bytes; lookup times
+including inflation and CRC were 4.2874, 6.3983 and 44.2280 ms. These small-file
+observations do not prove multi-GiB compatibility, ZIP64 support, hosted speedup,
+provider provenance or a reuse certificate. The existing attestation loader and
+all historical archive bytes remain unchanged.
+
+Format reference: [PKWARE APPNOTE](https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT).

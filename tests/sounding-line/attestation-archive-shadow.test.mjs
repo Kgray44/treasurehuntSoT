@@ -227,3 +227,34 @@ test("hard-linked source files cannot acquire archive custody", (t) => {
   fs.linkSync(input.filename, input.filename + ".alias");
   assert.throws(() => readAttestationArchiveShadow(input), /FILE_IDENTITY/u);
 });
+
+test("a native read error and a separate close error both retain their original identities", (t) => {
+  const store = fixture(t),
+    input = store(zip([{ name: "capture.json" }]));
+  const originalRead = fs.readSync,
+    originalClose = fs.closeSync;
+  const readError = Error("original native read failure"),
+    closeError = Error("original close failure");
+  let caught;
+  try {
+    fs.readSync = () => {
+      throw readError;
+    };
+    fs.closeSync = (fd) => {
+      originalClose(fd);
+      throw closeError;
+    };
+    try {
+      readAttestationArchiveShadow(input);
+    } catch (error) {
+      caught = error;
+    }
+  } finally {
+    fs.readSync = originalRead;
+    fs.closeSync = originalClose;
+  }
+  assert(caught instanceof AggregateError);
+  assert.equal(caught.errors[0], readError);
+  assert.equal(caught.errors[1], closeError);
+  assert.equal(caught.cause, readError);
+});
