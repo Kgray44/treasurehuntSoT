@@ -1,0 +1,95 @@
+name: Sounding Line clock observation (development only)
+on:
+  push:
+    branches: [codex/sounding-line-clock-domain-proof]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  observe:
+    name: Clock domain observation (development only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Observe native clock domains without qualification
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python3 -I -S <<'PY'
+          import os, sys, json, time, datetime, pathlib, urllib.request, hashlib, re, base64
+          repo = "Kgray44/treasurehuntSoT"
+          run, attempt = os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"]
+          assert os.environ["GITHUB_REPOSITORY"] == repo
+          assert all(re.fullmatch(r"[1-9][0-9]*", value) for value in [run, attempt])
+          result = {"classification": "DEVELOPMENT_OBSERVATION_NOT_QUALIFICATION", "qualification": False,
+                    "repository": repo, "runId": run, "attempt": attempt,
+                    "source": os.environ["GITHUB_SHA"], "ref": os.environ["GITHUB_REF"], "observations": []}
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / "sounding-line-clock-observation.json"
+          def utc(): return datetime.datetime.now(datetime.timezone.utc).isoformat()
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs): raise RuntimeError("REDIRECT_DENIED")
+          client = urllib.request.build_opener(NoRedirect())
+          def observe(endpoint):
+              began, wall = time.monotonic_ns(), utc()
+              request = urllib.request.Request("https://api.github.com/repos/" + repo + "/" + endpoint,
+                  headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"], "Accept": "application/vnd.github+json"})
+              with client.open(request, timeout=10) as response:
+                  body = response.read(1024 * 1024 + 1)
+                  assert response.status == 200 and len(body) <= 1024 * 1024
+                  result["observations"].append({"endpoint": endpoint, "localUtcBefore": wall, "localUtcAfter": utc(),
+                      "monotonicBeforeNs": began, "monotonicAfterNs": time.monotonic_ns(),
+                      "httpDate": response.headers.get("Date"), "requestId": response.headers.get("X-GitHub-Request-Id"),
+                      "bodySha256": hashlib.sha256(body).hexdigest(), "providerBodyBase64": base64.b64encode(body).decode("ascii"),
+                      "providerBody": json.loads(body)})
+          def small(path):
+              with open(path, "r", encoding="utf-8") as handle:
+                  value = handle.read(8193)
+                  assert len(value) <= 8192
+                  return value
+          try:
+              result["uptimeBefore"] = small("/proc/uptime")
+              result["clockTicksPerSecond"] = os.sysconf("SC_CLK_TCK")
+              result["bootIdSha256"] = hashlib.sha256(small("/proc/sys/kernel/random/boot_id").encode()).hexdigest()
+              with open("/proc/stat", "r", encoding="utf-8") as handle:
+                  stat = handle.read(65537)
+                  assert len(stat) <= 65536
+                  result["kernelBootUnixLine"] = next(line for line in stat.splitlines() if line.startswith("btime "))
+              result["processes"] = []
+              pid, seen = os.getpid(), set()
+              for _ in range(32):
+                  assert pid > 0 and pid not in seen
+                  seen.add(pid)
+                  stat = small("/proc/" + str(pid) + "/stat")
+                  tail = stat[stat.rindex(")") + 2:].split()
+                  entry = {"pid": pid, "parentPid": int(tail[1]), "startTicks": int(tail[19]), "stat": stat}
+                  try: entry["executable"] = os.readlink("/proc/" + str(pid) + "/exe")
+                  except OSError as error: entry["executableError"] = type(error).__name__
+                  result["processes"].append(entry)
+                  if pid == 1: break
+                  pid = entry["parentPid"]
+              result["uptimeAfter"] = small("/proc/uptime")
+              observe("actions/runs/" + run)
+              observe("actions/runs/" + run + "/attempts/" + attempt + "/jobs?per_page=100")
+              observe("actions/runs/" + run + "/timing")
+              time.sleep(2)
+              observe("actions/runs/" + run + "/timing")
+              observe("actions/runs/" + run + "/attempts/" + attempt + "/jobs?per_page=100")
+              result["status"] = "OBSERVATION_COMPLETE_NOT_QUALIFICATION"
+          except Exception as error:
+              result["status"] = "OBSERVATION_INCOMPLETE_NOT_QUALIFICATION"
+              result["errorClass"] = type(error).__name__
+              raise
+          finally:
+              body = json.dumps(result, indent=2).encode()
+              assert len(body) <= 128 * 1024
+              with output.open("xb") as handle: handle.write(body)
+          PY
+      - name: Retain original clock observation after every outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: clock-observation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sounding-line-clock-observation.json
+          if-no-files-found: error
+          retention-days: 90
