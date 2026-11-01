@@ -35,8 +35,17 @@ export function ordinaryCheckoutProfile({ baseSha, candidateSha, env = process.e
   const pr = dispatch ? Number(event.inputs?.pr_number) : pull?.number;
   need(Number.isSafeInteger(pr) && pr > 0 && ![721, 776].includes(pr), "FINITE_PROFILE_REQUIRED");
   return {
-    selectReadSet: ({ command, baseSha, candidateSha }) =>
-      documentationCheckoutReadSet({ command, baseSha, candidateSha, prNumber: pr, purpose }),
+    selectReadSet: ({ command, readOnlyCommand, root, git, baseSha, candidateSha }) =>
+      documentationCheckoutReadSet({
+        command,
+        readOnlyCommand,
+        root,
+        git,
+        baseSha,
+        candidateSha,
+        prNumber: pr,
+        purpose,
+      }),
     roots: [
       ...EXPERIENCE_CHECKOUT_ROOTS,
       PR776_CONTROLLER.ancestor,

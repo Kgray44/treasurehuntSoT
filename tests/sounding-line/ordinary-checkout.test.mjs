@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { ordinaryCheckoutProfile } from "../../scripts/sounding-line/ordinary-checkout.mjs";
 import "./ordinary-documentation-checkout.test.mjs";
 import "./ordinary-documentation-materialization.test.mjs";
+import "./ordinary-custody-probe.test.mjs";
 
 const baseSha = "a".repeat(40),
   candidateSha = "b".repeat(40);

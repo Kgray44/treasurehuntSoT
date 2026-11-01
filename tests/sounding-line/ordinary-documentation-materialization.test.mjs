@@ -6,7 +6,10 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { selectedCheckout } from "../../scripts/sounding-line/experience-selected-checkout.mjs";
-import { documentationCheckoutProposal } from "../../scripts/sounding-line/ordinary-documentation-checkout-profile.mjs";
+import {
+  documentationCheckoutProposal,
+  probeDocumentationCustody,
+} from "../../scripts/sounding-line/ordinary-documentation-checkout-profile.mjs";
 const git = (root, args, input, encoding = "utf8") =>
   execFileSync("git", args, {
     cwd: root,
@@ -128,7 +131,7 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
   const custody = await selectedCheckout({
     ...options,
     root: custodyRoot,
-    selectReadSet: async ({ command }) => {
+    selectReadSet: async ({ command, readOnlyCommand, root, git: executable }) => {
       const baseline = entries(await command(["ls-tree", "-rz", base])),
         current = entries(await command(["ls-tree", "-rz", candidate]));
       const proposal = documentationCheckoutProposal({
@@ -139,7 +142,20 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
         purpose: "campaign-custody",
       });
       assert.equal(proposal.profile, "DOCUMENTATION_CUSTODY_METADATA_V1");
-      return { applied: true, proposal };
+      const checked = await probeDocumentationCustody({
+        proposal,
+        command,
+        readOnlyCommand,
+        root,
+        git: executable,
+        baseSha: base,
+        candidateSha: candidate,
+        prNumber: 819,
+        baseEntries: baseline,
+        candidateEntries: current,
+      });
+      assert.equal(checked.proposal.profile, "DOCUMENTATION_CUSTODY_METADATA_V1");
+      return { applied: true, ...checked };
     },
   });
   assert.equal(custody.status, "PASS");
@@ -153,7 +169,7 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
   assert(custody.verified.requiredBlobBytes < selected.verified.requiredBlobBytes);
   const eventFile = path.join(owner, "event.json");
   writeFileSync(eventFile, JSON.stringify({ inputs: { pr_number: "819", base_sha: base, candidate_sha: candidate } }));
-  const reserve = (workspace, label) => {
+  const reserve = (workspace, label, eventPath = eventFile, subject = candidate) => {
     const output = path.join(owner, `${label}.output`);
     execFileSync(
       process.execPath,
@@ -166,7 +182,7 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
         "--base",
         base,
         "--candidate",
-        candidate,
+        subject,
       ],
       {
         timeout: 60000,
@@ -176,7 +192,7 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
           GH_TOKEN: "",
           GITHUB_TOKEN: "",
           GITHUB_SHA: base,
-          GITHUB_EVENT_PATH: eventFile,
+          GITHUB_EVENT_PATH: eventPath,
           GITHUB_OUTPUT: output,
         },
         stdio: ["ignore", "pipe", "pipe"],
@@ -186,4 +202,89 @@ test("inert full versus selected transport retains exact tree/ancestry/reader pi
   };
   assert.equal(reserve(fullRoot, "full"), "campaign=false\n");
   assert.equal(reserve(custodyRoot, "custody"), "campaign=false\n");
+  const positiveRoot = path.join(owner, "positive-full");
+  const positive = await selectedCheckout({
+    ...options,
+    root: positiveRoot,
+    selectReadSet: async ({ command, readOnlyCommand, root, git: executable }) => {
+      const baseline = entries(await command(["ls-tree", "-rz", base])),
+        current = entries(await command(["ls-tree", "-rz", candidate]));
+      const proposal = documentationCheckoutProposal({
+        baseEntries: baseline,
+        candidateEntries: current,
+        anchorEntries: baseline,
+        prNumber: 819,
+        purpose: "campaign-custody",
+      });
+      const checked = await probeDocumentationCustody({
+        proposal,
+        command,
+        readOnlyCommand,
+        root,
+        git: executable,
+        baseSha: base,
+        candidateSha: candidate,
+        prNumber: 721,
+        baseEntries: baseline,
+        candidateEntries: current,
+      });
+      assert.equal(checked.custodyProbe.campaign, true);
+      assert.equal(checked.proposal.profile, "FULL_SNAPSHOT");
+      return { applied: false, ...checked };
+    },
+  });
+  assert.equal(positive.readSet.reason, "CAMPAIGN_REQUIRES_FULL_RESERVATION_READERS");
+  assert.equal(positive.verified.requiredBlobBytes, full.verified.requiredBlobBytes);
+  for (const file of media)
+    assert(readFileSync(path.join(positiveRoot, file)).equals(readFileSync(path.join(fullRoot, file))));
+  const positiveEvent = path.join(owner, "positive-event.json");
+  writeFileSync(
+    positiveEvent,
+    JSON.stringify({ inputs: { pr_number: "721", base_sha: base, candidate_sha: candidate } }),
+  );
+  const denied = (workspace, label, eventPath, subject = candidate) => {
+    try {
+      reserve(workspace, label, eventPath, subject);
+      assert.fail("Original reservation must retain its denial");
+    } catch (error) {
+      const code = error.stderr?.toString().match(/PRODUCT_EXPERIENCE_EXCEPTION_[A-Z_]+/u)?.[0];
+      assert(code, error.message);
+      return code;
+    }
+  };
+  assert.equal(
+    denied(fullRoot, "full-positive", positiveEvent),
+    denied(positiveRoot, "fallback-positive", positiveEvent),
+  );
+  put("testing/contracts.json", '{"contracts":[{"id":"crossdeck.refit.companion"}]}\n');
+  git(seed, ["add", "testing/contracts.json"]);
+  git(seed, ["commit", "-qm", "inert copied campaign signal"]);
+  const copied = git(seed, ["rev-parse", "HEAD"]).trim(),
+    copiedRoot = path.join(owner, "copied-full");
+  const copiedReceipt = await selectedCheckout({
+    ...options,
+    root: copiedRoot,
+    candidateSha: copied,
+    selectReadSet: async ({ command }) => {
+      const baseline = entries(await command(["ls-tree", "-rz", base])),
+        current = entries(await command(["ls-tree", "-rz", copied]));
+      const proposal = documentationCheckoutProposal({
+        baseEntries: baseline,
+        candidateEntries: current,
+        anchorEntries: baseline,
+        prNumber: 819,
+        purpose: "campaign-custody",
+      });
+      assert.equal(proposal.profile, "FULL_SNAPSHOT");
+      return { applied: false, proposal };
+    },
+  });
+  assert.equal(copiedReceipt.readSet.applied, false);
+  for (const file of media) assert(existsSync(path.join(copiedRoot, file)));
+  const copiedEvent = path.join(owner, "copied-event.json");
+  writeFileSync(copiedEvent, JSON.stringify({ inputs: { pr_number: "819", base_sha: base, candidate_sha: copied } }));
+  assert.equal(
+    denied(seed, "seed-copied", copiedEvent, copied),
+    denied(copiedRoot, "fallback-copied", copiedEvent, copied),
+  );
 });

@@ -3,8 +3,14 @@
 // every commit/tree, every changed path, all source/config/public/fixture bytes,
 // and all existing historical reader pins.
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 export const DOCUMENTATION_CHECKOUT_ANCHOR = "caf86f42461201db8e6fe88e46a69c7c9e347d25";
 export const DOCUMENTATION_CHECKOUT_MODE = "SHADOW";
+export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "PENDING";
+const profilePath = "scripts/sounding-line/ordinary-documentation-checkout-profile.mjs";
 const hash = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 const allowedAuthorityChanges = new Set([
   ".github/workflows/sounding-line-ordinary.yml",
@@ -12,12 +18,12 @@ const allowedAuthorityChanges = new Set([
   "scripts/sounding-line/ordinary-documentation-checkout-profile.mjs",
   "scripts/sounding-line/experience-selected-checkout.mjs",
   "scripts/sounding-line/experience-checkout-hydration.mjs",
-  "scripts/sounding-line/authenticated-completed-evidence.mjs",
+  "scripts/sounding-line/ordinary-custody-probe.mjs",
+  "scripts/sounding-line/experience-exception.mjs",
   "tests/sounding-line/ordinary-checkout.test.mjs",
   "tests/sounding-line/ordinary-documentation-checkout.test.mjs",
   "tests/sounding-line/ordinary-documentation-materialization.test.mjs",
-  "tests/sounding-line/authenticated-completed-evidence.test.mjs",
-  "tests/sounding-line/fixtures/ordinary-documentation-source.json",
+  "tests/sounding-line/ordinary-custody-probe.test.mjs",
   "Development_Docs/Programs/Sounding_Line/Sounding_Line_Modernization_A_Implementation_Record.md",
 ]);
 const key = (entry) => `${entry.mode} ${entry.type} ${entry.sha ?? entry.blob}`;
@@ -66,6 +72,8 @@ export function documentationCheckoutProposal({
   anchorEntries,
   prNumber,
   purpose = "verification",
+  reviewedEntries,
+  profileSourceMatchesReviewed = false,
 }) {
   const full = (reason) => ({ profile: "FULL_SNAPSHOT", reason, qualification: false });
   if (!["verification", "campaign-custody"].includes(purpose)) return full("UNKNOWN_CHECKOUT_PURPOSE");
@@ -73,14 +81,22 @@ export function documentationCheckoutProposal({
     return full("FINITE_OR_UNBOUND_PROFILE");
   const base = inventory(baseEntries),
     candidate = inventory(candidateEntries),
-    anchor = inventory(anchorEntries);
-  if (!base || !candidate || !anchor) return full("UNKNOWN_TREE_ENTRY");
+    anchor = inventory(anchorEntries),
+    reviewed = reviewedEntries === undefined ? null : inventory(reviewedEntries);
+  if (!base || !candidate || !anchor || (reviewedEntries !== undefined && !reviewed)) return full("UNKNOWN_TREE_ENTRY");
   // The read-set certificate is source-bound, including all transitive readers,
   // unit definitions/fixtures, scanner policy, commands, lockfile and tool config.
   // Only the separately reviewed transport implementation may differ in main.
-  for (const file of new Set([...anchor.keys(), ...base.keys()]))
-    if (!allowedAuthorityChanges.has(file) && key(anchor.get(file) ?? {}) !== key(base.get(file) ?? {}))
-      return full("READER_OR_BASE_POLICY_DRIFT");
+  for (const file of new Set([...anchor.keys(), ...base.keys()])) {
+    if (key(anchor.get(file) ?? {}) === key(base.get(file) ?? {})) continue;
+    if (!allowedAuthorityChanges.has(file)) return full("READER_OR_BASE_POLICY_DRIFT");
+    if (
+      base.get(file)?.mode !== "100644" ||
+      reviewed?.get(file)?.mode !== "100644" ||
+      (file === profilePath ? profileSourceMatchesReviewed !== true : key(base.get(file)) !== key(reviewed.get(file)))
+    )
+      return full("REVIEWED_TRANSPORT_SOURCE_CHANGED");
+  }
   const changed = [...new Set([...base.keys(), ...candidate.keys()])]
     .filter((file) => key(base.get(file) ?? {}) !== key(candidate.get(file) ?? {}))
     .sort();
@@ -148,6 +164,7 @@ export function documentationCheckoutProposal({
     purpose,
     metadataPaths,
     anchor: DOCUMENTATION_CHECKOUT_ANCHOR,
+    transportCertificate: DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION,
     changedPaths: changed,
     omissions,
     omittedInventoryDigest: hash(omissions),
@@ -161,6 +178,9 @@ export function documentationCheckoutProposal({
 
 export async function documentationCheckoutReadSet({
   command,
+  readOnlyCommand,
+  root,
+  git,
   baseSha,
   candidateSha,
   prNumber,
@@ -177,17 +197,188 @@ export async function documentationCheckoutReadSet({
           [mode, type, sha] = metadata.split(" ");
         return { path, mode, type, sha };
       });
-  const proposal = documentationCheckoutProposal({
-    baseEntries: await tree(baseSha),
-    candidateEntries: await tree(candidateSha),
-    anchorEntries: await tree(DOCUMENTATION_CHECKOUT_ANCHOR),
+  const baseEntries = await tree(baseSha),
+    candidateEntries = await tree(candidateSha),
+    anchorEntries = await tree(DOCUMENTATION_CHECKOUT_ANCHOR);
+  const base = inventory(baseEntries),
+    anchor = inventory(anchorEntries);
+  let reviewedEntries,
+    profileSourceMatchesReviewed = false;
+  if (
+    base &&
+    anchor &&
+    [...new Set([...base.keys(), ...anchor.keys()])].some(
+      (file) => key(base.get(file) ?? {}) !== key(anchor.get(file) ?? {}),
+    ) &&
+    /^[a-f0-9]{40}$/u.test(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION)
+  ) {
+    const ancestors = (await command(["rev-list", baseSha])).split(/\r?\n/u);
+    if (ancestors.includes(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION)) {
+      reviewedEntries = await tree(DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION);
+      const expected = await command(
+        ["show", `${DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION}:${profilePath}`],
+        undefined,
+        true,
+      );
+      profileSourceMatchesReviewed = reviewedProfileSourceMatches(
+        readFileSync(fileURLToPath(import.meta.url)),
+        expected,
+        base.get(profilePath)?.sha,
+      );
+    }
+  }
+  let proposal = documentationCheckoutProposal({
+    baseEntries,
+    candidateEntries,
+    anchorEntries,
+    reviewedEntries,
+    profileSourceMatchesReviewed,
     prNumber,
     purpose,
   });
+  let custodyProbe;
+  if (DOCUMENTATION_CHECKOUT_MODE === "ACTIVE" && proposal.profile === "DOCUMENTATION_CUSTODY_METADATA_V1") {
+    const checked = await probeDocumentationCustody({
+      proposal,
+      command,
+      readOnlyCommand,
+      root,
+      git,
+      baseSha,
+      candidateSha,
+      prNumber,
+      baseEntries,
+      candidateEntries,
+    });
+    proposal = checked.proposal;
+    custodyProbe = checked.custodyProbe;
+  }
   return {
     applied:
       DOCUMENTATION_CHECKOUT_MODE === "ACTIVE" &&
       ["DOCUMENTATION_ONLY_SOURCE_BOUND_V1", "DOCUMENTATION_CUSTODY_METADATA_V1"].includes(proposal.profile),
     proposal,
+    custodyProbe,
   };
+}
+
+// The immutable reviewed commit contains the bootstrap literal PENDING. Only
+// that one literal may differ; mode, whitespace and every executable byte stay exact.
+export function reviewedProfileSourceMatches(installedBytes, reviewedSource, expectedBlob) {
+  const bytes = Buffer.from(installedBytes),
+    source = bytes.toString("utf8");
+  if (!Buffer.from(source, "utf8").equals(bytes)) return false;
+  const blob = createHash("sha1")
+    .update(Buffer.from(`blob ${bytes.length}\0`))
+    .update(bytes)
+    .digest("hex");
+  const normalize = (value) => {
+    const expression = /^export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "(?:PENDING|[a-f0-9]{40})";$/gmu;
+    return [...value.matchAll(expression)].length === 1
+      ? value.replace(expression, 'export const DOCUMENTATION_CHECKOUT_CERTIFICATE_REVISION = "PENDING";')
+      : null;
+  };
+  const actual = normalize(source),
+    expected = normalize(reviewedSource);
+  return blob === expectedBlob && actual !== null && expected !== null && actual === expected;
+}
+
+export async function probeDocumentationCustody({
+  proposal,
+  command,
+  readOnlyCommand,
+  root,
+  git,
+  baseSha,
+  candidateSha,
+  prNumber,
+  baseEntries,
+  candidateEntries,
+}) {
+  const full = (reason) => ({ proposal: { profile: "FULL_SNAPSHOT", reason, qualification: false } });
+  if (
+    proposal.profile !== "DOCUMENTATION_CUSTODY_METADATA_V1" ||
+    !root ||
+    !git ||
+    typeof readOnlyCommand !== "function"
+  )
+    return full("CUSTODY_PROBE_CONTEXT_UNAVAILABLE");
+  const base = inventory(baseEntries),
+    candidate = inventory(candidateEntries);
+  if (
+    !base ||
+    !candidate ||
+    !Array.isArray(proposal.metadataPaths) ||
+    proposal.metadataPaths.length > 32 ||
+    !proposal.metadataPaths.includes("testing/contracts.json") ||
+    !proposal.metadataPaths.includes("testing/product-experience-exceptions.json")
+  )
+    return full("CUSTODY_PROBE_INPUT_UNAVAILABLE");
+  await command(["merge-base", "--is-ancestor", baseSha, candidateSha]);
+  const readers = [
+    ...new Set([base, candidate].flatMap((tree) => proposal.metadataPaths.map((file) => tree.get(file)?.sha))),
+  ];
+  if (readers.some((sha) => !/^[a-f0-9]{40}$/u.test(sha ?? ""))) return full("CUSTODY_PROBE_INPUT_UNAVAILABLE");
+  // One explicit small reader fetch. No lazy reads, remote refs or retry loop.
+  await command([
+    "fetch",
+    "--filter=blob:none",
+    "--no-tags",
+    "--no-recurse-submodules",
+    "--no-write-fetch-head",
+    "origin",
+    ...readers,
+  ]);
+  const input = path.join(root, ".git/ordinary-custody-probe.json");
+  await writeFile(
+    input,
+    JSON.stringify({
+      root,
+      git,
+      baseSha,
+      candidateSha,
+      prNumber,
+      registryBlob: base.get("testing/product-experience-exceptions.json").sha,
+    }),
+    { flag: "wx" },
+  );
+  let result;
+  try {
+    result = JSON.parse(
+      await readOnlyCommand(
+        [fileURLToPath(new URL("./ordinary-custody-probe.mjs", import.meta.url)), input],
+        process.execPath,
+      ),
+    );
+  } catch (error) {
+    // Only a reaped child payload/local probe deadline may fall back. Global
+    // cancellation, total deadline or cleanup failures remain terminal failures.
+    if (
+      error instanceof SyntaxError ||
+      /SOUNDING_LINE_SELECTED_CHECKOUT_(?:GIT_FAILED|PROBE_DEADLINE)$/u.test(error.message)
+    )
+      return full("CUSTODY_PROBE_UNCERTAIN");
+    throw error;
+  }
+  if (
+    result?.status !== "PASS" ||
+    typeof result.campaign !== "boolean" ||
+    result.baseSha !== baseSha ||
+    result.candidateSha !== candidateSha ||
+    result.prNumber !== prNumber ||
+    result.registryBlob !== base.get("testing/product-experience-exceptions.json").sha ||
+    result.transport !== "DISABLED" ||
+    result.authority !== "READ_ONLY_FULL_ROUTE_HINT"
+  )
+    return full("CUSTODY_PROBE_UNCERTAIN");
+  if (result.campaign)
+    return {
+      proposal: {
+        profile: "FULL_SNAPSHOT",
+        reason: "CAMPAIGN_REQUIRES_FULL_RESERVATION_READERS",
+        qualification: false,
+      },
+      custodyProbe: result,
+    };
+  return { proposal, custodyProbe: result };
 }

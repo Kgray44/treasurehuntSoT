@@ -5,6 +5,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnOwnedProcess, processExit, stopOwnedProcess } from "./owned-process.mjs";
+import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
 import {
   EXPERIENCE_CHECKOUT_ROOTS,
   EXPERIENCE_READER_REVISIONS,
@@ -156,7 +157,7 @@ export async function selectedCheckout({
   const advance = () => clock.advance();
   const allRoots = [...new Set([baseSha, candidateSha, ...roots])];
   let operationalEnv, readSetSummary;
-  const command = async (args, executable = gitExecutable()) => {
+  const command = async (args, executable = gitExecutable(), raw = false, readOnly = false) => {
     need(!signal?.aborted, "CANCELLED");
     clock.assertLive();
     const remaining = deadline - performance.now() - 5000;
@@ -164,7 +165,7 @@ export async function selectedCheckout({
     const commandBegan = performance.now();
     const child = spawnOwnedProcess(executable, args, {
       root,
-      env: operationalEnv,
+      env: readOnly ? custodyProbeEnvironment(operationalEnv, gitExecutable()) : operationalEnv,
       cleanupOptions: { gracefulMs: 500, forceMs: 1000 },
     });
     child.stdout.unpipe(process.stdout);
@@ -204,7 +205,17 @@ export async function selectedCheckout({
         processExit(child),
         new Promise((_, reject) => {
           rejectClock = reject;
-          timer = setTimeout(() => reject(new Error("SOUNDING_LINE_SELECTED_CHECKOUT_DEADLINE")), remaining);
+          timer = setTimeout(
+            () =>
+              reject(
+                new Error(
+                  readOnly && remaining > 90000
+                    ? "SOUNDING_LINE_SELECTED_CHECKOUT_PROBE_DEADLINE"
+                    : "SOUNDING_LINE_SELECTED_CHECKOUT_DEADLINE",
+                ),
+              ),
+            readOnly ? Math.min(remaining, 90000) : remaining,
+          );
           abort = () => reject(new Error("SOUNDING_LINE_SELECTED_CHECKOUT_CANCELLED"));
           signal?.addEventListener("abort", abort, { once: true });
           if (signal?.aborted) abort();
@@ -233,7 +244,8 @@ export async function selectedCheckout({
     }
     need(size <= 128 * 1024 * 1024, "OUTPUT_LIMIT");
     advance();
-    return Buffer.concat(chunks).toString("utf8").trim();
+    const output = Buffer.concat(chunks).toString("utf8");
+    return raw ? output : output.trim();
   };
   await mkdir(root); // Fresh owned directory only; never reuse a shallow checkout.
   const emptyConfig = path.join(root, "..", `${path.basename(root)}.empty-git-config`);
@@ -277,10 +289,27 @@ export async function selectedCheckout({
       ...allRoots.map((sha) => `+${sha}:refs/sounding-line/selected/${sha}`),
     ]);
     need((await command(["rev-parse", "--is-shallow-repository"])) === "false", "SHALLOW");
-    const readSet = selectReadSet ? await selectReadSet({ command, baseSha, candidateSha }) : null;
+    const readSet = selectReadSet
+      ? await selectReadSet({
+          command,
+          readOnlyCommand: (args, executable) => command(args, executable, false, true),
+          root,
+          git: gitExecutable(),
+          baseSha,
+          candidateSha,
+        })
+      : null;
     need(readSet === null || typeof readSet.applied === "boolean", "READ_SET_INVALID");
     const exclusions = readSet?.applied ? readSet.proposal?.omissions : [];
     const metadataCustody = readSet?.applied && readSet.proposal?.profile === "DOCUMENTATION_CUSTODY_METADATA_V1";
+    need(
+      !metadataCustody ||
+        (readSet.custodyProbe?.status === "PASS" &&
+          readSet.custodyProbe.campaign === false &&
+          readSet.custodyProbe.baseSha === baseSha &&
+          readSet.custodyProbe.candidateSha === candidateSha),
+      "CUSTODY_PROBE_REQUIRED",
+    );
     need(
       !readSet?.applied ||
         (["DOCUMENTATION_ONLY_SOURCE_BOUND_V1", "DOCUMENTATION_CUSTODY_METADATA_V1"].includes(
@@ -310,6 +339,7 @@ export async function selectedCheckout({
           profile: readSet.proposal?.profile,
           purpose: readSet.proposal?.purpose,
           metadataPaths: readSet.proposal?.metadataPaths,
+          custodyProbe: readSet.custodyProbe,
           anchor: readSet.proposal?.anchor,
           reason: readSet.proposal?.reason,
           changedPaths: readSet.proposal?.changedPaths,
