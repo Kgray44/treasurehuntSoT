@@ -470,7 +470,7 @@ test("candidate cannot remove or mutate installed experience authority through p
       git(root, ["commit", "-qm", "candidate policy mutation"]);
       const candidateSha = git(root, ["rev-parse", "HEAD"]);
       await assert.rejects(
-        () => buildPlan({ root, baseSha, candidateSha, mode: "ordinary", prNumber: 0 }),
+        () => buildPlan({ root, baseSha, candidateSha, mode: "ordinary", prNumber: 820 }),
         /CONTROL_PLANE_CHANGE_REQUIRES_RELEASE_MODE:testing\/contracts.json/u,
       );
     }
@@ -479,7 +479,7 @@ test("candidate cannot remove or mutate installed experience authority through p
     git(root, ["commit", "-qm", "mixed product and authority"]);
     const candidateSha = git(root, ["rev-parse", "HEAD"]);
     await assert.rejects(
-      () => buildPlan({ root, baseSha, candidateSha, mode: "ordinary", prNumber: 0 }),
+      () => buildPlan({ root, baseSha, candidateSha, mode: "ordinary", prNumber: 820 }),
       /PRODUCT_AND_CONTROL_PLANE_MIXED:product=src\/product.ts;control-plane=testing\/contracts.json/u,
     );
   });
