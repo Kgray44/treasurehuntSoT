@@ -134,6 +134,7 @@ function commandLineObservation() {
     const head = execFileSync("git", ["-c", "core.fsmonitor=false", "rev-parse", "HEAD"], {
       cwd: installed,
       encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
       timeout: 10000,
       maxBuffer: 65536,
       windowsHide: true,
@@ -153,6 +154,7 @@ function commandLineObservation() {
         cwd: installed,
         timeout: 10000,
         maxBuffer: 2 * 1024 * 1024,
+        stdio: ["ignore", "pipe", "pipe"],
         windowsHide: true,
         env: {
           ...clean,

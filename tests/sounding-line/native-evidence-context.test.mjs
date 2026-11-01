@@ -32,25 +32,27 @@ function fixture(dispatch = false) {
       GITHUB_JOB: dispatch ? "experience-preparation" : "final-check",
       GITHUB_EVENT_NAME: dispatch ? "workflow_dispatch" : "pull_request_target",
     },
-    event: structuredClone({
-      repository: repo,
-      sender: owner,
-      ref: "refs/heads/main",
-      inputs: {
-        base_sha: base,
-        candidate_sha: candidate,
-        pr_number: "819",
-        experience_mode: "capture",
-        experience_diagnostic: "false",
-      },
-      pull_request: {
-        number: 819,
-        draft: false,
-        base: { ref: "main", sha: base, repo },
-        head: { sha: candidate, repo },
-      },
-      privateUnselectedValue: "DO_NOT_EMIT_PRIVATE_EVENT_DATA",
-    }),
+    event: JSON.parse(
+      JSON.stringify({
+        repository: repo,
+        sender: owner,
+        ref: "refs/heads/main",
+        inputs: {
+          base_sha: base,
+          candidate_sha: candidate,
+          pr_number: "819",
+          experience_mode: "capture",
+          experience_diagnostic: "false",
+        },
+        pull_request: {
+          number: 819,
+          draft: false,
+          base: { ref: "main", sha: base, repo },
+          head: { sha: candidate, repo },
+        },
+        privateUnselectedValue: "DO_NOT_EMIT_PRIVATE_EVENT_DATA",
+      }),
+    ),
   };
 }
 const invalid = /SOUNDING_LINE_NATIVE_CONTEXT_/u;
@@ -171,6 +173,15 @@ test("CLI preserves failures as unavailable shadow data and never prints private
   assert.equal(context.kind, "NATIVE_ORIGINAL_EVIDENCE_CONTEXT_SHADOW");
   assert.equal(context.baseSha, head);
   assert(!result.stdout.includes("DO_NOT_EMIT_PRIVATE_EVENT_DATA"));
+  const output = path.join(directory, "should-not-be-created");
+  const redirected = run({ GIT_DIR: path.join(directory, "PRIVATE_GIT_DIR_DO_NOT_EMIT"), GITHUB_OUTPUT: output });
+  assert.equal(redirected.status, 0);
+  assert.equal(redirected.stderr, "");
+  assert.equal(
+    JSON.parse(redirected.stdout.replace(/^SOUNDING_LINE_NATIVE_EVIDENCE_CONTEXT_V2 /u, "")).kind,
+    "NATIVE_ORIGINAL_EVIDENCE_CONTEXT_SHADOW",
+  );
+  assert(!fs.existsSync(output));
   fs.writeFileSync(eventPath, "PRIVATE_BAD_JSON_DO_NOT_EMIT");
   for (const attempt of [run(), run({ GITHUB_EVENT_PATH: path.join(directory, "PRIVATE_PATH_DO_NOT_EMIT") })]) {
     assert.equal(attempt.status, 0);
@@ -181,4 +192,12 @@ test("CLI preserves failures as unavailable shadow data and never prints private
     assert.equal(observed.qualification, false);
     assert.equal(observed.reuseAuthorized, false);
   }
+  fs.writeFileSync(eventPath, Buffer.alloc(2 * 1024 * 1024 + 1, 97));
+  const bounded = run();
+  assert.equal(bounded.status, 0);
+  assert.equal(bounded.stderr, "");
+  assert.equal(
+    JSON.parse(bounded.stdout.replace(/^SOUNDING_LINE_NATIVE_EVIDENCE_CONTEXT_V2 /u, "")).code,
+    "SOUNDING_LINE_NATIVE_CONTEXT_EVENT_FILE",
+  );
 });
