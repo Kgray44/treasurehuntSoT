@@ -27,18 +27,39 @@ async function createManual(page: Page) {
   return new URL(page.url()).pathname.split("/").at(-1)!;
 }
 
+async function browserJson(page: Page, path: string) {
+  const result = await page.evaluate(async (url) => {
+    const response = await fetch(url, { credentials: "same-origin", cache: "no-store" });
+    return { status: response.status, body: await response.json() };
+  }, path);
+  expect(result.status, path).toBe(200);
+  return result.body;
+}
+
+async function browserMutation(page: Page, path: string, method: "POST" | "PUT", csrfToken: string, data: unknown) {
+  return page.evaluate(
+    async ({ url, verb, token, body }) => {
+      const response = await fetch(url, {
+        method: verb,
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json", "x-csrf-token": token },
+        body: JSON.stringify(body),
+      });
+      return { status: response.status, body: await response.json() };
+    },
+    { url: path, verb: method, token: csrfToken, body: data },
+  );
+}
+
 async function setAppearance(page: Page, theme: "DARK" | "LIGHT", csrfToken: string) {
-  const preferences = await (await page.request.get("/api/passport/preferences")).json();
-  const response = await page.request.put("/api/passport/preferences", {
-    headers: { "x-csrf-token": csrfToken },
-    data: {
-      preferences: {
-        ...preferences.preferences,
-        experience: { ...preferences.preferences.experience, theme, motion: "SYSTEM" },
-      },
+  const preferences = await browserJson(page, "/api/passport/preferences");
+  const response = await browserMutation(page, "/api/passport/preferences", "PUT", csrfToken, {
+    preferences: {
+      ...preferences.preferences,
+      experience: { ...preferences.preferences.experience, theme, motion: "SYSTEM" },
     },
   });
-  expect(response.ok()).toBe(true);
+  expect(response.status).toBe(200);
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-voyage-theme", theme.toLowerCase());
   await expect(
@@ -69,7 +90,7 @@ for (const device of ["desktop", "mobile"] as const) {
     await page.setViewportSize(device === "desktop" ? { width: 1440, height: 1000 } : { width: 390, height: 844 });
     await page.emulateMedia({ reducedMotion: device === "mobile" ? "reduce" : "no-preference" });
     await signIn(page);
-    const catalogBefore = await (await page.request.get("/api/studio/tales")).json();
+    const catalogBefore = await browserJson(page, "/api/studio/tales");
     await page
       .getByRole("navigation", { name: "Studio destinations" })
       .getByRole("link", { name: "Create Chronicle", exact: true })
@@ -80,7 +101,7 @@ for (const device of ["desktop", "mobile"] as const) {
       await expect(choice).toBeDisabled();
       await expect(choice).toContainText("Coming soon");
     }
-    expect((await (await page.request.get("/api/studio/tales")).json()).tales.length).toBe(catalogBefore.tales.length);
+    expect((await browserJson(page, "/api/studio/tales")).tales.length).toBe(catalogBefore.tales.length);
     for (const theme of ["DARK", "LIGHT"] as const) {
       await setAppearance(page, theme, catalogBefore.csrfToken);
       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
@@ -124,7 +145,7 @@ for (const device of ["desktop", "mobile"] as const) {
     await details.getByLabel("Content warnings", { exact: true }).fill("Fictional storms");
     await details.getByRole("button", { name: "Save details" }).click();
     await expect(page.locator(".save-state")).toContainText("Saved at");
-    const persisted = await (await page.request.get(`/api/studio/tales/${taleId}`)).json();
+    const persisted = await browserJson(page, `/api/studio/tales/${taleId}`);
     expect(persisted.tale).toMatchObject({
       title,
       subtitle: "A synthetic adventure in progress",
@@ -155,7 +176,7 @@ for (const device of ["desktop", "mobile"] as const) {
     await page.getByLabel("Cover asset", { exact: true }).selectOption({ label: "synthetic-sc-00a-cover" });
     await page.getByRole("button", { name: "Save details" }).click();
     await expect(page.locator(".save-state")).toContainText("Saved at");
-    const covered = await (await page.request.get(`/api/studio/tales/${taleId}`)).json();
+    const covered = await browserJson(page, `/api/studio/tales/${taleId}`);
     expect(covered.tale.coverAssetId).toBeTruthy();
     for (const theme of ["DARK", "LIGHT"] as const) {
       await setAppearance(page, theme, catalogBefore.csrfToken);
@@ -180,15 +201,16 @@ for (const device of ["desktop", "mobile"] as const) {
     );
     await expect(page.locator(".timeline-block")).toHaveCount(0);
     await page.getByRole("button", { name: "Validate Chronicle", exact: true }).click();
-    const publication = await page.request.post(`/api/studio/tales/${taleId}/publish`, {
-      headers: { "x-csrf-token": persisted.csrfToken },
-      data: {},
-    });
-    expect(publication.status()).toBe(422);
-    expect((await publication.json()).code).toMatch(/VALIDATION_FAILED|DRYDOCK_READINESS_NOT_VERIFIED/);
-    expect(
-      (await (await page.request.get(`/api/studio/tales/${taleId}`)).json()).tale.latestPublishedVersionId,
-    ).toBeNull();
+    const publication = await browserMutation(
+      page,
+      `/api/studio/tales/${taleId}/publish`,
+      "POST",
+      persisted.csrfToken,
+      {},
+    );
+    expect(publication.status).toBe(422);
+    expect(publication.body.code).toMatch(/VALIDATION_FAILED|DRYDOCK_READINESS_NOT_VERIFIED/);
+    expect((await browserJson(page, `/api/studio/tales/${taleId}`)).tale.latestPublishedVersionId).toBeNull();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   });
 }
@@ -239,7 +261,7 @@ test("Chronicle details survive a failed save and recover through the visible re
   await page.getByRole("button", { name: "Save details" }).click();
   await expect(page.locator(".save-state")).toContainText("Save failed");
   await expect(page.getByLabel("Title", { exact: true })).toHaveValue("Recovered SC-00A draft");
-  expect((await (await page.request.get(`/api/studio/tales/${taleId}`)).json()).tale.title).toBe("Untitled Chronicle");
+  expect((await browserJson(page, `/api/studio/tales/${taleId}`)).tale.title).toBe("Untitled Chronicle");
   await page.unroute(`**/api/studio/tales/${taleId}/draft`);
   await page.getByRole("button", { name: "Retry save", exact: true }).click();
   await expect(page.locator(".save-state")).toContainText("Saved at");
