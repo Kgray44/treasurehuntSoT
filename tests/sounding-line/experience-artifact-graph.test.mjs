@@ -108,6 +108,13 @@ test("unknown source forms, missing definitions and unattested shared runtimes a
     "export const x=process.env.SECRET;",
     "export const x=`/asset/${name}`;",
     "export const x=window.location;",
+    'import "\\u002e/shared.css";',
+    'import/* lexical separator */"./shared.css";',
+    'import// lexical separator\n"./shared.css";',
+    'const load=require; export const x=load("./shared.css");',
+    'const load=fetch; export const x=load("/api/a");',
+    'export const x=globalThis["fetch"]("/api/a");',
+    'export const x=new WebSocket("/socket");',
   ]) {
     const value = build({ ...files, "src/a.ts": source });
     assert(value.contexts.filter((x) => x.contractId === "a").every((x) => x.unknown));

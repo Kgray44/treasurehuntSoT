@@ -164,6 +164,12 @@ export function buildExperienceArtifactGraph({
     }
     const source = bytes.toString("utf8"),
       dependencies = new Set();
+    // This shadow scanner is not a JavaScript parser. Escapes and comments can
+    // change a module literal or separate its lexical tokens; treating a missed
+    // local import as a package dependency would incorrectly close the graph.
+    // Preserve the original bytes and force a fresh context for these forms.
+    // A future protected parser/capability certificate may narrow this fallback.
+    if (/\\|\/\*|\/\//u.test(source)) node.unknown = true;
     for (const match of source.matchAll(imports)) {
       const target = resolve(file, match[1]);
       if (target) dependencies.add(fileId(target));
@@ -209,8 +215,14 @@ export function buildExperienceArtifactGraph({
     if (/process\.env\s*\[|\b(?:Math\.random|Date\.now|randomUUID|randomBytes)\s*\(/u.test(source)) node.unknown = true;
     // Until a protected parser/capability certificate accounts for these forms,
     // computed resources and ambient state cannot be proven by literal scanning.
-    if (/`|\b(?:new\s+URL|localStorage|sessionStorage|document|navigator|window)\b|(?:src|href)\s*=\s*\{/u.test(source))
+    if (
+      /`|\b(?:new\s+URL|localStorage|sessionStorage|document|navigator|window|globalThis|global|XMLHttpRequest|WebSocket|Worker)\b|(?:src|href)\s*=\s*\{/u.test(
+        source,
+      )
+    )
       node.unknown = true;
+    // Literal-call scanning cannot account for aliased resource loaders.
+    if (/\b(?:require|fetch)\b(?!\s*\()/u.test(source)) node.unknown = true;
     node.dependencies = [...dependencies];
   }
   for (const [name, type, fingerprint] of [
