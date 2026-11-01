@@ -25,6 +25,8 @@ import { shadowCaptureContextSchedule } from "../../scripts/sounding-line/experi
 import { experienceDigest } from "../../scripts/sounding-line/product-experience.mjs";
 import { createClosedContextResumeShadow } from "../../scripts/sounding-line/closed-context-resume-shadow.mjs";
 import { authenticatedCompletedReceipt } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
+import { buildClosedContextRegistryShadow } from "../../scripts/sounding-line/closed-context-registry-producer.mjs";
+import { validateArtifactManifest } from "../../scripts/sounding-line/artifact-evidence-registry.mjs";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 test(
   "owned SQLite restart restores an authenticated browser session and completed context without another sign-in",
@@ -246,6 +248,83 @@ require('node:http').createServer((q,s)=>{
       maximumBytes: 2 * 1024 * 1024,
     });
     assert.equal(hash(journalBytes), result.closedContextJournal.sha256);
+    const journalObservation = {
+      journal: JSON.parse(journalBytes),
+      bytes: journalBytes,
+      path: result.closedContextJournal.path,
+      completedAt: new Date().toISOString(),
+    };
+    const registryInput = {
+      plan,
+      contexts: [journalObservation],
+      producer: { repository: "Kgray44/treasurehuntSoT", runId: 4444, attempt: 1, workflowSha: plan.baseSha },
+      sourceTree: execFileSync("git", ["rev-parse", "HEAD^{tree}"], { encoding: "utf8", windowsHide: true }).trim(),
+      controllerDigest: hash(
+        await fs.readFile(new URL("../../scripts/sounding-line/closed-context-registry-producer.mjs", import.meta.url)),
+      ),
+      rawArtifact: { id: 9001, archiveSha256: "9".repeat(64) },
+      lifecycleArtifact: { id: 9002, archiveSha256: "8".repeat(64) },
+      cleanup: {
+        bytes: Buffer.from(JSON.stringify(runtime)),
+        path: "browser-runtime.json",
+        processTreeClosed: true,
+        portsClosed: runtime.lifecycle.cleanup.portsReleased,
+        streamsClosed: true,
+      },
+      definitionObservations: {
+        fixtureDigest: hash(Buffer.from("synthetic fixture")),
+        toolchainDigest: hash(Buffer.from(process.version)),
+        browserDigest: hash(Buffer.from("unattested synthetic browser declaration")),
+        environmentDigest: hash(Buffer.from("unattested synthetic environment declaration")),
+      },
+    };
+    const registry = buildClosedContextRegistryShadow(registryInput);
+    assert.equal(registry.manifest.artifacts.length, journalObservation.journal.artifacts.length + 3);
+    assert.deepEqual(
+      registry.manifest.artifacts.slice(0, journalObservation.journal.artifacts.length).map((value) => value.id),
+      journalObservation.journal.artifacts.map((value) => value.id),
+    );
+    assert.equal(registry.manifest.completedContexts.length, 1);
+    assert.equal(registry.manifest.runtimeAttestations[0].mutableStateClass, "UNATTESTED_SHARED_TASK_RUNTIME");
+    assert.equal(registry.reuseAuthorized, false);
+    assert.equal(registry.manifest.reviewReceipts.length, 0);
+    assert.equal(
+      validateArtifactManifest(registry.manifest, {
+        expectedCoverage: registry.expectedCoverage,
+        requireComplete: false,
+      }).completedContexts,
+      1,
+    );
+    assert.throws(() => validateArtifactManifest(registry.manifest), /PARTIAL_MANIFEST_NOT_ACCEPTANCE/u);
+    for (const change of [
+      (value) => {
+        value.cleanup.portsClosed = false;
+      },
+      (value) => {
+        value.contexts.push(value.contexts[0]);
+      },
+      (value) => {
+        value.contexts[0].journal.journey.status = "FAIL";
+      },
+      (value) => {
+        value.contexts[0].journal.mutableStateClass = "TASK_OWNED_ISOLATED_PER_CONTEXT";
+      },
+      (value) => {
+        value.contexts[0].journal.artifacts[0].id = "renumbered-original";
+      },
+      (value) => {
+        value.definitionObservations.sourceTreeDigest = "f".repeat(64);
+      },
+      (value) => {
+        value.plan.contracts[0].experience.journeys[0].steps[0].when = "DESKTOP";
+      },
+    ]) {
+      const altered = structuredClone(registryInput);
+      altered.contexts[0].bytes = Buffer.from(altered.contexts[0].bytes);
+      altered.cleanup.bytes = Buffer.from(altered.cleanup.bytes);
+      change(altered);
+      assert.throws(() => buildClosedContextRegistryShadow(altered), /SOUNDING_LINE_CONTEXT_REGISTRY_PRODUCER_/u);
+    }
     const authenticationCache = await readBoundedRawCaptureFile({
       root,
       rawDirectory,
