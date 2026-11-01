@@ -1206,7 +1206,7 @@ export function artifactBytes({ root, revision, file }) {
   if (revision) {
     const entry = git(root, ["ls-tree", revision, "--", file]).trim();
     if (!/^100(?:644|755) blob /u.test(entry)) fail("ARTIFACT_NOT_TRACKED_REGULAR_FILE", file);
-    return git(root, ["show", `${revision}:${file}`], { encoding: null });
+    return git(root, ["show", `${revision}:${file}`, "--"], { encoding: null });
   }
   const rootPath = realpathSync(root);
   const resolved = realpathSync(path.join(rootPath, file));
