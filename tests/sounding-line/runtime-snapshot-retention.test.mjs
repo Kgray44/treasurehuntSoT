@@ -150,7 +150,9 @@ test("bounded raw reads deny external paths, hard links, nonfiles and oversize m
   const large = path.join(raw, "oversize");
   fs.writeFileSync(large, Buffer.alloc(65));
   await assert.rejects(readBoundedRawCaptureFile({ ...f, file: large, maximumBytes: 64 }), /READ_FILE/u);
-  await assert.rejects(readBoundedRawCaptureFile({ ...f, file: raw, maximumBytes: 64 }));
+  await assert.rejects(
+    readBoundedRawCaptureFile({ ...f, file: path.join(raw, "runtime-snapshots"), maximumBytes: 64 }),
+  );
   await assert.rejects(
     f.store.append({ originalBinding: binding, files: new Map([["../outside", Buffer.from("x")]]) }),
     /FILE_BOUND/u,
