@@ -11,6 +11,7 @@ export function artifactRegistryFixture({
   baseSha = defaultBase,
   candidateSha = defaultCandidate,
   runId = 101,
+  contextSuffix = "",
   secondScreenshot = false,
   graphDigest = digest("graph"),
   dependencyClosureDigest = digest("closed dependency graph"),
@@ -27,7 +28,7 @@ export function artifactRegistryFixture({
   };
   const runtimeBody = {
     producerIdentity,
-    captureSession: "session-one",
+    captureSession: `session-one${contextSuffix}`,
     sourceTreeDigest: digest("tree"),
     fixtureDigest: digest("fixture"),
     toolchainDigest: digest("toolchain"),
@@ -46,7 +47,7 @@ export function artifactRegistryFixture({
   const cleanup = { ...cleanupBody, cleanupDigest: digest(cleanupBody) };
   const logical = (type, state = "READY", captureIndex = 0) => ({
     contractId: "contract",
-    journeyId: "journey",
+    journeyId: `journey${contextSuffix}`,
     state: type === "screenshot" ? state : "CONTEXT_CLOSED",
     device: "DESKTOP",
     viewport: { width: 1440, height: 900 },
@@ -58,7 +59,7 @@ export function artifactRegistryFixture({
   const requiredCoverage = ARTIFACT_TYPES.map((type) => logical(type));
   if (secondScreenshot) requiredCoverage.push(logical("screenshot", "NEXT", 1));
   const artifacts = requiredCoverage.map((logicalKey, index) => ({
-    id: `original-artifact-${index}`,
+    id: `original-artifact${contextSuffix}-${index}`,
     logicalKey,
     objectSha256: digest(`bytes:${logicalKey.type}`),
     byteLength: 100,
@@ -83,7 +84,7 @@ export function artifactRegistryFixture({
     originalCandidateSha: candidate,
   }));
   const contextBody = {
-    id: "original-context",
+    id: `original-context${contextSuffix}`,
     status: "PASS",
     closed: true,
     cleanup: "PASS",
@@ -119,7 +120,7 @@ export function artifactRegistryFixture({
     artifacts,
     journeyReceipts: [
       {
-        id: "original-journey",
+        id: `original-journey${contextSuffix}`,
         contextReceiptId: context.id,
         status: "PASS",
         definitionFingerprint: digest("journey"),

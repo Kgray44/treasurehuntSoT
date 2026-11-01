@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { generateKeyPairSync, createHash } from "node:crypto";
 import { artifactRegistryFixture } from "./fixtures/artifact-registry-v2.mjs";
+import { createClosedContextPrefix } from "../../scripts/sounding-line/artifact-evidence-registry.mjs";
 import {
   sealArtifactRegistryRetention,
   inspectArtifactRegistryRetention,
@@ -23,6 +24,18 @@ const binding = {
 };
 const seal = (manifest = artifactRegistryFixture()) => sealArtifactRegistryRetention({ manifest, binding, encryption });
 const open = (bytes) => openArtifactRegistryRetention({ bytes, binding, encryption, privateKey });
+
+test("an encrypted completed-context prefix remains partial and preserves its full original coverage identity", () => {
+  const original = artifactRegistryFixture();
+  const validation = { expectedCoverage: original.requiredCoverage };
+  const manifest = createClosedContextPrefix(original, ["original-context"], validation);
+  const bytes = sealArtifactRegistryRetention({ manifest, binding, encryption, validation });
+  const result = openArtifactRegistryRetention({ bytes, binding, encryption, privateKey, validation });
+  assert.deepEqual(result.manifest, manifest);
+  assert.equal(result.manifest.kind, "CLOSED_CONTEXT_PREFIX");
+  assert.equal(result.qualification, false);
+  assert.throws(() => open(bytes), /PREFIX_EXPECTED_COVERAGE_REQUIRED/u);
+});
 
 test("v2 retention keeps all original artifact paths and raw hashes encrypted without minting evidence authority", () => {
   const manifest = artifactRegistryFixture(),

@@ -12,11 +12,80 @@ import {
   sealArtifactManifest,
   validateArtifactManifest,
   createClosedContextCheckpoint,
+  createClosedContextPrefix,
 } from "../../scripts/sounding-line/artifact-evidence-registry.mjs";
 
 const base = "a".repeat(40),
   candidate = "b".repeat(40);
 const fixture = artifactRegistryFixture;
+
+test("a failed producer retains multiple closed contexts with original order, reviews and unfinished coverage intact", () => {
+  const first = fixture(),
+    second = fixture({ contextSuffix: "-second" }),
+    unfinished = fixture({ contextSuffix: "-unfinished" });
+  const expectedCoverage = [...first.requiredCoverage, ...second.requiredCoverage, ...unfinished.requiredCoverage];
+  const original = {
+    ...first,
+    requiredCoverage: expectedCoverage,
+    fullRequiredCoverageDigest: digest(expectedCoverage.map(artifactLogicalKey).sort()),
+  };
+  for (const field of [
+    "artifacts",
+    "completedContexts",
+    "runtimeAttestations",
+    "runtimeCleanupReceipts",
+    "journeyReceipts",
+  ])
+    original[field] = [...first[field], ...second[field]];
+  original.completedContexts.push({ id: "unfinished", status: "RUNNING", artifactIds: [] });
+  original.artifacts.push({ id: "unfinished-original-fragment" });
+  original.reviewReceipts = [
+    {
+      id: "original-cross-context-review",
+      contractId: "contract",
+      originalOrdinal: 7,
+      originalCandidateSha: candidate,
+      originalPacketDigest: digest("original packet"),
+      artifactIds: [...first.artifacts, ...second.artifacts].map((value) => value.id),
+      priorFindingIds: ["original-failed-finding"],
+    },
+  ];
+  const before = structuredClone(original),
+    options = { expectedCoverage, spentReviewOrdinals: { contract: 7 } };
+  const prefix = createClosedContextPrefix(original, ["original-context-second", "original-context"], options);
+  assert.deepEqual(original, before);
+  assert.equal(prefix.kind, "CLOSED_CONTEXT_PREFIX");
+  assert.deepEqual(prefix.artifacts, [...first.artifacts, ...second.artifacts]);
+  assert.deepEqual(prefix.completedContexts, [...first.completedContexts, ...second.completedContexts]);
+  assert.deepEqual(prefix.reviewReceipts, original.reviewReceipts);
+  assert.equal(prefix.fullRequiredCoverageDigest, original.fullRequiredCoverageDigest);
+  assert.equal(prefix.requiredCoverage.length, 12);
+  assert.equal(validateArtifactManifest(prefix, { ...options, requireComplete: false }).completedContexts, 2);
+  assert.throws(() => validateArtifactManifest(prefix), /PARTIAL_MANIFEST_NOT_ACCEPTANCE/u);
+  assert.throws(
+    () => validateArtifactManifest(prefix, { requireComplete: false, spentReviewOrdinals: { contract: 7 } }),
+    /PREFIX_EXPECTED_COVERAGE_REQUIRED/u,
+  );
+  assert.throws(() => createClosedContextPrefix(original, ["original-context"], options), /REVIEW_SCOPE/u);
+  assert.throws(
+    () => createClosedContextPrefix(original, ["original-context", "unfinished"], options),
+    /INCOMPLETE_CONTEXT/u,
+  );
+  assert.throws(
+    () => createClosedContextPrefix(original, ["original-context", "original-context"], options),
+    /PREFIX_CONTEXT_IDENTITIES/u,
+  );
+  assert.throws(
+    () =>
+      createClosedContextPrefix(
+        original,
+        Array.from({ length: 129 }, (_, i) => `context-${i}`),
+        options,
+      ),
+    /PREFIX_CONTEXT_IDENTITIES/u,
+  );
+  assert.throws(() => createClosedContextPrefix(original, ["missing"], options), /CHECKPOINT_CONTEXT_IDENTITY/u);
+});
 
 test("a complete v2 registry validates only as untrusted retention data", () => {
   const manifest = fixture();

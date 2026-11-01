@@ -136,6 +136,68 @@ export function createClosedContextCheckpoint(manifest, contextReceiptId, option
   return JSON.parse(canonicalJson(checkpoint));
 }
 
+// Preserve several original closed contexts after a failed producer without
+// converting the unfinished remainder into coverage or renumbering receipts.
+export function createClosedContextPrefix(manifest, contextReceiptIds, options = {}) {
+  need(object(manifest) && Buffer.byteLength(canonicalJson(manifest)) <= 2 * 1024 * 1024, "CHECKPOINT_INPUT_BOUND");
+  need(
+    Array.isArray(contextReceiptIds) &&
+      contextReceiptIds.length > 0 &&
+      contextReceiptIds.length <= 128 &&
+      contextReceiptIds.every(text) &&
+      new Set(contextReceiptIds).size === contextReceiptIds.length,
+    "PREFIX_CONTEXT_IDENTITIES",
+  );
+  need(
+    Array.isArray(options.expectedCoverage) && options.expectedCoverage.length <= 8192,
+    "CHECKPOINT_EXPECTED_COVERAGE_REQUIRED",
+  );
+  for (const field of [
+    "completedContexts",
+    "artifacts",
+    "runtimeAttestations",
+    "runtimeCleanupReceipts",
+    "journeyReceipts",
+    "reviewReceipts",
+    "inheritance",
+  ])
+    need(Array.isArray(manifest[field]) && manifest[field].length <= 8192, "CHECKPOINT_INPUT");
+  const selectedIds = new Set(contextReceiptIds);
+  const completedContexts = manifest.completedContexts.filter((value) => selectedIds.has(value.id));
+  need(completedContexts.length === selectedIds.size, "CHECKPOINT_CONTEXT_IDENTITY");
+  const ids = new Set();
+  for (const context of completedContexts) {
+    need(Array.isArray(context.artifactIds) && context.artifactIds.length <= 8192, "CHECKPOINT_INPUT");
+    for (const id of context.artifactIds) ids.add(id);
+  }
+  const artifacts = manifest.artifacts.filter((value) => ids.has(value.id));
+  need(artifacts.length > 0, "CHECKPOINT_CONTEXT_IDENTITY");
+  const contexts = new Set(artifacts.map((value) => artifactContextKey(value.logicalKey)));
+  const fullRequiredCoverageDigest = digest(options.expectedCoverage.map(artifactLogicalKey).sort());
+  need(manifest.fullRequiredCoverageDigest === fullRequiredCoverageDigest, "EXPECTED_COVERAGE_MISMATCH");
+  const prefix = sealArtifactManifest({
+    ...manifest,
+    kind: "CLOSED_CONTEXT_PREFIX",
+    qualification: false,
+    requiredCoverage: options.expectedCoverage.filter((key) => contexts.has(artifactContextKey(key))),
+    artifacts,
+    completedContexts,
+    runtimeAttestations: manifest.runtimeAttestations.filter((runtime) =>
+      completedContexts.some((context) => context.runtimeAttestationDigest === runtime.attestationDigest),
+    ),
+    runtimeCleanupReceipts: manifest.runtimeCleanupReceipts.filter((cleanup) =>
+      completedContexts.some((context) => context.runtimeCleanupReceiptDigest === cleanup.cleanupDigest),
+    ),
+    journeyReceipts: manifest.journeyReceipts.filter((journey) => selectedIds.has(journey.contextReceiptId)),
+    // A cross-context review stays whole; validation rejects any attempted slice.
+    reviewReceipts: manifest.reviewReceipts.filter((review) => review.artifactIds.some((id) => ids.has(id))),
+    inheritance: manifest.inheritance.filter((entry) => ids.has(entry.artifactId)),
+    deferredCoverage: [],
+  });
+  validateArtifactManifest(prefix, { ...options, requireComplete: false });
+  return JSON.parse(canonicalJson(prefix));
+}
+
 function validLocation(location) {
   if (
     !object(location) ||
@@ -177,7 +239,7 @@ export function validateArtifactManifest(
     "RETENTION_IDENTITY",
   );
   need(
-    ["COMPLETE_MANIFEST", "CLOSED_CONTEXT_CHECKPOINT"].includes(manifest.kind) &&
+    ["COMPLETE_MANIFEST", "CLOSED_CONTEXT_CHECKPOINT", "CLOSED_CONTEXT_PREFIX"].includes(manifest.kind) &&
       (!requireComplete || manifest.kind === "COMPLETE_MANIFEST"),
     "PARTIAL_MANIFEST_NOT_ACCEPTANCE",
   );
@@ -214,14 +276,17 @@ export function validateArtifactManifest(
   need(sha256.test(manifest.fullRequiredCoverageDigest ?? ""), "FULL_COVERAGE_IDENTITY");
   if (manifest.kind === "COMPLETE_MANIFEST")
     need(manifest.fullRequiredCoverageDigest === digest([...required].sort()), "FULL_COVERAGE_IDENTITY");
+  if (manifest.kind === "CLOSED_CONTEXT_PREFIX")
+    need(Array.isArray(expectedCoverage) && expectedCoverage.length > 0, "PREFIX_EXPECTED_COVERAGE_REQUIRED");
   if (expectedCoverage) {
     const expected = expectedCoverage.map(artifactLogicalKey).sort();
     need(manifest.fullRequiredCoverageDigest === digest(expected), "EXPECTED_COVERAGE_MISMATCH");
+    const selectedContexts = new Set(manifest.requiredCoverage.map(artifactContextKey));
     const selected =
       manifest.kind === "COMPLETE_MANIFEST"
         ? expected
         : expectedCoverage
-            .filter((key) => artifactContextKey(key) === artifactContextKey(manifest.requiredCoverage[0]))
+            .filter((key) => selectedContexts.has(artifactContextKey(key)))
             .map(artifactLogicalKey)
             .sort();
     need(same(selected, [...required].sort()), "EXPECTED_COVERAGE_MISMATCH");
@@ -427,6 +492,11 @@ export function validateArtifactManifest(
   need(
     manifest.kind !== "CLOSED_CONTEXT_CHECKPOINT" || (contexts.size === 1 && manifest.deferredCoverage.length === 0),
     "CHECKPOINT_SCOPE",
+  );
+  need(
+    manifest.kind !== "CLOSED_CONTEXT_PREFIX" ||
+      (contexts.size > 0 && contexts.size <= 128 && manifest.deferredCoverage.length === 0),
+    "PREFIX_SCOPE",
   );
   const journeys = new Set();
   for (const journey of manifest.journeyReceipts) {
