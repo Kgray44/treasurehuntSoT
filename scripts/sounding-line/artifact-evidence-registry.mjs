@@ -81,6 +81,61 @@ export function artifactContextBindingsDigest(artifacts) {
   );
 }
 
+// A failed producer may retain a closed context without declaring unfinished
+// contexts complete. This projection is still untrusted retention data; provider
+// authentication and the current dependency proof are separate operations.
+export function createClosedContextCheckpoint(manifest, contextReceiptId, options = {}) {
+  need(
+    object(manifest) && Buffer.byteLength(canonicalJson(manifest)) <= (options.maximumBytes ?? 2 * 1024 * 1024),
+    "CHECKPOINT_INPUT_BOUND",
+  );
+  for (const field of [
+    "completedContexts",
+    "artifacts",
+    "runtimeAttestations",
+    "runtimeCleanupReceipts",
+    "journeyReceipts",
+    "reviewReceipts",
+    "inheritance",
+  ])
+    need(Array.isArray(manifest[field]) && manifest[field].length <= 8192, "CHECKPOINT_INPUT");
+  const selected = manifest.completedContexts.filter((receipt) => receipt.id === contextReceiptId);
+  need(selected.length === 1, "CHECKPOINT_CONTEXT_IDENTITY");
+  const receipt = selected[0];
+  need(Array.isArray(manifest.artifacts) && Array.isArray(receipt.artifactIds), "CHECKPOINT_INPUT");
+  const ids = new Set(receipt.artifactIds);
+  const artifacts = manifest.artifacts.filter((artifact) => ids.has(artifact.id));
+  need(artifacts.length > 0, "CHECKPOINT_CONTEXT_IDENTITY");
+  const context = artifactContextKey(artifacts[0].logicalKey);
+  need(
+    Array.isArray(options.expectedCoverage) && options.expectedCoverage.length <= 8192,
+    "CHECKPOINT_EXPECTED_COVERAGE_REQUIRED",
+  );
+  const fullRequiredCoverageDigest = digest(options.expectedCoverage.map(artifactLogicalKey).sort());
+  need(manifest.fullRequiredCoverageDigest === fullRequiredCoverageDigest, "EXPECTED_COVERAGE_MISMATCH");
+  const checkpoint = sealArtifactManifest({
+    ...manifest,
+    kind: "CLOSED_CONTEXT_CHECKPOINT",
+    qualification: false,
+    requiredCoverage: options.expectedCoverage.filter((key) => artifactContextKey(key) === context),
+    artifacts,
+    completedContexts: selected,
+    runtimeAttestations: manifest.runtimeAttestations.filter(
+      (runtime) => runtime.attestationDigest === receipt.runtimeAttestationDigest,
+    ),
+    runtimeCleanupReceipts: manifest.runtimeCleanupReceipts.filter(
+      (cleanup) => cleanup.cleanupDigest === receipt.runtimeCleanupReceiptDigest,
+    ),
+    journeyReceipts: manifest.journeyReceipts.filter((journey) => journey.contextReceiptId === receipt.id),
+    // A review spanning several contexts cannot be narrowed into a new review.
+    reviewReceipts: manifest.reviewReceipts.filter((review) => review.artifactIds.some((id) => ids.has(id))),
+    inheritance: manifest.inheritance.filter((entry) => ids.has(entry.artifactId)),
+    deferredCoverage: [],
+  });
+  validateArtifactManifest(checkpoint, { ...options, requireComplete: false });
+  return JSON.parse(canonicalJson(checkpoint));
+}
+
 function validLocation(location) {
   if (
     !object(location) ||

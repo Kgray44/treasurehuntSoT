@@ -7,6 +7,7 @@ import {
   artifactContextBindingsDigest,
   sealArtifactManifest,
   validateArtifactManifest,
+  createClosedContextCheckpoint,
 } from "../../scripts/sounding-line/artifact-evidence-registry.mjs";
 
 const base = "a".repeat(40),
@@ -137,6 +138,52 @@ test("a complete v2 registry validates only as untrusted retention data", () => 
   assert.equal(result.completedContexts, 1);
   assert.equal(result.authentication, "RETENTION_ONLY_NOT_AUTHENTICATED");
   assert.equal(result.qualification, false);
+});
+
+test("a closed checkpoint preserves original identities while excluding unfinished contexts", () => {
+  const manifest = fixture();
+  const original = structuredClone(manifest);
+  manifest.completedContexts.push({ id: "unfinished", status: "RUNNING", artifactIds: [] });
+  manifest.artifacts.push({ id: "unfinished-artifact" });
+  const checkpoint = createClosedContextCheckpoint(manifest, "original-context", {
+    expectedCoverage: original.requiredCoverage,
+  });
+  assert.deepEqual(checkpoint.artifacts, original.artifacts);
+  assert.deepEqual(checkpoint.completedContexts, original.completedContexts);
+  assert.equal(checkpoint.originalCandidateSha, original.originalCandidateSha);
+  assert.equal(checkpoint.fullRequiredCoverageDigest, original.fullRequiredCoverageDigest);
+  assert.equal(checkpoint.kind, "CLOSED_CONTEXT_CHECKPOINT");
+  assert.throws(() => validateArtifactManifest(checkpoint), /PARTIAL_MANIFEST_NOT_ACCEPTANCE/u);
+  checkpoint.artifacts[0].id = "mutated-return";
+  assert.equal(manifest.artifacts[0].id, original.artifacts[0].id);
+});
+
+test("checkpoint projection cannot bypass cleanup, coverage, or context identity", () => {
+  const manifest = fixture();
+  const options = { expectedCoverage: manifest.requiredCoverage };
+  assert.throws(() => createClosedContextCheckpoint(manifest, "original-context"), /EXPECTED_COVERAGE_REQUIRED/u);
+  assert.throws(() => createClosedContextCheckpoint(manifest, "missing", options), /CONTEXT_IDENTITY/u);
+  for (const change of [
+    (value) => {
+      value.runtimeCleanupReceipts[0].status = "FAIL";
+    },
+    (value) => {
+      value.artifacts.pop();
+    },
+    (value) => {
+      value.completedContexts[0].closed = false;
+    },
+    (value) => {
+      value.artifacts[0].originalCandidateSha = "d".repeat(40);
+    },
+  ]) {
+    const broken = structuredClone(manifest);
+    change(broken);
+    assert.throws(
+      () => createClosedContextCheckpoint(broken, "original-context", options),
+      /SOUNDING_LINE_ARTIFACT_REGISTRY_/u,
+    );
+  }
 });
 
 test("content identity never substitutes for a different logical state", () => {
