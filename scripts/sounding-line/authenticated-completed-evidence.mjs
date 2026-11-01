@@ -25,6 +25,7 @@ const MODULES = [
 const SUPERVISED_MODULES = [
   "ordinary-supervised.mjs",
   "verification-budget.mjs",
+  "verification-job-clock.mjs",
   "verification-preflight.mjs",
   "verification-supervisor.mjs",
   "owned-process.mjs",

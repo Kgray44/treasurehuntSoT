@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { execFileSync } from "node:child_process";
-import { mkdtemp, mkdir, copyFile, writeFile, rm } from "node:fs/promises";
+import { mkdtemp, mkdir, copyFile, writeFile, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -21,6 +21,7 @@ async function fixture(t) {
     "ordinary.mjs",
     "ordinary-supervised.mjs",
     "verification-budget.mjs",
+    "verification-job-clock.mjs",
     "verification-preflight.mjs",
     "verification-supervisor.mjs",
     "owned-process.mjs",
@@ -58,6 +59,24 @@ test("preflight binds exact source, controller, policy and runtime without claim
   await writeFile(path.join(input.authorityRoot, "scripts/sounding-line/ordinary.mjs"), "changed controller\n");
   await assert.rejects(verificationPreflight(input), /AUTHORITY_CONTENT_CHANGED/u);
 });
+test("controller fingerprint includes the exact native clock source bytes", async (t) => {
+  const input = await fixture(t),
+    original = await verificationPreflight(input);
+  const clock = path.join(input.authorityRoot, "scripts/sounding-line/verification-job-clock.mjs");
+  await writeFile(clock, (await readFile(clock, "utf8")) + "\n// inert fixture clock change\n");
+  git(input.authorityRoot, "add", ".");
+  git(input.authorityRoot, "commit", "-qm", "changed clock authority");
+  const baseSha = git(input.authorityRoot, "rev-parse", "HEAD");
+  git(input.root, "merge", "--no-edit", baseSha);
+  const changed = await verificationPreflight({
+    ...input,
+    baseSha,
+    candidateSha: git(input.root, "rev-parse", "HEAD"),
+  });
+  assert.notEqual(changed.controllerDigest, original.controllerDigest);
+  assert.equal(changed.policyDigest, original.policyDigest);
+});
+
 test("tool, resource, transport and unknown failures are not classified as product failures", () => {
   for (const [code, expected] of [
     ["ENOENT", "TOOL_FAILURE"],

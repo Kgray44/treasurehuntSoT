@@ -56,7 +56,7 @@ it("shows and focuses a persistent recovery card for an upstream timeout instead
   await send();
   const alert = await screen.findByRole("alert");
   expect(within(alert).getByRole("heading", { name: "I couldn’t finish this room" })).toBeVisible();
-  expect(alert).toHaveFocus();
+  await waitFor(() => expect(alert).toHaveFocus());
   fireEvent.click(within(alert).getByText("What happened"));
   expect(within(alert).getByText("Spatial Assistant took too long. Your scene is unchanged.")).toBeVisible();
   expect(screen.getByRole("button", { name: "Reconstruct room from photograph" })).toBeEnabled();
@@ -70,7 +70,7 @@ it("renders a geometric clarification as a visible outcome with details and a re
   const heading = await screen.findByRole("heading", { name: "I need a clearer view" });
   const card = heading.closest('[role="status"]')! as HTMLElement;
   expect(heading).toBeVisible();
-  expect(card).toHaveFocus();
+  await waitFor(() => expect(card).toHaveFocus());
   fireEvent.click(within(card).getByText("What happened"));
   expect(within(card).getByText("A wall panel overlaps another feature.")).toBeVisible();
   expect(screen.getByRole("button", { name: "Reconstruct room from photograph" })).toBeEnabled();
