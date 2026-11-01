@@ -59,7 +59,11 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
         defer {scene.rendersContinuously=continuous;scene.delegate=previousDelegate}
         // Every mutation shares the one original five-second setup deadline.
         // This is a frame barrier, never a retry until a desired hit appears.
-        let observed=XCTWaiter.wait(for:[rendered],timeout:max(0,deadline-ProcessInfo.processInfo.systemUptime)) == .completed
+        // SceneKit retains its renderer delegate weakly. Keep this probe alive
+        // for the entire frame barrier; a vanished probe is not a render miss.
+        let observed=withExtendedLifetime(probe) {
+            XCTWaiter.wait(for:[rendered],timeout:max(0,deadline-ProcessInfo.processInfo.systemUptime)) == .completed
+        }
         let withinDeadline=ProcessInfo.processInfo.systemUptime <= deadline
         let projected=scene.projectPoint(SCNVector3(0,0,-1))
         let coordinates=[Double(projected.x),Double(projected.y),Double(projected.z)]
