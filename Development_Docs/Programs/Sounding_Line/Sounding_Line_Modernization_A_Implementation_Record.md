@@ -188,3 +188,74 @@ The task's single additional workspace has an explicit owner-authorized admissio
 exception. Both drive reserves and the twelve-GiB workspace peak remain in force;
 the stored aggregate policy was not raised. Preserve receipts and retire the
 workspace through the lifecycle manager when the modernization is complete.
+
+## Narrow documentation transport evidence
+
+The supervisor correction landed through #828 at protected main
+`caf86f42461201db8e6fe88e46a69c7c9e347d25`. Candidate
+`9dce420b88c00ab05460343825f67125dbcc703f` passed run `41266980290/1`,
+including required decision `124734223684`; the landed smoke passed 21/21.
+The subsequent #819 candidate `4a74675f93bcc7b98f5eddcb6e4801624dc86c71`
+failed run `41268135076/1` at the unchanged ten-minute checkout ceiling.
+Its original logs and failed decision remain retained. Its structured checkout
+receipt was not uploaded by the installed workflow and is unavailable.
+
+The additive transport profile covers regular documentation Markdown and the
+exact document-index path while keeping the existing 635-file application
+selection and commands. Verification retains all source/config/public/fixture
+bytes and historical reader pins. Only unchanged archival media payloads are
+omitted. Unknown reader, policy, extension, mode or source drift uses full checkout.
+Finite #721/#776 routes retain their existing restrictions.
+
+An immutable reviewed ancestor certificate pins allowed transport files by mode
+and blob identity. The profile's own comparison permits one bootstrap certificate
+literal to differ; all other code, mode and whitespace stay exact. A cold runner
+explicitly fetches, verifies and retains that exact tree-pinned certificate blob.
+Certificate-only readers cannot suppress an existing historical source reader.
+Evidence-authority files have no drift exemption.
+
+Custody uses complete Git ancestry/path metadata and the unchanged contracts,
+exception registry and attribute bodies. A bounded child with no token or output
+channel and all Git protocols disabled runs the original memoized campaign
+comparison before any omission. Positive or uncertain reaped results use full
+checkout before the original reservation executes. Global deadline, cancellation
+or cleanup failure stops checkout. This precheck writes no reservation or decision.
+Every checkout job retains its available exact receipt after every outcome.
+
+Local development measurements bind these original source identities:
+
+- At base `caf86f42` and candidate `4a74675f`, the exact required blob closure is
+  9,157,454,315 bytes full versus 2,137,161,378 bytes selected, avoiding
+  7,020,292,937 bytes. The reconstruction matches the original native manifest
+  digest `6bc65659377baa09b727cd1d45bae6f11ae25776dde647c8f864455438eaa2fc`
+  from failed whole run `41262595666/1`; its successful checkout aggregate is
+  retained without changing that run's failed outcome. The 110 shared historical
+  blobs total 47,642,355 bytes and were independently verified after bounded fetch.
+- Formatted candidate `59873eb96b2e9700e25c6d255f6661d845cf4d9f`, tree
+  `09ea6c3c7d6de86b21f645e37adab86f70ae7a1f`, is the exact formatting-only
+  child of `4a74675f`. Its local selected verification transported 1,474,867,960
+  pack bytes in 133,002.331 ms. The reviewed custody precheck preserved all 49
+  metadata/attribute paths and 14 requested root inventories, transporting
+  6,077,096 pack bytes in 32,095.7805 ms. These file-transport observations do not
+  establish hosted throughput or billed savings.
+- Full/selected plans and commands match. Sixteen direct filesystem-reader files
+  pass the same 248 assertions in both layouts. Prisma and cold TypeScript pass
+  both; the original-head formatter failure matches both and the corrected head
+  passes. The complete corrected-head selection ran all 635 files: 4,489 passing
+  assertions and seven existing pending cases. An initial repository-local temp
+  configuration failed private-storage safety checks; the unchanged fifth batch
+  passed with bounded external scratch, whose generated data was hash-preserved
+  and whose directory was released. Original failed receipts remain retained.
+
+Independent adversarial development coverage includes source/mode/blob drift,
+positive and copied-contract campaign fallback, uncertain/failed probe outcomes,
+cancellation and process cleanup, missing certificate denial, locked late
+transport, immutable historical pins and failed-receipt upload conditions.
+These development receipts provide preparation evidence. Protected qualification,
+guarded integration and landed verification retain their existing authorities.
+
+Independent source review cleared shadow commit
+`cebc17eb9d6c79cdab72c7ad698592ce6f684f2f` for preparation of the ACTIVE
+bootstrap. The immutable bootstrap contains ACTIVE with certificate PENDING;
+its final child changes only the certificate literal. Installation follows the
+ordinary protected check, guarded merge transaction and landed verification.

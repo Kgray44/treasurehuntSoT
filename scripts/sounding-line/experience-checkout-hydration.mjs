@@ -39,8 +39,40 @@ export async function checkoutHydration(file) {
     });
   };
   if (input.operation === "compile") {
+    need(input.exactReaderOnly === undefined || typeof input.exactReaderOnly === "boolean", "INVALID_READER_MODE");
+    need(
+      !input.exactReaderOnly ||
+        (input.snapshots.length === 0 && input.objects.length === 0 && (input.snapshotExclusions ?? []).length === 0),
+      "INVALID_EXACT_READER_CLOSURE",
+    );
     const required = new Map(input.objects.map((value) => [value.sha, value]));
     const fullSnapshots = new Set(input.snapshots);
+    const pathOnlySnapshots = input.pathOnlySnapshots ?? [];
+    need(
+      Array.isArray(pathOnlySnapshots) &&
+        pathOnlySnapshots.length <= 64 &&
+        pathOnlySnapshots.every((value) => /^[a-f0-9]{40}$/u.test(value)),
+      "INVALID_PATH_ONLY_ROOT",
+    );
+    const pathOnly = new Set(
+      pathOnlySnapshots.filter((value) => !fullSnapshots.has(value) && !(input.readerSnapshots ?? []).includes(value)),
+    );
+    const exclusions = new Map();
+    const excludedSeen = new Set();
+    for (const entry of input.snapshotExclusions ?? []) {
+      need(
+        typeof entry.path === "string" &&
+          entry.path.startsWith("Development_Docs/") &&
+          !/[\\\u0000-\u001f\u007f]/u.test(entry.path) &&
+          !entry.path.split("/").some((part) => !part || part === "." || part === "..") &&
+          /\.(?:png|jpe?g|webp|gif|webm|zip)$/iu.test(entry.path) &&
+          entry.mode === "100644" &&
+          /^[a-f0-9]{40}$/u.test(entry.blob) &&
+          !exclusions.has(entry.path),
+        "INVALID_SNAPSHOT_EXCLUSION",
+      );
+      exclusions.set(entry.path, entry);
+    }
     const explicitPaths = input.readerPaths ?? [];
     const foundPaths = new Set();
     const historicalMetadata = new Set([
@@ -52,19 +84,28 @@ export async function checkoutHydration(file) {
     // Full candidate/base working trees; other commits supply only the actual
     // sourceSnapshot byte predicate and exact R8-R14 metadata merge/ignore reads.
     // Immutable media/proof/producer blob pins remain explicit typed objects.
-    for (const revision of new Set([...input.snapshots, ...(input.readerSnapshots ?? [])])) {
+    for (const revision of new Set([...input.snapshots, ...(input.readerSnapshots ?? []), ...pathOnlySnapshots])) {
       need(/^[a-f0-9]{40}$/u.test(revision), "INVALID_ROOT");
       required.set(revision, { sha: revision, type: "commit" });
       for (const row of git(["ls-tree", "-rz", revision]).split("\0").filter(Boolean)) {
-        const [metadata, file] = row.split("\t");
+        const tab = row.indexOf("\t"),
+          metadata = row.slice(0, tab),
+          file = row.slice(tab + 1);
         const [mode, type, sha] = metadata.split(" ");
         need(type === "blob" && ["100644", "100755", "120000"].includes(mode), "UNSUPPORTED_TREE_ENTRY");
         const explicit = explicitPaths.some((value) => value.revision === revision && value.path === file);
         if (explicit) foundPaths.add(`${revision}:${file}`);
+        if (fullSnapshots.has(revision) && exclusions.has(file)) {
+          const entry = exclusions.get(file);
+          need(mode === entry.mode && sha === entry.blob && !explicit, "SNAPSHOT_EXCLUSION_CHANGED");
+          excludedSeen.add(`${revision}:${file}`);
+          continue;
+        }
         if (
           !fullSnapshots.has(revision) &&
-          !sourceSnapshotReadsPath(file) &&
-          !historicalMetadata.has(file) &&
+          (input.exactReaderOnly ||
+            pathOnly.has(revision) ||
+            (!sourceSnapshotReadsPath(file) && !historicalMetadata.has(file))) &&
           !explicit
         )
           continue;
@@ -76,11 +117,20 @@ export async function checkoutHydration(file) {
       explicitPaths.every((value) => foundPaths.has(`${value.revision}:${value.path}`)),
       "MISSING_READER_PATH",
     );
+    need(
+      [...fullSnapshots].every((revision) =>
+        [...exclusions.keys()].every((file) => excludedSeen.has(`${revision}:${file}`)),
+      ),
+      "MISSING_SNAPSHOT_EXCLUSION",
+    );
     const value = {
       readerPaths: explicitPaths,
+      snapshotExclusions: [...exclusions.values()],
       objects: [...required.values()].sort((a, b) => a.sha.localeCompare(b.sha)),
       snapshots: input.snapshots,
       readerSnapshots: input.readerSnapshots ?? [],
+      ...(input.exactReaderOnly ? { readerMode: "EXACT_PATHS_ONLY" } : {}),
+      ...(pathOnlySnapshots.length ? { pathOnlySnapshots } : {}),
     };
     writeFileSync(input.output, JSON.stringify(value), { flag: "wx" });
     return {
@@ -165,7 +215,12 @@ export async function checkoutHydration(file) {
     requiredBlobBytes: checked.filter((value) => value.type === "blob").reduce((n, value) => n + value.size, 0),
     unneededHistoricalBlobsAbsent: missing.length,
     completeCommitTreeAncestry: true,
-    blobStore: "FULL_BASE_CANDIDATE_AND_EXPLICIT_READER_CLOSURE",
+    blobStore:
+      closure.readerMode === "EXACT_PATHS_ONLY"
+        ? "CUSTODY_METADATA_AND_EXPLICIT_CERTIFICATE_READERS"
+        : closure.snapshotExclusions?.length
+          ? "SELECTED_BASE_CANDIDATE_AND_EXPLICIT_READER_CLOSURE"
+          : "FULL_BASE_CANDIDATE_AND_EXPLICIT_READER_CLOSURE",
     operations,
   };
 }
