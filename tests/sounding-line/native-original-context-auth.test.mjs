@@ -233,6 +233,13 @@ test("original provider log survives later checkout failure and moving PR associ
     assert.equal(api.inspectNativeOriginalContext(proof, { ...f.input, attempt: 2 }), null);
     observation.context.baseSha = "e".repeat(40);
     assert.equal(api.inspectNativeOriginalContext(proof, f.input).context.baseSha, base);
+    const originals = api.retainedNativeOriginalContextEvidence(proof, f.input);
+    assert.equal(originals.responses.length, f.calls.length);
+    assert.equal(originals.qualification, false);
+    const first = Buffer.from(originals.responses[0].bytes);
+    originals.responses[0].bytes.fill(0);
+    assert(api.retainedNativeOriginalContextEvidence(proof, f.input).responses[0].bytes.equals(first));
+    assert.equal(api.retainedNativeOriginalContextEvidence({ ...proof }, f.input), null);
     assert(f.calls.length < 20);
   }
 });
@@ -421,6 +428,23 @@ test("bounded asynchronous provider wait and frozen input binding", async () => 
       expectedOriginalSource: { baseSha: base, candidateSha: candidate },
     }),
   );
+});
+test("a failed provider join retains exact original responses without an authenticated proof", async () => {
+  const f = fixture();
+  f.context.candidateSha = "e".repeat(40);
+  let denied;
+  try {
+    await api.authenticateNativeOriginalContext(f.input);
+  } catch (error) {
+    denied = error;
+  }
+  assert(denied);
+  assert.equal(api.inspectNativeOriginalContext(denied, f.input), null);
+  const retained = api.retainedNativeOriginalContextEvidence(denied, f.input);
+  assert.equal(retained.classification, "FAILED_ORIGINAL_PROVIDER_OBSERVATION_RETENTION");
+  assert.equal(retained.responses.length, f.calls.length);
+  assert(retained.responses.at(-1).endpoint.endsWith("/logs"));
+  assert.equal(api.retainedNativeOriginalContextEvidence({ ...denied }, f.input), null);
 });
 test("dirty installed reader is refused before provider access", async () => {
   const file = path.join(root, files[0]),

@@ -17,6 +17,7 @@ const READERS = [
   "scripts/sounding-line/provider-run-log-archive.mjs",
 ];
 const proofs = new WeakMap(),
+  failedObservations = new WeakMap(),
   hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const oid = (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
@@ -105,6 +106,10 @@ function providerRequest(endpoint, { maximumBytes, timeoutMs }) {
   });
 }
 export async function authenticateNativeOriginalContext(input) {
+  let bindingTuple;
+  const originals = [],
+    observations = [];
+  let capturedBytes = 0;
   try {
     let { root, acceptedBaseSha, runId, attempt, prNumber, jobKey, expectedOriginalSource, budgetMs = 60000 } = input;
     need(!Object.hasOwn(input, "request"), "TRANSPORT_OVERRIDE");
@@ -126,9 +131,8 @@ export async function authenticateNativeOriginalContext(input) {
     const local = nativeGit(root, ["rev-parse", "HEAD", "HEAD^{tree}"]).split(/\r?\n/u);
     need(local[0] === acceptedBaseSha && oid(local[1]), "INSTALLED_BASE");
     nativeGit(root, ["diff", "--quiet", "HEAD", "--"]);
-    const bindingTuple = tuple({ root, acceptedBaseSha, runId, attempt, prNumber, jobKey, expectedOriginalSource });
-    const began = performance.now(),
-      observations = [];
+    bindingTuple = tuple({ root, acceptedBaseSha, runId, attempt, prNumber, jobKey, expectedOriginalSource });
+    const began = performance.now();
     const read = async (endpoint, maximumBytes = 2 * 1024 * 1024) => {
       const remaining = budgetMs - (performance.now() - began);
       need(remaining > 0, "DEADLINE");
@@ -147,6 +151,11 @@ export async function authenticateNativeOriginalContext(input) {
         clearTimeout(timer);
       }
       need(Buffer.isBuffer(bytes) && bytes.length > 0 && bytes.length <= maximumBytes, "BYTE_BOUND");
+      capturedBytes += bytes.length;
+      need(capturedBytes <= 64 * 1024 * 1024, "AGGREGATE_BYTE_BOUND");
+      // Retain the original response before parsing. A later denial must not erase it.
+      bytes = Buffer.from(bytes);
+      originals.push({ endpoint, bytes });
       observations.push({ endpoint, bytes: bytes.length, sha256: hash(bytes) });
       return bytes;
     };
@@ -406,18 +415,51 @@ export async function authenticateNativeOriginalContext(input) {
       observations,
       nativeStepLogSha256: hash(log),
       nativeStepLogBytes: log.length,
+      originals,
     });
     return proof;
   } catch (error) {
-    if (/^SOUNDING_LINE_NATIVE_ORIGINAL_[A-Z0-9_]+$/u.test(error?.message ?? "")) throw error;
-    throw Error("SOUNDING_LINE_NATIVE_ORIGINAL_UNAVAILABLE");
+    const denied = /^SOUNDING_LINE_NATIVE_ORIGINAL_[A-Z0-9_]+$/u.test(error?.message ?? "")
+      ? error
+      : Error("SOUNDING_LINE_NATIVE_ORIGINAL_UNAVAILABLE");
+    if (bindingTuple) failedObservations.set(denied, { tuple: bindingTuple, observations, originals });
+    throw denied;
   }
 }
 export function inspectNativeOriginalContext(proof, input) {
   try {
     const value = proofs.get(proof);
     if (!value || value.tuple !== tuple(input)) return null;
-    return JSON.parse(JSON.stringify({ ...value, tuple: undefined, qualification: false, reuseAuthorized: false }));
+    return JSON.parse(
+      JSON.stringify({
+        ...value,
+        tuple: undefined,
+        originals: undefined,
+        qualification: false,
+        reuseAuthorized: false,
+      }),
+    );
+  } catch {
+    return null;
+  }
+}
+// Copies for private immutable custody. Failed observations never become proofs.
+export function retainedNativeOriginalContextEvidence(handle, input) {
+  try {
+    const value = proofs.get(handle) ?? failedObservations.get(handle);
+    if (!value || value.tuple !== tuple(input)) return null;
+    return {
+      classification: proofs.has(handle)
+        ? "ORIGINAL_PROVIDER_EVIDENCE_RETENTION"
+        : "FAILED_ORIGINAL_PROVIDER_OBSERVATION_RETENTION",
+      qualification: false,
+      reuseAuthorized: false,
+      responses: value.originals.map(({ endpoint, bytes }) => ({
+        endpoint,
+        bytes: Buffer.from(bytes),
+        sha256: hash(bytes),
+      })),
+    };
   } catch {
     return null;
   }
