@@ -329,6 +329,7 @@ export async function selectedCheckout({
       await command(["config", "--local", "core.sparseCheckout", "true"]);
       await command(["config", "--local", "core.sparseCheckoutCone", "false"]);
       const escape = (file) => file.replace(/[\\*?\[\] !#]/gu, "\\$&");
+      await mkdir(path.join(root, ".git/info"), { recursive: true });
       await writeFile(
         path.join(root, ".git/info/sparse-checkout"),
         "/*\n" + exclusions.map((entry) => "!/" + escape(entry.path)).join("\n") + "\n",

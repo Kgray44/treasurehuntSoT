@@ -15,6 +15,7 @@ const allowedAuthorityChanges = new Set([
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
   "tests/sounding-line/ordinary-checkout.test.mjs",
   "tests/sounding-line/ordinary-documentation-checkout.test.mjs",
+  "tests/sounding-line/ordinary-documentation-materialization.test.mjs",
   "tests/sounding-line/authenticated-completed-evidence.test.mjs",
   "tests/sounding-line/fixtures/ordinary-documentation-source.json",
   "Development_Docs/Programs/Sounding_Line/Sounding_Line_Modernization_A_Implementation_Record.md",
@@ -88,6 +89,9 @@ export function documentationCheckoutProposal({ baseEntries, candidateEntries, a
     if (!after || after.mode !== "100644" || (before && before.mode !== after.mode))
       return full("DELETION_OR_TYPE_CHANGE");
   }
+  // The installed verifier adds migration validation even for a documentation
+  // filename containing this token. That command lies outside this certificate.
+  if (changed.some((file) => /migration/iu.test(file))) return full("MIGRATION_VALIDATION_REQUIRES_FULL");
   // File-system discovery must not lose a forbidden pathname even when that
   // binary's contents would never be read. Untracked files remain on disk and
   // are still scanned by the unchanged private-content implementation.

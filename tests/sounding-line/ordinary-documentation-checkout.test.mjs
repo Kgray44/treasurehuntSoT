@@ -22,6 +22,13 @@ const proposed = () => [...structuredClone(original), entry("Development_Docs/in
 const plan = (candidate = proposed(), base = original, anchor = original, prNumber = 819) =>
   documentationCheckoutProposal({ anchorEntries: anchor, baseEntries: base, candidateEntries: candidate, prNumber });
 
+test("documentation names requiring migration validation retain the full route", () => {
+  assert.equal(
+    plan([...original, entry("Development_Docs/Migration.md", "b".repeat(40))]).reason,
+    "MIGRATION_VALIDATION_REQUIRES_FULL",
+  );
+});
+
 test("new documentation mechanism starts in shadow; its data proposal grants no authority", () => {
   assert.equal(DOCUMENTATION_CHECKOUT_MODE, "SHADOW");
   const result = plan();

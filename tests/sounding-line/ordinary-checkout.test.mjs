@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
 import { ordinaryCheckoutProfile } from "../../scripts/sounding-line/ordinary-checkout.mjs";
+import "./ordinary-documentation-checkout.test.mjs";
+import "./ordinary-documentation-materialization.test.mjs";
 
 const baseSha = "a".repeat(40),
   candidateSha = "b".repeat(40);
