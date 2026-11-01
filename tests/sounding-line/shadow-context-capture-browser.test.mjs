@@ -21,8 +21,14 @@ test(
     const root = await mkdtemp(path.join(parent, "shadow-context-browser-"));
     const server = createServer((request, response) => {
       response.setHeader("Content-Type", "text/html");
+      const body =
+        request.url === "/away"
+          ? '<h1>Outside fixture</h1><a href="/">Return to fixture</a>'
+          : '<h1>Shadow context fixture</h1><p>Stable synthetic context.</p><a href="/away">Leave fixture</a>';
       response.end(
-        '<!doctype html><html lang="en"><head><title>Shadow fixture</title><style>body{font:18px Arial;margin:24px;color:#111;background:#fff}</style></head><body><main><h1>Shadow context fixture</h1><p>Stable synthetic context.</p></main></body></html>',
+        '<!doctype html><html lang="en"><head><title>Shadow fixture</title><style>body{font:18px Arial;margin:24px;color:#111;background:#fff}a{display:inline-block;padding:14px}:focus-visible{outline:3px solid #164fc0}</style></head><body><main>' +
+          body +
+          "</main></body></html>",
       );
     });
     await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
@@ -37,13 +43,33 @@ test(
         devices: ["DESKTOP"],
         roles: ["ANONYMOUS"],
         motion: true,
-        states: ["READY"],
+        states: ["READY", "RETURNED"],
         recordingRequired: true,
         journeys: [
           {
             id: "stable",
             roles: ["ANONYMOUS"],
-            steps: [{ action: "assert", role: "heading", name: "Shadow context fixture", state: "READY" }],
+            steps: [
+              { action: "assert", role: "heading", name: "Shadow context fixture", state: "READY" },
+              { action: "click", role: "link", name: "Leave fixture" },
+              {
+                action: "assert",
+                kind: "outcome",
+                role: "heading",
+                name: "Outside fixture",
+                path: "/away",
+                meaning: "The synthetic destination rendered after navigation.",
+              },
+              { action: "click", role: "link", name: "Return to fixture" },
+              {
+                action: "assert",
+                role: "heading",
+                name: "Shadow context fixture",
+                path: "/",
+                returnPath: true,
+                state: "RETURNED",
+              },
+            ],
           },
         ],
       },
