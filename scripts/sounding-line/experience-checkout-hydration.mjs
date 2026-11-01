@@ -129,6 +129,7 @@ export async function checkoutHydration(file) {
       objects: [...required.values()].sort((a, b) => a.sha.localeCompare(b.sha)),
       snapshots: input.snapshots,
       readerSnapshots: input.readerSnapshots ?? [],
+      ...(input.exactReaderOnly ? { readerMode: "EXACT_PATHS_ONLY" } : {}),
       ...(pathOnlySnapshots.length ? { pathOnlySnapshots } : {}),
     };
     writeFileSync(input.output, JSON.stringify(value), { flag: "wx" });
@@ -214,7 +215,12 @@ export async function checkoutHydration(file) {
     requiredBlobBytes: checked.filter((value) => value.type === "blob").reduce((n, value) => n + value.size, 0),
     unneededHistoricalBlobsAbsent: missing.length,
     completeCommitTreeAncestry: true,
-    blobStore: "FULL_BASE_CANDIDATE_AND_EXPLICIT_READER_CLOSURE",
+    blobStore:
+      closure.readerMode === "EXACT_PATHS_ONLY"
+        ? "CUSTODY_METADATA_AND_EXPLICIT_CERTIFICATE_READERS"
+        : closure.snapshotExclusions?.length
+          ? "SELECTED_BASE_CANDIDATE_AND_EXPLICIT_READER_CLOSURE"
+          : "FULL_BASE_CANDIDATE_AND_EXPLICIT_READER_CLOSURE",
     operations,
   };
 }

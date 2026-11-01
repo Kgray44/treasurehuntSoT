@@ -350,6 +350,7 @@ export async function selectedCheckout({
           custodyProbe: readSet.custodyProbe,
           certificateReader,
           anchor: readSet.proposal?.anchor,
+          transportCertificate: readSet.proposal?.transportCertificate,
           reason: readSet.proposal?.reason,
           changedPaths: readSet.proposal?.changedPaths,
           proposedOmissions: readSet.proposal?.omissions?.length ?? 0,
