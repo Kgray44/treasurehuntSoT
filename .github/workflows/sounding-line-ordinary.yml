@@ -171,6 +171,12 @@ jobs:
           fetch-tags: false
           show-progress: true
           persist-credentials: false
+      - name: Observe immutable original evidence context
+        if: ${{ inputs.pr_number != '721' && inputs.pr_number != '776' }}
+        continue-on-error: true
+        timeout-minutes: 1
+        working-directory: authority
+        run: node scripts/sounding-line/native-evidence-context.mjs
       - name: Set up ordinary checkout runtime
         if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         uses: actions/setup-node@v4
@@ -344,6 +350,12 @@ jobs:
             Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
           fetch-tags: false
           show-progress: true
+      - name: Observe immutable original evidence context
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
+        continue-on-error: true
+        timeout-minutes: 1
+        working-directory: authority
+        run: node scripts/sounding-line/native-evidence-context.mjs
       - name: Set up ordinary checkout runtime
         if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         uses: actions/setup-node@v4
