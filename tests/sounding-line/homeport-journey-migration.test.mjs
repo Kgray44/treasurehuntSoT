@@ -104,7 +104,7 @@ function migrationScenario(t, amended) {
         "utf8",
       ),
     );
-    unpack(source, "a71257c6cebe5cf672a72d5d9a307ba22d98c9e1b8228ed21f69467fae5db62f");
+    unpack(source, "394a86466baee735168a88783df7e8f3fafc71cec7105ddf8303a78f8bba984f");
     writeFileSync(path.join(root, ".git/shallow"), source.shallowBoundaries.join("\n") + "\n");
   }
   const put = (file, bytes, mode = "100644") =>
