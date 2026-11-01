@@ -1,0 +1,9 @@
+file:///D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/scripts/sounding-line/run-browser-suite.mjs:236
+    throw new Error(`SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:${profileId}:DATABASE_PATH`);
+          ^
+
+Error: SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:generic:DATABASE_PATH
+    at clearOwnedIsolationDatabase (file:///D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/scripts/sounding-line/run-browser-suite.mjs:236:11)
+    at file:///D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/scripts/sounding-line/run-browser-suite.mjs:41:11
+
+Node.js v24.18.0

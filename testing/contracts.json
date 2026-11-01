@@ -11421,6 +11421,237 @@
           "Accepted references concern the shared recovery frame only; the unavailable page is not a pilot-body visual baseline."
         ]
       }
+    },
+    {
+      "id": "admiralty.ai-economics",
+      "name": "Capability-aware AI economics and canonical useful outcomes",
+      "authority": "project-admiralty",
+      "owners": [
+        "project-admiralty"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated Administrator managing AI quality, spending and individual capability rights",
+        "objective": "Understand resource consumption and genuinely useful AI outcomes, investigate poor experience, and configure governed allowances",
+        "visibleOutcome": "Capability-aware economics distinguish provider attempts, logical-operation and provider-attempt efficiency, applied edits, accepted rooms, and uncertain cost; UTC request-day quality rates and cost per useful result expose changes over time; person controls use the canonical dossier and audited policy service",
+        "integrationOwner": "Admiralty AI economics experience integration",
+        "systems": [
+          "project-admiralty"
+        ],
+        "sourcePaths": [
+          "src/components/admiralty/AIEconomicsConsole.tsx",
+          "src/components/admiralty/AIEconomicsConsole.module.css",
+          "src/components/admiralty/AIPolicyChangeSummary.tsx",
+          "src/components/admiralty/AICapabilityPolicyFields.tsx",
+          "src/components/admiralty/AIQuotaUserPanel.tsx",
+          "src/app/admin/ai-usage"
+        ],
+        "projectionPaths": [
+          "src/parallax/ai-economics.ts",
+          "src/parallax/ai-quota-projections.ts",
+          "src/app/api/admin/ai-economics"
+        ],
+        "entryPoint": "/admin",
+        "states": [
+          "ADMIN_ENTRY",
+          "ECONOMICS_READY",
+          "QUALITY_READY",
+          "QUALITY_TREND_READY",
+          "CAPABILITIES_READY",
+          "HISTORY_READY",
+          "ECONOMICS_RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "ADMINISTRATOR"
+        ],
+        "accessibility": "Semantic figures and exact daily data, labeled filters, visible focus, keyboard-reachable contained tables, responsive cards and explicit loading/error/recovery feedback.",
+        "fallback": "No operations reports an honest empty period. Missing usage retains unknown dimensions and unresolved exposure. A failed refresh identifies the last loaded period and provides Retry.",
+        "navigation": "Enter through existing Admiralty navigation; move among economics views and the canonical People dossier; reveal existing governed configuration through its visible disclosure.",
+        "designTarget": "Preserve the Admiralty Chartroom visual family with a compact hierarchy, readable monetary precision, explicit evidence coverage, progressive operation inspection and per-capability outcome semantics. A Quality disclosure per capability presents observed UTC-day rates as non-interpolated samples with readable date labels and an exact focusable table; unknown days, outcomes and empty denominators remain explicit. Quality cards distinguish logical operations per useful result from recorded provider attempts per useful result, including retries and failed work, with explicit attempt capture coverage and unavailable incomplete history.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": [
+          "screen-page-admin",
+          "screen-page-admin-people"
+        ],
+        "homeportJourneyIds": [
+          "B"
+        ],
+        "browserTests": [
+          "tests/e2e/admiralty-ai-economics.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Synthetic isolated fixtures do not verify provider invoices, real private media, production deployment, prerequisite acceptance, or owner product acceptance."
+        ],
+        "roleSetup": {
+          "ADMINISTRATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fadmin%2Fai-usage",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-operator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "AI Usage & Quotas",
+              "text": "AI Usage & Quotas"
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "economics-capability-quality-and-return",
+            "roles": [
+              "ADMINISTRATOR"
+            ],
+            "outcome": "An Administrator naturally opens economics, distinguishes outcomes, inspects capability semantics and operation history, and returns to the overview.",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Overview"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Platform Overview",
+                "text": "Platform Overview",
+                "path": "/admin",
+                "state": "ADMIN_ENTRY",
+                "kind": "outcome",
+                "meaning": "The ordinary Admiralty entry remains available."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "AI Usage & Quotas"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "AI economics workspace",
+                "text": "Observed AI cost",
+                "path": "/admin/ai-usage",
+                "state": "ECONOMICS_READY",
+                "kind": "outcome",
+                "meaning": "Observed cost and unresolved exposure are distinct in the actual administrative workspace."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Quality & Outcomes"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "AI economics workspace",
+                "text": "Provider attempts per useful result",
+                "path": "/admin/ai-usage",
+                "state": "QUALITY_READY",
+                "kind": "outcome",
+                "meaning": "The operator distinguishes logical-operation efficiency from provider-attempt efficiency, acceptance/Apply denominators, capture coverage and sample limitations."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Room Reconstruction quality trend by UTC request day"
+              },
+              {
+                "action": "assert",
+                "role": "group",
+                "name": "Room Reconstruction quality trend",
+                "text": "Missing days have no sample.",
+                "path": "/admin/ai-usage",
+                "state": "QUALITY_TREND_READY",
+                "kind": "outcome",
+                "meaning": "The operator opens the daily quality disclosure and sees its cohort/coverage definition, observed rates and exact table when data exists, or an explicit unavailable state for an empty sample."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Capabilities"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "AI economics workspace",
+                "text": "Capability registry",
+                "path": "/admin/ai-usage",
+                "state": "CAPABILITIES_READY",
+                "kind": "outcome",
+                "meaning": "Capability ownership and useful-outcome semantics are inspectable without exposing private scene content."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Operation History"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "AI economics workspace",
+                "text": "Trace an operation",
+                "path": "/admin/ai-usage",
+                "state": "HISTORY_READY",
+                "kind": "outcome",
+                "meaning": "Bounded operation records and filters are available for investigation."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Overview"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "AI economics workspace",
+                "text": "Cost and evidence coverage",
+                "path": "/admin/ai-usage",
+                "state": "ECONOMICS_RETURNED",
+                "kind": "outcome",
+                "meaning": "The operator returns to the cost overview without mutating policies.",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {

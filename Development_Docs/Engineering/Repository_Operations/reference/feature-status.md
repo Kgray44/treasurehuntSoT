@@ -3,12 +3,19 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-24
+last_reviewed: 2026-10-31
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+Admiralty AI economics and capability intelligence is a dependent integration
+candidate. It adds provider-attempt and capability accounting, UTC-day outcome
+trends, cost and attempts per useful result, effective person allowances, and
+audited policy controls to the existing A1 workspace. Historical focused and
+browser evidence remains source-bound to the earlier branch. Current-main
+qualification and protected integration are pending; availability is unchanged.
 
 PR #776 remains the sole combined Studio integration candidate. Its tested source
 `abb8cc83f4fdcc50e55da364a7cb37ab9bfe3096` includes accepted main

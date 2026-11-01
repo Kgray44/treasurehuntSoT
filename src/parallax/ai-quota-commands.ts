@@ -29,10 +29,7 @@ type QuotaActor = Pick<
   "accountId" | "accountSessionId" | "capabilities" | "roles" | "authorizationBasis"
 >;
 function assertAuthority(actor: QuotaActor) {
-  if (
-    !actor.capabilities.includes("CONFIG_OPERATE") ||
-    !actor.roles.some((role) => ["ADMINISTRATOR", "CONFIGURATION_OPERATOR", "EMERGENCY_OPERATOR"].includes(role))
-  )
+  if (!actor.capabilities.includes("CONFIG_OPERATE") || !actor.roles.includes("ADMINISTRATOR"))
     throw new AdmiraltyError("ADMIRALTY_CAPABILITY_DENIED", "AI quota operation authority is required.", 403);
 }
 export function aiQuotaCommandIdentity(actor: QuotaActor, input: AIQuotaCommandInput) {
@@ -60,11 +57,34 @@ async function currentPolicy(
   input: AIQuotaCommandInput,
   now: Date,
 ) {
-  if (input.target === "GLOBAL") return { revision: globalRevision, current: global, resulting: input.policy };
+  if (input.target === "GLOBAL") {
+    for (const previous of global.pricingVersions ?? []) {
+      const next = input.policy.pricingVersions?.find(
+        (price) => price.model === previous.model && price.revision === previous.revision,
+      );
+      if (!next || JSON.stringify(previous) !== JSON.stringify(next))
+        throw new AdmiraltyError(
+          "ADMIN_VALIDATION_FAILED",
+          "Retain immutable pricing revisions and add a new version for a price change.",
+          400,
+        );
+    }
+    return { revision: globalRevision, current: global, resulting: input.policy };
+  }
   if (!(await tx.userAccount.findUnique({ where: { id: input.accountId }, select: { id: true } })))
     throw new AdmiraltyError("ADMIN_TARGET_NOT_FOUND", "Account unavailable.", 404);
   const row = await tx.aIQuotaUserPolicy.findUnique({ where: { accountId: input.accountId } });
   const current = row ? aiUserPolicySchema.nullable().parse(JSON.parse(row.policy)) : null;
+  if (
+    Object.values(input.policy?.capabilityPolicies ?? {}).some((capability) =>
+      capability.allowedModels?.some((model) => !global.allowedModels.includes(model)),
+    )
+  )
+    throw new AdmiraltyError(
+      "ADMIN_VALIDATION_FAILED",
+      "Capability model exceptions must stay inside the global allowed-model list.",
+      400,
+    );
   if (
     [input.policy?.standardModel, input.policy?.advancedModel, input.policy?.roomModel].some(
       (model) => model != null && !global.allowedModels.includes(model),

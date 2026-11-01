@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "objective": "An Administrator understands AI capabilities, cost and uncertainty, per-person allowances, and useful outcomes through the actual Admiralty interface",
+  "source": {
+    "base": "a5eeb5b42561042cea7e799a3b0d54c1b03c1006",
+    "state": "PREPARATORY_WORKTREE_SNAPSHOT",
+    "bindings": [
+      {
+        "path": "prisma/migrations/20261015010000_admiralty_ai_economics/migration.sql",
+        "sha256": "bc50cdc8f2efae2acf104a0181f817371eb4eed5507191456226c526586b9a90"
+      },
+      {
+        "path": "prisma/mysql-migrations/20261015010000_admiralty_ai_economics/migration.sql",
+        "sha256": "a9faa83f429c27d8b74ea867c688a0831f965bde94621bdbe34e0969c103f067"
+      },
+      {
+        "path": "prisma/schema.prisma",
+        "sha256": "6ef1e2974ed230f4cf6881d0c910e1eb0244fa99763efa3a0ace9913f6a4b209"
+      },
+      {
+        "path": "prisma/schema.sqlite.prisma",
+        "sha256": "6227116e433bae6be22bc0adc2c8a27968e648687448859bf6e9153b3ab69fdd"
+      },
+      {
+        "path": "scripts/admiralty/ai-economics-fixture.ts",
+        "sha256": "4f5830a544bf9c0c3c92afe04e457a58c6d1c64d8bea18edbf4b548bf05569a4"
+      },
+      {
+        "path": "src/app/admin/ai-usage/page.tsx",
+        "sha256": "1c225c25705536810e566d0dceced1e263854fcf4e7465a008636ea026aeb9f7"
+      },
+      {
+        "path": "src/app/api/admin/ai-economics/route.test.ts",
+        "sha256": "69550f119caf068e42ee426552ce4e3ee745f57add76be2c7ade00741df51b87"
+      },
+      {
+        "path": "src/app/api/admin/ai-economics/route.ts",
+        "sha256": "ed35d1f45eeb11538df30e5f84d869bf7d968f17ad79b250441ec323f36687a5"
+      },
+      {
+        "path": "src/app/api/studio/parallax/route.ts",
+        "sha256": "70b7cc6b5b1ea259bdaecc3935a7c0d791a268c650ec6fd3868dd3be60e9c07c"
+      },
+      {
+        "path": "src/components/admiralty/AICapabilityPolicyFields.tsx",
+        "sha256": "8558a1f6067fe6ca87c1ac792ab394c23f31a72186bfd57c1b92726b5dd2a7b6"
+      },
+      {
+        "path": "src/components/admiralty/AIEconomicsConsole.module.css",
+        "sha256": "0917e52962be5ac47ac2182abc93348b5189b9b4ea4be79af8337c135ae8d9b1"
+      },
+      {
+        "path": "src/components/admiralty/AIEconomicsConsole.tsx",
+        "sha256": "94ec96f9ec96f7e43d5ce9a146ef88b64e2cae614eb5558accd4c7f5a4df63c7"
+      },
+      {
+        "path": "src/components/admiralty/AIQuotaConsole.tsx",
+        "sha256": "dfeabda12bd30ec9e5b599bf352327236286dc4c315149698522936450201925"
+      },
+      {
+        "path": "src/components/admiralty/AIQuotaUserPanel.test.tsx",
+        "sha256": "2f679f1aa83c677ffe623513fe067e2cee50d7bc50c8cc411c6f96bbaf398ef5"
+      },
+      {
+        "path": "src/components/admiralty/AIQuotaUserPanel.tsx",
+        "sha256": "bcca827ef78a041562bb591c091ff3c2ad1e4fe3c222cc8da7f612837ebb412c"
+      },
+      {
+        "path": "src/components/studio/parallax/RoomPhotoPanel.tsx",
+        "sha256": "72ea17fb01670fd3c308482c5811fa2efdcdc2736ee0607cd6719008d0026e4b"
+      },
+      {
+        "path": "src/components/studio/parallax/spatial-assistant-port.ts",
+        "sha256": "52da354aa88a5592df348a34bb3a2b7e2d4a17821dbff00a5db492072f1bd32b"
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialAssistant.tsx",
+        "sha256": "c7c0d95757332c1ee8e61e4aae60c9f9a13413411bbef96fa9cd6bdabe570a72"
+      },
+      {
+        "path": "src/parallax/ai-attempts.ts",
+        "sha256": "c140f95e359e575533b26a6caa7460056180c923864ad968387101adb02b2138"
+      },
+      {
+        "path": "src/parallax/ai-capabilities.ts",
+        "sha256": "8331f5daccd0b9bd34b2155e91f38278c2bce42ef999d02adf45cbda834c401c"
+      },
+      {
+        "path": "src/parallax/ai-economics.test.ts",
+        "sha256": "8f0ba593ed230752d28f6b2b381ac366e98a023a788385c341fafccbde2cda8d"
+      },
+      {
+        "path": "src/parallax/ai-economics.ts",
+        "sha256": "3af460013d507c64ba9ae2f655192e45c2cb04f2415779405e1ca60d871448f7"
+      },
+      {
+        "path": "src/parallax/ai-ledger.test.ts",
+        "sha256": "be775a6dd1b774d1c0b132b59d9f72eb891966ef28d04987ac2a84d801c3b09d"
+      },
+      {
+        "path": "src/parallax/ai-ledger.ts",
+        "sha256": "b01dc238a9c0cbf042da9238a3a68e95673d2e2f13a555dc02549bdbf23741ff"
+      },
+      {
+        "path": "src/parallax/ai-outcomes.ts",
+        "sha256": "7735c76eae888fcf26383fb0988abdd7851575f4f29d5292276de1adf3dec889"
+      },
+      {
+        "path": "src/parallax/ai-policy.ts",
+        "sha256": "5844642dfdba93afefe1e05f0e2e0b9ef0b4f90d086edfc095aa58bf055a5612"
+      },
+      {
+        "path": "src/parallax/ai-quota-commands.test.ts",
+        "sha256": "67aa82785cbd8b7138147618de302967d766ea2335997b01afa93af0440cbc5b"
+      },
+      {
+        "path": "src/parallax/ai-quota-commands.ts",
+        "sha256": "2c3f32fb68ea24d6e9721cc7df0090d292fc4c9b581327842e50930f27c50957"
+      },
+      {
+        "path": "src/parallax/ai-quota-projections.ts",
+        "sha256": "4eb33ae99e3c96ef9c9ed8229fe7aaad40579f184fb14df2fdad1c5eabb18d14"
+      },
+      {
+        "path": "src/parallax/library-lifecycle-service.test.ts",
+        "sha256": "e95ccdfe29c884665774fd2d3cee86e6873bd90f01621e55aa5ce5bb8fd1961f"
+      },
+      {
+        "path": "src/parallax/library-lifecycle-service.ts",
+        "sha256": "ee7baec757fb53ab14a3dbae4ecf175a21493d6b8491be448de112b1db545056"
+      },
+      {
+        "path": "src/parallax/library-service.test.ts",
+        "sha256": "2c102076fbbf4a53808c1925499fdd4e9ffaff49ed9ad116edeab2c86d512820"
+      },
+      {
+        "path": "src/parallax/library-service.ts",
+        "sha256": "e724a1099a150b7f8714af8242da186423625f4fe84a5e8c607c89b8274a3894"
+      },
+      {
+        "path": "src/parallax/room-perception-service.ts",
+        "sha256": "40029178a722fc48ac9cfa2df75b177dde272bad11ce66bcfd8a1d0111a23a4b"
+      },
+      {
+        "path": "src/parallax/spatial-assistant-application.ts",
+        "sha256": "49481ee8ea8319afba9fc108ffc4ce64c8147a6ac580df2882719695189830d8"
+      },
+      {
+        "path": "src/parallax/spatial-assistant-service.test.ts",
+        "sha256": "083fd64582807c8022f58f8dac324f08fa19c730f37b61271cb64246a74591b0"
+      },
+      {
+        "path": "tests/e2e/admiralty-ai-economics.spec.ts",
+        "sha256": "496b56a6326c7c2d92ec60728cb8167bea106c7218a4c58850462acf2c579f1f"
+      }
+    ]
+  },
+  "artifacts": [
+    "overview-desktop.png",
+    "quality-desktop.png",
+    "operation-inspector.png",
+    "overview-mobile.png",
+    "quality-mobile.png",
+    "empty-mobile.png",
+    "error-mobile.png"
+  ],
+  "artifactRoot": "artifacts/admiralty-economics/browser",
+  "reference": "Experience_Images/Contact_Sheets/Area_Admiralty_Desktop_01.png",
+  "requiredDimensions": [
+    "objective",
+    "visual hierarchy",
+    "Admiralty coherence",
+    "mobile readability",
+    "navigation",
+    "accounting clarity",
+    "outcome semantics",
+    "loading and recovery",
+    "accessible fallback",
+    "privacy"
+  ],
+  "browserProof": "Actual production-browser journey passed desktop/mobile, canonical allowance preview/assurance/confirm, and empty/error/recovery states. Scoped axe has no serious or critical violations."
+}

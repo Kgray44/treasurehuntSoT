@@ -1,0 +1,46 @@
+[
+  {
+    "filePath": "D:\\CodexWorktrees\\treasurehunt-admiralty-ai-economics-20261014\\src\\components\\admiralty\\AIEconomicsConsole.tsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "D:\\CodexWorktrees\\treasurehunt-admiralty-ai-economics-20261014\\src\\parallax\\ai-economics.test.ts",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "D:\\CodexWorktrees\\treasurehunt-admiralty-ai-economics-20261014\\src\\parallax\\ai-economics.ts",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "D:\\CodexWorktrees\\treasurehunt-admiralty-ai-economics-20261014\\tests\\e2e\\admiralty-ai-economics.spec.ts",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  }
+]

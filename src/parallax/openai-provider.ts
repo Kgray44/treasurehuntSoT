@@ -1,6 +1,13 @@
 import { z } from "zod";
 import { assistantInterpretationSchema, assistantOperationSchema, SpatialAssistantError } from "./spatial-assistant";
-import { aiUsageSchema, aiModelIds, type AIGlobalPolicy, type AIModelId, type AIUsage } from "./ai-policy";
+import {
+  aiUsageSchema,
+  aiModelIds,
+  type AIGlobalPolicy,
+  type AIModelId,
+  type AIUsage,
+  type AIReportedUsage,
+} from "./ai-policy";
 
 export const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 export { conciseAssistantInstructions as assistantSystemInstructions } from "./assistant-instructions";
@@ -41,6 +48,7 @@ export class OpenAIProviderError extends SpatialAssistantError {
 type Outcome = {
   responseId: string;
   usage: AIUsage | null;
+  reportedUsage?: AIReportedUsage | null;
   interpretation: unknown | null;
   failure: { code: string; message: string } | null;
 };
@@ -66,6 +74,8 @@ const providerEnvelope = z.object({
         .object({
           cached_tokens: z.number().int().nonnegative().optional(),
           cache_write_tokens: z.number().int().nonnegative().optional(),
+          image_tokens: z.number().int().nonnegative().optional(),
+          audio_tokens: z.number().int().nonnegative().optional(),
         })
         .optional(),
       output_tokens_details: z.object({ reasoning_tokens: z.number().int().nonnegative().optional() }).optional(),
@@ -110,7 +120,18 @@ export function extractOpenAIResponse(
       })
     : null;
   const usage = reported?.success ? reported.data : null;
-  const base = { responseId: body.id, usage, interpretation: null };
+  const reportedUsage: AIReportedUsage | null = body.usage
+    ? {
+        inputTokens: body.usage.input_tokens,
+        outputTokens: body.usage.output_tokens,
+        cachedInputTokens: body.usage.input_tokens_details?.cached_tokens ?? null,
+        cacheWriteTokens: body.usage.input_tokens_details?.cache_write_tokens ?? null,
+        reasoningTokens: body.usage.output_tokens_details?.reasoning_tokens ?? null,
+        imageInputTokens: body.usage.input_tokens_details?.image_tokens ?? null,
+        audioInputTokens: body.usage.input_tokens_details?.audio_tokens ?? null,
+      }
+    : null;
+  const base = { responseId: body.id, usage, reportedUsage, interpretation: null };
   if (body.service_tier && body.service_tier !== "default")
     return {
       ...base,
@@ -166,7 +187,7 @@ export function extractOpenAIResponse(
       parsedInterpretation.intentType === "OUT_OF_SCOPE"
         ? structuredClone(outOfScopeInterpretation)
         : parsedInterpretation;
-    return { responseId: body.id, usage, interpretation, failure: null };
+    return { responseId: body.id, usage, reportedUsage, interpretation, failure: null };
   } catch {
     return {
       ...base,

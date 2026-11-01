@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "kind": "PUBLICATION_ONLY_TOOL_REPAIR_AND_DEPENDENCY_REFRESH",
+  "observedAt": "2026-10-15T05:28:52.165Z",
+  "reviewedProductSource": "4a185cbf6ba04c25564dcb5d031f03ef588de3c4",
+  "capturedProtectedBase": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "liveProtectedMain": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "prerequisite": {
+    "pullRequest": 722,
+    "head": "03fd8a318c3b79d6ada0472deb234fe5b7113009",
+    "state": "OPEN_DRAFT_UNMERGED",
+    "baseAsReported": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa"
+  },
+  "currentPlan": {
+    "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/refreshed-protected-plan-gate.log",
+    "sha256": "30a6f9a4ce31c595d625def758b115b5b859f674f09b21a4726693af2d5c2e64",
+    "outcome": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity"
+  },
+  "repair": {
+    "path": "scripts/generate-document-index.mjs",
+    "beforeSha256": "301b6431ded814124893e3a868571bdf694880add6a80014e1a334f7bd328af5",
+    "afterSha256": "c4c92685b8bd17ce03f00050172c7323ff686365cda39b38368ec9e36c4a4713",
+    "observedFailure": "docs:index failed with spawnSync git ENOBUFS when the Git file inventory exceeded the default 1 MiB subprocess buffer.",
+    "change": "Use a bounded 64 MiB output buffer for all three existing Git inventory reads, preserving every entry and all validation rules.",
+    "classification": "Internal documentation publication tooling; no user-visible product, execution, policy, schema, pricing or acceptance change."
+  },
+  "validationLog": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-attempt-ratios-20261015/publication-checks.log",
+  "boundary": "The 47 reviewed product/test bindings remain exact. This publication-only helper repair does not extend the independent product review to the helper or grant ordinary/protected qualification. The log records actual documentation/catalog commands.",
+  "nextTerminalTrigger": "Land Spatial Studio #722 and clear the selected Crossdeck design/integration gate through its existing owner, then reconcile/retarget the dependent PR, freeze fresh source and obtain ordinary exact-candidate qualification.",
+  "protectedAttestation": false,
+  "mainlineDecision": false,
+  "ownerAcceptance": false
+}

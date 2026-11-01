@@ -1,0 +1,35 @@
+
+> forever-treasure-companion@0.2.0 docs:index
+> node scripts/generate-document-index.mjs
+
+Indexed 2359 engineering records and inventoried 6921 documentation paths.
+
+> forever-treasure-companion@0.2.0 docs:index
+> node scripts/generate-document-index.mjs
+
+Indexed 2360 engineering records and inventoried 6932 documentation paths.
+
+> forever-treasure-companion@0.2.0 docs:validate
+> node scripts/validate-documentation.mjs
+
+Documentation validation passed.
+
+> forever-treasure-companion@0.2.0 features:sync
+> tsx scripts/features/build-feature-catalog.ts
+
+Generated Feature Catalog from 68 semantic entries.
+
+> forever-treasure-companion@0.2.0 features:validate
+> tsx scripts/features/validate-feature-catalog.ts
+
+Feature Catalog validation passed.
+
+> forever-treasure-companion@0.2.0 docs:index
+> node scripts/generate-document-index.mjs
+
+Indexed 2360 engineering records and inventoried 6933 documentation paths.
+
+> forever-treasure-companion@0.2.0 docs:validate
+> node scripts/validate-documentation.mjs
+
+Documentation validation passed.

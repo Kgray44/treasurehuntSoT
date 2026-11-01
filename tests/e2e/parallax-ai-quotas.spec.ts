@@ -26,6 +26,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await db.accountCredential.create({ data: { accountId: operator.id, passwordHash: await hash(password, 10) } });
   await authenticateClosure(context, operator, baseURL!);
   await page.goto("/admin/ai-usage");
+  await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
   await expect(page.getByRole("heading", { name: "AI Usage & Quotas", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Users", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Search users", exact: true })).toHaveCount(0);
@@ -37,7 +38,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   const captureRoot = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
   await mkdir(captureRoot, { recursive: true });
   if (overview.daily.every((day: { requests: number }) => day.requests === 0)) {
-    await page.getByRole("button", { name: "Overview", exact: true }).click();
+    await page.getByRole("button", { name: "Quota Overview", exact: true }).click();
     await expect(page.getByRole("figure", { name: "Requests per day by UTC day", exact: true })).toBeVisible();
     await page.screenshot({ path: `${captureRoot}/owner-daily-empty.png`, fullPage: true });
   }
@@ -70,6 +71,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   ).toBe(250);
   expect(await db.aIQuotaPolicyRevision.count({ where: { targetAccountId: creator.id } })).toBe(1);
   await page.goto("/admin/ai-usage");
+  await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
   await page.getByRole("button", { name: "User Overrides", exact: true }).click();
   const inventory = page.getByRole("region", { name: "Individual AI policies" });
   await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toBeVisible();
@@ -159,6 +161,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-mobile.png`, fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/admin/ai-usage");
+  await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
   await page.getByRole("button", { name: "Global Policy", exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Room reconstruction model", exact: true })).toHaveValue(
     "gpt-6.1-sol",

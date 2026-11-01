@@ -58,6 +58,7 @@ const tx = vi.hoisted(() => {
     );
   };
   return {
+    aIUsageLedger: { findMany: vi.fn(async () => []), updateMany: vi.fn(async () => ({ count: 0 })) },
     reusableAuthoringItem: {
       findUnique: vi.fn(async ({ where }: { where: { id: string } }) => state.rows.get(where.id) ?? null),
       findFirst: vi.fn(

@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-24
+last_reviewed: 2026-10-31
 ---
 
 # Changelog
@@ -67,6 +67,13 @@ This preparation does not promote mainline feature availability.
 Candidate branch: named mixed asset/room groups and editable scoped environment exclusion zones have focused browser evidence, independent review and bounded owner presentation acceptance. Reconstruction now prioritizes warnings for fitted estimated placements so bounded review cannot hide a geometry adjustment. Whole-Studio and physical AR acceptance remain open.
 
 ## Unreleased
+
+- Admiralty AI economics extends the existing AI Usage & Quotas workspace with
+  versioned capability and provider-attempt accounting, UTC request-day quality,
+  cost and attempts per useful result, effective person allowances, and audited
+  capability and pricing controls. Missing provider usage and incomplete attempt
+  history remain explicit. Historical focused, regression and browser evidence
+  retains its original source identity; current-main qualification is pending.
 
 - Avoid restarting Studio loading when saved account workspace preferences
   arrive. Nine focused hook cases and the unchanged exclusion-zone Library
