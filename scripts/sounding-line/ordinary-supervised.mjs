@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { verificationBudgetFromElapsed, verificationJobLimit } from "./verification-budget.mjs";
 import { readNativeVerificationClock } from "./verification-job-clock.mjs";
+import { verificationCapacity820 } from "./verification-capacity-820.mjs";
 import { verificationPreflight } from "./verification-preflight.mjs";
 import { superviseVerification } from "./verification-supervisor.mjs";
 
@@ -46,6 +47,7 @@ export async function currentVerificationJob({
   request = fetch,
   now = Date.now,
   candidateSha,
+  root,
   clock = readNativeVerificationClock,
   monotonic = () => performance.now(),
 }) {
@@ -69,6 +71,7 @@ export async function currentVerificationJob({
     providerHttpDate: null,
   };
   try {
+    const capacityGrant = await verificationCapacity820({ root, baseSha: env.GITHUB_SHA, candidateSha, env });
     const lookupBegan = monotonic();
     const response = await request(
       `https://api.github.com/repos/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}/attempts/${env.GITHUB_RUN_ATTEMPT}/jobs?per_page=100`,
@@ -176,9 +179,9 @@ export async function currentVerificationJob({
       providerSetupMs >= 0 ? "MAX_PROVIDER_AND_NATIVE_DEBIT" : "INCONSISTENT_PROVIDER_HEADER_NATIVE_EXECUTION_BOUND";
     const budget = verificationBudgetFromElapsed({
       setupMs,
-      limitMs: verificationJobLimit(env.SOUNDING_LINE_PR_NUMBER),
+      limitMs: capacityGrant ? capacityGrant.minutes * 60000 : verificationJobLimit(env.SOUNDING_LINE_PR_NUMBER),
     });
-    return Object.freeze({ ...budget, clockObservation: observation });
+    return Object.freeze({ ...budget, clockObservation: observation, ...(capacityGrant ? { capacityGrant } : {}) });
   } catch (error) {
     error.verificationJobObservation = observation;
     throw error;
@@ -219,7 +222,7 @@ async function main() {
   process.once("SIGTERM", cancel);
   process.once("SIGINT", cancel);
   try {
-    const budget = await currentVerificationJob({ candidateSha: options.candidate });
+    const budget = await currentVerificationJob({ candidateSha: options.candidate, root: invocation.root });
     const began = performance.now();
     const identity = await verificationPreflight({
       root: invocation.root,
@@ -234,6 +237,7 @@ async function main() {
       workflowSource: process.env.GITHUB_SHA,
     };
     identity.jobLookupCalls = 1;
+    identity.capacityLookupCalls = budget.capacityGrant ? 3 : 0;
     await writeFile(path.join(directory, "preflight.json"), JSON.stringify({ ...identity, budget }) + "\n", {
       flag: "wx",
     });

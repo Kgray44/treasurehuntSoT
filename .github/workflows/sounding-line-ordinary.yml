@@ -63,6 +63,9 @@ jobs:
     outputs:
       campaign: ${{ steps.custody.outputs.campaign }}
       phase: ${{ steps.custody.outputs.phase }}
+      verification_job_minutes: ${{ steps.verification-capacity.outputs.verification_job_minutes }}
+      verification_capacity_grant: ${{ steps.verification-capacity.outputs.verification_capacity_grant }}
+      verification_capacity_id: ${{ steps.verification-capacity.outputs.verification_capacity_id }}
     steps:
       - name: Require the trusted workflow base before executing write authority
         env:
@@ -133,6 +136,16 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
         run: node authority/scripts/sounding-line/experience-exception.mjs --operation reserve --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --evidence evidence
+      - name: Bind the finite PR820 verification capacity to exact installed source
+        id: verification-capacity
+        if: ${{ (github.event.pull_request.number == 820 || inputs.pr_number == '820') && (github.event_name != 'workflow_dispatch' || inputs.experience_mode == 'ordinary') && !inputs.experience_diagnostic }}
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOUNDING_LINE_PR_NUMBER: "820"
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/verification-capacity-820.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - name: Verify read-only custody checkout diagnostic identities and lineage
         if: inputs.experience_diagnostic && inputs.experience_mode == 'ordinary'
         env:
@@ -350,7 +363,7 @@ jobs:
     needs: campaign-custody
     if: ${{ (github.event_name != 'workflow_dispatch' || (inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic)) && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ (github.event.pull_request.number == 776 || inputs.pr_number == '776') && 120 || (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}
+    timeout-minutes: ${{ fromJSON(needs.campaign-custody.outputs.verification_job_minutes || '0') || ((github.event.pull_request.number == 776 || inputs.pr_number == '776') && 120 || (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45) }}
     outputs:
       current_observation: ${{ steps.route.outputs.private_failure_publication_nonce != '' && steps.ordinary-verifier.outputs.current_admission_observation_publish == steps.route.outputs.private_failure_publication_nonce }}
       current_observation_nonce: ${{ steps.route.outputs.private_failure_publication_nonce }}
@@ -469,17 +482,24 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           SOUNDING_LINE_EVIDENCE_PURPOSE: PROTECTED_FINAL_VERIFICATION
+          SOUNDING_LINE_VERIFICATION_JOB_MINUTES: ${{ needs.campaign-custody.outputs.verification_job_minutes }}
+          SOUNDING_LINE_VERIFICATION_CAPACITY_GRANT: ${{ needs.campaign-custody.outputs.verification_capacity_grant }}
+          SOUNDING_LINE_VERIFICATION_CAPACITY_ID: ${{ needs.campaign-custody.outputs.verification_capacity_id }}
           SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: ${{ steps.route.outputs.private_failure_publication_nonce }}
           SOUNDING_LINE_PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
           SOUNDING_LINE_BASE_SHA: ${{ steps.source.outputs.base }}
           SOUNDING_LINE_EXCEPTION_PHASE: ${{ needs.campaign-custody.outputs.phase }}
         run: node authority/scripts/sounding-line/ordinary-supervised.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
       - name: Retain verification supervision after every outcome
-        if: ${{ always() && steps.ordinary-verifier.outputs.verification_supervision_path != '' }}
+        if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}
         uses: actions/upload-artifact@v4
         with:
           name: sounding-line-verification-supervision-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ steps.ordinary-verifier.outputs.verification_supervision_path }}
+          path: |
+            authority/artifacts/sounding-line/verification-supervision/session-*/initial.json
+            authority/artifacts/sounding-line/verification-supervision/session-*/preflight.json
+            authority/artifacts/sounding-line/verification-supervision/session-*/terminal.json
+            authority/artifacts/sounding-line/verification-supervision/session-*/controller-failure.json
           if-no-files-found: error
           retention-days: 90
       - name: Retain completed whole obligations after any verifier outcome
