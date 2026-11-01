@@ -4,6 +4,7 @@ import { readFile, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 
 const observations = new WeakMap();
 const ownership = new WeakMap();
@@ -71,6 +72,10 @@ export async function bounded(operation, milliseconds, code) {
 }
 
 export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {} }) {
+  // Freeze the exact launch input before guardian setup awaits its private path.
+  // Later caller mutations must not change what the creation record describes.
+  args = JSON.parse(JSON.stringify(args));
+  env = { ...env };
   const windows = process.platform === "win32";
   const finiteBudget = (value, fallback) => (Number.isFinite(value) ? Math.max(0, Math.min(value, 5000)) : fallback);
   const gracefulMs = finiteBudget(cleanupOptions.gracefulMs, 2000);
@@ -102,7 +107,20 @@ export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {
   child.stdin.on("error", () => {});
   child.stdout.pipe(process.stdout, { end: false });
   child.stderr.pipe(process.stderr, { end: false });
-  const record = { windows, receiptDirectory: null, gracefulMs, forceMs };
+  const record = {
+    windows,
+    receiptDirectory: null,
+    gracefulMs,
+    forceMs,
+    creation: Object.freeze({
+      command,
+      argumentsSha256: createHash("sha256").update(JSON.stringify(args)).digest("hex"),
+      root: path.resolve(root),
+      databaseUrlSha256: createHash("sha256")
+        .update(String(env?.DATABASE_URL ?? ""))
+        .digest("hex"),
+    }),
+  };
   ownership.set(child, record);
   // Record before readiness or any other asynchronous wait.
   record.initialized = (async () => {
@@ -113,6 +131,9 @@ export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {
   // A startup error is consumed by both the observer and cleanup.
   record.initialized.catch(() => {});
   return child;
+}
+export function inspectOwnedProcessCreation(child) {
+  return ownership.get(child)?.creation ?? null;
 }
 
 export async function stopOwnedProcess(child, { gracefulMs = 2000, forceMs = 3000 } = {}) {

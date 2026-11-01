@@ -7,7 +7,7 @@ import { execFileSync } from "node:child_process";
 import { createRawOutputDirectory } from "../../scripts/sounding-line/experience-raw-output.mjs";
 import { createOwnedRuntimeStateRetentionFactory } from "../../scripts/sounding-line/owned-runtime-state-retention.mjs";
 import { restoreRuntimeSnapshotRetention } from "../../scripts/sounding-line/runtime-snapshot-retention.mjs";
-import { processExit } from "../../scripts/sounding-line/owned-process.mjs";
+import { processExit, spawnOwnedProcess, stopOwnedProcess } from "../../scripts/sounding-line/owned-process.mjs";
 import { authenticatedCompletedReceipt } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
 const rawDirectory = "artifacts/sounding-line/product-experience-capture-staging/capture-owned-state/raw";
 const binding = {
@@ -72,6 +72,52 @@ const state = () => ({
   authenticationCache: Buffer.from('{"cookies":[]}'),
   fixtureState: Buffer.from('{"fixture":"original"}'),
 });
+test(
+  "existing supervisor launches can be adopted only through their actual creation identity and declared database",
+  engine,
+  async (t) => {
+    const f = await fixture(t),
+      entrypoint = path.join(f.root, "adopt.cjs");
+    fs.writeFileSync(entrypoint, "process.exit(0)");
+    const outside = spawnOwnedProcess(process.execPath, [entrypoint], {
+      root: f.root,
+      env: { ...process.env, DATABASE_URL: "file:wrong.db" },
+      cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
+    });
+    const children = [outside];
+    t.after(async () => {
+      await Promise.all(children.map((child) => stopOwnedProcess(child)));
+    });
+    await assert.rejects(
+      f.owner.adoptCreatedProcess("application", { child: outside, entrypoint }),
+      /CREATION_BINDING/u,
+    );
+    await assert.rejects(
+      f.owner.adoptCreatedProcess("application", { child: { ...outside }, entrypoint }),
+      /CREATION_BINDING/u,
+    );
+    const application = spawnOwnedProcess(process.execPath, [entrypoint], {
+      root: f.root,
+      env: { ...process.env, DATABASE_URL: `file:${f.databasePath}` },
+      cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
+    });
+    children.push(application);
+    await f.owner.adoptCreatedProcess("application", { child: application, entrypoint });
+    await assert.rejects(f.owner.adoptCreatedProcess("capture", { child: application, entrypoint }), /LAUNCH/u);
+    const capture = spawnOwnedProcess(process.execPath, [entrypoint], {
+      root: f.root,
+      env: { ...process.env, DATABASE_URL: `file:${f.databasePath}` },
+      cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
+    });
+    children.push(capture);
+    await f.owner.adoptCreatedProcess("capture", { child: capture, entrypoint });
+    await Promise.all(children.map((child) => processExit(child)));
+    const retained = await f.owner.checkpoint(state());
+    assert.equal(retained.cleanup.capture.status, "PASS");
+    assert.equal(retained.qualification, false);
+    assert.equal(retained.reuseAuthorized, false);
+  },
+);
 test(
   "two context cuts share a finite store while preserving both original bindings and the first immutable database",
   engine,

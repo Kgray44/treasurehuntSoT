@@ -877,12 +877,20 @@ export async function captureProductExperience({
   await mkdir(artifactRoot, { recursive: true });
   const rawRecordings =
     rawOutputDirectory && !plan.pairedOnly
-      ? await createRawOutputDirectory({ root, directory: `${rawOutputDirectory}/recordings` })
+      ? await createRawOutputDirectory({
+          root,
+          directory: `${rawOutputDirectory}/recordings${shadowTarget ? "/" + shadowTarget.contextId : ""}`,
+        })
       : null;
   let closedContexts = null;
   if (rawRecordings && closedContextShadowAllowed(plan, plan.prNumber ?? process.env.SOUNDING_LINE_PR_NUMBER)) {
     const observed = await observeClosedContextShadow(() =>
-      createClosedContextJournal({ root, rawDirectory: rawOutputDirectory, binding: rawCaptureBinding(plan) }),
+      createClosedContextJournal({
+        root,
+        rawDirectory: rawOutputDirectory,
+        binding: rawCaptureBinding(plan),
+        ...(shadowTarget ? { namespace: shadowTarget.contextId } : {}),
+      }),
     );
     if (observed.status === "OBSERVED") closedContexts = observed.value;
   }

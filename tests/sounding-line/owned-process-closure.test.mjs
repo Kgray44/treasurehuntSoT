@@ -3,6 +3,7 @@ import test from "node:test";
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import { createHash } from "node:crypto";
 import {
   spawnOwnedProcess,
   stopOwnedProcess,
@@ -10,8 +11,34 @@ import {
   stopOwnedProcessWithClosureProof,
   inspectOwnedProcessClosure,
   consumeOwnedProcessClosure,
+  inspectOwnedProcessCreation,
 } from "../../scripts/sounding-line/owned-process.mjs";
 const root = process.cwd();
+test("creation metadata matches the exact immutable guardian input even if caller arguments change immediately", async (t) => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "owned-creation-")),
+    file = path.join(directory, "actual");
+  const args = ["-e", "require('node:fs').writeFileSync(process.argv[1],'original launch')", file],
+    original = JSON.stringify(args);
+  const env = { ...process.env, DATABASE_URL: "file:original-private.db" };
+  const child = spawnOwnedProcess(process.execPath, args, {
+    root,
+    env,
+    cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
+  });
+  t.after(async () => {
+    await stopOwnedProcess(child);
+    fs.rmSync(directory, { recursive: true, force: true });
+  });
+  args[1] = "throw Error('mutated launch')";
+  env.DATABASE_URL = "file:changed.db";
+  assert.equal((await processExit(child)).code, 0);
+  assert.equal(fs.readFileSync(file, "utf8"), "original launch");
+  const metadata = inspectOwnedProcessCreation(child);
+  assert.equal(metadata.argumentsSha256, createHash("sha256").update(original).digest("hex"));
+  assert.equal(metadata.databaseUrlSha256, createHash("sha256").update("file:original-private.db").digest("hex"));
+  assert(Object.isFrozen(metadata));
+  assert.equal(inspectOwnedProcessCreation({ ...child }), null);
+});
 async function ready(file) {
   const deadline = Date.now() + 15000;
   while (!fs.existsSync(file)) {

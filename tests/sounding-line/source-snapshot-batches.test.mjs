@@ -38,6 +38,7 @@ test("the protected regression script includes every incremental registry and co
     "sqlite-runtime-snapshot",
     "owned-runtime-state-retention",
     "shadow-context-schedule",
+    "shadow-context-worker",
   ])
     assert.equal(files.filter((file) => file === `tests/sounding-line/${name}.test.mjs`).length, 1, name);
 });

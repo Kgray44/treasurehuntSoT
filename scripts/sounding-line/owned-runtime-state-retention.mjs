@@ -13,6 +13,7 @@ import {
   stopOwnedProcess,
   stopOwnedProcessWithClosureProof,
   consumeOwnedProcessClosure,
+  inspectOwnedProcessCreation,
 } from "./owned-process.mjs";
 const MARKER = "CREATION_BOUND_DECLARED_SQLITE_RUNTIME_RETENTION_NOT_FULL_ISOLATION";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -94,7 +95,47 @@ async function createOwner({ root, rawDirectory, databasePath, originalBinding, 
     if (receipts.every((receipt) => receipt.status === "PASS")) notify();
     return receipts;
   }
+  async function admit(role, child, selected, args, source) {
+    const creation = inspectOwnedProcessCreation(child);
+    need(
+      phase === "OPEN" &&
+        ["application", "capture"].includes(role) &&
+        !launches.has(role) &&
+        ![...launches.values()].some((value) => value.child === child),
+      "LAUNCH",
+    );
+    need(
+      creation?.command === process.execPath &&
+        creation.root === root &&
+        creation.argumentsSha256 === hash(JSON.stringify([selected, ...args])) &&
+        creation.databaseUrlSha256 === hash(`file:${databasePath}`),
+      "CREATION_BINDING",
+    );
+    const metadata = Object.freeze({
+      role,
+      entrypoint: path.relative(root, selected),
+      entrypointSha256: hash(source),
+      argumentsSha256: hash(JSON.stringify(args)),
+    });
+    launches.set(role, { child, metadata });
+    return Object.freeze({ child, metadata, qualification: false, reuseAuthorized: false });
+  }
   return Object.freeze({
+    async adoptCreatedProcess(role, { child, entrypoint, args = [] }) {
+      need(
+        phase === "OPEN" &&
+          typeof entrypoint === "string" &&
+          Array.isArray(args) &&
+          args.length <= 64 &&
+          args.every((value) => typeof value === "string" && Buffer.byteLength(value) <= 8192) &&
+          Buffer.byteLength(JSON.stringify(args)) <= 65536,
+        "LAUNCH",
+      );
+      const selected = path.resolve(root, entrypoint);
+      need(selected.startsWith(root + path.sep) && (await realpath(selected)) === selected, "ENTRYPOINT");
+      const source = await entrypointBytes(selected);
+      return await admit(role, child, selected, args, source);
+    },
     async launch(role, { entrypoint, args = [], environment = {} }) {
       need(phase === "OPEN" && ["application", "capture"].includes(role) && !launches.has(role), "LAUNCH");
       need(
@@ -122,14 +163,12 @@ async function createOwner({ root, rawDirectory, databasePath, originalBinding, 
         env,
         cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
       });
-      const metadata = Object.freeze({
-        role,
-        entrypoint: path.relative(root, selected),
-        entrypointSha256: hash(source),
-        argumentsSha256: hash(JSON.stringify(args)),
-      });
-      launches.set(role, { child, metadata });
-      return Object.freeze({ child, metadata, qualification: false, reuseAuthorized: false });
+      try {
+        return await admit(role, child, selected, args, source);
+      } catch (error) {
+        await stopOwnedProcess(child);
+        throw error;
+      }
     },
     async checkpoint({ authenticationCache, fixtureState }) {
       need(phase === "OPEN" && launches.size === 2, "CHECKPOINT");

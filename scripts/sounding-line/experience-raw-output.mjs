@@ -234,6 +234,7 @@ export async function createClosedContextJournal({
   rawDirectory,
   binding,
   maximumMediaBytes = 256 * 1024 * 1024,
+  namespace,
 }) {
   root = await ownedRoot(root);
   validBinding(binding);
@@ -243,7 +244,9 @@ export async function createClosedContextJournal({
   rawDirectory = repoPath(root, rawDirectory);
   const { invocation } = scope(rawDirectory);
   const boundBinding = JSON.parse(json(binding));
-  const directory = `${rawDirectory}/closed-contexts`;
+  if (namespace !== undefined && (typeof namespace !== "string" || !/^[a-f0-9]{64}$/u.test(namespace)))
+    fail("CLOSED_CONTEXT_INVALID");
+  const directory = `${rawDirectory}/closed-contexts${namespace === undefined ? "" : "/" + namespace}`;
   await createRawOutputDirectory({ root, directory });
   let totalBytes = 0,
     count = 0,
