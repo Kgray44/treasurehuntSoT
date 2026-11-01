@@ -614,6 +614,11 @@ export function ChronicleLens({
           ×
         </button>
       </header>
+      {error && (
+        <p role="alert" className={styles.errorBanner}>
+          {error}
+        </p>
+      )}
       <div className={styles.stage}>
         {state && !accessLost && (
           <BrowserRoomView
@@ -887,7 +892,6 @@ export function ChronicleLens({
         {(!browserRequested || accessLost) && (
           <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>
         )}
-        {error && <p role="alert">{error}</p>}
         {pending && (
           <button disabled={busy} type="button" onClick={() => void retry()}>
             Retry recording interaction

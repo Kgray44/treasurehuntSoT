@@ -203,6 +203,14 @@
   place-items: center;
   padding: 0;
 }
+.errorBanner {
+  margin: 0;
+  padding: 0.85rem 1.7rem;
+  border-bottom: 1px solid #e3b66a75;
+  background: #382b1f;
+  color: #ffe0a0;
+  line-height: 1.5;
+}
 .stage {
   padding: 1.8rem;
   background: radial-gradient(ellipse at 50% 0, #28536280, transparent 65%), linear-gradient(150deg, #132c37, #0c202b);
@@ -324,6 +332,9 @@
   .lens header,
   .lens footer {
     padding: 1rem;
+  }
+  .errorBanner {
+    padding: 0.85rem 1rem;
   }
   .objects {
     grid-template-columns: 1fr;
