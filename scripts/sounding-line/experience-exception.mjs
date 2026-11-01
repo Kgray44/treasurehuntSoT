@@ -782,7 +782,7 @@ export function campaignRelated(options) {
 }
 // One comparison owns immutable metadata for its two exact revisions. Nothing is
 // cached between calls, and every original history row/signal is still evaluated.
-function campaignComparison(options) {
+export function campaignComparison(options) {
   const inventories = new Map(),
     paths = new Map(),
     identities = new Map(),

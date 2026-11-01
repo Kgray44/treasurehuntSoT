@@ -1,3 +1,4 @@
+import "./fixtures/historical-reader-blobs.mjs";
 import { CURRENT_R26 } from "../../scripts/sounding-line/experience-current-r26.mjs";
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -2716,7 +2717,10 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     const blob = run(["hash-object", "-w", "--stdin"], bytes);
     run(["update-index", "--add", "--cacheinfo", `${mode},${blob},${file}`]);
   };
-  const commit = (parent) => run(["commit-tree", run(["write-tree"]), "-p", parent, "-m", "isolated R3 fixture"]);
+  // These synthetic trees preserve unread historical entries by immutable ID.
+  // Admission still reads and validates its complete declared byte closure.
+  const commit = (parent) =>
+    run(["commit-tree", run(["write-tree", "--missing-ok"]), "-p", parent, "-m", "isolated R3 fixture"]);
   const baseInput = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
   run(["read-tree", baseInput]);
   put(
@@ -2749,6 +2753,15 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
   for (const name of r3Template.allowedProtectedBasePackageScriptNames)
     historicalPackage.scripts[name] = protectedBasePackage.scripts[name];
   put("package.json", JSON.stringify(historicalPackage));
+  // Reconstruct the recorded historical runtime and configuration on both sides.
+  const ambientRuntime = run(["ls-files", "-z", "--", "src", "public", "prisma"]);
+  run(["update-index", "--force-remove", "-z", "--stdin"], ambientRuntime + "\0");
+  run(
+    ["update-index", "--index-info"],
+    run(["ls-tree", "-r", r3Template.frozenReferenceSha, "--", "src", "public", "prisma"]) + "\n",
+  );
+  for (const [file, blob] of Object.entries(r3Template.frozenBlobs))
+    if (file !== "package.json") run(["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`]);
   const baseSha = commit(baseInput);
   const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));
   const contracts = structuredClone(original);
@@ -2759,6 +2772,7 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
   target.experience.localContinuationProof =
     r3ContractFixture().proposed.contracts[0].experience.localContinuationProof;
   const overlay = run(["ls-tree", "-r", CROSSDECK_R3.blockedCandidate, "--", "src", "public", "prisma"]);
+  // The base already has the historical closure, so this overlay retains no later assets.
   run(["update-index", "--index-info"], overlay + "\n");
   for (const entry of r3Template.protectedBaseRuntimeOverrides)
     run(["update-index", "--add", "--cacheinfo", `${entry.mode},${entry.blob},${entry.path}`]);
@@ -2793,6 +2807,9 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
       now: new Date("2026-10-15T19:00:00Z"),
     });
   assert.equal(bind(candidateSha).independentReviewOrdinal, 4);
+  run(["read-tree", candidateSha]);
+  put("public/unlisted-r3-fixture.txt", "unlisted asset");
+  assert.throws(() => bind(commit(baseSha)), /FROZEN_PRODUCT_CHANGED/u);
   run(["read-tree", candidateSha]);
   const changedPackage = structuredClone(historicalPackage);
   changedPackage.scripts["experience:test:browser"] = "node --test unlisted-package-fixture-change.mjs";
@@ -4937,9 +4954,13 @@ test("custody-only diagnostic has no finalization path and preserves ordinary pr
   );
   assert(acceptedGuard.includes("timeout-minutes: 15"));
   assert.match(guard, /path: authority\s+fetch-depth: 1/u);
-  assert.match(guard, /path: candidate\s+fetch-depth: 0/u);
-  assert.equal(guard.includes("sparse-checkout"), false);
-  assert.equal((guard.match(/persist-credentials: false/gu) ?? []).length, 3);
+  assert(guard.includes("node authority/scripts/sounding-line/ordinary-checkout.mjs"));
+  assert(!guard.includes("fetch-depth: 0"));
+  assert(guard.includes("sparse-checkout: |"));
+  assert(
+    guard.includes("Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025"),
+  );
+  assert.equal((guard.match(/persist-credentials: false/gu) ?? []).length, 2);
   const condition = "inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic";
   assert(workflow.slice(workflow.indexOf("  final-check:")).includes(condition));
   assert(workflow.slice(workflow.indexOf("  mainline-decision:")).includes(condition));
@@ -5005,7 +5026,10 @@ for (const record of [r4Template, r5Template, r6Template, r7Template, r8Template
       const blob = git(["hash-object", "-w", "--stdin"], bytes);
       git(["update-index", "--add", "--cacheinfo", `100644,${blob},${file}`]);
     };
-    const commit = (parent) => git(["commit-tree", git(["write-tree"]), "-p", parent, "-m", "R4 fixture"]);
+    // Do not demand payloads for unrelated entries merely to retain their IDs.
+    // This affects fixture construction only, never production admission.
+    const commit = (parent) =>
+      git(["commit-tree", git(["write-tree", "--missing-ok"]), "-p", parent, "-m", "R4 fixture"]);
     // A consumer checkout already contains the frozen product. Seed this fake
     // protected base from known main so its product interval stays nonempty.
     const head = "2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed";

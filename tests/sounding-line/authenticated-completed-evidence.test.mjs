@@ -32,6 +32,14 @@ const MODULES = [
   "scripts/sounding-line/ordinary.mjs",
   "scripts/sounding-line/evidence.mjs",
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
+  "scripts/sounding-line/ordinary-supervised.mjs",
+  "scripts/sounding-line/verification-budget.mjs",
+  "scripts/sounding-line/verification-job-clock.mjs",
+  "scripts/sounding-line/verification-preflight.mjs",
+  "scripts/sounding-line/verification-supervisor.mjs",
+  "scripts/sounding-line/owned-process.mjs",
+  "scripts/sounding-line/owned-process-linux.py",
+  "scripts/sounding-line/owned-process-windows.ps1",
 ];
 const installed = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -110,7 +118,7 @@ function reseal(receipt) {
   receipt.receiptDigest = digest(receipt);
 }
 
-async function fixture(action, { browser = false, dedicated = false } = {}) {
+async function fixture(action, { browser = false, dedicated = false, workflowTransform = (bytes) => bytes } = {}) {
   const owner = mkdtempSync(path.join(tmpdir(), "sl-authenticated-retention-")),
     root = path.join(owner, "candidate");
   mkdirSync(root);
@@ -139,7 +147,8 @@ async function fixture(action, { browser = false, dedicated = false } = {}) {
           ? process.env.SOUNDING_LINE_TEST_WORKFLOW_FIXTURE
           : path.join(installed, name);
       assert(source, "sparse policy tests require explicit SOUNDING_LINE_TEST_WORKFLOW_FIXTURE public YAML input");
-      put(root, name, readFileSync(source));
+      const bytes = readFileSync(source);
+      put(root, name, name === WORKFLOW ? workflowTransform(bytes) : bytes);
     }
     const files = {
       ".gitignore": "artifacts/\n",
@@ -573,6 +582,28 @@ test(
     }
   },
 );
+
+test("legacy direct exporter remains authenticated without accepting an ambiguous route", async () => {
+  const supervised =
+    "node authority/scripts/sounding-line/ordinary-supervised.mjs --mode ordinary --workspace candidate --base";
+  const direct = "node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base";
+  await fixture(
+    async (state) => {
+      const proof = await state.authenticate();
+      assert.equal(proof.admitted, 1);
+      assert(state.lookup(proof));
+    },
+    { workflowTransform: (bytes) => Buffer.from(bytes.toString().replace(supervised, direct)) },
+  );
+  await fixture(
+    async (state) => {
+      const proof = await state.authenticate();
+      assert.equal(proof.admitted, 0);
+      assert.equal(state.lookup(proof), null);
+    },
+    { workflowTransform: (bytes) => Buffer.from(bytes.toString() + `\n# ${direct}\n`) },
+  );
+});
 
 test("completed nonbrowser PASS remains reusable after later producer failure; opaque proof is candidate-bound", async () => {
   await fixture(async (state) => {
@@ -1069,6 +1100,14 @@ for (const [name, mutate] of [
       state.artifact.expired = true;
     },
   ],
+  ...MODULES.slice(4).map((module) => [
+    `provider supervised authority substitution: ${module}`,
+    (state) => {
+      const blob = git(state.root, "rev-parse", `${state.baseSha}:${module}`);
+      state.blobTransform = (value) =>
+        value.sha === blob ? { ...value, content: Buffer.from("substituted guardian").toString("base64") } : value;
+    },
+  ]),
   [
     "provider authority blob mismatch",
     (state) => {

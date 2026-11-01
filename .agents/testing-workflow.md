@@ -71,3 +71,14 @@ complete, freeze one candidate and use the normal protected final check. Preserv
 current source, base, product/browser obligations and qualification requirements.
 Merge only after that check and its exact seals pass; verify the actual landed
 tree before releasing dependent integration work.
+
+For an ordinary pull-request transaction, use the owner-side
+`scripts/sounding-line/protected-merge-transaction.mjs --operation merge --pr <number>
+--head <exact-head> --base <exact-protected-base> --run <successful-run-id>
+--receipt <new-private-receipt-prefix>`. This independently checks the successful
+required check, trusted app/workflow/run/attempt, readiness transition, source
+identities, live strict protection and administrator enforcement immediately
+before the server's exact-head merge. Unknown rulesets, moved source, skipped or
+neutral checks and unavailable proof stop the transaction. It creates no release
+authority. Finite campaign qualification and historical evidence remain governed
+by their installed selectors; this merge client accepts ordinary PR-target runs.

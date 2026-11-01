@@ -84,7 +84,7 @@ test("governed account commands require preview, assurance, confirmation, and du
   const admin = await signedInPage(browser, "ADMINISTRATOR", "/admin/people");
   await search(admin.page, "Consent Harbor");
   await admin.page.getByRole("link", { name: "Consent Harbor", exact: true }).click();
-  await expect(admin.page.getByRole("heading", { name: "Consent Harbor", exact: true })).toBeVisible();
+  await expect(admin.page.getByRole("heading", { level: 1, name: "Consent Harbor", exact: true })).toBeVisible();
   await expect(admin.page.locator("html")).not.toHaveAttribute("data-homeport-hydration");
   await expect(admin.page.locator("body")).not.toContainText("must-never-appear");
 
