@@ -1,0 +1,681 @@
+{
+  "objective": "Preserve private Chronicle ownership, capability-scoped workspace entry, existing authoring and live-Voyage boundaries through the expanded shared content models.",
+  "contract": {
+    "id": "homeport.owner-correction.round1.workspaces",
+    "name": "Project Homeport Owner Correction Round1 Workspaces",
+    "authority": "project-homeport",
+    "owners": [
+      "project-homeport"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "One canonical account using its existing Creator, Captain and Player capabilities.",
+      "objective": "Preserve private Chronicle ownership, capability-scoped workspace entry, existing authoring and live-Voyage boundaries through the expanded shared content models.",
+      "visibleOutcome": "The same owner reaches Creator, previews four Chronicle creation intentions without creating a record, returns to the library, then opens Captain and Player through All Workspaces without granting access to another owner private content.",
+      "integrationOwner": "Existing Parallax integration owner #776; Homeport, Chronicle, Landfall and One Voyage retain their separate workspace, publication and live-session authorities.",
+      "accessibility": "Use the actual account disclosure, semantic workspace cards, named Chronicle creation choices with unavailable choices identified, and pressed-state tabs on desktop and phone in both motion modes.",
+      "fallback": "Preserve actual sign-in redirects, permission-required states, private-resource 404, empty libraries and active-Chronicle transition locks.",
+      "navigation": "All Workspaces → Creator Library → Create Chronicle choices → Your Chronicles → All Workspaces → Captain → Player → All Workspaces.",
+      "designTarget": "Preserve the current three workspace task compositions and the accepted shared Homeport identity and navigation hierarchy.",
+      "entryPoint": "/account/roles",
+      "systems": [
+        "project-homeport",
+        "one-voyage",
+        "project-landfall"
+      ],
+      "sourcePaths": [
+        "src/app/captain/library/page.tsx",
+        "src/app/captain/sessions/[sessionId]/page.tsx",
+        "src/app/captain/tales/[taleId]/page.tsx",
+        "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+        "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+        "src/app/chronicles/[taleSlug]/compare/page.tsx",
+        "src/app/chronicles/[taleSlug]/page.tsx",
+        "src/app/page.tsx",
+        "src/app/play/[taleSlug]/history/page.tsx",
+        "src/app/play/[taleSlug]/page.tsx",
+        "src/app/player/invitation/page.tsx",
+        "src/app/player/landfall-return/page.tsx",
+        "src/app/player/playthroughs/[playthroughId]/page.tsx",
+        "src/app/studio/library/page.tsx",
+        "src/app/studio/private-content/page.tsx",
+        "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+        "src/app/studio/tales/[taleId]/assets/page.tsx",
+        "src/app/studio/tales/[taleId]/landfall/page.tsx",
+        "src/app/studio/tales/[taleId]/locations/page.tsx",
+        "src/app/studio/tales/[taleId]/page.tsx",
+        "src/app/studio/tales/[taleId]/settings/page.tsx",
+        "src/app/studio/tales/[taleId]/trials/page.tsx",
+        "src/app/studio/tales/[taleId]/versions/page.tsx",
+        "src/app/studio/tales/new/page.tsx",
+        "src/app/tale/[campaignSlug]/page.tsx",
+        "src/app/tales/page.tsx",
+        "src/components/captain/CaptainCommandConsole.tsx",
+        "src/components/captain/CaptainDashboard.tsx",
+        "src/components/captain/CaptainMusterRoom.tsx",
+        "src/components/captain/CaptainOperationalPanel.tsx",
+        "src/components/captain/CaptainSessionControl.tsx",
+        "src/components/gm/Quartermaster.tsx",
+        "src/components/homeport/WorkspaceCapabilityDashboard.tsx",
+        "src/components/landing/HarborLanding.tsx",
+        "src/components/muster/CrewChat.tsx",
+        "src/components/muster/MusterRoom.tsx",
+        "src/components/platform/CaptainLibrary.tsx",
+        "src/components/platform/InvitationCeremony.tsx",
+        "src/components/platform/PlayerSafePreview.tsx",
+        "src/components/platform/PlayerVoyageRoom.tsx",
+        "src/components/platform/StaffSignIn.tsx",
+        "src/components/player/AccessGate.tsx",
+        "src/components/player/PlayerExperience.tsx",
+        "src/components/studio/DrydockCompatibilityPanel.tsx",
+        "src/components/studio/DrydockLaunchGate.tsx",
+        "src/components/studio/DrydockScenarioLab.tsx",
+        "src/components/studio/LandfallContextEditor.tsx",
+        "src/components/studio/LandfallFieldTestPanel.tsx",
+        "src/components/studio/LandfallInstallationPanel.tsx",
+        "src/components/studio/LandfallOnlinePlacePanel.tsx",
+        "src/components/studio/LandfallWorkspace.tsx",
+        "src/components/studio/NewTaleForm.tsx",
+        "src/components/studio/PrivateContentConsole.tsx",
+        "src/components/studio/ShipwrightPublishingReview.tsx",
+        "src/components/studio/StudioHome.tsx",
+        "src/components/studio/StudioValidationPanel.tsx",
+        "src/components/studio/TaleEditor.tsx",
+        "src/components/studio/TaleEditorSection.tsx",
+        "src/components/studio/inspector/ContractAwareInspector.tsx",
+        "src/components/tales/PublishedBlockView.tsx",
+        "src/components/tales/TaleCatalog.tsx",
+        "src/components/tales/TaleStart.tsx",
+        "src/components/tideglass/TideglassPassage.tsx",
+        "src/styles/studio.css"
+      ],
+      "projectionPaths": [
+        "src/chronicle/types.ts",
+        "src/chronicle/journal-contract.ts",
+        "src/homeport/workspace-capabilities.ts",
+        "src/chronicle/studio-service.ts"
+      ],
+      "states": [
+        "WORKSPACES_READY",
+        "CREATOR_READABLE",
+        "CREATION_CHOICES_READABLE",
+        "CREATOR_RETURNED",
+        "CAPTAIN_READABLE",
+        "PLAYER_READABLE",
+        "WORKSPACES_RETURNED"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "CREATOR"
+      ],
+      "fixtureProfile": "generic",
+      "roleSetup": {
+        "CREATOR": {
+          "entryPoint": "/sign-in?returnTo=%2Faccount%2Froles",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "parallax-review-workspace-creator@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Parallax-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            }
+          ],
+          "witness": {
+            "role": "heading",
+            "name": "All Workspaces",
+            "text": "All Workspaces"
+          }
+        }
+      },
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport identity and workspace-entry frame only; no standalone task-body acceptance is asserted.",
+          "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted shared Homeport identity and workspace-entry frame only; no standalone task-body acceptance is asserted.",
+          "preserve": "Readable shared frame, clear account identity and ordinary navigation/return; preserve the unchanged current account task composition."
+        }
+      ],
+      "journeys": [
+        {
+          "id": "canonical-three-workspace-and-creation-return",
+          "roles": [
+            "CREATOR"
+          ],
+          "outcome": "One canonical account previews four Chronicle creation intentions, returns across the existing three workspaces without creating a Chronicle, and cannot acquire another owner's private Chronicle.",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "All Workspaces",
+              "state": "WORKSPACES_READY"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Enter Creator"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "path": "/studio/library",
+              "meaning": "A real canonical capability opens the existing owner-scoped Creator library.",
+              "state": "CREATOR_READABLE",
+              "text": "Voyagewright Studio"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Create Chronicle"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "heading",
+              "name": "Create a Chronicle",
+              "path": "/studio/tales/new",
+              "meaning": "The Chronicle creation entry presents four named intentions without creating or publishing a record.",
+              "state": "CREATION_CHOICES_READABLE",
+              "text": "Create a Chronicle"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Create Manually Begin with a blank canvas. Shape your Chapters and Passages as inspiration strikes. Begin creating →",
+              "state": "CREATION_CHOICES_READABLE"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Create with AI Build alongside the future Chronicle Architect, from a first spark to a story worth sharing. Coming soon",
+              "text": "Coming soon",
+              "state": "CREATION_CHOICES_READABLE"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Adapt a Story Bring an existing story or document into a new interactive adventure. Coming soon",
+              "text": "Coming soon",
+              "state": "CREATION_CHOICES_READABLE"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Start from a Template Begin with a ready-made Chronicle structure and make it your own. Coming soon",
+              "text": "Coming soon",
+              "state": "CREATION_CHOICES_READABLE"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Your Chronicles"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "path": "/studio/library",
+              "state": "CREATOR_RETURNED"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Synthetic Parallax Workspace Creator"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "All Workspaces"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Enter Captain"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "heading",
+              "name": "Captain's Console",
+              "path": "/captain/library",
+              "meaning": "The existing Captain capability opens the live-Voyage workspace without turning a private draft into a published Chronicle.",
+              "state": "CAPTAIN_READABLE",
+              "text": "Captain's Console"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Published Chronicles"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Synthetic Parallax Workspace Creator"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "All Workspaces"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Enter Player"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "heading",
+              "name": "My Chronicle Library",
+              "path": "/player/library",
+              "meaning": "The same session enters its Player library while preserving owner identity and independent capability boundaries.",
+              "state": "PLAYER_READABLE",
+              "text": "My Chronicle Library"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Synthetic Parallax Workspace Creator"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "All Workspaces"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "All Workspaces",
+              "path": "/account/roles",
+              "returnPath": true,
+              "state": "WORKSPACES_RETURNED"
+            }
+          ]
+        }
+      ],
+      "browserTests": [
+        "tests/e2e/parallax-workspace-compatibility.spec.ts",
+        "tests/e2e/chronicle-studio.spec.ts",
+        "tests/e2e/chronicle-platform.spec.ts"
+      ],
+      "limitations": [
+        "Representative cross-workspace compatibility only. Existing extended Chronicle authoring, publishing, Captain control, invitation, Player play, Landfall and active-session safety obligations retain their own test and owner authority.",
+        "The four-choice creation entry is deliberately left without choosing manual creation; no Chronicle publication, Crew creation, live session, external inference or physical acceptance is implied.",
+        "Legacy wrappers in the source set retain their current canonical route/dependency adapters; their presence is not a claim of a second implementation or a newly accepted legacy UI.",
+        "Accepted visual references cover the shared entry/navigation frame only; every newly captured task body still requires independent review.",
+        "Browser cases retain these separate domain assertions: The named signed-in actor remains the same canonical account and retains its capability boundary. Private source content remains excluded from another actor and the anonymous public projection. The advertised task return reaches its real parent destination without creating a replacement owner or publishing a private draft."
+      ],
+      "continuity": {
+        "objective": "Observe the same visible synthetic account identity at entry, task outcomes and return. Separate browser cases verify canonical IDs, capabilities and domain privacy; this aria-label alone does not prove them.",
+        "checks": [
+          {
+            "id": "visible-account-identity",
+            "role": "button",
+            "name": "Synthetic Parallax Workspace Creator",
+            "attribute": "aria-label"
+          }
+        ]
+      },
+      "homeportScreenIds": [],
+      "homeportJourneyIds": []
+    }
+  },
+  "sourceDigest": "2c00cb867fe526182ef1413a7feba606db671756786862b8fd845253266f273e",
+  "artifacts": [
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_READY-0.png",
+      "sha256": "a8fe21d09d9a894def0527b42ae5272d521702dda172bce7e1686a7b616b5390",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "WORKSPACES_READY",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_READABLE-2.png",
+      "sha256": "df134a4f9e21ac136d6e580972f4804d14ef50ff64e6297c1eada686bc54f27d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATOR_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4.png",
+      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5.png",
+      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6.png",
+      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7.png",
+      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8.png",
+      "sha256": "e2288e1969e9cb7463ef409cc6d1b893eb202e40ad8025b07d8fe32b4cbe0671",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CREATOR_RETURNED-10.png",
+      "sha256": "df134a4f9e21ac136d6e580972f4804d14ef50ff64e6297c1eada686bc54f27d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATOR_RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-CAPTAIN_READABLE-14.png",
+      "sha256": "ce96f2af8d691bba35e335e91b7de890fbd3f21cf771d9dcb65628b5005212bb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CAPTAIN_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-PLAYER_READABLE-19.png",
+      "sha256": "ea6a008d4d43074decd55d592545e540de2dd749e93e853150d6009357c1d0d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "PLAYER_READABLE",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-WORKSPACES_RETURNED-22.png",
+      "sha256": "62e88a2dad1b35a19fe522a1e7a11d0056bb43d1677489ce0ed9b265dc8825f0",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "WORKSPACES_RETURNED",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED.trace.zip",
+      "sha256": "220bf856d9e295e2b483ee6d5eb57ad6720c3e1d5fdcfd8391430a8624b2a189",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-DESKTOP-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/71fd7e943d08883b7bbaea66c482ccd0.webm",
+      "sha256": "1fc80a02921e3bc141ad8d57b59aadfdf699b1fdb71d0c8d3c32ef38ffeacf30",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "device": "DESKTOP",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_READY-0.png",
+      "sha256": "b5b21c67ee580ebddda3fec0265543069ec92f74b3e9db1f5d59d35a5b63a296",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "WORKSPACES_READY",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_READABLE-2.png",
+      "sha256": "25c067a51d2cf28bc55aae082f788b9a0acf7843c2375f300ae8b44ad2f98ac3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATOR_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-4.png",
+      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-5.png",
+      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-6.png",
+      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-7.png",
+      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATION_CHOICES_READABLE-8.png",
+      "sha256": "3becf9b9517a8986fc789ada12f07d11baaecbe559fbafc35db72b3078365379",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATION_CHOICES_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CREATOR_RETURNED-10.png",
+      "sha256": "65bd0700dbd4abc1f9733fbfa08606a5bee3beb48133e3496260b5a51732fde4",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CREATOR_RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-CAPTAIN_READABLE-14.png",
+      "sha256": "0dac05e019f378baad73db73fa367851b0232e1cd406d56f57fb51b298f07c20",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "CAPTAIN_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-PLAYER_READABLE-19.png",
+      "sha256": "ca7409ca9689d32be681196c40fe46931f9946c83ceff72e51c7327fa0249d99",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "PLAYER_READABLE",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-WORKSPACES_RETURNED-22.png",
+      "sha256": "aacd324819a63c7caf8469cf2582dc5734d977b19361daa0c81d9124689f1a0a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "state": "WORKSPACES_RETURNED",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED.trace.zip",
+      "sha256": "b714cb46a17c86377e7d4947ee569b7551efc9884f880440e14c6fd6e3893a82",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "homeport.owner-correction.round1.workspaces-canonical-three-workspace-and-creation-return-MOBILE-CREATOR-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/cef52eaf1b0ac6246a32288712330f3c.webm",
+      "sha256": "6b482d6814dd903b5c75d06a6bae6aad82aa7214f643705b754c110702179fcc",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "homeport.owner-correction.round1.workspaces",
+      "device": "MOBILE",
+      "role": "CREATOR",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "6db5d64486d13a0dcd0a2f0d6141ff3700e61a06c6a02a7060a56cc9c67edec1",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}
