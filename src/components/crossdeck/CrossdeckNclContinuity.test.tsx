@@ -171,6 +171,7 @@ beforeEach(() => {
   harness.record = async () => Response.json({});
   fetchMock = vi.fn<typeof fetch>(async (input, init) => {
     const url = String(input);
+    if (url === "/api/dev/parallax-tracker/availability") return Response.json({ localPrototype: false });
     if (url === `${endpoint}?block=${syntheticBinding.blockId}` && !init?.method) return harness.load!();
     if (url === endpoint && init?.method === "POST") {
       const receipt = receiptSchema.parse(JSON.parse(String(init.body)));
@@ -248,7 +249,11 @@ it("binds the released model Scene and accepted Inspect to the same Voyage, edit
   await act(async () => pending.resolve(Response.json({})));
   await within(dialog).findByText(/You are inspecting The released treasure chest/);
   expect(harness.state).toEqual(unchangedProjection);
-  expect(fetchMock.mock.calls.every(([url]) => String(url).startsWith(endpoint))).toBe(true);
+  expect(
+    fetchMock.mock.calls.every(
+      ([url]) => String(url).startsWith(endpoint) || String(url) === "/api/dev/parallax-tracker/availability",
+    ),
+  ).toBe(true);
   fireEvent.click(within(dialog).getByRole("button", { name: "Close Chronicle Lens" }));
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(screen.getByRole("region", { name: "Voyage context" })).toHaveAttribute(
