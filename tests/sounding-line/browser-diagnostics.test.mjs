@@ -758,7 +758,7 @@ test("actual Git ancestry failure retains fixed identity and validated revisions
   assert.equal(git.arguments[3].revision.sha, first);
   assert.deepEqual(git.stderr, { available: false });
   assert.equal(sanitizedFailureCode(error), "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED");
-  assert.equal(failureCategoryFor(error), "PRODUCT_FAILURE");
+  assert.equal(failureCategoryFor(error), "PROVENANCE_FAILURE");
   assert(!JSON.stringify(observed).includes(root));
   assert.equal(Object.isFrozen(error), true);
 });

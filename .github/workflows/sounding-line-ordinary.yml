@@ -4,7 +4,7 @@ run-name: Sounding Line finite 1 ${{ inputs.experience_mode || 'ordinary' }} ${{
 on:
   pull_request_target:
     branches: [main]
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, converted_to_draft, ready_for_review]
   workflow_dispatch:
     inputs:
       candidate_ref:
@@ -71,18 +71,25 @@ jobs:
           ref: ${{ github.sha }}
           path: authority
           fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            testing
+            Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
           fetch-tags: false
           show-progress: true
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - name: Set up ordinary checkout runtime
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Checkout exact ordinary ancestry and installed reader closure
         if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         timeout-minutes: 10
-        with:
-          ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
-          path: candidate
-          fetch-depth: 0
-          show-progress: true
-          persist-credentials: false
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/ordinary-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - name: Set up protected checkout runtime
         if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
         uses: actions/setup-node@v4
@@ -149,20 +156,25 @@ jobs:
           ref: ${{ inputs.base_sha }}
           path: authority
           fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            testing
+            Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
           fetch-tags: false
           show-progress: true
           persist-credentials: false
-      - name: Checkout complete candidate history
-        id: candidate-checkout
-        uses: actions/checkout@v4
-        timeout-minutes: 10
+      - name: Set up ordinary checkout runtime
         if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
+        uses: actions/setup-node@v4
         with:
-          ref: ${{ inputs.candidate_sha }}
-          path: candidate
-          fetch-depth: 0
-          show-progress: true
-          persist-credentials: false
+          node-version-file: authority/.nvmrc
+      - name: Checkout exact ordinary ancestry and installed reader closure
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/ordinary-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - name: Set up protected checkout runtime
         if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
         uses: actions/setup-node@v4
@@ -310,17 +322,24 @@ jobs:
           ref: ${{ steps.source.outputs.base }}
           path: authority
           fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            testing
+            Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
           fetch-tags: false
           show-progress: true
-      - uses: actions/checkout@v4
+      - name: Set up ordinary checkout runtime
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Checkout exact ordinary ancestry and installed reader closure
         if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         timeout-minutes: 10
-        with:
-          repository: ${{ steps.source.outputs.repository }}
-          ref: ${{ steps.source.outputs.candidate }}
-          path: candidate
-          fetch-depth: 0
-          show-progress: true
+        env:
+          BASE_SHA: ${{ steps.source.outputs.base }}
+          CANDIDATE_SHA: ${{ steps.source.outputs.candidate }}
+        run: node authority/scripts/sounding-line/ordinary-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - name: Set up protected checkout runtime
         if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' }}
         uses: actions/setup-node@v4
@@ -396,7 +415,15 @@ jobs:
           SOUNDING_LINE_PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
           SOUNDING_LINE_BASE_SHA: ${{ steps.source.outputs.base }}
           SOUNDING_LINE_EXCEPTION_PHASE: ${{ needs.campaign-custody.outputs.phase }}
-        run: node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
+        run: node authority/scripts/sounding-line/ordinary-supervised.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
+      - name: Retain verification supervision after every outcome
+        if: ${{ always() && steps.ordinary-verifier.outputs.verification_supervision_path != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-verification-supervision-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ steps.ordinary-verifier.outputs.verification_supervision_path }}
+          if-no-files-found: error
+          retention-days: 90
       - name: Retain completed whole obligations after any verifier outcome
         id: completed-evidence-artifact
         if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}
@@ -470,12 +497,13 @@ jobs:
   mainline-decision:
     name: Sounding Line / Mainline Decision
     needs: [campaign-custody, final-check]
-    if: ${{ always() && (github.event_name != 'workflow_dispatch' || (inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic)) && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
+    if: ${{ always() && (github.event_name != 'workflow_dispatch' || (inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic)) }}
     runs-on: ubuntu-latest
     timeout-minutes: 35
     permissions:
       contents: write
       pull-requests: read
+      issues: read
       actions: read
     steps:
       - name: Require successful protected verification and custody
@@ -484,30 +512,35 @@ jobs:
           VERIFICATION_RESULT: ${{ needs.final-check.result }}
         run: test "$CUSTODY_RESULT" = success && test "$VERIFICATION_RESULT" = success
       - name: Require the trusted workflow base before executing write authority
-        if: needs.campaign-custody.outputs.campaign == 'true'
         env:
           REQUESTED_BASE: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           TRUSTED_WORKFLOW_SHA: ${{ github.sha }}
         run: test "$REQUESTED_BASE" = "$TRUSTED_WORKFLOW_SHA"
       - uses: actions/checkout@v4
-        if: needs.campaign-custody.outputs.campaign == 'true'
         timeout-minutes: 10
         with:
           ref: ${{ github.sha }}
           path: authority
           fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            testing
+            Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
           fetch-tags: false
           show-progress: true
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - name: Set up ordinary checkout runtime
+        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Checkout exact ordinary ancestry and installed reader closure
         if: ${{ needs.campaign-custody.outputs.campaign == 'true' && !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         timeout-minutes: 10
-        with:
-          ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
-          path: candidate
-          fetch-depth: 0
-          show-progress: true
-          persist-credentials: false
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/ordinary-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - name: Set up protected checkout runtime
         if: ${{ needs.campaign-custody.outputs.campaign == 'true' && (github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         uses: actions/setup-node@v4
@@ -528,7 +561,6 @@ jobs:
           CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
         run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --pr 776
       - uses: actions/setup-node@v4
-        if: needs.campaign-custody.outputs.campaign == 'true'
         with:
           node-version-file: authority/.nvmrc
       - uses: actions/download-artifact@v4
@@ -542,6 +574,13 @@ jobs:
         with:
           name: sounding-line-current-admission-observation-${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
           path: decision
+      - name: Revalidate the exact ready transaction
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: node authority/scripts/sounding-line/protected-merge-transaction.mjs --operation gate --pr "$PR_NUMBER" --head "$HEAD_SHA" --base "$BASE_SHA" --run "${{ github.run_id }}"
       - name: Seal exact qualification without claiming whole-run success early
         if: needs.campaign-custody.outputs.campaign == 'true'
         env:

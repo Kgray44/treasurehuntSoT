@@ -22,6 +22,15 @@ const MODULES = [
   "scripts/sounding-line/evidence.mjs",
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
 ];
+const SUPERVISED_MODULES = [
+  "ordinary-supervised.mjs",
+  "verification-budget.mjs",
+  "verification-preflight.mjs",
+  "verification-supervisor.mjs",
+  "owned-process.mjs",
+  "owned-process-linux.py",
+  "owned-process-windows.ps1",
+].map((name) => `scripts/sounding-line/${name}`);
 const LIMITS = Object.freeze({
   producers: 3,
   runs: 5,
@@ -331,7 +340,16 @@ async function acceptedSource(root, baseSha, authoritySha, api) {
   git(root, ["merge-base", "--is-ancestor", authoritySha, baseSha]);
   const installed = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
   const source = new Map();
-  for (const name of MODULES) {
+  const workflowBytes = git(root, ["show", `${authoritySha}:${WORKFLOW}`], true);
+  const workflow = workflowBytes.toString("utf8");
+  const direct = workflow.includes(
+    "node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base",
+  );
+  const supervised = workflow.includes(
+    "node authority/scripts/sounding-line/ordinary-supervised.mjs --mode ordinary --workspace candidate --base",
+  );
+  requireValue(direct !== supervised, "WORKFLOW_CONTRACT_UNSUPPORTED");
+  for (const name of [...MODULES, ...(supervised ? SUPERVISED_MODULES : [])]) {
     requireValue(
       git(root, ["ls-tree", authoritySha, "--", name]).startsWith("100644 blob ") &&
         git(root, ["ls-tree", baseSha, "--", name]).startsWith("100644 blob "),
@@ -364,14 +382,12 @@ async function acceptedSource(root, baseSha, authoritySha, api) {
     );
     source.set(name, pinned);
   }
-  const workflow = source.get(WORKFLOW).toString("utf8");
   for (const fragment of [
     "pull_request_target:",
     "branches: [main]",
     "name: Sounding Line / Focused verification",
     "ref: ${{ steps.source.outputs.base }}",
     "path: authority",
-    "node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base",
     `name: ${UPLOAD}`,
     "id: completed-evidence-artifact",
     "uses: actions/upload-artifact@v4",
