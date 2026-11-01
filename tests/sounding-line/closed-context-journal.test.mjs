@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createHash } from "node:crypto";
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, truncateSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import {
@@ -138,6 +138,12 @@ test("a closed prefix keeps original identities and hashes when a later context 
   const saved = JSON.parse(bytes);
   assert.equal(saved.context.journeyId, "first");
   assert.deepEqual(saved.artifacts, f.artifacts);
+  assert.equal(saved.rawFiles.length, f.artifacts.length);
+  for (const raw of saved.rawFiles) {
+    assert(raw.path.startsWith(`${f.rawDirectory}/generic/closed-media/`));
+    assert(readFileSync(path.join(f.root, raw.path)).equals(readFileSync(path.join(f.root, raw.originalPath))));
+    assert.equal(hash(readFileSync(path.join(f.root, raw.path))), raw.sha256);
+  }
   assert.deepEqual(saved.binding, f.binding);
   assert.equal(saved.reuseAuthorized, false);
   assert.equal(saved.qualification, false);
@@ -157,6 +163,35 @@ test("a closed prefix keeps original identities and hashes when a later context 
   }
   await assert.rejects(f.journal.append(f), /EEXIST/u);
   assert(bytes.equals(readFileSync(path.join(f.root, receipt.path))));
+});
+
+test("existing finalized raw recording is bound byte-for-byte without another video copy", async (t) => {
+  const f = await fixture(t);
+  const recordingSource = `${f.rawDirectory}/generic/recordings/original.webm`;
+  mkdirSync(path.dirname(path.join(f.root, recordingSource)), { recursive: true });
+  const recording = f.artifacts.find((a) => a.type === "recording");
+  writeFileSync(path.join(f.root, recordingSource), readFileSync(path.join(f.root, recording.path)));
+  const receipt = await f.journal.append({ ...f, recordingSource });
+  const saved = JSON.parse(readFileSync(path.join(f.root, receipt.path)));
+  assert.equal(saved.rawFiles.find((file) => file.originalPath === recording.path).path, recordingSource);
+});
+
+test("media size and aggregate allowance fail closed before copying and cannot raise the hard cap", async (t) => {
+  const f = await fixture(t);
+  const limited = await createClosedContextJournal({
+    ...f,
+    rawDirectory: `${f.rawDirectory}/small`,
+    maximumMediaBytes: 1,
+  });
+  await assert.rejects(limited.append(f), /CLOSED_CONTEXT_BOUND/u);
+  assert.equal(existsSync(path.join(f.root, f.rawDirectory, "small", "closed-media")), false);
+  await assert.rejects(
+    createClosedContextJournal({ ...f, maximumMediaBytes: 256 * 1024 * 1024 + 1 }),
+    /CLOSED_CONTEXT_BOUND/u,
+  );
+  truncateSync(path.join(f.root, f.artifacts[0].path), 64 * 1024 * 1024 + 1);
+  await assert.rejects(f.journal.append(f), /CLOSED_CONTEXT_BOUND/u);
+  assert.equal(existsSync(path.join(f.root, f.rawDirectory, "generic", "closed-media")), false);
 });
 
 test("wrong context, substituted media, missing finalized recording and path escape never create a checkpoint", async (t) => {

@@ -963,6 +963,7 @@ export async function captureProductExperience({
                 const video = page.video();
                 await context.close();
                 let videoPath = await video.path();
+                const recordingSource = rawRecordings ? relative(root, videoPath) : undefined;
                 if (rawRecordings) {
                   const selected = await copyDeclaredCaptureFile({
                     root,
@@ -991,6 +992,7 @@ export async function captureProductExperience({
                       context: { ...diagnosticContext, viewport: EXPERIENCE_VIEWPORTS[device] },
                       artifacts: evidence.artifacts.slice(contextArtifactStart),
                       journey: observed.result,
+                      recordingSource,
                     }),
                   );
                   if (observation.status !== "OBSERVED") closedContexts = null;
