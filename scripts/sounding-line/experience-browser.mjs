@@ -26,6 +26,7 @@ import {
   createRawOutputDirectory,
   copyDeclaredCaptureFile,
   rawCaptureBinding,
+  createClosedContextJournal,
 } from "./experience-raw-output.mjs";
 import {
   assertExceptionExecution,
@@ -787,6 +788,10 @@ export async function captureProductExperience({
     rawOutputDirectory && !plan.pairedOnly
       ? await createRawOutputDirectory({ root, directory: `${rawOutputDirectory}/recordings` })
       : null;
+  const closedContexts =
+    rawRecordings && !plan.exception
+      ? await createClosedContextJournal({ root, rawDirectory: rawOutputDirectory, binding: rawCaptureBinding(plan) })
+      : null;
   const browser = plan.pairedOnly ? null : await chromium.launch({ headless: true });
   const evidence = {
     version: 1,
@@ -833,6 +838,7 @@ export async function captureProductExperience({
               });
               await context.tracing.start({ screenshots: true, snapshots: true });
               const page = await context.newPage();
+              const contextArtifactStart = evidence.artifacts.length;
               try {
                 if (role === "ANONYMOUS" && storageState) fail("ANONYMOUS_ROLE_STATE_MISMATCH");
                 if (role !== "ANONYMOUS") {
@@ -975,6 +981,12 @@ export async function captureProductExperience({
                   role,
                   motionMode,
                 });
+                if (closedContexts)
+                  await closedContexts.append({
+                    context: { ...diagnosticContext, viewport: EXPERIENCE_VIEWPORTS[device] },
+                    artifacts: evidence.artifacts.slice(contextArtifactStart),
+                    journey: observed.result,
+                  });
               } finally {
                 await context.close();
               }

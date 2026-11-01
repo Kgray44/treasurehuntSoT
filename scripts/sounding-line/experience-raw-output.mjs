@@ -108,6 +108,99 @@ export async function createRawOutputDirectory({ root, directory }) {
   await mkdir(target, { mode: 0o700 }); // Exclusive final directory: no prior producer output.
   return target;
 }
+
+// Retain closed browser contexts inside the existing encrypted raw-output lane.
+// These observations do not attest parent runtime cleanup or authorize resume.
+// The browser calls append only after trace.stop, context.close and video.path.
+export async function createClosedContextJournal({ root, rawDirectory, binding }) {
+  root = await ownedRoot(root);
+  validBinding(binding);
+  if (binding.recordDigest !== null) fail("CLOSED_CONTEXT_ORDINARY_SCOPE_REQUIRED");
+  rawDirectory = repoPath(root, rawDirectory);
+  const { invocation } = scope(rawDirectory);
+  const boundBinding = JSON.parse(json(binding));
+  const directory = `${rawDirectory}/closed-contexts`;
+  await createRawOutputDirectory({ root, directory });
+  let totalBytes = 0,
+    count = 0;
+  return Object.freeze({
+    async append({ context, artifacts, journey }) {
+      const contextFields = ["contractId", "journeyId", "device", "role", "motionMode"];
+      if (
+        !context ||
+        Object.keys(context).length !== contextFields.length + 1 ||
+        !contextFields.every(
+          (key) => typeof context[key] === "string" && context[key].length > 0 && context[key].length <= 2048,
+        ) ||
+        !["DESKTOP", "MOBILE"].includes(context.device) ||
+        !["NORMAL", "REDUCED"].includes(context.motionMode) ||
+        !context.viewport ||
+        Object.keys(context.viewport).length !== 2 ||
+        ![context.viewport.width, context.viewport.height].every(
+          (n) => Number.isSafeInteger(n) && n >= 1 && n <= 10000,
+        ) ||
+        !Array.isArray(artifacts) ||
+        artifacts.length > 8192 ||
+        !journey ||
+        typeof journey !== "object" ||
+        Array.isArray(journey) ||
+        journey.status !== "PASS" ||
+        journey.id !== context.journeyId ||
+        !["contractId", "device", "role", "motionMode"].every((key) => journey[key] === context[key])
+      )
+        fail("CLOSED_CONTEXT_INVALID");
+      // Bound serialization before filesystem work; clone to retain exact input
+      // values even if the producer mutates its aggregate capture afterward.
+      const originalBytes = Buffer.from(json({ context, artifacts, journey }));
+      if (originalBytes.length > 2 * 1024 * 1024) fail("CLOSED_CONTEXT_BOUND");
+      const original = JSON.parse(originalBytes);
+      const ids = new Set(),
+        paths = new Set(),
+        files = [];
+      for (const artifact of original.artifacts) {
+        if (
+          typeof artifact.id !== "string" ||
+          ids.has(artifact.id) ||
+          paths.has(artifact.path) ||
+          !["screenshot", "trace", "recording"].includes(artifact.type) ||
+          !/^[a-f0-9]{64}$/u.test(artifact.sha256 ?? "") ||
+          !["contractId", "device", "role", "motionMode"].every((key) => artifact[key] === original.context[key]) ||
+          !safe(artifact.path).startsWith(`${invocation}/capture/`)
+        )
+          fail("CLOSED_CONTEXT_ARTIFACT_INVALID");
+        ids.add(artifact.id);
+        paths.add(artifact.path);
+        const observed = await fingerprint(await owned(root, artifact.path));
+        if (observed.sha256 !== artifact.sha256) fail("CLOSED_CONTEXT_ARTIFACT_CHANGED");
+        files.push({ path: artifact.path, ...observed });
+      }
+      if (["trace", "recording"].some((type) => original.artifacts.filter((item) => item.type === type).length !== 1))
+        fail("CLOSED_CONTEXT_ARTIFACT_INVALID");
+      const observation = {
+        version: 1,
+        classification: "CLOSED_BROWSER_CONTEXT_OBSERVATION_NOT_RUNTIME_CLEANUP",
+        binding: boundBinding,
+        ...original,
+        files,
+        mutableStateClass: "UNATTESTED_SHARED_TASK_RUNTIME",
+        parentRuntimeCleanup: "UNAVAILABLE_UNTIL_PARENT_REAP",
+        coverage: "REQUIRES_INDEPENDENT_COMPLETE_CONTEXT_VALIDATION",
+        qualification: false,
+        reuseAuthorized: false,
+      };
+      const bytes = Buffer.from(json(observation));
+      if (count >= 8192 || bytes.length > 2 * 1024 * 1024 || totalBytes + bytes.length > 64 * 1024 * 1024)
+        fail("CLOSED_CONTEXT_BOUND");
+      const file = `${directory}/${hash(json(original.context))}.json`;
+      // Reserve before yielding to the write, so parallel callers cannot exceed
+      // the aggregate cap. A failed write conservatively consumes its allowance.
+      count++;
+      totalBytes += bytes.length;
+      await writeFile(await owned(root, file), bytes, { flag: "wx", mode: 0o600 });
+      return { path: file, bytes: bytes.length, sha256: hash(bytes), qualification: false };
+    },
+  });
+}
 function copyPaths(root, rawDirectory, source, destination) {
   rawDirectory = repoPath(root, rawDirectory);
   const { invocation, rawRoot } = scope(rawDirectory);
