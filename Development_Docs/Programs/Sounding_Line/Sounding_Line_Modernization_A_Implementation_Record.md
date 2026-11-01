@@ -151,6 +151,34 @@ forbidden control-plane candidate before executing tools. Existing source bindin
 job-clock debit, timeouts, failure retention and protected merge authority remain
 in force. A fresh prepared corrective PR must qualify and land before #819 retries.
 
+The corrective PR [#828](https://github.com/Kgray44/treasurehuntSoT/pull/828),
+original candidate `6fc44839424cf3d1e3ed18c0912322718a64db0a`, failed ordinary
+run `41263942352/1`: 1,063 regression passes, nine failures and four skips. Its
+original 241,274-byte log archive has SHA-256
+`cadbbc5e63c7e2aca5d8b033d91f41104e3e637f7af65d627cc69af49e5bfd74`.
+The missing historical script and unit-test payloads were test-data assumptions
+outside the installed runtime reader predicate. No failed decision was waived.
+
+The follow-up includes a 95,661-byte, 29-object blob-only test fixture with SHA-256
+`36be0bca3bddeb464cecc110ef16befe48339c63aa841ec29a1f634fa68660b2`.
+The importer verifies that digest, the exact object count/type/set and each
+original revision/path identity. It imports no commits, trees, refs, ancestry or
+release authority. R3 and R4–R8 synthetic tree construction permits missing
+unread historical payloads while retaining their exact object IDs; production
+admission and every positive/negative assertion remain unchanged. The local
+selected-reader reproduction disables transport during testing. Its intentionally
+omitted declared media pins are recorded separately from the hosted failures;
+they cannot establish a passing full checkout or a qualification result.
+
+All nine affected regressions subsequently passed against the existing full
+object store in 215,801.4791 ms. Five adversarial manifest mutations were denied:
+omitted/substituted origins, altered size, altered pack metadata and object-set
+substitution. Independent review cleared the fixture-integrity and synthetic-tree
+scope after pinning all 32 origin rows with canonical mapping digest
+`3c434f3fe45d4ab0bbf9f620426f51ea861474ca0ed700ab4edd8487de2ab040`.
+These focused development results prepare the next candidate; they do not replace
+its required protected check.
+
 The ordinary ten-minute objective and fifteen-minute governing ceiling remain
 the performance target. A retains the installed job ceilings while debiting setup
 and bounding execution; it does not claim those targets have already been met.
