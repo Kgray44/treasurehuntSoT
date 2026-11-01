@@ -172,7 +172,7 @@ jobs:
           show-progress: true
           persist-credentials: false
       - name: Observe immutable original evidence context
-        if: ${{ inputs.pr_number != '721' && inputs.pr_number != '776' }}
+        if: ${{ inputs.pr_number != '721' && inputs.pr_number != '776' && inputs.pr_number != '805' }}
         continue-on-error: true
         timeout-minutes: 1
         working-directory: authority
@@ -351,7 +351,7 @@ jobs:
           fetch-tags: false
           show-progress: true
       - name: Observe immutable original evidence context
-        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' || github.event.pull_request.number == 805 || inputs.pr_number == '805') }}
         continue-on-error: true
         timeout-minutes: 1
         working-directory: authority

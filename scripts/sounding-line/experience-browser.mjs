@@ -27,6 +27,7 @@ import {
   copyDeclaredCaptureFile,
   rawCaptureBinding,
   createClosedContextJournal,
+  closedContextShadowAllowed,
   observeClosedContextShadow,
 } from "./experience-raw-output.mjs";
 import {
@@ -790,7 +791,7 @@ export async function captureProductExperience({
       ? await createRawOutputDirectory({ root, directory: `${rawOutputDirectory}/recordings` })
       : null;
   let closedContexts = null;
-  if (rawRecordings && !plan.exception) {
+  if (rawRecordings && closedContextShadowAllowed(plan, plan.prNumber ?? process.env.SOUNDING_LINE_PR_NUMBER)) {
     const observed = await observeClosedContextShadow(() =>
       createClosedContextJournal({ root, rawDirectory: rawOutputDirectory, binding: rawCaptureBinding(plan) }),
     );

@@ -71,10 +71,11 @@ test("retention cannot substitute another source, owner scope, run, attempt or p
       /SOURCE_OR_PURPOSE_MISMATCH/u,
     );
   }
-  assert.throws(
-    () => inspectArtifactRegistryRetention({ bytes, binding: { ...binding, prNumber: 776 }, encryption }),
-    /ORDINARY_OWNER_SCOPE/u,
-  );
+  for (const prNumber of [721, 776, 805])
+    assert.throws(
+      () => inspectArtifactRegistryRetention({ bytes, binding: { ...binding, prNumber }, encryption }),
+      /ORDINARY_OWNER_SCOPE/u,
+    );
   assert.throws(
     () =>
       sealArtifactRegistryRetention({

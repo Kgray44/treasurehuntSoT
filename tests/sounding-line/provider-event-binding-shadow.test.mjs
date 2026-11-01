@@ -97,7 +97,7 @@ test("wrong run, attempt, PR, owner, workflow, repository and finite campaigns f
     input.runBytes = encoded(run);
     assert.throws(() => observeOriginalEventBinding(input), invalid);
   }
-  for (const prNumber of [721, 776, 0, 1.5, "819"])
+  for (const prNumber of [721, 776, 805, 0, 1.5, "819"])
     assert.throws(() => observeOriginalEventBinding({ ...make(), prNumber }), invalid);
 });
 

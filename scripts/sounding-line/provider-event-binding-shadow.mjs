@@ -37,7 +37,7 @@ const time = (value) =>
   typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/u.test(value) ? Date.parse(value) : NaN;
 
 export function observeOriginalEventBinding({ runBytes, jobsBytes, nativeStepLogBytes, runId, attempt, prNumber }) {
-  need([runId, attempt, prNumber].every(positive) && ![721, 776].includes(prNumber), "ORDINARY_SCOPE");
+  need([runId, attempt, prNumber].every(positive) && ![721, 776, 805].includes(prNumber), "ORDINARY_SCOPE");
   const run = data(runBytes, 2 * 1024 * 1024),
     jobs = data(jobsBytes, 2 * 1024 * 1024);
   need(

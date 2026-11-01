@@ -23,7 +23,7 @@ export function validateRegistryProviderMetadata({
     "BINDING",
   );
   need(
-    [binding.prNumber, binding.runId, binding.attempt].every(positive) && ![721, 776].includes(binding.prNumber),
+    [binding.prNumber, binding.runId, binding.attempt].every(positive) && ![721, 776, 805].includes(binding.prNumber),
     "ORDINARY_SCOPE",
   );
   need(

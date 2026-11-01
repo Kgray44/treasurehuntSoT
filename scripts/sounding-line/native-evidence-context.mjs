@@ -74,7 +74,7 @@ export function observeNativeEvidenceContext({ environment, event }) {
     candidateSha = event.inputs.candidate_sha;
     prNumber = number(event.inputs.pr_number);
   }
-  need(![721, 776].includes(prNumber), "ORDINARY_SCOPE");
+  need(![721, 776, 805].includes(prNumber), "ORDINARY_SCOPE");
   need(oid(baseSha) && oid(candidateSha) && baseSha === e.GITHUB_SHA, "SOURCE");
   return Object.freeze({
     schemaVersion: 2,

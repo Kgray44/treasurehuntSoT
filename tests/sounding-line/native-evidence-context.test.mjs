@@ -96,6 +96,7 @@ test("spoofed workflow, actor, fork, source, scope and input injection never bec
     (x) => (x.event.pull_request.draft = true),
     (x) => (x.event.pull_request.number = 776),
     (x) => (x.event.pull_request.number = 721),
+    (x) => (x.event.pull_request.number = 805),
     (x) => (x.event.pull_request.number = "819"),
     (x) => (x.event.pull_request.base.sha = candidate),
     (x) => (x.event.pull_request.head.sha = "invalid"),
@@ -112,6 +113,7 @@ test("spoofed workflow, actor, fork, source, scope and input injection never bec
     (x) => (x.event.inputs.pr_number = '819"; echo INJECTED'),
     (x) => (x.event.inputs.pr_number = "0819"),
     (x) => (x.event.inputs.pr_number = "776"),
+    (x) => (x.event.inputs.pr_number = "805"),
     (x) => (x.event.inputs.base_sha = candidate),
   ]) {
     const input = fixture(true);
@@ -142,7 +144,7 @@ test("new shadow steps precede candidate checkout and cannot change protected Ma
     assert.match(step, /timeout-minutes: 1/u);
     assert.match(step, /working-directory: authority/u);
     assert.match(step, /run: node scripts\/sounding-line\/native-evidence-context\.mjs/u);
-    assert(step.includes("721") && step.includes("776"));
+    assert(step.includes("721") && step.includes("776") && step.includes("805"));
     assert(!/env:|outputs:|GH_TOKEN|GITHUB_OUTPUT/u.test(step));
   }
   const custody = source.slice(source.indexOf("  campaign-custody:"), source.indexOf("  experience-preparation:"));

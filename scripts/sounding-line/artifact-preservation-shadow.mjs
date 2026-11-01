@@ -5,7 +5,7 @@ import { artifactLogicalKey, artifactContextKey, validateArtifactManifest } from
 // This joins independently reconstructed source closures with retained bytes.
 // It deliberately produces no capability/token and cannot authorize capture skips.
 export function planArtifactPreservationShadow({ original, current, manifest, prNumber, spentReviewOrdinals = {} }) {
-  if (!Number.isSafeInteger(prNumber) || prNumber <= 0 || [721, 776].includes(prNumber))
+  if (!Number.isSafeInteger(prNumber) || prNumber <= 0 || [721, 776, 805].includes(prNumber))
     throw new Error("SOUNDING_LINE_ARTIFACT_SHADOW_ORDINARY_SCOPE_REQUIRED");
   if (
     !Array.isArray(current?.requiredCoverage) ||

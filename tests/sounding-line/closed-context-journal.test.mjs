@@ -10,12 +10,22 @@ import {
   createClosedContextJournal,
   sealRawCaptureOutput,
   observeClosedContextShadow,
+  closedContextShadowAllowed,
 } from "../../scripts/sounding-line/experience-raw-output.mjs";
 import {
   retainRawCaptureOutput,
   verifiedRawCapturePaths,
 } from "../../scripts/sounding-line/experience-raw-retention.mjs";
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
+
+test("new context observation excludes held owners, finite grants and unknown PR identity", () => {
+  assert.equal(closedContextShadowAllowed({ prNumber: 900 }), true);
+  assert.equal(closedContextShadowAllowed({}, "900"), true);
+  for (const prNumber of [721, 776, 805, "805", undefined, null, "unknown", "0900", "9e2", 0])
+    assert.equal(closedContextShadowAllowed({}, prNumber), false);
+  assert.equal(closedContextShadowAllowed({ prNumber: 900, exception: { recordDigest: "f".repeat(64) } }), false);
+  assert.equal(closedContextShadowAllowed(null, 900), false);
+});
 
 test("shadow IO failures remain ineligible without changing canonical capture or leaking private errors", async (t) => {
   const logs = [];

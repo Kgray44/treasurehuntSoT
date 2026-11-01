@@ -149,6 +149,12 @@ export async function observeClosedContextShadow(operation) {
 // Retain closed browser contexts inside the existing encrypted raw-output lane.
 // These observations do not attest parent runtime cleanup or authorize resume.
 // The browser calls append only after trace.stop, context.close and video.path.
+export function closedContextShadowAllowed(plan, prNumber = plan?.prNumber) {
+  if (!plan || typeof plan !== "object" || Array.isArray(plan)) return false;
+  if (typeof prNumber === "string" && !/^[1-9][0-9]{0,15}$/u.test(prNumber)) return false;
+  const pr = Number(prNumber);
+  return Number.isSafeInteger(pr) && pr > 0 && ![721, 776, 805].includes(pr) && !plan?.exception;
+}
 export async function createClosedContextJournal({
   root,
   rawDirectory,

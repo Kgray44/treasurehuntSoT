@@ -89,6 +89,7 @@ test("a failed or cancelled producer's retained prefix never becomes whole-run a
 });
 for (const [name, change] of [
   ["finite owner scope", (x) => (x.binding.prNumber = 776)],
+  ["held owner scope", (x) => (x.binding.prNumber = 805)],
   ["run attempt", (x) => (x.run.run_attempt = 1)],
   ["candidate used as workflow source", (x) => (x.run.head_sha = binding.candidateSha)],
   ["candidate event", (x) => (x.run.event = "pull_request")],

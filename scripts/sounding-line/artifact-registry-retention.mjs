@@ -34,7 +34,7 @@ function validateBinding(binding) {
   need(binding.repository === "Kgray44/treasurehuntSoT" && binding.jobKey === "experience-preparation", "BINDING");
   need(
     [binding.prNumber, binding.runId, binding.attempt].every((value) => Number.isSafeInteger(value) && value > 0) &&
-      ![721, 776].includes(binding.prNumber),
+      ![721, 776, 805].includes(binding.prNumber),
     "ORDINARY_OWNER_SCOPE",
   );
   need(

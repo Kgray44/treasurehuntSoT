@@ -77,10 +77,11 @@ test("shadow preservation joins complete closure and byte bindings without grant
       "FRESH",
     );
   }
-  assert.throws(
-    () => planArtifactPreservationShadow({ original: model, current: model, manifest, prNumber: 776 }),
-    /ORDINARY_SCOPE_REQUIRED/u,
-  );
+  for (const prNumber of [721, 776, 805])
+    assert.throws(
+      () => planArtifactPreservationShadow({ original: model, current: model, manifest, prNumber }),
+      /ORDINARY_SCOPE_REQUIRED/u,
+    );
   assert.throws(
     () =>
       planArtifactPreservationShadow({
