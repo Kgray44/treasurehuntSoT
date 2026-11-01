@@ -207,3 +207,43 @@ test("server refusal remains a failure; success requires observed two-parent lan
     ["MERGE_PREFLIGHT", "MERGE_OBSERVED"],
   );
 });
+test("administrator automation cannot merge any premature epoch in the original incident sequence", async () => {
+  const draft = fixture();
+  draft.pull.draft = true;
+  draft.run.created_at = time;
+  draft.check.conclusion = "skipped";
+  Object.freeze(draft.check);
+  const readyBeforeRun = fixture();
+  readyBeforeRun.run.created_at = time;
+  readyBeforeRun.check.conclusion = "skipped";
+  const activePending = fixture();
+  activePending.run.status = "in_progress";
+  activePending.run.conclusion = null;
+  const activeFailed = fixture();
+  activeFailed.run.conclusion = "failure";
+  activeFailed.check.conclusion = "failure";
+  const movedBeforeCustody = fixture();
+  movedBeforeCustody.pull.base.sha = "d".repeat(40);
+  for (const snapshot of [draft, readyBeforeRun, activePending, activeFailed, movedBeforeCustody]) {
+    const mocked = server(snapshot),
+      records = [];
+    await assert.rejects(
+      protectedMergeTransaction({
+        pr: 900,
+        head,
+        base,
+        runId: 42,
+        api: mocked.api,
+        record: async (value) => records.push(value),
+      }),
+    );
+    assert.equal(mocked.merges(), 0);
+    assert.equal(records.at(-1).event, "MERGE_FAILURE");
+    assert.equal(records.at(-1).mergeRequested, false);
+  }
+  assert.equal(draft.check.conclusion, "skipped");
+  assert.equal(activeFailed.check.conclusion, "failure");
+  const qualified = server(fixture());
+  assert.equal((await protectedMergeTransaction({ pr: 900, head, base, runId: 42, api: qualified.api })).merge, merged);
+  assert.equal(qualified.merges(), 1);
+});

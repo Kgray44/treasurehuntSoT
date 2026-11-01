@@ -52,7 +52,7 @@ or post-merge `RELEASE_GO`. PR #805 and its owner workspace are excluded.
   An evidence-publication failure retains a fixed-shape original-outcome fallback
   in Actions logs. Completed-obligation authority is unchanged.
 - The required decision job explicitly fails when custody or verification did
-  not succeed, including draft-triggered skipped work. Its source/readiness gate
+  not succeed, including draft-triggered skipped work and draft conversion. Its source/readiness gate
   rechecks the exact live PR transaction. A protected dispatch uses its actual
   event input; candidate-written dispatch claims confer no authority.
 - The owner-side merge client independently checks the successful app-15368
@@ -64,6 +64,11 @@ or post-merge `RELEASE_GO`. PR #805 and its owner workspace are excluded.
 The existing finalizer and `Sounding Line / Mainline Decision` remain authoritative.
 New generic artifact inheritance and preparation/transport optimizations are not
 activated by A. They start in shadow mode in their dependent increments.
+
+The authority action uses its native sparse-checkout input. In the inspected
+[checkout v4 source](https://github.com/actions/checkout/blob/v4/src/git-source-provider.ts),
+sparse checkout selects the blob filter during fetch; an explicit filter input
+would take precedence. The fixture tests both missing media and complete readers.
 
 ## Measured development evidence
 

@@ -65,6 +65,7 @@ test("the installed workflow uses exact ordinary transport and an explicit alway
   assert(gate);
   const condition = gate.split("\n").find((line) => line.startsWith("    if:"));
   assert.match(condition, /always\(\)/u);
+  assert.match(workflow, /converted_to_draft/u);
   assert.doesNotMatch(condition, /draft/u);
   assert.match(gate, /test "\$CUSTODY_RESULT" = success && test "\$VERIFICATION_RESULT" = success/u);
   assert.match(gate, /protected-merge-transaction\.mjs --operation gate/u);
