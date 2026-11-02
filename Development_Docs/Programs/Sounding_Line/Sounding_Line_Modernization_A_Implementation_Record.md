@@ -492,3 +492,38 @@ the ACTIVE 18-blob checkout and independent source/ordinal/cleanup review; the
 exact landed tree passed 34 smoke checks. The earlier missing-original receipt
 remains historical and is not replaced by this fresh run. This disabled B
 preparation is a separate candidate and has no protected acceptance yet.
+
+That preparation subsequently landed through #844 at
+`bfe39895d16562c68391a3279a1729ae3235bb3d`, tree
+`851b70de76bbb4e82a81d21dbb8ba6aca18a33ad`. Ordinary run 41512764232/2
+passed Mainline Decision 125522309586/app 15368, 1,487 regression checks and
+16 rendered checks; the exact landed tree passed 50 smoke checks. Attempt 1
+failed on hosted disk exhaustion before code tests and its original annotation
+and unavailable-log limitation remain preserved. A single bounded failed-jobs
+infrastructure retry retained the exact candidate/base and existing authority.
+This establishes disabled preparation only, not custody or B completion.
+
+## Source-bound registry recipients and qualified supervisor rebind
+
+The next support candidate routes registry creation and native authenticated
+reading through installed public recipient pins. The real recovered pin remains
+null: the writer retains its original legacy recipient and no owner key is
+created or discovered. A future separately reviewed pin can select new writes
+while preserving the original legacy reader. The declared envelope ID selects
+only an installed pin; the existing complete envelope, AAD, private/public-key,
+nonempty RSA-OAEP label and AES-GCM authentication checks remain mandatory.
+Neither successful decryption nor policy metadata grants custody, isolation,
+review credit, resume, reuse or release authority. The native reader exposes no
+caller-selected encryption policy. Its conservative exact source closure covers
+the added module and refuses changes after provider archive authentication.
+
+The accompanying transport binding refresh pins only the already-qualified #844
+supervisor bytes. It preserves the original #843 lineage record and adds a
+separate continuation tied to #844's exact candidate, merge, run and attempt.
+The 68 reader paths, 90 certificate paths, metadata inventory, maximum 64 paths
+and excluded owners remain unchanged. The accepted base must still choose FULL
+under its older issuer; candidate bindings cannot authorize their own protected
+qualification. C1 retains its independent FULL route. Fresh selected native
+acceptance remains necessary after this support candidate lands. The recipient
+module has its separate registry source-closure tests and is not added to C0's
+unexecuted read set.
