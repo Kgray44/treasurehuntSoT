@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { isDeepStrictEqual } from "node:util";
 import { readCustodyPilotSource, retainCustodyProofFrame } from "./noncampaign-custody-proof-files.mjs";
 
 export const CUSTODY_RETENTION_LIMITS = Object.freeze({
@@ -192,12 +193,116 @@ export function retainCustodyWorkerProof({ workspace, destination, binding, limi
     }
   }
   const preservationComplete = errors.length === 0;
-  const integrityComplete =
+  const ledgerConsistent =
     preservationComplete &&
     source !== null &&
     ledgers.length > 0 &&
     integrityErrors.length === 0 &&
     rows.every((r) => !/^\d{4}-.*\.original\.bin$/u.test(r.path) || r.originalOrdinal !== undefined);
+  // Ledger consistency alone never establishes a completed worker prefix.
+  let workerPrefixComplete = false,
+    workerProofWitness = null;
+  const proofErrors = [];
+  const completed = [
+    "input.original.json",
+    "empty-git-config",
+    "deny.cjs",
+    "event.original.json",
+    "installed-source.original.json",
+    "original-frame-ledger.json",
+    "terminal.json",
+    "supervision.json",
+    "reserve-network.original.json",
+    "reserve-output.original.txt",
+    "worker.original.stdout",
+    "worker.original.stderr",
+  ];
+  if (source)
+    try {
+      need(
+        ledgerConsistent && completed.every((name) => byName.get(name)?.status === "BYTE_EXACT_READBACK"),
+        "COMPLETED_PREFIX_FILES",
+      );
+      const bytes = (name) => readCustodyPilotSource(path.join(originals, name));
+      const json = (name) => JSON.parse(bytes(name));
+      const ledger = json("original-frame-ledger.json");
+      need(
+        ledger.frames.length > 0 && Array.isArray(ledger.commands) && ledger.commands.length > 0,
+        "NONEMPTY_COMPLETED_LEDGER",
+      );
+      const terminal = json("terminal.json"),
+        supervision = json("supervision.json"),
+        installed = json("installed-source.original.json");
+      const stdout = bytes("worker.original.stdout"),
+        stderr = bytes("worker.original.stderr"),
+        compact = JSON.parse(stdout);
+      const expected = { ...terminal };
+      delete expected.proposal;
+      need(
+        isDeepStrictEqual(compact, expected) &&
+          terminal.proposalSha256 === hash(Buffer.from(JSON.stringify(terminal.proposal))),
+        "TERMINAL_RAW_PROOF_JOIN",
+      );
+      need(
+        terminal.status === "PASS_INSTALLED_NEGATIVE_CUSTODY" &&
+          terminal.root === workspace &&
+          terminal.baseSha === binding.baseSha &&
+          terminal.candidateSha === binding.candidateSha &&
+          terminal.prNumber === binding.prNumber &&
+          terminal.profile === "NONCAMPAIGN_CUSTODY_METADATA_V1",
+        "COMPLETED_SOURCE_BINDING",
+      );
+      need(
+        Array.isArray(installed.rows) &&
+          installed.rows.length > 0 &&
+          hash(Buffer.from(JSON.stringify(installed.rows))) === terminal.installedSourceDigest &&
+          installed.certificateRevision === terminal.certificateRevision,
+        "INSTALLED_SOURCE_JOIN",
+      );
+      need(
+        supervision.result?.code === 0 &&
+          supervision.failed === false &&
+          supervision.failure === null &&
+          Array.isArray(supervision.finalizationFailures) &&
+          supervision.finalizationFailures.length === 0 &&
+          supervision.stdoutComplete === true &&
+          supervision.stderrComplete === true &&
+          supervision.cleanup?.status === "PASS" &&
+          supervision.cleanup.treeReaped === true &&
+          supervision.cleanup.streamsClosed === true,
+        "COMPLETED_SUPERVISION",
+      );
+      need(
+        isDeepStrictEqual(supervision.observed, supervision.stored) &&
+          supervision.observed.stdout === stdout.length &&
+          supervision.observed.stderr === stderr.length,
+        "COMPLETE_WORKER_STREAMS",
+      );
+      const output = bytes("reserve-output.original.txt"),
+        counter = json("reserve-network.original.json");
+      need(
+        output.equals(Buffer.from("campaign=false\n")) &&
+          hash(output) === terminal.reserveOutputSha256 &&
+          counter.fetchAttempts === 0 &&
+          counter.networkAttempts === 0 &&
+          counter.nonGitProcessAttempts === 0 &&
+          terminal.fetchAttempts === 0 &&
+          terminal.networkAttempts === 0 &&
+          terminal.nonGitProcessAttempts === 0 &&
+          terminal.completeCommitTreeAncestry === true &&
+          terminal.filesystemUnchanged === true,
+        "NEGATIVE_ROUTE_ORIGINALS",
+      );
+      workerPrefixComplete = true;
+      workerProofWitness = {
+        proofSha256: hash(stdout),
+        installedSourceDigest: terminal.installedSourceDigest,
+        reserveOutputSha256: terminal.reserveOutputSha256,
+        certificateRevision: terminal.certificateRevision,
+      };
+    } catch (e) {
+      proofErrors.push(error(e));
+    }
   const manifest = {
     version: 1,
     kind: "ORIGINAL_CUSTODY_WORKER_PREFIX_FORENSIC_RETENTION",
@@ -207,7 +312,10 @@ export function retainCustodyWorkerProof({ workspace, destination, binding, limi
     limits: budget,
     producerFrameLedgerLimitBytes: 32 * 1024 ** 2,
     preservationComplete,
-    integrityComplete,
+    ledgerConsistent,
+    workerPrefixComplete,
+    workerProofWitness,
+    proofErrors,
     files: rows,
     sourceBytes: before?.total ?? 0,
     errors,
@@ -225,7 +333,9 @@ export function retainCustodyWorkerProof({ workspace, destination, binding, limi
         : "NO_WORKER_PREFIX"
       : "INCOMPLETE_ORIGINAL_RETENTION",
     preservationComplete,
-    integrityComplete,
+    ledgerConsistent,
+    workerPrefixComplete,
+    workerProofWitness,
     manifest: path.join(destination, "retention-manifest.json"),
     manifestSha256: hash(bytes),
     files: rows.length,
@@ -299,14 +409,23 @@ export async function retainCustodyWorkerProofCLI(workspaceOption) {
     `run-${binding.runId}-${binding.attempt}`,
   );
   const result = retainCustodyWorkerProof({ workspace, destination, binding });
-  let applied = false;
+  let applied = false,
+    expectedProof = null;
   try {
     const checkout = JSON.parse(readCustodyPilotSource(path.join(path.dirname(authority), "candidate.checkout.json")));
-    applied = checkout.readSet?.applied === true;
+    applied = checkout.readSet?.applied === true && checkout.readSet.profile === "NONCAMPAIGN_CUSTODY_METADATA_V1";
+    expectedProof = checkout.readSet?.transportSourceProof;
   } catch (e) {
     if (e.code !== "ENOENT") throw e;
   }
-  console.log(JSON.stringify(result));
-  if (!result.preservationComplete || (applied && !result.integrityComplete)) process.exitCode = 1;
+  const outerReceiptJoin =
+    !applied ||
+    (result.workerPrefixComplete &&
+      expectedProof &&
+      ["proofSha256", "installedSourceDigest", "reserveOutputSha256", "certificateRevision"].every(
+        (key) => result.workerProofWitness[key] === expectedProof[key],
+      ));
+  console.log(JSON.stringify({ ...result, outerReceiptJoin: Boolean(outerReceiptJoin) }));
+  if (!result.preservationComplete || !outerReceiptJoin) process.exitCode = 1;
   return result;
 }

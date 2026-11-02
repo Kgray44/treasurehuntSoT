@@ -1041,7 +1041,7 @@ test("custody retention preserves exact failed and partial originals without iss
   );
   const r = retainCustodyWorkerProof(f);
   assert.equal(r.preservationComplete, true);
-  assert.equal(r.integrityComplete, false);
+  assert.equal(r.ledgerConsistent, false);
   assert.equal(r.qualification, false);
   assert.equal(r.reuseAuthorized, false);
   for (const n of fs.readdirSync(source))
@@ -1050,7 +1050,7 @@ test("custody retention preserves exact failed and partial originals without iss
   assert.throws(() => retainCustodyWorkerProof(f), /OUTPUT_ALREADY_EXISTS/u);
   fs.unlinkSync(path.join(source, "0002-partial.original.bin"));
   const complete = retainCustodyWorkerProof({ ...f, destination: f.destination + "-complete" });
-  assert.equal(complete.integrityComplete, true);
+  assert.equal(complete.ledgerConsistent, true);
   assert.deepEqual(fs.readFileSync(path.join(source, "original-frame-ledger.failure.json")), ledger);
 });
 
@@ -1059,7 +1059,7 @@ test("custody retention records absent prefix and rejects source hardlinks and d
     absent = retainCustodyWorkerProof(f);
   assert.equal(absent.status, "NO_WORKER_PREFIX");
   assert.equal(absent.preservationComplete, true);
-  assert.equal(absent.integrityComplete, false);
+  assert.equal(absent.ledgerConsistent, false);
   const source = retentionSource(f),
     foreign = path.join(f.root, "foreign.bin");
   fs.writeFileSync(foreign, "private original");
@@ -1088,7 +1088,7 @@ test("custody retention rejects escaped, changed and reordered ledger references
     );
     const r = retainCustodyWorkerProof({ ...f, destination: f.destination + `-${i++}` });
     assert.equal(r.preservationComplete, true);
-    assert.equal(r.integrityComplete, false);
+    assert.equal(r.ledgerConsistent, false);
     assert(JSON.parse(fs.readFileSync(r.manifest)).integrityErrors.length > 0);
     assert.deepEqual(fs.readFileSync(path.join(r.manifest, "../originals", frame.path)), bytes);
   }
@@ -1248,4 +1248,83 @@ test("custody retention rejects unbound callers and source/output overlap before
   assert.equal(result.status, 1);
   assert.match(result.stderr, /TRUSTED_WORKFLOW_CONTEXT/u);
   assert.equal(fs.existsSync(f.destination), false);
+});
+
+test("custody retention distinguishes consistent empty ledgers from complete worker originals", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f),
+    raw = Buffer.from("trace"),
+    frame = retentionFrame(raw),
+    write = (name, value) =>
+      fs.writeFileSync(
+        path.join(source, name),
+        typeof value === "string" || Buffer.isBuffer(value) ? value : JSON.stringify(value),
+      );
+  const digest = (value) =>
+    createHash("sha256")
+      .update(Buffer.isBuffer(value) ? value : Buffer.from(JSON.stringify(value)))
+      .digest("hex");
+  const proposal = { profile: "NONCAMPAIGN_CUSTODY_METADATA_V1" },
+    rows = [{ path: "synthetic installed source", sha256: digest(raw) }],
+    counter = { fetchAttempts: 0, networkAttempts: 0, nonGitProcessAttempts: 0 };
+  const proof = {
+    status: "PASS_INSTALLED_NEGATIVE_CUSTODY",
+    root: f.workspace,
+    baseSha: f.binding.baseSha,
+    candidateSha: f.binding.candidateSha,
+    prNumber: f.binding.prNumber,
+    profile: proposal.profile,
+    proposalSha256: digest(proposal),
+    installedSourceDigest: digest(rows),
+    certificateRevision: sha("c"),
+    reserveOutputSha256: digest(Buffer.from("campaign=false\n")),
+    ...counter,
+    completeCommitTreeAncestry: true,
+    filesystemUnchanged: true,
+  };
+  const stdout = Buffer.from(JSON.stringify(proof) + "\n");
+  write(frame.path, raw);
+  write("original-frame-ledger.json", {
+    frames: [frame],
+    commands: [{ frames: { stdout: frame } }],
+    retainedBytes: raw.length,
+  });
+  write("input.original.json", {
+    root: f.workspace,
+    baseSha: f.binding.baseSha,
+    candidateSha: f.binding.candidateSha,
+    prNumber: f.binding.prNumber,
+  });
+  write("event.original.json", {});
+  write("empty-git-config", "");
+  write("deny.cjs", "synthetic test only");
+  write("installed-source.original.json", { rows, certificateRevision: proof.certificateRevision });
+  write("terminal.json", { ...proof, proposal });
+  write("reserve-output.original.txt", "campaign=false\n");
+  write("reserve-network.original.json", counter);
+  write("worker.original.stdout", stdout);
+  write("worker.original.stderr", "");
+  write("supervision.json", {
+    result: { code: 0 },
+    failed: false,
+    failure: null,
+    finalizationFailures: [],
+    stdoutComplete: true,
+    stderrComplete: true,
+    cleanup: { status: "PASS", treeReaped: true, streamsClosed: true },
+    observed: { stdout: stdout.length, stderr: 0 },
+    stored: { stdout: stdout.length, stderr: 0 },
+  });
+  const complete = retainCustodyWorkerProof(f);
+  assert.equal(complete.workerPrefixComplete, true);
+  assert.equal(complete.qualification, false);
+  assert.equal(complete.workerProofWitness.proofSha256, digest(stdout));
+  fs.unlinkSync(path.join(source, "terminal.json"));
+  assert.equal(retainCustodyWorkerProof({ ...f, destination: f.destination + "-missing" }).workerPrefixComplete, false);
+  write("terminal.json", { ...proof, proposal });
+  fs.unlinkSync(path.join(source, frame.path));
+  write("original-frame-ledger.json", { frames: [], commands: [], retainedBytes: 0 });
+  const empty = retainCustodyWorkerProof({ ...f, destination: f.destination + "-empty" });
+  assert.equal(empty.ledgerConsistent, true);
+  assert.equal(empty.workerPrefixComplete, false);
 });
