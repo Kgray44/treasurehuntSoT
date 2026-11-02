@@ -3,7 +3,7 @@ title: Sounding Line modernization A implementation and qualification record
 audience: engineering
 status: current
 canonical_for: sounding-line-modernization-a-implementation
-last_reviewed: 2026-11-01
+last_reviewed: 2026-11-02
 ---
 
 # Modernization A: reliability, cost containment and merge integrity
@@ -365,3 +365,97 @@ its owner-controlled merge are separate product integration evidence.
 A's installed reliability and merge-integrity work is integrated. B and C remain
 independent dependent increments; this disposition neither activates their shadow
 optimizations nor completes the overall modernization or its performance targets.
+
+## C custody activation follow-up: 2026-11-02
+
+This separate C follow-up records accepted source and its prepared operational
+verification. It does not change A's historical scope or complete B/C.
+
+The disabled adapter landed through [PR #839](https://github.com/Kgray44/treasurehuntSoT/pull/839)
+at `a73291222fd84967b86ab81231717eeba13e5238`. Its successor
+[PR #840](https://github.com/Kgray44/treasurehuntSoT/pull/840) installed ACTIVE
+at `fb19b072ccf93e0caf13b41383157f87b059f1b8`, parents
+`a73291222fd84967b86ab81231717eeba13e5238` and
+`f780a0e26f5e2a5707032827b560820dfa6115e6`, tree
+`ded1cbc202113a69f4ffe87c0ba9c64a034036ce`. Its ordinary FULL qualification
+`41417157333/1` passed required check `125190760960` (app `15368`):
+1,469 regression passes, zero failures, four existing skips, and 16 rendered
+passes. The 1,009-second whole-run observation exceeded the 900-second target.
+
+Independent native comparison `41419690651/1`, job `125191994528`, preserved the
+exact same protected base and candidate: FULL observed 19,443 blobs /
+9,432,303,600 bytes / 340,442.677506 ms; metadata selection observed 19 blobs /
+10,615,595 bytes / 12,167.457175 ms. The real installed worker and subsequent
+reserve command both returned `campaign=false` with zero fetch, network and
+non-Git process attempts. Complete 14-root ancestry, 87 runtime descriptor hashes,
+two workflow metadata pins, original historical identities and owned cleanup
+were verified. Artifact `13129426374` contains 64,628,526 original archive bytes,
+SHA-256 `7e49aeabcbbfe21b658794be3d54f7ae86c71e545842242580756d967d1411e5`.
+Different hosted instances, Node versions and runner images limit this to
+source-bound negative-route equivalence; it proves neither causal speedup nor
+the whole-run target. No separate FULL reserve stdout was captured.
+
+The exact landed tree passed 25 smoke checks. This record is prepared before the
+first subsequent ordinary ACTIVE run. That run must retain its actual enabled
+route, safe FULL fallback, original receipts, required decision, cleanup and
+whole-run timing before operational acceptance. This follow-up changes only
+regression coverage and this record; production certificate bytes, required
+protection, held owners and release authority remain governed by accepted main.
+
+## C retained-proof operational verification: 2026-11-02
+
+The first ordinary ACTIVE event for #841, candidate
+`40da64af40bfec9351b97639278f800ae994efcb`, passed run `41455538085/1`
+in 740 seconds. Its checkout receipt recorded 18 selected blobs / 10,610,239
+bytes / 10,578.199573 ms, but the installed workflow did not upload the original
+worker prefix. That event remains held evidence with an unrecoverable raw-worker
+gap. Its original candidate, checks, receipts and timing remain historical;
+subsequent evidence cannot replace its missing files.
+
+[PR #842](https://github.com/Kgray44/treasurehuntSoT/pull/842) installed bounded,
+after-every-outcome worker retention at
+`31115bf8f8d727c9b433e304e982f4c9cc5053ee`. Its qualification
+`41472986372/1` passed 1,476 regression checks and 16 rendered checks; its
+949-second observation exceeded the 900-second target. Landed smoke passed 32
+checks. This repair safely used FULL while its former source pins were stale.
+
+[PR #843](https://github.com/Kgray44/treasurehuntSoT/pull/843) rebound accepted
+retention source at `eb0c2483894c3461f70d2ce6797bdc5ddb499ea5`, tree
+`824a4e3ec56bb30cbbebec4a9321807794fcb89c`, with reviewed precursor
+`fe3cd493fdf1f8da3f175022a6dabb9e02850fea`. Qualification
+`41487028139/1`, required check `125428019304` / app `15368`, passed 1,477
+regression checks and 16 rendered checks in 872 seconds. The installed older
+reader correctly chose FULL/INSTALLED_READER_CHANGED: 19,448 blobs /
+9,432,454,430 bytes / 165,095.418321 ms. Its collector uploaded the independently
+verified NO_WORKER_PREFIX manifest. The final verification checkout retained the
+same complete blob closure in 240,447.72917 ms. Both retained complete 14-root
+ancestry, disabled late transport and passed owned cleanup. Landed smoke passed
+33 checks. These observations establish source integration and collector wiring;
+whole-run and billed savings still require comparable accepted evidence.
+
+The fresh #841 candidate forward-merges that accepted main while preserving
+`40da64af40bfec9351b97639278f800ae994efcb` as an ancestor. Its ordinary event
+must retain actual worker originals, original frame ordinals and command ledger,
+installed descriptor/workflow source identities, supervisor cleanup, exact outer
+checkout hash joins and the existing required Mainline Decision. Its merge stays
+held until independent review accepts that fresh evidence. Completion additionally
+requires a passing smoke check on the exact landed tree.
+
+## Remaining B/C acceptance boundaries
+
+B's authenticated evidence and dependency-aware preservation shadow landed through
+[PR #835](https://github.com/Kgray44/treasurehuntSoT/pull/835) at
+`84400d01c8e7e68ecb87f0d3aa80acf6e1964411`. Native observations remain
+UNATTESTED_SHARED_TASK_RUNTIME and use RUN_FRESH. Authenticated reuse acceptance
+requires a real provider archive, independently expected coverage and external
+isolation, with the existing owner-held key supplied only through its in-memory
+route. That route is presently unavailable. Fixture positives and old artifacts
+do not establish B activation or complete the B increment.
+
+C source batching is live in two consumers. The separate certified preparation
+experiment measured about 9.807 seconds validating reuse versus about 3 seconds
+for fresh generation. Its evidence-backed disposition is to keep RUN_FRESH;
+activation has no demonstrated cost benefit. Bounded media transport preserves
+original provider bytes under finite read/deadline limits. Each further consumer
+promotion remains subject to provider authenticity, external isolation and
+independent equivalence. Custody acceptance alone does not complete all of C.
