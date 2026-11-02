@@ -137,7 +137,8 @@ async function closeReader(reader, failures) {
   if (!reader) return { started: false, cancelled: false, lockReleased: false };
   let timer,
     cancelled = false,
-    lockReleased = false;
+    lockReleased = false,
+    cancelTimedOut = false;
   try {
     cancelled = await Promise.race([
       Promise.resolve()
@@ -150,7 +151,10 @@ async function closeReader(reader, failures) {
           },
         ),
       new Promise((resolve) => {
-        timer = setTimeout(() => resolve(false), 1000);
+        timer = setTimeout(() => {
+          cancelTimedOut = true;
+          resolve(false);
+        }, 1000);
       }),
     ]);
   } finally {
@@ -162,7 +166,13 @@ async function closeReader(reader, failures) {
       failures.push({ stage: "READER_RELEASE_LOCK", error });
     }
   }
-  return { started: true, cancelled, lockReleased };
+  return {
+    started: true,
+    cancelled,
+    lockReleased,
+    cancelTimedOut,
+    cancelObservation: cancelTimedOut ? "UNRESOLVED_AT_CLEANUP_CUTOFF" : cancelled ? "SUCCEEDED" : "FAILED",
+  };
 }
 
 // No production call site. Stream bytes into an exclusive private file instead
@@ -337,7 +347,8 @@ export async function retainMediaTransportShadow({
       need(serialized.length <= 65536, "FAILURE_RETENTION_BOUND");
       fs.writeFileSync(failurePath, serialized, { flag: "wx", mode: 0o600 });
       failureRetained = true;
-    } catch {
+    } catch (failure) {
+      originalFailures.push({ stage: "ORIGINAL_FAILURE_RECEIPT_RETENTION", error: failure });
       /* The initial receipt remains incomplete; do not claim custody. */
     }
   }

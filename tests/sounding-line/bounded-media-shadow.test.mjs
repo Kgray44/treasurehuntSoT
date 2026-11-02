@@ -159,6 +159,67 @@ test("simultaneous transport, cancel, release and file-close failures preserve s
   }
 });
 
+test("unresolved reader cancellation remains explicit after its finite cleanup cutoff", async (t) => {
+  const { directory } = fixture(t),
+    readError = Error("original interrupted read");
+  const r = {
+    ok: true,
+    status: 200,
+    headers: new Headers(),
+    body: {
+      getReader: () => ({
+        read: async () => {
+          throw readError;
+        },
+        cancel: () => new Promise(() => {}),
+        releaseLock: () => {},
+      }),
+    },
+  };
+  const result = await retainMediaTransportShadow({ ...options(directory, Buffer.from("expected")), response: r });
+  assert.equal(result.status, "FAIL");
+  assert.equal(result.originalError, readError);
+  assert.equal(result.readerCleanup.cancelTimedOut, true);
+  assert.equal(result.readerCleanup.cancelObservation, "UNRESOLVED_AT_CLEANUP_CUTOFF");
+  assert.equal(result.readerCleanup.cancelled, false);
+  assert.equal(verifyRetainedMediaShadow(result), null);
+});
+
+test("private failure receipt write failures remain exact in-process originals", async (t) => {
+  const { directory } = fixture(t),
+    write = fs.writeFileSync;
+  const readError = Error("original network read"),
+    retentionError = Error("original private receipt write");
+  fs.writeFileSync = (...args) => {
+    if (String(args[0]).endsWith(".original-failure.json")) throw retentionError;
+    return write(...args);
+  };
+  try {
+    const r = {
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      body: {
+        getReader: () => ({
+          read: async () => {
+            throw readError;
+          },
+          cancel: async () => {},
+          releaseLock: () => {},
+        }),
+      },
+    };
+    const result = await retainMediaTransportShadow({ ...options(directory, Buffer.from("expected")), response: r });
+    assert.equal(result.originalError, readError);
+    assert.equal(result.failureRetained, false);
+    assert.equal(result.originalFailures.at(-1).stage, "ORIGINAL_FAILURE_RECEIPT_RETENTION");
+    assert.equal(result.originalFailures.at(-1).error, retentionError);
+    assert.equal(verifyRetainedMediaShadow(result), null);
+  } finally {
+    fs.writeFileSync = write;
+  }
+});
+
 test("oversize, truncated and wrong-digest bodies never become complete media", async (t) => {
   const { directory } = fixture(t),
     bytes = Buffer.from("expected");
