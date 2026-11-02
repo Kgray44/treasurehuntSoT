@@ -351,6 +351,37 @@ test("failed original transport retains the exact error and all preceding provid
   assert.equal(requests.filter((endpoint) => endpoint === "actions/jobs/11/logs").length, 1);
   assert.equal(evidence.originals.length, 6);
 });
+
+test("unrelated terminal bytes remain exact original data without altering marker authentication", () => {
+  let original;
+  const proof = observe((d) => {
+    original = Buffer.concat([
+      Buffer.from("2026-11-02T00:00:00.0000000Z \u001b[36;1mrunner command\u001b[0m\n"),
+      d["actions/jobs/10/logs"],
+      Buffer.from("2026-11-02T00:00:03.0000000Z \u001b]8;;https://example.invalid\u0007untrusted hyperlink\u001b]8;;\u0007\n"),
+    ]);
+    d["actions/jobs/10/logs"] = original;
+  });
+  assert.equal(proof.kind, "PROVIDER_BOUND_PREPARATION_SHADOW_NOT_REUSE_AUTHORITY");
+  const row = api.retainedPreparationProviderEvidence(proof).originals.find((r) => r.endpoint === "actions/jobs/10/logs");
+  assert.deepEqual(row.bytes, original);
+  assert.equal(row.sha256, createHash("sha256").update(original).digest("hex"));
+});
+
+test("escape-bearing, malformed and duplicate marker lines cannot authenticate", () => {
+  for (const mutate of [
+    (text) => text.replace("SOUNDING_LINE_PREPARATION_CONTEXT_V1 ", "\u001b[32mSOUNDING_LINE_PREPARATION_CONTEXT_V1 "),
+    (text) => text.replace("SOUNDING_LINE_PREPARATION_CONTEXT_V1 ", "SOUNDING_LINE_PREPARATION_CONTEXT_V1 \u001b[32m"),
+    (text) => text.replace('"actor":"Kgray44"', '"actor":"Kgray44\u001b[0m"'),
+    (text) => text.replace("SOUNDING_LINE_PREPARATION_CONTEXT_V1 {", "SOUNDING_LINE_PREPARATION_CONTEXT_V1 invalid{"),
+    (text) => text + text,
+  ]) {
+    const proof = observe((d) => { d["actions/jobs/10/logs"] = Buffer.from(mutate(d["actions/jobs/10/logs"].toString())); });
+    assert.equal(proof.kind, "PREPARATION_PROVIDER_DENIED");
+    assert.equal(api.inspectPreparationProvider(proof, { root, acceptedBaseSha: source, runId }), null);
+    assert(api.retainedPreparationProviderEvidence(proof).originalError);
+  }
+});
 test("authenticated ZIP transport uses actual owned binary pipes and denies drift, corruption and failed payload exit", async () => {
   for (const scenario of ["positive", "corrupt", "exit", "advance"]) {
     const proof = observe();

@@ -51,7 +51,11 @@ function git(root, args) {
   });
 }
 function providerRequest(endpoint, { maximumBytes, timeoutMs }) {
-  return execFileSync("gh", ["api", "--hostname", "github.com", `repos/${repository}/${endpoint}`], {
+  // Original job logs contain runner ANSI bytes. Capture them only through the
+  // existing binary pipes; never render or strip them. JSON endpoints retain
+  // the CLI's default escape guard. Job IDs come from the validated run below.
+  const rawLog = /^actions\/jobs\/[1-9][0-9]*\/logs(?![\s\S])/u.test(endpoint);
+  return execFileSync("gh", ["api", "--hostname", "github.com", ...(rawLog ? ["--allow-escape-sequences"] : []), `repos/${repository}/${endpoint}`], {
     timeout: timeoutMs,
     maxBuffer: maximumBytes,
     encoding: null,
