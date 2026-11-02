@@ -8,6 +8,10 @@ import { createHash } from "node:crypto";
 import { Readable } from "node:stream";
 import { spawnOwnedProcess, processExit, stopOwnedProcess } from "./owned-process.mjs";
 import { retainMediaTransportShadow, verifyRetainedMediaShadow } from "./bounded-media-shadow.mjs";
+import {
+  restorePreparationArchiveShadow,
+  inspectPreparationArchiveRestoreShadow,
+} from "./preparation-archive-shadow.mjs";
 import { canonicalJson, digest } from "./evidence.mjs";
 import {
   PREPARATION_PUBLISHER_READERS,
@@ -20,6 +24,7 @@ const repository = "Kgray44/treasurehuntSoT",
 const proofs = new WeakMap(),
   retained = new WeakMap();
 const archiveProofs = new WeakMap();
+const capsuleProofs = new WeakMap();
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const oid = (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
@@ -318,7 +323,13 @@ export function authenticatePreparationProvider(input) {
       qualification: false,
       reuseAuthorized: false,
     });
-    proofs.set(proof, { root, source, runId, expiresAt: Math.min(Date.now() + 60000, time(artifact.expires_at)) });
+    proofs.set(proof, {
+      root,
+      source,
+      runId,
+      producerContext: contexts[0],
+      expiresAt: Math.min(Date.now() + 60000, time(artifact.expires_at)),
+    });
     retained.set(proof, { originals, failures });
     return proof;
   } catch (originalError) {
@@ -343,6 +354,44 @@ export function inspectPreparationProvider(proof, { root, acceptedBaseSha, runId
   )
     return null;
   return Object.freeze({ ...proof });
+}
+function assertFreshPreparationProvider(proof, binding, read) {
+  const { root, acceptedBaseSha, runId } = binding;
+  need(inspectPreparationProvider(proof, { root, acceptedBaseSha, runId }), "TRANSPORT_OPAQUE_SOURCE");
+  const main = read("git/ref/heads/main"),
+    run = read(`actions/runs/${runId}`),
+    artifact = read(`actions/artifacts/${proof.artifactId}`);
+  need(
+    main.ref === "refs/heads/main" && main.object?.type === "commit" && main.object.sha === acceptedBaseSha,
+    "TRANSPORT_MAIN_ADVANCED",
+  );
+  need(
+    run.id === runId &&
+      run.run_attempt === 1 &&
+      run.head_sha === acceptedBaseSha &&
+      run.head_branch === "main" &&
+      run.event === "workflow_dispatch" &&
+      run.path === PREPARATION_SHADOW_WORKFLOW &&
+      run.status === "completed" &&
+      run.conclusion === "success" &&
+      run.repository?.id === repositoryId &&
+      run.repository.full_name === repository &&
+      run.repository.owner?.id === ownerId &&
+      [run.actor, run.triggering_actor].every((actor) => actor?.id === ownerId && actor.login === "Kgray44"),
+    "TRANSPORT_RUN_CHANGED",
+  );
+  need(
+    artifact.id === proof.artifactId &&
+      artifact.name === `sounding-line-preparation-capsule-${runId}-1` &&
+      artifact.expired === false &&
+      artifact.workflow_run?.id === runId &&
+      artifact.workflow_run.head_sha === acceptedBaseSha &&
+      artifact.workflow_run.head_branch === "main" &&
+      artifact.size_in_bytes === proof.artifactBytes &&
+      artifact.digest === `sha256:${proof.artifactSha256}` &&
+      time(artifact.expires_at) > Date.now(),
+    "TRANSPORT_ARTIFACT_CHANGED",
+  );
 }
 // Download only an opaque authenticated original. Never buffer a complete ZIP,
 // extract it, authorize payload execution, or turn the transport into reuse.
@@ -372,43 +421,7 @@ export async function retainAuthenticatedPreparationArchive({ proof, root, accep
     originals.push({ endpoint, bytes: Buffer.from(bytes), sha256: hash(bytes) });
     return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
   };
-  const fresh = () => {
-    need(inspectPreparationProvider(proof, { root, acceptedBaseSha, runId }), "TRANSPORT_OPAQUE_SOURCE");
-    const main = read("git/ref/heads/main"),
-      run = read(`actions/runs/${runId}`),
-      artifact = read(`actions/artifacts/${proof.artifactId}`);
-    need(
-      main.ref === "refs/heads/main" && main.object?.type === "commit" && main.object.sha === acceptedBaseSha,
-      "TRANSPORT_MAIN_ADVANCED",
-    );
-    need(
-      run.id === runId &&
-        run.run_attempt === 1 &&
-        run.head_sha === acceptedBaseSha &&
-        run.head_branch === "main" &&
-        run.event === "workflow_dispatch" &&
-        run.path === PREPARATION_SHADOW_WORKFLOW &&
-        run.status === "completed" &&
-        run.conclusion === "success" &&
-        run.repository?.id === repositoryId &&
-        run.repository.full_name === repository &&
-        run.repository.owner?.id === ownerId &&
-        [run.actor, run.triggering_actor].every((actor) => actor?.id === ownerId && actor.login === "Kgray44"),
-      "TRANSPORT_RUN_CHANGED",
-    );
-    need(
-      artifact.id === proof.artifactId &&
-        artifact.name === `sounding-line-preparation-capsule-${runId}-1` &&
-        artifact.expired === false &&
-        artifact.workflow_run?.id === runId &&
-        artifact.workflow_run.head_sha === acceptedBaseSha &&
-        artifact.workflow_run.head_branch === "main" &&
-        artifact.size_in_bytes === proof.artifactBytes &&
-        artifact.digest === `sha256:${proof.artifactSha256}` &&
-        time(artifact.expires_at) > Date.now(),
-      "TRANSPORT_ARTIFACT_CHANGED",
-    );
-  };
+  const fresh = () => assertFreshPreparationProvider(proof, { root, acceptedBaseSha, runId }, read);
   try {
     fresh();
     originalArtifactId = proof.artifactId;
@@ -507,6 +520,90 @@ export function inspectAuthenticatedPreparationArchive(handle, binding) {
     reuseAuthorized: false,
   });
 }
+// Join actual payload bytes to the provider's original producer and independent
+// equivalence observation. The private restore is still never executable credit.
+export function validateAuthenticatedPreparationCapsule({ archive, binding, directory }) {
+  const originals = [],
+    failures = [],
+    began = performance.now();
+  let originalError, restore, provider;
+  const read = (endpoint) => {
+    need(performance.now() - began < 60000, "CAPSULE_DEADLINE");
+    let bytes;
+    try {
+      bytes = providerRequest(endpoint, { maximumBytes: 2 * 1024 * 1024, timeoutMs: 5000 });
+    } catch (error) {
+      failures.push({ endpoint, originalError: error });
+      throw error;
+    }
+    need(Buffer.isBuffer(bytes) && bytes.length > 0 && bytes.length <= 2 * 1024 * 1024, "CAPSULE_PROVIDER_BYTES");
+    originals.push({ endpoint, bytes: Buffer.from(bytes), sha256: hash(bytes) });
+    return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+  };
+  try {
+    const value = archiveProofs.get(archive);
+    need(value, "CAPSULE_OPAQUE_ARCHIVE");
+    provider = value.proof;
+    assertFreshPreparationProvider(provider, binding, read);
+    const source = inspectAuthenticatedPreparationArchive(archive, binding);
+    need(source, "CAPSULE_ORIGINAL_ARCHIVE_BYTES");
+    restore = restorePreparationArchiveShadow({ ...source, directory });
+    if (restore.status !== "PASS") {
+      if (restore.retentionError)
+        throw new AggregateError(
+          [restore.originalError, restore.retentionError],
+          "PREPARATION_CAPSULE_AND_FAILURE_RETENTION_FAILED",
+          { cause: restore.originalError },
+        );
+      throw restore.originalError;
+    }
+    const actual = inspectPreparationArchiveRestoreShadow(restore);
+    need(
+      actual &&
+        actual.manifestSha256 === provider.manifestSha256 &&
+        actual.inventoryDigest === provider.inventoryDigest &&
+        actual.inputFingerprint === provider.inputFingerprint &&
+        canonicalJson(actual.publisherContext) === canonicalJson(proofs.get(provider).producerContext),
+      "CAPSULE_ORIGINAL_PRODUCER_JOIN",
+    );
+    need(inspectAuthenticatedPreparationArchive(archive, binding), "CAPSULE_ARCHIVE_CHANGED");
+    assertFreshPreparationProvider(provider, binding, read);
+    need(inspectPreparationArchiveRestoreShadow(restore), "CAPSULE_DESTINATION_CHANGED");
+  } catch (error) {
+    originalError = error;
+  }
+  const handle = Object.freeze({
+    kind: originalError ? "AUTHENTICATED_PREPARATION_CAPSULE_DENIED" : "PROVIDER_BOUND_VALIDATED_PRISMA_CAPSULE_SHADOW",
+    sourceCommit: provider?.sourceCommit,
+    runId: provider?.runId,
+    attempt: 1,
+    artifactId: provider?.artifactId,
+    certificate: "NOT_ISSUED",
+    qualification: false,
+    reuseAuthorized: false,
+  });
+  retained.set(handle, { originals, failures, originalError, restore });
+  if (!originalError) capsuleProofs.set(handle, { archive, binding: { ...binding }, provider, restore });
+  return handle;
+}
+export function inspectAuthenticatedPreparationCapsule(handle, binding) {
+  const value = capsuleProofs.get(handle);
+  if (
+    !value ||
+    !inspectPreparationProvider(value.provider, binding) ||
+    !inspectAuthenticatedPreparationArchive(value.archive, binding)
+  )
+    return null;
+  const actual = inspectPreparationArchiveRestoreShadow(value.restore);
+  if (!actual) return null;
+  return Object.freeze({
+    ...actual,
+    provider: Object.freeze({ ...value.provider }),
+    certificate: "NOT_ISSUED",
+    qualification: false,
+    reuseAuthorized: false,
+  });
+}
 export function retainedPreparationProviderEvidence(handle) {
   const value = retained.get(handle);
   if (!value) return null;
@@ -519,6 +616,7 @@ export function retainedPreparationProviderEvidence(handle) {
     stderr: value.stderr && Buffer.from(value.stderr),
     stderrBytes: value.stderrBytes,
     result: value.result,
+    restore: value.restore,
     qualification: false,
     reuseAuthorized: false,
   });

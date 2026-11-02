@@ -22,6 +22,7 @@ export const PREPARATION_ARCHIVE_SHADOW_LIMITS = Object.freeze({
   chunkBytes: 65536,
   deadlineMs: 60000,
   expandedBytes: 132 * 1024 ** 2,
+  emptyDirectoriesRequired: true,
 });
 const need = (condition, code) => {
   if (!condition) throw Error(`SOUNDING_LINE_ATTESTATION_SHADOW_${code}`);
@@ -205,6 +206,7 @@ function readArchiveMember({ filename, expectedBytes, expectedSha256, memberName
       const identityName = directory ? name.slice(0, -1) : name;
       need(Buffer.from(name).equals(rawName) && safe(identityName) && !names.has(identityName), "MEMBER_PATH");
       names.add(identityName);
+      if (directory && limits.emptyDirectoriesRequired) need(size === 0 && compressed === 0, "NONEMPTY_DIRECTORY");
       members.push(Object.freeze({ path: identityName, type: directory ? "directory" : "file", bytes: size }));
       const mode = (attributes >>> 16) & 0xf000;
       need(

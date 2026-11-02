@@ -83,6 +83,8 @@ with zipfile.ZipFile(dst,'w',compression=zipfile.ZIP_DEFLATED) as z:
    if attack=='corrupt' and rel=='payload/index.js': z.writestr(rel,b'corrupted payload')
    else: z.write(full,rel)
  if attack=='extra': z.writestr('payload/unlisted.js',b'extra')
+ if attack=='directory-data': z.writestr('payload/',b'unaccounted directory data')
+ if attack=='empty-directory': z.writestr(zipfile.ZipInfo('payload/'),b'')
  if attack=='traversal': z.writestr('../outside.txt',b'outside')
  if attack=='symlink':
   entry=zipfile.ZipInfo('payload/alias.js');entry.create_system=3;entry.external_attr=(stat.S_IFLNK|0o777)<<16;z.writestr(entry,b'index.js')
@@ -132,7 +134,7 @@ test("complete capsule ZIP restores exact bytes and original metadata without gr
   assert.equal(inspectPreparationArchiveRestoreShadow(result), null);
 });
 test("extra, corrupt, traversing and non-file ZIP members leave failed custody and never materialize outside the private prefix", (t) => {
-  for (const attack of ["extra", "corrupt", "traversal", "symlink"]) {
+  for (const attack of ["extra", "corrupt", "traversal", "symlink", "directory-data"]) {
     const f = fixture(t, 1024, attack),
       result = restorePreparationArchiveShadow(f.input);
     assert.equal(result.status, "FAIL", attack);
@@ -142,6 +144,12 @@ test("extra, corrupt, traversing and non-file ZIP members leave failed custody a
     assert(fs.existsSync(path.join(result.root, "restore.failure.json")));
     assert(!fs.existsSync(path.join(f.root, "outside.txt")));
   }
+});
+test("an optional explicit empty payload directory has zero bytes and does not hide membership", (t) => {
+  const f = fixture(t, 1024, "empty-directory"),
+    result = restorePreparationArchiveShadow(f.input);
+  assert.equal(result.status, "PASS");
+  assert(inspectPreparationArchiveRestoreShadow(result));
 });
 test("original manifest identity, complete ZIP hash and exact retained metadata cannot be substituted", (t) => {
   for (const field of ["manifestSha256", "inventoryDigest", "expectedSha256"]) {

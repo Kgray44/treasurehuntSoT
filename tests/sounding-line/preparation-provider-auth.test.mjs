@@ -12,6 +12,7 @@ import {
   preparationPublisherContext,
 } from "../../scripts/sounding-line/preparation-publisher-shadow.mjs";
 import { digest } from "../../scripts/sounding-line/evidence.mjs";
+import { createPreparationCapsuleShadow } from "../../scripts/sounding-line/preparation-capsule-shadow.mjs";
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "preparation-provider-auth-"));
 const modulePath = "scripts/sounding-line/preparation-provider-auth.mjs";
 const git = (...args) =>
@@ -24,9 +25,14 @@ const git = (...args) =>
 for (const file of [
   ...PREPARATION_PUBLISHER_READERS,
   modulePath,
-  ...["bounded-media-shadow.mjs", "owned-process.mjs", "owned-process-windows.ps1", "owned-process-linux.py"].map(
-    (name) => `scripts/sounding-line/${name}`,
-  ),
+  ...[
+    "bounded-media-shadow.mjs",
+    "owned-process.mjs",
+    "owned-process-windows.ps1",
+    "owned-process-linux.py",
+    "preparation-archive-shadow.mjs",
+    "attestation-archive-shadow.mjs",
+  ].map((name) => `scripts/sounding-line/${name}`),
 ]) {
   const target = path.join(root, file);
   fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -191,7 +197,14 @@ function fixtures() {
     "actions/artifacts/55": artifact,
   };
 }
-let current, requests, transportFailure, mainReads, downloadFailure, downloadCorrupt, advanceDuringDownload;
+let current,
+  requests,
+  transportFailure,
+  mainReads,
+  downloadFailure,
+  downloadCorrupt,
+  advanceDuringDownload,
+  activeDownloadBytes;
 globalThis.__syntheticPreparationProvider = (endpoint, { maximumBytes, timeoutMs }) => {
   requests.push(endpoint);
   assert(maximumBytes <= 2 * 1024 * 1024);
@@ -215,6 +228,7 @@ function observe(change = () => {}) {
   downloadFailure = 0;
   downloadCorrupt = false;
   advanceDuringDownload = false;
+  activeDownloadBytes = archiveBytes;
   change(current);
   return api.authenticatePreparationProvider({ root, acceptedBaseSha: source, runId });
 }
@@ -228,7 +242,7 @@ globalThis.__syntheticPreparationDownload = (spawn, command, args, options) => {
   assert.equal(command, "gh");
   assert.deepEqual(args, ["api", "--hostname", "github.com", `repos/Kgray44/treasurehuntSoT/actions/artifacts/55/zip`]);
   if (advanceDuringDownload) current.advanceOnRead = mainReads + 1;
-  const payload = Buffer.from(archiveBytes);
+  const payload = Buffer.from(activeDownloadBytes);
   if (downloadCorrupt) payload[0] ^= 1;
   return spawn(
     process.execPath,
@@ -381,6 +395,114 @@ test("authenticated ZIP transport uses actual owned binary pipes and denies drif
       if (scenario === "corrupt") assert.equal(evidence.transport.status, "FAIL");
       if (scenario === "exit") assert.equal(evidence.result.code, 9);
       if (scenario === "advance") assert.match(evidence.originalError.message, /MAIN_ADVANCED/u);
+    }
+  }
+});
+test("provider provenance joins the complete actual capsule and rejects self-consistent publisher substitutions at use", async () => {
+  for (const scenario of ["positive", "nonce", "input"]) {
+    const client = path.join(root, `join-client-${scenario}`),
+      parent = path.join(root, `join-capsules-${scenario}`),
+      downloaded = path.join(root, `join-download-${scenario}`),
+      restored = path.join(root, `join-restores-${scenario}`);
+    for (const directory of [client, parent, downloaded, restored]) fs.mkdirSync(directory);
+    fs.writeFileSync(path.join(client, "index.js"), "module.exports = { immutableFixture: true };\n");
+    const original = createPreparationCapsuleShadow({ source: client, directory: parent, layer: "prisma-client" });
+    assert.equal(original.status, "PASS");
+    const publisher = {
+      kind: "PREPARATION_SOURCE_CAPSULE_SHADOW",
+      version: 1,
+      context: { ...contexts[0] },
+      identity: { inputFingerprint: capsule.inputFingerprint },
+      capsule: {
+        manifestSha256: original.manifestSha256,
+        initialSha256: createHash("sha256")
+          .update(fs.readFileSync(path.join(original.root, "initial.json")))
+          .digest("hex"),
+        inventoryDigest: original.inventoryDigest,
+        byteLength: original.bytes,
+        fileCount: original.files,
+      },
+      certificate: "NOT_ISSUED",
+      qualification: false,
+      reuseAuthorized: false,
+    };
+    if (scenario === "nonce") publisher.context.nonce = "7".repeat(64);
+    if (scenario === "input") publisher.identity.inputFingerprint = "8".repeat(64);
+    fs.writeFileSync(path.join(original.root, "publisher.json"), JSON.stringify(publisher));
+    const filename = path.join(root, `join-original-${scenario}.zip`);
+    execFileSync(
+      "python",
+      [
+        "-c",
+        "import os,sys,zipfile\nwith zipfile.ZipFile(sys.argv[2],'w',compression=zipfile.ZIP_DEFLATED) as z:\n for folder,dirs,files in os.walk(sys.argv[1]):\n  for name in sorted(files):\n   full=os.path.join(folder,name);z.write(full,os.path.relpath(full,sys.argv[1]).replace(os.sep,'/'))",
+        original.root,
+        filename,
+      ],
+      { windowsHide: true, timeout: 10000, maxBuffer: 65536 },
+    );
+    const zipBytes = fs.readFileSync(filename),
+      archiveDigest = `sha256:${createHash("sha256").update(zipBytes).digest("hex")}`;
+    const proof = observe((data) => {
+      activeDownloadBytes = zipBytes;
+      for (const artifact of [
+        data["actions/artifacts/55"],
+        data[`actions/runs/${runId}/artifacts?per_page=100`].artifacts[0],
+      ]) {
+        artifact.size_in_bytes = zipBytes.length;
+        artifact.digest = archiveDigest;
+      }
+      data["actions/jobs/10/logs"] = Buffer.from(
+        data["actions/jobs/10/logs"]
+          .toString()
+          .replace(JSON.stringify(capsule), JSON.stringify({ ...capsule, manifestSha256: original.manifestSha256 })),
+      );
+      data["actions/jobs/11/logs"] = Buffer.from(
+        data["actions/jobs/11/logs"]
+          .toString()
+          .replace(
+            JSON.stringify(equivalence),
+            JSON.stringify({
+              ...equivalence,
+              originalManifestSha256: original.manifestSha256,
+              inventoryDigest: original.inventoryDigest,
+            }),
+          ),
+      );
+    });
+    assert.equal(proof.kind, "PROVIDER_BOUND_PREPARATION_SHADOW_NOT_REUSE_AUTHORITY");
+    const binding = { root, acceptedBaseSha: source, runId },
+      archive = await api.retainAuthenticatedPreparationArchive({ proof, ...binding, directory: downloaded });
+    assert.equal(archive.kind, "PROVIDER_BOUND_PREPARATION_ZIP_NOT_VALIDATED_PAYLOAD");
+    const handle = api.validateAuthenticatedPreparationCapsule({ archive, binding, directory: restored });
+    if (scenario === "positive") {
+      assert.equal(handle.kind, "PROVIDER_BOUND_VALIDATED_PRISMA_CAPSULE_SHADOW");
+      const value = api.inspectAuthenticatedPreparationCapsule(handle, binding);
+      assert(value);
+      assert.equal(value.inventoryDigest, original.inventoryDigest);
+      assert.equal(value.inputFingerprint, capsule.inputFingerprint);
+      assert.equal(value.reuseAuthorized, false);
+      assert.deepEqual(
+        fs.readFileSync(path.join(value.payload, "index.js")),
+        fs.readFileSync(path.join(client, "index.js")),
+      );
+      assert.equal(api.inspectAuthenticatedPreparationCapsule(JSON.parse(JSON.stringify(handle)), binding), null);
+      const clone = api.validateAuthenticatedPreparationCapsule({
+        archive: JSON.parse(JSON.stringify(archive)),
+        binding,
+        directory: restored,
+      });
+      assert.equal(clone.kind, "AUTHENTICATED_PREPARATION_CAPSULE_DENIED");
+      current["git/ref/heads/main"].object.sha = "0".repeat(40);
+      const advanced = api.validateAuthenticatedPreparationCapsule({ archive, binding, directory: restored });
+      assert.equal(advanced.kind, "AUTHENTICATED_PREPARATION_CAPSULE_DENIED");
+      assert.match(api.retainedPreparationProviderEvidence(advanced).originalError.message, /MAIN_ADVANCED/u);
+      fs.writeFileSync(path.join(value.payload, "index.js"), "late payload change");
+      assert.equal(api.inspectAuthenticatedPreparationCapsule(handle, binding), null);
+    } else {
+      assert.equal(handle.kind, "AUTHENTICATED_PREPARATION_CAPSULE_DENIED");
+      const evidence = api.retainedPreparationProviderEvidence(handle);
+      assert.match(evidence.originalError.message, /ORIGINAL_PRODUCER_JOIN/u);
+      assert.equal(evidence.restore.status, "PASS"); // bytes alone never authorize the substituted identity
     }
   }
 });
