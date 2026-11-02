@@ -313,7 +313,7 @@ test("custody reader, policy, owner, malformed metadata and finite scope failure
     input.candidateEntries.find((row) => row.path === pin.path).blob = sha("0");
     assert.equal(proposeNoncampaignCustodyShadow(input).profile, "FULL_SNAPSHOT");
   }
-  assert.equal(cases.length + custodyPolicy.readers.length, 151);
+  assert.equal(cases.length + custodyPolicy.readers.length, 153);
   assert.throws(() => parseCustodyShadowTree(Buffer.from("100644 blob bad\tfile\0")), /TREE_METADATA/u);
   assert.throws(() => parseCustodyShadowTree(Buffer.from([255, 0])), /encoded data/u);
 });
