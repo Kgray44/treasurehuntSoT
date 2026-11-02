@@ -21,6 +21,7 @@ import {
   validateCustodyPilotBaseline,
   validatePreparedCustodyBaseline,
   validateCustodyRunPull,
+  CUSTODY_ORDINARY_WORKFLOW_SHA256,
 } from "../../scripts/sounding-line/noncampaign-custody-pilot.mjs";
 import { checkoutCommandOutput } from "../../scripts/sounding-line/experience-selected-checkout.mjs";
 import {
@@ -32,6 +33,7 @@ import {
   verifyCustodySwitchReader,
 } from "../../scripts/sounding-line/noncampaign-custody-read-set.mjs";
 import { createHash } from "node:crypto";
+import { retainCustodyWorkerProof } from "../../scripts/sounding-line/custody-worker-proof-retention.mjs";
 import { baselineToolchainObservations } from "../../scripts/sounding-line/noncampaign-custody-matched-pilot.mjs";
 import {
   custodyShadowPreload as adapterPreload,
@@ -311,7 +313,7 @@ test("custody reader, policy, owner, malformed metadata and finite scope failure
     input.candidateEntries.find((row) => row.path === pin.path).blob = sha("0");
     assert.equal(proposeNoncampaignCustodyShadow(input).profile, "FULL_SNAPSHOT");
   }
-  assert.equal(cases.length + custodyPolicy.readers.length, 151);
+  assert.equal(cases.length + custodyPolicy.readers.length, 153);
   assert.throws(() => parseCustodyShadowTree(Buffer.from("100644 blob bad\tfile\0")), /TREE_METADATA/u);
   assert.throws(() => parseCustodyShadowTree(Buffer.from([255, 0])), /encoded data/u);
 });
@@ -914,7 +916,7 @@ test("baseline toolchain observations retain original bytes and never certify ru
   assert.throws(() => baselineToolchainObservations(Buffer.from([255])));
 });
 
-test("actual GitHub empty PR array retains original identities through the pinned workflow run-name join", () => {
+test("actual GitHub empty PR array retains historical identities and refuses unreviewed workflow drift", () => {
   // The complete original response bytes are immutable fixtures. The historical
   // pre-merge PR response is not asserted to be the PR's present open state.
   const runBytes = fs.readFileSync(new URL("./fixtures/custody-pr838-run-empty.original.bin", import.meta.url));
@@ -932,6 +934,19 @@ test("actual GitHub empty PR array retains original identities through the pinne
     base = pull.base.sha,
     candidate = pull.head.sha;
   assert.deepEqual(run.pull_requests, []);
+  const installedWorkflow = fs.readFileSync(
+    new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url),
+  );
+  if (createHash("sha256").update(installedWorkflow).digest("hex") !== CUSTODY_ORDINARY_WORKFLOW_SHA256) {
+    // The retention rollout deliberately leaves the old observer pin frozen.
+    // Historical original bytes remain valid history; they cannot authenticate
+    // this changed installed workflow before its separately reviewed rebind.
+    assert.equal(pull.number, 838);
+    assert.equal(base, "613b73b5622e91dbee7b13c69ac7c5904771390e");
+    assert.equal(candidate, "7a38251a07c17914e6cad7e6901f0a7330507648");
+    assert.throws(() => validateCustodyRunPull(run, pull, base, candidate), /SOURCE_PINNED_PR_RUN_NAME/u);
+    return;
+  }
   const proof = validateCustodyRunPull(run, pull, base, candidate);
   assert.equal(proof.kind, "SOURCE_PINNED_RUN_NAME_WITH_EMPTY_PROVIDER_ARRAY");
   assert.equal(proof.observedPullRequestRows, 0);
@@ -1005,4 +1020,332 @@ test("sparse-bootstrap workflow pins require exact reviewed base and candidate b
     () => custodyWorkflowMetadataPin("scripts/sounding-line/experience-exception.mjs", original, original, original),
     /UNKNOWN_WORKFLOW_METADATA_PIN/u,
   );
+});
+
+test("custody retention preserves exact failed and partial originals without issuing authority", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f);
+  const bytes = Buffer.from([255, 0, 13, 10]),
+    frame = retentionFrame(bytes);
+  fs.writeFileSync(path.join(source, frame.path), bytes);
+  const ledger = Buffer.from(
+    JSON.stringify({ frames: [frame], commands: [{ frames: { stdout: frame } }], retainedBytes: bytes.length }) + "\n",
+  );
+  fs.writeFileSync(path.join(source, "original-frame-ledger.failure.json"), ledger);
+  fs.writeFileSync(path.join(source, "0002-partial.original.bin"), "partial");
+  fs.writeFileSync(
+    path.join(source, "supervision.json"),
+    '{"failed":true,"failure":{"message":"original cancellation and cleanup failure"}}',
+  );
+  const r = retainCustodyWorkerProof(f);
+  assert.equal(r.preservationComplete, true);
+  assert.equal(r.ledgerConsistent, false);
+  assert.equal(r.qualification, false);
+  assert.equal(r.reuseAuthorized, false);
+  for (const n of fs.readdirSync(source))
+    assert.deepEqual(fs.readFileSync(path.join(f.destination, "originals", n)), fs.readFileSync(path.join(source, n)));
+  assert.equal(JSON.parse(fs.readFileSync(r.manifest)).files.find((x) => x.path === frame.path).originalOrdinal, 1);
+  assert.throws(() => retainCustodyWorkerProof(f), /OUTPUT_ALREADY_EXISTS/u);
+  fs.unlinkSync(path.join(source, "0002-partial.original.bin"));
+  const complete = retainCustodyWorkerProof({ ...f, destination: f.destination + "-complete" });
+  assert.equal(complete.ledgerConsistent, true);
+  assert.deepEqual(fs.readFileSync(path.join(source, "original-frame-ledger.failure.json")), ledger);
+});
+
+test("custody retention records absent prefix and rejects source hardlinks and directory aliases", (t) => {
+  const f = retentionFixture(t),
+    absent = retainCustodyWorkerProof(f);
+  assert.equal(absent.status, "NO_WORKER_PREFIX");
+  assert.equal(absent.preservationComplete, true);
+  assert.equal(absent.ledgerConsistent, false);
+  const source = retentionSource(f),
+    foreign = path.join(f.root, "foreign.bin");
+  fs.writeFileSync(foreign, "private original");
+  fs.linkSync(foreign, path.join(source, "hardlinked.original.bin"));
+  const bad = retainCustodyWorkerProof({ ...f, destination: f.destination + "-hardlink" });
+  assert.equal(bad.preservationComplete, false);
+  assert.match(JSON.stringify(JSON.parse(fs.readFileSync(bad.manifest)).errors), /SOURCE_ALIAS/u);
+  assert.deepEqual(fs.readdirSync(path.join(f.destination + "-hardlink", "originals")), []);
+  fs.unlinkSync(path.join(source, "hardlinked.original.bin"));
+  fs.symlinkSync(f.root, path.join(source, "directory-link"), process.platform === "win32" ? "junction" : "dir");
+  assert.equal(retainCustodyWorkerProof({ ...f, destination: f.destination + "-alias" }).preservationComplete, false);
+  assert.equal(fs.readFileSync(foreign, "utf8"), "private original");
+});
+
+test("custody retention rejects escaped, changed and reordered ledger references while preserving raw bytes", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f),
+    bytes = Buffer.from("a"),
+    frame = retentionFrame(bytes);
+  fs.writeFileSync(path.join(source, frame.path), bytes);
+  let i = 0;
+  for (const change of [{ path: "../escape" }, { ordinal: 2 }, { bytes: 2 }, { sha256: "0".repeat(64) }]) {
+    fs.writeFileSync(
+      path.join(source, "original-frame-ledger.json"),
+      JSON.stringify({ frames: [{ ...frame, ...change }] }),
+    );
+    const r = retainCustodyWorkerProof({ ...f, destination: f.destination + `-${i++}` });
+    assert.equal(r.preservationComplete, true);
+    assert.equal(r.ledgerConsistent, false);
+    assert(JSON.parse(fs.readFileSync(r.manifest)).integrityErrors.length > 0);
+    assert.deepEqual(fs.readFileSync(path.join(r.manifest, "../originals", frame.path)), bytes);
+  }
+  const limited = retainCustodyWorkerProof({ ...f, destination: f.destination + "-bound", limits: { totalBytes: 1 } });
+  assert.equal(limited.preservationComplete, false);
+  assert.match(JSON.stringify(JSON.parse(fs.readFileSync(limited.manifest)).errors), /TOTAL_BOUND/u);
+  assert.throws(
+    () =>
+      retainCustodyWorkerProof({
+        ...f,
+        destination: f.destination + "-raised",
+        limits: { totalBytes: 129 * 1024 ** 2 },
+      }),
+    /LIMIT/u,
+  );
+});
+
+test("custody retention keeps partial destination and original write exception", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f),
+    bytes = Buffer.from("unaltered raw original");
+  fs.writeFileSync(path.join(source, "0001-stdout.original.bin"), bytes);
+  const original = fs.writeSync;
+  let injected = false;
+  try {
+    fs.writeSync = (...args) => {
+      if (!injected) {
+        injected = true;
+        original(args[0], args[1], args[2], 3, args[4]);
+        throw Error("SIMULATED_PARTIAL_WRITE");
+      }
+      return original(...args);
+    };
+    const r = retainCustodyWorkerProof(f);
+    assert.equal(r.preservationComplete, false);
+    assert.match(JSON.stringify(JSON.parse(fs.readFileSync(r.manifest)).errors), /SIMULATED_PARTIAL_WRITE/u);
+    assert.equal(fs.readFileSync(path.join(f.destination, "originals/0001-stdout.original.bin")).length, 3);
+  } finally {
+    fs.writeSync = original;
+  }
+  assert.deepEqual(fs.readFileSync(path.join(source, "0001-stdout.original.bin")), bytes);
+});
+
+test("custody retention preserves close failures and rejects changed readback", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f),
+    bytes = Buffer.from("unaltered raw original");
+  fs.writeFileSync(path.join(source, "0001-stdout.original.bin"), bytes);
+  const close = fs.closeSync;
+  let injected = false;
+  try {
+    fs.closeSync = (...args) => {
+      close(...args);
+      if (!injected) {
+        injected = true;
+        throw Error("SIMULATED_CLOSE_FAILURE");
+      }
+    };
+    const r = retainCustodyWorkerProof(f);
+    assert.equal(r.preservationComplete, false);
+    assert.match(JSON.stringify(JSON.parse(fs.readFileSync(r.manifest)).errors), /SIMULATED_CLOSE_FAILURE/u);
+  } finally {
+    fs.closeSync = close;
+  }
+  const read = fs.readSync;
+  let calls = 0;
+  try {
+    fs.readSync = (...args) => {
+      const n = read(...args);
+      if (++calls === 2 && n > 0) args[1][args[2]] ^= 1;
+      return n;
+    };
+    const r = retainCustodyWorkerProof({ ...f, destination: f.destination + "-readback" });
+    assert.equal(r.preservationComplete, false);
+    assert.match(JSON.stringify(JSON.parse(fs.readFileSync(r.manifest)).errors), /FRAME_READBACK_CHANGED/u);
+  } finally {
+    fs.readSync = read;
+  }
+  assert.deepEqual(fs.readFileSync(path.join(source, "0001-stdout.original.bin")), bytes);
+});
+
+function retentionSource(f) {
+  const s = path.join(f.workspace, ".git/noncampaign-custody-proof");
+  fs.mkdirSync(s, { recursive: true });
+  return s;
+}
+function retentionFrame(bytes) {
+  return {
+    ordinal: 1,
+    path: "0001-stdout.original.bin",
+    bytes: bytes.length,
+    sha256: createHash("sha256").update(bytes).digest("hex"),
+    completeReadback: true,
+  };
+}
+function retentionFixture(t) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "sl-worker-retention-")),
+    workspace = path.join(root, "candidate"),
+    destination = path.join(root, "retained");
+  fs.mkdirSync(workspace);
+  t.after(() => {
+    assert(path.resolve(root).startsWith(path.resolve(os.tmpdir()) + path.sep));
+    assert.equal(fs.realpathSync.native(root), root);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  return {
+    root,
+    workspace,
+    destination,
+    binding: {
+      repository: "Kgray44/treasurehuntSoT",
+      baseSha: sha("a"),
+      candidateSha: sha("b"),
+      prNumber: 842,
+      runId: "12345",
+      attempt: 1,
+    },
+  };
+}
+
+test("custody retention rejects unbound callers and source/output overlap before writing", (t) => {
+  const f = retentionFixture(t);
+  assert.throws(
+    () => retainCustodyWorkerProof({ ...f, binding: { ...f.binding, repository: "other/repo" } }),
+    /BINDING/u,
+  );
+  assert.equal(fs.existsSync(f.destination), false);
+  assert.throws(
+    () => retainCustodyWorkerProof({ ...f, destination: path.join(f.workspace, "output") }),
+    /OUTPUT_OVERLAP/u,
+  );
+  assert.equal(fs.existsSync(path.join(f.workspace, "output")), false);
+  const result = spawnSync(
+    process.execPath,
+    [
+      "scripts/sounding-line/experience-exception.mjs",
+      "--operation",
+      "retain-custody-proof",
+      "--workspace",
+      f.workspace,
+    ],
+    {
+      cwd: process.cwd(),
+      env: {
+        PATH: process.env.PATH,
+        SystemRoot: process.env.SystemRoot,
+        TEMP: process.env.TEMP,
+        TMP: process.env.TMP,
+        NODE_OPTIONS: "",
+        NODE_PATH: "",
+        GITHUB_REPOSITORY: "other/repo",
+      },
+      encoding: "utf8",
+      timeout: 20000,
+    },
+  );
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /TRUSTED_WORKFLOW_CONTEXT/u);
+  assert.equal(fs.existsSync(f.destination), false);
+});
+
+test("custody retention distinguishes consistent empty ledgers from complete worker originals", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f),
+    raw = Buffer.from("trace"),
+    frame = retentionFrame(raw),
+    write = (name, value) =>
+      fs.writeFileSync(
+        path.join(source, name),
+        typeof value === "string" || Buffer.isBuffer(value) ? value : JSON.stringify(value),
+      );
+  const digest = (value) =>
+    createHash("sha256")
+      .update(Buffer.isBuffer(value) ? value : Buffer.from(JSON.stringify(value)))
+      .digest("hex");
+  const proposal = { profile: "NONCAMPAIGN_CUSTODY_METADATA_V1" },
+    rows = [{ path: "synthetic installed source", sha256: digest(raw) }],
+    counter = { fetchAttempts: 0, networkAttempts: 0, nonGitProcessAttempts: 0 };
+  const proof = {
+    status: "PASS_INSTALLED_NEGATIVE_CUSTODY",
+    root: f.workspace,
+    baseSha: f.binding.baseSha,
+    candidateSha: f.binding.candidateSha,
+    prNumber: f.binding.prNumber,
+    profile: proposal.profile,
+    proposalSha256: digest(proposal),
+    installedSourceDigest: digest(rows),
+    certificateRevision: sha("c"),
+    reserveOutputSha256: digest(Buffer.from("campaign=false\n")),
+    ...counter,
+    completeCommitTreeAncestry: true,
+    filesystemUnchanged: true,
+  };
+  const stdout = Buffer.from(JSON.stringify(proof) + "\n");
+  write(frame.path, raw);
+  write("original-frame-ledger.json", {
+    frames: [frame],
+    commands: [{ frames: { stdout: frame } }],
+    retainedBytes: raw.length,
+  });
+  write("input.original.json", {
+    root: f.workspace,
+    baseSha: f.binding.baseSha,
+    candidateSha: f.binding.candidateSha,
+    prNumber: f.binding.prNumber,
+  });
+  write("event.original.json", {});
+  write("empty-git-config", "");
+  write("deny.cjs", "synthetic test only");
+  write("installed-source.original.json", { rows, certificateRevision: proof.certificateRevision });
+  write("terminal.json", { ...proof, proposal });
+  write("reserve-output.original.txt", "campaign=false\n");
+  write("reserve-network.original.json", counter);
+  write("worker.original.stdout", stdout);
+  write("worker.original.stderr", "");
+  write("supervision.json", {
+    result: { code: 0 },
+    failed: false,
+    failure: null,
+    finalizationFailures: [],
+    stdoutComplete: true,
+    stderrComplete: true,
+    cleanup: { status: "PASS", treeReaped: true, streamsClosed: true },
+    observed: { stdout: stdout.length, stderr: 0 },
+    stored: { stdout: stdout.length, stderr: 0 },
+  });
+  const complete = retainCustodyWorkerProof(f);
+  assert.equal(complete.workerPrefixComplete, true);
+  assert.equal(complete.qualification, false);
+  assert.equal(complete.workerProofWitness.proofSha256, digest(stdout));
+  fs.unlinkSync(path.join(source, "terminal.json"));
+  assert.equal(retainCustodyWorkerProof({ ...f, destination: f.destination + "-missing" }).workerPrefixComplete, false);
+  write("terminal.json", { ...proof, proposal });
+  fs.unlinkSync(path.join(source, frame.path));
+  write("original-frame-ledger.json", { frames: [], commands: [], retainedBytes: 0 });
+  const empty = retainCustodyWorkerProof({ ...f, destination: f.destination + "-empty" });
+  assert.equal(empty.ledgerConsistent, true);
+  assert.equal(empty.workerPrefixComplete, false);
+});
+
+test("retention source rebind preserves lineage and rejects stale or changed retention readers", () => {
+  assert.equal(
+    custodyPolicy.sourceRebind.priorReaderMapSha256,
+    "01245355f2ffc1d76a49237e74c52c3bceae67bd8253d38294447a90aaafe86a",
+  );
+  assert.deepEqual(custodyPolicy.excludedPullRequests, [721, 776, 805, 820]);
+  assert.equal(custodyPolicy.maximumMetadataPaths, 64);
+  assert.equal(custodyPolicy.sourceRebind.changedReaders.length, 1);
+  const prior = custodyPolicy.sourceRebind.changedReaders[0];
+  assert.equal(prior.path, "scripts/sounding-line/experience-exception.mjs");
+  assert.equal(prior.oldBlob, "876bd7ef84600dcbba29597f479105190d313051");
+  const helper = "scripts/sounding-line/custody-worker-proof-retention.mjs",
+    pin = custodyPolicy.readers.find((row) => row.path === helper);
+  assert(pin && custodyCertificatePaths.includes(helper) && custodyPilotSourceFiles().includes(helper));
+  assert.equal(pin.sha256, createHash("sha256").update(fs.readFileSync(helper)).digest("hex"));
+  const stale = custodySetup();
+  stale.baseEntries.find((row) => row.path === prior.path).blob = prior.oldBlob;
+  assert.equal(proposeNoncampaignCustodyShadow(stale).reason, "INSTALLED_READER_CHANGED");
+  const changed = custodySetup();
+  changed.candidateEntries.find((row) => row.path === helper).blob = sha("f");
+  assert.equal(proposeNoncampaignCustodyShadow(changed).reason, "INSTALLED_READER_CHANGED");
 });

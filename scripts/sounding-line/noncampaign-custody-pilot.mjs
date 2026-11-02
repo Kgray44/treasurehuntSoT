@@ -28,6 +28,8 @@ const need = (value, code) => {
 const singleLink = (stat) => stat.isFile() && stat.nlink === 1n;
 const signature = (stat) =>
   [stat.dev, stat.ino, stat.mode, stat.nlink, stat.size, stat.mtimeNs, stat.ctimeNs].map(String).join(":");
+export const CUSTODY_ORDINARY_WORKFLOW_SHA256 = "b020542e205810dac90c86384ffc02e7bcc538d3bbb24c2a1ec9f6e2f88f0217";
+
 export function custodyPilotSourceFiles() {
   const policy = JSON.parse(
     readCustodyPilotSource(
@@ -36,7 +38,7 @@ export function custodyPilotSourceFiles() {
   );
   need(
     hash(Buffer.from(JSON.stringify(policy.readers))) ===
-      "01245355f2ffc1d76a49237e74c52c3bceae67bd8253d38294447a90aaafe86a",
+      "7e05ee464306c0a7757f891273a2ca7101cd516085f9c4843ba4225b134f8179",
     "FIXED_READER_MAP_CHANGED",
   );
   return [
@@ -362,7 +364,7 @@ export function validateCustodyRunPull(run, pull, baseSha, candidateSha) {
     const workflow = readCustodyPilotSource(path.join(root, ".github/workflows/sounding-line-ordinary.yml"));
     const workflowSha256 = hash(workflow);
     need(
-      workflowSha256 === "d05da39862393b7195fb9a0748a90f8d35f6261e74ba0a7738adf7789a7b583f" &&
+      workflowSha256 === CUSTODY_ORDINARY_WORKFLOW_SHA256 &&
         run.workflow_id === 341545080 &&
         run.path === ".github/workflows/sounding-line-ordinary.yml" &&
         run.event === "pull_request_target" &&
