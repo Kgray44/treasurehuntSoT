@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import "./registry-custody-bootstrap.test.mjs";
 import "./registry-recipient-policy.test.mjs";
+import "./registry-custody-owner.test.mjs";
 import { generateKeyPairSync, createHash } from "node:crypto";
 import { artifactRegistryFixture } from "./fixtures/artifact-registry-v2.mjs";
 import { createClosedContextPrefix } from "../../scripts/sounding-line/artifact-evidence-registry.mjs";

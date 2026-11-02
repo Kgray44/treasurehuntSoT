@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { spawnSync, execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { digest } from "../../scripts/sounding-line/evidence.mjs";
 import { createArtifactDependencyGraph } from "../../scripts/sounding-line/artifact-dependency-graph.mjs";
 import { planSelectedSourceShadow } from "../../scripts/sounding-line/selected-source-shadow.mjs";
@@ -1352,19 +1352,23 @@ test("retention source rebind preserves lineage and rejects stale or changed ret
 
 test("qualified supervisor rebind changes only its accepted pin and preserves prior lineage and ownership", () => {
   const base = "bfe39895d16562c68391a3279a1729ae3235bb3d";
-  const original = JSON.parse(
-    execFileSync(
-      "git",
-      ["-c", "protocol.allow=never", "show", `${base}:testing/noncampaign-custody-shadow-readers.json`],
-      {
-        encoding: "utf8",
-        maxBuffer: 1024 * 1024,
-        timeout: 10000,
-        env: { ...process.env, GIT_NO_LAZY_FETCH: "1", GIT_OPTIONAL_LOCKS: "0" },
-        windowsHide: true,
-      },
-    ),
+  // The ordinary checkout need not contain this historical commit. Retain its
+  // exact original JSON losslessly; base64 avoids host line-ending conversion.
+  const encoded = fs
+    .readFileSync(new URL("./fixtures/custody-supervisor-pr844-readers.original.base64", import.meta.url), "ascii")
+    .trim();
+  assert(encoded.length <= 1024 * 1024);
+  const originalBytes = Buffer.from(encoded, "base64");
+  assert.equal(originalBytes.toString("base64"), encoded);
+  assert.equal(
+    createHash("sha256").update(originalBytes).digest("hex"),
+    "ac8fc58f9f4a901054859910c1c881ef4833a4de5d186a66319cbc5b87c433b2",
   );
+  assert.equal(
+    createHash("sha1").update(`blob ${originalBytes.length}\0`).update(originalBytes).digest("hex"),
+    "19f7044c312a31a3aef8d3aa9046921337dabd9e",
+  );
+  const original = JSON.parse(originalBytes.toString("utf8"));
   assert.deepEqual(custodyPolicy.sourceRebind, original.sourceRebind);
   assert.deepEqual(custodyPolicy.metadata, original.metadata);
   assert.deepEqual(custodyPolicy.excludedPullRequests, original.excludedPullRequests);
