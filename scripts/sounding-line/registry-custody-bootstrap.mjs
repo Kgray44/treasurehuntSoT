@@ -157,16 +157,13 @@ export function runPublicCustodyDummyPair(firstParent, secondParent) {
       }
     }
   }
-  if (failure) {
+  if (failure || cleanup.length !== 2 || cleanup.some((c) => c.status !== "VERIFIED_PUBLIC_DUMMY_RETIRED")) {
     // Preserve the original error and report every owned path even when a
     // partial write cannot be verified for retirement.
-    failure.custodyDummyCleanup = cleanup;
-    throw failure;
+    const error = failure ?? Error("SOUNDING_LINE_CUSTODY_BOOTSTRAP_DUMMY_CLEANUP_HELD");
+    error.custodyDummyCleanup = cleanup;
+    throw error;
   }
-  need(
-    cleanup.length === 2 && cleanup.every((c) => c.status === "VERIFIED_PUBLIC_DUMMY_RETIRED"),
-    "DUMMY_CLEANUP_HELD",
-  );
   return {
     kind: "PUBLIC_DUMMY_FILE_COPY_CHECK_ONLY",
     copies,
