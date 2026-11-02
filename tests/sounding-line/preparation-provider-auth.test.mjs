@@ -1,4 +1,5 @@
 import test from "node:test";
+import vm from "node:vm";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
@@ -351,6 +352,37 @@ test("failed original transport retains the exact error and all preceding provid
   assert.equal(requests.filter((endpoint) => endpoint === "actions/jobs/11/logs").length, 1);
   assert.equal(evidence.originals.length, 6);
 });
+
+test("unrelated terminal bytes remain exact original data without altering marker authentication", () => {
+  let original;
+  const proof = observe((d) => {
+    original = Buffer.concat([
+      Buffer.from("2026-11-02T00:00:00.0000000Z \u001b[36;1mrunner command\u001b[0m\n"),
+      d["actions/jobs/10/logs"],
+      Buffer.from("2026-11-02T00:00:03.0000000Z \u001b]8;;https://example.invalid\u0007untrusted hyperlink\u001b]8;;\u0007\n"),
+    ]);
+    d["actions/jobs/10/logs"] = original;
+  });
+  assert.equal(proof.kind, "PROVIDER_BOUND_PREPARATION_SHADOW_NOT_REUSE_AUTHORITY");
+  const row = api.retainedPreparationProviderEvidence(proof).originals.find((r) => r.endpoint === "actions/jobs/10/logs");
+  assert.deepEqual(row.bytes, original);
+  assert.equal(row.sha256, createHash("sha256").update(original).digest("hex"));
+});
+
+test("escape-bearing, malformed and duplicate marker lines cannot authenticate", () => {
+  for (const mutate of [
+    (text) => text.replace("SOUNDING_LINE_PREPARATION_CONTEXT_V1 ", "\u001b[32mSOUNDING_LINE_PREPARATION_CONTEXT_V1 "),
+    (text) => text.replace("SOUNDING_LINE_PREPARATION_CONTEXT_V1 ", "SOUNDING_LINE_PREPARATION_CONTEXT_V1 \u001b[32m"),
+    (text) => text.replace('"actor":"Kgray44"', '"actor":"Kgray44\u001b[0m"'),
+    (text) => text.replace("SOUNDING_LINE_PREPARATION_CONTEXT_V1 {", "SOUNDING_LINE_PREPARATION_CONTEXT_V1 invalid{"),
+    (text) => text + text,
+  ]) {
+    const proof = observe((d) => { d["actions/jobs/10/logs"] = Buffer.from(mutate(d["actions/jobs/10/logs"].toString())); });
+    assert.equal(proof.kind, "PREPARATION_PROVIDER_DENIED");
+    assert.equal(api.inspectPreparationProvider(proof, { root, acceptedBaseSha: source, runId }), null);
+    assert(api.retainedPreparationProviderEvidence(proof).originalError);
+  }
+});
 test("authenticated ZIP transport uses actual owned binary pipes and denies drift, corruption and failed payload exit", async () => {
   for (const scenario of ["positive", "corrupt", "exit", "advance"]) {
     const proof = observe();
@@ -504,5 +536,36 @@ test("provider provenance joins the complete actual capsule and rejects self-con
       assert.match(evidence.originalError.message, /ORIGINAL_PRODUCER_JOIN/u);
       assert.equal(evidence.restore.status, "PASS"); // bytes alone never authorize the substituted identity
     }
+  }
+});
+
+test("installed provider transport opts into exact binary logs only and keeps all output piped", () => {
+  const source = fs.readFileSync(new URL("../../scripts/sounding-line/preparation-provider-auth.mjs", import.meta.url), "utf8");
+  const body = /function providerRequest\(endpoint, \{ maximumBytes, timeoutMs \}\) \{[\s\S]*?\n\}\nfunction originalMarker/u.exec(source)?.[0];
+  assert(body);
+  const original = Buffer.from("timestamp \u001b[36;1moriginal\u001b[0m\n"), calls = [];
+  const request = vm.runInNewContext(body.replace(/\nfunction originalMarker$/u, "") + "\nproviderRequest", {
+    repository: "Kgray44/treasurehuntSoT",
+    process: { env: { SYNTHETIC_ENV: "retained" } },
+    execFileSync(command, args, options) { calls.push({ command, args: [...args], options }); return original; },
+  });
+  const endpoints = [
+    "actions/jobs/125097878005/logs", "actions/jobs/125098263697/logs",
+    "git/ref/heads/main", "actions/runs/123/attempts/1", "actions/artifacts/55",
+    "actions/jobs/10/logs?extra=true", "actions/jobs/0/logs", "actions/jobs/10/logs/other",
+    "actions/jobs/10/logs\n", "https://example.invalid/actions/jobs/10/logs",
+  ];
+  for (const [index, endpoint] of endpoints.entries()) {
+    assert.equal(request(endpoint, { maximumBytes: 2097152, timeoutMs: 15000 }), original);
+    const { command, args, options } = calls.at(-1);
+    assert.equal(command, "gh");
+    assert.equal(args.includes("--allow-escape-sequences"), index < 2);
+    assert.deepEqual(args.slice(0, 3), ["api", "--hostname", "github.com"]);
+    assert.equal(args.at(-1), `repos/Kgray44/treasurehuntSoT/${endpoint}`);
+    assert.equal(options.encoding, null);
+    assert.deepEqual([...options.stdio], ["ignore", "pipe", "pipe"]);
+    assert.equal(options.timeout, 15000);
+    assert.equal(options.maxBuffer, 2097152);
+    assert.equal(options.env.NO_COLOR, "1");
   }
 });
