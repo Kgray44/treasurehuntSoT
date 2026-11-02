@@ -915,7 +915,7 @@ test("baseline toolchain observations retain original bytes and never certify ru
   assert.throws(() => baselineToolchainObservations(Buffer.from([255])));
 });
 
-test("actual GitHub empty PR array retains original identities through the pinned workflow run-name join", () => {
+test("actual GitHub empty PR array retains historical identities and refuses unreviewed workflow drift", () => {
   // The complete original response bytes are immutable fixtures. The historical
   // pre-merge PR response is not asserted to be the PR's present open state.
   const runBytes = fs.readFileSync(new URL("./fixtures/custody-pr838-run-empty.original.bin", import.meta.url));
@@ -933,6 +933,22 @@ test("actual GitHub empty PR array retains original identities through the pinne
     base = pull.base.sha,
     candidate = pull.head.sha;
   assert.deepEqual(run.pull_requests, []);
+  const installedWorkflow = fs.readFileSync(
+    new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url),
+  );
+  if (
+    createHash("sha256").update(installedWorkflow).digest("hex") !==
+    "d05da39862393b7195fb9a0748a90f8d35f6261e74ba0a7738adf7789a7b583f"
+  ) {
+    // The retention rollout deliberately leaves the old observer pin frozen.
+    // Historical original bytes remain valid history; they cannot authenticate
+    // this changed installed workflow before its separately reviewed rebind.
+    assert.equal(pull.number, 838);
+    assert.equal(base, "613b73b5622e91dbee7b13c69ac7c5904771390e");
+    assert.equal(candidate, "7a38251a07c17914e6cad7e6901f0a7330507648");
+    assert.throws(() => validateCustodyRunPull(run, pull, base, candidate), /SOURCE_PINNED_PR_RUN_NAME/u);
+    return;
+  }
   const proof = validateCustodyRunPull(run, pull, base, candidate);
   assert.equal(proof.kind, "SOURCE_PINNED_RUN_NAME_WITH_EMPTY_PROVIDER_ARRAY");
   assert.equal(proof.observedPullRequestRows, 0);
