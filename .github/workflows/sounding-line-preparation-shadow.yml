@@ -1,0 +1,176 @@
+name: Sounding Line preparation shadow
+run-name: Sounding Line preparation shadow ${{ inputs.base_sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_sha:
+        description: Exact installed protected main; observations grant no reuse
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sounding-line-preparation-shadow-${{ inputs.base_sha }}
+  cancel-in-progress: false
+
+env:
+  INPUT_BASE_SHA: ${{ inputs.base_sha }}
+  DATABASE_URL: file:/tmp/sounding-line-preparation-unused.sqlite
+  PRISMA_GENERATE_SKIP_AUTOINSTALL: "1"
+  PRISMA_HIDE_UPDATE_MESSAGE: "1"
+
+jobs:
+  publisher:
+    name: Sounding Line / Preparation producer shadow
+    if: ${{ github.repository == 'Kgray44/treasurehuntSoT' && github.actor == 'Kgray44' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Require exact installed main and first attempt before checkout
+        run: |
+          test "$INPUT_BASE_SHA" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          prep_user="$RUNNER_TEMP/sounding-line-prep-user.npmrc"
+          prep_global="$RUNNER_TEMP/sounding-line-prep-global.npmrc"
+          set -C
+          : > "$prep_user"
+          : > "$prep_global"
+          printf '%s\n' "NPM_CONFIG_USERCONFIG=$prep_user" "NPM_CONFIG_GLOBALCONFIG=$prep_global" "NPM_CONFIG_CACHE=$RUNNER_TEMP/sounding-line-prep-npm-cache" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: candidate
+          fetch-depth: 1
+          fetch-tags: false
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /package.json
+            /package-lock.json
+            /.gitattributes
+            /prisma/schema.sqlite.prisma
+            /testing/prepared-artifacts.json
+            /.github/workflows/sounding-line-preparation-shadow.yml
+            /scripts/sounding-line/preparation-publisher-shadow.mjs
+            /scripts/sounding-line/preparation-capsule-shadow.mjs
+            /scripts/sounding-line/preparation-content-shadow.mjs
+            /scripts/sounding-line/preparation-layer-identities.mjs
+            /scripts/sounding-line/evidence.mjs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Observe original preparation producer context
+        working-directory: candidate
+        timeout-minutes: 1
+        run: node scripts/sounding-line/preparation-publisher-shadow.mjs context
+      - name: Install governed dependencies without scripts
+        working-directory: candidate
+        timeout-minutes: 3
+        run: npm ci --ignore-scripts
+      - name: Generate fresh immutable Prisma client
+        working-directory: candidate
+        timeout-minutes: 1
+        run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - name: Measure and seal private preparation capsule shadow
+        id: capsule
+        working-directory: candidate
+        timeout-minutes: 2
+        run: node scripts/sounding-line/preparation-publisher-shadow.mjs produce
+      - name: Upload original preparation capsule shadow
+        id: upload
+        timeout-minutes: 2
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-preparation-capsule-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ steps.capsule.outputs.capsule_path }}
+          if-no-files-found: error
+          retention-days: 1
+      - name: Retain original producer context after every outcome
+        if: always()
+        timeout-minutes: 1
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-preparation-producer-context-${{ github.run_id }}-${{ github.run_attempt }}
+          path: candidate/artifacts/preparation-shadow/context-publisher.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  independent-verifier:
+    name: Sounding Line / Preparation independent fresh verifier
+    needs: publisher
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Require exact installed main and first attempt before checkout
+        run: |
+          test "$INPUT_BASE_SHA" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          prep_user="$RUNNER_TEMP/sounding-line-prep-user.npmrc"
+          prep_global="$RUNNER_TEMP/sounding-line-prep-global.npmrc"
+          set -C
+          : > "$prep_user"
+          : > "$prep_global"
+          printf '%s\n' "NPM_CONFIG_USERCONFIG=$prep_user" "NPM_CONFIG_GLOBALCONFIG=$prep_global" "NPM_CONFIG_CACHE=$RUNNER_TEMP/sounding-line-prep-npm-cache" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: candidate
+          fetch-depth: 1
+          fetch-tags: false
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /package.json
+            /package-lock.json
+            /.gitattributes
+            /prisma/schema.sqlite.prisma
+            /testing/prepared-artifacts.json
+            /.github/workflows/sounding-line-preparation-shadow.yml
+            /scripts/sounding-line/preparation-publisher-shadow.mjs
+            /scripts/sounding-line/preparation-capsule-shadow.mjs
+            /scripts/sounding-line/preparation-content-shadow.mjs
+            /scripts/sounding-line/preparation-layer-identities.mjs
+            /scripts/sounding-line/evidence.mjs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Observe original independent verifier context
+        working-directory: candidate
+        timeout-minutes: 1
+        run: node scripts/sounding-line/preparation-publisher-shadow.mjs context
+      - name: Install independent governed dependencies without scripts
+        working-directory: candidate
+        timeout-minutes: 3
+        run: npm ci --ignore-scripts
+      - name: Generate independent fresh Prisma client before downloading cache
+        working-directory: candidate
+        timeout-minutes: 1
+        run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - name: Download only this run's exact original capsule artifact
+        timeout-minutes: 2
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.publisher.outputs.artifact_id }}
+          path: candidate/artifacts/preparation-downloaded
+          merge-multiple: true
+      - name: Independently compare complete fresh and transferred outputs
+        working-directory: candidate
+        timeout-minutes: 2
+        run: node scripts/sounding-line/preparation-publisher-shadow.mjs compare
+      - name: Retain independent verifier context and result after every outcome
+        if: always()
+        timeout-minutes: 1
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-preparation-equivalence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            candidate/artifacts/preparation-shadow/context-independent-verifier.json
+            candidate/artifacts/preparation-shadow/equivalence.json
+          if-no-files-found: warn
+          retention-days: 90
