@@ -3,7 +3,7 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import { performance } from "node:perf_hooks";
 import { canonicalJson, digest } from "./evidence.mjs";
-import { PREPARATION_LAYER_IDENTITIES } from "./preparation-reuse-shadow.mjs";
+import { PREPARATION_LAYER_IDENTITIES } from "./preparation-layer-identities.mjs";
 
 export const PREPARATION_CONTENT_LIMITS = Object.freeze({
   bytes: 2 * 1024 * 1024 * 1024,
@@ -14,6 +14,7 @@ export const PREPARATION_CONTENT_LIMITS = Object.freeze({
   deadlineMs: 60000,
 });
 const observations = new WeakMap();
+const restoredModes = new WeakSet();
 const need = (condition, code) => {
   if (!condition) throw Error(`SOUNDING_LINE_PREPARATION_CONTENT_${code}`);
 };
@@ -50,6 +51,7 @@ export function measurePreparationContentShadow({ root, layer }) {
     need(depth <= PREPARATION_CONTENT_LIMITS.depth, "DEPTH");
     const stat = fs.lstatSync(directory, { bigint: true });
     need(stat.isDirectory() && !stat.isSymbolicLink(), "DIRECTORY_ALIAS");
+    need((stat.mode & 0o7000n) === 0n, "SPECIAL_MODE");
     const key = relative || ".";
     if (collect) {
       initial.set(key, signature(stat));
@@ -71,6 +73,7 @@ export function measurePreparationContentShadow({ root, layer }) {
       if (childStat.isDirectory()) walk(filename, childRelative, depth + 1, collect);
       else {
         need(childStat.isFile() && childStat.nlink === 1n, "FILE_TYPE_OR_LINK");
+        need((childStat.mode & 0o7000n) === 0n, "SPECIAL_MODE");
         if (!collect) {
           need(initial.get(childRelative) === signature(childStat), "FILE_DRIFT");
           continue;
@@ -146,7 +149,7 @@ export function measurePreparationContentShadow({ root, layer }) {
     certificate: "NOT_ISSUED",
   });
   const handle = Object.freeze({ ...body, observationDigest: digest(body) });
-  observations.set(handle, { resolved, layer, inventoryDigest, bytes, entries });
+  observations.set(handle, { resolved, layer, inventoryDigest, bytes, entries, signatures: initial });
   return handle;
 }
 
@@ -197,4 +200,75 @@ export function inspectPreparationContentShadow(observation) {
     qualification: false,
     reuseAuthorized: false,
   });
+}
+
+// Restore transport-lost mode bits only on the exact measured inodes. The
+// original observation remains immutable and spent, including after failure.
+// This is a private transformation, never provider authentication or reuse.
+export function restorePreparationObservationModesShadow(observation, expectedInventory) {
+  const value = observations.get(observation);
+  need(value && !restoredModes.has(observation), "MODE_OBSERVATION_UNAVAILABLE_OR_SPENT");
+  restoredModes.add(observation);
+  need(
+    Array.isArray(expectedInventory) &&
+      expectedInventory.length <= 8192 &&
+      value.entries.length === expectedInventory.length,
+    "MODE_INVENTORY_BOUND",
+  );
+  const originals = new Map(value.entries.map((entry) => [entry.path, entry]));
+  const withoutModes = (entries) => entries.map(({ mode, ...entry }) => entry);
+  need(
+    canonicalJson(withoutModes(value.entries)) === canonicalJson(withoutModes(expectedInventory)),
+    "MODE_CONTENT_MISMATCH",
+  );
+  need(
+    expectedInventory.every((entry) => Number.isSafeInteger(entry.mode) && entry.mode >= 0 && entry.mode <= 0o777),
+    "MODE_BITS",
+  );
+  for (const entry of value.entries) {
+    const filename = entry.path === "." ? value.resolved : path.join(value.resolved, ...entry.path.split("/"));
+    need(signature(fs.lstatSync(filename, { bigint: true })) === value.signatures.get(entry.path), "MODE_SOURCE_DRIFT");
+  }
+  for (const entry of [...expectedInventory].reverse()) {
+    const original = originals.get(entry.path);
+    if (original.mode === entry.mode) continue;
+    const filename = entry.path === "." ? value.resolved : path.join(value.resolved, ...entry.path.split("/"));
+    let fd, failure;
+    try {
+      fd = fs.openSync(
+        filename,
+        fs.constants.O_RDONLY |
+          (fs.constants.O_NOFOLLOW || 0) |
+          (fs.constants.O_NONBLOCK || 0) |
+          (entry.type === "directory" ? fs.constants.O_DIRECTORY || 0 : 0),
+      );
+      const before = fs.fstatSync(fd, { bigint: true });
+      need(
+        signature(before) === value.signatures.get(entry.path) &&
+          signature(fs.lstatSync(filename, { bigint: true })) === signature(before),
+        "MODE_INODE_DRIFT",
+      );
+      fs.fchmodSync(fd, entry.mode);
+      const after = fs.fstatSync(fd, { bigint: true });
+      need(
+        Number(after.mode & 0o777n) === entry.mode &&
+          after.dev === before.dev &&
+          after.ino === before.ino &&
+          signature(after) === signature(fs.lstatSync(filename, { bigint: true })),
+        "MODE_RESTORE_DRIFT",
+      );
+    } catch (error) {
+      failure = error;
+    }
+    if (fd !== undefined)
+      try {
+        fs.closeSync(fd);
+      } catch (error) {
+        if (failure)
+          throw new AggregateError([failure, error], "PREPARATION_MODE_AND_CLOSE_FAILED", { cause: failure });
+        throw error;
+      }
+    if (failure) throw failure;
+  }
+  return measurePreparationContentShadow({ root: value.resolved, layer: value.layer });
 }

@@ -1,5 +1,7 @@
 import { canonicalJson, digest } from "./evidence.mjs";
 import { inspectNativeOriginalContext } from "./native-original-context-auth.mjs";
+import { PREPARATION_LAYER_IDENTITIES } from "./preparation-layer-identities.mjs";
+export { PREPARATION_LAYER_IDENTITIES } from "./preparation-layer-identities.mjs";
 
 export const PREPARATION_FINGERPRINT_FIELDS = Object.freeze([
   "sourceClosure",
@@ -18,13 +20,6 @@ export const PREPARATION_FINGERPRINT_FIELDS = Object.freeze([
 ]);
 // Exact declared identity families from the protected source cut's preparation
 // policy. A matching declaration remains observation data, never a certificate.
-export const PREPARATION_LAYER_IDENTITIES = Object.freeze({
-  dependency: Object.freeze(["package", "lockfile", "node-npm", "os-arch", "install-policy"]),
-  "prisma-client": Object.freeze(["dependency", "prisma", "schema", "generator", "os-arch"]),
-  "browser-chromium": Object.freeze(["playwright", "browser-revision", "os-arch", "browser-policy"]),
-  "browser-webkit": Object.freeze(["playwright", "browser-revision", "os-arch", "browser-policy"]),
-  "sqlite-baseline": Object.freeze(["schema", "migrations", "seed-fixture", "prisma-client", "baseline-policy"]),
-});
 const sha256 = (value) => typeof value === "string" && /^[a-f0-9]{64}$/u.test(value);
 const oid = (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
