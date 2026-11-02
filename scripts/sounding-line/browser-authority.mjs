@@ -4,13 +4,21 @@ import { createServer as createHttpServer, request as requestHttp } from "node:h
 import { createServer } from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { bounded, observeProcess, processExit, spawnOwnedProcess, stopOwnedProcess } from "./owned-process.mjs";
+import {
+  bounded,
+  observeProcess,
+  processExit,
+  spawnOwnedProcess,
+  stopOwnedProcess,
+  inspectOwnedProcessCreation,
+} from "./owned-process.mjs";
 import { emitPreparationPhase, preparationProductEnvironment } from "./preparation-phases.mjs";
 import { browserReceiptPaths, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
 import { createPublishableBrowserFailureRetention } from "./private-browser-failure-publication.mjs";
 import { createBrowserFailurePublicationOutput } from "./private-browser-failure-output.mjs";
 
 const readinessIntervalMs = 250;
+const closedOwnedRuns = new WeakMap();
 const readinessTimeoutMs = 120_000;
 
 const diagnosticFailureCodes = new Set([
@@ -651,7 +659,62 @@ export async function runBrowserAuthority({
     lifecycle,
   });
   progress("authority.result", { failureCategory, failureCode: failureCodeValue });
+  // Additive shadow capability only. Failure to observe it never changes the
+  // legacy runtime result, and a serialized receipt cannot recreate it.
+  try {
+    if (
+      !failureCategory &&
+      lifecycle.cleanup?.status === "PASS" &&
+      lifecycle.cleanup.portsReleased === true &&
+      inspectOwnedProcessCreation(server) &&
+      inspectOwnedProcessCreation(browser)
+    )
+      closedOwnedRuns.set(receipt, {
+        root: path.resolve(root),
+        server,
+        browser,
+        proxy,
+        original: JSON.stringify(receipt),
+      });
+  } catch {
+    /* Unknown remains ineligible for shadow state joins. */
+  }
   return receipt;
+}
+export function inspectOwnedBrowserAuthorityReceipt(receipt, { root }) {
+  try {
+    const value = closedOwnedRuns.get(receipt);
+    if (
+      !value ||
+      value.root !== path.resolve(root) ||
+      value.original !== JSON.stringify(receipt) ||
+      receipt.failureCategory !== null ||
+      receipt.lifecycle?.cleanup?.status !== "PASS" ||
+      receipt.lifecycle.cleanup.portsReleased !== true ||
+      value.proxy?.listening
+    )
+      return null;
+    const application = inspectOwnedProcessCreation(value.server),
+      capture = inspectOwnedProcessCreation(value.browser);
+    if (
+      !application ||
+      !capture ||
+      application.root !== value.root ||
+      capture.root !== value.root ||
+      !application.nodeOptionsCleared ||
+      !capture.nodeOptionsCleared ||
+      !application.nodePathCleared ||
+      !capture.nodePathCleared
+    )
+      return null;
+    return Object.freeze({
+      references: Object.freeze({ application: value.server, capture: value.browser }),
+      qualification: false,
+      reuseAuthorized: false,
+    });
+  } catch {
+    return null;
+  }
 }
 
 async function verifyPortReleased(port) {

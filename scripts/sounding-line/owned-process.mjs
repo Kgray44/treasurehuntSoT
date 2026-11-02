@@ -4,9 +4,12 @@ import { readFile, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 
 const observations = new WeakMap();
 const ownership = new WeakMap();
+const closureProofs = new WeakMap();
+const processClosures = new WeakMap();
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function observeProcess(child) {
@@ -69,6 +72,10 @@ export async function bounded(operation, milliseconds, code) {
 }
 
 export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {} }) {
+  // Freeze the exact launch input before guardian setup awaits its private path.
+  // Later caller mutations must not change what the creation record describes.
+  args = JSON.parse(JSON.stringify(args));
+  env = { ...env };
   const windows = process.platform === "win32";
   const finiteBudget = (value, fallback) => (Number.isFinite(value) ? Math.max(0, Math.min(value, 5000)) : fallback);
   const gracefulMs = finiteBudget(cleanupOptions.gracefulMs, 2000);
@@ -100,7 +107,22 @@ export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {
   child.stdin.on("error", () => {});
   child.stdout.pipe(process.stdout, { end: false });
   child.stderr.pipe(process.stderr, { end: false });
-  const record = { windows, receiptDirectory: null, gracefulMs, forceMs };
+  const record = {
+    windows,
+    receiptDirectory: null,
+    gracefulMs,
+    forceMs,
+    creation: Object.freeze({
+      command,
+      nodeOptionsCleared: !env.NODE_OPTIONS,
+      nodePathCleared: !env.NODE_PATH,
+      argumentsSha256: createHash("sha256").update(JSON.stringify(args)).digest("hex"),
+      root: path.resolve(root),
+      databaseUrlSha256: createHash("sha256")
+        .update(String(env?.DATABASE_URL ?? ""))
+        .digest("hex"),
+    }),
+  };
   ownership.set(child, record);
   // Record before readiness or any other asynchronous wait.
   record.initialized = (async () => {
@@ -111,6 +133,9 @@ export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {
   // A startup error is consumed by both the observer and cleanup.
   record.initialized.catch(() => {});
   return child;
+}
+export function inspectOwnedProcessCreation(child) {
+  return ownership.get(child)?.creation ?? null;
 }
 
 export async function stopOwnedProcess(child, { gracefulMs = 2000, forceMs = 3000 } = {}) {
@@ -187,4 +212,85 @@ export async function stopOwnedProcess(child, { gracefulMs = 2000, forceMs = 300
   };
   if (record && receipt.status === "PASS") record.finalReceipt = receipt;
   return receipt;
+}
+
+// Additive checkpoint primitive. Legacy cleanup behavior and receipts above
+// remain unchanged. A real owned tree closing does not attest the whole runtime,
+// the consistency of application state, successful work, or permission to resume.
+function closureRecord(proof, child) {
+  const value = closureProofs.get(proof),
+    record = ownership.get(child),
+    observed = observations.get(child);
+  if (
+    !value ||
+    value.child !== child ||
+    value.record !== record ||
+    !observed?.exited ||
+    !observed.closed ||
+    !record?.guardianReceipt ||
+    record.guardianReceipt.treeReaped !== true ||
+    record.guardianReceipt.verificationFailed === true ||
+    record.finalReceipt !== value.original ||
+    JSON.stringify(record.finalReceipt) !== value.originalJson
+  )
+    return null;
+  return value;
+}
+export async function stopOwnedProcessWithClosureProof(child) {
+  if (!ownership.has(child)) throw Error("SOUNDING_LINE_OWNED_PROCESS_CLOSURE_UNOWNED");
+  const cleanup = await stopOwnedProcess(child),
+    record = ownership.get(child),
+    observed = observations.get(child);
+  if (
+    cleanup.status !== "PASS" ||
+    !cleanup.directExitObserved ||
+    !cleanup.treeReaped ||
+    !cleanup.streamsClosed ||
+    !observed?.exited ||
+    !observed.closed ||
+    record.finalReceipt !== cleanup ||
+    record.guardianReceipt?.treeReaped !== true ||
+    record.guardianReceipt.verificationFailed === true
+  )
+    throw Error("SOUNDING_LINE_OWNED_PROCESS_CLOSURE_UNPROVEN");
+  let proof = processClosures.get(child);
+  if (!proof) {
+    proof = Object.freeze({
+      kind: "creation-bound-owned-process-tree-closure",
+      version: 1,
+      classification: "OWNED_TREE_CLOSED_NOT_FULL_RUNTIME_ISOLATION",
+      qualification: false,
+      reuseAuthorized: false,
+    });
+    closureProofs.set(proof, {
+      child,
+      record,
+      original: cleanup,
+      originalJson: JSON.stringify(cleanup),
+      cleanup: Object.freeze({ ...cleanup }),
+      consumed: false,
+    });
+    processClosures.set(child, proof);
+  }
+  if (!closureRecord(proof, child)) throw Error("SOUNDING_LINE_OWNED_PROCESS_CLOSURE_CHANGED");
+  return Object.freeze({ proof, cleanup: Object.freeze({ ...cleanup }), qualification: false, reuseAuthorized: false });
+}
+export function inspectOwnedProcessClosure(proof, child) {
+  const value = closureRecord(proof, child);
+  return value
+    ? Object.freeze({
+        cleanup: value.cleanup,
+        consumed: value.consumed,
+        classification: "OWNED_TREE_CLOSED_NOT_FULL_RUNTIME_ISOLATION",
+        qualification: false,
+        reuseAuthorized: false,
+      })
+    : null;
+}
+export async function consumeOwnedProcessClosure(proof, child, operation) {
+  const value = closureRecord(proof, child);
+  if (!value || value.consumed || typeof operation !== "function")
+    throw Error("SOUNDING_LINE_OWNED_PROCESS_CLOSURE_UNAVAILABLE");
+  value.consumed = true; // Failed checkpoint work never silently regains this cut.
+  return await operation();
 }

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -16,6 +16,58 @@ const entry = (blob = oid, name = "source.json") => ({ path: name, blob });
 const frame = (blob, body) => Buffer.concat([Buffer.from(`${blob} blob ${body.length}\n`), body, Buffer.from("\n")]);
 const inputIds = (options) => options.input.trimEnd().split("\n");
 const invalid = /PRODUCT_EXPERIENCE_SOURCE_SNAPSHOT_INVALID/u;
+
+test("the protected regression script includes every incremental registry and context boundary test", () => {
+  const { scripts } = JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8"));
+  const files = scripts["test:sounding-line"].split(/\s+/u);
+  for (const name of [
+    "artifact-dependency-graph",
+    "artifact-evidence-registry",
+    "experience-artifact-graph",
+    "experience-artifact-snapshot",
+    "artifact-registry-retention",
+    "closed-context-journal",
+    "artifact-registry-archive",
+    "artifact-registry-provenance",
+    "completed-evidence-v2",
+    "provider-event-binding-shadow",
+    "provider-run-log-archive",
+    "native-evidence-context",
+    "native-original-context-auth",
+    "native-registry-producer",
+    "runtime-snapshot-retention",
+    "owned-process-closure",
+    "sqlite-runtime-snapshot",
+    "owned-runtime-state-retention",
+    "shadow-context-schedule",
+    "shadow-context-worker",
+    "closed-context-resume-shadow",
+  ])
+    assert.equal(files.filter((file) => file === `tests/sounding-line/${name}.test.mjs`).length, 1, name);
+});
+
+test("raw-byte mode preserves invalid UTF-8 while aggregate byte bounds reject before payload", () => {
+  const bytes = Buffer.from([255, 0, 10]);
+  const read = (args) => (args[1] === "--batch-check" ? Buffer.from(`${oid} blob 3\n`) : frame(oid, bytes));
+  assert(
+    readSourceSnapshotBatches([entry()], read, { encoding: null, maxTotalBytes: 3 }).get("source.json").equals(bytes),
+  );
+  let payloads = 0;
+  assert.throws(
+    () =>
+      readSourceSnapshotBatches(
+        [entry(), entry(oid, "second.json")],
+        (args) => {
+          if (args[1] === "--batch") payloads++;
+          return Buffer.from(`${oid} blob 3\n${oid} blob 3\n`);
+        },
+        { maxTotalBytes: 5 },
+      ),
+    invalid,
+  );
+  assert.equal(payloads, 0);
+  assert.throws(() => readSourceSnapshotBatches([], read, { encoding: "latin1" }), invalid);
+});
 
 test("real Git bounded reads preserve all ordered aliases, empty blobs and opaque UTF-8 decoding after monolithic ENOBUFS", (t) => {
   const root = mkdtempSync(path.join(tmpdir(), "snapshot-batch-real-git-"));

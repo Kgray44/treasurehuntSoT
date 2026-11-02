@@ -26,6 +26,10 @@ import {
   createRawOutputDirectory,
   copyDeclaredCaptureFile,
   rawCaptureBinding,
+  createClosedContextJournal,
+  closedContextShadowAllowed,
+  closedContextIdentity,
+  observeClosedContextShadow,
 } from "./experience-raw-output.mjs";
 import {
   assertExceptionExecution,
@@ -55,6 +59,79 @@ const fail = (code) => {
 };
 const relative = (root, file) => path.relative(root, file).replaceAll("\\", "/");
 export const EXPERIENCE_VIEWPORTS = { DESKTOP: { width: 1440, height: 900 }, MOBILE: { width: 390, height: 844 } };
+
+export function shadowCaptureContextSchedule(plan) {
+  if (
+    !closedContextShadowAllowed(plan) ||
+    !plan.applicable ||
+    plan.pairedOnly ||
+    plan.localProof ||
+    !Array.isArray(plan.contracts) ||
+    plan.contracts.length > 128
+  )
+    fail("SHADOW_CONTEXT_SCOPE_INVALID");
+  const contexts = [],
+    ids = new Set();
+  for (const contract of plan.contracts) {
+    if (contract.experience?.pairedEvidence) fail("SHADOW_CONTEXT_SCOPE_INVALID");
+    for (const device of contract.experience.devices)
+      for (const journey of contract.experience.journeys)
+        for (const role of journey.roles)
+          for (const motionMode of contract.experience.motion ? ["NORMAL", "REDUCED"] : ["REDUCED"]) {
+            if (!EXPERIENCE_VIEWPORTS[device]) fail("SHADOW_CONTEXT_SCOPE_INVALID");
+            const context = {
+              contractId: contract.id,
+              journeyId: journey.id,
+              device,
+              role,
+              motionMode,
+              viewport: { ...EXPERIENCE_VIEWPORTS[device] },
+            };
+            const contextId = closedContextIdentity(context);
+            if (ids.has(contextId) || contexts.length >= 128) fail("SHADOW_CONTEXT_SCOPE_INVALID");
+            ids.add(contextId);
+            contexts.push(
+              Object.freeze({
+                ordinal: contexts.length + 1,
+                contextId,
+                context: Object.freeze({ ...context, viewport: Object.freeze(context.viewport) }),
+              }),
+            );
+          }
+  }
+  if (!contexts.length) fail("SHADOW_CONTEXT_SCOPE_INVALID");
+  return Object.freeze(contexts);
+}
+function shadowAuthenticationEntries(bytes) {
+  if (bytes === undefined) return [];
+  if (!Buffer.isBuffer(bytes) || bytes.length > 2 * 1024 * 1024) fail("SHADOW_CONTEXT_STATE_INVALID");
+  let entries;
+  try {
+    entries = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+  } catch {
+    fail("SHADOW_CONTEXT_STATE_INVALID");
+  }
+  if (!Array.isArray(entries) || entries.length > 128) fail("SHADOW_CONTEXT_STATE_INVALID");
+  const ids = new Set();
+  for (const entry of entries) {
+    if (
+      !Array.isArray(entry) ||
+      entry.length !== 2 ||
+      typeof entry[0] !== "string" ||
+      !/^[a-f0-9]{64}$/u.test(entry[0]) ||
+      ids.has(entry[0]) ||
+      !entry[1] ||
+      Object.keys(entry[1]).sort().join() !== "cookies,origins" ||
+      !Array.isArray(entry[1].cookies) ||
+      entry[1].cookies.length > 2048 ||
+      !Array.isArray(entry[1].origins) ||
+      entry[1].origins.length
+    )
+      fail("SHADOW_CONTEXT_STATE_INVALID");
+    ids.add(entry[0]);
+  }
+  return entries;
+}
 
 export function experienceChangedPaths(root, baseSha, candidateSha) {
   // Large reconciliations exceed Node's 1 MiB default. Retain the complete diff
@@ -755,7 +832,22 @@ export async function captureProductExperience({
   outputDirectory,
   storageState,
   rawOutputDirectory = process.env[EXPERIENCE_RAW_OUTPUT],
+  shadowContext,
+  shadowAuthenticationCache,
 }) {
+  let shadowTarget = null;
+  if (shadowContext !== undefined) {
+    if (
+      !shadowContext ||
+      Object.keys(shadowContext).sort().join() !== "contextId,mode" ||
+      shadowContext.mode !== "SHADOW_SINGLE_CONTEXT" ||
+      !rawOutputDirectory
+    )
+      fail("SHADOW_CONTEXT_SCOPE_INVALID");
+    shadowTarget = shadowCaptureContextSchedule(plan).find((value) => value.contextId === shadowContext.contextId);
+    if (!shadowTarget) fail("SHADOW_CONTEXT_SCOPE_INVALID");
+  } else if (shadowAuthenticationCache !== undefined) fail("SHADOW_CONTEXT_STATE_INVALID");
+  const authenticationEntries = shadowTarget ? shadowAuthenticationEntries(shadowAuthenticationCache) : [];
   const exceptionLease = await assertExceptionExecution({ root, plan, kind: "experience" });
   if (exceptionLease)
     claimExceptionPhase({
@@ -785,8 +877,23 @@ export async function captureProductExperience({
   await mkdir(artifactRoot, { recursive: true });
   const rawRecordings =
     rawOutputDirectory && !plan.pairedOnly
-      ? await createRawOutputDirectory({ root, directory: `${rawOutputDirectory}/recordings` })
+      ? await createRawOutputDirectory({
+          root,
+          directory: `${rawOutputDirectory}/recordings${shadowTarget ? "/" + shadowTarget.contextId : ""}`,
+        })
       : null;
+  let closedContexts = null;
+  if (rawRecordings && closedContextShadowAllowed(plan, plan.prNumber ?? process.env.SOUNDING_LINE_PR_NUMBER)) {
+    const observed = await observeClosedContextShadow(() =>
+      createClosedContextJournal({
+        root,
+        rawDirectory: rawOutputDirectory,
+        binding: rawCaptureBinding(plan),
+        ...(shadowTarget ? { namespace: shadowTarget.contextId } : {}),
+      }),
+    );
+    if (observed.status === "OBSERVED") closedContexts = observed.value;
+  }
   const browser = plan.pairedOnly ? null : await chromium.launch({ headless: true });
   const evidence = {
     version: 1,
@@ -800,8 +907,19 @@ export async function captureProductExperience({
     artifacts: [],
     journeys: [],
     reviews: [],
+    ...(shadowTarget
+      ? {
+          partialContext: {
+            mode: "SHADOW_SINGLE_CONTEXT",
+            contextId: shadowTarget.contextId,
+            ordinal: shadowTarget.ordinal,
+            qualification: false,
+            reuseAuthorized: false,
+          },
+        }
+      : {}),
   };
-  const authenticatedStates = new Map();
+  const authenticatedStates = new Map(authenticationEntries);
   try {
     for (const contract of plan.pairedOnly ? [] : plan.contracts) {
       for (const device of contract.experience.devices) {
@@ -814,6 +932,12 @@ export async function captureProductExperience({
                 ? ["NORMAL", "REDUCED"]
                 : ["REDUCED"]) {
               const diagnosticContext = { contractId: contract.id, journeyId: journey.id, device, role, motionMode };
+              if (
+                shadowTarget &&
+                closedContextIdentity({ ...diagnosticContext, viewport: EXPERIENCE_VIEWPORTS[device] }) !==
+                  shadowTarget.contextId
+              )
+                continue;
               const progress = (event, operation) =>
                 experienceDiagnostic(diagnosticStartedAt, event, diagnosticContext, operation);
               progress("context.start");
@@ -833,6 +957,7 @@ export async function captureProductExperience({
               });
               await context.tracing.start({ screenshots: true, snapshots: true });
               const page = await context.newPage();
+              const contextArtifactStart = evidence.artifacts.length;
               try {
                 if (role === "ANONYMOUS" && storageState) fail("ANONYMOUS_ROLE_STATE_MISMATCH");
                 if (role !== "ANONYMOUS") {
@@ -953,6 +1078,7 @@ export async function captureProductExperience({
                 const video = page.video();
                 await context.close();
                 let videoPath = await video.path();
+                const recordingSource = rawRecordings ? relative(root, videoPath) : undefined;
                 if (rawRecordings) {
                   const selected = await copyDeclaredCaptureFile({
                     root,
@@ -975,6 +1101,17 @@ export async function captureProductExperience({
                   role,
                   motionMode,
                 });
+                if (closedContexts) {
+                  const observation = await observeClosedContextShadow(() =>
+                    closedContexts.append({
+                      context: { ...diagnosticContext, viewport: EXPERIENCE_VIEWPORTS[device] },
+                      artifacts: evidence.artifacts.slice(contextArtifactStart),
+                      journey: observed.result,
+                      recordingSource,
+                    }),
+                  );
+                  if (observation.status !== "OBSERVED") closedContexts = null;
+                }
               } finally {
                 await context.close();
               }
@@ -993,6 +1130,27 @@ export async function captureProductExperience({
   }
   await writeFile(path.join(artifactRoot, "capture.json"), JSON.stringify(evidence, null, 2) + "\n");
   await writeExperienceReviewPackets({ plan, evidence, artifactRoot });
+  if (shadowTarget) {
+    const bytes = Buffer.from(JSON.stringify([...authenticatedStates]));
+    if (bytes.length > 2 * 1024 * 1024) fail("SHADOW_CONTEXT_STATE_INVALID");
+    const directory = await createRawOutputDirectory({
+      root,
+      directory: path.resolve(root, rawOutputDirectory, `private-context-state-${shadowTarget.contextId}`),
+    });
+    const file = path.join(directory, "authentication-cache.json");
+    await writeFile(file, bytes, { flag: "wx", mode: 0o600 });
+    // State coordinates are available only to the shadow parent, never serialized
+    // into capture.json/review packets or published as media/evidence artifacts.
+    Object.defineProperty(evidence, "shadowPrivateState", {
+      value: Object.freeze({
+        path: file,
+        bytes: bytes.length,
+        sha256: digest(bytes),
+        qualification: false,
+        reuseAuthorized: false,
+      }),
+    });
+  }
   return evidence;
 }
 export async function writeExperienceReviewPackets({ plan, evidence, artifactRoot }) {

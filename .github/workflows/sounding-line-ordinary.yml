@@ -32,6 +32,10 @@ on:
         description: Non-qualifying experience diagnostic; ordinary mode checks custody checkout only
         type: boolean
         default: false
+      incremental_evidence_shadow:
+        description: Retain an encrypted closed-context registry; grants no reuse or acceptance
+        type: boolean
+        default: false
       evidence_ref:
         description: Evidence-only ref for review or activation verification
         type: string
@@ -68,6 +72,22 @@ jobs:
           REQUESTED_BASE: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           TRUSTED_WORKFLOW_SHA: ${{ github.sha }}
         run: test "$REQUESTED_BASE" = "$TRUSTED_WORKFLOW_SHA"
+      - name: Reject unsupported ordinary dispatch before checkout
+        timeout-minutes: 1
+        env:
+          SOUNDING_LINE_ENTRY_EVENT: ${{ github.event_name }}
+          SOUNDING_LINE_ENTRY_MODE: ${{ inputs.experience_mode }}
+          SOUNDING_LINE_ENTRY_DIAGNOSTIC: ${{ inputs.experience_diagnostic }}
+          SOUNDING_LINE_ENTRY_PR: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          node -e '
+            const e = process.env;
+            const held = ["721", "776", "805"].includes(e.SOUNDING_LINE_ENTRY_PR);
+            if (e.SOUNDING_LINE_ENTRY_EVENT === "workflow_dispatch" && (e.SOUNDING_LINE_ENTRY_MODE || "ordinary") === "ordinary" && e.SOUNDING_LINE_ENTRY_DIAGNOSTIC !== "true" && !held) {
+              console.error("Ordinary candidate qualification requires a candidate-bound pull_request_target event; dispatch at main cannot supply the required candidate check. No checkout or qualification was performed.");
+              process.exit(1);
+            }
+          '
       - uses: actions/checkout@v4
         timeout-minutes: 10
         with:
@@ -184,6 +204,11 @@ jobs:
           fetch-tags: false
           show-progress: true
           persist-credentials: false
+      - name: Observe immutable original evidence context
+        if: ${{ inputs.pr_number != '721' && inputs.pr_number != '776' && inputs.pr_number != '805' }}
+        timeout-minutes: 1
+        working-directory: authority
+        run: node scripts/sounding-line/native-evidence-context.mjs
       - name: Set up ordinary checkout runtime
         if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         uses: actions/setup-node@v4
@@ -286,6 +311,7 @@ jobs:
           CAPTURE_ENCRYPTED: ${{ steps.experience.outputs.capture_raw_encrypted_path }}
         run: node authority/scripts/sounding-line/experience-raw-retention.mjs --workspace candidate --plan "$CAPTURE_PLAN" --encrypted "$CAPTURE_ENCRYPTED"
       - uses: actions/upload-artifact@v4
+        id: capture-raw-artifact
         if: always() && inputs.experience_mode == 'capture' && (steps.experience.outputs.capture_raw_verified_paths != '' || (steps.capture-raw-retention.outcome == 'success' && steps.capture-raw-retention.outputs.capture_raw_verified_paths != ''))
         with:
           name: product-experience-raw-${{ inputs.candidate_sha }}-${{ github.run_id }}
@@ -293,6 +319,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@v4
+        id: capture-lifecycle-artifact
         if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_plan_path != ''
         with:
           name: product-experience-lifecycle-${{ inputs.candidate_sha }}-${{ github.run_id }}
@@ -301,6 +328,28 @@ jobs:
             ${{ steps.experience.outputs.capture_profile_paths }}
             ${{ steps.experience.outputs.capture_plan_path }}
           if-no-files-found: warn
+          retention-days: 90
+      - name: Seal completed-context registry after parent cleanup
+        id: context-registry-shadow
+        if: ${{ always() && inputs.experience_mode == 'capture' && inputs.incremental_evidence_shadow == true && steps.capture-raw-artifact.outputs.artifact-id != '' && steps.capture-lifecycle-artifact.outputs.artifact-id != '' }}
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOUNDING_LINE_INCREMENTAL_EVIDENCE_SHADOW: ${{ inputs.incremental_evidence_shadow }}
+          CAPTURE_PLAN: ${{ steps.experience.outputs.capture_plan_path }}
+          CAPTURE_STAGE: ${{ steps.experience.outputs.capture_stage_path }}
+          CAPTURE_RUNTIMES: ${{ steps.experience.outputs.capture_runtime_paths }}
+          PREPARATION_SUPERVISION: ${{ steps.experience.outputs.preparation_progress_path }}
+          RAW_ARTIFACT_ID: ${{ steps.capture-raw-artifact.outputs.artifact-id }}
+          LIFECYCLE_ARTIFACT_ID: ${{ steps.capture-lifecycle-artifact.outputs.artifact-id }}
+        run: node authority/scripts/sounding-line/native-registry-producer.mjs --workspace candidate --plan "$CAPTURE_PLAN" --stage "$CAPTURE_STAGE" --runtimes "$CAPTURE_RUNTIMES" --supervision "$PREPARATION_SUPERVISION" --raw-artifact "$RAW_ARTIFACT_ID" --lifecycle-artifact "$LIFECYCLE_ARTIFACT_ID"
+      - name: Retain encrypted v2 context registry
+        if: ${{ always() && inputs.experience_mode == 'capture' && inputs.incremental_evidence_shadow == true && steps.context-registry-shadow.outputs.context_registry_encrypted_path != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-context-registry-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ steps.context-registry-shadow.outputs.context_registry_encrypted_path }}
+          if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@v4
         if: inputs.experience_mode == 'review'
@@ -357,6 +406,11 @@ jobs:
             Development_Docs/Testing/Product_Experience/Engineering/pr776-controller-reconciliation-20261025
           fetch-tags: false
           show-progress: true
+      - name: Observe immutable original evidence context
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776' || github.event.pull_request.number == 805 || inputs.pr_number == '805') }}
+        timeout-minutes: 1
+        working-directory: authority
+        run: node scripts/sounding-line/native-evidence-context.mjs
       - name: Set up ordinary checkout runtime
         if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721' || github.event.pull_request.number == 776 || inputs.pr_number == '776') }}
         uses: actions/setup-node@v4
