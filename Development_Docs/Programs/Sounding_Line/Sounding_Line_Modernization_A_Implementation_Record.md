@@ -438,7 +438,8 @@ The fresh #841 candidate forward-merges that accepted main while preserving
 must retain actual worker originals, original frame ordinals and command ledger,
 installed descriptor/workflow source identities, supervisor cleanup, exact outer
 checkout hash joins and the existing required Mainline Decision. Its merge stays
-held until independent review accepts that fresh evidence and its landed smoke.
+held until independent review accepts that fresh evidence. Completion additionally
+requires a passing smoke check on the exact landed tree.
 
 ## Remaining B/C acceptance boundaries
 
