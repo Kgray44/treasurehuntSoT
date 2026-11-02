@@ -153,11 +153,16 @@ export function runPublicCustodyDummyPair(firstParent, secondParent) {
         fs.rmdirSync(directory);
         cleanup.push({ directory, status: "VERIFIED_PUBLIC_DUMMY_RETIRED" });
       } catch (error) {
-        cleanup.push({ directory, status: "HELD", error: error.message });
+        cleanup.push({ directory, status: "HELD", error: error.message.slice(0, 512) });
       }
     }
   }
-  if (failure) throw failure;
+  if (failure) {
+    // Preserve the original error and report every owned path even when a
+    // partial write cannot be verified for retirement.
+    failure.custodyDummyCleanup = cleanup;
+    throw failure;
+  }
   need(
     cleanup.length === 2 && cleanup.every((c) => c.status === "VERIFIED_PUBLIC_DUMMY_RETIRED"),
     "DUMMY_CLEANUP_HELD",
@@ -259,7 +264,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   try {
     console.log(JSON.stringify(await runRegistryCustodyBootstrap(process.argv.slice(2))));
   } catch (error) {
-    console.error(error.message);
+    console.error(JSON.stringify({ error: error.message, cleanup: error.custodyDummyCleanup ?? [] }));
     process.exitCode = 1;
   }
 }

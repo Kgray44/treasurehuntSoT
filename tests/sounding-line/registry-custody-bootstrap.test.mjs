@@ -165,3 +165,40 @@ test("dummy reader refuses hardlinks, changed bytes and arbitrary filenames", ()
     fs.rmdirSync(parent);
   }
 });
+
+test("partial public dummy writes retain the original failure and report held resources", (t) => {
+  const first = fs.mkdtempSync(path.join(os.tmpdir(), "custody-partial-a-"));
+  const second = fs.mkdtempSync(path.join(os.tmpdir(), "custody-partial-b-"));
+  const write = fs.writeFileSync;
+  const original = Error("INDUCED_PARTIAL_PUBLIC_WRITE");
+  let count = 0,
+    observed;
+  t.mock.method(fs, "writeFileSync", (...args) => {
+    if (++count === 2) {
+      write(args[0], "PUBLIC_PARTIAL", args[2]);
+      throw original;
+    }
+    return write(...args);
+  });
+  try {
+    assert.throws(
+      () => runPublicCustodyDummyPair(first, second),
+      (error) => {
+        observed = error;
+        return error === original;
+      },
+    );
+    assert.equal(observed.custodyDummyCleanup[0].status, "VERIFIED_PUBLIC_DUMMY_RETIRED");
+    const held = observed.custodyDummyCleanup[1];
+    assert.equal(held.status, "HELD");
+    assert.equal(path.dirname(held.directory), second);
+    const file = path.join(held.directory, "public-canary.bin");
+    assert.equal(fs.readFileSync(file, "utf8"), "PUBLIC_PARTIAL");
+    // Fixture teardown knows these exact induced bytes; production held them.
+    fs.unlinkSync(file);
+    fs.rmdirSync(held.directory);
+  } finally {
+    fs.rmdirSync(first);
+    fs.rmdirSync(second);
+  }
+});
