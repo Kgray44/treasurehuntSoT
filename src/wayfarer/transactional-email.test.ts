@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -275,6 +275,34 @@ describe("Project Homeport transactional email providers", () => {
       data: { status: "FAILED", failureCode: "DELIVERY_FAILED" },
     });
     expect(JSON.stringify(mocks.deliveryUpdate.mock.calls)).not.toContain("654321");
+  });
+
+  it("uses the candidate-scoped generic outbox when only the candidate database reaches a built server", async () => {
+    const candidatePrefix = "0123456789ab";
+    syntheticRoot = path.resolve(`.sounding-line-${candidatePrefix}.outbox`);
+    vi.stubEnv("DATABASE_URL", `file:./.sounding-line-${candidatePrefix}.sqlite`);
+    vi.stubEnv("HOMEPORT_SYNTHETIC_EMAIL_ADAPTER", "");
+    vi.stubEnv("HOMEPORT_SYNTHETIC_OUTBOX_PATH", path.join(tmpdir(), "unpaired-email-outbox.jsonl"));
+    vi.stubEnv("HOMEPORT_PHASE7_TASK_ROOT", "");
+
+    expect(transactionalEmailProviderStatus()).toMatchObject({
+      providerId: "SYNTHETIC_OUTBOX",
+      available: true,
+      classification: "SYNTHETIC_EMAIL_ONLY",
+    });
+
+    await expect(
+      sendTransactionalEmail({
+        purpose: "VERIFY_EMAIL",
+        email: "generic-outbox@example.test",
+        accountId: "generic-outbox-account",
+        token: "123456",
+      }),
+    ).resolves.toMatchObject({ status: "SUBMITTED" });
+
+    expect(readFileSync(path.join(syntheticRoot, "outbox", "messages.jsonl"), "utf8")).toContain(
+      "generic-outbox@example.test",
+    );
   });
 
   it("keeps the dormant Postmark webhook compatibility boundary idempotent", async () => {
