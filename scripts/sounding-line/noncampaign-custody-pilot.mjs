@@ -1,5 +1,5 @@
-// Manual, source-checked experiment only. It never supplies an ordinary read-set
-// callback, reserves a campaign, issues a certificate or writes a Mainline result.
+// Manual source-checked experiments only. They never change the installed
+// ordinary switch, reserve a campaign or write a Mainline result.
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
@@ -11,6 +11,7 @@ import { ordinaryCheckoutProfile } from "./ordinary-checkout.mjs";
 import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
 import { readAttestationArchiveShadow } from "./attestation-archive-shadow.mjs";
 import { readSourceSnapshotBatches } from "./source-snapshot-batches.mjs";
+import { runMatchedCustodyAdapter } from "./noncampaign-custody-matched-pilot.mjs";
 import { EXPERIENCE_READER_OBJECTS } from "./experience-checkout-roots.mjs";
 
 export const CUSTODY_PILOT_WORKFLOW = ".github/workflows/sounding-line-custody-shadow.yml";
@@ -49,6 +50,10 @@ export function custodyPilotSourceFiles() {
         "experience-selected-checkout.mjs",
         "noncampaign-custody-pilot.mjs",
         "noncampaign-custody-shadow.mjs",
+        "noncampaign-custody-read-set.mjs",
+        "noncampaign-custody-matched-pilot.mjs",
+        "noncampaign-custody-negative-probe.mjs",
+        "noncampaign-custody-proof-files.mjs",
         "ordinary-checkout.mjs",
         "ordinary-custody-probe.mjs",
         "ordinary-documentation-checkout-profile.mjs",
@@ -215,11 +220,8 @@ export function retainCustodyPilotFrame(filename, bytes) {
   return Object.freeze({ bytes: bytes.length, sha256: hash(bytes), completeReadback: true });
 }
 
-export function validateCustodyPilotBaseline({ run, jobs, checks, artifacts, source, parents }) {
-  need(
-    oid(source) && Array.isArray(parents) && parents.length === 2 && parents.every(oid) && parents[0] !== parents[1],
-    "NORMAL_LANDED_SOURCE",
-  );
+function validateQualifiedCustodyBaseline({ run, jobs, checks, artifacts, source, baseSha, candidateSha }) {
+  need(oid(source) && oid(baseSha) && oid(candidateSha) && baseSha !== candidateSha, "BOUND_BASELINE_SOURCE");
   need(
     positive(run.id) &&
       run.run_attempt === 1 &&
@@ -227,7 +229,7 @@ export function validateCustodyPilotBaseline({ run, jobs, checks, artifacts, sou
       run.path === ".github/workflows/sounding-line-ordinary.yml" &&
       run.status === "completed" &&
       run.conclusion === "success" &&
-      run.head_sha === parents[1] &&
+      run.head_sha === candidateSha &&
       run.repository?.id === repositoryId &&
       run.repository.full_name === repository &&
       run.repository.owner?.id === ownerId &&
@@ -302,12 +304,56 @@ export function validateCustodyPilotBaseline({ run, jobs, checks, artifacts, sou
     artifactId: artifact.id,
     artifactBytes: artifact.size_in_bytes,
     artifactSha256: artifact.digest.slice(7),
-    baseSha: parents[0],
-    candidateSha: parents[1],
+    baseSha,
+    candidateSha,
     installedSource: source,
     qualification: false,
     certificate: "NOT_ISSUED",
   });
+}
+
+export function validateCustodyPilotBaseline(input) {
+  const { source, parents } = input;
+  need(
+    oid(source) && Array.isArray(parents) && parents.length === 2 && parents.every(oid) && parents[0] !== parents[1],
+    "NORMAL_LANDED_SOURCE",
+  );
+  return validateQualifiedCustodyBaseline({ ...input, baseSha: parents[0], candidateSha: parents[1] });
+}
+export function validatePreparedCustodyBaseline(input) {
+  const { source, pull } = input;
+  need(
+    pull?.state === "open" &&
+      pull.draft === false &&
+      pull.merged_at === null &&
+      positive(pull.number) &&
+      ![721, 776, 805, 820].includes(pull.number) &&
+      pull.base?.ref === "main" &&
+      pull.base.sha === source &&
+      pull.base.repo?.id === repositoryId &&
+      pull.head?.repo?.id === repositoryId &&
+      oid(pull.head.sha),
+    "OPEN_PREPARED_CANDIDATE",
+  );
+  validateCustodyRunPull(input.run, pull, source, pull.head.sha);
+  return validateQualifiedCustodyBaseline({ ...input, baseSha: source, candidateSha: pull.head.sha });
+}
+function validateCustodyRunPull(run, pull, baseSha, candidateSha) {
+  const rows = run.pull_requests;
+  need(
+    Array.isArray(rows) &&
+      rows.length === 1 &&
+      positive(pull.id) &&
+      rows[0].id === pull.id &&
+      rows[0].number === pull.number &&
+      rows[0].base?.sha === baseSha &&
+      rows[0].head?.sha === candidateSha &&
+      rows[0].base?.ref === "main" &&
+      rows[0].head?.ref === pull.head?.ref &&
+      rows[0].base?.repo?.id === repositoryId &&
+      rows[0].head?.repo?.id === repositoryId,
+    "ORIGINAL_PR_BINDING",
+  );
 }
 
 function context() {
@@ -336,7 +382,16 @@ function context() {
   const runId = Number(e.GITHUB_RUN_ID),
     baselineRunId = Number(e.INPUT_BASELINE_RUN_ID);
   need(positive(runId) && positive(baselineRunId) && baselineRunId !== runId, "RUN_IDENTITY");
+  const preparedPrNumber = e.INPUT_PREPARED_PR_NUMBER ? Number(e.INPUT_PREPARED_PR_NUMBER) : null;
+  need(
+    preparedPrNumber === null ||
+      (positive(preparedPrNumber) &&
+        String(preparedPrNumber) === e.INPUT_PREPARED_PR_NUMBER &&
+        ![721, 776, 805, 820].includes(preparedPrNumber)),
+    "PREPARED_PR_SELECTOR",
+  );
   return {
+    preparedPrNumber,
     source: e.GITHUB_SHA,
     runId,
     attempt: 1,
@@ -482,11 +537,21 @@ async function controller(directory) {
       { cwd, input, timeout: args[0] === "fetch" ? 120000 : 45000 },
     );
   const provider = (endpoint, maximumBytes = 2 * 1024 ** 2) =>
-    execute("gh", ["api", "--hostname", "github.com", `repos/${repository}/${endpoint}`], {
-      maximumBytes,
-      timeout: 15000,
-      environment: { ...env, GH_PROMPT_DISABLED: "1", NO_COLOR: "1" },
-    });
+    execute(
+      "gh",
+      [
+        "api",
+        ...(/^actions\/jobs\/[1-9][0-9]*\/logs(?![\s\S])/u.test(endpoint) ? ["--allow-escape-sequences"] : []),
+        "--hostname",
+        "github.com",
+        `repos/${repository}/${endpoint}`,
+      ],
+      {
+        maximumBytes,
+        timeout: 15000,
+        environment: { ...env, GH_PROMPT_DISABLED: "1", NO_COLOR: "1" },
+      },
+    );
   const json = (endpoint) => JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(provider(endpoint)));
   const liveMain = () => {
     const value = json("git/ref/heads/main");
@@ -504,27 +569,38 @@ async function controller(directory) {
     need(commit.sha === current.source && commit.tree?.sha === local[1], "INSTALLED_TREE");
     const run = json(`actions/runs/${current.baselineRunId}/attempts/1`);
     need(run.id === current.baselineRunId && run.run_attempt === 1 && oid(run.head_sha), "BASELINE_RUN_SELECTOR");
-    const binding = validateCustodyPilotBaseline({
+    const baselineInput = {
       run,
       jobs: json(`actions/runs/${current.baselineRunId}/attempts/1/jobs?per_page=100`),
       checks: json(`commits/${run.head_sha}/check-runs?per_page=100`),
       artifacts: json(`actions/runs/${current.baselineRunId}/artifacts?per_page=100`),
       source: current.source,
-      parents: commit.parents.map((value) => value.sha),
-    });
-    const pulls = json(`commits/${binding.candidateSha}/pulls?per_page=100`);
-    const matches = pulls.filter(
-      (pull) =>
-        pull.merge_commit_sha === current.source &&
-        pull.merged_at &&
-        pull.head?.sha === binding.candidateSha &&
-        pull.base?.repo?.id === repositoryId,
-    );
-    need(
-      matches.length === 1 && positive(matches[0].number) && ![721, 776, 805, 820].includes(matches[0].number),
-      "BASELINE_OWNER_SCOPE",
-    );
-    const prNumber = matches[0].number;
+    };
+    let binding, prNumber, subjectPull;
+    if (current.preparedPrNumber !== null) {
+      const pull = json(`pulls/${current.preparedPrNumber}`);
+      need(pull.number === current.preparedPrNumber, "PR_SELECTOR_IDENTITY");
+      binding = validatePreparedCustodyBaseline({ ...baselineInput, pull });
+      subjectPull = pull;
+      prNumber = pull.number;
+    } else {
+      binding = validateCustodyPilotBaseline({ ...baselineInput, parents: commit.parents.map((value) => value.sha) });
+      const pulls = json(`commits/${binding.candidateSha}/pulls?per_page=100`);
+      const matches = pulls.filter(
+        (pull) =>
+          pull.merge_commit_sha === current.source &&
+          pull.merged_at &&
+          pull.head?.sha === binding.candidateSha &&
+          pull.base?.repo?.id === repositoryId,
+      );
+      need(
+        matches.length === 1 && positive(matches[0].number) && ![721, 776, 805, 820].includes(matches[0].number),
+        "BASELINE_OWNER_SCOPE",
+      );
+      prNumber = matches[0].number;
+      subjectPull = matches[0];
+    }
+    validateCustodyRunPull(run, subjectPull, binding.baseSha, binding.candidateSha);
     const archiveBytes = provider(`actions/artifacts/${binding.artifactId}/zip`, 65536);
     need(
       archiveBytes.length === binding.artifactBytes && hash(archiveBytes) === binding.artifactSha256,
@@ -628,6 +704,28 @@ async function controller(directory) {
       productionReadsReplaced: 0,
       qualification: false,
     });
+    if (current.preparedPrNumber !== null) {
+      const baselineJobLog = provider(`actions/jobs/${binding.custodyJobId}/logs`, 8 * 1024 ** 2);
+      retainCustodyPilotFrame(path.join(directory, "baseline-custody-job.original.log"), baselineJobLog);
+      const observed = await runMatchedCustodyAdapter({
+        directory,
+        current,
+        binding,
+        baseline,
+        prNumber,
+        git,
+        execute,
+        record,
+        environment: env,
+        baselineJobLog,
+      });
+      liveMain();
+      const pull = json(`pulls/${prNumber}`);
+      validatePreparedCustodyBaseline({ ...baselineInput, pull });
+      record("original-frame-ledger.json", { rows, retainedBytes, qualification: false });
+      record("terminal.json", observed);
+      return;
+    }
     const selected = path.join(directory, "selected"),
       checkoutBegan = performance.now();
     fs.mkdirSync(selected);

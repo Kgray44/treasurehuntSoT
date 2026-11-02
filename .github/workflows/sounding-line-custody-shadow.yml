@@ -9,8 +9,12 @@ on:
         required: true
         type: string
       baseline_run_id:
-        description: Successful first-attempt ordinary qualification landed as this main
+        description: Successful first-attempt ordinary qualification with original FULL custody
         required: true
+        type: string
+      prepared_pr_number:
+        description: Optional still-open qualified activation PR; installed mode must remain SHADOW
+        required: false
         type: string
 
 permissions:
@@ -24,6 +28,7 @@ concurrency:
 env:
   INPUT_BASE_SHA: ${{ inputs.base_sha }}
   INPUT_BASELINE_RUN_ID: ${{ inputs.baseline_run_id }}
+  INPUT_PREPARED_PR_NUMBER: ${{ inputs.prepared_pr_number }}
   NODE_OPTIONS: ""
   NODE_PATH: ""
 
@@ -110,7 +115,11 @@ jobs:
             /scripts/sounding-line/experience-selected-checkout.mjs
             /scripts/sounding-line/homeport-source-amendment.mjs
             /scripts/sounding-line/immutable-recognition-reads.mjs
+            /scripts/sounding-line/noncampaign-custody-matched-pilot.mjs
+            /scripts/sounding-line/noncampaign-custody-negative-probe.mjs
             /scripts/sounding-line/noncampaign-custody-pilot.mjs
+            /scripts/sounding-line/noncampaign-custody-proof-files.mjs
+            /scripts/sounding-line/noncampaign-custody-read-set.mjs
             /scripts/sounding-line/noncampaign-custody-shadow.mjs
             /scripts/sounding-line/ordinary-checkout.mjs
             /scripts/sounding-line/ordinary-custody-probe.mjs
