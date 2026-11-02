@@ -8,7 +8,7 @@ import { retainCustodyProofFrame, readCustodyPilotSource } from "./noncampaign-c
 import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
 import { observeNoncampaignCustodyShadow, inspectNoncampaignCustodyShadow } from "./noncampaign-custody-shadow.mjs";
 
-export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "9128323906a580f7875552b65f4c52514729bd2d";
+export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "PENDING";
 export const CERTIFIED_CUSTODY_PROFILE = "NONCAMPAIGN_CUSTODY_METADATA_V1";
 const capabilities = new WeakMap();
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -33,9 +33,9 @@ const workerErrorObservation = (error, seen = new Set()) => {
   };
 };
 
-// These are the native-observed 84 installed source files, plus the new adapter
-// and proof worker. The worker independently checks their actual descriptors,
-// Git identities and reviewed ancestry; callers cannot supply this list.
+// Runtime source uses descriptor/body and reviewed-ancestry checks. The two
+// non-imported workflow configurations use exact reviewed Git metadata instead,
+// matching ordinary's sparse bootstrap. Callers cannot supply this list.
 export const custodyCertificatePaths = Object.freeze([
   ".gitattributes",
   ".github/workflows/sounding-line-custody-shadow.yml",

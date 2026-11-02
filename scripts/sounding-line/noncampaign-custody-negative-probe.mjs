@@ -33,6 +33,10 @@ const nativeMetadataSha256 = Object.freeze({
   "55080155a1604f9c1ca0d2d62cb278055d77a1ef": "42ffffc2c14dab3e22ab2990e6f70e092afb119b33b5fe071d7b300aeda049b4",
   "089308bf475a2b22bfdc64ac46164996855e7010": "404670ce9f99e960b8805571dd4f463f4ca3ab6c61162b5d51e33d361d8e67d7",
 });
+const workflowMetadataPins = new Set([
+  ".github/workflows/sounding-line-custody-shadow.yml",
+  ".github/workflows/sounding-line-ordinary.yml",
+]);
 
 export function custodyProofFilesystem(root, excluded = new Set()) {
   const pending = [root],
@@ -197,6 +201,25 @@ export function runInstalledNegativeCustodyProof(input) {
     );
     const certificateReaders = [];
     const installedRows = custodyCertificatePaths.map((filename) => {
+      if (workflowMetadataPins.has(filename)) {
+        // Ordinary's scripts/testing sparse bootstrap does not materialize
+        // these server-executed, non-imported workflow configs. Their complete
+        // immutable Git mode/blob identities remain exact in R, B and H.
+        const before = base.get(filename),
+          after = candidate.get(filename),
+          accepted = reviewed.get(filename);
+        need(
+          before?.mode === "100644" && identity(before) === identity(after) && identity(before) === identity(accepted),
+          "WORKFLOW_METADATA_DRIFT",
+        );
+        return {
+          path: filename,
+          kind: "NON_IMPORTED_WORKFLOW_METADATA",
+          mode: before.mode,
+          blob: before.blob,
+          reviewedBlob: accepted.blob,
+        };
+      }
       const actual = readCustodyPilotSource(path.join(installed, filename)),
         currentBlob = gitBlob(actual),
         normalizedBlob = gitBlob(normalizeCustodyCertificateSource(filename, actual));
@@ -226,6 +249,7 @@ export function runInstalledNegativeCustodyProof(input) {
       }
       return {
         path: filename,
+        kind: "INSTALLED_DESCRIPTOR_BYTES",
         blob: currentBlob,
         reviewedBlob: normalizedBlob,
         bytes: actual.length,
