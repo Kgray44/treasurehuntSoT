@@ -92,8 +92,7 @@ export function createPreparationCapsuleShadow({ source, directory, layer }) {
   sameDirectory(parent);
   const root = path.join(parent.root, `preparation-capsule-${randomUUID()}`);
   fs.mkdirSync(root, { mode: 0o700 });
-  const identity = directoryIdentity(root),
-    payload = path.join(root, "payload"),
+  const payload = path.join(root, "payload"),
     initial = path.join(root, "initial.json"),
     manifestPath = path.join(root, "manifest.json");
   const initialBytes = Buffer.from(
@@ -106,14 +105,15 @@ export function createPreparationCapsuleShadow({ source, directory, layer }) {
       reuseAuthorized: false,
     }) + "\n",
   );
-  fs.writeFileSync(initial, initialBytes, { flag: "wx", mode: 0o600 });
-  const initialReference = {
-    signature: signature(fs.lstatSync(initial, { bigint: true })),
-    bytes: initialBytes.length,
-    sha256: hash(initialBytes),
-  };
-  let failure, manifestReference;
+  let identity, initialReference, failure, manifestReference;
   try {
+    identity = directoryIdentity(root);
+    fs.writeFileSync(initial, initialBytes, { flag: "wx", mode: 0o600 });
+    initialReference = {
+      signature: signature(fs.lstatSync(initial, { bigint: true })),
+      bytes: initialBytes.length,
+      sha256: hash(initialBytes),
+    };
     fs.mkdirSync(payload);
     const buffer = Buffer.alloc(PREPARATION_CAPSULE_LIMITS.chunkBytes);
     for (const entry of inventory) {
@@ -223,7 +223,8 @@ export function createPreparationCapsuleShadow({ source, directory, layer }) {
   let failureRetained = false,
     retentionError;
   try {
-    sameDirectory(identity);
+    sameDirectory(parent);
+    sameDirectory(identity ?? directoryIdentity(root));
     const description = (error) => {
       const message = Object.getOwnPropertyDescriptor(error, "message");
       return typeof message?.value === "string" && message.value.length <= 16384 ? message.value : null;
@@ -254,6 +255,7 @@ export function createPreparationCapsuleShadow({ source, directory, layer }) {
         root,
         payload,
         initial,
+        initialReceiptCustody: initialReference ? "PINNED" : "UNAVAILABLE",
         failureRetained,
         qualification: false,
         reuseAuthorized: false,

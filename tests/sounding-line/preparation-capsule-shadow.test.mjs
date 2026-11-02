@@ -158,3 +158,75 @@ test("shared build layers, overlapping roots, and oversized source fail before c
   assert.throws(() => create(f), /BOUND/u);
   assert.deepEqual(fs.readdirSync(f.directory), []);
 });
+
+test("early post-allocation failures retain their original error and never delete the prefix", (t) => {
+  for (const stage of ["identity", "initial-write", "initial-stat"]) {
+    const f = fixture(t),
+      realpath = fs.realpathSync,
+      write = fs.writeFileSync,
+      stat = fs.lstatSync;
+    const original = Error(`original ${stage}`);
+    let injected = false;
+    fs.realpathSync = (...args) => {
+      if (stage === "identity" && !injected && path.basename(String(args[0])).startsWith("preparation-capsule-")) {
+        injected = true;
+        throw original;
+      }
+      return realpath(...args);
+    };
+    fs.writeFileSync = (...args) => {
+      if (stage === "initial-write" && !injected && String(args[0]).endsWith("initial.json")) {
+        injected = true;
+        write(args[0], "partial original prefix", args[2]);
+        throw original;
+      }
+      return write(...args);
+    };
+    fs.lstatSync = (...args) => {
+      if (stage === "initial-stat" && !injected && String(args[0]).endsWith("initial.json")) {
+        injected = true;
+        throw original;
+      }
+      return stat(...args);
+    };
+    let result;
+    try {
+      result = create(f);
+    } finally {
+      fs.realpathSync = realpath;
+      fs.writeFileSync = write;
+      fs.lstatSync = stat;
+    }
+    assert.equal(result.status, "FAIL", stage);
+    assert.equal(result.originalError, original);
+    assert.equal(result.initialReceiptCustody, "UNAVAILABLE");
+    assert.equal(result.failureRetained, true);
+    assert(fs.statSync(result.root).isDirectory());
+    assert.equal(JSON.parse(fs.readFileSync(path.join(result.root, "failure.json"))).message, original.message);
+    if (stage === "initial-write") assert.equal(fs.readFileSync(result.initial, "utf8"), "partial original prefix");
+    assert.equal(verifyPreparationCapsuleShadow(result), null);
+  }
+});
+
+test("an early initial-write failure and failure-record error remain separate originals", (t) => {
+  const f = fixture(t),
+    write = fs.writeFileSync;
+  const original = Error("original initial write"),
+    retention = Error("original failed receipt write");
+  fs.writeFileSync = (...args) => {
+    if (String(args[0]).endsWith("initial.json")) throw original;
+    if (String(args[0]).endsWith("failure.json")) throw retention;
+    return write(...args);
+  };
+  let result;
+  try {
+    result = create(f);
+  } finally {
+    fs.writeFileSync = write;
+  }
+  assert.equal(result.status, "FAIL");
+  assert.equal(result.originalError, original);
+  assert.equal(result.retentionError, retention);
+  assert.equal(result.failureRetained, false);
+  assert(fs.statSync(result.root).isDirectory());
+});
