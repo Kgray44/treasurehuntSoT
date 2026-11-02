@@ -1,5 +1,5 @@
-// File and denial primitives copied byte-for-byte from the independently observed
-// a141 custody pilot. The production adapter never imports the pilot controller.
+// Native-observed denial and descriptor primitives, with the frame writer
+// renamed. The production adapter never imports the pilot controller.
 import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";

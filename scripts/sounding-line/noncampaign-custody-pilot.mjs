@@ -64,6 +64,7 @@ export function custodyPilotSourceFiles() {
       ].map((name) => `scripts/sounding-line/${name}`),
       "testing/noncampaign-custody-shadow-readers.json",
       CUSTODY_PILOT_WORKFLOW,
+      ".github/workflows/sounding-line-ordinary.yml",
       "package.json",
       ".nvmrc",
       ".gitattributes",
@@ -335,11 +336,51 @@ export function validatePreparedCustodyBaseline(input) {
       oid(pull.head.sha),
     "OPEN_PREPARED_CANDIDATE",
   );
-  validateCustodyRunPull(input.run, pull, source, pull.head.sha);
-  return validateQualifiedCustodyBaseline({ ...input, baseSha: source, candidateSha: pull.head.sha });
+  const pullBinding = validateCustodyRunPull(input.run, pull, source, pull.head.sha);
+  return Object.freeze({
+    ...validateQualifiedCustodyBaseline({ ...input, baseSha: source, candidateSha: pull.head.sha }),
+    pullBinding,
+  });
 }
-function validateCustodyRunPull(run, pull, baseSha, candidateSha) {
+export function validateCustodyRunPull(run, pull, baseSha, candidateSha) {
   const rows = run.pull_requests;
+  need(
+    Array.isArray(rows) &&
+      positive(pull.id) &&
+      positive(pull.number) &&
+      oid(baseSha) &&
+      oid(candidateSha) &&
+      run.head_sha === candidateSha &&
+      typeof pull.head?.ref === "string" &&
+      run.head_branch === pull.head.ref,
+    "ORIGINAL_PR_BINDING",
+  );
+  if (rows.length === 0) {
+    // GitHub omits this mutable array for valid completed/merged runs. Join the
+    // actual provider facts using the protected workflow's exact run-name schema;
+    // no caller digest or invented pull-request row can supply this witness.
+    const workflow = readCustodyPilotSource(path.join(root, ".github/workflows/sounding-line-ordinary.yml"));
+    const workflowSha256 = hash(workflow);
+    need(
+      workflowSha256 === "d05da39862393b7195fb9a0748a90f8d35f6261e74ba0a7738adf7789a7b583f" &&
+        run.workflow_id === 341545080 &&
+        run.path === ".github/workflows/sounding-line-ordinary.yml" &&
+        run.event === "pull_request_target" &&
+        run.run_attempt === 1 &&
+        run.display_title === `Sounding Line finite 1 ordinary ${pull.number} ${candidateSha} active`,
+      "SOURCE_PINNED_PR_RUN_NAME",
+    );
+    return Object.freeze({
+      kind: "SOURCE_PINNED_RUN_NAME_WITH_EMPTY_PROVIDER_ARRAY",
+      observedPullRequestRows: 0,
+      prId: pull.id,
+      prNumber: pull.number,
+      baseSha,
+      candidateSha,
+      headRef: pull.head.ref,
+      workflowSha256,
+    });
+  }
   need(
     Array.isArray(rows) &&
       rows.length === 1 &&
@@ -354,6 +395,15 @@ function validateCustodyRunPull(run, pull, baseSha, candidateSha) {
       rows[0].head?.repo?.id === repositoryId,
     "ORIGINAL_PR_BINDING",
   );
+  return Object.freeze({
+    kind: "ORIGINAL_PROVIDER_PULL_ROW",
+    observedPullRequestRows: 1,
+    prId: pull.id,
+    prNumber: pull.number,
+    baseSha,
+    candidateSha,
+    headRef: pull.head.ref,
+  });
 }
 
 function context() {
@@ -600,7 +650,10 @@ async function controller(directory) {
       prNumber = matches[0].number;
       subjectPull = matches[0];
     }
-    validateCustodyRunPull(run, subjectPull, binding.baseSha, binding.candidateSha);
+    binding = Object.freeze({
+      ...binding,
+      pullBinding: validateCustodyRunPull(run, subjectPull, binding.baseSha, binding.candidateSha),
+    });
     const archiveBytes = provider(`actions/artifacts/${binding.artifactId}/zip`, 65536);
     need(
       archiveBytes.length === binding.artifactBytes && hash(archiveBytes) === binding.artifactSha256,

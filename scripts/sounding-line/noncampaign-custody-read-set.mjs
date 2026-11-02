@@ -8,7 +8,7 @@ import { retainCustodyProofFrame, readCustodyPilotSource } from "./noncampaign-c
 import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
 import { observeNoncampaignCustodyShadow, inspectNoncampaignCustodyShadow } from "./noncampaign-custody-shadow.mjs";
 
-export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "acbd196aef5341e13a2f88509ab88f8b015af44b";
+export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "PENDING";
 export const CERTIFIED_CUSTODY_PROFILE = "NONCAMPAIGN_CUSTODY_METADATA_V1";
 const capabilities = new WeakMap();
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -18,6 +18,20 @@ const full = (reason) => ({
   applied: false,
   proposal: Object.freeze({ profile: "FULL_SNAPSHOT", reason, qualification: false }),
 });
+const workerErrorObservation = (error, seen = new Set()) => {
+  if (error === undefined || error === null) return null;
+  if (typeof error !== "object") return { value: String(error) };
+  if (seen.has(error)) return { repeatedReference: true };
+  seen.add(error);
+  return {
+    name: typeof error.name === "string" ? error.name : "UNKNOWN",
+    message: typeof error.message === "string" ? error.message : null,
+    stack: typeof error.stack === "string" ? error.stack : null,
+    code: typeof error.code === "string" || typeof error.code === "number" ? error.code : null,
+    cause: workerErrorObservation(error.cause, seen),
+    errors: Array.isArray(error.errors) ? error.errors.map((item) => workerErrorObservation(item, seen)) : [],
+  };
+};
 
 // These are the native-observed 84 installed source files, plus the new adapter
 // and proof worker. The worker independently checks their actual descriptors,
@@ -25,6 +39,7 @@ const full = (reason) => ({
 export const custodyCertificatePaths = Object.freeze([
   ".gitattributes",
   ".github/workflows/sounding-line-custody-shadow.yml",
+  ".github/workflows/sounding-line-ordinary.yml",
   ".nvmrc",
   "package.json",
   "scripts/sounding-line/attestation-archive-shadow.mjs",
@@ -330,8 +345,13 @@ export async function certifiedNoncampaignCustodyReadSet({
           JSON.stringify({
             result,
             cleanup,
+            failure: workerErrorObservation(failure),
+            finalizationFailures: errors.map((error) => workerErrorObservation(error)),
             observed,
             stored,
+            stdoutComplete: observed.stdout === stored.stdout,
+            stderrComplete: observed.stderr === stored.stderr,
+            failed: !!failure || errors.length > 0 || result?.code !== 0 || cleanup?.status !== "PASS",
             originalExceptionSerializationComplete: false,
             qualification: false,
           }),

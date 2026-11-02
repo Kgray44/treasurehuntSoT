@@ -20,6 +20,7 @@ import {
   custodyPilotSourceFiles,
   validateCustodyPilotBaseline,
   validatePreparedCustodyBaseline,
+  validateCustodyRunPull,
 } from "../../scripts/sounding-line/noncampaign-custody-pilot.mjs";
 import { checkoutCommandOutput } from "../../scripts/sounding-line/experience-selected-checkout.mjs";
 import {
@@ -795,6 +796,7 @@ test("prepared comparison binds a ready open PR to its actual protected base and
       head: structuredClone(input.pull.head),
     },
   ];
+  input.run.head_branch = input.pull.head.ref;
   const result = validatePreparedCustodyBaseline(input);
   assert.equal(result.baseSha, input.pull.base.sha);
   assert.equal(result.candidateSha, input.pull.head.sha);
@@ -902,4 +904,68 @@ test("baseline toolchain observations retain original bytes and never certify ru
   assert.equal(result.equalityOrIsolationCertified, false);
   assert.equal(result.kernel, "NOT_RECORDED_BY_ORIGINAL_JOB");
   assert.throws(() => baselineToolchainObservations(Buffer.from([255])));
+});
+
+test("actual GitHub empty PR array retains original identities through the pinned workflow run-name join", () => {
+  // The complete original response bytes are immutable fixtures. The historical
+  // pre-merge PR response is not asserted to be the PR's present open state.
+  const runBytes = fs.readFileSync(new URL("./fixtures/custody-pr838-run-empty.original.bin", import.meta.url));
+  const pullBytes = fs.readFileSync(new URL("./fixtures/custody-pr838-premerge-pull.original.bin", import.meta.url));
+  assert.equal(
+    createHash("sha256").update(runBytes).digest("hex"),
+    "d213e561437fdd248dfacdf9abab9b2f936427a8df5a666aa8b0686cee96a1eb",
+  );
+  assert.equal(
+    createHash("sha256").update(pullBytes).digest("hex"),
+    "ff419478a408e3d2bf44fb8f716210a5f224b516c424ce11e2aea2d607e159f2",
+  );
+  const run = JSON.parse(runBytes),
+    pull = JSON.parse(pullBytes),
+    base = pull.base.sha,
+    candidate = pull.head.sha;
+  assert.deepEqual(run.pull_requests, []);
+  const proof = validateCustodyRunPull(run, pull, base, candidate);
+  assert.equal(proof.kind, "SOURCE_PINNED_RUN_NAME_WITH_EMPTY_PROVIDER_ARRAY");
+  assert.equal(proof.observedPullRequestRows, 0);
+  assert.equal(proof.prId, 5115855899);
+  assert.equal(proof.prNumber, 838);
+  assert.equal(proof.baseSha, "613b73b5622e91dbee7b13c69ac7c5904771390e");
+  assert.equal(proof.candidateSha, "7a38251a07c17914e6cad7e6901f0a7330507648");
+  assert.deepEqual(run.pull_requests, []);
+  for (const mutate of [
+    (v) => {
+      v.workflow_id = 1;
+    },
+    (v) => {
+      v.path = ".github/workflows/lookalike.yml";
+    },
+    (v) => {
+      v.event = "workflow_dispatch";
+    },
+    (v) => {
+      v.run_attempt = 2;
+    },
+    (v) => {
+      v.display_title = v.display_title.replace("838", "839");
+    },
+    (v) => {
+      v.display_title += "\n";
+    },
+    (v) => {
+      v.head_branch = "codex/other";
+    },
+    (v) => {
+      v.head_sha = sha("e");
+    },
+    (v) => {
+      v.pull_requests = undefined;
+    },
+    (v) => {
+      v.pull_requests = [{ id: pull.id, number: 839 }];
+    },
+  ]) {
+    const copy = structuredClone(run);
+    mutate(copy);
+    assert.throws(() => validateCustodyRunPull(copy, pull, base, candidate));
+  }
 });

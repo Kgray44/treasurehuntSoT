@@ -55,6 +55,7 @@ jobs:
           sparse-checkout: |
             /.gitattributes
             /.github/workflows/sounding-line-custody-shadow.yml
+            /.github/workflows/sounding-line-ordinary.yml
             /.nvmrc
             /package.json
             /scripts/sounding-line/attestation-archive-shadow.mjs
