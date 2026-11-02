@@ -94,6 +94,71 @@ test("original stream failures keep their identity, exact prefix and failed rece
   assert(!JSON.stringify(result).includes(error.message));
 });
 
+test("simultaneous transport, cancel, release and file-close failures preserve separate originals", async (t) => {
+  const { directory } = fixture(t),
+    originalOpen = fs.openSync,
+    originalClose = fs.closeSync;
+  const readError = Error("original read"),
+    cancelError = Error("original cancel"),
+    releaseError = Error("original release"),
+    closeError = Error("original raw close");
+  let rawFd;
+  fs.openSync = (...args) => {
+    const fd = originalOpen(...args);
+    if (String(args[0]).endsWith(".original.bin")) rawFd = fd;
+    return fd;
+  };
+  fs.closeSync = (fd) => {
+    originalClose(fd);
+    if (fd === rawFd) {
+      rawFd = undefined;
+      throw closeError;
+    }
+  };
+  try {
+    const r = {
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      body: {
+        getReader: () => ({
+          read: async () => {
+            throw readError;
+          },
+          cancel: async () => {
+            throw cancelError;
+          },
+          releaseLock: () => {
+            throw releaseError;
+          },
+        }),
+      },
+    };
+    const result = await retainMediaTransportShadow({ ...options(directory, Buffer.from("expected")), response: r });
+    assert.equal(result.status, "FAIL");
+    assert.equal(result.originalError, readError);
+    assert.deepEqual(
+      result.originalFailures.map(({ stage }) => stage),
+      ["TRANSPORT", "READER_CANCEL", "READER_RELEASE_LOCK", "RAW_FILE_CLOSE"],
+    );
+    assert.deepEqual(
+      result.originalFailures.map(({ error }) => error),
+      [readError, cancelError, releaseError, closeError],
+    );
+    assert.equal(result.failureRetained, true);
+    const retained = JSON.parse(fs.readFileSync(result.failurePath));
+    assert.deepEqual(
+      retained.observedFailures.map(({ original }) => original.message),
+      [readError.message, cancelError.message, releaseError.message, closeError.message],
+    );
+    assert.equal(verifyRetainedMediaShadow(result), null);
+    assert.equal(JSON.stringify(result).includes("original cancel"), false);
+  } finally {
+    fs.openSync = originalOpen;
+    fs.closeSync = originalClose;
+  }
+});
+
 test("oversize, truncated and wrong-digest bodies never become complete media", async (t) => {
   const { directory } = fixture(t),
     bytes = Buffer.from("expected");

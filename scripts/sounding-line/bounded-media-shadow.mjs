@@ -133,7 +133,7 @@ function verifyReceipt(reference) {
     if (fd !== undefined) fs.closeSync(fd);
   }
 }
-async function closeReader(reader) {
+async function closeReader(reader, failures) {
   if (!reader) return { started: false, cancelled: false, lockReleased: false };
   let timer,
     cancelled = false,
@@ -144,7 +144,10 @@ async function closeReader(reader) {
         .then(() => reader.cancel())
         .then(
           () => true,
-          () => false,
+          (error) => {
+            failures.push({ stage: "READER_CANCEL", error });
+            return false;
+          },
         ),
       new Promise((resolve) => {
         timer = setTimeout(() => resolve(false), 1000);
@@ -155,8 +158,8 @@ async function closeReader(reader) {
     try {
       reader.releaseLock();
       lockReleased = true;
-    } catch {
-      /* Retain incomplete closure. */
+    } catch (error) {
+      failures.push({ stage: "READER_RELEASE_LOCK", error });
     }
   }
   return { started: true, cancelled, lockReleased };
@@ -188,6 +191,7 @@ export async function retainMediaTransportShadow({
   const expectations = { expectedBytes, expectedSha256, maximumBytes, deadlineMs };
   const began = performance.now(),
     hash = createHash("sha256");
+  const originalFailures = [];
   let fd,
     reader,
     error,
@@ -264,15 +268,18 @@ export async function retainMediaTransportShadow({
     need(performance.now() - began < deadlineMs, "DEADLINE");
   } catch (failure) {
     error = failure;
+    originalFailures.push({ stage: "TRANSPORT", error: failure });
   } finally {
     clearTimeout(timer);
     if (abortHandler) signal?.removeEventListener("abort", abortHandler);
-    readerCleanup = await closeReader(reader);
+    readerCleanup = await closeReader(reader, originalFailures);
+    error ??= originalFailures[0]?.error;
     if (fd !== undefined) {
       try {
         fs.closeSync(fd);
         rawClosed = true;
       } catch (failure) {
+        originalFailures.push({ stage: "RAW_FILE_CLOSE", error: failure });
         error ??= failure;
       }
     }
@@ -281,41 +288,48 @@ export async function retainMediaTransportShadow({
   if (!error && sha256 !== expectedSha256) error = Error("SOUNDING_LINE_MEDIA_SHADOW_DIGEST_MISMATCH");
   if (!error && (!readerCleanup.cancelled || !readerCleanup.lockReleased || !rawClosed))
     error = Error("SOUNDING_LINE_MEDIA_SHADOW_CLEANUP_INCOMPLETE");
+  if (error && !originalFailures.some((failure) => failure.error === error))
+    originalFailures.push({ stage: "TERMINAL_VALIDATION", error });
   let failureRetained = false;
   if (error) {
     // The directory and this original error record are private, never product
     // output. Do not serialize caller getters or unbounded exception objects.
-    const original = {},
-      omittedFields = [];
-    for (const key of ["name", "message", "stack", "code"]) {
-      try {
-        const descriptor =
-          error && (typeof error === "object" || typeof error === "function")
-            ? Object.getOwnPropertyDescriptor(error, key)
-            : null;
-        if (descriptor) {
-          if (
-            Object.hasOwn(descriptor, "value") &&
-            typeof descriptor.value === "string" &&
-            descriptor.value.length <= 16384
-          )
-            original[key] = descriptor.value;
-          else {
-            const stack = key === "stack" ? boundedNativeStack(error, descriptor) : null;
-            if (stack !== null) original[key] = stack;
-            else omittedFields.push(key);
+    const describeFailure = (failure) => {
+      const original = {},
+        omittedFields = [];
+      for (const key of ["name", "message", "stack", "code"]) {
+        try {
+          const descriptor =
+            failure && (typeof failure === "object" || typeof failure === "function")
+              ? Object.getOwnPropertyDescriptor(failure, key)
+              : null;
+          if (descriptor) {
+            if (
+              Object.hasOwn(descriptor, "value") &&
+              typeof descriptor.value === "string" &&
+              descriptor.value.length <= 16384
+            )
+              original[key] = descriptor.value;
+            else {
+              const stack = key === "stack" ? boundedNativeStack(failure, descriptor) : null;
+              if (stack !== null) original[key] = stack;
+              else omittedFields.push(key);
+            }
           }
+        } catch {
+          omittedFields.push(key);
         }
-      } catch {
-        omittedFields.push(key);
       }
-    }
+      return { original, omittedFields };
+    };
+    const { original, omittedFields } = describeFailure(error);
     const serialized = Buffer.from(
       JSON.stringify({
         kind: "ORIGINAL_PRIVATE_TRANSPORT_FAILURE",
         representation: "BOUNDED_OWN_STRING_FIELDS_NOT_COMPLETE_EXCEPTION",
         original,
         omittedFields,
+        observedFailures: originalFailures.map(({ stage, error: failure }) => ({ stage, ...describeFailure(failure) })),
       }) + "\n",
     );
     try {
@@ -354,12 +368,21 @@ export async function retainMediaTransportShadow({
     sameDirectory(identity);
     terminalRecord = retainJSON(terminalPath, terminal);
   } catch (failure) {
+    originalFailures.push({ stage: "TERMINAL_RECEIPT_RETENTION", error: failure });
     error ??= failure;
     terminal.status = "FAIL";
     terminal.originalOutcome = "TERMINAL_RETENTION_FAILED";
     terminal.failureRetained = false;
   }
-  const result = Object.freeze(Object.defineProperty(terminal, "originalError", { value: error, enumerable: false }));
+  const result = Object.freeze(
+    Object.defineProperties(terminal, {
+      originalError: { value: error, enumerable: false },
+      originalFailures: {
+        value: Object.freeze(originalFailures.map((failure) => Object.freeze({ ...failure }))),
+        enumerable: false,
+      },
+    }),
+  );
   if (!error) completed.set(result, { identity, rawPath, bytes, sha256, initialRecord, terminalRecord });
   return result;
 }
