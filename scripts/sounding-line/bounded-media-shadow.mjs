@@ -226,6 +226,8 @@ async function retainTransportShadow(input, limits, kind) {
     rawClosed = false,
     timer,
     abortHandler,
+    abortError,
+    interruptRead,
     initialRecord,
     terminalRecord;
   let readerCleanup = { cancelled: false, lockReleased: false };
@@ -250,17 +252,33 @@ async function retainTransportShadow(input, limits, kind) {
     const length = response.headers.get("content-length");
     need(length === null || (/^[1-9][0-9]*$/u.test(length) && Number(length) === expectedBytes), "CONTENT_LENGTH");
     need(!signal?.aborted, "CANCELLED");
-    const abort = new Promise((_, reject) => {
-      abortHandler = () => reject(Error("SOUNDING_LINE_MEDIA_SHADOW_CANCELLED"));
-      if (signal?.aborted) abortHandler();
-      else signal?.addEventListener("abort", abortHandler, { once: true });
-      timer = setTimeout(() => reject(Error("SOUNDING_LINE_MEDIA_SHADOW_DEADLINE")), deadlineMs);
-    });
+    const interrupt = (failure) => {
+      abortError ??= failure;
+      interruptRead?.(abortError);
+    };
+    abortHandler = () => interrupt(Error("SOUNDING_LINE_MEDIA_SHADOW_CANCELLED"));
+    if (signal?.aborted) abortHandler();
+    else signal?.addEventListener("abort", abortHandler, { once: true });
+    timer = setTimeout(() => interrupt(Error("SOUNDING_LINE_MEDIA_SHADOW_DEADLINE")), deadlineMs);
     for (;;) {
       need(performance.now() - began < deadlineMs, "DEADLINE");
       need(reads < limits.reads, "READ_LIMIT");
       reads++;
-      const item = await Promise.race([reader.read(), abort]);
+      // One current read owns the interrupt callback. Racing every read against
+      // one unresolved abort promise would retain a reaction per archive chunk.
+      let item;
+      try {
+        item = await new Promise((resolve, reject) => {
+          interruptRead = reject;
+          if (abortError) reject(abortError);
+          else
+            Promise.resolve()
+              .then(() => reader.read())
+              .then(resolve, reject);
+        });
+      } finally {
+        interruptRead = null;
+      }
       need(performance.now() - began < deadlineMs, "DEADLINE");
       need(item && typeof item.done === "boolean", "FRAME");
       if (item.done) {
@@ -295,6 +313,7 @@ async function retainTransportShadow(input, limits, kind) {
     error = failure;
     originalFailures.push({ stage: "TRANSPORT", error: failure });
   } finally {
+    interruptRead = null;
     clearTimeout(timer);
     if (abortHandler) signal?.removeEventListener("abort", abortHandler);
     readerCleanup = await closeReader(reader, originalFailures);
