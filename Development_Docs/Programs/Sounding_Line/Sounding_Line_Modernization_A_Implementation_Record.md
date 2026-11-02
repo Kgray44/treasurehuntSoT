@@ -401,3 +401,60 @@ route, safe FULL fallback, original receipts, required decision, cleanup and
 whole-run timing before operational acceptance. This follow-up changes only
 regression coverage and this record; production certificate bytes, required
 protection, held owners and release authority remain governed by accepted main.
+
+## C retained-proof operational verification: 2026-11-02
+
+The first ordinary ACTIVE event for #841, candidate
+`40da64af40bfec9351b97639278f800ae994efcb`, passed run `41455538085/1`
+in 740 seconds. Its checkout receipt recorded 18 selected blobs / 10,610,239
+bytes / 10,578.199573 ms, but the installed workflow did not upload the original
+worker prefix. That event remains held evidence with an unrecoverable raw-worker
+gap. Its original candidate, checks, receipts and timing remain historical;
+subsequent evidence cannot replace its missing files.
+
+[PR #842](https://github.com/Kgray44/treasurehuntSoT/pull/842) installed bounded,
+after-every-outcome worker retention at
+`31115bf8f8d727c9b433e304e982f4c9cc5053ee`. Its qualification
+`41472986372/1` passed 1,476 regression checks and 16 rendered checks; its
+949-second observation exceeded the 900-second target. Landed smoke passed 32
+checks. This repair safely used FULL while its former source pins were stale.
+
+[PR #843](https://github.com/Kgray44/treasurehuntSoT/pull/843) rebound accepted
+retention source at `eb0c2483894c3461f70d2ce6797bdc5ddb499ea5`, tree
+`824a4e3ec56bb30cbbebec4a9321807794fcb89c`, with reviewed precursor
+`fe3cd493fdf1f8da3f175022a6dabb9e02850fea`. Qualification
+`41487028139/1`, required check `125428019304` / app `15368`, passed 1,477
+regression checks and 16 rendered checks in 872 seconds. The installed older
+reader correctly chose FULL/INSTALLED_READER_CHANGED: 19,448 blobs /
+9,432,454,430 bytes / 165,095.418321 ms. Its collector uploaded the independently
+verified NO_WORKER_PREFIX manifest. The final verification checkout retained the
+same complete blob closure in 240,447.72917 ms. Both retained complete 14-root
+ancestry, disabled late transport and passed owned cleanup. Landed smoke passed
+33 checks. These observations establish source integration and collector wiring;
+whole-run and billed savings still require comparable accepted evidence.
+
+The fresh #841 candidate forward-merges that accepted main while preserving
+`40da64af40bfec9351b97639278f800ae994efcb` as an ancestor. Its ordinary event
+must retain actual worker originals, original frame ordinals and command ledger,
+installed descriptor/workflow source identities, supervisor cleanup, exact outer
+checkout hash joins and the existing required Mainline Decision. Its merge stays
+held until independent review accepts that fresh evidence and its landed smoke.
+
+## Remaining B/C acceptance boundaries
+
+B's authenticated evidence and dependency-aware preservation shadow landed through
+[PR #835](https://github.com/Kgray44/treasurehuntSoT/pull/835) at
+`84400d01c8e7e68ecb87f0d3aa80acf6e1964411`. Native observations remain
+UNATTESTED_SHARED_TASK_RUNTIME and use RUN_FRESH. Authenticated reuse acceptance
+requires a real provider archive, independently expected coverage and external
+isolation, with the existing owner-held key supplied only through its in-memory
+route. That route is presently unavailable. Fixture positives and old artifacts
+do not establish B activation or complete the B increment.
+
+C source batching is live in two consumers. The separate certified preparation
+experiment measured about 9.807 seconds validating reuse versus about 3 seconds
+for fresh generation. Its evidence-backed disposition is to keep RUN_FRESH;
+activation has no demonstrated cost benefit. Bounded media transport preserves
+original provider bytes under finite read/deadline limits. Each further consumer
+promotion remains subject to provider authenticity, external isolation and
+independent equivalence. Custody acceptance alone does not complete all of C.
