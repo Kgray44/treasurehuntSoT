@@ -1,0 +1,88 @@
+name: Sounding Line preparation consumer shadow
+run-name: Sounding Line preparation consumer shadow ${{ inputs.producer_run_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_sha:
+        description: Exact installed protected main; no preparation is substituted
+        required: true
+        type: string
+      producer_run_id:
+        description: Successful first-attempt preparation producer and independent verifier
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sounding-line-preparation-consumer-shadow-${{ inputs.base_sha }}
+  cancel-in-progress: false
+
+jobs:
+  consumer-shadow:
+    name: Sounding Line / Preparation authenticated consumer shadow
+    if: ${{ github.repository == 'Kgray44/treasurehuntSoT' && github.actor == 'Kgray44' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require exact installed main and first attempt before checkout
+        env:
+          INPUT_BASE_SHA: ${{ inputs.base_sha }}
+        run: |
+          test "$INPUT_BASE_SHA" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = 1
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: candidate
+          fetch-depth: 1
+          fetch-tags: false
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /package.json
+            /package-lock.json
+            /.gitattributes
+            /prisma/schema.sqlite.prisma
+            /testing/prepared-artifacts.json
+            /.github/workflows/sounding-line-preparation-shadow.yml
+            /.github/workflows/sounding-line-preparation-consumer-shadow.yml
+            /scripts/sounding-line/preparation-publisher-shadow.mjs
+            /scripts/sounding-line/preparation-capsule-shadow.mjs
+            /scripts/sounding-line/preparation-content-shadow.mjs
+            /scripts/sounding-line/preparation-layer-identities.mjs
+            /scripts/sounding-line/evidence.mjs
+            /scripts/sounding-line/preparation-consumer-shadow.mjs
+            /scripts/sounding-line/preparation-provider-auth.mjs
+            /scripts/sounding-line/preparation-archive-shadow.mjs
+            /scripts/sounding-line/attestation-archive-shadow.mjs
+            /scripts/sounding-line/bounded-media-shadow.mjs
+            /scripts/sounding-line/owned-process.mjs
+            /scripts/sounding-line/owned-process-windows.ps1
+            /scripts/sounding-line/owned-process-linux.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Authenticate original provider records and complete preparation payload
+        working-directory: candidate
+        timeout-minutes: 4
+        env:
+          INPUT_BASE_SHA: ${{ inputs.base_sha }}
+          INPUT_PRODUCER_RUN_ID: ${{ inputs.producer_run_id }}
+          GH_TOKEN: ${{ github.token }}
+          NODE_OPTIONS: ""
+          NODE_PATH: ""
+        run: node scripts/sounding-line/preparation-consumer-shadow.mjs
+      - name: Retain original provider, byte and payload receipts after every outcome
+        if: always()
+        timeout-minutes: 1
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-preparation-consumer-shadow-${{ github.run_id }}-${{ github.run_attempt }}
+          path: candidate/artifacts/preparation-consumer-shadow
+          if-no-files-found: warn
+          retention-days: 90
+          compression-level: 0
