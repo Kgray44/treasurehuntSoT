@@ -38,7 +38,10 @@ import {
   readCustodyPilotSource as readProofSource,
   retainCustodyProofFrame,
 } from "../../scripts/sounding-line/noncampaign-custody-proof-files.mjs";
-import { custodyProofFilesystem } from "../../scripts/sounding-line/noncampaign-custody-negative-probe.mjs";
+import {
+  custodyProofFilesystem,
+  custodyWorkflowMetadataPin,
+} from "../../scripts/sounding-line/noncampaign-custody-negative-probe.mjs";
 
 const sha = (letter) => letter.repeat(40);
 const entry = (path, letter, mode = "100644") => ({ path, blob: sha(letter), mode, type: "blob" });
@@ -968,4 +971,33 @@ test("actual GitHub empty PR array retains original identities through the pinne
     mutate(copy);
     assert.throws(() => validateCustodyRunPull(copy, pull, base, candidate));
   }
+});
+
+test("sparse-bootstrap workflow pins require exact reviewed base and candidate blobs and never exempt runtime files", () => {
+  const original = { mode: "100644", type: "blob", blob: sha("a") };
+  for (const filename of [
+    ".github/workflows/sounding-line-custody-shadow.yml",
+    ".github/workflows/sounding-line-ordinary.yml",
+  ]) {
+    assert.equal(
+      custodyWorkflowMetadataPin(filename, original, original, original).kind,
+      "NON_IMPORTED_WORKFLOW_METADATA",
+    );
+    // A changed base remains unreviewed even when its candidate copies it.
+    const changed = { ...original, blob: sha("b") };
+    assert.throws(() => custodyWorkflowMetadataPin(filename, changed, changed, original), /WORKFLOW_METADATA_DRIFT/u);
+    assert.throws(() => custodyWorkflowMetadataPin(filename, original, changed, original), /WORKFLOW_METADATA_DRIFT/u);
+    for (const bad of [
+      undefined,
+      { ...original, mode: "100755" },
+      { ...original, mode: "120000" },
+      { ...original, type: "tree" },
+      { ...original, blob: sha("a") + "\n" },
+    ])
+      assert.throws(() => custodyWorkflowMetadataPin(filename, bad, bad, bad));
+  }
+  assert.throws(
+    () => custodyWorkflowMetadataPin("scripts/sounding-line/experience-exception.mjs", original, original, original),
+    /UNKNOWN_WORKFLOW_METADATA_PIN/u,
+  );
 });

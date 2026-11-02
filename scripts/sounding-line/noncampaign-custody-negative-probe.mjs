@@ -37,6 +37,25 @@ const workflowMetadataPins = new Set([
   ".github/workflows/sounding-line-custody-shadow.yml",
   ".github/workflows/sounding-line-ordinary.yml",
 ]);
+export function custodyWorkflowMetadataPin(filename, before, after, accepted) {
+  need(workflowMetadataPins.has(filename), "UNKNOWN_WORKFLOW_METADATA_PIN");
+  const identity = (row) => row && `${row.mode} ${row.type} ${row.blob}`;
+  need(
+    before?.mode === "100644" &&
+      before.type === "blob" &&
+      oid(before.blob) &&
+      identity(before) === identity(after) &&
+      identity(before) === identity(accepted),
+    "WORKFLOW_METADATA_DRIFT",
+  );
+  return Object.freeze({
+    path: filename,
+    kind: "NON_IMPORTED_WORKFLOW_METADATA",
+    mode: before.mode,
+    blob: before.blob,
+    reviewedBlob: accepted.blob,
+  });
+}
 
 export function custodyProofFilesystem(root, excluded = new Set()) {
   const pending = [root],
@@ -205,20 +224,12 @@ export function runInstalledNegativeCustodyProof(input) {
         // Ordinary's scripts/testing sparse bootstrap does not materialize
         // these server-executed, non-imported workflow configs. Their complete
         // immutable Git mode/blob identities remain exact in R, B and H.
-        const before = base.get(filename),
-          after = candidate.get(filename),
-          accepted = reviewed.get(filename);
-        need(
-          before?.mode === "100644" && identity(before) === identity(after) && identity(before) === identity(accepted),
-          "WORKFLOW_METADATA_DRIFT",
+        return custodyWorkflowMetadataPin(
+          filename,
+          base.get(filename),
+          candidate.get(filename),
+          reviewed.get(filename),
         );
-        return {
-          path: filename,
-          kind: "NON_IMPORTED_WORKFLOW_METADATA",
-          mode: before.mode,
-          blob: before.blob,
-          reviewedBlob: accepted.blob,
-        };
       }
       const actual = readCustodyPilotSource(path.join(installed, filename)),
         currentBlob = gitBlob(actual),
