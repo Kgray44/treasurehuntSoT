@@ -91,23 +91,23 @@ export function createPreparationCapsuleShadow({ source, directory, layer }) {
   deadline();
   sameDirectory(parent);
   const root = path.join(parent.root, `preparation-capsule-${randomUUID()}`);
-  fs.mkdirSync(root, { mode: 0o700 });
   const payload = path.join(root, "payload"),
     initial = path.join(root, "initial.json"),
     manifestPath = path.join(root, "manifest.json");
-  const initialBytes = Buffer.from(
-    JSON.stringify({
-      kind: "PREPARATION_CAPSULE_SHADOW",
-      status: "INCOMPLETE",
-      layer,
-      original,
-      qualification: false,
-      reuseAuthorized: false,
-    }) + "\n",
-  );
   let identity, initialReference, failure, manifestReference;
+  fs.mkdirSync(root, { mode: 0o700 });
   try {
     identity = directoryIdentity(root);
+    const initialBytes = Buffer.from(
+      JSON.stringify({
+        kind: "PREPARATION_CAPSULE_SHADOW",
+        status: "INCOMPLETE",
+        layer,
+        original,
+        qualification: false,
+        reuseAuthorized: false,
+      }) + "\n",
+    );
     fs.writeFileSync(initial, initialBytes, { flag: "wx", mode: 0o600 });
     initialReference = {
       signature: signature(fs.lstatSync(initial, { bigint: true })),

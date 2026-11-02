@@ -160,11 +160,12 @@ test("shared build layers, overlapping roots, and oversized source fail before c
 });
 
 test("early post-allocation failures retain their original error and never delete the prefix", (t) => {
-  for (const stage of ["identity", "initial-write", "initial-stat"]) {
+  for (const stage of ["identity", "initial-encode", "initial-write", "initial-stat"]) {
     const f = fixture(t),
       realpath = fs.realpathSync,
       write = fs.writeFileSync,
-      stat = fs.lstatSync;
+      stat = fs.lstatSync,
+      stringify = JSON.stringify;
     const original = Error(`original ${stage}`);
     let injected = false;
     fs.realpathSync = (...args) => {
@@ -189,6 +190,18 @@ test("early post-allocation failures retain their original error and never delet
       }
       return stat(...args);
     };
+    JSON.stringify = (value, ...args) => {
+      if (
+        stage === "initial-encode" &&
+        !injected &&
+        value?.kind === "PREPARATION_CAPSULE_SHADOW" &&
+        value.status === "INCOMPLETE"
+      ) {
+        injected = true;
+        throw original;
+      }
+      return stringify(value, ...args);
+    };
     let result;
     try {
       result = create(f);
@@ -196,6 +209,7 @@ test("early post-allocation failures retain their original error and never delet
       fs.realpathSync = realpath;
       fs.writeFileSync = write;
       fs.lstatSync = stat;
+      JSON.stringify = stringify;
     }
     assert.equal(result.status, "FAIL", stage);
     assert.equal(result.originalError, original);
