@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { spawnSync, execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { digest } from "../../scripts/sounding-line/evidence.mjs";
 import { createArtifactDependencyGraph } from "../../scripts/sounding-line/artifact-dependency-graph.mjs";
 import { planSelectedSourceShadow } from "../../scripts/sounding-line/selected-source-shadow.mjs";
