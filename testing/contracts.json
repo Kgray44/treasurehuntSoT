@@ -3,6 +3,244 @@
   "status": "integrated-tideglass-phase-3-wakebook-phase-1-control-plane",
   "contracts": [
     {
+      "id": "chronicle.creation",
+      "name": "Chronicle creation choices and canonical inline details",
+      "authority": "one-voyage",
+      "owners": ["one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator beginning a Chronicle and shaping its details without mandatory setup",
+        "objective": "Choose manual creation, enter the actual editor immediately, and save Chronicle details from that editor",
+        "visibleOutcome": "A real owned untitled draft opens directly; its title and complete supported metadata remain editable and saved through the canonical editor",
+        "integrationOwner": "Chronicle Creator SC-00A",
+        "systems": ["one-voyage"],
+        "sourcePaths": [
+          "src/components/studio/NewTaleForm.tsx",
+          "src/components/studio/ChronicleDetails.tsx",
+          "src/components/studio/ChronicleAuthoring.module.css",
+          "src/components/studio/StudioStatusHeader.tsx",
+          "src/components/studio/TaleEditor.tsx",
+          "src/components/studio/StudioHome.tsx",
+          "src/app/studio/tales/new",
+          "src/app/studio/tales",
+          "src/app/studio/library",
+          "src/components/studio/TaleEditorSection.tsx"
+        ],
+        "projectionPaths": [],
+        "entryPoint": "/studio/library",
+        "states": ["CHOICES_READY", "EDITOR_READY", "DETAILS_SAVED", "LIBRARY_RETURNED", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Keyboard activation, Enter to apply title, Escape to cancel or close Details, restored focus, native form controls and visible save feedback remain usable on desktop and mobile.",
+        "fallback": "Manual creation requires no AI, imported document or whole-Chronicle template. The other three choices visibly say Coming soon and cannot create drafts.",
+        "navigation": "Creator Library opens Create a Chronicle; manual creation opens the existing TaleEditor; Details stays within that editor and returning reaches the same Creator Library.",
+        "designTarget": "Use the established premium Studio shell and theme tokens with spacious four-card composition, purposeful line icons, a prominent manual action, readable disabled choices, visible focus and restrained reduced-motion transitions.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio-tales-new"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/chronicle-creation.spec.ts", "tests/e2e/chronicle-studio.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Only manual whole-Chronicle creation is available. Existing Chapter template insertion remains inside the editor. No Chronicle Architect, Story Import, Scene binding, physical device acceptance or owner acceptance is claimed."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "motion": {
+          "measurement": "Measure visible selection and saved-draft return feedback after keyboard activation in normal and reduced-motion contexts.",
+          "feedbackBudgetMs": 15000
+        },
+        "journeys": [
+          {
+            "id": "creation-and-inline-details",
+            "roles": ["CREATOR"],
+            "outcome": "Creator inspects all creation choices without creating a draft, then authors and saves a real named draft in the editor and returns to the Library and creation entry",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Create Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Create a Chronicle",
+                "text": "Create a Chronicle",
+                "state": "CHOICES_READY",
+                "path": "/studio/tales/new",
+                "kind": "outcome",
+                "meaning": "The natural creation entry shows the four-choice experience without requiring metadata.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Create with AI Build alongside the future Chronicle Architect, from a first spark to a story worth sharing. Coming soon",
+                "text": "Coming soon",
+                "state": "CHOICES_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Your Chronicles"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "state": "RETURNED",
+                "path": "/studio/library",
+                "returnPath": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Create Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Create a Chronicle",
+                "text": "Create a Chronicle",
+                "state": "CHOICES_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Create Manually Begin with a blank canvas. Shape your Chapters and Passages as inspiration strikes. Begin creating →"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Untitled Chronicle",
+                "text": "Untitled Chronicle",
+                "state": "EDITOR_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Rename Chronicle: Untitled Chronicle"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Chronicle title",
+                "value": "SC-00A Experience Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Apply title"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Chronicle Details"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Short description",
+                "value": "A synthetic Chronicle saved from its actual editor."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Save details"
+              },
+              {
+                "action": "assert",
+                "role": "status",
+                "name": "Chronicle save status",
+                "text": "Saved at",
+                "state": "DETAILS_SAVED"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Details"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "state": "LIBRARY_RETURNED",
+                "path": "/studio/library",
+                "kind": "outcome",
+                "meaning": "The Creator saved a real named Chronicle through the editor and returns to the same authenticated Library.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Create Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Create a Chronicle",
+                "text": "Create a Chronicle",
+                "state": "RETURNED",
+                "path": "/studio/tales/new",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "spatial-pilot.experience",
       "name": "Synthetic Spatial Chronicle publication, multi-device adventure and gated owner trials",
       "authority": "one-voyage",
@@ -3285,11 +3523,11 @@
       "experience": {
         "persona": "One canonical account using its existing Creator, Captain and Player capabilities.",
         "objective": "Preserve private Chronicle ownership, capability-scoped workspace entry, existing authoring and live-Voyage boundaries through the expanded shared content models.",
-        "visibleOutcome": "The same owner reaches Creator, previews an unsaved creation form, returns to the library, then opens Captain and Player through All Workspaces without granting access to another owner private content.",
+        "visibleOutcome": "The same owner reaches Creator, previews four Chronicle creation intentions without creating a record, returns to the library, then opens Captain and Player through All Workspaces without granting access to another owner private content.",
         "integrationOwner": "Existing Parallax integration owner #776; Homeport, Chronicle, Landfall and One Voyage retain their separate workspace, publication and live-session authorities.",
-        "accessibility": "Use the actual account disclosure, semantic workspace cards, labelled creation fields and pressed-state tabs on desktop and phone in both motion modes.",
+        "accessibility": "Use the actual account disclosure, semantic workspace cards, named Chronicle creation choices with unavailable choices identified, and pressed-state tabs on desktop and phone in both motion modes.",
         "fallback": "Preserve actual sign-in redirects, permission-required states, private-resource 404, empty libraries and active-Chronicle transition locks.",
-        "navigation": "All Workspaces → Creator Library → Create Chronicle → Back to Studio → All Workspaces → Captain → Player → All Workspaces.",
+        "navigation": "All Workspaces → Creator Library → Create Chronicle choices → Your Chronicles → All Workspaces → Captain → Player → All Workspaces.",
         "designTarget": "Preserve the current three workspace task compositions and the accepted shared Homeport identity and navigation hierarchy.",
         "entryPoint": "/account/roles",
         "systems": ["project-homeport", "one-voyage", "project-landfall"],
@@ -3368,7 +3606,7 @@
         "states": [
           "WORKSPACES_READY",
           "CREATOR_READABLE",
-          "CREATION_FORM_READABLE",
+          "CREATION_CHOICES_READABLE",
           "CREATOR_RETURNED",
           "CAPTAIN_READABLE",
           "PLAYER_READABLE",
@@ -3428,7 +3666,7 @@
           {
             "id": "canonical-three-workspace-and-creation-return",
             "roles": ["CREATOR"],
-            "outcome": "One canonical account returns across the existing three workspaces without persisting its unsaved form or acquiring another owner private Chronicle.",
+            "outcome": "One canonical account previews four Chronicle creation intentions, returns across the existing three workspaces without creating a Chronicle, and cannot acquire another owner's private Chronicle.",
             "steps": [
               {
                 "action": "assert",
@@ -3457,25 +3695,46 @@
                 "name": "Create Chronicle"
               },
               {
-                "action": "fill",
-                "role": "textbox",
-                "name": "Title",
-                "value": "Unsaved compatibility draft"
-              },
-              {
                 "action": "assert",
                 "kind": "outcome",
                 "role": "heading",
-                "name": "Create Chronicle",
+                "name": "Create a Chronicle",
                 "path": "/studio/tales/new",
-                "meaning": "The unchanged Chronicle creation task still accepts a local draft without creating or publishing a record.",
-                "state": "CREATION_FORM_READABLE",
-                "text": "Create Chronicle"
+                "meaning": "The Chronicle creation entry presents four named intentions without creating or publishing a record.",
+                "state": "CREATION_CHOICES_READABLE",
+                "text": "Create a Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Create Manually Begin with a blank canvas. Shape your Chapters and Passages as inspiration strikes. Begin creating →",
+                "state": "CREATION_CHOICES_READABLE"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Create with AI Build alongside the future Chronicle Architect, from a first spark to a story worth sharing. Coming soon",
+                "text": "Coming soon",
+                "state": "CREATION_CHOICES_READABLE"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Adapt a Story Bring an existing story or document into a new interactive adventure. Coming soon",
+                "text": "Coming soon",
+                "state": "CREATION_CHOICES_READABLE"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Start from a Template Begin with a ready-made Chronicle structure and make it your own. Coming soon",
+                "text": "Coming soon",
+                "state": "CREATION_CHOICES_READABLE"
               },
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Back to Studio"
+                "name": "← Your Chronicles"
               },
               {
                 "action": "assert",
@@ -3567,7 +3826,7 @@
         ],
         "limitations": [
           "Representative cross-workspace compatibility only. Existing extended Chronicle authoring, publishing, Captain control, invitation, Player play, Landfall and active-session safety obligations retain their own test and owner authority.",
-          "The creation form is deliberately left unsaved; no Chronicle publication, Crew creation, live session, external inference or physical acceptance is implied.",
+          "The four-choice creation entry is deliberately left without choosing manual creation; no Chronicle publication, Crew creation, live session, external inference or physical acceptance is implied.",
           "Legacy wrappers in the source set retain their current canonical route/dependency adapters; their presence is not a claim of a second implementation or a newly accepted legacy UI.",
           "Accepted visual references cover the shared entry/navigation frame only; every newly captured task body still requires independent review.",
           "Browser cases retain these separate domain assertions: The named signed-in actor remains the same canonical account and retains its capability boundary. Private source content remains excluded from another actor and the anonymous public projection. The advertised task return reaches its real parent destination without creating a replacement owner or publishing a private draft."

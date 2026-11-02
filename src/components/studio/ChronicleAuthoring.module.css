@@ -1,0 +1,366 @@
+.chronicle-creation-page {
+  padding: clamp(1.25rem, 5vw, 5rem);
+  color: var(--text-primary);
+}
+.chronicle-creation-sheet {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.chronicle-creation-back {
+  display: inline-block;
+  margin-bottom: 3rem;
+  color: var(--text-secondary);
+}
+.chronicle-creation-sheet > header {
+  max-width: 760px;
+  margin-bottom: 2.5rem;
+}
+.chronicle-creation-sheet :global(.eyebrow) {
+  color: var(--accent-primary);
+}
+.chronicle-creation-sheet h1 {
+  margin: 0.8rem 0 1rem;
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  line-height: 1.1;
+}
+.chronicle-creation-sheet > header > p:last-child {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  line-height: 1.65;
+}
+.chronicle-creation-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+.chronicle-creation-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  min-height: 270px;
+  padding: clamp(1.4rem, 3vw, 2.25rem);
+  text-align: left;
+  border: 1px solid var(--border-default);
+  border-radius: 18px;
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+.chronicle-creation-choice:disabled {
+  opacity: 1;
+  cursor: default;
+  color: var(--text-secondary);
+}
+.chronicle-creation-choice:first-child {
+  border-color: var(--accent-primary);
+  background: linear-gradient(135deg, var(--surface-raised), var(--surface-default));
+}
+.chronicle-creation-choice:enabled:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-hover);
+  box-shadow: 0 16px 38px rgb(0 0 0 / 22%);
+}
+.chronicle-creation-choice:focus-visible,
+.chronicle-title-button:focus-visible {
+  outline: 3px solid var(--accent-primary);
+  outline-offset: 5px;
+}
+.chronicle-choice-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  color: var(--accent-primary);
+  background: var(--surface-default);
+}
+.chronicle-choice-icon svg {
+  width: 30px;
+  height: 30px;
+}
+.chronicle-choice-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+.chronicle-choice-description {
+  max-width: 42ch;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+.chronicle-choice-footer {
+  margin-top: auto;
+  padding-top: 0.65rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.chronicle-creation-choice:enabled .chronicle-choice-footer {
+  color: var(--accent-primary);
+}
+.chronicle-creation-note {
+  margin-top: 1.8rem;
+  max-width: 68ch;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+:global(.editor-topbar) .chronicle-title-button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+.chronicle-title-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chronicle-status-header {
+  top: var(--chronicle-shell-offset, 0px);
+  grid-template-columns: minmax(0, 1fr) auto minmax(12rem, auto);
+  color: var(--text-primary);
+  background: var(--surface-overlay);
+  border-color: var(--border-default);
+}
+.chronicle-status-header > div:first-child {
+  flex-wrap: wrap;
+}
+.chronicle-status-header h1,
+.chronicle-status-header .chronicle-title-form {
+  flex: 1 1 100%;
+  max-width: none;
+}
+.chronicle-status-header h1 {
+  min-width: 0;
+  overflow: visible;
+}
+.chronicle-status-header :global(.studio-status-cluster) :global(.save-state) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.35rem;
+  grid-row: auto;
+  min-width: 0;
+  white-space: normal;
+}
+.chronicle-status-header :global(.studio-status-cluster) :global(.save-state)::before {
+  flex: none;
+  margin-right: 0;
+}
+.chronicle-status-header :global(.editor-primary-actions) {
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+}
+.chronicle-status-header :global(.save-state),
+.chronicle-status-header :global(.studio-status-label) {
+  color: var(--text-secondary);
+}
+.chronicle-status-header :global(.draft-mark) {
+  color: var(--accent-primary);
+}
+.chronicle-status-header :global(.validation-status) {
+  color: var(--text-primary);
+  background: var(--surface-default);
+}
+.chronicle-status-header :global(.validation-status) span {
+  color: var(--accent-primary);
+}
+.chronicle-status-header :global(.validation-status) strong {
+  color: var(--text-primary);
+}
+.chronicle-creation-page[data-motion-mode="reduced"] .chronicle-creation-choice {
+  transition: none;
+}
+.chronicle-creation-page[data-motion-mode="reduced"] .chronicle-creation-choice:enabled:hover {
+  transform: none;
+}
+.chronicle-status-header :global(.save-state.error),
+.chronicle-title-form [role="alert"] {
+  color: var(--state-danger);
+}
+.chronicle-editor :global(.timeline-drop) {
+  transition-property: height, border-color, background-color;
+}
+.chronicle-editor :global(.timeline-drop > span) {
+  color: var(--text-primary);
+  visibility: hidden;
+}
+.chronicle-editor :global(.timeline-drop:hover > span),
+.chronicle-editor :global(.timeline-drop:focus-within > span),
+.chronicle-editor :global(.timeline-drop.dnd-over > span) {
+  visibility: visible;
+}
+.chronicle-title-form [role="alert"] {
+  flex-basis: 100%;
+}
+.chronicle-editor
+  :is(
+    :global(.editor-section-nav),
+    :global(.block-library),
+    :global(.block-inspector),
+    :global(.chapter-timeline),
+    :global(.editor-single-panel)
+  ) {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  border-color: var(--border-default);
+}
+.chronicle-editor :global(.eyebrow),
+.chronicle-editor :global(.block-library) summary {
+  color: var(--accent-primary);
+}
+.chronicle-editor :global(.block-library) :is(p, small),
+.chronicle-editor :global(.block-inspector) p,
+.chronicle-editor :global(.block-library) article button span,
+.chronicle-editor :global(.chapter-timeline) p,
+.chronicle-editor :global(.empty-chapter) {
+  color: var(--text-secondary);
+}
+.chronicle-editor :global(.block-library) article {
+  background: var(--surface-default);
+}
+.chronicle-editor :global(.editor-section-nav) {
+  position: static;
+}
+.chronicle-editor :global(.editor-section-nav) a {
+  color: var(--text-secondary);
+}
+.chronicle-editor :global(.editor-section-nav) :global(a.active) {
+  color: var(--text-on-accent);
+}
+.chronicle-editor :global(.studio-active-section) {
+  background: var(--brass-100);
+}
+.chronicle-editor :global(.editor-section-nav) a,
+.chronicle-details :is(input, select, textarea, button, [tabindex]) {
+  scroll-margin-block-start: calc(var(--chronicle-shell-offset, 0px) + var(--chronicle-header-height, 8rem) + 1rem);
+}
+@media (min-width: 901px) {
+  .chronicle-editor :is(:global(.block-library), :global(.block-inspector)) {
+    top: calc(var(--chronicle-shell-offset, 0px) + var(--chronicle-header-height, 8rem) + 1rem);
+    height: calc(100vh - var(--chronicle-shell-offset, 0px) - var(--chronicle-header-height, 8rem) - 1rem);
+  }
+}
+@media (max-width: 900px) {
+  .chronicle-editor :global(.editor-section-nav) a,
+  .chronicle-details :is(input, select, textarea, button, [tabindex]) {
+    scroll-margin-block-start: calc(var(--chronicle-shell-offset, 0px) + 1rem);
+  }
+  .chronicle-status-header {
+    position: static;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.65rem;
+  }
+  .chronicle-status-header :global(.studio-status-cluster) {
+    flex-wrap: wrap;
+  }
+}
+.chronicle-title-button > span:last-child {
+  font-size: 0.65em;
+  color: var(--accent-primary);
+}
+.chronicle-title-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 34rem;
+}
+.chronicle-title-form label {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+.chronicle-title-form input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-emphasis);
+  background: var(--surface-default);
+  color: var(--text-primary);
+  border-radius: 6px;
+}
+.chronicle-details {
+  margin: 1rem clamp(1rem, 3vw, 3rem);
+  max-width: 1200px;
+}
+.chronicle-details > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.chronicle-details h2 {
+  margin-bottom: 0.65rem;
+  outline-offset: 0.3rem;
+}
+.chronicle-details h2:focus {
+  outline: 2px solid var(--accent-primary);
+  border-radius: 0.2rem;
+}
+.chronicle-details header p:last-child,
+.chronicle-details small,
+.chronicle-details footer {
+  color: var(--text-secondary);
+}
+.chronicle-details footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.chronicle-details :global(.settings-grid) :is(input, textarea, select) {
+  background: var(--surface-default);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+.chronicle-details :global(.settings-grid) label > span {
+  color: var(--text-heading);
+}
+.chronicle-conflict-comparison {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.chronicle-conflict-comparison td {
+  max-width: 25rem;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+@media (max-width: 620px) {
+  .chronicle-creation-choices {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .chronicle-creation-back {
+    margin-bottom: 2rem;
+  }
+  .chronicle-creation-choice {
+    min-height: 240px;
+  }
+  .chronicle-details :global(.settings-grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .chronicle-details :global(.settings-grid) :global(.wide) {
+    grid-column: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chronicle-creation-choice {
+    transition: none;
+  }
+  .chronicle-creation-choice:enabled:hover {
+    transform: none;
+  }
+}
