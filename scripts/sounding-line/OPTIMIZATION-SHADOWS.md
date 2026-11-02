@@ -1,8 +1,9 @@
 # Source, preparation and transport shadows
 
-These components depend on the incremental evidence model. They have no
-production call sites, issue no certificate, and grant no reuse, qualification,
-review credit or merge authority. Their focused tests run in `test:sounding-line`;
+These components depend on the incremental evidence model. They issue no
+certificate and grant no reuse, qualification, review credit or merge authority.
+Manual preparation shadow workflows provide an isolated native validation route;
+ordinary verification does not substitute their outputs. Focused tests run in `test:sounding-line`;
 an existing source-snapshot test checks that each new test is registered once.
 The existing checkout profiles, preparation commands and Mainline Decision retain
 their authority. Protected integration and native activation remain outstanding.
@@ -166,3 +167,61 @@ observations, not two fresh preparation runs or hosted savings. A declared layer
 does not prove data classification, native publisher provenance, installed input
 identity, expiry, revocation or external isolation. No certificate is issued;
 normal fresh preparation remains required.
+
+## Native preparation validation route
+
+The manual `sounding-line-preparation-shadow.yml` workflow requires the owner,
+exact installed protected main and first attempt before checkout. Two separate
+jobs use the same explicit eleven-file source closure. Each independently installs
+governed dependencies and generates a fresh Prisma client; the verifier generates
+before downloading this run's exact artifact ID. Its transferred inventory must
+match complete fresh output. Transport-lost modes are restored only after every
+path, type, size and hash matches, through one-use descriptor-bound observations.
+No private owner key or new credential is provisioned.
+
+`preparation-capsule-shadow.mjs` builds a private, exclusive, bounded copy of the
+immutable Prisma client, preserving source and destination inventories, original
+initial/terminal bytes and failed prefixes. The capsule ceiling is 128 MiB and
+8,192 entries; copying uses 64 KiB buffers. Early initialization, copy and separate
+close/retention failures retain their original exception identities in memory.
+
+`preparation-provider-auth.mjs` checks fixed GitHub endpoints for exact installed
+source, current main before/after, owner and triggering owner, successful original
+attempt, workflow identity, two distinct hosted jobs in order, job-timed original
+context/equivalence markers, and exact unexpired artifact metadata. An opaque,
+short-lived proof authenticates those observations without issuing reuse credit.
+The download uses the owned guardian's binary pipe, a 160 MiB ceiling and whole
+byte/hash readback. Main, original run and artifact are rechecked before and after
+download and again around payload validation. Serialized receipts cannot replace
+opaque proofs. A returned pathname is never itself a source or reuse certificate.
+
+`preparation-archive-shadow.mjs` validates the complete opened ZIP before each
+member lookup and restores only the exact original metadata and declared flat
+Prisma payload. Its separate profile permits 32 MiB per selected file, 68 members
+and 132 MiB total declared expansion under a minute. The attestation manifest
+reader retains its separate 8 MiB limit. Extra members, nonempty directory entries,
+path aliases, non-files, hash/CRC failures and partial records deny restoration;
+an optional explicit directory must have zero compressed and uncompressed bytes.
+Original metadata and the entire restored payload are reread before inspection.
+Provider/payload joining also requires the original producer context and input
+fingerprint, preserving original source/run identities.
+
+The manual `sounding-line-preparation-consumer-shadow.yml` workflow uses twenty
+explicit reader files and read-only contents/actions permissions. It validates
+real provider transport and Linux payloads without installing or executing the
+cached client. It admits a finite 448 MiB allocation envelope after checking
+1 GiB free, with a five-minute job deadline. Original provider frames have ordered
+byte/hash receipts and descriptor readback; original ZIP and failed prefixes are
+retained with context and terminal receipts after every outcome. Its native
+positive result, guarded substitution, isolation and comparable economics remain
+activation gates. Neither manual workflow replaces Mainline Decision.
+
+At local source `3de0f098a3497327f420fab6410e9a08ed79b230`, all 18 focused
+provider/payload/archive cases passed, including the independent Python ZIP,
+nonempty directory, identity substitutions, corrupt bytes, original write/close
+failures and main advancing before use. The owned guardian passed cleanup; raw
+output SHA-256 was `a99486c0720cec054228d8e1cd46929e36c7a3b40d7ceae32275e8bb1fb72d57`.
+These synthetic provider records and actual local binary pipes do not establish
+a native GitHub ZIP result. The interrupted earlier transport probe retained its
+zero-byte output and missing-terminal observation without being upgraded to a
+passing result. Native publication, qualification and activation remain open.
