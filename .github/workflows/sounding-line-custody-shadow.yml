@@ -1,0 +1,154 @@
+name: Sounding Line custody shadow
+run-name: Sounding Line custody shadow ${{ inputs.base_sha }} baseline ${{ inputs.baseline_run_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_sha:
+        description: Exact installed protected main; experiment grants no certificate
+        required: true
+        type: string
+      baseline_run_id:
+        description: Successful first-attempt ordinary qualification landed as this main
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sounding-line-custody-shadow-${{ inputs.base_sha }}
+  cancel-in-progress: false
+
+env:
+  INPUT_BASE_SHA: ${{ inputs.base_sha }}
+  INPUT_BASELINE_RUN_ID: ${{ inputs.baseline_run_id }}
+  NODE_OPTIONS: ""
+  NODE_PATH: ""
+
+jobs:
+  custody-shadow:
+    name: Sounding Line / Noncampaign custody metadata experiment
+    if: ${{ github.repository == 'Kgray44/treasurehuntSoT' && github.actor == 'Kgray44' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Require exact installed main and first attempt before checkout
+        run: |
+          test "$INPUT_BASE_SHA" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          test -n "$INPUT_BASELINE_RUN_ID"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: authority
+          fetch-depth: 1
+          fetch-tags: false
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.github/workflows/sounding-line-custody-shadow.yml
+            /.nvmrc
+            /package.json
+            /scripts/sounding-line/attestation-archive-shadow.mjs
+            /scripts/sounding-line/authenticated-completed-evidence.mjs
+            /scripts/sounding-line/browser-authority.mjs
+            /scripts/sounding-line/browser-diagnostics.mjs
+            /scripts/sounding-line/browser-suite-profiles.mjs
+            /scripts/sounding-line/custody-transport.mjs
+            /scripts/sounding-line/development-failure-evidence.mjs
+            /scripts/sounding-line/evidence.mjs
+            /scripts/sounding-line/experience-attestation.mjs
+            /scripts/sounding-line/experience-browser.mjs
+            /scripts/sounding-line/experience-checkout-hydration.mjs
+            /scripts/sounding-line/experience-checkout-roots.mjs
+            /scripts/sounding-line/experience-current-admission.mjs
+            /scripts/sounding-line/experience-current-observability.mjs
+            /scripts/sounding-line/experience-current-r16.mjs
+            /scripts/sounding-line/experience-current-r17.mjs
+            /scripts/sounding-line/experience-current-r18.mjs
+            /scripts/sounding-line/experience-current-r19.mjs
+            /scripts/sounding-line/experience-current-r20.mjs
+            /scripts/sounding-line/experience-current-r21.mjs
+            /scripts/sounding-line/experience-current-r22.mjs
+            /scripts/sounding-line/experience-current-r23.mjs
+            /scripts/sounding-line/experience-current-r24.mjs
+            /scripts/sounding-line/experience-current-r25.mjs
+            /scripts/sounding-line/experience-current-r26.mjs
+            /scripts/sounding-line/experience-diagnosed-continuation.mjs
+            /scripts/sounding-line/experience-exception.mjs
+            /scripts/sounding-line/experience-media-first-binding.mjs
+            /scripts/sounding-line/experience-media-first-r21.mjs
+            /scripts/sounding-line/experience-media-first-r22-policy.mjs
+            /scripts/sounding-line/experience-media-first-r22.mjs
+            /scripts/sounding-line/experience-media-first-shared.mjs
+            /scripts/sounding-line/experience-paired.mjs
+            /scripts/sounding-line/experience-pr776-checkout-profile.mjs
+            /scripts/sounding-line/experience-pr776-controller-reconciliation.mjs
+            /scripts/sounding-line/experience-r10.mjs
+            /scripts/sounding-line/experience-r11.mjs
+            /scripts/sounding-line/experience-r12.mjs
+            /scripts/sounding-line/experience-r13.mjs
+            /scripts/sounding-line/experience-r14-observability.mjs
+            /scripts/sounding-line/experience-r14-technical-proof.mjs
+            /scripts/sounding-line/experience-r14.mjs
+            /scripts/sounding-line/experience-r3.mjs
+            /scripts/sounding-line/experience-r4.mjs
+            /scripts/sounding-line/experience-r5.mjs
+            /scripts/sounding-line/experience-r6.mjs
+            /scripts/sounding-line/experience-r7.mjs
+            /scripts/sounding-line/experience-r8-format.mjs
+            /scripts/sounding-line/experience-r8.mjs
+            /scripts/sounding-line/experience-r9.mjs
+            /scripts/sounding-line/experience-raw-output.mjs
+            /scripts/sounding-line/experience-review-dimensions.mjs
+            /scripts/sounding-line/experience-review-source-gate.mjs
+            /scripts/sounding-line/experience-reviewed-adoption.mjs
+            /scripts/sounding-line/experience-scope-adjudication.mjs
+            /scripts/sounding-line/experience-selected-checkout.mjs
+            /scripts/sounding-line/homeport-source-amendment.mjs
+            /scripts/sounding-line/immutable-recognition-reads.mjs
+            /scripts/sounding-line/noncampaign-custody-pilot.mjs
+            /scripts/sounding-line/noncampaign-custody-shadow.mjs
+            /scripts/sounding-line/ordinary-checkout.mjs
+            /scripts/sounding-line/ordinary-custody-probe.mjs
+            /scripts/sounding-line/ordinary-documentation-checkout-profile.mjs
+            /scripts/sounding-line/ordinary.mjs
+            /scripts/sounding-line/owned-process-linux.py
+            /scripts/sounding-line/owned-process-windows.ps1
+            /scripts/sounding-line/owned-process.mjs
+            /scripts/sounding-line/preparation-phases.mjs
+            /scripts/sounding-line/private-browser-failure-output.mjs
+            /scripts/sounding-line/private-browser-failure-publication.mjs
+            /scripts/sounding-line/private-browser-failure.mjs
+            /scripts/sounding-line/product-experience.mjs
+            /scripts/sounding-line/replay-admission-source-diagnostic.mjs
+            /scripts/sounding-line/replay-posttechnical-diagnostic.mjs
+            /scripts/sounding-line/replay-posttechnical-suite.mjs
+            /scripts/sounding-line/source-diagnostics.mjs
+            /scripts/sounding-line/source-snapshot-batches.mjs
+            /scripts/sounding-line/verification-budget.mjs
+            /scripts/sounding-line/verification-diagnostics.mjs
+            /testing/noncampaign-custody-shadow-readers.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Observe source-bound metadata checkout and actual negative reserve route
+        working-directory: authority
+        timeout-minutes: 7
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/sounding-line/noncampaign-custody-pilot.mjs
+      - name: Retain original experiment files after every outcome
+        if: always()
+        timeout-minutes: 2
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-custody-shadow-${{ github.run_id }}-${{ github.run_attempt }}
+          path: authority/artifacts/custody-shadow/run-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90

@@ -1929,6 +1929,7 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   const workflowNames = readdirSync(".github/workflows").sort();
   assert.deepEqual(workflowNames, [
     "sounding-line-control-plane.yml",
+    "sounding-line-custody-shadow.yml",
     "sounding-line-exhaustive-release.yml",
     "sounding-line-focused-repair.yml",
     "sounding-line-ordinary.yml",
@@ -1946,7 +1947,11 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   assert.match(ordinaryWorkflow, /pull_request_target/u);
   assert.match(ordinaryWorkflow, /Sounding Line \/ Mainline Decision/u);
   assert.doesNotMatch(ordinaryWorkflow, /nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu);
-  for (const name of ["sounding-line-preparation-shadow.yml", "sounding-line-preparation-consumer-shadow.yml"]) {
+  for (const name of [
+    "sounding-line-preparation-shadow.yml",
+    "sounding-line-preparation-consumer-shadow.yml",
+    "sounding-line-custody-shadow.yml",
+  ]) {
     const workflow = readFileSync(`.github/workflows/${name}`, "utf8");
     const header = workflow.split("\npermissions:\n")[0];
     assert.deepEqual(

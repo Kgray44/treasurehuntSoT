@@ -1,8 +1,25 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { digest } from "../../scripts/sounding-line/evidence.mjs";
 import { createArtifactDependencyGraph } from "../../scripts/sounding-line/artifact-dependency-graph.mjs";
 import { planSelectedSourceShadow } from "../../scripts/sounding-line/selected-source-shadow.mjs";
+import {
+  proposeNoncampaignCustodyShadow,
+  parseCustodyShadowTree,
+  observeNoncampaignCustodyShadow,
+  inspectNoncampaignCustodyShadow,
+} from "../../scripts/sounding-line/noncampaign-custody-shadow.mjs";
+import {
+  retainCustodyPilotFrame,
+  readCustodyPilotSource,
+  custodyShadowPreload,
+  custodyPilotSourceFiles,
+  validateCustodyPilotBaseline,
+} from "../../scripts/sounding-line/noncampaign-custody-pilot.mjs";
 
 const sha = (letter) => letter.repeat(40);
 const entry = (path, letter, mode = "100644") => ({ path, blob: sha(letter), mode, type: "blob" });
@@ -172,4 +189,458 @@ test("held owners and bounded inventory expansion cannot obtain a new selection 
   const input = setup();
   input.historical = Array(15).fill(input.historical[0]);
   assert.equal(planSelectedSourceShadow(input).profile, "FULL_SNAPSHOT");
+});
+
+const custodyPolicy = JSON.parse(
+  fs.readFileSync(new URL("../../testing/noncampaign-custody-shadow-readers.json", import.meta.url), "utf8"),
+);
+function custodySetup() {
+  const baseEntries = [
+    ...custodyPolicy.readers.map(({ path, mode, blob }) => ({ path, mode, blob, type: "blob" })),
+    ...custodyPolicy.metadata.map((row) => ({ ...row, type: "blob" })),
+    entry(".gitattributes", "1"),
+    entry("src/changed.ts", "2"),
+    entry("src/deleted.ts", "3"),
+    entry("public/immutable.bin", "4"),
+  ];
+  const candidateEntries = structuredClone(baseEntries).filter((row) => row.path !== "src/deleted.ts");
+  candidateEntries.find((row) => row.path === "src/changed.ts").blob = sha("5");
+  candidateEntries.find((row) => row.path === "src/changed.ts").mode = "100755";
+  candidateEntries.push(entry("src/added.ts", "6"));
+  return {
+    baseSha: sha("a"),
+    candidateSha: sha("b"),
+    baseEntries,
+    candidateEntries,
+    purpose: "campaign-custody",
+    prNumber: 837,
+  };
+}
+const custodyTree = (rows) =>
+  Buffer.from(rows.map((row) => `${row.mode} ${row.type} ${row.blob}\t${row.path}\0`).join(""));
+test("custody proposal preserves complete path/change identities and cannot issue a source certificate", () => {
+  const input = custodySetup(),
+    result = proposeNoncampaignCustodyShadow(input);
+  assert.equal(result.profile, "NONCAMPAIGN_CUSTODY_METADATA_SHADOW_V1");
+  assert.deepEqual(result.changedPaths, ["src/added.ts", "src/changed.ts", "src/deleted.ts"]);
+  assert.equal(result.omissions.find((row) => row.path === "public/immutable.bin").blob, sha("4"));
+  assert.equal(result.applied, false);
+  assert.equal(result.sourceCertificate, "NOT_ISSUED");
+  assert.equal(result.readerObservationSource, custodyPolicy.readerObservationSource);
+  assert(Object.isFrozen(result) && Object.isFrozen(result.omissions) && Object.isFrozen(result.omissions[0]));
+  assert.deepEqual(parseCustodyShadowTree(custodyTree(input.baseEntries)), input.baseEntries);
+});
+test("custody reader, policy, owner, malformed metadata and finite scope failures retain FULL", () => {
+  const cases = [
+    ...[721, 776, 805, 820].map((number) => (v) => {
+      v.prNumber = number;
+    }),
+    (v) => {
+      v.purpose = "verification";
+    },
+    (v) => {
+      v.baseSha += "\n";
+    },
+    (v) => {
+      v.candidateEntries[0].blob += "\n";
+    },
+    (v) => {
+      v.candidateEntries.push({ ...v.candidateEntries[0] });
+    },
+    (v) => {
+      v.candidateEntries.push(entry("../escape", "7"));
+    },
+    (v) => {
+      v.candidateEntries.push({ path: "submodule", mode: "160000", type: "commit", blob: sha("8") });
+    },
+    (v) => {
+      v.candidateEntries.find((r) => r.path === ".gitattributes").blob = sha("9");
+    },
+    (v) => {
+      v.candidateSha = v.baseSha;
+      v.candidateEntries = structuredClone(v.baseEntries);
+    },
+    (v) => {
+      for (let i = 0; i < 65; i++) {
+        const row = entry(`extra-${i}/.gitattributes`, "1");
+        v.baseEntries.push(row);
+        v.candidateEntries.push({ ...row });
+      }
+    },
+    ...custodyPolicy.readers.map((pin) => (v) => {
+      v.baseEntries.find((r) => r.path === pin.path).blob = sha("0");
+    }),
+    ...custodyPolicy.metadata.flatMap((pin) => [
+      (v) => {
+        v.baseEntries.find((r) => r.path === pin.path).blob = sha("0");
+      },
+      (v) => {
+        v.candidateEntries.find((r) => r.path === pin.path).mode = "120000";
+      },
+    ]),
+  ];
+  for (const mutate of cases) {
+    const input = custodySetup();
+    mutate(input);
+    assert.equal(proposeNoncampaignCustodyShadow(input).profile, "FULL_SNAPSHOT");
+  }
+  for (const pin of custodyPolicy.readers) {
+    const input = custodySetup();
+    input.candidateEntries.find((row) => row.path === pin.path).blob = sha("0");
+    assert.equal(proposeNoncampaignCustodyShadow(input).profile, "FULL_SNAPSHOT");
+  }
+  assert.equal(cases.length + custodyPolicy.readers.length, 151);
+  assert.throws(() => parseCustodyShadowTree(Buffer.from("100644 blob bad\tfile\0")), /TREE_METADATA/u);
+  assert.throws(() => parseCustodyShadowTree(Buffer.from([255, 0])), /encoded data/u);
+});
+function custodyProbeFixture(t, customize = () => {}) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "custody-shadow-"));
+  fs.mkdirSync(path.join(directory, ".git"));
+  t.after(() => {
+    assert(directory.startsWith(path.resolve(os.tmpdir()) + path.sep));
+    fs.rmSync(directory, { recursive: true });
+  });
+  const input = custodySetup(),
+    calls = [];
+  const hint = {
+    status: "PASS",
+    campaign: false,
+    baseSha: input.baseSha,
+    candidateSha: input.candidateSha,
+    prNumber: input.prNumber,
+    registryBlob: custodyPolicy.metadata[1].blob,
+    transport: "DISABLED",
+    authority: "READ_ONLY_FULL_ROUTE_HINT",
+    qualification: false,
+  };
+  const options = {
+    ...input,
+    root: directory,
+    git: process.execPath,
+    command: async (args) => {
+      calls.push(args);
+      return args[0] === "ls-tree"
+        ? custodyTree(args[2] === input.baseSha ? input.baseEntries : input.candidateEntries)
+        : "";
+    },
+    readOnlyCommand: async () => JSON.stringify(hint),
+  };
+  customize(options, hint);
+  return { options, hint, calls };
+}
+test("custody shadow materialization observation binds source/root and rejects serialized handles", async (t) => {
+  const fixture = custodyProbeFixture(t),
+    result = await observeNoncampaignCustodyShadow(fixture.options);
+  assert.equal(result.applied, false);
+  assert.equal(result.observed, true);
+  // selectedCheckout consumes only applied=true. This callback-shaped result
+  // therefore retains the complete ordinary checkout even after a good hint.
+  assert.deepEqual(result.applied ? result.proposal.omissions : [], []);
+  assert.equal(result.shadowOnly, true);
+  const binding = {
+    root: fixture.options.root,
+    baseSha: fixture.options.baseSha,
+    candidateSha: fixture.options.candidateSha,
+  };
+  const observed = inspectNoncampaignCustodyShadow(result.shadowObservation, binding);
+  assert(observed && observed.proposal === result.proposal);
+  assert.equal(observed.certificate, "NOT_ISSUED");
+  assert.equal(inspectNoncampaignCustodyShadow(structuredClone(result.shadowObservation), binding), null);
+  assert.equal(inspectNoncampaignCustodyShadow(result.shadowObservation, { ...binding, candidateSha: sha("f") }), null);
+  assert.equal(
+    inspectNoncampaignCustodyShadow(result.shadowObservation, { ...binding, root: path.dirname(binding.root) }),
+    null,
+  );
+  fixture.hint.campaign = true;
+  assert.equal(observed.custodyProbe.campaign, false);
+  assert.equal(fixture.calls.filter((args) => args[0] === "fetch").length, 1);
+});
+test("campaign/uncertain hints retain FULL while cancellation and cleanup failures preserve original errors", async (t) => {
+  for (const mutate of [
+    (_o, h) => {
+      h.campaign = true;
+    },
+    (_o, h) => {
+      h.registryBlob = sha("f");
+    },
+    (o) => {
+      o.readOnlyCommand = async () => "invalid-json";
+    },
+    (o) => {
+      o.command = async () => Buffer.from("bad-tree");
+    },
+  ]) {
+    const fixture = custodyProbeFixture(t, mutate);
+    assert.equal((await observeNoncampaignCustodyShadow(fixture.options)).proposal.profile, "FULL_SNAPSHOT");
+  }
+  for (const marker of [
+    "SOUNDING_LINE_SELECTED_CHECKOUT_CANCELLED",
+    "SOUNDING_LINE_SELECTED_CHECKOUT_CLEANUP_FAILED",
+  ]) {
+    const original = Error(marker),
+      fixture = custodyProbeFixture(t, (o) => {
+        o.readOnlyCommand = async () => {
+          throw original;
+        };
+      });
+    await assert.rejects(observeNoncampaignCustodyShadow(fixture.options), (error) => error === original);
+  }
+});
+
+function pilotDirectory(t) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "custody-pilot-"));
+  t.after(() => {
+    assert(directory.startsWith(path.resolve(os.tmpdir()) + path.sep));
+    fs.rmSync(directory, { recursive: true });
+  });
+  return directory;
+}
+test("pilot original frames are exclusive and source reads reject hard links and descriptor-time mutation", (t) => {
+  const directory = pilotDirectory(t),
+    filename = path.join(directory, "original.bin"),
+    bytes = Buffer.from("original bytes\n");
+  const receipt = retainCustodyPilotFrame(filename, bytes);
+  assert.equal(receipt.completeReadback, true);
+  assert.deepEqual(readCustodyPilotSource(filename), bytes);
+  assert.throws(() => retainCustodyPilotFrame(filename, Buffer.from("replacement")), { code: "EEXIST" });
+  assert.deepEqual(fs.readFileSync(filename), bytes);
+  const link = path.join(directory, "hardlink");
+  fs.linkSync(filename, link);
+  assert.throws(() => readCustodyPilotSource(filename), /SOURCE_FILE/u);
+  fs.unlinkSync(link);
+  const read = fs.readSync;
+  let changed = false;
+  fs.readSync = (...args) => {
+    const result = read(...args);
+    if (!changed) {
+      changed = true;
+      fs.appendFileSync(filename, "changed after read");
+    }
+    return result;
+  };
+  try {
+    assert.throws(() => readCustodyPilotSource(filename), /SOURCE_CHANGED/u);
+  } finally {
+    fs.readSync = read;
+  }
+});
+test("pilot write and close failures retain both original exceptions and partial bytes", (t) => {
+  const directory = pilotDirectory(t),
+    filename = path.join(directory, "failed.bin");
+  const open = fs.openSync,
+    write = fs.writeSync,
+    close = fs.closeSync,
+    descriptors = new Set();
+  const first = Error("original write failure"),
+    second = Error("original close failure");
+  fs.openSync = (...args) => {
+    const fd = open(...args);
+    if (args[0] === filename && args[1] & fs.constants.O_WRONLY) descriptors.add(fd);
+    return fd;
+  };
+  fs.writeSync = (...args) => {
+    if (descriptors.has(args[0])) throw first;
+    return write(...args);
+  };
+  fs.closeSync = (fd) => {
+    const fail = descriptors.delete(fd);
+    close(fd);
+    if (fail) throw second;
+  };
+  try {
+    assert.throws(
+      () => retainCustodyPilotFrame(filename, Buffer.from("never accepted")),
+      (error) => error instanceof AggregateError && error.errors[0] === first && error.errors[1] === second,
+    );
+  } finally {
+    fs.openSync = open;
+    fs.writeSync = write;
+    fs.closeSync = close;
+  }
+  assert(fs.existsSync(filename));
+  assert.equal(fs.statSync(filename).size, 0);
+});
+test("native reserve preload denies Node network and non-Git processes while preserving permitted Git reads", (t) => {
+  const directory = pilotDirectory(t),
+    observation = path.join(directory, "network.json"),
+    preload = path.join(directory, "deny.cjs");
+  fs.writeFileSync(preload, custodyShadowPreload(observation, path.resolve("synthetic-git-path")));
+  const empty = path.join(directory, "empty-config");
+  fs.writeFileSync(empty, "");
+  const code =
+    "const cp=require('node:child_process');cp.execFileSync('git',['rev-parse','--is-inside-work-tree']);for(const run of[()=>fetch('https://example.invalid'),()=>require('node:net').connect(9,'127.0.0.1'),()=>require('node:https').get('https://example.invalid'),()=>cp.execFileSync(process.execPath,['-e','process.exit(99)'])]){let denied=false;try{run()}catch{denied=true}if(!denied)throw Error('UNEXPECTED_CAPABILITY')}";
+  const result = spawnSync(process.execPath, ["--require", preload, "-e", code], {
+    cwd: process.cwd(),
+    encoding: null,
+    timeout: 15000,
+    env: {
+      PATH: process.env.PATH,
+      SystemRoot: process.env.SystemRoot,
+      WINDIR: process.env.WINDIR,
+      GIT_CONFIG_GLOBAL: empty,
+      GIT_CONFIG_NOSYSTEM: "1",
+      GIT_OPTIONAL_LOCKS: "0",
+      GIT_TERMINAL_PROMPT: "0",
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  assert.equal(result.status, 0, result.stderr?.toString());
+  const observed = JSON.parse(fs.readFileSync(observation));
+  assert.equal(observed.fetchAttempts, 1);
+  assert.equal(observed.networkAttempts, 2);
+  assert.equal(observed.nonGitProcessAttempts, 1);
+  assert(observed.gitCalls > 0);
+});
+function qualifiedPilotBaseline() {
+  const source = sha("a"),
+    parents = [sha("b"), sha("c")],
+    runId = 12345;
+  const run = {
+    id: runId,
+    run_attempt: 1,
+    event: "pull_request_target",
+    path: ".github/workflows/sounding-line-ordinary.yml",
+    status: "completed",
+    conclusion: "success",
+    head_sha: parents[1],
+    repository: { id: 1303074266, full_name: "Kgray44/treasurehuntSoT", owner: { id: 64373011 } },
+    head_repository: { id: 1303074266, full_name: "Kgray44/treasurehuntSoT" },
+    actor: { id: 64373011, login: "Kgray44" },
+    triggering_actor: { id: 64373011, login: "Kgray44" },
+  };
+  const names = [
+    "Sounding Line / Finite campaign custody",
+    "Sounding Line / Focused verification",
+    "Sounding Line / Experience preparation (no mainline decision)",
+    "Sounding Line / Mainline Decision",
+  ];
+  const jobs = {
+    total_count: 4,
+    jobs: names.map((name, i) => ({
+      id: i + 10,
+      name,
+      run_id: runId,
+      run_attempt: 1,
+      head_sha: parents[1],
+      status: "completed",
+      conclusion: i === 2 ? "skipped" : "success",
+      runner_id: i + 100,
+      labels: ["ubuntu-latest"],
+    })),
+  };
+  const checks = {
+    total_count: 1,
+    check_runs: [
+      {
+        id: 13,
+        name: names[3],
+        head_sha: parents[1],
+        app: { id: 15368 },
+        status: "completed",
+        conclusion: "success",
+        details_url: `https://github.com/Kgray44/treasurehuntSoT/actions/runs/${runId}/job/13`,
+      },
+    ],
+  };
+  const artifacts = {
+    total_count: 1,
+    artifacts: [
+      {
+        id: 55,
+        name: `sounding-line-checkout-campaign-custody-${runId}-1`,
+        expired: false,
+        expires_at: "2099-01-01T00:00:00Z",
+        size_in_bytes: 4096,
+        digest: "sha256:" + "1".repeat(64),
+        workflow_run: { id: runId, head_sha: parents[1], repository_id: 1303074266, head_repository_id: 1303074266 },
+      },
+    ],
+  };
+  return { source, parents, run, jobs, checks, artifacts };
+}
+test("pilot baseline binds normal landed parents, exact first-attempt authority and immutable artifact without issuing a certificate", () => {
+  const input = qualifiedPilotBaseline(),
+    result = validateCustodyPilotBaseline(input);
+  assert.equal(result.baseSha, input.parents[0]);
+  assert.equal(result.candidateSha, input.parents[1]);
+  assert.equal(result.installedSource, input.source);
+  assert.equal(result.certificate, "NOT_ISSUED");
+  assert.equal(result.qualification, false);
+  const changes = [
+    (v) => {
+      v.parents.pop();
+    },
+    (v) => {
+      v.run.run_attempt = 2;
+    },
+    (v) => {
+      v.run.event = "workflow_dispatch";
+    },
+    (v) => {
+      v.run.head_repository.id = 1;
+    },
+    (v) => {
+      v.run.actor.id = 1;
+    },
+    (v) => {
+      v.run.triggering_actor.login = "other";
+    },
+    (v) => {
+      v.run.conclusion = "failure";
+    },
+    (v) => {
+      v.jobs.total_count = 5;
+    },
+    (v) => {
+      v.jobs.jobs[0].labels.push("self-hosted");
+    },
+    (v) => {
+      v.jobs.jobs[0].head_sha = sha("f");
+    },
+    (v) => {
+      v.jobs.jobs[0].conclusion = "failure";
+    },
+    (v) => {
+      v.checks.check_runs[0].app.id = 1;
+    },
+    (v) => {
+      v.checks.check_runs[0].details_url += "-other";
+    },
+    (v) => {
+      v.checks.total_count = 2;
+    },
+    (v) => {
+      v.artifacts.artifacts[0].expired = true;
+    },
+    (v) => {
+      v.artifacts.artifacts[0].digest += "\n";
+    },
+    (v) => {
+      v.artifacts.artifacts[0].workflow_run.head_sha = sha("f");
+    },
+    (v) => {
+      v.artifacts.artifacts[0].size_in_bytes = 65537;
+    },
+  ];
+  for (const change of changes) {
+    const copy = structuredClone(input);
+    change(copy);
+    assert.throws(() => validateCustodyPilotBaseline(copy));
+  }
+});
+test("custody pilot selected source includes every pinned reader and no whole source checkout", () => {
+  const readers = custodyPilotSourceFiles();
+  assert(readers.length <= 128 && new Set(readers).size === readers.length);
+  for (const row of custodyPolicy.readers) assert(readers.includes(row.path));
+  assert(readers.includes("scripts/sounding-line/experience-pr776-checkout-profile.mjs"));
+  assert(readers.includes("scripts/sounding-line/owned-process-linux.py"));
+  const workflow = fs.readFileSync(
+    new URL("../../.github/workflows/sounding-line-custody-shadow.yml", import.meta.url),
+    "utf8",
+  );
+  assert.deepEqual(
+    [...workflow.matchAll(/^            \/(.+)$/gmu)].map((match) => match[1]),
+    readers,
+  );
+  assert.doesNotMatch(workflow, /npm ci|Mainline Decision|:\s*write\b/u);
 });

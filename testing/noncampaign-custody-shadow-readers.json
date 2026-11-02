@@ -1,0 +1,531 @@
+{
+  "version": 1,
+  "status": "SHADOW_NOT_A_READ_SET_CERTIFICATE",
+  "readerObservationSource": "569ea93bad7eb6eaeabfcdf356557014697ddf7a",
+  "entrypoint": "scripts/sounding-line/experience-exception.mjs",
+  "readers": [
+    {
+      "path": "scripts/sounding-line/authenticated-completed-evidence.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "871eb90c7e8f1f4b73546de35aed6a6ddbda287e",
+      "sha256": "f2510080a6a0cf9e90842c39ec171609c6d6188749053cf5a47cbb6124a2c2e1"
+    },
+    {
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "05f9ef658856e9d7d04e9fa6a419f2d0e3d65ab6",
+      "sha256": "2787f429c9882cd1f90c2e53272a33dbe210d5df258fc8fc927a7d4b950c9712"
+    },
+    {
+      "path": "scripts/sounding-line/browser-diagnostics.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "9e945fbee1c1a7f0138308e01fb4e007ca216627",
+      "sha256": "9751a8acde0a7d0de58b0321cfb02e7791490dd87f930e322abe697e2e660d8e"
+    },
+    {
+      "path": "scripts/sounding-line/browser-suite-profiles.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "dff446c5d211fbbb477e64c8720da0e93baaf1df",
+      "sha256": "6e41b1d1c9a4b300e16b0104a953f6358e328d67fabc59106da468cc181e4c4a"
+    },
+    {
+      "path": "scripts/sounding-line/custody-transport.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f9ff45864950d65e23bd592778d6d87e6736a39d",
+      "sha256": "42ff9fcb22811895d3faf046752030fe03ec3087e09c159d15864b9063e26dc6"
+    },
+    {
+      "path": "scripts/sounding-line/development-failure-evidence.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "206222c84ccacaa7b3ae029d534d81da69fd2502",
+      "sha256": "f9288b0d463696f8cffca58a9d09a61b52fa34e9bf76ee9d575cd3e72ec40e26"
+    },
+    {
+      "path": "scripts/sounding-line/evidence.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a7f112e97d0a941e4db66df852d5a7f1e6da5a64",
+      "sha256": "3671aa747c5a61873a5cd5f93fc7b9c7f0387dd07b8047b9ab2bf2c34b71990d"
+    },
+    {
+      "path": "scripts/sounding-line/experience-attestation.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3529c4a4bf3c4c4cd0079f0eaffac5e9ab96f6be",
+      "sha256": "18519c5d06bb35ccf7fd0206c2f44ef7e47978bc88e18f61a96bf61a3d7eee13"
+    },
+    {
+      "path": "scripts/sounding-line/experience-browser.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "1a9d7b222c4ca2f189a9bd8782c29be7ebd98f30",
+      "sha256": "5c1696aa21364352ff764175a1959eac21481f4aecd9b1ba7d85cd01db10b2c3"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-admission.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "540ba2ea53d30535fc34c6d19dda578776cc9a11",
+      "sha256": "5418df7a1028bb56d7736e5a411f08684b191615c76a708f9f7194a7510f2024"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-observability.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "132f602ca02b4d1cb22f04628aaf93cd7669189f",
+      "sha256": "533f0f95dbe7ca334df93364695f69dd479e6008d61264b7a696653e4e18075a"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r16.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "f6f89fb61e5852cc4afa95b26f40ae6cf6bbec9a",
+      "sha256": "cd477c78f237ab757e61d1f5be2702547dee75dd3871d5a66f00c2e2f6c3c61e"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r17.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8f3e91181d816414ecb5924ecce5d620565d2c01",
+      "sha256": "d6feb1ad9a96f90e7f23dbb10cba16eddada515ba4873f91be529fee89155c40"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r18.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6186091ce6731ef17732515cf75b735d413f9bd7",
+      "sha256": "dd410258bb8f8bc8c58901001c9c613c92461c659e000d8f2c77040ff8ad7513"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r19.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "bc2ed74360434eed0b17f2ecc5e6eec3946082ab",
+      "sha256": "dbc4719e2de9382e3fbbf6b5098b9d08159c590ff7bbbc91cc51b3f8eb0cb50e"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r20.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "54ca0ddd626fee38a88188a99e77938951f40276",
+      "sha256": "b2684899c37653ea543dfb4efbfd3e11c9076eff2e572f879dd1f4e270d74c69"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r21.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8b9f6d61f56a517cad561a7f2e588b37cc097ccc",
+      "sha256": "e790f87c41c9d8a6b116ce00cecd81a2da0f5a7301dac47ee42c2cdbf3f3ae7c"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r22.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "835067678ff03c434341461b9c133cc098433c87",
+      "sha256": "472484eda2ff833b60d5a5efaf96efe111b0d75e2e5f005811413f7e0e9a4673"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r23.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d4f84279de04d88abaede2818370800a21134c7f",
+      "sha256": "a4018196aa05579ec014f1f5a7822de8d838f2ab10a6ad9ef59cdc4232031823"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r24.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "73e4f6a4f8182fc3e87db96bced37c8c4c67b4b7",
+      "sha256": "0daf8319e82135df35adec86ac7da9b1eba69377f27de01d115c81f58c19d2a2"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r25.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e7b2f9d94813ff7d63c2db07a042dd1e3d60fb3a",
+      "sha256": "d18a2b718717dff4648f286c612e27ae0186a359dcb8a16c24ff2f117ff53ae4"
+    },
+    {
+      "path": "scripts/sounding-line/experience-current-r26.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100",
+      "sha256": "c6475a1098f45d84fc231545b9a5505b8b0e209964423f77d76ad1cbcf0f772f"
+    },
+    {
+      "path": "scripts/sounding-line/experience-diagnosed-continuation.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "3d87b2a4fa25f0ef04b755b632db7880b2e02a29",
+      "sha256": "2f2109f80e5dada200ef72f255d011bc387ef44febb8e51415ed481c85404b19"
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "876bd7ef84600dcbba29597f479105190d313051",
+      "sha256": "99505abafe5db2066887956a337484f65d49b22f71c6e3e3cd0614a832360027"
+    },
+    {
+      "path": "scripts/sounding-line/experience-media-first-binding.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "283749d0d21f96fb15802c7fdf126ed564e2eabb",
+      "sha256": "5dfe63908b35fca913ab28959aa7ff065206c6d351476a19cc2984b66f650783"
+    },
+    {
+      "path": "scripts/sounding-line/experience-media-first-r21.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6272fd1182520234346e54d2b2faa70a73e03ae2",
+      "sha256": "e6a1c8e4b50c4056e955552b23e74e443411a7044adf4cd08e9eb3a7e9894157"
+    },
+    {
+      "path": "scripts/sounding-line/experience-media-first-r22-policy.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c366c30ce3923682c828e78f4285eb24eedf99c7",
+      "sha256": "322861b680c5826ba1b3d744fc03e611269c3c0b6259a8a2a10421307a862614"
+    },
+    {
+      "path": "scripts/sounding-line/experience-media-first-r22.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "28f242cb1dc9599c2313f9ba36a9a447d40860fc",
+      "sha256": "c407d89a9929de7c4693fe9b595709480920842af97eea8cee174689cf9ed9f5"
+    },
+    {
+      "path": "scripts/sounding-line/experience-media-first-shared.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "4c52a5a8a7026db258cad72cc6dc82752d544af9",
+      "sha256": "917b96634164742f73bcb3d234d759755875289e0395f3a84f79a59a5f825141"
+    },
+    {
+      "path": "scripts/sounding-line/experience-paired.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8ebca4d2aa650487f3933385591d092c05c1f89d",
+      "sha256": "68e7841c5fcdd27e4d19dec2cc1a3ed03ecd06559e81bc59e31056674a57791a"
+    },
+    {
+      "path": "scripts/sounding-line/experience-pr776-controller-reconciliation.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e0cc981126e1d8da17c0befcee73d1a4e05ad4e2",
+      "sha256": "22da75d2d9472d5cdac658d7d62e328828bc0cb8a714a4de4d6bed245e4a4fd7"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r10.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "63f116d6f7b82acef74a150acfb41672001f7776",
+      "sha256": "d6765a2bab70167a759465547b28c9ef48fc04225a3b0ee0e4c1aea89c87212e"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r11.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "73c44cdd04bb06196612ddacb2bdd440c1e5f822",
+      "sha256": "a2cbefb482d1f0fb98042bf4f5fc3fdca6e81b084e466b7308cc4af5f46928dd"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r12.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "89b8c2ac40356695a27bbfc7f4993b6d4ac3c6ba",
+      "sha256": "dbcf7c25e68c7f4fb791ede25e9b2b34031e1624b1860c89dd397b95b39c9c96"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r13.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "50062d153566d07ce334b1b36349af6e0472c1c5",
+      "sha256": "48f90f91911ec9bd7a17899a5b3d71f59d7c2b6b00c2af324efde7797ea4553b"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r14-observability.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e09c1d5477fa8dad908de48eaec8050f960f5737",
+      "sha256": "85650e9b9c9ae83fdf569df4a998481addd9c57dff94a0c979d66713c40bd17c"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r14-technical-proof.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "0d1bdd4ae34bb228b40c142484d5a92f0b879a15",
+      "sha256": "013eb036b768899a85bf77bed9f57f528a24f9f8d236e0c028824b43ff7cb521"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r14.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ae4ff8429c8ff3f92d7ee35a8113f042ac7f8f03",
+      "sha256": "0fc37ecc5cc53355e91519f100af110de37d124930f6db345ea62aa15366a646"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r3.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "42386400e5650fe36214d4c299a444324e92dba9",
+      "sha256": "97d703bcf4bf0094bc1bd94a76da06295575228e5acb454e4e0e90e69269d7bc"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r4.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2f4b71dd8516f36649763465e46bacb7c3171a68",
+      "sha256": "fbe26daf273071fd6f4167746dd144d09967e2856146e6e537c9b14db14cb98c"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r5.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a19da78535b9c27cb3a1cbc09c31a359ae3cbed3",
+      "sha256": "ba905bbd48452ce21d2dba2e1c4154ab056a4a8e50f7cf03a241c9d9d646261a"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r6.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d06c31e246577825416f2a19ef59fc626d7f0c4e",
+      "sha256": "a7dbb481d6e78956ffa34490cb373794e57930716ecb26216c7ddd9847567a0b"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r7.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "eb7af883a22b6eea8b2d38f95d9afc0037cb2dd0",
+      "sha256": "5e105f3eeff4171f21a0f2eb116920bcfecd5309bedf1de8a709fd2bbf5ab771"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r8-format.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "04c582b8e3f768e6eaa1241f5191e3a999c96015",
+      "sha256": "0dc36992ce3f038b095de9621495b42c607016b3f5a049ea89c9a6f668801de3"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r8.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "da9c078b30cf46fa90a262f791551775ea26a5ba",
+      "sha256": "1a9e24703915224186bc77f7f5b963fb393a600aa9f200cbf8561479e6f5be19"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r9.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "efbd683258c7a7473975d1804f5f3abfd5ba14d5",
+      "sha256": "d620c9414951716b5c683cfb5d023efb42a3ab4a8151808d82bd6d0af671349c"
+    },
+    {
+      "path": "scripts/sounding-line/experience-raw-output.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "e132bc995658eb48e1e7903eee5065bcf20a8011",
+      "sha256": "a129bdf6ef5868ad0ed8e3d257f508aa949c1394a7eb9c82b38772f88f00974e"
+    },
+    {
+      "path": "scripts/sounding-line/experience-review-dimensions.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "62b62cbcaa4e16c8973b2e1e336c013207e25415",
+      "sha256": "a75d71489ba9594b0d1781dea9b11032341ab5441399810eeb25835aacdd6e34"
+    },
+    {
+      "path": "scripts/sounding-line/experience-review-source-gate.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "617f7bd56834feef48cf9e97354536cfcd5ba715",
+      "sha256": "a85a52f2527058f9e0e627d753cee998e35d90adf7ae3dc1703a02b6fe9e0e5c"
+    },
+    {
+      "path": "scripts/sounding-line/experience-reviewed-adoption.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d8f00d95b1f5d25ef532a6597eabd35caa1cbc0d",
+      "sha256": "b1a3f7207d6665a9befa1897234af5d43991b58b4277cae8192775595a8ffb49"
+    },
+    {
+      "path": "scripts/sounding-line/experience-scope-adjudication.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "6786471633b91fd2e8f9c47d6d09a0f105456041",
+      "sha256": "7e3d96f4bfecfd5af5db139c7b20fbeac263bf47acf56942f5b2fd639fb97720"
+    },
+    {
+      "path": "scripts/sounding-line/homeport-source-amendment.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c2b81acec0997a15ee6a9b2b70a9f390a2a77579",
+      "sha256": "3827ee8f4d524d63812b20bde7db2e3f34dabcee0d266f3b8b0ee3724d0e94f3"
+    },
+    {
+      "path": "scripts/sounding-line/immutable-recognition-reads.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "2f59d86a5a38bebb779b46a6f73bf619d3c6edaa",
+      "sha256": "0cf8c7f61cdfbd412db99465193b30aed2deca28f753449b26fa0bdd04467349"
+    },
+    {
+      "path": "scripts/sounding-line/ordinary.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "a974ccca1766e8ae5978d964cdab863e85af6193",
+      "sha256": "7cbb4a2f5f0650d600f91441d4a29f9fbd8e8d45d5c7c226dda076b7ba22ae8a"
+    },
+    {
+      "path": "scripts/sounding-line/owned-process.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "02cfd820a905b3d64b46dfe1486a4a3e41e3ba59",
+      "sha256": "c2369857ae11e646c4ee0034f6df742a269f1daa7a90dcef3dd9bb1d4fc5222c"
+    },
+    {
+      "path": "scripts/sounding-line/preparation-phases.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "af306f391e563a9f7c5020ae907b8715e5ee76f6",
+      "sha256": "3b02531903ef08ac08dc3a557532a691439654cd4e3e4b9a383498bf6208abad"
+    },
+    {
+      "path": "scripts/sounding-line/private-browser-failure-output.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "8850b6c55bdf52eb110846b40c6571cd426ab43b",
+      "sha256": "b219b50c63e94ced1a82e1ee925ce27773d2872ff5374aa5eb0cc07b16a62f59"
+    },
+    {
+      "path": "scripts/sounding-line/private-browser-failure-publication.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "ff65d156d7ef75ef75d8c1eac6146632cae8bf1b",
+      "sha256": "8df9671c86d606a27fc12e12b8bf5c729e04888e7f90f879f8d78952a004e7e2"
+    },
+    {
+      "path": "scripts/sounding-line/private-browser-failure.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c94376abb3fea6386986c776e51aad554803d22c",
+      "sha256": "538266a46905cecf75ef4ea82b477bee9913aed3db28d97957607583fb428bcc"
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "7d76df39caaed0e55d689f0e46d8d73aaccf9d79",
+      "sha256": "9bcb38383e764bf4438dd6806ae7cb6fbc239e7b7e4c17afa7e99ba2b3fdeb8b"
+    },
+    {
+      "path": "scripts/sounding-line/replay-admission-source-diagnostic.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d9303fb4a6bf36159136b5f690c4502c25a9671f",
+      "sha256": "18f37bb0524cbb36374bc0078fbe2e18926a003030aba32614bd5c307b4d5a1e"
+    },
+    {
+      "path": "scripts/sounding-line/replay-posttechnical-diagnostic.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c671801c5083233dea39fbfd7d6e44a2f5df5cff",
+      "sha256": "8566b5e7083f14e3c92f75574a6f5d476c593ffe44341c9eb82d804405a2ca99"
+    },
+    {
+      "path": "scripts/sounding-line/replay-posttechnical-suite.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "41675f7a87da32aa52365693591dc89b22294666",
+      "sha256": "55d5db99f5488a3b2d2fdc785d51d86556a4ffb4b4747f8d751dd5fce7b54ab6"
+    },
+    {
+      "path": "scripts/sounding-line/source-diagnostics.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "68904a0540c5ac6b06ce9c7169854abbda6d9eb4",
+      "sha256": "07c07d2b85452c25f753f294a8ccaa8f5380762ff14de67299873d1e0760a1ab"
+    },
+    {
+      "path": "scripts/sounding-line/source-snapshot-batches.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c352cd800a3845dd67287ce5698673da443278c8",
+      "sha256": "23d3dbcbb3fb4fa345cbf2e925c56b4f4bdf41391fe1a6d949dd673a25ab4423"
+    },
+    {
+      "path": "scripts/sounding-line/verification-budget.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "c4ed372dff124df5db83c10883aa611531ecbf54",
+      "sha256": "34982a6357746c732f1786d9d6b57c326e30fe5a13cb44fa152c3b2358577a54"
+    },
+    {
+      "path": "scripts/sounding-line/verification-diagnostics.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "77e55bda7da5aaf504dfafaf22524a7cb56e1f4c",
+      "sha256": "775bb67db5f4e10c2fd893af29e9154a37f6379ec9e2ba661071d77b03facfd9"
+    }
+  ],
+  "unexecutedNegativeRouteSites": [
+    {
+      "file": "scripts/sounding-line/replay-posttechnical-diagnostic.mjs",
+      "issue": "nonliteral dynamic import"
+    },
+    {
+      "file": "scripts/sounding-line/replay-posttechnical-diagnostic.mjs",
+      "issue": "nonliteral dynamic import"
+    },
+    {
+      "file": "scripts/sounding-line/replay-admission-source-diagnostic.mjs",
+      "issue": "nonliteral dynamic import"
+    },
+    {
+      "file": "scripts/sounding-line/replay-admission-source-diagnostic.mjs",
+      "issue": "nonliteral dynamic import"
+    },
+    {
+      "file": "scripts/sounding-line/replay-admission-source-diagnostic.mjs",
+      "issue": "nonliteral dynamic import"
+    },
+    {
+      "file": "scripts/sounding-line/replay-admission-source-diagnostic.mjs",
+      "issue": "nonliteral dynamic import"
+    },
+    {
+      "file": "scripts/sounding-line/experience-diagnosed-continuation.mjs",
+      "issue": "nonliteral dynamic import"
+    },
+    {
+      "file": "scripts/sounding-line/experience-browser.mjs",
+      "kind": "require literal",
+      "value": "playwright"
+    },
+    {
+      "file": "scripts/sounding-line/experience-browser.mjs",
+      "kind": "require literal",
+      "value": "@axe-core/playwright"
+    }
+  ],
+  "metadata": [
+    {
+      "path": "testing/contracts.json",
+      "mode": "100644",
+      "blob": "55080155a1604f9c1ca0d2d62cb278055d77a1ef"
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "mode": "100644",
+      "blob": "089308bf475a2b22bfdc64ac46164996855e7010"
+    }
+  ],
+  "excludedPullRequests": [721, 776, 805, 820],
+  "maximumMetadataPaths": 64
+}
