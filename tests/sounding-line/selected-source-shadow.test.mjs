@@ -689,10 +689,15 @@ test("custody source normalization permits only the single reviewed literal and 
       text = source.toString();
     const from = filename.endsWith("noncampaign-custody-read-set.mjs")
       ? /REVISION = "(?:PENDING|[a-f0-9]{40})"/u.exec(text)?.[0]
-      : initialFrom;
+      : /MODE = "(?:SHADOW|ACTIVE)"/u.exec(text)?.[0];
+    const alternate = from === to ? initialFrom : to;
     assert(text.includes(from));
+    assert.notEqual(from, alternate);
     const normalized = normalizeCustodyCertificateSource(filename, source);
-    assert.deepEqual(normalizeCustodyCertificateSource(filename, Buffer.from(text.replace(from, to))), normalized);
+    assert.deepEqual(
+      normalizeCustodyCertificateSource(filename, Buffer.from(text.replace(from, alternate))),
+      normalized,
+    );
     assert.notDeepEqual(
       normalizeCustodyCertificateSource(filename, Buffer.from(text + "\n// other changed byte\n")),
       normalized,
