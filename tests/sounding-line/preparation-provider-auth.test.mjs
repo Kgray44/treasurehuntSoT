@@ -1,0 +1,304 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
+import { pathToFileURL } from "node:url";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import {
+  PREPARATION_PUBLISHER_READERS,
+  PREPARATION_SHADOW_WORKFLOW,
+  preparationPublisherContext,
+} from "../../scripts/sounding-line/preparation-publisher-shadow.mjs";
+import { digest } from "../../scripts/sounding-line/evidence.mjs";
+const root = fs.mkdtempSync(path.join(os.tmpdir(), "preparation-provider-auth-"));
+const modulePath = "scripts/sounding-line/preparation-provider-auth.mjs";
+const git = (...args) =>
+  execFileSync("git", ["-c", "gc.auto=0", "-c", "core.autocrlf=false", ...args], {
+    cwd: root,
+    encoding: "utf8",
+    windowsHide: true,
+    stdio: ["ignore", "pipe", "pipe"],
+  }).trim();
+for (const file of [...PREPARATION_PUBLISHER_READERS, modulePath]) {
+  const target = path.join(root, file);
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  fs.copyFileSync(new URL(`../../${file}`, import.meta.url), target);
+}
+// Instrument only the separately committed synthetic installed source. The
+// production module accepts no request callback or caller transport override.
+const filename = path.join(root, modulePath),
+  production = fs.readFileSync(filename, "utf8");
+const transport =
+  /function providerRequest\(endpoint, \{ maximumBytes, timeoutMs \}\) \{[\s\S]*?\n\}\nfunction originalMarker/u;
+assert(transport.test(production));
+fs.writeFileSync(
+  filename,
+  production.replace(
+    transport,
+    "function providerRequest(endpoint, options) { return globalThis.__syntheticPreparationProvider(endpoint, options); }\nfunction originalMarker",
+  ),
+);
+git("init", "-q");
+git("config", "user.name", "Synthetic preparation proof");
+git("config", "user.email", "fixture@example.invalid");
+git("add", ".");
+git("commit", "-qm", "Synthetic installed preparation producer and reader");
+const source = git("rev-parse", "HEAD"),
+  tree = git("rev-parse", "HEAD^{tree}"),
+  runId = 123;
+const readerDigest = digest(
+  PREPARATION_PUBLISHER_READERS.map((file) => ({
+    path: file,
+    mode: git("ls-tree", source, "--", file).split(" ")[0],
+    sha256: createHash("sha256")
+      .update(
+        execFileSync("git", ["show", `${source}:${file}`], {
+          cwd: root,
+          windowsHide: true,
+          maxBuffer: 8 * 1024 * 1024,
+        }),
+      )
+      .digest("hex"),
+  })),
+);
+const api = await import(pathToFileURL(filename).href);
+const start = "2026-11-02T00:00:00Z",
+  end = "2026-11-02T00:01:00Z",
+  verifierEnd = "2026-11-02T00:02:00Z";
+const contexts = ["publisher", "independent-verifier"].map((jobKey, i) =>
+  preparationPublisherContext({
+    repository: "Kgray44/treasurehuntSoT",
+    repositoryId: 1303074266,
+    actor: "Kgray44",
+    actorId: 64373011,
+    ref: "refs/heads/main",
+    event: "workflow_dispatch",
+    workflowRef: `Kgray44/treasurehuntSoT/${PREPARATION_SHADOW_WORKFLOW}@refs/heads/main`,
+    workflowSha: source,
+    sourceCommit: source,
+    sourceTree: tree,
+    readerDigest,
+    runId,
+    attempt: 1,
+    jobKey,
+    nonce: String(i + 1).repeat(64),
+  }),
+);
+const capsule = {
+  sourceCommit: source,
+  runId,
+  attempt: 1,
+  inputFingerprint: "d".repeat(64),
+  manifestSha256: "e".repeat(64),
+  qualification: false,
+  reuseAuthorized: false,
+};
+const equivalence = {
+  kind: "PREPARATION_INDEPENDENT_EQUIVALENCE_SHADOW",
+  version: 1,
+  originalProducer: contexts[0],
+  independentVerifier: contexts[1],
+  inputFingerprint: capsule.inputFingerprint,
+  originalManifestSha256: capsule.manifestSha256,
+  inventoryDigest: "f".repeat(64),
+  equivalent: true,
+  certificate: "NOT_ISSUED",
+  qualification: false,
+  reuseAuthorized: false,
+};
+const names = ["Sounding Line / Preparation producer shadow", "Sounding Line / Preparation independent fresh verifier"];
+function fixtures() {
+  const stepNames = [
+    ["Observe original preparation producer context", "Measure and seal private preparation capsule shadow"],
+    ["Observe original independent verifier context", "Independently compare complete fresh and transferred outputs"],
+  ];
+  const jobs = names.map((name, i) => ({
+    id: i + 10,
+    name,
+    run_id: runId,
+    run_attempt: 1,
+    head_sha: source,
+    status: "completed",
+    conclusion: "success",
+    runner_id: i + 100,
+    labels: ["ubuntu-latest"],
+    started_at: i ? end : start,
+    completed_at: i ? verifierEnd : end,
+    steps: stepNames[i].map((step, j) => ({
+      name: step,
+      number: j + 1,
+      status: "completed",
+      conclusion: "success",
+      started_at: i ? end : start,
+      completed_at: i ? verifierEnd : end,
+    })),
+  }));
+  const artifact = {
+    id: 55,
+    name: `sounding-line-preparation-capsule-${runId}-1`,
+    expired: false,
+    workflow_run: { id: runId, head_sha: source, head_branch: "main" },
+    size_in_bytes: 1234,
+    digest: `sha256:${"a".repeat(64)}`,
+    created_at: start,
+    expires_at: "2099-01-01T00:00:00Z",
+  };
+  const marker = (at, name, body) => `${at} ${name} ${JSON.stringify(body)}\n`;
+  return {
+    "git/ref/heads/main": { ref: "refs/heads/main", object: { type: "commit", sha: source } },
+    [`actions/runs/${runId}/attempts/1`]: {
+      id: runId,
+      run_attempt: 1,
+      head_sha: source,
+      head_branch: "main",
+      event: "workflow_dispatch",
+      path: PREPARATION_SHADOW_WORKFLOW,
+      status: "completed",
+      conclusion: "success",
+      workflow_id: 77,
+      repository: { id: 1303074266, full_name: "Kgray44/treasurehuntSoT", owner: { id: 64373011 } },
+      head_repository: { id: 1303074266, full_name: "Kgray44/treasurehuntSoT" },
+      actor: { id: 64373011, login: "Kgray44" },
+      triggering_actor: { id: 64373011, login: "Kgray44" },
+      referenced_workflows: [],
+    },
+    "actions/workflows/77": { id: 77, path: PREPARATION_SHADOW_WORKFLOW, state: "active" },
+    [`git/commits/${source}`]: { sha: source, tree: { sha: tree } },
+    [`actions/runs/${runId}/attempts/1/jobs?per_page=100`]: { total_count: 2, jobs },
+    "actions/jobs/10/logs": Buffer.from(
+      marker("2026-11-02T00:00:01.0000000Z", "SOUNDING_LINE_PREPARATION_CONTEXT_V1", contexts[0]) +
+        marker("2026-11-02T00:00:02.0000000Z", "SOUNDING_LINE_PREPARATION_CAPSULE_V1", capsule),
+    ),
+    "actions/jobs/11/logs": Buffer.from(
+      marker("2026-11-02T00:01:01.0000000Z", "SOUNDING_LINE_PREPARATION_CONTEXT_V1", contexts[1]) +
+        marker("2026-11-02T00:01:02.0000000Z", "SOUNDING_LINE_PREPARATION_EQUIVALENCE_V1", equivalence),
+    ),
+    [`actions/runs/${runId}/artifacts?per_page=100`]: { total_count: 1, artifacts: [{ ...artifact }] },
+    "actions/artifacts/55": artifact,
+  };
+}
+let current, requests, transportFailure, mainReads;
+globalThis.__syntheticPreparationProvider = (endpoint, { maximumBytes, timeoutMs }) => {
+  requests.push(endpoint);
+  assert(maximumBytes <= 2 * 1024 * 1024);
+  assert(timeoutMs > 0 && timeoutMs <= 15000);
+  if (transportFailure && endpoint === "actions/jobs/11/logs") throw transportFailure;
+  let value = current[endpoint];
+  if (endpoint === "git/ref/heads/main" && ++mainReads === 2 && current.advance)
+    value = { ...value, object: { type: "commit", sha: "0".repeat(40) } };
+  assert.notEqual(value, undefined, endpoint);
+  return Buffer.isBuffer(value) ? Buffer.from(value) : Buffer.from(JSON.stringify(value));
+};
+function observe(change = () => {}) {
+  current = fixtures();
+  requests = [];
+  transportFailure = null;
+  mainReads = 0;
+  change(current);
+  return api.authenticatePreparationProvider({ root, acceptedBaseSha: source, runId });
+}
+test.after(() => {
+  delete globalThis.__syntheticPreparationProvider;
+  assert(root.startsWith(path.resolve(os.tmpdir()) + path.sep));
+  fs.rmSync(root, { recursive: true });
+});
+test("fixed-provider originals bind both independent jobs, exact installed source and artifact without reuse authority", () => {
+  const proof = observe();
+  assert.equal(proof.kind, "PROVIDER_BOUND_PREPARATION_SHADOW_NOT_REUSE_AUTHORITY");
+  assert.equal(proof.reuseAuthorized, false);
+  assert.equal(proof.certificate, "NOT_ISSUED");
+  assert(api.inspectPreparationProvider(proof, { root, acceptedBaseSha: source, runId }));
+  assert.equal(
+    api.inspectPreparationProvider(JSON.parse(JSON.stringify(proof)), { root, acceptedBaseSha: source, runId }),
+    null,
+  );
+  assert.equal(api.inspectPreparationProvider(proof, { root, acceptedBaseSha: "0".repeat(40), runId }), null);
+  const evidence = api.retainedPreparationProviderEvidence(proof);
+  assert.equal(evidence.originals.length, 10);
+  assert.equal(evidence.originals[0].endpoint, "git/ref/heads/main");
+  evidence.originals[0].bytes.fill(0);
+  assert.notEqual(api.retainedPreparationProviderEvidence(proof).originals[0].bytes[0], 0);
+});
+test("provider, owner, original attempt, job isolation, source, log and artifact substitutions fail closed", () => {
+  const runKey = `actions/runs/${runId}/attempts/1`,
+    jobsKey = `actions/runs/${runId}/attempts/1/jobs?per_page=100`;
+  const changes = [
+    (d) => {
+      d[runKey].run_attempt = 2;
+    },
+    (d) => {
+      d[runKey].actor.id = 1;
+    },
+    (d) => {
+      d[runKey].triggering_actor.id = 1;
+    },
+    (d) => {
+      d[runKey].repository.owner.id = 1;
+    },
+    (d) => {
+      d[runKey].event = "pull_request_target";
+    },
+    (d) => {
+      d[runKey].head_sha = "0".repeat(40);
+    },
+    (d) => {
+      d[`git/commits/${source}`].tree.sha = "0".repeat(40);
+    },
+    (d) => {
+      d[jobsKey].total_count = 3;
+    },
+    (d) => {
+      d[jobsKey].jobs[1].runner_id = d[jobsKey].jobs[0].runner_id;
+    },
+    (d) => {
+      d[jobsKey].jobs[1].labels.push("self-hosted");
+    },
+    (d) => {
+      d[jobsKey].jobs[1].steps[0].conclusion = "failure";
+    },
+    (d) => {
+      d["actions/jobs/10/logs"] = Buffer.concat([d["actions/jobs/10/logs"], d["actions/jobs/10/logs"]]);
+    },
+    (d) => {
+      d["actions/jobs/10/logs"] = Buffer.from(
+        d["actions/jobs/10/logs"].toString().replaceAll(readerDigest, "0".repeat(64)),
+      );
+    },
+    (d) => {
+      d["actions/jobs/11/logs"] = Buffer.from(
+        d["actions/jobs/11/logs"].toString().replaceAll("2026-11-02T00:01:", "2026-11-02T00:09:"),
+      );
+    },
+    (d) => {
+      d["actions/artifacts/55"].expired = true;
+    },
+    (d) => {
+      d["actions/artifacts/55"].digest = `sha256:${"0".repeat(64)}`;
+    },
+    (d) => {
+      d["actions/artifacts/55"].workflow_run.head_sha = "0".repeat(40);
+    },
+    (d) => {
+      d.advance = true;
+    },
+  ];
+  for (const change of changes) {
+    const proof = observe(change);
+    assert.equal(proof.kind, "PREPARATION_PROVIDER_DENIED");
+    assert.equal(api.inspectPreparationProvider(proof, { root, acceptedBaseSha: source, runId }), null);
+    assert(api.retainedPreparationProviderEvidence(proof).originalError);
+  }
+});
+test("failed original transport retains the exact error and all preceding provider bytes without retry", () => {
+  const original = Error("native provider read interrupted");
+  const proof = observe(() => {
+    transportFailure = original;
+  });
+  const evidence = api.retainedPreparationProviderEvidence(proof);
+  assert.equal(evidence.originalError, original);
+  assert.equal(evidence.failures[0].originalError, original);
+  assert.equal(requests.filter((endpoint) => endpoint === "actions/jobs/11/logs").length, 1);
+  assert.equal(evidence.originals.length, 6);
+});
