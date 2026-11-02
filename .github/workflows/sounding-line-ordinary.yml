@@ -170,12 +170,14 @@ jobs:
           SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
         run: node authority/scripts/sounding-line/experience-checkout-probe.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - name: Preserve original custody worker prefix after every outcome
+        timeout-minutes: 2
         if: ${{ always() }}
         env:
           NODE_OPTIONS: ""
           NODE_PATH: ""
         run: node authority/scripts/sounding-line/experience-exception.mjs --operation retain-custody-proof --workspace candidate
       - name: Retain original custody worker proof separately
+        timeout-minutes: 2
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
