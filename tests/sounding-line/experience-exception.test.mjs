@@ -1,4 +1,9 @@
 import "./fixtures/historical-reader-blobs.mjs";
+import {
+  importR3CopiedSourceBlobs,
+  readR3CopiedSourceFixture,
+  verifyR3CopiedSourceFixture,
+} from "./fixtures/r3-copied-source-blobs.mjs";
 import { CURRENT_R26 } from "../../scripts/sounding-line/experience-current-r26.mjs";
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -2842,6 +2847,22 @@ function r3SourceEntries() {
       return { path: file, mode, type, sha };
     });
 }
+test("R3 copied-source blob fixture rejects altered mappings, metadata, object set and bytes", () => {
+  const fixture = readR3CopiedSourceFixture();
+  verifyR3CopiedSourceFixture(fixture);
+  for (const changed of [
+    { ...fixture, revision: "a".repeat(40) },
+    { ...fixture, rawBytes: fixture.rawBytes + 1 },
+    { ...fixture, entries: fixture.entries.slice(1) },
+    { ...fixture, entries: [{ ...fixture.entries[0], mode: "100755" }, ...fixture.entries.slice(1)] },
+    { ...fixture, objects: ["a".repeat(40), ...fixture.objects.slice(1)] },
+    { ...fixture, packSha256: "a".repeat(64) },
+    { ...fixture, packBase64: "A" + fixture.packBase64.slice(1) },
+  ])
+    assert.throws(() => verifyR3CopiedSourceFixture(changed));
+  assert.throws(() => verifyR3CopiedSourceFixture(fixture, []));
+});
+
 test("R3 copied repaired source is denied without ancestry, reference objects, ledgers or contracts", async (t) => {
   const directory = path.join(repo, "artifacts");
   mkdirSync(directory, { recursive: true });
@@ -2855,13 +2876,13 @@ test("R3 copied repaired source is denied without ancestry, reference objects, l
   git(["read-tree", "--empty"]);
   const baseSha = git(["commit-tree", git(["write-tree"]), "-m", "empty fixture"]);
   const source = r3SourceEntries();
-  // Import source blobs only, never the original commit/tree/ancestry or refs.
-  const pack = execFileSync("git", ["pack-objects", "--stdout"], {
-    cwd: repo,
-    input: [...new Set(source.map((e) => e.sha))].join("\n") + "\n",
-    maxBuffer: 128 * 1024 * 1024,
-  });
-  execFileSync("git", ["index-pack", "--stdin"], { cwd: root, input: pack, stdio: ["pipe", "pipe", "pipe"] });
+  // The source checkout supplies immutable tree metadata, not incidental old
+  // blob availability. Import the complete pinned test-only blob closure into
+  // this isolated attack repository, never its original history or authority.
+  importR3CopiedSourceBlobs(
+    root,
+    source.map((e) => ({ mode: e.mode, type: e.type, oid: e.sha, path: e.path })),
+  );
   git(["update-index", "--index-info"], source.map((e) => `${e.mode} ${e.type} ${e.sha}\t${e.path}`).join("\n") + "\n");
   const repaired = git(["hash-object", "-w", "--stdin"], "copied bounded repair");
   git(["update-index", "--cacheinfo", `100644,${repaired},${CROSSDECK_R3.productPaths[0]}`]);
