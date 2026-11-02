@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./ChronicleAuthoring.module.css";
+
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
@@ -39,6 +41,7 @@ import { StudioCommandPalette, type StudioCommand } from "@/components/studio/St
 import { StudioCanvasViewControls } from "@/components/studio/StudioCanvasViewControls";
 import { StudioSelectionToolbar } from "@/components/studio/StudioSelectionToolbar";
 import { StudioStatusHeader } from "@/components/studio/StudioStatusHeader";
+import { ChronicleDetails } from "@/components/studio/ChronicleDetails";
 import { StudioValidationPanel } from "@/components/studio/StudioValidationPanel";
 import { StudioNoEditableDraftState } from "@/components/studio/StudioNoEditableDraftState";
 import { DrydockScenarioLab } from "@/components/studio/DrydockScenarioLab";
@@ -152,6 +155,20 @@ type PublicationReceipt = {
 };
 
 const clone = <T,>(value: T): T => structuredClone(value);
+const chronicleDetailLabels = {
+  title: "Title",
+  slug: "Address",
+  subtitle: "Subtitle",
+  shortDescription: "Short description",
+  longDescription: "Long description",
+  theme: "Theme",
+  visibility: "Visibility",
+  coverAssetId: "Cover image",
+  playerCountMin: "Minimum players",
+  playerCountMax: "Maximum players",
+  estimatedDuration: "Estimated minutes",
+  contentWarnings: "Content warnings",
+} as const;
 /** Transitional source guard while the extracted contract-aware Inspector owns the live surface. */
 const legacyInspectorFallbackEnabled = false;
 
@@ -212,6 +229,10 @@ export function TaleEditor({
   const [dirty, setDirty] = useState(false);
   const [saveState, setSaveState] = useState("Loading Chronicle...");
   const [error, setError] = useState("");
+  const [detailsOpen, setDetailsOpen] = useState(initialSection === "settings");
+  const [draftConflict, setDraftConflict] = useState(false);
+  const [latestConflictDraft, setLatestConflictDraft] = useState<EditorData | null>(null);
+  const conflictRef = useRef(false);
   const [unavailableTale, setUnavailableTale] = useState<Pick<
     EditorData["tale"],
     "id" | "slug" | "title" | "subtitle"
@@ -331,27 +352,38 @@ export function TaleEditor({
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  const load = useCallback(async () => {
-    const response = await fetch(`/api/studio/tales/${taleId}`, { cache: "no-store" });
-    const body = (await response.json()) as EditorData & {
-      error?: string;
-      code?: string;
-      tale?: Pick<EditorData["tale"], "id" | "slug" | "title" | "subtitle">;
-    };
-    if (!response.ok) {
-      setUnavailableTale(body.code === "NO_EDITABLE_DRAFT" && body.tale ? body.tale : null);
-      setError(body.error ?? "This Chronicle could not be opened. Reload the page and try again.");
-      return;
-    }
-    const nextDraft = { tale: body.tale, chapters: body.draft.chapters, landfall: body.draft.landfall ?? null };
-    draftRevision.current = 0;
-    autosaveVersionRef.current = body.draft.autosaveVersion;
-    setData(body);
-    setDraft(nextDraft);
-    setUnavailableTale(null);
-    setError("");
-    setSaveState(`Saved at ${new Date(body.draft.savedAt).toLocaleTimeString()}`);
-  }, [taleId]);
+  const load = useCallback(
+    async (resetHistory = false) => {
+      const response = await fetch(`/api/studio/tales/${taleId}`, { cache: "no-store" });
+      const body = (await response.json()) as EditorData & {
+        error?: string;
+        code?: string;
+        tale?: Pick<EditorData["tale"], "id" | "slug" | "title" | "subtitle">;
+      };
+      if (!response.ok) {
+        setUnavailableTale(body.code === "NO_EDITABLE_DRAFT" && body.tale ? body.tale : null);
+        setError(body.error ?? "This Chronicle could not be opened. Reload the page and try again.");
+        return;
+      }
+      const nextDraft = { tale: body.tale, chapters: body.draft.chapters, landfall: body.draft.landfall ?? null };
+      draftRevision.current = 0;
+      autosaveVersionRef.current = body.draft.autosaveVersion;
+      setData(body);
+      setDraft(nextDraft);
+      setDirty(false);
+      if (resetHistory) {
+        setPast([]);
+        setFuture([]);
+      }
+      setDraftConflict(false);
+      setLatestConflictDraft(null);
+      conflictRef.current = false;
+      setUnavailableTale(null);
+      setError("");
+      setSaveState(`Saved at ${new Date(body.draft.savedAt).toLocaleTimeString()}`);
+    },
+    [taleId],
+  );
   useEffect(() => {
     if (!authenticated) return;
     queueMicrotask(() => void load());
@@ -694,6 +726,7 @@ export function TaleEditor({
       reusableUsage?: StudioDraftInput["reusableUsage"],
     ) => {
       if (!data) return false;
+      if (conflictRef.current) return false;
       if (saving.current) return saving.current;
       const savePromise = (async () => {
         setSaveState("Saving...");
@@ -717,6 +750,17 @@ export function TaleEditor({
             code?: string;
           };
           if (!response.ok) {
+            if (body.code === "DRAFT_CONFLICT") {
+              conflictRef.current = true;
+              setDraftConflict(true);
+              void fetch(`/api/studio/tales/${taleId}`, { cache: "no-store" })
+                .then(async (latest) => {
+                  if (latest.ok) setLatestConflictDraft((await latest.json()) as EditorData);
+                })
+                .catch(() => {
+                  /* Local edits stay intact when comparison is unavailable. */
+                });
+            }
             setSaveState(body.code === "DRAFT_CONFLICT" ? "Conflict - unsaved changes preserved" : "Save failed");
             setError(body.error ?? "This Chronicle could not be saved. Your changes remain in this browser.");
             return false;
@@ -764,11 +808,21 @@ export function TaleEditor({
     [data, taleId],
   );
   useEffect(() => {
-    if (!draft || !dirty) return;
+    if (!draft || !dirty || draftConflict) return;
     const revision = draftRevision.current;
     const timer = setTimeout(() => void save(draft, true, revision), 1100);
     return () => clearTimeout(timer);
-  }, [autosaveKick, draft, dirty, save]);
+  }, [autosaveKick, draft, dirty, draftConflict, save]);
+
+  useEffect(() => {
+    if (!dirty) return;
+    const warnBeforeLeaving = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warnBeforeLeaving);
+    return () => window.removeEventListener("beforeunload", warnBeforeLeaving);
+  }, [dirty]);
 
   function change(mutator: (next: DraftState) => void, pendingSaveState = "Unsaved changes") {
     if (!draft) return undefined;
@@ -781,9 +835,9 @@ export function TaleEditor({
     setDraft(next);
     setDirty(true);
     setSaveState(pendingSaveState);
-    return next;
     setValidation(null);
     setValidationPanelOpen(false);
+    return next;
   }
   function undo() {
     if (!draft || !past.length) return;
@@ -2009,7 +2063,7 @@ export function TaleEditor({
   const navLabels = {
     story: "Passages",
     trials: "Sea Trials",
-    settings: "Chronicle",
+    settings: "Chronicle Details",
     assets: "Assets",
     locations: "Waypoints",
     landfall: "Living Chart",
@@ -2018,7 +2072,32 @@ export function TaleEditor({
   } as const;
   return (
     <>
-      <motion.main ref={root} className="tale-editor" layout={mode !== "reduced"} data-motion-mode={mode}>
+      <motion.main
+        ref={root}
+        className={`tale-editor ${styles["chronicle-editor"]}`}
+        layout={mode !== "reduced"}
+        data-motion-mode={mode}
+        onClickCapture={async (event) => {
+          const link = (event.target as HTMLElement).closest<HTMLAnchorElement>("a[href]");
+          if (
+            !dirty ||
+            !link ||
+            event.ctrlKey ||
+            event.metaKey ||
+            event.shiftKey ||
+            event.altKey ||
+            link.target === "_blank"
+          )
+            return;
+          event.preventDefault();
+          const revision = draftRevision.current;
+          if (saving.current) await saving.current;
+          if (draftRevision.current !== revision) return;
+          if (await save(draft, false, revision)) {
+            if (draftRevision.current === revision) window.location.assign(link.href);
+          }
+        }}
+      >
         <SceneHost
           kind="platform-ceremony"
           hostKey={`studio-publish:${taleId}`}
@@ -2030,6 +2109,13 @@ export function TaleEditor({
         <StudioStatusHeader
           taleId={taleId}
           title={draft.tale.title}
+          onTitleChange={(title) =>
+            change((next) => {
+              next.tale.title = title;
+            })
+          }
+          detailsOpen={detailsOpen}
+          onToggleDetails={() => setDetailsOpen((open) => !open)}
           canUndo={Boolean(past.length)}
           canRedo={Boolean(future.length)}
           saveState={saveState}
@@ -2043,7 +2129,6 @@ export function TaleEditor({
           moreOpen={moreOpen}
           reducedMotion={mode === "reduced"}
           layoutDuration={layoutMotion.durationSeconds}
-          stateDuration={stateMotion.durationSeconds}
           ceremonyDuration={resolvePlatformMotionToken("ceremony", mode).durationSeconds}
           onUndo={undo}
           onRedo={redo}
@@ -2077,9 +2162,99 @@ export function TaleEditor({
             </Link>
           ))}
         </nav>
+        {detailsOpen && (
+          <ChronicleDetails
+            tale={draft.tale}
+            assets={data.assets}
+            saveState={saveState}
+            onChange={(patch) =>
+              change((next) => {
+                Object.assign(next.tale, patch);
+              })
+            }
+            onSave={() => void save(draft, false)}
+            onClose={() => {
+              setDetailsOpen(false);
+              requestAnimationFrame(() => document.getElementById("chronicle-details-trigger")?.focus());
+            }}
+          />
+        )}
+        {draftConflict && (
+          <section className="editor-error" role="alert" aria-label="Draft conflict">
+            <p>A newer draft was saved in another window. Your edits remain here; automatic saving is paused.</p>
+            {latestConflictDraft ? (
+              <div className={styles["chronicle-conflict-comparison"]}>
+                <h2>Review draft differences</h2>
+                <p>
+                  Your window has {draft.chapters.length} Chapters; the latest saved draft has{" "}
+                  {latestConflictDraft.draft.chapters.length}.
+                </p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Detail</th>
+                      <th>Your window</th>
+                      <th>Latest saved</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(
+                      [
+                        "title",
+                        "slug",
+                        "subtitle",
+                        "shortDescription",
+                        "longDescription",
+                        "theme",
+                        "visibility",
+                        "coverAssetId",
+                        "playerCountMin",
+                        "playerCountMax",
+                        "estimatedDuration",
+                        "contentWarnings",
+                      ] as const
+                    )
+                      .filter((key) => draft.tale[key] !== latestConflictDraft.tale[key])
+                      .map((key) => (
+                        <tr key={key}>
+                          <th>{chronicleDetailLabels[key]}</th>
+                          <td>{String(draft.tale[key] ?? "—")}</td>
+                          <td>{String(latestConflictDraft.tale[key] ?? "—")}</td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p>The latest saved comparison is unavailable. Your unsaved edits are still here.</p>
+            )}
+            <button
+              type="button"
+              onClick={async () => {
+                if (
+                  await requestAction({
+                    title: "Load the latest saved draft?",
+                    detail:
+                      "This replaces your unsaved edits in this window with the latest saved draft. Cancel to keep working with your current edits.",
+                    confirmLabel: "Load latest draft",
+                    destructive: true,
+                  })
+                )
+                  await load(true);
+              }}
+            >
+              Load latest saved draft
+            </button>
+          </section>
+        )}
         {error && (
           <div className="editor-error" role="alert">
             <span>{error}</span>
+            {!draftConflict && dirty && (
+              <button type="button" onClick={() => void save(draft, false)}>
+                Retry save
+              </button>
+            )}
             <button onClick={() => setError("")}>Dismiss</button>
           </div>
         )}
@@ -2253,7 +2428,7 @@ export function TaleEditor({
               {dragAnnouncement}
             </p>
             <div className="editor-workbench">
-              <aside id="studio-library" className="block-library" tabIndex={-1}>
+              <aside id="studio-library" className="block-library" tabIndex={-1} aria-label="Passage library">
                 <div>
                   <p className="eyebrow">Passage library</p>
                   <h2>Passages</h2>
@@ -2910,6 +3085,7 @@ export function TaleEditor({
                 ))}
               </section>
               <motion.aside
+                aria-label="Passage inspector"
                 className={`block-inspector ${selected ? "has-selection" : "empty"}`}
                 data-inspector-state={selected ? "open" : "closed"}
                 initial={false}
@@ -3296,119 +3472,6 @@ export function TaleEditor({
               })
             }
           />
-        )}
-        {initialSection === "settings" && (
-          <section className="editor-single-panel settings-panel">
-            <header>
-              <p className="eyebrow">Chronicle identity</p>
-              <h2>Settings</h2>
-            </header>
-            <div className="settings-grid">
-              <label>
-                <span>Title</span>
-                <input
-                  value={draft.tale.title}
-                  onChange={(event) =>
-                    change((next) => {
-                      next.tale.title = event.target.value;
-                    })
-                  }
-                />
-              </label>
-              <label>
-                <span>Address</span>
-                <input
-                  value={draft.tale.slug}
-                  onChange={(event) =>
-                    change((next) => {
-                      next.tale.slug = event.target.value.toLocaleLowerCase();
-                    })
-                  }
-                />
-              </label>
-              <label>
-                <span>Subtitle</span>
-                <input
-                  value={draft.tale.subtitle ?? ""}
-                  onChange={(event) =>
-                    change((next) => {
-                      next.tale.subtitle = event.target.value;
-                    })
-                  }
-                />
-              </label>
-              <label>
-                <span>Visibility</span>
-                <select
-                  value={draft.tale.visibility}
-                  onChange={(event) =>
-                    change((next) => {
-                      next.tale.visibility = event.target.value;
-                    })
-                  }
-                >
-                  <option value="PRIVATE">Private</option>
-                  <option value="UNLISTED">Unlisted</option>
-                  <option value="PUBLIC">Public</option>
-                </select>
-              </label>
-              <label className="wide">
-                <span>Short description</span>
-                <textarea
-                  value={draft.tale.shortDescription ?? ""}
-                  onChange={(event) =>
-                    change((next) => {
-                      next.tale.shortDescription = event.target.value;
-                    })
-                  }
-                />
-              </label>
-              <label className="wide">
-                <span>Long description</span>
-                <textarea
-                  rows={8}
-                  value={draft.tale.longDescription ?? ""}
-                  onChange={(event) =>
-                    change((next) => {
-                      next.tale.longDescription = event.target.value;
-                    })
-                  }
-                />
-              </label>
-              <label>
-                <span>Estimated minutes</span>
-                <input
-                  type="number"
-                  value={draft.tale.estimatedDuration ?? ""}
-                  onChange={(event) =>
-                    change((next) => {
-                      next.tale.estimatedDuration = event.target.value ? Number(event.target.value) : null;
-                    })
-                  }
-                />
-              </label>
-              <label>
-                <span>Cover asset</span>
-                <select
-                  value={draft.tale.coverAssetId ?? ""}
-                  onChange={(event) =>
-                    change((next) => {
-                      next.tale.coverAssetId = event.target.value || null;
-                    })
-                  }
-                >
-                  <option value="">No cover</option>
-                  {data.assets
-                    .filter((asset) => asset.mediaType === "IMAGE")
-                    .map((asset) => (
-                      <option key={asset.id} value={asset.id}>
-                        {asset.displayName}
-                      </option>
-                    ))}
-                </select>
-              </label>
-            </div>
-          </section>
         )}
         {initialSection === "assets" && (
           <LibraryPanel

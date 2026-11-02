@@ -76,9 +76,16 @@ for (const viewport of [
       expect(await denied.text()).not.toContain(hidden.title);
       const countBefore = await db.chronicle.count({ where: { creatorAccountId: owner.id } });
       await page.getByRole("link", { name: "Create Chronicle", exact: true }).click();
-      await expect(page.getByRole("heading", { name: "Create Chronicle", exact: true })).toBeVisible();
-      await page.getByRole("textbox", { name: "Title", exact: true }).fill("Unsaved compatibility draft");
-      await page.getByRole("link", { name: "← Back to Studio", exact: true }).click();
+      await expect(page.getByRole("heading", { name: "Create a Chronicle", exact: true })).toBeVisible();
+      for (const name of ["Create Manually", "Create with AI", "Adapt a Story", "Start from a Template"]) {
+        const choice = page.getByRole("button", { name: new RegExp(`^${name} `) });
+        await expect(choice).toBeVisible();
+        if (name !== "Create Manually") {
+          await expect(choice).toBeDisabled();
+          await expect(choice).toContainText("Coming soon");
+        }
+      }
+      await page.getByRole("link", { name: "← Your Chronicles", exact: true }).click();
       await expect(page.getByRole("heading", { name: "Voyagewright Studio", exact: true })).toBeVisible();
       expect(await db.chronicle.count({ where: { creatorAccountId: owner.id } })).toBe(countBefore);
       await workspaces(page, ownerName);

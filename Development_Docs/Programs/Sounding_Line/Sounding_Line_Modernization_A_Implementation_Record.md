@@ -1,9 +1,9 @@
 ---
 title: Sounding Line modernization A implementation and qualification record
 audience: engineering
-status: in-progress
+status: current
 canonical_for: sounding-line-modernization-a-implementation
-last_reviewed: 2026-10-31
+last_reviewed: 2026-11-01
 ---
 
 # Modernization A: reliability, cost containment and merge integrity
@@ -309,3 +309,59 @@ original log has no native clock proof. This run is retained as incomplete proof
 and cannot authorize this repair's merge. The correction adds that file once to
 the existing test list and adds a membership regression in an already executed
 budget test. It does not change clock behavior or any protected release authority.
+
+## Landed A disposition
+
+The following protected integrations supersede the preparation states above.
+Each used its own successful ordinary Mainline Decision, the installed guarded
+merge transaction and a passing landed-source smoke. Earlier failed candidates,
+receipts and incomplete proofs retain their original dispositions.
+
+| PR   | Landed commit                              | Successful ordinary run |
+| ---- | ------------------------------------------ | ----------------------- |
+| #821 | `cf1e5ad78b3e2b633d4ed691f396a4bab0191217` | `41258855297/1`         |
+| #828 | `caf86f42461201db8e6fe88e46a69c7c9e347d25` | `41266980290/1`         |
+| #829 | `47c9de31050a3908dd2b4aa9ca57305341a10220` | `41284381034/1`         |
+| #831 | `de2e2af03e6c21e746732f87732858882b7a63ce` | `41294261758/1`         |
+| #830 | `58516ec8b8f3f1a28ded02f3f63f5da2cd8889d8` | `41298652051/1`         |
+| #819 | `076d4cb652f9177194603b0f19b15eb0f89f7371` | `41301367275/1`         |
+| #827 | `0194edbc905a3443eea622b3a1c97b80a8425545` | `41305678678/1`         |
+| #832 | `b20199feee2a82129f1527a9c0099eca5c98be5a` | `41317451656/1`         |
+| #833 | `63e1af9bb663ae6916231e884e2a1722a377263e` | `41342857240/1`         |
+| #834 | `3f1eddb1f990ecad9b5a119236d73bdd0c9ecdbd` | `41347701254/1`         |
+
+The original #819 checkout failure is resolved. Its qualified ordinary run took
+933 seconds, including full-checkout observations of 150,944.865 ms for custody
+and 150,143.598 ms for final verification. This exceeds the 900-second objective
+by 33 seconds and does not establish performance completion. The selected
+documentation route remains separately scoped; it grants no selected checkout
+authority to unrelated candidates. No billed savings or controlled general
+before/after speedup is claimed.
+
+The clock correction's completed qualification is #831, including the previously
+omitted native clock test. #832 installs the independently reviewed source-bound
+amendment. #833 and #834 install the finite #820 verification capacity and its
+complete file-map source join. The latter preserves the original candidate and
+all original modes and blobs while independently binding current protected
+source, report and new evidence namespace. Its capacity is exact-owner,
+exact-source, attempt-one and expiry bound; it grants no general budget reset.
+The self-referential fixed-pin failure observed after #833 remains preserved;
+#834 corrects it by deriving the actual installed plan and source join.
+
+The #834 qualified run reported 1,166 passing assertions and four existing skips,
+14 rendered checks, a whole-run duration of 893 seconds, and 36 passing landed
+smoke assertions. This is that candidate's observation, not a guarantee for
+future candidates or satisfaction of the ten-minute objective.
+
+Subsequent #820 run `41355886565/1` was interrupted by native runner shutdown;
+its verification and decision failed. Dispatch `41360198183/1` then failed exact
+provider-job binding before product verification. Dispatch at main cannot supply
+the required candidate-head check or standalone protected merge qualification.
+Both original failed runs and the corrected route recommendation remain
+preserved. Ordinary candidate qualification uses its actual candidate-bound
+`pull_request_target` event. The later successful #820 run `41361388903/1` and
+its owner-controlled merge are separate product integration evidence.
+
+A's installed reliability and merge-integrity work is integrated. B and C remain
+independent dependent increments; this disposition neither activates their shadow
+optimizations nor completes the overall modernization or its performance targets.

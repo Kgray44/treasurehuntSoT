@@ -744,8 +744,8 @@
       "parallelSafe": false,
       "resources": ["application-port", "sqlite-clone", "browser-chromium", "trace-root"],
       "dependencies": [],
-      "contracts": ["invitation-acceptance"],
-      "affectedPaths": ["tests/e2e/chronicle-studio.spec.ts"],
+      "contracts": ["invitation-acceptance", "chronicle.creation"],
+      "affectedPaths": ["tests/e2e/chronicle-studio.spec.ts", "tests/e2e/chronicle-creation.spec.ts"],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",
       "adapter": "playwright-family"

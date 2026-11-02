@@ -72,6 +72,22 @@ jobs:
           REQUESTED_BASE: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           TRUSTED_WORKFLOW_SHA: ${{ github.sha }}
         run: test "$REQUESTED_BASE" = "$TRUSTED_WORKFLOW_SHA"
+      - name: Reject unsupported ordinary dispatch before checkout
+        timeout-minutes: 1
+        env:
+          SOUNDING_LINE_ENTRY_EVENT: ${{ github.event_name }}
+          SOUNDING_LINE_ENTRY_MODE: ${{ inputs.experience_mode }}
+          SOUNDING_LINE_ENTRY_DIAGNOSTIC: ${{ inputs.experience_diagnostic }}
+          SOUNDING_LINE_ENTRY_PR: ${{ github.event.pull_request.number || inputs.pr_number }}
+        run: |
+          node -e '
+            const e = process.env;
+            const held = ["721", "776", "805"].includes(e.SOUNDING_LINE_ENTRY_PR);
+            if (e.SOUNDING_LINE_ENTRY_EVENT === "workflow_dispatch" && (e.SOUNDING_LINE_ENTRY_MODE || "ordinary") === "ordinary" && e.SOUNDING_LINE_ENTRY_DIAGNOSTIC !== "true" && !held) {
+              console.error("Ordinary candidate qualification requires a candidate-bound pull_request_target event; dispatch at main cannot supply the required candidate check. No checkout or qualification was performed.");
+              process.exit(1);
+            }
+          '
       - uses: actions/checkout@v4
         timeout-minutes: 10
         with:

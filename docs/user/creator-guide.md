@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-31
 ---
 
 # Creator guide
@@ -19,7 +19,7 @@ Use Scene Manager to create a Scene from an Environment or duplicate a Scene.
 Published and installed content retain their separate permissions. This
 expanded view remains in qualification.
 
-Creator Studio is where you build a Chronicle. Create or choose a Chronicle, then use its settings, story blocks, locations, media, artifacts, and editions to shape the experience. Published editions stay unchanged so active Voyages can rely on them.
+Creator Studio is where you build a Chronicle. Create or choose a Chronicle, then use Chronicle Details, story blocks, locations, media, artifacts, and editions to shape the experience. Published editions stay unchanged so active Voyages can rely on them.
 
 The [Spatial Assistant candidate guide](spatial-assistant.md) describes reviewed natural-language spatial proposals. Its shared Studio integration and visual acceptance remain pending.
 
@@ -42,6 +42,26 @@ remove references retained by its immutable releases. The combined Library
 presentation remains in verification.
 
 ## Build your story
+
+Choose **Create Chronicle** in your Studio Library. **Create Manually** opens
+a real **Untitled Chronicle** draft directly in the editor. **Create with AI**,
+**Adapt a Story**, and **Start from a Template** show **Coming soon** while those
+whole-Chronicle workflows are unavailable. Reusable Chapter templates remain
+available inside an existing Chronicle.
+
+Select the title in the editor header to rename it. Press Enter or choose
+**Apply title** to apply the edit, or Escape to cancel. **Chronicle Details**
+opens its address, subtitle, descriptions, cover selection, theme, visibility,
+player limits, duration, and content warnings without leaving the editor.
+Upload cover images through **Assets**, then select the image in Details.
+Renaming the title keeps the address unless you edit the address separately.
+
+Edits use normal autosave and Undo/Redo. **Save details** saves explicitly;
+check the visible save status before leaving. A failed save keeps your edits
+available for retry. If another window saved a newer draft, review the comparison
+before deciding whether to load it; cancelling keeps your current edits.
+You can leave ordinary metadata incomplete while writing. Validation and the
+publication review still decide whether the Chronicle is ready to publish.
 
 Select a Story Block to open its Inspector. **Guided** mode focuses on the next authoring step, **Detailed** shows the available controls, and **Engineering** offers advanced information for experienced Creators. Choose destinations by their chapter and block title, then use the visual editor to build the available conditions.
 
