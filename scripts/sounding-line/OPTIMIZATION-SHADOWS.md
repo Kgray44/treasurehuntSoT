@@ -81,6 +81,12 @@ observations; the opaque verifier independently rereads the raw file and exact
 initial/terminal bytes. A changed or missing receipt invalidates that local
 handle even if the payload bytes still match. A serialized copy is not a handle.
 These checks do not authenticate a provider or prove external runtime isolation.
+Simultaneous transport, reader cancellation, lock release and file-close failures
+retain separate stage-labelled original errors in process and bounded private
+descriptions on disk. Receipt-write failures remain separate originals. Reader
+cancellation unresolved at the one-second cleanup cutoff is explicitly recorded
+as unresolved, fails the operation and grants no reuse; later completion is not
+claimed.
 Generated archive declarations around the 2 GiB and 4 GiB boundaries are explicitly
 rejected before reader acquisition by this lane's fixed 256 MiB cap; they are not
 silently truncated or admitted through partial verification.
