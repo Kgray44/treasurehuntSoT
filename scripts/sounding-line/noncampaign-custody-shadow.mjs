@@ -79,7 +79,12 @@ export function proposeNoncampaignCustodyShadow({
     candidate = inventory(candidateEntries);
   if (!base || !candidate) return full("UNKNOWN_COMPLETE_INVENTORY");
   for (const pin of policy.readers)
-    if (base.get(pin.path)?.mode !== pin.mode || base.get(pin.path)?.blob !== pin.blob)
+    if (
+      base.get(pin.path)?.mode !== pin.mode ||
+      base.get(pin.path)?.blob !== pin.blob ||
+      candidate.get(pin.path)?.mode !== pin.mode ||
+      candidate.get(pin.path)?.blob !== pin.blob
+    )
       return full("INSTALLED_READER_CHANGED");
   for (const pin of policy.metadata)
     if (
@@ -253,7 +258,7 @@ export async function observeNoncampaignCustodyShadow({
     proposal,
     hint: Object.freeze({ ...hint }),
   });
-  return { applied: true, proposal, custodyProbe: hint, shadowObservation: handle, shadowOnly: true };
+  return { applied: false, observed: true, proposal, custodyProbe: hint, shadowObservation: handle, shadowOnly: true };
 }
 export function inspectNoncampaignCustodyShadow(handle, { root, baseSha, candidateSha }) {
   const value = observations.get(handle);
