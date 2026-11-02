@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_BOUNDED_INTEL_ARTIFACT_REVIEW",
+  "runId": "39625033481",
+  "candidateSha": "79df8c58ef2db16ba236af139e88d5726c508012",
+  "transportSha": "ba95a2c4ab5a352bf71861b25e8611acfdb131ed",
+  "result": "FAILED_EXECUTION_AND_CANCELLED_PRESENTATION_PRESERVED",
+  "overallWorkflowConclusion": "cancelled",
+  "primaryJobConclusion": "failure",
+  "presentationJobConclusion": "cancelled",
+  "environment": {
+    "runnerLabel": "macos-26-intel",
+    "actualNodeArchitecture": "x64",
+    "xcode": "26.6 (17F113)",
+    "companionRuntime": "iOS26.5",
+    "companionRuntimePolicy": "PREINSTALLED_LATEST_SUPPORTED",
+    "darwinKernelRelease": "25.6.0",
+    "macOSVersion": "26.6.1",
+    "macOSProvenance": "Original job Operating System header and test-summary environmentDescription"
+  },
+  "primary": {
+    "result": "Passed",
+    "passed": 29,
+    "failed": 0,
+    "skipped": 1,
+    "requiredPassingTests": 29,
+    "currentReturnLargeTextAndCenterInputPassed": true,
+    "productionControllerInputGeometry": "SYNTHETIC_MESH",
+    "allSevenFrameBarrierPhasesPassedWithinSharedFiveSeconds": true,
+    "originalDirectHitAndEligibilityAssertionsPreserved": true,
+    "locationDenialScenarioStep": "skipped",
+    "cameraPermissionQualification": false
+  },
+  "graphics": {
+    "result": "PASS",
+    "evidenceClass": "INSTRUMENTED_SCENEKIT_GLTF_RENDERING_ONLY",
+    "actualMetalDeviceAvailable": true,
+    "actualMetalDeviceName": "Apple iOS simulator GPU",
+    "completedReadableMetalPreflight": true,
+    "originalBudgetSeconds": 20,
+    "sealedElapsedMilliseconds": 2918.6852489999637,
+    "assets": [
+      {
+        "id": "treasure-chest",
+        "geometryNodes": 7,
+        "materialInstances": 4,
+        "emptyPixels": 0,
+        "renderedPixels": 8301,
+        "removedPixels": 0
+      },
+      {
+        "id": "brass-compass",
+        "geometryNodes": 4,
+        "materialInstances": 4,
+        "emptyPixels": 0,
+        "renderedPixels": 2509,
+        "removedPixels": 0
+      }
+    ],
+    "populatedImagesVisuallyReviewed": true,
+    "pivotsPreservedAndModelsDetached": true,
+    "gpuDriverMemoryReleaseProven": false
+  },
+  "joined": {
+    "result": "FAIL",
+    "stage": "IOS_BOOT_DEVICE",
+    "failureCode": "NATIVE_LAB_FAILURE",
+    "failedCommand": "xcrun simctl bootstatus <owned-device> -b",
+    "driverState": "NOT_STARTED",
+    "osReady": false,
+    "clientReady": false,
+    "requests": {
+      "player": 0,
+      "clientScript": 0,
+      "scene": 0,
+      "clientReady": 0,
+      "clientFailed": 0,
+      "osReady": 0,
+      "osNext": 0
+    },
+    "completedActionCount": 0,
+    "driverOutputRetained": false,
+    "driverOutputFileCount": 0,
+    "nativeInspectResultBundleExists": false,
+    "canonicalMutationAssertionsCompleted": false,
+    "runtimeSelectionHypothesis": "Joined first-match policy selects iOS26.2; companion had selected and executed iOS26.5. Reuse deterministic latest-supported policy without increasing boot budget.",
+    "runtimeDefectProven": false
+  },
+  "presentation": {
+    "firstNativeBundle": {
+      "result": "Passed",
+      "passed": 30,
+      "failed": 0,
+      "skipped": 1,
+      "includesOSLargeTextAndOrientation": true
+    },
+    "separateReducedMotionBundle": {
+      "result": "Failed",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "failure": "LANDFALL_REDUCED_MOTION_FALLBACK_UNREADABLE",
+      "test": "testOwnedSimulatorReducedMotionSetting",
+      "xcodebuildExitCode": 65
+    },
+    "requiredPassingTests": 31,
+    "full31Satisfied": false,
+    "jobTimeoutAnnotation": "The job has exceeded the maximum execution time of 30m0s",
+    "manualCancellationProven": false,
+    "limits": "A concrete Reduced Motion XCTest failure and job timeout both remain; cancellation-only characterization is incorrect."
+  },
+  "cleanup": {
+    "primaryNative": "PASS",
+    "primaryNativeRemainingOwnedResources": 0,
+    "joined": "PASS",
+    "joinedDatabaseRemoved": true,
+    "joinedServerClosed": true,
+    "joinedSimulatorDeleted": true,
+    "presentationNative": "PASS",
+    "presentationRemainingOwnedResources": 0
+  },
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "originals": [
+    {
+      "part": "primary",
+      "path": "apple-build/test-summary.json",
+      "sha256": "21ddfd41bf1ca36de3ae05a68272cd7937864903bd20d40d6c3a5d4252e7b6bb"
+    },
+    {
+      "part": "primary",
+      "path": "apple-build/build-scope.json",
+      "sha256": "5995bc59a0e0c3e69e955f7ea0c9e8d00503ebd3858b853fc43bc227bb5f16ae"
+    },
+    {
+      "part": "primary",
+      "path": "apple-build/capabilities.json",
+      "sha256": "c410ed603ef98da204feed8fea86b3bba4336c69bd4ec2cbb5817f440e3d500c"
+    },
+    {
+      "part": "primary",
+      "path": "apple-build/runtime-selection.json",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d"
+    },
+    {
+      "part": "primary",
+      "path": "apple-build/cleanup.json",
+      "sha256": "861144a160ab0f5f69f8aa554713a8cb0e23414871085f4d29966e8404a84f59"
+    },
+    {
+      "part": "primary",
+      "path": "apple-build/test-attachments/manifest.json",
+      "sha256": "394c2739460821fb28f1eeff5bffd181f398e5e266bf7a69ffc2708c13242e53"
+    },
+    {
+      "part": "primary",
+      "path": "parallax-native-1792597798620/execution-failure.json",
+      "sha256": "5a6c3fcb7b22cfb43bcbaa596faf7241af118eb253dbe5eb2b389a851ce22c10"
+    },
+    {
+      "part": "primary",
+      "path": "parallax-native-1792597798620/ios-driver-diagnostics.json",
+      "sha256": "012d0ce4751189807cf19cecad6c6d734347e879850dd04c221dd2db4de6e666"
+    },
+    {
+      "part": "primary",
+      "path": "parallax-native-1792597798620/cleanup.json",
+      "sha256": "fea9c6711df661b4db58031cc00597d3f716f0c32f8fbd5e49fa350e01a0cace"
+    },
+    {
+      "part": "presentation",
+      "path": "apple-build/test-summary.json",
+      "sha256": "1bc265fdab7e807abf71dfbe24264d0816ee54fd053b37d499647fc017756fb4"
+    },
+    {
+      "part": "presentation",
+      "path": "apple-build/build-scope.json",
+      "sha256": "7240596b9e94017e1c46a35fb115efbec2a3ae102aea2cfb6fb429a7c9a835de"
+    },
+    {
+      "part": "presentation",
+      "path": "apple-build/capabilities.json",
+      "sha256": "c410ed603ef98da204feed8fea86b3bba4336c69bd4ec2cbb5817f440e3d500c"
+    },
+    {
+      "part": "presentation",
+      "path": "apple-build/runtime-selection.json",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d"
+    },
+    {
+      "part": "presentation",
+      "path": "apple-build/cleanup.json",
+      "sha256": "dd9db324ec60ede489e53251b9da8d7e9dcccea48b47eebc21dcad2d59ad95b8"
+    },
+    {
+      "part": "presentation",
+      "path": "apple-build/test-attachments/manifest.json",
+      "sha256": "9589bfd19ec77c6bd753b453c704824dfb98c73df3270e3b949a4e3706f4a3a2"
+    },
+    {
+      "part": "presentation",
+      "path": "apple-build/native-test-summary.json",
+      "sha256": "8ac4e117ed3c799f4d18cb9dadb520b07ff1c500b2f22e6843d8702d7323bcfa"
+    },
+    {
+      "part": "presentation",
+      "path": "apple-build/execution-error.json",
+      "sha256": "60942da4769a0592c05cbceb1dad71ea533cdba09ead120fb981be46219bd719"
+    }
+  ],
+  "privateJobLogHashes": {
+    "primary": "0c88439a751c9422721dc1a4e5385659c89c53245921bed4db36370a97fc032a",
+    "presentation": "82c53f9e7c81bc6ac6ee611c3f613da6cdc1b21eb6fea4b8e00b5c181e61d7e7"
+  },
+  "supersedes": {
+    "path": "ios-39625033481.independent-review.json",
+    "sha256": "67efb4acba00648acc0dae424fe0332fb3e79d3af00a20c676dc2a6bc0fedcb3",
+    "reason": "Names Node os.release as Darwin kernel and records separately observed macOS version; outcomes unchanged."
+  }
+}

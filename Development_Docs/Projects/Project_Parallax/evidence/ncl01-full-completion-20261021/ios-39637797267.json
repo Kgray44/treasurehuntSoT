@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_IOS_REVIEW",
+  "runId": 39637797267,
+  "reviewedAtUtc": "2026-10-21T17:22:09.9150453+00:00",
+  "candidate": "b4cea94abc64fc6e02dfa5f241242eda3888d4b3",
+  "candidateTree": "2f93d21e056a6143b0b9dfd26f2f6ede91eb7d69",
+  "sourceFingerprint": "3c0ed33c9193f2e6f2891a2ffb5a62e947b48d4c98e3526db4bd4f78a9080c0a",
+  "sourceDirty": false,
+  "transport": "be4ca1a68945a09f116eb27de23236441b47fabd",
+  "workflowSha256": "68cc4f576450a9bc9566b9f18124dd3df39bdf9117410064cb4d8c4659b03cb2",
+  "requestedRunner": "macos-26",
+  "workflowConclusion": "failure",
+  "environment": {
+    "architecture": "arm64",
+    "darwinKernelRelease": "25.6.0",
+    "macOS": "26.6.2",
+    "macOSProvenance": "Actual xcresult environmentDescription",
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "companionRuntime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "primary": {
+    "jobConclusion": "success",
+    "nativeStepConclusion": "success",
+    "result": "Passed",
+    "passedTests": 29,
+    "failedTests": 0,
+    "skippedTests": 1,
+    "nativeCleanup": {
+      "result": "PASS",
+      "remainingResourceCount": 0
+    },
+    "viewportPhases": [
+      {
+        "phase": "inspect-only",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "no-actions",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "revoked-selection",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "closer-unrelated-mesh",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "hidden",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "rejected-replacement",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "initial-input",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      }
+    ],
+    "viewportEvidenceLimit": "Synthetic cube in attached production SceneKit controller, exact production picker and accessible center action; not physical AR or original GLB touch proof.",
+    "raster": {
+      "result": "PASS",
+      "deadlineSeconds": 20,
+      "sealedElapsedMs": 1218.5337083333252,
+      "metalDeviceAvailable": true,
+      "readableCompletedTarget": true,
+      "metalCommandStatus": "completed",
+      "assets": [
+        {
+          "assetId": "treasure-chest",
+          "sourceSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+          "geometryNodes": 7,
+          "materialInstances": 4,
+          "emptyNontransparentPixels": 0,
+          "populatedNontransparentPixels": 8301,
+          "removedNontransparentPixels": 0,
+          "authoredChildMatricesAndMaterialObjectsPreserved": true,
+          "bottomCenterPivotPreserved": true,
+          "modelDetachedFromScene": true,
+          "opaqueEntitySelection": true,
+          "backgroundMiss": true,
+          "transparentVerticalMirrorMiss": true,
+          "removedFormerOpaqueMiss": true
+        },
+        {
+          "assetId": "brass-compass",
+          "sourceSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+          "geometryNodes": 4,
+          "materialInstances": 4,
+          "emptyNontransparentPixels": 0,
+          "populatedNontransparentPixels": 2509,
+          "removedNontransparentPixels": 0,
+          "authoredChildMatricesAndMaterialObjectsPreserved": true,
+          "bottomCenterPivotPreserved": true,
+          "modelDetachedFromScene": true,
+          "opaqueEntitySelection": true,
+          "backgroundMiss": true,
+          "transparentVerticalMirrorMiss": true,
+          "removedFormerOpaqueMiss": true
+        }
+      ],
+      "populatedPngsIndependentlyViewed": true,
+      "visualObservation": "Both original models visibly recognizable in retained populated PNGs.",
+      "fixtureUsesCamera": false,
+      "fixtureCreatesARSession": false,
+      "gpuDriverMemoryReleaseProven": false,
+      "physicalTrackingProven": false,
+      "physicalInspectInteractionProven": false
+    }
+  },
+  "joined": {
+    "result": "PASS",
+    "evidenceClass": "SIMULATOR_NATIVE_INPUT_CANONICAL_REJECTION_ONLY",
+    "qualification": false,
+    "source": {
+      "sourceSha": "b4cea94abc64fc6e02dfa5f241242eda3888d4b3",
+      "sourceTree": "2f93d21e056a6143b0b9dfd26f2f6ede91eb7d69",
+      "dirty": false,
+      "sourceFingerprint": "3c0ed33c9193f2e6f2891a2ffb5a62e947b48d4c98e3526db4bd4f78a9080c0a"
+    },
+    "selectedRuntime": {
+      "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+      "minimumIOS": "16.0",
+      "policy": "PREINSTALLED_LATEST_SUPPORTED"
+    },
+    "driverState": "COMPLETED",
+    "osReady": true,
+    "clientReady": true,
+    "clientFailurePostObserved": false,
+    "knownRouteCounts": {
+      "player": 1,
+      "clientScript": 1,
+      "scene": 4,
+      "clientReady": 1,
+      "clientFailed": 0,
+      "osReady": 1,
+      "osNext": 25
+    },
+    "actions": [
+      [
+        0,
+        "PASS"
+      ],
+      [
+        1,
+        "PASS"
+      ],
+      [
+        2,
+        "PASS"
+      ],
+      [
+        3,
+        "PASS"
+      ]
+    ],
+    "observedActionContract": [
+      "Open actual Chronicle Lens and start camera-free Device Lab",
+      "Actual OS tap of original chest mesh",
+      "Actual native Inspect control; visible canonical simulation rejection and native return",
+      "Close Lens and observe same synthetic Voyage"
+    ],
+    "evidence": [
+      {
+        "entityId": "fixture-native-chest",
+        "interactionType": "INSPECT",
+        "synthetic": true,
+        "disposition": "SIMULATION_REJECTED"
+      }
+    ],
+    "realSQLite": true,
+    "canonicalProgressionEventsAdded": 0,
+    "observationRowsAdded": 0,
+    "privateOutputRetained": true,
+    "privateOutputFileCount": 1,
+    "nativeInspectXcresultRetained": true,
+    "physicalTrackingProven": false,
+    "positivePhysicalInspectProven": false,
+    "cleanup": {
+      "result": "PASS",
+      "databaseRemoved": true,
+      "ownedServerClosed": true,
+      "ownedSimulatorDeleted": true,
+      "failedCleanupOperationCount": 0
+    }
+  },
+  "permissionScenario": {
+    "name": "permission-denied-native",
+    "scope": "Foreground location denial",
+    "stepConclusion": "success",
+    "result": "PASS",
+    "evidenceClass": "SIMULATOR_PROVEN",
+    "steps": [
+      {
+        "index": 0,
+        "action": "PERMISSION",
+        "state": "PASS",
+        "reason": null
+      },
+      {
+        "index": 1,
+        "action": "LOCATION",
+        "state": "PASS",
+        "reason": "OS_PERMISSION_PREVENTED_ACQUISITION"
+      },
+      {
+        "index": 2,
+        "action": "ASSERT",
+        "state": "PASS",
+        "reason": null
+      },
+      {
+        "index": 3,
+        "action": "ASSERT",
+        "state": "PASS",
+        "reason": null
+      },
+      {
+        "index": 4,
+        "action": "ASSERT",
+        "state": "PASS",
+        "reason": null
+      }
+    ],
+    "canonicalProgressionEvents": 0,
+    "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+    "cleanup": {
+      "result": "PASS",
+      "remainingResourceCount": 0
+    },
+    "cameraPermissionProven": false
+  },
+  "presentation": {
+    "jobConclusion": "cancelled",
+    "runnerAllocated": false,
+    "stepCount": 0,
+    "annotations": [
+      "The job was not acquired by Runner of type hosted even after multiple attempts",
+      "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+      "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times.",
+      "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+    ],
+    "artifactAvailable": false,
+    "sourceExecuted": false,
+    "full31Proven": false,
+    "interpretation": "Hosted ARM presentation job was not acquired. No current presentation source execution, test counts, windows, ReducedMotion or cleanup proof."
+  },
+  "limits": [
+    "Primary job succeeded; overall run failed because independent presentation was not acquired.",
+    "Software Simulator evidence only; no physical tracking, room registration, placement fidelity, positive physical observation or new TestFlight installation proof.",
+    "Primary29 and a future focused diagnostic cannot be aggregated into full31 acceptance.",
+    "No claim that ARM success diagnoses the Intel boot failure; Intel cause remains UNKNOWN.",
+    "Previous immutable failures and owner acceptance limits remain retained."
+  ],
+  "originals": [
+    {
+      "role": "viewport-inspect-only",
+      "sha256": "c68b30191b26cba4924f47710f7a3178c22de01d04fd764878ce26f1a60f2fbd",
+      "bytes": 336
+    },
+    {
+      "role": "viewport-no-actions",
+      "sha256": "28afa141e30e71c2f70941f2648646ee65742cbf97d07071431b7ad8aee2bc97",
+      "bytes": 334
+    },
+    {
+      "role": "viewport-revoked-selection",
+      "sha256": "73a431f500f27f688e613296dcbeec33c6079b414047e014280033741e759418",
+      "bytes": 341
+    },
+    {
+      "role": "viewport-closer-unrelated-mesh",
+      "sha256": "47c588fa14c3b36645588d2f704017a5f64d76443ec73fa24f41c2a878866b12",
+      "bytes": 345
+    },
+    {
+      "role": "viewport-hidden",
+      "sha256": "d4fb5ab92f409a9ec61c88f967f511e16e0c76aa9cdb824ab011b8a259881929",
+      "bytes": 330
+    },
+    {
+      "role": "viewport-rejected-replacement",
+      "sha256": "a94d3f2e6d845068ab862a8f96df14f3e0335116ba7eceedcc1b81076e8a4e10",
+      "bytes": 344
+    },
+    {
+      "role": "original-model-raster-report",
+      "sha256": "6ea1a0de613c6ae9bb0302f63da3e339e3b2c6c8405960a560c392b744a632a2",
+      "bytes": 14010
+    },
+    {
+      "role": "brass-compass-populated",
+      "sha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+      "bytes": 5725
+    },
+    {
+      "role": "treasure-chest-populated",
+      "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "bytes": 7237
+    },
+    {
+      "role": "viewport-initial-input",
+      "sha256": "449d05e5223d7710f54e1f1d4166f4eaa483fbe9d8979b501bc5637ce2758dc7",
+      "bytes": 337
+    },
+    {
+      "role": "owned-home-background-observations",
+      "sha256": "8265edfd5e4e8da86e755f1d3278d5da8b61424efea8ca2cf8425d4eb395420c",
+      "bytes": 111
+    },
+    {
+      "role": "native-test-summary",
+      "sha256": "6eae53033278b9b9e7f55431aa670b5836ded1edcd75e7af714356c2c19d8f78",
+      "bytes": 1242
+    },
+    {
+      "role": "native-cleanup",
+      "sha256": "c79c6a59715bdd33dd49127fb17643981257a3ee103e450e6db9f4b325e26f62",
+      "bytes": 99
+    },
+    {
+      "role": "capabilities",
+      "sha256": "c6e36223d4b3ab7f069c9358cff082c7ee0c25cae7919dd1156cf8f0d1ba6ebb",
+      "bytes": 16217
+    },
+    {
+      "role": "native-runtime-selection",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d",
+      "bytes": 131
+    },
+    {
+      "role": "attachment-manifest",
+      "sha256": "531be6fb0621a44c038c999d4b79db8a662e1864edfb8be30b620e1dc7092cf5",
+      "bytes": 10400
+    },
+    {
+      "role": "joined-native-inspect",
+      "sha256": "c687c2b7e67148fd47660377c92fdec7cf043c4b47149596375c4eaf21ae7157",
+      "bytes": 951
+    },
+    {
+      "role": "joined-driver-diagnostics",
+      "sha256": "272a2682bae23ed4e036233ba9ce1968ff7ca342cb6730281dc338dd06712654",
+      "bytes": 678
+    },
+    {
+      "role": "joined-cleanup",
+      "sha256": "fea9c6711df661b4db58031cc00597d3f716f0c32f8fbd5e49fa350e01a0cace",
+      "bytes": 217
+    },
+    {
+      "role": "joined-private-driver-stdout",
+      "sha256": "b51d3c3f0b286b73db26e8c704455489f5756cf714f795c9d6e240cc6f42a15b",
+      "bytes": 183
+    },
+    {
+      "role": "joined-xcresult-info",
+      "sha256": "736f5bbffedce1e7c598a943a4313caa4260d6f0ba3c260f6a36e7b4aad60ca9",
+      "bytes": 715
+    },
+    {
+      "role": "location-denial-receipt",
+      "sha256": "12f8724a0679bd8acc7f48b1f16df935f41355fb1fa2ca0bb81420cd6b3304da",
+      "bytes": 6132
+    },
+    {
+      "role": "location-denial-summary",
+      "sha256": "7e0fb980ce9377aac7bc45281fc9d450ad61d23e5ef0ebe49cc40fcb2b06beef",
+      "bytes": 495
+    },
+    {
+      "role": "primary-original-job-log",
+      "sha256": "9548b8193408fd14203416d41547632ef3515cc8c82184717b86d1d407ea59b4",
+      "bytes": 80341
+    }
+  ]
+}

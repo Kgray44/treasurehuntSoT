@@ -1,8 +1,10 @@
 import * as T from "three";
 import { paperSheetGeometry, compassProp, footprintProp } from "@/components/studio/parallax/spatial-props";
 import { applySpatialOpacity, disposeSpatialOpacity } from "@/components/studio/parallax/spatial-opacity";
-import { previewReferenceFrame } from "./authoring";
-import { type Anchor, type SpatialMoment, type Transform } from "./contracts";
+import { browserReferenceFrame } from "./browser-reference-frame";
+import { type Anchor, type SpatialMoment, type SpatialVersion, type Transform } from "./contracts";
+import { BrowserScenePresentation } from "./browser-scene-presentation";
+import { sceneRequirements, type SceneDelivery } from "./scene-delivery";
 import { spatialPropStyle, spatialFootprintSide } from "./prop-style";
 import {
   alignmentApplies,
@@ -20,6 +22,9 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
   readonly worldTracking = true;
   readonly planePlacement = false;
   private renderer: T.WebGLRenderer | null = null;
+  private presentation: BrowserScenePresentation | null = null;
+  private identity: { versionChecksum: string; instanceId: string } | null = null;
+  private modelSceneActive = false;
   private camera = new T.PerspectiveCamera();
   private scene = new T.Scene();
   private objects = new Map<string, T.Group>();
@@ -38,6 +43,18 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
     private select: (id: string) => void,
   ) {
     this.providerId = provider.providerId;
+  }
+  supportsScene(version: SpatialVersion) {
+    const enabled = version.entities.filter((entity) => entity.element?.enabled);
+    if (!enabled.length) return true;
+    return (
+      this.alignment.trackingScale === "METRIC" &&
+      sceneRequirements(version).every((requirement) => ["WORLD_TRACKING", "MODEL_GLB"].includes(requirement)) &&
+      enabled.every(
+        (entity) =>
+          entity.element?.kind === "PHYSICAL_ASSET" && entity.element.articulation === 0 && !entity.element.playback,
+      )
+    );
   }
   updateTracking(sample: BrowserTrackingSample | null) {
     if (!this.emit) return;
@@ -65,6 +82,8 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
   }
   async start(input: Parameters<SpatialRuntimeAdapter["start"]>[0]) {
     if (input.signal.aborted) throw new Error("Browser scene opening was cancelled.");
+    if (!input.sceneIdentity || !this.supportsScene(this.moment.version))
+      throw new Error("PARALLAX_BROWSER_SCENE_UNSUPPORTED");
     const intrinsics = this.provider.cameraIntrinsics(),
       sample = this.provider.read();
     if (
@@ -74,11 +93,15 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
     )
       throw new Error("Fresh room alignment and world tracking are required.");
     this.emit = input.emit;
+    this.identity = structuredClone(input.sceneIdentity);
     this.lastTracking = "";
     this.initialNormalSamples = 0;
     this.lastNormalTimestamp = -Infinity;
     const renderer = new T.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer = renderer;
+    this.presentation = new BrowserScenePresentation(this.scene, this.camera, {
+      createLegacyEntity: (entity) => this.createLegacyEntity(entity.id, entity.content, entity.widthMeters),
+    });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     renderer.setClearColor(0, 0);
     this.camera.fov = T.MathUtils.radToDeg(2 * Math.atan(intrinsics.height / (2 * intrinsics.focal)));
@@ -112,6 +135,11 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
         ),
         this.camera,
       );
+      if (this.modelSceneActive) {
+        const entityId = this.presentation?.pick(ray);
+        if (entityId) this.select(entityId);
+        return;
+      }
       const hit = ray.intersectObjects(
         [...this.objects.values()].filter((o) => o.visible),
         true,
@@ -157,7 +185,7 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
     const frame =
       anchor.kind === "SURFACE_RELATIVE"
         ? composeTransform(
-            previewReferenceFrame(this.moment.version, anchor, room.id, { ...room, horizontal: true, vertical: true }),
+            browserReferenceFrame(this.moment.version, anchor, room.id, { ...room, horizontal: true, vertical: true }),
             anchor.transform,
           )
         : anchor.transform;
@@ -167,43 +195,47 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
   async place() {
     return null;
   }
+  private createLegacyEntity(id: string, content: string, widthMeters: number): T.Group {
+    const source = this.moment.version.entities.find((entity) => entity.id === id);
+    if (!source) throw new Error("Browser render entity is not in this released scene.");
+    const object = new T.Group();
+    object.userData.entityId = id;
+    const style = spatialPropStyle(source);
+    if (style === "FOOTPRINT") object.add(footprintProp(widthMeters, spatialFootprintSide(source) === "RIGHT"));
+    else {
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 384;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("Scene text rendering is unavailable.");
+      context.fillStyle = style === "COMPASS" ? "#16293b" : "#e7d2a0";
+      context.fillRect(0, 0, 512, 384);
+      context.fillStyle = style === "COMPASS" ? "#efcb70" : "#33291e";
+      context.font = "28px serif";
+      const lines = (style === "COMPASS" ? "N   E   S   W" : content).match(/.{1,28}(?:\s|$)|.{1,28}/g) ?? [];
+      lines.slice(0, 10).forEach((line, i) => context.fillText(line.trim(), 20, 38 + i * 32));
+      const texture = new T.CanvasTexture(canvas);
+      texture.colorSpace = T.SRGBColorSpace;
+      if (style === "COMPASS") object.add(compassProp(widthMeters, texture));
+      else
+        object.add(
+          new T.Mesh(
+            style === "TEXT"
+              ? new T.PlaneGeometry(widthMeters, widthMeters * 0.75)
+              : paperSheetGeometry(widthMeters, style === "LETTER"),
+            new T.MeshStandardMaterial({ map: texture, side: T.DoubleSide, roughness: 0.85 }),
+          ),
+        );
+    }
+    return object;
+  }
   async render(entities: Parameters<SpatialRuntimeAdapter["render"]>[0]) {
     if (!this.renderer) throw new Error("Browser renderer is closed.");
     for (const object of this.objects.values()) object.visible = false;
     for (const e of entities) {
       let object = this.objects.get(e.id);
       if (!object) {
-        const source = this.moment.version.entities.find((entity) => entity.id === e.id);
-        if (!source) throw new Error("Browser render entity is not in this released scene.");
-        object = new T.Group();
-        object.userData.entityId = e.id;
-        const style = spatialPropStyle(source);
-        if (style === "FOOTPRINT") object.add(footprintProp(e.widthMeters, spatialFootprintSide(source) === "RIGHT"));
-        else {
-          const canvas = document.createElement("canvas");
-          canvas.width = 512;
-          canvas.height = 384;
-          const context = canvas.getContext("2d");
-          if (!context) throw new Error("Scene text rendering is unavailable.");
-          context.fillStyle = style === "COMPASS" ? "#16293b" : "#e7d2a0";
-          context.fillRect(0, 0, 512, 384);
-          context.fillStyle = style === "COMPASS" ? "#efcb70" : "#33291e";
-          context.font = "28px serif";
-          const lines = (style === "COMPASS" ? "N   E   S   W" : e.content).match(/.{1,28}(?:\s|$)|.{1,28}/g) ?? [];
-          lines.slice(0, 10).forEach((line, i) => context.fillText(line.trim(), 20, 38 + i * 32));
-          const texture = new T.CanvasTexture(canvas);
-          texture.colorSpace = T.SRGBColorSpace;
-          if (style === "COMPASS") object.add(compassProp(e.widthMeters, texture));
-          else
-            object.add(
-              new T.Mesh(
-                style === "TEXT"
-                  ? new T.PlaneGeometry(e.widthMeters, e.widthMeters * 0.75)
-                  : paperSheetGeometry(e.widthMeters, style === "LETTER"),
-                new T.MeshStandardMaterial({ map: texture, side: T.DoubleSide, roughness: 0.85 }),
-              ),
-            );
-        }
+        object = this.createLegacyEntity(e.id, e.content, e.widthMeters);
         this.scene.add(object);
         this.objects.set(e.id, object);
       }
@@ -219,6 +251,18 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
       applySpatialOpacity(object, e.opacity ?? 1);
     }
   }
+  async renderScene(delivery: SceneDelivery) {
+    if (!this.renderer || !this.presentation || !this.identity || !this.supportsScene(this.moment.version))
+      throw new Error("PARALLAX_BROWSER_SCENE_UNSUPPORTED");
+    if (
+      delivery.identity.versionId !== this.moment.version.id ||
+      delivery.identity.versionChecksum !== this.identity.versionChecksum ||
+      delivery.identity.instanceId !== this.identity.instanceId
+    )
+      throw new Error("PARALLAX_BROWSER_SCENE_IDENTITY_MISMATCH");
+    this.modelSceneActive = true;
+    await this.presentation.renderScene(delivery);
+  }
   async stop() {
     cancelAnimationFrame(this.frame);
     this.observer?.disconnect();
@@ -226,6 +270,10 @@ export class BrowserSpatialAdapter implements SpatialRuntimeAdapter {
     this.disposeEvents?.();
     this.disposeEvents = null;
     this.emit = null;
+    this.modelSceneActive = false;
+    this.identity = null;
+    this.presentation?.dispose();
+    this.presentation = null;
     const materials = new Set<T.Material>(),
       textures = new Set<T.Texture>(),
       geometries = new Set<T.BufferGeometry>();

@@ -8,6 +8,11 @@ last_reviewed: 2026-10-24
 
 # Repository automation guidance
 
+- [NCL-01 owned native Scene implementation context](parallax-ncl01.md)
+- [NCL-01 post-Crossdeck completion context](ncl01-full-completion.md)
+- [NCL-01 owned laptop preview operations](ncl01-local-preview.md)
+- [NCL-01 isolated TestFlight deployment](ncl01-testflight.md)
+
 Active execution guidance belongs here. Human product guidance and engineering
 evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do
@@ -70,6 +75,7 @@ not authorize restarting a completed phase.
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
 - [Sextant synthetic experience fixture preparation](scripts/sextant-experience-fixture.ts)
 - [Parallax Phase 3 owned implementation and workstation correction context](parallax-phase3.md)
+- [NCL-01 autonomous completion context](ncl01-full-completion.md)
 
 - [Spatial baseline review and Crossdeck realtime context](spatial-review-crossdeck-realtime.md)
 - [Landfall Phase 4 closure context](landfall-phase4.md)

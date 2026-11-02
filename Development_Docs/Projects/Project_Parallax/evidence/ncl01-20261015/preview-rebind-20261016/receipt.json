@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "task": "NCL01",
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "OWNED_LAPTOP_LAN_REBIND_AND_CANONICAL_ASSET_TRANSPORT_ONLY",
+  "publishedAtUtc": "2026-10-16T02:07:37.411361+00:00",
+  "status": "ROOT_REBOUND_AND_RESTORED_SOFTWARE_TRANSPORT_VERIFIED",
+  "executionAttribution": {
+    "operationExecutor": "/root",
+    "sourceReviewer": "/root/ncl01_review",
+    "sourceReviewerExecutedOperation": false,
+    "publisherAndIndependentProcessObserver": "/root/lan_rebind_audit",
+    "publisherExecutedRebindOrStartedServices": false
+  },
+  "firstGuardRefusal": {
+    "scriptSha256": "c7e6cef8d1708b39b8727c44d1e148b6c4da0948aa6c6c0ccb7f0a6a1567740b",
+    "requestedIp": "192.168.0.24",
+    "requiredInterface": "Wi-Fi",
+    "rootReportedFailureCode": "NCL01_REBIND_NEW_ADDRESS_NOT_ASSIGNED",
+    "reason": "The previously Preferred Wi-Fi address became Deprecated before execution; the script refused it.",
+    "rootReportedNoLeafChangesOrPlanCreation": true,
+    "rejectedPlanAbsentVerifiedByIndependentSourceReviewer": true,
+    "rawFailureCapturePublished": false,
+    "evidenceAttribution": "Root operation report plus independent reviewer plan-absence readback; this is not a fabricated raw failure log."
+  },
+  "replacement": {
+    "scriptSha256": "ed9d9467d498d6141be1e4c98f6276d53a4d998616aadb104f0d5592ae91e7e4",
+    "appHelperSha256": "89bdb86bd5db00220fbe0bd5c7fe7c8bccd54849af7593280e412dd4fd3ffe28",
+    "oldOrigin": "https://155.42.98.160:8449",
+    "newOrigin": "https://192.168.0.18:8449",
+    "requiredAddressState": "Preferred",
+    "requiredPrefixLength": 24,
+    "exactFiveControlledSourceFields": {
+      "newIp": "192.168.0.18",
+      "requiredInterfaceAlias": "Ethernet",
+      "planDirectory": "lan-rebind-20261015-192168018",
+      "planPurpose": "NCL01_ONE_OFF_LAN_REBIND_20261015_ETHERNET_192168018",
+      "fixedSuccessOutputTargetIp": "192.168.0.18"
+    },
+    "allOtherRebindGuardsAndBackupRollbackSourceUnchanged": true,
+    "changedTlsFiles": [
+      "server.csr.pem",
+      "server.extensions.cnf",
+      "server.pem",
+      "owner.json",
+      "server.config.json"
+    ],
+    "privateBackupRetained": true,
+    "rollbackExecuted": false
+  },
+  "preservedState": {
+    "publicCaSha256": "17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6",
+    "leafAndCaNotAfter": "2026-10-22T20:08:04Z",
+    "sameCaBothPrivateKeysAndPublicCertificateProfile": true,
+    "canonicalAccessAndRuntimeMetadataByteUnchangedReportedByAppliedReceipt": true,
+    "sceneChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+    "syntheticVoyageId": "cmv9yxc3u001i25do46ylmr89",
+    "sceneChecksumUnchangedInAuthenticatedAssetProbe": true,
+    "rebindScriptDatabaseWriteOperations": 0,
+    "assetProbeMutationScope": {
+      "canonicalSessionsCreated": 1,
+      "ownSessionLogoutAttempted": true,
+      "ownSessionLogoutSucceeded": true,
+      "ownSessionRevocationVerified": true,
+      "otherSessionsTouched": false,
+      "canonicalProgressionRequests": 0,
+      "resetOrPreparationRequests": 0
+    },
+    "publicCaTrustScope": "EXPLICIT_PUBLIC_CA_REQUEST_OPTIONS_ONLY",
+    "globalTrustChanged": false,
+    "firewallChanged": false,
+    "privateManifestAndPrivateKeyHashesCollectedOrPublished": false
+  },
+  "verification": {
+    "restoredTransportChecks": 5,
+    "publicHttpBootstrapChecks": 2,
+    "normallyVerifiedHttpsChecks": 3,
+    "restoredTransportAllPassed": true,
+    "canonicalAssetSuiteChecks": 11,
+    "canonicalAssetSuiteAllPassed": true,
+    "canonicalAssetSuiteEveryResponseNormallyTlsVerified": true,
+    "canonicalAssetSuiteRetainsOriginalModelDigestsAndSameReleasedScene": true,
+    "ownSessionLogoutAndRevocationVerified": true,
+    "existingAssetOriginalSha256Preserved": "ba61bb5a194611458c00bfa5341723da7c23238c5fd0a801b760fbec66e0ad6d",
+    "independentServiceObservation": "service-observation.json",
+    "independentSourceAndPublicCertificateReadback": "independent-source-review.json",
+    "independentSourceReviewLabelClarification": "The byte-exact independent source-review history field lan.rootReportedNormalTlsChecksPassed=5 counts all five restore checks. Its label is imprecise: the original transport records show two public HTTP bootstrap checks and three normally verified HTTPS checks. The independent packet is preserved unchanged."
+  },
+  "limits": {
+    "phoneReachability": "DEFERRED_BY_OWNER_NOT_PROVEN",
+    "nativeLoaderOrNativeInstallationProven": false,
+    "browserArOrPhysicalArTrackingProven": false,
+    "physicalInspectOrOwnerAcceptanceProven": false,
+    "formalProductExperienceOrProtectedQualificationProven": false,
+    "publicSourceReviewPacketIncludesSeparateIosSourceReviewButNoNewIosExecutionClaim": true
+  },
+  "publishedEvidence": [
+    {
+      "path": "local-https-assets.json",
+      "bytes": 6343,
+      "sha256": "ba61bb5a194611458c00bfa5341723da7c23238c5fd0a801b760fbec66e0ad6d"
+    },
+    {
+      "path": "preview-restored.original.json",
+      "bytes": 1360,
+      "sha256": "9ea5a2736acf6e3fa6105edad5b31d2d01dedcc9ac991f697515ff78e9ad4859"
+    },
+    {
+      "path": "applied-selected.json",
+      "bytes": 958,
+      "sha256": "b985acda5be2db77a82f9a600228199e7f3bf3a37e7e57182f9e91fca607b846"
+    },
+    {
+      "path": "independent-source-review.json",
+      "bytes": 5507,
+      "sha256": "d7c0c7b9d4544d16ddc35304ad504f74876bc09f2363c196acd477be96b9e589"
+    },
+    {
+      "path": "service-observation.json",
+      "bytes": 1300,
+      "sha256": "27e0a921ffde29c18305d21c1ad53b429aa5b6fd440168e3599340f30c6a00fa"
+    }
+  ]
+}

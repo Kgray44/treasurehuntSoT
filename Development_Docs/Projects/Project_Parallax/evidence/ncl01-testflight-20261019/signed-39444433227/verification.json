@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "kind": "UPLOAD_ACCEPTED_PROCESSING_VALID_INTERNAL_GROUP_ATTACHED",
+  "runId": 39444433227,
+  "candidateSha": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+  "transportSha": "38cd0bf20b463427c40d278470fe256db094b52c",
+  "origin": "https://ncl01.absoluterelativesystems.com",
+  "version": "0.1.0",
+  "build": "4",
+  "deviceArchiveValidated": true,
+  "appTargetSigningSettingsValidated": true,
+  "appStoreExportSucceeded": true,
+  "ipaBytes": 1975076,
+  "ipaSha256": "571ab9dba3f0ed6ef0127c56b9ac347e01ea3f97dae0e417149d836f49234f4d",
+  "ipaRetainedInOwnedArtifactDirectory": true,
+  "exportedIpaMetadataResourceChecksPassed": 13,
+  "credentialCleanup": "PASS",
+  "appleValidatePassed": true,
+  "appleUploadPassed": true,
+  "uploadAccepted": true,
+  "appleProcessing": "VALID",
+  "appleBuildId": "4a489dc0-060d-4a33-85b5-fb721fea7995",
+  "pipelineResult": "PASS",
+  "internalGroupAttached": true,
+  "internalBuildState": "IN_BETA_TESTING",
+  "usesNonExemptEncryption": false,
+  "publicPresentationAtHarvest": "PENDING_STATIC_ASSET_CACHE_PURGE_AND_PIXEL_REVIEW",
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "privacyScan": "PASS_NO_PRIVATE_KEY_CERTIFICATE_JWT_OR_RAW_KEY_BODY_FOUND",
+  "emailScan": "PASS_NO_EMAIL_OUTSIDE_BYTE_IDENTICAL_OFFICIAL_TOOL_HELP",
+  "files": [
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "appstore-export.original.log",
+      "bytes": 373,
+      "sha256": "8df94bddd4c12972b7fb07be0b82d763df6b1ea8dce01159f008862bcd7466b9"
+    },
+    {
+      "path": "asc-upload.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "asc-validate.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "device-archive.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 576,
+      "sha256": "d987444c855f0fcd724fbf5b459bae38ad3e31d34b8b605b508a132b7bbe0dc3"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 271,
+      "sha256": "399d80f96a85c26641ee726d3266d47154df6cc2d721e0a4a6a240174a9421cb"
+    },
+    {
+      "path": "ipa-metadata-verification.json",
+      "bytes": 788,
+      "sha256": "66d343949aeb01c8cc080754ffc2e04641439acd96b3c29e4b181a44a639f961"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "receipt.original.json",
+      "bytes": 1215,
+      "sha256": "892a3ca7dbf0709d7129e191109cabd80f3488c64327b63c1d55623704e3c9bd"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 189,
+      "sha256": "87696def568828093625ee5549cbf0198ccfe64c3617a60c442d7c424035929d"
+    }
+  ]
+}

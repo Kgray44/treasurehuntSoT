@@ -123,6 +123,10 @@ Experience_Images/Spatial_Studio_20261011/** -text -whitespace
 Development_Docs/Projects/Project_Parallax/Spatial_Studio_Visual_Review_20261011.md -text -whitespace
 
 /Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/** -text -whitespace
+# Preserve exact NCL receipt/capture bytes and original emitted log whitespace.
+Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/** -text -whitespace
 
 # Additive accepted-main reconciliation receipts retain original producer bytes.
 Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/** -text -whitespace

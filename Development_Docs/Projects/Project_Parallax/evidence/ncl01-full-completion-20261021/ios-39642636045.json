@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_IOS_PRESENTATION_REVIEW",
+  "qualification": false,
+  "reviewedAtUtc": "2026-10-21T17:59:30.714Z",
+  "runId": 39642636045,
+  "candidate": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+  "candidateTree": "591415b2ec6cf5a9675cb326a7e2db1226ce8d51",
+  "environment": {
+    "architecture": "x64",
+    "darwinKernelRelease": "25.6.0",
+    "macOS": "26.6.1",
+    "macOSProvenance": "Actual xcresult environmentDescription",
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "buildScope": {
+    "scope": "TWO_PRESENTATION_TESTS_ONLY",
+    "candidateSha": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+    "candidateTree": "591415b2ec6cf5a9675cb326a7e2db1226ce8d51",
+    "role": "DEVELOPMENT_ONLY",
+    "qualification": false,
+    "strictFull31Satisfied": false,
+    "requiredPassingTests": 2,
+    "selectedTests": [
+      "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation",
+      "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting"
+    ],
+    "native29Repeated": false,
+    "presentationAcceptance": false
+  },
+  "firstBundle": {
+    "result": "Passed",
+    "passedTests": 1,
+    "failedTests": 0,
+    "skippedTests": 0,
+    "expectedFailures": 0,
+    "totalTestCount": 1
+  },
+  "largeText": {
+    "settings": "ACTUAL_OWNED_SIMULATOR_SETTINGS",
+    "contentSize": "ACCESSIBILITY_XXXL",
+    "appearance": "DARK",
+    "fixture": "UNCONFIGURED_READABLE_FALLBACK",
+    "portraitBounds": {
+      "orientation": 1,
+      "window": {
+        "x": 0,
+        "width": 390,
+        "y": 0,
+        "height": 844
+      },
+      "landscape": false,
+      "deviceImage": {
+        "width": 390,
+        "orientation": 0,
+        "height": 844
+      },
+      "text": {
+        "x": 16,
+        "width": 346,
+        "height": 373.3333333333333,
+        "y": 63
+      }
+    },
+    "landscapeBounds": {
+      "deviceImage": {
+        "width": 844,
+        "height": 390,
+        "orientation": 2
+      },
+      "orientation": 3,
+      "landscape": true,
+      "window": {
+        "width": 844,
+        "x": 0,
+        "height": 390,
+        "y": 0
+      },
+      "text": {
+        "y": 16,
+        "width": 637,
+        "height": 187.33333333333334,
+        "x": 63
+      }
+    },
+    "actualDeviceScreensIndependentlyViewed": false,
+    "productionJournalRenderingProven": false,
+    "physicalAssistiveTechnologyProven": false
+  },
+  "attachments": [
+    {
+      "role": "test-attachments/Owned landscape actual bounds",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned device landscape screen",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/Owned large-text landscape fallback",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/Owned portrait actual bounds",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned device portrait screen",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/Owned large-text portrait fallback",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".png"
+    }
+  ],
+  "originals": [
+    {
+      "role": "test-attachments-manifest",
+      "sha256": "c5d2e2decc080d04c67701c0acf7a7332fc9ae47748d76327d3abd56dd391c85",
+      "bytes": 2970
+    },
+    {
+      "role": "test-attachments/Owned landscape actual bounds",
+      "sha256": "281d31d6520a72f677523868c38885b292fc5af85aa6b8b54ddc4ec7bb8ef930",
+      "bytes": 202
+    },
+    {
+      "role": "test-attachments/Owned device landscape screen",
+      "sha256": "9231c3e3b330bc69959215bd40fe74b21e059a61bccd71304163442ee743cd23",
+      "bytes": 146152
+    },
+    {
+      "role": "test-attachments/Owned large-text landscape fallback",
+      "sha256": "c7981d58c1bc85995129b2573567ecb7621566def659dcb990e0149c53cdb37f",
+      "bytes": 106047
+    },
+    {
+      "role": "test-attachments/Owned portrait actual bounds",
+      "sha256": "28be6e84032c3edfe210ae64c92beb7855546eb4fc8f6cc0095f5c62e4e426f8",
+      "bytes": 203
+    },
+    {
+      "role": "test-attachments/Owned device portrait screen",
+      "sha256": "c2b23352cff48dbc3aa5a4173ac5ed1f21234a7f1dd21edb58cd6c6fec8f151a",
+      "bytes": 136591
+    },
+    {
+      "role": "test-attachments/Owned large-text portrait fallback",
+      "sha256": "c2b23352cff48dbc3aa5a4173ac5ed1f21234a7f1dd21edb58cd6c6fec8f151a",
+      "bytes": 136591
+    },
+    {
+      "role": "build-scope.json",
+      "sha256": "4a238616f9121ad8b12b1bd5530c03bfbba05e827f66b8e441f9bfb6692007da",
+      "bytes": 564
+    },
+    {
+      "role": "native-test-summary.json",
+      "sha256": "fca5b04abbdcdc2f1f112b55b71bbc5833cc99c85e1e67d8ba9553f2fe5880e2",
+      "bytes": 991
+    },
+    {
+      "role": "capabilities.json",
+      "sha256": "c410ed603ef98da204feed8fea86b3bba4336c69bd4ec2cbb5817f440e3d500c",
+      "bytes": 15114
+    },
+    {
+      "role": "presentation-environment.json",
+      "sha256": "8ae54170f12cfb24589e2999c72a63e3c3c5f8c6e20dd8c8caf643cb6545a03b",
+      "bytes": 255
+    },
+    {
+      "role": "settings-environment.json",
+      "sha256": "85f8dea9f4dcce3e1cf7bf773dc3902449b03ad5576dd3226e79ae82f6e668b0",
+      "bytes": 80
+    },
+    {
+      "role": "orientation-configuration.json",
+      "sha256": "e81a49d4c70cefa92d113f94495fe1cb25a15d33fe40f46f6cfc5d2f2864f5a9",
+      "bytes": 443
+    },
+    {
+      "role": "runtime-selection.json",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d",
+      "bytes": 131
+    },
+    {
+      "role": "original-job-log",
+      "sha256": "3671ab92495f08efa5030eefac381589144c2b0c20a644940dcb35e2a8ac8c9d",
+      "bytes": 76887
+    }
+  ],
+  "transport": "27a6c3892bbfacb6c85c47959f2f9c9e3e0ac9ab",
+  "workflowSha256": "98609aa67ad6cb270685e2c086481d9ff47b9720962007e702641d316deb50eb",
+  "requestedRunner": "macos-26-intel",
+  "workflowConclusion": "cancelled",
+  "result": "INCOMPLETE_CANCELLED",
+  "annotation": "The job has exceeded the maximum execution time of 30m0s",
+  "combinedSummaryAvailable": false,
+  "reducedMotion": {
+    "finalSummaryAvailable": false,
+    "currentConcreteAssertionAvailable": false,
+    "xcresultStagingRetained": true,
+    "result": "UNKNOWN_NOT_COMPLETED"
+  },
+  "cleanup": {
+    "receiptAvailable": false,
+    "ownedSimulatorAbsenceProven": false
+  },
+  "full31Proven": false,
+  "limits": [
+    "First original large-text/orientation UI test passed1/0/0.",
+    "Second ReducedMotion test has no final summary or retained concrete assertion; original30m job cancelled.",
+    "No final aggregate summary or cleanup receipt. Cancellation is not a passing diagnostic or product cause.",
+    "Earlier live job-log request returned404 BlobNotFound; this does not diagnose checkout delay.",
+    "No subsequent retries or weakened assertions/bounds authorized by this receipt."
+  ]
+}

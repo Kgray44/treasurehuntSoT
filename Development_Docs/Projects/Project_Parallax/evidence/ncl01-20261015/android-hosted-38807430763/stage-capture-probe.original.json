@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "CONTINUOUS_STAGE_CAPTURE_SYNTHETIC_PROTOCOL_TEST",
+  "result": "PASS",
+  "exactSerialPortAndTagArgumentsVerified": true,
+  "outputPersistedBeforeChildExit": true,
+  "originalOutputSurvivesNonzero255Exit": true,
+  "boundedPrefixAndDigestsVerified": true,
+  "onlyOwnedLoggerStopped": true,
+  "idempotentStopVerified": true,
+  "physicalSerialRejected": true,
+  "emulatorExecutionProven": false
+}

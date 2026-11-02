@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "READ_ONLY_CROSSDECK_DESIGN_DEPENDENCY_REFRESH",
+  "date": "2026-10-15",
+  "nclCheckpoint": "2b89eda7d03c991ada9e2000d9a73c0ed3f580e3",
+  "protectedMainAtRead": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+  "browserProviderPresentInProtectedMain": false,
+  "browserProviderDiscovery": "GitHub Contents API listing for src/parallax at the immutable protected main SHA does not contain browser-spatial-adapter.ts",
+  "ownerPullRequest": {
+    "number": 721,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/pull/721",
+    "state": "OPEN",
+    "draft": true,
+    "head": "19687c12e20ef69e6519903b14e56a145df2d7e7"
+  },
+  "registrySource": {
+    "path": "testing/contracts.json",
+    "gitBlob": "eb8324379b3348cacf9e2ecbd592c5899ee5a63b",
+    "sha256": "e9b1fa638ffc8a7d67ca06ba7ffe1f05453d5c41f3929309fe94493dd204bdd9",
+    "bytes": 240794,
+    "retrieval": "GitHub Contents API at full immutable candidate SHA; decoded bytes verified against Git blob SHA"
+  },
+  "requiredContract": {
+    "id": "crossdeck.phase2.continuity",
+    "missingExperienceInNclBaseline": true,
+    "experiencePresentInOwnerCandidate": true,
+    "integrationOwner": "Crossdeck experience refit integration",
+    "continuityChecks": ["same-voyage", "same-edition"]
+  },
+  "decision": "Reuse the existing owner design after its governed integration baseline is available; do not author a parallel contract or alter the active consumer candidate",
+  "currentAuthority": {
+    "consumerOwnership": ".agents/crossdeck-r3-final-verification.md",
+    "consumerSourceEditsAuthorizedFromNcl": false,
+    "consumerDispatchAuthorizedFromNcl": false,
+    "protectedPreparationUntouched": true
+  },
+  "ownerCandidateModified": false,
+  "sharedRuntimeModified": false,
+  "ownerCandidateMerged": false,
+  "ownerExperienceAcceptance": "NOT_ASSERTED_FROM_THIS_READ",
+  "productAcceptance": false
+}

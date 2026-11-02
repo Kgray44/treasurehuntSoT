@@ -13,14 +13,13 @@ import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.TextureView;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.google.ar.core.*;
 import java.nio.*;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.concurrent.*;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import org.json.*;
@@ -32,8 +31,12 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   private Session session;
   private Dialog dialog;
   private GLSurfaceView surface;
-  private TextView status;
+  private TextureView modelTarget;
+  private android.view.Choreographer.FrameCallback softwareFrame;
+  final boolean softwareFixture;
+  private ParallaxInteractionView controls;
   private JSONArray pending;
+  private Set<String> pendingSurfaceQuads = new HashSet<>();
   private final List<Entity> entities = new ArrayList<>();
   private Frame frame;
   private int width, height, cameraTexture, cameraProgram, entityProgram;
@@ -41,26 +44,64 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   private volatile boolean active;
   final ParallaxSceneTransfer transfer;
   private final Runnable terminated;
-  private android.app.AlertDialog inspection;
+  private boolean stopped;
+  private volatile boolean sceneLoading = true, sceneLoadFailed;
   private int normalFrames;
+  private ParallaxModelRenderer modelRenderer;
+  private final ParallaxModelCache modelCache;
+  private final ExecutorService assetWorker = Executors.newSingleThreadExecutor();
+  private final Map<String, byte[]> sessionAssets = new ConcurrentHashMap<>();
+  private int activationGeneration;
+  private int pendingGeneration;
+  private int materializedGeneration, modelActivationGeneration;
+  private Consumer<Boolean> pendingActivation;
+  private String modelSignature = "";
+  private ModelFrame latestModelFrame;
+  private boolean modelFramePosted;
+
+  private static final class ModelFrame {
+    float[] projection, camera;
+    Map<String, float[]> transforms = new HashMap<>();
+    Set<String> visible = new HashSet<>();
+    boolean tracking;
+    float brightness;
+    long timestamp;
+    int generation;
+  }
 
   private static final class Entity {
     String id, content;
     float width, scale, opacity;
     int texture;
     Anchor anchor;
+    Pose authoredPose, localDelta = Pose.IDENTITY;
+    boolean model, surfaceQuad, visible = true, selectable = true;
+    JSONObject definition;
   }
 
   ParallaxLocalRuntime(Activity activity, Consumer<JSONObject> emit, String sessionId, int epoch, Runnable terminated) {
-    this.transfer = new ParallaxSceneTransfer(sessionId, epoch);
+    this(activity, emit, sessionId, epoch, terminated, 1, null, null, BuildConfig.LANDFALL_ORIGIN);
+  }
+
+  ParallaxLocalRuntime(Activity activity, Consumer<JSONObject> emit, String sessionId, int epoch,
+      Runnable terminated, int version, String checksum, String instance, String origin) {
+    this(activity, emit, sessionId, epoch, terminated, version, checksum, instance, origin, false);
+  }
+  ParallaxLocalRuntime(Activity activity, Consumer<JSONObject> emit, String sessionId, int epoch,
+      Runnable terminated, int version, String checksum, String instance, String origin, boolean requestedFixture) {
+    this.transfer = new ParallaxSceneTransfer(sessionId, epoch, version, checksum, instance);
     this.terminated = terminated;
     this.activity = activity;
     this.emit = emit;
+    this.softwareFixture = BuildConfig.DEBUG && ParallaxModelCache.allowedSoftwareFixture(true, origin, requestedFixture);
+    this.modelCache = new ParallaxModelCache(activity, origin, softwareFixture);
   }
 
   static JSONObject state(Activity a) throws JSONException {
     return new JSONObject()
         .put("sceneTransferVersion", 1)
+        .put("sceneDeliveryVersions", new JSONArray().put(1).put(2))
+        .put("capabilities", new JSONArray().put("WORLD_TRACKING").put("PLANE_PLACEMENT").put("MODEL_GLB"))
         .put("supported", ArCoreApk.getInstance().checkAvailability(a).isSupported())
         .put(
             "permission",
@@ -71,70 +112,72 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   }
 
   boolean start() {
+    if (stopped || active) return false;
     try {
-      if (activity.checkSelfPermission(android.Manifest.permission.CAMERA)
-          != PackageManager.PERMISSION_GRANTED) return false;
-      if (ArCoreApk.getInstance().requestInstall(activity, true)
-          != ArCoreApk.InstallStatus.INSTALLED) return false;
-      session = new Session(activity);
-      Config config = new Config(session);
-      config.setPlaneFindingMode(Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL);
-      session.configure(config);
+      boolean depthSupported = false;
+      if (!(BuildConfig.DEBUG && softwareFixture)) {
+        if (activity.checkSelfPermission(android.Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) return false;
+        if (ArCoreApk.getInstance().requestInstall(activity, true)
+            != ArCoreApk.InstallStatus.INSTALLED) return false;
+        session = new Session(activity);
+        Config config = new Config(session);
+        config.setPlaneFindingMode(Config.PlaneFindingMode.HORIZONTAL_AND_VERTICAL);
+        // Depth acquisition is available only on supported devices. This overlay does not claim occlusion.
+        depthSupported = session.isDepthModeSupported(Config.DepthMode.AUTOMATIC);
+        config.setDepthMode(Config.DepthMode.DISABLED);
+        config.setLightEstimationMode(Config.LightEstimationMode.AMBIENT_INTENSITY);
+        session.configure(config);
+      } else if (transfer.deliveryVersion != 2) return false;
       dialog = new Dialog(activity, android.R.style.Theme_Material_NoActionBar_Fullscreen);
       FrameLayout root = new FrameLayout(activity);
-      surface = new GLSurfaceView(activity);
-      surface.setEGLContextClientVersion(2);
-      surface.setPreserveEGLContextOnPause(true);
-      surface.setRenderer(this);
-      root.addView(surface);
-      LinearLayout controls = new LinearLayout(activity);
-      controls.setOrientation(LinearLayout.VERTICAL);
-      controls.setPadding(24, 24, 24, 24);
-      controls.setBackgroundColor(0xcf0c202b);
-      status = new TextView(activity);
-      status.setTextColor(Color.WHITE);
-      status.setText("Move your device slowly. Guided View remains available.");
-      controls.addView(status);
-      for (String action : new String[] {"INSPECT", "PLACE", "GUIDED"}) {
-        Button b = new Button(activity);
-        b.setText(
-            action.equals("INSPECT")
-                ? "Inspect object"
-                : action.equals("PLACE") ? "Place on a surface" : "Return to Guided View");
-        b.setTextColor(Color.WHITE);
-        b.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xff16303b));
-        b.setMinHeight(48);
-        controls.addView(b);
-        b.setOnClickListener(
-            v -> {
-              if (action.equals("GUIDED")) {
-                stop();
-              } else interaction(action);
-            });
+      root.setBackgroundColor(0xff0a1212);
+      if (!(BuildConfig.DEBUG && softwareFixture)) {
+        surface = new GLSurfaceView(activity);
+        surface.setEGLContextClientVersion(2);
+        surface.setPreserveEGLContextOnPause(true);
+        surface.setRenderer(this);
+        root.addView(surface);
       }
+      TextureView models = null;
+      if (transfer.deliveryVersion == 2) {
+        models = new TextureView(activity);
+        models.setOpaque(false);
+        root.addView(models, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        modelRenderer = new ParallaxModelRenderer(models);
+        modelTarget = models;
+      }
+      android.view.View touchTarget = models == null ? surface : models;
+      controls = new ParallaxInteractionView(activity, touchTarget, this::pickAt,
+          hit -> { selected = hit; updateControls(); if (hit != null) interaction("PICK"); },
+          this::interaction, this::stop, softwareFixture);
       FrameLayout.LayoutParams bottom =
           new FrameLayout.LayoutParams(
               ViewGroup.LayoutParams.MATCH_PARENT,
               ViewGroup.LayoutParams.WRAP_CONTENT,
               android.view.Gravity.BOTTOM);
       root.addView(controls, bottom);
-      surface.setOnTouchListener(
-          (v, event) -> {
-            if (event.getAction() == android.view.MotionEvent.ACTION_UP
-                && tracking.equals("NORMAL")) {
-              float tapX = event.getX(), tapY = event.getY();
-              surface.queueEvent(() -> pick(tapX, tapY));
-              v.performClick();
-              return true;
-            }
-            return true;
-          });
+      if (BuildConfig.DEBUG && softwareFixture) {
+        android.widget.TextView fidelity = new android.widget.TextView(activity);
+        fidelity.setText("Device Lab: camera-free software fixture. No AR tracking or physical proof.");
+        fidelity.setTextColor(Color.WHITE); fidelity.setBackgroundColor(0xff35220a);
+        fidelity.setTextSize(16); fidelity.setPadding(16, 16, 16, 16);
+        root.addView(fidelity, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT, android.view.Gravity.TOP));
+      }
       dialog.setContentView(root);
       bindDismissal(dialog);
-      session.resume();
+      if (session != null) session.resume();
       active = true;
       dialog.show();
-      surface.onResume();
+      if (surface != null) surface.onResume();
+      if (BuildConfig.DEBUG && softwareFixture) {
+        softwareFrame = this::softwareFrame;
+        android.view.Choreographer.getInstance().postFrameCallback(softwareFrame);
+      } else emit.accept(new JSONObject().put("type", "parallax-capabilities")
+          .put("sessionId", transfer.sessionId).put("epoch", transfer.epoch)
+          .put("depthSupported", depthSupported).put("depthOcclusion", false)
+          .put("renderer", "FILAMENT_1_75_1_GLB_OVERLAY"));
       return true;
     } catch (Exception e) {
       stop();
@@ -145,8 +188,28 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   // Kept separate from ARCore acquisition so the OS Dialog lifecycle is testable without camera/tracking claims.
   void bindDismissal(Dialog owned) { owned.setOnDismissListener(d -> stop()); }
 
-  private void pick(float x, float y) {
-    if (!active || frame == null || !tracking.equals("NORMAL")) return;
+  private void pickAt(float x, float y, Consumer<String> result) {
+    if (!active || sceneLoading || !(softwareFixture || tracking.equals("NORMAL"))) { result.accept(null); return; }
+    if (modelRenderer == null) { pickQuad(x, y, result); return; }
+    modelRenderer.pick(x, y, hit -> {
+      if (!active || sceneLoading || !(softwareFixture || tracking.equals("NORMAL"))) return;
+      if (hit != null && selectable(hit)) result.accept(hit);
+      else if (softwareFixture) result.accept(null);
+      else pickQuad(x, y, result);
+    });
+  }
+
+  private void pickQuad(float x, float y, Consumer<String> result) {
+    GLSurfaceView owned = surface;
+    if (owned == null) return;
+    owned.queueEvent(() -> {
+      String hit = pick(x, y);
+      activity.runOnUiThread(() -> result.accept(hit));
+    });
+  }
+
+  private String pick(float x, float y) {
+    if (!active || frame == null || !tracking.equals("NORMAL")) return null;
     float[] projection = new float[16],
         view = new float[16],
         model = new float[16],
@@ -159,8 +222,9 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     float nearest = Float.MAX_VALUE;
     synchronized (entities) {
       for (Entity e : entities) {
-        if (e.opacity == 0) continue;
-        e.anchor.getPose().toMatrix(model, 0);
+        if (e.model || !e.visible || !e.selectable || e.opacity <= 0
+            || e.anchor.getTrackingState() != TrackingState.TRACKING) continue;
+        geometryPose(e).toMatrix(model, 0);
         Matrix.scaleM(model, 0, e.width * e.scale / 2, e.width * 0.7f * e.scale / 2, 1);
         Matrix.multiplyMM(mv, 0, view, 0, model, 0);
         Matrix.multiplyMM(mvp, 0, projection, 0, mv, 0);
@@ -185,35 +249,63 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
         }
       }
     }
-    if (hit != null) {
-      selected = hit;
-      activity.runOnUiThread(() -> interaction("PICK"));
-    }
+    return hit;
+  }
+
+  private boolean selectable(String id) {
+    synchronized (entities) { for (Entity e : entities) if (e.id.equals(id)) return e.visible && e.opacity > 0 && e.selectable && entityTracked(e); }
+    return false;
+  }
+
+  private static Pose geometryPose(Entity entity) {
+    Pose root = entityPose(entity);
+    // ARCore plane poses expose +Y as their normal. Only the child quad changes its facing axis.
+    return entity.surfaceQuad ? root.compose(new Pose(new float[] {0, 0, 0},
+        new float[] {-(float) Math.sqrt(0.5), 0, 0, (float) Math.sqrt(0.5)})) : root;
   }
 
   private void interaction(String action) {
-    if (!active || !tracking.equals("NORMAL")) return;
-    String id = selected, content = null;
+    if (!active || sceneLoading || sceneLoadFailed || !(softwareFixture || tracking.equals("NORMAL"))
+        || (softwareFixture && action.equals("PLACE"))) return;
+    String id = selected;
+    boolean found = false;
     synchronized (entities) {
-      if (id == null) for (Entity e : entities) if (e.opacity > 0) { id=e.id; break; }
-      for (Entity e : entities) if (e.id.equals(id) && e.opacity > 0) content = e.content;
+      for (Entity e : entities) if (e.id.equals(id)) {
+        if (!e.visible || e.opacity <= 0 || !e.selectable || !entityTracked(e)) return;
+        JSONArray actions = e.definition.optJSONArray("interactions");
+        if (actions != null) { boolean allowed = false; for (int i = 0; i < actions.length(); i++) if (actions.optString(i).equals(action)) allowed = true; if (!allowed) return; }
+        found = true;
+      }
     }
-    if (id == null || content == null) return;
-    if (action.equals("INSPECT"))
-      inspection = new android.app.AlertDialog.Builder(activity)
-          .setTitle("Inspect object")
-          .setMessage(content)
-          .setPositiveButton("Return to the Lens", (d, w) -> {})
-          .show();
+    if (id == null || !found) return;
+    // INSPECT is an intent. The existing Player records it and presents its accepted or retryable outcome.
     try {
-      emit.accept(
-          new JSONObject()
-              .put("sessionId", transfer.sessionId).put("epoch", transfer.epoch)
-              .put("type", "parallax-interaction")
-              .put("entityId", id)
-              .put("interactionType", action));
+      JSONObject intent = interactionIntent(transfer, id, action);
+      if (BuildConfig.DEBUG && softwareFixture) intent.put("type", "parallax-lab-interaction").put("synthetic", true);
+      emit.accept(intent);
     } catch (JSONException ignored) {
     }
+  }
+
+  static JSONObject interactionIntent(ParallaxSceneTransfer transfer, String entityId, String action) throws JSONException {
+    return new JSONObject().put("sessionId", transfer.sessionId).put("epoch", transfer.epoch)
+        .put("type", "parallax-interaction").put("entityId", entityId).put("interactionType", action);
+  }
+
+  private void updateControls() {
+    activity.runOnUiThread(() -> {
+      if (controls == null || !active) return;
+      Set<String> actions = new HashSet<>();
+      synchronized (entities) {
+        for (Entity entity : entities) if (entity.id.equals(selected) && entity.visible && entity.opacity > 0 && entity.selectable
+            && entityTracked(entity)) {
+          JSONArray allowed = entity.definition.optJSONArray("interactions");
+          if (allowed == null) actions.addAll(Arrays.asList("PICK", "INSPECT", "PLACE"));
+          else for (int i = 0; i < allowed.length(); i++) actions.add(allowed.optString(i));
+        }
+      }
+      controls.update(tracking, sceneLoading, sceneLoadFailed, actions);
+    });
   }
 
   private void tracking(String value) {
@@ -223,11 +315,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
     activity.runOnUiThread(
         () -> {
           if (!active) return;
-          if (status != null)
-            status.setText(
-                value.equals("NORMAL")
-                    ? "Tap to choose the object, then inspect it."
-                    : "Finding the space again. Guided View is always available.");
+          updateControls();
           try {
             emit.accept(new JSONObject().put("sessionId", transfer.sessionId).put("epoch", transfer.epoch).put("type", "parallax-tracking").put("state", value));
           } catch (JSONException ignored) {
@@ -236,7 +324,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   }
 
   synchronized JSONObject placement(String alignment) throws JSONException {
-    if (frame == null || !tracking.equals("NORMAL"))
+    if (softwareFixture || frame == null || !tracking.equals("NORMAL"))
       return new JSONObject().put("pose", JSONObject.NULL);
     for (HitResult hit : frame.hitTest(width / 2f, height / 2f))
       if (hit.getTrackable() instanceof Plane) {
@@ -260,33 +348,116 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   synchronized boolean render(JSONArray input) {
     if (!active || !ParallaxSceneTransfer.validEntities(input)) return false;
     pending = input;
+    pendingSurfaceQuads = new HashSet<>();
+    sceneLoading = true; sceneLoadFailed = false; updateControls();
     return true;
   }
 
+  void renderScene(JSONObject scene, Consumer<Boolean> completed) {
+    if (!active) { completed.accept(false); return; }
+    if (scene.optInt("schemaVersion") == 1) { completed.accept(render(scene.optJSONArray("entities"))); return; }
+    final int generation = ++activationGeneration;
+    sceneLoading = true; sceneLoadFailed = false; updateControls();
+    if (pendingActivation != null) pendingActivation.accept(false);
+    pendingActivation = completed;
+    final JSONArray input = scene.optJSONArray("entities");
+    final StringBuilder signature = new StringBuilder();
+    for (int i = 0; i < input.length(); i++) {
+      JSONObject entity = input.optJSONObject(i), model = entity.optJSONObject("model");
+      if (model != null) signature.append(entity.optString("id")).append(':').append(model.optString("sha256")).append(';');
+    }
+    new android.os.Handler(activity.getMainLooper()).postDelayed(() -> {
+      if (active && generation == activationGeneration && pendingActivation != null) {
+        stop();
+      }
+    }, 60000);
+    assetWorker.submit(() -> {
+      Map<String, byte[]> assets = new HashMap<>();
+      try {
+        for (int i = 0; i < input.length(); i++) {
+          JSONObject entity = input.getJSONObject(i), model = entity.optJSONObject("model");
+          if (model == null) continue;
+          String digest = model.getString("sha256"); byte[] bytes = sessionAssets.get(digest);
+          if (bytes == null) { bytes = modelCache.load(model); sessionAssets.put(digest, bytes); }
+          assets.put(entity.getString("id"), bytes);
+        }
+        activity.runOnUiThread(() -> {
+          if (!active || generation != activationGeneration) return;
+          try {
+            if (!signature.toString().equals(modelSignature)) { modelRenderer.activate(assets); modelSignature = signature.toString(); }
+            modelActivationGeneration = generation;
+            Set<String> surfaceQuads = new HashSet<>();
+            for (int i = 0; i < input.length(); i++) {
+              JSONObject entity = input.optJSONObject(i);
+              if (ParallaxSceneDelivery.surfaceQuadCorrection(scene, entity)) surfaceQuads.add(entity.optString("id"));
+            }
+            synchronized (this) { pending = input; pendingGeneration = generation; pendingSurfaceQuads = surfaceQuads; }
+          } catch (RuntimeException failure) { finishActivation(false); }
+        });
+      } catch (Exception failure) {
+        activity.runOnUiThread(() -> { if (generation == activationGeneration) finishActivation(false); });
+      }
+    });
+  }
+
+  private void finishActivation(boolean success) {
+    Consumer<Boolean> reply = pendingActivation; pendingActivation = null;
+    sceneLoading = false; sceneLoadFailed = !success; updateControls();
+    transfer.completeActivation();
+    if (reply != null) reply.accept(success && active);
+  }
+
+  boolean abortScene(JSONObject payload) {
+    boolean canceledStaging = transfer.stagedMatches(payload);
+    boolean accepted = transfer.abort(payload);
+    // Ending the owned foreground provider makes a canceled COMMIT incapable of resurfacing late.
+    if (canceledStaging) stop();
+    return accepted;
+  }
+
   void stop() {
-    if (!active && session == null) return;
+    if (stopped) return;
+    stopped = true;
     boolean wasActive = active;
     active = false;
+    if (controls != null) { controls.close(); controls = null; }
+    if (BuildConfig.DEBUG && softwareFrame != null) {
+      android.view.Choreographer.getInstance().removeFrameCallback(softwareFrame); softwareFrame = null;
+    }
+    activationGeneration++; finishActivation(false); assetWorker.shutdownNow(); sessionAssets.clear();
+    if (modelRenderer != null) { modelRenderer.close(); modelRenderer = null; }
     transfer.clear();
     pending = null; selected = null; tracking = "INTERRUPTED"; normalFrames = 0;
-    if (inspection != null) { inspection.dismiss(); inspection = null; }
-    if (surface != null) surface.onPause();
+    latestModelFrame = null; modelFramePosted = false;
+    if (surface != null) {
+      surface.queueEvent(() -> {
+        synchronized (entities) {
+          for (Entity e : entities) if (e.texture != 0) GLES20.glDeleteTextures(1, new int[] {e.texture}, 0);
+        }
+        if (cameraTexture != 0) GLES20.glDeleteTextures(1, new int[] {cameraTexture}, 0);
+        if (cameraProgram != 0) GLES20.glDeleteProgram(cameraProgram);
+        if (entityProgram != 0) GLES20.glDeleteProgram(entityProgram);
+        cameraTexture = cameraProgram = entityProgram = 0;
+      });
+      surface.onPause();
+    }
     if (session != null) {
       try {
         session.pause();
       } catch (Exception ignored) {
       }
       synchronized (entities) {
-        for (Entity e : entities) e.anchor.detach();
+        for (Entity e : entities) if (e.anchor != null) e.anchor.detach();
         entities.clear();
       }
       session.close();
       session = null;
     }
+    synchronized (entities) { entities.clear(); }
     Dialog old = dialog;
     dialog = null;
     if (old != null) { old.setOnDismissListener(null); if (old.isShowing()) old.dismiss(); }
-    surface = null; status = null;
+    surface = null; modelTarget = null;
     terminated.run();
     if (wasActive) { try { emit.accept(new JSONObject().put("type", "parallax-tracking").put("state", "INTERRUPTED").put("sessionId", transfer.sessionId).put("epoch", transfer.epoch)); } catch (JSONException ignored) {} }
     frame = null;
@@ -374,8 +545,12 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
   private synchronized void materialize() throws Exception {
     if (pending == null) return;
     JSONArray input = pending;
+    int committedGeneration = pendingGeneration;
     pending = null;
     List<Entity> next = new ArrayList<>();
+    Map<String, Entity> previous = new HashMap<>();
+    synchronized (entities) { for (Entity old : entities) previous.put(old.id, old); }
+    Set<Anchor> reused = new HashSet<>();
     try {
     for (int i = 0; i < input.length(); i++) {
       JSONObject j = input.getJSONObject(i),
@@ -385,14 +560,14 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
       Entity e = new Entity();
       next.add(e);
       e.id = j.getString("id");
+      e.definition = j;
       e.content = j.getString("content");
       e.width = (float) j.getDouble("widthMeters");
       e.opacity = (float) j.optDouble("opacity", 1);
       e.scale = (float) t.getDouble("scale");
-      if (!ParallaxSceneTransfer.validEntities(input)) throw new IllegalArgumentException();
-      e.anchor =
-          session.createAnchor(
-              new Pose(
+      e.model = j.has("model"); e.visible = j.optBoolean("visible", true); e.selectable = j.optBoolean("selectable", true);
+      e.surfaceQuad = pendingSurfaceQuads.contains(e.id);
+      Pose desired = new Pose(
                   new float[] {
                     (float) p.getDouble("x"), (float) p.getDouble("y"), (float) p.getDouble("z")
                   },
@@ -401,7 +576,15 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
                     (float) q.getDouble("y"),
                     (float) q.getDouble("z"),
                     (float) q.getDouble("w")
-                  }));
+                  });
+      Entity old = previous.get(e.id);
+      if (BuildConfig.DEBUG && softwareFixture) { e.authoredPose = desired; }
+      else if (old != null && old.anchor.getTrackingState() != TrackingState.STOPPED) {
+        e.anchor = old.anchor; e.authoredPose = old.authoredPose;
+        e.localDelta = e.authoredPose.inverse().compose(desired); reused.add(e.anchor);
+      } else { e.anchor = session.createAnchor(desired); e.authoredPose = desired; }
+      if (e.model) { e.scale *= e.width / (float) j.getJSONObject("model").getDouble("sourceWidthMeters"); continue; }
+      if (BuildConfig.DEBUG && softwareFixture) throw new IllegalArgumentException("PARALLAX_LAB_REQUIRES_GLB");
       Bitmap image = Bitmap.createBitmap(1024, 716, Bitmap.Config.ARGB_8888);
       Canvas canvas = new Canvas(image);
       canvas.drawColor(0xffecddba);
@@ -426,16 +609,83 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
       image.recycle();
     }
     } catch (Exception failure) {
-      for (Entity e : next) { if (e.anchor != null) e.anchor.detach(); if (e.texture != 0) GLES20.glDeleteTextures(1, new int[]{e.texture}, 0); }
+      for (Entity e : next) { if (e.anchor != null && !reused.contains(e.anchor)) e.anchor.detach(); if (e.texture != 0) GLES20.glDeleteTextures(1, new int[]{e.texture}, 0); }
       throw failure;
     }
     synchronized (entities) {
       for (Entity e : entities) {
-        e.anchor.detach();
-        GLES20.glDeleteTextures(1, new int[] {e.texture}, 0);
+        if (e.anchor != null && !reused.contains(e.anchor)) e.anchor.detach();
+        if (e.texture != 0) GLES20.glDeleteTextures(1, new int[] {e.texture}, 0);
       }
       entities.clear();
       entities.addAll(next);
+      selected = ParallaxSceneDelivery.retainedSelection(selected, input);
+    }
+    materializedGeneration = committedGeneration;
+    activity.runOnUiThread(() -> { if (committedGeneration == activationGeneration) finishActivation(true); });
+  }
+
+  private void publishModels(Camera camera, long timestamp) {
+    ModelFrame snapshot = new ModelFrame(); snapshot.projection = new float[16]; snapshot.camera = new float[16];
+    camera.getProjectionMatrix(snapshot.projection, 0, 0.01f, 100);
+    camera.getDisplayOrientedPose().toMatrix(snapshot.camera, 0);
+    snapshot.tracking = tracking.equals("NORMAL"); snapshot.timestamp = timestamp;
+    snapshot.generation = materializedGeneration;
+    snapshot.brightness = frame.getLightEstimate().getState() == LightEstimate.State.VALID
+        ? frame.getLightEstimate().getPixelIntensity() : 1;
+    synchronized (entities) {
+      for (Entity entity : entities) {
+        if (!entity.model) continue;
+        float[] matrix = new float[16]; entity.anchor.getPose().compose(entity.localDelta).toMatrix(matrix, 0);
+        Matrix.scaleM(matrix, 0, entity.scale, entity.scale, entity.scale);
+        snapshot.transforms.put(entity.id, matrix);
+        if (entity.visible && entity.opacity > 0 && entity.anchor.getTrackingState() == TrackingState.TRACKING) snapshot.visible.add(entity.id);
+      }
+    }
+    latestModelFrame = snapshot;
+    if (modelFramePosted) return;
+    modelFramePosted = true;
+    activity.runOnUiThread(() -> {
+      ModelFrame ready;
+      synchronized (this) { ready = latestModelFrame; latestModelFrame = null; modelFramePosted = false; }
+      if (active && modelRenderer != null && ready != null)
+        modelRenderer.frame(ready.projection, ready.camera, ready.transforms, ready.visible,
+            ready.tracking && ready.generation == modelActivationGeneration, ready.brightness, ready.timestamp);
+    });
+  }
+
+  private boolean entityTracked(Entity entity) {
+    return softwareFixture || (entity.anchor != null && entity.anchor.getTrackingState() == TrackingState.TRACKING);
+  }
+  private static Pose entityPose(Entity entity) {
+    return entity.anchor == null ? entity.authoredPose : entity.anchor.getPose().compose(entity.localDelta);
+  }
+
+  /** The DEBUG loopback lab supplies a fixed camera, never an ARCore frame, anchor, plane or NORMAL event. */
+  private void softwareFrame(long timestamp) {
+    if (BuildConfig.DEBUG) {
+    if (!active || !softwareFixture || modelRenderer == null || modelTarget == null) return;
+    try {
+      materialize();
+      int w = modelTarget.getWidth(), h = modelTarget.getHeight();
+      if (w > 0 && h > 0) {
+        float[] projection = new float[16], camera = new float[16];
+        Matrix.perspectiveM(projection, 0, 45, (float) w / h, 0.01f, 100);
+        Matrix.setIdentityM(camera, 0);
+        Map<String, float[]> transforms = new HashMap<>(); Set<String> visible = new HashSet<>();
+        synchronized (entities) {
+          for (Entity entity : entities) {
+            float[] matrix = new float[16]; entityPose(entity).toMatrix(matrix, 0);
+            Matrix.scaleM(matrix, 0, entity.scale, entity.scale, entity.scale);
+            transforms.put(entity.id, matrix); if (entity.visible && entity.opacity > 0) visible.add(entity.id);
+          }
+        }
+        // This flag controls renderer visibility only; the lab never publishes world-tracking observations.
+        modelRenderer.frame(projection, camera, transforms, visible,
+            materializedGeneration == modelActivationGeneration, 1, timestamp);
+      }
+    } catch (Exception failure) { stop(); return; }
+    if (active && softwareFrame != null) android.view.Choreographer.getInstance().postFrameCallback(softwareFrame);
     }
   }
 
@@ -467,6 +717,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
             camera.getTrackingFailureReason() == TrackingFailureReason.INSUFFICIENT_LIGHT
                 ? "LIMITED_LOW_LIGHT"
                 : "LOST");
+        publishModels(camera, System.nanoTime());
         return;
       }
       tracking("NORMAL");
@@ -486,8 +737,8 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
             tracking("RELOCALIZING");
             continue;
           }
-          if (e.opacity == 0) continue;
-        e.anchor.getPose().toMatrix(model, 0);
+          if (e.model || !e.visible || e.opacity <= 0) continue;
+          geometryPose(e).toMatrix(model, 0);
           Matrix.scaleM(model, 0, e.width * e.scale / 2, e.width * 0.7f * e.scale / 2, 1);
           Matrix.multiplyMM(mv, 0, view, 0, model, 0);
           Matrix.multiplyMM(mvp, 0, projection, 0, mv, 0);
@@ -504,6 +755,7 @@ final class ParallaxLocalRuntime implements GLSurfaceView.Renderer {
           GLES20.glDepthMask(true); GLES20.glDisable(GLES20.GL_BLEND);
         }
       }
+      publishModels(camera, System.nanoTime());
     } catch (Exception e) {
       activity.runOnUiThread(this::stop);
     }

@@ -14,6 +14,8 @@ const probe = vi.hoisted(() => ({
   planes: true,
   twoViews: false,
   liveTimestamps: true,
+  sceneSupported: true,
+  runtimeState: "READY" as "READY" | "CLOSED",
   raySequence: [] as number[],
 }));
 vi.mock("@/sextant/camera", () => ({
@@ -69,6 +71,7 @@ vi.mock("@/parallax/tinyvio-browser-provider", () => ({
 }));
 vi.mock("@/parallax/browser-spatial-adapter", () => ({
   BrowserSpatialAdapter: class {
+    supportsScene = () => probe.sceneSupported;
     updateTracking() {}
     stop = async () => {};
   },
@@ -77,7 +80,7 @@ const lens = {
   open: probe.open,
   close: probe.close,
   updateDeviceContext: vi.fn(async () => {}),
-  read: () => ({ state: "READY" }),
+  read: () => ({ state: probe.runtimeState, mode: "BROWSER" }),
   useGuidedView: vi.fn(async () => {}),
 };
 const runtime = () => lens as never;
@@ -121,6 +124,8 @@ beforeEach(() => {
   probe.planes = true;
   probe.twoViews = false;
   probe.liveTimestamps = true;
+  probe.sceneSupported = true;
+  probe.runtimeState = "READY";
   probe.raySequence = [];
   probe.open.mockReset().mockResolvedValue(undefined);
   probe.close.mockReset().mockResolvedValue(undefined);
@@ -155,6 +160,25 @@ it("opens the canonical scene after three consistent detected-table corners", as
     });
   expect(probe.open).toHaveBeenCalledOnce();
   expect(screen.getByText("Room alignment complete. Your Chronicle scene is now open.")).toBeVisible();
+});
+
+it("keeps unsupported authored Scenes out of browser success and offers Guided View", async () => {
+  probe.sceneSupported = false;
+  const camera = await start();
+  for (let i = 0; i < 3; i++)
+    await act(async () => {
+      fireEvent.pointerUp(camera, { clientX: 1, clientY: 1 });
+    });
+  expect(probe.open).not.toHaveBeenCalled();
+  expect(screen.queryByText("Room alignment complete. Your Chronicle scene is now open.")).toBeNull();
+  expect(screen.getByRole("alert")).toHaveTextContent("Use Guided View to continue");
+  expect(screen.getByRole("button", { name: "Use Guided View" })).toBeEnabled();
+  probe.runtimeState = "CLOSED";
+  await act(async () => {
+    fireEvent.click(screen.getByRole("button", { name: "Use Guided View" }));
+  });
+  expect(probe.open).toHaveBeenCalledOnce();
+  expect(lens.useGuidedView).not.toHaveBeenCalled();
 });
 
 it("does not admit a stale camera pose when the last corner arrives", async () => {

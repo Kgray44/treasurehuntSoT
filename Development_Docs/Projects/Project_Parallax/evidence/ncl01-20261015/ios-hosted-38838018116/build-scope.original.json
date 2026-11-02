@@ -1,0 +1,10 @@
+{
+  "scope": "COMPANION_ONLY",
+  "requiredPassingTests": 24,
+  "excludedPresentationTests": [
+    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation",
+    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting"
+  ],
+  "independentPresentationReceiptRequired": true,
+  "presentationAcceptance": false
+}

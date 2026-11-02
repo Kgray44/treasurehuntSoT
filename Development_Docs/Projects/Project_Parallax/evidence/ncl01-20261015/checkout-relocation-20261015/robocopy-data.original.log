@@ -1,0 +1,29 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Thursday, October 15, 2026 7:02:38 PM
+   Source : C:\Users\kkids\.codex\worktrees\parallax-ncl01\Codex_TreasureHunt\
+     Dest : D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt\
+
+    Files : *.*
+	    
+  Options : *.* /NDL /NFL /S /E /DCOPY:DAT /COPY:DAT /NP /XJ /MT:8 /R:1 /W:1 
+
+------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :      5536      5535         2         0         0         0
+   Files :     45817     45817         0         0         0         0
+   Bytes :   2.679 g   2.679 g         0         0         0         0
+   Times :   0:01:07   0:00:07                       0:00:00   0:00:00
+
+
+   Speed :           406,405,778 Bytes/sec.
+   Speed :            23,254.725 MegaBytes/min.
+   Ended : Thursday, October 15, 2026 7:02:46 PM
+

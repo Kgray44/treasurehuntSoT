@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "sourceCheckpoint": "019030c3a88eeec3c7b07c5a3cc008b92128e7cb",
+  "files": [
+    {
+      "path": "after-readability-fix/desktop-computed-colors.json",
+      "bytes": 1454,
+      "sha256": "9510dd1a1a34b0f7127aac64a605a2b2301ca2eb44bab4b790ac82c00173ab34"
+    },
+    {
+      "path": "after-readability-fix/desktop-guided-objects-modal.png",
+      "bytes": 252019,
+      "sha256": "0b86484188f9a59d55752e37d452b7388a9fe5c75133a9fa2b45689ec5ad2f1b"
+    },
+    {
+      "path": "after-readability-fix/desktop-guided-objects.png",
+      "bytes": 700980,
+      "sha256": "2689091fa59a1777000eb80366c33a572d63d3fbf5044158b5c932764e1b667c"
+    },
+    {
+      "path": "after-readability-fix/desktop-inspect-chest-modal.png",
+      "bytes": 257023,
+      "sha256": "b38d3d4578326dbe1c0a7e6a14193841476685addc6f34321bce9614c6284c9c"
+    },
+    {
+      "path": "after-readability-fix/desktop-inspect-chest.png",
+      "bytes": 688374,
+      "sha256": "600b9ae54dae46c2ef8d62d58bedb7caeebd3a58a5c77d55668d122b8be575c6"
+    },
+    {
+      "path": "after-readability-fix/desktop-inspect-compass-modal.png",
+      "bytes": 255805,
+      "sha256": "585afe94c8019ed4fb3691939cf7ed5a1ce9ee42610fa304a36b2b8cdc0c6c88"
+    },
+    {
+      "path": "after-readability-fix/desktop-inspect-compass.png",
+      "bytes": 687214,
+      "sha256": "f5e0102d0bc063940c7f26ed61ad7ac032635e3462d44aad0ed1adee6ae67da8"
+    },
+    {
+      "path": "after-readability-fix/desktop-journal-before.png",
+      "bytes": 685512,
+      "sha256": "0eb7e89850326ed4030e91563f885afa1d7b984e82c1794f0513c8c821a6a30b"
+    },
+    {
+      "path": "after-readability-fix/desktop-journal-return.png",
+      "bytes": 903371,
+      "sha256": "5c5fdc8a005378af9c798d9d51b81fb33d6162cd666a41d246f4f1bad065654f"
+    },
+    {
+      "path": "after-readability-fix/desktop-journey.partial.json",
+      "bytes": 5369,
+      "sha256": "41000c31da9fedbc5efc6ed938bce44fe3a6704f9fab4439edc62cb00d715afb"
+    },
+    {
+      "path": "after-readability-fix/desktop-reopened-guided.png",
+      "bytes": 700980,
+      "sha256": "2689091fa59a1777000eb80366c33a572d63d3fbf5044158b5c932764e1b667c"
+    },
+    {
+      "path": "after-readability-fix/desktop-sanitized.zip",
+      "bytes": 5270614,
+      "sha256": "a60a6e37c55adf4571df3ae529a98aae94f9a3b4601b909d40081b1999bafad1"
+    },
+    {
+      "path": "after-readability-fix/mobile-computed-colors.json",
+      "bytes": 1454,
+      "sha256": "9510dd1a1a34b0f7127aac64a605a2b2301ca2eb44bab4b790ac82c00173ab34"
+    },
+    {
+      "path": "after-readability-fix/mobile-guided-objects-modal.png",
+      "bytes": 155252,
+      "sha256": "84b19374ecc71d78445022a26ee32d54c576edd47bd13cfcf8fc8005093f235c"
+    },
+    {
+      "path": "after-readability-fix/mobile-guided-objects.png",
+      "bytes": 334712,
+      "sha256": "98231a8d00e23785f7740d126409dd8466b511cd0578117fa1348897836f0588"
+    },
+    {
+      "path": "after-readability-fix/mobile-inspect-chest-modal.png",
+      "bytes": 125598,
+      "sha256": "70daba7d10198393964a0eee8a1c130aad760192e2c6bd74c74d5a4b26e64b17"
+    },
+    {
+      "path": "after-readability-fix/mobile-inspect-chest.png",
+      "bytes": 227441,
+      "sha256": "964627320440710fb6d9396a2890bb2312f5fd58b65d844ccfb2c995aeab0c55"
+    },
+    {
+      "path": "after-readability-fix/mobile-inspect-compass-modal.png",
+      "bytes": 161126,
+      "sha256": "21d7e64deeeb9bfc11ff338c63932b724e5c0053d41bda762eeb1444c0b95fba"
+    },
+    {
+      "path": "after-readability-fix/mobile-inspect-compass.png",
+      "bytes": 282134,
+      "sha256": "3c4d50b13175563fe33fc54af64545dffa45889d636ae853b7b35703615aa626"
+    },
+    {
+      "path": "after-readability-fix/mobile-journal-before.png",
+      "bytes": 306192,
+      "sha256": "db24ae83a3c082bcae9791b4cdb0c63f97ad4fe6ba5793e771cbac037a4c729a"
+    },
+    {
+      "path": "after-readability-fix/mobile-journal-return.png",
+      "bytes": 373435,
+      "sha256": "6fc2007687e0d987ccab39c593388c2c906f5fc8d9f40c01f82affb6fd8c83a2"
+    },
+    {
+      "path": "after-readability-fix/mobile-journey.partial.json",
+      "bytes": 4758,
+      "sha256": "0d03d25934dccc47480e30245e749096034285fe8d32e9c7bcd0d466eb2a9808"
+    },
+    {
+      "path": "after-readability-fix/mobile-reopened-guided.png",
+      "bytes": 334715,
+      "sha256": "8e5d7775b326fd8609aba9d6b546c07c598bbcc8db9c3a0a26ac254ec9fc9812"
+    },
+    {
+      "path": "after-readability-fix/mobile-sanitized.zip",
+      "bytes": 2187941,
+      "sha256": "abd999e0b56da9743b22da4ee8f85de635c33a9bd97b156fe43fd5fb59444cbe"
+    },
+    {
+      "path": "after-readability-fix/observation-database-proof.json",
+      "bytes": 4227,
+      "sha256": "ae2684cf86e44ccd2e8582df05f77bb19eb7c3311118112e6bea699716998016"
+    },
+    {
+      "path": "after-readability-fix/result.json",
+      "bytes": 10930,
+      "sha256": "fba1fbb0410b79f954fb6301b3f5100f64b5f718509997d055d213c71cde6775"
+    },
+    {
+      "path": "after-readability-fix/trace-redaction.json",
+      "bytes": 613,
+      "sha256": "e37c50a1d54ff4184e7ab9b48d681a7c28ee3e0ec0d83f57fcc198022b9693b2"
+    },
+    {
+      "path": "before-readability-fix/desktop-computed-colors.json",
+      "bytes": 764,
+      "sha256": "c45e76c6fd514938bf4ac07d3ebcfdc4fc46248704e461caf147d7a090f9db48"
+    },
+    {
+      "path": "before-readability-fix/desktop-guided-objects.png",
+      "bytes": 662730,
+      "sha256": "99d9b95fc21852e6dfbfae3bb76634b8c229a17cb38891564fd7dc2ac8775264"
+    },
+    {
+      "path": "before-readability-fix/desktop-inspect-chest.png",
+      "bytes": 705122,
+      "sha256": "e26c52b5f0eddab2dcbf6e3c146f8125ca864f0d47d962d42758dedf2c6b9b98"
+    },
+    {
+      "path": "before-readability-fix/desktop-inspect-compass.png",
+      "bytes": 703727,
+      "sha256": "44cbc34f245af5605d86e26619b758951a06a62ce80f2da444c0c61457040a1f"
+    },
+    {
+      "path": "before-readability-fix/desktop-journal-before.png",
+      "bytes": 685512,
+      "sha256": "0eb7e89850326ed4030e91563f885afa1d7b984e82c1794f0513c8c821a6a30b"
+    },
+    {
+      "path": "before-readability-fix/desktop-journal-return.png",
+      "bytes": 903369,
+      "sha256": "61100613b744e89b2dfd850cd550012b3c929ad2fe95c8e53d0a47a8ad3fee18"
+    },
+    {
+      "path": "before-readability-fix/desktop-journey.partial.json",
+      "bytes": 4627,
+      "sha256": "629d3d336d5202f12af2ba80439d65f4f86aff3bcf1986bf7e47279ff8b23754"
+    },
+    {
+      "path": "before-readability-fix/desktop-reopened-guided.png",
+      "bytes": 662758,
+      "sha256": "e2d93388ea0849485bfa1c3732baccb4c1a53390133dfe1d4ef59dd9b19f4490"
+    },
+    {
+      "path": "before-readability-fix/desktop-sanitized.zip",
+      "bytes": 5007737,
+      "sha256": "1b6f87dcf5b291440c0ac97dfbe3affd5f579ba7ed46e54705b8c1276b2768d3"
+    },
+    {
+      "path": "before-readability-fix/mobile-computed-colors.json",
+      "bytes": 764,
+      "sha256": "c45e76c6fd514938bf4ac07d3ebcfdc4fc46248704e461caf147d7a090f9db48"
+    },
+    {
+      "path": "before-readability-fix/mobile-guided-objects.png",
+      "bytes": 330279,
+      "sha256": "fea712dcf92c455d83ae5bf3985a777a651a1fc9e808c6a8098572303fad4192"
+    },
+    {
+      "path": "before-readability-fix/mobile-inspect-chest.png",
+      "bytes": 224168,
+      "sha256": "8c01b328a11e7de6b79d5c82eeffffb699d50560605b915f6e63783dcc565895"
+    },
+    {
+      "path": "before-readability-fix/mobile-inspect-compass.png",
+      "bytes": 273835,
+      "sha256": "d43094841c7e48b711dd92e56eea5aefe5d2c5af1a2a379b879c821fff4a4648"
+    },
+    {
+      "path": "before-readability-fix/mobile-journal-before.png",
+      "bytes": 306192,
+      "sha256": "db24ae83a3c082bcae9791b4cdb0c63f97ad4fe6ba5793e771cbac037a4c729a"
+    },
+    {
+      "path": "before-readability-fix/mobile-journal-return.png",
+      "bytes": 373435,
+      "sha256": "6fc2007687e0d987ccab39c593388c2c906f5fc8d9f40c01f82affb6fd8c83a2"
+    },
+    {
+      "path": "before-readability-fix/mobile-journey.partial.json",
+      "bytes": 4016,
+      "sha256": "4ad1877e1e1292e5d623c51649c99209de598195bb7d6905d8b0a9e2b22792de"
+    },
+    {
+      "path": "before-readability-fix/mobile-reopened-guided.png",
+      "bytes": 330282,
+      "sha256": "7116fa17532dc7bc40afac0f16ee2e513017d1f15baa3469f913d05a62abb8f1"
+    },
+    {
+      "path": "before-readability-fix/mobile-sanitized.zip",
+      "bytes": 2112634,
+      "sha256": "b35a456d7a61ca4d39af67f3c6aee89b4dbbbd2fb273d03c88cfaac068932490"
+    },
+    {
+      "path": "before-readability-fix/observation-database-proof.json",
+      "bytes": 4227,
+      "sha256": "1852f19651e5eea893834ad5138226ed56326d6a84ef15ec6c18c7693dc0b806"
+    },
+    {
+      "path": "before-readability-fix/result.json",
+      "bytes": 10527,
+      "sha256": "de2aa4b519a73cb3784c6ab28407ab7dd00e73635e9ea81d8a80070c940316ae"
+    },
+    {
+      "path": "before-readability-fix/trace-redaction.json",
+      "bytes": 613,
+      "sha256": "5179a4e41b17ea49e7be10a963f27be2b83fa98935c4b26d3a8eb5bdcd01965e"
+    },
+    {
+      "path": "desktop-guided-objects.png",
+      "bytes": 662730,
+      "sha256": "99d9b95fc21852e6dfbfae3bb76634b8c229a17cb38891564fd7dc2ac8775264"
+    },
+    {
+      "path": "desktop-journal-before.png",
+      "bytes": 685512,
+      "sha256": "0eb7e89850326ed4030e91563f885afa1d7b984e82c1794f0513c8c821a6a30b"
+    },
+    {
+      "path": "form-prehydration.json",
+      "bytes": 285,
+      "sha256": "3446de8ad9e61e39f195280f21d4dee19c4ec0fbf7414b391b94c25db079da25"
+    },
+    {
+      "path": "intermediate-primary-text-fix-6121954c8/contrast-failure.json",
+      "bytes": 807,
+      "sha256": "c814e3276b1b491b7f61deab805276c9729e67c86d807fad1a4ff6588ce7eba1"
+    },
+    {
+      "path": "intermediate-primary-text-fix-6121954c8/desktop-guided-objects-modal.png",
+      "bytes": 251918,
+      "sha256": "1c4a76ecdf3e8de4be60ca99947c8f36a3a8951ad13be01e55380ed2d8a41647"
+    },
+    {
+      "path": "intermediate-primary-text-fix-6121954c8/desktop-guided-objects.png",
+      "bytes": 700937,
+      "sha256": "16c708f3363e6f8603c55891b1911ca12a1a8521d75121ed67fe479aa08b2b65"
+    },
+    {
+      "path": "intermediate-primary-text-fix-6121954c8/desktop-journal-before.png",
+      "bytes": 685512,
+      "sha256": "0eb7e89850326ed4030e91563f885afa1d7b984e82c1794f0513c8c821a6a30b"
+    },
+    {
+      "path": "provisioning-helper-postcapture-hardening.json",
+      "bytes": 796,
+      "sha256": "17392be6cf032d6586b0354f3791a58eee11d10bfc2e91b58eefdc3b3f5453e1"
+    }
+  ]
+}

@@ -1,0 +1,318 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_IOS_REVIEW",
+  "runId": 39631967141,
+  "reviewedAtUtc": "2026-10-21T12:47:20.7688947-04:00",
+  "candidate": "b4cea94abc64fc6e02dfa5f241242eda3888d4b3",
+  "candidateTree": "2f93d21e056a6143b0b9dfd26f2f6ede91eb7d69",
+  "transport": "0d86eb4a6607458c9b064561e260d401e4b4afc1",
+  "workflowSha256": "c00601c819c2f6fe3cfe153d5602200236d76eba041f5cfa84e64a1642fb033a",
+  "requestedRunner": "macos-26-intel",
+  "workflowConclusion": "cancelled",
+  "environment": {
+    "architecture": "x64",
+    "darwinKernelRelease": "25.6.0",
+    "macOS": "26.6.1",
+    "macOSProvenance": "Actual xcresult environmentDescription",
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "companionRuntime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "primary": {
+    "jobConclusion": "failure",
+    "nativeStepConclusion": "success",
+    "result": "Passed",
+    "passedTests": 29,
+    "failedTests": 0,
+    "skippedTests": 1,
+    "expectedFullPresentationProof": false,
+    "nativeCleanup": {
+      "result": "PASS",
+      "remainingResourceCount": 0
+    },
+    "viewportPhases": [
+      {
+        "phase": "inspect-only",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "no-actions",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "revoked-selection",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "closer-unrelated-mesh",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "hidden",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "rejected-replacement",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      },
+      {
+        "phase": "initial-input",
+        "attachedToOwnedWindow": true,
+        "ownedWindowKey": true,
+        "renderCallbackObserved": true,
+        "withinSharedSetupDeadline": true,
+        "sharedSetupBudgetSeconds": 5
+      }
+    ],
+    "viewportEvidenceLimit": "Synthetic cube in attached production SceneKit controller, exact production picker and accessible center action; not a physical AR session or original GLB touch proof.",
+    "raster": {
+      "result": "PASS",
+      "deadlineSeconds": 20,
+      "sealedElapsedMs": 3379.641564999929,
+      "metalDeviceAvailable": true,
+      "readableCompletedTarget": true,
+      "metalCommandStatus": "completed",
+      "assets": [
+        {
+          "assetId": "treasure-chest",
+          "sourceSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+          "geometryNodes": 7,
+          "materialInstances": 4,
+          "emptyNontransparentPixels": 0,
+          "populatedNontransparentPixels": 8301,
+          "removedNontransparentPixels": 0,
+          "authoredChildMatricesAndMaterialObjectsPreserved": true,
+          "bottomCenterPivotPreserved": true,
+          "modelDetachedFromScene": true,
+          "opaqueEntitySelection": true,
+          "backgroundMiss": true,
+          "transparentVerticalMirrorMiss": true,
+          "removedFormerOpaqueMiss": true
+        },
+        {
+          "assetId": "brass-compass",
+          "sourceSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+          "geometryNodes": 4,
+          "materialInstances": 4,
+          "emptyNontransparentPixels": 0,
+          "populatedNontransparentPixels": 2509,
+          "removedNontransparentPixels": 0,
+          "authoredChildMatricesAndMaterialObjectsPreserved": true,
+          "bottomCenterPivotPreserved": true,
+          "modelDetachedFromScene": true,
+          "opaqueEntitySelection": true,
+          "backgroundMiss": true,
+          "transparentVerticalMirrorMiss": true,
+          "removedFormerOpaqueMiss": true
+        }
+      ],
+      "populatedPngsIndependentlyViewed": true,
+      "visualObservation": "Both original models are visibly recognizable in retained populated PNGs.",
+      "fixtureUsesCamera": false,
+      "fixtureCreatesARSession": false,
+      "gpuDriverMemoryReleaseProven": false,
+      "physicalTrackingProven": false,
+      "physicalInspectInteractionProven": false
+    }
+  },
+  "joined": {
+    "result": "FAIL",
+    "stage": "IOS_BOOT_DEVICE",
+    "code": "NATIVE_LAB_FAILURE",
+    "selectedRuntime": {
+      "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+      "minimumIOS": "16.0",
+      "policy": "PREINSTALLED_LATEST_SUPPORTED"
+    },
+    "driverState": "NOT_STARTED",
+    "osReady": false,
+    "clientReady": false,
+    "clientFailurePostObserved": false,
+    "knownRouteCounts": {
+      "player": 0,
+      "clientScript": 0,
+      "scene": 0,
+      "clientReady": 0,
+      "clientFailed": 0,
+      "osReady": 0,
+      "osNext": 0
+    },
+    "completedActionCount": 0,
+    "privateOutputRetained": false,
+    "privateOutputFileCount": 0,
+    "observedCommand": "xcrun simctl bootstatus <owned-device> -b",
+    "observedWrapperExitCode": 1,
+    "childExitCode": null,
+    "childKilled": null,
+    "childSignal": null,
+    "childDurationMs": null,
+    "childStderrAvailable": false,
+    "bootFailureCause": "UNKNOWN",
+    "sourceBootGuardMs": 180000,
+    "interpretation": "Latest supported runtime selection is recorded, but bootstatus still failed before driver or canonical interaction. The available wrapper error does not establish timeout or a concrete Simulator cause.",
+    "canonicalMutationAssertionsCompleted": false,
+    "cleanup": {
+      "result": "PASS",
+      "databaseRemoved": true,
+      "ownedServerClosed": true,
+      "ownedSimulatorDeleted": true,
+      "failedCleanupOperationCount": 0
+    }
+  },
+  "permissionScenario": {
+    "name": "permission-denied-native",
+    "scope": "Foreground location denial",
+    "stepConclusion": "skipped",
+    "cameraPermissionProven": false
+  },
+  "presentation": {
+    "jobConclusion": "cancelled",
+    "nativeStepConclusion": "cancelled",
+    "artifactUploadConclusion": "failure",
+    "artifactAvailable": false,
+    "annotation": "The job has exceeded the maximum execution time of 30m0s",
+    "artifactFailure": "Zip retention failed with ENOENT on a ReducedMotionTests.xcresult staging diagnostics file after cancellation.",
+    "currentXCTestAssertionAvailable": false,
+    "currentFinalTestCountsAvailable": false,
+    "full31Proven": false,
+    "currentWindowOrInfoPlistAvailable": false,
+    "currentCleanupProofAvailable": false,
+    "interpretation": "No current assertion or product cause established; current presentation stopped at the job envelope and its artifact was not retained."
+  },
+  "limits": [
+    "Software evidence only; no physical iPhone tracking, room registration, placement acceptance or new TestFlight installation proof.",
+    "Aggregate run remains unsuccessful despite primary29 passing.",
+    "Previous immutable XCTest failures, joined successes, runner acquisition failures and owner acceptance limits are not superseded.",
+    "No timeout, assertion, retry or product source changes were made for this review."
+  ],
+  "originals": [
+    {
+      "role": "viewport-inspect-only",
+      "sha256": "c68b30191b26cba4924f47710f7a3178c22de01d04fd764878ce26f1a60f2fbd",
+      "bytes": 336
+    },
+    {
+      "role": "viewport-no-actions",
+      "sha256": "28afa141e30e71c2f70941f2648646ee65742cbf97d07071431b7ad8aee2bc97",
+      "bytes": 334
+    },
+    {
+      "role": "viewport-revoked-selection",
+      "sha256": "73a431f500f27f688e613296dcbeec33c6079b414047e014280033741e759418",
+      "bytes": 341
+    },
+    {
+      "role": "viewport-closer-unrelated-mesh",
+      "sha256": "47c588fa14c3b36645588d2f704017a5f64d76443ec73fa24f41c2a878866b12",
+      "bytes": 345
+    },
+    {
+      "role": "viewport-hidden",
+      "sha256": "d4fb5ab92f409a9ec61c88f967f511e16e0c76aa9cdb824ab011b8a259881929",
+      "bytes": 330
+    },
+    {
+      "role": "viewport-rejected-replacement",
+      "sha256": "a94d3f2e6d845068ab862a8f96df14f3e0335116ba7eceedcc1b81076e8a4e10",
+      "bytes": 344
+    },
+    {
+      "role": "original-model-raster-report",
+      "sha256": "5fd0f7dc1dee8c563e9b1e7ddc89863ca479eec9903a289d4798234b4416a24b",
+      "bytes": 14028
+    },
+    {
+      "role": "brass-compass-populated",
+      "sha256": "da27aa2f2d18ded8cd468f5724199446eda67a8a54e82c3a7c010569caf558f5",
+      "bytes": 5728
+    },
+    {
+      "role": "treasure-chest-populated",
+      "sha256": "a3593360186884eb1cb0bc9385a3277acfee06b97d32b31bb1430536d60e8747",
+      "bytes": 7250
+    },
+    {
+      "role": "viewport-initial-input",
+      "sha256": "449d05e5223d7710f54e1f1d4166f4eaa483fbe9d8979b501bc5637ce2758dc7",
+      "bytes": 337
+    },
+    {
+      "role": "owned-home-background-observations",
+      "sha256": "e34ae87793a135f4ef97495d9dc623bdb3ad9b4150be7ffa5107c33e8d58ab39",
+      "bytes": 111
+    },
+    {
+      "role": "native-test-summary",
+      "sha256": "d21124d480ee84e25d8fbaefd3df3dd7b14ed502694e2051d34d3ee1ff934813",
+      "bytes": 1243
+    },
+    {
+      "role": "native-cleanup",
+      "sha256": "03d62ae9457cf6c28152fb0ed3c3243ca9f53463fb850fe8356d0352f1330888",
+      "bytes": 99
+    },
+    {
+      "role": "capabilities",
+      "sha256": "c410ed603ef98da204feed8fea86b3bba4336c69bd4ec2cbb5817f440e3d500c",
+      "bytes": 15114
+    },
+    {
+      "role": "native-runtime-selection",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d",
+      "bytes": 131
+    },
+    {
+      "role": "attachment-manifest",
+      "sha256": "293ead283c79058aeee67d1fe23957be7a6eee66bd74b43485551bba56ef5114",
+      "bytes": 10418
+    },
+    {
+      "role": "joined-execution-failure",
+      "sha256": "2e57b056bdaaafd37cc0238231ece83f995a7226d8a0e269ebf6aa1456382acb",
+      "bytes": 1002
+    },
+    {
+      "role": "joined-driver-diagnostics",
+      "sha256": "8899faa24eca5ea888fb77ce57ea8db1b51fd2595f2a5dae3c276ce39cc7d27a",
+      "bytes": 682
+    },
+    {
+      "role": "joined-cleanup",
+      "sha256": "fea9c6711df661b4db58031cc00597d3f716f0c32f8fbd5e49fa350e01a0cace",
+      "bytes": 217
+    },
+    {
+      "role": "primary-original-job-log",
+      "sha256": "552e4004cdd93472ed9f596c62dd9d44c7629006d0183bfcf99e093e23a6ad13",
+      "bytes": 79131
+    },
+    {
+      "role": "presentation-original-job-log",
+      "sha256": "9ab0139c2dfe9359c415ae6cabcaa3941ff0dd28738764668955391a181b6e92",
+      "bytes": 78056
+    }
+  ]
+}

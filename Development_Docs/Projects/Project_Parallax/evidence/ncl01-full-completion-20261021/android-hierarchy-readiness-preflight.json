@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "role": "ANDROID_HIERARCHY_INPUT_READINESS_COMPILE_PREFLIGHT_NOT_QUALIFICATION",
+  "qualification": false,
+  "baselineCommit": "1985afadc1e184089530eebaebe690e9785c0350",
+  "sourceFiles": [
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxNativeInputFixture.java",
+      "gitBlob": "80af8c3e574a1a21df3481affb11b98de83c4629",
+      "windowsBytesSha256": "3921b0914b6848f9aaddb6a2c03357928ec2ce592fa378fef656fa25c60f3c20"
+    },
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "gitBlob": "4ec9a631e9c28f4b5d5571df40cbb7360d717f89",
+      "windowsBytesSha256": "1bf75008fd1e93f62743aa8b87a3d8d19062afefd157f8a7c8c5e047d4255bc3"
+    }
+  ],
+  "sourceUnchangedDuringBuild": true,
+  "changedProductionSource": false,
+  "review": {
+    "root": "READY_NO_ACTIONABLE_ISSUE",
+    "independentNativePeer": "READY_NO_ACTIONABLE_ISSUE",
+    "buttonClickabilityParityRetained": true
+  },
+  "sourceIntegrity": {
+    "originalAssertionCallsRetained": 82,
+    "totalAssertionCalls": 87,
+    "checks": {
+      "allOriginalAssertionsUnchanged": true,
+      "physicalTapCallCountUnchanged": true,
+      "accessibilityActionCallCountUnchanged": true,
+      "noDirectClickAdded": true,
+      "noSleepAdded": true,
+      "oneOriginalEventInjectionSite": true,
+      "observerDelegatesExactlyOnce": true,
+      "gpuFixtureOnlyFactoryChanged": true,
+      "explicitButtonClickabilityRetained": true
+    },
+    "sourceAuditSha256": "3404b01f3de03e01aa8c36e97c2c41f591919bceb19ce689eead37a42e450c2c",
+    "instrumentationMethodCount": 16
+  },
+  "compile": {
+    "result": "PASS",
+    "dependencyMode": "OFFLINE_EXISTING_OWNED_C_COPY",
+    "gradleVersion": "8.11.1",
+    "jdkVersion": "21.0.10",
+    "commands": [
+      ":app:assembleDebug",
+      ":app:assembleDebugAndroidTest"
+    ],
+    "observedDuration": "14s",
+    "taskSummary": "62 actionable tasks: 4 executed, 58 up-to-date",
+    "apks": [
+      {
+        "path": "build/app/outputs/apk/debug/app-debug.apk",
+        "bytes": 64081461,
+        "sha256": "a53b7ba695bca23afa036dd3836a9496a75a44bf2c0c8feaecda41843737df5c"
+      },
+      {
+        "path": "build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk",
+        "bytes": 1522637,
+        "sha256": "6e9bbea9978d7b2297a9f9f65331c39731c1d3767eda1db97b860361dd9e6efe"
+      }
+    ]
+  },
+  "apkInspection": {
+    "originalCatalogGlbs": [
+      {
+        "assetId": "brass-compass",
+        "byteLength": 313396,
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb"
+      },
+      {
+        "assetId": "treasure-chest",
+        "byteLength": 630120,
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f"
+      }
+    ],
+    "newDiagnosticsPresentInTestDexOnly": true,
+    "productionDebugAppDexHasNoNewFixtureDiagnostics": true
+  },
+  "readiness": {
+    "newSetupBoundPerActionMs": 10000,
+    "existingCallbackBoundMs": 10000,
+    "existingOuterInstrumentationBoundMs": 180000,
+    "oneOriginalGestureOrAccessibilityAction": true,
+    "retries": false,
+    "newSleeps": false,
+    "directClickSubstitution": false,
+    "passiveDispatchCallsSuperOnce": true,
+    "targetAndOwnerAncestorLayoutObserved": true,
+    "exactLocalScreenWindowDisplayPointObserved": true,
+    "capturedPickerGenerationIsDiagnosticOnly": true,
+    "strictModelAndInputReceiptSchemasChanged": false
+  },
+  "hypothesis": {
+    "currentFailure": "39697272562 failed before the software-provider Return barrier, at replacement controls delayed-pick registration after one target gesture.",
+    "setupGap": "Queue idle alone did not observe layout/focus/visibility and current owner after fixture hierarchy/status changes.",
+    "newProbe": "Observe actual pre-draw, target+owner ancestry and original input point before each existing action; retain passive delivered-event and expected/active picker-generation diagnostics.",
+    "oldFailureCauses": "UNPROVED",
+    "newRuntimeExecution": "NOT_RUN",
+    "newJoinedCanonicalExecution": "NOT_RUN"
+  },
+  "preservation": {
+    "priorFailedRunsUnchanged": [
+      "39694528107",
+      "39697272562"
+    ],
+    "priorCCompileProofHashesUnchanged": true,
+    "priorLocalCompileVariantBytesPreserved": true,
+    "largeOriginalsRetainedPrivatelyOnD": true,
+    "automaticCleanupBlockRespected": true
+  },
+  "originalHashes": {
+    "compileReceiptSha256": "0a95adc9380290a625908c12cbc355833c2befef932637d830ba407150361790",
+    "stdoutSha256": "fca70643977302a37575d11044554bb01421f5922a08d73070034a79621806b3",
+    "stderrSha256": "1ee25da73f8a55f239c6b72dbb4beaf2db6555a08f387dfa20ab16eb99d8a859",
+    "priorCompilePreservationSha256": "20ca9a85771ecc9dfbf33199255de70c773ec89bda801c3ce0f5649f707b9aa8"
+  },
+  "officialApiBasis": [
+    "https://developer.android.com/reference/android/app/Instrumentation#waitForIdleSync()",
+    "https://developer.android.com/reference/android/view/ViewTreeObserver.OnPreDrawListener",
+    "https://developer.android.com/reference/android/view/ViewTreeObserver.OnWindowFocusChangeListener"
+  ],
+  "limits": [
+    "Source review, offline compile and APK inspection do not prove passing OS input, GPU, joined Lens, physical AR, Release, TestFlight or acceptance.",
+    "Both earlier 15/1 failures retain their original conclusions; a future passing run cannot retroactively prove their exact causes.",
+    "No new hosted workflow or retry was started by this workstream."
+  ]
+}

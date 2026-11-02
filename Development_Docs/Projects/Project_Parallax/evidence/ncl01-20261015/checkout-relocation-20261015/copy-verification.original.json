@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "task": "NCL01",
+  "result": "PASS",
+  "source": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt",
+  "physicalDestination": "D:\\CodexWorktrees\\parallax-ncl01-physical-20261015\\Codex_TreasureHunt",
+  "fileCount": 45817,
+  "bytes": 2877352915,
+  "directoryCount": 5534,
+  "junctions": [
+    {
+      "path": "artifacts/landfall-device-lab",
+      "target": "\\\\?\\D:\\CodexTemp\\ncl01-device-lab-evidence"
+    }
+  ],
+  "beforeManifestSha256": "2744cc43051be3a913802d05d341a44a6f8d16075424c8a2d959ba3c6f421da1",
+  "afterManifestSha256": "ea6b7d9975746e0f8fbd85339a068e9bb3ad251f8185df9045b7d3c503d07f97",
+  "checks": [
+    "all_regular_file_paths_lengths_sha256_equal",
+    "all_directories_equal",
+    "artifact_junction_topology_equal"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "recordedDate": "2026-10-20",
+  "status": "OFFICIAL_OWNER_ARTWORK_PREPARED_COMPILED_VERIFICATION_PENDING",
+  "authority": "Owner explicitly designated the attached dark brass compass as the official VoyageWright app icon and requested replacement",
+  "source": {
+    "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+    "attachmentName": "codex-clipboard-837921ef-83a6-4b3e-a9f9-ad1ed62453e0.png",
+    "bytes": 2719555,
+    "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+    "width": 1254,
+    "height": 1254,
+    "mode": "RGB",
+    "byteIdenticalToOwnerAttachment": true
+  },
+  "packagedAsset": {
+    "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+    "bytes": 1572837,
+    "sha256": "f60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b",
+    "decodedRgbPixelsSha256": "069e899824f90775ba241d769503a9f49bead67216b7d6e0db3cae50cd792bc8",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "alphaChannelPresent": false,
+    "fullImageResampling": "Pillow 12.2.0 Image.Resampling.LANCZOS",
+    "pngSaveOptions": {"optimize": false},
+    "fullCompositionBackgroundAndMarginsPreserved": true,
+    "generatedOrRedrawn": false
+  },
+  "independentLocalReview": {
+    "result": "PASS",
+    "sourceFileIdentityVerified": true,
+    "outputPixelsMatchFreshWholeImageResize": true,
+    "sourceAndOutputVisuallyInspected": true,
+    "existingUniversalIos1024SlotAndAppIconSelectionPreserved": true
+  },
+  "distributionPlan": {
+    "version": "0.1.0",
+    "build": "5",
+    "origin": "https://ncl01.absoluterelativesystems.com",
+    "bundleId": "com.voyagewright.landfall",
+    "compiledIconIdentityProven": false,
+    "testflightAvailabilityProven": false,
+    "phoneIconAppearanceProven": false
+  },
+  "scope": "iOS companion icon only; no native AR behavior, website/Android icon or preview-runtime change"
+}

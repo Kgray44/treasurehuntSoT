@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "kind": "OBSERVATION_ONLY_PROCESSING_VALID_INTERNAL_GROUP_ATTACHED",
+  "runId": 39364087090,
+  "candidateSha": "484183ac15badcfefd5b08cfd187e330e567fbf8",
+  "transportSha": "62b5c7bdf25261e4265f5633ffe58460679899a6",
+  "mode": "observe",
+  "archivePerformed": false,
+  "uploadPerformed": false,
+  "uploadAcceptedInThisRun": false,
+  "priorUploadRunId": 39363249446,
+  "priorUploadAccepted": true,
+  "priorUploadReceipt": "../signed-39363249446/receipt.original.json",
+  "appleProcessing": "VALID",
+  "appleBuildId": "6964a888-1759-4982-8254-b0005dbad00f",
+  "internalTesting": "BUILD_ATTACHED_TO_EXISTING_INTERNAL_GROUP",
+  "internalGroupId": "67398b1e-bde2-473e-a12e-d2da07f87619",
+  "pipelineResult": "PASS",
+  "credentialCleanup": "PASS",
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "privacyScan": "PASS_NO_PRIVATE_KEY_JWT_OR_RAW_KEY_BODY_FOUND",
+  "files": [
+    {
+      "path": "dispatch.original.json",
+      "bytes": 562,
+      "sha256": "3b3fcea22a880f3fe8b11033cd320ffe0d13e6e52949d1241448496f47e6c36a"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 270,
+      "sha256": "3dd715e60b10563d294bd3667b5cfa21124eea8b06b913da9e8c13a82c075812"
+    },
+    {
+      "path": "receipt.original.json",
+      "bytes": 657,
+      "sha256": "2c00d95f1bc81dc06b578cfe5da78026966df03ccf281217f9b1aa452f27ffe4"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 189,
+      "sha256": "9db7853647e15b0a2c130d07640020ec035da1bfaedafeaa93bf3316dd9e4347"
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "ANDROID_LOCAL_ACCESSIBILITY_SOURCE_BUILD_AND_BINARY_GATE_ONLY",
+  "sourceHead": "9abd26ba892f7715d32601e4d12058eae1acfb4e",
+  "dirty": true,
+  "sourceManifestSha256": "94a292e8e0a927959cf633dafc78ccc8a5cf33e4edc9867b08d505925a82b29a",
+  "changedNativeFiles": [
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "sha256": "8be745f6f31ebeb4d62c1cc7ad648bb38bd7c24bceaa8035e3ba0c5f97791914"
+    },
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxNativeInputFixture.java",
+      "sha256": "486aa4eb3b8667467ca44990c2525ebbb0a311eb421eb82c74df323943c0ff8c"
+    },
+    {
+      "path": "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxInteractionView.java",
+      "sha256": "ef6beda6356e23e7244663eb89c7b09ece135bfb9522087f6365c41f8b40f21d"
+    }
+  ],
+  "checks": {
+    "allThreeBuildTargetsPassed": true,
+    "releaseLintVitalPassed": true,
+    "sourceStillMatchesBuiltManifest": true,
+    "debugFixtureTokensPresent": 6,
+    "releaseFixtureTokensPresent": 0,
+    "productionCenterLabelInDebug": true,
+    "productionCenterLabelInRelease": true,
+    "releaseFixtureGateReturnsFalse": true,
+    "releaseActivityGateReturnsFalse": true,
+    "releaseFramePumpEmpty": true,
+    "releaseCleartextDisabled": true,
+    "releaseDebuggableAbsent": true,
+    "v1JvmAssertions": 167,
+    "v2JvmAssertions": 67,
+    "releaseGateJvmAssertions": 3,
+    "instrumentationMethodCount": 16,
+    "instrumentationExecuted": false,
+    "newAccessibilityGpuExecutionProven": false,
+    "canonicalOutcomeProven": false,
+    "physicalProof": false
+  },
+  "apks": [
+    {
+      "name": "app-debug.apk",
+      "bytes": 64266603,
+      "sha256": "f31e0291934eb9c9c8d4a83228fd4eb7056f53545c4fd998880de2483e069954"
+    },
+    {
+      "name": "app-debug-androidTest.apk",
+      "bytes": 1469261,
+      "sha256": "a94a6de8d32d36a0ea1e2902e029f8455b165aa03103ce15de981c98bb9651da"
+    },
+    {
+      "name": "app-release-unsigned.apk",
+      "bytes": 60947207,
+      "sha256": "4849d22a45e8326f6820231de92000adaeadbb674a71ae14ff563f97a678484f"
+    }
+  ],
+  "lint": {
+    "globalResult": "FAIL",
+    "errorClassification": "NON_NCL_BASELINE_DIAGNOSTIC",
+    "classificationAppliesTo": "Eight error signatures only",
+    "protectedMainSha": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+    "qualifiedLintDependencyClosureProvenOffline": true,
+    "errorCount": 8,
+    "warningCount": 20,
+    "protectedMainErrorCount": 8,
+    "protectedMainWarningCount": 20,
+    "allEightErrorSignaturesMatch": true,
+    "errorSignatures": [
+      "MissingPermission|native/android/app/src/debug/java/com/voyagewright/landfall/LandfallBleLabActivity.java|65|occurrences=1",
+      "MissingPermission|native/android/location-lab/src/main/java/com/voyagewright/landfall/lab/LandfallLocationLabService.java|48|occurrences=1",
+      "MissingPermission|native/android/location-lab/src/main/java/com/voyagewright/landfall/lab/LandfallLocationLabService.java|60|occurrences=1",
+      "MissingPermission|native/android/location-lab/src/main/java/com/voyagewright/landfall/lab/LandfallLocationLabService.java|69|occurrences=1",
+      "MissingPermission|native/android/location-lab/src/main/java/com/voyagewright/landfall/lab/LandfallLocationLabService.java|83|occurrences=1",
+      "MockLocation|native/android/location-lab/src/main/AndroidManifest.xml|5|occurrences=1",
+      "UnsafeOptInUsageError|native/android/app/src/main/java/com/voyagewright/landfall/LandfallQrScanner.java|95|occurrences=1",
+      "UnsafeOptInUsageError|native/android/app/src/main/java/com/voyagewright/landfall/LandfallQrScanner.java|97|occurrences=1"
+    ],
+    "errorDifferences": [],
+    "warningSignatureDifferences": [
+      {
+        "signature": "ClickableViewAccessibility|native/android/app/src/main/java/com/voyagewright/landfall/ParallaxInteractionView.java|58|occurrences=1",
+        "side": "CANDIDATE_ONLY"
+      },
+      {
+        "signature": "SetTextI18n|native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java|162|occurrences=1",
+        "side": "CANDIDATE_ONLY"
+      },
+      {
+        "signature": "ViewConstructor|native/android/app/src/main/java/com/voyagewright/landfall/ParallaxInteractionView.java|16|occurrences=1",
+        "side": "CANDIDATE_ONLY"
+      },
+      {
+        "signature": "ClickableViewAccessibility|native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java|121|occurrences=1",
+        "side": "PROTECTED_MAIN_ONLY"
+      },
+      {
+        "signature": "GradleDependency|native/android/location-lab/build.gradle|15|occurrences=1",
+        "side": "PROTECTED_MAIN_ONLY"
+      },
+      {
+        "signature": "SetTextI18n|native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java|96|occurrences=1",
+        "side": "PROTECTED_MAIN_ONLY"
+      }
+    ],
+    "suppressionsOrBaselineAdded": false
+  },
+  "originals": [
+    {
+      "file": "android-accessible-center-source.before.json",
+      "bytes": 9999,
+      "sha256": "94a292e8e0a927959cf633dafc78ccc8a5cf33e4edc9867b08d505925a82b29a"
+    },
+    {
+      "file": "android-accessible-center-build.json",
+      "bytes": 2068,
+      "sha256": "fe9db97e92438920796269cf14be17ce4ea42623edaf0f7f16050da0fe8a20f5"
+    },
+    {
+      "file": "android-accessible-center-build.original.log",
+      "bytes": 11858,
+      "sha256": "591372ca27f3fa41325d614b03e78467c298beecf526a23b8c0cbd0d1e949c58"
+    },
+    {
+      "file": "android-accessible-center-marker-scan.original.json",
+      "bytes": 6563,
+      "sha256": "7f00530f13bfa8dbf1ec6691e4d103cc0789c3e55bdf7ddf88575c0fdcb04d12"
+    },
+    {
+      "file": "android-accessible-center-release-bytecode.original.log",
+      "bytes": 383811,
+      "sha256": "acc15b01a9ddd51e85d8b01927ab5ae7cce93b1a48c26ca5a90c36404bfadf5a"
+    },
+    {
+      "file": "android-accessible-center-release-manifest.original.log",
+      "bytes": 15456,
+      "sha256": "584f2dda5676b46b4d4d592486b8bfac67a90ea275dcbe33a88b9997e9390920"
+    },
+    {
+      "file": "android-accessible-center-jvm-compile.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "android-accessible-center-jvm-v1.original.log",
+      "bytes": 78,
+      "sha256": "0792dd4765333d62edc66b368ae18f6055234ac59be7930edc6d77e02dfb2a3c"
+    },
+    {
+      "file": "android-accessible-center-jvm-v2.original.log",
+      "bytes": 248,
+      "sha256": "419af994f37afd5d6a4bcf9b59a778df43cf5332f72eb1352dfeb29eea97d291"
+    },
+    {
+      "file": "android-accessible-center-release-gate.original.log",
+      "bytes": 99,
+      "sha256": "8e8ce7f49436b0d80d70835f8d9d76969ebf48f283b31a49ae2da127161feb3c"
+    },
+    {
+      "file": "android-accessible-center-full-lint.original.log",
+      "bytes": 5697,
+      "sha256": "45f6d151773fce4509b53f6c21747ba5e387ef46def242c6cc7ccdd069e7a95c"
+    },
+    {
+      "file": "android-accessible-center-app-lint.original.log",
+      "bytes": 5804,
+      "sha256": "b6a955f18012a353d7876fb6b2871de4c410dab5e4f1f1929495dd96912567ea"
+    },
+    {
+      "file": "android-accessible-center-lint-runs.json",
+      "bytes": 897,
+      "sha256": "f4bacdcff03d8e4448fd2c020ad2c3cd428816fd4a69f621a7cca4c605a50eb6"
+    },
+    {
+      "file": "android-accessible-center-app-lint-report.original.txt",
+      "bytes": 17106,
+      "sha256": "ca57598cd6e9d05ac844681632732270f24258ef523f9954211927d006314af4"
+    },
+    {
+      "file": "android-accessible-center-locationLab-lint-report.original.txt",
+      "bytes": 5159,
+      "sha256": "e4cabffcf6f5c3b911f2c9c2262d6bf4853155a7217adac95b30c4e226d33f1c"
+    },
+    {
+      "file": "android-accessible-center-lint-signatures.original.json",
+      "bytes": 7209,
+      "sha256": "b98b2026efdb7b472460e81d93a04270332352dcae5f40a11227267ea29cdee5"
+    },
+    {
+      "file": "android-protected-main-e0056ff3-comparison.verification.json",
+      "bytes": 9623,
+      "sha256": "cc611813df7c47b1083a272496ec246f2d86b88227888c12305081e2fec9b1c3"
+    },
+    {
+      "file": "android-protected-main-e0056ff3-qualified-signatures.original.json",
+      "bytes": 7616,
+      "sha256": "e34429ab4f52d1f79534447698e5b6c4bb341fe5a22d25382d2dc2a2c1404560"
+    }
+  ]
+}

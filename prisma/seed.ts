@@ -192,6 +192,8 @@ async function main() {
     await prepareParallaxExperienceAccounts(db);
     const { prepareCrossdeckExperienceFixture } = await import("../tests/e2e/fixtures/crossdeck-experience");
     await prepareCrossdeckExperienceFixture(db);
+    const { prepareNcl01ExperienceFixture } = await import("../tests/e2e/fixtures/ncl01-experience");
+    await prepareNcl01ExperienceFixture(db);
   }
 
   const prior = await db.campaign.findUnique({ where: { slug: "development-forever-treasure" } });

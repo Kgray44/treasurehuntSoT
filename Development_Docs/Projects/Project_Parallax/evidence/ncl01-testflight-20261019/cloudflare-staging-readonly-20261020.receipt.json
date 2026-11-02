@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "status": "READ_ONLY_AUDIT_COMPLETE_ORIGIN_OWNERSHIP_UNRESOLVED",
+  "observedAt": "2026-10-20T14:18:17.942Z",
+  "publicStaging": {
+    "hostname": "staging.absoluterelativesystems.com",
+    "normalTlsValidation": true,
+    "httpStatus": 302,
+    "redirectFollowed": false,
+    "redirectKind": "CLOUDFLARE_ACCESS_LOGIN",
+    "applicationHtmlObserved": false,
+    "nclPreviewIdentityProven": false
+  },
+  "windowsConnector": {
+    "serviceName": "Cloudflared",
+    "state": "Running",
+    "startMode": "Auto",
+    "accountKind": "LOCAL_SYSTEM",
+    "processId": 23752,
+    "managementMode": "REMOTELY_MANAGED_TOKEN_ARGUMENT_MODE",
+    "explicitConfigFlagPresent": false,
+    "standardUserAndSystemProfileConfigAbsent": true,
+    "localReadyHttpStatus": 200,
+    "metricsListener": {
+      "address": "127.0.0.1",
+      "port": 20241
+    },
+    "rawServiceArgumentsAndCredentialsPublished": false
+  },
+  "knownNclRuntime": {
+    "sourceRoot": "D:/CodexWorktrees/parallax-ncl01-physical-20261015/Codex_TreasureHunt",
+    "sourceScope": "Owned physical preview source; not proof of staging origin or protected-main provenance",
+    "sourceFileSha256": {
+      "package.json": "ffceb5d8ec268234cf03a9abb6277da887ac373ae3c9b9513db84f964b894147",
+      "src/app/api/auth/sign-in/route.ts": "60fc1392f06848d53411eb4ca1c561e29172cd00e69547302ed1ddf48ed25614",
+      "native/ios/LandfallCompanion/LandfallCompanion.swift": "3cfef2264ccc60fe0d59d7bd3351d8519bbb30e89c3ef6d3eb38da4c89a4a6b9"
+    },
+    "isolatedPreviewDatabaseScopeVerified": true,
+    "listeners": [
+      {
+        "address": "127.0.0.1",
+        "port": 3149,
+        "processId": 190060,
+        "purpose": "NEXT_PREVIEW_APP"
+      },
+      {
+        "address": "155.42.98.171",
+        "port": 8449,
+        "processId": 193776,
+        "purpose": "OWNED_HTTPS_RELAY"
+      },
+      {
+        "address": "155.42.98.171",
+        "port": 8448,
+        "processId": 193776,
+        "purpose": "PUBLIC_CA_HELP_ONLY"
+      }
+    ]
+  },
+  "stagingRoute": {
+    "localServiceTarget": null,
+    "sourceCheckout": null,
+    "database": null,
+    "ownershipProven": false,
+    "existingRouteRepointSafe": false,
+    "reason": "Public traffic stops at Cloudflare Access; remote hostname ingress and origin settings are not available in the inspected local configuration"
+  },
+  "nativePolicyInference": {
+    "exactOriginNavigationRequired": true,
+    "externalAccessLoginRedirectRequiresReview": true,
+    "physicalNativeStagingLoginProven": false
+  },
+  "nextReadOnlyCheck": "After owner Cloudflare dashboard sign-in, inspect the existing staging public-hostname service URL and Access application policy before deciding reuse; preserve shared staging and connector configuration.",
+  "mutations": {
+    "serviceStopped": false,
+    "serviceReconfigured": false,
+    "newTunnelCreated": false,
+    "dnsChanged": false,
+    "firewallChanged": false,
+    "trustChanged": false,
+    "runtimeOrDatabaseChanged": false
+  },
+  "privateRawEvidenceRetained": true
+}

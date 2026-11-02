@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "rawTracesRemainTaskPrivate": true,
+  "authenticationFormOutsideTrace": true,
+  "knownCredentialAndCookieValuesAbsentFromAllExportedEntries": true,
+  "headerRedactions": [
+    "authorization",
+    "cookie",
+    "proxy-authorization",
+    "set-cookie",
+    "x-csrf-token",
+    "x-xsrf-token"
+  ],
+  "counts": {
+    "exactSecretReplacements": 16,
+    "sensitiveHeaderRedactions": 28,
+    "tokenFieldRedactions": 0,
+    "textEntries": 19,
+    "binaryEntries": 179
+  },
+  "files": [
+    "desktop-sanitized.zip",
+    "mobile-sanitized.zip"
+  ]
+}

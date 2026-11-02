@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "candidateSha": "adc0e2c87f07aca1fc136dbdf0114e2e575b12ec",
+  "transportSha": "bf9e592a4625d5e6a8570709596d13f4f3a84919",
+  "runId": "38802889231",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38802889231",
+  "conclusion": "failure",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-android-primary-phone-adc0e2c87f07aca1fc136dbdf0114e2e575b12ec/android-native-tests-1792096767139/receipt.json",
+      "sha256": "e85d6637007f0e2dc585269c819a2e7ac55df50b14d771b61cf8920309facdfb"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-adc0e2c87f07aca1fc136dbdf0114e2e575b12ec/camera-fixture.json",
+      "sha256": "f7680c3b7f65eabb8be66e51394c9660435d89d83adcc128fe65c07ce0a5fbed"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-adc0e2c87f07aca1fc136dbdf0114e2e575b12ec/camera-qr.png",
+      "sha256": "36ee2d1511f7a65aa93897c12db2753baf14f4d5567dc57b4f670ba32e90c045"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-adc0e2c87f07-1792096396090"
+    ],
+    "remainingResources": []
+  }
+}

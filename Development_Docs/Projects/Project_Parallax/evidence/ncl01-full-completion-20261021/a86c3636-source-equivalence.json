@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "currentSource": {
+    "sourceSha": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+    "sourceTree": "982f254e7e54ac28e08aac93a75db427496a4d90",
+    "dirty": false,
+    "sourceFingerprint": "d836e0c4bbcb661cfe54601f19c60bda960a76fa9a5552f6c7bca6868dbed503"
+  },
+  "protectedMain": "e1a86f98e56d68e8e87e3704d17439489ff1a170",
+  "protectedMainIsAncestor": true,
+  "browserAndCanonicalEvidence": {
+    "testedSource": "26da4135d851ee67a0c685a0726486739612d1e2",
+    "runId": "39607851877",
+    "paths": [
+      "src",
+      ":(exclude)src/landfall/device-lab",
+      "package.json",
+      "package-lock.json",
+      "prisma",
+      "public",
+      "next.config.ts",
+      "tests/e2e/parallax-native-authority.spec.ts"
+    ],
+    "changedPaths": [],
+    "result": "BYTE_IDENTICAL_IMPLEMENTATION_ONLY"
+  },
+  "nativeReverificationRequired": {
+    "reason": "Accessible center selection and graph test synchronization changed native source.",
+    "ios": true,
+    "android": true
+  },
+  "limits": [
+    "Browser proof is development evidence and does not admit a live tracking provider or Crossdeck integration. Earlier native receipts retain their own source and failed aggregate dispositions."
+  ]
+}

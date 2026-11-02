@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "SUPPORTING_INDEPENDENT_IOS_HIT_AND_OWNED_LAN_SOURCE_REVIEW",
+  "reviewerContext": "/root/ncl01_review",
+  "reviewedAtUtc": "2026-10-16T02:03:28.751Z",
+  "disposition": "ACCEPTED_WITH_NO_REMAINING_ACTIONABLE_SOURCE_FINDING",
+  "reviewedSources": [
+    {
+      "path": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+      "sha256": "817e6c8731fec53e539aa2282882d9696cdc7e68068732a82bd02f76b6665fd7"
+    },
+    {
+      "path": ".agents/scripts/ncl01-local-app.mjs",
+      "sha256": "89bdb86bd5db00220fbe0bd5c7fe7c8bccd54849af7593280e412dd4fd3ffe28"
+    },
+    {
+      "path": "D:/CodexTemp/ncl01-preview/rebind-owned-lan-20261015.ps1",
+      "sha256": "c7e6cef8d1708b39b8727c44d1e148b6c4da0948aa6c6c0ccb7f0a6a1567740b"
+    },
+    {
+      "path": "D:/CodexTemp/ncl01-preview/rebind-owned-lan-192168018-20261015.ps1",
+      "sha256": "ed9d9467d498d6141be1e4c98f6276d53a4d998616aadb104f0d5592ae91e7e4"
+    }
+  ],
+  "ios": {
+    "scope": "Existing camera-free raster fixture; actual SCNRenderer closest geometry result through production entityId to distinct authored IDs.",
+    "checked": [
+      "Opaque7x7 asymmetric pixel, transparent mirror/background and current viewport make direct pixel-center mapping falsifiable",
+      "Imported-geometry world intersection reprojects onto query; no fabricated hit/bounding-box override",
+      "Removed-scene misses retain old entity root in lookup",
+      "CPU-only main-actor mapper hop retains unchanged graph until serial continuation",
+      "Original27declarations/24pass requirement/1expectedskip/sixframes/assertions/one20sdeadline/sealed-late-callback behavior preserved"
+    ],
+    "primaryReferences": [
+      "https://developer.apple.com/documentation/scenekit/scnscenerenderer/hittest(_:options:)",
+      "https://developer.apple.com/documentation/scenekit/scnscenerenderer/projectpoint(_:)",
+      "https://developer.apple.com/documentation/scenekit/scnhittestresult/worldcoordinates",
+      "https://developer.apple.com/documentation/metal/mtlviewport/originy"
+    ],
+    "xctestExecutionReviewed": false,
+    "freshHostedExecution": "PENDING_SEPARATE_EXACT_SOURCE_RESULT",
+    "arViewTouchMappingProven": false,
+    "physicalInspectProven": false
+  },
+  "app": {
+    "findingResolved": "TLS relay check had preceded canonical private protection. Accepted89bdb source restores its single STATUS call before TLS key reads using process-local localhost8449, then actual relay-validated origin/hostname for real app environment.",
+    "statusOriginIndependent": "STATUS skips prepare/createVoyage/password rotation; supplied origin is not persisted."
+  },
+  "lan": {
+    "firstScript": "Root reported NEW_ADDRESS_NOT_ASSIGNED refusal when WiFi became Deprecated; reviewer verified rejected plan absent before and after replacement.",
+    "replacementReview": "Exactly5lines change targetIP18/requiredEthernet/uniqueplanpath-purpose/fixedoutput. Preferred24, PID/port refusal, fixed5file promotion, sameCA/keys/profile/expiry, protected backups and rollback retained.",
+    "preexecutionReadOnlyChecks": "PS AST parse0errors. Ordinary current-owned script/private2ruleACL; root+TLSdir+17entries had no owner/rule/reparse failures.",
+    "operationExecutor": "ROOT_NOT_THIS_REVIEWER",
+    "rootReportedNormalTlsChecksPassed": 5,
+    "independentReadback": {
+      "publicOrigin": "https://192.168.0.18:8449",
+      "publicCaSha256": "17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6",
+      "publicLeafIssuerSignatureAndIpVerified": true,
+      "leafExpiresAt": "2026-10-22T20:08:04.000Z",
+      "appliedReceiptRecordsStatus": "APPLIED_NOT_LISTENING",
+      "appliedReceiptReportsCanonicalPrivateStateAndKeysProfileUnchanged": true,
+      "privateKeyHashesNotRecomputedOrPublished": true,
+      "liveStateMethod": "Read-only Get-Process/Get-NetTCPConnection plus only owned listener ParentProcessId from Win32_Process; no process argv/environment collected.",
+      "appRecordTaskRootAndPortMatch": true,
+      "appParentAndRecordedCliChildAlive": true,
+      "appLoopback3149ListenerIsChildOfRecordedCli": true,
+      "relayOwnerAndConfigIdMatch": true,
+      "relayProcessAliveAndOwnsBoth18Listeners8448And8449": true
+    }
+  },
+  "publishedTransportProof": {
+    "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/preview-rebind-20261016/local-https-assets.json",
+    "sha256": "ba61bb5a194611458c00bfa5341723da7c23238c5fd0a801b760fbec66e0ad6d",
+    "executedByThisReviewer": false,
+    "independentlyReadStatusesAndVerifiedSourceFileHashes": true,
+    "checksPassed": 11,
+    "ordinaryTlsVerificationWithExplicitPublicCa": true,
+    "sameSceneChecksum": true,
+    "originalModelDigestsMatch": true,
+    "ownSessionLogoutAndRevocationReported": true,
+    "knownPrivateValuesAbsentReported": true
+  },
+  "limits": {
+    "sourceReviewIsNotNewIosExecution": true,
+    "nodeHttpsIsNotNativeLoaderOrPhoneReachability": true,
+    "physicalArTrackingMaterialFidelityAndInspectProven": false,
+    "driverMemoryReleaseProven": false,
+    "formalProductExperienceApproval": false,
+    "protectedQualificationOrMerge": false,
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "publication": {
+    "machineEngineeringMetadataOnly": true,
+    "privateTlsManifestKeyHashesPasswordsRuntimeContentsIncluded": false,
+    "sourceOrOriginalsModifiedByReviewer": false,
+    "servicesOrTrustChangedByReviewer": false
+  }
+}

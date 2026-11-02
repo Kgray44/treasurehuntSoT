@@ -1,0 +1,383 @@
+{
+  "schemaVersion": 1,
+  "role": "NCL01_POST_CROSSDECK_CONSUMER_CAUSAL_DIAGNOSTIC",
+  "qualification": false,
+  "createdAtUtc": "2026-10-21T23:48:04.652Z",
+  "source": {
+    "protectedBase": "aaff919428ef9ab421579415ce3409949724760d",
+    "candidate": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "plannerGitBlob": "6b2736640260866ebc383be16891549f65c8caed",
+    "plannerUnchangedFromAcceptedBase": true,
+    "inputs": "Committed Git objects only; no private runtime, database, credentials, device or media inputs."
+  },
+  "officialPlannerObservation": {
+    "result": "BLOCKED",
+    "gate": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
+    "uncoveredSurfaceCount": 135,
+    "retainedStderrSha256": "8a95e3985fd98f73356627702355eaf335a1507b66ecc19d037400c053eeecb2",
+    "uncoveredPathListSha256": "7618ac5c9b80130b3bbf860211041bd7031bb0d592258bc3d4fe407308c8383c",
+    "listDigestEncoding": "UTF8, original ordered paths joined by LF, one final LF",
+    "newOfficialPlanExecutedByThisAudit": false
+  },
+  "probe": {
+    "id": "NCL01_IMPORT_ERASURE_CONSUMER_DIAGNOSTIC_V1",
+    "sourceSha256": "32e4c1e8fac1738b3587c3b715e84886b240a43c515dbedf25638dfbe0e7d24b",
+    "sourceBytes": 4079,
+    "sourceEncoding": "UTF8/LF",
+    "source": "import path from 'node:path';import{execFileSync}from'node:child_process';import ts from'typescript';import{sourceSnapshot,revisionJson}from'./scripts/sounding-line/product-experience.mjs';const root=process.cwd(),base='aaff919428ef9ab421579415ce3409949724760d',head='0d83b64488711215bfdcfa47f898fa48f07e074e';const roots=execFileSync('git',['diff','--name-only',base,head],{encoding:'utf8',maxBuffer:2**25}).trim().split(/\\r?\\n/).filter(p=>!/(?:\\.test|\\.spec)\\.[cm]?[jt]sx?$/.test(p));const ss=[sourceSnapshot(root,base),sourceSnapshot(root,head)],graphs=[new Map(),new Map(),new Map()],ui=new Set(),esc=x=>x.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\$&');const add=(g,d,f,why)=>{if(!g.has(d))g.set(d,new Map());if(!g.get(d).has(f))g.get(d).set(f,why)};const re=/(?:import\\s+(?:[^\"'()]+?\\s+from\\s+)?|export\\s+(?:[^\"']+?\\s+from\\s+)?|require\\s*\\(|import\\s*\\()\\s*[\"']([^\"']+)[\"']/g;let ambient=0;\nfor(const s of ss){const fs=new Set(s.contents.keys()),eps=[...fs].filter(f=>/^src\\/app\\/api\\/.*\\/route\\.[jt]s$/.test(f)),assets=s.entries.filter(e=>e.path.startsWith('public/'));for(const[f,c]of s.contents){if(/(?:\\.tsx$|\\.(?:css|scss)$|^public\\/)/.test(f))ui.add(f);for(const a of assets)if(c.includes('/'+a.path.slice(7)))for(const g of graphs)add(g,a.path,f,'asset');const resolve=sp=>{const t=sp.startsWith('@/')?'src/'+sp.slice(2):sp.startsWith('.')?path.posix.normalize(path.posix.join(path.posix.dirname(f),sp)):null;return t?[t,...['.ts','.tsx','.js','.jsx','.mjs','.css','.json'].flatMap(e=>[t+e,t+'/index'+e])].find(x=>fs.has(x)):null};for(const m of c.matchAll(re)){const d=resolve(m[1]);if(d){add(graphs[0],d,f,'import');if(!/^(?:import|export)\\s+type\\b/.test(m[0]))add(graphs[1],d,f,'import')}}let emitted=c;if(/\\.d\\.ts$/.test(f)){emitted='';ambient++}else if(/\\.tsx?$/.test(f)){try{emitted=ts.transpileModule(c,{fileName:f,compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ESNext,jsx:ts.JsxEmit.Preserve}}).outputText}catch(e){console.log(JSON.stringify({probeFailureFile:f,error:String(e)}));throw e}}for(const m of emitted.matchAll(re)){const d=resolve(m[1]);if(d)add(graphs[2],d,f,'emitted import')}const us=[...c.matchAll(/[\"'`](\\/api\\/[^\"'`\\s]*)/g)].map(m=>m[1].replace(/\\$\\{[^}]+\\}/g,'parameter').split('?')[0]);for(const e of eps){const u=e.replace(/^src\\/app/,'').replace(/\\/route\\.[jt]s$/,'');const p=new RegExp('^'+u.split('/').map(x=>x.startsWith('[')?x.includes('...')?'.+':'[^/]+':esc(x)).join('/')+'$');if(us.some(v=>p.test(v)||new RegExp('^'+v.split('/').map(x=>x==='parameter'?'[^/]+':esc(x)).join('/')+'$').test(u.replace(/\\[[^\\]]+\\]/g,'parameter'))))for(const g of graphs)add(g,e,f,'HTTP')}}}\nconst cs=revisionJson(root,head,'testing/contracts.json').contracts.filter(c=>c.experience),covered=f=>cs.some(c=>c.experience.sourcePaths.some(p=>f===p||f.startsWith(p+'/')));const targets=['src/components/auth/CurrentUserProvider.tsx','src/app/account/privacy/page.tsx','src/spatial-pilot/OwnerSeaTrials.tsx','src/app/dev/spatial-pilot/page.tsx','src/landfall/device-lab/parallax-native-client.tsx'];const out=graphs.map((g,i)=>{const p=new Map(roots.map(r=>[r,null])),q=[...roots];for(let n=0;n<q.length;n++)for(const[f,why]of g.get(q[n])??[])if(!p.has(f)){p.set(f,{from:q[n],why});q.push(f)}const surfaces=[...p.keys()].filter(f=>ui.has(f)),uncovered=surfaces.filter(f=>!covered(f));const traces={};for(const t of targets){if(!p.has(t)){traces[t]=null;continue}let n=t;const s=[];while(p.get(n)){const e=p.get(n);s.unshift([e.from,e.why,n]);n=e.from}traces[t]={changedRoot:n,edges:s}}return{probe:['CURRENT_POLICY','EXPLICIT_TYPE_ONLY_IMPORT_ERASURE','TYPESCRIPT_EMITTED_IMPORTS_ONLY'][i],qualification:false,surfaceCount:surfaces.length,uncoveredCount:uncovered.length,uncovered:i===2?uncovered.slice(0,15):undefined,uncoveredPrefixCounts:i===2?Object.fromEntries([...new Set(uncovered.map(f=>f.split('/').slice(0,3).join('/')))].map(k=>[k,uncovered.filter(f=>f.startsWith(k+'/')).length])):undefined,traces:i===2?traces:undefined}});console.log(JSON.stringify({typescript:ts.version,ambientDeclarationsNotEmitted:ambient,probes:out},null,2));\n",
+    "invocation": "Evaluate embedded source using node --input-type=module -e from the repository root with the pinned Git objects and TypeScript5.9.3 installed.",
+    "kind": "READ_ONLY_IN_MEMORY_COUNTERFACTUAL_NOT_POLICY",
+    "node": "24.18.0",
+    "typescript": "5.9.3",
+    "ambientDeclarationsNotEmitted": 2,
+    "observationProvenance": "Counts recorded from the successful read-only in-memory tool result. Preserved source is the corresponding successful inline probe; no raw-stdout-file digest is claimed.",
+    "variants": [
+      {
+        "id": "CURRENT_POLICY",
+        "affectedSurfaces": 185,
+        "uncoveredSurfaces": 135
+      },
+      {
+        "id": "EXPLICIT_TYPE_ONLY_IMPORT_ERASURE",
+        "affectedSurfaces": 138,
+        "uncoveredSurfaces": 98
+      },
+      {
+        "id": "TYPESCRIPT_EMITTED_IMPORTS_ONLY",
+        "affectedSurfaces": 138,
+        "uncoveredSurfaces": 98
+      }
+    ],
+    "heldConstant": [
+      "Original source snapshots, reverse API projection and public-asset literal edges",
+      "Original UI-surface predicate and registered experience sourcePaths coverage",
+      "Candidate/base identity and changed-root set"
+    ],
+    "limits": [
+      "The counterfactual is not an executable policy change, official planner PASS, exemption or qualification.",
+      "Type-only erasure removes the CurrentUserProvider cone, but leaves98 uncovered surfaces.",
+      "TypeScript transpilation is performed only in memory; no emitted application files are written or executed."
+    ]
+  },
+  "causalClasses": {
+    "erasedTypeBridge": {
+      "changedRoots": [
+        "src/parallax/contracts.ts",
+        "src/parallax/asset-catalog.ts",
+        "src/parallax/element-contracts.ts",
+        "src/parallax/environment-reference.ts"
+      ],
+      "chain": [
+        "src/parallax/contracts.ts",
+        "src/chronicle/journal-contract.ts",
+        "src/landfall/offline-store.ts",
+        "src/components/auth/CurrentUserProvider.tsx"
+      ],
+      "erasedEdge": {
+        "from": "src/chronicle/journal-contract.ts",
+        "to": "src/landfall/offline-store.ts",
+        "statement": "import type { PlayerJournalBlock } from \"@/chronicle/journal-contract\""
+      },
+      "bridgeImportersByteUnchanged": [
+        "src/components/auth/CurrentUserProvider.tsx",
+        "src/landfall/offline-store.ts",
+        "src/chronicle/journal-contract.ts",
+        "src/spatial-pilot/OwnerSeaTrials.tsx",
+        "src/app/dev/spatial-pilot/page.tsx"
+      ],
+      "currentUserReachedAfterErasure": false
+    },
+    "remainingRuntimeChain": {
+      "changedRoot": "src/parallax/contracts.ts",
+      "chain": [
+        "src/parallax/contracts.ts",
+        "src/parallax/publication.ts",
+        "src/chronicle/types.ts",
+        "src/wayfarer/chronicle-history.ts",
+        "src/homeport/personal-harbor.ts",
+        "src/app/api/account/overview/route.ts",
+        "src/components/homeport/AccountSurfaces.tsx",
+        "src/app/account/privacy/page.tsx"
+      ],
+      "httpProjectionEdge": [
+        "src/app/api/account/overview/route.ts",
+        "src/components/homeport/AccountSurfaces.tsx"
+      ],
+      "interpretation": "Real emitted runtime imports plus the retained API-projection rule still connect shared canonical validation to existing consumers."
+    },
+    "ownerSeaTrials": {
+      "erasedDirectEdge": [
+        "src/spatial-pilot/service.ts",
+        "src/spatial-pilot/OwnerSeaTrials.tsx"
+      ],
+      "remainingRuntimeChain": [
+        "src/parallax/contracts.ts",
+        "src/parallax/authoring.ts",
+        "src/spatial-pilot/service.ts",
+        "src/app/api/dev/spatial-pilot/route.ts",
+        "src/spatial-pilot/OwnerSeaTrials.tsx"
+      ],
+      "actualPageConsumer": "src/app/dev/spatial-pilot/page.tsx"
+    },
+    "finiteNclInputs": [
+      "public/parallax/sc02/manifest.json",
+      "src/app/api/player/playthroughs/[playthroughId]/parallax/assets/[assetId]/route.ts",
+      "src/components/player/parallax/ChronicleLens.tsx"
+    ],
+    "internalHarness": {
+      "path": "src/landfall/device-lab/parallax-native-client.tsx",
+      "classificationCause": "Direct changed TSX root matches current UI predicate; actual contents mount the synthetic camera-free Device Lab Lens.",
+      "disposition": "Keep internal synthetic provenance; do not hide or rename it to evade policy."
+    },
+    "separateSharedFormRoot": {
+      "path": "src/components/wayfarer/AccountFlow.tsx",
+      "change": "Form method=post preserves credentials outside URLs before hydration.",
+      "disposition": "Real shared account-form behavior reaches additional existing modes; preserve the fix and qualify its honest consumer scope."
+    }
+  },
+  "sourceWitnesses": [
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "line": 38,
+      "needle": "const uiFile =",
+      "gitBlob": "6b2736640260866ebc383be16891549f65c8caed",
+      "sha256": "f217bf602e3953f0772cf85201e83b1bb3b6768886a6568c6d88ea797239799b"
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "line": 164,
+      "needle": "export function affectedConsumers",
+      "gitBlob": "6b2736640260866ebc383be16891549f65c8caed",
+      "sha256": "f217bf602e3953f0772cf85201e83b1bb3b6768886a6568c6d88ea797239799b"
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "line": 180,
+      "needle": "const imports =",
+      "gitBlob": "6b2736640260866ebc383be16891549f65c8caed",
+      "sha256": "f217bf602e3953f0772cf85201e83b1bb3b6768886a6568c6d88ea797239799b"
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "line": 643,
+      "needle": "if (uncovered.length) fail",
+      "gitBlob": "6b2736640260866ebc383be16891549f65c8caed",
+      "sha256": "f217bf602e3953f0772cf85201e83b1bb3b6768886a6568c6d88ea797239799b"
+    },
+    {
+      "path": "src/parallax/element-contracts.ts",
+      "line": 2,
+      "needle": "import { modelIds }",
+      "gitBlob": "1850bb64358313ab61f00d8580d71bee991386ee",
+      "sha256": "8129ec09dde86f2d542b94e1886c71784142b63e21ccbcbe2b5db536ee44c046"
+    },
+    {
+      "path": "src/parallax/contracts.ts",
+      "line": 4,
+      "needle": "import { spatialElementSchema }",
+      "gitBlob": "61b08ba9d5e698ff1604120262474f1f5e27fe21",
+      "sha256": "a0eb372d3a219a9c6b3e7e4b7ff82b85b7923f760bbc4625fd9bd52cda87f9bd"
+    },
+    {
+      "path": "src/parallax/contracts.ts",
+      "line": 5,
+      "needle": "import { environmentReferenceSchema",
+      "gitBlob": "61b08ba9d5e698ff1604120262474f1f5e27fe21",
+      "sha256": "a0eb372d3a219a9c6b3e7e4b7ff82b85b7923f760bbc4625fd9bd52cda87f9bd"
+    },
+    {
+      "path": "src/chronicle/journal-contract.ts",
+      "line": 2,
+      "needle": "import { spatialMomentSchema }",
+      "gitBlob": "67ea7dbf1ec37f8c70ffffe7835a8ad477feaa9f",
+      "sha256": "d44f00ec0c4a8429d45e718a101562e97250f4b3838bd41ad2eaca2c60eec617"
+    },
+    {
+      "path": "src/landfall/offline-store.ts",
+      "line": 3,
+      "needle": "import type { PlayerJournalBlock }",
+      "gitBlob": "f74ee343b967a288c144d9698fa37f6c0e823f1a",
+      "sha256": "ece6c619aa8957fa87f1668e44ca1491b194da37a3e3c8c2ba821627d91f255b"
+    },
+    {
+      "path": "src/components/auth/CurrentUserProvider.tsx",
+      "line": 4,
+      "needle": "import { bindLandfallOfflineIdentity",
+      "gitBlob": "d1a8bfd7ec2e8946d87b9d3f5d4f346a62054936",
+      "sha256": "631060484a1bcdd9d3cb402809ee194c2e9399494fe40741d758208b81646964"
+    },
+    {
+      "path": "src/parallax/publication.ts",
+      "line": 2,
+      "needle": "import { spatialMomentSchema",
+      "gitBlob": "83fb333bca37494c21f1ce84b0cc1de3821cb884",
+      "sha256": "80306932ffb2cb1375cba752895390f6e12f07517a662e6b61469e3dd2298fc7"
+    },
+    {
+      "path": "src/chronicle/types.ts",
+      "line": 1,
+      "needle": "import { validatePublishedSpatialMoments }",
+      "gitBlob": "23941b6cd279f31cb19af2dbc863424f69dede97",
+      "sha256": "310f13d08cbbf906503deba68f5478003a5c6514faf2a1d289f3c3800e2e215d"
+    },
+    {
+      "path": "src/wayfarer/chronicle-history.ts",
+      "line": 3,
+      "needle": "import { parsePublishedSnapshot",
+      "gitBlob": "5f6b7de1aa1a18369e8c0099e71313bfd7601bf4",
+      "sha256": "e1be5e7eb248e544818a9244a8fd08dd7da0a19b30a939bf5c9315f7c512680f"
+    },
+    {
+      "path": "src/homeport/personal-harbor.ts",
+      "line": 6,
+      "needle": "import { materializeChronicleHistory }",
+      "gitBlob": "18efbf24458cfa12786f1b386d3b4f59db2679e5",
+      "sha256": "6c85f37363ab42d08022e97964392ca29586280e92ca137da41a1f56745fbfce"
+    },
+    {
+      "path": "src/app/api/account/overview/route.ts",
+      "line": 2,
+      "needle": "import { personalHarborOverview }",
+      "gitBlob": "cd769a763cf2b14d1609fa9d38e4bb81b0c988ea",
+      "sha256": "24b423ce32803af8311bc969fef9e32f4afdafa624680089bfc2d135ea4a11c8"
+    },
+    {
+      "path": "src/components/homeport/AccountSurfaces.tsx",
+      "line": 101,
+      "needle": "/api/account/overview",
+      "gitBlob": "51125cd92b974b3b85d925606d5a66d18dd23683",
+      "sha256": "581904d3fc39333aa95361d8b41df5a35d136c2e36e0f99e8c290fbb6a3e8131"
+    },
+    {
+      "path": "src/app/account/privacy/page.tsx",
+      "line": 1,
+      "needle": "import { PrivacyEditor }",
+      "gitBlob": "be26697c0cccc4c9fba06d4b83f374d3ed0f33ac",
+      "sha256": "fb3df0835dc94ddbe027899e6623e763c15a2ff252b211431f9fe6a4dba693b3"
+    },
+    {
+      "path": "src/parallax/authoring.ts",
+      "line": 2,
+      "needle": "from \"./contracts\"",
+      "gitBlob": "b96081bdaa756e661782132c7724b0b7ecc9306c",
+      "sha256": "499b423faed4ef8ec6ad8c570aff72eaeb46050911de366688966340e49367e9"
+    },
+    {
+      "path": "src/spatial-pilot/service.ts",
+      "line": 9,
+      "needle": "import { createSpatialDraft }",
+      "gitBlob": "0fac43b16b897c5d0c2dbf0e5bed2cb4813ef053",
+      "sha256": "5c28214b0be3f6036492c2ed75841e2ac5b148667350487effd475fe63e8433c"
+    },
+    {
+      "path": "src/app/api/dev/spatial-pilot/route.ts",
+      "line": 3,
+      "needle": "import { provisionPilot }",
+      "gitBlob": "43e58eed60d5457796f873375c4f28ebe2024c50",
+      "sha256": "45a8e5665c36b86fa7cc96fc5a4e57a478a2fda4f5907953e22d391fb397af27"
+    },
+    {
+      "path": "src/spatial-pilot/OwnerSeaTrials.tsx",
+      "line": 5,
+      "needle": "import type { readPilot }",
+      "gitBlob": "c0b51e172b76451069da1687e3acea1ac5e71db5",
+      "sha256": "e9f5214637b6403847810c191ceef3fe4ec49d5dda9d892fb13f8092208489b8"
+    },
+    {
+      "path": "src/spatial-pilot/OwnerSeaTrials.tsx",
+      "line": 57,
+      "needle": "fetch(\"/api/dev/spatial-pilot\"",
+      "gitBlob": "c0b51e172b76451069da1687e3acea1ac5e71db5",
+      "sha256": "e9f5214637b6403847810c191ceef3fe4ec49d5dda9d892fb13f8092208489b8"
+    },
+    {
+      "path": "src/app/dev/spatial-pilot/page.tsx",
+      "line": 3,
+      "needle": "import { readPilot }",
+      "gitBlob": "dded6e13bfd29c0dc11fec0919e22e1a3c75f520",
+      "sha256": "9c491b5d219922e384b65b92b4785e8c000851af1bd87c012b340fd908b15199"
+    },
+    {
+      "path": "src/parallax/scene-delivery.ts",
+      "line": 2,
+      "needle": "import manifest from",
+      "gitBlob": "0d38df18eac76c5b8ea346cc8e11f0504bcacd60",
+      "sha256": "708e29d20b45ead918487962cd246d5cccf976c47f117814e2edb227f59d6e5c"
+    },
+    {
+      "path": "src/landfall/device-lab/parallax-native-client.tsx",
+      "line": 3,
+      "needle": "import { ChronicleLensDeviceLab }",
+      "gitBlob": "a5c0ff97bd01625ecadde33ab7371818b288f19d",
+      "sha256": "4d80d499ebd619e1cdf4ae5dcfa952d44bf0a42a7c3e571db12dfb57cf9dd82a"
+    },
+    {
+      "path": "src/components/wayfarer/AccountFlow.tsx",
+      "line": 416,
+      "needle": "<form method=\"post\"",
+      "gitBlob": "1f200531a36312cc6e03ff2d448876ad331c7c4d",
+      "sha256": "438ad95ae181657a216f87ae54238ad602d9777bb577fc3b8e288d50c32e3e2b"
+    }
+  ],
+  "pr776ReadOnlySnapshot": {
+    "number": 776,
+    "state": "OPEN",
+    "isDraft": true,
+    "mergedAt": null,
+    "baseSha": "aaff919428ef9ab421579415ce3409949724760d",
+    "headSha": "871431cd0827d42551c8a8b9d2d7fde5e16c1f77",
+    "acceptedAuthority": false,
+    "matchingBlobs": [
+      {
+        "path": "src/parallax/asset-catalog.ts",
+        "gitBlob": "3c40ace20221b3ab7b711ddfcbbd506e5b25cc3e",
+        "equalTo776": true
+      },
+      {
+        "path": "src/parallax/element-contracts.ts",
+        "gitBlob": "1850bb64358313ab61f00d8580d71bee991386ee",
+        "equalTo776": true
+      },
+      {
+        "path": "src/parallax/environment-reference.ts",
+        "gitBlob": "5f7c8f170f27c0bf1c47bcaac0720bb395182f10",
+        "equalTo776": true
+      },
+      {
+        "path": "public/parallax/sc02/models/treasure-chest.glb",
+        "gitBlob": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+        "equalTo776": true
+      },
+      {
+        "path": "public/parallax/sc02/models/brass-compass.glb",
+        "gitBlob": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+        "equalTo776": true
+      }
+    ],
+    "sc02TreeIdentical": false,
+    "contractsTsDeltaFrom776ToNcl": {
+      "additions": 6,
+      "deletions": 87
+    },
+    "limit": "Broader unaccepted library/asset integration is not a drop-in NCL baseline. No source, review allowance or ownership was consumed."
+  },
+  "blockedConsumerContractHandoff": {
+    "status": "PROTECTED_EXPERIENCE_COVERAGE_OBLIGATION_REMAINS",
+    "obligation": "Reconcile shared canonical-schema and account-form consumers with accepted experience coverage under the governing authority. Finite NCL Scene data and internal synthetic harness classification remain explicit.",
+    "notAuthorizedByThisReceipt": [
+      "Blanket registration of135 or98 screens without their actual objectives and evidence",
+      "Sounding Line/planner edits, import-syntax changes or registry exemptions to pass ordinary PR741",
+      "Use of Crossdeck721 finite review/adoption allowance",
+      "Treating open PR776 as accepted main or permission to change its work"
+    ],
+    "continueFocusedNclChecks": true,
+    "missingOwnerPermissionClaimed": false,
+    "newApprovalFlowCreated": false,
+    "possibleAcceptedBaselineRefresh": "One legitimate current-main refresh near closeout may be assessed if another owned integration has actually landed; no repeated equivalent planning or qualification is justified."
+  },
+  "limits": [
+    "Crossdeck design is available; this is a different currently enforced consumer-coverage gate.",
+    "No build, native GPU, Simulator, CI, signing, upload, runtime mutation, capture, review or Mainline Decision was performed.",
+    "No physical/browser-provider acceptance is implied."
+  ]
+}

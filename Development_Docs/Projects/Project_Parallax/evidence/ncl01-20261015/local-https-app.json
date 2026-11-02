@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "OWNED_LAPTOP_HTTPS_TRANSPORT_ONLY",
+  "timestamp": "2026-10-15T20:20:46.865Z",
+  "publicOrigin": "https://155.42.98.160:8449",
+  "caSha256": "17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6",
+  "caTrustScope": "EXPLICIT_NODE_REQUEST_OPTIONS_ONLY",
+  "globalTrustChanged": false,
+  "listenersStartedByProbe": false,
+  "statements": [
+    "No browser rendering or iPhone acceptance is claimed. Cookie hardening is live-proven only when a response issues a cookie; otherwise it remains covered by the 33-assertion helper self-test.",
+    "No response bodies, request headers, cookies, passwords or private keys were persisted."
+  ],
+  "records": [
+    {
+      "name": "https-home",
+      "method": "GET",
+      "transport": "HTTPS_TRUSTED_OWNED_CA",
+      "status": 200,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "location": null,
+      "contentType": "text/html; charset=utf-8",
+      "responseBytes": 24353,
+      "setCookiePresent": false,
+      "cookieCount": 0,
+      "allIssuedCookiesSecure": null,
+      "expectedStatus": 200,
+      "passed": true
+    },
+    {
+      "name": "https-player-unauthenticated",
+      "method": "GET",
+      "transport": "HTTPS_TRUSTED_OWNED_CA",
+      "status": 307,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "location": "https://155.42.98.160:8449/player/sign-in",
+      "contentType": "text/html; charset=utf-8",
+      "responseBytes": 15077,
+      "setCookiePresent": false,
+      "cookieCount": 0,
+      "allIssuedCookiesSecure": null,
+      "expectedStatus": 307,
+      "passed": true
+    },
+    {
+      "name": "https-canonical-sign-in",
+      "method": "GET",
+      "transport": "HTTPS_TRUSTED_OWNED_CA",
+      "status": 200,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "location": null,
+      "contentType": "text/html; charset=utf-8",
+      "responseBytes": 16466,
+      "setCookiePresent": false,
+      "cookieCount": 0,
+      "allIssuedCookiesSecure": null,
+      "expectedStatus": 200,
+      "passed": true
+    },
+    {
+      "name": "https-localhost-host-forwarding",
+      "method": "GET",
+      "transport": "HTTPS_TRUSTED_OWNED_CA",
+      "status": 307,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "location": "https://155.42.98.160:8449/player/sign-in",
+      "contentType": "text/html; charset=utf-8",
+      "responseBytes": 15077,
+      "setCookiePresent": false,
+      "cookieCount": 0,
+      "allIssuedCookiesSecure": null,
+      "expectedStatus": 307,
+      "passed": true
+    }
+  ],
+  "allPassed": true
+}

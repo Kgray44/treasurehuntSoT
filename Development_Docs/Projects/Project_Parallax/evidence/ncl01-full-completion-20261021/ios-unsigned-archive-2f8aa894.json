@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "UNSIGNED_RELEASE_ARCHIVE_SOURCE_BOUND_BINARY_AND_COMPILED_ICON_PROOF",
+  "result": "PASS",
+  "candidateSha": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+  "candidateTree": "cadc8fd0815190f2d3c59b99b017a70d431e4bff",
+  "transportSha": "64fa864f1fe1cbdfcc8e4b58bfc4aafe9e06a4ed",
+  "transportParent": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+  "transportChanges": [
+    ".github/workflows/ncl01-testflight.yml"
+  ],
+  "workflowSha256": "6e9f9dd0d4e7de0fd8bbd8198e0f5ee910b8387b43742f1eab7f9dfe07e6f595",
+  "runId": "39633902301",
+  "runUrl": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39633902301",
+  "mode": "unsigned",
+  "origin": "https://ncl01.absoluterelativesystems.com",
+  "version": "0.1.0",
+  "archiveOnlyBuildMetadata": "8",
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "iphoneosSdk": "26.5",
+  "archiveValidated": true,
+  "githubConclusion": "success",
+  "harvestAssertionCount": 20,
+  "harvestAssertions": "PASS",
+  "releaseFixtureEntrypointScan": {
+    "result": "PASS",
+    "scope": "KNOWN_DEBUG_ONLY_ENABLEMENT_STRINGS_ABSENT",
+    "executableSha256": "9aa73770560f7f5ef5ccf5fefa5559fa7bb1b01fd10cefeb295845ef08e7f15b",
+    "executableBytes": 503056,
+    "markerLabels": [
+      "DEBUG_SIMULATOR_CAMERA_FREE_SWITCH"
+    ],
+    "encodings": [
+      "utf-8",
+      "utf-16-le",
+      "utf-16-be"
+    ],
+    "matchedMarkerCount": 0,
+    "allFixtureCodeOrProtocolStringsAbsentClaimed": false
+  },
+  "approvedOfficialAndPreparedSourceSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "approvedCatalogFilenameMappingVerified": true,
+  "committedVerifier": {
+    "sourcePath": "scripts/landfall/testflight/release_proof.py",
+    "retainedFile": "release_proof.py.committed-original",
+    "gitBlobSha1": "d7a470dffdee35c624da532bbed59fef63be60ac",
+    "committedBytesSha256": "ea5211be5c92cccfa59e8a5fcfde67760daa981c960ee776e18a0c35771228d7",
+    "byteLength": 10642
+  },
+  "compiledIcons": [
+    {
+      "resource": "AppIcon60x60@2x.png",
+      "width": 120,
+      "height": 120,
+      "opaque": true,
+      "compiledPngSha256": "60de95a4782ac64b3d3545aa4436cd0d777bd4fec71c8bfbf468cbe91a467cfb",
+      "losslessPreviewSha256": "e0aae34457b46de7b8c484d1bc46bbf38449a7adf539b77c02263aef2cf9dea7",
+      "normalizedRgbaSha256": "5207415579749f1538c5c53022b73bff9b9648d551c335d5a2e7bb9f3defd060",
+      "sourceEncoding": "CGBI",
+      "pixelTransform": "NONE_EXCEPT_OPAQUE_CGBI_BGR_CHANNEL_DECODE",
+      "resized": false,
+      "colorManaged": false,
+      "byteIdenticalToCommittedApprovedBeta7Resource": true,
+      "independentPixelDecode": "PASS",
+      "independentArtworkReview": "PASS"
+    },
+    {
+      "resource": "AppIcon76x76@2x~ipad.png",
+      "width": 152,
+      "height": 152,
+      "opaque": true,
+      "compiledPngSha256": "f7ba24a3aa6e9fc0e23ec92978a5d15cf9420e98d5d6c8d128597779e8164b0b",
+      "losslessPreviewSha256": "2d37d6fccb2c71810b4fb4abe22414bda8a93a2ca5980493f7afd72d8cec623d",
+      "normalizedRgbaSha256": "f879873a21ce3d8cf8b298d3a731fa28dfc2ed9a7a57274eea64bab0b16e9928",
+      "sourceEncoding": "CGBI",
+      "pixelTransform": "NONE_EXCEPT_OPAQUE_CGBI_BGR_CHANNEL_DECODE",
+      "resized": false,
+      "colorManaged": false,
+      "byteIdenticalToCommittedApprovedBeta7Resource": true,
+      "independentPixelDecode": "PASS",
+      "independentArtworkReview": "PASS"
+    }
+  ],
+  "independentPixelValidation": {
+    "result": "PASS",
+    "implementation": "Sharp 0.35.5 / libvips 8.18.7",
+    "receiptSha256": "02f3d819b174e938e952607100ecbda35a60a4d5ae12d410c1746e7ba86f858c"
+  },
+  "independentArtworkReview": {
+    "result": "PASS_COMPILED_ICON_ARTWORK_REVIEW",
+    "receiptSha256": "3571601bc789e0800fa765ac0afaac448814673e0a57598f1a857479fe1b87e6",
+    "actual120And152PixelPreviewsViewed": true,
+    "officialMasterAndRetainedApprovedPreviewsCompared": true,
+    "independentPillowRgbaComparison": "PASS",
+    "finding": "Compass ring, needle, star and folded page remain contained and composition matches the approved artwork."
+  },
+  "originalFileCount": 22,
+  "originalManifestSha256": "2fbaa7cbf69a8fa6eee59b847443ae25cf84c2023557817b5709b5a16c2e710f",
+  "allOriginalLengthsAndSha256Reverified": true,
+  "originalFiles": [
+    {
+      "file": "AppIcon.png.committed-original",
+      "byteLength": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73"
+    },
+    {
+      "file": "committed-source.original.json",
+      "byteLength": 1115,
+      "sha256": "9b4fcb4dc2f8d3604ef5864d4f686538cf75ef62719d9c4d12176b1b7f75558f"
+    },
+    {
+      "file": "dispatch.original.json",
+      "byteLength": 580,
+      "sha256": "e3e1a9969080a0eecb2f91c7da3d495c84fecc28b225e8ed68a891e061eacbe0"
+    },
+    {
+      "file": "github-artifacts.original.json",
+      "byteLength": 815,
+      "sha256": "7443a0873e148fcdb34323306bcfc6c1eda31846ebc9cab999dba534dd557a53"
+    },
+    {
+      "file": "github-jobs.original.json",
+      "byteLength": 3436,
+      "sha256": "6a2ee9e1497c1550fd33c981f33c6db760b76b6cf860f01f03e6fe389832ef45"
+    },
+    {
+      "file": "github-run.original.json",
+      "byteLength": 12674,
+      "sha256": "f2433aab2c92f7656aee16564cb387a45eeca8863b7c9caac812239285ffa35d"
+    },
+    {
+      "file": "ownership.private.json",
+      "byteLength": 289,
+      "sha256": "dcee59518588a6c48e5b1e11ad8e3c68256e6b7ef47467f95cd064e68d199a56"
+    },
+    {
+      "file": "public-artifact/altool-help.log",
+      "byteLength": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "file": "public-artifact/compiled-icons/AppIcon60x60@2x.png",
+      "byteLength": 21570,
+      "sha256": "60de95a4782ac64b3d3545aa4436cd0d777bd4fec71c8bfbf468cbe91a467cfb"
+    },
+    {
+      "file": "public-artifact/compiled-icons/AppIcon60x60@2x.png.preview.png",
+      "byteLength": 20430,
+      "sha256": "e0aae34457b46de7b8c484d1bc46bbf38449a7adf539b77c02263aef2cf9dea7"
+    },
+    {
+      "file": "public-artifact/compiled-icons/AppIcon76x76@2x~ipad.png",
+      "byteLength": 33720,
+      "sha256": "f7ba24a3aa6e9fc0e23ec92978a5d15cf9420e98d5d6c8d128597779e8164b0b"
+    },
+    {
+      "file": "public-artifact/compiled-icons/AppIcon76x76@2x~ipad.png.preview.png",
+      "byteLength": 32222,
+      "sha256": "2d37d6fccb2c71810b4fb4abe22414bda8a93a2ca5980493f7afd72d8cec623d"
+    },
+    {
+      "file": "public-artifact/device_archive.log",
+      "byteLength": 1907,
+      "sha256": "e193a810bc035f7db297c7d61ac39a722d75fffb8ddae471a0db42efe99bb66f"
+    },
+    {
+      "file": "public-artifact/project_generation.log",
+      "byteLength": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "file": "public-artifact/receipt.json",
+      "byteLength": 3300,
+      "sha256": "1dfd20d84920129bc32e852018c8a637a8ea70abf39c3816489f15cfe8018a29"
+    },
+    {
+      "file": "public-artifact/release-proof.json",
+      "byteLength": 2468,
+      "sha256": "e9439db013c6ed1f1a4fb496016da1a7f4b65d4ff9819702f7d762b8a73f58b0"
+    },
+    {
+      "file": "public-artifact.original.zip",
+      "byteLength": 114878,
+      "sha256": "8ced3867869519436b7fc3f235a0371f902e7a13d786d948946889625c238cf0"
+    },
+    {
+      "file": "release_proof.py.committed-original",
+      "byteLength": 10642,
+      "sha256": "ea5211be5c92cccfa59e8a5fcfde67760daa981c960ee776e18a0c35771228d7"
+    },
+    {
+      "file": "runner.py.committed-original",
+      "byteLength": 30793,
+      "sha256": "97467fc7cf7f25c5f84cfa38aac2bc6096260c1daf48b31ed5d9b0b9d823a4a4"
+    },
+    {
+      "file": "source-binding.original.json",
+      "byteLength": 526,
+      "sha256": "e87de177a3b51579996ce3f0756adc4ad7b9d068cc1ea5b0e516bebbcd42c4e8"
+    },
+    {
+      "file": "unsigned-job.original.log",
+      "byteLength": 21748,
+      "sha256": "299458b1d0a68ed70e92e721baa062f0d078ce66c3b3216f00d901aa9dfa9645"
+    },
+    {
+      "file": "workflow.original.yml",
+      "byteLength": 3677,
+      "sha256": "6e9f9dd0d4e7de0fd8bbd8198e0f5ee910b8387b43742f1eab7f9dfe07e6f595"
+    }
+  ],
+  "releaseProofOriginalSha256": "e9439db013c6ed1f1a4fb496016da1a7f4b65d4ff9819702f7d762b8a73f58b0",
+  "macReceiptOriginalSha256": "1dfd20d84920129bc32e852018c8a637a8ea70abf39c3816489f15cfe8018a29",
+  "macJobLogRetainedPrivately": true,
+  "reportedCredentialCleanup": "PASS",
+  "independentCleanupStepConclusion": "success",
+  "uploadJobConclusion": "skipped",
+  "uploadPerformed": false,
+  "appleProcessing": "NOT_STARTED",
+  "newAppleBuildNumberConsumed": false,
+  "proofExportsArchiveExecutableOrSigningMaterial": false,
+  "physicalHomeScreenAppearanceProven": false,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "ownerAcceptanceClaimed": false,
+  "protectedIntegrationClaimed": false,
+  "limits": [
+    "The actual Mac Release executable scan covers the known DEBUG-only camera-free enablement literal in UTF-8, UTF-16LE and UTF-16BE; it does not prove every fixture body or protocol string absent. The executable was not exported for a second local scan.",
+    "The original Mac proof requested independent artwork review; that requirement is completed by the separately hashed peer review without altering any original.",
+    "Compiled artwork and archive proof do not qualify tracking, joined Inspect, accepted browser provider, Crossdeck design, protected main, physical Home Screen appearance or owner acceptance.",
+    "Only proof metadata and actual public icon PNG resources are intended for publication. Raw Mac job logs, private archive, executable and signing material remain private."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED"
+}

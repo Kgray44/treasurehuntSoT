@@ -1,0 +1,848 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "D0_SYNTHETIC_CONTRACT_ONLY",
+  "sceneCases": [
+    {
+      "name": "original compass",
+      "accepted": true,
+      "scene": {
+        "schemaVersion": 2,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "identity": {
+          "definitionId": "captains-note",
+          "versionId": "captains-note-v1",
+          "versionChecksum": "4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+          "instanceId": "instance:ncl01-fixture:run"
+        },
+        "units": "METERS",
+        "entities": [
+          {
+            "id": "captains-note",
+            "kind": "PARCHMENT",
+            "content": "The next bearing is written in the stars. Look for the northern light.",
+            "widthMeters": 0.16,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "anchorId": "desk-anchor",
+            "authoredTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "interactions": [
+              "PICK",
+              "INSPECT",
+              "PLACE"
+            ],
+            "visible": true,
+            "selectable": true,
+            "opacity": 1,
+            "element": {
+              "enabled": true,
+              "kind": "PHYSICAL_ASSET",
+              "modelId": "brass-compass",
+              "packageVersion": "1.0.0",
+              "articulation": 0
+            },
+            "model": {
+              "assetId": "brass-compass",
+              "version": "1.0.0",
+              "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+              "byteLength": 313396,
+              "url": "/api/player/playthroughs/ncl01-synthetic-voyage/parallax/assets/brass-compass?block=ncl01-block&versionChecksum=4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+              "format": "GLB",
+              "metersPerUnit": 1,
+              "sourceWidthMeters": 0.16
+            }
+          }
+        ],
+        "anchors": [
+          {
+            "id": "desk-anchor",
+            "kind": "LOCAL_WORLD",
+            "frameId": "local-session",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ],
+        "requirements": [
+          "MODEL_GLB",
+          "WORLD_TRACKING"
+        ],
+        "presentation": {
+          "elapsedMs": 0,
+          "reducedMotion": false
+        },
+        "fallback": {
+          "mode": "GUIDED",
+          "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
+          "preservesMeaning": true
+        }
+      }
+    },
+    {
+      "name": "missing parent",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 2,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "identity": {
+          "definitionId": "captains-note",
+          "versionId": "captains-note-v1",
+          "versionChecksum": "4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+          "instanceId": "instance:ncl01-fixture:run"
+        },
+        "units": "METERS",
+        "entities": [
+          {
+            "id": "captains-note",
+            "kind": "PARCHMENT",
+            "content": "The next bearing is written in the stars. Look for the northern light.",
+            "widthMeters": 0.16,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "anchorId": "desk-anchor",
+            "authoredTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "interactions": [
+              "PICK",
+              "INSPECT",
+              "PLACE"
+            ],
+            "visible": true,
+            "selectable": true,
+            "opacity": 1,
+            "element": {
+              "enabled": true,
+              "kind": "PHYSICAL_ASSET",
+              "modelId": "brass-compass",
+              "packageVersion": "1.0.0",
+              "articulation": 0
+            },
+            "model": {
+              "assetId": "brass-compass",
+              "version": "1.0.0",
+              "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+              "byteLength": 313396,
+              "url": "/api/player/playthroughs/ncl01-synthetic-voyage/parallax/assets/brass-compass?block=ncl01-block&versionChecksum=4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+              "format": "GLB",
+              "metersPerUnit": 1,
+              "sourceWidthMeters": 0.16
+            },
+            "parentEntityId": "missing"
+          }
+        ],
+        "anchors": [
+          {
+            "id": "desk-anchor",
+            "kind": "LOCAL_WORLD",
+            "frameId": "local-session",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ],
+        "requirements": [
+          "MODEL_GLB",
+          "WORLD_TRACKING"
+        ],
+        "presentation": {
+          "elapsedMs": 0,
+          "reducedMotion": false
+        },
+        "fallback": {
+          "mode": "GUIDED",
+          "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
+          "preservesMeaning": true
+        }
+      }
+    },
+    {
+      "name": "corrupt model identity",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 2,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "identity": {
+          "definitionId": "captains-note",
+          "versionId": "captains-note-v1",
+          "versionChecksum": "4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+          "instanceId": "instance:ncl01-fixture:run"
+        },
+        "units": "METERS",
+        "entities": [
+          {
+            "id": "captains-note",
+            "kind": "PARCHMENT",
+            "content": "The next bearing is written in the stars. Look for the northern light.",
+            "widthMeters": 0.16,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "anchorId": "desk-anchor",
+            "authoredTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "interactions": [
+              "PICK",
+              "INSPECT",
+              "PLACE"
+            ],
+            "visible": true,
+            "selectable": true,
+            "opacity": 1,
+            "element": {
+              "enabled": true,
+              "kind": "PHYSICAL_ASSET",
+              "modelId": "brass-compass",
+              "packageVersion": "1.0.0",
+              "articulation": 0
+            },
+            "model": {
+              "assetId": "brass-compass",
+              "version": "1.0.0",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "byteLength": 313396,
+              "url": "/api/player/playthroughs/ncl01-synthetic-voyage/parallax/assets/brass-compass?block=ncl01-block&versionChecksum=4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+              "format": "GLB",
+              "metersPerUnit": 1,
+              "sourceWidthMeters": 0.16
+            }
+          }
+        ],
+        "anchors": [
+          {
+            "id": "desk-anchor",
+            "kind": "LOCAL_WORLD",
+            "frameId": "local-session",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ],
+        "requirements": [
+          "MODEL_GLB",
+          "WORLD_TRACKING"
+        ],
+        "presentation": {
+          "elapsedMs": 0,
+          "reducedMotion": false
+        },
+        "fallback": {
+          "mode": "GUIDED",
+          "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
+          "preservesMeaning": true
+        }
+      }
+    },
+    {
+      "name": "external asset",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 2,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "identity": {
+          "definitionId": "captains-note",
+          "versionId": "captains-note-v1",
+          "versionChecksum": "4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+          "instanceId": "instance:ncl01-fixture:run"
+        },
+        "units": "METERS",
+        "entities": [
+          {
+            "id": "captains-note",
+            "kind": "PARCHMENT",
+            "content": "The next bearing is written in the stars. Look for the northern light.",
+            "widthMeters": 0.16,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "anchorId": "desk-anchor",
+            "authoredTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "interactions": [
+              "PICK",
+              "INSPECT",
+              "PLACE"
+            ],
+            "visible": true,
+            "selectable": true,
+            "opacity": 1,
+            "element": {
+              "enabled": true,
+              "kind": "PHYSICAL_ASSET",
+              "modelId": "brass-compass",
+              "packageVersion": "1.0.0",
+              "articulation": 0
+            },
+            "model": {
+              "assetId": "brass-compass",
+              "version": "1.0.0",
+              "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+              "byteLength": 313396,
+              "url": "https://invalid.example/compass.glb",
+              "format": "GLB",
+              "metersPerUnit": 1,
+              "sourceWidthMeters": 0.16
+            }
+          }
+        ],
+        "anchors": [
+          {
+            "id": "desk-anchor",
+            "kind": "LOCAL_WORLD",
+            "frameId": "local-session",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ],
+        "requirements": [
+          "MODEL_GLB",
+          "WORLD_TRACKING"
+        ],
+        "presentation": {
+          "elapsedMs": 0,
+          "reducedMotion": false
+        },
+        "fallback": {
+          "mode": "GUIDED",
+          "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
+          "preservesMeaning": true
+        }
+      }
+    },
+    {
+      "name": "stale revision",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 2,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "identity": {
+          "definitionId": "captains-note",
+          "versionId": "captains-note-v1",
+          "versionChecksum": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "instanceId": "instance:ncl01-fixture:run"
+        },
+        "units": "METERS",
+        "entities": [
+          {
+            "id": "captains-note",
+            "kind": "PARCHMENT",
+            "content": "The next bearing is written in the stars. Look for the northern light.",
+            "widthMeters": 0.16,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "anchorId": "desk-anchor",
+            "authoredTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "interactions": [
+              "PICK",
+              "INSPECT",
+              "PLACE"
+            ],
+            "visible": true,
+            "selectable": true,
+            "opacity": 1,
+            "element": {
+              "enabled": true,
+              "kind": "PHYSICAL_ASSET",
+              "modelId": "brass-compass",
+              "packageVersion": "1.0.0",
+              "articulation": 0
+            },
+            "model": {
+              "assetId": "brass-compass",
+              "version": "1.0.0",
+              "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+              "byteLength": 313396,
+              "url": "/api/player/playthroughs/ncl01-synthetic-voyage/parallax/assets/brass-compass?block=ncl01-block&versionChecksum=4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+              "format": "GLB",
+              "metersPerUnit": 1,
+              "sourceWidthMeters": 0.16
+            }
+          }
+        ],
+        "anchors": [
+          {
+            "id": "desk-anchor",
+            "kind": "LOCAL_WORLD",
+            "frameId": "local-session",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ],
+        "requirements": [
+          "MODEL_GLB",
+          "WORLD_TRACKING"
+        ],
+        "presentation": {
+          "elapsedMs": 0,
+          "reducedMotion": false
+        },
+        "fallback": {
+          "mode": "GUIDED",
+          "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
+          "preservesMeaning": true
+        }
+      }
+    },
+    {
+      "name": "undeclared model",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 2,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "identity": {
+          "definitionId": "captains-note",
+          "versionId": "captains-note-v1",
+          "versionChecksum": "4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+          "instanceId": "instance:ncl01-fixture:run"
+        },
+        "units": "METERS",
+        "entities": [
+          {
+            "id": "captains-note",
+            "kind": "PARCHMENT",
+            "content": "The next bearing is written in the stars. Look for the northern light.",
+            "widthMeters": 0.16,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "anchorId": "desk-anchor",
+            "authoredTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "interactions": [
+              "PICK",
+              "INSPECT",
+              "PLACE"
+            ],
+            "visible": true,
+            "selectable": true,
+            "opacity": 1,
+            "element": {
+              "enabled": true,
+              "kind": "PHYSICAL_ASSET",
+              "modelId": "brass-compass",
+              "packageVersion": "1.0.0",
+              "articulation": 0
+            },
+            "model": {
+              "assetId": "brass-compass",
+              "version": "1.0.0",
+              "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+              "byteLength": 313396,
+              "url": "/api/player/playthroughs/ncl01-synthetic-voyage/parallax/assets/brass-compass?block=ncl01-block&versionChecksum=4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+              "format": "GLB",
+              "metersPerUnit": 1,
+              "sourceWidthMeters": 0.16
+            }
+          }
+        ],
+        "anchors": [
+          {
+            "id": "desk-anchor",
+            "kind": "LOCAL_WORLD",
+            "frameId": "local-session",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ],
+        "requirements": [],
+        "presentation": {
+          "elapsedMs": 0,
+          "reducedMotion": false
+        },
+        "fallback": {
+          "mode": "GUIDED",
+          "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
+          "preservesMeaning": true
+        }
+      }
+    },
+    {
+      "name": "duplicate entity",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 2,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "identity": {
+          "definitionId": "captains-note",
+          "versionId": "captains-note-v1",
+          "versionChecksum": "4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+          "instanceId": "instance:ncl01-fixture:run"
+        },
+        "units": "METERS",
+        "entities": [
+          {
+            "id": "captains-note",
+            "kind": "PARCHMENT",
+            "content": "The next bearing is written in the stars. Look for the northern light.",
+            "widthMeters": 0.16,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "anchorId": "desk-anchor",
+            "authoredTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "interactions": [
+              "PICK",
+              "INSPECT",
+              "PLACE"
+            ],
+            "visible": true,
+            "selectable": true,
+            "opacity": 1,
+            "element": {
+              "enabled": true,
+              "kind": "PHYSICAL_ASSET",
+              "modelId": "brass-compass",
+              "packageVersion": "1.0.0",
+              "articulation": 0
+            },
+            "model": {
+              "assetId": "brass-compass",
+              "version": "1.0.0",
+              "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+              "byteLength": 313396,
+              "url": "/api/player/playthroughs/ncl01-synthetic-voyage/parallax/assets/brass-compass?block=ncl01-block&versionChecksum=4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+              "format": "GLB",
+              "metersPerUnit": 1,
+              "sourceWidthMeters": 0.16
+            }
+          },
+          {
+            "id": "captains-note",
+            "kind": "PARCHMENT",
+            "content": "The next bearing is written in the stars. Look for the northern light.",
+            "widthMeters": 0.16,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "anchorId": "desk-anchor",
+            "authoredTransform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            },
+            "interactions": [
+              "PICK",
+              "INSPECT",
+              "PLACE"
+            ],
+            "visible": true,
+            "selectable": true,
+            "opacity": 1,
+            "element": {
+              "enabled": true,
+              "kind": "PHYSICAL_ASSET",
+              "modelId": "brass-compass",
+              "packageVersion": "1.0.0",
+              "articulation": 0
+            },
+            "model": {
+              "assetId": "brass-compass",
+              "version": "1.0.0",
+              "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+              "byteLength": 313396,
+              "url": "/api/player/playthroughs/ncl01-synthetic-voyage/parallax/assets/brass-compass?block=ncl01-block&versionChecksum=4980e7aaa5992cbe9726411f2d4847d5667ed30efc0612f800ff577fc5ddba4d",
+              "format": "GLB",
+              "metersPerUnit": 1,
+              "sourceWidthMeters": 0.16
+            }
+          }
+        ],
+        "anchors": [
+          {
+            "id": "desk-anchor",
+            "kind": "LOCAL_WORLD",
+            "frameId": "local-session",
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ],
+        "requirements": [
+          "MODEL_GLB",
+          "WORLD_TRACKING"
+        ],
+        "presentation": {
+          "elapsedMs": 0,
+          "reducedMotion": false
+        },
+        "fallback": {
+          "mode": "GUIDED",
+          "narrative": "The Captain’s note is ready to read here. Its clue is the same in every view.",
+          "preservesMeaning": true
+        }
+      }
+    }
+  ]
+}

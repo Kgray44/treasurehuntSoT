@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "historicalSource": "cd597b1274bddad70118b77dd65b13969dd55a8d",
+  "preservedOriginalGitBlobs": 658,
+  "originalEntriesSha256": "71421fa2da32beca7c8c9563034bbcdb0549cc5c6987bb5c65871e8d37521d93",
+  "unchanged": true,
+  "testedImplementation": "26da4135d851ee67a0c685a0726486739612d1e2",
+  "reconciledSource": "9abd26ba892f7715d32601e4d12058eae1acfb4e",
+  "reconciledTree": "29f3277b8527c1da85095ff2a7bff59532e2a5fa",
+  "protectedBase": "e1a86f98e56d68e8e87e3704d17439489ff1a170",
+  "implementationEquivalence": {
+    "paths": [
+      "native",
+      "src",
+      "scripts/landfall",
+      "package.json",
+      "package-lock.json",
+      "prisma",
+      "tests/e2e/parallax-native-authority.spec.ts",
+      ".agents/landfall-device-lab-hosted.yml"
+    ],
+    "changedPaths": [],
+    "result": "PASS"
+  },
+  "assets": [
+    {
+      "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+      "bytes": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73"
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+      "bytes": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73"
+    },
+    {
+      "path": "public/parallax/sc02/models/brass-compass.glb",
+      "bytes": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb"
+    },
+    {
+      "path": "public/parallax/sc02/models/treasure-chest.glb",
+      "bytes": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f"
+    }
+  ],
+  "limits": [
+    "Equality preserves evidence scope, not protected acceptance. Historical failed receipts are not rewritten. Private classroom, media, credentials and preview database were not read or changed."
+  ]
+}

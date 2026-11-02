@@ -1,0 +1,1023 @@
+{
+  "schemaVersion": 2,
+  "role": "INDEPENDENT_READ_ONLY_SCOPED_SOURCE_REUSE_REVIEW",
+  "qualification": false,
+  "result": "PASS_WITH_EXPLICIT_EVIDENCE_LIMITS",
+  "source": {
+    "assembly": "539206b304a0f125e09f882323ea7d31837fd366",
+    "tree": "9278efd2a440384cda473e2294db01fd107de39b",
+    "dispatcher": "79df8c58ef2db16ba236af139e88d5726c508012",
+    "dispatcherTree": "bfced317377ec1571a15a77fc1e79def1e3438a4",
+    "ios": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+    "androidAndSoftware": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+    "browser": "26da4135d851ee67a0c685a0726486739612d1e2",
+    "protectedMain": "185f5fd368ec16a77cb5fe92e7813d7ca4ac6418"
+  },
+  "scopeComparisons": [
+    {
+      "name": "normalMainAssemblyRetainsFrozenDispatcherProduct",
+      "from": "79df8c58ef2db16ba236af139e88d5726c508012",
+      "paths": [
+        "native",
+        "src",
+        "scripts/landfall",
+        "tests/fixtures",
+        "package.json",
+        "package-lock.json",
+        "prisma",
+        "public",
+        "next.config.ts",
+        "tests/e2e/parallax-native-authority.spec.ts"
+      ],
+      "to": "539206b304a0f125e09f882323ea7d31837fd366",
+      "changedPaths": [],
+      "result": "NONVACUOUS_BYTE_IDENTICAL_SCOPED_SOURCE_ONLY",
+      "committedPathChecks": [
+        {
+          "path": "native",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "337d339a56d7e8dbe3eec2c7c78c3bd59b3616c3",
+            "matchedBlobCount": 102
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "337d339a56d7e8dbe3eec2c7c78c3bd59b3616c3",
+            "matchedBlobCount": 102
+          }
+        },
+        {
+          "path": "src",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "9d6dfa5e1e60bbe816d0aace8fb970652cde9260",
+            "matchedBlobCount": 1765
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "9d6dfa5e1e60bbe816d0aace8fb970652cde9260",
+            "matchedBlobCount": 1765
+          }
+        },
+        {
+          "path": "scripts/landfall",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "0b07322af77d0cd54d3cef5f15a404bf6ba309d1",
+            "matchedBlobCount": 28
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "0b07322af77d0cd54d3cef5f15a404bf6ba309d1",
+            "matchedBlobCount": 28
+          }
+        },
+        {
+          "path": "tests/fixtures",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "29af36f83e4fe72fa6049cea003e5070352a3a93",
+            "matchedBlobCount": 8
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "29af36f83e4fe72fa6049cea003e5070352a3a93",
+            "matchedBlobCount": 8
+          }
+        },
+        {
+          "path": "package.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "37b096381c2acaa747a24bccee901c62215b3577",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "37b096381c2acaa747a24bccee901c62215b3577",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "package-lock.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "prisma",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "fe2c43de6878e2ae98ee44912b61516dd13ec64e",
+            "matchedBlobCount": 158
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "fe2c43de6878e2ae98ee44912b61516dd13ec64e",
+            "matchedBlobCount": 158
+          }
+        },
+        {
+          "path": "public",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+            "matchedBlobCount": 41
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+            "matchedBlobCount": 41
+          }
+        },
+        {
+          "path": "next.config.ts",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "76a78483839ff606b9706867a5c442857e7a2456",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "76a78483839ff606b9706867a5c442857e7a2456",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "tests/e2e/parallax-native-authority.spec.ts",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "8c7afc37864aa64b5313b45925994bcd40732f8e",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "8c7afc37864aa64b5313b45925994bcd40732f8e",
+            "matchedBlobCount": 1
+          }
+        }
+      ],
+      "exclusionChecks": [],
+      "nonExcludedCommittedBlobCounts": {
+        "from": 2106,
+        "to": 2106
+      },
+      "allPositivePathsExistInBothCommittedTrees": true
+    },
+    {
+      "name": "iosArchiveAndRuntimeReuse",
+      "from": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+      "paths": [
+        "native/ios",
+        "scripts/landfall/device-lab/parallax-native-run.ts",
+        "public/parallax/sc02",
+        "package.json",
+        "package-lock.json",
+        ".agents/ncl01-testflight-hosted.yml",
+        ".agents/scripts/ncl01-apple-signing.ps1"
+      ],
+      "to": "539206b304a0f125e09f882323ea7d31837fd366",
+      "changedPaths": [],
+      "result": "NONVACUOUS_BYTE_IDENTICAL_SCOPED_SOURCE_ONLY",
+      "committedPathChecks": [
+        {
+          "path": "native/ios",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "e3b4e8ac3c13a4fe49c16826dffc81663bfa066b",
+            "matchedBlobCount": 56
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "e3b4e8ac3c13a4fe49c16826dffc81663bfa066b",
+            "matchedBlobCount": 56
+          }
+        },
+        {
+          "path": "scripts/landfall/device-lab/parallax-native-run.ts",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "d1963080fb673837c911ed4d11c66e1643306230",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "d1963080fb673837c911ed4d11c66e1643306230",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "public/parallax/sc02",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "fde0b1446f453c239490fe2122f510812ad4d561",
+            "matchedBlobCount": 5
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "fde0b1446f453c239490fe2122f510812ad4d561",
+            "matchedBlobCount": 5
+          }
+        },
+        {
+          "path": "package.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "37b096381c2acaa747a24bccee901c62215b3577",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "37b096381c2acaa747a24bccee901c62215b3577",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "package-lock.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": ".agents/ncl01-testflight-hosted.yml",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": ".agents/scripts/ncl01-apple-signing.ps1",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fe49d633a997195ec3f56d7a8eeb92eb6920b30b",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fe49d633a997195ec3f56d7a8eeb92eb6920b30b",
+            "matchedBlobCount": 1
+          }
+        }
+      ],
+      "exclusionChecks": [],
+      "nonExcludedCommittedBlobCounts": {
+        "from": 66,
+        "to": 66
+      },
+      "allPositivePathsExistInBothCommittedTrees": true
+    },
+    {
+      "name": "androidNativeCollectorReuse",
+      "from": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+      "paths": [
+        "native/android",
+        "src/landfall/device-lab",
+        ":(exclude)src/landfall/device-lab/hosted-ios-runner.test.ts",
+        "tests/fixtures/parallax",
+        ".agents/landfall-device-lab-hosted.yml"
+      ],
+      "to": "539206b304a0f125e09f882323ea7d31837fd366",
+      "changedPaths": [],
+      "result": "NONVACUOUS_BYTE_IDENTICAL_SCOPED_SOURCE_ONLY",
+      "committedPathChecks": [
+        {
+          "path": "native/android",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "0584aa2f577b41db533d0a41d15a5ea544448652",
+            "matchedBlobCount": 46
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "0584aa2f577b41db533d0a41d15a5ea544448652",
+            "matchedBlobCount": 46
+          }
+        },
+        {
+          "path": "src/landfall/device-lab",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "86a4f038df3d2b9af39b725f2f8ac5490a9b8375",
+            "matchedBlobCount": 53
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "0e45d5849335da66b5a2b47ffde4eef3f9c4ebb2",
+            "matchedBlobCount": 54
+          }
+        },
+        {
+          "path": "tests/fixtures/parallax",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "cb0e5ab3bbd4f979f68bd59d88dde08c86bb1a5f",
+            "matchedBlobCount": 2
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "cb0e5ab3bbd4f979f68bd59d88dde08c86bb1a5f",
+            "matchedBlobCount": 2
+          }
+        },
+        {
+          "path": ".agents/landfall-device-lab-hosted.yml",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "8be25be3d71ded2f42995c3f851d856718524f85",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "8be25be3d71ded2f42995c3f851d856718524f85",
+            "matchedBlobCount": 1
+          }
+        }
+      ],
+      "exclusionChecks": [
+        {
+          "pathspec": ":(exclude)src/landfall/device-lab/hosted-ios-runner.test.ts",
+          "pairedPositive": [
+            "src/landfall/device-lab"
+          ],
+          "fromCommittedMatchCount": 0,
+          "toCommittedMatchCount": 1,
+          "newGuardTestIntentionallyAbsentFromOlderCommit": true
+        }
+      ],
+      "nonExcludedCommittedBlobCounts": {
+        "from": 102,
+        "to": 102
+      },
+      "allPositivePathsExistInBothCommittedTrees": true
+    },
+    {
+      "name": "webCanonicalReuse",
+      "from": "26da4135d851ee67a0c685a0726486739612d1e2",
+      "paths": [
+        "src",
+        ":(exclude)src/landfall/device-lab",
+        "package.json",
+        "package-lock.json",
+        "prisma",
+        "public",
+        "next.config.ts",
+        "tests/e2e/parallax-native-authority.spec.ts"
+      ],
+      "to": "539206b304a0f125e09f882323ea7d31837fd366",
+      "changedPaths": [],
+      "result": "NONVACUOUS_BYTE_IDENTICAL_SCOPED_SOURCE_ONLY",
+      "committedPathChecks": [
+        {
+          "path": "src",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "f0abb5b017bdc8743c1d4a226ffe62462c399e44",
+            "matchedBlobCount": 1764
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "9d6dfa5e1e60bbe816d0aace8fb970652cde9260",
+            "matchedBlobCount": 1765
+          }
+        },
+        {
+          "path": "package.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "37b096381c2acaa747a24bccee901c62215b3577",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "37b096381c2acaa747a24bccee901c62215b3577",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "package-lock.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "prisma",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "fe2c43de6878e2ae98ee44912b61516dd13ec64e",
+            "matchedBlobCount": 158
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "fe2c43de6878e2ae98ee44912b61516dd13ec64e",
+            "matchedBlobCount": 158
+          }
+        },
+        {
+          "path": "public",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+            "matchedBlobCount": 41
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+            "matchedBlobCount": 41
+          }
+        },
+        {
+          "path": "next.config.ts",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "76a78483839ff606b9706867a5c442857e7a2456",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "76a78483839ff606b9706867a5c442857e7a2456",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "tests/e2e/parallax-native-authority.spec.ts",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "8c7afc37864aa64b5313b45925994bcd40732f8e",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "8c7afc37864aa64b5313b45925994bcd40732f8e",
+            "matchedBlobCount": 1
+          }
+        }
+      ],
+      "exclusionChecks": [
+        {
+          "pathspec": ":(exclude)src/landfall/device-lab",
+          "pairedPositive": [
+            "src"
+          ],
+          "fromCommittedMatchCount": 53,
+          "toCommittedMatchCount": 54,
+          "newGuardTestIntentionallyAbsentFromOlderCommit": false
+        }
+      ],
+      "nonExcludedCommittedBlobCounts": {
+        "from": 1914,
+        "to": 1914
+      },
+      "allPositivePathsExistInBothCommittedTrees": true
+    },
+    {
+      "name": "retainedSoftwareImplementation",
+      "from": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+      "paths": [
+        "src",
+        ":(exclude)src/landfall/device-lab/hosted-ios-runner.test.ts",
+        "package.json",
+        "package-lock.json",
+        "prisma",
+        "public",
+        "next.config.ts",
+        "tests/e2e/parallax-native-authority.spec.ts"
+      ],
+      "to": "539206b304a0f125e09f882323ea7d31837fd366",
+      "changedPaths": [],
+      "result": "NONVACUOUS_BYTE_IDENTICAL_SCOPED_SOURCE_ONLY",
+      "committedPathChecks": [
+        {
+          "path": "src",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "25f98185e2724f60a88f33f3fdb425ab52001b25",
+            "matchedBlobCount": 1764
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "9d6dfa5e1e60bbe816d0aace8fb970652cde9260",
+            "matchedBlobCount": 1765
+          }
+        },
+        {
+          "path": "package.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "37b096381c2acaa747a24bccee901c62215b3577",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "37b096381c2acaa747a24bccee901c62215b3577",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "package-lock.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "prisma",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "fe2c43de6878e2ae98ee44912b61516dd13ec64e",
+            "matchedBlobCount": 158
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "fe2c43de6878e2ae98ee44912b61516dd13ec64e",
+            "matchedBlobCount": 158
+          }
+        },
+        {
+          "path": "public",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+            "matchedBlobCount": 41
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "a51b84c67bd0b040b472b73037ca7ac3d30e035f",
+            "matchedBlobCount": 41
+          }
+        },
+        {
+          "path": "next.config.ts",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "76a78483839ff606b9706867a5c442857e7a2456",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "76a78483839ff606b9706867a5c442857e7a2456",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "tests/e2e/parallax-native-authority.spec.ts",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "8c7afc37864aa64b5313b45925994bcd40732f8e",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "8c7afc37864aa64b5313b45925994bcd40732f8e",
+            "matchedBlobCount": 1
+          }
+        }
+      ],
+      "exclusionChecks": [
+        {
+          "pathspec": ":(exclude)src/landfall/device-lab/hosted-ios-runner.test.ts",
+          "pairedPositive": [
+            "src"
+          ],
+          "fromCommittedMatchCount": 0,
+          "toCommittedMatchCount": 1,
+          "newGuardTestIntentionallyAbsentFromOlderCommit": true
+        }
+      ],
+      "nonExcludedCommittedBlobCounts": {
+        "from": 1967,
+        "to": 1967
+      },
+      "allPositivePathsExistInBothCommittedTrees": true
+    },
+    {
+      "name": "protectedAuthorityAndWorkflowCustody",
+      "from": "185f5fd368ec16a77cb5fe92e7813d7ca4ac6418",
+      "paths": [
+        "scripts/sounding-line",
+        "tests/sounding-line",
+        "testing",
+        "testing/contracts.json",
+        "testing/product-experience-exceptions.json",
+        "testing/sounding-line-authority.json",
+        ".github/workflows",
+        "Development_Docs/Governing",
+        "Development_Docs/Programs/Sounding_Line",
+        "Development_Docs/Governing/Sounding_Line_Effective_Authority.md"
+      ],
+      "to": "539206b304a0f125e09f882323ea7d31837fd366",
+      "changedPaths": [],
+      "result": "NONVACUOUS_BYTE_IDENTICAL_SCOPED_SOURCE_ONLY",
+      "committedPathChecks": [
+        {
+          "path": "scripts/sounding-line",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "58b92a1f07278642d826baec66ff8d0ac933e422",
+            "matchedBlobCount": 84
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "58b92a1f07278642d826baec66ff8d0ac933e422",
+            "matchedBlobCount": 84
+          }
+        },
+        {
+          "path": "tests/sounding-line",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "51dd8cef169389258b92ddcf76aad11ccbaebce9",
+            "matchedBlobCount": 47
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "51dd8cef169389258b92ddcf76aad11ccbaebce9",
+            "matchedBlobCount": 47
+          }
+        },
+        {
+          "path": "testing",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "bf8c55a60a112902ced69938a6872592e0746775",
+            "matchedBlobCount": 43
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "bf8c55a60a112902ced69938a6872592e0746775",
+            "matchedBlobCount": 43
+          }
+        },
+        {
+          "path": "testing/contracts.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "cec75109b4855603da434fe8cf49b2fa4643729a",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "cec75109b4855603da434fe8cf49b2fa4643729a",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "testing/product-experience-exceptions.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "d0a3969526afc372762a8c2874476b1ede47a33b",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "d0a3969526afc372762a8c2874476b1ede47a33b",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": "testing/sounding-line-authority.json",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "c8636cdf82e531b4de21e8d0a40fb7275b3356f4",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "c8636cdf82e531b4de21e8d0a40fb7275b3356f4",
+            "matchedBlobCount": 1
+          }
+        },
+        {
+          "path": ".github/workflows",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "e558e3d553fea096dad666ddbe48e2230cc28380",
+            "matchedBlobCount": 7
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "e558e3d553fea096dad666ddbe48e2230cc28380",
+            "matchedBlobCount": 7
+          }
+        },
+        {
+          "path": "Development_Docs/Governing",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "5a9e73e10ed2596cfcd91ecef21144021ebc8336",
+            "matchedBlobCount": 55
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "5a9e73e10ed2596cfcd91ecef21144021ebc8336",
+            "matchedBlobCount": 55
+          }
+        },
+        {
+          "path": "Development_Docs/Programs/Sounding_Line",
+          "from": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "019b52f3da0d6f2a3397575202e39442bcd8c5eb",
+            "matchedBlobCount": 311
+          },
+          "to": {
+            "mode": "040000",
+            "type": "tree",
+            "object": "019b52f3da0d6f2a3397575202e39442bcd8c5eb",
+            "matchedBlobCount": 311
+          }
+        },
+        {
+          "path": "Development_Docs/Governing/Sounding_Line_Effective_Authority.md",
+          "from": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "06cdf01de368f3bfa1a45356a4166d41300f4541",
+            "matchedBlobCount": 1
+          },
+          "to": {
+            "mode": "100644",
+            "type": "blob",
+            "object": "06cdf01de368f3bfa1a45356a4166d41300f4541",
+            "matchedBlobCount": 1
+          }
+        }
+      ],
+      "exclusionChecks": [],
+      "nonExcludedCommittedBlobCounts": {
+        "from": 547,
+        "to": 547
+      },
+      "allPositivePathsExistInBothCommittedTrees": true
+    }
+  ],
+  "retainedEvidence": [
+    {
+      "kind": "IOS_UNSIGNED_RELEASE_ARCHIVE",
+      "runId": "39619394225",
+      "testedCommit": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+      "disposition": "PASS_UNSIGNED_NO_UPLOAD",
+      "notFreshSimulatorEvidence": true
+    },
+    {
+      "kind": "ANDROID_NATIVE_AND_JOINED_REJECTION",
+      "runId": "39613042290",
+      "testedCommit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+      "nativeTests": 16,
+      "result": "PASS",
+      "joined": "REAL_SQLITE_SIMULATION_REJECTED_ZERO_OBSERVATIONS_ZERO_EVENTS",
+      "physicalTrackingProven": false
+    },
+    {
+      "kind": "REAL_APP_CANONICAL_D1_MOCK_NATIVE_TRANSPORT",
+      "runId": "39607851877",
+      "testedCommit": "26da4135d851ee67a0c685a0726486739612d1e2",
+      "result": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+      "actualSelectedCountIndependentlyRetained": null
+    },
+    {
+      "kind": "HOST_SOFTWARE_BASELINE",
+      "testedCommit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+      "tests": 495,
+      "files": 39,
+      "directTestFilesUnchanged": true,
+      "sourceReceipt": "software-a86c3636.json",
+      "changedTransitiveToolDependency": "scripts/landfall/device-lab/hosted.ts",
+      "boundedChangedToolRegression": "14 focused guard tests at retained dispatcher source; counts overlap, not an additive 509-test final-suite claim",
+      "directTestFileExistenceValidatedAtBothCommits": 39
+    },
+    {
+      "kind": "HOSTED_RUNNER_PREFLIGHT",
+      "baseCommit": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+      "checkedSourceMatchesFrozenDispatcher": true,
+      "tests": 14,
+      "files": 2,
+      "newRunnerGuardCasesInSource": 7,
+      "existingGraphicsGuardCasesInSource": 7,
+      "retainedLogSha256": "72a94fc4eba5ca698f005062eb28960777691c9ed5e446256774f9afabe271cb",
+      "limits": [
+        "Retained log reports only aggregate 14/2; individual case names were not emitted.",
+        "This verifies local transport guards, not Intel/native execution."
+      ]
+    }
+  ],
+  "preservation": {
+    "historicalSource": "cd597b1274bddad70118b77dd65b13969dd55a8d",
+    "prefixes": [
+      "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015",
+      "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019",
+      "native/ios/Branding",
+      "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset"
+    ],
+    "originalGitBlobEntries": 658,
+    "allOriginalModeBlobPathRowsRetained": true,
+    "originalEntriesSha256": "71421fa2da32beca7c8c9563034bbcdb0549cc5c6987bb5c65871e8d37521d93",
+    "assets": [
+      {
+        "path": "public/parallax/sc02/models/treasure-chest.glb",
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "gitBlob": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+        "committedAssemblyBytesSha256Verified": true
+      },
+      {
+        "path": "public/parallax/sc02/models/brass-compass.glb",
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "gitBlob": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+        "committedAssemblyBytesSha256Verified": true
+      },
+      {
+        "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+        "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+        "gitBlob": "448bba68585527f2b53db02966a579084610a30b",
+        "committedAssemblyBytesSha256Verified": true
+      },
+      {
+        "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+        "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+        "gitBlob": "448bba68585527f2b53db02966a579084610a30b",
+        "committedAssemblyBytesSha256Verified": true
+      }
+    ],
+    "prefixesResolveInBothCommittedTrees": true
+  },
+  "currentReadiness": {
+    "protectedMain": "185f5fd368ec16a77cb5fe92e7813d7ca4ac6418",
+    "acceptedMainIsAncestor": true,
+    "plannerGate": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity",
+    "planOriginalLogSha256": "66e716a10e5b7fd823847a801499edeaecbfeb4c7e08076ff9004e0ff543ace4",
+    "plannerExitCode": 1,
+    "plannerExitCodeEvidence": "Parent-owned execution report; gate token independently read",
+    "crossdeckPr721": {
+      "status": "OPEN",
+      "draft": false,
+      "head": "8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94",
+      "statusEvidence": "Parent fresh read-only refresh; not acceptance"
+    },
+    "proposedPr781": {
+      "status": "OPEN",
+      "head": "182233e0f6d11a5dd5f74f35e01183b633b6ec8f"
+    },
+    "pr741": {
+      "status": "OPEN_DRAFT",
+      "head": "76d1787e1340e396bc95747293d43e57130b00ed"
+    },
+    "finiteCrossdeckAllowanceUsed": false,
+    "authorityRunnerGitBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+    "authorityMachineIndexGitBlob": "c8636cdf82e531b4de21e8d0a40fb7275b3356f4"
+  },
+  "documentationReview": {
+    "ledgerGitBlob": "ba8f890aabe0cff7d76893cee6849477942477e9",
+    "findings": [
+      "Bounded first-model implementation is distinguished from current iOS qualification and integrated/physical/owner acceptance.",
+      "Broader rich-profile features are explicitly unsupported future increments; authored fallback is preserved.",
+      "Old47ff preview anonymous health is distinct from current candidate deployment and private-account integrity.",
+      "Current pins/PR721 non-draft head should be appended in the final readiness update without rewriting historical records.",
+      "Say 14 focused guard cases, not 14 new cases; 7 are new runner guards and the remaining guarded source has 7 existing graphics cases."
+    ],
+    "featureCatalogRecommendation": "NO_CHANGE_REQUIRED_UNACCEPTED_BOUNDED_MILESTONE"
+  },
+  "limits": [
+    "Source equality reuses only the stated unchanged implementation scope; it does not manufacture a fresh full-assembly run.",
+    "Native iOS Intel execution is still pending and must observe the actual environment/full assertions; retained ARM graphics do not qualify Intel.",
+    "No protected-main decision, merge, landed smoke, live browser provider, physical tracking, accepted physical Inspect or owner acceptance is proved.",
+    "No CI dispatch, refs, private accounts/database/media, runtime, main or PR were mutated by this review.",
+    "V1 authority comparison included a nonexistent runner path and incomplete actual script/policy coverage. Use this superseding v2 authority scope.",
+    "A newly excluded runner guard test is deliberately absent from the older commit; its real target entry and positive ancestor are validated. Every positive path exists at both compared commits.",
+    "Full testing/Governing/Sounding_Line-program tree equality is scoped source custody only; it grants no protected acceptance or Crossdeck allowance."
+  ],
+  "reviewRevision": 2,
+  "reviewCorrection": {
+    "supersededPrivateFile": "source-reuse-review-539206b3.json",
+    "supersededPrivateSha256": "05e2ac9b7a809a01d1ee99361989d564f0150dcf3109a3ba73822a8272a58996",
+    "supersededOriginalModified": false,
+    "reason": "V1 did not validate each scope path before diff; .agents/scripts/development-browser-suite.mjs was nonexistent. V2 validates every positive file/tree at both commits and uses the real Sounding Line scripts/tests, full testing policy tree, workflows, governing chain and machine index.",
+    "missingV1Path": ".agents/scripts/development-browser-suite.mjs",
+    "actualRunnerPath": "scripts/sounding-line/develop-browser-suite.mjs",
+    "previousHumanAuthorityPathExistsAtBothCommits": true,
+    "previousHumanAuthorityBlob": "06cdf01de368f3bfa1a45356a4166d41300f4541",
+    "v2PrewriteProbeRejectedMissingPath": "testing/workspace-lifecycle-policy.json",
+    "v2PrewriteProbeOutcome": "No v2 written; final scope uses actual complete testing tree and explicit required contract/exception/index files.",
+    "positiveScopePathChecks": 45,
+    "exclusionScopeChecks": 3,
+    "validationMethod": "git ls-tree -r -t --full-tree existence/type/nonempty blob-match validation before exact diff; exclusions require existing positive ancestor and real committed matches"
+  }
+}
