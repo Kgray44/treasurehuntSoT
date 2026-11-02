@@ -8,6 +8,9 @@ import {
   retainMediaTransportShadow,
   verifyRetainedMediaShadow,
   MEDIA_SHADOW_LIMITS,
+  LEGACY_ARCHIVE_SHADOW_LIMITS,
+  retainLegacyArchiveTransportShadow,
+  verifyRetainedLegacyArchiveShadow,
 } from "../../scripts/sounding-line/bounded-media-shadow.mjs";
 
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -38,6 +41,82 @@ const options = (directory, bytes, extra = {}) => ({
   expectedBytes: bytes.length,
   expectedSha256: hash(bytes),
   ...extra,
+});
+
+test("legacy archive spooling has a separate opaque profile without expanding the media lane", async (t) => {
+  const { directory } = fixture(t),
+    bytes = Buffer.alloc(130000, 0x5a);
+  const result = await retainLegacyArchiveTransportShadow({
+    ...options(directory, bytes),
+    response: response([bytes]),
+  });
+  assert.equal(result.status, "PASS");
+  assert.equal(result.kind, "LEGACY_ARCHIVE_TRANSPORT_SHADOW");
+  assert.equal(result.maximumBytes, LEGACY_ARCHIVE_SHADOW_LIMITS.bytes);
+  assert.equal(result.deadlineMs, LEGACY_ARCHIVE_SHADOW_LIMITS.deadlineMs);
+  assert.equal(verifyRetainedLegacyArchiveShadow(result).sha256, hash(bytes));
+  assert.equal(verifyRetainedMediaShadow(result), null);
+  assert.equal(verifyRetainedLegacyArchiveShadow(JSON.parse(JSON.stringify(result))), null);
+  await assert.rejects(
+    retainMediaTransportShadow({
+      ...options(directory, bytes),
+      response: response([bytes]),
+      maximumBytes: LEGACY_ARCHIVE_SHADOW_LIMITS.bytes,
+    }),
+    /LIMIT/u,
+  );
+  await assert.rejects(
+    retainMediaTransportShadow({
+      ...options(directory, bytes),
+      response: response([bytes]),
+      deadlineMs: LEGACY_ARCHIVE_SHADOW_LIMITS.deadlineMs,
+    }),
+    /DEADLINE/u,
+  );
+});
+
+test("legacy 2 GiB and 4 GiB declarations preserve interrupted prefixes without allocating the declared size", async (t) => {
+  const { directory } = fixture(t),
+    prefix = Buffer.alloc(64 * 1024, 0x5a);
+  for (const expectedBytes of [2 ** 31 - 1, 2 ** 31, 2 ** 31 + 1, 2 ** 32 - 1, 2 ** 32, 2 ** 32 + 1]) {
+    const original = Error(`interrupted declared archive ${expectedBytes}`);
+    let reads = 0;
+    const r = {
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      body: {
+        getReader: () => ({
+          read: async () => {
+            if (reads++ === 0) return { done: false, value: prefix };
+            throw original;
+          },
+          cancel: async () => {},
+          releaseLock: () => {},
+        }),
+      },
+    };
+    const result = await retainLegacyArchiveTransportShadow({
+      directory,
+      response: r,
+      expectedBytes,
+      expectedSha256: "a".repeat(64),
+    });
+    assert.equal(result.status, "FAIL");
+    assert.equal(result.originalError, original);
+    assert.equal(result.bytes, prefix.length);
+    assert(fs.readFileSync(result.rawPath).equals(prefix));
+    assert.equal(result.failureRetained, true);
+    assert.equal(verifyRetainedLegacyArchiveShadow(result), null);
+  }
+  await assert.rejects(
+    retainLegacyArchiveTransportShadow({
+      directory,
+      expectedBytes: LEGACY_ARCHIVE_SHADOW_LIMITS.bytes + 1,
+      expectedSha256: "a".repeat(64),
+    }),
+    /SIZE/u,
+  );
 });
 
 test("bounded streaming retains exact bytes without calling whole-response buffering", async (t) => {

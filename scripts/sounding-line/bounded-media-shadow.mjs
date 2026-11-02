@@ -9,6 +9,14 @@ export const MEDIA_SHADOW_LIMITS = Object.freeze({
   reads: 65536,
   deadlineMs: 120000,
 });
+// A separate legacy-archive lane; callers of the media lane cannot select these
+// larger ceilings through maximumBytes or deadlineMs.
+export const LEGACY_ARCHIVE_SHADOW_LIMITS = Object.freeze({
+  bytes: 5 * 1024 * 1024 * 1024,
+  chunkBytes: 64 * 1024,
+  reads: 100000,
+  deadlineMs: 600000,
+});
 const completed = new WeakMap();
 const NativeError = Error;
 const nativeStackGetter = Object.getOwnPropertyDescriptor(new NativeError(), "stack")?.get;
@@ -178,19 +186,26 @@ async function closeReader(reader, failures) {
 // No production call site. Stream bytes into an exclusive private file instead
 // of buffering a complete archive. Expected hashes are declarations, not provider
 // authentication, and path rechecks do not attest external runtime isolation.
-export async function retainMediaTransportShadow({
-  directory,
-  response,
-  expectedBytes,
-  expectedSha256,
-  maximumBytes = MEDIA_SHADOW_LIMITS.bytes,
-  deadlineMs = MEDIA_SHADOW_LIMITS.deadlineMs,
-  signal,
-}) {
-  need(Number.isSafeInteger(maximumBytes) && maximumBytes > 0 && maximumBytes <= MEDIA_SHADOW_LIMITS.bytes, "LIMIT");
+export function retainMediaTransportShadow(input) {
+  return retainTransportShadow(input, MEDIA_SHADOW_LIMITS, "MEDIA_TRANSPORT_SHADOW");
+}
+export function retainLegacyArchiveTransportShadow(input) {
+  return retainTransportShadow(input, LEGACY_ARCHIVE_SHADOW_LIMITS, "LEGACY_ARCHIVE_TRANSPORT_SHADOW");
+}
+async function retainTransportShadow(input, limits, kind) {
+  const {
+    directory,
+    response,
+    expectedBytes,
+    expectedSha256,
+    maximumBytes = limits.bytes,
+    deadlineMs = limits.deadlineMs,
+    signal,
+  } = input;
+  need(Number.isSafeInteger(maximumBytes) && maximumBytes > 0 && maximumBytes <= limits.bytes, "LIMIT");
   need(Number.isSafeInteger(expectedBytes) && expectedBytes > 0 && expectedBytes <= maximumBytes, "SIZE");
   need(typeof expectedSha256 === "string" && /^[a-f0-9]{64}$/u.test(expectedSha256), "DIGEST");
-  need(Number.isSafeInteger(deadlineMs) && deadlineMs > 0 && deadlineMs <= MEDIA_SHADOW_LIMITS.deadlineMs, "DEADLINE");
+  need(Number.isSafeInteger(deadlineMs) && deadlineMs > 0 && deadlineMs <= limits.deadlineMs, "DEADLINE");
   need(signal === undefined || signal instanceof AbortSignal, "SIGNAL");
   const identity = directoryIdentity(directory),
     id = `media-shadow-${randomUUID()}`;
@@ -223,7 +238,7 @@ export async function retainMediaTransportShadow({
     );
     sameFile(fd, rawPath);
     initialRecord = retainJSON(initialPath, {
-      kind: "MEDIA_TRANSPORT_SHADOW",
+      kind,
       status: "INCOMPLETE",
       ...expectations,
       authentication: "DECLARED_EXPECTATIONS_NOT_PROVIDER_AUTHENTICATED",
@@ -243,7 +258,7 @@ export async function retainMediaTransportShadow({
     });
     for (;;) {
       need(performance.now() - began < deadlineMs, "DEADLINE");
-      need(reads < MEDIA_SHADOW_LIMITS.reads, "READ_LIMIT");
+      need(reads < limits.reads, "READ_LIMIT");
       reads++;
       const item = await Promise.race([reader.read(), abort]);
       need(performance.now() - began < deadlineMs, "DEADLINE");
@@ -257,10 +272,10 @@ export async function retainMediaTransportShadow({
       if (item.value.byteLength === 0) continue;
       sameDirectory(identity);
       sameFile(fd, rawPath);
-      for (let offset = 0; offset < item.value.byteLength; offset += MEDIA_SHADOW_LIMITS.chunkBytes) {
+      for (let offset = 0; offset < item.value.byteLength; offset += limits.chunkBytes) {
         // Copy one bounded view so a shared producer buffer cannot change the
         // bytes between the hash and write operations.
-        const chunk = Buffer.from(item.value.subarray(offset, offset + MEDIA_SHADOW_LIMITS.chunkBytes));
+        const chunk = Buffer.from(item.value.subarray(offset, offset + limits.chunkBytes));
         let written = 0;
         while (written < chunk.length) {
           const count = fs.writeSync(fd, chunk, written, chunk.length - written);
@@ -353,7 +368,7 @@ export async function retainMediaTransportShadow({
     }
   }
   const terminal = {
-    kind: "MEDIA_TRANSPORT_SHADOW",
+    kind,
     status: error ? "FAIL" : "PASS",
     ...expectations,
     bytes,
@@ -394,13 +409,19 @@ export async function retainMediaTransportShadow({
       },
     }),
   );
-  if (!error) completed.set(result, { identity, rawPath, bytes, sha256, initialRecord, terminalRecord });
+  if (!error) completed.set(result, { kind, identity, rawPath, bytes, sha256, initialRecord, terminalRecord });
   return result;
 }
 
 export function verifyRetainedMediaShadow(receipt) {
+  return verifyRetainedTransport(receipt, "MEDIA_TRANSPORT_SHADOW");
+}
+export function verifyRetainedLegacyArchiveShadow(receipt) {
+  return verifyRetainedTransport(receipt, "LEGACY_ARCHIVE_TRANSPORT_SHADOW");
+}
+function verifyRetainedTransport(receipt, kind) {
   const value = completed.get(receipt);
-  if (!value) return null;
+  if (!value || value.kind !== kind) return null;
   let fd;
   try {
     sameDirectory(value.identity);
