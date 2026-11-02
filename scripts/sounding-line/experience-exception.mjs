@@ -2978,6 +2978,11 @@ async function main() {
     }, []),
   );
   const root = path.resolve(options.workspace ?? process.cwd());
+  if (options.operation === "retain-custody-proof") {
+    const { retainCustodyWorkerProofCLI } = await import("./custody-worker-proof-retention.mjs");
+    await retainCustodyWorkerProofCLI(options.workspace);
+    return;
+  }
   if (!["reserve", "seal"].includes(options.operation)) fail("OPERATION_FORBIDDEN");
   const baseSha = options.base,
     candidateSha = options.candidate;
