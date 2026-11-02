@@ -187,3 +187,14 @@ export function comparePreparationContentShadow({ source, destination }) {
     externalIsolationAttested: false,
   });
 }
+
+export function inspectPreparationContentShadow(observation) {
+  const measured = observations.get(observation);
+  if (!measured) return null;
+  return Object.freeze({
+    observationDigest: observation.observationDigest,
+    entries: Object.freeze(measured.entries.map((entry) => Object.freeze({ ...entry }))),
+    qualification: false,
+    reuseAuthorized: false,
+  });
+}
