@@ -71,7 +71,7 @@ export async function bounded(operation, milliseconds, code) {
   }
 }
 
-export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {} }) {
+export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {}, inheritExecutionPolicy = false }) {
   // Freeze the exact launch input before guardian setup awaits its private path.
   // Later caller mutations must not change what the creation record describes.
   args = JSON.parse(JSON.stringify(args));
@@ -80,17 +80,22 @@ export function spawnOwnedProcess(command, args, { root, env, cleanupOptions = {
   const finiteBudget = (value, fallback) => (Number.isFinite(value) ? Math.max(0, Math.min(value, 5000)) : fallback);
   const gracefulMs = finiteBudget(cleanupOptions.gracefulMs, 2000);
   const forceMs = finiteBudget(cleanupOptions.forceMs, 3000);
+  const guardianCommand =
+    windows && inheritExecutionPolicy
+      ? path.win32.join(process.env.SystemRoot, "System32", "WindowsPowerShell", "v1.0", "powershell.exe")
+      : windows
+        ? "powershell.exe"
+        : "python3";
   // On Windows the guardian creates the payload suspended, assigns a kill-on-
   // close Job Object, then resumes it. No descendant can escape through the
   // spawn-to-assignment race, including when the guardian's parent disappears.
   const child = spawn(
-    windows ? "powershell.exe" : "python3",
+    guardianCommand,
     windows
       ? [
           "-NoProfile",
           "-NonInteractive",
-          "-ExecutionPolicy",
-          "Bypass",
+          ...(inheritExecutionPolicy ? [] : ["-ExecutionPolicy", "Bypass"]),
           "-File",
           fileURLToPath(new URL("./owned-process-windows.ps1", import.meta.url)),
         ]
