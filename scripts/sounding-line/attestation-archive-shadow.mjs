@@ -11,6 +11,17 @@ export const ATTESTATION_ARCHIVE_SHADOW_LIMITS = Object.freeze({
   entries: 16384,
   chunkBytes: 65536,
   deadlineMs: 600000,
+  expandedBytes: 8 * 1024 ** 3,
+});
+export const PREPARATION_ARCHIVE_SHADOW_LIMITS = Object.freeze({
+  archiveBytes: 160 * 1024 ** 2,
+  centralBytes: 128 * 1024,
+  metadataBytes: 512 * 1024,
+  memberBytes: 32 * 1024 ** 2,
+  entries: 68,
+  chunkBytes: 65536,
+  deadlineMs: 60000,
+  expandedBytes: 132 * 1024 ** 2,
 });
 const need = (condition, code) => {
   if (!condition) throw Error(`SOUNDING_LINE_ATTESTATION_SHADOW_${code}`);
@@ -44,14 +55,16 @@ function extras(bytes) {
 // Unhooked, read-only experiment. A full file digest precedes member lookup.
 // No extraction or selected-range proof can substitute for the complete digest.
 // Expected digests remain caller declarations, not provider authentication.
-export function readAttestationArchiveShadow({
-  filename,
-  expectedBytes,
-  expectedSha256,
-  memberNames,
-  deadlineMs = ATTESTATION_ARCHIVE_SHADOW_LIMITS.deadlineMs,
-}) {
-  const limits = ATTESTATION_ARCHIVE_SHADOW_LIMITS;
+export function readAttestationArchiveShadow(input) {
+  return readArchiveMember(input, ATTESTATION_ARCHIVE_SHADOW_LIMITS);
+}
+// Separate immutable preparation profile. Callers of the attestation reader
+// cannot enlarge its 8 MiB selected-manifest bound through an option.
+export function readPreparationArchiveMemberShadow(input) {
+  return readArchiveMember(input, PREPARATION_ARCHIVE_SHADOW_LIMITS);
+}
+function readArchiveMember({ filename, expectedBytes, expectedSha256, memberNames, deadlineMs }, limits) {
+  if (deadlineMs === undefined) deadlineMs = limits.deadlineMs;
   need(typeof filename === "string" && path.isAbsolute(filename), "PATH");
   need(
     Number.isSafeInteger(expectedBytes) && expectedBytes >= 22 && expectedBytes <= limits.archiveBytes,
@@ -159,7 +172,8 @@ export function readAttestationArchiveShadow({
     );
     const central = read(centralOffset, centralSize),
       names = new Set(),
-      regions = [];
+      regions = [],
+      members = [];
     let cursor = 0,
       expanded = 0,
       selected;
@@ -183,7 +197,7 @@ export function readAttestationArchiveShadow({
         "CENTRAL_INVALID",
       );
       expanded += size;
-      need(expanded <= 8 * 1024 ** 3, "EXPANSION_BOUND");
+      need(expanded <= limits.expandedBytes, "EXPANSION_BOUND");
       const rawName = central.subarray(cursor + 46, cursor + 46 + nameSize);
       need(flags & 0x800 || !rawName.some((byte) => byte > 127), "NAME_ENCODING_UNSUPPORTED");
       const name = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(rawName),
@@ -191,6 +205,7 @@ export function readAttestationArchiveShadow({
       const identityName = directory ? name.slice(0, -1) : name;
       need(Buffer.from(name).equals(rawName) && safe(identityName) && !names.has(identityName), "MEMBER_PATH");
       names.add(identityName);
+      members.push(Object.freeze({ path: identityName, type: directory ? "directory" : "file", bytes: size }));
       const mode = (attributes >>> 16) & 0xf000;
       need(
         (directory ? [0, 0x4000] : [0, 0x8000]).includes(mode) && (!(attributes & 0x10) || directory),
@@ -291,6 +306,7 @@ export function readAttestationArchiveShadow({
       kind: "WHOLE_ARCHIVE_MEMBER_SHADOW",
       name: selected.name,
       bytes: selected.bytes,
+      members: Object.freeze(members),
       archiveSha256: expectedSha256,
       measurements: stats,
       qualification: false,

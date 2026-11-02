@@ -307,7 +307,7 @@ function inputs(root, context) {
     }),
   };
 }
-function eligibleInventory(entries) {
+export function eligiblePreparationInventoryShadow(entries) {
   const file =
     /^(?:(?:client|default|edge|index|index-browser|wasm)\.(?:js|d\.ts)|package\.json|schema\.prisma|query_engine_bg\.(?:js|wasm)|(?:wasm-edge-light-loader|wasm-worker-loader)\.mjs|(?:lib)?query_engine[-a-z0-9_.]+\.node)$/u;
   need(
@@ -404,7 +404,7 @@ export function compareTransferredPreparationShadow({ directory, context, inputF
       manifest.comparison.action === "RUN_FRESH_PREPARATION",
     "ORIGINAL_COMPARISON",
   );
-  eligibleInventory(manifest.inventory);
+  eligiblePreparationInventoryShadow(manifest.inventory);
   const payload = path.join(downloaded, "payload"),
     transferred = measurePreparationContentShadow({ root: payload, layer: "prisma-client" });
   const withoutModes = (entries) => entries.map(({ mode, ...entry }) => entry);
@@ -475,7 +475,7 @@ export function preparationPublisherMain(operation) {
   const identity = inputs(root, context);
   const source = path.join(root, "node_modules/.prisma/client");
   const measured = measurePreparationContentShadow({ root: source, layer: "prisma-client" });
-  eligibleInventory(inspectPreparationContentShadow(measured).entries);
+  eligiblePreparationInventoryShadow(inspectPreparationContentShadow(measured).entries);
   if (operation === "produce") {
     need(context.jobKey === "publisher", "JOB_ROLE");
     const parent = path.join(contextDirectory, "capsules");
