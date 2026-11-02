@@ -3,7 +3,7 @@
 import { constants, createHash, createPublicKey, privateDecrypt, createDecipheriv } from "node:crypto";
 import { canonicalJson } from "./evidence.mjs";
 import { validateArtifactManifest } from "./artifact-evidence-registry.mjs";
-import { BROWSER_FAILURE_ENCRYPTION_KEY } from "./private-browser-failure.mjs";
+import { installedRegistryWriteRecipient, installedRegistryReadRecipient } from "./registry-recipient-policy.mjs";
 import { sealPosttechnicalEvidence } from "./replay-posttechnical-diagnostic.mjs";
 
 const FORMAT = "VW-POSTTECHNICAL-EVIDENCE-1";
@@ -72,7 +72,7 @@ const aad = (binding, encryption) => ({
 export function sealArtifactRegistryRetention({
   manifest,
   binding,
-  encryption = BROWSER_FAILURE_ENCRYPTION_KEY,
+  encryption = installedRegistryWriteRecipient(),
   validation = {},
 }) {
   validateBinding(binding);
@@ -151,7 +151,23 @@ function parseEnvelope(bytes, binding, encryption) {
   return { header, headerBytes, nonce, wrappedKey, ciphertext, tag };
 }
 
-export function inspectArtifactRegistryRetention({ bytes, binding, encryption = BROWSER_FAILURE_ENCRYPTION_KEY }) {
+// A bounded declared ID selects only an installed public pin. The normal parser
+// and AEAD checks still validate the complete original envelope and binding.
+function declaredRecipientId(bytes) {
+  need(Buffer.isBuffer(bytes) && bytes.length >= 1 && bytes.length <= MAXIMUM, "ENVELOPE_BOUND");
+  try {
+    const envelope = JSON.parse(bytes.toString("utf8"));
+    return JSON.parse(decode(envelope.aad, 8192).toString("utf8")).keyId;
+  } catch {
+    throw Error("SOUNDING_LINE_ARTIFACT_RETENTION_ENVELOPE");
+  }
+}
+
+export function inspectArtifactRegistryRetention({
+  bytes,
+  binding,
+  encryption = installedRegistryReadRecipient(declaredRecipientId(bytes)),
+}) {
   parseEnvelope(bytes, binding, encryption);
   // Original artifact IDs, paths, raw hashes and logical coverage stay encrypted.
   return {
@@ -166,7 +182,7 @@ export function openArtifactRegistryRetention({
   bytes,
   binding,
   privateKey,
-  encryption = BROWSER_FAILURE_ENCRYPTION_KEY,
+  encryption = installedRegistryReadRecipient(declaredRecipientId(bytes)),
   validation = {},
 }) {
   const envelope = parseEnvelope(bytes, binding, encryption);

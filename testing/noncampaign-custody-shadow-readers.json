@@ -1,7 +1,7 @@
 {
   "version": 1,
   "status": "SHADOW_NOT_A_READ_SET_CERTIFICATE",
-  "readerObservationSource": "31115bf8f8d727c9b433e304e982f4c9cc5053ee",
+  "readerObservationSource": "bfe39895d16562c68391a3279a1729ae3235bb3d",
   "entrypoint": "scripts/sounding-line/experience-exception.mjs",
   "readers": [
     {
@@ -393,8 +393,8 @@
       "path": "scripts/sounding-line/owned-process.mjs",
       "mode": "100644",
       "type": "blob",
-      "blob": "02cfd820a905b3d64b46dfe1486a4a3e41e3ba59",
-      "sha256": "c2369857ae11e646c4ee0034f6df742a269f1daa7a90dcef3dd9bb1d4fc5222c"
+      "blob": "cc1061abeae81442f19048879111c6a8886daca6",
+      "sha256": "10ca602421e486ead22532f29b8662503193c7db80630a857094a32dde9ca00d"
     },
     {
       "path": "scripts/sounding-line/preparation-phases.mjs",
@@ -558,5 +558,34 @@
     "conservativeAddedReader": "scripts/sounding-line/custody-worker-proof-retention.mjs",
     "negativeReserveBehaviorChanged": false,
     "qualification": false
-  }
+  },
+  "sourceRebindContinuations": [
+    {
+      "kind": "QUALIFIED_DEFAULT_EQUIVALENT_SUPERVISOR_PENDING_FRESH_NATIVE_ACCEPTANCE",
+      "priorReaderObservationSource": "31115bf8f8d727c9b433e304e982f4c9cc5053ee",
+      "priorReaderMapSha256": "7e05ee464306c0a7757f891273a2ca7101cd516085f9c4843ba4225b134f8179",
+      "priorCertificateRevision": "fe3cd493fdf1f8da3f175022a6dabb9e02850fea",
+      "acceptedSource": "bfe39895d16562c68391a3279a1729ae3235bb3d",
+      "originalAcceptedCandidate": "ddeb583b05cadae4f3c95c85f26c587f161df36c",
+      "protectedAcceptance": {
+        "pr": 844,
+        "runId": 41512764232,
+        "attempt": 2,
+        "requiredCheckId": 125522309586,
+        "appId": 15368
+      },
+      "changedReaders": [
+        {
+          "path": "scripts/sounding-line/owned-process.mjs",
+          "oldBlob": "02cfd820a905b3d64b46dfe1486a4a3e41e3ba59",
+          "newBlob": "cc1061abeae81442f19048879111c6a8886daca6",
+          "oldSha256": "c2369857ae11e646c4ee0034f6df742a269f1daa7a90dcef3dd9bb1d4fc5222c",
+          "newSha256": "10ca602421e486ead22532f29b8662503193c7db80630a857094a32dde9ca00d"
+        }
+      ],
+      "readerPathsUnchanged": true,
+      "negativeReserveBehaviorChanged": false,
+      "qualification": false
+    }
+  ]
 }

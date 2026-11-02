@@ -73,6 +73,32 @@ fs.writeFileSync(
     `export const BROWSER_FAILURE_ENCRYPTION_KEY = Object.freeze(${JSON.stringify(fixtureEncryption)});`,
   ),
 );
+
+// Only this separately committed fixture enables a synthetic recovered generation.
+const fixtureRecoveredPair = generateKeyPairSync("rsa", { modulusLength: 3072 });
+const fixtureRecoveredPublic = fixtureRecoveredPair.publicKey.export({ type: "spki", format: "pem" });
+const fixtureRecoveredEncryption = {
+  publicKey: fixtureRecoveredPublic,
+  keyId: createHash("sha256").update(fixtureRecoveredPublic).digest("hex"),
+};
+const pendingDeclaration = "const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = null;";
+const policySource = fs.readFileSync(
+  new URL("../../scripts/sounding-line/registry-recipient-policy.mjs", import.meta.url),
+  "utf8",
+);
+assert(policySource.includes(pendingDeclaration));
+fs.writeFileSync(
+  path.join(root, "scripts/sounding-line/registry-recipient-policy.mjs"),
+  policySource.replace(
+    pendingDeclaration,
+    "const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = Object.freeze(" + JSON.stringify(fixtureRecoveredEncryption) + ");",
+  ),
+);
+
+fs.copyFileSync(
+  new URL("../../scripts/sounding-line/artifact-registry-retention.mjs", import.meta.url),
+  path.join(root, "scripts/sounding-line/artifact-registry-retention.mjs"),
+);
 git("add", ".");
 git("commit", "-qm", "Synthetic installed producer");
 const base = git("rev-parse", "HEAD");
@@ -556,81 +582,88 @@ test("registry transport requires the opaque original event, installed source cl
   assert.equal(api.retainedNativeOriginalContextEvidence(proof, f.input).responses.length, 4);
 });
 
-test("provider transport and owner decryption preserve original IDs and review ordinals without granting reuse", async () => {
-  const f = registryFixture();
-  const { sealArtifactRegistryRetention } = await import(
-    pathToFileURL(path.join(root, "scripts/sounding-line/artifact-registry-retention.mjs")).href
-  );
-  const { sealArtifactManifest, validateArtifactManifest } = await import(
-    pathToFileURL(path.join(root, "scripts/sounding-line/artifact-evidence-registry.mjs")).href
-  );
-  const original = artifactRegistryFixture({ baseSha: base, candidateSha: candidate, runId: 4444 });
-  original.producerMode = "capture";
-  original.reviewReceipts.push({
-    id: "original-independent-review",
-    contractId: "contract",
-    originalOrdinal: 3,
-    originalCandidateSha: candidate,
-    originalPacketDigest: "e".repeat(64),
-    artifactIds: original.artifacts.map((a) => a.id),
-    priorFindingIds: ["original-failed-finding"],
+for (const recipientMode of ["legacy", "new"]) {
+  test(`source-pinned ${recipientMode} recipient preserves provider IDs and ordinals without reuse`, async () => {
+    const f = registryFixture();
+    const { sealArtifactRegistryRetention } = await import(
+      pathToFileURL(path.join(root, "scripts/sounding-line/artifact-registry-retention.mjs")).href
+    );
+    const { sealArtifactManifest, validateArtifactManifest } = await import(
+      pathToFileURL(path.join(root, "scripts/sounding-line/artifact-evidence-registry.mjs")).href
+    );
+    const original = artifactRegistryFixture({ baseSha: base, candidateSha: candidate, runId: 4444 });
+    original.producerMode = "capture";
+    original.reviewReceipts.push({
+      id: "original-independent-review",
+      contractId: "contract",
+      originalOrdinal: 3,
+      originalCandidateSha: candidate,
+      originalPacketDigest: "e".repeat(64),
+      artifactIds: original.artifacts.map((a) => a.id),
+      priorFindingIds: ["original-failed-finding"],
+    });
+    const manifest = sealArtifactManifest(original),
+      spentReviewOrdinals = { contract: 3 };
+    validateArtifactManifest(manifest, { spentReviewOrdinals });
+    const binding = {
+      repository: repository.full_name,
+      prNumber: 900,
+      runId: 4444,
+      attempt: 1,
+      baseSha: base,
+      candidateSha: candidate,
+      jobKey: "experience-preparation",
+      sourceBindingsDigest: "f".repeat(64),
+    };
+    const encrypted = sealArtifactRegistryRetention({
+      manifest,
+      binding,
+      validation: { spentReviewOrdinals },
+      ...(recipientMode === "legacy" ? { encryption: fixtureEncryption } : {}),
+    });
+    f.registryArchive = zip("registry-v2.encrypted", encrypted.toString("utf8"));
+    f.artifact.size_in_bytes = f.registryArchive.length;
+    f.artifact.digest = `sha256:${createHash("sha256").update(f.registryArchive).digest("hex")}`;
+    const originalProof = await api.authenticateNativeOriginalContext(f.input);
+    const registryProof = await api.authenticateNativeRegistryArchive({ ...f.registryInput, originalProof });
+    const args = {
+      registryProof,
+      input: f.input,
+      privateKey: recipientMode === "legacy" ? fixturePrivateKey : fixtureRecoveredPair.privateKey,
+      expectedCoverage: manifest.requiredCoverage,
+      spentReviewOrdinals,
+    };
+    const proof = await api.openNativeRegistryRetention(args);
+    assert.deepEqual(api.inspectNativeRegistryRetention(proof, f.input).manifest, manifest);
+    assert.equal(proof.qualification, false);
+    assert.equal(proof.reuseAuthorized, false);
+    assert.equal(api.inspectNativeRegistryRetention({ ...proof }, f.input), null);
+    assert.equal(api.inspectNativeRegistryArchive(proof, f.input), null);
+    const copy = api.inspectNativeRegistryRetention(proof, f.input);
+    copy.manifest.artifacts[0].id = "changed";
+    assert.equal(api.inspectNativeRegistryRetention(proof, f.input).manifest.artifacts[0].id, manifest.artifacts[0].id);
+    await assert.rejects(
+      api.openNativeRegistryRetention({ ...args, registryProof: { ...registryProof } }),
+      /PROOF_REQUIRED/u,
+    );
+    await assert.rejects(
+      api.openNativeRegistryRetention({
+        ...args,
+        privateKey: generateKeyPairSync("rsa", { modulusLength: 2048 }).privateKey,
+      }),
+      /DECRYPTION_FAILED/u,
+    );
+    await assert.rejects(api.openNativeRegistryRetention({ ...args, expectedCoverage: [] }), /EXPECTED_COVERAGE/u);
+    await assert.rejects(
+      api.openNativeRegistryRetention({ ...args, expectedCoverage: manifest.requiredCoverage.slice(1) }),
+      /EXPECTED_COVERAGE_MISMATCH/u,
+    );
+    await assert.rejects(
+      api.openNativeRegistryRetention({ ...args, spentReviewOrdinals: { contract: 4 } }),
+      /UNAUTHORIZED_REVIEW_ORDINAL/u,
+    );
   });
-  const manifest = sealArtifactManifest(original),
-    spentReviewOrdinals = { contract: 3 };
-  validateArtifactManifest(manifest, { spentReviewOrdinals });
-  const binding = {
-    repository: repository.full_name,
-    prNumber: 900,
-    runId: 4444,
-    attempt: 1,
-    baseSha: base,
-    candidateSha: candidate,
-    jobKey: "experience-preparation",
-    sourceBindingsDigest: "f".repeat(64),
-  };
-  const encrypted = sealArtifactRegistryRetention({ manifest, binding, validation: { spentReviewOrdinals } });
-  f.registryArchive = zip("registry-v2.encrypted", encrypted.toString("utf8"));
-  f.artifact.size_in_bytes = f.registryArchive.length;
-  f.artifact.digest = `sha256:${createHash("sha256").update(f.registryArchive).digest("hex")}`;
-  const originalProof = await api.authenticateNativeOriginalContext(f.input);
-  const registryProof = await api.authenticateNativeRegistryArchive({ ...f.registryInput, originalProof });
-  const args = {
-    registryProof,
-    input: f.input,
-    privateKey: fixturePrivateKey,
-    expectedCoverage: manifest.requiredCoverage,
-    spentReviewOrdinals,
-  };
-  const proof = await api.openNativeRegistryRetention(args);
-  assert.deepEqual(api.inspectNativeRegistryRetention(proof, f.input).manifest, manifest);
-  assert.equal(proof.qualification, false);
-  assert.equal(proof.reuseAuthorized, false);
-  assert.equal(api.inspectNativeRegistryRetention({ ...proof }, f.input), null);
-  assert.equal(api.inspectNativeRegistryArchive(proof, f.input), null);
-  const copy = api.inspectNativeRegistryRetention(proof, f.input);
-  copy.manifest.artifacts[0].id = "changed";
-  assert.equal(api.inspectNativeRegistryRetention(proof, f.input).manifest.artifacts[0].id, manifest.artifacts[0].id);
-  await assert.rejects(
-    api.openNativeRegistryRetention({ ...args, registryProof: { ...registryProof } }),
-    /PROOF_REQUIRED/u,
-  );
-  await assert.rejects(
-    api.openNativeRegistryRetention({
-      ...args,
-      privateKey: generateKeyPairSync("rsa", { modulusLength: 2048 }).privateKey,
-    }),
-    /DECRYPTION_FAILED/u,
-  );
-  await assert.rejects(api.openNativeRegistryRetention({ ...args, expectedCoverage: [] }), /EXPECTED_COVERAGE/u);
-  await assert.rejects(
-    api.openNativeRegistryRetention({ ...args, expectedCoverage: manifest.requiredCoverage.slice(1) }),
-    /EXPECTED_COVERAGE_MISMATCH/u,
-  );
-  await assert.rejects(
-    api.openNativeRegistryRetention({ ...args, spentReviewOrdinals: { contract: 4 } }),
-    /UNAUTHORIZED_REVIEW_ORDINAL/u,
-  );
-});
+}
 for (const [name, change] of [
   [
     "copied original proof",
@@ -710,3 +743,68 @@ for (const [name, change] of [
       assert.equal(retained.qualification, false);
     }
   });
+
+async function selectedRecipientFixture(encryption) {
+  const f = registryFixture();
+  const { sealArtifactRegistryRetention } = await import(
+    pathToFileURL(path.join(root, "scripts/sounding-line/artifact-registry-retention.mjs")).href
+  );
+  const { sealArtifactManifest } = await import(
+    pathToFileURL(path.join(root, "scripts/sounding-line/artifact-evidence-registry.mjs")).href
+  );
+  const original = artifactRegistryFixture({ baseSha: base, candidateSha: candidate, runId: 4444 });
+  original.producerMode = "capture";
+  const manifest = sealArtifactManifest(original);
+  const binding = {
+    repository: repository.full_name,
+    prNumber: 900,
+    runId: 4444,
+    attempt: 1,
+    baseSha: base,
+    candidateSha: candidate,
+    jobKey: "experience-preparation",
+    sourceBindingsDigest: "f".repeat(64),
+  };
+  const encrypted = sealArtifactRegistryRetention({ manifest, binding, ...(encryption ? { encryption } : {}) });
+  f.registryArchive = zip("registry-v2.encrypted", encrypted.toString("utf8"));
+  f.artifact.size_in_bytes = f.registryArchive.length;
+  f.artifact.digest = `sha256:${createHash("sha256").update(f.registryArchive).digest("hex")}`;
+  const originalProof = await api.authenticateNativeOriginalContext(f.input);
+  const registryProof = await api.authenticateNativeRegistryArchive({ ...f.registryInput, originalProof });
+  return { f, manifest, registryProof };
+}
+test("native rejects unknown recipient even when the caller supplies a matching alternate pin", async () => {
+  const untrusted = generateKeyPairSync("rsa", { modulusLength: 2048 });
+  const publicKey = untrusted.publicKey.export({ type: "spki", format: "pem" });
+  const encryption = { publicKey, keyId: createHash("sha256").update(publicKey).digest("hex") };
+  const { f, manifest, registryProof } = await selectedRecipientFixture(encryption);
+  await assert.rejects(
+    api.openNativeRegistryRetention({
+      registryProof,
+      input: f.input,
+      privateKey: untrusted.privateKey,
+      expectedCoverage: manifest.requiredCoverage,
+      encryption,
+    }),
+    /REGISTRY_RECIPIENT_UNKNOWN_KEY_ID/u,
+  );
+});
+test("native refuses dirty recipient-policy source even after provider archive authentication", async () => {
+  const { f, manifest, registryProof } = await selectedRecipientFixture();
+  const file = path.join(root, "scripts/sounding-line/registry-recipient-policy.mjs"),
+    original = fs.readFileSync(file);
+  try {
+    fs.appendFileSync(file, "\n// Synthetic source mutation after authentication\n");
+    await assert.rejects(
+      api.openNativeRegistryRetention({
+        registryProof,
+        input: f.input,
+        privateKey: fixtureRecoveredPair.privateKey,
+        expectedCoverage: manifest.requiredCoverage,
+      }),
+      /REGISTRY_SOURCE_CLOSURE/u,
+    );
+  } finally {
+    fs.writeFileSync(file, original);
+  }
+});

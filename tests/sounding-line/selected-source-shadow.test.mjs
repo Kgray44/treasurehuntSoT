@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { spawnSync } from "node:child_process";
+import { spawnSync, execFileSync } from "node:child_process";
 import { digest } from "../../scripts/sounding-line/evidence.mjs";
 import { createArtifactDependencyGraph } from "../../scripts/sounding-line/artifact-dependency-graph.mjs";
 import { planSelectedSourceShadow } from "../../scripts/sounding-line/selected-source-shadow.mjs";
@@ -1348,4 +1348,54 @@ test("retention source rebind preserves lineage and rejects stale or changed ret
   const changed = custodySetup();
   changed.candidateEntries.find((row) => row.path === helper).blob = sha("f");
   assert.equal(proposeNoncampaignCustodyShadow(changed).reason, "INSTALLED_READER_CHANGED");
+});
+
+test("qualified supervisor rebind changes only its accepted pin and preserves prior lineage and ownership", () => {
+  const base = "bfe39895d16562c68391a3279a1729ae3235bb3d";
+  const original = JSON.parse(
+    execFileSync(
+      "git",
+      ["-c", "protocol.allow=never", "show", `${base}:testing/noncampaign-custody-shadow-readers.json`],
+      {
+        encoding: "utf8",
+        maxBuffer: 1024 * 1024,
+        timeout: 10000,
+        env: { ...process.env, GIT_NO_LAZY_FETCH: "1", GIT_OPTIONAL_LOCKS: "0" },
+        windowsHide: true,
+      },
+    ),
+  );
+  assert.deepEqual(custodyPolicy.sourceRebind, original.sourceRebind);
+  assert.deepEqual(custodyPolicy.metadata, original.metadata);
+  assert.deepEqual(custodyPolicy.excludedPullRequests, original.excludedPullRequests);
+  assert.equal(custodyPolicy.maximumMetadataPaths, original.maximumMetadataPaths);
+  assert.equal(custodyPolicy.readers.length, 68);
+  assert.equal(custodyCertificatePaths.length, 90);
+  const changed = custodyPolicy.readers.filter(
+    (pin) => JSON.stringify(pin) !== JSON.stringify(original.readers.find((old) => old.path === pin.path)),
+  );
+  assert.deepEqual(
+    changed.map((pin) => pin.path),
+    ["scripts/sounding-line/owned-process.mjs"],
+  );
+  const continuation = custodyPolicy.sourceRebindContinuations.at(-1);
+  assert.equal(continuation.acceptedSource, base);
+  assert.equal(continuation.originalAcceptedCandidate, "ddeb583b05cadae4f3c95c85f26c587f161df36c");
+  assert.deepEqual(continuation.protectedAcceptance, {
+    pr: 844,
+    runId: 41512764232,
+    attempt: 2,
+    requiredCheckId: 125522309586,
+    appId: 15368,
+  });
+  assert.equal(continuation.changedReaders.length, 1);
+  assert.equal(continuation.changedReaders[0].newBlob, changed[0].blob);
+  assert.equal(
+    continuation.changedReaders[0].oldBlob,
+    original.readers.find((pin) => pin.path === changed[0].path).blob,
+  );
+  assert.equal(changed[0].sha256, createHash("sha256").update(fs.readFileSync(changed[0].path)).digest("hex"));
+  const stale = custodySetup();
+  stale.candidateEntries.find((row) => row.path === changed[0].path).blob = continuation.changedReaders[0].oldBlob;
+  assert.equal(proposeNoncampaignCustodyShadow(stale).reason, "INSTALLED_READER_CHANGED");
 });
