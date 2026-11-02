@@ -314,7 +314,8 @@ function eligibleInventory(entries) {
     entries.length <= 64 &&
       entries.every((entry) =>
         entry.type === "directory"
-          ? entry.path === "." && [0o755, 0o777].includes(entry.mode)
+          ? entry.path === "." &&
+            [...[0o755, 0o777], ...(process.platform === "win32" ? [0o666] : [])].includes(entry.mode)
           : file.test(entry.path) && [0o644, 0o755, 0o666, 0o777].includes(entry.mode),
       ),
     "GENERATED_OUTPUT_CLASS",
