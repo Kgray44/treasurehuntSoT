@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
-import { ordinaryCheckoutProfile } from "../../scripts/sounding-line/ordinary-checkout.mjs";
+import {
+  ordinaryCheckoutProfile,
+  NONCAMPAIGN_CUSTODY_CHECKOUT_MODE,
+} from "../../scripts/sounding-line/ordinary-checkout.mjs";
 import "./ordinary-documentation-checkout.test.mjs";
 import "./ordinary-documentation-materialization.test.mjs";
 import "./ordinary-custody-probe.test.mjs";
@@ -103,4 +106,49 @@ test("the installed workflow uses exact ordinary transport and an explicit alway
   for (const file of ["initial", "preflight", "terminal", "controller-failure"])
     assert(retention.includes(`session-*/${file}.json`));
   assert.match(retention, /if-no-files-found: error/u);
+});
+
+test("installed custody gate preserves purpose, cancellation, held owners and FULL uncertainty", async () => {
+  assert(["SHADOW", "ACTIVE"].includes(NONCAMPAIGN_CUSTODY_CHECKOUT_MODE));
+  const active = NONCAMPAIGN_CUSTODY_CHECKOUT_MODE === "ACTIVE";
+  const controller = new AbortController();
+  controller.abort();
+  let treeReads = 0;
+  const context = {
+    baseSha,
+    candidateSha,
+    signal: controller.signal,
+    command: async (args) => {
+      assert.deepEqual(args.slice(0, 2), ["ls-tree", "-rz"]);
+      treeReads++;
+      return "";
+    },
+    binaryCommand: async () => assert.fail("no binary transport is admitted by this incomplete context"),
+    readOnlyBinaryCommand: async () => assert.fail("no worker is admitted by this incomplete context"),
+  };
+  const profile = (purpose, pr = "819") =>
+    ordinaryCheckoutProfile({
+      baseSha,
+      candidateSha,
+      env: { ...env, GITHUB_JOB: "campaign-custody" },
+      event: { inputs: { ...event.inputs, pr_number: pr } },
+      purpose,
+    });
+  const verification = await profile("verification").selectReadSet(context);
+  assert.equal(verification.applied, false);
+  assert.equal(verification.proposal.profile, "FULL_SNAPSHOT");
+  assert.equal(treeReads, 2);
+  if (active) {
+    await assert.rejects(profile("campaign-custody").selectReadSet(context), /SELECTED_CHECKOUT_CANCELLED/u);
+    assert.equal(treeReads, 2);
+  }
+  for (const pr of ["805", "820", "819"]) {
+    const result = await profile("campaign-custody", pr).selectReadSet({ ...context, signal: undefined });
+    assert.equal(result.applied, false);
+    assert.equal(result.proposal.profile, "FULL_SNAPSHOT");
+    if (active) {
+      assert.equal(result.proposal.reason, pr === "819" ? "PROOF_CONTEXT_UNAVAILABLE" : "HELD_OR_UNBOUND_OWNER");
+      assert.equal(treeReads, 2);
+    }
+  }
 });

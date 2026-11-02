@@ -3,7 +3,7 @@ title: Sounding Line modernization A implementation and qualification record
 audience: engineering
 status: current
 canonical_for: sounding-line-modernization-a-implementation
-last_reviewed: 2026-11-01
+last_reviewed: 2026-11-02
 ---
 
 # Modernization A: reliability, cost containment and merge integrity
@@ -365,3 +365,39 @@ its owner-controlled merge are separate product integration evidence.
 A's installed reliability and merge-integrity work is integrated. B and C remain
 independent dependent increments; this disposition neither activates their shadow
 optimizations nor completes the overall modernization or its performance targets.
+
+## C custody activation follow-up: 2026-11-02
+
+This separate C follow-up records accepted source and its prepared operational
+verification. It does not change A's historical scope or complete B/C.
+
+The disabled adapter landed through [PR #839](https://github.com/Kgray44/treasurehuntSoT/pull/839)
+at `a73291222fd84967b86ab81231717eeba13e5238`. Its successor
+[PR #840](https://github.com/Kgray44/treasurehuntSoT/pull/840) installed ACTIVE
+at `fb19b072ccf93e0caf13b41383157f87b059f1b8`, parents
+`a73291222fd84967b86ab81231717eeba13e5238` and
+`f780a0e26f5e2a5707032827b560820dfa6115e6`, tree
+`ded1cbc202113a69f4ffe87c0ba9c64a034036ce`. Its ordinary FULL qualification
+`41417157333/1` passed required check `125190760960` (app `15368`):
+1,469 regression passes, zero failures, four existing skips, and 16 rendered
+passes. The 1,009-second whole-run observation exceeded the 900-second target.
+
+Independent native comparison `41419690651/1`, job `125191994528`, preserved the
+exact same protected base and candidate: FULL observed 19,443 blobs /
+9,432,303,600 bytes / 340,442.677506 ms; metadata selection observed 19 blobs /
+10,615,595 bytes / 12,167.457175 ms. The real installed worker and subsequent
+reserve command both returned `campaign=false` with zero fetch, network and
+non-Git process attempts. Complete 14-root ancestry, 87 runtime descriptor hashes,
+two workflow metadata pins, original historical identities and owned cleanup
+were verified. Artifact `13129426374` contains 64,628,526 original archive bytes,
+SHA-256 `7e49aeabcbbfe21b658794be3d54f7ae86c71e545842242580756d967d1411e5`.
+Different hosted instances, Node versions and runner images limit this to
+source-bound negative-route equivalence; it proves neither causal speedup nor
+the whole-run target. No separate FULL reserve stdout was captured.
+
+The exact landed tree passed 25 smoke checks. This record is prepared before the
+first subsequent ordinary ACTIVE run. That run must retain its actual enabled
+route, safe FULL fallback, original receipts, required decision, cleanup and
+whole-run timing before operational acceptance. This follow-up changes only
+regression coverage and this record; production certificate bytes, required
+protection, held owners and release authority remain governed by accepted main.
