@@ -19,7 +19,29 @@ import {
   custodyShadowPreload,
   custodyPilotSourceFiles,
   validateCustodyPilotBaseline,
+  validatePreparedCustodyBaseline,
+  validateCustodyRunPull,
 } from "../../scripts/sounding-line/noncampaign-custody-pilot.mjs";
+import { checkoutCommandOutput } from "../../scripts/sounding-line/experience-selected-checkout.mjs";
+import {
+  certifiedNoncampaignCustodyReadSet,
+  inspectCertifiedCustodyReadSet,
+  normalizeCustodyCertificateSource,
+  custodyCertificatePaths,
+  custodySwitchAlternate,
+  verifyCustodySwitchReader,
+} from "../../scripts/sounding-line/noncampaign-custody-read-set.mjs";
+import { createHash } from "node:crypto";
+import { baselineToolchainObservations } from "../../scripts/sounding-line/noncampaign-custody-matched-pilot.mjs";
+import {
+  custodyShadowPreload as adapterPreload,
+  readCustodyPilotSource as readProofSource,
+  retainCustodyProofFrame,
+} from "../../scripts/sounding-line/noncampaign-custody-proof-files.mjs";
+import {
+  custodyProofFilesystem,
+  custodyWorkflowMetadataPin,
+} from "../../scripts/sounding-line/noncampaign-custody-negative-probe.mjs";
 
 const sha = (letter) => letter.repeat(40);
 const entry = (path, letter, mode = "100644") => ({ path, blob: sha(letter), mode, type: "blob" });
@@ -643,4 +665,339 @@ test("custody pilot selected source includes every pinned reader and no whole so
     readers,
   );
   assert.doesNotMatch(workflow, /npm ci|Mainline Decision|:\s*write\b/u);
+});
+
+test("binary checkout output preserves malformed UTF8 and legacy text semantics independently", () => {
+  const bytes = Buffer.from([255, 0, 10, 32]);
+  const binary = checkoutCommandOutput(bytes, "buffer");
+  assert.deepEqual(binary, bytes);
+  binary[0] = 1;
+  assert.equal(bytes[0], 255);
+  assert.equal(checkoutCommandOutput(Buffer.from(" \nlegacy\n ")), "legacy");
+  assert.equal(checkoutCommandOutput(Buffer.from(" \nlegacy\n "), true), " \nlegacy\n ");
+  assert.throws(() => parseCustodyShadowTree(checkoutCommandOutput(bytes, "buffer")));
+  assert.throws(() => checkoutCommandOutput("decoded already", "buffer"));
+  assert.throws(() => checkoutCommandOutput(bytes, "utf8"));
+});
+
+test("custody source normalization permits only the single reviewed literal and installed switch token", () => {
+  for (const [filename, initialFrom, to] of [
+    ["scripts/sounding-line/noncampaign-custody-read-set.mjs", 'REVISION = "PENDING"', `REVISION = "${sha("a")}"`],
+    ["scripts/sounding-line/ordinary-checkout.mjs", 'MODE = "SHADOW"', 'MODE = "ACTIVE"'],
+  ]) {
+    const source = fs.readFileSync(filename),
+      text = source.toString();
+    const from = filename.endsWith("noncampaign-custody-read-set.mjs")
+      ? /REVISION = "(?:PENDING|[a-f0-9]{40})"/u.exec(text)?.[0]
+      : initialFrom;
+    assert(text.includes(from));
+    const normalized = normalizeCustodyCertificateSource(filename, source);
+    assert.deepEqual(normalizeCustodyCertificateSource(filename, Buffer.from(text.replace(from, to))), normalized);
+    assert.notDeepEqual(
+      normalizeCustodyCertificateSource(filename, Buffer.from(text + "\n// other changed byte\n")),
+      normalized,
+    );
+    assert.throws(() => normalizeCustodyCertificateSource(filename, Buffer.from(text.replace(from, "MISSING"))));
+    const declaration = text
+      .split("\n")
+      .find((line) => line.startsWith("export const NONCAMPAIGN_CUSTODY_") && line.includes(from));
+    assert.throws(() => normalizeCustodyCertificateSource(filename, Buffer.from(text + "\n" + declaration + "\n")));
+    assert.throws(() => normalizeCustodyCertificateSource(filename, Buffer.from([255])));
+  }
+  assert(custodyCertificatePaths.includes("scripts/sounding-line/noncampaign-custody-negative-probe.mjs"));
+  assert.equal(new Set(custodyCertificatePaths).size, custodyCertificatePaths.length);
+  for (const row of custodyPolicy.readers) assert(custodyCertificatePaths.includes(row.path));
+});
+
+test("caller booleans, serialized observations and missing reviewed ancestry cannot mint custody capabilities", async () => {
+  const context = {
+    root: path.resolve("artifacts/never-created-custody"),
+    git: process.execPath,
+    baseSha: sha("a"),
+    candidateSha: sha("b"),
+    roots: [sha("a"), sha("b")],
+  };
+  for (const prNumber of [721, 776, 805, 820, 0, NaN]) {
+    const result = await certifiedNoncampaignCustodyReadSet({
+      ...context,
+      prNumber,
+      applied: true,
+      sourceCertificate: true,
+      binaryCommand: () => {
+        throw Error("must not execute");
+      },
+    });
+    assert.equal(result.applied, false);
+    assert.equal(result.proposal.profile, "FULL_SNAPSHOT");
+  }
+  for (const value of [
+    { applied: true },
+    { applied: true, proposal: { profile: "NONCAMPAIGN_CUSTODY_METADATA_V1" } },
+    structuredClone({ certificate: "MATCHED", observed: true }),
+  ])
+    assert.equal(inspectCertifiedCustodyReadSet(value, context), null);
+  assert.equal((await certifiedNoncampaignCustodyReadSet({ ...context, prNumber: 900001 })).applied, false);
+});
+
+test("adapter denial preload is byte-equivalent to the native-observed implementation and proof frames stay exclusive", (t) => {
+  const directory = pilotDirectory(t),
+    filename = path.join(directory, "original.bin"),
+    git = path.resolve(process.execPath);
+  assert.equal(
+    adapterPreload(path.join(directory, "counters.json"), git),
+    custodyShadowPreload(path.join(directory, "counters.json"), git),
+  );
+  const bytes = Buffer.from("original proof bytes\n");
+  assert.equal(retainCustodyProofFrame(filename, bytes).completeReadback, true);
+  assert.deepEqual(readProofSource(filename), bytes);
+  assert.throws(() => retainCustodyProofFrame(filename, Buffer.from("replacement")), { code: "EEXIST" });
+  assert.deepEqual(fs.readFileSync(filename), bytes);
+  const alias = path.join(directory, "hardlink");
+  fs.linkSync(filename, alias);
+  assert.throws(() => readProofSource(filename), /SOURCE_FILE/u);
+  fs.unlinkSync(alias);
+});
+
+test("negative custody filesystem proof detects phase files and source mutations outside its exact two output paths", (t) => {
+  const directory = pilotDirectory(t),
+    file = path.join(directory, "source.txt"),
+    output = path.join(directory, "output.txt"),
+    network = path.join(directory, "network.json");
+  fs.writeFileSync(file, "installed source");
+  const excluded = new Set([output, network]),
+    before = custodyProofFilesystem(directory, excluded);
+  fs.writeFileSync(output, "campaign=false\n");
+  fs.writeFileSync(network, "{}");
+  assert.equal(custodyProofFilesystem(directory, excluded), before);
+  fs.mkdirSync(path.join(directory, "phase"));
+  assert.notEqual(custodyProofFilesystem(directory, excluded), before);
+  fs.rmdirSync(path.join(directory, "phase"));
+  fs.appendFileSync(file, "changed");
+  assert.notEqual(custodyProofFilesystem(directory, excluded), before);
+});
+
+test("prepared comparison binds a ready open PR to its actual protected base and original qualified head", () => {
+  const fixture = qualifiedPilotBaseline();
+  const input = {
+    ...fixture,
+    source: fixture.parents[0],
+    pull: {
+      id: 123456,
+      number: 900001,
+      state: "open",
+      draft: false,
+      merged_at: null,
+      base: { ref: "main", sha: fixture.parents[0], repo: { id: 1303074266 } },
+      head: { ref: "codex/inert-qualified-fixture", sha: fixture.parents[1], repo: { id: 1303074266 } },
+    },
+  };
+  input.run.pull_requests = [
+    {
+      id: input.pull.id,
+      number: input.pull.number,
+      base: structuredClone(input.pull.base),
+      head: structuredClone(input.pull.head),
+    },
+  ];
+  input.run.head_branch = input.pull.head.ref;
+  const result = validatePreparedCustodyBaseline(input);
+  assert.equal(result.baseSha, input.pull.base.sha);
+  assert.equal(result.candidateSha, input.pull.head.sha);
+  assert.equal(result.installedSource, input.source);
+  for (const mutate of [
+    (v) => {
+      v.pull.state = "closed";
+    },
+    (v) => {
+      v.pull.draft = true;
+    },
+    (v) => {
+      v.pull.merged_at = "2026-11-02T00:00:00Z";
+    },
+    (v) => {
+      v.pull.base.sha = sha("e");
+    },
+    (v) => {
+      v.pull.head.sha = sha("e");
+    },
+    (v) => {
+      v.pull.base.ref = "other";
+    },
+    (v) => {
+      v.pull.head.repo.id = 1;
+    },
+    (v) => {
+      v.pull.base.repo.id = 1;
+    },
+    (v) => {
+      v.pull.number = 805;
+    },
+    (v) => {
+      v.run.run_attempt = 2;
+    },
+    (v) => {
+      v.run.head_sha = sha("e");
+    },
+    (v) => {
+      v.artifacts.artifacts[0].digest += "\n";
+    },
+    (v) => {
+      v.run.pull_requests = [];
+    },
+    (v) => {
+      v.run.pull_requests[0].number += 1;
+    },
+    (v) => {
+      v.run.pull_requests[0].id += 1;
+    },
+    (v) => {
+      v.run.pull_requests[0].head.sha = sha("e");
+    },
+    (v) => {
+      v.run.pull_requests[0].base.sha = sha("e");
+    },
+  ]) {
+    const copy = structuredClone(input);
+    mutate(copy);
+    assert.throws(() => validatePreparedCustodyBaseline(copy));
+  }
+});
+
+test("candidate switch reader accepts one byte-exact data transition and rejects other code, modes and identities", () => {
+  const installedBytes = fs.readFileSync("scripts/sounding-line/ordinary-checkout.mjs"),
+    candidateBytes = custodySwitchAlternate(installedBytes);
+  const blob = createHash("sha1").update(`blob ${candidateBytes.length}\0`).update(candidateBytes).digest("hex");
+  const input = { installedBytes, candidateBytes, mode: "100644", blob, revision: sha("a") };
+  assert.deepEqual(verifyCustodySwitchReader(input), {
+    revision: sha("a"),
+    path: "scripts/sounding-line/ordinary-checkout.mjs",
+    blob,
+  });
+  assert.deepEqual(custodySwitchAlternate(candidateBytes), installedBytes);
+  for (const change of [
+    { candidateBytes: installedBytes },
+    { candidateBytes: Buffer.concat([candidateBytes, Buffer.from("\n")]) },
+    { candidateBytes: Buffer.from(candidateBytes.map((byte, index) => (index === 0 ? byte ^ 1 : byte))) },
+    { mode: "100755" },
+    { mode: "120000" },
+    { blob: sha("b") },
+    { blob: blob + "\n" },
+    { revision: sha("a") + "\n" },
+  ])
+    assert.throws(() => verifyCustodySwitchReader({ ...input, ...change }));
+  assert.throws(() => custodySwitchAlternate(Buffer.from([255])));
+  assert.throws(() => custodySwitchAlternate(Buffer.alloc(16385)));
+  const declaration = installedBytes
+    .toString()
+    .split("\n")
+    .find((line) => line.startsWith("export const NONCAMPAIGN_CUSTODY_CHECKOUT_MODE"));
+  assert.throws(() => custodySwitchAlternate(Buffer.from(installedBytes.toString() + "\n" + declaration + "\n")));
+  const controller = new AbortController();
+  controller.abort();
+  return assert.rejects(certifiedNoncampaignCustodyReadSet({ signal: controller.signal }), /CANCELLED/u);
+});
+
+test("baseline toolchain observations retain original bytes and never certify runtime equality", () => {
+  const bytes = Buffer.from("\u001b[32mVersion: 20261025.353.1\nnode v24.19.0\ngit version 2.56.0\n\u001b[0m");
+  const result = baselineToolchainObservations(bytes);
+  assert.deepEqual(result.nodeVersions, ["v24.19.0"]);
+  assert.deepEqual(result.gitVersions, ["2.56.0"]);
+  assert.deepEqual(result.imageVersions, ["20261025.353.1"]);
+  assert.equal(result.originalLogSha256, createHash("sha256").update(bytes).digest("hex"));
+  assert.equal(result.equalityOrIsolationCertified, false);
+  assert.equal(result.kernel, "NOT_RECORDED_BY_ORIGINAL_JOB");
+  assert.throws(() => baselineToolchainObservations(Buffer.from([255])));
+});
+
+test("actual GitHub empty PR array retains original identities through the pinned workflow run-name join", () => {
+  // The complete original response bytes are immutable fixtures. The historical
+  // pre-merge PR response is not asserted to be the PR's present open state.
+  const runBytes = fs.readFileSync(new URL("./fixtures/custody-pr838-run-empty.original.bin", import.meta.url));
+  const pullBytes = fs.readFileSync(new URL("./fixtures/custody-pr838-premerge-pull.original.bin", import.meta.url));
+  assert.equal(
+    createHash("sha256").update(runBytes).digest("hex"),
+    "d213e561437fdd248dfacdf9abab9b2f936427a8df5a666aa8b0686cee96a1eb",
+  );
+  assert.equal(
+    createHash("sha256").update(pullBytes).digest("hex"),
+    "ff419478a408e3d2bf44fb8f716210a5f224b516c424ce11e2aea2d607e159f2",
+  );
+  const run = JSON.parse(runBytes),
+    pull = JSON.parse(pullBytes),
+    base = pull.base.sha,
+    candidate = pull.head.sha;
+  assert.deepEqual(run.pull_requests, []);
+  const proof = validateCustodyRunPull(run, pull, base, candidate);
+  assert.equal(proof.kind, "SOURCE_PINNED_RUN_NAME_WITH_EMPTY_PROVIDER_ARRAY");
+  assert.equal(proof.observedPullRequestRows, 0);
+  assert.equal(proof.prId, 5115855899);
+  assert.equal(proof.prNumber, 838);
+  assert.equal(proof.baseSha, "613b73b5622e91dbee7b13c69ac7c5904771390e");
+  assert.equal(proof.candidateSha, "7a38251a07c17914e6cad7e6901f0a7330507648");
+  assert.deepEqual(run.pull_requests, []);
+  for (const mutate of [
+    (v) => {
+      v.workflow_id = 1;
+    },
+    (v) => {
+      v.path = ".github/workflows/lookalike.yml";
+    },
+    (v) => {
+      v.event = "workflow_dispatch";
+    },
+    (v) => {
+      v.run_attempt = 2;
+    },
+    (v) => {
+      v.display_title = v.display_title.replace("838", "839");
+    },
+    (v) => {
+      v.display_title += "\n";
+    },
+    (v) => {
+      v.head_branch = "codex/other";
+    },
+    (v) => {
+      v.head_sha = sha("e");
+    },
+    (v) => {
+      v.pull_requests = undefined;
+    },
+    (v) => {
+      v.pull_requests = [{ id: pull.id, number: 839 }];
+    },
+  ]) {
+    const copy = structuredClone(run);
+    mutate(copy);
+    assert.throws(() => validateCustodyRunPull(copy, pull, base, candidate));
+  }
+});
+
+test("sparse-bootstrap workflow pins require exact reviewed base and candidate blobs and never exempt runtime files", () => {
+  const original = { mode: "100644", type: "blob", blob: sha("a") };
+  for (const filename of [
+    ".github/workflows/sounding-line-custody-shadow.yml",
+    ".github/workflows/sounding-line-ordinary.yml",
+  ]) {
+    assert.equal(
+      custodyWorkflowMetadataPin(filename, original, original, original).kind,
+      "NON_IMPORTED_WORKFLOW_METADATA",
+    );
+    // A changed base remains unreviewed even when its candidate copies it.
+    const changed = { ...original, blob: sha("b") };
+    assert.throws(() => custodyWorkflowMetadataPin(filename, changed, changed, original), /WORKFLOW_METADATA_DRIFT/u);
+    assert.throws(() => custodyWorkflowMetadataPin(filename, original, changed, original), /WORKFLOW_METADATA_DRIFT/u);
+    for (const bad of [
+      undefined,
+      { ...original, mode: "100755" },
+      { ...original, mode: "120000" },
+      { ...original, type: "tree" },
+      { ...original, blob: sha("a") + "\n" },
+    ])
+      assert.throws(() => custodyWorkflowMetadataPin(filename, bad, bad, bad));
+  }
+  assert.throws(
+    () => custodyWorkflowMetadataPin("scripts/sounding-line/experience-exception.mjs", original, original, original),
+    /UNKNOWN_WORKFLOW_METADATA_PIN/u,
+  );
 });

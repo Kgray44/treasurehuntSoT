@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnOwnedProcess, processExit, stopOwnedProcess } from "./owned-process.mjs";
 import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
+import { CERTIFIED_CUSTODY_PROFILE, inspectCertifiedCustodyReadSet } from "./noncampaign-custody-read-set.mjs";
 import {
   EXPERIENCE_CHECKOUT_ROOTS,
   EXPERIENCE_READER_REVISIONS,
@@ -26,6 +27,12 @@ const gitExecutable = () => {
   return path.resolve(resolved);
 };
 const oid = (s) => /^[a-f0-9]{40}$/u.test(s ?? "");
+export function checkoutCommandOutput(bytes, raw = false) {
+  need(Buffer.isBuffer(bytes) && [false, true, "buffer"].includes(raw), "OUTPUT_ENCODING");
+  if (raw === "buffer") return Buffer.from(bytes);
+  const text = bytes.toString("utf8");
+  return raw ? text : text.trim();
+}
 export function requireCheckoutCleanup(receipt, signal) {
   need(receipt?.status === "PASS" && receipt.treeReaped && receipt.streamsClosed, "CLEANUP_FAILED");
   need(!signal?.aborted, "CANCELLED");
@@ -244,8 +251,7 @@ export async function selectedCheckout({
     }
     need(size <= 128 * 1024 * 1024, "OUTPUT_LIMIT");
     advance();
-    const output = Buffer.concat(chunks).toString("utf8");
-    return raw ? output : output.trim();
+    return checkoutCommandOutput(Buffer.concat(chunks), raw);
   };
   await mkdir(root); // Fresh owned directory only; never reuse a shallow checkout.
   const emptyConfig = path.join(root, "..", `${path.basename(root)}.empty-git-config`);
@@ -289,19 +295,34 @@ export async function selectedCheckout({
       ...allRoots.map((sha) => `+${sha}:refs/sounding-line/selected/${sha}`),
     ]);
     need((await command(["rev-parse", "--is-shallow-repository"])) === "false", "SHALLOW");
-    const readSet = selectReadSet
+    let readSet = selectReadSet
       ? await selectReadSet({
           command,
           readOnlyCommand: (args, executable) => command(args, executable, false, true),
+          binaryCommand: (args, executable) => command(args, executable, "buffer"),
+          readOnlyBinaryCommand: (args, executable) => command(args, executable, "buffer", true),
           root,
           git: gitExecutable(),
           baseSha,
           candidateSha,
+          roots: Object.freeze([...allRoots]),
+          signal,
         })
       : null;
     need(readSet === null || typeof readSet.applied === "boolean", "READ_SET_INVALID");
+    const certifiedCustody =
+      readSet?.applied && readSet.proposal?.profile === CERTIFIED_CUSTODY_PROFILE
+        ? inspectCertifiedCustodyReadSet(readSet, { root, baseSha, candidateSha, roots: allRoots })
+        : null;
+    if (readSet?.applied && readSet.proposal?.profile === CERTIFIED_CUSTODY_PROFILE && !certifiedCustody)
+      readSet = {
+        applied: false,
+        proposal: { profile: "FULL_SNAPSHOT", reason: "OPAQUE_CUSTODY_PROOF_UNAVAILABLE", qualification: false },
+      };
     const exclusions = readSet?.applied ? readSet.proposal?.omissions : [];
-    const metadataCustody = readSet?.applied && readSet.proposal?.profile === "DOCUMENTATION_CUSTODY_METADATA_V1";
+    const metadataCustody =
+      readSet?.applied &&
+      (readSet.proposal?.profile === "DOCUMENTATION_CUSTODY_METADATA_V1" || certifiedCustody !== null);
     const certificateReader = readSet?.certificateReader;
     need(
       !certificateReader ||
@@ -312,6 +333,7 @@ export async function selectedCheckout({
     );
     need(
       !metadataCustody ||
+        certifiedCustody ||
         (readSet.custodyProbe?.status === "PASS" &&
           readSet.custodyProbe.campaign === false &&
           readSet.custodyProbe.baseSha === baseSha &&
@@ -320,9 +342,11 @@ export async function selectedCheckout({
     );
     need(
       !readSet?.applied ||
-        (["DOCUMENTATION_ONLY_SOURCE_BOUND_V1", "DOCUMENTATION_CUSTODY_METADATA_V1"].includes(
-          readSet.proposal?.profile,
-        ) &&
+        ([
+          "DOCUMENTATION_ONLY_SOURCE_BOUND_V1",
+          "DOCUMENTATION_CUSTODY_METADATA_V1",
+          CERTIFIED_CUSTODY_PROFILE,
+        ].includes(readSet.proposal?.profile) &&
           Array.isArray(exclusions) &&
           exclusions.length <= 100000),
       "READ_SET_INVALID",
@@ -348,6 +372,12 @@ export async function selectedCheckout({
           purpose: readSet.proposal?.purpose,
           metadataPaths: readSet.proposal?.metadataPaths,
           custodyProbe: readSet.custodyProbe,
+          ...(certifiedCustody
+            ? {
+                transportSourceProof: certifiedCustody.transportSourceProof,
+                certificateReaders: certifiedCustody.certificateReaders,
+              }
+            : {}),
           certificateReader,
           anchor: readSet.proposal?.anchor,
           transportCertificate: readSet.proposal?.transportCertificate,
@@ -380,6 +410,7 @@ export async function selectedCheckout({
             )
           : readerPaths),
         ...(certificateReader ? [{ revision: certificateReader.revision, path: certificateReader.path }] : []),
+        ...(certifiedCustody ? certifiedCustody.certificateReaders : []),
       ],
       pathOnlySnapshots: certificateReader ? [certificateReader.revision] : [],
       exactReaderOnly: metadataCustody === true,
