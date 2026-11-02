@@ -64,6 +64,7 @@ jobs:
             /scripts/sounding-line/browser-diagnostics.mjs
             /scripts/sounding-line/browser-suite-profiles.mjs
             /scripts/sounding-line/custody-transport.mjs
+            /scripts/sounding-line/custody-worker-proof-retention.mjs
             /scripts/sounding-line/development-failure-evidence.mjs
             /scripts/sounding-line/evidence.mjs
             /scripts/sounding-line/experience-attestation.mjs

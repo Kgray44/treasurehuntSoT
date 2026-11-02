@@ -8,7 +8,7 @@ import { retainCustodyProofFrame, readCustodyPilotSource } from "./noncampaign-c
 import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
 import { observeNoncampaignCustodyShadow, inspectNoncampaignCustodyShadow } from "./noncampaign-custody-shadow.mjs";
 
-export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "1c654058987dc6b96d569dd1afe9a179bcbf473f";
+export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "fe3cd493fdf1f8da3f175022a6dabb9e02850fea";
 export const CERTIFIED_CUSTODY_PROFILE = "NONCAMPAIGN_CUSTODY_METADATA_V1";
 const capabilities = new WeakMap();
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -48,6 +48,7 @@ export const custodyCertificatePaths = Object.freeze([
   "scripts/sounding-line/browser-diagnostics.mjs",
   "scripts/sounding-line/browser-suite-profiles.mjs",
   "scripts/sounding-line/custody-transport.mjs",
+  "scripts/sounding-line/custody-worker-proof-retention.mjs",
   "scripts/sounding-line/development-failure-evidence.mjs",
   "scripts/sounding-line/evidence.mjs",
   "scripts/sounding-line/experience-attestation.mjs",

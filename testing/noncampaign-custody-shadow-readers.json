@@ -1,7 +1,7 @@
 {
   "version": 1,
   "status": "SHADOW_NOT_A_READ_SET_CERTIFICATE",
-  "readerObservationSource": "569ea93bad7eb6eaeabfcdf356557014697ddf7a",
+  "readerObservationSource": "31115bf8f8d727c9b433e304e982f4c9cc5053ee",
   "entrypoint": "scripts/sounding-line/experience-exception.mjs",
   "readers": [
     {
@@ -38,6 +38,13 @@
       "type": "blob",
       "blob": "f9ff45864950d65e23bd592778d6d87e6736a39d",
       "sha256": "42ff9fcb22811895d3faf046752030fe03ec3087e09c159d15864b9063e26dc6"
+    },
+    {
+      "path": "scripts/sounding-line/custody-worker-proof-retention.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b6db243c8fada389f5026647cd46c1886662cd28",
+      "sha256": "bb2689d56da0d08f1f8f73fe6fa6053730fc44b1e7406d8ea691ab7c63b0c100"
     },
     {
       "path": "scripts/sounding-line/development-failure-evidence.mjs",
@@ -169,8 +176,8 @@
       "path": "scripts/sounding-line/experience-exception.mjs",
       "mode": "100644",
       "type": "blob",
-      "blob": "876bd7ef84600dcbba29597f479105190d313051",
-      "sha256": "99505abafe5db2066887956a337484f65d49b22f71c6e3e3cd0614a832360027"
+      "blob": "f25017f274b37ca1674564d26a69db7a368ad2a5",
+      "sha256": "b61d7bf30eb92791f5fcd7179e09f3ba0c144c6b278828025cc9fc919981547a"
     },
     {
       "path": "scripts/sounding-line/experience-media-first-binding.mjs",
@@ -512,6 +519,12 @@
       "file": "scripts/sounding-line/experience-browser.mjs",
       "kind": "require literal",
       "value": "@axe-core/playwright"
+    },
+    {
+      "file": "scripts/sounding-line/experience-exception.mjs",
+      "kind": "dynamic import literal",
+      "value": "./custody-worker-proof-retention.mjs",
+      "guard": "options.operation === \"retain-custody-proof\"; not executed by reserve negative route"
     }
   ],
   "metadata": [
@@ -527,5 +540,23 @@
     }
   ],
   "excludedPullRequests": [721, 776, 805, 820],
-  "maximumMetadataPaths": 64
+  "maximumMetadataPaths": 64,
+  "sourceRebind": {
+    "kind": "ACCEPTED_RETENTION_SOURCE_PENDING_FRESH_NATIVE_ACCEPTANCE",
+    "priorReaderObservationSource": "569ea93bad7eb6eaeabfcdf356557014697ddf7a",
+    "priorReaderMapSha256": "01245355f2ffc1d76a49237e74c52c3bceae67bd8253d38294447a90aaafe86a",
+    "acceptedRetentionSource": "31115bf8f8d727c9b433e304e982f4c9cc5053ee",
+    "changedReaders": [
+      {
+        "path": "scripts/sounding-line/experience-exception.mjs",
+        "oldBlob": "876bd7ef84600dcbba29597f479105190d313051",
+        "newBlob": "f25017f274b37ca1674564d26a69db7a368ad2a5",
+        "oldSha256": "99505abafe5db2066887956a337484f65d49b22f71c6e3e3cd0614a832360027",
+        "newSha256": "b61d7bf30eb92791f5fcd7179e09f3ba0c144c6b278828025cc9fc919981547a"
+      }
+    ],
+    "conservativeAddedReader": "scripts/sounding-line/custody-worker-proof-retention.mjs",
+    "negativeReserveBehaviorChanged": false,
+    "qualification": false
+  }
 }
