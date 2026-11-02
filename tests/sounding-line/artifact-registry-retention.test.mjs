@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import "./registry-custody-bootstrap.test.mjs";
 import { generateKeyPairSync, createHash } from "node:crypto";
 import { artifactRegistryFixture } from "./fixtures/artifact-registry-v2.mjs";
 import { createClosedContextPrefix } from "../../scripts/sounding-line/artifact-evidence-registry.mjs";

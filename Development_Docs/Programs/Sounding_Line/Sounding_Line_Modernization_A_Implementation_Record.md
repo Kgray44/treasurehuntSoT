@@ -459,3 +459,36 @@ activation has no demonstrated cost benefit. Bounded media transport preserves
 original provider bytes under finite read/deadline limits. Each further consumer
 promotion remains subject to provider authenticity, external isolation and
 independent equivalence. Custody acceptance alone does not complete all of C.
+
+## B internal custody bootstrap: disabled preparation
+
+The owner selected two internal devices in the same laptop, with no external or
+cloud copies. This supersedes the proposed storage arrangement only. It does not
+establish off-host recovery, laptop-loss recovery, ransomware resilience, secret
+custody or authenticated evidence reuse. Read-only metadata identified C: and D:
+as separate NVMe SSDs; drive letters alone do not establish that distinction.
+
+`registry-custody-bootstrap.mjs` provides a metadata plan and a fixed public dummy
+file check only. Real setup, key creation, export, installation, unlock and
+rotation are rejected before inventory or file operations. It cannot accept key
+material or a passphrase. The dummy check independently inspects one fixed public
+canary in each selected temporary directory and removes only verified owned
+canaries. It performs no encryption and supplies no physical-failure or recovery
+proof. Unexpected entries or modified canaries remain held.
+
+The read-only Windows inventory uses an explicit environment allowlist and the
+existing creation-owned Job Object supervisor with inherited execution policy.
+The default supervisor launch behavior is unchanged. A policy denial fails
+closed, without another bypass. This supervisor source change invalidates the
+previous selected-reader binding and requires FULL until independently rebound.
+The age release version and digest in the plan are candidates from official
+release metadata; no binary installation or publisher-proof verification is
+claimed. The old recipient and protected release authority remain unchanged.
+
+The preceding fresh #841 acceptance hold was subsequently satisfied: protected
+main landed `e0708888239fd0f5037e89706fe3f5f063800301` after run 41490473609/1,
+1,478 passing checks and 16 rendered checks. Native retained originals supported
+the ACTIVE 18-blob checkout and independent source/ordinal/cleanup review; the
+exact landed tree passed 34 smoke checks. The earlier missing-original receipt
+remains historical and is not replaced by this fresh run. This disabled B
+preparation is a separate candidate and has no protected acceptance yet.

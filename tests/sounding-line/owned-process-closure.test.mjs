@@ -12,8 +12,43 @@ import {
   inspectOwnedProcessClosure,
   consumeOwnedProcessClosure,
   inspectOwnedProcessCreation,
+  bounded,
 } from "../../scripts/sounding-line/owned-process.mjs";
 const root = process.cwd();
+test("inherited execution policy omits bypass while default launch behavior remains unchanged", async () => {
+  for (const inheritExecutionPolicy of [false, true]) {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "owned-policy-"));
+    const file = path.join(directory, "ready");
+    const child = spawnOwnedProcess(
+      process.execPath,
+      ["-e", "require('node:fs').writeFileSync(process.argv[1],'ready');setInterval(()=>{},1000)", file],
+      {
+        root,
+        env: { ...process.env },
+        inheritExecutionPolicy,
+        cleanupOptions: { gracefulMs: 200, forceMs: 1000 },
+      },
+    );
+    try {
+      if (process.platform === "win32") {
+        assert.equal(child.spawnargs.includes("-ExecutionPolicy"), !inheritExecutionPolicy);
+        assert.equal(child.spawnargs.includes("Bypass"), !inheritExecutionPolicy);
+      }
+      await ready(file);
+      await assert.rejects(
+        bounded(() => processExit(child), 50, "POLICY_FIXTURE_TIMEOUT"),
+        /POLICY_FIXTURE_TIMEOUT/u,
+      );
+    } finally {
+      const closed = await stopOwnedProcess(child);
+      assert.equal(closed.status, "PASS");
+      assert.equal(closed.treeReaped, true);
+      assert.equal(closed.streamsClosed, true);
+      fs.unlinkSync(file);
+      fs.rmdirSync(directory);
+    }
+  }
+});
 test("creation metadata matches the exact immutable guardian input even if caller arguments change immediately", async (t) => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "owned-creation-")),
     file = path.join(directory, "actual");
