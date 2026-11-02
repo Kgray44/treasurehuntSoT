@@ -8,7 +8,7 @@ import { retainCustodyProofFrame, readCustodyPilotSource } from "./noncampaign-c
 import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
 import { observeNoncampaignCustodyShadow, inspectNoncampaignCustodyShadow } from "./noncampaign-custody-shadow.mjs";
 
-export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "fad3f66f178405ce9be7e20b58649ac54cde6133";
+export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "PENDING";
 export const CERTIFIED_CUSTODY_PROFILE = "NONCAMPAIGN_CUSTODY_METADATA_V1";
 const capabilities = new WeakMap();
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -265,7 +265,9 @@ export async function certifiedNoncampaignCustodyReadSet({
   }
   const input = path.join(directory, "input.original.json");
   retainCustodyProofFrame(input, Buffer.from(JSON.stringify({ root, git, baseSha, candidateSha, prNumber, roots })));
-  const environment = custodyProbeEnvironment(process.env, git);
+  const emptyConfig = path.join(directory, "empty-git-config");
+  retainCustodyProofFrame(emptyConfig, Buffer.alloc(0));
+  const environment = custodyProbeEnvironment({ ...process.env, GIT_CONFIG_GLOBAL: emptyConfig }, git);
   const child = spawnOwnedProcess(
     process.execPath,
     [fileURLToPath(new URL("./noncampaign-custody-negative-probe.mjs", import.meta.url)), input],

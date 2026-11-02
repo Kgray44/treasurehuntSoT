@@ -88,6 +88,15 @@ export function runInstalledNegativeCustodyProof(input) {
     frames = [],
     commands = [];
   need(fs.realpathSync.native(directory) === directory, "DIRECTORY_ALIAS");
+  const emptyConfig = path.join(directory, "empty-git-config");
+  need(
+    process.env.GIT_CONFIG_GLOBAL === emptyConfig &&
+      process.env.GIT_CONFIG_SYSTEM === emptyConfig &&
+      readCustodyPilotSource(emptyConfig).length === 0 &&
+      !process.env.NODE_OPTIONS &&
+      !process.env.NODE_PATH,
+    "EMPTY_INSTALLED_CONFIGURATION_REQUIRED",
+  );
   let ordinal = 0,
     retainedBytes = 0;
   const retain = (label, bytes) => {
