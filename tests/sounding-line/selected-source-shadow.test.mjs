@@ -21,6 +21,7 @@ import {
   validateCustodyPilotBaseline,
   validatePreparedCustodyBaseline,
   validateCustodyRunPull,
+  CUSTODY_ORDINARY_WORKFLOW_SHA256,
 } from "../../scripts/sounding-line/noncampaign-custody-pilot.mjs";
 import { checkoutCommandOutput } from "../../scripts/sounding-line/experience-selected-checkout.mjs";
 import {
@@ -936,10 +937,7 @@ test("actual GitHub empty PR array retains historical identities and refuses unr
   const installedWorkflow = fs.readFileSync(
     new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url),
   );
-  if (
-    createHash("sha256").update(installedWorkflow).digest("hex") !==
-    "d05da39862393b7195fb9a0748a90f8d35f6261e74ba0a7738adf7789a7b583f"
-  ) {
+  if (createHash("sha256").update(installedWorkflow).digest("hex") !== CUSTODY_ORDINARY_WORKFLOW_SHA256) {
     // The retention rollout deliberately leaves the old observer pin frozen.
     // Historical original bytes remain valid history; they cannot authenticate
     // this changed installed workflow before its separately reviewed rebind.
@@ -1327,4 +1325,27 @@ test("custody retention distinguishes consistent empty ledgers from complete wor
   const empty = retainCustodyWorkerProof({ ...f, destination: f.destination + "-empty" });
   assert.equal(empty.ledgerConsistent, true);
   assert.equal(empty.workerPrefixComplete, false);
+});
+
+test("retention source rebind preserves lineage and rejects stale or changed retention readers", () => {
+  assert.equal(
+    custodyPolicy.sourceRebind.priorReaderMapSha256,
+    "01245355f2ffc1d76a49237e74c52c3bceae67bd8253d38294447a90aaafe86a",
+  );
+  assert.deepEqual(custodyPolicy.excludedPullRequests, [721, 776, 805, 820]);
+  assert.equal(custodyPolicy.maximumMetadataPaths, 64);
+  assert.equal(custodyPolicy.sourceRebind.changedReaders.length, 1);
+  const prior = custodyPolicy.sourceRebind.changedReaders[0];
+  assert.equal(prior.path, "scripts/sounding-line/experience-exception.mjs");
+  assert.equal(prior.oldBlob, "876bd7ef84600dcbba29597f479105190d313051");
+  const helper = "scripts/sounding-line/custody-worker-proof-retention.mjs",
+    pin = custodyPolicy.readers.find((row) => row.path === helper);
+  assert(pin && custodyCertificatePaths.includes(helper) && custodyPilotSourceFiles().includes(helper));
+  assert.equal(pin.sha256, createHash("sha256").update(fs.readFileSync(helper)).digest("hex"));
+  const stale = custodySetup();
+  stale.baseEntries.find((row) => row.path === prior.path).blob = prior.oldBlob;
+  assert.equal(proposeNoncampaignCustodyShadow(stale).reason, "INSTALLED_READER_CHANGED");
+  const changed = custodySetup();
+  changed.candidateEntries.find((row) => row.path === helper).blob = sha("f");
+  assert.equal(proposeNoncampaignCustodyShadow(changed).reason, "INSTALLED_READER_CHANGED");
 });
