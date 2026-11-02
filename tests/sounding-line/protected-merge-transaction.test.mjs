@@ -1,10 +1,59 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import {
   requireQualificationBoundary,
   requireSuccessfulMergeDecision,
   protectedMergeTransaction,
 } from "../../scripts/sounding-line/protected-merge-transaction.mjs";
+
+test("ordinary dispatch fails before checkout while candidate events and existing held routes remain available", () => {
+  const workflow = readFileSync(new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url), "utf8");
+  const campaign = workflow.split("  campaign-custody:\n")[1]?.split("  experience-preparation:\n")[0];
+  assert(campaign, "exact campaign job required");
+  const trusted = campaign.indexOf("Require the trusted workflow base before executing write authority");
+  const guard = campaign.indexOf("Reject unsupported ordinary dispatch before checkout");
+  const checkout = campaign.indexOf("- uses: actions/checkout@v4");
+  assert(trusted >= 0 && trusted < guard && guard < checkout);
+  const step = campaign.slice(guard, checkout);
+  assert.match(step, /timeout-minutes: 1/u);
+  for (const input of [
+    "github.event_name",
+    "inputs.experience_mode",
+    "inputs.experience_diagnostic",
+    "github.event.pull_request.number || inputs.pr_number",
+  ])
+    assert(step.includes(`\u0024{{ ${input} }}`), input);
+  const program = step.match(/node -e '\n([\s\S]*?)\n          '/u)?.[1];
+  assert(program, "execute the actual inline guard program");
+  for (const [event, mode, diagnostic, pr, status] of [
+    ["pull_request_target", "ordinary", "false", "820", 0],
+    ["workflow_dispatch", "capture", "false", "820", 0],
+    ["workflow_dispatch", "review", "false", "820", 0],
+    ["workflow_dispatch", "verify", "false", "820", 0],
+    ["workflow_dispatch", "ordinary", "true", "820", 0],
+    ["workflow_dispatch", "ordinary", "false", "820", 1],
+    ["workflow_dispatch", "", "false", "835", 1],
+    ...["721", "776", "805"].map((held) => ["workflow_dispatch", "ordinary", "false", held, 0]),
+  ]) {
+    const result = spawnSync(process.execPath, ["-e", program], {
+      encoding: "utf8",
+      timeout: 5000,
+      maxBuffer: 65536,
+      env: {
+        ...process.env,
+        SOUNDING_LINE_ENTRY_EVENT: event,
+        SOUNDING_LINE_ENTRY_MODE: mode,
+        SOUNDING_LINE_ENTRY_DIAGNOSTIC: diagnostic,
+        SOUNDING_LINE_ENTRY_PR: pr,
+      },
+    });
+    assert.ifError(result.error);
+    assert.equal(result.status, status, `${event}/${mode}/${diagnostic}/${pr}: ${result.stderr}`);
+    if (status === 1) assert.match(result.stderr, /candidate-bound pull_request_target event/u);
+  }
+});
 const repo = "Kgray44/treasurehuntSoT",
   head = "a".repeat(40),
   base = "b".repeat(40),
