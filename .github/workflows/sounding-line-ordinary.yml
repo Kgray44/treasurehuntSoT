@@ -169,6 +169,22 @@ jobs:
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
         run: node authority/scripts/sounding-line/experience-checkout-probe.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
+      - name: Preserve original custody worker prefix after every outcome
+        if: ${{ always() }}
+        env:
+          NODE_OPTIONS: ""
+          NODE_PATH: ""
+        run: node authority/scripts/sounding-line/experience-exception.mjs --operation retain-custody-proof --workspace candidate
+      - name: Retain original custody worker proof separately
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-custody-worker-proof-${{ github.run_id }}-${{ github.run_attempt }}
+          path: authority/artifacts/sounding-line/custody-worker-proof/run-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
       - name: Retain exact checkout receipt after every outcome
         if: ${{ always() && hashFiles('candidate.checkout.json') != '' }}
         uses: actions/upload-artifact@v4

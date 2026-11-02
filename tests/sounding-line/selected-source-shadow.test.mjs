@@ -32,6 +32,7 @@ import {
   verifyCustodySwitchReader,
 } from "../../scripts/sounding-line/noncampaign-custody-read-set.mjs";
 import { createHash } from "node:crypto";
+import { retainCustodyWorkerProof } from "../../scripts/sounding-line/custody-worker-proof-retention.mjs";
 import { baselineToolchainObservations } from "../../scripts/sounding-line/noncampaign-custody-matched-pilot.mjs";
 import {
   custodyShadowPreload as adapterPreload,
@@ -1005,4 +1006,230 @@ test("sparse-bootstrap workflow pins require exact reviewed base and candidate b
     () => custodyWorkflowMetadataPin("scripts/sounding-line/experience-exception.mjs", original, original, original),
     /UNKNOWN_WORKFLOW_METADATA_PIN/u,
   );
+});
+
+test("custody retention preserves exact failed and partial originals without issuing authority", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f);
+  const bytes = Buffer.from([255, 0, 13, 10]),
+    frame = retentionFrame(bytes);
+  fs.writeFileSync(path.join(source, frame.path), bytes);
+  const ledger = Buffer.from(
+    JSON.stringify({ frames: [frame], commands: [{ frames: { stdout: frame } }], retainedBytes: bytes.length }) + "\n",
+  );
+  fs.writeFileSync(path.join(source, "original-frame-ledger.failure.json"), ledger);
+  fs.writeFileSync(path.join(source, "0002-partial.original.bin"), "partial");
+  fs.writeFileSync(
+    path.join(source, "supervision.json"),
+    '{"failed":true,"failure":{"message":"original cancellation and cleanup failure"}}',
+  );
+  const r = retainCustodyWorkerProof(f);
+  assert.equal(r.preservationComplete, true);
+  assert.equal(r.integrityComplete, false);
+  assert.equal(r.qualification, false);
+  assert.equal(r.reuseAuthorized, false);
+  for (const n of fs.readdirSync(source))
+    assert.deepEqual(fs.readFileSync(path.join(f.destination, "originals", n)), fs.readFileSync(path.join(source, n)));
+  assert.equal(JSON.parse(fs.readFileSync(r.manifest)).files.find((x) => x.path === frame.path).originalOrdinal, 1);
+  assert.throws(() => retainCustodyWorkerProof(f), /OUTPUT_ALREADY_EXISTS/u);
+  fs.unlinkSync(path.join(source, "0002-partial.original.bin"));
+  const complete = retainCustodyWorkerProof({ ...f, destination: f.destination + "-complete" });
+  assert.equal(complete.integrityComplete, true);
+  assert.deepEqual(fs.readFileSync(path.join(source, "original-frame-ledger.failure.json")), ledger);
+});
+
+test("custody retention records absent prefix and rejects source hardlinks and directory aliases", (t) => {
+  const f = retentionFixture(t),
+    absent = retainCustodyWorkerProof(f);
+  assert.equal(absent.status, "NO_WORKER_PREFIX");
+  assert.equal(absent.preservationComplete, true);
+  assert.equal(absent.integrityComplete, false);
+  const source = retentionSource(f),
+    foreign = path.join(f.root, "foreign.bin");
+  fs.writeFileSync(foreign, "private original");
+  fs.linkSync(foreign, path.join(source, "hardlinked.original.bin"));
+  const bad = retainCustodyWorkerProof({ ...f, destination: f.destination + "-hardlink" });
+  assert.equal(bad.preservationComplete, false);
+  assert.match(JSON.stringify(JSON.parse(fs.readFileSync(bad.manifest)).errors), /SOURCE_ALIAS/u);
+  assert.deepEqual(fs.readdirSync(path.join(f.destination + "-hardlink", "originals")), []);
+  fs.unlinkSync(path.join(source, "hardlinked.original.bin"));
+  fs.symlinkSync(f.root, path.join(source, "directory-link"), process.platform === "win32" ? "junction" : "dir");
+  assert.equal(retainCustodyWorkerProof({ ...f, destination: f.destination + "-alias" }).preservationComplete, false);
+  assert.equal(fs.readFileSync(foreign, "utf8"), "private original");
+});
+
+test("custody retention rejects escaped, changed and reordered ledger references while preserving raw bytes", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f),
+    bytes = Buffer.from("a"),
+    frame = retentionFrame(bytes);
+  fs.writeFileSync(path.join(source, frame.path), bytes);
+  let i = 0;
+  for (const change of [{ path: "../escape" }, { ordinal: 2 }, { bytes: 2 }, { sha256: "0".repeat(64) }]) {
+    fs.writeFileSync(
+      path.join(source, "original-frame-ledger.json"),
+      JSON.stringify({ frames: [{ ...frame, ...change }] }),
+    );
+    const r = retainCustodyWorkerProof({ ...f, destination: f.destination + `-${i++}` });
+    assert.equal(r.preservationComplete, true);
+    assert.equal(r.integrityComplete, false);
+    assert(JSON.parse(fs.readFileSync(r.manifest)).integrityErrors.length > 0);
+    assert.deepEqual(fs.readFileSync(path.join(r.manifest, "../originals", frame.path)), bytes);
+  }
+  const limited = retainCustodyWorkerProof({ ...f, destination: f.destination + "-bound", limits: { totalBytes: 1 } });
+  assert.equal(limited.preservationComplete, false);
+  assert.match(JSON.stringify(JSON.parse(fs.readFileSync(limited.manifest)).errors), /TOTAL_BOUND/u);
+  assert.throws(
+    () =>
+      retainCustodyWorkerProof({
+        ...f,
+        destination: f.destination + "-raised",
+        limits: { totalBytes: 129 * 1024 ** 2 },
+      }),
+    /LIMIT/u,
+  );
+});
+
+test("custody retention keeps partial destination and original write exception", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f),
+    bytes = Buffer.from("unaltered raw original");
+  fs.writeFileSync(path.join(source, "0001-stdout.original.bin"), bytes);
+  const original = fs.writeSync;
+  let injected = false;
+  try {
+    fs.writeSync = (...args) => {
+      if (!injected) {
+        injected = true;
+        original(args[0], args[1], args[2], 3, args[4]);
+        throw Error("SIMULATED_PARTIAL_WRITE");
+      }
+      return original(...args);
+    };
+    const r = retainCustodyWorkerProof(f);
+    assert.equal(r.preservationComplete, false);
+    assert.match(JSON.stringify(JSON.parse(fs.readFileSync(r.manifest)).errors), /SIMULATED_PARTIAL_WRITE/u);
+    assert.equal(fs.readFileSync(path.join(f.destination, "originals/0001-stdout.original.bin")).length, 3);
+  } finally {
+    fs.writeSync = original;
+  }
+  assert.deepEqual(fs.readFileSync(path.join(source, "0001-stdout.original.bin")), bytes);
+});
+
+test("custody retention preserves close failures and rejects changed readback", (t) => {
+  const f = retentionFixture(t),
+    source = retentionSource(f),
+    bytes = Buffer.from("unaltered raw original");
+  fs.writeFileSync(path.join(source, "0001-stdout.original.bin"), bytes);
+  const close = fs.closeSync;
+  let injected = false;
+  try {
+    fs.closeSync = (...args) => {
+      close(...args);
+      if (!injected) {
+        injected = true;
+        throw Error("SIMULATED_CLOSE_FAILURE");
+      }
+    };
+    const r = retainCustodyWorkerProof(f);
+    assert.equal(r.preservationComplete, false);
+    assert.match(JSON.stringify(JSON.parse(fs.readFileSync(r.manifest)).errors), /SIMULATED_CLOSE_FAILURE/u);
+  } finally {
+    fs.closeSync = close;
+  }
+  const read = fs.readSync;
+  let calls = 0;
+  try {
+    fs.readSync = (...args) => {
+      const n = read(...args);
+      if (++calls === 2 && n > 0) args[1][args[2]] ^= 1;
+      return n;
+    };
+    const r = retainCustodyWorkerProof({ ...f, destination: f.destination + "-readback" });
+    assert.equal(r.preservationComplete, false);
+    assert.match(JSON.stringify(JSON.parse(fs.readFileSync(r.manifest)).errors), /FRAME_READBACK_CHANGED/u);
+  } finally {
+    fs.readSync = read;
+  }
+  assert.deepEqual(fs.readFileSync(path.join(source, "0001-stdout.original.bin")), bytes);
+});
+
+function retentionSource(f) {
+  const s = path.join(f.workspace, ".git/noncampaign-custody-proof");
+  fs.mkdirSync(s, { recursive: true });
+  return s;
+}
+function retentionFrame(bytes) {
+  return {
+    ordinal: 1,
+    path: "0001-stdout.original.bin",
+    bytes: bytes.length,
+    sha256: createHash("sha256").update(bytes).digest("hex"),
+    completeReadback: true,
+  };
+}
+function retentionFixture(t) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "sl-worker-retention-")),
+    workspace = path.join(root, "candidate"),
+    destination = path.join(root, "retained");
+  fs.mkdirSync(workspace);
+  t.after(() => {
+    assert(path.resolve(root).startsWith(path.resolve(os.tmpdir()) + path.sep));
+    assert.equal(fs.realpathSync.native(root), root);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  return {
+    root,
+    workspace,
+    destination,
+    binding: {
+      repository: "Kgray44/treasurehuntSoT",
+      baseSha: sha("a"),
+      candidateSha: sha("b"),
+      prNumber: 842,
+      runId: "12345",
+      attempt: 1,
+    },
+  };
+}
+
+test("custody retention rejects unbound callers and source/output overlap before writing", (t) => {
+  const f = retentionFixture(t);
+  assert.throws(
+    () => retainCustodyWorkerProof({ ...f, binding: { ...f.binding, repository: "other/repo" } }),
+    /BINDING/u,
+  );
+  assert.equal(fs.existsSync(f.destination), false);
+  assert.throws(
+    () => retainCustodyWorkerProof({ ...f, destination: path.join(f.workspace, "output") }),
+    /OUTPUT_OVERLAP/u,
+  );
+  assert.equal(fs.existsSync(path.join(f.workspace, "output")), false);
+  const result = spawnSync(
+    process.execPath,
+    [
+      "scripts/sounding-line/experience-exception.mjs",
+      "--operation",
+      "retain-custody-proof",
+      "--workspace",
+      f.workspace,
+    ],
+    {
+      cwd: process.cwd(),
+      env: {
+        PATH: process.env.PATH,
+        SystemRoot: process.env.SystemRoot,
+        TEMP: process.env.TEMP,
+        TMP: process.env.TMP,
+        NODE_OPTIONS: "",
+        NODE_PATH: "",
+        GITHUB_REPOSITORY: "other/repo",
+      },
+      encoding: "utf8",
+      timeout: 20000,
+    },
+  );
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /TRUSTED_WORKFLOW_CONTEXT/u);
+  assert.equal(fs.existsSync(f.destination), false);
 });
