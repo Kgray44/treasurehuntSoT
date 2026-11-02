@@ -1955,6 +1955,15 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     );
     assert.match(workflow, /permissions:\n  contents: read\n  actions: read\n/u);
     assert.equal((workflow.match(/^\s*permissions:/gmu) ?? []).length, 1);
+    for (const guard of [
+      "github.repository == 'Kgray44/treasurehuntSoT'",
+      "github.actor == 'Kgray44'",
+      "github.ref == 'refs/heads/main'",
+      'test "$INPUT_BASE_SHA" = "$GITHUB_SHA"',
+      'test "$GITHUB_RUN_ATTEMPT" = 1',
+    ])
+      assert(workflow.includes(guard), `${name}: ${guard}`);
+    assert(workflow.indexOf('test "$GITHUB_RUN_ATTEMPT" = 1') < workflow.indexOf("uses: actions/checkout@v4"));
     assert.doesNotMatch(
       workflow,
       /pull_request_target|pull_request:|push:|workflow_call|workflow_run|schedule:|Mainline Decision|:\s*write\b/u,
