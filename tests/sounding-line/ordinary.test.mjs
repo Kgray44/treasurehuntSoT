@@ -1932,7 +1932,9 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     "sounding-line-exhaustive-release.yml",
     "sounding-line-focused-repair.yml",
     "sounding-line-ordinary.yml",
+    "sounding-line-preparation-consumer-shadow.yml",
     "sounding-line-preparation-probe.yml",
+    "sounding-line-preparation-shadow.yml",
     "sounding-line-replay-admission-diagnostic.yml",
     "sounding-line-replay-historical-validation-diagnostic.yml",
     "sounding-line-replay-posttechnical-diagnostic.yml",
@@ -1944,6 +1946,21 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   assert.match(ordinaryWorkflow, /pull_request_target/u);
   assert.match(ordinaryWorkflow, /Sounding Line \/ Mainline Decision/u);
   assert.doesNotMatch(ordinaryWorkflow, /nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu);
+  for (const name of ["sounding-line-preparation-shadow.yml", "sounding-line-preparation-consumer-shadow.yml"]) {
+    const workflow = readFileSync(`.github/workflows/${name}`, "utf8");
+    const header = workflow.split("\npermissions:\n")[0];
+    assert.deepEqual(
+      [...header.matchAll(/^  ([a-z_]+):$/gmu)].map((match) => match[1]),
+      ["workflow_dispatch"],
+    );
+    assert.match(workflow, /permissions:\n  contents: read\n  actions: read\n/u);
+    assert.equal((workflow.match(/^\s*permissions:/gmu) ?? []).length, 1);
+    assert.doesNotMatch(
+      workflow,
+      /pull_request_target|pull_request:|push:|workflow_call|workflow_run|schedule:|Mainline Decision|:\s*write\b/u,
+    );
+    assert(!ordinaryWorkflow.includes(name));
+  }
   const focusedWorkflow = readFileSync(".github/workflows/sounding-line-focused-repair.yml", "utf8");
   assert.match(focusedWorkflow, /on:\n  workflow_dispatch:\n    inputs:\n/u);
   const focusedInputs = focusedWorkflow.split("\npermissions:\n")[0];
