@@ -117,3 +117,26 @@ provider provenance or a reuse certificate. The existing attestation loader and
 all historical archive bytes remain unchanged.
 
 Format reference: [PKWARE APPNOTE](https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT).
+
+## Preparation content rehashing
+
+`preparation-content-shadow.mjs` independently hashes complete source and
+destination layer directories. It bounds content to 2 GiB, metadata to 32 MiB,
+entries to 200,000 and reads to reusable 64 KiB buffers under a 60-second local
+deadline and the external owned-process guardian. Regular files must have one
+link; symlinks, Git stores and directory aliases fail closed. Inventories include
+file modes and empty directories. Descriptor/name identity, whole-tree membership
+and timestamps are checked before and after reading. Separate read and close
+failures preserve both original errors. Comparison rereads both directories;
+serialized observations cannot stand in for opaque in-process handles.
+
+At source `7ea3fe47ca6b64d9db111453d89224971af650b6`, the existing local Prisma
+client contained 18 files and 45,402,804 bytes. Its private owned copy and both
+independent rehashes matched inventory SHA-256
+`5e67be52c40df0825ea0b9c000d8ea945bec378f080dccb884729eb3104f8b7d`.
+The initial read took 847.776 ms, copying 24.564 ms, and destination measurement
+plus both comparison rereads 603.037 ms. These are local existing-output
+observations, not two fresh preparation runs or hosted savings. A declared layer
+does not prove data classification, native publisher provenance, installed input
+identity, expiry, revocation or external isolation. No certificate is issued;
+normal fresh preparation remains required.
