@@ -21,7 +21,13 @@ const git = (...args) =>
     windowsHide: true,
     stdio: ["ignore", "pipe", "pipe"],
   }).trim();
-for (const file of [...PREPARATION_PUBLISHER_READERS, modulePath]) {
+for (const file of [
+  ...PREPARATION_PUBLISHER_READERS,
+  modulePath,
+  ...["bounded-media-shadow.mjs", "owned-process.mjs", "owned-process-windows.ps1", "owned-process-linux.py"].map(
+    (name) => `scripts/sounding-line/${name}`,
+  ),
+]) {
   const target = path.join(root, file);
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.copyFileSync(new URL(`../../${file}`, import.meta.url), target);
@@ -35,10 +41,15 @@ const transport =
 assert(transport.test(production));
 fs.writeFileSync(
   filename,
-  production.replace(
-    transport,
-    "function providerRequest(endpoint, options) { return globalThis.__syntheticPreparationProvider(endpoint, options); }\nfunction originalMarker",
-  ),
+  production
+    .replace(
+      "import { spawnOwnedProcess, processExit, stopOwnedProcess }",
+      "import { spawnOwnedProcess as realSpawnOwnedProcess, processExit, stopOwnedProcess }",
+    )
+    .replace(
+      transport,
+      "function providerRequest(endpoint, options) { return globalThis.__syntheticPreparationProvider(endpoint, options); }\nfunction spawnOwnedProcess(command, args, options) { return globalThis.__syntheticPreparationDownload(realSpawnOwnedProcess, command, args, options); }\nfunction originalMarker",
+    ),
 );
 git("init", "-q");
 git("config", "user.name", "Synthetic preparation proof");
@@ -67,6 +78,7 @@ const api = await import(pathToFileURL(filename).href);
 const start = "2026-11-02T00:00:00Z",
   end = "2026-11-02T00:01:00Z",
   verifierEnd = "2026-11-02T00:02:00Z";
+const archiveBytes = Buffer.from(Array.from({ length: 4096 }, (_, index) => index % 256));
 const contexts = ["publisher", "independent-verifier"].map((jobKey, i) =>
   preparationPublisherContext({
     repository: "Kgray44/treasurehuntSoT",
@@ -140,8 +152,8 @@ function fixtures() {
     name: `sounding-line-preparation-capsule-${runId}-1`,
     expired: false,
     workflow_run: { id: runId, head_sha: source, head_branch: "main" },
-    size_in_bytes: 1234,
-    digest: `sha256:${"a".repeat(64)}`,
+    size_in_bytes: archiveBytes.length,
+    digest: `sha256:${createHash("sha256").update(archiveBytes).digest("hex")}`,
     created_at: start,
     expires_at: "2099-01-01T00:00:00Z",
   };
@@ -179,31 +191,54 @@ function fixtures() {
     "actions/artifacts/55": artifact,
   };
 }
-let current, requests, transportFailure, mainReads;
+let current, requests, transportFailure, mainReads, downloadFailure, downloadCorrupt, advanceDuringDownload;
 globalThis.__syntheticPreparationProvider = (endpoint, { maximumBytes, timeoutMs }) => {
   requests.push(endpoint);
   assert(maximumBytes <= 2 * 1024 * 1024);
   assert(timeoutMs > 0 && timeoutMs <= 15000);
   if (transportFailure && endpoint === "actions/jobs/11/logs") throw transportFailure;
   let value = current[endpoint];
-  if (endpoint === "git/ref/heads/main" && ++mainReads === 2 && current.advance)
+  if (
+    endpoint === "git/ref/heads/main" &&
+    ((++mainReads === 2 && current.advance) || mainReads === current.advanceOnRead)
+  )
     value = { ...value, object: { type: "commit", sha: "0".repeat(40) } };
   assert.notEqual(value, undefined, endpoint);
   return Buffer.isBuffer(value) ? Buffer.from(value) : Buffer.from(JSON.stringify(value));
 };
 function observe(change = () => {}) {
   current = fixtures();
+  current[`actions/runs/${runId}`] = structuredClone(current[`actions/runs/${runId}/attempts/1`]);
   requests = [];
   transportFailure = null;
   mainReads = 0;
+  downloadFailure = 0;
+  downloadCorrupt = false;
+  advanceDuringDownload = false;
   change(current);
   return api.authenticatePreparationProvider({ root, acceptedBaseSha: source, runId });
 }
 test.after(() => {
   delete globalThis.__syntheticPreparationProvider;
+  delete globalThis.__syntheticPreparationDownload;
   assert(root.startsWith(path.resolve(os.tmpdir()) + path.sep));
   fs.rmSync(root, { recursive: true });
 });
+globalThis.__syntheticPreparationDownload = (spawn, command, args, options) => {
+  assert.equal(command, "gh");
+  assert.deepEqual(args, ["api", "--hostname", "github.com", `repos/Kgray44/treasurehuntSoT/actions/artifacts/55/zip`]);
+  if (advanceDuringDownload) current.advanceOnRead = mainReads + 1;
+  const payload = Buffer.from(archiveBytes);
+  if (downloadCorrupt) payload[0] ^= 1;
+  return spawn(
+    process.execPath,
+    [
+      "-e",
+      `process.stdout.write(Buffer.from('${payload.toString("base64")}','base64'),()=>{process.exitCode=${downloadFailure}})`,
+    ],
+    options,
+  );
+};
 test("fixed-provider originals bind both independent jobs, exact installed source and artifact without reuse authority", () => {
   const proof = observe();
   assert.equal(proof.kind, "PROVIDER_BOUND_PREPARATION_SHADOW_NOT_REUSE_AUTHORITY");
@@ -301,4 +336,51 @@ test("failed original transport retains the exact error and all preceding provid
   assert.equal(evidence.failures[0].originalError, original);
   assert.equal(requests.filter((endpoint) => endpoint === "actions/jobs/11/logs").length, 1);
   assert.equal(evidence.originals.length, 6);
+});
+test("authenticated ZIP transport uses actual owned binary pipes and denies drift, corruption and failed payload exit", async () => {
+  for (const scenario of ["positive", "corrupt", "exit", "advance"]) {
+    const proof = observe();
+    assert.equal(proof.kind, "PROVIDER_BOUND_PREPARATION_SHADOW_NOT_REUSE_AUTHORITY");
+    const directory = path.join(root, `download-${scenario}`);
+    fs.mkdirSync(directory);
+    downloadCorrupt = scenario === "corrupt";
+    downloadFailure = scenario === "exit" ? 9 : 0;
+    advanceDuringDownload = scenario === "advance";
+    const handle = await api.retainAuthenticatedPreparationArchive({
+      proof,
+      root,
+      acceptedBaseSha: source,
+      runId,
+      directory,
+    });
+    const evidence = api.retainedPreparationProviderEvidence(handle);
+    assert.equal(evidence.cleanup.status, "PASS");
+    if (scenario === "positive") {
+      assert.equal(handle.kind, "PROVIDER_BOUND_PREPARATION_ZIP_NOT_VALIDATED_PAYLOAD");
+      const value = api.inspectAuthenticatedPreparationArchive(handle, { root, acceptedBaseSha: source, runId });
+      assert(value);
+      assert.deepEqual(fs.readFileSync(value.filename), archiveBytes);
+      assert.equal(value.reuseAuthorized, false);
+      assert.equal(value.certificate, "NOT_ISSUED");
+      assert.equal(
+        api.inspectAuthenticatedPreparationArchive(JSON.parse(JSON.stringify(handle)), {
+          root,
+          acceptedBaseSha: source,
+          runId,
+        }),
+        null,
+      );
+      fs.writeFileSync(value.filename, "corrupted after transport");
+      assert.equal(api.inspectAuthenticatedPreparationArchive(handle, { root, acceptedBaseSha: source, runId }), null);
+    } else {
+      assert.equal(handle.kind, "PREPARATION_ARCHIVE_TRANSPORT_DENIED");
+      assert(evidence.originalError);
+      assert.equal(api.inspectAuthenticatedPreparationArchive(handle, { root, acceptedBaseSha: source, runId }), null);
+      assert(evidence.transport.rawPath);
+      assert(fs.existsSync(evidence.transport.rawPath));
+      if (scenario === "corrupt") assert.equal(evidence.transport.status, "FAIL");
+      if (scenario === "exit") assert.equal(evidence.result.code, 9);
+      if (scenario === "advance") assert.match(evidence.originalError.message, /MAIN_ADVANCED/u);
+    }
+  }
 });

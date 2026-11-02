@@ -5,6 +5,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { Readable } from "node:stream";
+import { spawnOwnedProcess, processExit, stopOwnedProcess } from "./owned-process.mjs";
+import { retainMediaTransportShadow, verifyRetainedMediaShadow } from "./bounded-media-shadow.mjs";
 import { canonicalJson, digest } from "./evidence.mjs";
 import {
   PREPARATION_PUBLISHER_READERS,
@@ -16,6 +19,7 @@ const repository = "Kgray44/treasurehuntSoT",
   ownerId = 64373011;
 const proofs = new WeakMap(),
   retained = new WeakMap();
+const archiveProofs = new WeakMap();
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const oid = (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value);
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
@@ -340,6 +344,169 @@ export function inspectPreparationProvider(proof, { root, acceptedBaseSha, runId
     return null;
   return Object.freeze({ ...proof });
 }
+// Download only an opaque authenticated original. Never buffer a complete ZIP,
+// extract it, authorize payload execution, or turn the transport into reuse.
+export async function retainAuthenticatedPreparationArchive({ proof, root, acceptedBaseSha, runId, directory }) {
+  const originals = [],
+    failures = [];
+  let child,
+    transport,
+    cleanup,
+    originalError,
+    result,
+    originalArtifactId,
+    stderrBytes = 0;
+  const stderr = [],
+    controller = new AbortController(),
+    began = performance.now();
+  const read = (endpoint) => {
+    need(performance.now() - began < 60000, "TRANSPORT_DEADLINE");
+    let bytes;
+    try {
+      bytes = providerRequest(endpoint, { maximumBytes: 2 * 1024 * 1024, timeoutMs: 5000 });
+    } catch (error) {
+      failures.push({ endpoint, originalError: error });
+      throw error;
+    }
+    need(Buffer.isBuffer(bytes) && bytes.length > 0 && bytes.length <= 2 * 1024 * 1024, "TRANSPORT_PROVIDER_BYTES");
+    originals.push({ endpoint, bytes: Buffer.from(bytes), sha256: hash(bytes) });
+    return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+  };
+  const fresh = () => {
+    need(inspectPreparationProvider(proof, { root, acceptedBaseSha, runId }), "TRANSPORT_OPAQUE_SOURCE");
+    const main = read("git/ref/heads/main"),
+      run = read(`actions/runs/${runId}`),
+      artifact = read(`actions/artifacts/${proof.artifactId}`);
+    need(
+      main.ref === "refs/heads/main" && main.object?.type === "commit" && main.object.sha === acceptedBaseSha,
+      "TRANSPORT_MAIN_ADVANCED",
+    );
+    need(
+      run.id === runId &&
+        run.run_attempt === 1 &&
+        run.head_sha === acceptedBaseSha &&
+        run.head_branch === "main" &&
+        run.event === "workflow_dispatch" &&
+        run.path === PREPARATION_SHADOW_WORKFLOW &&
+        run.status === "completed" &&
+        run.conclusion === "success" &&
+        run.repository?.id === repositoryId &&
+        run.repository.full_name === repository &&
+        run.repository.owner?.id === ownerId &&
+        [run.actor, run.triggering_actor].every((actor) => actor?.id === ownerId && actor.login === "Kgray44"),
+      "TRANSPORT_RUN_CHANGED",
+    );
+    need(
+      artifact.id === proof.artifactId &&
+        artifact.name === `sounding-line-preparation-capsule-${runId}-1` &&
+        artifact.expired === false &&
+        artifact.workflow_run?.id === runId &&
+        artifact.workflow_run.head_sha === acceptedBaseSha &&
+        artifact.workflow_run.head_branch === "main" &&
+        artifact.size_in_bytes === proof.artifactBytes &&
+        artifact.digest === `sha256:${proof.artifactSha256}` &&
+        time(artifact.expires_at) > Date.now(),
+      "TRANSPORT_ARTIFACT_CHANGED",
+    );
+  };
+  try {
+    fresh();
+    originalArtifactId = proof.artifactId;
+    child = spawnOwnedProcess(
+      "gh",
+      ["api", "--hostname", "github.com", `repos/${repository}/actions/artifacts/${proof.artifactId}/zip`],
+      {
+        root,
+        env: { ...process.env, GH_PROMPT_DISABLED: "1", NO_COLOR: "1", NODE_OPTIONS: "", NODE_PATH: "" },
+        cleanupOptions: { gracefulMs: 500, forceMs: 1000 },
+      },
+    );
+    // The generic guardian mirrors text by default. Detach synchronously before
+    // its asynchronous launch readiness; binary bytes belong only in custody.
+    child.stdout.unpipe(process.stdout);
+    child.stderr.unpipe(process.stderr);
+    const exited = processExit(child);
+    child.stderr.on("data", (bytes) => {
+      const remaining = 65536 - stderrBytes;
+      if (remaining > 0) stderr.push(Buffer.from(bytes.subarray(0, remaining)));
+      stderrBytes += bytes.length;
+      if (stderrBytes > 65536) controller.abort();
+    });
+    transport = await retainMediaTransportShadow({
+      directory,
+      expectedBytes: proof.artifactBytes,
+      expectedSha256: proof.artifactSha256,
+      maximumBytes: 160 * 1024 * 1024,
+      deadlineMs: Math.max(1, Math.floor(55000 - (performance.now() - began))),
+      signal: controller.signal,
+      response: { ok: true, status: 200, headers: new Headers(), body: Readable.toWeb(child.stdout) },
+    });
+    need(transport.status === "PASS" && verifyRetainedMediaShadow(transport), "TRANSPORT_COMPLETE_BYTES");
+    let timer;
+    try {
+      result = await Promise.race([
+        exited,
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(Error("PREPARATION_DOWNLOAD_EXIT_DEADLINE")), 1000);
+        }),
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+    need(result.code === 0 && !result.signal && stderrBytes <= 65536, "TRANSPORT_PROCESS");
+    fresh();
+  } catch (error) {
+    originalError = error;
+  } finally {
+    if (child)
+      try {
+        cleanup = await stopOwnedProcess(child);
+      } catch (error) {
+        failures.push({ stage: "OWNED_DOWNLOAD_CLEANUP", originalError: error });
+        originalError ??= error;
+      }
+    if (child && cleanup?.status !== "PASS") originalError ??= Error("PREPARATION_DOWNLOAD_CLEANUP_UNPROVEN");
+  }
+  const handle = Object.freeze({
+    kind: originalError
+      ? "PREPARATION_ARCHIVE_TRANSPORT_DENIED"
+      : "PROVIDER_BOUND_PREPARATION_ZIP_NOT_VALIDATED_PAYLOAD",
+    sourceCommit: acceptedBaseSha,
+    runId,
+    attempt: 1,
+    artifactId: originalArtifactId,
+    certificate: "NOT_ISSUED",
+    qualification: false,
+    reuseAuthorized: false,
+  });
+  retained.set(handle, {
+    originals,
+    failures,
+    originalError,
+    transport,
+    cleanup,
+    stderr: Buffer.concat(stderr),
+    stderrBytes,
+    result,
+  });
+  if (!originalError) archiveProofs.set(handle, { proof, root, acceptedBaseSha, runId, transport });
+  return handle;
+}
+export function inspectAuthenticatedPreparationArchive(handle, binding) {
+  const value = archiveProofs.get(handle);
+  if (!value || !inspectPreparationProvider(value.proof, binding) || !verifyRetainedMediaShadow(value.transport))
+    return null;
+  return Object.freeze({
+    filename: value.transport.rawPath,
+    expectedBytes: value.transport.bytes,
+    expectedSha256: value.transport.sha256,
+    manifestSha256: value.proof.manifestSha256,
+    inventoryDigest: value.proof.inventoryDigest,
+    certificate: "NOT_ISSUED",
+    qualification: false,
+    reuseAuthorized: false,
+  });
+}
 export function retainedPreparationProviderEvidence(handle) {
   const value = retained.get(handle);
   if (!value) return null;
@@ -347,6 +514,11 @@ export function retainedPreparationProviderEvidence(handle) {
     originals: Object.freeze(value.originals.map((row) => Object.freeze({ ...row, bytes: Buffer.from(row.bytes) }))),
     failures: Object.freeze(value.failures.map((row) => Object.freeze({ ...row }))),
     originalError: value.originalError,
+    transport: value.transport,
+    cleanup: value.cleanup,
+    stderr: value.stderr && Buffer.from(value.stderr),
+    stderrBytes: value.stderrBytes,
+    result: value.result,
     qualification: false,
     reuseAuthorized: false,
   });
