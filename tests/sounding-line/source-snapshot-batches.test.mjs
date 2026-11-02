@@ -46,6 +46,7 @@ test("the protected regression script includes every incremental registry and co
     "bounded-media-shadow",
     "selected-source-shadow",
     "preparation-reuse-shadow",
+    "preparation-content-shadow",
     "attestation-archive-shadow",
   ])
     assert.equal(files.filter((file) => file === `tests/sounding-line/${name}.test.mjs`).length, 1, name);
