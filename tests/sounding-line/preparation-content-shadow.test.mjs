@@ -46,6 +46,13 @@ test("corrupt restored bytes are rejected even with an independently measured de
   assert.equal(comparison.disposition, "REJECT_CORRUPTION");
   assert.equal(comparison.contentEquivalent, false);
 });
+test("empty directory membership contributes to the complete output inventory", (t) => {
+  const { source, destination } = fixture(t);
+  fs.mkdirSync(path.join(destination, "extra-empty-directory"));
+  const comparison = comparePreparationContentShadow({ source: measure(source), destination: measure(destination) });
+  assert.equal(comparison.disposition, "REJECT_CORRUPTION");
+  assert.equal(comparison.contentEquivalent, false);
+});
 test("late destination mutation and source mutation independently reject stale observations", (t) => {
   const { source, destination } = fixture(t),
     a = measure(source),

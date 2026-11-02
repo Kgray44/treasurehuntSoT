@@ -54,6 +54,10 @@ export function measurePreparationContentShadow({ root, layer }) {
     if (collect) {
       initial.set(key, signature(stat));
       need(initial.size <= PREPARATION_CONTENT_LIMITS.entries, "ENTRIES");
+      const entry = { path: key, type: "directory", mode: Number(stat.mode & 0o777n) };
+      metadataBytes += Buffer.byteLength(canonicalJson(entry));
+      need(metadataBytes <= PREPARATION_CONTENT_LIMITS.metadataBytes, "METADATA");
+      entries.push(entry);
     } else need(initial.get(key) === signature(stat), "DIRECTORY_DRIFT");
     const names = fs.readdirSync(directory).sort();
     for (const name of names) {
@@ -98,6 +102,7 @@ export function measurePreparationContentShadow({ root, layer }) {
           need(signature(fs.lstatSync(filename, { bigint: true })) === signature(childStat), "FILE_NAME_DRIFT");
           result = {
             path: childRelative,
+            type: "file",
             bytes: Number(childStat.size),
             mode: Number(childStat.mode & 0o777n),
             sha256: hash.digest("hex"),
@@ -123,7 +128,8 @@ export function measurePreparationContentShadow({ root, layer }) {
     need(signature(fs.lstatSync(directory, { bigint: true })) === signature(stat), "DIRECTORY_DRIFT");
   }
   walk(resolved);
-  need(entries.length > 0, "EMPTY");
+  const fileCount = entries.filter((entry) => entry.type === "file").length;
+  need(fileCount > 0, "EMPTY");
   // Re-enumerate the whole tree; a late insertion/removal cannot hide behind a
   // matching list of previously opened files. Directory timestamps also bind it.
   walk(resolved, "", 0, false);
@@ -133,7 +139,7 @@ export function measurePreparationContentShadow({ root, layer }) {
     kind: "PREPARATION_CONTENT_SHADOW_OBSERVATION",
     layer,
     inventoryDigest,
-    fileCount: entries.length,
+    fileCount,
     byteLength: bytes,
     qualification: false,
     reuseAuthorized: false,
