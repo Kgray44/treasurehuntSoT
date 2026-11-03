@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "ENGINEERING_EVIDENCE",
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "kind": "FOCUSED_READ_ONLY_TESTFLIGHT_PREFLIGHT_LOCAL_VERIFICATION",
+  "sealedAtUtc": "2026-10-22T03:03:25.163Z",
+  "observedParent": {
+    "head": "a8208aa038d989b8aee17f1494bd37a44e5b1b9b",
+    "meaning": "Parent HEAD observed during local execution; not a frozen candidate, protected qualification or commit of this working patch."
+  },
+  "source": {
+    "unchangedBeforeAfter": true,
+    "files": [
+      {
+        "path": ".agents/ncl01-testflight-hosted.yml",
+        "before": {
+          "sha256": "9e04245a62e55e65010c503bf257c38f526fb4735adb6bf87f59b9fdddf860a3",
+          "bytes": 5145
+        },
+        "after": {
+          "sha256": "9e04245a62e55e65010c503bf257c38f526fb4735adb6bf87f59b9fdddf860a3",
+          "bytes": 5145
+        }
+      },
+      {
+        "path": ".agents/ncl01-testflight.md",
+        "before": {
+          "sha256": "528e608632a3889f20755f1d75f7c4af31786e658ecbea05c0659894a21eb493",
+          "bytes": 29416
+        },
+        "after": {
+          "sha256": "528e608632a3889f20755f1d75f7c4af31786e658ecbea05c0659894a21eb493",
+          "bytes": 29416
+        }
+      },
+      {
+        "path": "scripts/landfall/testflight/dispatch.mjs",
+        "before": {
+          "sha256": "b4932d711692dbdaa69bc19ccc238006bb77ecdb32d253d5e9bee6a5fff14324",
+          "bytes": 5087
+        },
+        "after": {
+          "sha256": "b4932d711692dbdaa69bc19ccc238006bb77ecdb32d253d5e9bee6a5fff14324",
+          "bytes": 5087
+        }
+      },
+      {
+        "path": "scripts/landfall/testflight/dispatch.test.mjs",
+        "before": {
+          "sha256": "36d7bae3c1ae9ee81eba73d1519922719ab71650dfbf4c48a2b9f9363b29c895",
+          "bytes": 3698
+        },
+        "after": {
+          "sha256": "36d7bae3c1ae9ee81eba73d1519922719ab71650dfbf4c48a2b9f9363b29c895",
+          "bytes": 3698
+        }
+      },
+      {
+        "path": "scripts/landfall/testflight/runner.py",
+        "before": {
+          "sha256": "a1922ac0838730c55c52dc91b71672fc95f4d9896041f28f9c712958563a0d40",
+          "bytes": 42399
+        },
+        "after": {
+          "sha256": "a1922ac0838730c55c52dc91b71672fc95f4d9896041f28f9c712958563a0d40",
+          "bytes": 42399
+        }
+      },
+      {
+        "path": "scripts/landfall/testflight/test_runner.py",
+        "before": {
+          "sha256": "bcf5fe2cb270f3ed3df543d80dc2e937755dd020c661de11ac2c7cd05b330d2a",
+          "bytes": 35272
+        },
+        "after": {
+          "sha256": "bcf5fe2cb270f3ed3df543d80dc2e937755dd020c661de11ac2c7cd05b330d2a",
+          "bytes": 35272
+        }
+      }
+    ],
+    "sourceBeforeRecord": {
+      "sha256": "0b059d2eef1acecfbea5a2d4b97a287c0b4f61ae555cd7513ac21a976b96ab76",
+      "bytes": 1135
+    },
+    "privateVerificationRecord": {
+      "sha256": "065e3348f22efcd555034300fcdca2909907b79c77b13f184f70dd1157fd4436",
+      "bytes": 3073
+    }
+  },
+  "checks": {
+    "tests": {
+      "total": 42,
+      "passed": 42,
+      "failed": 0,
+      "node": {
+        "total": 5,
+        "passed": 5
+      },
+      "python": {
+        "total": 37,
+        "passed": 37,
+        "runnerBoundaries": 28,
+        "unchangedReleaseProofChecks": 9
+      }
+    },
+    "format": {
+      "exitCode": 0
+    },
+    "eslint": {
+      "exitCode": 0
+    },
+    "diffCheck": {
+      "exitCode": 0
+    }
+  },
+  "originals": [
+    {
+      "role": "node-tests",
+      "fileName": "node-tests.original.log",
+      "sha256": "adff3bb204c8795c049ee26ef191753e414bbdc58467eb75050195ce60f669d6",
+      "bytes": 602,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "role": "python-tests",
+      "fileName": "python-tests.original.log",
+      "sha256": "2d3e7492176353ebc723d36707e11f86ebf241560d741a8a24a0a3d1ec761df1",
+      "bytes": 7181,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "role": "format-check",
+      "fileName": "format-check.original.log",
+      "sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20",
+      "bytes": 66,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "role": "eslint",
+      "fileName": "eslint.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "exitCode": 0,
+      "signal": null
+    },
+    {
+      "role": "diff-check",
+      "fileName": "diff-check.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "exitCode": 0,
+      "signal": null
+    }
+  ],
+  "independentSourceReview": {
+    "receiptSha256": "411378da026c5819908b03617ba044b7a4d6fc1316235e68852168fcf45ef015",
+    "bytes": 6777,
+    "role": "SOURCE_REVIEW_ONLY",
+    "meaning": "Independent peer source/security review; not a builder result, candidate qualification or actual Apple execution."
+  },
+  "limits": {
+    "actualAppleRequestsExecuted": false,
+    "actualSecretValuesUsed": false,
+    "actualSigningExecuted": false,
+    "workflowDispatched": false,
+    "uploadExecuted": false,
+    "internalGroupMutated": false,
+    "beta7Replaced": false,
+    "previewReplaced": false,
+    "certificateOrProfileRevocationVerified": false,
+    "uploadPermissionVerified": false,
+    "buildNumberReserved": false,
+    "physicalInstallationOrARProven": false
+  },
+  "scope": "Synthetic local tests exercise GET-only routes, material checks, private-output guards, exact identity matching, no search-list/profile installation, bounded cleanup, persisted failure and idempotent recovery. No real credentials or App Store Connect calls were exercised."
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "role": "READ_ONLY_EXISTING_PREVIEW_HEALTH",
+  "qualification": false,
+  "result": "FAIL",
+  "origin": "https://ncl01.absoluterelativesystems.com",
+  "code": "HEALTH_TIMEOUT",
+  "requestIdleTimeoutMs": 20000,
+  "exactFailedRequest": "UNOBSERVED_SIGN_IN_OR_REFERENCED_PUBLIC_ASSET",
+  "tlsValidation": "REJECT_UNAUTHORIZED_TRUE",
+  "runtimeChanged": false,
+  "privateAccountUsed": false,
+  "privateDatabaseReadOrChanged": false,
+  "scriptSha256": "cc82f7bc0f24c116e1818d6936bd47730002d4fe3901f902d2d542030af8df93",
+  "limits": [
+    "A timeout is not a certificate trust failure or proof that all public routes are unavailable. Read-only diagnosis continues."
+  ]
+}

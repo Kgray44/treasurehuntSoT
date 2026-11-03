@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "role": "OWNED_CAPTURE_CANCELLATION_REQUEST_NOT_TERMINAL_PROOF",
+  "runId": 39788400044,
+  "baseSha": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "candidateSha": "be9abdac95279ea1e4f67b23221027ba19bd6e68",
+  "requestedAtUtc": "2026-10-22T14:11:39.4999634Z",
+  "exitCode": 0,
+  "reason": "NO_DEMONSTRATED_PROGRESS_OVER_20_MINUTES",
+  "lastObservedStepStartUtc": "2026-10-22T13:50:36Z",
+  "activeLogAttempt": "HTTP404_UNAVAILABLE_2026-10-22T14:04:16Z",
+  "browserInspection": "EXISTING_TAB_BIND_TIMED_OUT_NO_NEW_PROFILE",
+  "qualification": false,
+  "retryDispatched": false
+}

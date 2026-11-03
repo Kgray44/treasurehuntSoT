@@ -1,0 +1,198 @@
+{
+  "role": "NCL01_ORDINARY_CAPTURE_ATTEMPT_CANCELLED_AFTER_PLANNING",
+  "qualification": false,
+  "acceptance": false,
+  "result": "PLAN_RETAINED_CAPTURE_COMPLETION_UNPROVED_CANCELLED",
+  "run": {
+    "id": 39788400044,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39788400044",
+    "event": "workflow_dispatch",
+    "workflowPath": ".github/workflows/sounding-line-ordinary.yml",
+    "workflowHead": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+    "workflowBranch": "main",
+    "createdAtUtc": "2026-10-22T13:36:57Z",
+    "updatedAtUtc": "2026-10-22T14:17:55Z",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "terminalObservedAtUtc": "2026-10-22T14:19:49.744Z",
+    "attempt": 1
+  },
+  "binding": {
+    "installedBaseSha": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+    "candidateSha": "be9abdac95279ea1e4f67b23221027ba19bd6e68",
+    "candidateTree": "6b9923185a4b7e19f434a44eeaa192fe268098b8",
+    "sourceDigest": "077256e6be7d3739f3c13e678661921b6bc19c2715e9d29a1f8f8c365aafba5f",
+    "contractDigest": "1641e055d4bcb7d0cb34ef8c641023cd8957e10e46768c07ee63418cb03ffeb3",
+    "modeFromTrustedDispatch": "capture",
+    "diagnosticFromTrustedDispatch": false,
+    "pullRequestFromTrustedDispatch": 741,
+    "candidateConfirmedInTrustedCheckout": true,
+    "baseNeverRebound": true
+  },
+  "plan": {
+    "relativePath": "artifacts/artifact-12433205401.extracted/product-experience-submission/plan.json",
+    "bytes": 322893,
+    "sha256": "31bc7658fe2f306259bbd0c2be37b28d9307f665c416691cc96e95f47e7101ab",
+    "classification": "CROSS_PROJECT_EXPERIENCE",
+    "applicable": true,
+    "contractCount": 18,
+    "genericContexts": 68,
+    "totalContexts": 74,
+    "pairedCases": 3,
+    "pairedBrowserContexts": 6,
+    "browserFilesDeclared": 10,
+    "uncertaintyCount": 0,
+    "debtCount": 0,
+    "exceptionPropertyPresent": false,
+    "campaignPropertyPresent": false,
+    "status": "OFFICIAL_PLAN_RETAINED_ONLY; no executed-context denominator established"
+  },
+  "jobs": [
+    {
+      "id": 119857581561,
+      "name": "Sounding Line / Finite campaign custody",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAtUtc": "2026-10-22T13:37:01Z",
+      "completedAtUtc": "2026-10-22T13:43:11Z"
+    },
+    {
+      "id": 119860852409,
+      "name": "Sounding Line / Experience preparation (no mainline decision)",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "startedAtUtc": "2026-10-22T13:43:16Z",
+      "completedAtUtc": "2026-10-22T14:12:20Z"
+    },
+    {
+      "id": 119860905323,
+      "name": "Sounding Line / Focused verification",
+      "status": "completed",
+      "conclusion": "skipped",
+      "startedAtUtc": "2026-10-22T13:43:18Z",
+      "completedAtUtc": "2026-10-22T13:43:12Z"
+    },
+    {
+      "id": 119861097152,
+      "name": "Sounding Line / Mainline Decision",
+      "status": "completed",
+      "conclusion": "skipped",
+      "startedAtUtc": "2026-10-22T13:43:40Z",
+      "completedAtUtc": "2026-10-22T13:43:12Z"
+    }
+  ],
+  "executionBoundary": {
+    "lastInstallerOutputUtc": "2026-10-22T13:50:36.4629128Z",
+    "prepareCommandStartUtc": "2026-10-22T13:50:36.5741823Z",
+    "command": "node authority/scripts/sounding-line/experience-prepare.mjs",
+    "lastExposedStep": 9,
+    "noChildStageStdoutBeforeCancellation": true,
+    "cancellationErrorUtc": "2026-10-22T14:12:14.9381946Z",
+    "applicationBuildCaptureStage": "NOT_ESTABLISHED_FROM_EXPORTED_LOG_OR_ARTIFACTS",
+    "executedContexts": "UNKNOWN",
+    "actualApplicationFailure": "NOT_DETERMINED",
+    "retainedScreenshots": 0,
+    "retainedVideos": 0,
+    "captureManifest": null,
+    "reviewerPacket": null,
+    "noAppExecutionClaim": false
+  },
+  "cancellation": {
+    "normalRequestUtcFromParent": "2026-10-22T14:11:39.4999634Z",
+    "stepCancelledAtUtc": "2026-10-22T14:12:14Z",
+    "jobCompletedAtUtc": "2026-10-22T14:12:20Z",
+    "retentionSteps11AndUploads10_12_13": "SUCCESS",
+    "postJobStepsThrough31": "SUCCESS",
+    "runAggregateLagRetained": true,
+    "noForceCancel": true,
+    "noRetry": true,
+    "noCancellationActionByThisAudit": true
+  },
+  "cleanupAndRetention": {
+    "retentionStatus": "COMPLETE",
+    "encryptedFiles": [
+      {
+        "bytes": 2870,
+        "sha256": "bb490648368bc4a91a59ff5db2f0c9678855b60bebb3876de10f17bbcf2b0801"
+      }
+    ],
+    "encryptedIndexNotDecrypted": true,
+    "lifecycleArtifactContainsOnlyIdenticalPlan": true,
+    "ownedRuntimeDescendantStreamPortCleanup": "NOT_PROVED_BY_EXPORTED_RECEIPTS",
+    "runnerPostJobSuccessDoesNotProveApplicationCleanup": true
+  },
+  "artifacts": [
+    {
+      "id": 12433205401,
+      "name": "product-experience-capture-077256e6be7d3739",
+      "bytes": 36073,
+      "sha256": "349fe20e6aeea74bda95ff959b0e8f739d1190aad282c4f96827868f10e5140b",
+      "apiDigestMatches": true,
+      "relativeZip": "artifacts/artifact-12433205401.original.zip"
+    },
+    {
+      "id": 12431569105,
+      "name": "product-experience-lifecycle-be9abdac95279ea1e4f67b23221027ba19bd6e68-39788400044",
+      "bytes": 36013,
+      "sha256": "399e302fc2d3fd30f260ffa2e21d2df3e556c7693195faaa9e1e66f8f418fdc6",
+      "apiDigestMatches": true,
+      "relativeZip": "artifacts/artifact-12431569105.original.zip"
+    },
+    {
+      "id": 12431389474,
+      "name": "product-experience-raw-be9abdac95279ea1e4f67b23221027ba19bd6e68-39788400044",
+      "bytes": 2851,
+      "sha256": "2f92cc6634b7d39e5768635da75460947dd9d6e2a25ce9c0947b41da246c46dd",
+      "apiDigestMatches": true,
+      "relativeZip": "artifacts/artifact-12431389474.original.zip"
+    }
+  ],
+  "custody": {
+    "jobId": 119857581561,
+    "result": "SUCCESS",
+    "printedCampaignValue": "NOT_EXPORTED",
+    "planHasNoExceptionProperty": true,
+    "sourceDerivedNoFiniteReservationByThisRun": true,
+    "sourceReviewSha256": "bc6be48fda6d762143e987c598a8508effb9077c1ceee459b9a78bcc7a5db538",
+    "remoteLedgerIndependentlyAudited": false,
+    "noGlobalCountsOrRetryEntitlementInferred": true
+  },
+  "logs": {
+    "custodyBytes": 89659,
+    "custodySha256": "b6b1cff6fe8a2d0adcdafe9112561b6c3510642d4e21e50670bf3d840de9957e",
+    "preparationBytes": 127888,
+    "preparationSha256": "355b52c25bca9fd22ccdf6e5d61c9db272389c4cca0317b1d9eb542607b9230d",
+    "activeLogRequest": {
+      "onceAtUtc": "2026-10-22T14:04:16.596Z",
+      "httpStatus": 404,
+      "noRepeatBeforePostJob": true
+    }
+  },
+  "watch": {
+    "startedAtUtc": "2026-10-22T13:39:11Z",
+    "initialBudgetMinutes": 20,
+    "parentExtendedDeadlineUtc": "2026-10-22T14:30:00Z",
+    "statusObservations": 22,
+    "urgentOwnerRequestedCheckpointRetained": true,
+    "stoppedAtActualTerminal": true,
+    "noMoreStatusPolling": true,
+    "initialLocalGuardCorrection": "V1 incorrectly compared workflow run head to candidate input; failed before jobs read, preserved. V2 correctly binds installed39 workflow head and candidatebe9 separately."
+  },
+  "originals": {
+    "fileCount": 112,
+    "totalBytes": 1647563,
+    "mapSha256": "cf02ea1251d6ce2b5e472c0999cb04d6ce81c28c9bec93fe02da998b9b84e1ad"
+  },
+  "limits": {
+    "noMediaViewed": true,
+    "noIndependentCritique": true,
+    "noDecryption": true,
+    "noOwnerKeysOrPrivateRuntimeRead": true,
+    "noSourceRefPolicyMutation": true,
+    "noDispatchRetryForceOrRuntimeByThisAudit": true,
+    "allAuditOutputsOnD": true,
+    "noMainlineDecisionOrPhysicalAcceptance": true,
+    "noPriorFailuresRewritten": true,
+    "featureCatalog": "NO CHANGE REQUIRED"
+  }
+}

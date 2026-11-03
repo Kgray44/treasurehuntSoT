@@ -1,0 +1,7 @@
+{
+  "stage": "BOOT_SIMULATOR",
+  "code": null,
+  "killed": true,
+  "signal": "SIGTERM",
+  "diagnosticHash": "827dcd6d2b30ab880cf93bc0b99edb7e9114a9da5bdac4e06cd7268e4a1c0e90"
+}

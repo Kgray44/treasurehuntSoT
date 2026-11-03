@@ -1,0 +1,336 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "HOSTED_IOS_SIMULATOR_RASTER_ATTEMPT",
+  "candidateSha": "2b89eda7d03c991ada9e2000d9a73c0ed3f580e3",
+  "transportSha": "3228df44bcf09621d146a66d5e8986603f21e717",
+  "runId": "38817044787",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38817044787",
+  "conclusion": "failure",
+  "artifactName": "landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3",
+  "harvestedArtifactFiles": 5132,
+  "originalHarvestReceiptSha256": "8f829c8c6c52f020d2c346264bb653fc5e2257ecad5e264eced4a10bbb27d8f3",
+  "originalRunLogSha256": "ba1f49c45e3a0db98bda79dbdae58ab350a8837f25234ffded3ca4b9a2e2bd34",
+  "preservedRawEvidencePath": "artifacts/landfall-device-lab/hosted-2b89eda7d03c-1792103148335/run-38817044787",
+  "failure": {
+    "stage": "NATIVE_BUILD_AND_XCTEST",
+    "code": 65,
+    "killed": false,
+    "signal": null,
+    "diagnosticHash": "e6dacfc3cf6c75d399480e87177a5de45b69e21eee63bd3c69e5821a29c2cd16"
+  },
+  "nativeTests": {
+    "passed": 23,
+    "failed": 1,
+    "skipped": 1,
+    "total": 25,
+    "scope": "COMPANION_ONLY",
+    "nclMethods": [
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testAuthorizedAssetReferencesAndIntegrity()",
+        "name": "testAuthorizedAssetReferencesAndIntegrity()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.10396099090576172
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+        "name": "testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Failure",
+        "duration": 15.861096978187561
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+        "name": "testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.003018021583557129
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+        "name": "testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.057705044746398926
+      }
+    ],
+    "expectedSkippedTest": "NativeLifecycleTests/testCanonicalScenarioOperations()",
+    "excludedPresentationTests": [
+      "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation",
+      "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting"
+    ],
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB",
+          "deviceName": "landfall-owned-13253",
+          "modelName": "iPhone 17e",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 23,
+        "skippedTests": 1,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ]
+  },
+  "rasterEvidence": {
+    "acceptedSoftwareRasterProof": false,
+    "acceptanceChecks": {
+      "reportResultPass": false,
+      "existingCatalogMethodSuccess": false,
+      "native24PassesZeroFailuresOneExpectedSkip": false,
+      "allSixOriginalPngsDigestVerified": false,
+      "completedWithinOriginal20000ms": true,
+      "sealedWithinOriginal20000ms": true,
+      "oneColorTargetAcrossAllModelFrames": true,
+      "fixtureCpuOwnersReleased": true,
+      "allObservedFrameGpuCallbacksWithinOriginal20000ms": true,
+      "allObservedFrameMeasurementAndPngEncodingWithinOriginal20000ms": true
+    },
+    "state": "FAIL",
+    "originalReportPath": "ios-hosted-38817044787/test-attachments/D99ECC01-8894-4B0C-AA78-7B507FD6BACA.json",
+    "metalPreflight": {
+      "commandStatus": "completed",
+      "completedElapsedMs": 83.46504166661362,
+      "deviceAvailable": true,
+      "deviceName": "Apple iOS simulator GPU",
+      "expectedBGRA": [
+        191,
+        128,
+        64,
+        255
+      ],
+      "readableCompletedTarget": true,
+      "registryID": "4294967674",
+      "sampleBGRA": [
+        191,
+        128,
+        64,
+        255
+      ],
+      "storageMode": "shared"
+    },
+    "assets": [],
+    "frames": [
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 308.3320416667448,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 327.654958333369,
+        "name": "treasure-chest-empty",
+        "nonblackVisiblePixels": 0,
+        "nontransparentPixels": 0,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "publishedPng": "ios-hosted-38817044787/test-attachments/EF340C86-D139-4EFC-9D6B-B09F1B43399B.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 0,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      },
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 3695.2592083332547,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 3700.8384166665564,
+        "name": "treasure-chest-populated",
+        "nonblackVisiblePixels": 7714,
+        "nontransparentPixels": 8301,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+        "width": 256,
+        "publishedPng": "ios-hosted-38817044787/test-attachments/E10A444C-41A8-447F-977D-7C055625974D.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 8301,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      },
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 3703.5512916665994,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 3708.69116666654,
+        "name": "treasure-chest-removed",
+        "nonblackVisiblePixels": 7714,
+        "nontransparentPixels": 8301,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+        "width": 256,
+        "publishedPng": "ios-hosted-38817044787/test-attachments/A7723320-B125-48D8-A758-1ADC2E2C7B3F.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 8301,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      }
+    ],
+    "cleanup": "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED",
+    "completedElapsedMs": 3709.4095416666732,
+    "sealedElapsedMs": 3710.299999999961,
+    "failure": "Removed SceneKit model retained old pixels",
+    "directHostMetalProbePerformed": false,
+    "directHostMetalAvailability": "UNKNOWN",
+    "observedFrameCount": 3,
+    "requiredFrameCount": 6
+  },
+  "deviceLabScenario": {
+    "scenarioId": "permission-denied-native",
+    "state": "NOT_RUN",
+    "reason": "The prerequisite apple-build companion-only step failed; the terminal hosted job records this scenario step as skipped.",
+    "canonicalProgressionEvents": null
+  },
+  "buildSimulatorCleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "93679EB0-F38F-4BDF-8B0B-CE76162F3CDB"
+    ],
+    "remainingResources": []
+  },
+  "transportCleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-2b89eda7d03c-1792103148335"
+    ],
+    "remainingResources": []
+  },
+  "boundaries": {
+    "physicalWorldTrackingProven": false,
+    "productionActivateOrARAnchorPathExercised": false,
+    "actualPlayerPresentationProven": false,
+    "physicalMaterialFidelityProven": false,
+    "gpuDriverMemoryReleaseProven": false,
+    "physicalOwnerAcceptanceProven": false,
+    "productionSignedInstallProven": false,
+    "fullPresentationMatrixProven": false,
+    "performanceAndThermalQualificationProven": false,
+    "physicalLocalNetworkPermissionProven": false,
+    "laptopOriginReachableFromPhoneProven": false,
+    "physicalTLSAndAppBoundOriginProven": false
+  },
+  "publishedEvidence": [
+    {
+      "path": "ios-hosted-38817044787/test-summary.original.json",
+      "sha256": "3b867e401c007b3a3a48e03c5a630ccfc4bf56bb25d559b057eabcdd4254c2b7",
+      "bytes": 1716,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/test-summary.json"
+    },
+    {
+      "path": "ios-hosted-38817044787/build-scope.original.json",
+      "sha256": "28b1afa081f5aa54a251110bfbc71ffc0b2c5096b359cd8b11477b61950b797a",
+      "bytes": 370,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/build-scope.json"
+    },
+    {
+      "path": "ios-hosted-38817044787/build-cleanup.original.json",
+      "sha256": "b075b6c4c64760ebd1f5ee60b12b2795840f7e714e42fc697083e2920f2fb1d1",
+      "bytes": 99,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/cleanup.json"
+    },
+    {
+      "path": "ios-hosted-38817044787/runtime-selection.original.json",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d",
+      "bytes": 131,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/runtime-selection.json"
+    },
+    {
+      "path": "ios-hosted-38817044787/execution-error.original.json",
+      "sha256": "c137417b9a01a6cc89e9e05d2a3384aab6732db4d273189fa5ec8cd7ead248c8",
+      "bytes": 179,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/execution-error.json"
+    },
+    {
+      "path": "ios-hosted-38817044787/capabilities.original.json",
+      "sha256": "9b1761fe19aec89bd828797d2d492e7c04189911a7927da336c4725941ee64bb",
+      "bytes": 16217,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/capabilities.json"
+    },
+    {
+      "path": "ios-hosted-38817044787/native-test-cases.extracted.json",
+      "sha256": "62597cc32aed7f2922d53406dd683f2cb63549fbff6eab2ceb44b4c035bb1727",
+      "bytes": 6667,
+      "sourceDatabaseSha256": "91885bc0ba6088d94598530838e60edf60490be506404179452e89ba8036ca7a",
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/NativeTests.xcresult/database.sqlite3"
+    },
+    {
+      "path": "ios-hosted-38817044787/test-attachments/manifest.original.json",
+      "sha256": "4bee7f275eee25031484aba6e069c1cee7e5d89dcf53948f6c35f530f19c1402",
+      "bytes": 4367,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/test-attachments/manifest.json"
+    },
+    {
+      "path": "ios-hosted-38817044787/ncl-attachment-associations.extracted.json",
+      "sha256": "db84f8987b33aa1e9ce86161b186cd15adc8373f547a31460116990054dd8436",
+      "bytes": 2051,
+      "sourceManifestSha256": "4bee7f275eee25031484aba6e069c1cee7e5d89dcf53948f6c35f530f19c1402"
+    },
+    {
+      "path": "ios-hosted-38817044787/test-attachments/D99ECC01-8894-4B0C-AA78-7B507FD6BACA.json",
+      "sha256": "0d544475e712aabb5b77b906f92df2a074c72cc9ba583b45ec440938837aa057",
+      "bytes": 2703,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/test-attachments/D99ECC01-8894-4B0C-AA78-7B507FD6BACA.json",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "ncl01-scenekit-catalog_0_6BF47A75-D58B-4AAE-9E77-306E431770B6.json"
+    },
+    {
+      "path": "ios-hosted-38817044787/test-attachments/A7723320-B125-48D8-A758-1ADC2E2C7B3F.png",
+      "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "bytes": 7237,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/test-attachments/A7723320-B125-48D8-A758-1ADC2E2C7B3F.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "treasure-chest-removed_0_76A7171C-2968-477F-A161-EBA220EAE9C2.png"
+    },
+    {
+      "path": "ios-hosted-38817044787/test-attachments/E10A444C-41A8-447F-977D-7C055625974D.png",
+      "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "bytes": 7237,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/test-attachments/E10A444C-41A8-447F-977D-7C055625974D.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "treasure-chest-populated_0_AFA588A4-8126-4E78-82B7-BD52C5E36F03.png"
+    },
+    {
+      "path": "ios-hosted-38817044787/test-attachments/EF340C86-D139-4EFC-9D6B-B09F1B43399B.png",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-2b89eda7d03c991ada9e2000d9a73c0ed3f580e3/apple-build/test-attachments/EF340C86-D139-4EFC-9D6B-B09F1B43399B.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "treasure-chest-empty_0_31C02ED7-BFE6-4889-BC1E-76D9C178A15B.png"
+    },
+    {
+      "path": "ios-hosted-38817044787/hosted-run.excerpt.log",
+      "sha256": "f907f2e338c85d100af8b980e9c9835f2034fea390a3b84962095c6cc059554e",
+      "bytes": 20913,
+      "sourceRunLogSha256": "ba1f49c45e3a0db98bda79dbdae58ab350a8837f25234ffded3ca4b9a2e2bd34",
+      "selection": "Original numbered lines from apple-build companion-only step through run completion"
+    },
+    {
+      "path": "ios-hosted-38817044787/hosted-run-state.original.json",
+      "sha256": "ca2bb835153673c986848913d69f5dd59140a8431a5b745e1614abdfb27ce81f",
+      "bytes": 5034,
+      "sourceRawPath": "run-state.original.json"
+    }
+  ],
+  "priorRunReceiptsPreserved": [
+    "38798660744",
+    "38800480310",
+    "38807972598",
+    "38810163899"
+  ],
+  "originalRunStateSha256": "ca2bb835153673c986848913d69f5dd59140a8431a5b745e1614abdfb27ce81f"
+}

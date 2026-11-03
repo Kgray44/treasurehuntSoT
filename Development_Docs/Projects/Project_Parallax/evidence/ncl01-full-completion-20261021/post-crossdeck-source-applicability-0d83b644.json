@@ -1,0 +1,945 @@
+{
+  "schemaVersion": 1,
+  "role": "READ_ONLY_NCL_SOURCE_APPLICABILITY_NOT_QUALIFICATION",
+  "qualification": false,
+  "observedAt": "2026-10-21T23:36:32.031Z",
+  "provisionalWorkingTree": false,
+  "candidate": {
+    "commit": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "tree": "493196847b029b756b76c2a42ee262cbe7f15b02",
+    "workingTreeHead": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "resolvedMergeHead": null,
+    "acceptedCrossdeckMain": "aaff919428ef9ab421579415ce3409949724760d"
+  },
+  "originalSourceReferences": {
+    "completedNcl347": {
+      "commit": "347a401ca8e1cb2086c51a8db95be687d124412c",
+      "tree": "10e82cb7cd851f8667d55df0c026119632e38cd0"
+    },
+    "qualifiedIos98": {
+      "commit": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+      "tree": "591415b2ec6cf5a9675cb326a7e2db1226ce8d51"
+    },
+    "qualifiedAndroidA86": {
+      "commit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+      "tree": "982f254e7e54ac28e08aac93a75db427496a4d90"
+    },
+    "qualifiedUnsignedArchive2f8": {
+      "commit": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+      "tree": "cadc8fd0815190f2d3c59b99b017a70d431e4bff"
+    }
+  },
+  "method": {
+    "trackedComparison": "git diff --name-only against completed347; positive nonempty Git subtree and selected blob identities",
+    "untrackedCheck": "nonignored untracked paths excluded from all reused input scopes",
+    "historicalArtifactCheck": "scoped Git tree/blob identity, not rereading or rehashing every historical receipt",
+    "gitMutation": false,
+    "testExecution": false,
+    "selectedInputBlobComparison": "Exact committed candidate and reference Git blob IDs; no build or runtime binary comparison."
+  },
+  "unchangedTrackedSourcePaths": [
+    "native/ios",
+    "native/android",
+    "src/parallax",
+    "src/landfall",
+    "scripts/landfall",
+    "tests/fixtures/parallax",
+    "public/parallax/sc02",
+    ".github/workflows",
+    ".agents/landfall-device-lab-hosted.yml",
+    ".agents/ncl01-testflight-hosted.yml",
+    "tests/e2e/parallax-native-authority.spec.ts",
+    "src/app/api/player/playthroughs/[playthroughId]/parallax",
+    "package.json",
+    "package-lock.json",
+    ".nvmrc",
+    ".node-version",
+    "tsconfig.json",
+    "next.config.ts",
+    "vitest.config.ts",
+    "playwright.config.ts"
+  ],
+  "unchangedSourceDiff": [],
+  "nonignoredUntrackedSourcePaths": [],
+  "subtrees": [
+    {
+      "path": "native/ios",
+      "trackedFileCount": 56,
+      "candidateGitTree": "7a009230e07a559b9c6584f4917f9d27724f4f9a",
+      "referenceGitTrees": {
+        "completedNcl347": "7a009230e07a559b9c6584f4917f9d27724f4f9a",
+        "qualifiedIos98": "7a009230e07a559b9c6584f4917f9d27724f4f9a",
+        "qualifiedAndroidA86": "dd46e4749d3161e11f331db7f2a19991cc6e4033",
+        "qualifiedUnsignedArchive2f8": "7a009230e07a559b9c6584f4917f9d27724f4f9a"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": false,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/android",
+      "trackedFileCount": 46,
+      "candidateGitTree": "0584aa2f577b41db533d0a41d15a5ea544448652",
+      "referenceGitTrees": {
+        "completedNcl347": "0584aa2f577b41db533d0a41d15a5ea544448652",
+        "qualifiedIos98": "0584aa2f577b41db533d0a41d15a5ea544448652",
+        "qualifiedAndroidA86": "0584aa2f577b41db533d0a41d15a5ea544448652",
+        "qualifiedUnsignedArchive2f8": "0584aa2f577b41db533d0a41d15a5ea544448652"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/parallax",
+      "trackedFileCount": 79,
+      "candidateGitTree": "37bf2f7d3a3dd5765507a1373184099df6d8d23a",
+      "referenceGitTrees": {
+        "completedNcl347": "37bf2f7d3a3dd5765507a1373184099df6d8d23a",
+        "qualifiedIos98": "37bf2f7d3a3dd5765507a1373184099df6d8d23a",
+        "qualifiedAndroidA86": "37bf2f7d3a3dd5765507a1373184099df6d8d23a",
+        "qualifiedUnsignedArchive2f8": "37bf2f7d3a3dd5765507a1373184099df6d8d23a"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/landfall",
+      "trackedFileCount": 188,
+      "candidateGitTree": "fce125221566a2ef5cf1ca4749c65a087e1fd506",
+      "referenceGitTrees": {
+        "completedNcl347": "fce125221566a2ef5cf1ca4749c65a087e1fd506",
+        "qualifiedIos98": "fce125221566a2ef5cf1ca4749c65a087e1fd506",
+        "qualifiedAndroidA86": "af17fb55a2e931a5fa035b413765d2522bc98699",
+        "qualifiedUnsignedArchive2f8": "6325052c4a2845bc7e0efa04410d1e6fca87ef6c"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": false,
+        "qualifiedUnsignedArchive2f8": false
+      }
+    },
+    {
+      "path": "scripts/landfall/device-lab",
+      "trackedFileCount": 22,
+      "candidateGitTree": "42f11158253390e21db28e08b5625e1cfee38681",
+      "referenceGitTrees": {
+        "completedNcl347": "42f11158253390e21db28e08b5625e1cfee38681",
+        "qualifiedIos98": "42f11158253390e21db28e08b5625e1cfee38681",
+        "qualifiedAndroidA86": "1fb8f26d0edba4832204e4b1cd14a032aaa9c705",
+        "qualifiedUnsignedArchive2f8": "8fdd3c9ebcbc694334311ead4bae5df521a715c5"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": false,
+        "qualifiedUnsignedArchive2f8": false
+      }
+    },
+    {
+      "path": "scripts/landfall/testflight",
+      "trackedFileCount": 6,
+      "candidateGitTree": "7daca8471c5e8cf3d591fb8cf4f91ba856c7730c",
+      "referenceGitTrees": {
+        "completedNcl347": "7daca8471c5e8cf3d591fb8cf4f91ba856c7730c",
+        "qualifiedIos98": "7daca8471c5e8cf3d591fb8cf4f91ba856c7730c",
+        "qualifiedAndroidA86": "e3a2a943439798429efddb815c1b0ed68900a69b",
+        "qualifiedUnsignedArchive2f8": "7daca8471c5e8cf3d591fb8cf4f91ba856c7730c"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": false,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "tests/fixtures/parallax",
+      "trackedFileCount": 2,
+      "candidateGitTree": "cb0e5ab3bbd4f979f68bd59d88dde08c86bb1a5f",
+      "referenceGitTrees": {
+        "completedNcl347": "cb0e5ab3bbd4f979f68bd59d88dde08c86bb1a5f",
+        "qualifiedIos98": "cb0e5ab3bbd4f979f68bd59d88dde08c86bb1a5f",
+        "qualifiedAndroidA86": "cb0e5ab3bbd4f979f68bd59d88dde08c86bb1a5f",
+        "qualifiedUnsignedArchive2f8": "cb0e5ab3bbd4f979f68bd59d88dde08c86bb1a5f"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "public/parallax/sc02",
+      "trackedFileCount": 5,
+      "candidateGitTree": "fde0b1446f453c239490fe2122f510812ad4d561",
+      "referenceGitTrees": {
+        "completedNcl347": "fde0b1446f453c239490fe2122f510812ad4d561",
+        "qualifiedIos98": "fde0b1446f453c239490fe2122f510812ad4d561",
+        "qualifiedAndroidA86": "fde0b1446f453c239490fe2122f510812ad4d561",
+        "qualifiedUnsignedArchive2f8": "fde0b1446f453c239490fe2122f510812ad4d561"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": ".github/workflows",
+      "trackedFileCount": 7,
+      "candidateGitTree": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "referenceGitTrees": {
+        "completedNcl347": "e558e3d553fea096dad666ddbe48e2230cc28380",
+        "qualifiedIos98": "e558e3d553fea096dad666ddbe48e2230cc28380",
+        "qualifiedAndroidA86": "12ef5edfce7b589a750ac988358df6ca70c651bb",
+        "qualifiedUnsignedArchive2f8": "e558e3d553fea096dad666ddbe48e2230cc28380"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": false,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    }
+  ],
+  "selectedInputBlobs": [
+    {
+      "path": "src/parallax/scene-delivery.ts",
+      "candidateGitBlob": "0d38df18eac76c5b8ea346cc8e11f0504bcacd60",
+      "referenceGitBlobs": {
+        "completedNcl347": "0d38df18eac76c5b8ea346cc8e11f0504bcacd60",
+        "qualifiedIos98": "0d38df18eac76c5b8ea346cc8e11f0504bcacd60",
+        "qualifiedAndroidA86": "0d38df18eac76c5b8ea346cc8e11f0504bcacd60",
+        "qualifiedUnsignedArchive2f8": "0d38df18eac76c5b8ea346cc8e11f0504bcacd60"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/parallax/scene-transfer.ts",
+      "candidateGitBlob": "c9b28235df60485843d613da038882148af0d7b2",
+      "referenceGitBlobs": {
+        "completedNcl347": "c9b28235df60485843d613da038882148af0d7b2",
+        "qualifiedIos98": "c9b28235df60485843d613da038882148af0d7b2",
+        "qualifiedAndroidA86": "c9b28235df60485843d613da038882148af0d7b2",
+        "qualifiedUnsignedArchive2f8": "c9b28235df60485843d613da038882148af0d7b2"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/parallax/native.ts",
+      "candidateGitBlob": "cb7ec284ed71e23938949e9bcec42363013ded41",
+      "referenceGitBlobs": {
+        "completedNcl347": "cb7ec284ed71e23938949e9bcec42363013ded41",
+        "qualifiedIos98": "cb7ec284ed71e23938949e9bcec42363013ded41",
+        "qualifiedAndroidA86": "cb7ec284ed71e23938949e9bcec42363013ded41",
+        "qualifiedUnsignedArchive2f8": "cb7ec284ed71e23938949e9bcec42363013ded41"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/parallax/runtime.ts",
+      "candidateGitBlob": "d483f0ce693c9b2886270fd4a318aa8a973bbdf3",
+      "referenceGitBlobs": {
+        "completedNcl347": "d483f0ce693c9b2886270fd4a318aa8a973bbdf3",
+        "qualifiedIos98": "d483f0ce693c9b2886270fd4a318aa8a973bbdf3",
+        "qualifiedAndroidA86": "d483f0ce693c9b2886270fd4a318aa8a973bbdf3",
+        "qualifiedUnsignedArchive2f8": "d483f0ce693c9b2886270fd4a318aa8a973bbdf3"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/parallax/contracts.ts",
+      "candidateGitBlob": "61b08ba9d5e698ff1604120262474f1f5e27fe21",
+      "referenceGitBlobs": {
+        "completedNcl347": "61b08ba9d5e698ff1604120262474f1f5e27fe21",
+        "qualifiedIos98": "61b08ba9d5e698ff1604120262474f1f5e27fe21",
+        "qualifiedAndroidA86": "61b08ba9d5e698ff1604120262474f1f5e27fe21",
+        "qualifiedUnsignedArchive2f8": "61b08ba9d5e698ff1604120262474f1f5e27fe21"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/parallax/transforms.ts",
+      "candidateGitBlob": "0b8cf03603cfc05938759e2ca0d506ed0ae01019",
+      "referenceGitBlobs": {
+        "completedNcl347": "0b8cf03603cfc05938759e2ca0d506ed0ae01019",
+        "qualifiedIos98": "0b8cf03603cfc05938759e2ca0d506ed0ae01019",
+        "qualifiedAndroidA86": "0b8cf03603cfc05938759e2ca0d506ed0ae01019",
+        "qualifiedUnsignedArchive2f8": "0b8cf03603cfc05938759e2ca0d506ed0ae01019"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/landfall/native-bridge.ts",
+      "candidateGitBlob": "190f15963c3b7967a950bc50774607be064835c2",
+      "referenceGitBlobs": {
+        "completedNcl347": "190f15963c3b7967a950bc50774607be064835c2",
+        "qualifiedIos98": "190f15963c3b7967a950bc50774607be064835c2",
+        "qualifiedAndroidA86": "190f15963c3b7967a950bc50774607be064835c2",
+        "qualifiedUnsignedArchive2f8": "190f15963c3b7967a950bc50774607be064835c2"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "src/app/api/player/playthroughs/[playthroughId]/parallax/assets/[assetId]/route.ts",
+      "candidateGitBlob": "07e76abf34ee5839280620c16d2c444607b81717",
+      "referenceGitBlobs": {
+        "completedNcl347": "07e76abf34ee5839280620c16d2c444607b81717",
+        "qualifiedIos98": "07e76abf34ee5839280620c16d2c444607b81717",
+        "qualifiedAndroidA86": "07e76abf34ee5839280620c16d2c444607b81717",
+        "qualifiedUnsignedArchive2f8": "07e76abf34ee5839280620c16d2c444607b81717"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "tests/fixtures/parallax/native-delivery-v2.json",
+      "candidateGitBlob": "6eeb972e8f00e5fab359457a18edf3265869bb4d",
+      "referenceGitBlobs": {
+        "completedNcl347": "6eeb972e8f00e5fab359457a18edf3265869bb4d",
+        "qualifiedIos98": "6eeb972e8f00e5fab359457a18edf3265869bb4d",
+        "qualifiedAndroidA86": "6eeb972e8f00e5fab359457a18edf3265869bb4d",
+        "qualifiedUnsignedArchive2f8": "6eeb972e8f00e5fab359457a18edf3265869bb4d"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/ios/project.yml",
+      "candidateGitBlob": "9d09991534263e5cba6b6182b3ba00c6d71cf163",
+      "referenceGitBlobs": {
+        "completedNcl347": "9d09991534263e5cba6b6182b3ba00c6d71cf163",
+        "qualifiedIos98": "9d09991534263e5cba6b6182b3ba00c6d71cf163",
+        "qualifiedAndroidA86": "9d09991534263e5cba6b6182b3ba00c6d71cf163",
+        "qualifiedUnsignedArchive2f8": "9d09991534263e5cba6b6182b3ba00c6d71cf163"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Landfall.entitlements",
+      "candidateGitBlob": "3950d3193db7ecc168c54b9d50da4788e56802ee",
+      "referenceGitBlobs": {
+        "completedNcl347": "3950d3193db7ecc168c54b9d50da4788e56802ee",
+        "qualifiedIos98": "3950d3193db7ecc168c54b9d50da4788e56802ee",
+        "qualifiedAndroidA86": "3950d3193db7ecc168c54b9d50da4788e56802ee",
+        "qualifiedUnsignedArchive2f8": "3950d3193db7ecc168c54b9d50da4788e56802ee"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/ios/LandfallCompanion/PrivacyInfo.xcprivacy",
+      "candidateGitBlob": "305f6052d4e3751de0b1fc2b62647a57e8341104",
+      "referenceGitBlobs": {
+        "completedNcl347": "305f6052d4e3751de0b1fc2b62647a57e8341104",
+        "qualifiedIos98": "305f6052d4e3751de0b1fc2b62647a57e8341104",
+        "qualifiedAndroidA86": "305f6052d4e3751de0b1fc2b62647a57e8341104",
+        "qualifiedUnsignedArchive2f8": "305f6052d4e3751de0b1fc2b62647a57e8341104"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/Contents.json",
+      "candidateGitBlob": "7140563583a209df2e1515c4177e85428b7417f2",
+      "referenceGitBlobs": {
+        "completedNcl347": "7140563583a209df2e1515c4177e85428b7417f2",
+        "qualifiedIos98": "7140563583a209df2e1515c4177e85428b7417f2",
+        "qualifiedAndroidA86": "7140563583a209df2e1515c4177e85428b7417f2",
+        "qualifiedUnsignedArchive2f8": "7140563583a209df2e1515c4177e85428b7417f2"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+      "candidateGitBlob": "448bba68585527f2b53db02966a579084610a30b",
+      "referenceGitBlobs": {
+        "completedNcl347": "448bba68585527f2b53db02966a579084610a30b",
+        "qualifiedIos98": "448bba68585527f2b53db02966a579084610a30b",
+        "qualifiedAndroidA86": "448bba68585527f2b53db02966a579084610a30b",
+        "qualifiedUnsignedArchive2f8": "448bba68585527f2b53db02966a579084610a30b"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+      "candidateGitBlob": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+      "referenceGitBlobs": {
+        "completedNcl347": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+        "qualifiedIos98": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+        "qualifiedAndroidA86": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+        "qualifiedUnsignedArchive2f8": "7a816c8a8ed9f967da08832368a4f635f5b476b2"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+      "candidateGitBlob": "448bba68585527f2b53db02966a579084610a30b",
+      "referenceGitBlobs": {
+        "completedNcl347": "448bba68585527f2b53db02966a579084610a30b",
+        "qualifiedIos98": "448bba68585527f2b53db02966a579084610a30b",
+        "qualifiedAndroidA86": "448bba68585527f2b53db02966a579084610a30b",
+        "qualifiedUnsignedArchive2f8": "448bba68585527f2b53db02966a579084610a30b"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/android/build.gradle",
+      "candidateGitBlob": "74c6c79b10b62a3ce5cea5d06b67939378a676bf",
+      "referenceGitBlobs": {
+        "completedNcl347": "74c6c79b10b62a3ce5cea5d06b67939378a676bf",
+        "qualifiedIos98": "74c6c79b10b62a3ce5cea5d06b67939378a676bf",
+        "qualifiedAndroidA86": "74c6c79b10b62a3ce5cea5d06b67939378a676bf",
+        "qualifiedUnsignedArchive2f8": "74c6c79b10b62a3ce5cea5d06b67939378a676bf"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/android/settings.gradle",
+      "candidateGitBlob": "4fbaef928f91aeb01967221e37f516d75fd94d46",
+      "referenceGitBlobs": {
+        "completedNcl347": "4fbaef928f91aeb01967221e37f516d75fd94d46",
+        "qualifiedIos98": "4fbaef928f91aeb01967221e37f516d75fd94d46",
+        "qualifiedAndroidA86": "4fbaef928f91aeb01967221e37f516d75fd94d46",
+        "qualifiedUnsignedArchive2f8": "4fbaef928f91aeb01967221e37f516d75fd94d46"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/android/gradle.properties",
+      "candidateGitBlob": "b7b86429493142031f1fccd26861f2ef7a14edc7",
+      "referenceGitBlobs": {
+        "completedNcl347": "b7b86429493142031f1fccd26861f2ef7a14edc7",
+        "qualifiedIos98": "b7b86429493142031f1fccd26861f2ef7a14edc7",
+        "qualifiedAndroidA86": "b7b86429493142031f1fccd26861f2ef7a14edc7",
+        "qualifiedUnsignedArchive2f8": "b7b86429493142031f1fccd26861f2ef7a14edc7"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/android/app/build.gradle",
+      "candidateGitBlob": "63232a83b8291672a91c1bd619472e438471b81c",
+      "referenceGitBlobs": {
+        "completedNcl347": "63232a83b8291672a91c1bd619472e438471b81c",
+        "qualifiedIos98": "63232a83b8291672a91c1bd619472e438471b81c",
+        "qualifiedAndroidA86": "63232a83b8291672a91c1bd619472e438471b81c",
+        "qualifiedUnsignedArchive2f8": "63232a83b8291672a91c1bd619472e438471b81c"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/android/app/src/main/AndroidManifest.xml",
+      "candidateGitBlob": "2dd846783a723a520c5b929651c2368416f58a89",
+      "referenceGitBlobs": {
+        "completedNcl347": "2dd846783a723a520c5b929651c2368416f58a89",
+        "qualifiedIos98": "2dd846783a723a520c5b929651c2368416f58a89",
+        "qualifiedAndroidA86": "2dd846783a723a520c5b929651c2368416f58a89",
+        "qualifiedUnsignedArchive2f8": "2dd846783a723a520c5b929651c2368416f58a89"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "native/android/app/src/debug/AndroidManifest.xml",
+      "candidateGitBlob": "749bc321ac53af8e501cad3b8d98ba7b5d530db8",
+      "referenceGitBlobs": {
+        "completedNcl347": "749bc321ac53af8e501cad3b8d98ba7b5d530db8",
+        "qualifiedIos98": "749bc321ac53af8e501cad3b8d98ba7b5d530db8",
+        "qualifiedAndroidA86": "749bc321ac53af8e501cad3b8d98ba7b5d530db8",
+        "qualifiedUnsignedArchive2f8": "749bc321ac53af8e501cad3b8d98ba7b5d530db8"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "public/parallax/sc02/manifest.json",
+      "candidateGitBlob": "83f1bd55b1fc515957afd64ab311c2139382b036",
+      "referenceGitBlobs": {
+        "completedNcl347": "83f1bd55b1fc515957afd64ab311c2139382b036",
+        "qualifiedIos98": "83f1bd55b1fc515957afd64ab311c2139382b036",
+        "qualifiedAndroidA86": "83f1bd55b1fc515957afd64ab311c2139382b036",
+        "qualifiedUnsignedArchive2f8": "83f1bd55b1fc515957afd64ab311c2139382b036"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "public/parallax/sc02/models/brass-compass.glb",
+      "candidateGitBlob": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+      "referenceGitBlobs": {
+        "completedNcl347": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+        "qualifiedIos98": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+        "qualifiedAndroidA86": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+        "qualifiedUnsignedArchive2f8": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "public/parallax/sc02/models/treasure-chest.glb",
+      "candidateGitBlob": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+      "referenceGitBlobs": {
+        "completedNcl347": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+        "qualifiedIos98": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+        "qualifiedAndroidA86": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+        "qualifiedUnsignedArchive2f8": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "scripts/landfall/testflight/runner.py",
+      "candidateGitBlob": "a2a5ff23eb3d7cc7ba816ac121735cab1aa4988b",
+      "referenceGitBlobs": {
+        "completedNcl347": "a2a5ff23eb3d7cc7ba816ac121735cab1aa4988b",
+        "qualifiedIos98": "a2a5ff23eb3d7cc7ba816ac121735cab1aa4988b",
+        "qualifiedAndroidA86": "22d8fd792ef79885a6805bd7c8c953b9d66645f2",
+        "qualifiedUnsignedArchive2f8": "a2a5ff23eb3d7cc7ba816ac121735cab1aa4988b"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": false,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "scripts/landfall/testflight/release_proof.py",
+      "candidateGitBlob": "d7a470dffdee35c624da532bbed59fef63be60ac",
+      "referenceGitBlobs": {
+        "completedNcl347": "d7a470dffdee35c624da532bbed59fef63be60ac",
+        "qualifiedIos98": "d7a470dffdee35c624da532bbed59fef63be60ac",
+        "qualifiedAndroidA86": null,
+        "qualifiedUnsignedArchive2f8": "d7a470dffdee35c624da532bbed59fef63be60ac"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": false,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": ".agents/ncl01-testflight-hosted.yml",
+      "candidateGitBlob": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d",
+      "referenceGitBlobs": {
+        "completedNcl347": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d",
+        "qualifiedIos98": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d",
+        "qualifiedAndroidA86": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d",
+        "qualifiedUnsignedArchive2f8": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": ".agents/landfall-device-lab-hosted.yml",
+      "candidateGitBlob": "8be25be3d71ded2f42995c3f851d856718524f85",
+      "referenceGitBlobs": {
+        "completedNcl347": "8be25be3d71ded2f42995c3f851d856718524f85",
+        "qualifiedIos98": "8be25be3d71ded2f42995c3f851d856718524f85",
+        "qualifiedAndroidA86": "8be25be3d71ded2f42995c3f851d856718524f85",
+        "qualifiedUnsignedArchive2f8": "8be25be3d71ded2f42995c3f851d856718524f85"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "package.json",
+      "candidateGitBlob": "37b096381c2acaa747a24bccee901c62215b3577",
+      "referenceGitBlobs": {
+        "completedNcl347": "37b096381c2acaa747a24bccee901c62215b3577",
+        "qualifiedIos98": "37b096381c2acaa747a24bccee901c62215b3577",
+        "qualifiedAndroidA86": "37b096381c2acaa747a24bccee901c62215b3577",
+        "qualifiedUnsignedArchive2f8": "37b096381c2acaa747a24bccee901c62215b3577"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "package-lock.json",
+      "candidateGitBlob": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "referenceGitBlobs": {
+        "completedNcl347": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+        "qualifiedIos98": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+        "qualifiedAndroidA86": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+        "qualifiedUnsignedArchive2f8": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": ".nvmrc",
+      "candidateGitBlob": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "referenceGitBlobs": {
+        "completedNcl347": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "qualifiedIos98": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "qualifiedAndroidA86": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "qualifiedUnsignedArchive2f8": "60ade1ae01e833a5c291c47883bf26fb031f7727"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": ".node-version",
+      "candidateGitBlob": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+      "referenceGitBlobs": {
+        "completedNcl347": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "qualifiedIos98": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "qualifiedAndroidA86": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "qualifiedUnsignedArchive2f8": "60ade1ae01e833a5c291c47883bf26fb031f7727"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "tsconfig.json",
+      "candidateGitBlob": "45df8a341097f1492f6947cf685aa94422d852aa",
+      "referenceGitBlobs": {
+        "completedNcl347": "45df8a341097f1492f6947cf685aa94422d852aa",
+        "qualifiedIos98": "45df8a341097f1492f6947cf685aa94422d852aa",
+        "qualifiedAndroidA86": "45df8a341097f1492f6947cf685aa94422d852aa",
+        "qualifiedUnsignedArchive2f8": "45df8a341097f1492f6947cf685aa94422d852aa"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "next.config.ts",
+      "candidateGitBlob": "76a78483839ff606b9706867a5c442857e7a2456",
+      "referenceGitBlobs": {
+        "completedNcl347": "76a78483839ff606b9706867a5c442857e7a2456",
+        "qualifiedIos98": "76a78483839ff606b9706867a5c442857e7a2456",
+        "qualifiedAndroidA86": "76a78483839ff606b9706867a5c442857e7a2456",
+        "qualifiedUnsignedArchive2f8": "76a78483839ff606b9706867a5c442857e7a2456"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "vitest.config.ts",
+      "candidateGitBlob": "9277e84d3bd2605f82e08ee29ecf41474e0936d5",
+      "referenceGitBlobs": {
+        "completedNcl347": "9277e84d3bd2605f82e08ee29ecf41474e0936d5",
+        "qualifiedIos98": "9277e84d3bd2605f82e08ee29ecf41474e0936d5",
+        "qualifiedAndroidA86": "9277e84d3bd2605f82e08ee29ecf41474e0936d5",
+        "qualifiedUnsignedArchive2f8": "9277e84d3bd2605f82e08ee29ecf41474e0936d5"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    },
+    {
+      "path": "playwright.config.ts",
+      "candidateGitBlob": "e43e9912bc263909c58a31ded843a25209761917",
+      "referenceGitBlobs": {
+        "completedNcl347": "e43e9912bc263909c58a31ded843a25209761917",
+        "qualifiedIos98": "e43e9912bc263909c58a31ded843a25209761917",
+        "qualifiedAndroidA86": "e43e9912bc263909c58a31ded843a25209761917",
+        "qualifiedUnsignedArchive2f8": "e43e9912bc263909c58a31ded843a25209761917"
+      },
+      "matches": {
+        "completedNcl347": true,
+        "qualifiedIos98": true,
+        "qualifiedAndroidA86": true,
+        "qualifiedUnsignedArchive2f8": true
+      }
+    }
+  ],
+  "originalCatalogAndArtwork": [
+    {
+      "path": "public/parallax/sc02/models/brass-compass.glb",
+      "byteLength": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb"
+    },
+    {
+      "path": "public/parallax/sc02/models/treasure-chest.glb",
+      "byteLength": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f"
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+      "byteLength": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73"
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+      "byteLength": 2719555,
+      "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc"
+    }
+  ],
+  "historicalArtifacts": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015",
+      "trackedFileCount": 456,
+      "baseGitTree": "ef5a02c66c34ef074e681426ccf671b4fae00bfc",
+      "candidateGitTree": "ef5a02c66c34ef074e681426ccf671b4fae00bfc",
+      "changedTrackedPaths": [],
+      "originalTrackedArtifactGitBlobsUnchanged": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021",
+      "trackedFileCount": 55,
+      "baseGitTree": "43d5bfdf0b1e045afe9b4a5f23af219f34cec4da",
+      "candidateGitTree": "43d5bfdf0b1e045afe9b4a5f23af219f34cec4da",
+      "changedTrackedPaths": [],
+      "originalTrackedArtifactGitBlobsUnchanged": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019",
+      "trackedFileCount": 196,
+      "baseGitTree": "a51c7df70b4b0715d4db8f4d250141ee428f736c",
+      "candidateGitTree": "a51c7df70b4b0715d4db8f4d250141ee428f736c",
+      "changedTrackedPaths": [],
+      "originalTrackedArtifactGitBlobsUnchanged": true
+    },
+    {
+      "path": "native/ios/Branding",
+      "trackedFileCount": 4,
+      "baseGitTree": "47710d898ed68daf93e70636bc946c626d4d53bb",
+      "candidateGitTree": "47710d898ed68daf93e70636bc946c626d4d53bb",
+      "changedTrackedPaths": [],
+      "originalTrackedArtifactGitBlobsUnchanged": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets",
+      "trackedFileCount": 3,
+      "baseGitTree": "9f1e745f5d463a9d94756eec310a313d70f24c0c",
+      "candidateGitTree": "9f1e745f5d463a9d94756eec310a313d70f24c0c",
+      "changedTrackedPaths": [],
+      "originalTrackedArtifactGitBlobsUnchanged": true
+    },
+    {
+      "path": "public/parallax/sc02",
+      "trackedFileCount": 5,
+      "baseGitTree": "fde0b1446f453c239490fe2122f510812ad4d561",
+      "candidateGitTree": "fde0b1446f453c239490fe2122f510812ad4d561",
+      "changedTrackedPaths": [],
+      "originalTrackedArtifactGitBlobsUnchanged": true
+    }
+  ],
+  "changedIntegrationPaths": [
+    "src/app/devices/companion/page.tsx",
+    "src/app/devices/pair/page.tsx",
+    "src/components/crossdeck/CrossdeckCompanion.module.css",
+    "src/components/crossdeck/CrossdeckCompanion.test.tsx",
+    "src/components/crossdeck/CrossdeckCompanion.tsx",
+    "src/components/crossdeck/CrossdeckCompanionGateway.test.tsx",
+    "src/components/crossdeck/CrossdeckCompanionGateway.tsx",
+    "src/components/crossdeck/CrossdeckDevices.module.css",
+    "src/components/crossdeck/CrossdeckDevices.test.tsx",
+    "src/components/crossdeck/CrossdeckDevices.tsx",
+    "src/components/crossdeck/CrossdeckDisplay.module.css",
+    "src/components/crossdeck/CrossdeckDisplay.test.tsx",
+    "src/components/crossdeck/CrossdeckDisplay.tsx",
+    "src/components/crossdeck/CrossdeckHandoff.test.tsx",
+    "src/components/crossdeck/CrossdeckHandoff.tsx",
+    "src/components/crossdeck/CrossdeckNclContinuity.test.tsx",
+    "src/components/crossdeck/VoyageContext.tsx",
+    "src/components/crossdeck/useCrossdeckSession.test.tsx",
+    "src/components/crossdeck/useCrossdeckSession.ts",
+    "src/components/platform/PlayerLibrary.tsx",
+    "src/components/platform/PlayerSignIn.module.css",
+    "src/components/platform/PlayerSignIn.tsx",
+    "src/components/player/journal/ChronicleJournalPage.tsx",
+    "src/components/player/journal/ChronicleJournalSession.test.ts",
+    "src/components/player/journal/ChronicleJournalSession.tsx",
+    "src/components/player/journal/LandfallJournalChart.test.tsx",
+    "src/components/player/journal/LandfallJournalChart.tsx",
+    "src/components/player/parallax/ChronicleLens.module.css",
+    "src/components/player/parallax/ChronicleLens.test.tsx",
+    "src/components/player/parallax/ChronicleLens.tsx",
+    "src/crossdeck/crossdeck-experience-fixture.test.ts",
+    "src/crossdeck/experiences.ts",
+    "src/crossdeck/service.test.ts",
+    "src/crossdeck/service.ts",
+    "src/crossdeck/transport.test.ts",
+    "src/crossdeck/transport.ts",
+    "src/navigation/navigation.test.ts",
+    "src/navigation/registry.ts",
+    "src/navigation/route-classification.ts",
+    "src/styles/chronicle.css",
+    "src/styles/platform.css",
+    "tests/e2e/crossdeck-experience-refit.spec.ts",
+    "tests/e2e/crossdeck-phase1.spec.ts",
+    "tests/e2e/crossdeck-phase2.spec.ts",
+    "tests/e2e/crossdeck-refit-recovery.spec.ts"
+  ],
+  "applicability": {
+    "iosNativeSourceAndTests": "Source-applicable from qualified98 and unsigned2f8; full iOS tree differs from older a86. Original run conclusions and skips remain unchanged.",
+    "androidNativeSourceAndTests": "Source-applicable from a86 and completed347; original sixteen-method Emulator/input evidence is retained evidence, not a fresh execution.",
+    "sharedSceneDeliveryModelAuthorityAndTransport": "Specified unchanged Parallax, native bridge, authenticated asset route, fixtures and catalog input scope only.",
+    "unsignedDistributionAndCompiledIcon": "TestFlight runner/verifier, native project/signing configuration and original approved artwork inputs match qualified unsigned2f8. No new archive, upload or distribution occurred.",
+    "priorJoinedLensJourneys": "Historical run outcomes remain preserved; changed Lens/Journal/Crossdeck web integration requires fresh source-bound integration qualification.",
+    "integratedLensWebUi": "NOT_QUALIFIED_BY_THIS_SOURCE_AUDIT",
+    "physicalHardware": "NOT_ESTABLISHED",
+    "protectedMergeAcceptance": "NOT_ESTABLISHED",
+    "nativeIosJoinedAndroidJoinedSoftwareAggregate": "NO_NEW_AGGREGATE_PASS_INFERRED",
+    "fullLint": "Historical global FAIL with eight matching protected-main baseline errors remains separate from Release lintVital/build proof; no new lint was run.",
+    "sourceAndBinaryDistinction": "Equal tracked source/configuration does not assert equal newly built binaries, runtime dependencies, host environment or fresh test results."
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "task": "NCL01_ROUTER_STATIC_CACHE_DIAGNOSTIC",
+  "timestamp": "2026-10-20T15:07:20.226Z",
+  "records": [
+    {
+      "scope": "local",
+      "path": "/_next/static/css/73f0cdc4ae157bcd.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 47320,
+      "sha256": "c0eafba30d68d5ea64d7ae4b6b2246415fc659e7fea075ebeba0d088a86e19cd",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "cfCacheStatus": null,
+      "age": null,
+      "normalPublicTlsVerified": false
+    },
+    {
+      "scope": "public",
+      "path": "/_next/static/css/73f0cdc4ae157bcd.css",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 18088,
+      "sha256": "5bd11cef5516e21a7a38449a805a458fa9dc11c330aa884298538d7b6879e85c",
+      "cacheControl": "max-age=14400, s-maxage=31536000",
+      "cfCacheStatus": "HIT",
+      "age": "136",
+      "normalPublicTlsVerified": true
+    },
+    {
+      "scope": "public",
+      "path": "/_next/static/css/73f0cdc4ae157bcd.css?ncl01_static_probe=1792508839759",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 47320,
+      "sha256": "c0eafba30d68d5ea64d7ae4b6b2246415fc659e7fea075ebeba0d088a86e19cd",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "cfCacheStatus": "MISS",
+      "age": null,
+      "normalPublicTlsVerified": true
+    }
+  ],
+  "canonicalProgressionRequests": 0,
+  "authSessionsCreated": 0
+}

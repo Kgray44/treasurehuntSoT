@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "pid": 195824,
+  "createdAt": "2026-10-20T15:06:44.7187600Z",
+  "exactCreationTicksAndScriptHashCaptured": true,
+  "loopbackPort": 3158,
+  "script": "serve-owned-production-router.mjs"
+}

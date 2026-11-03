@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "kind": "FAILED_SIGNED_ATTEMPT_BEFORE_ARCHIVE_OR_UPLOAD",
+  "runId": 39361584467,
+  "candidateSha": "fe6624fb62106794fd479e5f57e0e50c35c2d08c",
+  "profileAndPrivateSigningIdentityValidated": true,
+  "credentialCleanup": "PASS",
+  "uploadAccepted": false,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "files": [
+    {
+      "path": "receipt.original.json",
+      "bytes": 731,
+      "sha256": "d5c178327d11c07b3343905901cfde6b8cd35b98355a7973fdead9f96596f86b"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 271,
+      "sha256": "177b3c5c40440d53998c1b3099e2a2e826bc614f8dcf10e3238f36dfe036569f"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 218,
+      "sha256": "07b9f384e1d64d49630b2adcec7ede30e9f569d7152780166c480b677cf9adfa"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 560,
+      "sha256": "daaec054bb8f36a3647d1be22bad06cce3b0a29ca12c0c922fe3e072232558a7"
+    }
+  ]
+}

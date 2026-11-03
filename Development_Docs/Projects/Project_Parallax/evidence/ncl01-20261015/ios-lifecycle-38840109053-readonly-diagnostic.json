@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "kind": "READ_ONLY_LIFECYCLE_HOME_FAILURE_DIAGNOSTIC",
+  "runId": "38840109053",
+  "candidateSha": "9314c749e426110ee38ed1da373a4e2361c6431a",
+  "test": "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+  "originalEvidence": {
+    "receipt": {
+      "path": "D:\\CodexWorktrees\\parallax-ncl01-physical-20261015\\Codex_TreasureHunt\\Development_Docs\\Projects\\Project_Parallax\\evidence\\ncl01-20261015\\ios-hosted-38840109053.receipt.json",
+      "sha256": "67e634346a48d941057286d4cd2095d7c43a657af7cf9f7a9803135047c8a0da"
+    },
+    "xcresultDatabase": {
+      "path": "D:\\CodexTemp\\ncl01-device-lab-evidence\\hosted-9314c749e426-1792117354955\\run-38840109053\\artifacts\\landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a\\apple-build\\NativeTests.xcresult\\database.sqlite3",
+      "sha256": "1dca2d2cff61bda410746156e1a484b30461316d4c7cda36bd7dae6e41e0a42f",
+      "matchesFrozenPublishedCaseSource": true,
+      "openedWith": "SQLite URI mode=ro immutable=1",
+      "afterReadSha256Unchanged": true
+    },
+    "attachmentManifest": {
+      "path": "D:\\CodexTemp\\ncl01-device-lab-evidence\\hosted-9314c749e426-1792117354955\\run-38840109053\\artifacts\\landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a\\apple-build\\test-attachments\\manifest.json",
+      "sha256": "39ed033d4cc6163368fe9e79d289cfc545d6531edf0466bc16c4195ae7b49be2"
+    },
+    "originalRunLog": {
+      "path": "D:\\CodexTemp\\ncl01-device-lab-evidence\\hosted-9314c749e426-1792117354955\\run-38840109053\\run.log",
+      "sha256": "fed33701d435b00c217230413cc40b245d464fba1e57eeea725dbaf2f0420eec"
+    },
+    "unchangedTestSource": {
+      "path": "native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift",
+      "sha256": "54fb976b436e0326447029b64762ccbfa2a60a04dd8f665dc85a6131530c4f6e",
+      "matchesFrozenCandidate": true
+    }
+  },
+  "observed": {
+    "onlyReportedIssue": "XCTAssertTrue failed - LANDFALL_HOME_BACKGROUND_UNOBSERVED",
+    "issueSecondsFromTest": 39.285,
+    "homePressActivity": {
+      "title": "Pressing Home button",
+      "startSecondsFromTest": 16.278,
+      "finishSecondsFromTest": 24.255,
+      "durationSeconds": 7.977
+    },
+    "backgroundPredicateChecks": {
+      "count": 15,
+      "firstSecondsFromTest": 25.347,
+      "lastFinishedSecondsFromTest": 39.265
+    },
+    "remainingRecordedStepsWithoutAdditionalReportedIssues": [
+      {
+        "title": "Open com.voyagewright.landfall",
+        "startSecondsFromTest": 51.425,
+        "finishSecondsFromTest": 51.911,
+        "durationSeconds": 0.486
+      },
+      {
+        "title": "Wait for com.voyagewright.landfall to become Running Foreground",
+        "startSecondsFromTest": 51.912,
+        "finishSecondsFromTest": 51.912,
+        "durationSeconds": 0.0
+      },
+      {
+        "title": "Waiting 10.0s for StaticText (First Match) to exist",
+        "startSecondsFromTest": 51.913,
+        "finishSecondsFromTest": 53.005,
+        "durationSeconds": 1.092
+      },
+      {
+        "title": "Terminate com.voyagewright.landfall:19012",
+        "startSecondsFromTest": 53.006,
+        "finishSecondsFromTest": 54.04,
+        "durationSeconds": 1.034
+      },
+      {
+        "title": "Wait for com.voyagewright.landfall to become Not Running",
+        "startSecondsFromTest": 54.041,
+        "finishSecondsFromTest": 54.042,
+        "durationSeconds": 0.001
+      },
+      {
+        "title": "Tear Down",
+        "startSecondsFromTest": 54.043,
+        "finishSecondsFromTest": 54.14,
+        "durationSeconds": 0.097
+      }
+    ],
+    "automaticDebugText": {
+      "count": 15,
+      "uniqueContentCount": 1,
+      "sha256": "f3e183678ba03f6fb5bf4e1dbbbd31d32e5f7f648ac0617eba2c31e5a1204e26",
+      "content": "Query chain:\n \u00e2\u2020\u2019Find: Target Application 'com.voyagewright.landfall'\n",
+      "stateValuesRecorded": false
+    },
+    "automaticStillScreenshotCount": 0,
+    "automaticScreenRecording": {
+      "path": "D:\\CodexTemp\\ncl01-device-lab-evidence\\hosted-9314c749e426-1792117354955\\run-38840109053\\artifacts\\landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a\\apple-build\\test-attachments\\8DB15E6A-4913-4C91-B371-8980E94AA1D8.mp4",
+      "sha256": "f7e1e044b708b43151595b0d25f80e86585a80e230d54a7ebb767b26b0a86c54",
+      "bytes": 3336324,
+      "movieHeaderDurationSeconds": 54.038333333333334,
+      "visuallyDecoded": false,
+      "localFfmpegOrPythonVideoDecoderAvailable": false
+    }
+  },
+  "unknown": [
+    "Which XCUIApplication.State value each predicate evaluation returned; the automatic text contains only a query chain.",
+    "Whether the physical Home simulation transition was delivered and displayed as expected; the activity title alone does not prove the visual transition.",
+    "A causal explanation for the sole background observation failure.",
+    "Visual contents of the retained automatic MP4; no local video decoder was available in the inspected environment."
+  ],
+  "conclusion": "Preserved activity and automatic text give additional timing and coverage limits, but no cause is established. Do not infer a repair from an unchanged replay result.",
+  "sourceEdited": false,
+  "originalsOrDatabaseMutated": false,
+  "runtimeOrGitChanged": false,
+  "jobDispatched": false,
+  "repairProposed": false
+}

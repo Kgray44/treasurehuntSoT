@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_READ_ONLY_REVIEW",
+  "result": "PASS_WITH_EXPLICIT_EVIDENCE_LIMITS",
+  "runId": "39608114180",
+  "transportSha": "333034a159a41b996f59b77b1de5c08cd2a5935e",
+  "candidateSha": "26da4135d851ee67a0c685a0726486739612d1e2",
+  "mode": "unsigned",
+  "evidenceClass": "HOSTED_UNSIGNED_GENERIC_IOS_RELEASE_ARCHIVE_ONLY",
+  "deviceArchiveValidated": true,
+  "version": "0.1.0",
+  "build": "8",
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "iphoneosSdk": "26.5",
+  "appExecutableSha256": "d42308fc08037ceb8d84d801216996a415382f3bc5728fefb8377dbb3d9334e8",
+  "reportedCredentialCleanup": "PASS",
+  "workflowCleanupStep": "success",
+  "uploadJob": "skipped",
+  "uploadAccepted": false,
+  "appleProcessing": "NOT_STARTED",
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "sourceIconSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "retainedOriginalIconSha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+  "archivedMetadataAssertionsReviewed": [
+    "bundle/version/build",
+    "HTTPS origin and app-bound host",
+    "camera and local-network purpose strings",
+    "no ATS exceptions",
+    "AppIcon catalog name",
+    "app and GLTFKit2 privacy manifests"
+  ],
+  "compiledIconPixelComparison": "UNAVAILABLE_ARCHIVE_NOT_PUBLISHED",
+  "releaseLabBinaryScan": "UNAVAILABLE_EXECUTABLE_NOT_PUBLISHED",
+  "warnings": [
+    "UIButton contentEdgeInsets deprecation; build succeeded"
+  ],
+  "artifactHashes": {
+    "altool-help.log": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752",
+    "receipt.json": "dc814ab41e40fd25ab56e94e3d5012322fe6af05e06c416c3ecae7208333cac4",
+    "project_generation.log": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167",
+    "device_archive.log": "a135830f57c3ab21621b1a3df1369c13c70b8222201a22c109bdb9c059043f9c"
+  }
+}

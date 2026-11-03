@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "task": "NCL01",
+  "evidenceClass": "LAPTOP_PREVIEW_REBIND_TRANSPORT_ONLY",
+  "checkedAt": "2026-10-16T01:48:58.358Z",
+  "origin": "https://192.168.0.18:8449",
+  "caSha256": "17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6",
+  "caTrustScope": "EXPLICIT_NODE_REQUEST_OPTIONS_ONLY",
+  "globalTrustChanged": false,
+  "firewallChanged": false,
+  "phoneReachabilityProven": false,
+  "responseBodiesPersisted": false,
+  "checks": [
+    {
+      "name": "public-bootstrap-help",
+      "status": 200,
+      "bytes": 825,
+      "trustedTls": null,
+      "tlsProtocol": null,
+      "passed": true
+    },
+    {
+      "name": "public-ca-original",
+      "status": 200,
+      "bytes": 848,
+      "trustedTls": null,
+      "tlsProtocol": null,
+      "passed": true
+    },
+    {
+      "name": "trusted-https-home",
+      "status": 200,
+      "bytes": 24353,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "name": "trusted-https-sign-in",
+      "status": 200,
+      "bytes": 16480,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "name": "trusted-https-player-unauthenticated",
+      "status": 307,
+      "bytes": 15121,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    }
+  ],
+  "allPassed": true
+}

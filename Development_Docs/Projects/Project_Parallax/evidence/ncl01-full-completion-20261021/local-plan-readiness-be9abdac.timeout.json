@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "qualification": false,
+  "role": "BOUNDED_LOCAL_PLAN_READINESS_ONLY",
+  "startedAtUtc": "2026-10-22T13:33:02.496Z",
+  "completedAtUtc": "2026-10-22T13:34:02.687Z",
+  "base": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+  "candidate": "be9abdac95279ea1e4f67b23221027ba19bd6e68",
+  "candidateTree": "6b9923185a4b7e19f434a44eeaa192fe268098b8",
+  "nodeVersion": "v24.18.0",
+  "declaredNodeVersion": "v24.19.0",
+  "nodeVersionMatchesDeclared": false,
+  "budgetMs": 60000,
+  "outputLimitBytes": 8388608,
+  "overflow": false,
+  "result": {
+    "timedOut": true
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": null,
+    "elapsedMs": 162,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "stdout": {
+    "bytes": 65536,
+    "sha256": "9d67780c07063af0fa8aecddca34a8ea28715ecfdc58bf92b3ada0687ffae54e",
+    "capturedStreamComplete": true
+  },
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "capturedStreamComplete": true
+  },
+  "planGenerated": false,
+  "parseError": null,
+  "applicable": null,
+  "classification": null,
+  "sourceDigest": null,
+  "contractDigest": null,
+  "selectedContractIds": null,
+  "genericContexts": null,
+  "pairedContexts": null,
+  "totalContexts": null,
+  "uncertainty": null,
+  "exceptionPresent": null,
+  "noBrowserOrApplicationStarted": true,
+  "captureOrReviewOrMainlineAccepted": false
+}

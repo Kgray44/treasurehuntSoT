@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "result": "PASS",
+  "entries": [
+    {
+      "runId": "39613042290",
+      "candidate": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+      "transport": "b56473a8e5cdfea2aafb6e961ce3ff4a96eaa9b1",
+      "branch": "codex/landfall-lab-a86c3636c3bf-1792591006091",
+      "conclusion": "success",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_TEMPORARY_GIT_REF_ONLY"
+    },
+    {
+      "runId": "39612997940",
+      "candidate": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+      "transport": "10a76587cf13026e77bf3eafc3ba3f0a6e7f9ab3",
+      "branch": "codex/ncl01-testflight-unsigned-a86c3636c3bf-1792591013144",
+      "conclusion": "success",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_TEMPORARY_GIT_REF_ONLY"
+    }
+  ],
+  "historicalEvidencePreserved": true,
+  "limits": ["Branch cleanup is not app, physical-device, signing or mainline acceptance."]
+}

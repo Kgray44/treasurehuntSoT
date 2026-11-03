@@ -109,6 +109,16 @@ describe("Parallax native bridge boundary (mock transport, no hardware qualifica
           detail: { sessionId: identity.sessionId, epoch: identity.epoch, ...detail },
         }),
       );
+    // D1 transport fixtures must not spread START-only transfer/revision fields
+    // into a strict tracking event. Three malformed samples cannot enable Inspect.
+    expect(identity).toHaveProperty("sceneTransferVersion");
+    expect(identity).toHaveProperty("versionChecksum");
+    expect(identity).toHaveProperty("instanceId");
+    for (let i = 0; i < 3; i++) event({ ...identity, type: "parallax-tracking", state: "NORMAL" });
+    expect(runtime.read().state).toBe("LEARNING_SPACE");
+    await expect(runtime.interact("captains-note", "INSPECT", "invalid-tracking-inspect")).rejects.toThrow(
+      "PARALLAX_LENS_NOT_READY",
+    );
     for (let i = 0; i < 3; i++) event({ type: "parallax-tracking", state: "NORMAL" });
     expect(runtime.read().state).toBe("READY");
     event({ type: "lifecycle", state: "BACKGROUND" });

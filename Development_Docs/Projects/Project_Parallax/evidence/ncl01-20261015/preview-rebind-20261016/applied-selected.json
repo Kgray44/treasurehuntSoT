@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "SAFE_SELECTED_ROOT_EXECUTED_LAN_REBIND_RECEIPT",
+  "source": "applied.receipt.private.json",
+  "selection": "Only the explicitly named safe fields are reproduced; private manifest and key hashes were not collected.",
+  "fields": {
+    "purpose": "NCL01_ONE_OFF_LAN_REBIND_20261015_ETHERNET_192168018",
+    "status": "APPLIED_NOT_LISTENING",
+    "oldOrigin": "https://155.42.98.160:8449",
+    "newOrigin": "https://192.168.0.18:8449",
+    "appliedAt": "2026-10-16T01:46:58.6904398+00:00",
+    "caSha256": "17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6",
+    "notAfter": "20261022200804Z",
+    "changedFiles": [
+      "server.csr.pem",
+      "server.extensions.cnf",
+      "server.pem",
+      "owner.json",
+      "server.config.json"
+    ],
+    "canonicalAccessAndRuntimeUnchanged": true,
+    "privateKeysAndPublicCaProfileUnchanged": true
+  }
+}

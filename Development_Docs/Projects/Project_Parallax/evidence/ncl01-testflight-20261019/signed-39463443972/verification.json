@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "kind": "UPLOAD_ACCEPTED_PROCESSING_VALID_INTERNAL_GROUP_ATTACHED_OFFICIAL_ICON_COMPILED",
+  "runId": 39463443972,
+  "candidateSha": "785eb61ed33b2e261ae944c53f53c95886e4c521",
+  "transportSha": "f3c099f617d7ed5aa9559aa011b920929d81c330",
+  "origin": "https://ncl01.absoluterelativesystems.com",
+  "version": "0.1.0",
+  "build": "5",
+  "deviceArchiveValidated": true,
+  "appTargetSigningSettingsValidated": true,
+  "appStoreExportSucceeded": true,
+  "ipaBytes": 5412691,
+  "ipaSha256": "5c99fcfb7e03237b39e4325726972784c719d3257de57374b0a6645f6084088c",
+  "ipaRetainedInOwnedArtifactDirectory": true,
+  "exportedIpaMetadataResourceChecksPassed": 13,
+  "credentialCleanup": "PASS",
+  "appleValidatePassed": true,
+  "appleUploadPassed": true,
+  "uploadAccepted": true,
+  "appleProcessing": "VALID",
+  "appleBuildId": "1b6a18c9-408c-44b4-9241-18329c073caa",
+  "pipelineResult": "PASS",
+  "internalGroupAttached": true,
+  "internalBuildState": "IN_BETA_TESTING",
+  "usesNonExemptEncryption": false,
+  "officialSourcePngSha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+  "preparedAppIconPngSha256": "f60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b",
+  "compiledAssetsCarSha256": "55933001bd8fa57d08bb6185a1da0090928cf6c1ed8e2f8bd1d42586a74077c2",
+  "compiledIconResourcesComparedWithBuild4": 2,
+  "allCompiledIconsChangedFromBuild4": true,
+  "rootVisualReviewOfBothCompiledPreviews": "PASS_REPORTED_BY_ROOT",
+  "compiledIconViewingCopiesDecodedWithoutResizeOrRedraw": true,
+  "physicalHomeScreenIconVerified": false,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "privacyScan": "PASS_NO_PRIVATE_KEY_CERTIFICATE_JWT_OR_RAW_KEY_BODY_FOUND",
+  "emailScan": "PASS_NO_EMAIL_OUTSIDE_OFFICIAL_TOOL_HELP_OR_KNOWN_COMPILED_ICON_FILENAMES",
+  "files": [
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "appstore-export.original.log",
+      "bytes": 373,
+      "sha256": "1ff59a271117486b8918f70a0d1deec73aa6dbfbd84e4bc51279766632c1f47b"
+    },
+    {
+      "path": "asc-upload.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "asc-validate.original.json",
+      "bytes": 68,
+      "sha256": "1aa85e05ea2335c79fb99fdeabde221ce3ff107edb9f5e988d0dae0b10bd5eb7"
+    },
+    {
+      "path": "compiled-icon-verification.json",
+      "bytes": 2334,
+      "sha256": "d8b8fa29e83eddfe687f6f749699e70211955d2eca069988172078ba212b6d70"
+    },
+    {
+      "path": "compiled-icons/AppIcon60x60@2x.png",
+      "bytes": 17165,
+      "sha256": "e28b60cc06b776e265c906366383859dc734a02e330cab4950eb856b65e5ca48"
+    },
+    {
+      "path": "compiled-icons/AppIcon60x60@2x.png.preview.png",
+      "bytes": 17088,
+      "sha256": "df4c78e35a79c1eccb80b9b3e6fa142f87cac75da15aed31cb12f8f202814ecd"
+    },
+    {
+      "path": "compiled-icons/AppIcon76x76@2x~ipad.png",
+      "bytes": 26880,
+      "sha256": "5af901ddafc2d7824683cd9f960531b79b962b6801e274ab5db0f10fd6ed7438"
+    },
+    {
+      "path": "compiled-icons/AppIcon76x76@2x~ipad.png.preview.png",
+      "bytes": 26858,
+      "sha256": "ff030c8c5fbf2f82c0222e63cdc629f0b2920d1c12820f1b33c692b76bb19fab"
+    },
+    {
+      "path": "device-archive.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 576,
+      "sha256": "6dfe2beeda2e2077ea4368b67359cc4e8f2b4d69ef7685baa9bd853eab3186c5"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 271,
+      "sha256": "29079391089c9355f8b8bd6efa6bcb4e3661df28487da076912b4c762b81e41d"
+    },
+    {
+      "path": "ipa-metadata-verification.json",
+      "bytes": 787,
+      "sha256": "b59fa92f712f2237bec8653e427f273f8024a4efff833f71142989c2303ca5fc"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "receipt.original.json",
+      "bytes": 1215,
+      "sha256": "9eb4b97db1e53ecead54e0d0b642ea091ad1f9cf062b2c0a30303eef808334f8"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 189,
+      "sha256": "de0012cc1b3a11c63963fbffd5f2a30e37aa761d9683ed4795d4c7d42a4fb92e"
+    }
+  ]
+}

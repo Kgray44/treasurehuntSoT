@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_BOUNDED_SCHEDULER_REVIEW",
+  "runId": "39619309485",
+  "candidateSha": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+  "transportSha": "a6dbf242fb0d84c474e398cca5beac8da0353816",
+  "result": "NOT_EXECUTED_HOSTED_RUNNER_NOT_ACQUIRED",
+  "job": {
+    "name": "Native / iOS / primary-phone",
+    "status": "completed",
+    "conclusion": "cancelled",
+    "labels": ["macos-latest"],
+    "createdAt": "2026-10-21T14:43:13Z",
+    "startedAt": "2026-10-21T14:43:13Z",
+    "completedAt": "2026-10-21T14:58:15Z",
+    "stepCount": 0,
+    "artifactCount": 0,
+    "runnerNamePresent": false,
+    "runnerIdIsZeroSentinel": true
+  },
+  "annotations": [
+    {
+      "level": "failure",
+      "message": "The job was not acquired by Runner of type hosted even after multiple attempts"
+    },
+    {
+      "level": "notice",
+      "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+    },
+    {
+      "level": "notice",
+      "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+    },
+    {
+      "level": "notice",
+      "message": "Due to capacity constraints, jobs targeting macOS arm64 runners may experience longer queue times."
+    }
+  ],
+  "evidenceLimits": [
+    "GitHub reports hosted runner acquisition failure; timestamp fields do not prove execution.",
+    "No candidate build, XCTest, camera-free joined path or Dynamic Type assertion ran.",
+    "The a86 clipping failure remains retained; the a523 priority repair awaits executed iOS validation.",
+    "Unsigned generic-device Release archive39619394225 independently passed for a523; no signing or upload."
+  ],
+  "physicalInstallationProven": false,
+  "physicalARProven": false
+}

@@ -1,0 +1,116 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "08F2831E-AB51-4215-8197-802E353797D0.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "installation-framework-capabilities-and-inactive-guards_0_539B3FE5-3875-45C0-92E0-09145A10B8CD.json",
+        "timestamp" : 1792119343.765
+      }
+    ],
+    "testIdentifier" : "InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "E5D67095-E262-4D9C-B78C-E07A7D8EC373.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "nearby-interaction-framework-capability_0_EDFFCB4F-0E0A-4E91-BFE3-7FA36C894CA1.json",
+        "timestamp" : 1792119343.852
+      }
+    ],
+    "testIdentifier" : "NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "246921BB-4068-428E-A069-B6195248E315.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "ncl01-scenekit-catalog_0_D068122B-6D16-4B9B-AFF1-15004CFD986E.json",
+        "timestamp" : 1792119346.062
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "6A75FB50-D871-4BC5-8B77-8A92BD0AF2D7.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "brass-compass-removed_0_888C6A27-DB73-45AD-86F5-4C4046DB79A8.png",
+        "timestamp" : 1792119346.056
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "10F751BF-033E-46F3-AF22-B0B0DA22BA02.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "brass-compass-populated_0_30E10966-6980-4B4F-A5E5-CD8AD70C3D4E.png",
+        "timestamp" : 1792119346.055
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "D86B34DE-BF2A-4A80-BDB6-34CF4E05E04D.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "brass-compass-empty_0_3AA0B20A-6551-47D2-B5A4-463919566D15.png",
+        "timestamp" : 1792119346.055
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "4B0DA4A4-B395-4F4C-8F99-83EB40998482.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-removed_0_C89DE772-9F03-4F4D-92CD-1258BB9DC969.png",
+        "timestamp" : 1792119346.055
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "35E0AB1F-D11B-4AC4-B661-865E3534621E.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-populated_0_FBFA94C7-AE3A-4BDD-A245-753AD6D90A74.png",
+        "timestamp" : 1792119346.054
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "D9869AAC-9535-43D5-A0EE-40E63E1F5003.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "treasure-chest-empty_0_46A94861-CD97-4EE7-91C5-94E9BDFEB9D7.png",
+        "timestamp" : 1792119346.053
+      }
+    ],
+    "testIdentifier" : "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "7D82EC86-0924-47B7-9F91-FE20C1AC712D",
+        "deviceName" : "landfall-owned-6507",
+        "exportedFileName" : "C86283AA-ABB0-40C3-8C78-28C8F1954E44.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "native-lease-performance_0_03F7CA31-79F3-481A-9165-12EA510825D2.json",
+        "timestamp" : 1792119347.346
+      }
+    ],
+    "testIdentifier" : "PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance"
+  }
+]

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "status": "FUNCTIONAL_PASS_WITH_PRESENTATION_FALLBACK",
+  "evidenceClass": "ORDINARY_LOCAL_BROWSER_JOURNAL_AND_ACCESSIBLE_GUIDED_VIEW_ONLY",
+  "checkedAt": "2026-10-20T14:07:21.514Z",
+  "browser": "Microsoft Edge",
+  "browserOrigin": "http://ncl01-classroom.localhost:3149",
+  "browserTransportScope": "Dedicated loopback hostname to isolate this test from other local sign-ins; this browser journey does not prove TLS or phone behavior",
+  "canonicalHttpsApiOrigin": "https://155.42.98.171:8449",
+  "voyageId": "cmvgr299f000v25o8koydyrcd",
+  "chronicleId": "cmvgr27ij000125o8k5egqrde",
+  "sceneChecksum": "13c1178ec10faae82ef92a7095b376380bcfbf0a1b436caaa7d51beb005edf6d",
+  "authoringPlanSha256": "d804ea8192f1f3ad6f4b5a3e5a8a09ca8011cac8721845e9c445512eda2be1e6",
+  "ordinaryDiscoverability": {
+    "status": "PASS",
+    "libraryPath": "/player/library",
+    "libraryHeading": "My Chronicle Library",
+    "section": "Active Voyages",
+    "newChronicleTitle": "The Classroom Compass Trail — NCL01",
+    "originalChronicleAlsoPresent": true,
+    "newCardAction": "Continue Adventure",
+    "newCardOpensCanonicalJournal": true
+  },
+  "journal": {
+    "status": "PASS",
+    "journalHref": "/player/playthroughs/cmvgr299f000v25o8koydyrcd/journal",
+    "passageHeading": "Follow the classroom tables",
+    "openJournalPresentationUsed": true,
+    "firstOpeningSkippedThroughOrdinaryControl": true,
+    "readingStatePersistenceAllowed": true,
+    "manualPlacementLimitationsVisible": true,
+    "lensEntryLabel": "Open Chronicle Lens",
+    "lensEntryVisibleAndActivated": true,
+    "continueVoyageActivated": false
+  },
+  "guided": {
+    "status": "PASS",
+    "heading": "The Classroom Compass Trail",
+    "mode": "GUIDED VIEW",
+    "accessibleCardCount": 3,
+    "cards": [
+      {
+        "name": "Middle table treasure chest",
+        "clue": "NORTH"
+      },
+      {
+        "name": "Left table brass compass",
+        "clue": "LIGHT"
+      },
+      {
+        "name": "Right table brass compass",
+        "clue": "WAITS"
+      }
+    ],
+    "canvasCount": 0,
+    "browser3DModelRenderingProven": false,
+    "nativeARProven": false
+  },
+  "presentationFinding": {
+    "status": "DEGRADED_PRESENTATION_WITH_WORKING_JOURNAL",
+    "observedOnReturnFromLibrary": "The animated opening could not finish. The journal and page turning are ready.",
+    "journalAndLensEntryRemainedUsable": true,
+    "animationQualityPassed": false
+  },
+  "progression": {
+    "status": "PASS",
+    "originalAndNewVoyagePresent": true,
+    "bothVoyagesCanonicalStatusCurrentBlockSequenceVariablesInventoryCompletionAndEventsUnchanged": true,
+    "readOnlyBeforeAfterQueries": true,
+    "continueOrCompletionActionsActivated": false
+  },
+  "cleanup": {
+    "status": "PASS",
+    "onlyOwnBrowserSessionSignedOut": true,
+    "ownBrowserSessionRevoked": true,
+    "otherSessionsRevokedByVerifier": false,
+    "ownedVerificationTabClosed": true
+  },
+  "privateScreenshotsRetained": true,
+  "privateImagesAndRawGeometryPublished": false,
+  "physicalPhoneOnNewFixtureProven": false,
+  "sourceReceipts": [
+    "classroom-ready.public.json",
+    "classroom-browser-session-cleanup.public.json"
+  ]
+}

@@ -1,0 +1,677 @@
+Native / iOS / primary-phone	UNKNOWN STEP	﻿2026-10-15T20:02:09.4395920Z Current runner version: '2.337.0'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4420290Z ##[group]Runner Image Provisioner
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4420920Z Hosted Compute Agent
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4421400Z Version: 20260828.587
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4421930Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4422400Z Build Date: 2026-08-28T16:44:25Z
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4422820Z Worker ID: {f2ede825-797f-4b30-b4c1-70341492c6ee}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4423280Z Azure Region: westus
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4423630Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4424750Z ##[group]Operating System
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4425210Z macOS
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4425560Z 26.6.2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4425870Z 25G83
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4426200Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4426540Z ##[group]Runner Image
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4426920Z Image: macos-26-arm64
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4427310Z Version: 20260907.0351.1
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4429060Z Included Software: https://github.com/actions/runner-images/blob/macos-26-arm64/20260907.0351/images/macos/macos-26-arm64-Readme.md
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4432640Z Image Release: https://github.com/actions/runner-images/releases/tag/macos-26-arm64%2F20260907.0351
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4434490Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4437400Z ##[group]GITHUB_TOKEN Permissions
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4442540Z Contents: read
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4443530Z Metadata: read
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4444680Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4449480Z Secret source: Actions
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4451100Z Cache mode: write
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.4452310Z Prepare workflow directory
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.5017150Z Prepare all required actions
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.5087550Z Getting action download info
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:09.9523440Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.3584760Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.5728760Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9031290Z Complete job name: Native / iOS / primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9693410Z ##[group]Run actions/checkout@v4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9694510Z with:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9695010Z   ref: bfb27c63727ee217761bfd1b296e43bdc117f25d
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9695470Z   fetch-depth: 0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9695850Z   repository: Kgray44/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9699350Z   token: ***
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9699870Z   ssh-strict: true
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9700400Z   ssh-user: git
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9700870Z   persist-credentials: true
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9701400Z   clean: true
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9702730Z   sparse-checkout-cone-mode: true
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9703320Z   fetch-tags: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9703780Z   show-progress: true
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9704180Z   lfs: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9704520Z   submodules: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9704910Z   set-safe-directory: true
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9723860Z   allow-unsafe-pr-checkout: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9725350Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9726010Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:10.9726580Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.8535680Z Syncing repository: Kgray44/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.8538150Z ##[group]Getting Git version info
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.8539340Z Working directory is '/Users/runner/work/treasurehuntSoT/treasurehuntSoT'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.8541320Z [command]/opt/homebrew/bin/git version
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9182780Z git version 2.55.0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9199180Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9216100Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/3b2edaad-b942-436e-91cc-a09d0ab52948/.gitconfig'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9227740Z Temporarily overriding HOME='/Users/runner/work/_temp/3b2edaad-b942-436e-91cc-a09d0ab52948' before making global git config changes
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9234680Z Adding repository directory to the temporary git global config as a safe directory
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9241030Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/treasurehuntSoT/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9422420Z Deleting the contents of '/Users/runner/work/treasurehuntSoT/treasurehuntSoT'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9430240Z ##[group]Initializing the repository
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9435050Z [command]/opt/homebrew/bin/git init /Users/runner/work/treasurehuntSoT/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9878110Z hint: Using 'master' as the name for the initial branch. This default branch name
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9880530Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9882280Z hint: to use in all of your new repositories, which will suppress this warning,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9884070Z hint: call:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9885220Z hint:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9886620Z hint: 	git config --global init.defaultBranch <name>
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9887830Z hint:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9888930Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9890710Z hint: 'development'. The just-created branch can be renamed via this command:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9892200Z hint:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9893070Z hint: 	git branch -m <name>
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9894020Z hint:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9895240Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9897450Z Initialized empty Git repository in /Users/runner/work/treasurehuntSoT/treasurehuntSoT/.git/
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:11.9901000Z [command]/opt/homebrew/bin/git remote add origin https://github.com/Kgray44/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.0092190Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.0095300Z ##[group]Disabling automatic garbage collection
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.0098050Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.0190560Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.0191960Z ##[group]Setting up auth
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.0193590Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.0280640Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.2464380Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.2604000Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.4129720Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.4445150Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.5902290Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.6033090Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.6036150Z ##[group]Fetching the repository
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:02:12.6052560Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.1797540Z From https://github.com/Kgray44/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.1817790Z  * [new branch]          agent/sounding-line-governance-impact-mapping-20260819 -> origin/agent/sounding-line-governance-impact-mapping-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.1820290Z  * [new branch]          agent/sounding-line-maintenance-binding-selection-20260820 -> origin/agent/sounding-line-maintenance-binding-selection-20260820
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.1822580Z  * [new branch]          codex/admiralty-ai-economics-spatial -> origin/codex/admiralty-ai-economics-spatial
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.1824120Z  * [new branch]          codex/admiralty-fixture-environment-contract -> origin/codex/admiralty-fixture-environment-contract
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.1828090Z  * [new branch]          codex/admiralty-generic-fixture-path -> origin/codex/admiralty-generic-fixture-path
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2100400Z  * [new branch]          codex/admiralty-generic-fixture-post-dispatch -> origin/codex/admiralty-generic-fixture-post-dispatch
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2101480Z  * [new branch]          codex/admiralty-generic-fixture-post-harborlight -> origin/codex/admiralty-generic-fixture-post-harborlight
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2102280Z  * [new branch]          codex/admiralty-generic-fixture-post-runtime -> origin/codex/admiralty-generic-fixture-post-runtime
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2103310Z  * [new branch]          codex/admiralty-generic-fixture-scope-repair -> origin/codex/admiralty-generic-fixture-scope-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2104090Z  * [new branch]          codex/admiralty-generic-seed-gate -> origin/codex/admiralty-generic-seed-gate
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2105040Z  * [new branch]          codex/admiralty-phase3-generic-fixture-scope -> origin/codex/admiralty-phase3-generic-fixture-scope
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2105980Z  * [new branch]          codex/admiralty-support-pilot-login-rate-boundary-repair -> origin/codex/admiralty-support-pilot-login-rate-boundary-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2107090Z  * [new branch]          codex/admiralty-support-pilot-signin-navigation-repair -> origin/codex/admiralty-support-pilot-signin-navigation-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2108320Z  * [new branch]          codex/admiralty-support-pilot-synthetic-credential-repair -> origin/codex/admiralty-support-pilot-synthetic-credential-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2109460Z  * [new branch]          codex/bridgewatch-admiralty-operational-bringup -> origin/codex/bridgewatch-admiralty-operational-bringup
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2110500Z  * [new branch]          codex/bridgewatch-admiralty-operational-bringup-current-main -> origin/codex/bridgewatch-admiralty-operational-bringup-current-main
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2111700Z  * [new branch]          codex/bridgewatch-admiralty-operational-bringup-harborlight-current-main -> origin/codex/bridgewatch-admiralty-operational-bringup-harborlight-current-main
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2122310Z  * [new branch]          codex/bridgewatch-admiralty-operational-bringup-lottie-current-main -> origin/codex/bridgewatch-admiralty-operational-bringup-lottie-current-main
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2123640Z  * [new branch]          codex/bridgewatch-admiralty-operational-bringup-reconcile -> origin/codex/bridgewatch-admiralty-operational-bringup-reconcile
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2124560Z  * [new branch]          codex/bridgewatch-operational-bringup-current-reconcile -> origin/codex/bridgewatch-operational-bringup-current-reconcile
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2125440Z  * [new branch]          codex/bridgewatch-operational-bringup-final-current -> origin/codex/bridgewatch-operational-bringup-final-current
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2126960Z  * [new branch]          codex/bridgewatch-operational-bringup-post-zoom -> origin/codex/bridgewatch-operational-bringup-post-zoom
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2127630Z  * [new branch]          codex/chronicle-sc-00a  -> origin/codex/chronicle-sc-00a
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2128320Z  * [new branch]          codex/crossdeck-experience-refit -> origin/codex/crossdeck-experience-refit
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2129140Z  * [new branch]          codex/crossdeck-final-verification-control-plane-20261015 -> origin/codex/crossdeck-final-verification-control-plane-20261015
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2130030Z  * [new branch]          codex/deepwater-policy-digest-recovery -> origin/codex/deepwater-policy-digest-recovery
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2131050Z  * [new branch]          codex/focused-studio-normalizer-transport-repair -> origin/codex/focused-studio-normalizer-transport-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2131850Z  * [new branch]          codex/harborlight-guide-article-receipt -> origin/codex/harborlight-guide-article-receipt
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2132660Z  * [new branch]          codex/helm-a2-pass-helm -> origin/codex/helm-a2-pass-helm
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2228670Z  * [new branch]          codex/helm-a2-pass-helm-recovery -> origin/codex/helm-a2-pass-helm-recovery
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2230190Z  * [new branch]          codex/helm-p4-weather-passage -> origin/codex/helm-p4-weather-passage
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2231470Z  * [new branch]          codex/homeport-browser-fixture-current-shell -> origin/codex/homeport-browser-fixture-current-shell
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2235110Z  * [new branch]          codex/homeport-browser-fixture-eligibility-password -> origin/codex/homeport-browser-fixture-eligibility-password
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2236320Z  * [new branch]          codex/homeport-browser-fixtures-current-main -> origin/codex/homeport-browser-fixtures-current-main
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2237180Z  * [new branch]          codex/homeport-browser-fixtures-current-shell -> origin/codex/homeport-browser-fixtures-current-shell
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2238150Z  * [new branch]          codex/homeport-browser-fixtures-post-streaming -> origin/codex/homeport-browser-fixtures-post-streaming
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2239140Z  * [new branch]          codex/homeport-browser-fixtures-rate-safe -> origin/codex/homeport-browser-fixtures-rate-safe
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2240060Z  * [new branch]          codex/homeport-browser-fixtures-separated-roles -> origin/codex/homeport-browser-fixtures-separated-roles
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2241200Z  * [new branch]          codex/homeport-browser-fixtures-verification -> origin/codex/homeport-browser-fixtures-verification
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2242050Z  * [new branch]          codex/homeport-phase2-password-fixture -> origin/codex/homeport-phase2-password-fixture
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2243050Z  * [new branch]          codex/homeport-reconcile-studio-migration-route -> origin/codex/homeport-reconcile-studio-migration-route
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2243770Z  * [new branch]          codex/hookline-lifecycle-integration -> origin/codex/hookline-lifecycle-integration
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2244460Z  * [new branch]          codex/landfall-lab-bfb27c63727e-1792094515749 -> origin/codex/landfall-lab-bfb27c63727e-1792094515749
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2245190Z  * [new branch]          codex/landfall-lab-parallax-3bdfccd980d8 -> origin/codex/landfall-lab-parallax-3bdfccd980d8
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2246760Z  * [new branch]          codex/lanternwake-journal-mobile-wrap -> origin/codex/lanternwake-journal-mobile-wrap
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2247510Z  * [new branch]          codex/lanternwake-journal-mobile-wrap-reconcile -> origin/codex/lanternwake-journal-mobile-wrap-reconcile
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2248440Z  * [new branch]          codex/lanternwake-p3-animation-route-lifecycle -> origin/codex/lanternwake-p3-animation-route-lifecycle
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2249370Z  * [new branch]          codex/lanternwake-p3-canonical-route-lifecycle -> origin/codex/lanternwake-p3-canonical-route-lifecycle
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2250300Z  * [new branch]          codex/lanternwake-pageflip-failpoint-boundary -> origin/codex/lanternwake-pageflip-failpoint-boundary
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2251220Z  * [new branch]          codex/lanternwake-phase3-browser-resilience -> origin/codex/lanternwake-phase3-browser-resilience
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2251990Z  * [new branch]          codex/parallax-browser-ar-qualification -> origin/codex/parallax-browser-ar-qualification
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2252810Z  * [new branch]          codex/parallax-fixture-recovery -> origin/codex/parallax-fixture-recovery
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2253370Z  * [new branch]          codex/parallax-ncl01    -> origin/codex/parallax-ncl01
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2253900Z  * [new branch]          codex/parallax-sc-00b-inspector -> origin/codex/parallax-sc-00b-inspector
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2254760Z  * [new branch]          codex/parallax-sc-00c-env-projection -> origin/codex/parallax-sc-00c-env-projection
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2255460Z  * [new branch]          codex/parallax-sc-00c-library -> origin/codex/parallax-sc-00c-library
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2256070Z  * [new branch]          codex/parallax-sc-01    -> origin/codex/parallax-sc-01
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2256650Z  * [new branch]          codex/parallax-sc-02-premium-assets -> origin/codex/parallax-sc-02-premium-assets
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2257270Z  * [new branch]          codex/parallax-sc-07a-publishing -> origin/codex/parallax-sc-07a-publishing
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2258110Z  * [new branch]          codex/parallax-sc00b-integration-probe -> origin/codex/parallax-sc00b-integration-probe
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2258920Z  * [new branch]          codex/parallax-sc00c-drag-placement -> origin/codex/parallax-sc00c-drag-placement
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2259560Z  * [new branch]          codex/parallax-sc00c-final -> origin/codex/parallax-sc00c-final
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2260130Z  * [new branch]          codex/parallax-sc01-compat-review -> origin/codex/parallax-sc01-compat-review
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2260830Z  * [new branch]          codex/parallax-sc01-studio-integration -> origin/codex/parallax-sc01-studio-integration
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2261560Z  * [new branch]          codex/parallax-sc07a-core-adaptation -> origin/codex/parallax-sc07a-core-adaptation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2262230Z  * [new branch]          codex/parallax-surface-orientation -> origin/codex/parallax-surface-orientation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2263060Z  * [new branch]          codex/passport-shell-contract-repair -> origin/codex/passport-shell-contract-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2265470Z  * [new branch]          codex/phase-b1-foundation -> origin/codex/phase-b1-foundation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2266020Z  * [new branch]          codex/phase-b2-native-capture -> origin/codex/phase-b2-native-capture
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2266650Z  * [new branch]          codex/phase-b3-studio-authoring -> origin/codex/phase-b3-studio-authoring
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2267320Z  * [new branch]          codex/phase-b4-verification-runtime -> origin/codex/phase-b4-verification-runtime
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2268050Z  * [new branch]          codex/phase-b5-player-story-captain -> origin/codex/phase-b5-player-story-captain
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2268930Z  * [new branch]          codex/phase-b6-hardening-public-release -> origin/codex/phase-b6-hardening-public-release
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2269860Z  * [new branch]          codex/phase2-mainline-convergence-gate-audit -> origin/codex/phase2-mainline-convergence-gate-audit
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2271060Z  * [new branch]          codex/pr189-current-product-20260818 -> origin/codex/pr189-current-product-20260818
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2272380Z  * [new branch]          codex/pr189-current-product-r10-20260819 -> origin/codex/pr189-current-product-r10-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2274290Z  * [new branch]          codex/pr189-current-product-r11-20260819 -> origin/codex/pr189-current-product-r11-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2275220Z  * [new branch]          codex/pr189-current-product-r12-20260819 -> origin/codex/pr189-current-product-r12-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2275960Z  * [new branch]          codex/pr189-current-product-r2-20260818 -> origin/codex/pr189-current-product-r2-20260818
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2276680Z  * [new branch]          codex/pr189-current-product-r3-20260818 -> origin/codex/pr189-current-product-r3-20260818
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2277420Z  * [new branch]          codex/pr189-current-product-r4-20260819 -> origin/codex/pr189-current-product-r4-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2278660Z  * [new branch]          codex/pr189-current-product-r5-20260819 -> origin/codex/pr189-current-product-r5-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2279380Z  * [new branch]          codex/pr189-current-product-r6-20260819 -> origin/codex/pr189-current-product-r6-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2280120Z  * [new branch]          codex/pr189-current-product-r7-20260819 -> origin/codex/pr189-current-product-r7-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2280810Z  * [new branch]          codex/pr189-current-product-r8-20260819 -> origin/codex/pr189-current-product-r8-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2282240Z  * [new branch]          codex/pr189-current-product-r9-20260819 -> origin/codex/pr189-current-product-r9-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2284900Z  * [new branch]          codex/pr204-current-product-r1-20260819 -> origin/codex/pr204-current-product-r1-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2286290Z  * [new branch]          codex/pr204-current-product-r2-20260819 -> origin/codex/pr204-current-product-r2-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2288030Z  * [new branch]          codex/product-experience-activation-evidence -> origin/codex/product-experience-activation-evidence
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2289040Z  * [new branch]          codex/project-admiralty-phase2-open-the-chartroom -> origin/codex/project-admiralty-phase2-open-the-chartroom
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2290060Z  * [new branch]          codex/project-admiralty-phase3-take-the-watch -> origin/codex/project-admiralty-phase3-take-the-watch
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2290950Z  * [new branch]          codex/project-bosun-b11-auto0-canary -> origin/codex/project-bosun-b11-auto0-canary
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2291790Z  * [new branch]          codex/project-bosun-b11-auto0-resumed -> origin/codex/project-bosun-b11-auto0-resumed
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2292610Z  * [new branch]          codex/project-bridgewatch-phase1-raise-the-board -> origin/codex/project-bridgewatch-phase1-raise-the-board
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2293550Z  * [new branch]          codex/project-bridgewatch-phase3-keep-the-watch-1 -> origin/codex/project-bridgewatch-phase3-keep-the-watch-1
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2294930Z  * [new branch]          codex/project-bridgewatch-phase3-keep-the-watch-2 -> origin/codex/project-bridgewatch-phase3-keep-the-watch-2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2296070Z  * [new branch]          codex/project-bridgewatch-phase3-keep-the-watch-3 -> origin/codex/project-bridgewatch-phase3-keep-the-watch-3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2297100Z  * [new branch]          codex/project-bridgewatch-phase3-keep-the-watch-4 -> origin/codex/project-bridgewatch-phase3-keep-the-watch-4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2298170Z  * [new branch]          codex/project-bridgewatch-phase3-keep-the-watch-5 -> origin/codex/project-bridgewatch-phase3-keep-the-watch-5
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2301040Z  * [new branch]          codex/project-bridgewatch-v2-open-instruments -> origin/codex/project-bridgewatch-v2-open-instruments
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2302370Z  * [new branch]          codex/project-confluence-c2-c7-implementation -> origin/codex/project-confluence-c2-c7-implementation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2306160Z  * [new branch]          codex/project-confluence-ordinary-admission -> origin/codex/project-confluence-ordinary-admission
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2321690Z  * [new branch]          codex/project-deepwater-phase4-closure-record -> origin/codex/project-deepwater-phase4-closure-record
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2324060Z  * [new branch]          codex/project-drydock-phase2-closure-acceptance -> origin/codex/project-drydock-phase2-closure-acceptance
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2325010Z  * [new branch]          codex/project-drydock-phase3-closure-record -> origin/codex/project-drydock-phase3-closure-record
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2326010Z  * [new branch]          codex/project-fairlead-github-interaction-overhaul -> origin/codex/project-fairlead-github-interaction-overhaul
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2327540Z  * [new branch]          codex/project-fairlead-github-interaction-overhaul-requalified -> origin/codex/project-fairlead-github-interaction-overhaul-requalified
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2328960Z  * [new branch]          codex/project-harborlight-phase2-open-the-exchange -> origin/codex/project-harborlight-phase2-open-the-exchange
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2329930Z  * [new branch]          codex/project-harborlight-phase2-open-the-exchange-v2 -> origin/codex/project-harborlight-phase2-open-the-exchange-v2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2333330Z  * [new branch]          codex/project-harborlight-phase3-welcome-the-fleet -> origin/codex/project-harborlight-phase3-welcome-the-fleet
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2334520Z  * [new branch]          codex/project-helm-amendment-v11-governance -> origin/codex/project-helm-amendment-v11-governance
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2335450Z  * [new branch]          codex/project-helm-phase2-read-the-deck -> origin/codex/project-helm-phase2-read-the-deck
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2336280Z  * [new branch]          codex/project-launchdeck-20261010 -> origin/codex/project-launchdeck-20261010
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2337070Z  * [new branch]          codex/project-sealed-hold-phase4-grant-safe-passage -> origin/codex/project-sealed-hold-phase4-grant-safe-passage
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2338900Z  * [new branch]          codex/project-shipwright-phase1-clear-the-workbench -> origin/codex/project-shipwright-phase1-clear-the-workbench
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2339820Z  * [new branch]          codex/project-shipwright-phase2-fit-the-tools -> origin/codex/project-shipwright-phase2-fit-the-tools
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2340730Z  * [new branch]          codex/project-shipwright-phase2-fit-the-tools-r2 -> origin/codex/project-shipwright-phase2-fit-the-tools-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2342160Z  * [new branch]          codex/project-shipwright-phase2-fit-the-tools-r3 -> origin/codex/project-shipwright-phase2-fit-the-tools-r3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2343040Z  * [new branch]          codex/project-shipwright-phase2-fit-the-tools-r4 -> origin/codex/project-shipwright-phase2-fit-the-tools-r4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2343970Z  * [new branch]          codex/project-shipwright-phase2-fit-the-tools-r5 -> origin/codex/project-shipwright-phase2-fit-the-tools-r5
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2344920Z  * [new branch]          codex/project-shipwright-phase2-fit-the-tools-r6 -> origin/codex/project-shipwright-phase2-fit-the-tools-r6
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2345930Z  * [new branch]          codex/project-shipwright-phase3-shape-the-chronicle -> origin/codex/project-shipwright-phase3-shape-the-chronicle
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2347490Z  * [new branch]          codex/project-sounding-line-final-main-receipt -> origin/codex/project-sounding-line-final-main-receipt
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2348370Z  * [new branch]          codex/project-sounding-line-governing-documentation -> origin/codex/project-sounding-line-governing-documentation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2351450Z  * [new branch]          codex/project-sounding-line-phase3-preparation -> origin/codex/project-sounding-line-phase3-preparation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2352400Z  * [new branch]          codex/project-sounding-line-phase3-read-the-current -> origin/codex/project-sounding-line-phase3-read-the-current
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2353310Z  * [new branch]          codex/project-sounding-line-phase4-preparation -> origin/codex/project-sounding-line-phase4-preparation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2354600Z  * [new branch]          codex/project-sounding-line-phase4-prove-the-passage -> origin/codex/project-sounding-line-phase4-prove-the-passage
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2355520Z  * [new branch]          codex/project-sounding-line-program-completion -> origin/codex/project-sounding-line-program-completion
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2356500Z  * [new branch]          codex/project-tideglass-phase3-choose-the-passage -> origin/codex/project-tideglass-phase3-choose-the-passage
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2357430Z  * [new branch]          codex/project-tideglass-phase3-mainline-record -> origin/codex/project-tideglass-phase3-mainline-record
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2361400Z  * [new branch]          codex/project-trim-phase0-weigh-the-cargo-recovery -> origin/codex/project-trim-phase0-weigh-the-cargo-recovery
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2362310Z  * [new branch]          codex/project-trim-phase1-set-the-watch -> origin/codex/project-trim-phase1-set-the-watch
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2363090Z  * [new branch]          codex/project-trim-phase3-carry-the-logbook -> origin/codex/project-trim-phase3-carry-the-logbook
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2367030Z  * [new branch]          codex/project-trim-phase4-closure -> origin/codex/project-trim-phase4-closure
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2367880Z  * [new branch]          codex/project-trim-phase4-trim-the-sails -> origin/codex/project-trim-phase4-trim-the-sails
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2368810Z  * [new branch]          codex/project-true-north-navigation-shell -> origin/codex/project-true-north-navigation-shell
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2369710Z  * [new branch]          codex/project-wakebook-phase1-open-the-wake -> origin/codex/project-wakebook-phase1-open-the-wake
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2370920Z  * [new branch]          codex/project-wayfarer-phase4-artifacts-achievements -> origin/codex/project-wayfarer-phase4-artifacts-achievements
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2371820Z  * [new branch]          codex/refit-v1-embarkation -> origin/codex/refit-v1-embarkation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2372860Z  * [new branch]          codex/sc00c-bootload-combined -> origin/codex/sc00c-bootload-combined
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2373910Z  * [new branch]          codex/sc02-insertion-placement -> origin/codex/sc02-insertion-placement
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2374630Z  * [new branch]          codex/sextant-phase4-take-it-afield -> origin/codex/sextant-phase4-take-it-afield
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2375370Z  * [new branch]          codex/shared-maintenance-drydock-classifier-test-repair -> origin/codex/shared-maintenance-drydock-classifier-test-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2376320Z  * [new branch]          codex/shared-maintenance-ft036-record-20260819 -> origin/codex/shared-maintenance-ft036-record-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2377350Z  * [new branch]          codex/shared-maintenance-record-closure-validator-20260819 -> origin/codex/shared-maintenance-record-closure-validator-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2378310Z  * [new branch]          codex/shipwright-isolated-runtime-root-repair -> origin/codex/shipwright-isolated-runtime-root-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2380270Z  * [new branch]          codex/shipwright-isolated-runtime-sealed-source-repair-current -> origin/codex/shipwright-isolated-runtime-sealed-source-repair-current
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2381230Z  * [new branch]          codex/sl-v14-throughput-train-drydock-r2 -> origin/codex/sl-v14-throughput-train-drydock-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2382100Z  * [new branch]          codex/sounding-line-active-authority-lineage-repair -> origin/codex/sounding-line-active-authority-lineage-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2382860Z  * [new branch]          codex/sounding-line-animation-lab-boundary -> origin/codex/sounding-line-animation-lab-boundary
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2383630Z  * [new branch]          codex/sounding-line-authority-binding-activation -> origin/codex/sounding-line-authority-binding-activation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2384560Z  * [new branch]          codex/sounding-line-authority-maintenance-prisma-setup -> origin/codex/sounding-line-authority-maintenance-prisma-setup
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2385770Z  * [new branch]          codex/sounding-line-browser-baseline-product -> origin/codex/sounding-line-browser-baseline-product
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2386790Z  * [new branch]          codex/sounding-line-browser-baseline-recovery -> origin/codex/sounding-line-browser-baseline-recovery
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2387640Z  * [new branch]          codex/sounding-line-browser-fixture-seed-recovery -> origin/codex/sounding-line-browser-fixture-seed-recovery
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2388520Z  * [new branch]          codex/sounding-line-ordinary-candidate-provenance -> origin/codex/sounding-line-ordinary-candidate-provenance
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2390510Z  * [new branch]          codex/sounding-line-owner-authorized-route-r1 -> origin/codex/sounding-line-owner-authorized-route-r1
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2391360Z  * [new branch]          codex/sounding-line-p34-current-main-reconcile-20260818 -> origin/codex/sounding-line-p34-current-main-reconcile-20260818
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2392400Z  * [new branch]          codex/sounding-line-phase3-generic-dispatch -> origin/codex/sounding-line-phase3-generic-dispatch
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2396130Z  * [new branch]          codex/sounding-line-record-only-sha-repair -> origin/codex/sounding-line-record-only-sha-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2396940Z  * [new branch]          codex/sounding-line-task-database-email -> origin/codex/sounding-line-task-database-email
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2397700Z  * [new branch]          codex/sounding-line-task-owned-email-recognition -> origin/codex/sounding-line-task-owned-email-recognition
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2398680Z  * [new branch]          codex/sounding-line-v1.2-runtime-bootstrap -> origin/codex/sounding-line-v1.2-runtime-bootstrap
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2399400Z  * [new branch]          codex/sounding-line-v1.4.1-maintenance-r2 -> origin/codex/sounding-line-v1.4.1-maintenance-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2400130Z  * [new branch]          codex/sounding-line-v11-governance -> origin/codex/sounding-line-v11-governance
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2400890Z  * [new branch]          codex/sounding-line-v14-acceptance-unblock -> origin/codex/sounding-line-v14-acceptance-unblock
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2401920Z  * [new branch]          codex/sounding-line-v14-browser-resource-contract-r2 -> origin/codex/sounding-line-v14-browser-resource-contract-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2402750Z  * [new branch]          codex/sounding-line-v14-captain-auth -> origin/codex/sounding-line-v14-captain-auth
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2403420Z  * [new branch]          codex/sounding-line-v14-corrective-activation -> origin/codex/sounding-line-v14-corrective-activation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2404150Z  * [new branch]          codex/sounding-line-v14-final-calibration -> origin/codex/sounding-line-v14-final-calibration
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2404930Z  * [new branch]          codex/sounding-line-v14-hosted-selftest -> origin/codex/sounding-line-v14-hosted-selftest
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2405870Z  * [new branch]          codex/sounding-line-v14-hosted-selftest-shallow-base -> origin/codex/sounding-line-v14-hosted-selftest-shallow-base
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2406760Z  * [new branch]          codex/sounding-line-v14-hosted-wave-capacity -> origin/codex/sounding-line-v14-hosted-wave-capacity
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2407470Z  * [new branch]          codex/sounding-line-v14-p34-ledger -> origin/codex/sounding-line-v14-p34-ledger
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2408180Z  * [new branch]          codex/sounding-line-v14-postcutover-wiring -> origin/codex/sounding-line-v14-postcutover-wiring
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2408980Z  * [new branch]          codex/sounding-line-v14-worker-boundary-repair -> origin/codex/sounding-line-v14-worker-boundary-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2409750Z  * [new branch]          codex/sounding-line-v141-current-main-input-fix -> origin/codex/sounding-line-v141-current-main-input-fix
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2413650Z  * [new branch]          codex/sounding-line-v141-maintenance-authority-correction -> origin/codex/sounding-line-v141-maintenance-authority-correction
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2414940Z  * [new branch]          codex/sounding-line-v141-maintenance-binding-r3 -> origin/codex/sounding-line-v141-maintenance-binding-r3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2415760Z  * [new branch]          codex/sounding-line-v141-open-service-track -> origin/codex/sounding-line-v141-open-service-track
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2419320Z  * [new branch]          codex/sounding-line-v141-ordinary-candidate-path -> origin/codex/sounding-line-v141-ordinary-candidate-path
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2420330Z  * [new branch]          codex/sounding-line-v141-routine-maintenance-proof -> origin/codex/sounding-line-v141-routine-maintenance-proof
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2421190Z  * [new branch]          codex/sounding-line-v141-routine-maintenance-proof-r3 -> origin/codex/sounding-line-v141-routine-maintenance-proof-r3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2422040Z  * [new branch]          codex/sounding-line-v141-worker-source-binding -> origin/codex/sounding-line-v141-worker-source-binding
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2422870Z  * [new branch]          codex/sounding-line-v142-bootstrap-fixture-r2 -> origin/codex/sounding-line-v142-bootstrap-fixture-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2423640Z  * [new branch]          codex/sounding-line-v142-bootstrap-selection -> origin/codex/sounding-line-v142-bootstrap-selection
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2424440Z  * [new branch]          codex/sounding-line-v142-browser-repair -> origin/codex/sounding-line-v142-browser-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2425280Z  * [new branch]          codex/sounding-line-v142-browser-repair-r10 -> origin/codex/sounding-line-v142-browser-repair-r10
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2426060Z  * [new branch]          codex/sounding-line-v142-browser-repair-r11 -> origin/codex/sounding-line-v142-browser-repair-r11
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2427310Z  * [new branch]          codex/sounding-line-v142-browser-repair-r2 -> origin/codex/sounding-line-v142-browser-repair-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2428020Z  * [new branch]          codex/sounding-line-v142-browser-repair-r3 -> origin/codex/sounding-line-v142-browser-repair-r3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2428800Z  * [new branch]          codex/sounding-line-v142-browser-repair-r4 -> origin/codex/sounding-line-v142-browser-repair-r4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2430060Z  * [new branch]          codex/sounding-line-v142-browser-repair-r5 -> origin/codex/sounding-line-v142-browser-repair-r5
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2430870Z  * [new branch]          codex/sounding-line-v142-browser-repair-r6 -> origin/codex/sounding-line-v142-browser-repair-r6
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2431660Z  * [new branch]          codex/sounding-line-v142-browser-repair-r7 -> origin/codex/sounding-line-v142-browser-repair-r7
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2432440Z  * [new branch]          codex/sounding-line-v142-browser-repair-r8 -> origin/codex/sounding-line-v142-browser-repair-r8
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2433260Z  * [new branch]          codex/sounding-line-v142-browser-repair-r9 -> origin/codex/sounding-line-v142-browser-repair-r9
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2434620Z  * [new branch]          codex/sounding-line-v142-browser-selection-bootstrap -> origin/codex/sounding-line-v142-browser-selection-bootstrap
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2435570Z  * [new branch]          codex/sounding-line-v142-cutover-test-reconcile -> origin/codex/sounding-line-v142-cutover-test-reconcile
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2436350Z  * [new branch]          codex/sounding-line-v142-discovery-repair -> origin/codex/sounding-line-v142-discovery-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2437200Z  * [new branch]          codex/sounding-line-v142-fixture-runtime-repair-r2 -> origin/codex/sounding-line-v142-fixture-runtime-repair-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2438130Z  * [new branch]          codex/sounding-line-v142-lanternwake-browser-fixture -> origin/codex/sounding-line-v142-lanternwake-browser-fixture
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2439120Z  * [new branch]          codex/sounding-line-v142-lanternwake-browser-fixture-r2 -> origin/codex/sounding-line-v142-lanternwake-browser-fixture-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2440610Z  * [new branch]          codex/sounding-line-v142-lanternwake-browser-fixture-r3 -> origin/codex/sounding-line-v142-lanternwake-browser-fixture-r3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2442480Z  * [new branch]          codex/sounding-line-v142-lanternwake-browser-fixture-r4 -> origin/codex/sounding-line-v142-lanternwake-browser-fixture-r4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2443410Z  * [new branch]          codex/sounding-line-v142-lanternwake-browser-fixture-r5 -> origin/codex/sounding-line-v142-lanternwake-browser-fixture-r5
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2444250Z  * [new branch]          codex/sounding-line-v142-registry-reconcile -> origin/codex/sounding-line-v142-registry-reconcile
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2445150Z  * [new branch]          codex/sounding-line-v142-tideglass-browser-fixture-r1 -> origin/codex/sounding-line-v142-tideglass-browser-fixture-r1
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2446130Z  * [new branch]          codex/sounding-line-windows-command-length-followup -> origin/codex/sounding-line-windows-command-length-followup
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2447100Z  * [new branch]          codex/spatial-visual-crossdeck-realtime-20261011 -> origin/codex/spatial-visual-crossdeck-realtime-20261011
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2449020Z  * [new branch]          codex/task-database-synthetic-email-product -> origin/codex/task-database-synthetic-email-product
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2449960Z  * [new branch]          codex/tideglass-browser-baseline-r9-20260819 -> origin/codex/tideglass-browser-baseline-r9-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2450860Z  * [new branch]          codex/tideglass-browser-family-isolation-20260819 -> origin/codex/tideglass-browser-family-isolation-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2451750Z  * [new branch]          codex/tideglass-browser-product-r10-20260819 -> origin/codex/tideglass-browser-product-r10-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2452520Z  * [new branch]          codex/tideglass-browser-product-r11-20260819 -> origin/codex/tideglass-browser-product-r11-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2453390Z  * [new branch]          codex/tideglass-browser-product-r12-20260819 -> origin/codex/tideglass-browser-product-r12-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2454090Z  * [new branch]          codex/tideglass-browser-product-r13-20260819 -> origin/codex/tideglass-browser-product-r13-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2454830Z  * [new branch]          codex/tideglass-browser-product-r14-20260819 -> origin/codex/tideglass-browser-product-r14-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2456230Z  * [new branch]          codex/tideglass-browser-product-r15-20260819 -> origin/codex/tideglass-browser-product-r15-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2456930Z  * [new branch]          codex/tideglass-browser-product-r16-20260819 -> origin/codex/tideglass-browser-product-r16-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2457730Z  * [new branch]          codex/tideglass-browser-product-r17-20260819 -> origin/codex/tideglass-browser-product-r17-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2458820Z  * [new branch]          codex/tideglass-browser-product-r18-20260819 -> origin/codex/tideglass-browser-product-r18-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2460620Z  * [new branch]          codex/tideglass-browser-product-r19-20260819 -> origin/codex/tideglass-browser-product-r19-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2461410Z  * [new branch]          codex/tideglass-browser-product-r22-20260819 -> origin/codex/tideglass-browser-product-r22-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2462220Z  * [new branch]          codex/tideglass-browser-product-r23-20260819 -> origin/codex/tideglass-browser-product-r23-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2462910Z  * [new branch]          codex/tideglass-browser-product-r24-20260819 -> origin/codex/tideglass-browser-product-r24-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2463700Z  * [new branch]          codex/tideglass-browser-product-r25-20260819 -> origin/codex/tideglass-browser-product-r25-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2464440Z  * [new branch]          codex/tideglass-browser-product-r30-20260819 -> origin/codex/tideglass-browser-product-r30-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2466060Z  * [new branch]          codex/tideglass-product-focus-r3-20260819 -> origin/codex/tideglass-product-focus-r3-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2466790Z  * [new branch]          codex/tideglass-product-focus-r4-20260819 -> origin/codex/tideglass-product-focus-r4-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2467770Z  * [new branch]          codex/tideglass-product-focus-r5-20260819 -> origin/codex/tideglass-product-focus-r5-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2468840Z  * [new branch]          codex/tideglass-product-focus-r6-20260819 -> origin/codex/tideglass-product-focus-r6-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2469520Z  * [new branch]          codex/tideglass-product-focus-r7-20260819 -> origin/codex/tideglass-product-focus-r7-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2470320Z  * [new branch]          codex/tideglass-registry-engine-r2-20260819 -> origin/codex/tideglass-registry-engine-r2-20260819
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2471000Z  * [new branch]          codex/unified-experience-shell -> origin/codex/unified-experience-shell
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2471670Z  * [new branch]          codex/validation-runtime-transient-cleanup -> origin/codex/validation-runtime-transient-cleanup
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2472400Z  * [new branch]          codex/voyagewright-brightwork-stage1 -> origin/codex/voyagewright-brightwork-stage1
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2473130Z  * [new branch]          codex/voyagewright-brightwork-stage8-wave3 -> origin/codex/voyagewright-brightwork-stage8-wave3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2477390Z  * [new branch]          codex/voyagewright-brightwork-stage8-wave3-format-successor -> origin/codex/voyagewright-brightwork-stage8-wave3-format-successor
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2478780Z  * [new branch]          codex/wakebook-p3-baseline-responsive-repair -> origin/codex/wakebook-p3-baseline-responsive-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2479480Z  * [new branch]          codex/wakebook-p3-journey-e-current-main -> origin/codex/wakebook-p3-journey-e-current-main
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2480080Z  * [new branch]          codex/wakebook-p4-return-journey -> origin/codex/wakebook-p4-return-journey
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2480640Z  * [new branch]          codex/wakebook-phase1-test-cleanup -> origin/codex/wakebook-phase1-test-cleanup
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2481970Z  * [new branch]          codex/wakebook-phase2-shared-browser-repair -> origin/codex/wakebook-phase2-shared-browser-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2482650Z  * [new branch]          codex/wayfarer-embedded-outbox-contract -> origin/codex/wayfarer-embedded-outbox-contract
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2483550Z  * [new branch]          codex/wayfarer-generic-outbox-fallback -> origin/codex/wayfarer-generic-outbox-fallback
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2484510Z  * [new branch]          codex/wayfarer-generic-outbox-partial-env-repair -> origin/codex/wayfarer-generic-outbox-partial-env-repair
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2485230Z  * [new branch]          codex/wayfarer-task-email-boundary -> origin/codex/wayfarer-task-email-boundary
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2485950Z  * [new branch]          codex/wayfarer-task-email-outbox-contract -> origin/codex/wayfarer-task-email-outbox-contract
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2486700Z  * [new branch]          docs/admiralty-v1.3-support-pilot-amendment -> origin/docs/admiralty-v1.3-support-pilot-amendment
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2487560Z  * [new branch]          docs/nightwatch-bosun-v1.1-atomic-integration-20260820 -> origin/docs/nightwatch-bosun-v1.1-atomic-integration-20260820
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2488450Z  * [new branch]          integration/sounding-line-authority-cutover-mainline -> origin/integration/sounding-line-authority-cutover-mainline
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2489370Z  * [new branch]          integration/sounding-line-final-program-closure-mainline -> origin/integration/sounding-line-final-program-closure-mainline
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2490340Z  * [new branch]          integration/sounding-line-phase3-mainline -> origin/integration/sounding-line-phase3-mainline
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2490930Z  * [new branch]          main                    -> origin/main
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2491550Z  * [new branch]          tmp/readme-prettier-helper-20260921 -> origin/tmp/readme-prettier-helper-20260921
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2492220Z  * [new tag]             project-deepwater-phase4-candidate-20260812-r3 -> project-deepwater-phase4-candidate-20260812-r3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2492930Z  * [new tag]             project-deepwater-phase4-candidate-20260812-r4 -> project-deepwater-phase4-candidate-20260812-r4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2493850Z  * [new tag]             project-deepwater-phase4-candidate-20260812-r5 -> project-deepwater-phase4-candidate-20260812-r5
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2494660Z  * [new tag]             project-deepwater-phase4-candidate-20260812-r6 -> project-deepwater-phase4-candidate-20260812-r6
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2495570Z  * [new tag]             project-deepwater-phase4-candidate-20260812-r8 -> project-deepwater-phase4-candidate-20260812-r8
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2496330Z  * [new tag]             project-deepwater-phase4-candidate-20260812-r9 -> project-deepwater-phase4-candidate-20260812-r9
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2497180Z  * [new tag]             project-deepwater-phase4-closure-record-candidate-20260812-r2 -> project-deepwater-phase4-closure-record-candidate-20260812-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2498050Z  * [new tag]             project-drydock-phase3-candidate-20260812 -> project-drydock-phase3-candidate-20260812
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2498760Z  * [new tag]             project-drydock-phase3-candidate-20260812-r2 -> project-drydock-phase3-candidate-20260812-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2500920Z  * [new tag]             project-drydock-phase3-candidate-20260812-r3 -> project-drydock-phase3-candidate-20260812-r3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2502030Z  * [new tag]             project-drydock-phase3-candidate-20260812-r4 -> project-drydock-phase3-candidate-20260812-r4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2502720Z  * [new tag]             project-drydock-phase3-candidate-20260812-r5 -> project-drydock-phase3-candidate-20260812-r5
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2503420Z  * [new tag]             project-drydock-phase3-candidate-20260812-r6 -> project-drydock-phase3-candidate-20260812-r6
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2511290Z  * [new tag]             sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2/prepare -> sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2/prepare
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2512370Z  * [new tag]             sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/prepare -> sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015/prepare
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2514030Z  * [new tag]             sounding-line-record-only-sha-repair-candidate-20260812-r2 -> sounding-line-record-only-sha-repair-candidate-20260812-r2
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2515400Z  * [new tag]             sounding-line-record-only-sha-repair-current-main-candidate-20260812-r3 -> sounding-line-record-only-sha-repair-current-main-candidate-20260812-r3
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2518560Z [command]/opt/homebrew/bin/git rev-parse --verify --quiet bfb27c63727ee217761bfd1b296e43bdc117f25d^{object}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2519090Z bfb27c63727ee217761bfd1b296e43bdc117f25d
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2520040Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2520350Z ##[group]Determining the checkout info
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2520670Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2520880Z [command]/opt/homebrew/bin/git sparse-checkout disable
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2521480Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2522170Z ##[group]Checking out the ref
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:33.2522580Z [command]/opt/homebrew/bin/git checkout --progress --force bfb27c63727ee217761bfd1b296e43bdc117f25d
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:34.6289600Z Updating files:  23% (1403/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:34.6906840Z Updating files:  24% (1458/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:34.7435780Z Updating files:  25% (1519/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:34.8893220Z Updating files:  26% (1580/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.0283000Z Updating files:  27% (1641/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.2398100Z Updating files:  28% (1701/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.2671890Z Updating files:  29% (1762/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.3358240Z Updating files:  29% (1804/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.4178540Z Updating files:  30% (1823/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.5290600Z Updating files:  31% (1884/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.5727200Z Updating files:  32% (1944/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.7307060Z Updating files:  33% (2005/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.7943110Z Updating files:  34% (2066/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.8907520Z Updating files:  35% (2127/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.9240180Z Updating files:  36% (2187/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.9301910Z Updating files:  37% (2248/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:35.9710930Z Updating files:  38% (2309/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:36.0587350Z Updating files:  39% (2370/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:36.1633550Z Updating files:  40% (2430/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:36.2657260Z Updating files:  41% (2491/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:36.3684190Z Updating files:  41% (2537/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:36.8683430Z Updating files:  42% (2552/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:37.2794240Z Updating files:  43% (2613/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:37.5299340Z Updating files:  43% (2645/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:38.0816470Z Updating files:  44% (2673/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:38.2650250Z Updating files:  45% (2734/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:38.2707600Z Updating files:  45% (2794/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:38.6117690Z Updating files:  46% (2795/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:38.8460110Z Updating files:  47% (2856/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:39.0491390Z Updating files:  48% (2916/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:39.1715710Z Updating files:  49% (2977/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:39.2679970Z Updating files:  50% (3038/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:39.3441400Z Updating files:  50% (3068/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:39.4828780Z Updating files:  51% (3099/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:39.5756630Z Updating files:  52% (3159/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:39.6532490Z Updating files:  53% (3220/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.2114620Z Updating files:  54% (3281/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.2669240Z Updating files:  55% (3342/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.3012900Z Updating files:  55% (3368/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.3106980Z Updating files:  56% (3402/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.3214170Z Updating files:  57% (3463/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.3353850Z Updating files:  58% (3524/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.3524620Z Updating files:  59% (3585/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.3674980Z Updating files:  60% (3645/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.4001340Z Updating files:  61% (3706/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.5913920Z Updating files:  62% (3767/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.6094480Z Updating files:  63% (3828/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.6228130Z Updating files:  64% (3888/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.6383660Z Updating files:  65% (3949/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.6509360Z Updating files:  66% (4010/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.6624550Z Updating files:  67% (4071/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.6750840Z Updating files:  68% (4131/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.6878480Z Updating files:  69% (4192/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.6980410Z Updating files:  70% (4253/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7110040Z Updating files:  71% (4314/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7198240Z Updating files:  72% (4374/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7304590Z Updating files:  73% (4435/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7485300Z Updating files:  74% (4496/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7594540Z Updating files:  75% (4557/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7709250Z Updating files:  76% (4617/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7792810Z Updating files:  77% (4678/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7878740Z Updating files:  78% (4739/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.7991730Z Updating files:  79% (4800/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.8163990Z Updating files:  80% (4860/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.8316470Z Updating files:  81% (4921/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.8427370Z Updating files:  82% (4982/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.8575990Z Updating files:  83% (5043/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.8669140Z Updating files:  84% (5103/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.8817490Z Updating files:  85% (5164/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.8918630Z Updating files:  86% (5225/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.8970630Z Updating files:  87% (5286/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9024230Z Updating files:  88% (5346/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9119020Z Updating files:  89% (5407/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9229500Z Updating files:  90% (5468/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9323250Z Updating files:  91% (5529/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9420200Z Updating files:  92% (5589/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9491850Z Updating files:  93% (5650/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9627580Z Updating files:  94% (5711/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9882640Z Updating files:  95% (5772/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:40.9947110Z Updating files:  96% (5832/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0085450Z Updating files:  97% (5893/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0191450Z Updating files:  98% (5954/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0287760Z Updating files:  99% (6015/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0288240Z Updating files: 100% (6075/6075)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0288490Z Updating files: 100% (6075/6075), done.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0414390Z HEAD is now at bfb27c637 feat(parallax): add shared scene delivery and native GLB rendering slice
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0545250Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0751450Z [command]/opt/homebrew/bin/git log -1 --format=%H
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.0937470Z bfb27c63727ee217761bfd1b296e43bdc117f25d
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1409410Z ##[group]Run actions/setup-node@v4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1409770Z with:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1409980Z   node-version-file: .nvmrc
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1410250Z   cache: npm
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1410450Z   always-auth: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1410870Z   check-latest: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1414090Z   token: ***
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1414390Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1414670Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.1414970Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.3650490Z Node version file is not JSON file
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.3651840Z Resolved .nvmrc as 24.19.0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.3677120Z Attempting to download 24.19.0...
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.3906770Z (node:4160) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:41.3909200Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:42.1431700Z Acquiring 24.19.0 - arm64 from https://github.com/actions/node-versions/releases/download/24.19.0-30872449280/node-24.19.0-darwin-arm64.tar.gz
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:42.8507420Z Extracting ...
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:42.8628990Z [command]/usr/bin/tar xz --strip 1 -C /Users/runner/work/_temp/19e3ff85-964a-48a0-9c89-9675bd3eb845 -f /Users/runner/work/_temp/cc90fabb-7bbb-4e06-bb00-3047b89e6105
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:44.1474490Z Adding to the cache ...
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:50.6041580Z ##[group]Environment details
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:51.4849200Z node: v24.19.0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:51.4880620Z npm: 11.17.0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:51.4881430Z yarn: 1.22.22
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:51.4882760Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:51.4885090Z [command]/Users/runner/hostedtoolcache/node/24.19.0/arm64/bin/npm config get cache
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:51.7979840Z /Users/runner/.npm
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:52.2152570Z npm cache is not found
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:52.2753430Z ##[group]Run npm ci --ignore-scripts
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:52.2755930Z ^[[36;1mnpm ci --ignore-scripts^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:52.3296200Z shell: /bin/bash -e {0}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:52.3296810Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:52.3297190Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:52.3297670Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:05:57.6690010Z npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.4495750Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.4502320Z added 645 packages, and audited 647 packages in 45s
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.4502990Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.4503250Z 205 packages are looking for funding
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.4504010Z   run `npm fund` for details
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5147900Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5148800Z 6 high severity vulnerabilities
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5149470Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5150080Z To address issues that do not require attention, run:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5150520Z   npm audit fix
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5150690Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5152470Z To address all issues (including breaking changes), run:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5152910Z   npm audit fix --force
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5153100Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.5153200Z Run `npm audit` for details.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.7081630Z ##[group]Run brew install xcodegen
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:37.7082180Z ^[[36;1mbrew install xcodegen^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:38.3022820Z shell: /bin/bash -e {0}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:38.3023490Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:38.3024220Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:38.3024770Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:49.1802490Z ^[[32m==>^[[0m ^[[1mDownloading bottle manifests^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:49.1882930Z ✔︎ Bottle Manifest xcodegen (2.46.0)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:49.1886990Z ^[[34m==>^[[0m ^[[1mWould install 1 formula:^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:49.1888340Z xcodegen
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:49.1911800Z ^[[32m==>^[[0m ^[[1mFetching downloads for: ^[[32mxcodegen^[[39m^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:49.9529110Z ✔︎ Bottle xcodegen (2.46.0)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:50.0077480Z ^[[34m==>^[[0m ^[[1mPouring xcodegen--2.46.0.arm64_tahoe.bottle.1.tar.gz^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:50.6955810Z 🍺  /opt/homebrew/Cellar/xcodegen/2.46.0: 38 files, 7.4MB
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:50.7203340Z ##[group]Run npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:50.7204260Z ^[[36;1mnpx --no-install prisma generate --schema prisma/schema.sqlite.prisma^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:50.8149560Z shell: /bin/bash -e {0}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:50.8149890Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:50.8150180Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:50.8150490Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:55.4064280Z Prisma schema loaded from prisma/schema.sqlite.prisma
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.6321700Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.6425970Z ✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 1.81s
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.6527160Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.6629170Z Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.6729240Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.6833720Z Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.6926690Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.7105260Z ##[group]Run npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.7106000Z ^[[36;1mnpx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only^[[0m
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.7158570Z shell: /bin/bash -e {0}
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.7158890Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.7159320Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:06:58.7159720Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.2960010Z {
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.2969550Z   "devicesAndConfigurations" : [
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.2970360Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.2970570Z   ],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3015840Z   "environmentDescription" : "LandfallCompanion · Built with macOS 26.6.2",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3047810Z   "expectedFailures" : 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3052350Z   "failedTests" : 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3053070Z   "finishTime" : 1792095165.978,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3054050Z   "passedTests" : 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3059100Z   "result" : "unknown",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3059930Z   "skippedTests" : 0,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3070990Z   "startTime" : 1792095124.365,
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3071780Z   "statistics" : [
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3072280Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3072600Z   ],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3072950Z   "testFailures" : [
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3073390Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3073750Z   ],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3077250Z   "title" : "Test - LandfallCompanion",
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3078020Z   "topInsights" : [
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3078380Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3078770Z   ],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3079130Z   "totalTestCount" : 0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3084600Z }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:12:51.3085260Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5379270Z Command failed: xcodebuild -quiet -project /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion.xcodeproj -scheme LandfallCompanion -destination platform=iOS Simulator,id=5F5C670B-C672-48D3-AA70-D1D7E9FFB590 -derivedDataPath /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData -resultBundlePath /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/NativeTests.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- LANDFALL_LAB_PRESENTATION=1 -skip-testing:LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation -skip-testing:LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting test
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5405880Z --- xcodebuild: WARNING: Using the first of multiple matching destinations:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5501250Z { platform:iOS Simulator, arch:arm64, id:5F5C670B-C672-48D3-AA70-D1D7E9FFB590, OS:26.5, name:landfall-owned-6015 }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5505470Z { platform:iOS Simulator, arch:x86_64, id:5F5C670B-C672-48D3-AA70-D1D7E9FFB590, OS:26.5, name:landfall-owned-6015 }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5508360Z Testing failed:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5510060Z 	Invalid redeclaration of 'transform'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5511020Z 	Testing cancelled because the build failed.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5511690Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5512290Z ** TEST FAILED **
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5512410Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5512570Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5512810Z Writing result bundle at path:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5514580Z 	/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/NativeTests.xcresult
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5515420Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5516440Z /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:197:17: error: invalid redeclaration of 'transform'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5520330Z             var transform=simd_float4x4(simd_quatf(ix:Float(qx),iy:Float(qy),iz:Float(qz),r:Float(qw)))
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5521170Z                 ^
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5524270Z /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:174:93: note: 'transform' previously declared here
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5525890Z                   let width=entity["widthMeters"] as? Double,(0.01...5).contains(width),let transform=entity["transform"] as? [String:Any],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5537990Z                                                                                             ^
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5539510Z /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:174:93: note: 'transform' previously declared here
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5540940Z                   let width=entity["widthMeters"] as? Double,(0.01...5).contains(width),let transform=entity["transform"] as? [String:Any],
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5542000Z                                                                                             ^
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5542970Z Failed frontend command:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5625610Z /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/LandfallApp.swift /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/LandfallCompanion.swift /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/LandfallHardware.swift /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/LandfallLocationThrottle.swift /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/LandfallNearbyInteraction.swift /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/LandfallPower.swift /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/LandfallPrivateStore.swift /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/LandfallSecureHints.swift -primary-file /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/ParallaxAssetCache.swift -primary-file /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/ParallaxLocalRuntime.swift -primary-file /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/ParallaxSceneDelivery.swift -primary-file /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion/ParallaxSceneTransfer.swift -supplementary-output-file-map /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/supplementaryOutputs-3 -target arm64-apple-ios16.0-simulator -disable-cross-import-overlay-search -swift-module-cross-import CoreNFC /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/Frameworks/CoreNFC.framework/Modules/CoreNFC.swiftcrossimport/UIKit.swiftoverlay -swift-module-cross-import CoreNFC /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk/System/Library/Frameworks/CoreNFC.framework/Modules/CoreNFC.swiftcrossimport/UIKit.swiftoverlay -swift-module-cross-import SceneKit /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/Frameworks/SceneKit.framework/Modules/SceneKit.swiftcrossimport/SwiftUI.swiftoverlay -swift-module-cross-import WebKit /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Cryptexes/OS/System/Library/Frameworks/WebKit.framework/Modules/WebKit.swiftcrossimport/SwiftUI.swiftoverlay -swift-module-cross-import WebKit /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk/System/Library/Frameworks/WebKit.framework/Modules/WebKit.swiftcrossimport/SwiftUI.swiftoverlay -load-resolved-plugin /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libFoundationMacros.dylib\#/Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#FoundationMacros -load-resolved-plugin /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libObservationMacros.dylib\#/Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#ObservationMacros -load-resolved-plugin /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libPreviewsMacros.dylib\#/Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#PreviewsMacros -load-resolved-plugin /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftMacros.dylib\#/Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftMacros -load-resolved-plugin /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins/libSwiftUIMacros.dylib\#/Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server\#SwiftUIMacros -disable-implicit-swift-modules -Xcc -fno-implicit-modules -Xcc -fno-implicit-module-maps -explicit-swift-module-map-file /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/LandfallCompanion-dependencies-1.json -debug-module-path /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/LandfallCompanion.swiftmodule -Xllvm -aarch64-use-tbi -enable-objc-interop -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator26.5.sdk -I /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Products/Debug-iphonesimulator -F /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Products/Debug-iphonesimulator -no-color-diagnostics -Xcc -fno-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=4 -module-cache-path /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -swift-version 5 -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/LandfallCompanion_const_extract_protocols.json -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios -enable-anonymous-context-mangled-names -file-compilation-dir /Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -Xcc -ivfsstatcache -Xcc /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/SDKStatCaches.noindex/iphonesimulator26.5-23F81a-688ef53f1462e2c8f657fdc38a81448ff45c64a1807a658693f2a61704f17a36.sdkstatcache -Xcc -I/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/LandfallCompanion-generated-files.hmap -Xcc -I/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/LandfallCompanion-own-target-headers.hmap -Xcc -I/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/LandfallCompanion-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/LandfallCompanion-project-headers.hmap -Xcc -I/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/DerivedSources/arm64 -Xcc -I/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/DerivedSources -Xcc -DDEBUG\=1 -no-auto-bridging-header-chaining -module-name LandfallCompanion -frontend-parseable-output -disable-clang-spi -clang-target arm64-apple-ios26.5-simulator -target-sdk-version 26.5 -target-sdk-name iphonesimulator26.5 -in-process-plugin-server-path /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -o /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/ParallaxAssetCache.o -o /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/ParallaxLocalRuntime.o -o /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/ParallaxSceneDelivery.o -o /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/ParallaxSceneTransfer.o -index-unit-output-path /LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/ParallaxAssetCache.o -index-unit-output-path /LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/ParallaxLocalRuntime.o -index-unit-output-path /LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/ParallaxSceneDelivery.o -index-unit-output-path /LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/ParallaxSceneTransfer.o -index-store-path /Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Index.noindex/DataStore -index-system-modules
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5744730Z note: Using codesigning identity override: -
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5746650Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5748080Z --- xcodebuild: WARNING: Using the first of multiple matching destinations:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5749770Z { platform:iOS Simulator, arch:arm64, id:5F5C670B-C672-48D3-AA70-D1D7E9FFB590, OS:26.5, name:landfall-owned-6015 }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5753640Z { platform:iOS Simulator, arch:x86_64, id:5F5C670B-C672-48D3-AA70-D1D7E9FFB590, OS:26.5, name:landfall-owned-6015 }
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5754310Z Testing failed:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5755400Z 	Invalid redeclaration of 'transform'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5763340Z 	Testing cancelled because the build failed.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5763600Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5763830Z ** TEST FAILED **
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5764770Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5764770Z 
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.5783940Z LANDFALL_APPLE_BUILD_FAILED
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.8829750Z ##[error]Process completed with exit code 1.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9557290Z ##[group]Run actions/upload-artifact@v4
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9734960Z with:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9735500Z   name: landfall-ios-primary-phone-bfb27c63727ee217761bfd1b296e43bdc117f25d
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9735880Z   path: artifacts/landfall-device-lab
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9736150Z   retention-days: 14
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9736370Z   if-no-files-found: warn
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9736570Z   compression-level: 6
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9736890Z   overwrite: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9737360Z   include-hidden-files: false
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9737550Z env:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9737820Z   LANDFALL_LAB_PROFILE: primary-phone
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:16.9738470Z ##[endgroup]
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:18.0425420Z (node:14990) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:18.0464040Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:19.4982050Z With the provided path, there will be 3389 files uploaded
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:19.4982660Z Artifact name is valid!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:19.4982960Z Root directory input is valid!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:19.8895500Z Beginning upload of artifact content to blob storage
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:21.7174420Z (node:14990) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:22.6860320Z Uploaded bytes 8388608
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:23.9806430Z Uploaded bytes 16777216
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:27.9045560Z Uploaded bytes 25165824
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:28.8884540Z Uploaded bytes 33554432
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:29.7439590Z Uploaded bytes 41943040
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:30.5226660Z Uploaded bytes 50331648
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:31.1590620Z Uploaded bytes 58720256
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:31.8668680Z Uploaded bytes 67108864
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:32.6518310Z Uploaded bytes 75497472
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:33.3408990Z Uploaded bytes 83886080
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:34.0660900Z Uploaded bytes 92274688
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:34.7772390Z Uploaded bytes 100663296
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:35.3916930Z Uploaded bytes 109051904
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:36.1124570Z Uploaded bytes 117440512
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:36.7801590Z Uploaded bytes 125829120
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:37.3928700Z Uploaded bytes 134217728
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:37.9841070Z Uploaded bytes 142606336
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.0333420Z Uploaded bytes 150994944
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.1874110Z Uploaded bytes 155034070
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.2675400Z Finished uploading artifact content to blob storage!
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.2679700Z SHA256 digest of uploaded artifact zip is 5a07afd957467e809d62b4c394613a021e29de171746edd0bb81501cd85d47a1
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.2681720Z Finalizing artifact upload
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.7105310Z Artifact landfall-ios-primary-phone-bfb27c63727ee217761bfd1b296e43bdc117f25d.zip successfully finalized. Artifact ID 12003358100
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.7206500Z Artifact landfall-ios-primary-phone-bfb27c63727ee217761bfd1b296e43bdc117f25d has been successfully uploaded! Final size is 155034070 bytes. Artifact ID is 12003358100
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.7248010Z Artifact download URL: https://github.com/Kgray44/treasurehuntSoT/actions/runs/38798660744/artifacts/12003358100
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.7534330Z Post job cleanup.
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.9031410Z [command]/opt/homebrew/bin/git version
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.9675080Z git version 2.55.0
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.9696530Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/b2431086-f98b-461f-8332-3684e88d6c65/.gitconfig'
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.9704830Z Temporarily overriding HOME='/Users/runner/work/_temp/b2431086-f98b-461f-8332-3684e88d6c65' before making global git config changes
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.9708150Z Adding repository directory to the temporary git global config as a safe directory
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.9710840Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/treasurehuntSoT/treasurehuntSoT
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.9875140Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:39.9969120Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:40.1226120Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:40.1302520Z http.https://github.com/.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:40.1311770Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:40.1412020Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:40.2599530Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:40.2681240Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:40.5067530Z Cleaning up orphan processes
+Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T20:13:43.6328960Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -1,0 +1,201 @@
+Running altool at path '/Applications/Xcode_26.6.app/Contents/SharedFrameworks/ContentDelivery.framework/Resources/altool'...
+
+Copyright © 2009-2025 Apple Inc. All rights reserved. Version 26.40.1 (174001)
+
+usage: altool
+
+# App Upload and Validation
+altool --upload-package <file>
+          Authentication [Options]
+altool --upload-app -f <file>
+          Authentication [Options]
+altool --validate-app <file>
+          Authentication [Options]
+
+# Asset Pack Management
+altool --upload-asset-pack <filepath> --apple-id <id>
+          Authentication [Options]
+altool --asset-pack-status {--asset-pack-version-id <id> |
+          --apple-id <id> --asset-pack-identifier <string> --version <string>}
+          Authentication [Options]
+altool --list-asset-packs --apple-id <id>
+          Authentication [Options]
+altool --list-asset-pack-versions --apple-id <id> --asset-pack-identifier <string>
+          Authentication [Options]
+
+# App and Provider Information
+altool --list-apps --provider-public-id <id> {--filter}
+          Authentication [Options]
+altool --list-providers {--legacy}
+          Authentication [Options]
+
+# App Store Text Management
+altool --app-store-text <folder_path> { --upload | --download } --apple-id <id>
+          --bundle-short-version-string <string> --platform <platform>
+          Authentication [Options]
+altool --beta-app-store-text <folder_path> { --upload | --download } --apple-id <id>
+          --bundle-short-version-string <string> --platform <platform>
+          Authentication [Options]
+
+# Authentication and Security
+altool --store-password-in-keychain-item <keychain_item_name> -u <username> -p <password>
+          [--keychain <filename> | --sync]
+altool --generate-jwt --apiKey <api_key> --apiIssuer <issuer_id>
+          [--auth-string <string> | --p8-file-path <path>]
+          [--keychain <filename> | --sync]
+
+# Status and Monitoring
+altool --build-status {--delivery-id <id> | --apple-id <id> --bundle-version <string>}
+          Authentication [Options]
+
+----------
+EXIT CODES
+----------
+0    Success
+1    Failure (error code and message are generally also displayed)
+
+--------------
+AUTHENTICATION
+--------------
+Most commands require authorization using one of two methods:
+1) Username with password
+2) API Key with Issuer ID
+
+    -u, --username <username>     Username for App Store Connect authentication
+    -p, --password <password>     Password (if omitted from command line, will be read from stdin)
+                                  
+                                  Alternative password specification methods:
+                                  • '-p @keychain:<name>' - Use password from keychain item
+                                  • '-p @env:<variable>' - Use password from environment variable
+    --provider-public-id <id>     Required when user has multiple providers (use --list-providers 
+                                  to find your provider ID)
+    --auth-string <string>        Private key from JWT p8 file (content between BEGIN/END)
+    --p8-file-path <filepath>     Direct path to JWT p8 authentication file
+
+                                  
+    --api-key <string>            API Key for JWT authentication (alternative to username/password)
+                                  Private key file 'AuthKey_<api_key>.p8' will be searched for in:
+                                  • ./private_keys
+                                  • ~/private_keys
+                                  • ~/.private_keys
+                                  • ~/.appstoreconnect/private_keys
+                                  • $API_PRIVATE_KEYS_DIR (environment variable)
+    --api-issuer <id>             Issuer ID (required with --api-key)
+    --api-key-subject <string>    Set to 'user' when using non-ApiKey_ prefixed auth files
+
+---------------
+COMMAND DETAILS
+---------------
+--upload-package <filepath>
+    Uploads the specified app archive to the App Store
+    
+    --wait                        Wait for processing completion before returning status
+
+--upload-app -f <filepath>
+    Uploads the specified app to the App Store
+
+--validate-app <filepath>
+    Validates an app archive for the App Store
+
+--list-apps
+    Display all apps associated with a provider
+
+    --provider-public-id <id>     Provider ID to list apps for
+    --filter-apple-id <id>        Filter by Apple ID
+    --filter-bundle-id <id>       Filter by bundleID
+    --filter-name <name>          Filter by app name
+    --filter-sku <SKU>            Filter by SKU
+    --filter-platform <string>    Filter by platform {macos | ios | appletvos | visionos}
+--list-providers
+    Display providers associated with your account
+
+    --legacy                      Output in legacy format
+
+--store-password-in-keychain-item <keychain_item_name> -u <username> -p <password>
+    Store password in keychain for later use with '@keychain:' prefix
+    
+    --keychain <filepath>         Specify custom keychain file path
+    --sync                        Allow keychain item to sync with iCloud
+
+--app-store-text <folderpath> {--upload | --download}
+    Manage App Store text content (description, keywords, etc.)
+    
+    --apple-id <id>               App's Apple ID
+    --bundle-short-version-string <str>  App version
+    -t, --platform <platform>     Platform {macos | ios | appletvos | visionos}
+
+--upload-asset-pack <filepath>
+    Upload asset pack (.aar file) to the App Store
+    
+    --apple-id <id>               App ID to associate with the asset pack
+    --wait                        Wait for READY/FAILED status before returning
+
+--asset-pack-status
+    Get asset pack processing status
+    
+    --asset-pack-version-id <id>  Asset pack version ID
+    OR
+    --apple-id <id>               App ID associated with the asset pack
+    --asset-pack-identifier <string> Asset pack developer name
+    --version <string>            Asset pack version number
+
+--list-asset-packs
+    List asset packs for an app
+    
+    --apple-id <id>               App ID
+
+--list-asset-pack-versions
+    List versions of a specific asset pack
+    
+    --apple-id <id>               App ID
+    --asset-pack-identifier <string> Asset pack developer name
+
+--beta-app-store-text <folderpath> {--upload | --download}
+    Manage Beta App Store text content
+    
+    --apple-id <id>               App's Apple ID
+    --bundle-short-version-string <string> App version
+    -t, --platform <platform>     Platform {macos | ios | appletvos | visionos}
+
+--generate-jwt
+    Generate a JWT authentication token
+
+--build-status
+    Check delivery and App Store Connect processing status
+    
+    --delivery-id <id>            Delivery ID (from successful upload)
+    OR
+    --apple-id <id>               App ID
+    --bundle-version <string>     CFBundleVersion
+    --bundle-short-version-string <string> CFBundleShortVersionString
+    --platform <platform>         Platform {macos | ios | appletvos | visionos}
+    
+    --wait                        Wait for processing completion before returning status
+
+--------------
+COMMON OPTIONS
+--------------
+--output-format {xml | json | normal}
+                                  Output format (default: normal)
+--show-progress                   Show progress during operation
+--verbose                         Enable detailed logging
+--help                            Display this help information
+--use-old-altool                  Use legacy altool for compatible commands
+
+--------
+EXAMPLES
+--------
+# Upload a ipa
+altool --upload-package ~/MyApp.ipa --api-key ABC123DEF456 --api-issuer 57246542-96fe-1a63-e053-0824d011072a
+# Validate a pkg
+altool --validate-app ~/MyApp.pkg --username jappleseed@apple.com --app-password "MyP@ssw0rd!@78" --provider-public-id 57246542-96fe-1a63-e053-0824d011072a
+        # Upload an asset pack
+altool 
+# Store password in keychain
+altool --store-password-in-keychain-item MY_SECRET -u jappleseed@apple.com -p "MyP@ssw0rd!@78"
+
+# Upload app using keychain authentication
+altool --upload-package /path/to/app.ipa -u jappleseed@apple.com -p @keychain:MY_SECRET
+
+# List providers using JWT authentication
+altool --list-providers --api-key ABC123DEF456 --api-issuer 57246542-96fe-1a63-e053-0824d011072a

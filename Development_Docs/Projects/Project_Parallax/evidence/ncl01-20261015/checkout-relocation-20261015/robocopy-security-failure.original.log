@@ -1,0 +1,28 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Thursday, October 15, 2026 7:01:54 PM
+   Source : C:\Users\kkids\.codex\worktrees\parallax-ncl01\Codex_TreasureHunt\
+     Dest : D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt\
+
+    Files : *.*
+	    
+  Options : *.* /NDL /NFL /S /E /DCOPY:DAT /COPY:DATS /NP /XJ /MT:8 /R:1 /W:1 
+
+------------------------------------------------------------------------------
+
+2026/10/15 19:01:54 ERROR 5 (0x00000005) Copying NTFS Security to Destination Directory D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt\
+Access is denied.
+
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :         1         1         0         0         0         0
+   Files :         0         0         0         0         0         0
+   Bytes :         0         0         0         0         0         0
+   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+   Ended : Thursday, October 15, 2026 7:01:54 PM
+

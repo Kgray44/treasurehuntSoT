@@ -8,7 +8,7 @@ import {
 } from "./adaptive-contracts";
 import type { Transform } from "./contracts";
 import { composeTransform } from "./transforms";
-import { surfaceFrameRotation, findSurfacePlacement } from "./surface-placement";
+import { surfaceFrameRotation, findSurfacePlacement } from "./runtime-placement";
 const point = z.strictObject({
   x: z.number().finite().min(-100).max(100),
   y: z.number().finite().min(-10).max(20),

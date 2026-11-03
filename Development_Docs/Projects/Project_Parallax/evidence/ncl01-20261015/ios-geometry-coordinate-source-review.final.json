@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "machine-engineering-evidence",
+  "reviewer": "independent-source-and-artifact-review",
+  "reviewedAtUtc": "2026-10-16T02:23:07.228372Z",
+  "authorityPromotion": false,
+  "sourceEditedByReviewer": false,
+  "jobsDispatchedByReviewer": false,
+  "evidenceClass": "INDEPENDENT_REVIEW_OF_FIXED_OFFSCREEN_COORDINATE_SOURCE_CORRECTION",
+  "result": "ACCEPTED_SOURCE_ONLY_PENDING_FRESH_EXACT_SOURCE_EXECUTION",
+  "path": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+  "baselineCandidateSha": "2f2d55fd15743bc49d815dd4d9d2179debf52238",
+  "baselineSha256": "817e6c8731fec53e539aa2282882d9696cdc7e68068732a82bd02f76b6665fd7",
+  "reviewedSha256": "d40db072a0fbcbc8580d24eda2ad622e5fd7b123de4cb483df816669dfb0d94e",
+  "failureReceiptSha256": "cc0503fcff3334ed60147f2bc7231bb610b28bfeb26ffd56a182878a4bf3fea5",
+  "reviewedLines": {
+    "fixedMapping": "294-298",
+    "populatedQueriesAndRoundtrip": "302-320",
+    "removedQueriesAndRetainedRoot": "331-343"
+  },
+  "checkedChanges": [
+    "One fixed x unchanged / queryY = targetHeight - readbackPixelCenterY conversion per query; target is asserted origin-zero256x256.",
+    "All three populated and all three removed queries use the same conversion; raw alpha sampling stays in original readback coordinates.",
+    "Actual closest geometry hit must reproject onto converted query and inverse-convert onto original opaque readback pixel within unchanged0.51pixel tolerance.",
+    "Exact distinct authored entity ID still comes through production ParallaxLocalRuntime.entityId; transparent mirror/background and removed graph remain mandatory nil.",
+    "No adaptive fallback, retries, added hit queries, frames, waits or deadlines; original one20s deadline, six frames and all preexisting geometry/material/pivot/clear/disposal assertions remain.",
+    "CPU-only main-actor mapper hop and asynchronous late-completion sealing/lifetime code are unchanged."
+  ],
+  "primarySources": [
+    {
+      "url": "https://developer.apple.com/documentation/scenekit/scnscenerenderer/hittest(_:options:)",
+      "supports": "Queries renderer screen space including GPU viewport and searches actual scene geometry."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/scenekit/scnscenerenderer/projectpoint(_:)",
+      "supports": "Projects actual world-space hit back to corresponding renderer screen coordinates, with z in near/far depth interval."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/metal/mtlviewport/originy",
+      "supports": "Metal viewport origin is upper-left; this alone does not guarantee SceneKit hitTest readback-row orientation."
+    }
+  ],
+  "rationale": "The exact failed opaque0/mirror1/background0 observation justifies this narrow fixed conversion as a falsifiable correction. The query/reprojection/inverse assertions retain independent relationship to original shaded pixels.",
+  "executionPerformedByReviewer": false,
+  "swiftCompilerRunByReviewer": false,
+  "correctedCoordinateOrGeometryProofAccepted": false,
+  "physicalOrAuthorityAcceptance": false,
+  "actionableSourceFindings": [],
+  "reviewedCandidateSha": "9314c749e426110ee38ed1da373a4e2361c6431a",
+  "candidateSourceBytesVerifiedAfterRootCommit": true
+}

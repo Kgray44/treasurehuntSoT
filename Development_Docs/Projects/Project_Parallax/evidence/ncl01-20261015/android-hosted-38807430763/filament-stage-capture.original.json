@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "CONTINUOUS_FIXTURE_STAGE_DIAGNOSTICS_ONLY",
+  "tag": "NCL01Filament",
+  "serial": "emulator-5554",
+  "code": 255,
+  "signal": null,
+  "spawnErrorCode": null,
+  "writeFailed": false,
+  "loggerClosed": true,
+  "terminationReason": "LOGGER_EXITED",
+  "streams": [
+    {
+      "path": "filament-stages.stdout.original.log",
+      "observedBytes": 1239,
+      "bytes": 1239,
+      "maximumBytes": 262144,
+      "truncated": false,
+      "sha256": "b6346883cf3819aa4468197c0596f24c9ff033a0afb3ad6f6892ff7f8f7469a2"
+    },
+    {
+      "path": "filament-stages.stderr.original.log",
+      "observedBytes": 34,
+      "bytes": 34,
+      "maximumBytes": 8192,
+      "truncated": false,
+      "sha256": "426b9110c9497224234887d6087a99af8900da5094dc929fb1cd0b22a33c1be5"
+    }
+  ],
+  "physicalTrackingProven": false
+}

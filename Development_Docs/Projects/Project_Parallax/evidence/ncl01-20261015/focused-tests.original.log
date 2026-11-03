@@ -1,0 +1,23 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/parallax-ncl01/Codex_TreasureHunt
+
+ ✓ src/parallax/runtime-delivery.test.ts (7 tests) 324ms
+ ✓ src/parallax/browser-scene-presentation.test.ts (10 tests) 261ms
+ ✓ src/components/player/parallax/ChronicleLens.test.tsx (5 tests) 331ms
+ ✓ src/parallax/scene-transfer.test.ts (37 tests) 220ms
+ ✓ src/parallax/native.test.ts (4 tests) 77ms
+ ✓ src/parallax/authoring.test.ts (20 tests) 53ms
+ ✓ src/parallax/scene-delivery.test.ts (13 tests) 42ms
+ ✓ src/parallax/adaptive-runtime.test.ts (4 tests) 114ms
+ ✓ src/parallax/phase1.test.ts (14 tests) 34ms
+ ✓ src/parallax/asset-delivery.test.ts (7 tests) 32ms
+ ✓ src/app/api/player/playthroughs/[playthroughId]/parallax/assets/[assetId]/route.test.ts (4 tests) 12ms
+
+ Test Files  11 passed (11)
+      Tests  125 passed (125)
+   Start at  15:57:49
+   Duration  7.76s (transform 1.90s, setup 752ms, import 7.00s, tests 1.50s, environment 3.54s)
+

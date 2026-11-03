@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "result": "PASS_STATIC_AND_PRIOR_IMAGE_FEASIBILITY_ONLY",
+  "sourceSha256": "817e6c8731fec53e539aa2282882d9696cdc7e68068732a82bd02f76b6665fd7",
+  "sourcePath": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+  "legacyReadOnlyHead": "e6eb9659d38918ef24f903ba78a13b2d067fd1ff",
+  "checks": {
+    "oneExistingRenderer": true,
+    "sameRenderFrameCalls": true,
+    "sameAssetByteDigests": true,
+    "originalPixelAndClearAssertions": true,
+    "singleOriginalDeadline": true,
+    "noNewCameraOrBlockingWait": true,
+    "realGeometryAndProductionMapper": true,
+    "lateContinuationSealingRetained": true,
+    "allOriginalTestDeclarationsUnchanged": true
+  },
+  "unchangedTestDeclarationCount": 27,
+  "originalCatalogAssets": {
+    "treasure-chest": {
+      "bytes": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f"
+    },
+    "brass-compass": {
+      "bytes": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb"
+    }
+  },
+  "priorImageSourceRun": "38819289805",
+  "priorReportSha256": "fc7dd0db5b13a430cb600dfda9fa539d86611789dc159498d19399993226e3c6",
+  "priorImageFeasibility": [
+    {
+      "frame": "brass-compass-populated",
+      "pngSha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+      "asymmetricInteriorCandidates": 186,
+      "chosenPixelCenter": [
+        127.5,
+        147.5
+      ],
+      "transparentMirrorPixelCenter": [
+        127.5,
+        108.5
+      ],
+      "backgroundPixelCenter": [
+        3.5,
+        3.5
+      ]
+    },
+    {
+      "frame": "treasure-chest-populated",
+      "pngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "asymmetricInteriorCandidates": 89,
+      "chosenPixelCenter": [
+        127.5,
+        166.5
+      ],
+      "transparentMirrorPixelCenter": [
+        127.5,
+        89.5
+      ],
+      "backgroundPixelCenter": [
+        3.5,
+        3.5
+      ]
+    }
+  ],
+  "swiftCompilerAvailable": false,
+  "freshGeometryHitExecutionObserved": false,
+  "physicalAcceptanceProven": false
+}

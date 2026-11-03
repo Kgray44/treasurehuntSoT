@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "role": "HOSTED_FOCUSED_BROWSER_DEVELOPMENT_REVIEW_NOT_ACCEPTANCE",
+  "qualification": false,
+  "result": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+  "reviewedAtUtc": "2026-10-22T03:56:24.179Z",
+  "run": {
+    "id": 39717629819,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39717629819",
+    "attempt": 1,
+    "event": "workflow_dispatch",
+    "branch": "main",
+    "protectedWorkflowSha": "8e49351e62e1f32340109566557a824bfa74e14d",
+    "workflowPath": ".github/workflows/sounding-line-focused-repair.yml",
+    "createdAtUtc": "2026-10-22T03:35:00Z",
+    "updatedAtUtc": "2026-10-22T03:51:23Z",
+    "jobId": 119623455681,
+    "jobStartedAtUtc": "2026-10-22T03:35:03Z",
+    "jobCompletedAtUtc": "2026-10-22T03:51:22Z",
+    "conclusion": "success"
+  },
+  "candidate": {
+    "sha": "80a3f2ff5d0e226c4a3c1a2e5623de6f74e49e63",
+    "tree": "18c80b53c9bac43a291e9241aaf7e3f803650ec2",
+    "selector": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+    "selectedTestGitBlob": "4def6bcd8094233afe90a63afe843441153a2221",
+    "selectedTestSha256": "c05e517d79d0fb88304ed52a4ba19eeb37d80c4064fccf81556a6094504bb98b"
+  },
+  "environment": {
+    "workflowRunner": "ubuntu-latest",
+    "nodeObserved": "v24.19.0",
+    "nodeDeclared": "24.19.0",
+    "lockedDependenciesStep": "SUCCESS",
+    "browser": "CHROMIUM",
+    "workers": 1,
+    "retries": 0,
+    "repeatEach": 1
+  },
+  "observedSummaries": [
+    {
+      "status": "PASS_DEVELOPMENT_PREPARED_NOT_ACCEPTANCE",
+      "role": "DEVELOPMENT_ONLY",
+      "qualification": false
+    },
+    {
+      "status": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+      "role": "DEVELOPMENT_ONLY",
+      "qualification": false
+    }
+  ],
+  "preparedManifest": {
+    "publishedSha256": "9f3a2aea821e69c7f3e85c7b056e06ee09987da11b727d9a3d66bd7e6d4113af",
+    "digestPublication": "OBSERVED_IN_EXECUTION_ENVIRONMENT_LOG",
+    "originalManifestBytesRetained": false,
+    "workflowRoleStatusPathAndDigestGuardsPassed": true,
+    "runHelperVerifiesSuppliedManifestDigest": true
+  },
+  "testDenominator": {
+    "sourceDeclaredCases": 7,
+    "actualExecutedCases": null,
+    "actualPassedCases": null,
+    "originalReportSha256": null,
+    "originalReportRetained": false,
+    "reason": "Success workflow publishes bounded status; private Playwright report and its digest/count were not exported. No numeric denominator inferred from source."
+  },
+  "sourceEnforcedReportRules": {
+    "positiveSelectedCountRequired": true,
+    "skippedZeroRequired": true,
+    "flakyZeroRequired": true,
+    "unexpectedAndRuntimeFailureAgreementRequired": true,
+    "sourceBuildDependencyFingerprintsRequiredUnchanged": true,
+    "meaning": "These are unchanged helper gates passed by the observed success, not independently retained raw report measurements."
+  },
+  "cleanup": {
+    "terminalCleanupGate": "PASS_ENFORCED_BY_OBSERVED_SUCCESS_AND_RETAINED_HELPER_SOURCE",
+    "rawRuntimeCleanupReceiptRetained": false,
+    "individualResourceStatuses": null,
+    "directRemoteProcessOrPortInspectionPerformed": false,
+    "guardPath": "scripts/sounding-line/develop-browser-suite.mjs",
+    "guardGitBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+    "guardSha256": "fa81fc38bbf22e5cfd3ef9c88286837b4d3085b18e0567978d2834089167589e",
+    "originalHelperRetained": true
+  },
+  "sourceBindings": {
+    "protectedWorkflow": {
+      "path": ".github/workflows/sounding-line-focused-repair.yml",
+      "sourceSha": "8e49351e62e1f32340109566557a824bfa74e14d",
+      "gitBlob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+      "bytes": 5837,
+      "sha256": "5c071c38ebcc45b6c2f23d18f96f0da2f1142576715248bdcff01f55b09bbc4a"
+    },
+    "candidateInputs": [
+      {
+        "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+        "gitBlob": "4def6bcd8094233afe90a63afe843441153a2221",
+        "bytes": 17128,
+        "sha256": "c05e517d79d0fb88304ed52a4ba19eeb37d80c4064fccf81556a6094504bb98b"
+      },
+      {
+        "path": ".nvmrc",
+        "gitBlob": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "bytes": 8,
+        "sha256": "7e8a2fa94951112b894a3dbe3d05efef5e9263741fa49125f0a70f40fedab4cc"
+      },
+      {
+        "path": "package-lock.json",
+        "gitBlob": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+        "bytes": 397906,
+        "sha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373"
+      },
+      {
+        "path": "scripts/sounding-line/owned-process.mjs",
+        "gitBlob": "d2051a5f5809e634c1b2c1a99a052edbcd060c3d",
+        "bytes": 7087,
+        "sha256": "28266ddb98360512d8196ae4a71ceb92a447c98128b0b5156b95f5aaab9d18df"
+      },
+      {
+        "path": "scripts/sounding-line/owned-process-windows.ps1",
+        "gitBlob": "63221fa37a288fb1f1c18161aef2146a83117171",
+        "bytes": 6450,
+        "sha256": "a07a54452b7f67c0b730c8361be674defcc52c90a5cccca804cf3a92d5bb179c"
+      },
+      {
+        "path": "scripts/sounding-line/browser-authority.mjs",
+        "gitBlob": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+        "bytes": 26506,
+        "sha256": "4f0921a6080419c674c4c2373d5807f22a7daf8449f650fa14b873643e02454d"
+      },
+      {
+        "path": "scripts/sounding-line/develop-browser-suite.mjs",
+        "gitBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+        "bytes": 32395,
+        "sha256": "fa81fc38bbf22e5cfd3ef9c88286837b4d3085b18e0567978d2834089167589e"
+      },
+      {
+        "path": "scripts/sounding-line/browser-suite-profiles.mjs",
+        "gitBlob": "dff446c5d211fbbb477e64c8720da0e93baaf1df",
+        "bytes": 7220,
+        "sha256": "6e41b1d1c9a4b300e16b0104a953f6358e328d67fabc59106da468cc181e4c4a"
+      }
+    ],
+    "actualProtectedHelperInputs": [
+      {
+        "path": ".nvmrc",
+        "gitBlob": "60ade1ae01e833a5c291c47883bf26fb031f7727",
+        "bytes": 8,
+        "sha256": "7e8a2fa94951112b894a3dbe3d05efef5e9263741fa49125f0a70f40fedab4cc"
+      },
+      {
+        "path": "scripts/sounding-line/owned-process.mjs",
+        "gitBlob": "d2051a5f5809e634c1b2c1a99a052edbcd060c3d",
+        "bytes": 7087,
+        "sha256": "28266ddb98360512d8196ae4a71ceb92a447c98128b0b5156b95f5aaab9d18df"
+      },
+      {
+        "path": "scripts/sounding-line/owned-process-windows.ps1",
+        "gitBlob": "63221fa37a288fb1f1c18161aef2146a83117171",
+        "bytes": 6450,
+        "sha256": "a07a54452b7f67c0b730c8361be674defcc52c90a5cccca804cf3a92d5bb179c"
+      },
+      {
+        "path": "scripts/sounding-line/browser-authority.mjs",
+        "gitBlob": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+        "bytes": 26506,
+        "sha256": "4f0921a6080419c674c4c2373d5807f22a7daf8449f650fa14b873643e02454d"
+      },
+      {
+        "path": "scripts/sounding-line/develop-browser-suite.mjs",
+        "gitBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+        "bytes": 32395,
+        "sha256": "fa81fc38bbf22e5cfd3ef9c88286837b4d3085b18e0567978d2834089167589e"
+      },
+      {
+        "path": "scripts/sounding-line/browser-suite-profiles.mjs",
+        "gitBlob": "dff446c5d211fbbb477e64c8720da0e93baaf1df",
+        "bytes": 7220,
+        "sha256": "6e41b1d1c9a4b300e16b0104a953f6358e328d67fabc59106da468cc181e4c4a"
+      }
+    ]
+  },
+  "retention": {
+    "successArtifactCount": 0,
+    "encryptedFailureUploadStep": "SKIPPED",
+    "encryptedFailurePayloadExpected": false,
+    "originalJobLogBytes": 88656,
+    "originalJobLogSha256": "69caf3d1d6b9797228a5a855687e67dbc292dc534072a3e66493d34f4cee7862",
+    "originalMapSha256": "556a9e229f7144740c95a1b076c435e546b272ab330043252400c4c5a078e493",
+    "originalFileCount": 29,
+    "originalBytes": 227223
+  },
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Require protected workflow source and a focused selector",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@v4",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@v4",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Create the dedicated candidate worktree",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/setup-node@v4",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Install locked development dependencies",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Prepare the source-bound development runtime",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run the selected development case without qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Retain encrypted development failure diagnostics",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Post Run actions/setup-node@v4",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "limits": [
+    "Development-only protected-source workflow; no ProductExperience capture, Mainline decision, protected merge, deployment, physical AR, or owner acceptance inferred.",
+    "Candidate80a3 and protected workflow8e493 have distinct roles; this does not claim current main already contains the candidate.",
+    "Prepared-manifest digest is published; its raw bytes and private report/runtime receipts are not retained in success artifacts.",
+    "No seven-of-seven hosted claim; seven is source-declared, and actual numeric execution/report digest remains unavailable.",
+    "Windowsa820 seven-case functional pass and its capacity-stop control failure remain separate unchanged evidence.",
+    "Prior hosted failures retain their original status; no historical-cause closure is inferred.",
+    "Review used read-only metadata/source/log requests only; no workflow dispatch, rerun, key search, decryption, checkout, build, source edit, or runtime mutation.",
+    "All new local receipt/download streams and explicit tool TEMP/TMP were on D; existing GitHub credential configuration was used by gh without reading or printing values."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "kind": "FRESH_APPLE_BUILD_AND_INTERNAL_GROUP_READBACK",
+  "appleBuildId": "f01afddd-2c41-492d-beb7-d974d1d47206",
+  "build": "7",
+  "appleProcessing": "VALID",
+  "usesNonExemptEncryption": false,
+  "internalBuildState": "IN_BETA_TESTING",
+  "internalGroupId": "67398b1e-bde2-473e-a12e-d2da07f87619",
+  "internalGroupAttached": true,
+  "checkedAt": "2026-10-21T00:41:10.2467932Z",
+  "physicalInstallationProven": false,
+  "physicalARProven": false
+}

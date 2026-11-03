@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "javaScriptDisabled": true,
+  "values": "INVENTED_NON_SECRET",
+  "method": "POST",
+  "path": "/sign-in",
+  "urlContainsCredentialFields": false,
+  "bodyFieldNames": [
+    "login",
+    "password"
+  ],
+  "requestAbortedBeforeServer": true
+}

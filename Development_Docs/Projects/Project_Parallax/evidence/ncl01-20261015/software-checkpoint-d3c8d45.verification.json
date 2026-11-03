@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "PROJECT_TYPESCRIPT_AND_SOURCE_DELTA_ONLY",
+  "date": "2026-10-15",
+  "sourceCheckpoint": "d3c8d457aee9edad3e485fdee737ca6c7a1a8d63",
+  "priorSourceManifest": "software-checkpoint-b328c49.source-manifest.json",
+  "sourceDelta": [
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "sha256": "423dc3de1e2f936b5fdc5958240a17fe124a23e6ecae2adce0680fee8a3bd62b",
+      "gitBlob": "5c0662fb4892e3e1e87309e92094e3e9da642b68"
+    },
+    {
+      "path": "scripts/landfall/device-lab/android-graphics-probe.ts",
+      "sha256": "e5aaf4c4e1f8892aa7d2396bbb4bd7c4269f6ddc3dfbce4a9489dfcedd59cb64",
+      "gitBlob": "e982593a0587d1656191bd8c14a9c09b0091a76b"
+    },
+    {
+      "path": "scripts/landfall/device-lab/harvest-hosted.ts",
+      "sha256": "056d0f34272b4708e6140695e61d29f739ea6bd1356175e07124755fcc6c8c20",
+      "gitBlob": "1627d4d7ff8d31917a80bb804c46a2f3ae5f7de3"
+    },
+    {
+      "path": "scripts/landfall/device-lab/hosted.ts",
+      "sha256": "726785bd346faac7febd54de37e53975df0565dbf8250643c773fb8f6f72c822",
+      "gitBlob": "14afa4200e607499d667c2f36b253f2cbbdd868e"
+    },
+    {
+      "path": "src/landfall/device-lab/android-graphics-probe.test.ts",
+      "sha256": "b7409120665a2eb2a5f35f1298815431478d5eab32f981a8352c3c7725c8c7ab",
+      "gitBlob": "b5f4fecd64bdb17eb9f0b63e54201a7d5580a7bd"
+    }
+  ],
+  "typescript": {
+    "command": "npm run typecheck",
+    "exitCode": 0,
+    "originalLog": "typecheck-d3c8d45.original.log",
+    "sha256": "87cbed0ffc784c19ac32b5eb5829e31eca5ebd6ea4b569718fa3d43d88a58e8d"
+  },
+  "sourceEquivalence": {
+    "iosUnchangedFromHostedCandidate": "b328c49a69b7179c54b0dd0608aba65ded6c368d",
+    "androidUnchangedFromComparisonCandidate": "46a20fc1940d7c1fd01275dd8e7163281a42e998",
+    "sharedAndAssetRoutesUnchangedFrom125PassingTests": "bfb27c63727ee217761bfd1b296e43bdc117f25d",
+    "allGitDiffChecksEmpty": true
+  },
+  "formalExperienceApproval": false,
+  "physicalAcceptance": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

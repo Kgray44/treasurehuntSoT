@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "OWNED_TRUSTED_TLS_AUTH_COOKIE_ONLY",
+  "timestamp": "2026-10-15T20:42:16.600Z",
+  "origin": "https://155.42.98.160:8449",
+  "explicitOwnedCA": true,
+  "globalTrustChanged": false,
+  "loginHttpStatus": 200,
+  "issuedCookieCount": 3,
+  "allIssuedCookiesSecure": true,
+  "syntheticAccountOnly": true,
+  "ownSessionSignOutHttpStatus": 200,
+  "onlyCreatedSessionRevoked": true,
+  "secretsPersisted": false,
+  "physicalOrBrowserAcceptance": false
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_TRANSPORT_DIAGNOSTICS_NOT_QUALIFICATION",
+  "qualification": false,
+  "source": {
+    "commit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+    "tree": "982f254e7e54ac28e08aac93a75db427496a4d90"
+  },
+  "events": {
+    "initialPushEventDelay": "OBSERVED_MINUTES_NO_AUTHENTICATION_ROOT_CAUSE_PROVEN",
+    "manualDispatchAttempt": "HTTP_422_WORKFLOW_DISPATCH_NOT_SUPPORTED_NO_RUN_CREATED",
+    "scopedCredentialHelperProbe": "ONE_PUSH_NO_GLOBAL_CONFIGURATION_OR_CREDENTIAL_ROTATION",
+    "probeAliasRemovedWithExactShaLease": true
+  },
+  "duplicateIosRuns": [
+    {
+      "runId": "39613378110",
+      "conclusion": "CANCELLED_BEFORE_RUNNER_ALLOCATION"
+    },
+    {
+      "runId": "39613516431",
+      "conclusion": "CANCELLED_BEFORE_RUNNER_ALLOCATION"
+    }
+  ],
+  "retainedIosRun": "39613376449",
+  "noQualificationClaimFromCancelledRuns": true
+}

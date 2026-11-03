@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "recordedDate": "2026-10-20",
+  "status": "OWNER_AUTHORIZED_CENTERED_OFFICIAL_LOGO_PREPARED_COMPILED_VERIFICATION_PENDING",
+  "authority": "Owner accepted the tighter preview, requested the whole emblem shifted so the needle pivot is centered, then explicitly authorized proceeding without further user checks",
+  "retainedOwnerOriginal": {
+    "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+    "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+    "unchanged": true
+  },
+  "editedSource": {
+    "path": "native/ios/Branding/VoyageWright-Logo.centered-refinement.source.png",
+    "sha256": "cd3ffa3a3db274310bade32dfa6ae2d19e8a1a05208d67a1cadf56709167d19e",
+    "dimensions": [1254, 1254],
+    "mode": "RGB",
+    "generationUsed": true,
+    "byteIdenticalToOwnerOriginal": false,
+    "editHistory": "generation-history.json"
+  },
+  "officialLogo": {
+    "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+    "bytes": 2226363,
+    "sha256": "59aa4f4054561fe83ede9e514d41abedbb35da90ded5d52fd89f398a1013d7d9",
+    "dimensions": [1254, 1254],
+    "mode": "RGB",
+    "opaque": true,
+    "targetPivotPixelCenter": [626.5, 626.5],
+    "measuredPivotInnerEdgeFit": [626.5058, 626.4207]
+  },
+  "packagedAsset": {
+    "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+    "bytes": 1518596,
+    "sha256": "f85442a36f1697d47b3d1c8814f44100a72b564145e3960a295ba2233874219f",
+    "decodedRgbPixelsSha256": "c8bd2157e3420dae558b9edbc39c1a4ef524480ac406fb2a0d75831b6c25545b",
+    "dimensions": [1024, 1024],
+    "mode": "RGB",
+    "opaque": true,
+    "targetPivotPixelCenter": [511.5, 511.5],
+    "measuredPivotInnerEdgeFit": [511.6214, 511.5015],
+    "maximumAbsoluteResidualAcrossIndependentMethodsPerAxisPixels": 0.16
+  },
+  "mechanicalPackaging": {
+    "tool": "sharp 0.35.5 / libvips 8.18.7",
+    "sourceTranslationPixels": [4.954, 7.217],
+    "translationInterpolator": "bicubic",
+    "edgePaddingPixels": 32,
+    "edgePaddingMethod": "mirror, only exposed dark background",
+    "iconResizeKernel": "lanczos3",
+    "record": "packaging.original.json",
+    "script": "packaging.original.mjs"
+  },
+  "independentReview": {
+    "result": "PASS",
+    "record": "final-center-review.original.json",
+    "sha256": "8234f901acd7a6494134181bc2bc1a6d56eb8a4927124126a863f1e361610228",
+    "wholeEmblemAndSafeMarginsVisuallyReviewed": true,
+    "rootReviewedFinalPackagedIcon": true,
+    "existingUniversalIos1024SlotPreserved": true,
+    "precisionClaim": "Subpixel centering supported by independent measurements; depicted aperture shading and antialiasing preclude a zero-error mathematical claim"
+  },
+  "distributionPlan": {
+    "version": "0.1.0",
+    "build": "6",
+    "origin": "https://ncl01.absoluterelativesystems.com",
+    "bundleId": "com.voyagewright.landfall",
+    "compiledIconIdentityProven": false,
+    "testflightAvailabilityProven": false,
+    "phoneIconAppearanceProven": false
+  },
+  "scope": {
+    "officialLogoMasterAndIosCompanionIcon": true,
+    "nativeArBehaviorChanged": false,
+    "websiteOrAndroidIconChanged": false,
+    "previewRuntimeOrDatabaseChanged": false,
+    "protectedMainOrPr741Merged": false,
+    "fullAuthoredSceneAcceptanceProven": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "timestamp": "2026-10-20T15:14:32.8948837Z",
+  "ownedProcessCreationAndListeners": [
+    {
+      "component": "production",
+      "pid": 195824,
+      "createdAt": "2026-10-20T15:06:44.7187600Z",
+      "exactStartTicksMatched": true,
+      "exactCimCreationTicksMatched": true,
+      "instanceIdAndScriptHashMatched": true,
+      "heldProcessHandleVerified": true,
+      "oneLoopbackListenerMatched": true,
+      "port": 3158,
+      "script": "serve-owned-production-router.mjs"
+    },
+    {
+      "component": "edge",
+      "pid": 195316,
+      "createdAt": "2026-10-20T14:43:13.6394070Z",
+      "exactStartTicksMatched": true,
+      "exactCimCreationTicksMatched": true,
+      "instanceIdAndScriptHashMatched": true,
+      "heldProcessHandleVerified": true,
+      "oneLoopbackListenerMatched": true,
+      "port": 3159,
+      "script": "loopback-edge.mjs"
+    }
+  ],
+  "existingNclListenersUnchanged": true,
+  "existingCloudflaredServicePidUnchanged": true,
+  "oldProduction3158OwnedStopAndPortRelease": "PASS",
+  "finalRuntimeStopHelperExecuted": false,
+  "publicRoutePublished": true
+}

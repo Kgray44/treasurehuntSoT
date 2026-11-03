@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "role": "NCL01_CONTRACT_DESIGN_LOCAL_GUARD_REVIEW",
+  "qualification": false,
+  "result": "TOOL_OBSERVED_DEVELOPMENT_GUARDS_ONLY",
+  "source": {
+    "protectedBase": "aaff919428ef9ab421579415ce3409949724760d",
+    "consumerImpactProducer": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "headParent": "39e28ffdea15171f8373bb6fdf752a118c20dccd",
+    "ownedChangesUncommitted": true,
+    "files": [
+      {
+        "role": "contract_registry",
+        "path": "testing/contracts.json",
+        "sha256": "b66c062cd650f7e99bff0be2dad6a085ada7ca07991a23cd3ab27e732f8446c0",
+        "bytes": 313677
+      },
+      {
+        "role": "experience_design",
+        "path": "Development_Docs/Projects/Project_Parallax/NCL01_Consumer_Experience_Design_20261021.md",
+        "sha256": "13b6f439f7c7edf04625e58ad4ef3fdbc1bbf267e4cc13b0ec3e4e362230af52",
+        "bytes": 12443
+      }
+    ]
+  },
+  "semanticGuard": {
+    "provenance": "OBSERVED_INLINE_READ_ONLY_NODE_GUARD_OUTPUT",
+    "allExperienceSchemasValid": 19,
+    "protectedDomainRecordsPreserved": 494,
+    "protectedExperienceContractsPreserved": 11,
+    "domainOwnersAndAuthorityUnchanged": true,
+    "existingJourneysRolesReferencesDebtAndFieldsPreserved": true,
+    "newExperienceFamilies": 8,
+    "priorUncoveredPaths": 135,
+    "priorPathsExplicitlyCovered": 135,
+    "priorPathsStillUncovered": 0,
+    "newFamilyRoleDeviceMotionContexts": 32,
+    "additionalAnonymousRegistrationContexts": 2,
+    "selectedProtectedContextsRemainAdditional": true,
+    "officialFrozenPlanContextTotal": null,
+    "acceptedScreenJourneyReferenceBindingsChecked": true,
+    "everyDeclaredStateHasCaptureStep": true,
+    "focusedBrowserSpecificationExists": true
+  },
+  "existingGuardTests": {
+    "command": "node --test tests/sounding-line/product-experience.test.mjs",
+    "provenance": "TOOL_OBSERVED_PROCESS_OUTPUT_NOT_AUTHENTICATED_PRODUCER",
+    "exitCode": 0,
+    "tests": 49,
+    "passed": 49,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 37229.9699,
+    "originalProcessLogSeparatelyRetained": false,
+    "originalProcessLogSha256": null,
+    "originalOutputDigest": null,
+    "outputDigestUnavailableReason": "The command output was delivered by exec/write_stdin tool chunks and was not separately redirected or retained as an immutable process log. No historical stdout is reconstructed."
+  },
+  "formatAndWhitespace": {
+    "prettierOwnedFiles": "PASS",
+    "gitDiffCheckOwnedFiles": "PASS"
+  },
+  "evidenceLocators": {
+    "privatePathMapSha256": "2229a060ecdd241bc794b415ff96c9c749fde2441c052c5911014d5caf1a5a33",
+    "liveTaskTraceLocatorRetainedPrivately": true,
+    "taskTraceReadOrAuthenticated": false
+  },
+  "officialExperiencePlan": "NOT_RUN",
+  "capture": "NOT_RUN",
+  "independentMediaReview": "NOT_RUN",
+  "ordinaryMainlineDecision": "NOT_RUN",
+  "workflowDispatches": 0,
+  "commitsByThisReview": 0,
+  "limits": [
+    "This is a local nonqualifying development observation, not authenticated hosted producer evidence.",
+    "Coverage checks apply only to the previously observed135 paths and the exact owned-file hashes; an exact committed experience plan is still required.",
+    "Schemas, declared journeys and existing guard tests do not demonstrate those new UI journeys have executed or passed.",
+    "No new native/GPU, physical AR, live metric browser provider, signed beta, protected merge, landed smoke or owner acceptance is inferred."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "timestamp": "2026-10-20T14:58:31.9793373Z",
+  "ownedProcessCreationAndListeners": [
+    {
+      "component": "production",
+      "pid": 195796,
+      "createdAt": "2026-10-20T14:49:20.0515040Z",
+      "exactStartTicksMatched": true,
+      "exactCimCreationTicksMatched": true,
+      "instanceIdAndScriptHashMatched": true,
+      "heldProcessHandleVerified": true,
+      "oneLoopbackListenerMatched": true,
+      "port": 3158
+    },
+    {
+      "component": "edge",
+      "pid": 195316,
+      "createdAt": "2026-10-20T14:43:13.6394070Z",
+      "exactStartTicksMatched": true,
+      "exactCimCreationTicksMatched": true,
+      "instanceIdAndScriptHashMatched": true,
+      "heldProcessHandleVerified": true,
+      "oneLoopbackListenerMatched": true,
+      "port": 3159
+    }
+  ],
+  "existingNclListenersUnchanged": true,
+  "startHelperSyntaxValid": true,
+  "startHelperExistingRuntimeIdempotency": "PASS",
+  "stopHelperSyntaxValid": true,
+  "finalRuntimeStopHelperExecuted": false,
+  "priorOwnedCandidateStopsAndPortRelease": "PASS",
+  "publicRoutePublished": false
+}

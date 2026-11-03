@@ -1,0 +1,419 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "SUPPORTING_INDEPENDENT_IOS_SIMULATOR_RASTER_REVIEW",
+  "reviewerContext": "/root/ncl01_review",
+  "reviewedAtUtc": "2026-10-16T01:02:29.630Z",
+  "disposition": "ACCEPTED_WITH_NO_ACTIONABLE_FINDING_IN_BOUNDED_SIMULATOR_SCOPE",
+  "candidateSha": "aecbf27d63aa6c2bf287fc840e679b92600d4ff8",
+  "receipt": {
+    "path": "ios-hosted-38819289805.receipt.json",
+    "sha256": "4a154a41559cf476d3c0454beb14392ad267e785d9b539e1eaed87253b2df31d",
+    "runId": "38819289805",
+    "transportSha": "556df4338bef47af32cbe4120793202edde8fcaa",
+    "conclusion": "success"
+  },
+  "publishedFiles": {
+    "verifiedCount": 22,
+    "verification": "Each actual file length and SHA256 independently recomputed; originals unchanged.",
+    "files": [
+      {
+        "path": "ios-hosted-38819289805/hosted-run-state.original.json",
+        "bytes": 5034,
+        "sha256": "1ea7f4681d9175fb82ea175e10c9fa005a2a8d7a7631e16b9ee1fe0b9fbba882"
+      },
+      {
+        "path": "ios-hosted-38819289805/native-test-summary.original.json",
+        "bytes": 1281,
+        "sha256": "f08f8bb19f51917ea374a6ad9f5f29fa6e0f151751b508c8ca64745ef806a2fe"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-summary.original.json",
+        "bytes": 1242,
+        "sha256": "2c5d05cba35dd2a97391cab6bd7abc88ddda1b7e4c98180d3319735fda43c9a7"
+      },
+      {
+        "path": "ios-hosted-38819289805/build-scope.original.json",
+        "bytes": 370,
+        "sha256": "28b1afa081f5aa54a251110bfbc71ffc0b2c5096b359cd8b11477b61950b797a"
+      },
+      {
+        "path": "ios-hosted-38819289805/build-cleanup.original.json",
+        "bytes": 99,
+        "sha256": "c00e82398227124f7498aadd807008e0a69ab3674e15f6d1bc10f1d329682e8c"
+      },
+      {
+        "path": "ios-hosted-38819289805/runtime-selection.original.json",
+        "bytes": 131,
+        "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d"
+      },
+      {
+        "path": "ios-hosted-38819289805/capabilities.original.json",
+        "bytes": 16217,
+        "sha256": "c6e36223d4b3ab7f069c9358cff082c7ee0c25cae7919dd1156cf8f0d1ba6ebb"
+      },
+      {
+        "path": "ios-hosted-38819289805/build-summary.original.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "ios-hosted-38819289805/native-test-cases.extracted.json",
+        "bytes": 6670,
+        "sha256": "672028143d8f979246171be66eef78962ff4d701bb7417bd7154ee87b3da2f29"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-attachments/manifest.original.json",
+        "bytes": 5669,
+        "sha256": "9779ba41504d6417a640472e8b9811ec4919236d0092048ad3d1ee859a07df53"
+      },
+      {
+        "path": "ios-hosted-38819289805/ncl-attachment-associations.extracted.json",
+        "bytes": 3334,
+        "sha256": "49ece3b9b7cdd3f988ecb53999ed0bc39db4241722a4d10df5e4ae48bf37d2c7"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-attachments/CD4DC308-D1EB-4EBB-B60F-711F41B67BC9.json",
+        "bytes": 7377,
+        "sha256": "fc7dd0db5b13a430cb600dfda9fa539d86611789dc159498d19399993226e3c6"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-attachments/31B1E174-3B30-4945-BE5E-B1AEABDFD8C4.png",
+        "bytes": 1306,
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-attachments/D6BB1857-BC13-4A73-9C16-21DF3AF6B129.png",
+        "bytes": 5725,
+        "sha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-attachments/AAA2DBFE-3A8F-4077-BC7B-F04F02B71C45.png",
+        "bytes": 1306,
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-attachments/E84A9047-947D-469E-8405-FE187684ED98.png",
+        "bytes": 1306,
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-attachments/33176080-A0CE-4EB7-84DB-05DA565EFAC5.png",
+        "bytes": 7237,
+        "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381"
+      },
+      {
+        "path": "ios-hosted-38819289805/test-attachments/71547DB6-7C64-469C-86EF-7A6EFD81C5E5.png",
+        "bytes": 1306,
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f"
+      },
+      {
+        "path": "ios-hosted-38819289805/permission-denied-native.original.json",
+        "bytes": 6132,
+        "sha256": "9f5d23dfe55f8b286212de0d09ab8f9ce1e7ea4bbbc0c74b5a1e177310d29d88"
+      },
+      {
+        "path": "ios-hosted-38819289805/scenario-summary.original.json",
+        "bytes": 495,
+        "sha256": "49267b26baede32a2da997c51a7753b0f256cd9cf26c2f82fb15ed609dc6268f"
+      },
+      {
+        "path": "ios-hosted-38819289805/authority-receipt.original.json",
+        "bytes": 277,
+        "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904"
+      },
+      {
+        "path": "ios-hosted-38819289805/hosted-run.excerpt.log",
+        "bytes": 15725,
+        "sha256": "8f3390ad2ae0449cf6113f4bf5c415558e2d7e879161f8bad572932e8c6e753f"
+      }
+    ]
+  },
+  "sourceBinding": {
+    "candidateTree": "75511a2014f476288e564ccde08068cf7fb10ef0",
+    "originalScenarioSourceFingerprint": "c03198aa445408939dd057ef49fc9220778fef145c0d0dd503a9ae50927075fc",
+    "originalScenarioDirty": false,
+    "reviewedHeadSha": "2b8809980e3c8d448a9de4739779cd6f5849d39a",
+    "observedHeadAtRecordWrite": "2b8809980e3c8d448a9de4739779cd6f5849d39a",
+    "candidateToReviewedHeadChanges": [
+      "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "scripts/landfall/device-lab/android-test.ts",
+      "src/landfall/device-lab/android-scene-rendering.test.ts",
+      "src/landfall/device-lab/android-scene-rendering.ts"
+    ],
+    "nativeIosEqualsCandidateAtRecordWrite": true,
+    "nativeIosWorkingTreeClean": true,
+    "fixture": {
+      "path": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+      "sha256": "b09fca56f2e16a94a2fd99df42609fef90d34fe53ed41a6387df478c4d056582"
+    },
+    "transportParentEqualsCandidate": true,
+    "transportOnlyChange": ".github/workflows/landfall-device-lab.yml"
+  },
+  "visualReview": {
+    "method": "Both populated original PNGs inspected using view_image without editing or recomposition.",
+    "images": [
+      {
+        "name": "treasure-chest-populated",
+        "path": "ios-hosted-38819289805/test-attachments/33176080-A0CE-4EB7-84DB-05DA565EFAC5.png",
+        "observation": "Visible authored chest with brown slats, dark bands and gold latch."
+      },
+      {
+        "name": "brass-compass-populated",
+        "path": "ios-hosted-38819289805/test-attachments/D6BB1857-BC13-4A73-9C16-21DF3AF6B129.png",
+        "observation": "Visible authored compass with gold rim, light dial and colored needle."
+      }
+    ],
+    "acceptance": "Both expected catalog objects visibly rasterize; physical material fidelity and actual Player presentation are not established."
+  },
+  "independentPngReview": {
+    "decoder": "sharp",
+    "decoderVersion": "0.35.5",
+    "method": "Decoded original PNGs to RGBA; recomputed alpha>16 and visible max(R,G,B)>8 counts; matched original report and PNG SHA256.",
+    "frames": [
+      {
+        "name": "treasure-chest-empty",
+        "path": "ios-hosted-38819289805/test-attachments/71547DB6-7C64-469C-86EF-7A6EFD81C5E5.png",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "height": 256,
+        "alphaGreaterThan16": 0,
+        "nonblackVisiblePixels": 0,
+        "transactionFlushed": true,
+        "renderSystemUptime": 915.0181497916667,
+        "renderElapsedMs": 195.21612500000174,
+        "gpuCallbackElapsedMs": 218.29304166669772,
+        "measuredAndEncodedElapsedMs": 226.89770833335388
+      },
+      {
+        "name": "treasure-chest-populated",
+        "path": "ios-hosted-38819289805/test-attachments/33176080-A0CE-4EB7-84DB-05DA565EFAC5.png",
+        "pngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+        "width": 256,
+        "height": 256,
+        "alphaGreaterThan16": 8301,
+        "nonblackVisiblePixels": 7714,
+        "transactionFlushed": true,
+        "renderSystemUptime": 915.0967594166667,
+        "renderElapsedMs": 273.8257500000145,
+        "gpuCallbackElapsedMs": 2195.851166666671,
+        "measuredAndEncodedElapsedMs": 2202.8799166666886
+      },
+      {
+        "name": "treasure-chest-removed",
+        "path": "ios-hosted-38819289805/test-attachments/E84A9047-947D-469E-8405-FE187684ED98.png",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "height": 256,
+        "alphaGreaterThan16": 0,
+        "nonblackVisiblePixels": 0,
+        "transactionFlushed": true,
+        "renderSystemUptime": 917.0260800000001,
+        "renderElapsedMs": 2203.146333333393,
+        "gpuCallbackElapsedMs": 2205.1666666667415,
+        "measuredAndEncodedElapsedMs": 2210.9894583333016
+      },
+      {
+        "name": "brass-compass-empty",
+        "path": "ios-hosted-38819289805/test-attachments/AAA2DBFE-3A8F-4077-BC7B-F04F02B71C45.png",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "height": 256,
+        "alphaGreaterThan16": 0,
+        "nonblackVisiblePixels": 0,
+        "transactionFlushed": true,
+        "renderSystemUptime": 917.0410775,
+        "renderElapsedMs": 2218.143833333329,
+        "gpuCallbackElapsedMs": 2220.199291666745,
+        "measuredAndEncodedElapsedMs": 2229.456291666679
+      },
+      {
+        "name": "brass-compass-populated",
+        "path": "ios-hosted-38819289805/test-attachments/D6BB1857-BC13-4A73-9C16-21DF3AF6B129.png",
+        "pngSha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+        "width": 256,
+        "height": 256,
+        "alphaGreaterThan16": 2509,
+        "nonblackVisiblePixels": 2509,
+        "transactionFlushed": true,
+        "renderSystemUptime": 917.0550151250001,
+        "renderElapsedMs": 2232.0814583333686,
+        "gpuCallbackElapsedMs": 2237.5441249999994,
+        "measuredAndEncodedElapsedMs": 2249.479000000065
+      },
+      {
+        "name": "brass-compass-removed",
+        "path": "ios-hosted-38819289805/test-attachments/31B1E174-3B30-4945-BE5E-B1AEABDFD8C4.png",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "height": 256,
+        "alphaGreaterThan16": 0,
+        "nonblackVisiblePixels": 0,
+        "transactionFlushed": true,
+        "renderSystemUptime": 917.0729602916667,
+        "renderElapsedMs": 2250.0266250000323,
+        "gpuCallbackElapsedMs": 2251.966124999967,
+        "measuredAndEncodedElapsedMs": 2257.0318333333717
+      }
+    ]
+  },
+  "timing": {
+    "singleDeadlineMs": 20000,
+    "allFramesTransactionFlushed": true,
+    "strictlyIncreasingRenderSystemUptime": true,
+    "eachFrameRenderBeforeCallbackBeforeMeasurement": true,
+    "allFrameTimestampsWithinDeadline": true,
+    "completedElapsedMs": 2257.4184166667237,
+    "sealedElapsedMs": 2257.924333333335,
+    "inFlightCommandAtSeal": false
+  },
+  "nativeTests": {
+    "passed": 24,
+    "failed": 0,
+    "skipped": 1,
+    "total": 25,
+    "expectedSkippedTest": "NativeLifecycleTests/testCanonicalScenarioOperations()",
+    "nclMethods": [
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testAuthorizedAssetReferencesAndIntegrity()",
+        "name": "testAuthorizedAssetReferencesAndIntegrity()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.012719988822937012
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+        "name": "testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 2.268889904022217
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+        "name": "testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.001898050308227539
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+        "name": "testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.03932797908782959
+      }
+    ],
+    "excludedPresentationTests": [
+      "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation",
+      "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting"
+    ],
+    "fullPresentationMatrixProven": false
+  },
+  "canonicalScenario": {
+    "scenarioId": "permission-denied-native",
+    "result": "PASS",
+    "steps": [
+      {
+        "index": 0,
+        "action": "PERMISSION",
+        "state": "PASS"
+      },
+      {
+        "index": 1,
+        "action": "LOCATION",
+        "state": "PASS"
+      },
+      {
+        "index": 2,
+        "action": "ASSERT",
+        "state": "PASS"
+      },
+      {
+        "index": 3,
+        "action": "ASSERT",
+        "state": "PASS"
+      },
+      {
+        "index": 4,
+        "action": "ASSERT",
+        "state": "PASS"
+      }
+    ],
+    "canonicalProgressionEvents": 0,
+    "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+    "cleanup": {
+      "result": "PASS",
+      "ownedResources": [
+        "loopback-native-lab-server",
+        "EA329E34-CAAA-4A35-8BBD-869E628A9707"
+      ],
+      "remainingResources": []
+    }
+  },
+  "cleanup": {
+    "fixture": "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED",
+    "meaning": "Scene detached and fixture-owned CPU references released; driver memory release is not established.",
+    "buildSimulator": {
+      "result": "PASS",
+      "ownedResources": [
+        "484034D8-B41E-4638-B77A-7E106A0A7934"
+      ],
+      "remainingResources": []
+    },
+    "transport": {
+      "result": "PASS",
+      "ownedResources": [
+        "refs/heads/codex/landfall-lab-aecbf27d63aa-1792104343687"
+      ],
+      "remainingResources": []
+    }
+  },
+  "preservedFailure": {
+    "path": "ios-hosted-38817044787.receipt.json",
+    "sha256": "b1039897250b8fae8fc881f548c9212b3badc87ffe4854275512a310e6810935",
+    "verifiedPublishedFileCount": 15,
+    "originalReportPath": "ios-hosted-38817044787/test-attachments/D99ECC01-8894-4B0C-AA78-7B507FD6BACA.json",
+    "result": "FAIL",
+    "failure": "Removed SceneKit model retained old pixels",
+    "frames": [
+      {
+        "name": "treasure-chest-empty",
+        "alphaGreaterThan16": 0,
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f"
+      },
+      {
+        "name": "treasure-chest-populated",
+        "alphaGreaterThan16": 8301,
+        "pngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381"
+      },
+      {
+        "name": "treasure-chest-removed",
+        "alphaGreaterThan16": 8301,
+        "pngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381"
+      }
+    ],
+    "populatedAndRemovedChestRemainByteIdentical": true,
+    "repairCausality": "Fresh bounded success is observed; the underlying cause of prior retained pixels is not asserted."
+  },
+  "limitations": {
+    "physicalWorldTrackingProven": false,
+    "productionActivateOrARAnchorPathExercised": false,
+    "actualPlayerPresentationProven": false,
+    "physicalMaterialFidelityProven": false,
+    "gpuDriverMemoryReleaseProven": false,
+    "physicalOwnerAcceptanceProven": false,
+    "productionSignedInstallProven": false,
+    "fullPresentationMatrixProven": false,
+    "performanceAndThermalQualificationProven": false,
+    "physicalLocalNetworkPermissionProven": false,
+    "laptopOriginReachableFromPhoneProven": false,
+    "physicalTLSAndAppBoundOriginProven": false,
+    "directHostMetalProbePerformed": false,
+    "directHostMetalAvailability": "UNKNOWN",
+    "actualSimulatorMetalDeviceObserved": "Apple iOS simulator GPU",
+    "protectedQualificationProven": false,
+    "formalProductExperienceApproval": false,
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "sourceOrOriginalMutationsPerformedByReviewer": false
+}

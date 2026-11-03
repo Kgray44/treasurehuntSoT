@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "role": "READ_ONLY_INDEPENDENT_SCENE_CONFIGURATION_INVESTIGATION",
+  "evidenceClass": "COUNTEREVIDENCE_TO_UNPROVED_HYPOTHESIS",
+  "qualification": false,
+  "runId": "39625033481",
+  "artifactSourceSha": "79df8c58ef2db16ba236af139e88d5726c508012",
+  "reviewedCurrentSourceSha": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+  "result": "COUNTEREVIDENCE_TO_UNPROVED_HYPOTHESIS",
+  "hypothesis": "Missing UIApplicationSceneManifest prevents the SwiftUI app from creating any foreground scene, causing the retained blank Reduced Motion launch.",
+  "conclusion": "The manifest is absent in the actual compiled app, but that absence is not a demonstrated causal defect. The same compiled configuration created a foreground UIWindowScene and readable foreground shell in successful tests. No production configuration or lifecycle repair is supported by the retained failure evidence.",
+  "codeChanged": false,
+  "causalRepairRecommended": false,
+  "newRunOrDispatchPerformed": false,
+  "compiledInfo": {
+    "bothArtifactsByteIdentical": true,
+    "byteLength": 2733,
+    "sha256": "012933dd5bc7b970c726190370a014e1a775b5e727fbf9f28634c931ce498a6b",
+    "absentKeys": [
+      "UIApplicationSceneManifest",
+      "UISceneConfigurations",
+      "UIApplicationSupportsMultipleScenes",
+      "UIMainStoryboardFile",
+      "NSMainNibFile",
+      "UILaunchStoryboardName"
+    ],
+    "presentValues": {
+      "CFBundlePackageType": "APPL",
+      "DTSDKName": "iphonesimulator26.5",
+      "MinimumOSVersion": "16.0",
+      "UILaunchScreen": {},
+      "LandfallOrigin": "",
+      "WKAppBoundDomains": [
+        "127.0.0.1"
+      ]
+    },
+    "appTargetExplicitInfoGeneratedByXcodeGen": true,
+    "appTargetDoesNotSetSceneManifestGeneration": true,
+    "generateInfoPlistYesPresentOnlyOnUnitTestTarget": true
+  },
+  "counterevidence": {
+    "primaryAggregate": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1
+    },
+    "presentationInitialAggregate": {
+      "passed": 30,
+      "failed": 0,
+      "skipped": 1
+    },
+    "foregroundSceneGuardSource": "let scene=try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap{$0 as? UIWindowScene}.first(where:{$0.activationState == .foregroundActive}),\"Owned test host needs a foreground window scene\")",
+    "retainedProductionControllerViewport": {
+      "attachedToOwnedWindow": true,
+      "evidenceClass": "SIMULATOR_TEST_VIEWPORT_SETUP_ONLY",
+      "ownedWindowKey": true,
+      "phase": "inspect-only",
+      "pointOfViewAssigned": true,
+      "projectedCenter": [
+        200,
+        400,
+        0.9900990128517151
+      ],
+      "renderCallbackObserved": true,
+      "sharedSetupBudgetSeconds": 5,
+      "viewportHeight": 800,
+      "viewportWidth": 400,
+      "withinSharedSetupDeadline": true
+    },
+    "shellHomeReturnBackgroundObservedInBothArtifacts": true,
+    "backgroundObservationCount": 2,
+    "sourceGuardAndPassingAttachmentEstablishActualForegroundWindowScene": true
+  },
+  "retainedFailures": {
+    "isolatedReducedMotion": {
+      "failed": 1,
+      "code": "LANDFALL_REDUCED_MOTION_FALLBACK_UNREADABLE",
+      "retainedHierarchyHasApplicationOnlyNoWindow": true,
+      "homeAlternateNotObservedInThese79Artifacts": true
+    },
+    "joinedLens": {
+      "stage": "IOS_BOOT_DEVICE",
+      "driverState": "NOT_STARTED",
+      "clientReady": false,
+      "appRequests": 0,
+      "appNotYetExercisedByThisFailure": true
+    }
+  },
+  "initializationReview": {
+    "appSnippet": [
+      "final class LandfallDelegate: NSObject, UIApplicationDelegate { let companion = LandfallCompanion() }",
+      "@main struct LandfallApp: App {",
+      "  @UIApplicationDelegateAdaptor(LandfallDelegate.self) private var delegate",
+      "  var body: some Scene { WindowGroup { /* configured WebView or readable ScrollView fallback */ } }",
+      "}"
+    ],
+    "constructorSnippet": [
+      "var configured = Self.allowedOrigin(Bundle.main.object(forInfoDictionaryKey: \"LandfallOrigin\") as? String ?? \"\")",
+      "origin = configured; super.init()",
+      "if let origin = origin { privateStore = LandfallPrivateStore(origin: origin.absoluteString) }",
+      "hardware = LandfallHardware { [weak self] event in self?.event(event) }",
+      "nearby = LandfallNearbyInteraction { [weak self] event in self?.event(event) }"
+    ],
+    "unconfiguredArtifactSkipsPrivateStoreAndWebView": true,
+    "explicitSemaphoreGroupWaitSleepBlockingLoopOrSyncNetworkInConstructorObserved": false,
+    "frameworkConstructorsAndMainQueueNotificationsStillPotentialTimingSitesNotProvedCause": true,
+    "noStackOrTimingObservationEstablishesInitializerHang": true
+  },
+  "officialSources": [
+    {
+      "url": "https://developer.apple.com/documentation/swiftui/app",
+      "finding": "App @main supplies launch entry and its Scene hierarchy has a system-managed lifecycle."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/swiftui/uiapplicationdelegateadaptor",
+      "finding": "SwiftUI instantiates an adapted UIApplicationDelegate; custom scene delegate handling is optional and SwiftUI manages the scene delegate instance when supplied."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/swiftui/migrating-to-the-swiftui-life-cycle",
+      "finding": "SwiftUI migration uses App and WindowGroup, removes obsolete storyboard/window launch ownership, and uses scene lifecycle."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/xcode/build-settings-reference",
+      "finding": "INFOPLIST_KEY_UIApplicationSceneManifest_Generation writes a manifest suitable for multi-window when GENERATE_INFOPLIST_FILE is enabled; it is not a universal blank-window diagnosis."
+    },
+    {
+      "url": "https://developer.apple.com/documentation/technotes/tn3187-migrating-to-the-uikit-scene-based-life-cycle",
+      "finding": "UIKit migration explains explicit scene configuration and a future SDK adoption requirement. It does not establish the cause of this SwiftUI iOS26.5 retained failure."
+    }
+  ],
+  "falsifiableBoundary": [
+    "A deterministic no-scene hypothesis is contradicted by the retained foregroundActive UIWindowScene guard and passing viewport attachment from the same compiled Info configuration.",
+    "This does not prove manifest omission harmless on every future OS, or that framework initialization can never stall.",
+    "A future direct scene-configuration exception or a measured app-main-thread initialization stack would be new causal evidence; none is retained here.",
+    "An unchanged-source ARM-host comparison may qualify that host environment, but a pass alone would not identify the earlier Intel failure cause."
+  ],
+  "sourceFiles": [
+    {
+      "path": "native/ios/LandfallCompanion/LandfallApp.swift",
+      "gitBlobSha1": "0d574bb433af1187e56ab0e0f17d55e1b232df60",
+      "committedLfSha256": "b5e93c96de5ebceaa5951a8dd09c63cbac87aa50cbfdc140bc6fc331a12da664",
+      "bytesUnchangedFrom79To2f8": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/LandfallCompanion.swift",
+      "gitBlobSha1": "e97667f2deaf69ba82aecb8fc7ae66dd9c61185c",
+      "committedLfSha256": "9ba36b8853d5f6c1bfb256c4e6dba93ff4874653a3cfcbf182cd1aca50b26a8f",
+      "bytesUnchangedFrom79To2f8": true
+    },
+    {
+      "path": "native/ios/project.yml",
+      "gitBlobSha1": "9d09991534263e5cba6b6182b3ba00c6d71cf163",
+      "committedLfSha256": "3a1b86a74eddf166290865875d38039984d4457862ee540a3cb1ce1a6e0929fc",
+      "bytesUnchangedFrom79To2f8": true
+    },
+    {
+      "path": "native/ios/LandfallCompanionTests/ParallaxSceneDeliveryTests.swift",
+      "gitBlobSha1": "9f16b850974c3653927783281002a67aa0c21d91",
+      "committedLfSha256": "599b7fa47e109080580a0dcc27ef408ba0b8b8c2ad62aa47b2bf80ec1f344e09",
+      "bytesUnchangedFrom79To2f8": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/LandfallHardware.swift",
+      "gitBlobSha1": "d7fcf87b3587fa49efff2a515bc51d954e691c61",
+      "committedLfSha256": "ae0e562bd79de3bc1d33addc24c735671bd9c235aace73e884b85674c157d75f",
+      "bytesUnchangedFrom79To2f8": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/LandfallNearbyInteraction.swift",
+      "gitBlobSha1": "a9d41dda0ae7025dfd5f0a024907a1b983991345",
+      "committedLfSha256": "dd7a918efd006c226a35a8142c5144990d9b7475bb99f838fe3ec75de660cafd",
+      "bytesUnchangedFrom79To2f8": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/LandfallPrivateStore.swift",
+      "gitBlobSha1": "4bc6402e2f156bd51a6666f2410e2a4b7e893f31",
+      "committedLfSha256": "21a8ce7e3afc6ebd531bfb28f978ae905a63fff3e867afbf11a696e76b1d5064",
+      "bytesUnchangedFrom79To2f8": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/LandfallSecureHints.swift",
+      "gitBlobSha1": "10a89a5d675ba31a8889c03e7f8f8bf7f760baee",
+      "committedLfSha256": "df417be648f7a3b020289c0751cd981ee7a490c46b4c9cfbdc7c930e0d2d6a06",
+      "bytesUnchangedFrom79To2f8": true
+    },
+    {
+      "path": "native/ios/LandfallCompanion/LandfallPower.swift",
+      "gitBlobSha1": "1f39e57135a89b9c48e60d9193cea5204a34bc0d",
+      "committedLfSha256": "8dd8ae48a220a99bfab72fa157ada2fd5d6e114402ea06fc9aec338244cd7833",
+      "bytesUnchangedFrom79To2f8": true
+    }
+  ],
+  "retainedOriginalFileCount": 15,
+  "originals": [
+    {
+      "file": "ios-39625033481-primary/apple-build/DerivedData/Build/Products/Debug-iphonesimulator/LandfallCompanion.app/Info.plist",
+      "byteLength": 2733,
+      "sha256": "012933dd5bc7b970c726190370a014e1a775b5e727fbf9f28634c931ce498a6b"
+    },
+    {
+      "file": "ios-39625033481-presentation/apple-build/DerivedData/Build/Products/Debug-iphonesimulator/LandfallCompanion.app/Info.plist",
+      "byteLength": 2733,
+      "sha256": "012933dd5bc7b970c726190370a014e1a775b5e727fbf9f28634c931ce498a6b"
+    },
+    {
+      "file": "ios-39625033481-primary/apple-build/native-test-summary.json",
+      "byteLength": 1282,
+      "sha256": "63b2cefc68b1e332d721f245d5c6a45dda3a30c7af9c58f004e73a2ad1a207f3"
+    },
+    {
+      "file": "ios-39625033481-presentation/apple-build/native-test-summary.json",
+      "byteLength": 1284,
+      "sha256": "8ac4e117ed3c799f4d18cb9dadb520b07ff1c500b2f22e6843d8702d7323bcfa"
+    },
+    {
+      "file": "ios-39625033481-presentation/apple-build/test-summary.json",
+      "byteLength": 1486,
+      "sha256": "1bc265fdab7e807abf71dfbe24264d0816ee54fd053b37d499647fc017756fb4"
+    },
+    {
+      "file": "ios-39625033481-primary/apple-build/build-scope.json",
+      "byteLength": 370,
+      "sha256": "5995bc59a0e0c3e69e955f7ea0c9e8d00503ebd3858b853fc43bc227bb5f16ae"
+    },
+    {
+      "file": "ios-39625033481-presentation/apple-build/build-scope.json",
+      "byteLength": 194,
+      "sha256": "7240596b9e94017e1c46a35fb115efbec2a3ae102aea2cfb6fb429a7c9a835de"
+    },
+    {
+      "file": "ios-39625033481-primary/apple-build/test-attachments/manifest.json",
+      "byteLength": 10398,
+      "sha256": "394c2739460821fb28f1eeff5bffd181f398e5e266bf7a69ffc2708c13242e53"
+    },
+    {
+      "file": "ios-39625033481-presentation/apple-build/test-attachments/manifest.json",
+      "byteLength": 13381,
+      "sha256": "9589bfd19ec77c6bd753b453c704824dfb98c73df3270e3b949a4e3706f4a3a2"
+    },
+    {
+      "file": "ios-39625033481-presentation/apple-build/reduced-motion-attachments/manifest.json",
+      "byteLength": 10372,
+      "sha256": "5977d995da7d3d0e10671ae3f38c2a2e571a46ed4637dd7811f8026500d56d74"
+    },
+    {
+      "file": "ios-39625033481-primary/apple-build/test-attachments/FB6CDDB6-355C-4A4B-B0AB-CBB63B985645.json",
+      "byteLength": 336,
+      "sha256": "c68b30191b26cba4924f47710f7a3178c22de01d04fd764878ce26f1a60f2fbd"
+    },
+    {
+      "file": "ios-39625033481-primary/apple-build/test-attachments/2A962B19-EAFC-4973-A558-74B96738E755.json",
+      "byteLength": 111,
+      "sha256": "89c00a390c74421d4b5f1b18121c6e8167ad135124a26cb7f29fc8bebc5cdfd3"
+    },
+    {
+      "file": "ios-39625033481-presentation/apple-build/test-attachments/DC1E13FF-EA79-403B-9381-40F9B5B06035.json",
+      "byteLength": 111,
+      "sha256": "c4d965c376ac8a512f7097bafd4bafc9683cd0cac08f453ef542ab16659c4ab8"
+    },
+    {
+      "file": "ios-39625033481-presentation/apple-build/reduced-motion-attachments/11C26707-1E7F-4D93-97AB-B230F57EC779.txt",
+      "byteLength": 93,
+      "sha256": "b76419b331eaf193ddf9c77a6b4c714f39780f54912286b6e26a2aac14f1c7ce"
+    },
+    {
+      "file": "ios-39625033481-primary/parallax-native-1792597798620/execution-failure.json",
+      "byteLength": 829,
+      "sha256": "5a6c3fcb7b22cfb43bcbaa596faf7241af118eb253dbe5eb2b389a851ce22c10"
+    }
+  ],
+  "originalSealPolicy": "Only original file lengths and SHA256 were read and sealed; no retained bytes were modified. No raw device identifiers, local absolute paths, private content or log payloads are included."
+}

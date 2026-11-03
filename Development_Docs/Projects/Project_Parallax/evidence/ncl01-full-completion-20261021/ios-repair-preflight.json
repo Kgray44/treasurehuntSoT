@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "role": "PRE_FREEZE_DEVELOPMENT_CHECKS_ONLY",
+  "qualification": false,
+  "baselineCommit": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+  "dirty": true,
+  "sourceFiles": [
+    {
+      "path": "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift",
+      "gitBlob": "cae0bed47aeb5a9ad06a1275218653622d734b3d",
+      "windowsBytesSha256": "0c6dc2b0de360731ee893330755d178f7254da4615e3060fce084397885cbe60"
+    },
+    {
+      "path": "scripts/landfall/device-lab/parallax-native-run.ts",
+      "gitBlob": "d1963080fb673837c911ed4d11c66e1643306230",
+      "windowsBytesSha256": "66e2c353e3b0b8e536267b9b57f94d1741864b647f29cb0edcd3cc18e5de3eb2"
+    }
+  ],
+  "changes": [
+    "Required vertical compression resistance on the fixed native Return button; existing behavioral assertions unchanged.",
+    "iOS lab diagnostic stages and observed route counters; original readiness/actions/timeouts unchanged; private output retention joins independent cleanup."
+  ],
+  "checks": {
+    "typeScript": {
+      "result": "PASS",
+      "exitCode": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "targetedEslint": {
+      "result": "PASS",
+      "exitCode": 0,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nativeInputCollectorRegression": {
+      "result": "PASS",
+      "passed": 14,
+      "files": 2,
+      "reportSha256": "d288f79595e9547b1df23f9a2d926504325b37c9bdaf86b9f679200805ee0cb4",
+      "logSha256": "f8090eafc1d0d751c940055728425f5e17b25d641e81e0339a2016bef6931c5f"
+    }
+  },
+  "independentReview": "READY_NO_BLOCKING_FINDINGS",
+  "nativeReexecutionRequired": true,
+  "limits": [
+    "Working-source host checks only. No new iOS Simulator, archive, TestFlight, physical-device or mainline acceptance is claimed."
+  ]
+}

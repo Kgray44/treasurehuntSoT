@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_TRANSPORT_CLEANUP_NOT_ACCEPTANCE",
+  "qualification": false,
+  "entries": [
+    {
+      "runId": "39625033481",
+      "candidate": "79df8c58ef2db16ba236af139e88d5726c508012",
+      "transport": "ba95a2c4ab5a352bf71861b25e8611acfdb131ed",
+      "branch": "codex/landfall-lab-79df8c58ef2d-1792595508478",
+      "conclusion": "cancelled",
+      "retainedReceiptSha256": "d2ce2d71e1308f7dbcb30630e76ab66286c997182cbe73a5ddc65a5fa30d84ae",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    },
+    {
+      "runId": "39631967141",
+      "candidate": "b4cea94abc64fc6e02dfa5f241242eda3888d4b3",
+      "transport": "0d86eb4a6607458c9b064561e260d401e4b4afc1",
+      "branch": "codex/landfall-lab-b4cea94abc64-1792598860128",
+      "conclusion": "cancelled",
+      "retainedReceiptSha256": "35a0b4b1716d1c046e339571465fa942095192dacc96ddbe52052a6157c6e1d6",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    },
+    {
+      "runId": "39633902301",
+      "candidate": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+      "transport": "64fa864f1fe1cbdfcc8e4b58bfc4aafe9e06a4ed",
+      "branch": "codex/ncl01-testflight-unsigned-2f8aa894959f-1792599634550",
+      "conclusion": "success",
+      "retainedReceiptSha256": "1c7e34ddd11b8e42511a13a531d40f8088960222d9e18a5407ab50b10cec886c",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    }
+  ],
+  "currentArmRunLeftUntouched": true,
+  "currentArmRun": "39637797267",
+  "implementationBranchPreserved": "codex/ncl01-full-completion",
+  "historicalBranchesWorktreesAndEvidencePreserved": true
+}

@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "PRESERVED_NCL01_PREVIEW_RESTORATION",
+  "observedAt": "2026-10-22T13:25:32.3008762Z",
+  "result": "OWNERSHIP_AND_LOOPBACK_PASS_PUBLIC_HTTPS_INCOMPLETE",
+  "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+  "newCandidateCutover": false,
+  "originalProductionBuildRoot": "D:\\CodexTemp\\ncl01-preview\\cloudflare-ncl01-20261020\\app",
+  "originalProductionBuildReceipt": "D:\\CodexTemp\\ncl01-preview\\cloudflare-ncl01-20261020\\production-build.public.json",
+  "originalBuildIdMatchedBeforeStart": true,
+  "procedure": {
+    "restorationArguments": [],
+    "pinnedHelpersChanged": false,
+    "entryPoint": "C:\\Users\\kkids\\.codex\\tmp\\ncl01-full-completion\\preview-runtime\\Start-OwnedPreview.ps1",
+    "nodeCreateNoWindow": true,
+    "validationArgument": "--validate-current-live-only",
+    "childStartProcessWindowStyleHidden": true
+  },
+  "preflight": {
+    "allIdentityAndSourceClausesPassed": true,
+    "exactRuntimeScriptMatchesAbsent": true,
+    "recordedRuntimeAndConsoleCreationsAbsent": true,
+    "recordedDirectDescendantsAbsent": true,
+    "no3158Or3159Listeners": true,
+    "privateConfigurationCredentialsKeysCookiesOrChronicleDataInspectedByAgent": false
+  },
+  "wrapperRestoration": {
+    "schemaVersion": 1,
+    "result": "PASS",
+    "mode": "START_ABSENT_VERIFY_LIVE",
+    "knownComponentsVerified": 2,
+    "startedComponents": [
+      "production",
+      "edge"
+    ],
+    "staleCArchives": [
+      "stale-production-71f612c0194848cdb1d0f52ef8e1ebe6",
+      "stale-edge-06682c33b3be4872b79539aa6d737e10"
+    ],
+    "unknownPortsOrProcessesAccepted": false,
+    "healthyServicesRestarted": false,
+    "signalsSentByWrapper": 0,
+    "legacyDMetadataModified": false,
+    "cloudflaredServiceModified": false,
+    "neighborsCreationIdentitiesUnchanged": true,
+    "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+    "anonymousHttpOrAuthHealthQualifiedByThisCheck": false,
+    "at": "2026-10-22T13:21:00.8684132Z"
+  },
+  "wrapperLiveOnlyValidation": {
+    "schemaVersion": 1,
+    "result": "PASS",
+    "mode": "VALIDATE_CURRENT_LIVE_ONLY",
+    "knownComponentsVerified": 2,
+    "startedComponents": [],
+    "staleCArchives": [],
+    "unknownPortsOrProcessesAccepted": false,
+    "healthyServicesRestarted": false,
+    "signalsSentByWrapper": 0,
+    "legacyDMetadataModified": false,
+    "cloudflaredServiceModified": false,
+    "neighborsCreationIdentitiesUnchanged": true,
+    "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+    "anonymousHttpOrAuthHealthQualifiedByThisCheck": false,
+    "at": "2026-10-22T13:21:52.8764918Z"
+  },
+  "services": [
+    {
+      "component": "production",
+      "owner": "NCL01_CLOUDFLARE_PRODUCTION",
+      "pid": 106668,
+      "bindHost": "127.0.0.1",
+      "port": 3158,
+      "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+      "creationIdentityVerified": true,
+      "startUtcTicks": "639282719937163551",
+      "cimCreationUtcTicks": "639282719937163550",
+      "capturedConsoleHostCount": 1,
+      "ownershipRecordRetained": "C:\\Users\\kkids\\.codex\\tmp\\ncl01-full-completion\\preview-runtime\\next-production-process.private.json",
+      "identityRecordRetained": "C:\\Users\\kkids\\.codex\\tmp\\ncl01-full-completion\\preview-runtime\\production-identity.private.json",
+      "intentionallyLeftRunning": true
+    },
+    {
+      "component": "edge",
+      "owner": "NCL01_CLOUDFLARE_LOOPBACK_EDGE",
+      "pid": 96208,
+      "bindHost": "127.0.0.1",
+      "port": 3159,
+      "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+      "creationIdentityVerified": true,
+      "startUtcTicks": "639282720281214519",
+      "cimCreationUtcTicks": "639282720281214510",
+      "capturedConsoleHostCount": 1,
+      "ownershipRecordRetained": "C:\\Users\\kkids\\.codex\\tmp\\ncl01-full-completion\\preview-runtime\\edge-process.private.json",
+      "identityRecordRetained": "C:\\Users\\kkids\\.codex\\tmp\\ncl01-full-completion\\preview-runtime\\edge-identity.private.json",
+      "intentionallyLeftRunning": true
+    }
+  ],
+  "reviewedScriptPins": [
+    {
+      "file": "Start-OwnedPreview.ps1",
+      "sha256": "3d5146136829ec33665133b8cfbfdb00ff6ab79175419e1e2b373c11440d1dce",
+      "matchesReviewedPin": true
+    },
+    {
+      "file": "Start-OwnedProduction.ps1",
+      "sha256": "9441050c036fcab55d3bbe2eebb595c8c48ae379b99335eb41a97ad791b80d37",
+      "matchesReviewedPin": true
+    },
+    {
+      "file": "Stop-OwnedProduction.ps1",
+      "sha256": "f0e44ac5625f65c3ca2004a171341f0a11d77f698f84261490294a6fa820acdd",
+      "matchesReviewedPin": true
+    },
+    {
+      "file": "Start-OwnedEdge.ps1",
+      "sha256": "3fab1c49c6f54b3aaa9c07abf71edf6e81e648728d1fc1ea5477f59f672d7b24",
+      "matchesReviewedPin": true
+    },
+    {
+      "file": "Owned-Preview-Console.ps1",
+      "sha256": "2ea1fcac70ca66fc5c4462ef44c77b3d9c7b33818f01b8dcb9f722d9e5ae8375",
+      "matchesReviewedPin": true
+    },
+    {
+      "file": "serve-owned-production-router.mjs",
+      "sha256": "0fc89520c59ce30230cb76637f66c232ea66f5daea1af04ffa1b9df93739663a",
+      "matchesReviewedPin": true
+    },
+    {
+      "file": "loopback-edge-owned-state.mjs",
+      "sha256": "f1b30352eee7dea94a75afc86e37b4bedd93d4854f483fb5d8225731f4197b28",
+      "matchesReviewedPin": true
+    }
+  ],
+  "loopbackHealth": {
+    "authenticationAttempted": false,
+    "assetsPassed": 8,
+    "assetsChecked": 8,
+    "productionStatus": 200,
+    "result": "PASS",
+    "edgeStatus": 200,
+    "assetsDiscovered": 25,
+    "remainingDiscoveredAssetsNotChecked": 17
+  },
+  "publicHttps": {
+    "tlsAuthorized": null,
+    "retries": 0,
+    "status": null,
+    "attempts": 1,
+    "limitation": "The one client request did not yield an HTTP status; neither public reachability nor phone trust is qualified by this check.",
+    "result": "INCOMPLETE",
+    "ordinaryNodeCertificateValidationDefaults": true,
+    "errorCode": "ANONYMOUS_HTTPS_REQUEST_FAILED"
+  },
+  "protectedCloudflared": {
+    "state": "Running",
+    "serviceConfigurationReadOrChanged": false,
+    "pid": 16524,
+    "matchesPreStartPid": true
+  },
+  "storage": {
+    "cFloorBytes": 32212254720,
+    "newEvidenceOnD": true,
+    "originalPinnedCRuntimePathsPreserved": true,
+    "cFreeBytesNow": 32665051136,
+    "aboveFloor": true,
+    "newBuildsInstallationsOrPackageCachesCreated": false,
+    "cFreeBytesBeforeStart": 32939986944
+  },
+  "cleanupBoundaries": {
+    "originalDMetadataPreserved": true,
+    "unrelatedProcessesOrWorktreesChanged": false,
+    "globalCloudflareTlsTrustFirewallOrNetworkPolicyChanged": false,
+    "staleCRecordsAndLogsPreservedOnlyByReviewedWrapper": true,
+    "creationBoundOwnershipRecordsRetained": true,
+    "intendedProductionAndEdgeRetainedRunning": true,
+    "noSourceDeploymentOrRebuild": true,
+    "noBrowserOrProfileLaunched": true,
+    "noDirectPrivateFixtureOrCredentialMutationByAgent": true,
+    "normalApplicationDatabaseWritesNotAudited": true
+  },
+  "acceptance": {
+    "ownerAcceptanceProven": false,
+    "privateAccountOrDatabaseIntegrityProven": false,
+    "physicalARProven": false,
+    "physicalPhonePublicTrustProven": false,
+    "anonymousLoopbackOnly": true
+  },
+  "publishedEvidence": [
+    {
+      "file": "restoration-wrapper.original.public.json",
+      "sha256": "7492c254d436b1caa7e401dd76e71fe6b85619471cf46857d19d45c3b03413d8",
+      "byteLength": 722,
+      "originalPublicReceipt": "C:\\Users\\kkids\\.codex\\tmp\\ncl01-full-completion\\preview-runtime\\preview-check-531a14e61205409f94eee11d0187ea20\\receipt.public.json",
+      "byteIdentical": true
+    },
+    {
+      "file": "live-only-validation.original.public.json",
+      "sha256": "98bae1f06350dd50d2b6d4872a454de2f8e9d6cf00c64dc69f1c186806ed7a82",
+      "byteLength": 576,
+      "originalPublicReceipt": "C:\\Users\\kkids\\.codex\\tmp\\ncl01-full-completion\\preview-runtime\\preview-check-f5244d33b9904717b4f0af492569278b\\receipt.public.json",
+      "byteIdentical": true
+    },
+    {
+      "file": "anonymous-loopback-health.public.json",
+      "sha256": "5ff741a593677678aaedfba6be14d26ca20bca689553091259c2a452a17e0711",
+      "byteLength": 3675
+    },
+    {
+      "file": "anonymous-public-https-once.public.json",
+      "sha256": "0d5cc076a40044f9de61084756c49578941880bc52059e665d8739d019811074",
+      "byteLength": 934
+    },
+    {
+      "file": "anonymous-loopback-probe.mjs",
+      "sha256": "824dbe799a155ddbf876ba7cfd5ac645406cd3e2661827b78d8660c8848cd1a3",
+      "byteLength": 3905
+    },
+    {
+      "file": "anonymous-https-once.mjs",
+      "sha256": "9b086d619a223095fbce09afe6b25983cc840169e2e9646dc45acf9686451a9a",
+      "byteLength": 2921
+    },
+    {
+      "file": "collect-public-summary.ps1",
+      "sha256": "0d5838e4eaf75c61915792ed2474f37b027b51817c9397e842745af462992943",
+      "byteLength": 9262
+    }
+  ]
+}

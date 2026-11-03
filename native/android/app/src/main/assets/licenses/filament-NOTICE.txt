@@ -1,0 +1,16 @@
+Voyagewright Landfall Companion includes these unmodified Maven dependencies:
+
+com.google.android.filament:filament-android:1.75.1
+com.google.android.filament:gltfio-android:1.75.1
+
+Filament, Copyright The Android Open Source Project.
+Licensed under the Apache License, Version 2.0; the original license is included
+as filament-Apache-2.0.txt in this directory.
+
+Source and release: https://github.com/google/filament/tree/v1.75.1
+Distribution: https://repo.maven.apache.org/maven2/com/google/android/filament/
+
+The pinned 1.75.1 distribution supports the existing Android 36 toolchain.
+Filament/gltfio own GLB loading, PBR materials, rendering and GPU picking.
+Voyagewright's ARCore integration and asset cache are separate application code.
+This notice does not change the upstream license or imply upstream endorsement.

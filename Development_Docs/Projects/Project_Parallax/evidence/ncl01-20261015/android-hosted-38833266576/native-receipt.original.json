@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "sourceSha": "c2357ffe19b7efe88b8f1843bb47e036b4a3ae31",
+  "sourceTree": "6b1e48defb524e4dfd13a94e1a4bb8c306023ef1",
+  "dirty": false,
+  "sourceFingerprint": "51270352557cf3a0b27bc793ed9b646613ca609ebae9a77b1fbf053726f5f014",
+  "sourceUnchanged": true,
+  "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+  "evidenceClass": "EMULATOR_PROVEN",
+  "result": "PASS",
+  "failure": null,
+  "failureStage": null,
+  "failureDiagnosticsSha256": null,
+  "filamentStageCaptureSha256": "359aa880fa2793e751e56ed50c7a744204c15e54bb6827dcbf8eecad20ff800c",
+  "canonicalProgressionEvents": null,
+  "androidVersion": "16",
+  "appSha256": "3effb31f8c9406bf260b65c7432570d0a226104a3138b852bf5af57e385f0eed",
+  "testApkSha256": "7dc1f56d5dc7cbabf961a9a4514c2ab4c7a6eab9976cdf921a4af9f5515c9afd",
+  "sensorPerformanceSha256": "a5ffa4174a864901f4d6c2f3de67fe777f6dde9cbbfd53c89cb685ecc643bb71",
+  "sceneRenderingSha256": "269495c4fe3db32c0dd6c88952467ac857db9f481d27da6292cb1fb0dca3f284",
+  "cleanup": {
+    "result": "PASS"
+  }
+}

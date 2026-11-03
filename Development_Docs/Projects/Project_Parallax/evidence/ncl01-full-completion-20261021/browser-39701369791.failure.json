@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_FOCUSED_BROWSER_DEVELOPMENT_REVIEW",
+  "qualification": false,
+  "runId": 39701369791,
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39701369791",
+  "workflowConclusion": "failure",
+  "source": {
+    "candidateSha": "b9b6956fe291919bd6fcb6329618702d873582af",
+    "candidateTree": "5ad61518e88bdda5ffc0e72f9ff3a3b5cedb5b21",
+    "protectedWorkflowSha": "aaff919428ef9ab421579415ce3409949724760d",
+    "workflowBlob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+    "testSelector": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+    "testBlob": "b66926b9d954c03c86c0097633f2695c53ebffde"
+  },
+  "execution": {
+    "preparation": "PASS_DEVELOPMENT_PREPARED_NOT_ACCEPTANCE",
+    "selectedBrowserStatus": "DEVELOPMENT_CASE_FAILED_NOT_ACCEPTANCE",
+    "publishedStepDurationSeconds": 90,
+    "sourceDeclaredAndPreviouslyCollectedCases": 7,
+    "actualExecutedCases": null,
+    "actualPassedCases": null,
+    "actualFailedCases": null,
+    "reportSha256": null,
+    "countsAndReportDigest": "NOT_PUBLISHED",
+    "specificFailedAssertion": "NOT_OBSERVED",
+    "fixtureOrProductCause": "UNPROVED",
+    "retryOrSourceMutationPerformed": false
+  },
+  "diagnostics": {
+    "artifactId": 12394066219,
+    "artifactName": "sounding-line-development-failures-39701369791-1",
+    "artifactArchiveBytes": 13298196,
+    "githubReportedArchiveDigest": "sha256:e940369d67e86bb4bd375a592da69e547262ab06ab9fcbe9a625918492430ada",
+    "compressedArchiveIndependentlyRehashed": false,
+    "retention": "COMPLETE",
+    "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+    "ciphertextSha256": "bf984d39279f287c1c79cbecb1e0707e8f958b021b9a6e1a0bb3db1180042453",
+    "ciphertextBytes": 17655026,
+    "retentionReceiptSha256": "78615a901d7d626f57e774122d43e1fd04867483c69789831c126a53ab78bd8b",
+    "encryptedMemberCount": 10,
+    "rawBytes": 9926402,
+    "workerExitCode": 1,
+    "retentionIssues": [],
+    "decryptionPerformed": false,
+    "privateKeyRead": false,
+    "rawCleanupRetentionField": "RAW_RETAINED_PRIVATE"
+  },
+  "limits": [
+    "Seven is the frozen source/local collection count, not a claimed hosted execution denominator.",
+    "Published log contains no assertion, per-test result, actual case count or report digest.",
+    "Encrypted attachments are preserved without private-key access; no causal product, fixture or platform conclusion is inferred.",
+    "Retention metadata RAW_RETAINED_PRIVATE is not independent proof of browser process cleanup.",
+    "Development-only failure; no experience qualification, mainline, native, physical or owner-acceptance claim."
+  ],
+  "originalMetadata": [
+    {
+      "file": "run.initial.original.json",
+      "bytes": 2484,
+      "sha256": "2bac9c8b6a09f625295f197723574713c00bd4717df8b8112237e734fdd060e5"
+    },
+    {
+      "file": "run.completed.original.json",
+      "bytes": 3096,
+      "sha256": "a54947e7c818541caef42f7e206b03ce70295ff5deae802a85a691fcd312dcfd"
+    },
+    {
+      "file": "artifact-metadata.original.json",
+      "bytes": 756,
+      "sha256": "875c77a4c9c8dcfc1d9a7a8215ba3195708656026bca8a9f49baf027148930e1"
+    },
+    {
+      "file": "job.original.log",
+      "bytes": 183706,
+      "sha256": "ef8ffe5b6544d1f258830db6d174dd22fa762b5d55bfcae2cd9bdd2813574ea4"
+    },
+    {
+      "file": "watch.original.log",
+      "bytes": 6216,
+      "sha256": "8170813cac939f87eeb692f721305b66db758082ece5cee947cf840b712ab905"
+    }
+  ]
+}

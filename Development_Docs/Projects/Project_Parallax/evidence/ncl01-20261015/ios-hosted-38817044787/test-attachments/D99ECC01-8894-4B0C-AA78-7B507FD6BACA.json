@@ -1,0 +1,80 @@
+{
+  "cleanup" : "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED",
+  "completedElapsedMs" : 3709.4095416666732,
+  "deadlineSeconds" : 20,
+  "evidenceClass" : "INSTRUMENTED_SCENEKIT_GLTF_RENDERING_ONLY",
+  "failure" : "Removed SceneKit model retained old pixels",
+  "fixtureCreatesARSession" : false,
+  "fixtureUsesCamera" : false,
+  "frames" : [
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 308.33204166674477,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 327.654958333369,
+      "name" : "treasure-chest-empty",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 3695.2592083332547,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 3700.8384166665564,
+      "name" : "treasure-chest-populated",
+      "nonblackVisiblePixels" : 7714,
+      "nontransparentPixels" : 8301,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 3703.5512916665994,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 3708.6911666665401,
+      "name" : "treasure-chest-removed",
+      "nonblackVisiblePixels" : 7714,
+      "nontransparentPixels" : 8301,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "width" : 256
+    }
+  ],
+  "gpuDriverMemoryReleaseProven" : false,
+  "inFlightCommand" : false,
+  "metalPreflight" : {
+    "commandStatus" : "completed",
+    "completedElapsedMs" : 83.465041666613615,
+    "deviceAvailable" : true,
+    "deviceName" : "Apple iOS simulator GPU",
+    "expectedBGRA" : [
+      191,
+      128,
+      64,
+      255
+    ],
+    "readableCompletedTarget" : true,
+    "registryID" : "4294967674",
+    "sampleBGRA" : [
+      191,
+      128,
+      64,
+      255
+    ],
+    "storageMode" : "shared"
+  },
+  "phase" : "RENDER_treasure-chest-removed",
+  "physicalMaterialFidelityProven" : false,
+  "physicalTrackingProven" : false,
+  "productionActivateOrARAnchorPathExercised" : false,
+  "productionBoundary" : "Prototype clone\/sanitize, width normalization and entity root relative to a supplied anchor frame",
+  "result" : "FAIL",
+  "sameColorTargetAcrossAllModelFrames" : true,
+  "schemaVersion" : 1,
+  "sealedElapsedMs" : 3710.2999999999611,
+  "testOwnedBoundary" : "Nonidentity rigid anchor frame, camera, lighting and offscreen Metal target"
+}

@@ -7,17 +7,21 @@ final class ParallaxSceneTransfer {
     static let sceneBytes = 393216, chunkBytes = 8192, maxChunks = 48, timeoutMs = 15000
     let sessionId: String
     let epoch: Int
+    let deliveryVersion: Int
+    let versionChecksum: String?, instanceId: String?
     private var generation = 0, currentGeneration = 0, count = 0, total = 0, next = 0
     private var deadline: Double = 0
     private var transaction: String?, digest = ""
     private var buffer: Data?
-    init(sessionId: String, epoch: Int) { self.sessionId = sessionId; self.epoch = epoch }
+    private var stagedTransaction: String?
+    private var stagedGeneration = 0
+    init(sessionId: String, epoch: Int, deliveryVersion: Int = 1, versionChecksum: String? = nil, instanceId: String? = nil) { self.sessionId = sessionId; self.epoch = epoch; self.deliveryVersion=deliveryVersion;self.versionChecksum=versionChecksum;self.instanceId=instanceId }
     private static func numeric(_ value: Any?) -> Double? {
         guard let n = value as? NSNumber, CFGetTypeID(n) != CFBooleanGetTypeID(), n.doubleValue.isFinite else { return nil }; return n.doubleValue
     }
     private static func integer(_ value: Any?) -> Bool { guard let n = numeric(value) else { return false }; return n >= 0 && n <= 2147483647 && n.rounded(.towardZero) == n }
     static func validStart(_ p: [String:Any]) -> Bool {
-        guard p.count == 5, integer(p["epoch"]), let epoch=p["epoch"] as? Int, epoch>0, integer(p["sceneTransferVersion"]), p["sceneTransferVersion"] as? Int == 1,
+        guard p.count == 5, integer(p["epoch"]), let epoch=p["epoch"] as? Int, epoch>0, integer(p["sceneTransferVersion"]), [1,2].contains(p["sceneTransferVersion"] as? Int ?? 0),
               let session=p["sessionId"] as? String, session.range(of:"^[A-Za-z0-9-]{1,64}$",options:.regularExpression) != nil,
               let checksum=p["versionChecksum"] as? String, checksum.range(of:"^[a-f0-9]{64}$",options:.regularExpression) != nil,
               let instance=p["instanceId"] as? String, instance.range(of:"^[A-Za-z0-9][A-Za-z0-9._:-]{0,299}$",options:.regularExpression) != nil else { return false }
@@ -25,11 +29,15 @@ final class ParallaxSceneTransfer {
     }
     func matches(_ p: [String:Any]) -> Bool { p["sessionId"] as? String == sessionId && Self.integer(p["epoch"]) && p["epoch"] as? Int == epoch }
     func clear() { buffer = nil; transaction = nil }
+    func stagedMatches(_ p: [String:Any]) -> Bool {
+        matches(p) && stagedTransaction != nil && p["transactionId"] as? String == stagedTransaction && Self.integer(p["generation"]) && p["generation"] as? Int == stagedGeneration
+    }
+    func completeActivation() { stagedTransaction=nil }
     func expire(_ now: Double) { if buffer != nil && now >= deadline { clear() } }
     private func current(_ p: [String:Any], _ now: Double) -> Bool { expire(now); return matches(p) && buffer != nil && p["transactionId"] as? String == transaction && Self.integer(p["generation"]) && p["generation"] as? Int == currentGeneration }
     func begin(_ p: [String:Any], _ now: Double) -> Bool {
         expire(now)
-        guard p.count == 8, ["generation","totalBytes","chunkCount","sceneTransferVersion"].allSatisfy({Self.integer(p[$0])}), matches(p), buffer == nil, p["sceneTransferVersion"] as? Int == 1, let g = p["generation"] as? Int, g > generation, g > 0, g <= 2147483647,
+        guard p.count == 8, ["generation","totalBytes","chunkCount","sceneTransferVersion"].allSatisfy({Self.integer(p[$0])}), matches(p), buffer == nil, p["sceneTransferVersion"] as? Int == deliveryVersion, let g = p["generation"] as? Int, g > generation, g > 0, g <= 2147483647,
               let n = p["totalBytes"] as? Int, n > 0, n <= Self.sceneBytes, let c = p["chunkCount"] as? Int, c == (n + Self.chunkBytes - 1) / Self.chunkBytes, c <= Self.maxChunks,
               let t = p["transactionId"] as? String, t.range(of: "^[A-Za-z0-9-]{1,64}$", options: .regularExpression) != nil,
               let d = p["digest"] as? String, d.range(of: "^[a-f0-9]{64}$", options: .regularExpression) != nil else { return false }
@@ -41,15 +49,18 @@ final class ParallaxSceneTransfer {
               let bytes = Data(base64Encoded: encoded), bytes.base64EncodedString() == encoded, bytes.count == min(Self.chunkBytes, total - next * Self.chunkBytes) else { clear(); return false }
         buffer?.append(bytes); next += 1; return true
     }
-    func abort(_ p: [String:Any]) -> Bool { if matches(p) && p["transactionId"] as? String == transaction && Self.integer(p["generation"]) && p["generation"] as? Int == currentGeneration { clear() }; return matches(p) }
+    func abort(_ p: [String:Any]) -> Bool { if matches(p) && p["transactionId"] as? String == transaction && Self.integer(p["generation"]) && p["generation"] as? Int == currentGeneration { clear() };if stagedMatches(p) { completeActivation() }; return matches(p) }
     func commit(_ p: [String:Any], _ now: Double) -> [[String:Any]]? {
+        commitScene(p,now)?["entities"] as? [[String:Any]]
+    }
+    func commitScene(_ p: [String:Any], _ now: Double) -> [String:Any]? {
         guard current(p, now) else { return nil }
         defer { clear() }
         guard p.count == 4, next == count, let bytes = buffer, bytes.count == total, SHA256.hash(data: bytes).map({String(format:"%02x", $0)}).joined() == digest,
-              String(data: bytes, encoding: .utf8) != nil, let scene = (try? JSONSerialization.jsonObject(with: bytes)) as? [String:Any], scene.count == 4,
-              Self.integer(scene["schemaVersion"]), scene["schemaVersion"] as? Int == 1, scene["transformKind"] as? String == "RESOLVED_LOCAL_V1", scene["coordinateFrame"] as? String == "LOCAL_Y_UP_NEGATIVE_Z",
-              let entities = scene["entities"] as? [[String:Any]], Self.validEntities(entities) else { return nil }
-        return entities
+              String(data: bytes, encoding: .utf8) != nil, let scene = (try? JSONSerialization.jsonObject(with: bytes)) as? [String:Any],
+              Self.integer(scene["schemaVersion"]), ParallaxSceneDelivery.valid(scene,version:deliveryVersion,checksum:versionChecksum,instanceId:instanceId) else { return nil }
+        stagedTransaction=p["transactionId"] as? String;stagedGeneration=currentGeneration
+        return scene
     }
     static func validEntities(_ input: [[String:Any]]) -> Bool {
         guard (1...32).contains(input.count) else { return false }

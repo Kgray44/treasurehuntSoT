@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "role": "LOCAL_WINDOWS_DEVELOPMENT_DIAGNOSTIC_REVIEW",
+  "qualification": false,
+  "createdAt": "2026-10-22T01:32:10.881467+00:00",
+  "sourceSha": "b9b6956fe291919bd6fcb6329618702d873582af",
+  "sourceTree": "5ad61518e88bdda5ffc0e72f9ff3a3b5cedb5b21",
+  "sourcePaths": [
+    {
+      "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "gitBlob": "b66926b9d954c03c86c0097633f2695c53ebffde",
+      "sha256": "2b4db1e299032171d397d2c6fea99ab2a4cdba628bd891477f50ad778cec72a1"
+    },
+    {
+      "path": "tests/e2e/fixtures/ncl01-experience.ts",
+      "gitBlob": "c6c222d120af1cee17e743720175954f665da2a0",
+      "sha256": "df50153965ba3ffc066b191609bb85bc5947fa6cc5ceb71c2e70ef8a59802798"
+    },
+    {
+      "path": "src/parallax/ncl01-experience-fixture.test.ts",
+      "gitBlob": "8bbd8d25bdccfda6506023f4978cedacf45435d7",
+      "sha256": "a7179b3f54b0025ca2045403e708cc5e6a32ab1f9b2b2fb5c3ebe5d1692d034a"
+    },
+    {
+      "path": "prisma/seed.ts",
+      "gitBlob": "1b3d718af62a0430aa967afc9fd50d0eebef0521",
+      "sha256": "5527241b4abb5ca4468d26c67afd342334d93cc83b8a450f9402e51e17454c76"
+    },
+    {
+      "path": "src/components/homeport/AccountSurfaces.tsx",
+      "gitBlob": "51125cd92b974b3b85d925606d5a66d18dd23683",
+      "sha256": "581904d3fc39333aa95361d8b41df5a35d136c2e36e0f99e8c290fbb6a3e8131"
+    },
+    {
+      "path": "src/components/admiralty/AdminPrimitives.tsx",
+      "gitBlob": "f71dbdedb0d058c5dd4fc2b14d6516c1e44b6804",
+      "sha256": "c7a91ea8904cbb75f8090dda187bd2cec7fbfac15343c2b67b57389c3e3e132e"
+    },
+    {
+      "path": "src/app/admin/people/page.tsx",
+      "gitBlob": "8a4464ebfcd45a4e5599044258ebde638ef34505",
+      "sha256": "4508d812655240996397c095f50ced9fd189b3f8d2a48af2c3153059f0c0c4e4"
+    }
+  ],
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "declaredNodeVersion": "24.19.0",
+    "browser": "locked Chromium1194 /141.0.7390.37",
+    "workers": 1,
+    "retries": 0,
+    "repeatEach": 1,
+    "runtime": "owned production Next server and existing runBrowserAuthority",
+    "evidenceTier": "ordinary DEVELOPMENT diagnostic; not prepared-helper PASS or ProductExperience acceptance"
+  },
+  "actualExecution": {
+    "executed": 7,
+    "passed": 5,
+    "failed": 2,
+    "skipped": 0,
+    "flaky": 0,
+    "reportDurationMs": 44777.547999999995,
+    "cases": [
+      {
+        "declarationLine": 77,
+        "title": "anonymous account navigation exposes registration and its conventional sign-in return",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 93,
+        "title": "Player returns through account and real version-pinned private history",
+        "project": "chromium",
+        "result": "failed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 129,
+        "title": "Creator opens the actual owned draft and cancels creation without publishing",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 151,
+        "title": "Captain reads eligible editions and closes the real Voyage wizard without creating a Voyage",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 175,
+        "title": "Administrator uses the real privacy-preserving People empty state and returns to the same account",
+        "project": "chromium",
+        "result": "failed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 188,
+        "title": "isolated fixed Owner opens Sea Trials and follows the actual conventional return",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 204,
+        "title": "public Community and Chronicle discovery preserve private history through empty-state recovery",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  "demonstratedFailures": [
+    {
+      "caseDeclarationLine": 93,
+      "assertionLine": 48,
+      "callerLine": 97,
+      "category": "AXE_SERIOUS_ACCESSIBILITY",
+      "rule": "aria-prohibited-attr",
+      "impact": "serious",
+      "targets": [
+        ".harbor-media-inline-preview--avatar",
+        ".harbor-media-inline-preview--banner"
+      ],
+      "offendingAttribute": "aria-label on a div with no valid role",
+      "fixedLabels": [
+        "Current avatar preview",
+        "Current banner preview"
+      ],
+      "source": "src/components/homeport/AccountSurfaces.tsx",
+      "sourceLines": [
+        505,
+        583
+      ],
+      "limit": "This case stopped on Public Profile; later history assertions were not executed."
+    },
+    {
+      "caseDeclarationLine": 175,
+      "assertionLine": 181,
+      "category": "HEADING_ROLE_SELECTOR_MISMATCH",
+      "expected": {
+        "role": "heading",
+        "name": "Start with a known clue",
+        "exact": true
+      },
+      "observedStaticAX": {
+        "heading": "People",
+        "titleRole": "strong",
+        "title": "Start with a known clue",
+        "detail": "Admiralty does not enumerate the account directory. Enter at least two characters.",
+        "returnControl": "Return to account"
+      },
+      "observedPathname": "/admin/people",
+      "observedGETResponseStatus": 200,
+      "observedMimeType": "text/x-component",
+      "source": "src/components/admiralty/AdminPrimitives.tsx",
+      "sourceLine": 127,
+      "callerSource": "src/app/admin/people/page.tsx",
+      "callerSourceLine": 28,
+      "serverStderrBytes": 0,
+      "limit": "No authentication or authorization failure is inferred; role-specific intended People state was observed."
+    }
+  ],
+  "runtimeOutcome": {
+    "failureCategory": "PRODUCT_FAILURE",
+    "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 1,
+        "elapsedMs": 4,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 142,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "timings": {
+      "serverPreparationMs": 17,
+      "serverReadinessMs": 3200,
+      "browserExecutionMs": 57841,
+      "infrastructureFailureWaitMs": 0,
+      "cleanupMs": 146
+    }
+  },
+  "preservation": {
+    "unchangedFailedPreparation": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+    "preparedManifestForged": false,
+    "copierGuardBypassed": false,
+    "originalBuildAndClosedDatabaseUnchanged": true,
+    "trackedSourceUnchanged": true,
+    "exclusiveOrdinaryCopy": {
+      "regularFileCount": 6073,
+      "regularBytes": 510063505,
+      "sameOwnedJunctionCount": 3,
+      "inventoriesIdentical": true,
+      "allCopiedRegularFilesHaveOneLink": true
+    },
+    "originalFileCount": 47,
+    "originalBytes": 22910817,
+    "privateOriginalMapSha256": "f4c850d550326981a8633f23a5dcd0ca3247bbc5e67c5e3c91f6ae1ef553599c",
+    "originalReportSha256": "54b21a7a02d5cf8804513f85af0d9582e50bccb008b63f7273c0dfb4c7d03831",
+    "originalRuntimeSha256": "980c66ed58150bb3a743eee10aa62cf3ef559ed2411686d863a968cf7d33231c",
+    "terminalSha256": "dff42e7c708df2097b53ce9a8eaa18f6c1d6859910403e6180b8e00ae43f8044",
+    "copyInventorySha256": "0ef97c813d5216b97498da4f137e8c9780920a9dec7c09a0fc9825976197097b",
+    "setupReviewSha256": "9a359a1b2932c141afbd8ecdf00bd902c35f1554ebb61c0ef1df853c77c33700"
+  },
+  "hostedLinuxFailure": {
+    "runId": 39701369791,
+    "sourceSha": "b9b6956fe291919bd6fcb6329618702d873582af",
+    "retained": true,
+    "executedCaseCount": null,
+    "failedAssertion": null,
+    "cause": "UNKNOWN; encrypted originals remain preserved, local Windows findings do not establish Linux cause",
+    "reviewSha256": "94a31abf69efa94d6434f3719f2420288edae72ac8bdfb3a5b8277303e5b16fc"
+  },
+  "limits": [
+    "One local Windows diagnostic execution; no rerun or source repair.",
+    "No ProductExperience, protected merge, native GPU, physical AR, private-preview, or human acceptance claim.",
+    "No raw DOM, credentials, cookies, auth query strings, media, database paths, or local account data are exported by this review.",
+    "Original local screenshots/traces/videos remain private; Administrator failure screenshot independently viewed."
+  ]
+}

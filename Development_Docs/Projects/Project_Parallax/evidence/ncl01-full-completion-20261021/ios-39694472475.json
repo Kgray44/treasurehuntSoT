@@ -1,0 +1,475 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_IOS_REVIEW",
+  "qualification": false,
+  "runId": 39694472475,
+  "workflowConclusion": "success",
+  "source": {
+    "sourceSha": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "sourceTree": "493196847b029b756b76c2a42ee262cbe7f15b02",
+    "transportSha": "63445687739b0fb6b64ac7c6eec39414314686cb",
+    "dirty": false,
+    "sourceFingerprint": "1d0f0ff4576ae5a0042bd14e4209e95af819febebf8f36ad93d2248c68bfcc62"
+  },
+  "reviewScope": {
+    "producerInventoryFileCount": 6502,
+    "independentlyRehashedOriginalSubsetCount": 51,
+    "allProducerFilesIndependentlyRehashed": false,
+    "completeProducerInventoryRetained": true,
+    "hostedReceiptSha256": "c0cdb2b407eb70a4e8c4576483b1e45a55f4e3c50ea81374c9c562710c4d2c1c",
+    "privateOriginalMapSha256": "c9f2703a484a9877f8ab61161d01bbe37b233d1121fc829632142cfa4cde4072",
+    "selection": "Current exported receipts, all companion attachment originals, every location-receipt artifact, joined input/cleanup diagnostics and both compiled GLBs; generated build products and xcresult internals are outside independent subset."
+  },
+  "native": {
+    "scope": "COMPANION_ONLY",
+    "passed": 29,
+    "failed": 0,
+    "skipped": 1,
+    "expectedFailures": 0,
+    "total": 30,
+    "skipDisposition": "Consistent with the existing expected driver-only skip; per-case skip detail was not independently exported.",
+    "presentationTestsExcluded": 2,
+    "currentFull31Claim": false,
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "models": {
+    "evidenceClass": "INSTRUMENTED_SCENEKIT_GLTF_RENDERING_ONLY",
+    "sealedElapsedMs": 1678.4955833334152,
+    "deadlineSeconds": 20,
+    "identities": [
+      {
+        "assetId": "treasure-chest",
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "compiledBytesMatchCommittedOriginal": true,
+        "geometryNodes": 7,
+        "materials": 4,
+        "renderedPixels": 8301
+      },
+      {
+        "assetId": "brass-compass",
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "compiledBytesMatchCommittedOriginal": true,
+        "geometryNodes": 4,
+        "materials": 4,
+        "renderedPixels": 2509
+      }
+    ],
+    "frames": [
+      {
+        "name": "treasure-chest-empty",
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "height": 256,
+        "nontransparentPixels": 0,
+        "nonblackVisiblePixels": 0,
+        "independentlyDecoded": true
+      },
+      {
+        "name": "treasure-chest-populated",
+        "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+        "width": 256,
+        "height": 256,
+        "nontransparentPixels": 8301,
+        "nonblackVisiblePixels": 7714,
+        "independentlyDecoded": true
+      },
+      {
+        "name": "treasure-chest-removed",
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "height": 256,
+        "nontransparentPixels": 0,
+        "nonblackVisiblePixels": 0,
+        "independentlyDecoded": true
+      },
+      {
+        "name": "brass-compass-empty",
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "height": 256,
+        "nontransparentPixels": 0,
+        "nonblackVisiblePixels": 0,
+        "independentlyDecoded": true
+      },
+      {
+        "name": "brass-compass-populated",
+        "sha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+        "width": 256,
+        "height": 256,
+        "nontransparentPixels": 2509,
+        "nonblackVisiblePixels": 2509,
+        "independentlyDecoded": true
+      },
+      {
+        "name": "brass-compass-removed",
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "width": 256,
+        "height": 256,
+        "nontransparentPixels": 0,
+        "nonblackVisiblePixels": 0,
+        "independentlyDecoded": true
+      }
+    ],
+    "pixelMetricDefinition": "Committed fixture: alpha greater than16, shaded RGB maximum greater than8.",
+    "viewportPhases": [
+      {
+        "phase": "inspect-only",
+        "renderCallbackObserved": true,
+        "ownedWindowAndCameraAssigned": true,
+        "withinOriginal5SecondSetupBudget": true
+      },
+      {
+        "phase": "no-actions",
+        "renderCallbackObserved": true,
+        "ownedWindowAndCameraAssigned": true,
+        "withinOriginal5SecondSetupBudget": true
+      },
+      {
+        "phase": "revoked-selection",
+        "renderCallbackObserved": true,
+        "ownedWindowAndCameraAssigned": true,
+        "withinOriginal5SecondSetupBudget": true
+      },
+      {
+        "phase": "closer-unrelated-mesh",
+        "renderCallbackObserved": true,
+        "ownedWindowAndCameraAssigned": true,
+        "withinOriginal5SecondSetupBudget": true
+      },
+      {
+        "phase": "hidden",
+        "renderCallbackObserved": true,
+        "ownedWindowAndCameraAssigned": true,
+        "withinOriginal5SecondSetupBudget": true
+      },
+      {
+        "phase": "rejected-replacement",
+        "renderCallbackObserved": true,
+        "ownedWindowAndCameraAssigned": true,
+        "withinOriginal5SecondSetupBudget": true
+      },
+      {
+        "phase": "initial-input",
+        "renderCallbackObserved": true,
+        "ownedWindowAndCameraAssigned": true,
+        "withinOriginal5SecondSetupBudget": true
+      }
+    ],
+    "geometryPositiveAndNegativeGuards": true,
+    "fixtureUsesCamera": false,
+    "fixtureCreatesARSession": false,
+    "physicalTrackingProven": false,
+    "physicalMaterialFidelityProven": false
+  },
+  "joined": {
+    "result": "PASS",
+    "evidenceClass": "SIMULATOR_NATIVE_INPUT_CANONICAL_REJECTION_ONLY",
+    "actualOSDriverActions": 4,
+    "allActionsPassed": true,
+    "osReady": true,
+    "clientReady": true,
+    "driverCompleted": true,
+    "realSQLite": true,
+    "canonicalDisposition": "SIMULATION_REJECTED",
+    "observationsAdded": 0,
+    "progressionEventsAdded": 0,
+    "exportedScreenshotCount": 0,
+    "physicalTrackingProven": false,
+    "positivePhysicalInspectProven": false
+  },
+  "locationDenial": {
+    "result": "PASS",
+    "stepsPassed": 5,
+    "deniedCapability": "LOCATION",
+    "osPermissionPreventedAcquisition": true,
+    "cameraPermissionDenialProven": false
+  },
+  "visualReview": {
+    "populatedFramesViewed": [
+      "treasure-chest-populated",
+      "brass-compass-populated"
+    ],
+    "modelFinding": "Original chest and compass are identifiable, centered and fully contained in their actual instrumented camera-free frames. No physical or material-fidelity acceptance follows.",
+    "locationFinalFrameViewed": true,
+    "locationImageScope": "Synthetic Device Lab shell; the image itself does not display OS denial.",
+    "joinedPlayerImageViewed": false,
+    "joinedImageLimit": "The joined receipt exports zero screenshots; no joined Player-image visual proof is claimed."
+  },
+  "cleanup": {
+    "companionResult": "PASS",
+    "companionOwnedResources": 1,
+    "companionRemainingResources": 0,
+    "joinedResult": "PASS",
+    "joinedDatabaseRemoved": true,
+    "joinedServerClosed": true,
+    "joinedSimulatorDeleted": true,
+    "joinedFailedCleanupOperations": 0,
+    "locationResult": "PASS",
+    "locationRemainingResources": 0,
+    "exactTransportRefReportedRemoved": true,
+    "refDeletionIsNotNativeCleanupProof": true
+  },
+  "originalSubset": [
+    {
+      "index": 0,
+      "sha256": "ba0078719cd49a15dfc69dbe1604f838d8dac849c555253c470bcce3c95e298c",
+      "bytes": 16218
+    },
+    {
+      "index": 1,
+      "sha256": "f355d49210e4e478dbed2860ffa04306e2b7b674681ae3065b6cc11e6306dc0c",
+      "bytes": 6132
+    },
+    {
+      "index": 2,
+      "sha256": "f540fa439df2fc795e153b911c88472cce9fc84c27b48b2a29845095203234d2",
+      "bytes": 421
+    },
+    {
+      "index": 3,
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "bytes": 277
+    },
+    {
+      "index": 4,
+      "sha256": "76af9f97ebfc84a531c00e1eeabe4d85082c59ecde657da2d06482211bbafe80",
+      "bytes": 906
+    },
+    {
+      "index": 5,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "index": 6,
+      "sha256": "409d93a00b79ef92f95a094ff1e2ace92e7cafcc262ff6d57e844a295824098b",
+      "bytes": 916
+    },
+    {
+      "index": 7,
+      "sha256": "3a32984a4209bd43c82a530b626a0059c3f61f6edfc70d561c49607abbafed8d",
+      "bytes": 99075
+    },
+    {
+      "index": 8,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "index": 9,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "index": 10,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "index": 11,
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4",
+      "bytes": 97
+    },
+    {
+      "index": 12,
+      "sha256": "4265f97a6c2980590a44d04464fb79289cb9b07ce92c170e5b899612fce3c9f8",
+      "bytes": 1389
+    },
+    {
+      "index": 13,
+      "sha256": "f0fe75ada7d56b9d17621aabf4b198aea3fc377543f3d17e5b8b8bcb6b728300",
+      "bytes": 495
+    },
+    {
+      "index": 14,
+      "sha256": "e7bcc35ee19d797f8af033ac1fd6b8b8803946a1057f7b659a39bcb667041188",
+      "bytes": 319
+    },
+    {
+      "index": 15,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "bytes": 313396
+    },
+    {
+      "index": 16,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "bytes": 630120
+    },
+    {
+      "index": 17,
+      "sha256": "467771fb02fc174ef9af6dfa6ade7a161044c0bee1560b3ab6b2b7c2bf280eb2",
+      "bytes": 1255
+    },
+    {
+      "index": 18,
+      "sha256": "5995bc59a0e0c3e69e955f7ea0c9e8d00503ebd3858b853fc43bc227bb5f16ae",
+      "bytes": 370
+    },
+    {
+      "index": 19,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "index": 20,
+      "sha256": "c6e36223d4b3ab7f069c9358cff082c7ee0c25cae7919dd1156cf8f0d1ba6ebb",
+      "bytes": 16217
+    },
+    {
+      "index": 21,
+      "sha256": "7b8e3675aefc5f34a41e75a452f8a6dd00151458ab40064b34743cfc2da53fe7",
+      "bytes": 99
+    },
+    {
+      "index": 22,
+      "sha256": "2b063e85672c8a8e4efbc985289e7a066edacd9c515af8a09196d77d0e9c695d",
+      "bytes": 1092
+    },
+    {
+      "index": 23,
+      "sha256": "e81a49d4c70cefa92d113f94495fe1cb25a15d33fe40f46f6cfc5d2f2864f5a9",
+      "bytes": 443
+    },
+    {
+      "index": 24,
+      "sha256": "8ae54170f12cfb24589e2999c72a63e3c3c5f8c6e20dd8c8caf643cb6545a03b",
+      "bytes": 255
+    },
+    {
+      "index": 25,
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d",
+      "bytes": 131
+    },
+    {
+      "index": 26,
+      "sha256": "81885e5be928606e80cff2055fc8c60c1ce7ba44868bedd7ab48c881f8df0414",
+      "bytes": 583
+    },
+    {
+      "index": 27,
+      "sha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+      "bytes": 5725
+    },
+    {
+      "index": 28,
+      "sha256": "599c18d1b178e189a4bf740e82e8312ff56c3f0d972c20b9ef128b26191e63dd",
+      "bytes": 14000
+    },
+    {
+      "index": 29,
+      "sha256": "73a431f500f27f688e613296dcbeec33c6079b414047e014280033741e759418",
+      "bytes": 341
+    },
+    {
+      "index": 30,
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306
+    },
+    {
+      "index": 31,
+      "sha256": "d4fb5ab92f409a9ec61c88f967f511e16e0c76aa9cdb824ab011b8a259881929",
+      "bytes": 330
+    },
+    {
+      "index": 32,
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306
+    },
+    {
+      "index": 33,
+      "sha256": "a94d3f2e6d845068ab862a8f96df14f3e0335116ba7eceedcc1b81076e8a4e10",
+      "bytes": 344
+    },
+    {
+      "index": 34,
+      "sha256": "47c588fa14c3b36645588d2f704017a5f64d76443ec73fa24f41c2a878866b12",
+      "bytes": 345
+    },
+    {
+      "index": 35,
+      "sha256": "d57d62852536b16458c9cf6d179793e2f95aa74290ba36c93793fb2aa35a839c",
+      "bytes": 111
+    },
+    {
+      "index": 36,
+      "sha256": "c68b30191b26cba4924f47710f7a3178c22de01d04fd764878ce26f1a60f2fbd",
+      "bytes": 336
+    },
+    {
+      "index": 37,
+      "sha256": "449d05e5223d7710f54e1f1d4166f4eaa483fbe9d8979b501bc5637ce2758dc7",
+      "bytes": 337
+    },
+    {
+      "index": 38,
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306
+    },
+    {
+      "index": 39,
+      "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "bytes": 7237
+    },
+    {
+      "index": 40,
+      "sha256": "37b63dabc9cb1f872218b8be55a890ee7ffaf1514cf771c4e13f7fc9bdecf8a0",
+      "bytes": 111
+    },
+    {
+      "index": 41,
+      "sha256": "43434f8a9c711103368e14aa48a3f73732dae71324cfa7438fe6af9553ff8095",
+      "bytes": 243
+    },
+    {
+      "index": 42,
+      "sha256": "28afa141e30e71c2f70941f2648646ee65742cbf97d07071431b7ad8aee2bc97",
+      "bytes": 334
+    },
+    {
+      "index": 43,
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306
+    },
+    {
+      "index": 44,
+      "sha256": "229e69cae091e63121800bd7a0b761e094998227fa119ec0abfdee2fe306cd7c",
+      "bytes": 10415
+    },
+    {
+      "index": 45,
+      "sha256": "84cdc9a877a8ed304a51695252767c04c5b91fc2fc94863702fca03cc875c74d",
+      "bytes": 1052
+    },
+    {
+      "index": 46,
+      "sha256": "d5a2a47bf5f228f7d2238efec74aa84081fc1a976a1de9a26f271c697dbb0209",
+      "bytes": 715
+    },
+    {
+      "index": 47,
+      "sha256": "fea9c6711df661b4db58031cc00597d3f716f0c32f8fbd5e49fa350e01a0cace",
+      "bytes": 217
+    },
+    {
+      "index": 48,
+      "sha256": "76fec5d3ae6cdbb79b71ec00f4bab01808e9eeeac0dc0806423568223b20af4c",
+      "bytes": 678
+    },
+    {
+      "index": 49,
+      "sha256": "180950ec21eaf80362917cecd7c2141bc9289af2fff2701c47d3d2996e0aee5e",
+      "bytes": 183
+    },
+    {
+      "index": 50,
+      "sha256": "73990a0b6cdd6d9ecc8ae816d6ee9be923b43f3f387c5aaed25634df6be0d424",
+      "bytes": 951
+    }
+  ],
+  "limits": [
+    "Development Simulator evidence only.",
+    "No fresh full31, real-room camera, physical tracking or Inspect, owner acceptance, new signed distribution, Mainline Decision or protected merge claim.",
+    "NativeInspect xcresult internals and thousands of generated build products were retained but not independently parsed/hashed.",
+    "Later candidate descendants require separate source applicability."
+  ]
+}

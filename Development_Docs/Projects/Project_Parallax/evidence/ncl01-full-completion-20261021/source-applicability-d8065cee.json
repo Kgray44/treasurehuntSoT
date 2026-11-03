@@ -1,0 +1,514 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_COMMIT_BOUND_SOURCE_APPLICABILITY_NOT_ACCEPTANCE",
+  "qualification": false,
+  "candidate": {
+    "commit": "d8065ceed41e3bff77b01838145afeb8e57f1b7f",
+    "tree": "6b148c3ee070da924a8cd4412c9b501ba0444ca9",
+    "reviewedCommittedTreeOnly": true,
+    "descendsFromConsumer846": true,
+    "workingTreeCleanAtOriginalReadStart": true,
+    "workingTreeCleanAtOriginalReadEnd": false,
+    "currentCleanWorkingTreeNotClaimed": true,
+    "workingHeadAtSerialization": "7c114fe26c1e9dafe79e42b2dec94fa4c938e6a4",
+    "uncommittedWorkingTreePathsExcluded": [
+      "tests/e2e/ncl01-consumer-continuity.spec.ts"
+    ]
+  },
+  "method": "Immutable committed Git tree/blob comparisons and public pinned asset bytes completed before a final dirty-working-tree guard. This receipt serializes those checked d806 objects only; no tests, builds, GPU, browsers, services or plans were run.",
+  "originalFreezeObservation": {
+    "sha256": "e1a079319a8f0c184986c4ac77bfe03345e60720096e41796e7895959ec3222e",
+    "stage": "FINAL_WORKING_TREE_CLEAN_GUARD",
+    "committedInputAssertionsCompletedBeforeGuard": true,
+    "sourceChangedByAudit": false,
+    "uncommittedTestEditExcluded": true
+  },
+  "priorSourceGuide": {
+    "candidate": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "sha256": "cc3bb1ef48c2c173109902a433299afa3c3a38f64f7820dea398e20576bda4ea",
+    "usedAsPathAndKeyGuideOnly": true,
+    "identifiedMutableGuideBytesVerifiedByHash": true,
+    "historicalArtifactCorpusNotRehashed": true
+  },
+  "sourceReferences": {
+    "iosFresh": {
+      "commit": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+      "tree": "493196847b029b756b76c2a42ee262cbe7f15b02"
+    },
+    "iosFull31": {
+      "commit": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+      "tree": "591415b2ec6cf5a9675cb326a7e2db1226ce8d51"
+    },
+    "unsignedRelease": {
+      "commit": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+      "tree": "cadc8fd0815190f2d3c59b99b017a70d431e4bff"
+    },
+    "androidFresh": {
+      "commit": "39e28ffdea15171f8373bb6fdf752a118c20dccd",
+      "tree": "f87ab7a2a2faee85f0d7510dd97fe2cc21691fbe"
+    },
+    "consumer846": {
+      "commit": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+      "tree": "56d660781a0f41af1a5568eb1f1156f87eecf823"
+    },
+    "preservedPreview": {
+      "commit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+      "tree": "198ee909b3ee0d87abdb91ccbf8c55bd5948f823"
+    }
+  },
+  "trees": [
+    {
+      "path": "native/ios",
+      "gitTree": "7a009230e07a559b9c6584f4917f9d27724f4f9a",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "iosFresh",
+        "iosFull31",
+        "unsignedRelease"
+      ]
+    },
+    {
+      "path": "native/android",
+      "gitTree": "dc78ec87ba6cd31260cf0ee0b417ddfaa4412a18",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "androidFresh"
+      ]
+    },
+    {
+      "path": "src",
+      "gitTree": "e411c6ef5a4aca3e52a67917fdfeb23200655b5a",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "consumer846"
+      ]
+    },
+    {
+      "path": "src/parallax",
+      "gitTree": "fff13d5d79dce504e0fbbc72520c24f2ca51f6ad",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "consumer846"
+      ]
+    },
+    {
+      "path": "src/landfall",
+      "gitTree": "fce125221566a2ef5cf1ca4749c65a087e1fd506",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "androidFresh",
+        "consumer846"
+      ]
+    },
+    {
+      "path": "src/components/player/parallax",
+      "gitTree": "628f3611a047a74bb6c0b76ee7be381ca44c4a90",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "androidFresh",
+        "consumer846"
+      ]
+    },
+    {
+      "path": "src/components/player/journal",
+      "gitTree": "055012aee4a40f5de035afa9fafd71495dfd4aff",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "androidFresh",
+        "consumer846"
+      ]
+    },
+    {
+      "path": "src/crossdeck",
+      "gitTree": "417f692810b6d1c7fe987d843c73d14f50872180",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "androidFresh",
+        "consumer846"
+      ]
+    },
+    {
+      "path": "scripts/landfall/testflight",
+      "gitTree": "7daca8471c5e8cf3d591fb8cf4f91ba856c7730c",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "unsignedRelease",
+        "consumer846"
+      ]
+    },
+    {
+      "path": "public/parallax/sc02",
+      "gitTree": "fde0b1446f453c239490fe2122f510812ad4d561",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "androidFresh",
+        "consumer846"
+      ]
+    },
+    {
+      "path": "tests/fixtures/parallax",
+      "gitTree": "cb0e5ab3bbd4f979f68bd59d88dde08c86bb1a5f",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "androidFresh",
+        "consumer846"
+      ]
+    },
+    {
+      "path": ".github/workflows",
+      "gitTree": "e558e3d553fea096dad666ddbe48e2230cc28380",
+      "nonemptyVerified": true,
+      "matchesReferences": [
+        "androidFresh",
+        "consumer846"
+      ]
+    }
+  ],
+  "sharedSceneBridgeAndProgression": {
+    "matchesReferences": [
+      "androidFresh",
+      "consumer846"
+    ],
+    "blobs": [
+      {
+        "path": "src/parallax/scene-delivery.ts",
+        "gitBlob": "0d38df18eac76c5b8ea346cc8e11f0504bcacd60"
+      },
+      {
+        "path": "src/parallax/scene-transfer.ts",
+        "gitBlob": "c9b28235df60485843d613da038882148af0d7b2"
+      },
+      {
+        "path": "src/parallax/native.ts",
+        "gitBlob": "cb7ec284ed71e23938949e9bcec42363013ded41"
+      },
+      {
+        "path": "src/parallax/runtime.ts",
+        "gitBlob": "d483f0ce693c9b2886270fd4a318aa8a973bbdf3"
+      },
+      {
+        "path": "src/parallax/contracts.ts",
+        "gitBlob": "61b08ba9d5e698ff1604120262474f1f5e27fe21"
+      },
+      {
+        "path": "src/parallax/transforms.ts",
+        "gitBlob": "0b8cf03603cfc05938759e2ca0d506ed0ae01019"
+      },
+      {
+        "path": "src/landfall/native-bridge.ts",
+        "gitBlob": "190f15963c3b7967a950bc50774607be064835c2"
+      },
+      {
+        "path": "src/chronicle/progression.ts",
+        "gitBlob": "eaaeb72de3f27d93631ca2d891bd8a7a33e343f5"
+      },
+      {
+        "path": "src/server/progression.ts",
+        "gitBlob": "8417d0527ce7fd432b9856c07b3a917a867403f9"
+      },
+      {
+        "path": "src/app/api/player/playthroughs/[playthroughId]/parallax/route.ts",
+        "gitBlob": "15a829ecdce8421c1c52063a4478735130307665"
+      },
+      {
+        "path": "src/app/api/player/playthroughs/[playthroughId]/parallax/assets/[assetId]/route.ts",
+        "gitBlob": "07e76abf34ee5839280620c16d2c444607b81717"
+      },
+      {
+        "path": "src/components/player/parallax/ChronicleLens.tsx",
+        "gitBlob": "c631636a43d1036caa26eec294effd3e4aac9e89"
+      },
+      {
+        "path": "src/components/player/journal/ChronicleJournalSession.tsx",
+        "gitBlob": "2c7e8be01421a89899f2f49e74d157fa4d4bd7ea"
+      },
+      {
+        "path": "src/components/crossdeck/CrossdeckCompanion.tsx",
+        "gitBlob": "16670d5101b2c5d82578c6edfd6c5345cbb954ae"
+      },
+      {
+        "path": "prisma/schema.prisma",
+        "gitBlob": "e1bef668ff9e74cedc302d9a20a5074395c70c82"
+      }
+    ],
+    "parallaxTreeDifferenceFromAndroidFresh": {
+      "paths": [
+        "src/parallax/ncl01-experience-fixture.test.ts"
+      ],
+      "classification": "GENERIC_EXPERIENCE_FIXTURE_TEST_ONLY",
+      "productionRuntimeChanged": false
+    }
+  },
+  "lockedBuildAndToolConfig": {
+    "matchesReferences": [
+      "androidFresh",
+      "consumer846"
+    ],
+    "blobs": [
+      {
+        "path": "package.json",
+        "gitBlob": "37b096381c2acaa747a24bccee901c62215b3577"
+      },
+      {
+        "path": "package-lock.json",
+        "gitBlob": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2"
+      },
+      {
+        "path": ".nvmrc",
+        "gitBlob": "60ade1ae01e833a5c291c47883bf26fb031f7727"
+      },
+      {
+        "path": ".node-version",
+        "gitBlob": "60ade1ae01e833a5c291c47883bf26fb031f7727"
+      },
+      {
+        "path": "tsconfig.json",
+        "gitBlob": "45df8a341097f1492f6947cf685aa94422d852aa"
+      },
+      {
+        "path": "next.config.ts",
+        "gitBlob": "76a78483839ff606b9706867a5c442857e7a2456"
+      },
+      {
+        "path": "vitest.config.ts",
+        "gitBlob": "9277e84d3bd2605f82e08ee29ecf41474e0936d5"
+      },
+      {
+        "path": "playwright.config.ts",
+        "gitBlob": "e43e9912bc263909c58a31ded843a25209761917"
+      }
+    ]
+  },
+  "unsignedArchiveAndSigningConfigInputs": {
+    "matchesReferences": [
+      "unsignedRelease",
+      "consumer846"
+    ],
+    "blobs": [
+      {
+        "path": "native/ios/project.yml",
+        "gitBlob": "9d09991534263e5cba6b6182b3ba00c6d71cf163"
+      },
+      {
+        "path": "native/ios/LandfallCompanion/Landfall.entitlements",
+        "gitBlob": "3950d3193db7ecc168c54b9d50da4788e56802ee"
+      },
+      {
+        "path": "native/ios/LandfallCompanion/PrivacyInfo.xcprivacy",
+        "gitBlob": "305f6052d4e3751de0b1fc2b62647a57e8341104"
+      },
+      {
+        "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/Contents.json",
+        "gitBlob": "7140563583a209df2e1515c4177e85428b7417f2"
+      },
+      {
+        "path": ".agents/ncl01-testflight-hosted.yml",
+        "gitBlob": "a2d7295816d5a8e1b9fa968ab280a6370f748c3d"
+      }
+    ],
+    "privateSigningMaterialRead": false,
+    "newArchiveOrBinaryEquivalenceClaimed": false
+  },
+  "publicAssetPins": [
+    {
+      "path": "public/parallax/sc02/models/brass-compass.glb",
+      "gitBlob": "2764b88a0a76bd3eee5125ba1c51a9a7d21356eb",
+      "bytes": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "matchesReferences": [
+        "androidFresh",
+        "unsignedRelease"
+      ]
+    },
+    {
+      "path": "public/parallax/sc02/models/treasure-chest.glb",
+      "gitBlob": "ccc55a2231ae0cc1ffe8e193db09e1d0d47a5562",
+      "bytes": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "matchesReferences": [
+        "androidFresh",
+        "unsignedRelease"
+      ]
+    },
+    {
+      "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+      "gitBlob": "448bba68585527f2b53db02966a579084610a30b",
+      "bytes": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+      "matchesReferences": [
+        "androidFresh",
+        "unsignedRelease"
+      ]
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+      "gitBlob": "448bba68585527f2b53db02966a579084610a30b",
+      "bytes": 1617603,
+      "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+      "matchesReferences": [
+        "androidFresh",
+        "unsignedRelease"
+      ]
+    },
+    {
+      "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+      "gitBlob": "7a816c8a8ed9f967da08832368a4f635f5b476b2",
+      "bytes": 2719555,
+      "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+      "matchesReferences": [
+        "androidFresh",
+        "unsignedRelease"
+      ]
+    }
+  ],
+  "changesSince846": {
+    "productionPaths": [],
+    "nativePaths": [],
+    "authorityOrBuildConfigPaths": [],
+    "allChangedPaths": [
+      {
+        "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+        "status": "M",
+        "classification": "GENERATED_DOCUMENTATION",
+        "gitBlob": "1adabb56f60a8789bb2b59f4a13537ade2f149ca"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/NCL01_Consumer_Experience_Design_20261021.md",
+        "status": "M",
+        "classification": "CURRENT_ENGINEERING_DESIGN",
+        "gitBlob": "8468bc4056e392de8cd63d56036b7b855d22c2f8"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/NCL01_Post_Crossdeck_Integration_20261021.md",
+        "status": "M",
+        "classification": "CURRENT_ENGINEERING_RECORD",
+        "gitBlob": "d127db605a0801a019a61e94768c50910ae0ff4b"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/browser-39706781483.json",
+        "status": "A",
+        "classification": "NEW_SEALED_HOSTED_DEVELOPMENT_REVIEW",
+        "gitBlob": "a53ea5b31d30372aa1826dc89ecde334b47309b7"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/consumer-local-846ef70e.failure.json",
+        "status": "A",
+        "classification": "NEW_SEALED_WINDOWS_FAILURE_REVIEW",
+        "gitBlob": "0dc5e7c561d95150d396e79a0b1854943dd0b309"
+      },
+      {
+        "path": "Development_Docs/document-index.json",
+        "status": "M",
+        "classification": "GENERATED_DOCUMENTATION_INDEX",
+        "gitBlob": "bff1c79e7b49eda39d99fe41cbdd9079b59ba84b"
+      },
+      {
+        "path": "testing/contracts.json",
+        "status": "M",
+        "classification": "TWO_NEW_CONSUMER_EXPERIENCES_ONLY",
+        "gitBlob": "e0adec7671ba3967ca480a0bf1e1c84731fb0463"
+      },
+      {
+        "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+        "status": "M",
+        "classification": "EXISTING_SEVEN_CASE_PRECONDITION_AND_OWNER_RETURN",
+        "gitBlob": "65403d23099e82d704505b10502ce4e2b0eda32c"
+      }
+    ],
+    "changedNewExperiences": [
+      "admiralty.phase2.account-dossier-support",
+      "parallax.ncl01.owner-sea-trials"
+    ],
+    "otherContractsAndPolicyUnchanged": 493,
+    "sourceDeclaredCaseTitlesUnchanged": 7,
+    "testChanges": "Adds current route settled/interactive/generation/opacity precondition before existing Axe audit and extends actual Owner Home-to-account return; no new test method.",
+    "contractChanges": "Admin uses actual account-menu Admiralty entry and exact account return; Owner retains authorized private trial entry and actual account return. Home href continuity explicitly means navigation only."
+  },
+  "retainedEvidenceScopes": {
+    "ios": {
+      "freshReference": "iosFresh",
+      "nativePassed": 29,
+      "nativeFailed": 0,
+      "expectedDriverSkipped": 1,
+      "joinedActions": 4,
+      "full31AndUnsigned20RetainedReferences": [
+        "iosFull31",
+        "unsignedRelease"
+      ],
+      "limit": "Unchanged iOS inputs support retaining their source-bound native/presentation/unsigned evidence only; no new execution or physical result."
+    },
+    "android": {
+      "freshReference": "androidFresh",
+      "runId": "39699792641",
+      "nativePassed": 16,
+      "nativeFailed": 0,
+      "durationSeconds": 93.147,
+      "originalPixels": {
+        "brass-compass": 4386,
+        "treasure-chest": 10974
+      },
+      "clearedPixels": 0,
+      "joinedActions": 4,
+      "permissionScenarios": 1,
+      "limit": "Exact whole Android subtree matches fresh16 evidence; no repeated GPU/native run and no physical tracking or positive physical Inspect claim."
+    },
+    "windows846": {
+      "reviewFile": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/consumer-local-846ef70e.failure.json",
+      "reviewSha256": "e3c18e0bd8094365a57934f3ccaca2e81e4bf33b5c113227000f59b1f845c05d",
+      "source": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+      "executed": 7,
+      "passed": 6,
+      "failed": 1,
+      "skipped": 0,
+      "durationMs": 33904.975,
+      "classification": "RETAINED_FAILED_WINDOWS_DEVELOPMENT_RUN",
+      "causeScope": "Local accessibility audit overlapped retained route transition states; no final static-color defect or historical Linux cause inferred."
+    },
+    "hosted846": {
+      "reviewFile": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/browser-39706781483.json",
+      "reviewSha256": "4834475d304bfd142532da97142f250a96911b6e26115d446a29b69a86f9ea30",
+      "source": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+      "runId": "39706781483",
+      "workflowConclusion": "success",
+      "executionStatus": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+      "sourceDeclaredCases": 7,
+      "executedCases": null,
+      "passedCases": null,
+      "classification": "RETAINED_SEPARATE_HOSTED_LINUX_DEVELOPMENT_PASS",
+      "limit": "Actual per-case counts/report/media were not published; no7/7 inference, no Windows failure supersession and no later d806 test/contract execution claim."
+    },
+    "currentConsumer": {
+      "source": "d8065ceed41e3bff77b01838145afeb8e57f1b7f",
+      "protectedCaptureOrReviewClaimed": false,
+      "aggregateAcceptanceClaimed": false,
+      "testRevisionExecutedByThisAudit": false,
+      "experienceRevisionExecutedByThisAudit": false,
+      "concurrentRuntimeResultsReadOrAdjudicated": false,
+      "currentTestExecutionOutcomeClaimed": false
+    },
+    "olderFailures": {
+      "retained": true,
+      "existingEvidenceGitBlobsModifiedSinceAndroidFresh": [],
+      "historicalCausesNotReinterpreted": true
+    }
+  },
+  "preservedPreviewSource": {
+    "reference": "preservedPreview",
+    "historicalGitCommitAndTreeRetained": true,
+    "noDeploymentOrPreviewSourceMutationPerformedByAudit": true,
+    "liveProcessOriginHealthOrPrivateDatabaseChecked": false,
+    "currentlyDeployedBytesOrAccountHealthNotInferred": true
+  },
+  "limits": [
+    "Committed d806 inputs only. The browser-test working-tree edit observed during the read is excluded, and final working-tree cleanliness is not claimed. No future child/test execution is qualified.",
+    "Source applicability only; no fresh aggregate software pass, Product Experience review, protected Mainline Decision, merge, landed smoke, signed beta or owner acceptance.",
+    "Account/consumer production matches846; this does not claim the entire application is byte-identical to39e. Shared Scene/native input scopes have explicitly checked references.",
+    "Physical iPhone/Android AR, authored-room alignment, positive physical Inspect, live metric browser provider and assistive acceptance remain separate.",
+    "Historical public evidence remains committed; private original artifact contents, credentials and runtime state were not inspected or changed. No PR781/NCL02/NCL03 authority changes.",
+    "Runtime nonexecution flags describe this audit only. Concurrent local d806 browser results were not read or adjudicated by this source review."
+  ],
+  "supersedesDerivedReview": {
+    "sha256": "4dbc077bd7d69e8ba341503dbfd866d60ffedd33ec195041a78ab3cd4c6510ed",
+    "reason": "Nonexecution fields now explicitly describe this source-only audit, not absence of concurrent browser work. No source/tree/blob/hash assertion changed."
+  }
+}

@@ -502,6 +502,7 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
               </div>
               <div
                 className="harbor-media-inline-preview harbor-media-inline-preview--avatar"
+                role="group"
                 aria-label="Current avatar preview"
               >
                 {selection?.kind === "AVATAR" ? (
@@ -535,7 +536,7 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
               <small>{selection?.kind === "AVATAR" ? "PENDING_LOCAL" : draft.avatar ? "READY" : "No avatar"}</small>
             </div>
             {selection?.kind === "AVATAR" && selection.confirmed ? (
-              <div className="harbor-media-field-actions" aria-label="Pending avatar actions">
+              <div className="harbor-media-field-actions" role="group" aria-label="Pending avatar actions">
                 <button
                   type="button"
                   className="button button--quiet"
@@ -580,6 +581,7 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
               </div>
               <div
                 className="harbor-media-inline-preview harbor-media-inline-preview--banner"
+                role="group"
                 aria-label="Current banner preview"
               >
                 {selection?.kind === "BANNER" ? (
@@ -613,7 +615,7 @@ export function ProfileEditor({ returnTo }: { returnTo?: string } = {}) {
               <small>{selection?.kind === "BANNER" ? "PENDING_LOCAL" : draft.banner ? "READY" : "No banner"}</small>
             </div>
             {selection?.kind === "BANNER" && selection.confirmed ? (
-              <div className="harbor-media-field-actions" aria-label="Pending banner actions">
+              <div className="harbor-media-field-actions" role="group" aria-label="Pending banner actions">
                 <button
                   type="button"
                   className="button button--quiet"

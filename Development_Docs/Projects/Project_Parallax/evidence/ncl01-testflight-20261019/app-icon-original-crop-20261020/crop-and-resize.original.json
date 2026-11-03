@@ -1,0 +1,26 @@
+{
+  "sourceSha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+  "crop": {
+    "left": 240,
+    "top": 215,
+    "width": 800,
+    "height": 800
+  },
+  "sourceCropPixelsExactlyPreserved": true,
+  "originalPivotMeasured": [
+    639.7635,
+    614.4448
+  ],
+  "cropPixelCenter": [
+    639.5,
+    614.5
+  ],
+  "resize": {
+    "width": 1024,
+    "height": 1024,
+    "kernel": "lanczos3"
+  },
+  "colorAdjustments": false,
+  "generativeEditing": false,
+  "resultSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73"
+}

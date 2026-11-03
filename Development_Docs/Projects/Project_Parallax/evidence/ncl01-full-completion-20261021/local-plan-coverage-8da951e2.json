@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "qualification": false,
+  "role": "DERIVED_LOCAL_PLAN_COVERAGE_ONLY",
+  "baseSha": "90bff6ec281d79a6788c8270a8a3d67fd8257010",
+  "candidateSha": "8da951e2ae142fe1f563034c67fe09d36a3316aa",
+  "candidateTree": "b854487653b1ab68d788655bed1e08dc62ec6f1c",
+  "sourceDigest": "ee93261896e2dbaaa114a6b944ea0d20635f7b60d5f433ff1ba81185dd2d6134",
+  "contractDigest": "1641e055d4bcb7d0cb34ef8c641023cd8957e10e46768c07ee63418cb03ffeb3",
+  "originalPlan": {
+    "bytes": 322388,
+    "sha256": "9b18a2ac8a971e0375e3eaea0f726beec6577dda1ebaa42f3604ef3084d898c0"
+  },
+  "readinessReviewSha256": "6b0a9d5a9a97dbea26784551252b26228bf0f62c8ed51ec8e51762aeded2a80d",
+  "selectedContractCount": 18,
+  "selectedContractIds": [
+    "admiralty.phase1.registry",
+    "admiralty.phase2.account-dossier-support",
+    "community-public-projection",
+    "crossdeck.phase2.continuity",
+    "crossdeck.refit.companion",
+    "crossdeck.refit.published-lens",
+    "drydock-authoring-contracts",
+    "homeport.phase7.account.canonical-lifecycle",
+    "homeport.phase7.account.cross-workspace-session",
+    "homeport.shell.crossdeck-access-recovery",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "homeport.transition.auth-routes",
+    "parallax.floating-controls.experience",
+    "parallax.ncl01.owner-sea-trials",
+    "public-privacy-projection",
+    "spatial-pilot.experience",
+    "wayfarer-history-projection"
+  ],
+  "genericContexts": 68,
+  "pairedContexts": 6,
+  "totalContexts": 74,
+  "pairedCaseIds": [
+    "crossdeck-pair-normal",
+    "crossdeck-pair-reduced",
+    "crossdeck-pair-adverse"
+  ],
+  "uncertainty": [],
+  "exceptionPresent": false,
+  "nodeVersion": "v24.18.0",
+  "declaredNodeVersion": "v24.19.0",
+  "captureOrIndependentReviewOrMainlineAccepted": false
+}

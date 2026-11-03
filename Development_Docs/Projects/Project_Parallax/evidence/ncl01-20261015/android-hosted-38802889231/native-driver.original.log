@@ -1,0 +1,14 @@
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:39:23.4120999Z Emulator booted.
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:39:23.4233523Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell input keyevent 82
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:39:24.6867037Z Disabling animations.
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:39:24.6888520Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global window_animation_scale 0.0
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:39:25.1630740Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global transition_animation_scale 0.0
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:39:25.3068141Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 shell settings put global animator_duration_scale 0.0
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:39:25.5858456Z ##[endgroup]
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:39:25.5918056Z [command]/usr/bin/sh -c npx --no-install tsx scripts/landfall/device-lab/android-test.ts
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:40:48.7038713Z {"result":"FAIL","directory":"/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/android-native-tests-1792096767139"}
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:40:48.7331771Z ##[error]The process '/usr/bin/sh' failed with exit code 1
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:40:48.7333300Z ##[group]Terminate Emulator
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:40:48.7336932Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 emu kill
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:40:48.7367317Z error: could not connect to TCP port 5554: Connection refused
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T20:40:48.7371503Z The process '/usr/local/lib/android/sdk/platform-tools/adb' failed with exit code 1

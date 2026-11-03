@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "FAILED_NATIVE_DRIVER_DIAGNOSTICS_ONLY",
+  "stage": "INSTRUMENTATION",
+  "capturedBeforeCleanup": true,
+  "maximumBytesPerStream": 262144,
+  "originalFailure": {
+    "code": 255,
+    "signal": null,
+    "killed": false,
+    "validationCode": null,
+    "stdout": {
+      "path": "tool-failure.stdout.original.log",
+      "bytes": 5008,
+      "originalBytes": 5008,
+      "truncated": false,
+      "sha256": "66f5553f5a06a9c6b996604da23f4c9fc86933594f648d6a065790282ff67921"
+    },
+    "stderr": {
+      "path": "tool-failure.stderr.original.log",
+      "bytes": 0,
+      "originalBytes": 0,
+      "truncated": false,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "observations": [
+    {
+      "name": "adb-state",
+      "result": "FAIL",
+      "code": 1,
+      "signal": null,
+      "killed": false,
+      "validationCode": null,
+      "stdout": {
+        "path": "adb-state.stdout.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "adb-state.stderr.original.log",
+        "bytes": 22,
+        "originalBytes": 22,
+        "truncated": false,
+        "sha256": "4be638bde642b088a4bdd4b24186451522d04388f3e0e28ba5ba745a391f01c8"
+      }
+    },
+    {
+      "name": "adb-logcat",
+      "result": "FAIL",
+      "code": null,
+      "signal": "SIGTERM",
+      "killed": true,
+      "validationCode": null,
+      "stdout": {
+        "path": "adb-logcat.stdout.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "adb-logcat.stderr.original.log",
+        "bytes": 23,
+        "originalBytes": 23,
+        "truncated": false,
+        "sha256": "3ac98e1b3dca881f7dd64bfe98388694b4c4af23988443a9d3ac9dc7ab771f22"
+      }
+    },
+    {
+      "name": "guest-memory",
+      "result": "FAIL",
+      "code": 1,
+      "signal": null,
+      "killed": false,
+      "validationCode": null,
+      "stdout": {
+        "path": "guest-memory.stdout.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "guest-memory.stderr.original.log",
+        "bytes": 20,
+        "originalBytes": 20,
+        "truncated": false,
+        "sha256": "a7d0391f2b9ecc7dc302d6ca042251f413b26e1f1ee29d396e7db3df0701640f"
+      }
+    },
+    {
+      "name": "host-memory",
+      "result": "PASS",
+      "code": null,
+      "signal": null,
+      "killed": false,
+      "validationCode": null,
+      "stdout": {
+        "path": "host-memory.stdout.original.log",
+        "bytes": 1618,
+        "originalBytes": 1618,
+        "truncated": false,
+        "sha256": "61e4aa875e0c8b8c90664ddfbb0f32ab5f0ca948a2fe853fc5c1651be733d9d2"
+      },
+      "stderr": {
+        "path": "host-memory.stderr.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "host-processes",
+      "result": "PASS",
+      "code": null,
+      "signal": null,
+      "killed": false,
+      "validationCode": null,
+      "stdout": {
+        "path": "host-processes.stdout.original.log",
+        "bytes": 6591,
+        "originalBytes": 6591,
+        "truncated": false,
+        "sha256": "5cf1b750c4aac7a2a6c6b9419cc706c5e428b1c7436db9ebfd289cfa73be7122"
+      },
+      "stderr": {
+        "path": "host-processes.stderr.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "host-kernel",
+      "result": "FAIL",
+      "code": 1,
+      "signal": null,
+      "killed": false,
+      "validationCode": null,
+      "stdout": {
+        "path": "host-kernel.stdout.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "host-kernel.stderr.original.log",
+        "bytes": 58,
+        "originalBytes": 58,
+        "truncated": false,
+        "sha256": "eb7773ca6beb7854c1984fe13ca1a9c96b7c92861c48ec1f6e2c881c19f3084f"
+      }
+    },
+    {
+      "name": "host-cgroup-memory-events",
+      "result": "FAIL",
+      "code": "ENOENT",
+      "signal": null,
+      "killed": false,
+      "validationCode": null,
+      "stdout": {
+        "path": "host-cgroup-memory-events.stdout.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "host-cgroup-memory-events.stderr.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "host-cgroup-memory-current",
+      "result": "FAIL",
+      "code": "ENOENT",
+      "signal": null,
+      "killed": false,
+      "validationCode": null,
+      "stdout": {
+        "path": "host-cgroup-memory-current.stdout.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "host-cgroup-memory-current.stderr.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "host-cgroup-memory-max",
+      "result": "FAIL",
+      "code": "ENOENT",
+      "signal": null,
+      "killed": false,
+      "validationCode": null,
+      "stdout": {
+        "path": "host-cgroup-memory-max.stdout.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "host-cgroup-memory-max.stderr.original.log",
+        "bytes": 0,
+        "originalBytes": 0,
+        "truncated": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "physicalTrackingProven": false
+}

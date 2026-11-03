@@ -412,7 +412,8 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
             <Link href={authorizedReturnTo(returnTo, currentUser, "/passport")}>Continue without signing in again</Link>
           </p>
         ) : null}
-        <form onSubmit={submit} aria-describedby="account-status">
+        {/* Early native submission must keep credentials out of URLs before hydration. */}
+        <form method="post" onSubmit={submit} aria-describedby="account-status">
           {fields.map((field) => {
             const fieldError = fieldErrors[field];
             const describedBy =

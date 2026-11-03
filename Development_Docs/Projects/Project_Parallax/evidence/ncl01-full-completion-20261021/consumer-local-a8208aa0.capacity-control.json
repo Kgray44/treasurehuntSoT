@@ -1,0 +1,338 @@
+{
+  "role": "LOCAL_WINDOWS_DEVELOPMENT_FUNCTIONAL_RESULT_WITH_CAPACITY_CONTROL_FAILURE",
+  "qualification": false,
+  "sourceSha": "a8208aa038d989b8aee17f1494bd37a44e5b1b9b",
+  "sourceTree": "d64a3d8ab705e54d82f2d139c533f6b4fade5ae8",
+  "createdAtUtc": "2026-10-22T03:19:32.889Z",
+  "functionalStatus": "PASS",
+  "wholeRunCapacityCompliance": false,
+  "capacityControlStatus": "STOP_DIRECTIVE_NOT_ENFORCED_BEFORE_SERVER_AND_BROWSER",
+  "cancellationClaim": false,
+  "controlObservations": {
+    "rootCapacityStopDirectivePrecededServerAndBrowser": true,
+    "directiveExactUtcNotRetainedInLocalFiles": true,
+    "twoPreflightRefusalsMadeNoMutation": true,
+    "stopAttemptExactUtcNotRetainedInLocalFiles": true,
+    "firstRefusal": "BUILD_GUARDIAN_ALREADY_EXITED",
+    "secondRefusal": "MASTER_ALREADY_EXITED",
+    "masterCreationAndFixedArgvVerifiedInFirstPreflight": true,
+    "capacityStopNotEnforced": true,
+    "cancelledClaim": false,
+    "noSourceFailureAttribution": true,
+    "priorCapacityObservationFreeBytes": 13709418496,
+    "priorCapacityObservationUtc": "2026-10-22T03:03:58Z",
+    "priorCapacityObservationSource": "Agent observation reported before attempted stop; no fresh capacity measurement performed here"
+  },
+  "noCausalSourceFailureInferred": true,
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "declaredNodeVersion": "24.19.0",
+    "nodeVersionMatchesRepositoryDeclaration": false,
+    "chromium": "EXISTING_LOCKED_BINARY",
+    "workers": 1,
+    "retries": 0,
+    "repeatEach": 1,
+    "ordinaryBuild": true,
+    "preparedManifestUsed": false,
+    "immutableWindowsCopierUsed": false
+  },
+  "heavyChildTemporaryDataDependenciesDatabaseBuildAndOutputsOnD": true,
+  "parentSupervisorControlReceiptsOnC": true,
+  "allTemporaryDataOnDClaim": false,
+  "priorRuntimeDatabaseBuildAndEvidenceUntouchedClaimExcludesWarmNpmCache": true,
+  "sourceInputDigestSha256": "1706e5f6150458d6c4d6033656b2c9825152a41654893293c33ee139ef285032",
+  "sourceInputCount": 2844,
+  "sourceUnchanged": true,
+  "selectedTest": {
+    "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+    "gitBlob": "4def6bcd8094233afe90a63afe843441153a2221",
+    "sha256": "c05e517d79d0fb88304ed52a4ba19eeb37d80c4064fccf81556a6094504bb98b"
+  },
+  "execution": {
+    "sourceDeclaredCases": 7,
+    "actualExecutedCases": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "reportStartUtc": "2026-10-22T03:07:45.720Z",
+    "reportDurationMs": 111254.341,
+    "reportIntervalEndUtc": "2026-10-22T03:09:36.974Z",
+    "serverGuardianCreatedUtc": "2026-10-22T03:06:31.190Z",
+    "browserGuardianCreatedUtc": "2026-10-22T03:06:51.710Z",
+    "browserRuntimeReceiptWrittenUtc": "2026-10-22T03:09:38.847Z",
+    "results": [
+      {
+        "title": "anonymous account navigation exposes registration and its conventional sign-in return",
+        "line": 117,
+        "project": "chromium",
+        "status": "expected",
+        "expectedStatus": "passed",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "durationMs": 12366,
+            "startTime": "2026-10-22T03:07:54.689Z",
+            "errorCount": 0
+          }
+        ]
+      },
+      {
+        "title": "Player returns through account and real version-pinned private history",
+        "line": 133,
+        "project": "chromium",
+        "status": "expected",
+        "expectedStatus": "passed",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "durationMs": 20908,
+            "startTime": "2026-10-22T03:08:10.938Z",
+            "errorCount": 0
+          }
+        ]
+      },
+      {
+        "title": "Creator opens the actual owned draft and cancels creation without publishing",
+        "line": 178,
+        "project": "chromium",
+        "status": "expected",
+        "expectedStatus": "passed",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "durationMs": 15467,
+            "startTime": "2026-10-22T03:08:31.978Z",
+            "errorCount": 0
+          }
+        ]
+      },
+      {
+        "title": "Captain reads eligible editions and closes the real Voyage wizard without creating a Voyage",
+        "line": 200,
+        "project": "chromium",
+        "status": "expected",
+        "expectedStatus": "passed",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "durationMs": 9690,
+            "startTime": "2026-10-22T03:08:47.538Z",
+            "errorCount": 0
+          }
+        ]
+      },
+      {
+        "title": "Administrator uses the real privacy-preserving People empty state and returns to the same account",
+        "line": 224,
+        "project": "chromium",
+        "status": "expected",
+        "expectedStatus": "passed",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "durationMs": 8851,
+            "startTime": "2026-10-22T03:08:57.269Z",
+            "errorCount": 0
+          }
+        ]
+      },
+      {
+        "title": "isolated fixed Owner opens Sea Trials and follows the actual conventional return",
+        "line": 238,
+        "project": "chromium",
+        "status": "expected",
+        "expectedStatus": "passed",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "durationMs": 13473,
+            "startTime": "2026-10-22T03:09:06.150Z",
+            "errorCount": 0
+          }
+        ]
+      },
+      {
+        "title": "public Community and Chronicle discovery preserve private history through empty-state recovery",
+        "line": 257,
+        "project": "chromium",
+        "status": "expected",
+        "expectedStatus": "passed",
+        "results": [
+          {
+            "status": "passed",
+            "retry": 0,
+            "durationMs": 15841,
+            "startTime": "2026-10-22T03:09:19.666Z",
+            "errorCount": 0
+          }
+        ]
+      }
+    ]
+  },
+  "assertionApplicability": {
+    "playerDetailExactProjectedUrlAndNamedEditionRegion": "PASSED_CASE_133",
+    "playerSettledDetailAxeSeriousCriticalAndVisibleReturn": "PASSED_CASE_133",
+    "playerOwnerAndAdminHttp404Denials": "PASSED_CASE_133",
+    "ownerGuardPendingStateAndVisibleHomeAccountReturn": "PASSED_CASE_238",
+    "seriousCriticalAxeAssertions": "UNCHANGED_ASSERTIONS_REACHED_BY_PASSED_CASES",
+    "perAxeInvocationRawFindingsNotSeparatelyExported": true
+  },
+  "ordinarySetup": [
+    {
+      "label": "locked-npm-ci",
+      "payloadExitCode": 0,
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    {
+      "label": "prisma-generate",
+      "payloadExitCode": 0,
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    {
+      "label": "sqlite-bootstrap",
+      "payloadExitCode": 0,
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    {
+      "label": "generic-seed",
+      "payloadExitCode": 0,
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    {
+      "label": "scripts/migrate-legacy-companion.ts",
+      "payloadExitCode": 0,
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    {
+      "label": "scripts/sounding-line/prepare-validation-isolation.mjs",
+      "payloadExitCode": 0,
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    {
+      "label": "next-build",
+      "payloadExitCode": 0,
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true
+    }
+  ],
+  "cleanup": {
+    "browser": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": 0,
+      "elapsedMs": 14,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "fixture": {
+      "status": "NOT_STARTED",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    "server": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": null,
+      "elapsedMs": 471,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "proxy": {
+      "status": "PASS"
+    },
+    "portsReleased": true,
+    "status": "PASS",
+    "externalPostRunObservation": {
+      "observedAtUtc": "2026-10-22T03:18:56.0104234Z",
+      "masterAbsent": true,
+      "recordedGuardianCount": 9,
+      "allRecordedGuardiansAbsent": true,
+      "ownedLoopbackListenerCount": 0,
+      "originalOuterSessionExitCode": 0,
+      "originalOuterStreamsClosed": true,
+      "nativeJobEmptyProof": "Preserved ordinary setup/runtime cleanup treeReaped true; no surviving recorded supervisor",
+      "stopMutationCount": 0
+    },
+    "exactStopMutationCount": 0,
+    "originalOuterSessionExitCode": 0,
+    "originalOuterStreamsClosed": true
+  },
+  "reportSha256": "902e202e8e483386e431eccbf448961e1e0aa4b2de204780d853ea14976735fe",
+  "runtimeReceiptSha256": "5c1ca5ed6446a071a5ca68036ced72d477218040a661472fbf34d86b9247a93a",
+  "originalMapSha256": "35961064194f85b2210b105ce2e292d59a73263286b0bc93dd2ad7895eac170b",
+  "originalFileCount": 48,
+  "originalBytes": 1981507,
+  "stopControlObservationSha256": "1d654bd26a164e919b337099459a2e488f849946ef91d520c7239254e2eac8df",
+  "priorOriginalsRevalidation": {
+    "originalFileCount": 269,
+    "status": "PASS",
+    "maps": [
+      {
+        "sourceSha": "b9b6956fe291919bd6fcb6329618702d873582af",
+        "originalMapSha256": "f4c850d550326981a8633f23a5dcd0ca3247bbc5e67c5e3c91f6ae1ef553599c",
+        "originalFileCount": 47,
+        "bytesRehashed": 22910817,
+        "status": "PASS"
+      },
+      {
+        "sourceSha": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+        "originalMapSha256": "594d8e988a66601829f1ad0bb419c29cd6911d69d8b0be1a97f7830a9dd90cb3",
+        "originalFileCount": 78,
+        "bytesRehashed": 25197509,
+        "status": "PASS"
+      },
+      {
+        "sourceSha": "d8065ceed41e3bff77b01838145afeb8e57f1b7f",
+        "originalMapSha256": "7523c7ea581a38c0217aa61b404039b1343740ada686455bf598a457a3964f0c",
+        "originalFileCount": 72,
+        "bytesRehashed": 24253573,
+        "status": "PASS"
+      },
+      {
+        "sourceSha": "7c114fe26c1e9dafe79e42b2dec94fa4c938e6a4",
+        "originalMapSha256": "37344b507ab895865102b7869f2eed3bf3edd34ccff87cbf3a3ecd4e139fdfb7",
+        "originalFileCount": 72,
+        "bytesRehashed": 23155189,
+        "status": "PASS"
+      }
+    ]
+  },
+  "limits": [
+    "Functional Windows development evidence only; capacity-stop compliance failed.",
+    "No hosted Linux, immutable prepare/run helper, ProductExperience capture, protected-main gate, physical/native AR, or owner acceptance claimed.",
+    "Two stop attempts made no mutation: first preflight refused an already-exited build guardian; second found the master already exited.",
+    "Exact UTC receipt times of the stop directive and the two refused attempts are not retained in these local files; root message timing is separate evidence.",
+    "Original terminal PASS bytes preserved unchanged; this derived review adds the control failure.",
+    "Prior hosted Linux failure remains independently preserved and its cause is not established by this Windows pass.",
+    "No runtime rerun, source edits, reserve reduction, or process mutation followed this review."
+  ]
+}

@@ -1,0 +1,463 @@
+{
+  "arViewTouchCoordinateMappingProven" : false,
+  "assets" : [
+    {
+      "assetId" : "treasure-chest",
+      "authoredChildMatricesAndMaterialObjectsPreserved" : true,
+      "bottomCenterPivotPreserved" : true,
+      "emptyNontransparentPixels" : 0,
+      "entityId" : "fixture-model-treasure-chest",
+      "entityScale" : 1.2,
+      "entityTranslationMeters" : [
+        0.23000000000000001,
+        0.17000000000000001,
+        -0.31
+      ],
+      "entityYawRadians" : 0.52359873056411743,
+      "geometryNodes" : 7,
+      "geometrySelection" : {
+        "backgroundMiss" : true,
+        "backgroundNeighborhoodMaximumAlpha" : 0,
+        "backgroundPixelCenter" : [
+          3.5,
+          3.5
+        ],
+        "boundingBoxOnlyOverride" : false,
+        "currentViewport" : [
+          0,
+          0,
+          256,
+          256
+        ],
+        "faceIndex" : 791,
+        "geometryIndex" : 0,
+        "hitNodeName" : "Node5",
+        "mirrorNeighborhoodMaximumAlpha" : 0,
+        "neighborhoodWidthPixels" : 7,
+        "opaqueNeighborhoodMinimumAlpha" : 255,
+        "opaquePixelCenter" : [
+          127.5,
+          166.5
+        ],
+        "pixelCoordinateMapping" : "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once; fixed inverse for projected readback; no fallback",
+        "populatedRawBgraSha256" : "eefdbb1d3acc19fee523afd83a919a0971a452ab94cc8af8c23ae8e0602839c7",
+        "productionMapper" : "ParallaxLocalRuntime.entityId(for:entities:)",
+        "projectedReadbackCoordinates" : [
+          127.5,
+          166.49998474121094
+        ],
+        "projectedViewportCoordinates" : [
+          127.5,
+          89.500015258789062,
+          0.99972444772720337
+        ],
+        "query" : "SCNRenderer.hitTest",
+        "sceneKitBackgroundQueryCenter" : [
+          3.5,
+          252.5
+        ],
+        "sceneKitOpaqueQueryCenter" : [
+          127.5,
+          89.5
+        ],
+        "sceneKitTransparentMirrorQueryCenter" : [
+          127.5,
+          166.5
+        ],
+        "searchMode" : "closest",
+        "selectedEntityId" : "fixture-model-treasure-chest",
+        "transparentVerticalMirrorMiss" : true,
+        "transparentVerticalMirrorPixelCenter" : [
+          127.5,
+          89.5
+        ],
+        "verifiedElapsedMs" : 2053.7515833333373,
+        "worldCoordinates" : [
+          0.36936575174331665,
+          0.28779321908950806,
+          -0.043347686529159546
+        ]
+      },
+      "materialInstances" : 4,
+      "modelDetachedFromScene" : true,
+      "originalBoundsMeters" : [
+        -0.40000000596046448,
+        0,
+        -0.25,
+        0.40000000596046448,
+        0.61000001430511475,
+        0.25
+      ],
+      "removedGeometrySelection" : {
+        "backgroundMiss" : true,
+        "formerOpaquePixelMiss" : true,
+        "rawReadbackPixelCenters" : [
+          [
+            127.5,
+            166.5
+          ],
+          [
+            127.5,
+            89.5
+          ],
+          [
+            3.5,
+            3.5
+          ]
+        ],
+        "readbackToQueryMapping" : "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once",
+        "retainedRootLookupUsed" : true,
+        "sceneKitQueryCenters" : [
+          [
+            127.5,
+            89.5
+          ],
+          [
+            127.5,
+            166.5
+          ],
+          [
+            3.5,
+            252.5
+          ]
+        ],
+        "transparentVerticalMirrorMiss" : true,
+        "verifiedElapsedMs" : 2062.0587500000056
+      },
+      "removedNontransparentPixels" : 0,
+      "renderedNontransparentPixels" : 8301,
+      "sha256" : "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "sourceWidthMeters" : 0.80000000000000004,
+      "testAnchorFrameTranslationMeters" : [
+        -0.13,
+        0.080000000000000002,
+        0.20999999999999999
+      ],
+      "testAnchorFrameYawRadians" : -0.26179936528205872,
+      "transformedBoundsMeters" : [
+        -0.46349567174911499,
+        0.17000000178813934,
+        -0.91547071933746338,
+        0.90001147985458374,
+        1.0850000381469727,
+        0.25104483962059021
+      ],
+      "widthNormalization" : 1.25
+    },
+    {
+      "assetId" : "brass-compass",
+      "authoredChildMatricesAndMaterialObjectsPreserved" : true,
+      "bottomCenterPivotPreserved" : true,
+      "emptyNontransparentPixels" : 0,
+      "entityId" : "fixture-model-brass-compass",
+      "entityScale" : 1.2,
+      "entityTranslationMeters" : [
+        0.23000000000000001,
+        0.17000000000000001,
+        -0.31
+      ],
+      "entityYawRadians" : 0.52359873056411743,
+      "geometryNodes" : 4,
+      "geometrySelection" : {
+        "backgroundMiss" : true,
+        "backgroundNeighborhoodMaximumAlpha" : 0,
+        "backgroundPixelCenter" : [
+          3.5,
+          3.5
+        ],
+        "boundingBoxOnlyOverride" : false,
+        "currentViewport" : [
+          0,
+          0,
+          256,
+          256
+        ],
+        "faceIndex" : 327,
+        "geometryIndex" : 0,
+        "hitNodeName" : "Node1",
+        "mirrorNeighborhoodMaximumAlpha" : 0,
+        "neighborhoodWidthPixels" : 7,
+        "opaqueNeighborhoodMinimumAlpha" : 255,
+        "opaquePixelCenter" : [
+          127.5,
+          147.5
+        ],
+        "pixelCoordinateMapping" : "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once; fixed inverse for projected readback; no fallback",
+        "populatedRawBgraSha256" : "3d1e44a0cc7561c3e7bb90421c2733deeb5cf2c69b517ad6232d9d8f5824cfcb",
+        "productionMapper" : "ParallaxLocalRuntime.entityId(for:entities:)",
+        "projectedReadbackCoordinates" : [
+          127.49996185302734,
+          147.50001525878906
+        ],
+        "projectedViewportCoordinates" : [
+          127.49996185302734,
+          108.49998474121094,
+          0.99885779619216919
+        ],
+        "query" : "SCNRenderer.hitTest",
+        "sceneKitBackgroundQueryCenter" : [
+          3.5,
+          252.5
+        ],
+        "sceneKitOpaqueQueryCenter" : [
+          127.5,
+          108.5
+        ],
+        "sceneKitTransparentMirrorQueryCenter" : [
+          127.5,
+          147.5
+        ],
+        "searchMode" : "closest",
+        "selectedEntityId" : "fixture-model-brass-compass",
+        "transparentVerticalMirrorMiss" : true,
+        "transparentVerticalMirrorPixelCenter" : [
+          127.5,
+          108.5
+        ],
+        "verifiedElapsedMs" : 2104.2057083334385,
+        "worldCoordinates" : [
+          0.29267621040344238,
+          0.19804233312606812,
+          -0.19216063618659973
+        ]
+      },
+      "materialInstances" : 4,
+      "modelDetachedFromScene" : true,
+      "originalBoundsMeters" : [
+        -0.079999998211860657,
+        0,
+        -0.095000006258487701,
+        0.079999998211860657,
+        0.045000001788139343,
+        0.094999998807907104
+      ],
+      "removedGeometrySelection" : {
+        "backgroundMiss" : true,
+        "formerOpaquePixelMiss" : true,
+        "rawReadbackPixelCenters" : [
+          [
+            127.5,
+            147.5
+          ],
+          [
+            127.5,
+            108.5
+          ],
+          [
+            3.5,
+            3.5
+          ]
+        ],
+        "readbackToQueryMapping" : "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once",
+        "retainedRootLookupUsed" : true,
+        "sceneKitQueryCenters" : [
+          [
+            127.5,
+            108.5
+          ],
+          [
+            127.5,
+            147.5
+          ],
+          [
+            3.5,
+            252.5
+          ]
+        ],
+        "transparentVerticalMirrorMiss" : true,
+        "verifiedElapsedMs" : 2111.3703750000923
+      },
+      "removedNontransparentPixels" : 0,
+      "renderedNontransparentPixels" : 2509,
+      "sha256" : "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "sourceWidthMeters" : 0.16,
+      "testAnchorFrameTranslationMeters" : [
+        -0.13,
+        0.080000000000000002,
+        0.20999999999999999
+      ],
+      "testAnchorFrameYawRadians" : -0.26179936528205872,
+      "transformedBoundsMeters" : [
+        0.054826945066452026,
+        0.17000000178813934,
+        -0.49340862035751343,
+        0.40517303347587585,
+        0.23750001192092896,
+        -0.12659139931201935
+      ],
+      "widthNormalization" : 1.25
+    }
+  ],
+  "cleanup" : "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED",
+  "completedElapsedMs" : 2111.7627083333446,
+  "deadlineSeconds" : 20,
+  "evidenceClass" : "INSTRUMENTED_SCENEKIT_GLTF_RENDERING_ONLY",
+  "fixtureCreatesARSession" : false,
+  "fixtureUsesCamera" : false,
+  "frames" : [
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 127.06395833333772,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 134.94250000007924,
+      "name" : "treasure-chest-empty",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "renderElapsedMs" : 115.95825000006243,
+      "renderSystemUptime" : 847.77885745833339,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 1899.4071666667196,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 1904.7134166667092,
+      "name" : "treasure-chest-populated",
+      "nonblackVisiblePixels" : 7714,
+      "nontransparentPixels" : 8301,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "renderElapsedMs" : 163.10637500009761,
+      "renderSystemUptime" : 847.82600558333343,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2056.3874583333472,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2061.6925833334108,
+      "name" : "treasure-chest-removed",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "renderElapsedMs" : 2054.0403333334325,
+      "renderSystemUptime" : 849.71693954166676,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2067.9239166667003,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2072.9241666666667,
+      "name" : "brass-compass-empty",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "renderElapsedMs" : 2066.515458333356,
+      "renderSystemUptime" : 849.72941466666668,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2079.1174583333714,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2084.1808750000155,
+      "name" : "brass-compass-populated",
+      "nonblackVisiblePixels" : 2509,
+      "nontransparentPixels" : 2509,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+      "renderElapsedMs" : 2075.385416666677,
+      "renderSystemUptime" : 849.73828462500001,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2105.9642916667372,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2111.0034583333572,
+      "name" : "brass-compass-removed",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "renderElapsedMs" : 2104.2876250000973,
+      "renderSystemUptime" : 849.76718683333343,
+      "transactionFlushed" : true,
+      "width" : 256
+    }
+  ],
+  "gpuDriverMemoryReleaseProven" : false,
+  "inFlightCommand" : false,
+  "metalPreflight" : {
+    "commandStatus" : "completed",
+    "completedElapsedMs" : 23.278708333350551,
+    "deviceAvailable" : true,
+    "deviceName" : "Apple iOS simulator GPU",
+    "expectedBGRA" : [
+      191,
+      128,
+      64,
+      255
+    ],
+    "readableCompletedTarget" : true,
+    "registryID" : "4294967740",
+    "sampleBGRA" : [
+      191,
+      128,
+      64,
+      255
+    ],
+    "storageMode" : "shared"
+  },
+  "phase" : "ALL_MODELS_CLEARED",
+  "physicalInspectInteractionProven" : false,
+  "physicalMaterialFidelityProven" : false,
+  "physicalTrackingProven" : false,
+  "productionActivateOrARAnchorPathExercised" : false,
+  "productionBoundary" : "Prototype clone\/sanitize, width normalization, entity root relative to a supplied anchor frame and hit-node ancestry to authored entity ID",
+  "result" : "PASS",
+  "sameColorTargetAcrossAllModelFrames" : true,
+  "schemaVersion" : 1,
+  "sealedElapsedMs" : 2112.3539166667342,
+  "selectionProbe" : {
+    "assetId" : "brass-compass",
+    "backgroundPixelCenter" : [
+      3.5,
+      3.5
+    ],
+    "currentViewport" : [
+      0,
+      0,
+      256,
+      256
+    ],
+    "entityId" : "fixture-model-brass-compass",
+    "opaquePixelCenter" : [
+      127.5,
+      147.5
+    ],
+    "readbackToQueryMapping" : "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once",
+    "sceneKitBackgroundQueryCenter" : [
+      3.5,
+      252.5
+    ],
+    "sceneKitOpaqueQueryCenter" : [
+      127.5,
+      108.5
+    ],
+    "sceneKitTransparentMirrorQueryCenter" : [
+      127.5,
+      147.5
+    ],
+    "transparentVerticalMirrorPixelCenter" : [
+      127.5,
+      108.5
+    ]
+  },
+  "selectionProbeHitCounts" : {
+    "background" : 0,
+    "opaque" : 1,
+    "transparentVerticalMirror" : 0
+  },
+  "testOwnedBoundary" : "Nonidentity rigid anchor frame, camera, lighting, offscreen Metal target and geometry hit queries in its viewport"
+}

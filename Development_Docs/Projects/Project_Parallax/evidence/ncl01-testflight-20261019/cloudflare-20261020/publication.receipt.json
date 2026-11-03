@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "status": "PUBLISHED_PUBLIC_HTTPS_AUTH_VERIFIED_BETA4_DISPATCHED",
+  "observedAt": "2026-10-20T15:01:07Z",
+  "publicOrigin": "https://ncl01.absoluterelativesystems.com",
+  "ownerApproval": {
+    "kind": "EXPLICIT_ACTION_TIME_APPROVAL",
+    "answer": "Approve publishing this route",
+    "scope": "New ncl01 public hostname through existing tunnel to isolated laptop preview; existing VoyageWright sign-in protects private content; staging and audit preserved"
+  },
+  "cloudflareUiConfirmation": {
+    "message": "Route added successfully",
+    "dnsRecordCreated": true,
+    "dnsType": "CNAME",
+    "hostname": "ncl01.absoluterelativesystems.com",
+    "existingTunnelName": "ars-local-staging",
+    "service": "http://127.0.0.1:3159",
+    "additionalSettings": "DEFAULTS",
+    "stagingLocalhost3000Unchanged": true,
+    "auditLocalhost3110Unchanged": true,
+    "accessProtectionsModified": false,
+    "serviceFirewallOrTrustReconfigured": false
+  },
+  "publicChecks": {
+    "receipt": "public-https-auth-assets-streams-pass.public.json",
+    "sha256": "4121e264201b21180158049a5cc1b133086dc21bfb76e722c5361ed6165b6d35",
+    "passed": 14,
+    "total": 14,
+    "normalPlatformTls": true,
+    "caOrTlsOverrides": false,
+    "secureCanonicalSignIn": true,
+    "journalHtmlAndCurrentEventsStream": true,
+    "originalGlbHashesVerified": true,
+    "ownSessionRevoked": true,
+    "bothVoyagesUnchanged": true,
+    "independentReceiptReviewPassed": true,
+    "fullCrossdeckStreamProven": false
+  },
+  "ordinaryBrowser": {
+    "edgeRootRenderedOverNormalHttps": true,
+    "playerEntryAndAccountSignInNavigationPassed": true,
+    "browserSignInPerformed": false,
+    "voyageProgressionPerformed": false,
+    "privateScreenshotsRetainedOutsideGit": true
+  },
+  "beta4": {
+    "candidate": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+    "version": "0.1.0",
+    "build": "4",
+    "githubRunId": "39444433227",
+    "statusAtSnapshot": "DISPATCHED_NOT_YET_ACCEPTED"
+  },
+  "ownerPhone": {
+    "cellularSafariCheck": "DEFERRED_BY_OWNER",
+    "stableOriginNativeInstallationProven": false,
+    "stableOriginPhysicalArProven": false,
+    "authoredSceneFidelityAccepted": false
+  },
+  "credentialsOrPrivateGeometryPublished": false
+}

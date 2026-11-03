@@ -1,0 +1,369 @@
+{
+  "version": 1,
+  "role": "LOCAL_WINDOWS_CORRECTED_DEVELOPMENT_DIAGNOSTIC_REVIEW",
+  "qualification": false,
+  "createdAt": "2026-10-22T01:53:31.183010+00:00",
+  "sourceSha": "846ef70ebdcbe45c75dfeb6171f31f11d243a45c",
+  "sourceTree": "56d660781a0f41af1a5568eb1f1156f87eecf823",
+  "sourcePaths": [
+    {
+      "path": "tests/e2e/ncl01-consumer-continuity.spec.ts",
+      "gitBlob": "d9b4aa544e3983c41264d728ef39c35f7823f5d5",
+      "sha256": "68f74da1a4b4ab30e06165f4579633b782a0fd586bf180d2374cb7bb7f28b321"
+    },
+    {
+      "path": "src/components/homeport/AccountSurfaces.tsx",
+      "gitBlob": "542a69311439e6da6d4ab7542db51c25d94001e2",
+      "sha256": "cd9eb2f28d05ef2a357c36ea4fae1c851c12f8db6b16c0b712ae6e78c7659806"
+    },
+    {
+      "path": "src/components/admiralty/AdminPrimitives.tsx",
+      "gitBlob": "f71dbdedb0d058c5dd4fc2b14d6516c1e44b6804",
+      "sha256": "c7a91ea8904cbb75f8090dda187bd2cec7fbfac15343c2b67b57389c3e3e132e"
+    },
+    {
+      "path": "src/components/wakebook/PassportLayout.tsx",
+      "gitBlob": "2f5adb839c5f8205bddf3ea09a5fe767db14cb72",
+      "sha256": "0b0010ba95bd443622778d2455586f47a5d2f510595bd72ab3523776f26753e0"
+    },
+    {
+      "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+      "gitBlob": "c7f290c94c6243f991c1c7b3d4cfcdaddc633cd0",
+      "sha256": "964c8748e0a670399f73d9ea936f69a2922422c7b4879827b0b6eeef99eae7bf"
+    },
+    {
+      "path": "src/styles/personal-harbor.css",
+      "gitBlob": "00efc7718d07d3f5226085a74cf2320a1c126e42",
+      "sha256": "fb83e61014f44667c61449ab05b3694c3d71f1f6b2c5e58dba3b34a900924831"
+    },
+    {
+      "path": "src/animation/platform/RouteMotionBoundary.tsx",
+      "gitBlob": "ce1933aebb50ef8578fb761be2ed6dc409cc40e3",
+      "sha256": "15609902218ba335f892a2bbc63d9feef28a63f9fbbce43436d355a466107b44"
+    }
+  ],
+  "environment": {
+    "platform": "win32",
+    "node": "v24.18.0",
+    "declaredNodeVersion": "24.19.0",
+    "browser": "locked Chromium1194 /141.0.7390.37",
+    "workers": 1,
+    "retries": 0,
+    "repeatEach": 1,
+    "runtime": "new owned production build and existing runBrowserAuthority",
+    "copierOrPreparedManifestUsed": false,
+    "evidenceTier": "ordinary DEVELOPMENT diagnostic; not ProductExperience acceptance"
+  },
+  "setup": {
+    "lockedDependencyInstall": "PASS",
+    "canonicalPreparationAndNextBuild": "6/6 PASS",
+    "ownedProcessCleanup": "7/7 PASS",
+    "buildRegularFiles": 6073,
+    "buildRegularBytes": 509983575,
+    "sameOwnedBuildJunctions": 3,
+    "warmNpmCacheReused": true,
+    "v2LauncherPreflight": "FAILED before resources created; preserved; same ACL predicate executed through verified existing PowerShell7 in v3",
+    "bothDriveMinimumReserveBytes": 32212254720
+  },
+  "actualExecution": {
+    "executed": 7,
+    "passed": 6,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 33904.975,
+    "cases": [
+      {
+        "declarationLine": 77,
+        "title": "anonymous account navigation exposes registration and its conventional sign-in return",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 93,
+        "title": "Player returns through account and real version-pinned private history",
+        "project": "chromium",
+        "result": "failed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 129,
+        "title": "Creator opens the actual owned draft and cancels creation without publishing",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 151,
+        "title": "Captain reads eligible editions and closes the real Voyage wizard without creating a Voyage",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 175,
+        "title": "Administrator uses the real privacy-preserving People empty state and returns to the same account",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 189,
+        "title": "isolated fixed Owner opens Sea Trials and follows the actual conventional return",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      },
+      {
+        "declarationLine": 205,
+        "title": "public Community and Chronicle discovery preserve private history through empty-state recovery",
+        "project": "chromium",
+        "result": "passed",
+        "retry": 0
+      }
+    ]
+  },
+  "newlyReachedPlayerState": {
+    "observedHeading": "Voyage Detail",
+    "chronicleHeading": "NCL01 Consumer Chronicle",
+    "editionWitness": "Synthetic account history v1",
+    "previousPublicProfileAccessibilityCheck": "PASSED",
+    "currentFailureCallerLine": 116,
+    "sharedAccessibilityAssertionLine": 48,
+    "laterReturnAndPlayerDenialAssertions": "NOT_REACHED"
+  },
+  "demonstratedFailure": {
+    "rule": "color-contrast",
+    "impact": "serious",
+    "topLevelNodeCount": 6,
+    "nodes": [
+      {
+        "target": ".product-route-content > main > .passport-shell__hero > .passport-shell__navigation[aria-label=\"Chronicle Passport sections\"] > ul > li:nth-child(2) > a[aria-current=\"page\"][href$=\"history\"]",
+        "observedRatio": 1.83,
+        "foreground": "#888a71",
+        "background": "#c6ba94",
+        "requiredRatio": 4.5,
+        "component": "src/components/wakebook/PassportLayout.tsx",
+        "componentLine": 48,
+        "stylesheet": "src/styles/personal-harbor.css",
+        "stylesheetLine": 1898
+      },
+      {
+        "target": "a[href$=\"#wakebook-provenance\"]",
+        "observedRatio": 1.85,
+        "foreground": "#374142",
+        "background": "#040e11",
+        "requiredRatio": 4.5,
+        "component": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "componentLine": 237,
+        "stylesheet": "src/styles/personal-harbor.css",
+        "stylesheetLine": 3089
+      },
+      {
+        "target": ".wakebook-crew-avatar",
+        "observedRatio": 1.72,
+        "foreground": "#454740",
+        "background": "#0c2425",
+        "requiredRatio": 4.5,
+        "component": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "componentLine": 362,
+        "stylesheet": "src/styles/personal-harbor.css",
+        "stylesheetLine": 2778
+      },
+      {
+        "target": "label:nth-child(3) > select",
+        "observedRatio": 2.11,
+        "foreground": "#484e50",
+        "background": "#12181a",
+        "requiredRatio": 4.5,
+        "component": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "componentLine": 545,
+        "stylesheet": "src/styles/personal-harbor.css",
+        "stylesheetLine": 3335
+      },
+      {
+        "target": "form:nth-child(1) > label:nth-child(4) > select",
+        "observedRatio": 2.11,
+        "foreground": "#484e50",
+        "background": "#12181a",
+        "requiredRatio": 4.5,
+        "component": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "componentLine": 562,
+        "stylesheet": "src/styles/personal-harbor.css",
+        "stylesheetLine": 3335
+      },
+      {
+        "target": "form:nth-child(2) > label:nth-child(4) > select",
+        "observedRatio": 2.11,
+        "foreground": "#484e50",
+        "background": "#12181a",
+        "requiredRatio": 4.5,
+        "component": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "componentLine": 627,
+        "stylesheet": "src/styles/personal-harbor.css",
+        "stylesheetLine": 3335
+      }
+    ],
+    "transitionObservations": [
+      {
+        "snapshot": "before@call@137",
+        "timestampMs": 23213.14,
+        "routeAttributes": [
+          {
+            "class": "product-route-transition",
+            "data-route-state": "preparing"
+          },
+          {
+            "class": "product-route-layer",
+            "style": "opacity: 1;",
+            "data-route-role": "outgoing",
+            "data-route-interactive": "false"
+          },
+          {
+            "class": "product-route-layer",
+            "style": "opacity: 0; transform: translateY(4px);",
+            "data-route-role": "incoming",
+            "data-route-interactive": "false"
+          },
+          {
+            "class": "product-route-content"
+          }
+        ]
+      },
+      {
+        "snapshot": "before@call@139",
+        "timestampMs": 23274.918,
+        "routeAttributes": [
+          {
+            "class": "product-route-transition",
+            "data-route-state": "preparing"
+          },
+          {
+            "class": "product-route-layer",
+            "style": "opacity: 0; transform: translateY(4px); pointer-events: none;",
+            "data-route-role": "incoming",
+            "data-route-interactive": "false"
+          },
+          {
+            "class": "product-route-content"
+          }
+        ]
+      },
+      {
+        "snapshot": "after@call@143",
+        "timestampMs": 23532.535,
+        "routeAttributes": [
+          {
+            "class": "product-route-transition",
+            "data-route-state": "ready"
+          },
+          {
+            "class": "product-route-layer",
+            "style": "opacity: 0; transform: translateY(0.0072323px); pointer-events: auto;",
+            "data-route-role": "incoming",
+            "data-route-interactive": "true"
+          }
+        ]
+      }
+    ],
+    "auditEvaluateWindowMs": {
+      "start": 23313.556,
+      "end": 23498.277
+    },
+    "sourceTransitionWitness": {
+      "path": "src/animation/platform/RouteMotionBoundary.tsx",
+      "lines": [
+        128,
+        131,
+        134,
+        136,
+        401
+      ]
+    },
+    "diagnosis": "Accessibility audit overlapped retained route preparing/ready animation states; source nominal colors differ from observed blended colors. A route-settling synchronization gap is supported; no final static color or historical Linux cause is asserted.",
+    "nominalSourceColors": {
+      "currentPassportNavigation": {
+        "foreground": "#163837",
+        "background": "#f7e5b5"
+      },
+      "crewAvatar": {
+        "foreground": "#f2e4c3",
+        "background": "#256461"
+      }
+    },
+    "failureScreenshotIndependentlyViewed": true,
+    "failureScreenshotObservation": "Later captured hero/current navigation appear readable; screenshot is not a stable-state AXE pass."
+  },
+  "runtimeOutcome": {
+    "failureCategory": "PRODUCT_FAILURE",
+    "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 1,
+        "elapsedMs": 3,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 142,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "timings": {
+      "serverPreparationMs": 8,
+      "serverReadinessMs": 2266,
+      "browserExecutionMs": 46210,
+      "infrastructureFailureWaitMs": 0,
+      "cleanupMs": 145
+    }
+  },
+  "preservation": {
+    "sourceUnchanged": true,
+    "previousB9OriginalMapSha256": "f4c850d550326981a8633f23a5dcd0ca3247bbc5e67c5e3c91f6ae1ef553599c",
+    "previousB9OriginalFilesRehashedUnchanged": 47,
+    "previousB9RuntimeDatabaseBuildAndEvidenceUntouched": true,
+    "originalFileCount": 78,
+    "originalBytes": 25197509,
+    "originalMapSha256": "594d8e988a66601829f1ad0bb419c29cd6911d69d8b0be1a97f7830a9dd90cb3",
+    "originalReportSha256": "7e40169ed4f13e2ba3b5e2a191b9dc16df0e4a81fa6ff20953d8f583e6f1c319",
+    "originalRuntimeSha256": "6d4a9b85f8d394087dc96fd8c2aa7db73d50f1391e5359bfd274e91f4afe95b1",
+    "terminalSha256": "73558a3377f2eea4b36a2bb1b3f0addc3e78db83656aae3ab47f2037fed6d55e",
+    "launcherV3Sha256": "db59c94798eafbfc34877186582dcb9f6e19ccb2a2b5182cc5db35c60cdd6868",
+    "runtimeCredentialsAndDatabaseExcluded": true
+  },
+  "hostedLinux": {
+    "originalB9Run39701369791": "retained; case count and cause UNKNOWN",
+    "corrected846Run39706781483": "separate environment/result; not inferred from this local run"
+  },
+  "limits": [
+    "One actual source-corrected local browser execution; no retry or product/test edit.",
+    "No prepared-helper PASS, protected integration, ProductExperience, native GPU, physical AR, or owner acceptance claim.",
+    "Raw DOM, credentials, cookies, private media, local account data and database paths are not exported.",
+    "Private original map hashes runtime evidence, logs and metadata, excluding database and generated runtime credential."
+  ]
+}

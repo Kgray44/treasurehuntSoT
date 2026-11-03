@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "READ_ONLY_IOS_RASTER_PROOF_FEASIBILITY_AUDIT",
+  "date": "2026-10-15",
+  "reviewer": "independent ios_render_proof_audit agent",
+  "sourceCheckpoint": "46a20fc1940d7c1fd01275dd8e7163281a42e998",
+  "existingSuccessfulRun": "38800480310",
+  "existingProof": "Original GLBs imported through pinned GLTFKit2 and SceneKit; geometry and materials asserted",
+  "rasterizedPixelsProven": false,
+  "hostedMetalAvailability": "UNKNOWN",
+  "hostObservation": {
+    "runner": "macos-26-arm64",
+    "imageVersion": "20261013.0424.1",
+    "operatingSystem": "macOS 26.6.2",
+    "xcode": "26.6",
+    "capabilitiesContainMetalDeviceProbe": false,
+    "absenceOfProbeDoesNotEstablishNoGpu": true
+  },
+  "boundedFeasibleApproach": {
+    "prerequisite": "Observe an actual Metal device and successfully completed, readable target on host and Simulator before another full raster-test run",
+    "renderer": "Existing SceneKit SCNRenderer with Metal command-buffer completion",
+    "input": "Exact digest-verified original GLBs through the existing import bridge",
+    "assertions": "Empty, populated and removed-model frames with declared pixel tolerance, completion timestamp and preserved original assertions",
+    "deadline": "One existing shared 20-second deadline; no synchronous main-thread snapshot or waitUntilCompleted",
+    "captures": "Original PNG and metrics using keepAlways XCTest attachments",
+    "productionPreparationBoundary": "Cloning, sanitization and entity scale remain private in ParallaxLocalRuntime; import-only rasterization would not prove those operations"
+  },
+  "sources": [
+    "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+    "https://docs.github.com/en/actions/reference/runners/larger-runners",
+    "https://developer.apple.com/documentation/scenekit/scnrenderer/render(attime:viewport:commandbuffer:passdescriptor:)",
+    "https://developer.apple.com/documentation/metal/mtlcommandbuffer/addcompletedhandler(_:)",
+    "https://developer.apple.com/documentation/metal/mtltexture/getbytes(_:bytesperrow:from:mipmaplevel:)",
+    "https://developer.apple.com/documentation/xctest/adding-attachments-to-tests-activities-and-issues"
+  ],
+  "sourceModified": false,
+  "extraNativeRunDispatched": false,
+  "arSessionCreated": false,
+  "physicalTrackingProven": false,
+  "actualPlayerPresentationProven": false,
+  "ownerAcceptanceProven": false
+}

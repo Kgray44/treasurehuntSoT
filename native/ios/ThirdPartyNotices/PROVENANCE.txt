@@ -1,0 +1,10 @@
+GLTFKit2 0.5.15, commit e69e354c4f31ea07b7816b8cbe2ddb28e897d073
+https://github.com/warrenm/GLTFKit2
+The upstream Swift package pins GLTFKit2.xcframework.zip with SHA-256
+9d0c338282acce4986494aa02a5f1495278f56c60d43f31453fefea6875b4928.
+Its prebuilt framework includes cgltf and libktx (KTX-Software v4.2.1).
+Upstream license and copyright notices are retained alongside this file.
+KTX notices come from https://github.com/KhronosGroup/KTX-Software at
+170e75893e3d232a2c4f241afe199256f8abb6f9 (tag v4.2.1).
+The complete upstream license collection is included for attribution;
+it does not imply that upstream test images or trademarked samples ship here.

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "kind": "CANONICAL_CLASSROOM_FIXTURE_API_AND_ACCESSIBLE_BROWSER_PROOF_ONLY",
+  "voyageId": "cmvgr299f000v25o8koydyrcd",
+  "sceneChecksum": "13c1178ec10faae82ef92a7095b376380bcfbf0a1b436caaa7d51beb005edf6d",
+  "fixturePublished": true,
+  "authenticatedAssetChecksPassed": 11,
+  "ordinaryBrowserStatus": "FUNCTIONAL_PASS_WITH_PRESENTATION_FALLBACK",
+  "browserCanvasCount": 0,
+  "browser3DProven": false,
+  "nativeClassroomPhysicalTestProven": false,
+  "automaticRoomRegistration": false,
+  "measuredScale": false,
+  "bothVoyagesCanonicalProgressionUnchanged": true,
+  "onlyOwnVerificationSessionsRevoked": true,
+  "privateImagesRawGeometryAndPlansPublished": false,
+  "files": [
+    {
+      "path": "asset-checks.public.json",
+      "bytes": 6730,
+      "sha256": "1024ae334771cebb8e7b2eb649845ea36514cc29c3c0021cf1a0d2292d38f1c7"
+    },
+    {
+      "path": "classroom-browser-review.public.json",
+      "bytes": 3190,
+      "sha256": "7797bcd0e73621fd3d17c09075ca2689392a0e325030a44938b43761c545723c"
+    },
+    {
+      "path": "classroom-browser-session-cleanup.public.json",
+      "bytes": 199,
+      "sha256": "1ba65d5a1b42dec8edae5d776760ce6f491585dddb07da0278dd233ff08b3937"
+    },
+    {
+      "path": "classroom-ready.public.json",
+      "bytes": 1818,
+      "sha256": "0d3908418e3ce2ed91464593da8f8d5b746840dd93cb665e12201d636185ba2f"
+    }
+  ]
+}

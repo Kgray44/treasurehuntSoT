@@ -1,0 +1,177 @@
+[
+  {
+    "identifier": "CompanionTests/testConfiguredOriginRequiresSingleHTTPSAuthority()",
+    "name": "testConfiguredOriginRequiresSingleHTTPSAuthority()",
+    "suite": "CompanionTests",
+    "result": "Success",
+    "duration": 0.17807400226593018
+  },
+  {
+    "identifier": "CompanionTests/testFailedRegistrationCanRemoveOnlyItsOwnConsent()",
+    "name": "testFailedRegistrationCanRemoveOnlyItsOwnConsent()",
+    "suite": "CompanionTests",
+    "result": "Success",
+    "duration": 0.023099064826965332
+  },
+  {
+    "identifier": "CompanionTests/testNativeWakeJournalIsEncryptedBoundedAndClearable()",
+    "name": "testNativeWakeJournalIsEncryptedBoundedAndClearable()",
+    "suite": "CompanionTests",
+    "result": "Success",
+    "duration": 0.160180926322937
+  },
+  {
+    "identifier": "CompanionTests/testUnconfiguredShellDoesNotAcquireLocation()",
+    "name": "testUnconfiguredShellDoesNotAcquireLocation()",
+    "suite": "CompanionTests",
+    "result": "Success",
+    "duration": 0.010938048362731934
+  },
+  {
+    "identifier": "InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition()",
+    "name": "testActualFrameworkCapabilitiesAndInactiveAcquisition()",
+    "suite": "InstallationInteractionTests",
+    "result": "Success",
+    "duration": 0.3310120105743408
+  },
+  {
+    "identifier": "LocationThrottleTests/testFinalFixIsCoalescedWithoutAnotherNativeCallback()",
+    "name": "testFinalFixIsCoalescedWithoutAnotherNativeCallback()",
+    "suite": "LocationThrottleTests",
+    "result": "Success",
+    "duration": 0.003654003143310547
+  },
+  {
+    "identifier": "LocationThrottleTests/testQueuedFixExpiresAndPowerIntervalIsRecheckedBeforeDelivery()",
+    "name": "testQueuedFixExpiresAndPowerIntervalIsRecheckedBeforeDelivery()",
+    "suite": "LocationThrottleTests",
+    "result": "Success",
+    "duration": 0.0007250308990478516
+  },
+  {
+    "identifier": "LocationThrottleTests/testStaleFutureInvalidAndOutOfOrderFixesCannotReplaceFreshPendingFix()",
+    "name": "testStaleFutureInvalidAndOutOfOrderFixesCannotReplaceFreshPendingFix()",
+    "suite": "LocationThrottleTests",
+    "result": "Success",
+    "duration": 0.0008140802383422852
+  },
+  {
+    "identifier": "LocationThrottleTests/testStopAndRestartCannotDeliverThePreviousPendingFix()",
+    "name": "testStopAndRestartCannotDeliverThePreviousPendingFix()",
+    "suite": "LocationThrottleTests",
+    "result": "Success",
+    "duration": 0.0006231069564819336
+  },
+  {
+    "identifier": "NativeLifecycleTests/testCanonicalScenarioOperations()",
+    "name": "testCanonicalScenarioOperations()",
+    "suite": "NativeLifecycleTests",
+    "result": "Skipped",
+    "duration": 1.7859569787979126
+  },
+  {
+    "identifier": "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+    "name": "testUnconfiguredShellReturnsFromHome()",
+    "suite": "NativeLifecycleTests",
+    "result": "Success",
+    "duration": 14.867285966873169
+  },
+  {
+    "identifier": "NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle()",
+    "name": "testFrameworkCapabilityAndInactiveLifecycle()",
+    "suite": "NearbyInteractionTests",
+    "result": "Success",
+    "duration": 0.010823965072631836
+  },
+  {
+    "identifier": "NearbyInteractionTests/testPairingRejectsReplayUnboundedArchiveAndIdentityClaims()",
+    "name": "testPairingRejectsReplayUnboundedArchiveAndIdentityClaims()",
+    "suite": "NearbyInteractionTests",
+    "result": "Success",
+    "duration": 0.004757046699523926
+  },
+  {
+    "identifier": "NearbyInteractionTests/testUnsupportedDeviceDoesNotPrepareOrEmitAReportedRange()",
+    "name": "testUnsupportedDeviceDoesNotPrepareOrEmitAReportedRange()",
+    "suite": "NearbyInteractionTests",
+    "result": "Success",
+    "duration": 0.0006279945373535156
+  },
+  {
+    "identifier": "ParallaxSceneDeliveryTests/testAuthorizedAssetReferencesAndIntegrity()",
+    "name": "testAuthorizedAssetReferencesAndIntegrity()",
+    "suite": "ParallaxSceneDeliveryTests",
+    "result": "Success",
+    "duration": 0.0474550724029541
+  },
+  {
+    "identifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+    "name": "testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+    "suite": "ParallaxSceneDeliveryTests",
+    "result": "Failure",
+    "duration": 4.900955080986023
+  },
+  {
+    "identifier": "ParallaxSceneDeliveryTests/testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+    "name": "testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+    "suite": "ParallaxSceneDeliveryTests",
+    "result": "Success",
+    "duration": 0.0014140605926513672
+  },
+  {
+    "identifier": "ParallaxSceneDeliveryTests/testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+    "name": "testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+    "suite": "ParallaxSceneDeliveryTests",
+    "result": "Success",
+    "duration": 0.06553900241851807
+  },
+  {
+    "identifier": "ParallaxTests/testSharedBoundaryFixtures()",
+    "name": "testSharedBoundaryFixtures()",
+    "suite": "ParallaxTests",
+    "result": "Success",
+    "duration": 0.027842998504638672
+  },
+  {
+    "identifier": "ParallaxTests/testStartIdentityUsesStrictNumbers()",
+    "name": "testStartIdentityUsesStrictNumbers()",
+    "suite": "ParallaxTests",
+    "result": "Success",
+    "duration": 0.0038999319076538086
+  },
+  {
+    "identifier": "ParallaxTests/testTerminationIsAcknowledgedOnceWithoutOpeningCamera()",
+    "name": "testTerminationIsAcknowledgedOnceWithoutOpeningCamera()",
+    "suite": "ParallaxTests",
+    "result": "Success",
+    "duration": 0.14958298206329346
+  },
+  {
+    "identifier": "PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance()",
+    "name": "testBoundedNativeLeaseEncryptionAndRestorePerformance()",
+    "suite": "PrivateStoreTests",
+    "result": "Success",
+    "duration": 0.4094640016555786
+  },
+  {
+    "identifier": "PrivateStoreTests/testCompleteLeaseReturnsOnlyItsBoundJourney()",
+    "name": "testCompleteLeaseReturnsOnlyItsBoundJourney()",
+    "suite": "PrivateStoreTests",
+    "result": "Success",
+    "duration": 0.02816009521484375
+  },
+  {
+    "identifier": "PrivateStoreTests/testInvalidKeysExpiredLeasesAndOversizedValuesFailClosed()",
+    "name": "testInvalidKeysExpiredLeasesAndOversizedValuesFailClosed()",
+    "suite": "PrivateStoreTests",
+    "result": "Success",
+    "duration": 0.009053945541381836
+  },
+  {
+    "identifier": "PrivateStoreTests/testRestartLeaseIsEncryptedOriginBoundAndClearable()",
+    "name": "testRestartLeaseIsEncryptedOriginBoundAndClearable()",
+    "suite": "PrivateStoreTests",
+    "result": "Success",
+    "duration": 0.012580037117004395
+  }
+]

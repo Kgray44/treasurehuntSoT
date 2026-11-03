@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "machine-engineering-evidence",
+  "reviewer": "independent-source-and-artifact-review",
+  "reviewedAtUtc": "2026-10-16T02:23:07.228372Z",
+  "authorityPromotion": false,
+  "sourceEditedByReviewer": false,
+  "jobsDispatchedByReviewer": false,
+  "evidenceClass": "INDEPENDENT_REVIEW_OF_FAILED_IOS_GEOMETRY_SELECTION_ATTEMPT",
+  "result": "ACCEPTED_AS_TRUTHFUL_FAILED_ATTEMPT_EVIDENCE",
+  "runId": "38838018116",
+  "candidateSha": "2f2d55fd15743bc49d815dd4d9d2179debf52238",
+  "transportSha": "6434f65aa308ebd545635187e7fcc6d286da7aab",
+  "receipt": {
+    "path": "ios-hosted-38838018116.receipt.json",
+    "sha256": "cc0503fcff3334ed60147f2bc7231bb610b28bfeb26ffd56a182878a4bf3fea5"
+  },
+  "publishedEvidenceValidation": {
+    "manifestPointer": "ios-hosted-38838018116.receipt.json#/publishedEvidence",
+    "verifiedEntries": 15,
+    "verifiedBytes": 70401,
+    "allDeclaredSha256AndLengthsMatch": true,
+    "canonicalManifestEncoding": "JSON UTF-8, sorted path entries, sorted object keys, compact separators; only path/sha256/bytes",
+    "manifestSha256": "fafe1aa5f71a40c61ea305915ca278d732377d4b9a929c3a77b779b2aff3421a",
+    "directSourceArtifactByteComparisonsPass": true,
+    "canonicalHarvestReceiptSha256": "d9a1d7424809ad577190bdba769cf0ff7bd311d108b0294991ad3fd71db8344d"
+  },
+  "sourceBinding": {
+    "path": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+    "candidateBlob": "1b78b0a52a3cd0810e1ab26fc9ec0d62c6d94124",
+    "candidateSha256": "817e6c8731fec53e539aa2282882d9696cdc7e68068732a82bd02f76b6665fd7",
+    "immutableCandidateBytesVerified": true,
+    "candidateOnlyChangedPath": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+    "transportOnlyChangedPath": ".github/workflows/landfall-device-lab.yml",
+    "currentSourceNowHasSeparatelyReviewedCorrection": true,
+    "currentSourceSha256": "d40db072a0fbcbc8580d24eda2ad622e5fd7b123de4cb483df816669dfb0d94e"
+  },
+  "observedFailure": {
+    "phase": "GEOMETRY_HIT_treasure-chest",
+    "message": "Actual rendered opaque interior did not hit original SceneKit geometry",
+    "candidateGuardLine": 306,
+    "currentViewport": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "rawProbePoints": {
+      "assetId": "treasure-chest",
+      "backgroundPixelCenter": [
+        3.5,
+        3.5
+      ],
+      "currentViewport": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "entityId": "fixture-model-treasure-chest",
+      "opaquePixelCenter": [
+        127.5,
+        166.5
+      ],
+      "transparentVerticalMirrorPixelCenter": [
+        127.5,
+        89.5
+      ]
+    },
+    "actualClosestHitCounts": {
+      "background": 0,
+      "opaque": 0,
+      "transparentVerticalMirror": 1
+    },
+    "productionEntityMapperReachedForRenderedHit": false,
+    "geometryHitWorldProjectionReached": false,
+    "compassOrRemovedFramesReached": false,
+    "causeClassification": "Observed direct query missed an opaque readback neighborhood while its vertical mirror query hit. A Y convention mismatch is a source-backed inference, not a proved universal SceneKit API rule or accepted corrected execution."
+  },
+  "independentImageChecks": {
+    "reader": "Pillow 12.2.0",
+    "populatedOriginalViewedWithViewImage": true,
+    "visualObservation": "Brown wooden chest with dark metal bands and central gold latch, matching the prior accepted raster identity.",
+    "frames": [
+      {
+        "name": "treasure-chest-empty",
+        "path": "ios-hosted-38838018116/test-attachments/653EB7D4-D423-4DC7-B68C-A3F1D5FBDB32.png",
+        "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "dimensions": [
+          256,
+          256
+        ],
+        "decodedRgbaSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "alphaGreaterThan16": 0,
+        "nonblackVisiblePixelsUsingFixtureThreshold": 0,
+        "neighborhoods": {
+          "backgroundPixelCenter": {
+            "point": [
+              3.5,
+              3.5
+            ],
+            "sampleCount": 49,
+            "minimumAlpha": 0,
+            "maximumAlpha": 0
+          },
+          "opaquePixelCenter": {
+            "point": [
+              127.5,
+              166.5
+            ],
+            "sampleCount": 49,
+            "minimumAlpha": 0,
+            "maximumAlpha": 0
+          },
+          "transparentVerticalMirrorPixelCenter": {
+            "point": [
+              127.5,
+              89.5
+            ],
+            "sampleCount": 49,
+            "minimumAlpha": 0,
+            "maximumAlpha": 0
+          }
+        }
+      },
+      {
+        "name": "treasure-chest-populated",
+        "path": "ios-hosted-38838018116/test-attachments/A9DA184D-3BD6-47AD-AE22-C901E6D08740.png",
+        "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+        "dimensions": [
+          256,
+          256
+        ],
+        "decodedRgbaSha256": "b8b9ba5ec47a2a090c98d19f2fa1f374c3117d86eb2abdce9049d13add4494b7",
+        "alphaGreaterThan16": 8301,
+        "nonblackVisiblePixelsUsingFixtureThreshold": 7714,
+        "neighborhoods": {
+          "backgroundPixelCenter": {
+            "point": [
+              3.5,
+              3.5
+            ],
+            "sampleCount": 49,
+            "minimumAlpha": 0,
+            "maximumAlpha": 0
+          },
+          "opaquePixelCenter": {
+            "point": [
+              127.5,
+              166.5
+            ],
+            "sampleCount": 49,
+            "minimumAlpha": 255,
+            "maximumAlpha": 255
+          },
+          "transparentVerticalMirrorPixelCenter": {
+            "point": [
+              127.5,
+              89.5
+            ],
+            "sampleCount": 49,
+            "minimumAlpha": 0,
+            "maximumAlpha": 0
+          }
+        }
+      }
+    ]
+  },
+  "timingAndTests": {
+    "nativeCases": {
+      "passed": 23,
+      "failed": 1,
+      "skipped": 1,
+      "expectedSkippedIdentifier": "NativeLifecycleTests/testCanonicalScenarioOperations()"
+    },
+    "failedIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+    "observedFrames": 2,
+    "requiredFrames": 6,
+    "observedRenderSystemUptime": [
+      1255.6703303333334,
+      1255.7489160416667
+    ],
+    "observedRenderTimesStrictlyIncreasing": true,
+    "allObservedFramesTransactionFlushed": true,
+    "allObservedCommandsCompleted": true,
+    "completedElapsedMs": 4234.811374999936,
+    "sealedElapsedMs": 4235.853791666614,
+    "originalDeadlineMs": 20000,
+    "observedTimingWithinDeadline": true,
+    "receiptMonotonicFalseInterpretation": "The frozen receipt false is its complete-six-frame acceptance predicate; observed two timestamps strictly increase. No original receipt rewrite."
+  },
+  "cleanupAndScenario": {
+    "fixtureCpuOwners": "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED",
+    "buildSimulatorCleanup": "PASS",
+    "canonicalHarvestTransportCleanup": "PASS",
+    "canonicalPermissionDeniedScenario": "NOT_RUN; prerequisite companion XCTest step failed",
+    "canonicalProgressionEvents": null
+  },
+  "preservedPriorReceiptSha256": {
+    "ios-hosted-38817044787.receipt.json": "b1039897250b8fae8fc881f548c9212b3badc87ffe4854275512a310e6810935",
+    "ios-hosted-38819289805.receipt.json": "4a154a41559cf476d3c0454beb14392ad267e785d9b539e1eaed87253b2df31d"
+  },
+  "proofLimits": [
+    "No passing geometry-selection proof from this run; existing prior raster evidence remains separately source-bound.",
+    "Camera-free simulator SCNRenderer only; no ARView touch coordinates, ARKit anchoring, physical Inspect/tracking/TLS reachability, owner acceptance, or driver memory-release proof.",
+    "Metal preflight is within the hosted simulator; direct host Metal availability remains unknown.",
+    "Review reads the frozen publication and immutable candidate; no new XCTest execution by reviewer."
+  ],
+  "findings": [
+    {
+      "priority": "informational",
+      "path": "ios-hosted-38838018116.receipt.json#/rasterEvidence/acceptanceChecks/strictlyAdvancingMonotonicRenderTimes",
+      "observation": "Label conflates six-frame completeness with observed monotonic ordering. Original false must remain frozen; read alongside observedFrameCount2/required6 and increasing timestamps.",
+      "action": "Use precise observed-versus-complete wording in downstream documentation; no original mutation."
+    }
+  ]
+}

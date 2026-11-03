@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "INDEPENDENT_READ_ONLY_OWNED_PREVIEW_PROCESS_OBSERVATION",
+  "observerContext": "/root/lan_rebind_audit",
+  "observedAtUtc": "2026-10-16T02:06:04.4065637+00:00",
+  "method": "Read-only owned task records, Get-Process, Get-NetTCPConnection, and listener ProcessId/ParentProcessId only; no argv or environment collected.",
+  "app": {
+    "parentPid": 35192,
+    "recordedCliChildPid": 16116,
+    "parentAlive": true,
+    "cliChildAlive": true,
+    "loopbackPort": 3149
+  },
+  "relay": {
+    "pid": 35232,
+    "alive": true,
+    "publicOrigin": "https://192.168.0.18:8449",
+    "bootstrap": true
+  },
+  "listeners": [
+    {
+      "localAddress": "192.168.0.18",
+      "localPort": 8449,
+      "owningProcess": 35232
+    },
+    {
+      "localAddress": "192.168.0.18",
+      "localPort": 8448,
+      "owningProcess": 35232
+    },
+    {
+      "localAddress": "127.0.0.1",
+      "localPort": 3149,
+      "owningProcess": 28308
+    }
+  ],
+  "listenerParentRelations": [
+    {
+      "processId": 28308,
+      "parentProcessId": 16116
+    },
+    {
+      "processId": 35232,
+      "parentProcessId": 36332
+    }
+  ],
+  "observationStartsOrStopsServices": false,
+  "phoneReachabilityOrPhysicalTrackingProven": false
+}

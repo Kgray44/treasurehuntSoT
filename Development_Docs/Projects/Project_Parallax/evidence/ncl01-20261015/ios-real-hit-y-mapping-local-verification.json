@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "result": "PASS_STATIC_AND_FROZEN_FAILURE_COORDINATE_FEASIBILITY_ONLY",
+  "sourcePath": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+  "sourceSha256": "d40db072a0fbcbc8580d24eda2ad622e5fd7b123de4cb483df816669dfb0d94e",
+  "priorFrozenCandidateSha": "2f2d55fd15743bc49d815dd4d9d2179debf52238",
+  "priorFixtureSha256": "817e6c8731fec53e539aa2282882d9696cdc7e68068732a82bd02f76b6665fd7",
+  "boundedPatchPath": "D:\\CodexTemp\\ncl01-evidence\\ios-real-hit-y-mapping.change.patch",
+  "boundedPatchSha256": "6f7cb9795adcd5ac8b7c48bdb56000c9163c103a8a082f78a5bdffef836beaac",
+  "checks": {
+    "allPreparationPreflightLifetimeAndDeadlineSourceUnchanged": true,
+    "rawAlphaSamplingAndPixelSelectionUnchanged": true,
+    "productionMapperMainQueueHandoffUnchanged": true,
+    "modelAssertionsAndSixFrameRenderReadbackEncodingUnchanged": true,
+    "fixedSingleConversionHelper": true,
+    "opaqueMirrorBackgroundConvertedOnce": true,
+    "removedPointsConvertedOnce": true,
+    "bothProjectionChecksRequired": true,
+    "sameQueryAndRendererCounts": true,
+    "sameDeadlineChecksAndFrameCallCounts": true,
+    "noNewCameraOrGpuBlockingOrAdaptiveFallback": true,
+    "strictRealGeometryAndExactMapperAndMissAssertionsPreserved": true,
+    "all27OriginalTestDeclarationsUnchanged": true
+  },
+  "unchangedTestDeclarationCount": 27,
+  "frozenFailureRunId": "38838018116",
+  "frozenFailureReceiptSha256": "cc0503fcff3334ed60147f2bc7231bb610b28bfeb26ffd56a182878a4bf3fea5",
+  "frozenOriginalReportSha256": "7c6f2085d4f1cafb37f95e217127de317546a6677b4502a097a164a3a7f0fe82",
+  "frozenOriginalPopulatedPngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+  "observedPriorUnconvertedQueryCounts": {
+    "background": 0,
+    "opaque": 0,
+    "transparentVerticalMirror": 1
+  },
+  "fixedCoordinateFeasibility": [
+    {
+      "kind": "opaquePixelCenter",
+      "rawReadbackPixelCenter": [
+        127.5,
+        166.5
+      ],
+      "fixedSceneKitQueryCenter": [
+        127.5,
+        89.5
+      ],
+      "inverseReadbackPixelCenter": [
+        127.5,
+        166.5
+      ],
+      "rawNeighborhoodMinAlpha": 255,
+      "rawNeighborhoodMaxAlpha": 255
+    },
+    {
+      "kind": "transparentVerticalMirrorPixelCenter",
+      "rawReadbackPixelCenter": [
+        127.5,
+        89.5
+      ],
+      "fixedSceneKitQueryCenter": [
+        127.5,
+        166.5
+      ],
+      "inverseReadbackPixelCenter": [
+        127.5,
+        89.5
+      ],
+      "rawNeighborhoodMinAlpha": 0,
+      "rawNeighborhoodMaxAlpha": 0
+    },
+    {
+      "kind": "backgroundPixelCenter",
+      "rawReadbackPixelCenter": [
+        3.5,
+        3.5
+      ],
+      "fixedSceneKitQueryCenter": [
+        3.5,
+        252.5
+      ],
+      "inverseReadbackPixelCenter": [
+        3.5,
+        3.5
+      ],
+      "rawNeighborhoodMinAlpha": 0,
+      "rawNeighborhoodMaxAlpha": 0
+    }
+  ],
+  "scope": "Prior actual asymmetric query/image pair supports the fixed conversion. No corrected Swift compilation, geometry selection, mapper, world roundtrip, cleared graph or second asset execution has occurred.",
+  "swiftCompilerAvailable": false,
+  "freshCorrectedExecutionObserved": false,
+  "sourceOnlyFixtureEdited": true,
+  "gitIndexOrObjectsMutated": false,
+  "jobDispatched": false,
+  "physicalAcceptanceProven": false
+}

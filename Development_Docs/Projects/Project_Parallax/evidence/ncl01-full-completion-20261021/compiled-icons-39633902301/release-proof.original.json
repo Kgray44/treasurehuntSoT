@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "candidateSha": "2f8aa894959f8e363759b39f745e055ca899a9bf",
+  "evidenceClass": "ACTUAL_RELEASE_BINARY_SCAN_AND_COMPILED_ICON_PIXEL_CAPTURE",
+  "result": "PASS",
+  "verifierSha256": "ea5211be5c92cccfa59e8a5fcfde67760daa981c960ee776e18a0c35771228d7",
+  "approvedSourcePngSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "preparedAndOfficialSourceBytesIdentical": true,
+  "approvedCatalogFilenameMappingVerified": true,
+  "releaseFixtureEntrypointScan": {
+    "result": "PASS",
+    "scope": "KNOWN_DEBUG_ONLY_ENABLEMENT_STRINGS_ABSENT",
+    "executableSha256": "9aa73770560f7f5ef5ccf5fefa5559fa7bb1b01fd10cefeb295845ef08e7f15b",
+    "executableBytes": 503056,
+    "markerLabels": [
+      "DEBUG_SIMULATOR_CAMERA_FREE_SWITCH"
+    ],
+    "encodings": [
+      "utf-8",
+      "utf-16-le",
+      "utf-16-be"
+    ],
+    "matchedMarkerCount": 0,
+    "allFixtureCodeOrProtocolStringsAbsentClaimed": false
+  },
+  "compiledIcons": [
+    {
+      "resource": "AppIcon60x60@2x.png",
+      "width": 120,
+      "height": 120,
+      "opaque": true,
+      "compiledPngSha256": "60de95a4782ac64b3d3545aa4436cd0d777bd4fec71c8bfbf468cbe91a467cfb",
+      "normalizedRgbaSha256": "5207415579749f1538c5c53022b73bff9b9648d551c335d5a2e7bb9f3defd060",
+      "sourceEncoding": "CGBI",
+      "preview": "compiled-icons/AppIcon60x60@2x.png.preview.png",
+      "previewSha256": "e0aae34457b46de7b8c484d1bc46bbf38449a7adf539b77c02263aef2cf9dea7",
+      "pixelTransform": "NONE_EXCEPT_OPAQUE_CGBI_BGR_CHANNEL_DECODE",
+      "resized": false,
+      "colorManaged": false
+    },
+    {
+      "resource": "AppIcon76x76@2x~ipad.png",
+      "width": 152,
+      "height": 152,
+      "opaque": true,
+      "compiledPngSha256": "f7ba24a3aa6e9fc0e23ec92978a5d15cf9420e98d5d6c8d128597779e8164b0b",
+      "normalizedRgbaSha256": "f879873a21ce3d8cf8b298d3a731fa28dfc2ed9a7a57274eea64bab0b16e9928",
+      "sourceEncoding": "CGBI",
+      "preview": "compiled-icons/AppIcon76x76@2x~ipad.png.preview.png",
+      "previewSha256": "2d37d6fccb2c71810b4fb4abe22414bda8a93a2ca5980493f7afd72d8cec623d",
+      "pixelTransform": "NONE_EXCEPT_OPAQUE_CGBI_BGR_CHANNEL_DECODE",
+      "resized": false,
+      "colorManaged": false
+    }
+  ],
+  "compiledArtworkFidelity": "INDEPENDENT_VISUAL_REVIEW_REQUIRED",
+  "automaticCrossResolutionOrColorToleranceClaimed": false,
+  "physicalHomeScreenAppearanceProven": false,
+  "proofExportsArchiveExecutableOrSigningMaterial": false
+}

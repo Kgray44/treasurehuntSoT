@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_TRANSPORT_CLEANUP_NOT_ACCEPTANCE",
+  "qualification": false,
+  "entries": [
+    {
+      "runId": "39613376449",
+      "candidate": "a86c3636c3bf823f7776ce0fc904fd2e6329c4b3",
+      "transport": "c797815315196e2332186a3fc1fbfdd34c519570",
+      "branch": "codex/landfall-lab-a86c3636c3bf-1792590987466",
+      "conclusion": "failure",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    },
+    {
+      "runId": "39619309485",
+      "candidate": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+      "transport": "a6dbf242fb0d84c474e398cca5beac8da0353816",
+      "branch": "codex/landfall-lab-a523b8287231-1792593562844",
+      "conclusion": "failure",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    },
+    {
+      "runId": "39619394225",
+      "candidate": "a523b8287231b44c3cc30c5ebb6fba6954e6d95a",
+      "transport": "aedd3f42af81912007bf69bb88433437aa434c1f",
+      "branch": "codex/ncl01-testflight-unsigned-a523b8287231-1792593579669",
+      "conclusion": "success",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_COMPLETED_TEMPORARY_REF_ONLY"
+    }
+  ],
+  "currentIntelRunLeftUntouched": true,
+  "historicalBranchesAndEvidencePreserved": true
+}

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "b328c49a69b7179c54b0dd0608aba65ded6c368d",
+  "transportSha": "97d1a376ee4a6efd66bafbf5ccdfe119d8ba0eca",
+  "runId": "38807972598",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38807972598",
+  "conclusion": "failure",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/build-scope.json",
+      "sha256": "28b1afa081f5aa54a251110bfbc71ffc0b2c5096b359cd8b11477b61950b797a"
+    },
+    {
+      "path": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/capabilities.json",
+      "sha256": "c6e36223d4b3ab7f069c9358cff082c7ee0c25cae7919dd1156cf8f0d1ba6ebb"
+    },
+    {
+      "path": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/cleanup.json",
+      "sha256": "dac40b89412fa33f3e75be86dace3ad645f40a05f469688714a30e19a49cea26"
+    },
+    {
+      "path": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/execution-error.json",
+      "sha256": "ec36a0bbe26cce7ee4e20b0dd502f24bd4a1643c2c3085a68dd4d426ab04753f"
+    },
+    {
+      "path": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/runtime-selection.json",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d"
+    },
+    {
+      "path": "artifacts/landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d/apple-build/test-summary.json",
+      "sha256": "9fe8573bba09dfd95889aac22320a2257045436d85de593ba40b88ffe51d1bba"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-b328c49a69b7-1792098697318"
+    ],
+    "remainingResources": []
+  }
+}

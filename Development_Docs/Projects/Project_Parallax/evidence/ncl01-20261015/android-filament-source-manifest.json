@@ -1,0 +1,222 @@
+[
+  {
+    "path": "native/android/.gitignore",
+    "sha256": "838655f2e91bf2cc39b78e25f41b3706543530eeaca3c710e323d9c7fa5619ca",
+    "gitBlob": "208cf4f38286a2fc3974121366039bc4e6a8f734"
+  },
+  {
+    "path": "native/android/app/build.gradle",
+    "sha256": "44d0b33cdcb8789cadb88bf3c42b35e9325273f812d03635056e6f18aaab9f5d",
+    "gitBlob": "63232a83b8291672a91c1bd619472e438471b81c"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/GeofenceTests.java",
+    "sha256": "98e2b817c171ab904c7878a9a274df63117f3d501d8e0c000e68435ee1786019",
+    "gitBlob": "7997ace2df8da151dd392beb07198ccbbc482f24"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/HardwareTests.java",
+    "sha256": "2f9f9d19983f9cd8a13bd4343941ed98501113af15e6409316d325ca8fbfad64",
+    "gitBlob": "d6a1d670fccecc54729c93b284d2f6a5d569fe5c"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxBoundaryFixtures.java",
+    "sha256": "7fd571ecdeeef244f2382e06f4a4f728a6893fc0469d61e49be84a62a7bb97fd",
+    "gitBlob": "dd3f876179e33db75448d0fa0bddd5fa17248ecf"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxDeliveryFixtures.java",
+    "sha256": "2246fc2d05fe6ce0f2f3a5dfc1df711dcb3e230d7dd314664470b9a95341c509",
+    "gitBlob": "731fa3f498e4bb5ff56972717be245ccc101fe64"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+    "sha256": "3b2f6ea1a99713b05e086e57ed47d48ab3ceaf60357b71061616018982f3108b",
+    "gitBlob": "13280fe185cfc73c552ab4ff289c49eeb3a25031"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxTests.java",
+    "sha256": "fca5ace0a2d1fe585b03deac86c0210d6232de11cdd1a4032132c6bc2a197154",
+    "gitBlob": "2eee15ca1babc88af9af51d88c56f915c089d297"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/PowerTests.java",
+    "sha256": "ebe0dc2fd7d287cce7685753863363f470c2bf915f3b4f4df1fb1b0292ee6380",
+    "gitBlob": "bcc6084e8f6d8aa40ec998967bb392da439f5156"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/PrivateStoreTests.java",
+    "sha256": "ab2a926bac01feb977eece358dad967b526ad5144de023a5a3a24d229d705bf5",
+    "gitBlob": "e4524d13d0124093e04b1bedf3899736026caa7d"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/SensorPerformanceTests.java",
+    "sha256": "3a7dfde80f9efda2c34109226c81a8a2a1cfe70dee7cf5d65d1987bb0d7cc33e",
+    "gitBlob": "7e1595087b579d3f8fb5465e3c4c3e1f574a70e5"
+  },
+  {
+    "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/UwbTests.java",
+    "sha256": "758118a774786b6dbdc7985e222f814af34f9f42e2861a02e2dbca6636cb13f8",
+    "gitBlob": "109bbe7c7f1124557b6827e1d48f1433745a33b1"
+  },
+  {
+    "path": "native/android/app/src/debug/AndroidManifest.xml",
+    "sha256": "2d6a15a163a8ef9f5ff9a93ca502adcf232aea5c6086e82fffa7acfc47acf105",
+    "gitBlob": "749bc321ac53af8e501cad3b8d98ba7b5d530db8"
+  },
+  {
+    "path": "native/android/app/src/debug/java/com/voyagewright/landfall/LandfallBleLabActivity.java",
+    "sha256": "fb8415ed74aed279d9bdcf91726587a2ad4064bb7493204fbc1424b587d686d1",
+    "gitBlob": "f982cbb94a3cba2461c4d45769650994484a9db9"
+  },
+  {
+    "path": "native/android/app/src/main/AndroidManifest.xml",
+    "sha256": "a8102f304131cbfd123d885170b94968487ce100ad3ad8aeccd7ec81fce6dd16",
+    "gitBlob": "2dd846783a723a520c5b929651c2368416f58a89"
+  },
+  {
+    "path": "native/android/app/src/main/assets/licenses/filament-Apache-2.0.txt",
+    "sha256": "02d70b593dd8e9355dd8e1ca8d13c303bee5bcaf3065b66ff6e4f534e1e6a2c1",
+    "gitBlob": "73774b41cafc7ca9171fa50ea9fd95da343be320"
+  },
+  {
+    "path": "native/android/app/src/main/assets/licenses/filament-NOTICE.txt",
+    "sha256": "d2bc4a47edc5c0f29f6bdfabd700a47d1e066c46490d666f2538163a1692c08a",
+    "gitBlob": "899a13543dac2646c4fd635dfa3b5ed365722881"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallActivity.java",
+    "sha256": "41e1e601506876a6acb2e2d60dd2fb1bbb88f775f6e5ef6c117de14666d9750d",
+    "gitBlob": "edfc3bebff1a9bc7ecdca1fdbbd7397fe87594ce"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallBootReceiver.java",
+    "sha256": "38f33a2e702639272f3c31c4a75f6c93c9c12389b56828be0d268983e2217a08",
+    "gitBlob": "e45d44075b0dc82c88dd5ccdf6689c3d7f454de9"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallCookiePersistence.java",
+    "sha256": "5dffbd6477711cee72c0b0c6ced0c0f60c9e8cee5019b53bdf74eac1490c6058",
+    "gitBlob": "3a08f4000c8b4714369e78fca20b047620f9786c"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallGeofenceReceiver.java",
+    "sha256": "41c8a4177703dfb84fb13c4f5fb2b68ac70c7ce96605efcc8858752f7261e74a",
+    "gitBlob": "5d39205344774510f41abb16fe387969c6904cf3"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallGeofences.java",
+    "sha256": "7946c786a2bc555f66ad05f6ddec3ed680dce43bb319e34d38bc337706e68fdd",
+    "gitBlob": "7edda348d6d5622651f71bdb56dcd11e9d893920"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallHardware.java",
+    "sha256": "8761f9a84fd85497c942ba0c4247dab27e88408b7b864fd1ec3d518b3a2d860e",
+    "gitBlob": "f18fc3468223485016175be42eb819badadfd9ac"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallOpeningGeometry.java",
+    "sha256": "9f96580ed0b9d46252a5141f90007b5b97523e4969b4d46a1eb92c6750edac21",
+    "gitBlob": "7259bdb3b5baae87f3c0324ac975e39082d77694"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallPower.java",
+    "sha256": "7a27e5cdd98781c2db9d54505bc1c80c68c932cf384fc2ce7ad92c20f9cc5dc2",
+    "gitBlob": "a099b2991c5ce0f9451971e899aa32176c941741"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallPrivateStore.java",
+    "sha256": "b0a8010fb3b7adb533c0742da6c7cf422c414c186de010b84d9132e1d2c98532",
+    "gitBlob": "32583b7ab09c82a58207a16dee2ed8e6f5471816"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallQrScanner.java",
+    "sha256": "20d9c2f9c554760a2df6e4bdb6007a940df6bf636f5d15e17fc05b337a7c18df",
+    "gitBlob": "3bc7cf397332844fa40248ecfa279f6bba6298a9"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallRangingUwb.java",
+    "sha256": "db0ab5b2208042d46ebd5f3eae7dd423210ebed91f2fe3b910bb4253e9efe8a9",
+    "gitBlob": "3fd78f7423cc3b8614aab6d42c587e89b8b1d8c0"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallSecureHints.java",
+    "sha256": "1f3c1ae7e50db2e0dd4fa01affd91414f408b47916b6506437ac695ce5522e0e",
+    "gitBlob": "a908863992d766b31b2d5d195dc20b7e8f85d6eb"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallSensors.java",
+    "sha256": "4497d429f28a508b0625c58e6e0b4337d6330c9017c5bb753d82ceffbbbe94b3",
+    "gitBlob": "d8123f5313119d9671662ee3200e62098607f426"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallUwb.java",
+    "sha256": "001e32f0abbc8a2c14315feaf6a2629f8eea8388f299c49afebebdb7be273b91",
+    "gitBlob": "d7012d482772815b585e7dc7f77cc246bb014074"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallUwbDriver.java",
+    "sha256": "50b6f8b0378b4986a3c3c4c1fba3e6afaef59b1dd626927c0a544adef4cd2778",
+    "gitBlob": "d9bdb969d2aeaa65935f1778a87556c86cddb102"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/LandfallUwbParameters.java",
+    "sha256": "76d4c78cdd6889b41998b65bf68671286f56ee6e44cc7ce48cc5626eec1a64b3",
+    "gitBlob": "58fcafdc674427447df33ba45a9e75986a5c874d"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java",
+    "sha256": "85aea4929e9cbc5fde3c0e89de6635c08ddc63e7f59c2e2c88b5fcec49fee40a",
+    "gitBlob": "db1913542bf6ecd34f09a9f6811aee3013820dff"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxModelCache.java",
+    "sha256": "71f111dc36a58cde8818d36f129084160da9348dd4816772ca9b2dede80dc9b3",
+    "gitBlob": "dbc12ebc53452ceedd77188b48aff6db61f4d3f4"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxModelRenderer.java",
+    "sha256": "0a600269dfe2a1054bc949221f04554d7c1490e7375f32f2241a9725619af5bf",
+    "gitBlob": "b7aa6e33ba027411c871f8200414abf821266c1d"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxSceneDelivery.java",
+    "sha256": "a2dd7e2ddcb6ba1c7220fdf0d0bc41d0b2445ad5d0636a16bcf1735e08a67021",
+    "gitBlob": "3c1266d1279a3cf1c7473568185b7644c8bb631d"
+  },
+  {
+    "path": "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxSceneTransfer.java",
+    "sha256": "6c23ba93b97e8aa7a0958120f00a991463b629df6013abc83fa5371817e2308e",
+    "gitBlob": "c02c26cccb16b447d2236628e0b737c378058add"
+  },
+  {
+    "path": "native/android/build.gradle",
+    "sha256": "048ecfefe09971849fc8c9326de9d0e8af7e50e371aed980e2e1617124bb969f",
+    "gitBlob": "74c6c79b10b62a3ce5cea5d06b67939378a676bf"
+  },
+  {
+    "path": "native/android/gradle.properties",
+    "sha256": "3ad9310b9f6cf96906b0c4dc6dd4c3586010148441fcc46196cfac7fa1b9a59e",
+    "gitBlob": "b7b86429493142031f1fccd26861f2ef7a14edc7"
+  },
+  {
+    "path": "native/android/location-lab/build.gradle",
+    "sha256": "a6cbdabc59a164a7701cfc9af7935a4feb81edd54d00e5cf9d8907a74ca5e68d",
+    "gitBlob": "2cd76d2385f0e00874e4e33374787838c5b66c7e"
+  },
+  {
+    "path": "native/android/location-lab/src/main/AndroidManifest.xml",
+    "sha256": "477da72d621252e9e31b1ecb2aa24009beb6edac1f65e75c2d4fd282b9aaeb84",
+    "gitBlob": "acbdb7c7417df096d933d9d7dfe9c58fee45cb74"
+  },
+  {
+    "path": "native/android/location-lab/src/main/java/com/voyagewright/landfall/lab/LandfallLocationLabService.java",
+    "sha256": "b119fe8dd2df64deb958fd2633616b2186aafdf4d4d60af83f5a34ae5cffc14f",
+    "gitBlob": "71ffcd9fec1c5947bf5e13559cc505614828ce4f"
+  },
+  {
+    "path": "native/android/settings.gradle",
+    "sha256": "b6b9b168753509a6d6a3e045a8a510113bb9ea3fb3be9b92cd4d2cc9525c22da",
+    "gitBlob": "4fbaef928f91aeb01967221e37f516d75fd94d46"
+  }
+]

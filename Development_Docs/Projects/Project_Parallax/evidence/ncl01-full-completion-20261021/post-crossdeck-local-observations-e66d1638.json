@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_OBSERVATION_NOT_MAINLINE_ACCEPTANCE",
+  "qualification": false,
+  "observedAt": "2026-10-21T23:43:29.703Z",
+  "candidate": {
+    "commit": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+    "tree": "094defa8062b420d0c9b61d73fa0e9464a0875a5",
+    "implementationParent": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "acceptedBase": "aaff919428ef9ab421579415ce3409949724760d"
+  },
+  "localChecks": {
+    "affectedVitest": {
+      "source": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+      "testFiles": 48,
+      "passed": 614,
+      "failed": 0,
+      "durationSeconds": 57.56,
+      "arguments": [
+        "src/parallax",
+        "src/crossdeck",
+        "src/components/crossdeck",
+        "src/components/player/parallax",
+        "src/components/player/journal/ChronicleJournalSession.test.ts",
+        "--reporter=dot"
+      ],
+      "evidence": "Root observed original tool stdout; machine reporter/log not separately retained. This is not an authenticated producer receipt."
+    },
+    "focusedIntegration": {
+      "files": 3,
+      "passed": 52,
+      "newContinuityCases": 14
+    },
+    "typescript": "PASS after current E2E addition",
+    "focusedLint": "PASS",
+    "documentation": "PASS",
+    "featureCatalog": {
+      "semanticEntries": 68,
+      "result": "PASS",
+      "decision": "NO CHANGE REQUIRED"
+    }
+  },
+  "extension": {
+    "changedPaths": [
+      "tests/e2e/parallax-native-authority.spec.ts"
+    ],
+    "unchangedNativeAndWebScopes": [
+      "native/ios",
+      "native/android",
+      "src/parallax",
+      "src/landfall",
+      "scripts/landfall",
+      "public/parallax/sc02",
+      ".agents/landfall-device-lab-hosted.yml",
+      ".agents/ncl01-testflight-hosted.yml",
+      "src/components/player/parallax",
+      "src/components/player/journal",
+      "src/components/crossdeck"
+    ],
+    "nativeAndWebSourceIdentical": true,
+    "oldBrowserTestsUnchanged": false,
+    "freshBrowserExecution": "PENDING"
+  },
+  "experiencePlan": {
+    "source": "0d83b64488711215bfdcfa47f898fa48f07e074e",
+    "acceptedDesignDependency": "AVAILABLE",
+    "result": "BLOCKED_UNREGISTERED_SURFACE",
+    "ordinaryInvoked": false,
+    "exceptionAllowanceConsumed": false,
+    "originalErrorSha256": "8a95e3985fd98f73356627702355eaf335a1507b66ecc19d037400c053eeecb2"
+  },
+  "historicalFailuresPreserved": true,
+  "physicalAcceptance": "OUTSTANDING",
+  "limits": [
+    "Current local observations are development-only, not a Mainline Decision.",
+    "Native joined runs execute the frozen implementation parent; the current child changes only browser E2E tests.",
+    "Fresh native/browser jobs remain pending and are not promoted to success."
+  ]
+}

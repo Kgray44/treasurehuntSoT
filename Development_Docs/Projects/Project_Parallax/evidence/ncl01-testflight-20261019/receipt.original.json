@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "candidateSha": "bcca4fba851686b1cced11604daf5790a467b8bb",
+  "mode": "unsigned",
+  "teamId": "X2JZ9N65V2",
+  "bundleId": "com.voyagewright.landfall",
+  "origin": "https://192.168.0.24:8449",
+  "version": "0.1.0",
+  "build": "1",
+  "uploadAccepted": false,
+  "appleProcessing": "NOT_STARTED",
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "iphoneosSdk": "26.5",
+  "altoolKeyLookup": "EXPLICIT_P8_PATH",
+  "deviceArchiveValidated": true,
+  "appExecutableSha256": "b9f8b1c267ce8cfd83d20ce1a85cb0ce325a9759ce0556b1e973f29fcaf7772d",
+  "result": "PASS",
+  "credentialCleanup": "PASS"
+}

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordedDate": "2026-10-20",
+  "status": "OWNER_APPROVED_ORIGINAL_ARTWORK_CROP_OFFICIAL_LOGO_PREPARED_COMPILED_VERIFICATION_PENDING",
+  "authority": "Owner approved the exact original-artwork crop PNG and explicitly requested release update and adoption as the actual official VoyageWright logo",
+  "supersededRelease": {
+    "version": "0.1.0",
+    "build": "6",
+    "candidateSha": "fbd3c7402cec3ae3d374b73c218968bc07daa06a",
+    "ownerRejectedGeneratedArtworkAndColorChanges": true,
+    "immutableHistoricalReceiptsPreserved": true
+  },
+  "retainedOwnerOriginal": {
+    "path": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+    "bytes": 2719555,
+    "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+    "dimensions": [1254, 1254],
+    "unchanged": true
+  },
+  "originalPixelCrop": {
+    "path": "native/ios/Branding/VoyageWright-Logo.crop-source.png",
+    "bytes": 1033677,
+    "sha256": "0351edb99b3dfcc14508e78c60926e87eb1d1840205ebd754e6000731107bd96",
+    "decodedRgbPixelsSha256": "911bc9e42638723f10e2e05fd99768970845ce4be649afcd6e4e64f4a2218f94",
+    "dimensions": [800, 800],
+    "rectangle": {"left": 240, "top": 215, "width": 800, "height": 800},
+    "everyDecodedRgbPixelMatchesOriginalSubset": true,
+    "originalPivotMeasured": [639.7635, 614.4448],
+    "cropPixelCenterInOriginalCoordinates": [639.5, 614.5]
+  },
+  "officialLogo": {
+    "path": "native/ios/Branding/VoyageWright-Logo.official.png",
+    "bytes": 1617603,
+    "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+    "decodedRgbPixelsSha256": "6229c5e448e0148888b7f21cfdf9ecc882149191f03b25ff95c616269c4c4757",
+    "dimensions": [1024, 1024],
+    "mode": "RGB",
+    "opaque": true,
+    "byteIdenticalToExactOwnerApprovedPng": true
+  },
+  "packagedAsset": {
+    "path": "native/ios/LandfallCompanion/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+    "bytes": 1617603,
+    "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+    "byteIdenticalToOfficialLogoAndExactOwnerApprovedPng": true,
+    "existingUniversalIos1024SlotPreserved": true
+  },
+  "operations": {
+    "tool": "sharp 0.35.5 / libvips 8.18.7",
+    "orderedOperations": ["Extract the 800-square original pixel rectangle", "Resize once to 1024-square with Lanczos3", "Encode RGB PNG"],
+    "record": "crop-and-resize.original.json",
+    "generativeEditing": false,
+    "colorAdjustments": false,
+    "affineTranslationOrMirroredBackground": false,
+    "sourceArtworkRedrawn": false
+  },
+  "independentReview": {
+    "record": "local-review.original.json",
+    "sha256": "b25f96d1c2528776907759d1133f97576e032de2986b4ff7d72aa667c3812c25",
+    "result": "PASS",
+    "everyCropPixelMatchesOriginalSubset": true,
+    "approvedPixelsMatchFreshOriginalCropAndResize": true,
+    "final1024PivotInnerEdgeFit": [512.3862, 511.9119],
+    "targetPixelCenter": [511.5, 511.5],
+    "maximumMeasuredResidualAcrossMethodsPerAxisPixels": 0.90,
+    "preserveExactApprovedArtifactWithoutAdditionalAlignment": true,
+    "rootCanonicalLogoAndAppIconCopyHashesVerified": true,
+    "compiledOrPhysicalPhoneVerificationClaimed": false
+  },
+  "distributionPlan": {
+    "version": "0.1.0",
+    "build": "7",
+    "origin": "https://ncl01.absoluterelativesystems.com",
+    "bundleId": "com.voyagewright.landfall",
+    "compiledIconIdentityProven": false,
+    "testflightAvailabilityProven": false,
+    "phoneIconAppearanceProven": false
+  },
+  "scope": {
+    "officialLogoMasterAndIosCompanionIcon": true,
+    "nativeArBehaviorChanged": false,
+    "websiteOrAndroidIconChanged": false,
+    "previewRuntimeOrDatabaseChanged": false,
+    "protectedMainOrPr741Merged": false,
+    "fullAuthoredSceneAcceptanceProven": false
+  }
+}

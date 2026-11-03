@@ -1,0 +1,59 @@
+--- a/native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift
++++ b/native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift
+@@ -291,25 +291,33 @@
+             self.queue.async { self.perform { try self.requireTime();try completion(identifiers) } }
+         }
+     }
++    private func convertedViewportPoint(_ point: CGPoint) -> CGPoint {
++        // Fixed opposite Y origins for this origin-zero offscreen target. This
++        // involution converts once per direction; it never probes another mapping.
++        return CGPoint(x:point.x,y:CGFloat(size)-point.y)
++    }
+     private func verifyRenderedSelection(renderer: SCNRenderer, root: SCNNode, assetId: String, entityId: String, bytes: [UInt8], completion: @escaping ([String:Any],SelectionPixels) throws -> Void) {
+         perform {
+             phase("GEOMETRY_HIT_"+assetId);try requireTime()
+             let pixels=try selectionPixels(bytes),viewport=renderer.currentViewport
++            let opaqueQuery=convertedViewportPoint(pixels.opaque),mirrorQuery=convertedViewportPoint(pixels.mirror),backgroundQuery=convertedViewportPoint(pixels.background)
+             func pair(_ point: CGPoint) -> [Double] { [Double(point.x),Double(point.y)] }
+-            record("selectionProbe",["assetId":assetId,"entityId":entityId,"opaquePixelCenter":pair(pixels.opaque),"transparentVerticalMirrorPixelCenter":pair(pixels.mirror),"backgroundPixelCenter":pair(pixels.background),"currentViewport":[Double(viewport.origin.x),Double(viewport.origin.y),Double(viewport.width),Double(viewport.height)]])
++            record("selectionProbe",["assetId":assetId,"entityId":entityId,"opaquePixelCenter":pair(pixels.opaque),"transparentVerticalMirrorPixelCenter":pair(pixels.mirror),"backgroundPixelCenter":pair(pixels.background),"sceneKitOpaqueQueryCenter":pair(opaqueQuery),"sceneKitTransparentMirrorQueryCenter":pair(mirrorQuery),"sceneKitBackgroundQueryCenter":pair(backgroundQuery),"readbackToQueryMapping":"x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once","currentViewport":[Double(viewport.origin.x),Double(viewport.origin.y),Double(viewport.width),Double(viewport.height)]])
+             try require(viewport==CGRect(x:0,y:0,width:size,height:size),"Geometry hit viewport differs from the completed Metal target")
+             let options: [SCNHitTestOption:Any]=[.searchMode:SCNHitTestSearchMode.closest.rawValue]
+-            let hit=renderer.hitTest(pixels.opaque,options:options).first
+-            let mirror=renderer.hitTest(pixels.mirror,options:options).first
+-            let background=renderer.hitTest(pixels.background,options:options).first
++            let hit=renderer.hitTest(opaqueQuery,options:options).first
++            let mirror=renderer.hitTest(mirrorQuery,options:options).first
++            let background=renderer.hitTest(backgroundQuery,options:options).first
+             record("selectionProbeHitCounts",["opaque":hit == nil ? 0:1,"transparentVerticalMirror":mirror == nil ? 0:1,"background":background == nil ? 0:1])
+             guard let hit=hit else { throw Failure(message:"Actual rendered opaque interior did not hit original SceneKit geometry") }
+             try require(hit.node.geometry != nil && hit.node !== root,"Actual model hit must identify imported geometry below the authored entity root")
+             try require(mirror == nil && background == nil,"Transparent mirror or background unexpectedly hit SceneKit geometry")
+             let world=hit.worldCoordinates,projected=renderer.projectPoint(world)
+             try require([world.x,world.y,world.z,projected.x,projected.y,projected.z].allSatisfy { $0.isFinite },"Geometry hit or its projected viewport point is not finite")
+-            try require(abs(Double(projected.x)-Double(pixels.opaque.x))<=0.51 && abs(Double(projected.y)-Double(pixels.opaque.y))<=0.51 && projected.z>=0 && projected.z<=1,"Real geometry hit does not reproject onto its completed rendered pixel")
+-            let evidence: [String:Any]=["query":"SCNRenderer.hitTest","searchMode":"closest","boundingBoxOnlyOverride":false,"pixelCoordinateMapping":"Metal readback row and column passed directly to GPU viewport at pixel center; no vertical flip or fallback","opaquePixelCenter":pair(pixels.opaque),"transparentVerticalMirrorPixelCenter":pair(pixels.mirror),"backgroundPixelCenter":pair(pixels.background),"neighborhoodWidthPixels":7,"opaqueNeighborhoodMinimumAlpha":Int(neighborhoodAlpha(pixels.opaque,bytes:bytes).min()!),"mirrorNeighborhoodMaximumAlpha":Int(neighborhoodAlpha(pixels.mirror,bytes:bytes).max()!),"backgroundNeighborhoodMaximumAlpha":Int(neighborhoodAlpha(pixels.background,bytes:bytes).max()!),"populatedRawBgraSha256":SHA256.hash(data:Data(bytes)).map { String(format:"%02x",$0) }.joined(),"hitNodeName":hit.node.name ?? "","geometryIndex":hit.geometryIndex,"faceIndex":hit.faceIndex,"worldCoordinates":[world.x,world.y,world.z],"projectedViewportCoordinates":[projected.x,projected.y,projected.z],"currentViewport":[Double(viewport.origin.x),Double(viewport.origin.y),Double(viewport.width),Double(viewport.height)]]
++            try require(abs(Double(projected.x)-Double(opaqueQuery.x))<=0.51 && abs(Double(projected.y)-Double(opaqueQuery.y))<=0.51 && projected.z>=0 && projected.z<=1,"Real geometry hit does not reproject onto its converted SceneKit query point")
++            let projectedReadback=convertedViewportPoint(CGPoint(x:CGFloat(projected.x),y:CGFloat(projected.y)))
++            try require(abs(Double(projectedReadback.x)-Double(pixels.opaque.x))<=0.51 && abs(Double(projectedReadback.y)-Double(pixels.opaque.y))<=0.51,"Real geometry hit does not back-convert onto its completed rendered pixel")
++            let evidence: [String:Any]=["query":"SCNRenderer.hitTest","searchMode":"closest","boundingBoxOnlyOverride":false,"pixelCoordinateMapping":"x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once; fixed inverse for projected readback; no fallback","opaquePixelCenter":pair(pixels.opaque),"transparentVerticalMirrorPixelCenter":pair(pixels.mirror),"backgroundPixelCenter":pair(pixels.background),"sceneKitOpaqueQueryCenter":pair(opaqueQuery),"sceneKitTransparentMirrorQueryCenter":pair(mirrorQuery),"sceneKitBackgroundQueryCenter":pair(backgroundQuery),"neighborhoodWidthPixels":7,"opaqueNeighborhoodMinimumAlpha":Int(neighborhoodAlpha(pixels.opaque,bytes:bytes).min()!),"mirrorNeighborhoodMaximumAlpha":Int(neighborhoodAlpha(pixels.mirror,bytes:bytes).max()!),"backgroundNeighborhoodMaximumAlpha":Int(neighborhoodAlpha(pixels.background,bytes:bytes).max()!),"populatedRawBgraSha256":SHA256.hash(data:Data(bytes)).map { String(format:"%02x",$0) }.joined(),"hitNodeName":hit.node.name ?? "","geometryIndex":hit.geometryIndex,"faceIndex":hit.faceIndex,"worldCoordinates":[world.x,world.y,world.z],"projectedViewportCoordinates":[projected.x,projected.y,projected.z],"projectedReadbackCoordinates":pair(projectedReadback),"currentViewport":[Double(viewport.origin.x),Double(viewport.origin.y),Double(viewport.width),Double(viewport.height)]]
+             try requireTime()
+             mapHits([hit,mirror,background],entities:[entityId:root]) { identifiers in
+                 try self.require(identifiers.count==3 && identifiers[0]==entityId && identifiers[0] != assetId && identifiers[1]==nil && identifiers[2]==nil,"Real geometry hit did not resolve through the production mapper to the exact authored entity ID, or a miss selected an entity")
+@@ -325,13 +333,14 @@
+             phase("REMOVED_GEOMETRY_HIT_"+entityId);try requireTime()
+             let points=[pixels.opaque,pixels.mirror,pixels.background]
+             try require(points.allSatisfy { neighborhoodAlpha($0,bytes:bytes).allSatisfy { $0==0 } },"Removed selection neighborhoods retained pixels")
+-            let hits=points.map { renderer.hitTest($0,options:[.searchMode:SCNHitTestSearchMode.closest.rawValue]).first }
++            let queries=points.map { convertedViewportPoint($0) }
++            let hits=queries.map { renderer.hitTest($0,options:[.searchMode:SCNHitTestSearchMode.closest.rawValue]).first }
+             try require(hits.allSatisfy { $0==nil },"Removed scene geometry still produces a hit")
+             // Keep the old root in the lookup to prove misses come from the
+             // cleared geometry, rather than merely emptying the identity map.
+             mapHits(hits,entities:[entityId:root]) { identifiers in
+                 try self.require(identifiers.count==3 && identifiers.allSatisfy { $0==nil },"Removed scene hit unexpectedly selected the retained authored entity")
+-                try completion(["formerOpaquePixelMiss":true,"transparentVerticalMirrorMiss":true,"backgroundMiss":true,"retainedRootLookupUsed":true,"verifiedElapsedMs":(ProcessInfo.processInfo.systemUptime-self.started)*1000])
++                try completion(["formerOpaquePixelMiss":true,"transparentVerticalMirrorMiss":true,"backgroundMiss":true,"rawReadbackPixelCenters":points.map { [Double($0.x),Double($0.y)] },"sceneKitQueryCenters":queries.map { [Double($0.x),Double($0.y)] },"readbackToQueryMapping":"x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once","retainedRootLookupUsed":true,"verifiedElapsedMs":(ProcessInfo.processInfo.systemUptime-self.started)*1000])
+             }
+         }
+     }

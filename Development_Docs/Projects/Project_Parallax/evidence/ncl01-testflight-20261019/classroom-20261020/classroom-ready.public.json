@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "status": "READY",
+  "evidenceClass": "CANONICAL_PRIVATE_CLASSROOM_SOFTWARE_FIXTURE",
+  "chronicleTitle": "The Classroom Compass Trail — NCL01",
+  "voyageName": "NCL01 — Classroom Compass Trail",
+  "chronicleId": "cmvgr27ij000125o8k5egqrde",
+  "versionId": "cmvgr27q9000q25o8hx91sgm7",
+  "voyageId": "cmvgr299f000v25o8koydyrcd",
+  "journalHref": "/player/playthroughs/cmvgr299f000v25o8koydyrcd/journal",
+  "sceneChecksum": "13c1178ec10faae82ef92a7095b376380bcfbf0a1b436caaa7d51beb005edf6d",
+  "sourceRoomSha256": "1605b1ca0348f0a0893a2fd847ac7f8282647d9cabdc62a66887c4930ff7caf3",
+  "planSha256": "d804ea8192f1f3ad6f4b5a3e5a8a09ca8011cac8721845e9c445512eda2be1e6",
+  "coordinateSourceCommit": "8715b61b301df519fff637e52ecd2d982ca38271",
+  "photos": [
+    "IMG_8690",
+    "IMG_8691"
+  ],
+  "entities": [
+    {
+      "id": "ncl01-classroom-two-photo-20261020:object-1",
+      "name": "Middle table treasure chest",
+      "modelId": "treasure-chest"
+    },
+    {
+      "id": "ncl01-classroom-two-photo-20261020:object-2",
+      "name": "Left table brass compass",
+      "modelId": "brass-compass"
+    },
+    {
+      "id": "ncl01-classroom-two-photo-20261020:object-3",
+      "name": "Right table brass compass",
+      "modelId": "brass-compass"
+    }
+  ],
+  "anchorCount": 1,
+  "requirements": [
+    "MODEL_GLB",
+    "PLANE_PLACEMENT",
+    "WORLD_TRACKING"
+  ],
+  "originalFixtureUnchanged": true,
+  "credentialsUnchanged": true,
+  "originalFixtureBaselineSha256": "2416f2febf82627d83790c490113ae24373830a72c7dea450232ef12b1959784",
+  "drydockProofStatus": "COMPLETE",
+  "publishedSourceChecksum": "83178a4c627e5b09b29bacdbfd737202390c0be8e21a206360f030cfc2a62a4a",
+  "automaticRoomRecognition": false,
+  "measuredRoomRegistration": false,
+  "nativeClassroomPhysicalTest": "PENDING_OWNER"
+}

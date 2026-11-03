@@ -1,0 +1,7 @@
+{
+  "stage": "NATIVE_BUILD_AND_XCTEST",
+  "code": 65,
+  "killed": false,
+  "signal": null,
+  "diagnosticHash": "2087fe381ca6869f089b1903459c20f41f2ef9c321fe44d390b9a34daa41bc2b"
+}

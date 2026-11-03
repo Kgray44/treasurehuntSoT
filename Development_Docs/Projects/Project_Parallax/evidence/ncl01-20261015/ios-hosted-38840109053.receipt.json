@@ -1,0 +1,1210 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "HOSTED_IOS_SIMULATOR_GEOMETRY_SELECTION_ATTEMPT",
+  "candidateSha": "9314c749e426110ee38ed1da373a4e2361c6431a",
+  "transportSha": "5e9d42412f2798e07b89b523000fed5e94753825",
+  "runId": "38840109053",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38840109053",
+  "conclusion": "failure",
+  "artifactName": "landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a",
+  "harvestedArtifactFiles": 5071,
+  "originalRunStateSha256": "1e8596975cf106912dd1760432bd619ee31933f829d5f14a0427a6e6800fae5c",
+  "originalHarvestReceiptSha256": "e63d751ef3e15f9fca7786be0cf19b9f590c2935bafe06cf39663f09d9c9861c",
+  "originalRunLogSha256": "fed33701d435b00c217230413cc40b245d464fba1e57eeea725dbaf2f0420eec",
+  "preservedRawEvidencePath": "artifacts/landfall-device-lab/hosted-9314c749e426-1792117354955/run-38840109053",
+  "failure": {
+    "stage": "NATIVE_BUILD_AND_XCTEST",
+    "code": 65,
+    "killed": false,
+    "signal": null,
+    "diagnosticHash": "2087fe381ca6869f089b1903459c20f41f2ef9c321fe44d390b9a34daa41bc2b"
+  },
+  "nativeTests": {
+    "passed": 23,
+    "failed": 1,
+    "skipped": 1,
+    "total": 25,
+    "scope": "COMPANION_ONLY",
+    "nclMethods": [
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testAuthorizedAssetReferencesAndIntegrity()",
+        "name": "testAuthorizedAssetReferencesAndIntegrity()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.009180068969726562
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+        "name": "testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 2.2073479890823364
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+        "name": "testSelectionUsesHitAncestryAndNeverAnArbitraryFirstEntity()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.0008460283279418945
+      },
+      {
+        "identifier": "ParallaxSceneDeliveryTests/testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+        "name": "testSharedVersionTwoSceneTransferAndIdentityFixtures()",
+        "suite": "ParallaxSceneDeliveryTests",
+        "result": "Success",
+        "duration": 0.04068303108215332
+      }
+    ],
+    "failureMethods": [
+      {
+        "identifier": "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+        "name": "testUnconfiguredShellReturnsFromHome()",
+        "suite": "NativeLifecycleTests",
+        "result": "Failure",
+        "duration": 54.14287197589874
+      }
+    ],
+    "structuredTestFailures": [
+      {
+        "failureText": "XCTAssertTrue failed - LANDFALL_HOME_BACKGROUND_UNOBSERVED",
+        "targetName": "LandfallCompanionUiTests",
+        "testIdentifier": 25,
+        "testIdentifierString": "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+        "testIdentifierURL": "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests/testUnconfiguredShellReturnsFromHome",
+        "testName": "testUnconfiguredShellReturnsFromHome()"
+      }
+    ],
+    "expectedSkippedTest": "NativeLifecycleTests/testCanonicalScenarioOperations()",
+    "excludedPresentationTests": [
+      "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation",
+      "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting"
+    ],
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "FDB7DEAD-BECF-460F-BBF4-F84AE3418269",
+          "deviceName": "landfall-owned-8613",
+          "modelName": "iPhone 17e",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 23,
+        "skippedTests": 1,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ]
+  },
+  "aggregateAcceptance": {
+    "passed": false,
+    "requiredPasses": 24,
+    "requiredFailures": 0,
+    "expectedSkips": 1,
+    "actualRunConclusion": "failure",
+    "actualScenarioState": "NOT_RUN",
+    "failureDoesNotOverrideObservedCatalogMethodResult": true
+  },
+  "rasterEvidence": {
+    "observedComponentAssertionsPassed": true,
+    "observedFrameCount": 6,
+    "requiredFrameCount": 6,
+    "acceptedSoftwareRasterProof": false,
+    "acceptanceChecks": {
+      "reportResultPass": true,
+      "existingCatalogMethodSuccess": true,
+      "native24PassesZeroFailuresOneExpectedSkip": false,
+      "allSixOriginalPngsDigestVerified": true,
+      "exactTwoModelFrameSequence": true,
+      "onlyExpectedCanonicalScenarioPackageSkip": true,
+      "allObservedFrameGpuCallbacksWithinOriginal20000ms": true,
+      "allObservedFrameMeasurementAndPngEncodingWithinOriginal20000ms": true,
+      "completedWithinOriginal20000ms": true,
+      "sealedWithinOriginal20000ms": true,
+      "allObservedRenderTimesWithinOriginal20000ms": true,
+      "eachFrameRenderCallbackAndMeasurementOrdered": true,
+      "allFramesFlushedAutomaticTransaction": true,
+      "completeSixFramesStrictlyAdvancingMonotonicRenderTimes": true,
+      "oneColorTargetAcrossAllModelFrames": true,
+      "fixtureCpuOwnersReleased": true
+    },
+    "state": "PASS",
+    "originalReportPath": "ios-hosted-38840109053/test-attachments/E4A7CC58-B8B5-4096-BEAC-280A203B5DB2.json",
+    "metalPreflight": {
+      "commandStatus": "completed",
+      "completedElapsedMs": 33.96524999993744,
+      "deviceAvailable": true,
+      "deviceName": "Apple iOS simulator GPU",
+      "expectedBGRA": [
+        191,
+        128,
+        64,
+        255
+      ],
+      "readableCompletedTarget": true,
+      "registryID": "4294967701",
+      "sampleBGRA": [
+        191,
+        128,
+        64,
+        255
+      ],
+      "storageMode": "shared"
+    },
+    "assets": [
+      {
+        "assetId": "treasure-chest",
+        "authoredChildMatricesAndMaterialObjectsPreserved": true,
+        "bottomCenterPivotPreserved": true,
+        "emptyNontransparentPixels": 0,
+        "entityId": "fixture-model-treasure-chest",
+        "entityScale": 1.2,
+        "entityTranslationMeters": [
+          0.23,
+          0.17,
+          -0.31
+        ],
+        "entityYawRadians": 0.5235987305641174,
+        "geometryNodes": 7,
+        "geometrySelection": {
+          "backgroundMiss": true,
+          "backgroundNeighborhoodMaximumAlpha": 0,
+          "backgroundPixelCenter": [
+            3.5,
+            3.5
+          ],
+          "boundingBoxOnlyOverride": false,
+          "currentViewport": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "faceIndex": 791,
+          "geometryIndex": 0,
+          "hitNodeName": "Node5",
+          "mirrorNeighborhoodMaximumAlpha": 0,
+          "neighborhoodWidthPixels": 7,
+          "opaqueNeighborhoodMinimumAlpha": 255,
+          "opaquePixelCenter": [
+            127.5,
+            166.5
+          ],
+          "pixelCoordinateMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once; fixed inverse for projected readback; no fallback",
+          "populatedRawBgraSha256": "eefdbb1d3acc19fee523afd83a919a0971a452ab94cc8af8c23ae8e0602839c7",
+          "productionMapper": "ParallaxLocalRuntime.entityId(for:entities:)",
+          "projectedReadbackCoordinates": [
+            127.5,
+            166.49998474121094
+          ],
+          "projectedViewportCoordinates": [
+            127.5,
+            89.50001525878906,
+            0.9997244477272034
+          ],
+          "query": "SCNRenderer.hitTest",
+          "sceneKitBackgroundQueryCenter": [
+            3.5,
+            252.5
+          ],
+          "sceneKitOpaqueQueryCenter": [
+            127.5,
+            89.5
+          ],
+          "sceneKitTransparentMirrorQueryCenter": [
+            127.5,
+            166.5
+          ],
+          "searchMode": "closest",
+          "selectedEntityId": "fixture-model-treasure-chest",
+          "transparentVerticalMirrorMiss": true,
+          "transparentVerticalMirrorPixelCenter": [
+            127.5,
+            89.5
+          ],
+          "verifiedElapsedMs": 2135.2647499999193,
+          "worldCoordinates": [
+            0.36936575174331665,
+            0.28779321908950806,
+            -0.043347686529159546
+          ]
+        },
+        "materialInstances": 4,
+        "modelDetachedFromScene": true,
+        "originalBoundsMeters": [
+          -0.4000000059604645,
+          0,
+          -0.25,
+          0.4000000059604645,
+          0.6100000143051147,
+          0.25
+        ],
+        "removedGeometrySelection": {
+          "backgroundMiss": true,
+          "formerOpaquePixelMiss": true,
+          "rawReadbackPixelCenters": [
+            [
+              127.5,
+              166.5
+            ],
+            [
+              127.5,
+              89.5
+            ],
+            [
+              3.5,
+              3.5
+            ]
+          ],
+          "readbackToQueryMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once",
+          "retainedRootLookupUsed": true,
+          "sceneKitQueryCenters": [
+            [
+              127.5,
+              89.5
+            ],
+            [
+              127.5,
+              166.5
+            ],
+            [
+              3.5,
+              252.5
+            ]
+          ],
+          "transparentVerticalMirrorMiss": true,
+          "verifiedElapsedMs": 2142.797666666638
+        },
+        "removedNontransparentPixels": 0,
+        "renderedNontransparentPixels": 8301,
+        "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "sourceWidthMeters": 0.8,
+        "testAnchorFrameTranslationMeters": [
+          -0.13,
+          0.08,
+          0.21
+        ],
+        "testAnchorFrameYawRadians": -0.2617993652820587,
+        "transformedBoundsMeters": [
+          -0.463495671749115,
+          0.17000000178813934,
+          -0.9154707193374634,
+          0.9000114798545837,
+          1.0850000381469727,
+          0.2510448396205902
+        ],
+        "widthNormalization": 1.25
+      },
+      {
+        "assetId": "brass-compass",
+        "authoredChildMatricesAndMaterialObjectsPreserved": true,
+        "bottomCenterPivotPreserved": true,
+        "emptyNontransparentPixels": 0,
+        "entityId": "fixture-model-brass-compass",
+        "entityScale": 1.2,
+        "entityTranslationMeters": [
+          0.23,
+          0.17,
+          -0.31
+        ],
+        "entityYawRadians": 0.5235987305641174,
+        "geometryNodes": 4,
+        "geometrySelection": {
+          "backgroundMiss": true,
+          "backgroundNeighborhoodMaximumAlpha": 0,
+          "backgroundPixelCenter": [
+            3.5,
+            3.5
+          ],
+          "boundingBoxOnlyOverride": false,
+          "currentViewport": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "faceIndex": 327,
+          "geometryIndex": 0,
+          "hitNodeName": "Node1",
+          "mirrorNeighborhoodMaximumAlpha": 0,
+          "neighborhoodWidthPixels": 7,
+          "opaqueNeighborhoodMinimumAlpha": 255,
+          "opaquePixelCenter": [
+            127.5,
+            147.5
+          ],
+          "pixelCoordinateMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once; fixed inverse for projected readback; no fallback",
+          "populatedRawBgraSha256": "3d1e44a0cc7561c3e7bb90421c2733deeb5cf2c69b517ad6232d9d8f5824cfcb",
+          "productionMapper": "ParallaxLocalRuntime.entityId(for:entities:)",
+          "projectedReadbackCoordinates": [
+            127.49996185302734,
+            147.50001525878906
+          ],
+          "projectedViewportCoordinates": [
+            127.49996185302734,
+            108.49998474121094,
+            0.9988577961921692
+          ],
+          "query": "SCNRenderer.hitTest",
+          "sceneKitBackgroundQueryCenter": [
+            3.5,
+            252.5
+          ],
+          "sceneKitOpaqueQueryCenter": [
+            127.5,
+            108.5
+          ],
+          "sceneKitTransparentMirrorQueryCenter": [
+            127.5,
+            147.5
+          ],
+          "searchMode": "closest",
+          "selectedEntityId": "fixture-model-brass-compass",
+          "transparentVerticalMirrorMiss": true,
+          "transparentVerticalMirrorPixelCenter": [
+            127.5,
+            108.5
+          ],
+          "verifiedElapsedMs": 2187.663749999956,
+          "worldCoordinates": [
+            0.2926762104034424,
+            0.19804233312606812,
+            -0.19216063618659973
+          ]
+        },
+        "materialInstances": 4,
+        "modelDetachedFromScene": true,
+        "originalBoundsMeters": [
+          -0.07999999821186066,
+          0,
+          -0.0950000062584877,
+          0.07999999821186066,
+          0.04500000178813934,
+          0.0949999988079071
+        ],
+        "removedGeometrySelection": {
+          "backgroundMiss": true,
+          "formerOpaquePixelMiss": true,
+          "rawReadbackPixelCenters": [
+            [
+              127.5,
+              147.5
+            ],
+            [
+              127.5,
+              108.5
+            ],
+            [
+              3.5,
+              3.5
+            ]
+          ],
+          "readbackToQueryMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once",
+          "retainedRootLookupUsed": true,
+          "sceneKitQueryCenters": [
+            [
+              127.5,
+              108.5
+            ],
+            [
+              127.5,
+              147.5
+            ],
+            [
+              3.5,
+              252.5
+            ]
+          ],
+          "transparentVerticalMirrorMiss": true,
+          "verifiedElapsedMs": 2194.6801666666715
+        },
+        "removedNontransparentPixels": 0,
+        "renderedNontransparentPixels": 2509,
+        "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "sourceWidthMeters": 0.16,
+        "testAnchorFrameTranslationMeters": [
+          -0.13,
+          0.08,
+          0.21
+        ],
+        "testAnchorFrameYawRadians": -0.2617993652820587,
+        "transformedBoundsMeters": [
+          0.054826945066452026,
+          0.17000000178813934,
+          -0.4934086203575134,
+          0.40517303347587585,
+          0.23750001192092896,
+          -0.12659139931201935
+        ],
+        "widthNormalization": 1.25
+      }
+    ],
+    "frames": [
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 158.4509583333329,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 165.46699999992143,
+        "name": "treasure-chest-empty",
+        "nonblackVisiblePixels": 0,
+        "nontransparentPixels": 0,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "renderElapsedMs": 148.3370416666503,
+        "renderSystemUptime": 914.8259806666667,
+        "transactionFlushed": true,
+        "width": 256,
+        "publishedPng": "ios-hosted-38840109053/test-attachments/136C180C-472A-4A87-961A-06778979C73F.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 0,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      },
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 1953.7737916666629,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 1960.138041666596,
+        "name": "treasure-chest-populated",
+        "nonblackVisiblePixels": 7714,
+        "nontransparentPixels": 8301,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+        "renderElapsedMs": 198.3612083332673,
+        "renderSystemUptime": 914.8760048333334,
+        "transactionFlushed": true,
+        "width": 256,
+        "publishedPng": "ios-hosted-38840109053/test-attachments/7E1877CB-9E5A-407D-9BBE-79D74D87F9FE.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 8301,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      },
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 2137.185208333335,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 2142.3759166666514,
+        "name": "treasure-chest-removed",
+        "nonblackVisiblePixels": 0,
+        "nontransparentPixels": 0,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "renderElapsedMs": 2135.4487916665903,
+        "renderSystemUptime": 916.8130924166667,
+        "transactionFlushed": true,
+        "width": 256,
+        "publishedPng": "ios-hosted-38840109053/test-attachments/63A3267F-9EC5-4734-9F2D-09EC8954A95D.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 0,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      },
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 2149.1501250000056,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 2154.166625000016,
+        "name": "brass-compass-empty",
+        "nonblackVisiblePixels": 0,
+        "nontransparentPixels": 0,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "renderElapsedMs": 2147.8305833333025,
+        "renderSystemUptime": 916.8254742083334,
+        "transactionFlushed": true,
+        "width": 256,
+        "publishedPng": "ios-hosted-38840109053/test-attachments/BA0F2F2F-B25E-46A6-80E8-26EB53CBB44E.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 0,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      },
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 2160.8471249999184,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 2166.1775000000034,
+        "name": "brass-compass-populated",
+        "nonblackVisiblePixels": 2509,
+        "nontransparentPixels": 2509,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+        "renderElapsedMs": 2156.802583333274,
+        "renderSystemUptime": 916.8344462083334,
+        "transactionFlushed": true,
+        "width": 256,
+        "publishedPng": "ios-hosted-38840109053/test-attachments/83767E80-63AA-43C5-84C1-71210B30F97A.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 2509,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      },
+      {
+        "commandStatus": "completed",
+        "gpuCallbackElapsedMs": 2189.2482083333107,
+        "height": 256,
+        "measuredAndEncodedElapsedMs": 2194.309874999931,
+        "name": "brass-compass-removed",
+        "nonblackVisiblePixels": 0,
+        "nontransparentPixels": 0,
+        "pixelFormat": "BGRA8Unorm",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "renderElapsedMs": 2187.750875000006,
+        "renderSystemUptime": 916.8653945000001,
+        "transactionFlushed": true,
+        "width": 256,
+        "publishedPng": "ios-hosted-38840109053/test-attachments/C4AE731C-4852-4F23-A96C-0F1FDD3103B6.png",
+        "independentPngInspection": {
+          "width": 256,
+          "height": 256,
+          "nontransparentPixelsAlphaGreaterThan16": 0,
+          "decodedMode": "RGBA",
+          "reader": "Pillow 12.2.0"
+        }
+      }
+    ],
+    "cleanup": "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED",
+    "completedElapsedMs": 2195.127124999999,
+    "sealedElapsedMs": 2195.8417916666804,
+    "lastObservedPhase": "ALL_MODELS_CLEARED",
+    "failure": null,
+    "directHostMetalProbePerformed": false,
+    "directHostMetalAvailability": "UNKNOWN"
+  },
+  "geometrySelectionEvidence": {
+    "acceptedSoftwareGeometrySelectionProof": false,
+    "observedComponentAssertionsPassed": true,
+    "state": "COMPONENT_ASSERTIONS_PASSED_AGGREGATE_GATE_NOT_MET",
+    "originalReportPath": "ios-hosted-38840109053/test-attachments/E4A7CC58-B8B5-4096-BEAC-280A203B5DB2.json",
+    "assets": [
+      {
+        "assetId": "treasure-chest",
+        "entityId": "fixture-model-treasure-chest",
+        "geometrySelection": {
+          "backgroundMiss": true,
+          "backgroundNeighborhoodMaximumAlpha": 0,
+          "backgroundPixelCenter": [
+            3.5,
+            3.5
+          ],
+          "boundingBoxOnlyOverride": false,
+          "currentViewport": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "faceIndex": 791,
+          "geometryIndex": 0,
+          "hitNodeName": "Node5",
+          "mirrorNeighborhoodMaximumAlpha": 0,
+          "neighborhoodWidthPixels": 7,
+          "opaqueNeighborhoodMinimumAlpha": 255,
+          "opaquePixelCenter": [
+            127.5,
+            166.5
+          ],
+          "pixelCoordinateMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once; fixed inverse for projected readback; no fallback",
+          "populatedRawBgraSha256": "eefdbb1d3acc19fee523afd83a919a0971a452ab94cc8af8c23ae8e0602839c7",
+          "productionMapper": "ParallaxLocalRuntime.entityId(for:entities:)",
+          "projectedReadbackCoordinates": [
+            127.5,
+            166.49998474121094
+          ],
+          "projectedViewportCoordinates": [
+            127.5,
+            89.50001525878906,
+            0.9997244477272034
+          ],
+          "query": "SCNRenderer.hitTest",
+          "sceneKitBackgroundQueryCenter": [
+            3.5,
+            252.5
+          ],
+          "sceneKitOpaqueQueryCenter": [
+            127.5,
+            89.5
+          ],
+          "sceneKitTransparentMirrorQueryCenter": [
+            127.5,
+            166.5
+          ],
+          "searchMode": "closest",
+          "selectedEntityId": "fixture-model-treasure-chest",
+          "transparentVerticalMirrorMiss": true,
+          "transparentVerticalMirrorPixelCenter": [
+            127.5,
+            89.5
+          ],
+          "verifiedElapsedMs": 2135.2647499999193,
+          "worldCoordinates": [
+            0.36936575174331665,
+            0.28779321908950806,
+            -0.043347686529159546
+          ]
+        },
+        "removedGeometrySelection": {
+          "backgroundMiss": true,
+          "formerOpaquePixelMiss": true,
+          "rawReadbackPixelCenters": [
+            [
+              127.5,
+              166.5
+            ],
+            [
+              127.5,
+              89.5
+            ],
+            [
+              3.5,
+              3.5
+            ]
+          ],
+          "readbackToQueryMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once",
+          "retainedRootLookupUsed": true,
+          "sceneKitQueryCenters": [
+            [
+              127.5,
+              89.5
+            ],
+            [
+              127.5,
+              166.5
+            ],
+            [
+              3.5,
+              252.5
+            ]
+          ],
+          "transparentVerticalMirrorMiss": true,
+          "verifiedElapsedMs": 2142.797666666638
+        },
+        "independentPngNeighborhoodInspection": {
+          "reader": "Pillow12.2.0",
+          "populated": {
+            "opaque": {
+              "centerPixel": [
+                127.5,
+                166.5
+              ],
+              "minimumAlpha": 255,
+              "maximumAlpha": 255,
+              "samples": 49
+            },
+            "verticalMirror": {
+              "centerPixel": [
+                127.5,
+                89.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            },
+            "background": {
+              "centerPixel": [
+                3.5,
+                3.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            }
+          },
+          "removed": {
+            "opaque": {
+              "centerPixel": [
+                127.5,
+                166.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            },
+            "verticalMirror": {
+              "centerPixel": [
+                127.5,
+                89.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            },
+            "background": {
+              "centerPixel": [
+                3.5,
+                3.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            }
+          }
+        },
+        "independentSceneKitReprojectionErrorPixels": [
+          0.0,
+          1.52587890625e-05
+        ],
+        "independentRawReadbackRoundtripErrorPixels": [
+          0.0,
+          1.52587890625e-05
+        ],
+        "acceptanceChecks": {
+          "actualSceneKitGeometryQuery": true,
+          "productionMapperUsed": true,
+          "distinctAuthoredEntitySelected": true,
+          "actualViewport256": true,
+          "finiteGeometryHitAndProjection": true,
+          "sceneKitReprojectionWithin051Pixel": true,
+          "fixedConvertedQueryMappingForAllPoints": true,
+          "projectedReadbackUsesFixedInverse": true,
+          "rawReadbackRoundtripWithin051Pixel": true,
+          "removedQueriesUseSameFixedMapping": true,
+          "exactVerticalMirror": true,
+          "transparentMirrorAndBackgroundMiss": true,
+          "allRemovedQueriesMissWithRetainedRootLookup": true,
+          "selectionWithinOriginal20000ms": true,
+          "removedQueriesWithinOriginal20000ms": true,
+          "independentOriginalPngConfirmsSafeOpaqueMirrorAndBackground": true,
+          "independentOriginalPngConfirmsRemovedClearNeighborhoods": true,
+          "reportedAlphaMetricsMatchOriginalPng": true
+        },
+        "acceptedSoftwareGeometrySelectionProof": true
+      },
+      {
+        "assetId": "brass-compass",
+        "entityId": "fixture-model-brass-compass",
+        "geometrySelection": {
+          "backgroundMiss": true,
+          "backgroundNeighborhoodMaximumAlpha": 0,
+          "backgroundPixelCenter": [
+            3.5,
+            3.5
+          ],
+          "boundingBoxOnlyOverride": false,
+          "currentViewport": [
+            0,
+            0,
+            256,
+            256
+          ],
+          "faceIndex": 327,
+          "geometryIndex": 0,
+          "hitNodeName": "Node1",
+          "mirrorNeighborhoodMaximumAlpha": 0,
+          "neighborhoodWidthPixels": 7,
+          "opaqueNeighborhoodMinimumAlpha": 255,
+          "opaquePixelCenter": [
+            127.5,
+            147.5
+          ],
+          "pixelCoordinateMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once; fixed inverse for projected readback; no fallback",
+          "populatedRawBgraSha256": "3d1e44a0cc7561c3e7bb90421c2733deeb5cf2c69b517ad6232d9d8f5824cfcb",
+          "productionMapper": "ParallaxLocalRuntime.entityId(for:entities:)",
+          "projectedReadbackCoordinates": [
+            127.49996185302734,
+            147.50001525878906
+          ],
+          "projectedViewportCoordinates": [
+            127.49996185302734,
+            108.49998474121094,
+            0.9988577961921692
+          ],
+          "query": "SCNRenderer.hitTest",
+          "sceneKitBackgroundQueryCenter": [
+            3.5,
+            252.5
+          ],
+          "sceneKitOpaqueQueryCenter": [
+            127.5,
+            108.5
+          ],
+          "sceneKitTransparentMirrorQueryCenter": [
+            127.5,
+            147.5
+          ],
+          "searchMode": "closest",
+          "selectedEntityId": "fixture-model-brass-compass",
+          "transparentVerticalMirrorMiss": true,
+          "transparentVerticalMirrorPixelCenter": [
+            127.5,
+            108.5
+          ],
+          "verifiedElapsedMs": 2187.663749999956,
+          "worldCoordinates": [
+            0.2926762104034424,
+            0.19804233312606812,
+            -0.19216063618659973
+          ]
+        },
+        "removedGeometrySelection": {
+          "backgroundMiss": true,
+          "formerOpaquePixelMiss": true,
+          "rawReadbackPixelCenters": [
+            [
+              127.5,
+              147.5
+            ],
+            [
+              127.5,
+              108.5
+            ],
+            [
+              3.5,
+              3.5
+            ]
+          ],
+          "readbackToQueryMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once",
+          "retainedRootLookupUsed": true,
+          "sceneKitQueryCenters": [
+            [
+              127.5,
+              108.5
+            ],
+            [
+              127.5,
+              147.5
+            ],
+            [
+              3.5,
+              252.5
+            ]
+          ],
+          "transparentVerticalMirrorMiss": true,
+          "verifiedElapsedMs": 2194.6801666666715
+        },
+        "independentPngNeighborhoodInspection": {
+          "reader": "Pillow12.2.0",
+          "populated": {
+            "opaque": {
+              "centerPixel": [
+                127.5,
+                147.5
+              ],
+              "minimumAlpha": 255,
+              "maximumAlpha": 255,
+              "samples": 49
+            },
+            "verticalMirror": {
+              "centerPixel": [
+                127.5,
+                108.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            },
+            "background": {
+              "centerPixel": [
+                3.5,
+                3.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            }
+          },
+          "removed": {
+            "opaque": {
+              "centerPixel": [
+                127.5,
+                147.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            },
+            "verticalMirror": {
+              "centerPixel": [
+                127.5,
+                108.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            },
+            "background": {
+              "centerPixel": [
+                3.5,
+                3.5
+              ],
+              "minimumAlpha": 0,
+              "maximumAlpha": 0,
+              "samples": 49
+            }
+          }
+        },
+        "independentSceneKitReprojectionErrorPixels": [
+          3.814697265625e-05,
+          1.52587890625e-05
+        ],
+        "independentRawReadbackRoundtripErrorPixels": [
+          3.814697265625e-05,
+          1.52587890625e-05
+        ],
+        "acceptanceChecks": {
+          "actualSceneKitGeometryQuery": true,
+          "productionMapperUsed": true,
+          "distinctAuthoredEntitySelected": true,
+          "actualViewport256": true,
+          "finiteGeometryHitAndProjection": true,
+          "sceneKitReprojectionWithin051Pixel": true,
+          "fixedConvertedQueryMappingForAllPoints": true,
+          "projectedReadbackUsesFixedInverse": true,
+          "rawReadbackRoundtripWithin051Pixel": true,
+          "removedQueriesUseSameFixedMapping": true,
+          "exactVerticalMirror": true,
+          "transparentMirrorAndBackgroundMiss": true,
+          "allRemovedQueriesMissWithRetainedRootLookup": true,
+          "selectionWithinOriginal20000ms": true,
+          "removedQueriesWithinOriginal20000ms": true,
+          "independentOriginalPngConfirmsSafeOpaqueMirrorAndBackground": true,
+          "independentOriginalPngConfirmsRemovedClearNeighborhoods": true,
+          "reportedAlphaMetricsMatchOriginalPng": true
+        },
+        "acceptedSoftwareGeometrySelectionProof": true
+      }
+    ],
+    "lastObservedPhase": "ALL_MODELS_CLEARED",
+    "lastSelectionProbe": {
+      "assetId": "brass-compass",
+      "backgroundPixelCenter": [
+        3.5,
+        3.5
+      ],
+      "currentViewport": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "entityId": "fixture-model-brass-compass",
+      "opaquePixelCenter": [
+        127.5,
+        147.5
+      ],
+      "readbackToQueryMapping": "x unchanged; queryY = targetHeight - readbackPixelCenterY, exactly once",
+      "sceneKitBackgroundQueryCenter": [
+        3.5,
+        252.5
+      ],
+      "sceneKitOpaqueQueryCenter": [
+        127.5,
+        108.5
+      ],
+      "sceneKitTransparentMirrorQueryCenter": [
+        127.5,
+        147.5
+      ],
+      "transparentVerticalMirrorPixelCenter": [
+        127.5,
+        108.5
+      ]
+    },
+    "lastSelectionProbeHitCounts": {
+      "background": 0,
+      "opaque": 1,
+      "transparentVerticalMirror": 0
+    },
+    "scope": "Camera-free SCNRenderer actual mesh intersection and production authored-entity ancestry mapping inside a test-owned viewport",
+    "arViewTouchCoordinateMappingProven": false,
+    "physicalInspectInteractionProven": false
+  },
+  "deviceLabScenario": {
+    "scenarioId": "permission-denied-native",
+    "state": "NOT_RUN",
+    "hostedStepConclusion": "skipped",
+    "reason": "The prerequisite apple-build companion-only step failed.",
+    "canonicalProgressionEvents": null
+  },
+  "buildSimulatorCleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "FDB7DEAD-BECF-460F-BBF4-F84AE3418269"
+    ],
+    "remainingResources": []
+  },
+  "transportCleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-9314c749e426-1792117354955"
+    ],
+    "remainingResources": []
+  },
+  "boundaries": {
+    "arViewTouchCoordinateMappingProven": false,
+    "physicalInspectInteractionProven": false,
+    "physicalWorldTrackingProven": false,
+    "productionActivateOrARAnchorPathExercised": false,
+    "actualPlayerPresentationProven": false,
+    "physicalMaterialFidelityProven": false,
+    "gpuDriverMemoryReleaseProven": false,
+    "physicalOwnerAcceptanceProven": false,
+    "productionSignedInstallProven": false,
+    "fullPresentationMatrixProven": false,
+    "performanceAndThermalQualificationProven": false,
+    "physicalLocalNetworkPermissionProven": false,
+    "laptopOriginReachableFromPhoneProven": false,
+    "physicalTLSAndAppBoundOriginProven": false
+  },
+  "publishedEvidence": [
+    {
+      "path": "ios-hosted-38840109053/hosted-run-state.original.json",
+      "sha256": "1e8596975cf106912dd1760432bd619ee31933f829d5f14a0427a6e6800fae5c",
+      "bytes": 5034,
+      "sourceRawPath": "run-state.original.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-summary.original.json",
+      "sha256": "4a750f6b033d3bb76c910c817740be1c7abad795b25a1e74c03e543866259459",
+      "bytes": 1763,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-summary.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/build-scope.original.json",
+      "sha256": "28b1afa081f5aa54a251110bfbc71ffc0b2c5096b359cd8b11477b61950b797a",
+      "bytes": 370,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/build-scope.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/build-cleanup.original.json",
+      "sha256": "0a38002e650d9f994fbadd7384cedee4816297dcddd0bd164e7fb1c27435fd91",
+      "bytes": 99,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/cleanup.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/runtime-selection.original.json",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d",
+      "bytes": 131,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/runtime-selection.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/execution-error.original.json",
+      "sha256": "24d1348169dc9237bcc589b96afe25bb20de9646c20d9609fd94238ee892d022",
+      "bytes": 179,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/execution-error.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/capabilities.original.json",
+      "sha256": "c6e36223d4b3ab7f069c9358cff082c7ee0c25cae7919dd1156cf8f0d1ba6ebb",
+      "bytes": 16217,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/capabilities.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/native-test-cases.extracted.json",
+      "sha256": "9927b8165fa67230730f518e5f8b6311959a4fa536d7feaeb3c301fd54b6d012",
+      "bytes": 6676,
+      "sourceDatabaseSha256": "1dca2d2cff61bda410746156e1a484b30461316d4c7cda36bd7dae6e41e0a42f",
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/NativeTests.xcresult/database.sqlite3"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-attachments/manifest.original.json",
+      "sha256": "39ed033d4cc6163368fe9e79d289cfc545d6531edf0466bc16c4195ae7b49be2",
+      "bytes": 13577,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-attachments/manifest.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/ncl-attachment-associations.extracted.json",
+      "sha256": "742d65c4308432b3fe012ae863415bd9bcb0933d496a5713739bc03daff3b8e7",
+      "bytes": 3334,
+      "sourceManifestSha256": "39ed033d4cc6163368fe9e79d289cfc545d6531edf0466bc16c4195ae7b49be2"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-attachments/E4A7CC58-B8B5-4096-BEAC-280A203B5DB2.json",
+      "sha256": "62508202c431092ab5f0adb96ee94fa5a524eeebcd74d04810e7edfa7ab371cf",
+      "bytes": 14012,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-attachments/E4A7CC58-B8B5-4096-BEAC-280A203B5DB2.json",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "ncl01-scenekit-catalog_0_91B19CD9-22BF-444C-B829-5C8E8E079E3C.json"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-attachments/C4AE731C-4852-4F23-A96C-0F1FDD3103B6.png",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-attachments/C4AE731C-4852-4F23-A96C-0F1FDD3103B6.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "brass-compass-removed_0_14615C1C-B006-49F3-8F08-97EA055132DA.png"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-attachments/83767E80-63AA-43C5-84C1-71210B30F97A.png",
+      "sha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+      "bytes": 5725,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-attachments/83767E80-63AA-43C5-84C1-71210B30F97A.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "brass-compass-populated_0_33928EBA-068B-4B63-9CD8-60E98DCA5C7B.png"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-attachments/BA0F2F2F-B25E-46A6-80E8-26EB53CBB44E.png",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-attachments/BA0F2F2F-B25E-46A6-80E8-26EB53CBB44E.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "brass-compass-empty_0_4C2A751F-23F0-4DC4-85E6-A6865C06ADBA.png"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-attachments/63A3267F-9EC5-4734-9F2D-09EC8954A95D.png",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-attachments/63A3267F-9EC5-4734-9F2D-09EC8954A95D.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "treasure-chest-removed_0_24D25D28-726C-4AF5-B1AD-B04F55602F84.png"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-attachments/7E1877CB-9E5A-407D-9BBE-79D74D87F9FE.png",
+      "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "bytes": 7237,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-attachments/7E1877CB-9E5A-407D-9BBE-79D74D87F9FE.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "treasure-chest-populated_0_B2E651CD-F511-402B-9F3D-E10AA8F2D04C.png"
+    },
+    {
+      "path": "ios-hosted-38840109053/test-attachments/136C180C-472A-4A87-961A-06778979C73F.png",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306,
+      "sourceArtifactPath": "artifacts/landfall-ios-primary-phone-9314c749e426110ee38ed1da373a4e2361c6431a/apple-build/test-attachments/136C180C-472A-4A87-961A-06778979C73F.png",
+      "testIdentifier": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "suggestedHumanReadableName": "treasure-chest-empty_0_27B322F9-BF9D-4D3C-9162-6D18AB6158D2.png"
+    },
+    {
+      "path": "ios-hosted-38840109053/hosted-run.excerpt.log",
+      "sha256": "b8bcc3986c3b3adacb096bfcabe1c6bfde6f0bace50aa23002c86fcdf8aa0c84",
+      "bytes": 21284,
+      "sourceRunLogSha256": "fed33701d435b00c217230413cc40b245d464fba1e57eeea725dbaf2f0420eec",
+      "selection": "Original numbered lines from apple-build companion-only step through run completion"
+    },
+    {
+      "path": "ios-hosted-38840109053/source-binding.extracted.json",
+      "sha256": "9cc005ad34368aaafb18d72959301db7af7b6547bc3b4ca664725a4bd3750d32",
+      "bytes": 1642
+    }
+  ],
+  "priorRunReceiptsPreserved": [
+    "38798660744",
+    "38800480310",
+    "38807972598",
+    "38810163899",
+    "38817044787",
+    "38819289805",
+    "38838018116"
+  ]
+}

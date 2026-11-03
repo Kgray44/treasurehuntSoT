@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "role": "POST_MERGE_FROZEN_DEVELOPMENT_CHECKS",
+  "qualification": false,
+  "source": {
+    "sourceSha": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+    "sourceTree": "591415b2ec6cf5a9675cb326a7e2db1226ce8d51",
+    "dirty": false,
+    "sourceFingerprint": "a4741adf00b0c85835ae3d6dd3f3d579057e0f6c31c29a209dcf6c51c2e9e339"
+  },
+  "acceptedMain": "d699de9568ea355a363223dd88f747536b450688",
+  "sourceUnchangedDuringChecks": true,
+  "checks": {
+    "fullTypeScript": {
+      "command": "tsc --noEmit --incremental false",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    "targetedEslint": {
+      "exitCode": 0,
+      "result": "PASS",
+      "paths": [
+        "scripts/landfall/device-lab/apple-build.ts",
+        "scripts/landfall/device-lab/hosted.ts",
+        "scripts/landfall/device-lab/apple-presentation-diagnostic.ts",
+        "src/landfall/device-lab/apple-presentation-diagnostic.test.ts"
+      ]
+    },
+    "focusedTests": {
+      "exitCode": 0,
+      "result": "PASS",
+      "passed": 25,
+      "files": 3,
+      "breakdown": {
+        "newDiagnostic": 8,
+        "existingStrictSummary": 10,
+        "existingRunner": 7
+      },
+      "selectedFiles": [
+        {
+          "path": "src/landfall/device-lab/apple-presentation-diagnostic.test.ts",
+          "status": "passed",
+          "tests": 8
+        },
+        {
+          "path": "src/landfall/device-lab/apple-test-summary.test.ts",
+          "status": "passed",
+          "tests": 10
+        },
+        {
+          "path": "src/landfall/device-lab/hosted-ios-runner.test.ts",
+          "status": "passed",
+          "tests": 7
+        }
+      ]
+    }
+  },
+  "sourceFiles": [
+    {
+      "path": "scripts/landfall/device-lab/apple-build.ts",
+      "gitBlob": "8928983dd9660834d1d541275b1b769c09e3bb5b",
+      "workingBytesSha256": "bacdc0d13882fe3b1cf419a27c9f95ca380f5bed89537b4aa780c6016ef8cb44"
+    },
+    {
+      "path": "scripts/landfall/device-lab/hosted.ts",
+      "gitBlob": "1a415563c0dc8ad523ebe2bce014b39302629bd7",
+      "workingBytesSha256": "9ce9b34ae57652416978eecf83bfdf7b401c8bbf10f018a227fda4dbd159f294"
+    },
+    {
+      "path": "scripts/landfall/device-lab/apple-presentation-diagnostic.ts",
+      "gitBlob": "ee97c4a75500298b2da9446d5e75ca5340741df2",
+      "workingBytesSha256": "aced82ca107544184db85ce7b010f8423bf1eb44030e0ef4b0d41adfaa4c0427"
+    },
+    {
+      "path": "src/landfall/device-lab/apple-presentation-diagnostic.test.ts",
+      "gitBlob": "5f90e16786a45698f58786cbc853a6a209ee2be8",
+      "workingBytesSha256": "2dbea2519f9596f80e89dd2ae884259c8a0e4114437f035f45b159eb883e8055"
+    }
+  ],
+  "originals": [
+    {
+      "file": "source.before.original.json",
+      "bytes": 215,
+      "sha256": "cbb3c29b7c3d1391bdfb724fdb7f42721df8ff637b44b737a49c0acd136aac28"
+    },
+    {
+      "file": "source.after.original.json",
+      "bytes": 215,
+      "sha256": "cbb3c29b7c3d1391bdfb724fdb7f42721df8ff637b44b737a49c0acd136aac28"
+    },
+    {
+      "file": "source.after-typecheck.original.json",
+      "bytes": 215,
+      "sha256": "cbb3c29b7c3d1391bdfb724fdb7f42721df8ff637b44b737a49c0acd136aac28"
+    },
+    {
+      "file": "typecheck.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "eslint.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "focused.original.log",
+      "bytes": 509,
+      "sha256": "e82c00ab07241b98a156dc41dbb4763375564749cb40202097842057c0e287d3"
+    },
+    {
+      "file": "focused.original.json",
+      "bytes": 10621,
+      "sha256": "877073d30c7233a44e6bf9370eead30115ca37401b3d476d5e5f684b6756c19a"
+    }
+  ],
+  "independentReview": "READY_AFTER_FAILURE_RETENTION_FIX",
+  "limits": [
+    "These overlapping host checks are not a fresh495-test suite, native counts, Simulator execution, full31 acceptance or physical proof.",
+    "The diagnostic cannot replace the unchanged full31 presentation gate or synthesize it from separate runs.",
+    "Accepted PR784 changes only replay artifact-folder validation and does not grant Crossdeck execution or product acceptance."
+  ]
+}

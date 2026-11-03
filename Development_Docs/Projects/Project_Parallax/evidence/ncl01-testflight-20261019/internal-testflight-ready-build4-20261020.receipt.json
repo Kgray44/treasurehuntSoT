@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "recordedDate": "2026-10-20",
+  "status": "INTERNAL_TESTFLIGHT_AVAILABLE_PUBLIC_PREVIEW_VERIFIED_PHYSICAL_VALIDATION_OPEN",
+  "candidateSha": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+  "version": "0.1.0",
+  "build": "4",
+  "bundleId": "com.voyagewright.landfall",
+  "origin": "https://ncl01.absoluterelativesystems.com",
+  "distribution": {
+    "githubRunId": "39444433227",
+    "githubConclusion": "SUCCESS",
+    "appleBuildId": "4a489dc0-060d-4a33-85b5-fb721fea7995",
+    "appleProcessing": "VALID",
+    "internalBuildState": "IN_BETA_TESTING",
+    "existingInternalGroup": "NCL-01 Owner",
+    "exportedIpaResourceChecksPassed": 13,
+    "ipaBytes": 1975076,
+    "ipaSha256": "571ab9dba3f0ed6ef0127c56b9ac347e01ea3f97dae0e417149d836f49234f4d",
+    "credentialCleanup": "PASS",
+    "exactTransportRefCleanup": "PASS",
+    "verificationReceipt": "signed-39444433227/verification.json",
+    "verificationReceiptSha256": "e1428480511a1648500bf1a2e10d65209e0c4df900d3f8186b166bb635b346ee"
+  },
+  "publicRuntime": {
+    "finalReadiness": "cloudflare-20261020/production-router-readiness.public.json",
+    "finalReadinessSha256": "a8102f434ef1efb64d4488f3f8cd5d6a00cf625225af82cc36c4924a37a6faa1",
+    "normalPlatformTls": true,
+    "noCaOverrideOrTlsException": true,
+    "productionBuildAndTypecheck": "PASS",
+    "htmlReferencedStaticResponsesPassed": 150,
+    "staticCheckScope": "Three actual pages, 25 CSS/JS references each, ordinary requests and explicit same-origin Origin variants; not 150 unique files",
+    "staticQueryBypassUsedForAcceptance": false,
+    "postRouterAuthAssetsJournalSseChecksPassed": 14,
+    "bothVoyagesUnchanged": true,
+    "probeSessionRevoked": true,
+    "exactOwnedRuntimeIdentityBound": true,
+    "existingLanServicesAndStagingAuditPreserved": true,
+    "originalStaticAndCacheFailuresRetained": true,
+    "fullCrossdeckStreamProven": false
+  },
+  "cacheRepair": {
+    "initialAction": "Exact 25 ncl01 CSS/JS URL purge",
+    "finalAction": "Prefix purge of ncl01.absoluterelativesystems.com/_next/static to clear Origin-keyed cached error variants",
+    "zoneWidePurge": false,
+    "stagingOrAuditPurged": false,
+    "cacheRulesTtlDevelopmentModeOrAccessChanged": false,
+    "officialGuidance": "https://developers.cloudflare.com/cache/how-to/purge-cache/purge-by-single-file/"
+  },
+  "browserReview": {
+    "normalReload": true,
+    "styledAccountSignInPixels": "PASS",
+    "hydrationObservedThroughSettledProviderAvailability": true,
+    "providerAvailability": "Google and GitHub unavailable as configured; existing email/password sign-in retained",
+    "browserCredentialsEntered": false,
+    "browserVoyageProgressionPerformed": false,
+    "screenshotsRetainedOutsideGit": true
+  },
+  "ownerEvidence": {
+    "cellularPhoneReachabilityReported": true,
+    "fixedPhoneStylingConfirmed": false,
+    "exactBuild4InstallationProven": false,
+    "build4NativeSignInProven": false,
+    "build4PhysicalArProven": false,
+    "authoredSceneFidelityAccepted": false
+  },
+  "officialIconArtworkChanged": false,
+  "privateCredentialsPhotosOrRawGeometryPublished": false,
+  "protectedMainOrPr741Merged": false
+}

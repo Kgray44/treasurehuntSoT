@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "SUPPORTING_INDEPENDENT_RENDERED_REVIEW",
+  "reviewerContext": "/root/ncl01_visual_review",
+  "reviewedCandidate": "58efbb24af8e7ec36ce9573fa8924525e9a75804",
+  "disposition": "NO_REMAINING_CONCRETE_FINDING_IN_BOUNDED_GUIDED_SCOPE",
+  "evidence": [
+    "browser-guided/after-readability-fix/result.json",
+    "browser-guided/sticky-close-fix/result.json",
+    "browser-guided/sticky-close-fix/mobile-deep-scrolled-sticky-close.png",
+    "browser-guided/sticky-close-fix/desktop-compact-deep-scrolled-sticky-close.png"
+  ],
+  "findings": [
+    {
+      "id": "NCL-GUIDED-CLOSE",
+      "status": "REPAIRED_AND_INDEPENDENTLY_VERIFIED",
+      "proof": "At deep scroll, title and Close remain visible; measured-coordinate click closes without scrolling, restores Journal focus, and reopen starts at zero."
+    }
+  ],
+  "observations": [
+    "Clue and inspected-object feedback remain readable.",
+    "Both authored objects preserve the same northern-light clue.",
+    "Captured canonical progression remains unchanged."
+  ],
+  "formalProductExperienceApproval": false,
+  "physicalAcceptance": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

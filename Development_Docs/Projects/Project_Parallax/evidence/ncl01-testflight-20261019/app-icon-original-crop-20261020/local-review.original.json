@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "kind": "INDEPENDENT_ORIGINAL_PIXEL_CROP_AND_STANDARD_RESIZE_REVIEW",
+  "result": "PASS_ORIGINAL_CROP_AND_RESIZE_IDENTITY",
+  "reviewedAt": "2026-10-21T00:29:44.130498+00:00",
+  "scope": "Approved original-image artifact only. Reviewer writes only this temporary receipt, not repository assets/source/docs/stage or CI/runtime.",
+  "original": {
+    "relativePath": "native/ios/Branding/VoyageWright-AppIcon.source.png",
+    "sha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "retainedUnchanged": true
+  },
+  "rawCrop": {
+    "relativePath": "artifacts/ncl01-original-logo-20261020/Original-pixels-centered-crop-800.png",
+    "sha256": "0351edb99b3dfcc14508e78c60926e87eb1d1840205ebd754e6000731107bd96",
+    "decodedPixelsSha256": "911bc9e42638723f10e2e05fd99768970845ce4be649afcd6e4e64f4a2218f94",
+    "size": [
+      800,
+      800
+    ],
+    "mode": "RGB",
+    "boxRightBottomExclusive": [
+      240,
+      215,
+      1040,
+      1015
+    ],
+    "allPixelsEqualExactOriginalSubset": true,
+    "originalSourcePixelCenterOfCrop": [
+      639.5,
+      614.5
+    ]
+  },
+  "approvedOutput": {
+    "relativePath": "artifacts/ncl01-original-logo-20261020/VoyageWright-original-centered-1x1.png",
+    "sha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+    "bytes": 1617603,
+    "decodedPixelsSha256": "6229c5e448e0148888b7f21cfdf9ecc882149191f03b25ff95c616269c4c4757",
+    "size": [
+      1024,
+      1024
+    ],
+    "mode": "RGB",
+    "channels": 3,
+    "bitsPerSample": 8,
+    "opaque": true
+  },
+  "freshIndependentSharpComparison": {
+    "source": "Retained original PNG",
+    "operation": [
+      {
+        "extract": {
+          "left": 240,
+          "top": 215,
+          "width": 800,
+          "height": 800
+        }
+      },
+      {
+        "resize": {
+          "width": 1024,
+          "height": 1024,
+          "kernel": "lanczos3"
+        }
+      }
+    ],
+    "versions": {
+      "sharp": "0.35.5",
+      "vips": "8.18.7",
+      "png": "1.6.58"
+    },
+    "pixelEquality": true,
+    "freshDecodedPixelsSha256": "6229c5e448e0148888b7f21cfdf9ecc882149191f03b25ff95c616269c4c4757",
+    "verification": "A separate Node/sharp process regenerated pixels in memory and compared Buffer.equals with the approved decoded image; no generated artifact was written.",
+    "additionalArtGenerationOrColorAdjustment": false,
+    "affineTranslationMirroringPaddingRecolorOrRedraw": false
+  },
+  "sourceCropProvenanceSha256": "f80fab8e88143f00f8c302d5a55528553d8a2658bc27d2a034cda7942efc2daf",
+  "centering": {
+    "measurementLibraries": {
+      "Pillow": "12.2.0",
+      "numpy": "2.4.4"
+    },
+    "coordinateConvention": "Zero-based pixel centers; 1024 canvas center=(511.5,511.5)",
+    "originalInnerEdgeFitCenter": [
+      639.7635,
+      614.4448
+    ],
+    "originalFitRadialRmsPixels": 0.3875,
+    "integerCropCenterResidualSourcePixels": [
+      0.2635,
+      -0.0552
+    ],
+    "predictedResizedPivotFromOriginalFit": [
+      511.8373,
+      511.4293
+    ],
+    "finalOutputMeasurements": [
+      {
+        "method": "dark_aperture_component_boundary_circle_fit",
+        "thresholdMaxRgbExclusive": 35,
+        "componentPixels": 2926,
+        "center": [
+          512.3433,
+          511.9443
+        ],
+        "radiusPixels": 30.0469,
+        "radialRmsPixels": 0.498,
+        "residualFromCanvasPixelCenter": [
+          0.8433,
+          0.4443
+        ]
+      },
+      {
+        "method": "dark_aperture_component_boundary_circle_fit",
+        "thresholdMaxRgbExclusive": 40,
+        "componentPixels": 2940,
+        "center": [
+          512.3457,
+          511.9649
+        ],
+        "radiusPixels": 30.1288,
+        "radialRmsPixels": 0.4535,
+        "residualFromCanvasPixelCenter": [
+          0.8457,
+          0.4649
+        ]
+      },
+      {
+        "method": "dark_aperture_component_boundary_circle_fit",
+        "thresholdMaxRgbExclusive": 50,
+        "componentPixels": 2965,
+        "center": [
+          512.3895,
+          511.9576
+        ],
+        "radiusPixels": 30.2653,
+        "radialRmsPixels": 0.4109,
+        "residualFromCanvasPixelCenter": [
+          0.8895,
+          0.4576
+        ]
+      },
+      {
+        "method": "dark_aperture_component_boundary_circle_fit",
+        "thresholdMaxRgbExclusive": 60,
+        "componentPixels": 2978,
+        "center": [
+          512.3206,
+          511.9425
+        ],
+        "radiusPixels": 30.3332,
+        "radialRmsPixels": 0.4039,
+        "residualFromCanvasPixelCenter": [
+          0.8206,
+          0.4425
+        ]
+      },
+      {
+        "method": "dark_aperture_component_boundary_circle_fit",
+        "thresholdMaxRgbExclusive": 70,
+        "componentPixels": 2996,
+        "center": [
+          512.2932,
+          511.9233
+        ],
+        "radiusPixels": 30.4227,
+        "radialRmsPixels": 0.4137,
+        "residualFromCanvasPixelCenter": [
+          0.7932,
+          0.4233
+        ]
+      },
+      {
+        "method": "radial_inner_gradient",
+        "radialAngles": 360,
+        "radialSampleStepPixels": 0.05,
+        "center": [
+          512.3862,
+          511.9119
+        ],
+        "radiusPixels": 31.2373,
+        "radialRmsPixels": 0.4246,
+        "residualFromCanvasPixelCenter": [
+          0.8862,
+          0.4119
+        ]
+      },
+      {
+        "method": "radial_bright_rim_peak",
+        "radialAngles": 360,
+        "radialSampleStepPixels": 0.05,
+        "center": [
+          512.3658,
+          511.9235
+        ],
+        "radiusPixels": 32.5274,
+        "radialRmsPixels": 0.4853,
+        "residualFromCanvasPixelCenter": [
+          0.8658,
+          0.4235
+        ]
+      }
+    ],
+    "maximumAbsoluteResidualAcrossMethodsPerAxisPixels": [
+      0.8895,
+      0.4649
+    ],
+    "uncertainty": "Shading, antialiasing and circle edge choice give subpixel measurement uncertainty; this is not a mathematically perfect circle. The integer crop is the nearest source-pixel-aligned 800 square to the measured pivot. No subpixel translation or zero-error claim is made."
+  },
+  "visualReview": {
+    "approvedOutputViewedAtOriginalResolution": true,
+    "fullOriginalCompassNeedlePointsLeafAndStarVisible": true,
+    "originalArtworkAndColorsPreservedByPixelPipeline": true,
+    "noObviousRoundedCornerClippingRisk": true,
+    "approximateSourceArtworkBoundsInclusive": [
+      282,
+      255,
+      960,
+      968
+    ],
+    "approximateUnresizedCropMarginsPixels": {
+      "left": 42,
+      "top": 40,
+      "right": 79,
+      "bottom": 46
+    },
+    "marginPrecision": "Approximate visual artwork bounds, not a measured platform mask or alpha boundary."
+  },
+  "notProven": {
+    "canonicalReplacementByReviewer": false,
+    "compiledAppIcon": false,
+    "signedArchiveOrAppleProcessing": false,
+    "installedIcon": false,
+    "nativeArOrRoomRegistration": false
+  }
+}

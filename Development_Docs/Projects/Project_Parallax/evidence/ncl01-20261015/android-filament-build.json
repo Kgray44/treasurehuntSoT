@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "evidenceClass": "ACTUAL_ANDROID_BUILD_ONLY",
+  "sourceCheckpoint": "adc0e2c87f07aca1fc136dbdf0114e2e575b12ec",
+  "sourceManifest": "android-filament-source-manifest.json",
+  "result": "PASS",
+  "command": "Gradle 8.11.1 -p native/android -I <task-owned-D-build-init-script> --console plain --no-daemon assembleDebug assembleDebugAndroidTest",
+  "compileSdk": 36,
+  "filament": "1.75.1",
+  "apk": {
+    "bytes": 64256327,
+    "sha256": "933d69b81d17dc714a3dd787b023944857403563adb04289b80041ef58dc1dd6"
+  },
+  "androidTestApk": {
+    "bytes": 1359829,
+    "sha256": "082655873615d4c911923bcfc5a02a3ebae822ad25af14ef961838c8385e6294"
+  },
+  "newInstrumentationTest": "ParallaxTests.originalCatalogLoadsAndRendersThroughFilament",
+  "productionAndroidChangedSinceInitialBuild": false,
+  "emulatorExecution": "PENDING_HOSTED_38802889231",
+  "physicalTrackingProven": false,
+  "renderedFidelityProven": false,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

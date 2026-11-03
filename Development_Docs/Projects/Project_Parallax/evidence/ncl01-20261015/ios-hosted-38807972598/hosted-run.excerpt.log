@@ -1,0 +1,430 @@
+582: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:18:09.8412040Z ##[group]Run npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+583: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:18:09.8412960Z ^[[36;1mnpx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only^[[0m
+584: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:18:09.8479500Z shell: /bin/bash -e {0}
+585: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:18:09.8479900Z env:
+586: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:18:09.8480110Z   LANDFALL_LAB_PROFILE: primary-phone
+587: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:18:09.8480690Z ##[endgroup]
+588: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:25:20.9197740Z XCRESULT_NOT_CREATED
+589: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4591810Z Command failed: xcrun simctl bootstatus 2BE11633-C0CB-4850-8C0E-3504C74A9479 -b
+590: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4604800Z 
+591: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4606160Z ple.locationd.migrator (CoreLocationMigrator.migrator)
+592: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4607710Z 		Migration Elapsed:05:39 seconds
+593: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4614750Z 
+594: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4618170Z [2026-10-15 21:24:06 +0000] Status=2, isTerminal=NO, Elapsed=05:48.
+595: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4624370Z 	Waiting on Data Migration
+596: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4823610Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+597: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4824920Z 		Migration Elapsed:05:40 seconds
+598: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4825440Z 
+599: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4825700Z [2026-10-15 21:24:07 +0000] Status=2, isTerminal=NO, Elapsed=05:49.
+600: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4828680Z 	Waiting on Data Migration
+601: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4832490Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+602: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4837760Z 		Migration Elapsed:05:41 seconds
+603: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4841200Z 
+604: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4841750Z [2026-10-15 21:24:08 +0000] Status=2, isTerminal=NO, Elapsed=05:50.
+605: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4842750Z 	Waiting on Data Migration
+606: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4847460Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+607: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4851080Z 		Migration Elapsed:05:42 seconds
+608: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4851250Z 
+609: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4851750Z [2026-10-15 21:24:09 +0000] Status=2, isTerminal=NO, Elapsed=05:51.
+610: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4852520Z 	Waiting on Data Migration
+611: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4853630Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+612: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4860110Z 		Migration Elapsed:05:43 seconds
+613: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4861480Z 
+614: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4862810Z [2026-10-15 21:24:10 +0000] Status=2, isTerminal=NO, Elapsed=05:52.
+615: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4863450Z 	Waiting on Data Migration
+616: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4899340Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+617: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4902830Z 		Migration Elapsed:05:44 seconds
+618: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4903570Z 
+619: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4904390Z [2026-10-15 21:24:11 +0000] Status=2, isTerminal=NO, Elapsed=05:53.
+620: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4905390Z 	Waiting on Data Migration
+621: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4926390Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+622: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4927980Z 		Migration Elapsed:05:45 seconds
+623: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4928400Z 
+624: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4936770Z [2026-10-15 21:24:12 +0000] Status=2, isTerminal=NO, Elapsed=05:54.
+625: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4998970Z 	Waiting on Data Migration
+626: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.4999610Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+627: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5001750Z 		Migration Elapsed:05:46 seconds
+628: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5002380Z 
+629: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5003160Z [2026-10-15 21:24:13 +0000] Status=2, isTerminal=NO, Elapsed=05:55.
+630: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5004430Z 	Waiting on Data Migration
+631: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5006140Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+632: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5011290Z 		Migration Elapsed:05:47 seconds
+633: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5011600Z 
+634: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5011950Z [2026-10-15 21:24:14 +0000] Status=2, isTerminal=NO, Elapsed=05:56.
+635: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5012330Z 	Waiting on Data Migration
+636: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5842880Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+637: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5843600Z 		Migration Elapsed:05:48 seconds
+638: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5843780Z 
+639: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5877020Z [2026-10-15 21:24:15 +0000] Status=2, isTerminal=NO, Elapsed=05:57.
+640: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5879780Z 	Waiting on Data Migration
+641: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5881160Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+642: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5888070Z 		Migration Elapsed:05:49 seconds
+643: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5889340Z 
+644: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5890800Z [2026-10-15 21:24:16 +0000] Status=2, isTerminal=NO, Elapsed=05:58.
+645: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5891920Z 	Waiting on Data Migration
+646: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5894170Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+647: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5896490Z 		Migration Elapsed:05:50 seconds
+648: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5897920Z 
+649: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5898720Z [2026-10-15 21:24:17 +0000] Status=2, isTerminal=NO, Elapsed=05:59.
+650: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5900850Z 	Waiting on Data Migration
+651: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5902710Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+652: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5904020Z 		Migration Elapsed:05:51 seconds
+653: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5904450Z 
+654: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5905760Z [2026-10-15 21:24:18 +0000] Status=2, isTerminal=NO, Elapsed=06:00.
+655: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5906850Z 	Waiting on Data Migration
+656: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5910340Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+657: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5911420Z 		Migration Elapsed:05:52 seconds
+658: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5911810Z 
+659: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5912430Z [2026-10-15 21:24:19 +0000] Status=2, isTerminal=NO, Elapsed=06:01.
+660: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5913560Z 	Waiting on Data Migration
+661: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5915610Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+662: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5916750Z 		Migration Elapsed:05:53 seconds
+663: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5917490Z 
+664: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5918490Z [2026-10-15 21:24:20 +0000] Status=2, isTerminal=NO, Elapsed=06:02.
+665: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5919550Z 	Waiting on Data Migration
+666: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5948950Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+667: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5950510Z 		Migration Elapsed:05:54 seconds
+668: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5950920Z 
+669: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5951900Z [2026-10-15 21:24:21 +0000] Status=2, isTerminal=NO, Elapsed=06:03.
+670: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5953760Z 	Waiting on Data Migration
+671: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5966120Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+672: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5967220Z 		Migration Elapsed:05:55 seconds
+673: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5968290Z 
+674: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5968600Z [2026-10-15 21:24:22 +0000] Status=2, isTerminal=NO, Elapsed=06:04.
+675: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5972250Z 	Waiting on Data Migration
+676: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5972880Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+677: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5973560Z 		Migration Elapsed:05:56 seconds
+678: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5973890Z 
+679: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5974310Z [2026-10-15 21:24:23 +0000] Status=2, isTerminal=NO, Elapsed=06:05.
+680: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5974770Z 	Waiting on Data Migration
+681: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5975820Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+682: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5979470Z 		Migration Elapsed:05:57 seconds
+683: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5979660Z 
+684: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5980060Z [2026-10-15 21:24:24 +0000] Status=2, isTerminal=NO, Elapsed=06:06.
+685: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5980900Z 	Waiting on Data Migration
+686: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5981290Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+687: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5981860Z 		Migration Elapsed:05:58 seconds
+688: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5982000Z 
+689: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5982360Z [2026-10-15 21:24:25 +0000] Status=2, isTerminal=NO, Elapsed=06:07.
+690: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5982700Z 	Waiting on Data Migration
+691: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5983100Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+692: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5983510Z 		Migration Elapsed:05:59 seconds
+693: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5983650Z 
+694: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5983900Z [2026-10-15 21:24:26 +0000] Status=2, isTerminal=NO, Elapsed=06:08.
+695: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5984790Z 	Waiting on Data Migration
+696: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5985810Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+697: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5986570Z 		Migration Elapsed:06:00 seconds
+698: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5986830Z 
+699: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5987110Z [2026-10-15 21:24:27 +0000] Status=2, isTerminal=NO, Elapsed=06:09.
+700: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5987720Z 	Waiting on Data Migration
+701: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5988100Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+702: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5988470Z 		Migration Elapsed:06:01 seconds
+703: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5988610Z 
+704: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5989040Z [2026-10-15 21:24:28 +0000] Status=2, isTerminal=NO, Elapsed=06:10.
+705: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5989340Z 	Waiting on Data Migration
+706: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5989960Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+707: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5990380Z 		Migration Elapsed:06:02 seconds
+708: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5990510Z 
+709: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5990750Z [2026-10-15 21:24:29 +0000] Status=2, isTerminal=NO, Elapsed=06:11.
+710: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.5991100Z 	Waiting on Data Migration
+711: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6002110Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+712: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6004420Z 		Migration Elapsed:06:03 seconds
+713: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6004630Z 
+714: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6005130Z [2026-10-15 21:24:30 +0000] Status=2, isTerminal=NO, Elapsed=06:12.
+715: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6005560Z 	Waiting on Data Migration
+716: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6039500Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+717: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6041030Z 		Migration Elapsed:06:04 seconds
+718: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6041460Z 
+719: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6042590Z [2026-10-15 21:24:31 +0000] Status=2, isTerminal=NO, Elapsed=06:13.
+720: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6043920Z 	Waiting on Data Migration
+721: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6045640Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+722: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6046830Z 		Migration Elapsed:06:05 seconds
+723: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6047290Z 
+724: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6048770Z [2026-10-15 21:24:32 +0000] Status=2, isTerminal=NO, Elapsed=06:14.
+725: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6050460Z 	Waiting on Data Migration
+726: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6050990Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+727: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6052250Z 		Migration Elapsed:06:06 seconds
+728: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6057100Z 
+729: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6057920Z [2026-10-15 21:24:33 +0000] Status=2, isTerminal=NO, Elapsed=06:15.
+730: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6061810Z 	Waiting on Data Migration
+731: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6063710Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+732: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6064770Z 		Migration Elapsed:06:07 seconds
+733: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6065530Z 
+734: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6066520Z [2026-10-15 21:24:34 +0000] Status=2, isTerminal=NO, Elapsed=06:16.
+735: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6090090Z 	Waiting on Data Migration
+736: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6092930Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+737: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6095190Z 		Migration Elapsed:06:08 seconds
+738: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6095940Z 
+739: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6096570Z [2026-10-15 21:24:35 +0000] Status=2, isTerminal=NO, Elapsed=06:17.
+740: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6100400Z 	Waiting on Data Migration
+741: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6102060Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+742: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6106030Z 		Migration Elapsed:06:09 seconds
+743: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6107050Z 
+744: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6107780Z [2026-10-15 21:24:36 +0000] Status=2, isTerminal=NO, Elapsed=06:18.
+745: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6110280Z 	Waiting on Data Migration
+746: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6113060Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+747: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6114750Z 		Migration Elapsed:06:10 seconds
+748: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6115880Z 
+749: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6117220Z [2026-10-15 21:24:37 +0000] Status=2, isTerminal=NO, Elapsed=06:19.
+750: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6119160Z 	Waiting on Data Migration
+751: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6121160Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+752: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6125750Z 		Migration Elapsed:06:11 seconds
+753: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6153820Z 
+754: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6154340Z [2026-10-15 21:24:38 +0000] Status=2, isTerminal=NO, Elapsed=06:20.
+755: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6155520Z 	Waiting on Data Migration
+756: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6156140Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+757: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6156810Z 		Migration Elapsed:06:12 seconds
+758: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6157300Z 
+759: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6157560Z [2026-10-15 21:24:39 +0000] Status=2, isTerminal=NO, Elapsed=06:21.
+760: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6157900Z 	Waiting on Data Migration
+761: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6158860Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+762: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6194670Z 		Migration Elapsed:06:13 seconds
+763: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6195100Z 
+764: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6196050Z [2026-10-15 21:24:40 +0000] Status=2, isTerminal=NO, Elapsed=06:22.
+765: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6197030Z 	Waiting on Data Migration
+766: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6197860Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+767: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6198990Z 		Migration Elapsed:06:14 seconds
+768: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6199290Z 
+769: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6200380Z [2026-10-15 21:24:41 +0000] Status=2, isTerminal=NO, Elapsed=06:23.
+770: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6200810Z 	Waiting on Data Migration
+771: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6201260Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+772: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6201800Z 		Migration Elapsed:06:15 seconds
+773: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6202080Z 
+774: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6202500Z [2026-10-15 21:24:42 +0000] Status=2, isTerminal=NO, Elapsed=06:24.
+775: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6214760Z 	Waiting on Data Migration
+776: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6247210Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+777: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6262430Z 		Migration Elapsed:06:16 seconds
+778: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6263160Z 
+779: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6263940Z [2026-10-15 21:24:43 +0000] Status=2, isTerminal=NO, Elapsed=06:25.
+780: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6264430Z 	Waiting on Data Migration
+781: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6264900Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+782: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6265850Z 		Migration Elapsed:06:17 seconds
+783: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6266310Z 
+784: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6266550Z [2026-10-15 21:24:44 +0000] Status=2, isTerminal=NO, Elapsed=06:26.
+785: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6267490Z 	Waiting on Data Migration
+786: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6268320Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+787: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6278910Z 		Migration Elapsed:06:18 seconds
+788: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6279440Z 
+789: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6280020Z [2026-10-15 21:24:45 +0000] Status=2, isTerminal=NO, Elapsed=06:27.
+790: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6281240Z 	Waiting on Data Migration
+791: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6282070Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+792: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6282800Z 		Migration Elapsed:06:19 seconds
+793: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6282930Z 
+794: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6283380Z [2026-10-15 21:24:46 +0000] Status=2, isTerminal=NO, Elapsed=06:28.
+795: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6283970Z 	Waiting on Data Migration
+796: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6284550Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+797: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6285730Z 		Migration Elapsed:06:20 seconds
+798: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6286100Z 
+799: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6286570Z [2026-10-15 21:24:47 +0000] Status=2, isTerminal=NO, Elapsed=06:29.
+800: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6287100Z 	Waiting on Data Migration
+801: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6288100Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+802: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6288510Z 		Migration Elapsed:06:21 seconds
+803: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6288840Z 
+804: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6289340Z [2026-10-15 21:24:48 +0000] Status=2, isTerminal=NO, Elapsed=06:30.
+805: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6290580Z 	Waiting on Data Migration
+806: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6291320Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+807: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6292120Z 		Migration Elapsed:06:22 seconds
+808: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6292420Z 
+809: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6292700Z [2026-10-15 21:24:49 +0000] Status=2, isTerminal=NO, Elapsed=06:31.
+810: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6294220Z 	Waiting on Data Migration
+811: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6295220Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+812: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6296130Z 		Migration Elapsed:06:23 seconds
+813: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6296440Z 
+814: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6296880Z [2026-10-15 21:24:50 +0000] Status=2, isTerminal=NO, Elapsed=06:32.
+815: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6297250Z 	Waiting on Data Migration
+816: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6298040Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+817: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6300210Z 		Migration Elapsed:06:24 seconds
+818: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6300430Z 
+819: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6300930Z [2026-10-15 21:24:51 +0000] Status=2, isTerminal=NO, Elapsed=06:33.
+820: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6301710Z 	Waiting on Data Migration
+821: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6302160Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+822: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6303290Z 		Migration Elapsed:06:25 seconds
+823: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6303610Z 
+824: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6303840Z [2026-10-15 21:24:52 +0000] Status=2, isTerminal=NO, Elapsed=06:34.
+825: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6304470Z 	Waiting on Data Migration
+826: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6305010Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+827: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6305590Z 		Migration Elapsed:06:26 seconds
+828: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6305760Z 
+829: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6306670Z [2026-10-15 21:24:53 +0000] Status=2, isTerminal=NO, Elapsed=06:35.
+830: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6307310Z 	Waiting on Data Migration
+831: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6318480Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+832: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6320790Z 		Migration Elapsed:06:27 seconds
+833: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6322780Z 
+834: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6325030Z [2026-10-15 21:24:54 +0000] Status=2, isTerminal=NO, Elapsed=06:36.
+835: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6327310Z 	Waiting on Data Migration
+836: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6330150Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+837: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6331820Z 		Migration Elapsed:06:28 seconds
+838: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6332670Z 
+839: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6334570Z [2026-10-15 21:24:55 +0000] Status=2, isTerminal=NO, Elapsed=06:37.
+840: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6335240Z 	Waiting on Data Migration
+841: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6337820Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+842: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6356730Z 		Migration Elapsed:06:29 seconds
+843: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6358060Z 
+844: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6359790Z [2026-10-15 21:24:56 +0000] Status=2, isTerminal=NO, Elapsed=06:38.
+845: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6361850Z 	Waiting on Data Migration
+846: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6363600Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+847: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6366630Z 		Migration Elapsed:06:30 seconds
+848: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6367990Z 
+849: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6372750Z [2026-10-15 21:24:57 +0000] Status=2, isTerminal=NO, Elapsed=06:39.
+850: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6413230Z 	Waiting on Data Migration
+851: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6415450Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+852: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6415890Z 		Migration Elapsed:06:31 seconds
+853: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6416050Z 
+854: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6416450Z [2026-10-15 21:24:58 +0000] Status=2, isTerminal=NO, Elapsed=06:40.
+855: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6417080Z 	Waiting on Data Migration
+856: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6418200Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+857: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6418950Z 		Migration Elapsed:06:32 seconds
+858: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6419090Z 
+859: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6419330Z [2026-10-15 21:24:59 +0000] Status=2, isTerminal=NO, Elapsed=06:41.
+860: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6498880Z 	Waiting on Data Migration
+861: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6501240Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+862: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6502290Z 		Migration Elapsed:06:33 seconds
+863: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6502650Z 
+864: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6503270Z [2026-10-15 21:25:00 +0000] Status=2, isTerminal=NO, Elapsed=06:42.
+865: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6504060Z 	Waiting on Data Migration
+866: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6506810Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+867: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6579610Z 		Migration Elapsed:06:34 seconds
+868: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6580110Z 
+869: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6580800Z [2026-10-15 21:25:01 +0000] Status=2, isTerminal=NO, Elapsed=06:43.
+870: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6582010Z 	Waiting on Data Migration
+871: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6583420Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+872: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6590350Z 		Migration Elapsed:06:35 seconds
+873: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6590990Z 
+874: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6591750Z [2026-10-15 21:25:02 +0000] Status=2, isTerminal=NO, Elapsed=06:44.
+875: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6592750Z 	Waiting on Data Migration
+876: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6593720Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+877: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6594120Z 		Migration Elapsed:06:36 seconds
+878: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6594580Z 
+879: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6595290Z [2026-10-15 21:25:03 +0000] Status=2, isTerminal=NO, Elapsed=06:45.
+880: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6596100Z 	Waiting on Data Migration
+881: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6597170Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+882: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6598190Z 		Migration Elapsed:06:37 seconds
+883: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6598560Z 
+884: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6599140Z [2026-10-15 21:25:04 +0000] Status=2, isTerminal=NO, Elapsed=06:46.
+885: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6599950Z 	Waiting on Data Migration
+886: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6668090Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+887: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6669240Z 		Migration Elapsed:06:38 seconds
+888: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6669610Z 
+889: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6670210Z [2026-10-15 21:25:05 +0000] Status=2, isTerminal=NO, Elapsed=06:47.
+890: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6671010Z 	Waiting on Data Migration
+891: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6672070Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+892: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6673210Z 		Migration Elapsed:06:39 seconds
+893: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6673620Z 
+894: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6674270Z [2026-10-15 21:25:06 +0000] Status=2, isTerminal=NO, Elapsed=06:48.
+895: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6675140Z 	Waiting on Data Migration
+896: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6676200Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+897: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6677220Z 		Migration Elapsed:06:40 seconds
+898: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6677630Z 
+899: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6678280Z [2026-10-15 21:25:07 +0000] Status=2, isTerminal=NO, Elapsed=06:49.
+900: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6680790Z 	Waiting on Data Migration
+901: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6681910Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+902: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6682960Z 		Migration Elapsed:06:41 seconds
+903: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6683330Z 
+904: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6683900Z [2026-10-15 21:25:08 +0000] Status=2, isTerminal=NO, Elapsed=06:50.
+905: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6684700Z 	Waiting on Data Migration
+906: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6685690Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+907: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6686700Z 		Migration Elapsed:06:42 seconds
+908: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6687100Z 
+909: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6687730Z [2026-10-15 21:25:09 +0000] Status=2, isTerminal=NO, Elapsed=06:51.
+910: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6688490Z 	Waiting on Data Migration
+911: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6694160Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+912: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6695880Z 		Migration Elapsed:06:43 seconds
+913: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6698060Z 
+914: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6698820Z [2026-10-15 21:25:10 +0000] Status=2, isTerminal=NO, Elapsed=06:52.
+915: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6699730Z 	Waiting on Data Migration
+916: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6700890Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+917: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6702100Z 		Migration Elapsed:06:44 seconds
+918: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6702490Z 
+919: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6703170Z [2026-10-15 21:25:11 +0000] Status=2, isTerminal=NO, Elapsed=06:53.
+920: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6704010Z 	Waiting on Data Migration
+921: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6705150Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+922: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6706360Z 		Migration Elapsed:06:45 seconds
+923: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6706770Z 
+924: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6720670Z [2026-10-15 21:25:12 +0000] Status=2, isTerminal=NO, Elapsed=06:54.
+925: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6721800Z 	Waiting on Data Migration
+926: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6722390Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+927: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6724230Z 		Migration Elapsed:06:46 seconds
+928: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6724770Z 
+929: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6725700Z [2026-10-15 21:25:13 +0000] Status=2, isTerminal=NO, Elapsed=06:55.
+930: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6727950Z 	Waiting on Data Migration
+931: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6728490Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+932: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6729470Z 		Migration Elapsed:06:47 seconds
+933: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6730350Z 
+934: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6795180Z [2026-10-15 21:25:14 +0000] Status=2, isTerminal=NO, Elapsed=06:56.
+935: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6796520Z 	Waiting on Data Migration
+936: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6797540Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+937: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6828310Z 		Migration Elapsed:06:48 seconds
+938: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6828570Z 
+939: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6828850Z [2026-10-15 21:25:15 +0000] Status=2, isTerminal=NO, Elapsed=06:57.
+940: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6829160Z 	Waiting on Data Migration
+941: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6829740Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+942: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6831720Z 		Migration Elapsed:06:49 seconds
+943: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6832360Z 
+944: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6832640Z [2026-10-15 21:25:16 +0000] Status=2, isTerminal=NO, Elapsed=06:58.
+945: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6832970Z 	Waiting on Data Migration
+946: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6833370Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+947: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6833780Z 		Migration Elapsed:06:50 seconds
+948: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6833930Z 
+949: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6834170Z [2026-10-15 21:25:17 +0000] Status=2, isTerminal=NO, Elapsed=06:59.
+950: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6834450Z 	Waiting on Data Migration
+951: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6834870Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+952: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6835370Z 		Migration Elapsed:06:51 seconds
+953: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6835570Z 
+954: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6835810Z [2026-10-15 21:25:18 +0000] Status=2, isTerminal=NO, Elapsed=07:00.
+955: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6836760Z 	Waiting on Data Migration
+956: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6837330Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+957: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6838630Z 		Migration Elapsed:06:52 seconds
+958: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6838830Z 
+959: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6839200Z [2026-10-15 21:25:19 +0000] Status=2, isTerminal=NO, Elapsed=07:01.
+960: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6839580Z 	Waiting on Data Migration
+961: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6840230Z 		Reason:Running plugin com.apple.locationd.migrator (CoreLocationMigrator.migrator)
+962: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6840630Z 		Migration Elapsed:06:53 seconds
+963: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6840790Z 
+964: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6840800Z 
+965: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6840800Z 
+966: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:48.6840930Z LANDFALL_APPLE_BUILD_FAILED
+967: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.0038980Z ##[error]Process completed with exit code 1.
+968: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1185450Z ##[group]Run actions/upload-artifact@v4
+969: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1185730Z with:
+970: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1186030Z   name: landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d
+971: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1186380Z   path: artifacts/landfall-device-lab
+972: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1186580Z   retention-days: 14
+973: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1186770Z   if-no-files-found: warn
+974: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1187010Z   compression-level: 6
+975: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1187190Z   overwrite: false
+976: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1187340Z   include-hidden-files: false
+977: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1187520Z env:
+978: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1187670Z   LANDFALL_LAB_PROFILE: primary-phone
+979: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:49.1187900Z ##[endgroup]
+980: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:50.4688320Z (node:18967) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+981: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:50.4689630Z (Use `node --trace-deprecation ...` to show where the warning was created)
+982: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:50.4812750Z With the provided path, there will be 6 files uploaded
+983: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:50.4825710Z Artifact name is valid!
+984: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:50.4829770Z Root directory input is valid!
+985: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.0326430Z Beginning upload of artifact content to blob storage
+986: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.1524840Z (node:18967) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+987: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.4195320Z Uploaded bytes 3899
+988: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.5110930Z Finished uploading artifact content to blob storage!
+989: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.5214400Z SHA256 digest of uploaded artifact zip is d14159624cd2ba72df7c993357210c233031f29b48589d6797c2c00d3f86b82a
+990: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.5317760Z Finalizing artifact upload
+991: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.7878840Z Artifact landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d.zip successfully finalized. Artifact ID 12007618776
+992: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.7880510Z Artifact landfall-ios-primary-phone-b328c49a69b7179c54b0dd0608aba65ded6c368d has been successfully uploaded! Final size is 3899 bytes. Artifact ID is 12007618776
+993: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.7888750Z Artifact download URL: https://github.com/Kgray44/treasurehuntSoT/actions/runs/38807972598/artifacts/12007618776
+994: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:51.8851060Z Post job cleanup.
+995: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.3339090Z [command]/opt/homebrew/bin/git version
+996: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.3837120Z git version 2.56.0
+997: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.4028350Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/6f69a7d6-63f3-4351-a107-02914eaab1fa/.gitconfig'
+998: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.4031510Z Temporarily overriding HOME='/Users/runner/work/_temp/6f69a7d6-63f3-4351-a107-02914eaab1fa' before making global git config changes
+999: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.4034090Z Adding repository directory to the temporary git global config as a safe directory
+1000: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.4038870Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/treasurehuntSoT/treasurehuntSoT
+1001: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.4391010Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+1002: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.4680030Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+1003: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.8610700Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+1004: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.8702440Z http.https://github.com/.extraheader
+1005: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.8882650Z [command]/opt/homebrew/bin/git config --local --unset-all http.https://github.com/.extraheader
+1006: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:52.8930870Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+1007: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:53.2671770Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+1008: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:53.2978240Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+1009: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:26:53.6487330Z Cleaning up orphan processes
+1010: Native / iOS / primary-phone	UNKNOWN STEP	2026-10-15T21:27:01.6642460Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+1011: 

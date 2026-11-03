@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "EXACT_NATIVE_FIXTURE_SOURCE_AND_HOSTED_TRANSPORT_BINDING",
+  "candidateSha": "2f2d55fd15743bc49d815dd4d9d2179debf52238",
+  "candidateParent": "e6eb9659d38918ef24f903ba78a13b2d067fd1ff",
+  "transportSha": "6434f65aa308ebd545635187e7fcc6d286da7aab",
+  "candidateChangedPaths": [
+    "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift"
+  ],
+  "transportChangedPaths": [
+    ".github/workflows/landfall-device-lab.yml"
+  ],
+  "fixture": {
+    "path": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+    "sha256": "817e6c8731fec53e539aa2282882d9696cdc7e68068732a82bd02f76b6665fd7",
+    "bytes": 33808,
+    "gitBlob": "1b78b0a52a3cd0810e1ab26fc9ec0d62c6d94124"
+  },
+  "priorPublishedIosFilesPreserved": 70,
+  "priorPublishedIosHashSetSha256": "245304ca0972ede97428ca03f8136a122b35d1b7c9638dbd5338b5e13b3d5525",
+  "canonicalHarvestReceiptSha256": "d9a1d7424809ad577190bdba769cf0ff7bd311d108b0294991ad3fd71db8344d",
+  "note": "Every original artifact copied for this receipt is checked against the canonical harvest manifest; no prior run image is rebound."
+}

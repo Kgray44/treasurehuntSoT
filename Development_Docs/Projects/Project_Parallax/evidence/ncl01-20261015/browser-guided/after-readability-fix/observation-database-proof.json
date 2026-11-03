@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "readOnlyTaskIsolatedDatabase": true,
+  "linkedRequestReceipts": [
+    {
+      "viewport": "desktop",
+      "observationId": "cmva03dr8001r25ykdbc3qxq5",
+      "entityId": "ncl01-original-model-scene:entity-0",
+      "interactionType": "INSPECT",
+      "receiptDigest": "29d4376f7f9d37b1ce878a06acf848937204a812ba3b89cdfc9fa78637ee258c",
+      "receiptExactMatch": true,
+      "mode": "GUIDED",
+      "authority": "NONAUTHORITATIVE",
+      "observedAt": "2026-10-15T20:38:01.997Z",
+      "originalHttpStatus": 200,
+      "responseBodyAvailable": false
+    },
+    {
+      "viewport": "desktop",
+      "observationId": "cmva03gm1001t25ykq1hbwmbi",
+      "entityId": "ncl01-original-model-scene:chest",
+      "interactionType": "INSPECT",
+      "receiptDigest": "fe6ac41dd3b7da17d0b950a46c11ece1187aadcecb1249a803c9bba7d81947e8",
+      "receiptExactMatch": true,
+      "mode": "GUIDED",
+      "authority": "NONAUTHORITATIVE",
+      "observedAt": "2026-10-15T20:38:05.698Z",
+      "originalHttpStatus": 200,
+      "responseBodyAvailable": false
+    },
+    {
+      "viewport": "mobile",
+      "observationId": "cmva03oey001x25ykm52i3f71",
+      "entityId": "ncl01-original-model-scene:entity-0",
+      "interactionType": "INSPECT",
+      "receiptDigest": "8993b66d094b332e8cac4c5f30b1ad351796241d964624654a738a1c1e0c48df",
+      "receiptExactMatch": true,
+      "mode": "GUIDED",
+      "authority": "NONAUTHORITATIVE",
+      "observedAt": "2026-10-15T20:38:15.829Z",
+      "originalHttpStatus": 200,
+      "responseBodyAvailable": false
+    },
+    {
+      "viewport": "mobile",
+      "observationId": "cmva03r1g001z25ykc9h5wkpw",
+      "entityId": "ncl01-original-model-scene:chest",
+      "interactionType": "INSPECT",
+      "receiptDigest": "6c5fa0ebbf1d9ba4b1802a259de93c2ec9e6df0e56f96c1d369e5974587638fd",
+      "receiptExactMatch": true,
+      "mode": "GUIDED",
+      "authority": "NONAUTHORITATIVE",
+      "observedAt": "2026-10-15T20:38:19.229Z",
+      "originalHttpStatus": 200,
+      "responseBodyAvailable": false
+    }
+  ],
+  "progression": {
+    "before": {
+      "capturedAt": "2026-10-15T20:36:35.087Z",
+      "session": {
+        "id": "cmv9yxc3u001i25do46ylmr89",
+        "status": "ACTIVE",
+        "currentBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "currentSequence": 3,
+        "publishedVersionId": "cmv9yxbf0001d25doh10rwzol",
+        "variables": "{}",
+        "inventory": "[]",
+        "completedAt": null
+      },
+      "events": [
+        {
+          "id": "cmv9yxc4s001s25dohxuu9wv4",
+          "sequence": 1,
+          "eventType": "sessionLaunched"
+        },
+        {
+          "id": "cmv9yxc4v001w25do4hqzwv1w",
+          "sequence": 2,
+          "eventType": "blockEntered"
+        },
+        {
+          "id": "cmv9yxc4x002025doumtt5y7u",
+          "sequence": 3,
+          "eventType": "verificationRequested"
+        }
+      ]
+    },
+    "after": {
+      "capturedAt": "2026-10-15T20:38:45.004Z",
+      "session": {
+        "id": "cmv9yxc3u001i25do46ylmr89",
+        "status": "ACTIVE",
+        "currentBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "currentSequence": 3,
+        "publishedVersionId": "cmv9yxbf0001d25doh10rwzol",
+        "variables": "{}",
+        "inventory": "[]",
+        "completedAt": null
+      },
+      "events": [
+        {
+          "id": "cmv9yxc4s001s25dohxuu9wv4",
+          "sequence": 1,
+          "eventType": "sessionLaunched"
+        },
+        {
+          "id": "cmv9yxc4v001w25do4hqzwv1w",
+          "sequence": 2,
+          "eventType": "blockEntered"
+        },
+        {
+          "id": "cmv9yxc4x002025doumtt5y7u",
+          "sequence": 3,
+          "eventType": "verificationRequested"
+        }
+      ]
+    },
+    "unchanged": true
+  },
+  "notes": [
+    "Matched actual browser request bodies to canonical ParallaxObservation records; no new receipts were submitted by this proof helper",
+    "HTTP200 and rendered Interaction recorded confirmed each UI action; Playwright response-body retrieval timed out for some response streams and is explicitly represented",
+    "Observation persistence is supporting software evidence and does not certify physical accuracy or owner acceptance"
+  ]
+}

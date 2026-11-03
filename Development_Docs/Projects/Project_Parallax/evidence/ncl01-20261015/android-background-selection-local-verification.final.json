@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "LOCAL_BACKGROUND_SELECTION_FIX_COMPILE_AND_VALIDATOR_TESTS_ONLY",
+  "sourceBinding": "EXACT_REVIEWED_SOURCE_FILE_BYTES_NOT_NEW_HOSTED_PROOF",
+  "priorCandidateSha": "2b8809980e3c8d448a9de4739779cd6f5849d39a",
+  "sourceFiles": [
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "sha256": "8429ea7bc8926aecfeded432a6b39c997791088e921bb2f2a2f52bd33b976706"
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.ts",
+      "sha256": "9bfce34ada0db64d4383d94d1402d187d8892bb45d008f9f6891f97bdecd1b04"
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.test.ts",
+      "sha256": "d3719c8568b517d6a09be1dbd89c1e640d4bb00c5bfcdae2001ea5e2c7c888ae"
+    }
+  ],
+  "change": "Remove union-alpha-AABB proxy only; retain all49-zero-alpha background and actual production GPU miss; choose farthest-center safe background and nearest-center opaque hit",
+  "preservedFailedHostedRun": "38820573449",
+  "preservedFailedReceipt": "android-hosted-38820573449/receipt.json",
+  "preservedFailedReceiptSha256": "8890310a2fac7d76e85239f9861cbafe4502b1fe2de28ec8b5deaa75f2608174",
+  "focusedValidatorTests": {
+    "passed": 9,
+    "failed": 0,
+    "fullExtentAabbTransparentBackgroundAccepted": true,
+    "opaqueAndAlpha1BackgroundRejected": true
+  },
+  "eslint": "PASS_ZERO_FINDINGS",
+  "typescript": "PASS_FULL_PROJECT",
+  "prettier": "PASS",
+  "gitDiffCheck": "PASS",
+  "nativeBuild": {
+    "result": "PASS",
+    "durationSeconds": 68,
+    "tasks": [
+      ":app:assembleDebug",
+      ":app:assembleDebugAndroidTest"
+    ],
+    "maximumHeapMiB": 768,
+    "maximumMetaspaceMiB": 384,
+    "maximumWorkers": 1,
+    "offline": true,
+    "daemon": false,
+    "allBuildCacheTempOnD": true,
+    "appSha256": "e5edfd137884ff5b08837285fcf443022c06da383b81d156ea7a15c90c2f36e6",
+    "testApkSha256": "77317f35bde43e88cb75c7d370239c40d2f36572e9ddb7858271f51596b9aed7"
+  },
+  "independentReview": "ACCEPTED_EXACT_THREE_SOURCE_HASHES",
+  "productionAndCollectorOrchestrationUnchanged": true,
+  "independentPngValidatorChanged": true,
+  "originalInstrumentationMethodCount": 16,
+  "originalAssetsUnchanged": true,
+  "readbackPickAndPngDeadlineMs": 10000,
+  "all49BackgroundAlphaValuesMustEqualZero": true,
+  "productionGpuMissMustReturnNull": true,
+  "freshHostedRuntimeProof": "PENDING_ROOT_FREEZE_AND_DISPATCH",
+  "formalExperienceApproval": false,
+  "physicalTrackingProven": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "knownPrivateValuesAbsent": true,
+  "publishedEvidence": [
+    {
+      "path": "android-background-selection-local/android-background-repair-tests.original.log",
+      "bytes": 641,
+      "sha256": "96b2e7ef6f09ee38538cfef02e59c7f19adba4d4a5c7085016c8add928020211",
+      "sourceLocalPath": "D:\\CodexTemp\\ncl01-evidence\\android-background-repair-tests.original.log"
+    },
+    {
+      "path": "android-background-selection-local/android-background-repair-eslint.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceLocalPath": "D:\\CodexTemp\\ncl01-evidence\\android-background-repair-eslint.original.log"
+    },
+    {
+      "path": "android-background-selection-local/android-background-repair-typecheck.original.log",
+      "bytes": 66,
+      "sha256": "87cbed0ffc784c19ac32b5eb5829e31eca5ebd6ea4b569718fa3d43d88a58e8d",
+      "sourceLocalPath": "D:\\CodexTemp\\ncl01-evidence\\android-background-repair-typecheck.original.log"
+    },
+    {
+      "path": "android-background-selection-local/android-background-repair-build.original.log",
+      "bytes": 4576,
+      "sha256": "017217105716fb1a9df9e602df07979b2c805dad11a300c7c9e8dda9ad80a784",
+      "sourceLocalPath": "D:\\CodexTemp\\ncl01-evidence\\android-background-repair-build.original.log"
+    }
+  ]
+}

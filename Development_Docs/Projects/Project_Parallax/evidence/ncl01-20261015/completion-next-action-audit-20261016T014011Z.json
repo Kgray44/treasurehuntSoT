@@ -1,0 +1,363 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "READ_ONLY_FULL_GOAL_COMPLETION_AND_NEXT_ACTION_AUDIT",
+  "reviewerContext": "/root/ncl01_review",
+  "reviewedAtUtc": "2026-10-16T01:40:11.198Z",
+  "checkpoint": "e6eb9659d38918ef24f903ba78a13b2d067fd1ff",
+  "brief": {
+    "path": "C:/Users/kkids/.codex/attachments/870c815b-f79d-40d5-a196-566024493cec/pasted-text-1.txt",
+    "sha256": "5fa3b9bacba83dea8137ca6b18826f8df5cd12c8fbeb17ae23e9d7ded496690e",
+    "readInFull": true
+  },
+  "scope": "Full original mission remains intact; software success is not initial physical milestone or whole-goal completion.",
+  "nativeSourceEquivalence": {
+    "iosCandidate": "aecbf27d63aa6c2bf287fc840e679b92600d4ff8",
+    "androidCandidate": "c2357ffe19b7efe88b8f1843bb47e036b4a3ae31",
+    "checkpointIosTreeEqualsTestedIos": true,
+    "checkpointAndroidNativeAndCollectorEqualsTestedAndroid": true
+  },
+  "sourceBoundEvidence": [
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38819289805.receipt.json",
+      "sha256": "4a154a41559cf476d3c0454beb14392ad267e785d9b539e1eaed87253b2df31d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-raster-independent-review.final.json",
+      "sha256": "0435a9622da62edbf7250c536fde641956cfa973cb749039f9747bf50f867e6b"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/receipt.json",
+      "sha256": "d1c9c5dcbc55f21617fbaf64c17f24636048d0ebbaab95977af5cd4e241f3e79"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/independent-review.final.json",
+      "sha256": "f319a47081a2a0e2df900a1da443e3d8352c69777d560f6ad27773674532a800"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/guided-independent-review.final.json",
+      "sha256": "79b72d2f070800a006ab50562d5c3486c8c52e204c19e831ef3b06238dd28bd8"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/local-https-assets.json",
+      "sha256": "dc752877126dee56ae2f95df280909463cf7d42a656e2e6f50ba3bc768e49286"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/browser-integration-audit.json",
+      "sha256": "8f0b392f2cf7368f9d9c35c1015db783c985b9a192d8911a73c512923ee44d1d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T010841Z.json",
+      "sha256": "43208b800d1964c6838b2d5ea3446bbca53e0c049242ff85c2b4124b1811bd59"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/final-source-verification.json",
+      "sha256": "4a57f9ab823309f172f1714f484b0cab360cda242bf87908e4e5108348036031"
+    }
+  ],
+  "initialMilestone": {
+    "complete": false,
+    "requirementCount": 10,
+    "requirements": [
+      {
+        "n": 1,
+        "requirement": "One Parallax-authored3D object",
+        "state": "SOFTWARE_DEMONSTRATED",
+        "proof": [
+          "Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md:20",
+          "public/parallax/sc02/manifest.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38819289805.receipt.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/receipt.json"
+        ],
+        "gap": "Both original chest and compass are reused, not newly duplicated; this does not establish physical presentation."
+      },
+      {
+        "n": 2,
+        "requirement": "Correct asset identity and transform",
+        "state": "SOFTWARE_COMPONENT_PROOF_PHYSICAL_UNVERIFIED",
+        "proof": [
+          "src/parallax/scene-delivery.ts:20",
+          "native/ios/LandfallCompanion/ParallaxModelPreparation.swift:18",
+          "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java:95",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-raster-independent-review.final.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/independent-review.final.json"
+        ],
+        "gap": "Digests, authored bounds, meter units, bottom pivot and supplied-frame transforms are verified; physical pose/scale/drift remains unmeasured."
+      },
+      {
+        "n": 3,
+        "requirement": "Native rendering on iOS",
+        "state": "SIMULATOR_RASTER_DEMONSTRATED",
+        "proof": [
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38819289805.receipt.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-raster-independent-review.final.json"
+        ],
+        "gap": "24pass/0fail/1expectedskip; original chest0/8301/0 and compass0/2509/0 within20s. Fixture does not exercise production activation/ARSession/ARKit anchors."
+      },
+      {
+        "n": 4,
+        "requirement": "Native rendering on Android",
+        "state": "EMULATOR_RASTER_AND_PRODUCTION_PICK_DEMONSTRATED",
+        "proof": [
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/receipt.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/independent-review.final.json"
+        ],
+        "gap": "16pass; real Filament pixels4386/10976, alpha>16 clear0, exact authored hits and null misses. No ARCore/camera or physical proof; cleared PNGs retain alpha1."
+      },
+      {
+        "n": 5,
+        "requirement": "Real ARKit/ARCore world anchoring on supported physical devices",
+        "state": "NOT_DEMONSTRATED_EXTERNAL_SETUP_AND_DEVICE_BLOCK",
+        "proof": [
+          "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:196",
+          "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java:555",
+          ".agents/ncl01-local-preview.md:78"
+        ],
+        "gap": "Owner iPhone lacks installed signed companion/developer setup and prefers no borrowed Mac; no physical Android. Phone reachability/trust is deferred. Source anchor calls do not prove physical stability."
+      },
+      {
+        "n": 6,
+        "requirement": "Consistent Scene semantics with browser",
+        "state": "PARTIAL_UNMERGED_PROVIDER_AND_DESIGN_DEPENDENCY",
+        "proof": [
+          "src/parallax/runtime.ts:41",
+          "src/parallax/browser-scene-presentation.ts:187",
+          "src/components/player/parallax/ChronicleLens.tsx:218",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/browser-integration-audit.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T010841Z.json"
+        ],
+        "gap": "Canonical v2/helper and actual Guided meaning exist; browser AR provider is absent from this/main baseline. Registration/plane-placement and BROWSER receipt integration require the governed upstream baseline."
+      },
+      {
+        "n": 7,
+        "requirement": "Real Inspect interaction",
+        "state": "PARTIAL_ONE_AVAILABLE_IOS_SELECTION_PROOF_INCREMENT",
+        "proof": [
+          "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:83",
+          "native/ios/LandfallCompanionTests/ParallaxSceneDeliveryTests.swift:56",
+          "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift:221",
+          "src/components/player/parallax/ChronicleLens.tsx:262",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/guided-independent-review.final.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/receipt.json"
+        ],
+        "gap": "Guided Inspect persisted actual canonical observations and Android real geometry picks pass. iOS only tests fabricated ancestry; actual original-mesh SceneKit hit/miss is safe to verify now. Complete native physical touch/Inspect/return journey remains unproved."
+      },
+      {
+        "n": 8,
+        "requirement": "Authoritative Chronicle handling without duplicate progression",
+        "state": "SOFTWARE_AUTHORITY_AND_GUIDED_JOURNEY_DEMONSTRATED_NATIVE_END_TO_END_UNVERIFIED",
+        "proof": [
+          "src/parallax/native.ts:139",
+          "src/parallax/runtime.ts:570",
+          "src/parallax/service.ts:96",
+          "src/app/api/player/playthroughs/[playthroughId]/parallax/route.ts:26",
+          "Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md:284",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/receipt.json"
+        ],
+        "gap": "Same-account/released-version/membership/idempotency checks and observation-only handling exist; Guided Inspect/unchanged progression and real canonical denied scenarios pass. Camera-free picks alone do not exercise the full native authenticated Inspect journey."
+      },
+      {
+        "n": 9,
+        "requirement": "Device lifecycle and tracking-loss recovery",
+        "state": "SOFTWARE_LIFECYCLE_PROOF_PHYSICAL_RECOVERY_UNVERIFIED",
+        "proof": [
+          "src/parallax/native.test.ts:52",
+          "src/parallax/runtime.ts:353",
+          "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:68",
+          "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:208",
+          "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java:406",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-raster-independent-review.final.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/independent-review.final.json"
+        ],
+        "gap": "Session/epoch cancellation, close/reopen, delayed stage abort, actual Android dialog dismissal and explicit owner disposal have software proof. Actual camera ownership, anchor recovery, relaunch and driver-memory release require device observations."
+      },
+      {
+        "n": 10,
+        "requirement": "Reproducible build, test and owner-review evidence",
+        "state": "BUILD_TEST_AND_SUPPORTING_REVIEW_PROVEN_OWNER_AND_PROTECTED_ACCEPTANCE_PENDING",
+        "proof": [
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/final-source-verification.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38819289805.receipt.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/receipt.json",
+          "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/guided-independent-review.final.json",
+          "Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md:470"
+        ],
+        "gap": "Exact source/transport/original artifacts and independent reviews are reproducible. No formal Product Experience approval, protected qualification/merge or owner physical acceptance; existing Crossdeck design gate remains."
+      }
+    ]
+  },
+  "numberedMissionSections": [
+    {
+      "n": 1,
+      "title": "Universal spatial-scene delivery",
+      "state": "SUPPORTED_SUBSET_IMPLEMENTED_FULL_MISSION_PARTIAL",
+      "refs": [
+        "src/parallax/scene-delivery.ts:61",
+        "src/parallax/scene-delivery.ts:125",
+        "src/parallax/scene-transfer.ts",
+        "src/parallax/asset-delivery.ts"
+      ],
+      "remaining": "v1/v2 identity/hierarchy/units/originalGLB refs/visibility/capabilities/fallback and separate authorized caches exist. Full audio/effect/imported-media/articulation/element-timeline/custom rendering breadth is not implemented; unsupported enabled semantics require Guided. Do not equate fallback with full native capability."
+    },
+    {
+      "n": 2,
+      "title": "Native rendering integration",
+      "state": "NATIVE_SOFTWARE_PROOF_BROWSER_AR_INTEGRATION_PENDING",
+      "refs": [
+        "Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md:27",
+        "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38819289805.receipt.json",
+        "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/receipt.json",
+        "src/parallax/browser-scene-presentation.ts:228"
+      ],
+      "remaining": "Same originals/identity/PBR intent/pivot tested in native and browser graph helper; simultaneous actual browserAR/native physical consistency still needs canonical provider integration and hardware."
+    },
+    {
+      "n": 3,
+      "title": "Native iOS track",
+      "state": "REAL_MODELS_AND_TRANSFORMS_PARTIAL_PHYSICAL_AND_RICHER_CAPABILITIES_PENDING",
+      "refs": [
+        "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:64",
+        "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:196",
+        "native/ios/LandfallCompanion/ParallaxSceneDelivery.swift:6"
+      ],
+      "remaining": "First safe increment: real SceneKit geometry hit/miss→production identity. ARKit anchoring/surface placement/recovery/camera/material fidelity unverified physically. LiDAR occlusion, richer effects/timelines and separate RealityKit/RoomPlan work remain unimplemented/unqualified; not authorized to jump ahead of first slice."
+    },
+    {
+      "n": 4,
+      "title": "Native Android track",
+      "state": "REAL_MODELS_AND_GPU_SELECTION_PARTIAL_PHYSICAL_AND_RICHER_CAPABILITIES_PENDING",
+      "refs": [
+        "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxModelRenderer.java:120",
+        "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java:117",
+        "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java:667"
+      ],
+      "remaining": "Actual model rendering/picking/disposal verified. Physical anchors, camera projection, relocalization, material fidelity, compatibility and performance remain unverified. Depth is explicitly disabled; occlusion/full animation and device quality tiers are not completed."
+    },
+    {
+      "n": 5,
+      "title": "Shared Chronicle Lens experience",
+      "state": "CANONICAL_AUTHORITY_REUSED_HANDOFF_INTEGRATION_DEPENDENCY_PENDING",
+      "refs": [
+        "src/components/player/parallax/ChronicleLens.tsx:218",
+        "src/parallax/native.ts:97",
+        "src/parallax/service.ts:96",
+        "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T010841Z.json"
+      ],
+      "remaining": "One canonical account/Voyage/version and observation path are preserved. Complete browser/native/phone participation, roles, pairing/reconnect and handoff need existing Crossdeck/provider baseline; no parallel contract or story state is justified."
+    },
+    {
+      "n": 6,
+      "title": "Room alignment and spatial fidelity",
+      "state": "BASIC_LOCAL_SURFACE_FRAMES_ONLY_FULL_REGISTRATION_PENDING",
+      "refs": [
+        "src/parallax/contracts.ts:52",
+        "src/parallax/environment-reference.ts:9",
+        "src/parallax/runtime.ts:315",
+        "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:118",
+        "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxLocalRuntime.java:310",
+        "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/browser-integration-audit.json"
+      ],
+      "remaining": "Immutable Environment pin, authored/resolved frames, raycast plane placement and honest tracking/fallback exist. No complete integrated measured-room/landmark/calibration-revision/recalibration/recovered-session registration proof. Preserve existing Environment authority and await its governed browser/SC integration plus calibrated observations; transforms alone are not measured truth."
+    },
+    {
+      "n": 7,
+      "title": "Future native room scanning",
+      "state": "EXPLICIT_POST_SLICE_INCREMENT_NOT_IMPLEMENTED",
+      "refs": [
+        "src/parallax/environment-reference.ts:9",
+        "Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md:240"
+      ],
+      "remaining": "Retain existing Environment construction/verification authority; RoomPlan and Android reconstruction ingestion are reserved future work. Brief explicitly says scanning does not block the initial slice."
+    },
+    {
+      "n": 8,
+      "title": "Performance and quality",
+      "state": "BOUNDED_SOFTWARE_METRICS_ONLY_ACTUAL_DEVICE_PROFILE_PENDING",
+      "refs": [
+        "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxModelRenderer.java:44",
+        "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/android-hosted-38833266576/native-sensor-performance.original.json",
+        "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/ios-hosted-38819289805.receipt.json"
+      ],
+      "remaining": "Sensor CPU/PSS and bounded fixture load/render/pick elapsed values do not prove AR FPS/tracking/memory/thermal/battery/registration/drift/relaunch/resource-release quality. Physical capability profiles and degradation validation remain necessary after supported installs."
+    },
+    {
+      "n": 9,
+      "title": "Implementation organization",
+      "state": "BOUNDED_SOURCE_OWNERSHIP_PRESERVED_GOVERNED_INTEGRATION_PENDING",
+      "refs": [
+        ".agents/parallax-ncl01.md:17",
+        "Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md:18",
+        "Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md:470"
+      ],
+      "remaining": "Existing companions/canonical runtime/SC asset definitions reused with bounded ownership and focused validation. Do not absorb active branches, modify their protected preparations, invent new contracts or infer integration acceptance from supporting artifacts."
+    },
+    {
+      "n": 10,
+      "title": "Initial milestone and acceptance",
+      "state": "INCOMPLETE",
+      "refs": [
+        "Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md:495"
+      ],
+      "remaining": "All ten initial requirements are mapped above. Owner must still test the same released clue through both supported native frameworks, with real-world anchoring/recovery and consistent browser semantics. Richer effects/occlusion/scanning/shared anchors/full presentation follow separately validated increments after the first slice."
+    }
+  ],
+  "availableNextActions": [
+    {
+      "priority": 1,
+      "kind": "BOUNDED_VERIFICATION_INCREMENT",
+      "status": "ROOT_ASSIGNED_IN_PROGRESS",
+      "owner": "ios_real_hit_fixture",
+      "action": "Extend only the existing camera-free iOS raster fixture with actual SCNRenderer geometry hits for both originals, production entityId mapping to distinct authored IDs, alpha-safe background and removed-scene misses.",
+      "why": "Directly advances section3 actual object selection and initial requirement7; existing test only fabricates node ancestry.",
+      "limits": "Preserve24passes/1expectedskip/27declarations/sixframes/alloriginalassertions/one20sdeadline. No production changes, ARSession, additional wait or physical/native-touch/completeInspect claim.",
+      "sourceRefs": [
+        "native/ios/LandfallCompanionTests/ParallaxSceneDeliveryTests.swift:56",
+        "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift:179",
+        "native/ios/LandfallCompanion/ParallaxLocalRuntime.swift:83"
+      ],
+      "primaryApi": "https://developer.apple.com/documentation/scenekit/scnscenerenderer/hittest(_:options:)"
+    },
+    {
+      "priority": 2,
+      "kind": "EXISTING_TASK_OWNED_PREVIEW_READINESS",
+      "status": "ROOT_ASSIGNED_IN_PROGRESS",
+      "owner": "lan_rebind_audit",
+      "action": "Complete and independently review the already-owned current-LAN leaf/origin rebind and ordinary TLS readback without changing CA identity, system trust or private fixture state.",
+      "why": "Root reported a current WiFi address change after the historical laptop transport proof. Historical11PASS transport metrics do not establish current-origin readiness.",
+      "limits": "Auditor did not inspect/change private keys/listeners/network state. Owner phone reachability remains deferred; root must review/execute operations."
+    }
+  ],
+  "independentSourceCrossCheck": {
+    "agent": "/root/ncl01_review/software_gap_check",
+    "conclusion": "Same iOS real-geometry hit-test evidence gap; no additional concrete Inspect-authority or lifecycle implementation repair identified."
+  },
+  "externalDependencies": {
+    "browserAndCrossdeckSnapshot": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/crossdeck-dependency-refresh-20261016T010841Z.json",
+    "snapshotUtc": "2026-10-16T01:08:41Z",
+    "mainAtSnapshot": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+    "ownerPr721HeadAtSnapshot": "87bb29391ee747d9738cc7f259c47f4343a7da89",
+    "ownerPrDraftOpenUnmerged": true,
+    "requiredDesignAndBrowserProviderAbsentFromMainAtSnapshot": true,
+    "physicalSetup": "Owner iPhone17Pro has no installed companion/developer setup; no Mac preferred/no physicalAndroid; phone reachability deferred.",
+    "afterAssignedSoftwareIncrements": "Remaining first-milestone acceptance depends on governed browser/Crossdeck integration and physical installation/devices/owner observations. Additional unchanged emulator reruns or status-only records do not close those gaps."
+  },
+  "decision": {
+    "wholeGoalComplete": false,
+    "initialMilestoneComplete": false,
+    "verifiedExternalOnlyImpasseNow": false,
+    "reason": "One meaningful iOS selection verification increment and the already-owned laptop origin readiness repair can advance now; neither grants physical acceptance. Broader capability increments remain explicitly incomplete and sequenced after the first slice."
+  },
+  "boundaries": {
+    "sourceModified": false,
+    "repositoryEvidenceModified": false,
+    "jobsLaunched": false,
+    "commitsCreated": false,
+    "otherUserChatsMessaged": false,
+    "parallelContractsCreated": false,
+    "systemTrustOrSigningPurchasesPerformed": false,
+    "physicalAcceptance": false,
+    "formalExperienceApproval": false,
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "outputFile": "D:\\CodexTemp\\ncl01-evidence\\completion-next-action-audit-20261016T014011Z.json"
+}

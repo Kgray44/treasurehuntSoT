@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_FOCUSED_BROWSER_REVIEW",
+  "qualification": false,
+  "result": "PASS_DEVELOPMENT_ONLY_WITH_EXPLICIT_REPORT_LIMITS",
+  "reviewedAtUtc": "2026-10-22T00:00:55.132Z",
+  "run": {
+    "id": 39694836167,
+    "attempt": 1,
+    "event": "workflow_dispatch",
+    "authorityBranch": "main",
+    "authorityCommit": "aaff919428ef9ab421579415ce3409949724760d",
+    "workflowPath": ".github/workflows/sounding-line-focused-repair.yml",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "source": {
+    "candidate": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+    "candidateTree": "094defa8062b420d0c9b61d73fa0e9464a0875a5",
+    "selector": "tests/e2e/parallax-native-authority.spec.ts",
+    "profile": "generic",
+    "project": "chromium",
+    "workers": 1,
+    "retries": 0,
+    "repeatEach": 1,
+    "protectedIdentity": [
+      {
+        "path": ".github/workflows/sounding-line-focused-repair.yml",
+        "authorityBlob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+        "candidateBlob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+        "identical": true
+      },
+      {
+        "path": "scripts/sounding-line/develop-browser-suite.mjs",
+        "authorityBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+        "candidateBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+        "identical": true
+      },
+      {
+        "path": "scripts/sounding-line/browser-authority.mjs",
+        "authorityBlob": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+        "candidateBlob": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+        "identical": true
+      }
+    ]
+  },
+  "originalLog": {
+    "sha256": "ddc4f87813923b1ee5d698d3767ee1017b6e53a423010896d3ac0c27fe98d219",
+    "bytes": 173365,
+    "privateOriginalRetained": true,
+    "rawContentPublished": false
+  },
+  "observed": {
+    "statuses": [
+      {
+        "status": "PASS_DEVELOPMENT_PREPARED_NOT_ACCEPTANCE",
+        "role": "DEVELOPMENT_ONLY",
+        "qualification": false
+      },
+      {
+        "status": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+        "role": "DEVELOPMENT_ONLY",
+        "qualification": false
+      }
+    ],
+    "preparedManifestSha256": "1d8cb483f29c3e91cb727a68750f414056a65ef1f4bb0cbfa2b7982841d223d8",
+    "preparedManifestContentPublished": false,
+    "captureChild": {
+      "exitCode": 0,
+      "signal": null
+    },
+    "browserCleanup": {
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    "proxyCleanup": {
+      "outcome": "CLOSED"
+    },
+    "serverCleanup": {
+      "exitCode": 1,
+      "signal": null,
+      "outcome": "EXITED",
+      "cleanupStatus": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    "authority": {
+      "failureCategory": null,
+      "failureCode": null
+    },
+    "publicArtifactCount": 0,
+    "nonfatalWarningTypes": [
+      "MaxListenersExceededWarning"
+    ]
+  },
+  "guardedPassConditions": {
+    "basis": "Exact protected helper source plus its observed guarded PASS outputs. Private fingerprint values are not invented.",
+    "conditions": [
+      "Main-only workflow and exact candidate/focused selector in a dedicated worktree",
+      "Task-owned synthetic nonce SQLite/fixture and production build",
+      "Preparation source fingerprint stable; immutable build/database/credential and dependency/browser fingerprints sealed in manifest",
+      "Exact logged manifest SHA, private layout and current source/Node/workspace/profile/runtime binding",
+      "Immutable build tree, installed dependency tree/locks/browser executables and pristine database baseline match",
+      "Copied runtime build checked before browser execution",
+      "Actual private report has positive selected count, zero skipped/flaky and no disagreement between unexpected results and runtime failure state",
+      "Runtime cleanup must PASS before report validation",
+      "Source/build/dependency fingerprints checked again after run; private log and lock finalization guarded"
+    ],
+    "privateFingerprintValuesPublished": false
+  },
+  "testEvidence": {
+    "declaredCases": {
+      "platformLoop": [
+        "IOS",
+        "ANDROID"
+      ],
+      "additionalCase": "D1 real Crossdeck companion preserves canonical model Inspect and clears revoked presentation",
+      "declaredTotal": 3
+    },
+    "report": {
+      "exactExecutedCount": null,
+      "sha256": null,
+      "perCaseRawResultsPublished": false,
+      "limit": "File declares3 cases; successful selected-file execution is established, not independently measured3/3."
+    },
+    "basis": "Exact selected source inspected; successful execution is guarded by actual report validation. Canonical HTTP and SQLite assertions are not mocked.",
+    "realPaths": [
+      "Canonical synthetic account/session and immutable edition fixture; actual production application",
+      "Visible connection-code pairing and two distinct surfaces sharing canonical Player membership",
+      "Companion purpose controls, same Voyage/edition, bound Scene/checksum/model identity and authenticated delivery metadata",
+      "Pending actual POST is paused then route.continue; no mocked response or premature accepted content/SQLite observation",
+      "Actual HTTP200 yields exact inspected entity and Guided return; identical receipt replay is idempotent",
+      "Purpose replacement, stale native identity, real surface revocation/unmount and canonical Journal return",
+      "Final expected one observation and unchanged progression events/block/sequence/membership count queried from real SQLite",
+      "Dialog serious/critical axe findings must be empty; owned contexts/fixtures use source finalizers"
+    ],
+    "emulatedPaths": [
+      "window.LandfallNative transport/capability replies",
+      "Native tracking and interaction CustomEvents"
+    ],
+    "notProven": [
+      "GLB binary download/rendering or native GPU input by this browser test",
+      "Live browser metric provider or physical AR",
+      "Independent screenshots/video/media critique",
+      "Physical iPhone/Android or owner acceptance",
+      "Ordinary Sounding Line qualification/Mainline Decision/protected merge"
+    ]
+  },
+  "sourceWitnesses": [
+    {
+      "revision": "aaff919428ef9ab421579415ce3409949724760d",
+      "path": ".github/workflows/sounding-line-focused-repair.yml",
+      "gitBlob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+      "sha256": "5c071c38ebcc45b6c2f23d18f96f0da2f1142576715248bdcff01f55b09bbc4a",
+      "anchors": [
+        {
+          "needle": "process.env.GITHUB_REF !== \"refs/heads/main\"",
+          "line": 40
+        },
+        {
+          "needle": "DEVELOPMENT_PREPARATION_INCOMPLETE",
+          "line": 90
+        }
+      ]
+    },
+    {
+      "revision": "aaff919428ef9ab421579415ce3409949724760d",
+      "path": "scripts/sounding-line/develop-browser-suite.mjs",
+      "gitBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+      "sha256": "fa81fc38bbf22e5cfd3ef9c88286837b4d3085b18e0567978d2834089167589e",
+      "anchors": [
+        {
+          "needle": "export function assertDevelopmentBuildReuse",
+          "line": 206
+        },
+        {
+          "needle": "DEVELOPMENT_PREPARED_BUILD_OR_DEPENDENCIES_CHANGED",
+          "line": 635
+        },
+        {
+          "needle": "DEVELOPMENT_BROWSER_CLEANUP_FAILED",
+          "line": 684
+        },
+        {
+          "needle": "selected > 0",
+          "line": 690
+        },
+        {
+          "needle": "report.stats.skipped === 0",
+          "line": 692
+        },
+        {
+          "needle": "report.stats.flaky === 0",
+          "line": 693
+        },
+        {
+          "needle": "DEVELOPMENT_CASE_AND_RUNTIME_DISAGREE",
+          "line": 698
+        },
+        {
+          "needle": "DEVELOPMENT_SOURCE_OR_SNAPSHOT_CHANGED",
+          "line": 709
+        }
+      ]
+    },
+    {
+      "revision": "aaff919428ef9ab421579415ce3409949724760d",
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "gitBlob": "2f27a5ac5b47ca07ad8737e9b8b394c7e46835b9",
+      "sha256": "4f0921a6080419c674c4c2373d5807f22a7daf8449f650fa14b873643e02454d",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "playwright.config.ts",
+      "gitBlob": "e43e9912bc263909c58a31ded843a25209761917",
+      "sha256": "9dd00e6d1d9b914a50da93bf30f0d8a3b05e8bcc217dfa1865d7306106057e3d",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "tests/e2e/parallax-native-authority.spec.ts",
+      "gitBlob": "544e5478868aea3cb52a7ee697714bc16ee2c189",
+      "sha256": "36443e23eeb78e1a6ccb06b7351096ca85f4288d836c5e924435c6fd98832263",
+      "anchors": [
+        {
+          "needle": "for (const platform of [\"IOS\", \"ANDROID\"] as const)",
+          "line": 126
+        },
+        {
+          "needle": "D1 real Crossdeck companion preserves canonical model Inspect",
+          "line": 278
+        },
+        {
+          "needle": "await route.continue();",
+          "line": 186
+        },
+        {
+          "needle": "expect(surfaces).toHaveLength(2);",
+          "line": 330
+        },
+        {
+          "needle": "expect(primary!.membershipId).toBe(receiver.membershipId);",
+          "line": 334
+        },
+        {
+          "needle": "expect(visiblePosts).toHaveLength(1);",
+          "line": 485
+        },
+        {
+          "needle": "expect(await db.parallaxObservation.count({ where: { sessionId: voyage.id } })).toBe(1);",
+          "line": 244
+        },
+        {
+          "needle": "expect(await db.playthroughMembership.count({ where: { playthroughId: voyage.id } })).toBe(beforeMembers);",
+          "line": 493
+        },
+        {
+          "needle": "expect([after.currentBlockId, after.currentSequence]).toEqual([before.currentBlockId, before.currentSequence]);",
+          "line": 249
+        }
+      ]
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "tests/e2e/fixtures/sounding-line-isolation.ts",
+      "gitBlob": "e54459fbbf35d450b0616441dfd809a221fc14b6",
+      "sha256": "fc3464843de49233190f2432a806572bd280afeece182090e42170af0d8f94ab",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "tests/e2e/fixtures/landfall-closure.ts",
+      "gitBlob": "8d06c51fd1ba0e899493948daa942ba3572747f0",
+      "sha256": "949746762513e8a2a4c8fb6e99e9863399bf3a20715214039381709533813a46",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "src/components/player/parallax/ChronicleLens.tsx",
+      "gitBlob": "c631636a43d1036caa26eec294effd3e4aac9e89",
+      "sha256": "8077db5b7681e591cb29e19c9791131cf8ba4d079413175855896e83a731e713",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "src/components/crossdeck/CrossdeckCompanion.tsx",
+      "gitBlob": "16670d5101b2c5d82578c6edfd6c5345cbb954ae",
+      "sha256": "5ead5ddb250de06b5ca2572d69ee50d4bd164e5496fcaf8b5dc38407ba63103f",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "src/components/crossdeck/useCrossdeckSession.ts",
+      "gitBlob": "00459d5b24e77ad5c8da9ccb319a0f1e5e272c14",
+      "sha256": "470cea49f37d4f5771a0150a7b4e27ea49a4e72c6fb39f26e2f0ae4711917177",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "src/components/player/journal/ChronicleJournalSession.tsx",
+      "gitBlob": "2c7e8be01421a89899f2f49e74d157fa4d4bd7ea",
+      "sha256": "182ecce1c074b10dbc9bdb1ffc4800cc6148da8b6b25d8c900e69c5e8a08deae",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "src/parallax/evidence.ts",
+      "gitBlob": "7fd97f33c9f65799c1ac469dbb7cf77985bf669c",
+      "sha256": "4825801a0da7c71bbf300a8747db6839bcca2ff62d806e8009018019ac490388",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "src/app/api/player/playthroughs/[playthroughId]/parallax/route.ts",
+      "gitBlob": "15a829ecdce8421c1c52063a4478735130307665",
+      "sha256": "7012a0c18c0d5f3d14d5466937051a3bed55fd8fdcfa5efe6d1a2519b6f160ee",
+      "anchors": []
+    },
+    {
+      "revision": "e66d1638eb8acc88f31c4c27426aad5f1c105b1b",
+      "path": "package-lock.json",
+      "gitBlob": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+      "sha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+      "anchors": []
+    }
+  ],
+  "limits": [
+    "DEVELOPMENT_ONLY; no Crossdeck finite allowance or product acceptance supplied.",
+    "Exact count and report digest stay unpublished; public artifact listing is empty.",
+    "Pending Android test-only fixture does not change this reviewed web-production scope; never reuse a private prepared manifest across any fingerprint change.",
+    "Source remains pinned to e66; broader future changes need their own source-equivalence assessment.",
+    "No raw private paths, fixture credential, publication nonce or device identifiers are included.",
+    "No additional CI, build, runtime, database, capture, signing or upload action performed by this review."
+  ]
+}

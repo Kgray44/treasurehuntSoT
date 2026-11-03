@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "kind": "NCL01_UNSIGNED_DEVICE_ARCHIVE_ONLY",
+  "baselineSha": "76d1787e1340e396bc95747293d43e57130b00ed",
+  "candidateSha": "bcca4fba851686b1cced11604daf5790a467b8bb",
+  "runId": 39342416557,
+  "transportSha": "0050884d36499a4c42e7e78b99edc6d822e1805f",
+  "tests": {
+    "transportPassed": 3,
+    "runnerBoundariesPassed": 4,
+    "syntheticCredentialChecksPassed": 18
+  },
+  "nativeRuntimeChanged": false,
+  "originalPr741Merged": false,
+  "signingSecretsConfigured": false,
+  "phoneReachabilityProven": false,
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "files": [
+    {
+      "path": "receipt.original.json",
+      "bytes": 679,
+      "sha256": "d003a144bf0cf4f21dedba48998b92e4a4285c223ad053107abb57fa36ceaec3"
+    },
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "device-archive.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 271,
+      "sha256": "9d17fce32739c592b5e5100c27a8aa57eceb2ba4b2870c90597ce44a4decc305"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 220,
+      "sha256": "992071616690ccee9836a6c79da3ea7116d200c5206c201626f033b9fa53b4d4"
+    },
+    {
+      "path": "cancelled-39342258297-cleanup.original.json",
+      "bytes": 253,
+      "sha256": "4369be328cfa77b1b38772b5e60e652f6d05b9bff82a367ceb8f3aca49106fa0"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 564,
+      "sha256": "6fb9d891489326ba94748051dab011df69925679904a2ce4b0a978eafe62d6eb"
+    },
+    {
+      "path": "cancelled-dispatch.original.json",
+      "bytes": 564,
+      "sha256": "23692a4fb877308442c9d16dc790ca105f772973519de3ac2407c065e7505030"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:28:23.3905846Z [command]/usr/bin/sh -c npx --no-install tsx scripts/landfall/device-lab/android-test.ts
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:29:51.5945219Z {"result":"FAIL","directory":"/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/android-native-tests-1792099704433"}
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:29:51.6134602Z ##[error]The process '/usr/bin/sh' failed with exit code 1
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:29:51.6139776Z ##[group]Terminate Emulator
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:29:51.6142327Z [command]/usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 emu kill
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:29:51.6169252Z error: could not connect to TCP port 5554: Connection refused
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:29:51.6170225Z The process '/usr/local/lib/android/sdk/platform-tools/adb' failed with exit code 1

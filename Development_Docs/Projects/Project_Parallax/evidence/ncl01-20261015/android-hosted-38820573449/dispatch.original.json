@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "candidateSha": "2b8809980e3c8d448a9de4739779cd6f5849d39a",
+  "target": "android",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "browser": [],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "permission-denied-native",
+    "provider": "all"
+  },
+  "transportSha": "cfca6bf43f965c8277385657281b9a6cfae6e213",
+  "transportTree": "89346935a688a89551dc59e9f80932635fcc97e9",
+  "branch": "codex/landfall-lab-2b8809980e3c-1792105059226",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-15T22:57:41.719Z",
+  "cleanup": "PASS",
+  "runId": "38820573449",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38820573449",
+  "harvested": "D:\\CodexWorktrees\\parallax-ncl01-physical-20261015\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-2b8809980e3c-1792105059226\\run-38820573449"
+}

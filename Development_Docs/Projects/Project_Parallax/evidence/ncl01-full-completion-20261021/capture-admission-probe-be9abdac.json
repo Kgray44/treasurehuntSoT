@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "engineering-evidence",
+  "qualification": false,
+  "role": "SOURCE_BOUND_NONCAPTURING_ADMISSION_DIAGNOSIS",
+  "completedAtUtc": "2026-10-22T14:23:08.062Z",
+  "source": {
+    "baseSha": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+    "candidateSha": "be9abdac95279ea1e4f67b23221027ba19bd6e68",
+    "modulePath": "scripts/sounding-line/experience-exception.mjs",
+    "moduleBlob": "b95e1118513e93c9a28f6356367c6f7bdd65f15b",
+    "registryPath": "testing/product-experience-exceptions.json",
+    "registryBlob": "089308bf475a2b22bfdc64ac46164996855e7010",
+    "moduleAndRegistryIdenticalAcrossBaseAndCandidate": true
+  },
+  "scope": {
+    "oneRecognizeProbeOnly": true,
+    "probeBudgetMs": 10000,
+    "readOnlyGitOperations": true,
+    "dBareMetadataRoot": true,
+    "noCaptureOrBrowserOrApplicationOrApi": true,
+    "noProtectedFrameworkModification": true,
+    "noCandidateModification": true,
+    "noRetry": true,
+    "ambientCredentialsAndGhaRemoved": true,
+    "noFakeClockOrLease": true
+  },
+  "localEnvironment": {
+    "nodeVersion": "v24.18.0",
+    "hostedDeclaredNodeVersion": "v24.19.0",
+    "installedLocalHead": "be9abdac95279ea1e4f67b23221027ba19bd6e68",
+    "hostedInstalledHead": "39b706ad3c9a2b8e1d589f71db909cf6c32c468b",
+    "semanticsBoundary": "Local imported module resolves installed HEAD to candidate; installed/candidate/base exception registry blobs and module blobs were checked identical. Git root is a Windows D bare metadata store with C object alternates, not the hosted Linux checkout."
+  },
+  "staticFindings": [
+    {
+      "lines": "2485-2490",
+      "finding": "recognizeExceptionExecution constructs campaign plus installed, candidate and base registry rows without deduplication. With the three identical 26-row registries this is 79 records, subject to records.some short circuit."
+    },
+    {
+      "lines": "2520-2535",
+      "finding": "For qualifying denial signals and exact protected-base comparison, each visited record can call direct campaignRelated. The callback also checks ancestry once per visited record before its return expression."
+    },
+    {
+      "lines": "778-825",
+      "finding": "campaignRelated uses the direct source adapter. A separate campaignComparison owns memoized revision inventories, document reads, identities and ancestor results, but recognition does not call it."
+    },
+    {
+      "lines": "827-858",
+      "finding": "Direct campaign comparison can repeat candidate recursive inventories, contract reads, source identity checks, ancestry, and immutable-history presence lookups across visited records."
+    },
+    {
+      "path": "scripts/sounding-line/experience-browser.mjs",
+      "lines": "734-778",
+      "finding": "Replay admission precedes diagnostic profile setup and onDiagnosticScope; missing runtime/profile paths is consistent with a pre-scope halt but does not by itself prove the exact hosted substage."
+    }
+  ],
+  "probe": {
+    "startedAtUtc": "2026-10-22T14:21:27.857Z",
+    "completedAtUtc": "2026-10-22T14:21:38.044Z",
+    "result": {
+      "timedOut": true
+    },
+    "elapsedMsIncludingCleanup": 10186,
+    "observations": [
+      {
+        "phase": "MODULE_IMPORT",
+        "at": "2026-10-22T14:21:28.819Z"
+      },
+      {
+        "phase": "RECOGNITION_BEGIN",
+        "at": "2026-10-22T14:21:29.124Z"
+      }
+    ],
+    "gitTrace": {
+      "bytes": 175908,
+      "sha256": "4ba551fcbb1f2d097a773fe6cd0c053fa08ad472c9ad1542fbe7202ddc229da2",
+      "missing": false,
+      "events": 645,
+      "gitStarts": 59,
+      "gitExits": 59,
+      "operations": {
+        "rev-parse": 6,
+        "ls-tree": 34,
+        "show": 10,
+        "merge-base": 9
+      },
+      "firstStartAt": "2026-10-22T14:21:29.171112Z",
+      "lastStartAt": "2026-10-22T14:21:37.806557Z",
+      "lastExitAt": "2026-10-22T14:21:37.891726Z",
+      "lastStartedOperation": "ls-tree"
+    },
+    "duplicateExamples": {
+      "candidateRecursiveInventories": 4,
+      "candidateContractPresenceReads": 4,
+      "baseContractPresenceReads": 3
+    },
+    "cleanup": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": null,
+      "elapsedMs": 150,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "cleanupBoundary": "Creation-bound Windows Job Object reported tree reaped and streams closed. No separate host process-table audit was performed."
+  },
+  "conclusion": "The single 10-second local recognizer did not finish and demonstrated repeated completed Git reads through its final second. This supports a measurable repeated-read fanout hypothesis; it does not prove the cause of the hosted 20-minute stall, deadlock, completion time, or entitlement to another capture.",
+  "nextMaintenanceOwnerDiagnostic": {
+    "capturing": false,
+    "action": "In the existing maintenance-owned lane, inspect and boundedly instrument exact-source recognizeExceptionExecution at the declared runtime to measure visited records and repeated immutable Git reads. Compare any proposed memoized comparison against the unchanged recognizer on unrelated, related, retired, same-source and malformed inputs before considering a protected repair.",
+    "falsifiableOutcome": "If exact-source admission does not exhibit repeated read fanout or the installed hosted stage is proven elsewhere, reject this hypothesis. If an equivalence-preserving reduction removes repeated reads while all denial/recognition outcomes remain unchanged, retain that source-bound proof for the maintenance owner.",
+    "preserve": "All historical rows, live wall-clock checks, finite campaign controls, custody rules and denial semantics; no NCL capture redispatch in this task."
+  },
+  "files": {
+    "review": {
+      "path": "D:/CodexTaskOutputs/ncl01-post-crossdeck-20261021/capture-admission-probe-20261022/review.public.json",
+      "bytes": 2578,
+      "sha256": "aff94724584b5e301a871aa34357ef92f6ebdeae96356517b8f85527e9849259"
+    },
+    "trace": {
+      "path": "D:/CodexTaskOutputs/ncl01-post-crossdeck-20261021/capture-admission-probe-20261022/git-trace2.original.jsonl",
+      "bytes": 175908,
+      "sha256": "4ba551fcbb1f2d097a773fe6cd0c053fa08ad472c9ad1542fbe7202ddc229da2"
+    },
+    "stdout": {
+      "bytes": 120,
+      "sha256": "dee3e04b83f47b2614b0351894b79e1d297f56c7302e6d8cab14d058a0e4fa11"
+    },
+    "stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

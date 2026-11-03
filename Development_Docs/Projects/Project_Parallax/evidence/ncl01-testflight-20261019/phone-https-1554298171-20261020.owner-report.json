@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "OWNER_REPORTED_IPHONE_SAFARI_HTTPS_REACHABILITY_AND_TRUST",
+  "reportedDate": "2026-10-20",
+  "publicOrigin": "https://155.42.98.171:8449",
+  "device": "iPhone 17 Pro",
+  "surface": "Safari",
+  "ownerResponse": "Opens without a warning",
+  "phoneReachabilityOwnerReported": true,
+  "phoneCertificateTrustOwnerReported": true,
+  "sameCaRetained": true,
+  "caReinstallationRequired": false,
+  "independentlyCapturedPhoneEvidence": false,
+  "build3NativeConnectivityProven": false,
+  "build3InstallationProven": false,
+  "measuredARTrackingProven": false,
+  "classroomRegistrationProven": false
+}

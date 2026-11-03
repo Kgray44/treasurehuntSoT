@@ -93,6 +93,9 @@ jobs:
       - run: brew install xcodegen
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
       - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+      - name: Camera-free native input through canonical Lens and SQLite
+        if: ${{ !cancelled() && matrix.profile == 'primary-phone' }}
+        run: npx --no-install tsx scripts/landfall/device-lab/parallax-native-run.ts
       - run: npm run landfall:device-lab -- --platform ios --scenario __APPLE_SCENARIOS__
       - uses: actions/upload-artifact@v4
         if: always()
@@ -200,12 +203,13 @@ jobs:
           arch: x86_64
           profile: ${{ matrix.device }}
           ram-size: ${{ matrix.ram }}
-          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -memory ${{ matrix.memory }} ${{ matrix.lowRam }} -camera-back imagefile:${{ github.workspace }}/artifacts/landfall-device-lab/camera-qr.png -camera-front none
+          emulator-options: -no-window -gpu swangle -no-snapshot -noaudio -no-boot-anim -memory ${{ matrix.memory }} ${{ matrix.lowRam }} -camera-back imagefile:${{ github.workspace }}/artifacts/landfall-device-lab/camera-qr.png -camera-front none
           emulator-boot-timeout: 300
           disable-linux-hw-accel: false
           disable-animations: true
           script: |
             npx --no-install tsx scripts/landfall/device-lab/android-test.ts
+            npx --no-install tsx scripts/landfall/device-lab/parallax-native-run.ts --android
             npm run landfall:device-lab -- --platform android --scenario __ANDROID_SCENARIOS__
       - uses: actions/upload-artifact@v4
         if: always()

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "status": "ROUTING_REVIEWED_PUBLICATION_PENDING",
+  "observedAt": "2026-10-20T14:49:18Z",
+  "evidenceScope": "OWNER_AUTHENTICATED_CLOUDFLARE_DASHBOARD_READ_ONLY_AND_UNSUBMITTED_ROUTE_DRAFT",
+  "ownerCompletedSignIn": true,
+  "existingTunnelName": "ars-local-staging",
+  "existingPublishedApplications": [
+    {"hostname": "staging.absoluterelativesystems.com", "service": "http://localhost:3000", "additionalSettings": "DEFAULTS"},
+    {"hostname": "audit.absoluterelativesystems.com", "service": "http://localhost:3110", "additionalSettings": "DEFAULTS"}
+  ],
+  "existingAccessApplication": {
+    "name": "staging",
+    "destination": "staging.absoluterelativesystems.com",
+    "policyName": "Test Users",
+    "wildcardApplicationObserved": false,
+    "modified": false
+  },
+  "proposedApplication": {
+    "hostname": "ncl01.absoluterelativesystems.com",
+    "path": "",
+    "service": "http://127.0.0.1:3159",
+    "additionalSettings": "DEFAULTS",
+    "authentication": "EXISTING_VOYAGEWRIGHT_ACCOUNT_AND_AUTHORIZED_ASSET_ROUTES",
+    "routeFormPrepared": true,
+    "addRouteSubmitted": false,
+    "publicExposureApprovedAtActionTime": false
+  },
+  "publicationGates": [
+    "Isolated production build and strict loopback proxy checks",
+    "Exact-public-Origin authenticated streaming and asset checks",
+    "Owner action-time approval of new public route",
+    "Normal public HTTPS, authentication and authorized original GLB checks",
+    "Exact-candidate TestFlight build 4 upload, processing and existing internal group"
+  ],
+  "mutations": {
+    "existingRouteChanged": false,
+    "dnsChanged": false,
+    "tunnelOrServiceReconfigured": false,
+    "accessChanged": false,
+    "firewallOrTrustChanged": false,
+    "build4Dispatched": false,
+    "domainPurchased": false
+  },
+  "physicalStableOriginPhoneProof": false,
+  "authoredSceneFidelityAccepted": false,
+  "privateScreenshotRetainedOutsideGit": true,
+  "credentialsOrPrivateGeometryPublished": false
+}

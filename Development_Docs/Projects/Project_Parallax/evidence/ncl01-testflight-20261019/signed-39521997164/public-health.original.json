@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "task": "NCL01_ORIGINAL_LOGO_TESTFLIGHT7_READ_ONLY_ORIGIN_HEALTH",
+  "startedAt": "2026-10-21T00:31:10.270Z",
+  "completedAt": "2026-10-21T00:31:13.239Z",
+  "publicOrigin": "https://ncl01.absoluterelativesystems.com",
+  "htmlTarget": "/sign-in?returnTo=%2Fplayer%2Flibrary",
+  "html": {
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "bytes": 19154,
+    "trustedTls": true,
+    "tlsProtocol": "TLSv1.3"
+  },
+  "checks": [
+    {
+      "path": "/_next/static/css/73f0cdc4ae157bcd.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 47320,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/css/f433890a83f11201.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 82043,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/css/1a2651c401bcdc00.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 77127,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/css/697cca252382c351.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 41148,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/css/3d3835e780b066ab.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 51906,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/css/4e218e9e6d31e5c3.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 68932,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/css/21698dc9dd19b11e.css",
+      "status": 200,
+      "contentType": "text/css; charset=UTF-8",
+      "bytes": 67489,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/webpack-544dd9af3f5c13fd.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 5286,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/605ecc53-43a5aa497d32e0a8.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 201060,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/54638-488ce2b411e87ec4.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 241631,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/main-app-8b19b70d87d11572.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 531,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/594d7194-0c62c9f8aade8ea3.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 51580,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/96579-e60226a284936fa6.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 8666,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/87041-3abccc9eaecae5af.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 120744,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/54776-31cd8e403871b755.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 56574,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/74052-ccdbf308f1a24b21.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 86704,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/79291-c50fef18992eb9e8.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 5185,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/51130-e691a111c5f098f0.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 52207,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/63776-3e87c9135072d62d.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 9517,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/33475-57a5ca16657a63e0.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 8548,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/62918-88c7796e8373c70f.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 114868,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/app/layout-1eae462a643b6375.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 53907,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/96901-fdd87d18a6b284a8.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 22561,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/app/sign-in/page-29a731d45396f608.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 159,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    },
+    {
+      "path": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "status": 200,
+      "contentType": "application/javascript; charset=UTF-8",
+      "bytes": 112594,
+      "trustedTls": true,
+      "tlsProtocol": "TLSv1.3",
+      "passed": true
+    }
+  ],
+  "allPassed": true,
+  "normalPlatformTls": true,
+  "caOverrides": false,
+  "redirectsFollowed": 0,
+  "authSessionsCreated": 0,
+  "canonicalProgressionRequests": 0,
+  "dDriveWrites": 0,
+  "processOrConfigChanges": false
+}
