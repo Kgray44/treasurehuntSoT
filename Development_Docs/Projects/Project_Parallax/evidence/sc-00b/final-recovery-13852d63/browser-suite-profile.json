@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00b-combined.spec.ts",
+    "-g",
+    "covers twelve selection contexts|scale drag previews"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}
