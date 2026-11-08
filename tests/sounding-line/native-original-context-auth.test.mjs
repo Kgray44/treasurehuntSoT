@@ -81,16 +81,17 @@ const fixtureRecoveredEncryption = {
   publicKey: fixtureRecoveredPublic,
   keyId: createHash("sha256").update(fixtureRecoveredPublic).digest("hex"),
 };
-const pendingDeclaration = "const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = null;";
+const recipientDeclaration =
+  /^const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = (?:null|Object.freeze\(\{[\s\S]*?\}\));$/mu;
 const policySource = fs.readFileSync(
   new URL("../../scripts/sounding-line/registry-recipient-policy.mjs", import.meta.url),
   "utf8",
 );
-assert(policySource.includes(pendingDeclaration));
+assert.match(policySource, recipientDeclaration);
 fs.writeFileSync(
   path.join(root, "scripts/sounding-line/registry-recipient-policy.mjs"),
   policySource.replace(
-    pendingDeclaration,
+    recipientDeclaration,
     "const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = Object.freeze(" + JSON.stringify(fixtureRecoveredEncryption) + ");",
   ),
 );
