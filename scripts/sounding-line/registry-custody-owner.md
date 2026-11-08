@@ -1,8 +1,8 @@
 # Private owner recovery preparation
 
-This internal tool prepares a new registry recipient without enabling it. The
-production recovered-recipient pin remains unset. Existing encrypted evidence,
-original recipient identities and protected release authority remain intact.
+This internal tool prepares a registry recipient for review. A separate change
+to protected main installs the reviewed public pin for new shadow registries.
+The reader retains the original recipient identity for older registries.
 
 After this source has passed ordinary protected qualification and landed, the
 owner can open a visible **Windows PowerShell** window on this host and run:
