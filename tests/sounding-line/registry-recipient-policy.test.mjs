@@ -44,13 +44,10 @@ async function fixture(t, pin = null) {
     new URL("../../scripts/sounding-line/registry-recipient-policy.mjs", import.meta.url),
     "utf8",
   );
-  const declaration = "const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = null;";
-  assert(source.includes(declaration));
-  if (pin)
-    source = source.replace(
-      declaration,
-      `const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = Object.freeze(${JSON.stringify(pin)});`,
-    );
+  const declaration = /^const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = (?:null|Object.freeze\(\{[\s\S]*?\}\));$/mu;
+  assert.match(source, declaration);
+  const fixturePin = pin ? `Object.freeze(${JSON.stringify(pin)})` : "null";
+  source = source.replace(declaration, `const RECOVERED_INTERNAL_REGISTRY_RECIPIENT = ${fixturePin};`);
   fs.writeFileSync(path.join(directory, names[1]), source, { flag: "wx" });
   let retention = fs.readFileSync(
     new URL("../../scripts/sounding-line/artifact-registry-retention.mjs", import.meta.url),
