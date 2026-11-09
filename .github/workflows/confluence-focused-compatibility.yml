@@ -1,0 +1,26 @@
+name: Confluence focused compatibility
+
+# Small, nonauthoritative parser regression check; Sounding Line retains merge/release authority.
+on:
+  pull_request:
+    paths:
+      - 'scripts/confluence/**'
+      - 'tests/confluence/**'
+      - '.github/workflows/confluence-focused-compatibility.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  human-archive-compatibility:
+    name: Confluence / Human archive compatibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Focused Confluence tests only
+        run: npm run confluence:test
