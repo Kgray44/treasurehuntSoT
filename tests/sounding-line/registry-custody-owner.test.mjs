@@ -50,6 +50,36 @@ test("captured owner operation refuses before private setup; observation grants 
   assert.equal(prepare.status, 1);
   assert.equal(prepare.stdout, "");
   assert.equal(prepare.stderr.trim(), "OWNER_CUSTODY_PRIVATE_OWNER_CONSOLE_REQUIRED");
+  const provider = [
+    "--operation",
+    "owner-open-provider-registry",
+    "4000",
+    "8000",
+    "900",
+    "a".repeat(64),
+    "b".repeat(64),
+    "D",
+  ];
+  const open = invoke(...provider);
+  assert.equal(open.status, 1);
+  assert.equal(open.stdout, "");
+  assert.equal(open.stderr.trim(), "OWNER_CUSTODY_PRIVATE_OWNER_CONSOLE_REQUIRED");
+  for (const [index, value] of [
+    [2, "9007199254740992"],
+    [4, "721"],
+    [4, "776"],
+    [4, "805"],
+    [5, "not-a-digest"],
+    [6, "not-a-source-digest"],
+    [7, "E"],
+  ]) {
+    const bad = provider.slice();
+    bad[index] = value;
+    const denied = invoke(...bad);
+    assert.equal(denied.status, 1);
+    assert.equal(denied.stdout, "");
+    assert.equal(denied.stderr.trim(), "OWNER_CUSTODY_ARGUMENTS");
+  }
   for (const args of [[], ["--operation", "decrypt"], ["--operation", "owner-prepare", "--key", "public-fixture"]]) {
     const result = invoke(...args);
     assert.equal(result.status, 1);

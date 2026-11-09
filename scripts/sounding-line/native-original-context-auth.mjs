@@ -9,6 +9,7 @@ import { createHash } from "node:crypto";
 import { readNativeEvidenceContextStepLog, PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM } from "./provider-run-log-archive.mjs";
 import { readArtifactRegistryArchive, ARTIFACT_REGISTRY_ARCHIVE_MAXIMUM } from "./artifact-registry-archive.mjs";
 import { validateRegistryProviderMetadata } from "./artifact-registry-provenance.mjs";
+import { verifiedRegistryOwnerTool } from "./registry-owner-tools.mjs";
 const REPOSITORY = "Kgray44/treasurehuntSoT",
   REPOSITORY_ID = 1303074266,
   OWNER_ID = 64373011;
@@ -19,6 +20,7 @@ const READERS = [
   "scripts/sounding-line/provider-run-log-archive.mjs",
   "scripts/sounding-line/artifact-registry-archive.mjs",
   "scripts/sounding-line/artifact-registry-provenance.mjs",
+  "scripts/sounding-line/registry-owner-tools.mjs",
 ];
 const proofs = new WeakMap(),
   registryProofs = new WeakMap(),
@@ -40,7 +42,16 @@ const parse = (bytes, maximum) => {
 };
 const time = (value) =>
   typeof value === "string" && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,7})?Z$/u.test(value) ? Date.parse(value) : NaN;
-const tuple = ({ root, acceptedBaseSha, runId, attempt, prNumber, jobKey, expectedOriginalSource }) =>
+const tuple = ({
+  root,
+  acceptedBaseSha,
+  runId,
+  attempt,
+  prNumber,
+  jobKey,
+  expectedOriginalSource,
+  privateOwnerWindows,
+}) =>
   JSON.stringify([
     path.resolve(root),
     acceptedBaseSha,
@@ -50,6 +61,7 @@ const tuple = ({ root, acceptedBaseSha, runId, attempt, prNumber, jobKey, expect
     jobKey,
     expectedOriginalSource?.baseSha,
     expectedOriginalSource?.candidateSha,
+    privateOwnerWindows === true,
   ]);
 function localBytes(file) {
   const fd = fs.openSync(file, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW | fs.constants.O_NONBLOCK);
@@ -83,33 +95,41 @@ function localBytes(file) {
     fs.closeSync(fd);
   }
 }
-function nativeGit(root, args) {
+function nativeGit(root, args, privateOwnerWindows = false) {
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("GIT_")));
-  return execFileSync("git", ["-c", "core.fsmonitor=false", "-c", "protocol.allow=never", ...args], {
-    cwd: root,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-    windowsHide: true,
-    timeout: 10000,
-    maxBuffer: 65536,
-    env: {
-      ...env,
-      GIT_NO_LAZY_FETCH: "1",
-      GIT_OPTIONAL_LOCKS: "0",
-      GIT_NO_REPLACE_OBJECTS: "1",
-      GIT_TERMINAL_PROMPT: "0",
+  return execFileSync(
+    privateOwnerWindows ? verifiedRegistryOwnerTool("git") : "git",
+    ["-c", "core.fsmonitor=false", "-c", "protocol.allow=never", ...args],
+    {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+      windowsHide: true,
+      timeout: 10000,
+      maxBuffer: 65536,
+      env: {
+        ...env,
+        GIT_NO_LAZY_FETCH: "1",
+        GIT_OPTIONAL_LOCKS: "0",
+        GIT_NO_REPLACE_OBJECTS: "1",
+        GIT_TERMINAL_PROMPT: "0",
+      },
     },
-  }).trim();
+  ).trim();
 }
-function providerRequest(endpoint, { maximumBytes, timeoutMs }) {
-  return execFileSync("gh", ["api", "--hostname", "github.com", `repos/${REPOSITORY}/${endpoint}`], {
-    encoding: null,
-    stdio: ["ignore", "pipe", "pipe"],
-    windowsHide: true,
-    timeout: timeoutMs,
-    maxBuffer: maximumBytes,
-    env: { ...process.env, GH_PROMPT_DISABLED: "1", NO_COLOR: "1" },
-  });
+function providerRequest(endpoint, { maximumBytes, timeoutMs, privateOwnerWindows }) {
+  return execFileSync(
+    privateOwnerWindows ? verifiedRegistryOwnerTool("gh") : "gh",
+    ["api", "--hostname", "github.com", `repos/${REPOSITORY}/${endpoint}`],
+    {
+      encoding: null,
+      stdio: ["ignore", "pipe", "pipe"],
+      windowsHide: true,
+      timeout: timeoutMs,
+      maxBuffer: maximumBytes,
+      env: { ...process.env, GH_PROMPT_DISABLED: "1", NO_COLOR: "1" },
+    },
+  );
 }
 export async function authenticateNativeOriginalContext(input) {
   let bindingTuple;
@@ -118,6 +138,7 @@ export async function authenticateNativeOriginalContext(input) {
   let capturedBytes = 0;
   try {
     let { root, acceptedBaseSha, runId, attempt, prNumber, jobKey, expectedOriginalSource, budgetMs = 60000 } = input;
+    const privateOwnerWindows = input.privateOwnerWindows === true;
     need(!Object.hasOwn(input, "request"), "TRANSPORT_OVERRIDE");
     need([runId, attempt, prNumber].every(positive) && ![721, 776, 805].includes(prNumber), "ORDINARY_SCOPE");
     need(
@@ -134,10 +155,19 @@ export async function authenticateNativeOriginalContext(input) {
     };
     root = fs.realpathSync(root);
     need(fs.realpathSync(fileURLToPath(new URL("../../", import.meta.url))) === root, "INSTALLED_READER_ROOT");
-    const local = nativeGit(root, ["rev-parse", "HEAD", "HEAD^{tree}"]).split(/\r?\n/u);
+    const local = nativeGit(root, ["rev-parse", "HEAD", "HEAD^{tree}"], privateOwnerWindows).split(/\r?\n/u);
     need(local[0] === acceptedBaseSha && oid(local[1]), "INSTALLED_BASE");
-    nativeGit(root, ["diff", "--quiet", "HEAD", "--"]);
-    bindingTuple = tuple({ root, acceptedBaseSha, runId, attempt, prNumber, jobKey, expectedOriginalSource });
+    nativeGit(root, ["diff", "--quiet", "HEAD", "--"], privateOwnerWindows);
+    bindingTuple = tuple({
+      root,
+      acceptedBaseSha,
+      runId,
+      attempt,
+      prNumber,
+      jobKey,
+      expectedOriginalSource,
+      privateOwnerWindows,
+    });
     const began = performance.now();
     const read = async (endpoint, maximumBytes = 2 * 1024 * 1024) => {
       const remaining = budgetMs - (performance.now() - began);
@@ -147,7 +177,11 @@ export async function authenticateNativeOriginalContext(input) {
       try {
         bytes = await Promise.race([
           Promise.resolve().then(() =>
-            providerRequest(endpoint, { maximumBytes, timeoutMs: Math.max(1, Math.min(20000, Math.floor(remaining))) }),
+            providerRequest(endpoint, {
+              maximumBytes,
+              timeoutMs: Math.max(1, Math.min(20000, Math.floor(remaining))),
+              privateOwnerWindows,
+            }),
           ),
           new Promise((_, reject) => {
             timer = setTimeout(() => reject(Error("SOUNDING_LINE_NATIVE_ORIGINAL_DEADLINE")), remaining);
@@ -408,7 +442,7 @@ export async function authenticateNativeOriginalContext(input) {
     }
     need(
       (await json("git/ref/heads/main")).object?.sha === acceptedBaseSha &&
-        nativeGit(root, ["rev-parse", "HEAD"]) === acceptedBaseSha,
+        nativeGit(root, ["rev-parse", "HEAD"], privateOwnerWindows) === acceptedBaseSha,
       "ACCEPTED_BASE_MOVED",
     );
     const proof = Object.freeze({
@@ -421,6 +455,7 @@ export async function authenticateNativeOriginalContext(input) {
       context: JSON.parse(JSON.stringify(context)),
       jobId: job.id,
       acceptedBaseSha,
+      privateOwnerWindows,
       observations,
       nativeStepLogSha256: hash(log),
       nativeStepLogBytes: log.length,
@@ -487,7 +522,10 @@ function verifyRegistrySourceClosure(original, suppliedRoot) {
   need(before.length > 0 && before.length === after.length && after.length <= 4096, "REGISTRY_SOURCE_CLOSURE");
   let sourceBytes = 0;
   const root = fs.realpathSync(suppliedRoot);
-  need(nativeGit(root, ["rev-parse", "HEAD"]) === original.acceptedBaseSha, "INSTALLED_BASE");
+  need(
+    nativeGit(root, ["rev-parse", "HEAD"], original.privateOwnerWindows) === original.acceptedBaseSha,
+    "INSTALLED_BASE",
+  );
   for (const [file, entry] of after) {
     const prior = producer.entries.get(file);
     need(
@@ -538,7 +576,11 @@ export async function authenticateNativeRegistryArchive({
     try {
       bytes = await Promise.race([
         Promise.resolve().then(() =>
-          providerRequest(endpoint, { maximumBytes, timeoutMs: Math.max(1, Math.min(20000, Math.floor(remaining))) }),
+          providerRequest(endpoint, {
+            maximumBytes,
+            timeoutMs: Math.max(1, Math.min(20000, Math.floor(remaining))),
+            privateOwnerWindows: original.privateOwnerWindows,
+          }),
         ),
         new Promise((_, reject) => {
           timer = setTimeout(() => reject(Error("SOUNDING_LINE_NATIVE_ORIGINAL_DEADLINE")), remaining);
@@ -588,10 +630,10 @@ export async function authenticateNativeRegistryArchive({
     const envelope = readArtifactRegistryArchive(archive);
     need(
       parse(await read("git/ref/heads/main", 65536), 65536).object?.sha === original.acceptedBaseSha &&
-        nativeGit(root, ["rev-parse", "HEAD"]) === original.acceptedBaseSha,
+        nativeGit(root, ["rev-parse", "HEAD"], original.privateOwnerWindows) === original.acceptedBaseSha,
       "ACCEPTED_BASE_MOVED",
     );
-    nativeGit(root, ["diff", "--quiet", "HEAD", "--"]);
+    nativeGit(root, ["diff", "--quiet", "HEAD", "--"], original.privateOwnerWindows);
     const proof = Object.freeze({
       kind: "PROVIDER_BOUND_REGISTRY_ARCHIVE_NOT_VALIDATED_CONTENT",
       qualification: false,

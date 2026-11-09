@@ -16,6 +16,7 @@ const files = [
   ".github/workflows/sounding-line-ordinary.yml",
   "scripts/sounding-line/artifact-registry-archive.mjs",
   "scripts/sounding-line/artifact-registry-provenance.mjs",
+  "scripts/sounding-line/registry-owner-tools.mjs",
 ];
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "original-context-auth-"));
 for (const item of fs.readdirSync(new URL("../../scripts/sounding-line/", import.meta.url), { withFileTypes: true })) {
@@ -50,7 +51,7 @@ for (const file of files) {
 const fixtureReader = path.join(root, files[0]);
 const productionReader = fs.readFileSync(fixtureReader, "utf8");
 const transportBody =
-  /function providerRequest\(endpoint, \{ maximumBytes, timeoutMs \}\) \{[\s\S]*?\n\}\nexport async function/u;
+  /function providerRequest\(endpoint, \{ maximumBytes, timeoutMs, privateOwnerWindows \}\) \{[\s\S]*?\n\}\nexport async function/u;
 assert(transportBody.test(productionReader));
 fs.writeFileSync(
   fixtureReader,
@@ -575,6 +576,12 @@ test("registry transport requires the opaque original event, installed source cl
   assert.equal(api.inspectNativeOriginalContext(proof, f.input), null);
   assert.equal(api.inspectNativeRegistryArchive({ ...proof }, f.input), null);
   assert.equal(api.inspectNativeRegistryArchive(proof, { ...f.input, runId: 5555 }), null);
+  const ownerInput = { ...f.input, privateOwnerWindows: true };
+  assert.equal(api.inspectNativeRegistryArchive(proof, ownerInput), null);
+  await assert.rejects(
+    api.authenticateNativeRegistryArchive({ ...f.registryInput, input: ownerInput, originalProof }),
+    /ORIGINAL_PROOF_REQUIRED/u,
+  );
   value.envelope.fill(0);
   assert.equal(
     api.inspectNativeRegistryArchive(proof, f.input).envelope.toString(),

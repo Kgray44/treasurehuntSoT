@@ -1,6 +1,21 @@
 # Run by the owner in a visible Windows PowerShell console, never a captured tool.
-param([ValidateSet('check-private-console','owner-prepare')][string]$Operation='check-private-console')
+param(
+ [ValidateSet('check-private-console','owner-prepare','owner-open-provider-registry')][string]$Operation='check-private-console',
+ [string]$RunId,[string]$ArtifactId,[string]$PullRequest,[string]$ArchiveSha256,[string]$SourceBindingsDigest,
+ [ValidateSet('C','D')][string]$RecoveryDrive
+)
 $ErrorActionPreference='Stop'
+$ownerArguments=@('--operation',$Operation)
+if($Operation -eq 'owner-open-provider-registry'){
+ if($RunId -cnotmatch '^[1-9][0-9]{0,15}$' -or $ArtifactId -cnotmatch '^[1-9][0-9]{0,15}$' -or
+    $PullRequest -cnotmatch '^[1-9][0-9]{0,15}$' -or $ArchiveSha256 -cnotmatch '^[a-f0-9]{64}$' -or
+    $SourceBindingsDigest -cnotmatch '^[a-f0-9]{64}$' -or !$RecoveryDrive){
+  throw 'OWNER_CUSTODY_ARGUMENTS'
+ }
+ $ownerArguments+=@($RunId,$ArtifactId,$PullRequest,$ArchiveSha256,$SourceBindingsDigest,$RecoveryDrive.ToUpperInvariant())
+}elseif($RunId -or $ArtifactId -or $PullRequest -or $ArchiveSha256 -or $SourceBindingsDigest -or $RecoveryDrive){
+ throw 'OWNER_CUSTODY_ARGUMENTS'
+}
 foreach($name in @('CODEX_THREAD_ID','CODEX_SESSION_ID','CODEX_TOOL_CALL_ID','CODEX_CI')){
  if([Environment]::GetEnvironmentVariable($name,'Process')){throw 'OWNER_CUSTODY_CAPTURED_SESSION_REFUSED'}
 }
@@ -19,7 +34,7 @@ foreach($entry in [Environment]::GetEnvironmentVariables('Process').GetEnumerato
 try{
  foreach($name in @($saved.Keys)){if($name -notin $keep){[Environment]::SetEnvironmentVariable($name,$null,'Process')}}
  # No NODE_OPTIONS, NODE_PATH, key value, password or execution-policy override.
- & $node (Join-Path $PSScriptRoot 'registry-custody-owner.mjs') --operation $Operation
+ & $node (Join-Path $PSScriptRoot 'registry-custody-owner.mjs') @ownerArguments
  $result=$LASTEXITCODE
 }finally{
  foreach($name in @([Environment]::GetEnvironmentVariables('Process').Keys)){if(-not $saved.ContainsKey($name)){[Environment]::SetEnvironmentVariable($name,$null,'Process')}}
