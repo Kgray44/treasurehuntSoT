@@ -215,6 +215,7 @@ async function main() {
     captureMode: context.mode,
     root: workspace,
     rawDirectory: stagePath.slice(0, -"capture".length) + "raw",
+    profileScopedJournals: true,
     cleanupPaths,
     plan,
     producer: {
