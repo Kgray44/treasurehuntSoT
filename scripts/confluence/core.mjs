@@ -437,7 +437,7 @@ export async function humanEvidenceForWeek(archiveRoot, weekId) {
     const declaredType = String(record.recordType ?? record.record_type ?? record.schemaVersion ?? "").toLowerCase();
     const hasSourcePolicy = Boolean(record.evidence_policy ?? record.sourcePolicy ??
       record.source_policy ?? record.collectionPolicy ?? record.purpose ??
-      record.project_scope ?? record.scope);
+      record.project_scope ?? record.collection_scope ?? record.scope);
     if (evidenceWeek !== weekId || !String(sourceTimezone ?? "").includes(TIMEZONE) ||
         !declaredType.includes("weekly") || !record.coverage || !hasSourcePolicy)
       throw new Error("CONFLUENCE_HUMAN_EVIDENCE_SOURCE_INVALID");
