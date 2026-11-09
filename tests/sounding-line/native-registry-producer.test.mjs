@@ -298,7 +298,7 @@ test("independently committed synthetic authority exercises CLI sealing, parent 
   };
   const target = shadowCaptureContextSchedule(plan)[0],
     stage = "artifacts/sounding-line/product-experience-capture-staging/capture-native-fixture/capture",
-    raw = stage.slice(0, -7) + "raw";
+    raw = stage.slice(0, -7) + "raw/generic";
   const artifacts = [],
     rawFiles = [];
   for (const [index, type] of ["screenshot", "screenshot", "trace", "recording"].entries()) {
@@ -338,7 +338,8 @@ test("independently committed synthetic authority exercises CLI sealing, parent 
     qualification: false,
     reuseAuthorized: false,
   };
-  write(candidateRoot, `${raw}/closed-contexts/${target.contextId}.json`, JSON.stringify(journal));
+  const journalPath = `${raw}/closed-contexts/${target.contextId}.json`;
+  write(candidateRoot, journalPath, JSON.stringify(journal));
   const diagnosticRun = randomUUID(),
     scopeId = randomUUID(),
     runtimePath = `artifacts/sounding-line/browser-diagnostics/${diagnosticRun}/${scopeId}/browser-runtime.json`;
@@ -499,6 +500,22 @@ test("independently committed synthetic authority exercises CLI sealing, parent 
   const second = run(path.join(directory, "second-output"));
   assert.equal(JSON.parse(second.stdout).classification, "SHADOW_CONTEXT_REGISTRY_UNAVAILABLE");
   assert(fs.readFileSync(encryptedPath).equals(encrypted));
+  const journalFile = path.join(candidateRoot, journalPath);
+  for (const [change, code] of [
+    [
+      { ...journal, context: { ...journal.context, contractId: "another-profile-contract" } },
+      "SOUNDING_LINE_CONTEXT_REGISTRY_FILES_JOURNAL_PROFILE",
+    ],
+    [
+      { ...journal, rawFiles: [{ ...rawFiles[0], path: rawFiles[0].path.replace("/generic/", "/foreign/") }] },
+      "SOUNDING_LINE_CONTEXT_REGISTRY_FILES_MEDIA_BINDING",
+    ],
+  ]) {
+    fs.writeFileSync(journalFile, JSON.stringify(change));
+    const denied = run(path.join(directory, "wrong-profile-output"));
+    assert.equal(JSON.parse(denied.stdout).code, code);
+  }
+  fs.writeFileSync(journalFile, JSON.stringify(journal));
   fs.writeFileSync(
     path.join(authority, supervision, "terminal.json"),
     JSON.stringify({ ...terminal, cleanup: { ...terminal.cleanup, treeReaped: false } }),

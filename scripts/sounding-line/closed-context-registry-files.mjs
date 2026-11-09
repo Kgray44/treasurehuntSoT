@@ -66,7 +66,7 @@ export async function readBoundedRegistryFile({ root, file, maximumBytes }) {
     await handle.close();
   }
 }
-async function journalPaths(root, directory) {
+async function journalPaths(root, directories) {
   const result = [];
   let entries = 0;
   async function visit(relative, nested) {
@@ -91,7 +91,14 @@ async function journalPaths(root, directory) {
       }
     }
   }
-  await visit(directory, false);
+  for (const directory of directories) {
+    try {
+      await visit(directory, false);
+    } catch (error) {
+      if (error?.code === "ENOENT") need(false, "JOURNAL_DIRECTORY_MISSING");
+      throw error;
+    }
+  }
   return result.sort();
 }
 export async function readRegistryRuntimeCleanups({ root, plan, cleanupPaths }) {
@@ -170,6 +177,7 @@ export async function sealClosedContextRegistryFiles({
   rawDirectory,
   cleanupPath,
   cleanupPaths = [cleanupPath],
+  profileScopedJournals = false,
   ...input
 }) {
   shadowCaptureContextSchedule(input.plan);
@@ -181,9 +189,18 @@ export async function sealClosedContextRegistryFiles({
     "RAW_SCOPE",
   );
   const cleanups = await readRegistryRuntimeCleanups({ root, plan: input.plan, cleanupPaths });
+  const profileByContract = new Map(
+    input.plan.contracts.map((contract) => [contract.id, contract.experience.fixtureProfile ?? "generic"]),
+  );
+  const directories = profileScopedJournals
+    ? cleanups.map(({ fixtureProfile }) => {
+        need(/^[A-Za-z0-9_-]+$/u.test(fixtureProfile), "JOURNAL_PROFILE");
+        return `${rawDirectory}/${fixtureProfile}/closed-contexts`;
+      })
+    : [`${rawDirectory}/closed-contexts`];
   const contexts = [],
     failedContextObservations = [],
-    paths = await journalPaths(root, `${rawDirectory}/closed-contexts`),
+    paths = await journalPaths(root, directories),
     seenPaths = new Set();
   let metadataBytes = 0,
     mediaBytes = 0;
@@ -194,11 +211,15 @@ export async function sealClosedContextRegistryFiles({
       bytes = await readBoundedRawCaptureFile({ root, rawDirectory, file, maximumBytes: 2 * 1024 * 1024 });
       need((metadataBytes += bytes.length) <= 64 * 1024 * 1024, "METADATA_BOUND");
       const journal = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+      const profile = file.slice(rawDirectory.length + 1).split("/", 1)[0];
+      if (profileScopedJournals)
+        need(profileByContract.get(journal.context?.contractId) === profile, "JOURNAL_PROFILE");
+      const mediaRoot = profileScopedJournals ? `${rawDirectory}/${profile}` : rawDirectory;
       need(Array.isArray(journal.rawFiles) && journal.rawFiles.length <= 512, "MEDIA_BOUND");
       for (const descriptor of journal.rawFiles) {
         need(
           typeof descriptor.path === "string" &&
-            descriptor.path.startsWith(rawDirectory + "/") &&
+            descriptor.path.startsWith(mediaRoot + "/") &&
             !seenPaths.has(descriptor.path) &&
             seenPaths.size < 8192 &&
             Number.isSafeInteger(descriptor.bytes) &&
