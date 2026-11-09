@@ -40,6 +40,37 @@ const parse = (bytes, maximum) => {
     throw Error("SOUNDING_LINE_NATIVE_ORIGINAL_JSON");
   }
 };
+const logFrame = /^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{7}Z) (.*)$/u;
+const contextMarker = "SOUNDING_LINE_NATIVE_EVIDENCE_CONTEXT_V2 ";
+const contextCommand = "node scripts/sounding-line/native-evidence-context.mjs";
+
+function diagnosticJobLogFrame(bytes, checkoutStartedAt) {
+  const lines = new TextDecoder("utf-8", { fatal: true }).decode(bytes).trimEnd().split(/\r?\n/u);
+  const frameIndices = [];
+  for (const [index, line] of lines.entries()) {
+    if (logFrame.exec(line)?.[2].startsWith(contextMarker)) frameIndices.push(index);
+  }
+  need(frameIndices.length === 1, "JOB_LOG_STEP");
+  const index = frameIndices[0];
+  need(index >= 4, "JOB_LOG_STEP");
+  const group = lines.slice(index - 4, index + 1).map((line) => logFrame.exec(line));
+  need(
+    group.every(Boolean) &&
+      group[0][2] === `##[group]Run ${contextCommand}` &&
+      group[1][2] === `\u001b[36;1m${contextCommand}\u001b[0m` &&
+      group[2][2] === "shell: /usr/bin/bash -e {0}" &&
+      group[3][2] === "##[endgroup]",
+    "JOB_LOG_STEP",
+  );
+  const timestamps = group.map((match) => match[1]);
+  need(
+    timestamps.every((stamp, i) => i === 0 || timestamps[i - 1] <= stamp) &&
+      time(timestamps[4]) < time(checkoutStartedAt),
+    "JOB_LOG_TIME",
+  );
+  need(Buffer.byteLength(lines[index]) <= 16384, "JOB_LOG_STEP");
+  return Buffer.from(lines[index]);
+}
 const time = (value) =>
   typeof value === "string" && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,7})?Z$/u.test(value) ? Date.parse(value) : NaN;
 const tuple = ({
@@ -280,17 +311,27 @@ export async function authenticateNativeOriginalContext(input) {
       (step) => step.name === "Checkout exact ordinary ancestry and installed reader closure",
     );
     need(checkout.length === 1 && checkout[0].number > contextStep.number, "CANDIDATE_ORDER");
-    const archive = await read(`actions/runs/${runId}/attempts/${attempt}/logs`, PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM),
-      log = readNativeEvidenceContextStepLog(archive, { jobKey });
+    const archive = await read(`actions/runs/${runId}/attempts/${attempt}/logs`, PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM);
+    const allowMissing =
+      jobKey === "experience-preparation" &&
+      run.event === "workflow_dispatch" &&
+      expectedOriginalSource.baseSha === expectedOriginalSource.candidateSha;
+    let log = readNativeEvidenceContextStepLog(archive, { jobKey, allowMissing });
+    // GitHub may compact old run ZIPs to whole-job logs. A malformed archive
+    // never takes this route. Bind the substitute to the original job and step.
+    if (log === undefined) {
+      const aggregate = await read(`actions/jobs/${job.id}/logs`, PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM);
+      log = diagnosticJobLogFrame(aggregate, checkout[0].started_at);
+    }
     const text = new TextDecoder("utf-8", { fatal: true }).decode(log);
     const frames = [];
     for (const line of text.trimEnd().split(/\r?\n/u)) {
-      const match = /^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{7}Z) (.*)$/u.exec(line);
+      const match = logFrame.exec(line);
       need(match, "LOG_FRAME");
-      if (match[2].startsWith("SOUNDING_LINE_NATIVE_EVIDENCE_CONTEXT_V2 "))
+      if (match[2].startsWith(contextMarker))
         frames.push({
           at: time(match[1]),
-          payload: match[2].slice("SOUNDING_LINE_NATIVE_EVIDENCE_CONTEXT_V2 ".length),
+          payload: match[2].slice(contextMarker.length),
         });
     }
     need(

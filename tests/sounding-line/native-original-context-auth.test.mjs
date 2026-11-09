@@ -279,6 +279,49 @@ test("provider-bound installed-main diagnostics retain their distinct non-qualif
   assert.equal(observation.context.baseSha, observation.context.candidateSha);
   assert.equal(observation.reuseAuthorized, false);
 });
+test("a diagnostic with a compact provider archive uses only its exact job's native step frame", async () => {
+  const f = fixture();
+  f.context.mode = "capture-diagnostic";
+  f.context.candidateSha = base;
+  f.input.expectedOriginalSource.candidateSha = base;
+  const job = f.values[jobsKey].jobs[0];
+  job.steps.at(-1).started_at = "2026-11-01T16:00:05Z";
+  const line = (body) => `${f.prefix}${body}`;
+  const marker = line(`SOUNDING_LINE_NATIVE_EVIDENCE_CONTEXT_V2 ${JSON.stringify(f.context)}`);
+  const group =
+    [
+      line("##[group]Run node scripts/sounding-line/native-evidence-context.mjs"),
+      line("\u001b[36;1mnode scripts/sounding-line/native-evidence-context.mjs\u001b[0m"),
+      line("shell: /usr/bin/bash -e {0}"),
+      line("##[endgroup]"),
+      marker,
+    ].join("\r\n") + "\r\n";
+  let aggregate = group;
+  let archive = zip("0_Sounding Line _ Experience preparation (no mainline decision).txt", group);
+  f.override = (endpoint) => {
+    if (endpoint === `${runKey}/logs`) return archive;
+    if (endpoint === "actions/jobs/55/logs") return Buffer.from(aggregate);
+  };
+  const proof = await api.authenticateNativeOriginalContext(f.input);
+  assert.equal(api.inspectNativeOriginalContext(proof, f.input).context.mode, "capture-diagnostic");
+  const retained = api.retainedNativeOriginalContextEvidence(proof, f.input);
+  assert(
+    retained.responses.some(
+      ({ endpoint, bytes }) => endpoint === "actions/jobs/55/logs" && bytes.equals(Buffer.from(group)),
+    ),
+  );
+  for (const bad of [marker, group + marker, group.replace("Run node", "Run echo")]) {
+    aggregate = bad;
+    await assert.rejects(api.authenticateNativeOriginalContext(f.input), /JOB_LOG_STEP/u);
+  }
+  aggregate = group;
+  job.steps.at(-1).started_at = "2026-11-01T16:00:02Z";
+  await assert.rejects(api.authenticateNativeOriginalContext(f.input), /JOB_LOG_TIME/u);
+  archive = Buffer.from("not a ZIP");
+  f.calls.length = 0;
+  await assert.rejects(api.authenticateNativeOriginalContext(f.input), /UNAVAILABLE/u);
+  assert(!f.calls.includes("actions/jobs/55/logs"));
+});
 test("callers cannot supply an authentication transport", async () => {
   const f = fixture();
   await assert.rejects(
