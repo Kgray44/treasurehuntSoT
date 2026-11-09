@@ -55,6 +55,17 @@ acceptance and cannot enable evidence reuse. Independent public-receipt review
 and a separate protected source amendment are required before any new recipient
 pin can become active.
 
+After an installed-main diagnostic publishes its standalone registry, the owner
+can open it using the existing recovery copy in the same visible console. Use
+`-Operation owner-open-provider-registry -RunId <id> -ArtifactId <id>
+-PullRequest <number> -ArchiveSha256 <digest> -RecoveryDrive D` with the
+independently verified diagnostic identifiers. The command checks the live
+protected source, original provider archive, installed recipient and authored
+coverage before prompting. The passphrase goes into the private console prompt.
+The recovered key is used in memory. The public receipt records the source,
+archive and coverage digests and counts. Runtime isolation and reuse remain
+separate approval gates.
+
 The workspace must remain under its recorded mission hold while this entry point
 is needed. Before final workspace retirement, preserve a source-bound recovery
 entry point and its immutable source identity; never leave recovery instructions

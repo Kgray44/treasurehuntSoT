@@ -36,6 +36,8 @@ const powershell = path.win32.join(
   "powershell.exe",
 );
 const age = path.join(os.homedir(), "AppData", "Local", "Voyagewright", "Tools", "age", "1.3.2", "age.exe");
+const gh = "C:\\Program Files\\GitHub CLI\\gh.exe";
+const git = path.join(os.homedir(), "AppData", "Local", "Programs", "Git", "cmd", "git.exe");
 const ageSha = "2821a4ed191da07372acd302e5f6feae7a7985e285e1417765ebe74025af45f0";
 const guard = "C:\\Users\\kkids\\AppData\\Local\\AeroStorageWatch\\ReserveGuard.ps1";
 const env = () => ({
@@ -164,8 +166,6 @@ async function publicMetadata(script, args = [], allowFailure = false) {
   };
 }
 function protectedSource() {
-  const gh = "C:\\Program Files\\GitHub CLI\\gh.exe",
-    git = path.join(os.homedir(), "AppData", "Local", "Programs", "Git", "cmd", "git.exe");
   const api = (endpoint) =>
     JSON.parse(
       execFileSync(gh, ["api", `repos/Kgray44/treasurehuntSoT/${endpoint}`], {
@@ -386,9 +386,181 @@ export function finalizeOwnerCustodyResult(result) {
   const failure = result.failure ?? (result.journalFailures.length ? "OWNER_CUSTODY_JOURNAL_FAILED" : null);
   return { ...result, receipt: failure ? null : result.receipt, failure, qualification: false, reuseAuthorized: false };
 }
-export async function runRegistryCustodyOwner(args) {
+async function openProviderDiagnostic({ source, runId, artifactId, prNumber, archiveSha256, drive }) {
+  // The private launcher removes inherited PATH. Only the same Git and GitHub
+  // binaries used by the protected-source preflight are visible to the reader.
+  process.env.Path = [path.dirname(gh), path.dirname(git)].join(";");
+  const [
+    {
+      authenticateNativeOriginalContext,
+      authenticateNativeRegistryArchive,
+      inspectNativeRegistryArchive,
+      openNativeRegistryRetention,
+      inspectNativeRegistryRetention,
+    },
+    { activationPlan },
+    { EXPERIENCE_VIEWPORTS },
+    { artifactLogicalKey },
+    { installedRegistryWriteRecipient },
+    { inspectArtifactRegistryRetention },
+  ] = await Promise.all([
+    import("./native-original-context-auth.mjs"),
+    import("./experience-prepare.mjs"),
+    import("./experience-browser.mjs"),
+    import("./artifact-evidence-registry.mjs"),
+    import("./registry-recipient-policy.mjs"),
+    import("./artifact-registry-retention.mjs"),
+  ]);
+  const baseSha = source.source;
+  const input = {
+    root,
+    acceptedBaseSha: baseSha,
+    runId,
+    attempt: 1,
+    prNumber,
+    jobKey: "experience-preparation",
+    expectedOriginalSource: { baseSha, candidateSha: baseSha },
+  };
+  const plan = activationPlan({ root, baseSha, candidateSha: baseSha });
   need(
-    args.length === 2 && args[0] === "--operation" && ["check-private-console", "owner-prepare"].includes(args[1]),
+    plan.applicable &&
+      !plan.exception &&
+      !plan.paired &&
+      !plan.pairedOnly &&
+      plan.contracts.length === 1 &&
+      plan.contracts[0].id === "homeport.transition.auth-routes",
+    "DIAGNOSTIC_PLAN",
+  );
+  // Derive complete coverage from the authored journey. Producer claims and
+  // retained journal coverage cannot change the owner's expected obligations.
+  const [contract] = plan.contracts;
+  const expectedCoverage = [];
+  for (const journey of contract.experience.journeys) {
+    need(
+      journey.steps.every((step) => !Object.hasOwn(step, "when") && !Object.hasOwn(step, "devices")),
+      "DIAGNOSTIC_PLAN",
+    );
+    for (const role of journey.roles)
+      for (const device of contract.experience.devices)
+        for (const motionMode of contract.experience.motion ? ["NORMAL", "REDUCED"] : ["REDUCED"]) {
+          const context = {
+            contractId: contract.id,
+            journeyId: journey.id,
+            role,
+            device,
+            motionMode,
+            viewport: { ...EXPERIENCE_VIEWPORTS[device] },
+          };
+          for (const [captureIndex, step] of journey.steps.entries())
+            if (step.state) expectedCoverage.push({ ...context, type: "screenshot", state: step.state, captureIndex });
+          for (const type of ["recording", "trace", "accessibility", "cleanup", "journey"])
+            expectedCoverage.push({ ...context, type, state: "CONTEXT_CLOSED", captureIndex: null });
+        }
+  }
+  const keys = expectedCoverage.map(artifactLogicalKey).sort();
+  need(keys.length === 16 && new Set(keys).size === keys.length, "DIAGNOSTIC_COVERAGE");
+  const originalProof = await authenticateNativeOriginalContext(input);
+  const registryProof = await authenticateNativeRegistryArchive({
+    originalProof,
+    input,
+    artifactId,
+    sourceBindingsDigest: plan.sourceDigest,
+  });
+  const archive = inspectNativeRegistryArchive(registryProof, input);
+  need(archive?.producerMode === "capture-diagnostic" && archive.archiveSha256 === archiveSha256, "DIAGNOSTIC_ARCHIVE");
+  const pin = installedRegistryWriteRecipient();
+  inspectArtifactRegistryRetention({ bytes: archive.envelope, binding: archive.binding, encryption: pin });
+  const target = INTERNAL_CUSTODY_TARGETS[drive];
+  const directory = path.dirname(target);
+  canonicalDirectory(directory);
+  const verification = await publicMetadata(path.join(here, "registry-custody-owner-windows.ps1"), [
+    "-Operation",
+    "verify",
+  ]);
+  need(verification.value.status === "VERIFIED_EXISTING_CUSTODY_ACL", "DIRECTORY_ACL_CHANGED");
+  const custody = JSON.parse(boundedFile(path.join(directory, "custody.public.json"), 65536));
+  const copy = custody.copies?.find((entry) => entry.path === target);
+  need(
+    custody.kind === "INTERNAL_TWO_DEVICE_OWNER_KEY_RECOVERY_CANARY_ONLY" &&
+      custody.publicKeyId === pin.keyId &&
+      custody.publicKey === pin.publicKey &&
+      /^[a-f0-9]{64}$/u.test(copy?.sha256 ?? "") &&
+      Number.isSafeInteger(copy.bytes) &&
+      copy.bytes > 0 &&
+      copy.bytes <= 1048576,
+    "RECOVERY_PUBLIC_BINDING",
+  );
+  reserve(268435456, 67108864);
+  const receiptDirectory = path.join(os.homedir(), "AppData", "Local", "Voyagewright", "CustodyReceipts");
+  canonicalDirectory(receiptDirectory);
+  const encrypted = boundedFile(target, copy.bytes, copy.sha256);
+  need(encrypted.length === copy.bytes, "RECOVERY_FILE_SIZE");
+  const receiptBase = {
+    source: baseSha,
+    runId,
+    attempt: 1,
+    artifactId,
+    prNumber,
+    archiveSha256,
+    drive,
+    publicKeyId: pin.keyId,
+    expectedCoverageDigest: hash(JSON.stringify(keys)),
+    externalIsolationProved: false,
+    qualification: false,
+    reuseAuthorized: false,
+  };
+  const operationId = randomUUID();
+  const retain = (stage, value) =>
+    writeExclusive(
+      path.join(receiptDirectory, `owner-provider-${runId}-${operationId}-${stage}.json`),
+      Buffer.from(JSON.stringify({ operationId, ...receiptBase, ...value }, null, 2) + "\n"),
+    );
+  retain("prepared", { kind: "OWNER_PROVIDER_RECOVERY_PREPARED", ownerKeyOperations: 0 });
+  console.log(
+    `Open the authenticated diagnostic registry from run ${runId}, artifact ${artifactId}, using the ${drive}: recovery copy.`,
+  );
+  let der;
+  let opened;
+  try {
+    der = await ageProcess(["--decrypt"], encrypted);
+    const privateKey = createPrivateKey({ key: der, type: "pkcs8", format: "der" });
+    der.fill(0);
+    need(createPublicKey(privateKey).export({ type: "spki", format: "pem" }) === pin.publicKey, "RECOVERED_KEY_PIN");
+    const proof = await openNativeRegistryRetention({ registryProof, input, privateKey, expectedCoverage });
+    const { manifest } = inspectNativeRegistryRetention(proof, input) ?? {};
+    need(manifest?.completedContexts.length === 2 && manifest.artifacts.length === keys.length, "DIAGNOSTIC_COVERAGE");
+    opened = {
+      kind: "OWNER_OPENED_NATIVE_DIAGNOSTIC_REGISTRY_NOT_REUSE_AUTHORITY",
+      manifestDigest: manifest.manifestDigest,
+      completedContexts: manifest.completedContexts.length,
+      artifacts: manifest.artifacts.length,
+      ownerKeyOperations: 1,
+    };
+  } catch (error) {
+    const failure = /^(?:OWNER_CUSTODY|SOUNDING_LINE)_[A-Z0-9_]+$/u.test(error?.message ?? "")
+      ? error.message
+      : "OWNER_CUSTODY_PROVIDER_OPEN_FAILED";
+    opened = { kind: "OWNER_PROVIDER_RECOVERY_FAILED", ownerKeyOperations: 1, failure };
+  } finally {
+    der?.fill(0);
+  }
+  return { ...receiptBase, ...opened, publicReceipt: retain("result", opened) };
+}
+export async function runRegistryCustodyOwner(args) {
+  const opening = args[0] === "--operation" && args[1] === "owner-open-provider-registry";
+  const positive = (value) => /^[1-9][0-9]{0,15}$/u.test(value ?? "") && Number.isSafeInteger(Number(value));
+  if (opening)
+    need(
+      args.length === 7 &&
+        args.slice(2, 5).every(positive) &&
+        ![721, 776, 805].includes(Number(args[4])) &&
+        /^[a-f0-9]{64}$/u.test(args[5]) &&
+        ["C", "D"].includes(args[6]),
+      "ARGUMENTS",
+    );
+  need(
+    opening ||
+      (args.length === 2 && args[0] === "--operation" && ["check-private-console", "owner-prepare"].includes(args[1])),
     "ARGUMENTS",
   );
   const preliminary = ownerConsolePreflightObservation();
@@ -421,6 +593,15 @@ export async function runRegistryCustodyOwner(args) {
     return { ...preliminary, ...observation, ready: true, ownerKeyOperations: 0 };
   boundedFile(age, 7172096, ageSha);
   const source = protectedSource();
+  if (opening)
+    return openProviderDiagnostic({
+      source,
+      runId: Number(args[2]),
+      artifactId: Number(args[3]),
+      prNumber: Number(args[4]),
+      archiveSha256: args[5],
+      drive: args[6],
+    });
   for (const directory of generationDirectories) need(!fs.existsSync(directory), "GENERATION_ALREADY_EXISTS");
   const firstPlan = planInternalRegistryCustody(
     (await publicMetadata(path.join(here, "registry-custody-inventory.ps1"))).value,
@@ -693,7 +874,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   process.on("SIGINT", () => activeAge?.kill());
   try {
     const result = await runRegistryCustodyOwner(process.argv.slice(2));
-    if (result.failure) {
+    if (result.kind === "OWNER_PROVIDER_RECOVERY_FAILED") {
+      console.log(JSON.stringify(result));
+      process.exitCode = 1;
+    } else if (result.failure) {
       console.error("Recovery setup is incomplete. Existing copies are preserved; public recording may be incomplete.");
       console.log(JSON.stringify(result));
       process.exitCode = 1;
