@@ -15,6 +15,8 @@ import {
   inspectDocx,
   inspectPdf,
   periodForWeek,
+  statusForWeek,
+  weekFor,
   updateEvidenceIndex,
   validatePublicMetadata,
   validateRecord,
@@ -79,6 +81,59 @@ test("recognizes a validated human evidence source without rewriting it", async 
   }
 });
 
+test("recognizes archival weekly human formats without treating an empty week as ready", async () => {
+  const root = await mkdtemp(join(tmpdir(), "confluence-weekly-legacy-"));
+  try {
+    const w35 = join(root, "human", "weekly", "2026", "2026-W35");
+    const w38 = join(root, "human", "weekly", "2026", "2026-W38");
+    await mkdir(w35, { recursive: true });
+    await mkdir(w38, { recursive: true });
+    await writeFile(join(w35, "weekly-human-evidence.json"), JSON.stringify({
+      schemaVersion: "1.0", recordType: "weekly-human-evidence",
+      week: { isoWeek: "2026-W35", timezone: "America/New_York" },
+      purpose: "human evidence", coverage: "BEST_EFFORT_PARTIAL", sourceChats: [{ title: "recovered" }],
+    }));
+    await writeFile(join(w38, "weekly-human-evidence.json"), JSON.stringify({
+      schemaVersion: "weekly-human-evidence.v1",
+      week: { label: "2026-W38", timezone: "America/New_York" },
+      purpose: "human evidence", coverage: { classification: "BEST_EFFORT_PARTIAL" }, sourceChatList: [],
+    }));
+    const found = await humanEvidenceForWeek(root, "2026-W35");
+    assert.equal(found.format, "confluence-human-weekly-legacy");
+    assert.equal(found.hasRecoverableSource, true);
+    const gap = await humanEvidenceForWeek(root, "2026-W38");
+    assert.equal(gap.hasRecoverableSource, false);
+    const status = await statusForWeek({ archiveRoot: root, publicRoot: root, weekId: "2026-W38" });
+    assert.equal(status.HUMAN_EVIDENCE_PRESENT, true);
+    assert.equal(status.HUMAN_EVIDENCE_READY, false);
+    assert.equal(status.readiness, "WAITING_FOR_EVIDENCE");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("recognizes later legacy weekly human sources and rejects period substitution", async () => {
+  const root = await mkdtemp(join(tmpdir(), "confluence-human-v2-"));
+  try {
+    const dir = join(root, "human", "weekly", "2026", "2026-W44");
+    await mkdir(dir, { recursive: true });
+    const record = { schema_version: "2.0", record_type: "weekly-human-evidence",
+      week: { iso_week: "2026-W44", timezone: "America/New_York" },
+      scope: "Voyagewright", coverage: "BEST_EFFORT_PARTIAL", source_chat_list: [{ id: "C01" }] };
+    await writeFile(join(dir, "weekly-human-evidence.json"), JSON.stringify(record));
+    assert.equal((await humanEvidenceForWeek(root, "2026-W44")).sourceChatCount, 1);
+    await writeFile(join(dir, "weekly-human-evidence.json"), JSON.stringify({ ...record, week: { iso_week: "2026-W43", timezone: "America/New_York" } }));
+    await assert.rejects(() => humanEvidenceForWeek(root, "2026-W44"), /CONFLUENCE_HUMAN_EVIDENCE_SOURCE_INVALID/);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("weekFor returns real Eastern DST boundaries", () => {
+  assert.deepEqual(weekFor(new Date("2026-10-30T15:00:00Z")), periodForWeek("2026-W44"));
+  assert.equal(weekFor(new Date("2026-10-30T15:00:00Z")).end, "2026-11-02T00:00:00-05:00");
+  assert.equal(weekFor(new Date("2026-11-08T20:00:00Z")).start, "2026-11-02T00:00:00-05:00");
+});
 test("public metadata refuses every private evidence field", async () => {
   await assert.rejects(
     () => validatePublicMetadata({ weekId: "2026-W34", pdfDigest: "a", docxDigest: "b", humanEvidence: "not safe" }),
