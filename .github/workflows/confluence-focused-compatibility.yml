@@ -37,4 +37,6 @@ jobs:
         with:
           node-version: '22'
       - name: Run focused builtin-node Confluence regressions
-        run: node --test tests/confluence/core.test.mjs
+        # The existing full Confluence suite has Windows-only PowerShell/path fixtures.
+        # This nonauthoritative Linux job proves only the new archive parser/DST regressions.
+        run: node --test --test-name-pattern='recognizes archival weekly human|recognizes later legacy weekly human|weekFor returns real Eastern' tests/confluence/core.test.mjs
