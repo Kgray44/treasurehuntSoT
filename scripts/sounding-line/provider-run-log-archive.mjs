@@ -27,6 +27,21 @@ function extras(archive, start, length) {
   }
   need(start === end);
 }
+function readMember(archive, member) {
+  const { dataStart, dataEnd, method, size, crc } = member;
+  const payload = archive.subarray(dataStart, dataEnd);
+  let bytes;
+  if (method === 0) {
+    need(payload.length === size);
+    bytes = payload;
+  } else {
+    const inflated = inflateRawSync(payload, { maxOutputLength: Math.max(1, size), info: true });
+    need(inflated.engine.bytesWritten === payload.length);
+    bytes = inflated.buffer;
+  }
+  need(bytes.length === size && crc32(bytes) === crc);
+  return bytes;
+}
 function readSelectedNativeStepLog(archive, target, allowMissing = false) {
   try {
     need(Buffer.isBuffer(archive) && archive.length >= 22 && archive.length <= PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM);
@@ -119,19 +134,11 @@ function readSelectedNativeStepLog(archive, target, allowMissing = false) {
             archive.readUInt32LE(local + 18) === compressed &&
             archive.readUInt32LE(local + 22) === size,
         );
-      regions.push({ start: local, end: regionEnd });
+      const member = { start: local, end: regionEnd, dataStart: start, dataEnd, method, size, crc };
+      regions.push(member);
       if (name === target) {
         need(selected === undefined && size > 0 && size <= SELECTED_MAXIMUM && compressed <= 65536);
-        const payload = archive.subarray(start, dataEnd);
-        if (method === 0) {
-          need(compressed === size);
-          selected = Buffer.from(payload);
-        } else {
-          const inflated = inflateRawSync(payload, { maxOutputLength: SELECTED_MAXIMUM, info: true });
-          need(inflated.engine.bytesWritten === payload.length);
-          selected = inflated.buffer;
-        }
-        need(selected.length === size && crc32(selected) === crc);
+        selected = Buffer.from(readMember(archive, member));
       }
       cursor = next;
     }
@@ -139,9 +146,14 @@ function readSelectedNativeStepLog(archive, target, allowMissing = false) {
     need(
       cursor === end &&
         regions[0].start === 0 &&
-        regions.every((region, index) => region.end === (regions[index + 1]?.start ?? central)) &&
-        (selected !== undefined || allowMissing),
+        regions.every((region, index) => region.end === (regions[index + 1]?.start ?? central)),
     );
+    if (selected === undefined) {
+      // Missing target is distinct from corrupt input. Compact ZIPs must be
+      // small enough to verify every member before the caller can fall back.
+      need(allowMissing && count <= 16 && expanded <= PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM);
+      for (const member of regions) readMember(archive, member);
+    }
     return selected;
   } catch {
     throw Error("SOUNDING_LINE_PROVIDER_RUN_LOG_ARCHIVE_INVALID");

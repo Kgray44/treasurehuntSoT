@@ -317,6 +317,15 @@ test("a diagnostic with a compact provider archive uses only its exact job's nat
   aggregate = group;
   job.steps.at(-1).started_at = "2026-11-01T16:00:02Z";
   await assert.rejects(api.authenticateNativeOriginalContext(f.input), /JOB_LOG_TIME/u);
+  job.steps.at(-1).started_at = "2026-11-01T16:00:05Z";
+  aggregate = group.replace('"mode":"capture-diagnostic"', '"mode":"capture"');
+  await assert.rejects(api.authenticateNativeOriginalContext(f.input), /EVENT_SOURCE/u);
+  aggregate = group;
+  archive = Buffer.from(archive);
+  archive[30 + archive.readUInt16LE(26) + archive.readUInt16LE(28)] ^= 0x40;
+  f.calls.length = 0;
+  await assert.rejects(api.authenticateNativeOriginalContext(f.input), /UNAVAILABLE/u);
+  assert(!f.calls.includes("actions/jobs/55/logs"));
   archive = Buffer.from("not a ZIP");
   f.calls.length = 0;
   await assert.rejects(api.authenticateNativeOriginalContext(f.input), /UNAVAILABLE/u);

@@ -319,7 +319,8 @@ export async function authenticateNativeOriginalContext(input) {
     let log = readNativeEvidenceContextStepLog(archive, { jobKey, allowMissing });
     // GitHub may compact old run ZIPs to whole-job logs. A malformed archive
     // never takes this route. Bind the substitute to the original job and step.
-    if (log === undefined) {
+    const usedJobLog = log === undefined;
+    if (usedJobLog) {
       const aggregate = await read(`actions/jobs/${job.id}/logs`, PROVIDER_RUN_LOG_ARCHIVE_MAXIMUM);
       log = diagnosticJobLogFrame(aggregate, checkout[0].started_at);
     }
@@ -388,6 +389,7 @@ export async function authenticateNativeOriginalContext(input) {
         context.workflowRef === `${REPOSITORY}/${WORKFLOW}@refs/heads/main`,
       "CONTEXT_BINDING",
     );
+    need(!usedJobLog || context.mode === "capture-diagnostic", "EVENT_SOURCE");
     need(
       run.event === "pull_request_target"
         ? jobKey === "final-check" && context.mode === "ordinary" && run.head_sha === context.candidateSha
