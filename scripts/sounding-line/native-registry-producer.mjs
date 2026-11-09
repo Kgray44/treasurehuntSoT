@@ -73,12 +73,30 @@ function options(argv) {
 }
 function providerArtifact(id, name, context, maximumBytes) {
   need(positive(id), "ARTIFACT_ID");
-  const bytes = execFileSync(
-    "gh",
-    ["api", "--hostname", "github.com", `repos/Kgray44/treasurehuntSoT/actions/artifacts/${id}`],
-    { windowsHide: true, stdio: ["ignore", "pipe", "pipe"], timeout: 5000, maxBuffer: 1024 * 1024, env: environment() },
-  );
-  const artifact = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+  let bytes;
+  try {
+    bytes = execFileSync(
+      "gh",
+      ["api", "--hostname", "github.com", `repos/Kgray44/treasurehuntSoT/actions/artifacts/${id}`],
+      {
+        windowsHide: true,
+        stdio: ["ignore", "pipe", "pipe"],
+        timeout: 5000,
+        maxBuffer: 1024 * 1024,
+        env: environment(),
+      },
+    );
+  } catch (error) {
+    need(error?.code !== "ENOBUFS", "ARTIFACT_METADATA_INVALID");
+    throw Error("SOUNDING_LINE_NATIVE_REGISTRY_PRODUCER_ARTIFACT_METADATA_UNAVAILABLE");
+  }
+  let artifact;
+  try {
+    artifact = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+  } catch {
+    throw Error("SOUNDING_LINE_NATIVE_REGISTRY_PRODUCER_ARTIFACT_METADATA_INVALID");
+  }
+  need(artifact && typeof artifact === "object" && !Array.isArray(artifact), "ARTIFACT_METADATA_INVALID");
   need(
     artifact.id === Number(id) &&
       artifact.name === name &&
@@ -116,7 +134,7 @@ async function newOutputDirectory(relative) {
   }
   return selected;
 }
-async function main() {
+async function main(diagnostic) {
   const context = readInstalledNativeEvidenceContext();
   need(
     context.kind === "NATIVE_ORIGINAL_EVIDENCE_CONTEXT_SHADOW" &&
@@ -126,7 +144,9 @@ async function main() {
     "OPT_IN_CONTEXT",
   );
   const input = options(process.argv.slice(2));
+  diagnostic.stage = "INSTALLED_SOURCE";
   await installedSource(context.baseSha);
+  diagnostic.stage = "CAPTURE_PLAN";
   const workspace = await fs.realpath(input.workspace);
   need(workspace === path.resolve(root, "../candidate") && input.workspace === "candidate", "WORKSPACE");
   need(git(workspace, ["rev-parse", "HEAD"]).trim() === context.candidateSha, "CANDIDATE");
@@ -164,6 +184,7 @@ async function main() {
     "PLAN_BINDING",
   );
   plan.prNumber = context.prNumber;
+  diagnostic.stage = "PARENT_CLEANUP";
   const supervision = input.supervision.startsWith("authority/") ? input.supervision.slice("authority/".length) : "";
   need(
     /^artifacts\/sounding-line\/preparation-supervision\/session-[A-Za-z0-9_-]+\/public$/u.test(supervision),
@@ -196,21 +217,26 @@ async function main() {
       terminal.cleanup.ownership === "LINUX_SUBREAPER_AND_PIDFD",
     "PARENT_CLEANUP",
   );
+  diagnostic.stage = "RAW_ARTIFACT_METADATA";
   const rawArtifact = providerArtifact(
     input["raw-artifact"],
     `product-experience-raw-${context.candidateSha}-${context.runId}`,
     context,
     512 * 1024 * 1024,
   );
+  diagnostic.stage = "LIFECYCLE_ARTIFACT_METADATA";
   const lifecycleArtifact = providerArtifact(
     input["lifecycle-artifact"],
     `product-experience-lifecycle-${context.candidateSha}-${context.runId}`,
     context,
     32 * 1024 * 1024,
   );
+  diagnostic.stage = "REGISTRY_INPUTS";
   const cleanupPaths = input.runtimes.split(/\r?\n/u).filter(Boolean).map(local);
   const sourceTree = git(workspace, ["rev-parse", "HEAD^{tree}"]).trim();
+  const controllerDigest = hash(await fs.readFile(fileURLToPath(import.meta.url)));
   const declared = (classification) => hash(JSON.stringify({ classification, sourceDigest: plan.sourceDigest }));
+  diagnostic.stage = "REGISTRY_SEAL";
   const sealed = await sealClosedContextRegistryFiles({
     captureMode: context.mode,
     root: workspace,
@@ -225,7 +251,7 @@ async function main() {
       workflowSha: context.baseSha,
     },
     sourceTree,
-    controllerDigest: hash(await fs.readFile(fileURLToPath(import.meta.url))),
+    controllerDigest,
     rawArtifact,
     lifecycleArtifact,
     definitionObservations: {
@@ -235,7 +261,9 @@ async function main() {
       environmentDigest: declared("EXTERNAL_ENVIRONMENT_NOT_CERTIFIED"),
     },
   });
+  diagnostic.stage = "SOURCE_RECHECK";
   await installedSource(context.baseSha);
+  diagnostic.stage = "PUBLICATION";
   const relative = `artifacts/sounding-line/context-registry-shadow/run-${context.runId}-${context.attempt}`;
   const output = await newOutputDirectory(relative);
   await fs.writeFile(path.join(output, "registry-v2.encrypted"), sealed.encrypted, { flag: "wx", mode: 0o600 });
@@ -264,8 +292,9 @@ async function main() {
   console.log(JSON.stringify(receipt));
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const diagnostic = { stage: "CONTEXT" };
   try {
-    await main();
+    await main(diagnostic);
   } catch (error) {
     const code = /^SOUNDING_LINE_[A-Z0-9_]+$/u.test(error?.message ?? "")
       ? error.message
@@ -275,6 +304,8 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
         version: 2,
         classification: "SHADOW_CONTEXT_REGISTRY_UNAVAILABLE",
         code,
+        stage: diagnostic.stage,
+        reason: error?.code === "ENOENT" ? "MISSING_INPUT" : null,
         qualification: false,
         reuseAuthorized: false,
       }),

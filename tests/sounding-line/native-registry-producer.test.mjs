@@ -69,6 +69,7 @@ test("local, missing-event and injected private arguments remain unavailable and
     assert.equal(result.stderr, "");
     assert(!result.stdout.includes("PRIVATE_"));
     assert.equal(JSON.parse(result.stdout).classification, "SHADOW_CONTEXT_REGISTRY_UNAVAILABLE");
+    assert.equal(JSON.parse(result.stdout).stage, "CONTEXT");
     assert.equal(JSON.parse(result.stdout).reuseAuthorized, false);
     assert(!fs.existsSync(output));
   }
@@ -229,13 +230,13 @@ test("independently committed synthetic authority exercises CLI sealing, parent 
   // production CLI has no transport argument; no actual provider claim is made.
   const producerPath = path.join(authority, "scripts/sounding-line/native-registry-producer.mjs");
   const source = fs.readFileSync(producerPath, "utf8");
-  const begin = source.search(/  const bytes = execFileSync\(\r?\n    "gh",/u),
-    finish = source.indexOf("  const artifact =", begin);
+  const begin = source.search(/    bytes = execFileSync\(\r?\n      "gh",/u),
+    finish = source.indexOf("  } catch", begin);
   assert(begin > 0 && finish > begin);
   fs.writeFileSync(
     producerPath,
     source.slice(0, begin) +
-      '  const bytes = execFileSync(process.execPath, ["-e", "process.stdout.write(require(\'fs\').readFileSync(process.argv[1]))", path.join(root, "provider", id + ".json")], {timeout:5000,windowsHide:true,maxBuffer:1048576});\n' +
+      '    bytes = execFileSync(process.execPath, ["-e", "process.stdout.write(require(\'fs\').readFileSync(process.argv[1]))", path.join(root, "provider", id + ".json")], {timeout:5000,windowsHide:true,maxBuffer:1048576,stdio:["ignore","pipe","pipe"]});\n' +
       source.slice(finish),
   );
   const git = (cwd, ...args) =>
@@ -479,6 +480,30 @@ test("independently committed synthetic authority exercises CLI sealing, parent 
       timeout: 30000,
       env: { ...environment, GITHUB_OUTPUT: output },
     });
+  for (const [id, contents, stage, code] of [
+    [11, null, "RAW_ARTIFACT_METADATA", "ARTIFACT_METADATA_UNAVAILABLE"],
+    [22, "PRIVATE_MALFORMED_JSON", "LIFECYCLE_ARTIFACT_METADATA", "ARTIFACT_METADATA_INVALID"],
+    [22, "null", "LIFECYCLE_ARTIFACT_METADATA", "ARTIFACT_METADATA_INVALID"],
+    [22, "x".repeat(1048577), "LIFECYCLE_ARTIFACT_METADATA", "ARTIFACT_METADATA_INVALID"],
+    [22, JSON.stringify({ digest: "PRIVATE_INVALID_METADATA" }), "LIFECYCLE_ARTIFACT_METADATA", "ARTIFACT_METADATA"],
+  ]) {
+    const file = path.join(authority, "provider", id + ".json");
+    const original = fs.readFileSync(file);
+    if (contents === null) fs.unlinkSync(file);
+    else fs.writeFileSync(file, contents);
+    const deniedOutput = path.join(directory, "metadata-denied-output");
+    const denied = run(deniedOutput);
+    fs.writeFileSync(file, original);
+    assert.equal(denied.status, 0);
+    assert.equal(denied.stderr, "");
+    assert(!denied.stdout.includes("PRIVATE_"));
+    const failure = JSON.parse(denied.stdout);
+    assert.equal(failure.stage, stage);
+    assert.equal(failure.code, "SOUNDING_LINE_NATIVE_REGISTRY_PRODUCER_" + code);
+    assert.equal(failure.qualification, false);
+    assert.equal(failure.reuseAuthorized, false);
+    assert(!fs.existsSync(deniedOutput));
+  }
   const output = path.join(directory, "output"),
     first = run(output);
   assert.equal(first.status, 0);
@@ -499,6 +524,7 @@ test("independently committed synthetic authority exercises CLI sealing, parent 
   assert(!encrypted.includes(Buffer.from(artifacts[0].id)));
   const second = run(path.join(directory, "second-output"));
   assert.equal(JSON.parse(second.stdout).classification, "SHADOW_CONTEXT_REGISTRY_UNAVAILABLE");
+  assert.equal(JSON.parse(second.stdout).stage, "PUBLICATION");
   assert(fs.readFileSync(encryptedPath).equals(encrypted));
   const journalFile = path.join(candidateRoot, journalPath);
   for (const [change, code] of [
@@ -514,7 +540,20 @@ test("independently committed synthetic authority exercises CLI sealing, parent 
     fs.writeFileSync(journalFile, JSON.stringify(change));
     const denied = run(path.join(directory, "wrong-profile-output"));
     assert.equal(JSON.parse(denied.stdout).code, code);
+    assert.equal(JSON.parse(denied.stdout).stage, "REGISTRY_SEAL");
   }
+  fs.writeFileSync(
+    journalFile,
+    JSON.stringify({
+      ...journal,
+      rawFiles: [{ ...rawFiles[0], path: rawFiles[0].path + "-missing" }, ...rawFiles.slice(1)],
+    }),
+  );
+  const missingMediaOutput = path.join(directory, "missing-media-output");
+  const missingMedia = JSON.parse(run(missingMediaOutput).stdout);
+  assert.equal(missingMedia.stage, "REGISTRY_SEAL");
+  assert.equal(missingMedia.reason, "MISSING_INPUT");
+  assert(!fs.existsSync(missingMediaOutput));
   fs.writeFileSync(journalFile, JSON.stringify(journal));
   fs.writeFileSync(
     path.join(authority, supervision, "terminal.json"),
