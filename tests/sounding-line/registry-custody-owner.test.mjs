@@ -50,7 +50,16 @@ test("captured owner operation refuses before private setup; observation grants 
   assert.equal(prepare.status, 1);
   assert.equal(prepare.stdout, "");
   assert.equal(prepare.stderr.trim(), "OWNER_CUSTODY_PRIVATE_OWNER_CONSOLE_REQUIRED");
-  const provider = ["--operation", "owner-open-provider-registry", "4000", "8000", "900", "a".repeat(64), "D"];
+  const provider = [
+    "--operation",
+    "owner-open-provider-registry",
+    "4000",
+    "8000",
+    "900",
+    "a".repeat(64),
+    "b".repeat(64),
+    "D",
+  ];
   const open = invoke(...provider);
   assert.equal(open.status, 1);
   assert.equal(open.stdout, "");
@@ -61,7 +70,8 @@ test("captured owner operation refuses before private setup; observation grants 
     [4, "776"],
     [4, "805"],
     [5, "not-a-digest"],
-    [6, "E"],
+    [6, "not-a-source-digest"],
+    [7, "E"],
   ]) {
     const bad = provider.slice();
     bad[index] = value;

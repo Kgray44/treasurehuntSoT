@@ -1,18 +1,19 @@
 # Run by the owner in a visible Windows PowerShell console, never a captured tool.
 param(
  [ValidateSet('check-private-console','owner-prepare','owner-open-provider-registry')][string]$Operation='check-private-console',
- [string]$RunId,[string]$ArtifactId,[string]$PullRequest,[string]$ArchiveSha256,
+ [string]$RunId,[string]$ArtifactId,[string]$PullRequest,[string]$ArchiveSha256,[string]$SourceBindingsDigest,
  [ValidateSet('C','D')][string]$RecoveryDrive
 )
 $ErrorActionPreference='Stop'
 $ownerArguments=@('--operation',$Operation)
 if($Operation -eq 'owner-open-provider-registry'){
  if($RunId -cnotmatch '^[1-9][0-9]{0,15}$' -or $ArtifactId -cnotmatch '^[1-9][0-9]{0,15}$' -or
-    $PullRequest -cnotmatch '^[1-9][0-9]{0,15}$' -or $ArchiveSha256 -cnotmatch '^[a-f0-9]{64}$' -or !$RecoveryDrive){
+    $PullRequest -cnotmatch '^[1-9][0-9]{0,15}$' -or $ArchiveSha256 -cnotmatch '^[a-f0-9]{64}$' -or
+    $SourceBindingsDigest -cnotmatch '^[a-f0-9]{64}$' -or !$RecoveryDrive){
   throw 'OWNER_CUSTODY_ARGUMENTS'
  }
- $ownerArguments+=@($RunId,$ArtifactId,$PullRequest,$ArchiveSha256,$RecoveryDrive.ToUpperInvariant())
-}elseif($RunId -or $ArtifactId -or $PullRequest -or $ArchiveSha256 -or $RecoveryDrive){
+ $ownerArguments+=@($RunId,$ArtifactId,$PullRequest,$ArchiveSha256,$SourceBindingsDigest,$RecoveryDrive.ToUpperInvariant())
+}elseif($RunId -or $ArtifactId -or $PullRequest -or $ArchiveSha256 -or $SourceBindingsDigest -or $RecoveryDrive){
  throw 'OWNER_CUSTODY_ARGUMENTS'
 }
 foreach($name in @('CODEX_THREAD_ID','CODEX_SESSION_ID','CODEX_TOOL_CALL_ID','CODEX_CI')){

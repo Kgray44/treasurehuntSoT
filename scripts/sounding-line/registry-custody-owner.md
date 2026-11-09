@@ -58,13 +58,15 @@ pin can become active.
 After an installed-main diagnostic publishes its standalone registry, the owner
 can open it using the existing recovery copy in the same visible console. Use
 `-Operation owner-open-provider-registry -RunId <id> -ArtifactId <id>
--PullRequest <number> -ArchiveSha256 <digest> -RecoveryDrive D` with the
+-PullRequest <number> -ArchiveSha256 <digest> -SourceBindingsDigest <digest> -RecoveryDrive D` with the
 independently verified diagnostic identifiers. The command checks the live
 protected source, original provider archive, installed recipient and authored
 coverage before prompting. The passphrase goes into the private console prompt.
 The recovered key is used in memory. The public receipt records the source,
 archive and coverage digests and counts. Runtime isolation and reuse remain
-separate approval gates.
+separate approval gates. The provider operation checks the exact signed Git
+and GitHub CLI executable bytes before using those tools. An executable update
+requires a reviewed pin update.
 
 The workspace must remain under its recorded mission hold while this entry point
 is needed. Before final workspace retirement, preserve a source-bound recovery

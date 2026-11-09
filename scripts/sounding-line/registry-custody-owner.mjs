@@ -21,6 +21,7 @@ import {
 } from "./registry-custody-bootstrap.mjs";
 import { spawnOwnedProcess, processExit, stopOwnedProcess } from "./owned-process.mjs";
 import { requireMergeProtection } from "./protected-merge-transaction.mjs";
+import { verifiedRegistryOwnerTool } from "./registry-owner-tools.mjs";
 
 const hash = (b) => createHash("sha256").update(b).digest("hex");
 const need = (value, code) => {
@@ -165,10 +166,12 @@ async function publicMetadata(script, args = [], allowFailure = false) {
     cleanup,
   };
 }
-function protectedSource() {
+function protectedSource(opening = false) {
+  const providerTool = opening ? verifiedRegistryOwnerTool("gh") : gh;
+  const sourceTool = opening ? verifiedRegistryOwnerTool("git") : git;
   const api = (endpoint) =>
     JSON.parse(
-      execFileSync(gh, ["api", `repos/Kgray44/treasurehuntSoT/${endpoint}`], {
+      execFileSync(providerTool, ["api", `repos/Kgray44/treasurehuntSoT/${endpoint}`], {
         env: env(),
         encoding: "utf8",
         timeout: 15000,
@@ -177,7 +180,7 @@ function protectedSource() {
       }),
     );
   const actor = JSON.parse(
-    execFileSync(gh, ["api", "user"], {
+    execFileSync(providerTool, ["api", "user"], {
       env: env(),
       encoding: "utf8",
       timeout: 15000,
@@ -198,7 +201,7 @@ function protectedSource() {
   }
   requireMergeProtection(protection, rulesets);
   const local = (args, maxBuffer = 1048576) =>
-    execFileSync(git, ["-c", "protocol.allow=never", "-c", "core.fsmonitor=false", ...args], {
+    execFileSync(sourceTool, ["-c", "protocol.allow=never", "-c", "core.fsmonitor=false", ...args], {
       cwd: root,
       env: { ...env(), GIT_NO_LAZY_FETCH: "1", GIT_OPTIONAL_LOCKS: "0", GIT_NO_REPLACE_OBJECTS: "1" },
       encoding: "utf8",
@@ -386,10 +389,15 @@ export function finalizeOwnerCustodyResult(result) {
   const failure = result.failure ?? (result.journalFailures.length ? "OWNER_CUSTODY_JOURNAL_FAILED" : null);
   return { ...result, receipt: failure ? null : result.receipt, failure, qualification: false, reuseAuthorized: false };
 }
-async function openProviderDiagnostic({ source, runId, artifactId, prNumber, archiveSha256, drive }) {
-  // The private launcher removes inherited PATH. Only the same Git and GitHub
-  // binaries used by the protected-source preflight are visible to the reader.
-  process.env.Path = [path.dirname(gh), path.dirname(git)].join(";");
+async function openProviderDiagnostic({
+  source,
+  runId,
+  artifactId,
+  prNumber,
+  archiveSha256,
+  sourceBindingsDigest,
+  drive,
+}) {
   const [
     {
       authenticateNativeOriginalContext,
@@ -398,15 +406,11 @@ async function openProviderDiagnostic({ source, runId, artifactId, prNumber, arc
       openNativeRegistryRetention,
       inspectNativeRegistryRetention,
     },
-    { activationPlan },
-    { EXPERIENCE_VIEWPORTS },
     { artifactLogicalKey },
     { installedRegistryWriteRecipient },
     { inspectArtifactRegistryRetention },
   ] = await Promise.all([
     import("./native-original-context-auth.mjs"),
-    import("./experience-prepare.mjs"),
-    import("./experience-browser.mjs"),
     import("./artifact-evidence-registry.mjs"),
     import("./registry-recipient-policy.mjs"),
     import("./artifact-registry-retention.mjs"),
@@ -419,29 +423,39 @@ async function openProviderDiagnostic({ source, runId, artifactId, prNumber, arc
     attempt: 1,
     prNumber,
     jobKey: "experience-preparation",
+    privateOwnerWindows: true,
     expectedOriginalSource: { baseSha, candidateSha: baseSha },
   };
-  const plan = activationPlan({ root, baseSha, candidateSha: baseSha });
-  need(
-    plan.applicable &&
-      !plan.exception &&
-      !plan.paired &&
-      !plan.pairedOnly &&
-      plan.contracts.length === 1 &&
-      plan.contracts[0].id === "homeport.transition.auth-routes",
-    "DIAGNOSTIC_PLAN",
+  const authored = JSON.parse(
+    execFileSync(
+      verifiedRegistryOwnerTool("git"),
+      ["-c", "protocol.allow=never", "show", `${baseSha}:testing/contracts.json`],
+      {
+        cwd: root,
+        encoding: "utf8",
+        timeout: 10000,
+        maxBuffer: 2097152,
+        windowsHide: true,
+        env: { ...env(), GIT_NO_LAZY_FETCH: "1", GIT_OPTIONAL_LOCKS: "0", GIT_NO_REPLACE_OBJECTS: "1" },
+      },
+    ),
   );
   // Derive complete coverage from the authored journey. Producer claims and
   // retained journal coverage cannot change the owner's expected obligations.
-  const [contract] = plan.contracts;
+  const contracts = authored.contracts.filter(({ id }) => id === "homeport.transition.auth-routes");
+  need(contracts.length === 1, "DIAGNOSTIC_PLAN");
+  const [contract] = contracts;
+  const viewports = { DESKTOP: { width: 1440, height: 900 }, MOBILE: { width: 390, height: 844 } };
   const expectedCoverage = [];
   for (const journey of contract.experience.journeys) {
     need(
       journey.steps.every((step) => !Object.hasOwn(step, "when") && !Object.hasOwn(step, "devices")),
       "DIAGNOSTIC_PLAN",
     );
-    for (const role of journey.roles)
-      for (const device of contract.experience.devices)
+    for (const role of journey.roles) {
+      need(role === "ANONYMOUS", "DIAGNOSTIC_PLAN");
+      for (const device of contract.experience.devices) {
+        need(Object.hasOwn(viewports, device), "DIAGNOSTIC_PLAN");
         for (const motionMode of contract.experience.motion ? ["NORMAL", "REDUCED"] : ["REDUCED"]) {
           const context = {
             contractId: contract.id,
@@ -449,13 +463,15 @@ async function openProviderDiagnostic({ source, runId, artifactId, prNumber, arc
             role,
             device,
             motionMode,
-            viewport: { ...EXPERIENCE_VIEWPORTS[device] },
+            viewport: { ...viewports[device] },
           };
           for (const [captureIndex, step] of journey.steps.entries())
             if (step.state) expectedCoverage.push({ ...context, type: "screenshot", state: step.state, captureIndex });
           for (const type of ["recording", "trace", "accessibility", "cleanup", "journey"])
             expectedCoverage.push({ ...context, type, state: "CONTEXT_CLOSED", captureIndex: null });
         }
+      }
+    }
   }
   const keys = expectedCoverage.map(artifactLogicalKey).sort();
   need(keys.length === 16 && new Set(keys).size === keys.length, "DIAGNOSTIC_COVERAGE");
@@ -464,7 +480,7 @@ async function openProviderDiagnostic({ source, runId, artifactId, prNumber, arc
     originalProof,
     input,
     artifactId,
-    sourceBindingsDigest: plan.sourceDigest,
+    sourceBindingsDigest,
   });
   const archive = inspectNativeRegistryArchive(registryProof, input);
   need(archive?.producerMode === "capture-diagnostic" && archive.archiveSha256 === archiveSha256, "DIAGNOSTIC_ARCHIVE");
@@ -502,6 +518,7 @@ async function openProviderDiagnostic({ source, runId, artifactId, prNumber, arc
     artifactId,
     prNumber,
     archiveSha256,
+    sourceBindingsDigest,
     drive,
     publicKeyId: pin.keyId,
     expectedCoverageDigest: hash(JSON.stringify(keys)),
@@ -551,11 +568,12 @@ export async function runRegistryCustodyOwner(args) {
   const positive = (value) => /^[1-9][0-9]{0,15}$/u.test(value ?? "") && Number.isSafeInteger(Number(value));
   if (opening)
     need(
-      args.length === 7 &&
+      args.length === 8 &&
         args.slice(2, 5).every(positive) &&
         ![721, 776, 805].includes(Number(args[4])) &&
         /^[a-f0-9]{64}$/u.test(args[5]) &&
-        ["C", "D"].includes(args[6]),
+        /^[a-f0-9]{64}$/u.test(args[6]) &&
+        ["C", "D"].includes(args[7]),
       "ARGUMENTS",
     );
   need(
@@ -592,7 +610,7 @@ export async function runRegistryCustodyOwner(args) {
   if (args[1] === "check-private-console")
     return { ...preliminary, ...observation, ready: true, ownerKeyOperations: 0 };
   boundedFile(age, 7172096, ageSha);
-  const source = protectedSource();
+  const source = protectedSource(opening);
   if (opening)
     return openProviderDiagnostic({
       source,
@@ -600,7 +618,8 @@ export async function runRegistryCustodyOwner(args) {
       artifactId: Number(args[3]),
       prNumber: Number(args[4]),
       archiveSha256: args[5],
-      drive: args[6],
+      sourceBindingsDigest: args[6],
+      drive: args[7],
     });
   for (const directory of generationDirectories) need(!fs.existsSync(directory), "GENERATION_ALREADY_EXISTS");
   const firstPlan = planInternalRegistryCustody(
