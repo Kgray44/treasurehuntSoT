@@ -1,4 +1,5 @@
 import { recognitionGitRead, withImmutableRecognitionReads } from "./immutable-recognition-reads.mjs";
+import { readInstalledNativeEvidenceContext } from "./native-evidence-context.mjs";
 import { CURRENT_R24, assertR24Mode, validateR24Custody } from "./experience-current-r24.mjs";
 import { CURRENT_R25, assertR25Mode } from "./experience-current-r25.mjs";
 import { CURRENT_R26, assertR26Mode } from "./experience-current-r26.mjs";
@@ -2493,6 +2494,28 @@ function recognizeExceptionSource({ root, baseSha, candidateSha, environment = p
     ...exceptionRecords(root, candidateSha),
     ...(baseSha ? exceptionRecords(root, baseSha) : []),
   ];
+  // An owner dispatch on the exact installed main tree adds no campaign source.
+  // Explicit campaign consumers still use the live exception checks below.
+  if (
+    baseSha === candidateSha &&
+    baseSha === installedHead &&
+    process.env.GITHUB_ACTIONS === "true" &&
+    process.env.GITHUB_EVENT_NAME === "workflow_dispatch" &&
+    !environment.SOUNDING_LINE_EXCEPTION_PHASE &&
+    !environment.SOUNDING_LINE_EXCEPTION_LEASE
+  ) {
+    const context = readInstalledNativeEvidenceContext();
+    if (
+      context.mode === "capture-diagnostic" &&
+      context.attempt === 1 &&
+      context.baseSha === baseSha &&
+      context.candidateSha === candidateSha &&
+      environment.SOUNDING_LINE_PR_NUMBER === String(context.prNumber) &&
+      !records.some((record) => record.pullRequest === context.prNumber) &&
+      git(root, "rev-parse", "HEAD") === candidateSha
+    )
+      return false;
+  }
   let protectedBase;
   try {
     protectedBase = git(root, "rev-parse", "origin/main");
