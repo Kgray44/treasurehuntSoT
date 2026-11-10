@@ -1,0 +1,229 @@
+name: Sounding Line user swap capability
+run-name: Sounding Line user swap capability on ${{ inputs.source_sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact protected commit with the reviewed bounded user-service test
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: sounding-line-user-swap-capability
+  cancel-in-progress: false
+
+jobs:
+  observation:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && github.sha == inputs.source_sha }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - name: Test zero swap in a disposable user service
+        shell: bash
+        env:
+          OBSERVATION_SOURCE: ${{ inputs.source_sha }}
+        run: |
+          exec /usr/bin/env -i PATH=/usr/bin:/bin LANG=C.UTF-8 SYSTEMD_PAGER=cat \
+            OBSERVATION_SOURCE="$OBSERVATION_SOURCE" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_WORKFLOW_SHA="$GITHUB_WORKFLOW_SHA" GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_ARCH="$RUNNER_ARCH" ImageVersion="$ImageVersion" RUNNER_TRACKING_ID="$RUNNER_TRACKING_ID" \
+            /usr/bin/python3 -IB - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import signal
+          import subprocess
+          import time
+          from pathlib import Path
+
+          uid = os.getuid()
+          source = os.environ["OBSERVATION_SOURCE"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          kernel = os.uname().release
+          image = os.environ["ImageVersion"]
+          tracking = os.environ.get("RUNNER_TRACKING_ID", "")
+          if not (
+              uid == os.geteuid() and uid > 0
+              and re.fullmatch(r"[0-9a-f]{40}", source)
+              and source == os.environ["GITHUB_SHA"] == os.environ["GITHUB_WORKFLOW_SHA"]
+              and os.environ["RUNNER_ENVIRONMENT"] == "github-hosted"
+              and os.environ["RUNNER_ARCH"] == "X64"
+              and os.environ["GITHUB_RUN_ATTEMPT"] == "1"
+              and re.fullmatch(r"[0-9]{1,20}", run_id)
+              and re.fullmatch(r"[0-9.]{1,32}", image)
+          ):
+              raise SystemExit("USER_SWAP_SOURCE_IDENTITY_MISMATCH")
+
+          unit = f"sounding-line-swap-{run_id}.service"
+          group = f"/user.slice/user-{uid}.slice/user@{uid}.service/app.slice/{unit}"
+          cgroup = Path("/sys/fs/cgroup") / group.lstrip("/")
+          runtime = Path(f"/run/user/{uid}")
+          bus = runtime / "bus"
+          user_env = dict(
+              os.environ, XDG_RUNTIME_DIR=str(runtime), DBUS_SESSION_BUS_ADDRESS=f"unix:path={bus}",
+          )
+          payload = r"""
+          import json
+          import os
+          import subprocess
+          import sys
+          import time
+          from pathlib import Path
+
+          expected, uid = sys.argv[1], int(sys.argv[2])
+          root = Path("/sys/fs/cgroup") / expected.lstrip("/")
+
+          def verify():
+              status = dict(line.split(":", 1) for line in Path("/proc/self/status").read_text().splitlines())
+              if not (
+                  os.getuid() == os.geteuid() == uid
+                  and Path("/proc/self/cgroup").read_text().splitlines() == ["0::" + expected]
+                  and status["NoNewPrivs"].strip() == "1"
+                  and all(int(status[key].strip(), 16) == 0 for key in ("CapEff", "CapPrm", "CapAmb"))
+                  and (root / "memory.swap.max").read_text().strip() == "0"
+                  and (root / "memory.max").read_text().strip() == "134217728"
+                  and (root / "pids.max").read_text().strip() == "8"
+              ):
+                  raise SystemExit("USER_SWAP_MEMBERSHIP_OR_LIMIT")
+
+          def shmem():
+              return int(dict(line.split() for line in (root / "memory.stat").read_text().splitlines())["shmem"])
+
+          verify()
+          size = 2 * 1024 * 1024
+          if len(sys.argv) == 4:
+              before = shmem()
+              with os.fdopen(os.memfd_create("sounding-line-synthetic"), "wb", buffering=0) as data:
+                  if data.write(b"\xa5" * size) != size:
+                      raise SystemExit("USER_SWAP_SHORT_SYNTHETIC_WRITE")
+                  deadline = time.monotonic() + 3
+                  delta = shmem() - before
+                  while delta < size and time.monotonic() < deadline:
+                      time.sleep(0.1)
+                      delta = shmem() - before
+                  swap = int((root / "memory.swap.current").read_text())
+                  verify()
+                  if delta < size or swap != 0:
+                      raise SystemExit("USER_SWAP_CHARGE_OR_LIMIT")
+                  print(json.dumps({"chargedShmemBytes": delta, "swapCurrentBytes": swap}), flush=True)
+          else:
+              child = subprocess.run(
+                  [sys.executable, "-IB", "-c", os.environ["SL_SWAP_PAYLOAD"], expected, str(uid), "child"],
+                  stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=6, check=False,
+              )
+              if child.returncode:
+                  error = child.stderr.strip()
+                  if error in {"USER_SWAP_MEMBERSHIP_OR_LIMIT", "USER_SWAP_SHORT_SYNTHETIC_WRITE", "USER_SWAP_CHARGE_OR_LIMIT"}:
+                      raise SystemExit(error)
+                  raise SystemExit("USER_SWAP_DESCENDANT_FAILED")
+              print(json.dumps(json.loads(child.stdout)), flush=True)
+          """
+
+          def run(args, timeout):
+              try:
+                  result = subprocess.run(
+                      args, env=user_env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                      stderr=subprocess.PIPE, text=True, timeout=timeout, check=False,
+                  )
+                  stderr = result.stderr
+                  cause = next((line for line in stderr.splitlines() if re.fullmatch(r"USER_SWAP_[A-Z_]{1,60}", line)), None)
+                  if cause is None and ("Access denied" in stderr or "Permission denied" in stderr):
+                      cause = "USER_SERVICE_ACCESS_DENIED"
+                  return result.returncode, result.stdout.strip(), cause
+              except (OSError, subprocess.TimeoutExpired):
+                  return None, "", None
+
+          def load_state():
+              return run(["/usr/bin/systemctl", "--user", "show", "--property=LoadState", "--value", unit], 2)[1]
+
+          def manager_on_user_bus():
+              code, result, _ = run([
+                  "/usr/bin/busctl", f"--address=unix:path={bus}", "--timeout=2s", "call",
+                  "org.freedesktop.DBus", "/org/freedesktop/DBus", "org.freedesktop.DBus",
+                  "NameHasOwner", "s", "org.freedesktop.systemd1",
+              ], 3)
+              return code == 0 and result == "b true"
+
+          def present():
+              try:
+                  cgroup.stat()
+              except FileNotFoundError:
+                  return False
+              return True
+
+          def interrupt(_signal, _frame):
+              raise KeyboardInterrupt
+
+          status = "RUNNER_IMAGE_DRIFT"
+          detail = {}
+          cleanup = None
+          if image == "20261101.347.1" and kernel == "6.8.0-1070-azure":
+              in_observed_group = Path("/proc/self/cgroup").read_text().splitlines() == [
+                  "0::/system.slice/hosted-compute-agent.service"
+              ]
+              status = "PRECONDITION_REFUSED"
+              detail["observedRunnerGroup"] = in_observed_group
+              detail["runnerTrackingAvailable"] = bool(re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", tracking))
+              detail["userBusSocketPresent"] = bus.is_socket()
+              detail["managerOnUserBus"] = detail["userBusSocketPresent"] and manager_on_user_bus()
+              if all(detail.values()) and load_state() == "not-found" and not present():
+                  command = [
+                      "/usr/bin/systemd-run", "--user", "--wait", "--pipe", "--collect",
+                      "--service-type=exec", f"--unit={unit}", "--slice=app.slice",
+                      "--property=MemorySwapMax=0", "--property=MemoryMax=128M", "--property=TasksMax=8",
+                      "--property=NoNewPrivileges=yes", "--property=RuntimeMaxSec=12",
+                      "--property=TimeoutStartSec=5", "--property=TimeoutStopSec=2", "--property=JobTimeoutSec=8",
+                      "--property=KillMode=control-group", "--property=Restart=no",
+                      f"--setenv=RUNNER_TRACKING_ID={tracking}", "/usr/bin/env", "-i",
+                      "PATH=/usr/bin:/bin", "LANG=C.UTF-8", f"RUNNER_TRACKING_ID={tracking}",
+                      f"SL_SWAP_PAYLOAD={payload}", "/usr/bin/python3", "-IB", "-c", payload, group, str(uid),
+                  ]
+                  signal.signal(signal.SIGINT, interrupt)
+                  signal.signal(signal.SIGTERM, interrupt)
+                  try:
+                      returncode, output, cause = run(command, 22)
+                      detail["serviceExit"] = returncode
+                      detail["serviceFailureStage"] = cause
+                      status = "SERVICE_FAILED_OR_TIMED_OUT"
+                      if returncode == 0:
+                          status = "SERVICE_RESULT_REFUSED"
+                          try:
+                              measured = json.loads(output)
+                              if measured["chargedShmemBytes"] >= 2 * 1024 * 1024 and measured["swapCurrentBytes"] == 0:
+                                  detail.update(measured)
+                                  status = "ZERO_SWAP_AND_DESCENDANT_CHARGE_OBSERVED"
+                          except (ValueError, KeyError, TypeError):
+                              pass
+                  except KeyboardInterrupt:
+                      status = "CANCELLED"
+                  finally:
+                      try:
+                          if status == "CANCELLED" or load_state() != "not-found" or present():
+                              run(["/usr/bin/systemctl", "--user", "--no-block", "stop", unit], 2)
+                          for _ in range(3):
+                              cleanup = load_state() == "not-found" and not present()
+                              if cleanup:
+                                  break
+                              time.sleep(0.2)
+                      except KeyboardInterrupt:
+                          status = "CANCELLED"
+                          cleanup = False
+
+          receipt = {
+              "kind": "USER_SWAP_CAPABILITY_ONLY", "source": source, "workflowSha": source,
+              "runId": int(run_id), "attempt": 1, "runner": "ubuntu-22.04", "image": image,
+              "kernel": kernel, "uid": uid, "unit": unit, "expectedGroup": group,
+              "status": status, "detail": detail, "unitAndCgroupGone": cleanup,
+              "qualification": False, "externalIsolationProved": False, "reuseAuthorized": False,
+          }
+          canonical = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode("ascii")
+          print(canonical.decode("ascii"), flush=True)
+          print("capabilitySha256=" + hashlib.sha256(canonical).hexdigest(), flush=True)
+          if status != "ZERO_SWAP_AND_DESCENDANT_CHARGE_OBSERVED" or not cleanup:
+              raise SystemExit(1)
+          PY

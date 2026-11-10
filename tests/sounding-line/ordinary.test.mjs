@@ -1943,6 +1943,7 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     "sounding-line-replay-posttechnical-diagnostic.yml",
     "sounding-line-runner-cgroup-observation.yml",
     "sounding-line-ubuntu22-capability.yml",
+    "sounding-line-user-swap-capability.yml",
   ]);
   assert.equal(scripts.test, "vitest run");
   for (const key of Object.keys(scripts))
