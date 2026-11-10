@@ -22,7 +22,7 @@ from jammy_native_runtime_inputs import (
 from producer_boundary import MS_NODEV, MS_NOEXEC, MS_NOSUID, MS_RDONLY, MS_REMOUNT, host_mount
 
 PLAN = Path(__file__).with_name("jammy-confined-preflight-plan.json")
-SUPERVISOR_PLAN_SHA256 = "433b22f13f64400c8acd8846c24ca00c4b07b673bb5886f200195ea64b3b30d8"
+SUPERVISOR_PLAN_SHA256 = "31911adc93ee1156441c96633cace23bcc80d3b98b47ed65da940b9c1b711cbc"
 GROUP_PARENT = "/user.slice/user-1001.slice/user@1001.service/app.slice"
 MOUNT_FLAGS = {"ro", "nosuid", "nodev"}
 PROC_FLAGS = MOUNT_FLAGS | {"noexec"}
@@ -50,10 +50,12 @@ class Run:
     ref: str
     event: str
     operation: str
+    unit_nonce: str | None = None
 
     @property
     def unit(self):
-        return f"sounding-line-native-preflight-{self.run_id}.service"
+        suffix = "" if self.unit_nonce is None else "-" + self.unit_nonce
+        return f"sounding-line-native-preflight-{self.run_id}{suffix}.service"
 
     @property
     def cgroup(self):
@@ -133,6 +135,8 @@ def verify_run(run, expected_source):
             type(run.attempt) is int and run.attempt == 1 and
             run.actor == run.triggering_actor == "Kgray44" and run.repository == "Kgray44/treasurehuntSoT" and
             run.ref == "refs/heads/main" and run.event == "workflow_dispatch" and
+            (run.unit_nonce is None or (type(run.unit_nonce) is str and
+                                        re.fullmatch(r"[a-f0-9]{32}", run.unit_nonce))) and
             run.operation == "confined-loader-and-denials-only", "PREFLIGHT_RUN_BINDING")
 
 
@@ -309,12 +313,12 @@ def reap_canary(pid, pidfd):
     return True
 
 
-def bounded_command(argv, *, timeout, output_limit=LISTING_LIMIT):
+def bounded_command(argv, *, timeout, output_limit=LISTING_LIMIT, pass_fds=(), stdin=subprocess.DEVNULL):
     """Bounded, non-shell invocation for a trusted fixed command."""
     deadline = time.monotonic() + timeout
     env = {"PATH": "/usr/bin:/bin", "LANG": "C", "XDG_RUNTIME_DIR": "/run/user/1001",
            "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1001/bus"}
-    child = subprocess.Popen(argv, env=env, stdin=subprocess.DEVNULL,
+    child = subprocess.Popen(argv, env=env, stdin=stdin, pass_fds=pass_fds,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
         with selectors.DefaultSelector() as selector:

@@ -35,18 +35,29 @@
   "requiredDenials": [
     "sameUidManagerAccess", "cgroupRemount", "cgroupMigration", "cgroupLimitMutation"
   ],
+  "launcher": {
+    "entry": "jammy_preflight_worker.py",
+    "controller": "controller",
+    "unitIdentity": "provider run plus exclusive 128-bit scope nonce",
+    "watchdog": "controller pidfd, separate session, no named stop or recursive cleanup",
+    "passiveExpirySeconds": 27,
+    "recoverySeconds": 32,
+    "runtimeAdapterLiveVerified": false
+  },
   "beforeDispatch": [
     "Source-bind exact workflow, owner authorization, protected head, and attempt one",
-    "Wire the trusted supervisor to a reviewed Linux launcher with private mounts, descriptor and capability drop, syscall allowlist and command deadlines",
+    "Bind the held workflow to the reviewed launcher and exact authenticated public archive acquisition",
+    "Review how runner-wide cancellation preserves recovery custody when both controller and watchdog are terminated"
+  ],
+  "nativeAdmissionRequires": [
     "Prove scoped user-manager delegation is available for canary leaves under the bounded service",
-    "Enforce exclusive unit lifetime ownership across manager read-back and stop",
-    "Attest a valid sacrificial cgroup v2 migration target independently of clone3 policy on a plain directory",
+    "Verify the scoped unit and passive expiry on the exact runner without stopping any unit by name",
+    "Attest the valid sacrificial cgroup v2 mount and migration target",
     "Prove remount, migration and limit mutation denial against valid positive controls",
     "Prove effective cgroup bounds and membership for every writer before staging any member",
     "Use authenticated inventory and bind all seven members to a fresh private read-only root",
-    "Require independent watchdog recovery for partial staging and abrupt controller termination",
-    "Confirm no partial cleanup can leave a service, child, mount, cgroup, or scratch tree",
-    "Independently review the exact wired supervisor and refusal paths"
+    "Verify independent watchdog recovery after abrupt controller termination and partial staging",
+    "Verify the service, children, mounts, cgroup, fragment and scratch are gone"
   ],
   "runtimeAuthorized": false,
   "qualification": false,

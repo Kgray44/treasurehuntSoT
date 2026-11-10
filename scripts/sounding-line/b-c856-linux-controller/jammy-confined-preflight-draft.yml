@@ -24,8 +24,8 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 5
     steps:
-      - name: Refuse while the trusted supervisor is absent
+      - name: Refuse while native publication and execution are held
         shell: bash
         run: |
-          printf '%s\n' PREFLIGHT_SUPERVISOR_UNAVAILABLE >&2
+          printf '%s\n' PREFLIGHT_ACTION_NOT_AUTHORIZED >&2
           exit 1
