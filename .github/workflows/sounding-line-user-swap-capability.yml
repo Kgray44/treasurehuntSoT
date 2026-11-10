@@ -37,7 +37,9 @@ jobs:
           import os
           import re
           import signal
+          import stat
           import subprocess
+          import tempfile
           import time
           from pathlib import Path
 
@@ -64,6 +66,8 @@ jobs:
           cgroup = Path("/sys/fs/cgroup") / group.lstrip("/")
           runtime = Path(f"/run/user/{uid}")
           bus = runtime / "bus"
+          unit_root = runtime / "systemd/user"
+          unit_file = unit_root / unit
           user_env = dict(
               os.environ, XDG_RUNTIME_DIR=str(runtime), DBUS_SESSION_BUS_ADDRESS=f"unix:path={bus}",
               SYSTEMD_LOG_TARGET="console", SYSTEMD_LOG_COLOR="0", SYSTEMD_LOG_LEVEL="info",
@@ -123,7 +127,7 @@ jobs:
                   print(json.dumps({"chargedShmemBytes": delta, "swapCurrentBytes": swap}), flush=True)
           else:
               child = subprocess.run(
-                  [sys.executable, "-IB", "-c", os.environ["SL_SWAP_PAYLOAD"], expected, str(uid), "child"],
+                  [sys.executable, "-IB", __file__, expected, str(uid), "child"],
                   stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=6, check=False,
               )
               if child.returncode:
@@ -148,6 +152,8 @@ jobs:
                   "Unknown assignment: ": "SYSTEMD_PROPERTY_ASSIGNMENT",
                   "Failed to parse ": "SYSTEMD_ARGUMENT_PARSE",
                   f"Job for {unit} failed": "SYSTEMD_START_JOB",
+                  f"Failed to start {unit}: ": "SYSTEMD_START_UNIT",
+                  f"Timed out starting {unit}": "SYSTEMD_START_JOB_TIMEOUT",
               }
               signals = {
                   "HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "FPE", "KILL", "USR1",
@@ -214,6 +220,17 @@ jobs:
           def load_state():
               return run(["/usr/bin/systemctl", "--user", "show", "--property=LoadState", "--value", unit], 2)[1]
 
+          def user_bus_call(member, argument):
+              return run([
+                  "/usr/bin/busctl", f"--address=unix:path={bus}", "--timeout=2s", "call",
+                  "org.freedesktop.systemd1", "/org/freedesktop/systemd1", "org.freedesktop.systemd1.Manager",
+                  member, "s", argument,
+              ], 3)
+
+          def unloaded():
+              code, _, stderr = user_bus_call("GetUnit", unit)
+              return code == 1 and stderr.strip() == f"Call failed: Unit {unit} not loaded."
+
           def manager_on_user_bus():
               code, result, _ = run([
                   "/usr/bin/busctl", f"--address=unix:path={bus}", "--timeout=2s", "call",
@@ -229,8 +246,50 @@ jobs:
                   return False
               return True
 
+          cancelled = False
+          waiting_for_start = False
+
           def interrupt(_signal, _frame):
-              raise KeyboardInterrupt
+              global cancelled
+              if not cancelled:
+                  cancelled = True
+                  if waiting_for_start:
+                      raise KeyboardInterrupt
+
+          def owned_directory(path):
+              info = path.lstat()
+              return stat.S_ISDIR(info.st_mode) and info.st_uid == uid and not info.st_mode & 0o022
+
+          def unit_text(scratch):
+              clean_env = f"PATH=/usr/bin:/bin LANG=C.UTF-8 RUNNER_TRACKING_ID={tracking}"
+              return (
+                  "[Unit]\nJobTimeoutSec=8s\nCollectMode=inactive-or-failed\n"
+                  "[Service]\nType=exec\nSlice=app.slice\n"
+                  "MemorySwapMax=0\nMemoryMax=128M\nTasksMax=8\nNoNewPrivileges=yes\n"
+                  "RuntimeMaxSec=12s\nTimeoutStartSec=5s\nTimeoutStopSec=2s\n"
+                  "KillMode=control-group\nRestart=no\nLimitFSIZE=2M\n"
+                  f"Environment=RUNNER_TRACKING_ID={tracking}\n"
+                  f"StandardOutput=file:{scratch}/stdout\nStandardError=file:{scratch}/stderr\n"
+                  f"ExecStart=/usr/bin/env -i {clean_env} /usr/bin/python3 -IB {scratch}/worker.py {group} {uid}\n"
+              )
+
+          def configured():
+              code, output, _ = run([
+                  "/usr/bin/systemctl", "--user", "--all", "show",
+                  "--property=FragmentPath,DropInPaths,JobTimeoutUSec,RuntimeMaxUSec,TimeoutStartUSec,TimeoutStopUSec,LoadState",
+                  unit,
+              ], 3)
+              return code == 0 and set(output.splitlines()) == {
+                  f"FragmentPath={unit_file}", "JobTimeoutUSec=8s", "RuntimeMaxUSec=12s",
+                  "TimeoutStartUSec=5s", "TimeoutStopUSec=2s", "LoadState=loaded", "DropInPaths=",
+              }
+
+          def read_output(path):
+              with path.open("rb") as stream:
+                  data = stream.read(8193)
+              if len(data) > 8192:
+                  raise ValueError("USER_SWAP_OUTPUT_LIMIT")
+              return data.decode("utf-8", errors="replace").strip()
 
           status = "RUNNER_IMAGE_DRIFT"
           detail = {}
@@ -245,48 +304,83 @@ jobs:
               detail["userBusSocketPresent"] = bus.is_socket()
               detail["managerOnUserBus"] = detail["userBusSocketPresent"] and manager_on_user_bus()
               if all(detail.values()) and load_state() == "not-found" and not present():
-                  command = [
-                      "/usr/bin/systemd-run", "--user", "--wait", "--pipe", "--collect", "--no-ask-password",
-                      "--service-type=exec", f"--unit={unit}", "--slice=app.slice",
-                      "--property=MemorySwapMax=0", "--property=MemoryMax=128M", "--property=TasksMax=8",
-                      "--property=NoNewPrivileges=yes", "--property=RuntimeMaxSec=12",
-                      "--property=TimeoutStartSec=5", "--property=TimeoutStopSec=2", "--property=JobTimeoutSec=8",
-                      "--property=KillMode=control-group", "--property=Restart=no",
-                      f"--setenv=RUNNER_TRACKING_ID={tracking}", "/usr/bin/env", "-i",
-                      "PATH=/usr/bin:/bin", "LANG=C.UTF-8", f"RUNNER_TRACKING_ID={tracking}",
-                      f"SL_SWAP_PAYLOAD={payload}", "/usr/bin/python3", "-IB", "-c", payload, group, str(uid),
-                  ]
+                  scratch = None
+                  created_root = owned_unit = start_requested = False
+                  os.umask(0o077)
                   signal.signal(signal.SIGINT, interrupt)
                   signal.signal(signal.SIGTERM, interrupt)
                   try:
-                      returncode, output, stderr = run(command, 22)
-                      detail["serviceExit"] = returncode
-                      if returncode != 0:
-                          detail.update(service_diagnostic(stderr))
-                      status = "SERVICE_FAILED_OR_TIMED_OUT"
-                      if returncode == 0:
-                          status = "SERVICE_RESULT_REFUSED"
+                      if not (owned_directory(runtime) and owned_directory(unit_root.parent)):
+                          raise ValueError("USER_SWAP_RUNTIME_DIRECTORY_REFUSED")
+                      try:
+                          unit_root.mkdir(mode=0o700)
+                          created_root = True
+                      except FileExistsError:
+                          pass
+                      if not owned_directory(unit_root):
+                          raise ValueError("USER_SWAP_RUNTIME_DIRECTORY_REFUSED")
+                      scratch = Path(tempfile.mkdtemp(prefix=f"sl-swap-{run_id}-", dir=runtime))
+                      (scratch / "worker.py").write_text(payload, encoding="ascii")
+                      for name in ("stdout", "stderr"):
+                          (scratch / name).touch(exist_ok=False)
+                      with unit_file.open("x", encoding="ascii") as stream:
+                          owned_unit = True
+                          stream.write(unit_text(scratch))
+                      detail["configuredDeadlinesVerified"] = configured()
+                      status = "UNIT_CONFIGURATION_REFUSED"
+                      if detail["configuredDeadlinesVerified"] and not cancelled:
+                          status = "SERVICE_FAILED_OR_TIMED_OUT"
                           try:
-                              measured = json.loads(output)
+                              waiting_for_start = True
+                              if cancelled:
+                                  raise KeyboardInterrupt
+                              start_requested = True
+                              returncode, _, stderr = run([
+                                  "/usr/bin/systemctl", "--user", "--no-ask-password", "--job-mode=fail",
+                                  "start", "--wait", unit,
+                              ], 22)
+                          finally:
+                              waiting_for_start = False
+                          detail["serviceExit"] = returncode
+                          detail.update(service_diagnostic(stderr + "\n" + read_output(scratch / "stderr")))
+                          if returncode == 0:
+                              status = "SERVICE_RESULT_REFUSED"
+                              measured = json.loads(read_output(scratch / "stdout"))
                               if measured["chargedShmemBytes"] >= 2 * 1024 * 1024 and measured["swapCurrentBytes"] == 0:
-                                  detail.update(measured)
+                                  detail["chargedShmemBytes"] = measured["chargedShmemBytes"]
+                                  detail["swapCurrentBytes"] = measured["swapCurrentBytes"]
                                   status = "ZERO_SWAP_AND_DESCENDANT_CHARGE_OBSERVED"
-                          except (ValueError, KeyError, TypeError):
-                              pass
                   except KeyboardInterrupt:
+                      cancelled = True
                       status = "CANCELLED"
+                  except (OSError, ValueError, KeyError, TypeError):
+                      if not start_requested:
+                          status = "UNIT_CONFIGURATION_REFUSED"
                   finally:
                       try:
-                          if status == "CANCELLED" or load_state() != "not-found" or present():
-                              run(["/usr/bin/systemctl", "--user", "--no-block", "stop", unit], 2)
-                          for _ in range(3):
-                              cleanup = load_state() == "not-found" and not present()
-                              if cleanup:
+                          if start_requested and (cancelled or not (unloaded() and not present())):
+                              run(["/usr/bin/systemctl", "--user", "--no-ask-password", "stop", unit], 4)
+                          if owned_unit:
+                              unit_file.unlink()
+                          cleanup_deadline = time.monotonic() + 3
+                          while True:
+                              cleanup = unloaded() and not present()
+                              if cleanup or time.monotonic() >= cleanup_deadline:
                                   break
                               time.sleep(0.2)
+                          if cleanup and scratch is not None:
+                              for name in ("worker.py", "stdout", "stderr"):
+                                  (scratch / name).unlink(missing_ok=True)
+                              scratch.rmdir()
+                          if cleanup and created_root:
+                              unit_root.rmdir()
                       except KeyboardInterrupt:
                           status = "CANCELLED"
                           cleanup = False
+                      except OSError:
+                          cleanup = False
+                  if cancelled:
+                      status = "CANCELLED"
 
           receipt = {
               "kind": "USER_SWAP_CAPABILITY_ONLY", "source": source, "workflowSha": source,
