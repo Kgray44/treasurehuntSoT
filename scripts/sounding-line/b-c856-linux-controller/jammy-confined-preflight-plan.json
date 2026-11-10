@@ -37,13 +37,16 @@
   ],
   "beforeDispatch": [
     "Source-bind exact workflow, owner authorization, protected head, and attempt one",
-    "Implement trusted supervisor, including positive controls, private mounts, descriptor and capability drop, syscall allowlist and command deadlines",
+    "Wire the trusted supervisor to a reviewed Linux launcher with private mounts, descriptor and capability drop, syscall allowlist and command deadlines",
+    "Prove scoped user-manager delegation is available for canary leaves under the bounded service",
+    "Enforce exclusive unit lifetime ownership across manager read-back and stop",
     "Attest a valid sacrificial cgroup v2 migration target independently of clone3 policy on a plain directory",
     "Prove remount, migration and limit mutation denial against valid positive controls",
     "Prove effective cgroup bounds and membership for every writer before staging any member",
     "Use authenticated inventory and bind all seven members to a fresh private read-only root",
+    "Require independent watchdog recovery for partial staging and abrupt controller termination",
     "Confirm no partial cleanup can leave a service, child, mount, cgroup, or scratch tree",
-    "Independently review exact supervisor and refusal paths"
+    "Independently review the exact wired supervisor and refusal paths"
   ],
   "runtimeAuthorized": false,
   "qualification": false,
