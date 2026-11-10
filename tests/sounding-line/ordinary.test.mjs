@@ -1928,6 +1928,8 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   const scripts = JSON.parse(readFileSync("package.json", "utf8")).scripts;
   const workflowNames = readdirSync(".github/workflows").sort();
   assert.deepEqual(workflowNames, [
+    "sounding-line-b-c856-runtime-producer.yml",
+    "sounding-line-b-c856-runtime.yml",
     "sounding-line-control-plane.yml",
     "sounding-line-custody-shadow.yml",
     "sounding-line-exhaustive-release.yml",
@@ -1969,6 +1971,29 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     ])
       assert(workflow.includes(guard), `${name}: ${guard}`);
     assert(workflow.indexOf('test "$GITHUB_RUN_ATTEMPT" = 1') < workflow.indexOf("uses: actions/checkout@v4"));
+    assert.doesNotMatch(
+      workflow,
+      /pull_request_target|pull_request:|push:|workflow_call|workflow_run|schedule:|Mainline Decision|:\s*write\b/u,
+    );
+    assert(!ordinaryWorkflow.includes(name));
+  }
+  for (const [name, permissions] of [
+    ["sounding-line-b-c856-runtime-producer.yml", "  contents: read"],
+    ["sounding-line-b-c856-runtime.yml", "  contents: read\n  actions: read"],
+  ]) {
+    const workflow = readFileSync(`.github/workflows/${name}`, "utf8");
+    assert.match(workflow, /^on:\n  workflow_dispatch:\n    inputs:\n/mu);
+    assert.equal(workflow.split("\npermissions:\n")[1]?.split("\n\n")[0], permissions);
+    assert.equal((workflow.match(/^\s*permissions:/gmu) ?? []).length, 1);
+    for (const guard of [
+      "github.event_name == 'workflow_dispatch'",
+      "github.repository == 'Kgray44/treasurehuntSoT'",
+      "github.ref == 'refs/heads/main'",
+      "github.actor == 'Kgray44'",
+      "github.triggering_actor == 'Kgray44'",
+      "github.run_attempt == 1",
+    ])
+      assert(workflow.includes(guard), `${name}: ${guard}`);
     assert.doesNotMatch(
       workflow,
       /pull_request_target|pull_request:|push:|workflow_call|workflow_run|schedule:|Mainline Decision|:\s*write\b/u,
