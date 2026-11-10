@@ -1,0 +1,69 @@
+{
+  "kind": "SOUNDING_LINE_JAMMY_PRIVATE_RUNTIME_INPUTS_V1",
+  "inventory": {
+    "source": "0f5ec2311999324d933ad334c8d9b794b2ad51ec",
+    "tree": "2094b0c7195009ca3c380c010e9939f9ec3dad74",
+    "workflowId": 413733115,
+    "workflowSha256": "b894719325b86afdc0b9afd2e99251a89168f4826ba1cab0905d88e10ece6085",
+    "run": 42904385774,
+    "attempt": 1,
+    "manifestSha256": "351d5b4e4dc54e6b919196f7bbc8e57428cb50594cee108e16647ed3ca1421ad",
+    "receiptSha256": "bb6ad7b76ee9cb11e8fb63c2699b7de7003a086b3510f68fff82ceedb5a9ef1a",
+    "runner": {
+      "image": "20261101.347.1",
+      "kernel": "6.8.0-1070-azure",
+      "label": "ubuntu-22.04"
+    }
+  },
+  "interpreter": {
+    "target": "/lib64/ld-linux-x86-64.so.2",
+    "member": "ld-linux-x86-64.so.2"
+  },
+  "members": {
+    "bwrap": {
+      "member": "usr/bin/bwrap",
+      "bytes": 80424,
+      "sha256": "5d1f77a455d3a5cc1a45bdbf2e23b89cbd7b33e640dd9ae3b5ce2573d133889e",
+      "target": "/usr/bin/bwrap"
+    },
+    "ld-linux-x86-64.so.2": {
+      "member": "usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2",
+      "bytes": 236616,
+      "sha256": "c20a2dc8917c755f02b94049356320fe1f62ac7d9f8994731f807d9df39302da",
+      "target": "/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2"
+    },
+    "libc.so.6": {
+      "member": "usr/lib/x86_64-linux-gnu/libc.so.6",
+      "bytes": 2129424,
+      "sha256": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+      "target": "/usr/lib/x86_64-linux-gnu/libc.so.6"
+    },
+    "libcap.so.2": {
+      "member": "usr/lib/x86_64-linux-gnu/libcap.so.2.66",
+      "bytes": 51536,
+      "sha256": "6ac6abc86ac891c6e13486470e26f1d939f47fda9e6b5d5508a7f5ec881adc84",
+      "target": "/usr/lib/x86_64-linux-gnu/libcap.so.2"
+    },
+    "libgcc_s.so.1": {
+      "member": "usr/lib/x86_64-linux-gnu/libgcc_s.so.1",
+      "bytes": 183024,
+      "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb",
+      "target": "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1"
+    },
+    "libpcre2-8.so.0": {
+      "member": "usr/lib/x86_64-linux-gnu/libpcre2-8.so.0.11.2",
+      "bytes": 625344,
+      "sha256": "6075a70c30fd7216b9214ae50f2def0ce835092b034088ed9bd64c6a376c740f",
+      "target": "/usr/lib/x86_64-linux-gnu/libpcre2-8.so.0"
+    },
+    "libselinux.so.1": {
+      "member": "usr/lib/x86_64-linux-gnu/libselinux.so.1",
+      "bytes": 174472,
+      "sha256": "0ec0843463f90e227b0e138e1f379774f50b5514bd7f5dbd4c8a87aca0aa6670",
+      "target": "/usr/lib/x86_64-linux-gnu/libselinux.so.1"
+    }
+  },
+  "requiredRuntimeDenials": ["sameUidManagerAccess", "cgroupRemount", "cgroupMigration", "cgroupLimitMutation"],
+  "runtimeAuthorized": false,
+  "reuseAuthorized": false
+}
