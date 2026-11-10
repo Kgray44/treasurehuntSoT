@@ -1,7 +1,7 @@
 {
   "version": 1,
   "status": "SHADOW_NOT_A_READ_SET_CERTIFICATE",
-  "readerObservationSource": "bfe39895d16562c68391a3279a1729ae3235bb3d",
+  "readerObservationSource": "e12aad72315533a81fbfcdc98e5c5a2e1d905697",
   "entrypoint": "scripts/sounding-line/experience-exception.mjs",
   "readers": [
     {
@@ -176,8 +176,8 @@
       "path": "scripts/sounding-line/experience-exception.mjs",
       "mode": "100644",
       "type": "blob",
-      "blob": "f25017f274b37ca1674564d26a69db7a368ad2a5",
-      "sha256": "b61d7bf30eb92791f5fcd7179e09f3ba0c144c6b278828025cc9fc919981547a"
+      "blob": "e57dee9046fdeaca00a73f952d2556ba02d2e573",
+      "sha256": "f0fad2057325b7962446b7a8e6bfa16d4534d7eb3a31b4143d5ad88f512dda2f"
     },
     {
       "path": "scripts/sounding-line/experience-media-first-binding.mjs",
@@ -381,6 +381,13 @@
       "type": "blob",
       "blob": "2f59d86a5a38bebb779b46a6f73bf619d3c6edaa",
       "sha256": "0cf8c7f61cdfbd412db99465193b30aed2deca28f753449b26fa0bdd04467349"
+    },
+    {
+      "path": "scripts/sounding-line/native-evidence-context.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "b9fc639b232293bcf025423de37dd36092e0003c",
+      "sha256": "33ead41a65b7b4a0d8597b979ba9b70d1d2f1d625cd15a301ad707d8c9f905a1"
     },
     {
       "path": "scripts/sounding-line/ordinary.mjs",
