@@ -7,7 +7,8 @@ import tarfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
-from unittest.mock import patch
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 import jammy_native_inventory as probe
 
@@ -39,6 +40,40 @@ def fixture_elf(needed="libc.so.6", interpreter=probe.INTERPRETER, tag=1):
 
 
 class StaticInventoryTests(unittest.TestCase):
+    def test_libc_whole_archive_bound_does_not_raise_selected_member_bound(self):
+        name = probe.LIBDIR+"/libc.so.6"
+        selected = (name, b"selected", tarfile.REGTYPE, "")
+        other = ("usr/share/unselected", bytes(8*probe.MIB), tarfile.REGTYPE, "")
+        raw = fixture_tar([selected, other])
+        with self.assertRaisesRegex(ValueError, "INVENTORY_TAR_SIZE"):
+            probe.tar_members(raw, ["libc.so.6"])
+        self.assertEqual(probe.tar_members(raw, ["libc.so.6"], probe.LIBC_TAR_LIMIT),
+                         {"libc.so.6": (name, b"selected")})
+        with self.assertRaisesRegex(ValueError, "INVENTORY_MEMBER_TYPE"):
+            probe.tar_members(fixture_tar([(name, bytes(4*probe.MIB+1), tarfile.REGTYPE, "")]),
+                              ["libc.so.6"], probe.LIBC_TAR_LIMIT)
+
+    def test_libc_expansion_refuses_excess_and_reaps_the_decoder(self):
+        child = Mock()
+        child.poll.return_value = None
+        selector = Mock()
+        selector.select.return_value = [(SimpleNamespace(fileobj=child.stdout, fd=3), 1)]
+        selector.get_map.return_value = {3: child.stdout}
+        context = Mock()
+        context.__enter__ = Mock(return_value=selector)
+        context.__exit__ = Mock(return_value=False)
+        with patch.object(probe, "LIBC_TAR_LIMIT", 4), \
+             patch.object(probe.subprocess, "Popen", return_value=child), \
+             patch.object(probe.selectors, "DefaultSelector", return_value=context), \
+             patch.object(probe.os, "read", return_value=b"12345") as read:
+            with self.assertRaisesRegex(ValueError, "INVENTORY_LIBC_TAR_EXPANSION"):
+                probe.bounded_libc_tar(b"fixture")
+        read.assert_called_once_with(3, 5)
+        child.kill.assert_called_once_with()
+        child.wait.assert_called_once_with(timeout=2)
+        child.stdout.close.assert_called_once_with()
+        child.stderr.close.assert_called_once_with()
+
     def test_static_verifier_pins_jammy_without_changing_frozen_path_or_source(self):
         frozen = Path(__file__).with_name("diagnostic-v3.zip").read_bytes()
         with patch.dict(sys.modules):
