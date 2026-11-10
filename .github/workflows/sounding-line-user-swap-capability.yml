@@ -149,6 +149,12 @@ jobs:
                   "Failed to parse ": "SYSTEMD_ARGUMENT_PARSE",
                   f"Job for {unit} failed": "SYSTEMD_START_JOB",
               }
+              signals = {
+                  "HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "FPE", "KILL", "USR1",
+                  "SEGV", "USR2", "PIPE", "ALRM", "TERM", "STKFLT", "CHLD", "CONT", "STOP",
+                  "TSTP", "TTIN", "TTOU", "URG", "XCPU", "XFSZ", "VTALRM", "PROF", "WINCH",
+                  "IO", "PWR", "SYS",
+              }
               if "USER_SWAP_PAYLOAD_ENTERED" in lines:
                   diagnostic["serviceFailureStage"] = "PAYLOAD_ENTERED"
               if f"Running as unit: {unit}" in lines:
@@ -165,9 +171,12 @@ jobs:
                   ):
                       diagnostic["systemdResult"] = match[1]
                   if match := re.fullmatch(
-                      r"Main processes terminated with: code=(exited|killed|dumped)/status=([0-9]{1,3}|SIG[A-Z0-9]{1,12})", line,
+                      r"Main processes terminated with: code=(exited|killed|dumped)/status=(\S{1,12})", line,
                   ):
-                      diagnostic["systemdProcessCode"], diagnostic["systemdProcessStatus"] = match.groups()
+                      code, value = match.groups()
+                      if ((code == "exited" and re.fullmatch(r"[0-9]{1,3}", value))
+                          or (code != "exited" and (value in signals or re.fullmatch(r"RTMIN\+(?:[0-9]|[12][0-9]|30)", value)))):
+                          diagnostic["systemdProcessCode"], diagnostic["systemdProcessStatus"] = code, value
                   for prefix, stage in startup.items():
                       if line.startswith(prefix) and diagnostic["serviceFailureStage"] != "PAYLOAD_ENTERED":
                           diagnostic["serviceFailureStage"] = stage
