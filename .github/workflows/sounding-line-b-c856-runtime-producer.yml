@@ -65,7 +65,7 @@ jobs:
           except Exception:
               raise SystemExit("Producer code transfer refused.") from None
           if (not 0 < len(raw) <= 256*1024 or hashlib.sha256(raw).hexdigest() !=
-              "5cd99acc896a88737e963a4584a51a222106a79b4669b0a6dac723034297cd10"):
+              "17c31531b0ef7f1ec4943c5382054174ec3ff2950c72d696f9a19ba489bbcbf1"):
               raise SystemExit("Producer code digest refused.")
           with zipfile.ZipFile(io.BytesIO(raw)) as code:
               for name in ("producer_boundary", "producer_driver"):

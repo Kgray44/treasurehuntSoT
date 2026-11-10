@@ -18,6 +18,7 @@ from pathlib import Path
 
 from admission import SOURCE, TREE
 from capsule import BROWSER, BROWSER_CAPTURE, BROWSER_PLAN, BWRAP_SHA, MAX_SEED, V3_FILES, digest
+from producer_boundary import FONT_BYTES, FONT_TARGET, verify_font
 from controller import v3_bytes, write_document
 from native_layout import (GIB, MIB, RESERVE, NATIVE_STAGE_CAP, Stage, filesystem_free, need,
                            publisher_projection, system_browser_libraries)
@@ -220,8 +221,8 @@ def stage_native(source, scratch, node, v3, bwrap):
         stage.tree(source/"node_modules"/package, f"{browser}/node_modules/{package}")
     for directory in ("chromium_headless_shell-1194", "ffmpeg-1011"):
         stage.tree(scratch/"browsers"/directory, f"children/browser/browsers/{directory}")
-    stage.copy(Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
-        "children/browser/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", system=True)
+    with Path("/bootstrap/DejaVuSans.ttf").open("rb") as stream:
+        stage.bytes(FONT_TARGET, verify_font(stream.read(FONT_BYTES + 1)))
     stage.bytes("children/browser/etc/fonts/fonts.conf",
         b"<?xml version='1.0'?>\n<fontconfig><dir>/usr/share/fonts</dir><cachedir>/tmp/font-cache</cachedir></fontconfig>\n")
     libraries = {role or "supervisor": stage.dependencies(role, system_browser_libraries() if role.endswith("browser") else ())

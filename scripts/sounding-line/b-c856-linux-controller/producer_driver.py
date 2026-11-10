@@ -20,9 +20,9 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 from producer_boundary import (
-    CAPSULE_EXPORT_CAP, EVIDENCE_EXPORT_CAP, HOST_MARGIN, HOST_RESERVE, INODE_CAP, MIB, TMPFS_CAP,
+    CAPSULE_EXPORT_CAP, EVIDENCE_EXPORT_CAP, FONT_BYTES, FONT_MEMBER, FONT_SHA256, HOST_MARGIN, HOST_RESERVE, INODE_CAP, MIB, TMPFS_CAP,
     admitted_host_space, available, bind_readonly, create_owned_scratch, directory_identity, drop_caps_and_chroot,
-    need, prctl, setup_namespace_root, verify_owned_scratch,
+    need, prctl, setup_namespace_root, verify_font, verify_owned_scratch,
 )
 
 REPO = "Kgray44/treasurehuntSoT"
@@ -168,7 +168,7 @@ def git_checkout(token, source):
         need(result.returncode == 0 and len(result.stdout) <= 65536 and len(result.stderr) <= 65536,
              "PRODUCER_PINNED_CHECKOUT")
         return result.stdout.strip().decode("ascii")
-    git("init", "--quiet")
+    git("init", "--quiet", "--template=")
     git("remote", "add", "origin", SOURCE_URL)
     git("sparse-checkout", "set", "--no-cone", "--stdin", input=("\n".join(SPARSE)+"\n").encode("ascii"))
     git("fetch", "--quiet", "--no-tags", "--depth=1", "--filter=blob:none", "origin", SOURCE, timeout=80)
@@ -284,7 +284,7 @@ def inner(scratch, evidence):
     files = package_members((scratch/"code.zip").read_bytes())
     for name, body in files.items():
         write_fixed(root/"bootstrap"/name, body)
-    for name, bound in (("bwrap.bin", 80424), ("bwrap-proof.json", 65536)):
+    for name, bound in (("bwrap.bin", 80424), ("bwrap-proof.json", 65536), ("DejaVuSans.ttf", FONT_BYTES)):
         with (scratch/name).open("rb") as stream:
             data = stream.read(bound+1)
         need(0 < len(data) <= bound, "PRODUCER_SIGNED_INPUT_BOUND")
@@ -319,7 +319,27 @@ def inner(scratch, evidence):
         "reserveBytes": HOST_RESERVE, "scope": "PRODUCER_WRITABLE_ROOT_AND_BOUNDED_HOST_EXPORT"})
 
 
-def public_bwrap(members, scratch):
+# This exact package digest is in Noble's authenticated main/binary-amd64 index.
+FONT_PACKAGE = "pool/main/f/fonts-dejavu/fonts-dejavu-core_2.37-8_all.deb"
+FONT_PACKAGE_BYTES = 835172
+FONT_PACKAGE_SHA256 = "40049660c194f3b8a2541fc7369efebb10e9f94bdac836a2f38fafedd10fa73a"
+
+
+def signed_font(deb, bounded_tar):
+    need(len(deb) == FONT_PACKAGE_BYTES and hashlib.sha256(deb).hexdigest() == FONT_PACKAGE_SHA256,
+         "PRODUCER_SIGNED_FONT_PACKAGE")
+    with tarfile.open(fileobj=io.BytesIO(bounded_tar(deb)), mode="r:") as archive:
+        entries = [item for item in archive if item.name in (FONT_MEMBER, "./"+FONT_MEMBER)]
+        need(len(entries) == 1, "PRODUCER_SIGNED_FONT_INVENTORY")
+        item = entries[0]
+        need(item.type in (tarfile.REGTYPE, tarfile.AREGTYPE) and not item.pax_headers and
+             item.uid == item.gid == 0 and item.mode == 0o644 and item.size == FONT_BYTES,
+             "PRODUCER_SIGNED_FONT_METADATA")
+        with archive.extractfile(item) as stream:
+            return verify_font(stream.read(FONT_BYTES + 1))
+
+
+def public_native_inputs(members, scratch, evidence):
     # Keep the frozen verifier's UID 0 check in the host user namespace.
     # Its archive, index and package reads are bounded. Temporary signature
     # state goes in the already-owned, separately admitted host scratch.
@@ -334,13 +354,22 @@ def public_bwrap(members, scratch):
     previous = tempfile.tempdir
     tempfile.tempdir = str(scratch)
     try:
-        _, binary, proof = sys.modules["archive"].authenticated_package()
+        archive = sys.modules["archive"]
+        _, binary, proof = archive.authenticated_package()
+        client = urllib.request.build_opener(urllib.request.ProxyHandler({}), archive.NoRedirect())
+        font_deb = archive.fetch(client, archive.ARCHIVE+FONT_PACKAGE, FONT_PACKAGE_BYTES)
+        font = signed_font(font_deb, sys.modules["package"].bounded_tar)
     finally:
         tempfile.tempdir = previous
     need(len(binary) == 80424 and hashlib.sha256(binary).hexdigest() == proof["binarySha256"],
          "PRODUCER_SIGNED_BINARY")
     write_fixed(scratch/"bwrap.bin", binary)
     public_receipt(scratch/"bwrap-proof.json", proof)
+    write_fixed(scratch/"DejaVuSans.ttf", font)
+    public_receipt(evidence/"signed-native-font.json", {
+        "package": FONT_PACKAGE, "packageSha256": FONT_PACKAGE_SHA256,
+        "member": FONT_MEMBER, "memberBytes": FONT_BYTES, "memberSha256": FONT_SHA256,
+    })
 
 
 def read_bounded_json(path, maximum):
@@ -365,7 +394,6 @@ def system_destinations(files):
         relative = system_relative(name)
         if relative == "usr/bin/python3" or relative.startswith((
             "usr/lib/python3.12/", "lib/x86_64-linux-gnu/", "usr/lib/x86_64-linux-gnu/", "lib64/",
-            "usr/share/fonts/truetype/dejavu/",
         )):
             selected.add(name)
     return selected
@@ -382,8 +410,8 @@ def verify_host_system_sources(scratch, evidence):
         path = Path(location)
         expected = Path("/"+system_relative(target)).resolve(strict=True)
         need(path.is_absolute() and path.resolve(strict=True) == path == expected and
-             (path.is_relative_to("/usr/lib") or path.is_relative_to("/usr/bin") or
-              path.is_relative_to("/usr/share/fonts")), "PRODUCER_HOST_SYSTEM_SOURCE_PATH")
+             (path.is_relative_to("/usr/lib") or path.is_relative_to("/usr/bin")),
+             "PRODUCER_HOST_SYSTEM_SOURCE_PATH")
         for component in (path, *path.parents):
             inode = component.lstat()
             need(inode.st_uid == 0 and not inode.st_mode & 0o022, "PRODUCER_HOST_SYSTEM_SOURCE_OWNER")
@@ -431,7 +459,9 @@ def run_outer(raw, token):
         for name in ("producer_driver.py", "producer_boundary.py"):
             write_fixed(scratch/name, members[name])
         trusted("/usr/bin/git")
-        public_bwrap(members, scratch)
+        trusted("/usr/bin/gpgv")
+        trusted("/usr/bin/dpkg-deb")
+        public_native_inputs(members, scratch, evidence)
         python, unshare = trusted("/usr/bin/python3"), trusted("/usr/bin/unshare")
         start = time.monotonic()
         command = [str(unshare), "--map-current-user", "--keep-caps", "--mount", "--propagation", "private",
