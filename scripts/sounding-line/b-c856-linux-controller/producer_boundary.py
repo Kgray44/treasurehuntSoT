@@ -1,5 +1,6 @@
 """Fixed, unprivileged storage boundary for the C856 producer."""
 import ctypes
+import hashlib
 import json
 import os
 import re
@@ -15,6 +16,10 @@ CAPSULE_EXPORT_CAP = 2*GIB
 EVIDENCE_EXPORT_CAP = 16*MIB
 HOST_MARGIN = 48*MIB
 OWNERSHIP = ".c856-owner.json"
+FONT_MEMBER = "usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+FONT_TARGET = "children/browser/" + FONT_MEMBER
+FONT_BYTES = 759720
+FONT_SHA256 = "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280"
 MS_RDONLY, MS_NOSUID, MS_NODEV, MS_NOEXEC, MS_REMOUNT, MS_BIND = 1, 2, 4, 8, 32, 4096
 
 
@@ -25,6 +30,12 @@ class BoundaryError(ValueError):
 def need(ok, code):
     if not ok:
         raise BoundaryError(code)
+
+
+def verify_font(data):
+    need(len(data) == FONT_BYTES and hashlib.sha256(data).hexdigest() == FONT_SHA256,
+         "PRODUCER_SIGNED_FONT_MEMBER")
+    return data
 
 
 def admitted_host_space(free):

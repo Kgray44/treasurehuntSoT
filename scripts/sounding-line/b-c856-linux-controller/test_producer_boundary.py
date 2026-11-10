@@ -30,10 +30,10 @@ class BoundaryTests(unittest.TestCase):
             "children/browser/usr/lib/x86_64-linux-gnu/libX11.so.6",
             "children/app/lib/x86_64-linux-gnu/libc.so.6",
             "lib64/ld-linux-x86-64.so.2",
-            "children/browser/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
         }
         other = {
             "usr/bin/bwrap",
+            "children/browser/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
             "children/app/usr/bin/node",
             "children/browser/source/usr/bin/python3",
         }

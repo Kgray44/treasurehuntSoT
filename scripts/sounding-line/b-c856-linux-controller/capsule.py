@@ -10,6 +10,7 @@ import zipfile
 from pathlib import Path, PurePosixPath
 
 from admission import MAX_CAPSULE, MIB, SHA256, SOURCE, TREE, need
+from producer_boundary import FONT_BYTES, FONT_SHA256, FONT_TARGET
 
 MAX_MANIFEST = 24*MIB
 MAX_SEED = 32*MIB
@@ -35,7 +36,7 @@ DIRECTORIES = tuple(
     for path in ("dev", "proc", "run", "tmp", "state")
 ) + ("masks/dir", "children/browser/source/artifacts", "children/app/inputs")
 REQUIRED_FILES = set(V3_FILES) | {
-    BROWSER, BROWSER_CAPTURE, "usr/bin/bwrap", "usr/bin/python3", "masks/file",
+    BROWSER, BROWSER_CAPTURE, "usr/bin/bwrap", "usr/bin/python3", "masks/file", FONT_TARGET,
     "children/app/usr/bin/python3", "children/app/usr/bin/node",
     "children/browser/usr/bin/python3", "children/browser/usr/bin/node",
     "children/browser/inputs/authentication.json", "children/app/source/.next/BUILD_ID",
@@ -122,6 +123,8 @@ def manifest_check(data, expected_digest, expected_bytes, publisher, v3):
     need(files[BROWSER_CAPTURE]["sha256"] == expected_capture and
          files[BROWSER]["sha256"] == result["chromiumSha256"] and files["usr/bin/bwrap"]["sha256"] == BWRAP_SHA and
          files[BROWSER]["mode"] == files["usr/bin/bwrap"]["mode"] == 0o555, "CAPSULE_EXECUTABLE_IDENTITY")
+    need(files[FONT_TARGET] == {"bytes": FONT_BYTES, "mode": 0o444, "sha256": FONT_SHA256},
+         "CAPSULE_SIGNED_FONT_IDENTITY")
     return result
 
 

@@ -84,8 +84,8 @@ def file_identity(info):
 def system_file(path):
     requested = Path(path)
     actual = requested.resolve(strict=True)
-    need(actual.is_file() and (actual.is_relative_to("/usr/lib") or actual.is_relative_to("/usr/bin") or
-                              actual.is_relative_to("/usr/share/fonts")), "NATIVE_SYSTEM_FILE")
+    need(actual.is_file() and (actual.is_relative_to("/usr/lib") or actual.is_relative_to("/usr/bin")),
+         "NATIVE_SYSTEM_FILE")
     need(os.statvfs("/usr").f_flag & os.ST_RDONLY, "NATIVE_SYSTEM_MOUNT_WRITABLE")
     # The private namespace does not map host UID 0. The host publisher
     # verifies actual root ownership and exact member bytes before upload.
