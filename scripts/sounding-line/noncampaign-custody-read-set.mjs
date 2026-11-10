@@ -8,7 +8,7 @@ import { retainCustodyProofFrame, readCustodyPilotSource } from "./noncampaign-c
 import { custodyProbeEnvironment } from "./ordinary-custody-probe.mjs";
 import { observeNoncampaignCustodyShadow, inspectNoncampaignCustodyShadow } from "./noncampaign-custody-shadow.mjs";
 
-export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "PENDING";
+export const NONCAMPAIGN_CUSTODY_CERTIFICATE_REVISION = "f52fbb300d12648675d3e14c1701c948b1619899";
 export const CERTIFIED_CUSTODY_PROFILE = "NONCAMPAIGN_CUSTODY_METADATA_V1";
 const capabilities = new WeakMap();
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
