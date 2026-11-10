@@ -1,0 +1,101 @@
+name: Sounding Line Jammy native inventory preflight
+run-name: Sounding Line Jammy static inventory on ${{ inputs.source_sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact reviewed protected inventory commit
+        required: true
+        type: string
+      native_manifest_sha256:
+        description: Reviewed native package pin manifest SHA-256
+        required: true
+        type: string
+      operation:
+        description: Scope of the separately approved action
+        required: true
+        type: choice
+        options:
+          - static-package-inventory-only
+
+permissions: {}
+
+concurrency:
+  group: sounding-line-jammy-native-inventory
+  cancel-in-progress: false
+
+jobs:
+  inventory:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && github.sha == inputs.source_sha && inputs.operation == 'static-package-inventory-only' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Authenticate and inventory package members without loading them
+        timeout-minutes: 3
+        shell: bash
+        env:
+          INPUT_SOURCE: ${{ inputs.source_sha }}
+          INPUT_MANIFEST: ${{ inputs.native_manifest_sha256 }}
+        run: |
+          exec /usr/bin/env -i PATH=/usr/bin:/bin LANG=C.UTF-8 \
+            INPUT_SOURCE="$INPUT_SOURCE" INPUT_MANIFEST="$INPUT_MANIFEST" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_WORKFLOW_SHA="$GITHUB_WORKFLOW_SHA" GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_ARCH="$RUNNER_ARCH" RUNNER_TEMP="$RUNNER_TEMP" ImageVersion="$ImageVersion" \
+            /usr/bin/python3 -IB - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import urllib.request
+
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  return None
+
+          source = os.environ["INPUT_SOURCE"]
+          manifest_hash = "351d5b4e4dc54e6b919196f7bbc8e57428cb50594cee108e16647ed3ca1421ad"
+          if not (
+              os.getuid() == os.geteuid() == 1001 and re.fullmatch(r"[a-f0-9]{40}", source)
+              and source == os.environ["GITHUB_SHA"] == os.environ["GITHUB_WORKFLOW_SHA"]
+              and manifest_hash == os.environ["INPUT_MANIFEST"] and os.environ["GITHUB_RUN_ATTEMPT"] == "1"
+              and re.fullmatch(r"[1-9][0-9]{0,15}", os.environ["GITHUB_RUN_ID"])
+              and os.environ["RUNNER_ENVIRONMENT"] == "github-hosted" and os.environ["RUNNER_ARCH"] == "X64"
+              and os.environ["ImageVersion"] == "20261101.347.1" and os.uname().release == "6.8.0-1070-azure"
+          ):
+              raise SystemExit("INVENTORY_SOURCE_OR_RUNNER_IDENTITY")
+          root = ("https://raw.githubusercontent.com/Kgray44/treasurehuntSoT/" + source +
+                  "/scripts/sounding-line/b-c856-linux-controller/")
+          client = urllib.request.build_opener(NoRedirect(), urllib.request.ProxyHandler({}))
+
+          def pinned(name, limit, digest):
+              url = root+name
+              with client.open(url, timeout=12) as response:
+                  if response.geturl() != url or response.status != 200:
+                      raise ValueError("INVENTORY_CODE_PROVIDER")
+                  raw = response.read(limit+1)
+              if not 0 < len(raw) <= limit or hashlib.sha256(raw).hexdigest() != digest:
+                  raise ValueError("INVENTORY_CODE_PIN")
+              return raw
+
+          try:
+              code = pinned("jammy_native_inventory.py", 32*1024,
+                            "26da40f75921e1192f6ea6f913ae726db6bfb7968f4052f29e2cb7c5de4bef3e")
+              plan = json.loads(pinned("jammy-native-inventory.json", 8*1024, manifest_hash))
+              verifier = pinned("diagnostic-v3.zip", 64*1024,
+                                "84be75e7a0f97e63a5953c3491142d4cbbd6531f5ef71350478ef5795753bb13")
+              module = {}
+              exec(compile(code, "jammy_native_inventory.py", "exec"), module)
+              observed = module["inventory"](plan, verifier)
+          except Exception as error:
+              code = str(error)
+              raise SystemExit(code if re.fullmatch(r"(?:INVENTORY|PACKAGE|RELEASE|ARCHIVE|INDEX|BASE|MOVING|SIGNED)_[A-Z0-9_]{1,65}", code)
+                               else "INVENTORY_FAILED_"+type(error).__name__) from None
+          observed.update(source=source, workflowSha=source, manifestSha256=manifest_hash,
+                          runId=int(os.environ["GITHUB_RUN_ID"]), attempt=1,
+                          runner=plan["runner"])
+          receipt = json.dumps(observed, sort_keys=True, separators=(",", ":")).encode("ascii")
+          print(receipt.decode("ascii"), flush=True)
+          print("inventorySha256="+hashlib.sha256(receipt).hexdigest(), flush=True)
+          PY

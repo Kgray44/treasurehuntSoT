@@ -1,0 +1,62 @@
+{
+  "kind": "SOUNDING_LINE_JAMMY_STATIC_NATIVE_INVENTORY_V1",
+  "runner": {
+    "label": "ubuntu-22.04",
+    "image": "20261101.347.1",
+    "kernel": "6.8.0-1070-azure"
+  },
+  "noble": {
+    "pocket": "noble-updates",
+    "releaseSha256": "126d2549d8519be40038abf0c7f526bfa7da1aaa511f20846be649e8082df883",
+    "indexBytes": 1442524,
+    "indexSha256": "6a9fda52baee4c3beec1424c3a179d7664a1645ca5d699f2adca00de79284117"
+  },
+  "bubblewrap": {
+    "sha256": "5d1f77a455d3a5cc1a45bdbf2e23b89cbd7b33e640dd9ae3b5ce2573d133889e",
+    "bytes": 80424,
+    "packageSha512": "f4e2c7e8944e22ea0d49ad88fdba695a78dd5793524fdbf8cccdf8f0984c0b3e13c27812e92664d2f0a71cd09c4121e470468c962da1c644e9566e2082aaae6a",
+    "packageBytes": 51272
+  },
+  "packages": {
+    "libc6": [
+      "2.39-0ubuntu8.9",
+      "pool/main/g/glibc/libc6_2.39-0ubuntu8.9_amd64.deb",
+      3264314,
+      "ff5557d99b51f761c4b7c92368b9cc45565eda17df9bf9eb4b134d09825008be",
+      ["ld-linux-x86-64.so.2", "libc.so.6"]
+    ],
+    "libcap2": [
+      "1:2.66-5ubuntu2.4",
+      "pool/main/libc/libcap2/libcap2_2.66-5ubuntu2.4_amd64.deb",
+      30500,
+      "23c627c77c66552a658e62852f244f4946dc543898e0ec5428d5dc6bffde2d6a",
+      ["libcap.so.2"]
+    ],
+    "libgcc-s1": [
+      "14.2.0-4ubuntu2~24.04.1",
+      "pool/main/g/gcc-14/libgcc-s1_14.2.0-4ubuntu2~24.04.1_amd64.deb",
+      78392,
+      "aa7fadbe33b78bcf99885318040601c550c208929565b179891d9a3cc2aa68cd",
+      ["libgcc_s.so.1"]
+    ],
+    "libpcre2-8-0": [
+      "10.42-4ubuntu2.2",
+      "pool/main/p/pcre2/libpcre2-8-0_10.42-4ubuntu2.2_amd64.deb",
+      228546,
+      "f41da7cb7e979d6b037ea92650c72ec8ec532ec3c93aa8d5b997207de56695ea",
+      ["libpcre2-8.so.0"]
+    ],
+    "libselinux1": [
+      "3.5-2ubuntu2.1",
+      "pool/main/libs/libselinux/libselinux1_3.5-2ubuntu2.1_amd64.deb",
+      79660,
+      "6abaa6c26f46ef17764c4a753e0e84de1cdadde5634fd2987621fdc617988d19",
+      ["libselinux.so.1"]
+    ]
+  },
+  "runtimeAdmission": {
+    "authorized": false,
+    "requiredDenials": ["sameUidManagerAccess", "cgroupRemount", "cgroupMigration", "cgroupLimitMutation"],
+    "unverifiedDenials": ["sameUidManagerAccess", "cgroupRemount", "cgroupMigration", "cgroupLimitMutation"]
+  }
+}
