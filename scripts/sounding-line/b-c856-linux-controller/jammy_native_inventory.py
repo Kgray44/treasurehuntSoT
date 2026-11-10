@@ -5,13 +5,16 @@ import json
 import lzma
 import os
 import re
+import selectors
 import shutil
 import signal
 import stat
 import struct
+import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 import types
 import urllib.request
 import zipfile
@@ -20,6 +23,7 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path, PurePosixPath
 
 MIB = 1 << 20
+LIBC_TAR_LIMIT = 14*MIB
 ARCHIVE = "https://archive.ubuntu.com/ubuntu/"
 NOBLE_METADATA_SNAPSHOT = "https://snapshot.ubuntu.com/ubuntu/20261110T120000Z/"
 LIBDIR = "usr/lib/x86_64-linux-gnu"
@@ -43,8 +47,45 @@ def sha256(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def tar_members(raw, targets):
-    require(0 < len(raw) <= 8*MIB, "INVENTORY_TAR_SIZE")
+def bounded_libc_tar(deb):
+    # The exact Noble libc6 data tar is 13,475,840 bytes, including files
+    # outside the selected ELF closure. Only this package has a larger bound.
+    with tempfile.TemporaryFile() as source:
+        source.write(deb)
+        source.seek(0)
+        child = subprocess.Popen(
+            ["/usr/bin/dpkg-deb", "--fsys-tarfile", "-"], stdin=source,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={"PATH": "/usr/bin:/bin", "LANG": "C", "LC_ALL": "C"},
+        )
+        buffers = {child.stdout: (bytearray(), LIBC_TAR_LIMIT), child.stderr: (bytearray(), 65536)}
+        deadline = time.monotonic()+15
+        try:
+            with selectors.DefaultSelector() as selector:
+                for stream in buffers:
+                    selector.register(stream, selectors.EVENT_READ)
+                while selector.get_map():
+                    events = selector.select(max(0, deadline-time.monotonic()))
+                    require(events and time.monotonic() <= deadline, "INVENTORY_LIBC_TAR_DEADLINE")
+                    for event, _ in events:
+                        buffer, limit = buffers[event.fileobj]
+                        block = os.read(event.fd, min(65536, limit-len(buffer)+1))
+                        if block:
+                            require(len(buffer)+len(block) <= limit, "INVENTORY_LIBC_TAR_EXPANSION")
+                            buffer.extend(block)
+                        else:
+                            selector.unregister(event.fileobj)
+            require(child.wait(timeout=max(.1, deadline-time.monotonic())) == 0, "INVENTORY_LIBC_TAR_EXTRACT")
+            return bytes(buffers[child.stdout][0])
+        finally:
+            if child.poll() is None:
+                child.kill()
+                child.wait(timeout=2)
+            child.stdout.close()
+            child.stderr.close()
+
+
+def tar_members(raw, targets, whole_archive_limit=8*MIB):
+    require(0 < len(raw) <= whole_archive_limit, "INVENTORY_TAR_SIZE")
     files = {}
     with tarfile.open(fileobj=io.BytesIO(raw), mode="r:") as archive:
         for index, member in enumerate(archive):
@@ -250,10 +291,13 @@ def inventory(plan, verifier):
             require(len(deb) == bwrap["packageBytes"] and hashlib.sha512(deb).hexdigest() == bwrap["packageSha512"] and
                     len(binary) == bwrap["bytes"] and sha256(binary) == bwrap["sha256"], "INVENTORY_BWRAP_PIN")
             files = {"bwrap": ("usr/bin/bwrap", binary)}
-            for _, path, size, digest, targets in plan["packages"].values():
+            for name, (_, path, size, digest, targets) in plan["packages"].items():
                 deb = public.fetch(client, ARCHIVE+path, size)
                 require(len(deb) == size and sha256(deb) == digest, "INVENTORY_PACKAGE_PIN")
-                selected = tar_members(package.bounded_tar(deb), targets)
+                if name == "libc6":
+                    selected = tar_members(bounded_libc_tar(deb), targets, LIBC_TAR_LIMIT)
+                else:
+                    selected = tar_members(package.bounded_tar(deb), targets)
                 require(not files.keys() & selected.keys(), "INVENTORY_MEMBER_DUPLICATE")
                 files.update(selected)
                 require(sum(len(member) for _, member in files.values()) <= 8*MIB, "INVENTORY_CLOSURE_SIZE")
