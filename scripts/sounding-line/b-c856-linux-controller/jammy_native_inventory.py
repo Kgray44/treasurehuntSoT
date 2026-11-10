@@ -27,6 +27,10 @@ LOADER = "ld-linux-x86-64.so.2"
 INTERPRETER = "/lib64/" + LOADER
 INDEX = "main/binary-amd64/Packages.xz"
 VERIFIER_SHA256 = "84be75e7a0f97e63a5953c3491142d4cbbd6531f5ef71350478ef5795753bb13"
+# Ubuntu's signed Jammy ubuntu-keyring 2021.03.26 package and the exact runner
+# image SBOM agree on these bytes at the existing root-owned keyring path.
+JAMMY_ARCHIVE_KEY_BYTES = 1733
+JAMMY_ARCHIVE_KEY_SHA256 = "bfdb0512804d0740816d836bb05b1ef8b27609771d7b9962c95bcc57bfaac230"
 DENIALS = ("sameUidManagerAccess", "cgroupRemount", "cgroupMigration", "cgroupLimitMutation")
 
 
@@ -201,11 +205,23 @@ def expired(_signal, _frame):
     raise TimeoutError("INVENTORY_DEADLINE")
 
 
+def inventory_verifier(verifier):
+    require(sha256(verifier) == VERIFIER_SHA256, "INVENTORY_VERIFIER_PIN")
+    with zipfile.ZipFile(io.BytesIO(verifier)) as archive:
+        for name in ("package", "archive"):
+            module = types.ModuleType(name)
+            sys.modules[name] = module
+            exec(compile(archive.read(name+".py"), name+".py", "exec"), module.__dict__)
+    public = sys.modules["archive"]
+    public.KEYRING_BYTES = JAMMY_ARCHIVE_KEY_BYTES
+    public.KEYRING_SHA256 = JAMMY_ARCHIVE_KEY_SHA256
+    return public, sys.modules["package"]
+
+
 def inventory(plan, verifier):
     require(plan["kind"] == "SOUNDING_LINE_JAMMY_STATIC_NATIVE_INVENTORY_V1" and
             plan["runtimeAdmission"] == {"authorized": False, "requiredDenials": list(DENIALS),
                                          "unverifiedDenials": list(DENIALS)}, "INVENTORY_RUNTIME_REFUSED")
-    require(sha256(verifier) == VERIFIER_SHA256, "INVENTORY_VERIFIER_PIN")
     for name in ("gpgv", "dpkg-deb"):
         trusted_tool(name)
     root = Path(os.environ["RUNNER_TEMP"])
@@ -214,13 +230,7 @@ def inventory(plan, verifier):
     with open("/proc/meminfo", encoding="ascii") as memory:
         available = re.search(r"^MemAvailable:\s+([0-9]+) kB$", memory.read(16384), re.M)
     require(available and int(available[1])*1024 >= 512*MIB, "INVENTORY_MEMORY_ADMISSION")
-    with zipfile.ZipFile(io.BytesIO(verifier)) as archive:
-        for name in ("package", "archive"):
-            module = types.ModuleType(name)
-            sys.modules[name] = module
-            exec(compile(archive.read(name+".py"), name+".py", "exec"), module.__dict__)
-    public = sys.modules["archive"]
-    package = sys.modules["package"]
+    public, package = inventory_verifier(verifier)
     client = urllib.request.build_opener(public.NoRedirect(), urllib.request.ProxyHandler({}))
     with tempfile.TemporaryDirectory(prefix="sl-jammy-inventory-", dir=root) as scratch:
         tempfile.tempdir = scratch

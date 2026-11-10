@@ -2,9 +2,11 @@
 import io
 import lzma
 import struct
+import sys
 import tarfile
 import unittest
 from datetime import datetime, timezone
+from pathlib import Path
 from unittest.mock import patch
 
 import jammy_native_inventory as probe
@@ -37,6 +39,18 @@ def fixture_elf(needed="libc.so.6", interpreter=probe.INTERPRETER, tag=1):
 
 
 class StaticInventoryTests(unittest.TestCase):
+    def test_static_verifier_pins_jammy_without_changing_frozen_path_or_source(self):
+        frozen = Path(__file__).with_name("diagnostic-v3.zip").read_bytes()
+        with patch.dict(sys.modules):
+            archive, _ = probe.inventory_verifier(frozen)
+            self.assertEqual(str(archive.KEYRING).replace("\\", "/"), "/etc/apt/trusted.gpg.d/ubuntu-keyring-2018-archive.gpg")
+            self.assertEqual(archive.KEYRING_BYTES, 1733)
+            self.assertEqual(archive.KEYRING_SHA256,
+                             "bfdb0512804d0740816d836bb05b1ef8b27609771d7b9962c95bcc57bfaac230")
+            self.assertIs(archive.signed_release.__globals__["archive_key"], archive.archive_key)
+            with self.assertRaisesRegex(ValueError, "INVENTORY_VERIFIER_PIN"):
+                probe.inventory_verifier(frozen+b"x")
+
     def test_approved_relative_soname_link_resolves_one_exact_member(self):
         target = "libcap.so.2"
         base = probe.LIBDIR+"/"
