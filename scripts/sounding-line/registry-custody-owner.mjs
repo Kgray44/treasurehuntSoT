@@ -389,15 +389,53 @@ export function finalizeOwnerCustodyResult(result) {
   const failure = result.failure ?? (result.journalFailures.length ? "OWNER_CUSTODY_JOURNAL_FAILED" : null);
   return { ...result, receipt: failure ? null : result.receipt, failure, qualification: false, reuseAuthorized: false };
 }
-async function openProviderDiagnostic({
-  source,
-  runId,
-  artifactId,
-  prNumber,
-  archiveSha256,
-  sourceBindingsDigest,
-  drive,
-}) {
+const ownerOpenStages = new Set([
+  "ARGUMENTS",
+  "PRIVATE_CONSOLE",
+  "RESERVE_PREFLIGHT",
+  "CONSOLE_OBSERVATION",
+  "RECOVERY_TOOL",
+  "PROTECTED_SOURCE",
+  "AUTHORED_COVERAGE",
+  "PROVIDER_CONTEXT",
+  "PROVIDER_ARCHIVE",
+  "RECIPIENT",
+  "CUSTODY_ACL",
+  "RECOVERY_METADATA",
+  "RESERVE_RECOVERY",
+  "RECEIPT_DIRECTORY",
+  "RECOVERY_COPY",
+  "PREPARED_RECEIPT",
+  "PRIVATE_PROMPT",
+  "PRIVATE_OPEN",
+  "RESULT_RECEIPT",
+]);
+const ownerOpenReasons = new Map([
+  ["ENOENT", "MISSING_INPUT"],
+  ["EACCES", "ACCESS_DENIED"],
+  ["EPERM", "ACCESS_DENIED"],
+  ["ETIMEDOUT", "TIMEOUT"],
+  ["ENOBUFS", "RESPONSE_BOUND"],
+]);
+
+export function ownerOpenFailureDiagnostic(stage, error) {
+  const known = ownerOpenStages.has(stage);
+  const publicStage = known ? stage : "UNCLASSIFIED";
+  return {
+    kind: "OWNER_PROVIDER_RECOVERY_DIAGNOSTIC",
+    code: `OWNER_CUSTODY_${publicStage}_FAILED`,
+    stage: publicStage,
+    reason: ownerOpenReasons.get(error?.code) ?? null,
+    privateOperation:
+      !known || ["PRIVATE_OPEN", "RESULT_RECEIPT"].includes(stage) ? "MAY_HAVE_OCCURRED" : "NOT_STARTED",
+  };
+}
+
+async function openProviderDiagnostic(
+  { source, runId, artifactId, prNumber, archiveSha256, sourceBindingsDigest, drive },
+  diagnostic,
+) {
+  diagnostic.stage = "AUTHORED_COVERAGE";
   const [
     {
       authenticateNativeOriginalContext,
@@ -475,7 +513,9 @@ async function openProviderDiagnostic({
   }
   const keys = expectedCoverage.map(artifactLogicalKey).sort();
   need(keys.length === 16 && new Set(keys).size === keys.length, "DIAGNOSTIC_COVERAGE");
+  diagnostic.stage = "PROVIDER_CONTEXT";
   const originalProof = await authenticateNativeOriginalContext(input);
+  diagnostic.stage = "PROVIDER_ARCHIVE";
   const registryProof = await authenticateNativeRegistryArchive({
     originalProof,
     input,
@@ -484,8 +524,10 @@ async function openProviderDiagnostic({
   });
   const archive = inspectNativeRegistryArchive(registryProof, input);
   need(archive?.producerMode === "capture-diagnostic" && archive.archiveSha256 === archiveSha256, "DIAGNOSTIC_ARCHIVE");
+  diagnostic.stage = "RECIPIENT";
   const pin = installedRegistryWriteRecipient();
   inspectArtifactRegistryRetention({ bytes: archive.envelope, binding: archive.binding, encryption: pin });
+  diagnostic.stage = "CUSTODY_ACL";
   const target = INTERNAL_CUSTODY_TARGETS[drive];
   const directory = path.dirname(target);
   canonicalDirectory(directory);
@@ -494,6 +536,7 @@ async function openProviderDiagnostic({
     "verify",
   ]);
   need(verification.value.status === "VERIFIED_EXISTING_CUSTODY_ACL", "DIRECTORY_ACL_CHANGED");
+  diagnostic.stage = "RECOVERY_METADATA";
   const custody = JSON.parse(boundedFile(path.join(directory, "custody.public.json"), 65536));
   const copy = custody.copies?.find((entry) => entry.path === target);
   need(
@@ -506,9 +549,12 @@ async function openProviderDiagnostic({
       copy.bytes <= 1048576,
     "RECOVERY_PUBLIC_BINDING",
   );
+  diagnostic.stage = "RESERVE_RECOVERY";
   reserve(268435456, 67108864);
+  diagnostic.stage = "RECEIPT_DIRECTORY";
   const receiptDirectory = path.join(os.homedir(), "AppData", "Local", "Voyagewright", "CustodyReceipts");
   canonicalDirectory(receiptDirectory);
+  diagnostic.stage = "RECOVERY_COPY";
   const encrypted = boundedFile(target, copy.bytes, copy.sha256);
   need(encrypted.length === copy.bytes, "RECOVERY_FILE_SIZE");
   const receiptBase = {
@@ -532,12 +578,15 @@ async function openProviderDiagnostic({
       path.join(receiptDirectory, `owner-provider-${runId}-${operationId}-${stage}.json`),
       Buffer.from(JSON.stringify({ operationId, ...receiptBase, ...value }, null, 2) + "\n"),
     );
+  diagnostic.stage = "PREPARED_RECEIPT";
   retain("prepared", { kind: "OWNER_PROVIDER_RECOVERY_PREPARED", ownerKeyOperations: 0 });
+  diagnostic.stage = "PRIVATE_PROMPT";
   console.log(
     `Open the authenticated diagnostic registry from run ${runId}, artifact ${artifactId}, using the ${drive}: recovery copy.`,
   );
   let der;
   let opened;
+  diagnostic.stage = "PRIVATE_OPEN";
   try {
     der = await ageProcess(["--decrypt"], encrypted);
     const privateKey = createPrivateKey({ key: der, type: "pkcs8", format: "der" });
@@ -561,9 +610,14 @@ async function openProviderDiagnostic({
   } finally {
     der?.fill(0);
   }
+  diagnostic.stage = "RESULT_RECEIPT";
   return { ...receiptBase, ...opened, publicReceipt: retain("result", opened) };
 }
 export async function runRegistryCustodyOwner(args) {
+  return runOwnerOperation(args, { stage: "ARGUMENTS" });
+}
+
+async function runOwnerOperation(args, diagnostic) {
   const opening = args[0] === "--operation" && args[1] === "owner-open-provider-registry";
   const positive = (value) => /^[1-9][0-9]{0,15}$/u.test(value ?? "") && Number.isSafeInteger(Number(value));
   if (opening)
@@ -581,6 +635,7 @@ export async function runRegistryCustodyOwner(args) {
       (args.length === 2 && args[0] === "--operation" && ["check-private-console", "owner-prepare"].includes(args[1])),
     "ARGUMENTS",
   );
+  diagnostic.stage = "PRIVATE_CONSOLE";
   const preliminary = ownerConsolePreflightObservation();
   const preliminaryReady =
     preliminary.windows &&
@@ -591,7 +646,9 @@ export async function runRegistryCustodyOwner(args) {
   if (args[1] === "check-private-console" && !preliminaryReady)
     return { ...preliminary, ready: false, ownerKeyOperations: 0 };
   need(preliminaryReady, "PRIVATE_OWNER_CONSOLE_REQUIRED");
+  diagnostic.stage = "RESERVE_PREFLIGHT";
   reserve(2097152, 2097152);
+  diagnostic.stage = "CONSOLE_OBSERVATION";
   const observation = JSON.parse(
     execFileSync(
       powershell,
@@ -609,18 +666,23 @@ export async function runRegistryCustodyOwner(args) {
   need(observation.attached === true && observation.visible === true, "VISIBLE_OWNER_CONSOLE_REQUIRED");
   if (args[1] === "check-private-console")
     return { ...preliminary, ...observation, ready: true, ownerKeyOperations: 0 };
+  diagnostic.stage = "RECOVERY_TOOL";
   boundedFile(age, 7172096, ageSha);
+  diagnostic.stage = "PROTECTED_SOURCE";
   const source = protectedSource(opening);
   if (opening)
-    return openProviderDiagnostic({
-      source,
-      runId: Number(args[2]),
-      artifactId: Number(args[3]),
-      prNumber: Number(args[4]),
-      archiveSha256: args[5],
-      sourceBindingsDigest: args[6],
-      drive: args[7],
-    });
+    return openProviderDiagnostic(
+      {
+        source,
+        runId: Number(args[2]),
+        artifactId: Number(args[3]),
+        prNumber: Number(args[4]),
+        archiveSha256: args[5],
+        sourceBindingsDigest: args[6],
+        drive: args[7],
+      },
+      diagnostic,
+    );
   for (const directory of generationDirectories) need(!fs.existsSync(directory), "GENERATION_ALREADY_EXISTS");
   const firstPlan = planInternalRegistryCustody(
     (await publicMetadata(path.join(here, "registry-custody-inventory.ps1"))).value,
@@ -891,8 +953,10 @@ export async function runRegistryCustodyOwner(args) {
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   process.on("SIGINT", () => activeAge?.kill());
+  const args = process.argv.slice(2);
+  const diagnostic = { stage: "ARGUMENTS" };
   try {
-    const result = await runRegistryCustodyOwner(process.argv.slice(2));
+    const result = await runOwnerOperation(args, diagnostic);
     if (result.kind === "OWNER_PROVIDER_RECOVERY_FAILED") {
       console.log(JSON.stringify(result));
       process.exitCode = 1;
@@ -907,7 +971,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       console.log(result.journal);
     } else console.log(JSON.stringify(result));
   } catch (error) {
-    console.error(/^OWNER_CUSTODY_[A-Z_]+$/u.test(error.message) ? error.message : "OWNER_CUSTODY_FAILED");
+    if (/^OWNER_CUSTODY_[A-Z_]+$/u.test(error?.message ?? "")) console.error(error.message);
+    else if (args[0] === "--operation" && args[1] === "owner-open-provider-registry")
+      console.error(JSON.stringify(ownerOpenFailureDiagnostic(diagnostic.stage, error)));
+    else console.error("OWNER_CUSTODY_FAILED");
     process.exitCode = 1;
   }
 }

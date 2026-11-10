@@ -5,10 +5,35 @@ import path from "node:path";
 import { test } from "node:test";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import {
-  runPublicOwnerStorageProbe,
-  finalizeOwnerCustodyResult,
-} from "../../scripts/sounding-line/registry-custody-owner.mjs";
+import * as owner from "../../scripts/sounding-line/registry-custody-owner.mjs";
+const { runPublicOwnerStorageProbe, finalizeOwnerCustodyResult } = owner;
+
+test("unexpected owner-open prerequisite failures expose only fixed public diagnostics", () => {
+  for (const [stage, nativeCode, reason, privateOperation] of [
+    ["RESERVE_PREFLIGHT", "ENOENT", "MISSING_INPUT", "NOT_STARTED"],
+    ["CONSOLE_OBSERVATION", "ETIMEDOUT", "TIMEOUT", "NOT_STARTED"],
+    ["PROTECTED_SOURCE", "ENOBUFS", "RESPONSE_BOUND", "NOT_STARTED"],
+    ["PROVIDER_ARCHIVE", undefined, null, "NOT_STARTED"],
+    ["CUSTODY_ACL", "EACCES", "ACCESS_DENIED", "NOT_STARTED"],
+    ["PREPARED_RECEIPT", "EPERM", "ACCESS_DENIED", "NOT_STARTED"],
+    ["RESULT_RECEIPT", "ENOENT", "MISSING_INPUT", "MAY_HAVE_OCCURRED"],
+  ]) {
+    const error = Object.assign(new Error("PRIVATE_FIXTURE_MESSAGE"), {
+      code: nativeCode,
+      path: "PRIVATE_FIXTURE_PATH",
+      stderr: "PRIVATE_FIXTURE_STDERR",
+    });
+    const publicResult = owner.ownerOpenFailureDiagnostic(stage, error);
+    assert.deepEqual(publicResult, {
+      kind: "OWNER_PROVIDER_RECOVERY_DIAGNOSTIC",
+      code: "OWNER_CUSTODY_" + stage + "_FAILED",
+      stage,
+      reason,
+      privateOperation,
+    });
+    assert(!JSON.stringify(publicResult).includes("PRIVATE_FIXTURE"));
+  }
+});
 
 test("late file or journal failure cannot expose a success receipt or replace the primary failure", () => {
   const completedCanary = { publicFixture: true, canaryPassed: true };
