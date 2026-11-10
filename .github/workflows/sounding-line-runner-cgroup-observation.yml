@@ -1,0 +1,145 @@
+name: Sounding Line runner cgroup observation
+run-name: Sounding Line cgroup observation on ${{ inputs.source_sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact protected commit with the reviewed read-only observation
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: sounding-line-runner-cgroup-observation
+  cancel-in-progress: false
+
+jobs:
+  observation:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && github.sha == inputs.source_sha }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - name: Read systemd and cgroup v2 capability
+        shell: bash
+        env:
+          OBSERVATION_SOURCE: ${{ inputs.source_sha }}
+        run: |
+          exec /usr/bin/env -i PATH=/usr/bin:/bin LANG=C.UTF-8 SYSTEMD_PAGER=cat \
+            OBSERVATION_SOURCE="$OBSERVATION_SOURCE" GITHUB_SHA="$GITHUB_SHA" \
+            GITHUB_WORKFLOW_SHA="$GITHUB_WORKFLOW_SHA" GITHUB_RUN_ID="$GITHUB_RUN_ID" \
+            GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_ARCH="$RUNNER_ARCH" ImageVersion="$ImageVersion" \
+            /usr/bin/python3 -IB - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import subprocess
+          from pathlib import Path, PurePosixPath
+
+          uid = os.getuid()
+          source = os.environ["OBSERVATION_SOURCE"]
+          if not (
+              uid > 0 and uid == os.geteuid()
+              and re.fullmatch(r"[0-9a-f]{40}", source)
+              and source == os.environ["GITHUB_SHA"] == os.environ["GITHUB_WORKFLOW_SHA"]
+              and os.environ["RUNNER_ENVIRONMENT"] == "github-hosted"
+              and os.environ["RUNNER_ARCH"] == "X64"
+              and os.environ["GITHUB_RUN_ATTEMPT"] == "1"
+              and re.fullmatch(r"[0-9]+", os.environ["GITHUB_RUN_ID"])
+              and re.fullmatch(r"[0-9.]+", os.environ["ImageVersion"])
+          ):
+              raise SystemExit("CGROUP_OBSERVATION_IDENTITY_MISMATCH")
+
+          def systemctl(args, env, fields):
+              try:
+                  result = subprocess.run(
+                      ["/usr/bin/systemctl", "--no-pager", *args],
+                      env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                      stderr=subprocess.DEVNULL, text=True, timeout=5, check=False,
+                  )
+              except (OSError, subprocess.TimeoutExpired):
+                  return {"status": "unavailable", "properties": {}}
+              properties = {}
+              for line in result.stdout.splitlines():
+                  name, _, value = line.partition("=")
+                  if name in fields and re.fullmatch(r"[A-Za-z0-9_./@ :+-]{0,512}", value):
+                      properties[name] = value
+              return {"status": result.returncode, "properties": properties}
+
+          unit_fields = ("ActiveState", "Delegate", "ControlGroup")
+          unit = systemctl(
+              ["show", f"user@{uid}.service", *[f"--property={name}" for name in unit_fields]],
+              os.environ, unit_fields,
+          )
+          user_env = dict(os.environ, XDG_RUNTIME_DIR=f"/run/user/{uid}")
+          manager = systemctl(["--user", "show", "--property=Version"], user_env, ("Version",))
+
+          def read(path):
+              try:
+                  with path.open(encoding="ascii") as stream:
+                      value = stream.read(4097)
+              except FileNotFoundError:
+                  return {"status": "absent"}
+              except (OSError, UnicodeError):
+                  return {"status": "unreadable"}
+              value = value.strip()
+              if not re.fullmatch(r"[A-Za-z0-9_ -]{0,4096}", value):
+                  return {"status": "unexpected"}
+              return {"status": "read", "value": value}
+
+          def ancestry(mount, group):
+              if not re.fullmatch(r"/[A-Za-z0-9_./@:+-]{0,512}", group):
+                  return []
+              path = PurePosixPath(group)
+              if ".." in path.parts or path.root != "/":
+                  return []
+              return [
+                  {
+                      "group": str(parent),
+                      "controllers": read(mount / parent.relative_to("/") / "cgroup.controllers"),
+                      "subtreeControl": read(mount / parent.relative_to("/") / "cgroup.subtree_control"),
+                      "swapMax": read(mount / parent.relative_to("/") / "memory.swap.max"),
+                  }
+                  for parent in (path, *path.parents)
+              ]
+
+          mount = Path("/sys/fs/cgroup")
+          mount_verified = False
+          for line in Path("/proc/self/mountinfo").read_text().splitlines():
+              left, _, right = line.partition(" - ")
+              parts = left.split()
+              if parts[4] == str(mount):
+                  mount_verified = parts[3] == "/" and right.split()[0] == "cgroup2"
+          groups = [
+              line[3:] for line in Path("/proc/self/cgroup").read_text().splitlines()
+              if line.startswith("0::")
+          ]
+          runner_ancestry = ancestry(mount, groups[0]) if mount_verified and len(groups) == 1 else []
+          unit_group = unit["properties"].get("ControlGroup", "")
+          unit_ancestry = ancestry(mount, unit_group) if mount_verified else []
+          receipt = {
+              "kind": "RUNNER_CGROUP_OBSERVATION_ONLY",
+              "source": source,
+              "workflowSha": os.environ["GITHUB_WORKFLOW_SHA"],
+              "runId": int(os.environ["GITHUB_RUN_ID"]),
+              "attempt": 1,
+              "runner": "ubuntu-22.04",
+              "image": os.environ["ImageVersion"],
+              "kernel": os.uname().release,
+              "uid": uid,
+              "userManager": manager,
+              "userUnit": unit,
+              "cgroupV2RootMountVerified": mount_verified,
+              "runnerAncestry": runner_ancestry,
+              "userUnitAncestry": unit_ancestry,
+              "qualification": False,
+              "externalIsolationProved": False,
+              "reuseAuthorized": False,
+          }
+          payload = json.dumps(receipt, sort_keys=True, separators=(",", ":")).encode("ascii")
+          print(payload.decode("ascii"), flush=True)
+          print("observationSha256=" + hashlib.sha256(payload).hexdigest(), flush=True)
+          PY
