@@ -81,7 +81,7 @@ jobs:
 
           try:
               code = pinned("jammy_native_inventory.py", 32*1024,
-                            "e33a066e8b7221c35fc4a92ef7b665c4e9b62954d7cca664b408b7568e85c5bc")
+                            "1398cfe31e38f8b884b812a9b34edd4d58db85d1eeae2b9a38b3a3c1d4193d88")
               plan = json.loads(pinned("jammy-native-inventory.json", 8*1024, manifest_hash))
               verifier = pinned("diagnostic-v3.zip", 64*1024,
                                 "84be75e7a0f97e63a5953c3491142d4cbbd6531f5ef71350478ef5795753bb13")
