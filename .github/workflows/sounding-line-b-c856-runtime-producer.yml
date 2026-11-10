@@ -1,0 +1,145 @@
+name: Sounding Line B C856 native runtime producer
+run-name: B C856 native runtime capsule
+
+on:
+  workflow_dispatch:
+    inputs:
+      producer_sha:
+        description: Approved protected producer commit
+        required: true
+        type: string
+      producer_workflow_id:
+        description: Exact registered workflow ID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sounding-line-b-c856-native-runtime-producer
+  cancel-in-progress: false
+
+jobs:
+  capsule:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && github.sha == inputs.producer_sha }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      C856_PRODUCER_SHA: ${{ inputs.producer_sha }}
+      C856_PRODUCER_WORKFLOW_ID: ${{ inputs.producer_workflow_id }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Verify producer code and build inside bounded private storage
+        timeout-minutes: 20
+        env:
+          C856_CHECKOUT_READ_TOKEN: ${{ github.token }}
+        run: |
+          exec /usr/bin/python3 -IB - <<'PY'
+          import hashlib, io, os, re, sys, types, urllib.request, zipfile
+
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  return None
+
+          sha = os.environ["C856_PRODUCER_SHA"]
+          if (not re.fullmatch(r"[a-f0-9]{40}", sha) or
+              sha != os.environ["GITHUB_SHA"] or sha != os.environ["GITHUB_WORKFLOW_SHA"]):
+              raise SystemExit("Producer commit identity refused.")
+          token = os.environ.pop("C856_CHECKOUT_READ_TOKEN")
+          if not re.fullmatch(r"[A-Za-z0-9_]{1,512}", token):
+              raise SystemExit("Producer read token unavailable.")
+          url = ("https://api.github.com/repos/Kgray44/treasurehuntSoT/contents/"
+                 "scripts/sounding-line/b-c856-linux-controller/producer-code.zip?ref="+sha)
+          client = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+          try:
+              with client.open(urllib.request.Request(url, headers={
+                  "Accept": "application/vnd.github.raw+json", "Authorization": "Bearer "+token,
+                  "User-Agent": "sounding-line-b-c856-producer", "X-GitHub-Api-Version": "2022-11-28",
+              }), timeout=12) as response:
+                  if response.status != 200 or response.geturl() != url:
+                      raise ValueError()
+                  raw = response.read(256*1024+1)
+          except Exception:
+              raise SystemExit("Producer code transfer refused.") from None
+          if (not 0 < len(raw) <= 256*1024 or hashlib.sha256(raw).hexdigest() !=
+              "fd632669ccdb54bf2211e3ac831ab7ca402f9dda80dae9800913662822d9523a"):
+              raise SystemExit("Producer code digest refused.")
+          with zipfile.ZipFile(io.BytesIO(raw)) as code:
+              for name in ("producer_boundary", "producer_driver"):
+                  module = types.ModuleType(name)
+                  sys.modules[name] = module
+                  exec(compile(code.read(name+".py"), name+".py", "exec"), module.__dict__)
+          try:
+              sys.modules["producer_driver"].run_outer(raw, token.encode("ascii"))
+          except Exception as error:
+              code = str(error)
+              if not re.fullmatch(r"[A-Z0-9_]{1,80}", code):
+                  code = type(error).__name__
+              raise SystemExit("C856 producer stopped: "+code) from None
+          PY
+      - name: Publish the exact native capsule
+        id: capsule
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        timeout-minutes: 2
+        with:
+          name: sounding-line-b-c856-runtime-capsule
+          path: ${{ runner.temp }}/c856-producer-${{ github.run_id }}-1/artifact/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 7
+      - name: Remove only authenticated producer scratch
+        if: always()
+        timeout-minutes: 1
+        run: |
+          /usr/bin/python3 -IB - <<'PY'
+          import json, os, re, shutil, stat
+          from pathlib import Path
+
+          run = os.environ["GITHUB_RUN_ID"]
+          if not re.fullmatch(r"[1-9][0-9]{0,15}", run):
+              raise SystemExit("Producer cleanup run identity refused.")
+          temp = Path(os.environ["RUNNER_TEMP"])
+          target = temp/f"c856-producer-{run}-1"
+          if not os.path.lexists(target):
+              raise SystemExit(0)
+          entry = target.lstat()
+          proof = target/".c856-owner.json"
+          if (temp.resolve(strict=True) != temp or target.resolve(strict=True) != target or
+              not stat.S_ISDIR(entry.st_mode) or entry.st_uid != os.getuid() or
+              entry.st_dev != temp.stat().st_dev):
+              raise SystemExit("Producer cleanup ownership refused.")
+          fd = os.open(proof, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+          with os.fdopen(fd, "rb") as stream:
+              st = os.fstat(stream.fileno())
+              data = stream.read(1025)
+          if (not stat.S_ISREG(st.st_mode) or st.st_nlink != 1 or st.st_uid != os.getuid() or
+              len(data) > 1024 or json.loads(data) !=
+              {"run": run, "attempt": 1, "directory": [entry.st_dev, entry.st_ino, entry.st_uid]}):
+              raise SystemExit("Producer cleanup marker refused.")
+          if (target/"mount").exists() and any((target/"mount").iterdir()):
+              raise SystemExit("Producer private mount did not disappear.")
+          for directory, folders, files in os.walk(target, followlinks=False):
+              for name in (*folders, *files):
+                  child = (Path(directory)/name).lstat()
+                  if child.st_uid != entry.st_uid or child.st_dev != entry.st_dev or stat.S_ISLNK(child.st_mode):
+                      raise SystemExit("Producer cleanup descendant refused.")
+          shutil.rmtree(target)
+          evidence = temp/f"c856-producer-evidence-{run}-1"
+          if evidence.is_dir() and evidence.resolve(strict=True) == evidence and evidence.stat().st_uid == os.getuid():
+              with (evidence/"cleanup.json").open("x", encoding="ascii") as report:
+                  json.dump({"ownedScratchRemoved": True, "privateMountAbsent": True}, report)
+          PY
+      - name: Retain producer receipts and bounded tool output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        timeout-minutes: 2
+        with:
+          name: sounding-line-b-c856-runtime-producer-receipts-${{ github.run_id }}-1
+          path: ${{ runner.temp }}/c856-producer-evidence-${{ github.run_id }}-1/
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90
+
