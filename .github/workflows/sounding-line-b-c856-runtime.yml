@@ -1,0 +1,103 @@
+name: Sounding Line B C856 runtime diagnostic
+run-name: B C856 Linux isolation and equivalence diagnostic
+
+on:
+  workflow_dispatch:
+    inputs:
+      controller_sha:
+        description: Approved protected controller commit
+        required: true
+        type: string
+      producer_run:
+        description: Reviewed capsule producer run ID
+        required: true
+        type: string
+      producer_sha:
+        description: Reviewed capsule producer commit
+        required: true
+        type: string
+      producer_workflow:
+        description: Reviewed capsule producer workflow ID
+        required: true
+        type: string
+      artifact_id:
+        description: Exact capsule artifact ID
+        required: true
+        type: string
+      archive_sha256:
+        description: Exact provider ZIP SHA-256
+        required: true
+        type: string
+      archive_bytes:
+        description: Exact provider ZIP byte length
+        required: true
+        type: string
+      manifest_sha256:
+        description: Exact native capsule manifest SHA-256
+        required: true
+        type: string
+      capsule_bytes:
+        description: Sum of native capsule file byte lengths
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sounding-line-b-c856-runtime-diagnostic
+  cancel-in-progress: false
+
+jobs:
+  diagnostic:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && github.sha == inputs.controller_sha }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      C856_APPROVED_INPUTS: ${{ toJSON(inputs) }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the approved controller only
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        timeout-minutes: 1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          fetch-tags: false
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/sounding-line/b-c856-linux-controller/
+      - name: Admit space and authenticate the capsule
+        timeout-minutes: 4
+        env:
+          C856_ARTIFACT_READ_TOKEN: ${{ github.token }}
+        run: /usr/bin/python3 -B scripts/sounding-line/b-c856-linux-controller/controller.py prepare
+      - name: Run the diagnostic in the admitted boundaries
+        timeout-minutes: 17
+        run: |
+          unset GH_TOKEN GITHUB_TOKEN ACTIONS_RUNTIME_TOKEN ACTIONS_ID_TOKEN_REQUEST_TOKEN ACTIONS_ID_TOKEN_REQUEST_URL NODE_OPTIONS NODE_PATH
+          exec /usr/bin/python3 -B scripts/sounding-line/b-c856-linux-controller/controller.py run
+      - name: Remove owned runtime scratch
+        if: always()
+        timeout-minutes: 1
+        run: /usr/bin/python3 -B scripts/sounding-line/b-c856-linux-controller/controller.py cleanup
+      - name: Retain bounded diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        timeout-minutes: 2
+        with:
+          name: sounding-line-b-c856-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90
+          path: |
+            ${{ runner.temp }}/c856-evidence-${{ github.run_id }}-1/*.json
+            ${{ runner.temp }}/c856-evidence-${{ github.run_id }}-1/run/*.json
+            ${{ runner.temp }}/c856-evidence-${{ github.run_id }}-1/run/*/*.json
+            ${{ runner.temp }}/c856-evidence-${{ github.run_id }}-1/run/*/stderr.original
+            ${{ runner.temp }}/c856-evidence-${{ github.run_id }}-1/run/*/originals/journal
+            ${{ runner.temp }}/c856-evidence-${{ github.run_id }}-1/run/*/originals/media-*
