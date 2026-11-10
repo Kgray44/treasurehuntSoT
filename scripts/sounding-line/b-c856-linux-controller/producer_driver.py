@@ -93,9 +93,16 @@ def trusted(path):
     return selected
 
 
+TOKEN_LIMIT = 4096
+
+
+def require_checkout_token(token):
+    need(0 < len(token) <= TOKEN_LIMIT and re.fullmatch(rb"[!-~]+", token), "PRODUCER_CHECKOUT_TOKEN")
+
+
 def read_token():
-    token = sys.stdin.buffer.read(513)
-    need(0 < len(token) <= 512 and re.fullmatch(rb"[A-Za-z0-9_]+", token), "PRODUCER_CHECKOUT_TOKEN")
+    token = sys.stdin.buffer.read(TOKEN_LIMIT + 1)
+    require_checkout_token(token)
     return token
 
 
@@ -401,7 +408,7 @@ def verify_host_system_sources(scratch, evidence):
 
 def run_outer(raw, token):
     identity = guard()
-    need(0 < len(token) <= 512, "PRODUCER_CHECKOUT_TOKEN")
+    require_checkout_token(token)
     run = identity["GITHUB_RUN_ID"]
     scratch, evidence = host_paths(run)
     parent = scratch.parent

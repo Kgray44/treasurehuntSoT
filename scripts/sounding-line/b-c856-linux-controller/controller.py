@@ -110,8 +110,8 @@ def prepare(choice, scratch, evidence):
     v3 = v3_bytes()
     planned = live_space(scratch, choice)
     write_document(evidence / "admission.json", planned)
-    token = os.environ.pop("C856_ARTIFACT_READ_TOKEN", None)
-    need(token and len(token) <= 512, "CONTROLLER_ARTIFACT_TOKEN")
+    token = os.environ.pop("C856_ARTIFACT_READ_TOKEN", "")
+    need(re.fullmatch(r"[!-~]{1,4096}", token), "CONTROLLER_ARTIFACT_TOKEN")
     provider = artifact_metadata(choice, token)
     write_document(evidence / "provider.json", provider)
     carrier = scratch / "capsule.zip"
