@@ -21,6 +21,7 @@ from pathlib import Path, PurePosixPath
 
 MIB = 1 << 20
 ARCHIVE = "https://archive.ubuntu.com/ubuntu/"
+NOBLE_METADATA_SNAPSHOT = "https://snapshot.ubuntu.com/ubuntu/20261110T120000Z/"
 LIBDIR = "usr/lib/x86_64-linux-gnu"
 LOADER = "ld-linux-x86-64.so.2"
 INTERPRETER = "/lib64/" + LOADER
@@ -227,7 +228,7 @@ def inventory(plan, verifier):
         signal.alarm(90)
         try:
             pins = plan["noble"]
-            prefix = ARCHIVE+"dists/"+pins["pocket"]+"/"
+            prefix = NOBLE_METADATA_SNAPSHOT+"dists/"+pins["pocket"]+"/"
             signed = public.fetch(client, prefix+"InRelease", 512*1024)
             require(sha256(signed) == pins["releaseSha256"], "INVENTORY_RELEASE_PIN")
             release = public.signed_release(signed)
