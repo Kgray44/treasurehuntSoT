@@ -66,6 +66,7 @@ jobs:
           bus = runtime / "bus"
           user_env = dict(
               os.environ, XDG_RUNTIME_DIR=str(runtime), DBUS_SESSION_BUS_ADDRESS=f"unix:path={bus}",
+              SYSTEMD_LOG_TARGET="console", SYSTEMD_LOG_COLOR="0", SYSTEMD_LOG_LEVEL="info",
           )
           payload = r"""
           import json
@@ -77,6 +78,15 @@ jobs:
 
           expected, uid = sys.argv[1], int(sys.argv[2])
           root = Path("/sys/fs/cgroup") / expected.lstrip("/")
+          worker = len(sys.argv) == 4
+          print("USER_SWAP_PAYLOAD_ENTERED", file=sys.stderr, flush=True)
+
+          def report_exception(_kind, error, _traceback):
+              print("USER_SWAP_PAYLOAD_EXCEPTION", file=sys.stderr, flush=True)
+              if isinstance(error, OSError) and isinstance(error.errno, int):
+                  print(f"USER_SWAP_PAYLOAD_ERRNO={error.errno}", file=sys.stderr, flush=True)
+
+          sys.excepthook = report_exception
 
           def verify():
               status = dict(line.split(":", 1) for line in Path("/proc/self/status").read_text().splitlines())
@@ -96,7 +106,7 @@ jobs:
 
           verify()
           size = 2 * 1024 * 1024
-          if len(sys.argv) == 4:
+          if worker:
               before = shmem()
               with os.fdopen(os.memfd_create("sounding-line-synthetic"), "wb", buffering=0) as data:
                   if data.write(b"\xa5" * size) != size:
@@ -117,26 +127,80 @@ jobs:
                   stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=6, check=False,
               )
               if child.returncode:
-                  error = child.stderr.strip()
-                  if error in {"USER_SWAP_MEMBERSHIP_OR_LIMIT", "USER_SWAP_SHORT_SYNTHETIC_WRITE", "USER_SWAP_CHARGE_OR_LIMIT"}:
-                      raise SystemExit(error)
+                  for line in child.stderr.splitlines():
+                      print(line, file=sys.stderr)
                   raise SystemExit("USER_SWAP_DESCENDANT_FAILED")
               print(json.dumps(json.loads(child.stdout)), flush=True)
           """
+
+          def service_diagnostic(stderr):
+              lines = stderr[-8192:].splitlines()
+              diagnostic = {"serviceFailureStage": "SYSTEMD_CLIENT_OR_STARTUP_UNCLASSIFIED"}
+              causes = {
+                  "USER_SWAP_MEMBERSHIP_OR_LIMIT", "USER_SWAP_SHORT_SYNTHETIC_WRITE",
+                  "USER_SWAP_CHARGE_OR_LIMIT", "USER_SWAP_DESCENDANT_FAILED",
+                  "USER_SWAP_PAYLOAD_EXCEPTION",
+              }
+              startup = {
+                  "Failed to start transient service unit: ": "SYSTEMD_START_TRANSIENT_UNIT",
+                  "Failed to connect to bus: ": "SYSTEMD_CONNECT_BUS",
+                  "Failed to find executable ": "SYSTEMD_FIND_EXECUTABLE",
+                  "Unknown assignment: ": "SYSTEMD_PROPERTY_ASSIGNMENT",
+                  "Failed to parse ": "SYSTEMD_ARGUMENT_PARSE",
+                  f"Job for {unit} failed": "SYSTEMD_START_JOB",
+              }
+              if "USER_SWAP_PAYLOAD_ENTERED" in lines:
+                  diagnostic["serviceFailureStage"] = "PAYLOAD_ENTERED"
+              if f"Running as unit: {unit}" in lines:
+                  diagnostic["systemdAcceptedUnit"] = True
+                  if diagnostic["serviceFailureStage"] != "PAYLOAD_ENTERED":
+                      diagnostic["serviceFailureStage"] = "SYSTEMD_UNIT_ACCEPTED_BEFORE_PAYLOAD"
+              for line in lines:
+                  if line in causes:
+                      diagnostic.setdefault("payloadFailure", line)
+                  if match := re.fullmatch(r"USER_SWAP_PAYLOAD_ERRNO=([0-9]{1,3})", line):
+                      diagnostic["payloadErrno"] = int(match[1])
+                  if match := re.fullmatch(
+                      r"Finished with result: (success|resources|protocol|timeout|exit-code|signal|core-dump|watchdog|start-limit-hit|oom-kill|exec-condition)", line,
+                  ):
+                      diagnostic["systemdResult"] = match[1]
+                  if match := re.fullmatch(
+                      r"Main processes terminated with: code=(exited|killed|dumped)/status=([0-9]{1,3}|SIG[A-Z0-9]{1,12})", line,
+                  ):
+                      diagnostic["systemdProcessCode"], diagnostic["systemdProcessStatus"] = match.groups()
+                  for prefix, stage in startup.items():
+                      if line.startswith(prefix) and diagnostic["serviceFailureStage"] != "PAYLOAD_ENTERED":
+                          diagnostic["serviceFailureStage"] = stage
+                          for reason in (
+                              "Access denied", "Permission denied", "Operation not permitted",
+                              "Invalid argument", "No such file or directory", "No medium found",
+                              "Connection refused", "Unit already exists",
+                          ):
+                              if reason in line[len(prefix):]:
+                                  diagnostic["systemdReason"] = reason
+                          for prop in (
+                              "MemorySwapMax", "MemoryMax", "TasksMax", "NoNewPrivileges",
+                              "RuntimeMaxSec", "RuntimeMaxUSec", "TimeoutStartSec", "TimeoutStartUSec",
+                              "TimeoutStopSec", "TimeoutStopUSec", "JobTimeoutSec", "JobTimeoutUSec",
+                              "KillMode", "Restart", "StandardInputFileDescriptor",
+                              "StandardOutputFileDescriptor", "StandardErrorFileDescriptor",
+                          ):
+                              if re.search(rf"\b{prop}\b", line[len(prefix):]):
+                                  diagnostic["systemdProperty"] = prop
+              return diagnostic
 
           def run(args, timeout):
               try:
                   result = subprocess.run(
                       args, env=user_env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
-                      stderr=subprocess.PIPE, text=True, timeout=timeout, check=False,
+                      stderr=subprocess.PIPE, text=True, errors="replace", timeout=timeout, check=False,
                   )
-                  stderr = result.stderr
-                  cause = next((line for line in stderr.splitlines() if re.fullmatch(r"USER_SWAP_[A-Z_]{1,60}", line)), None)
-                  if cause is None and ("Access denied" in stderr or "Permission denied" in stderr):
-                      cause = "USER_SERVICE_ACCESS_DENIED"
-                  return result.returncode, result.stdout.strip(), cause
-              except (OSError, subprocess.TimeoutExpired):
-                  return None, "", None
+                  return result.returncode, result.stdout.strip(), result.stderr
+              except subprocess.TimeoutExpired as error:
+                  stderr = (error.stderr or b"")[-8192:].decode("utf-8", errors="replace")
+                  return None, "", stderr
+              except OSError:
+                  return None, "", ""
 
           def load_state():
               return run(["/usr/bin/systemctl", "--user", "show", "--property=LoadState", "--value", unit], 2)[1]
@@ -173,7 +237,7 @@ jobs:
               detail["managerOnUserBus"] = detail["userBusSocketPresent"] and manager_on_user_bus()
               if all(detail.values()) and load_state() == "not-found" and not present():
                   command = [
-                      "/usr/bin/systemd-run", "--user", "--wait", "--pipe", "--collect",
+                      "/usr/bin/systemd-run", "--user", "--wait", "--pipe", "--collect", "--no-ask-password",
                       "--service-type=exec", f"--unit={unit}", "--slice=app.slice",
                       "--property=MemorySwapMax=0", "--property=MemoryMax=128M", "--property=TasksMax=8",
                       "--property=NoNewPrivileges=yes", "--property=RuntimeMaxSec=12",
@@ -186,9 +250,10 @@ jobs:
                   signal.signal(signal.SIGINT, interrupt)
                   signal.signal(signal.SIGTERM, interrupt)
                   try:
-                      returncode, output, cause = run(command, 22)
+                      returncode, output, stderr = run(command, 22)
                       detail["serviceExit"] = returncode
-                      detail["serviceFailureStage"] = cause
+                      if returncode != 0:
+                          detail.update(service_diagnostic(stderr))
                       status = "SERVICE_FAILED_OR_TIMED_OUT"
                       if returncode == 0:
                           status = "SERVICE_RESULT_REFUSED"
