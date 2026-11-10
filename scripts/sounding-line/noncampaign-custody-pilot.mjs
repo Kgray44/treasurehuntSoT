@@ -38,7 +38,7 @@ export function custodyPilotSourceFiles() {
   );
   need(
     hash(Buffer.from(JSON.stringify(policy.readers))) ===
-      "c8014dc9ae0d53409917138448ddbbbaf4a75e42164c13d89f73b1b59c397e76",
+      "81105442b6b70bd26e545bc65661ec32eb990e5d1e982e1afc00b9b8b63c620e",
     "FIXED_READER_MAP_CHANGED",
   );
   return [

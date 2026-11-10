@@ -313,7 +313,7 @@ test("custody reader, policy, owner, malformed metadata and finite scope failure
     input.candidateEntries.find((row) => row.path === pin.path).blob = sha("0");
     assert.equal(proposeNoncampaignCustodyShadow(input).profile, "FULL_SNAPSHOT");
   }
-  assert.equal(cases.length + custodyPolicy.readers.length, 153);
+  assert.equal(cases.length + custodyPolicy.readers.length, 155);
   assert.throws(() => parseCustodyShadowTree(Buffer.from("100644 blob bad\tfile\0")), /TREE_METADATA/u);
   assert.throws(() => parseCustodyShadowTree(Buffer.from([255, 0])), /encoded data/u);
 });
@@ -1373,9 +1373,23 @@ test("qualified supervisor rebind changes only its accepted pin and preserves pr
   assert.deepEqual(custodyPolicy.metadata, original.metadata);
   assert.deepEqual(custodyPolicy.excludedPullRequests, original.excludedPullRequests);
   assert.equal(custodyPolicy.maximumMetadataPaths, original.maximumMetadataPaths);
-  assert.equal(custodyPolicy.readers.length, 68);
-  assert.equal(custodyCertificatePaths.length, 90);
-  const changed = custodyPolicy.readers.filter(
+  assert.equal(custodyPolicy.readers.length, 69);
+  assert.equal(custodyCertificatePaths.length, 91);
+  const nativeContext = "scripts/sounding-line/native-evidence-context.mjs";
+  const exception = "scripts/sounding-line/experience-exception.mjs";
+  const priorMap = custodyPolicy.readers
+    .filter((pin) => pin.path !== nativeContext)
+    .map((pin) => (pin.path === exception ? original.readers.find((old) => old.path === exception) : pin));
+  assert.equal(
+    createHash("sha256").update(JSON.stringify(priorMap)).digest("hex"),
+    "c8014dc9ae0d53409917138448ddbbbaf4a75e42164c13d89f73b1b59c397e76",
+  );
+  for (const file of [nativeContext, exception]) {
+    const pin = custodyPolicy.readers.find((row) => row.path === file);
+    assert(custodyCertificatePaths.includes(file) && custodyPilotSourceFiles().includes(file));
+    assert.equal(pin.sha256, createHash("sha256").update(fs.readFileSync(file)).digest("hex"));
+  }
+  const changed = priorMap.filter(
     (pin) => JSON.stringify(pin) !== JSON.stringify(original.readers.find((old) => old.path === pin.path)),
   );
   assert.deepEqual(

@@ -117,6 +117,7 @@ jobs:
             /scripts/sounding-line/experience-selected-checkout.mjs
             /scripts/sounding-line/homeport-source-amendment.mjs
             /scripts/sounding-line/immutable-recognition-reads.mjs
+            /scripts/sounding-line/native-evidence-context.mjs
             /scripts/sounding-line/noncampaign-custody-matched-pilot.mjs
             /scripts/sounding-line/noncampaign-custody-negative-probe.mjs
             /scripts/sounding-line/noncampaign-custody-pilot.mjs
