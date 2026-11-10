@@ -1,0 +1,162 @@
+name: Sounding Line Ubuntu 22 namespace capability
+run-name: Sounding Line Ubuntu 22 capability on ${{ inputs.source_sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact protected commit with the reviewed capability probe
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: sounding-line-ubuntu22-capability
+  cancel-in-progress: false
+
+jobs:
+  capability:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && github.sha == inputs.source_sha }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    env:
+      PROBE_SOURCE: ${{ inputs.source_sha }}
+    steps:
+      - name: Check rootless namespace and tmpfs capability
+        shell: bash
+        run: |
+          exec /usr/bin/env -i PATH=/usr/bin:/bin LANG=C.UTF-8 \
+            PROBE_SOURCE="$PROBE_SOURCE" GITHUB_SHA="$GITHUB_SHA" GITHUB_WORKFLOW_SHA="$GITHUB_WORKFLOW_SHA" \
+            GITHUB_RUN_ID="$GITHUB_RUN_ID" RUNNER_ENVIRONMENT="$RUNNER_ENVIRONMENT" \
+            RUNNER_ARCH="$RUNNER_ARCH" ImageVersion="$ImageVersion" RUNNER_TEMP="$RUNNER_TEMP" \
+            /usr/bin/python3 -IB - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+          import sys
+          import tempfile
+          from pathlib import Path
+
+          def require(condition, code):
+              if not condition:
+                  raise SystemExit(code)
+
+          inner = r"""
+          import ctypes
+          import json
+          import os
+          import select
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          def require(condition, code):
+              if not condition:
+                  raise SystemExit(code)
+
+          def mount(source, path, kind, flags, options=None):
+              libc = ctypes.CDLL(None, use_errno=True)
+              call = libc.mount
+              call.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p,
+                               ctypes.c_ulong, ctypes.c_char_p]
+              if call(source, os.fsencode(path), kind, flags, options) != 0:
+                  raise OSError(ctypes.get_errno(), "private mount failed")
+
+          root = Path(sys.argv[1])
+          require(os.getpid() == 1 and os.getuid() == int(sys.argv[2]), "PROBE_PID_OR_UID")
+          expected = (os.getuid(), os.getuid(), 1)
+          require(tuple(map(int, Path("/proc/self/uid_map").read_text().split())) == expected, "PROBE_UID_MAP")
+          gid = int(sys.argv[3])
+          require(tuple(map(int, Path("/proc/self/gid_map").read_text().split())) == (gid, gid, 1),
+                  "PROBE_GID_MAP")
+          mount(b"c856-capability", root, b"tmpfs", 2 | 4,
+                b"size=6442450944,nr_inodes=200000,noswap,mode=0700")
+          usage = os.statvfs(root)
+          require(usage.f_blocks*usage.f_frsize == 6442450944 and usage.f_files == 200000, "PROBE_TMPFS_LIMIT")
+          mounts = [row for row in Path("/proc/self/mountinfo").read_text().splitlines()
+                    if row.split()[4] == str(root)]
+          require(len(mounts) == 1 and "noswap" in mounts[0].split()[-1].split(","), "PROBE_TMPFS_NOSWAP")
+          (root/"proc").mkdir()
+          mount(b"proc", root/"proc", b"proc", 1 | 2 | 4 | 8)
+          require(os.readlink(root/"proc/self") == "1" and os.statvfs(root/"proc").f_flag & os.ST_RDONLY,
+                  "PROBE_PRIVATE_PROC")
+          (root/"marker").write_bytes(b"C856")
+          nested = ["/usr/bin/unshare", "--map-current-user", "--keep-caps", "--mount",
+                    "--propagation", "private", "--net", "--pid", "--fork", "--kill-child",
+                    "/usr/bin/python3", "-IB", "-c", "import os; raise SystemExit(os.getpid() != 1)"]
+          with subprocess.Popen(nested) as process:
+              descriptor = os.pidfd_open(process.pid)
+              try:
+                  poller = select.poll()
+                  poller.register(descriptor, select.POLLIN)
+                  if not poller.poll(5000):
+                      process.kill()
+                      raise SystemExit("PROBE_PIDFD_TIMEOUT")
+                  require(process.wait(timeout=2) == 0, "PROBE_NESTED_NAMESPACE")
+              finally:
+                  os.close(descriptor)
+          print(json.dumps({"uidMap": expected, "gidMap": [gid, gid, 1], "pidOne": True,
+                            "tmpfsBytes": 6442450944, "tmpfsInodes": 200000, "noswap": True,
+                            "privateReadOnlyProc": True, "nestedNamespaces": True, "pidfdExit": True}),
+                flush=True)
+          """
+
+          env = os.environ
+          sha = env["PROBE_SOURCE"]
+          require(re.fullmatch(r"[a-f0-9]{40}", sha) and sha == env["GITHUB_SHA"] == env["GITHUB_WORKFLOW_SHA"],
+                  "PROBE_SOURCE")
+          require(env["RUNNER_ENVIRONMENT"] == "github-hosted" and env["RUNNER_ARCH"] == "X64" and
+                  os.getuid() != 0 and re.fullmatch(r"[A-Za-z0-9._+-]{1,80}", env["ImageVersion"]),
+                  "PROBE_RUNNER")
+          release = Path("/etc/os-release").read_text(encoding="utf-8")
+          require('VERSION_ID="22.04"' in release.splitlines(), "PROBE_OS")
+          policy_paths = ("/proc/sys/kernel/apparmor_restrict_unprivileged_userns",
+                          "/proc/sys/kernel/unprivileged_userns_clone", "/proc/sys/user/max_user_namespaces",
+                          "/proc/self/attr/current")
+          def policy():
+              observed = {}
+              for name in policy_paths:
+                  try:
+                      with open(name, encoding="utf-8") as stream:
+                          observed[name] = stream.read(512).strip()
+                  except OSError:
+                      observed[name] = None
+              return observed
+          before = policy()
+          print(json.dumps({"source": sha, "run": env["GITHUB_RUN_ID"], "image": env["ImageVersion"],
+                            "kernel": os.uname().release, "uid": os.getuid(), "policyBefore": before}),
+                flush=True)
+          runner_temp = Path(env["RUNNER_TEMP"])
+          require(runner_temp.resolve(strict=True) == runner_temp and runner_temp.stat().st_uid == os.getuid(),
+                  "PROBE_SCRATCH_OWNERSHIP")
+          space = os.statvfs(runner_temp)
+          free_bytes = space.f_bavail*space.f_frsize
+          mem = re.search(r"^MemAvailable:\s+(\d+) kB$", Path("/proc/meminfo").read_text(), flags=re.M)
+          require(mem is not None and int(mem.group(1))*1024 >= 6979321856 and free_bytes >= 4362076160,
+                  "PROBE_RESOURCE_ADMISSION")
+          for name in ("/usr/bin/python3", "/usr/bin/unshare"):
+              actual = Path(name).resolve(strict=True)
+              require(actual.is_relative_to("/usr/bin") and actual.is_file(), "PROBE_LAUNCHER_PATH")
+              for component in (actual, *actual.parents):
+                  entry = component.lstat()
+                  require(entry.st_uid == 0 and not entry.st_mode & 0o022, "PROBE_LAUNCHER_OWNER")
+          print(json.dumps({"hostFreeBytes": free_bytes, "memAvailableBytes": int(mem.group(1))*1024}),
+                flush=True)
+          root = Path(tempfile.mkdtemp(prefix="c856-capability-", dir=runner_temp))
+          command = ["/usr/bin/unshare", "--map-current-user", "--keep-caps", "--mount",
+                     "--propagation", "private", "--pid", "--fork", "--kill-child",
+                     "/usr/bin/python3", "-IB", "-c", inner, str(root), str(os.getuid()), str(os.getgid())]
+          try:
+              result = subprocess.run(command, stdin=subprocess.DEVNULL, timeout=70, check=False)
+          finally:
+              # A private mount and every file written to it must disappear with PID 1.
+              require(not any(root.iterdir()), "PROBE_SCRATCH_NOT_EMPTY")
+              root.rmdir()
+              after = policy()
+              print(json.dumps({"ownedScratchRemoved": not root.exists(), "policyAfter": after,
+                                "policyUnchanged": after == before, "qualification": False}), flush=True)
+              require(after == before and not root.exists(), "PROBE_CLEANUP_OR_POLICY")
+          sys.exit(result.returncode)
+          PY
