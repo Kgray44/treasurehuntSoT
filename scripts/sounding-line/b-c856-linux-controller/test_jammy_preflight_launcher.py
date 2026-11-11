@@ -2,6 +2,7 @@ import errno
 import os
 import stat
 import unittest
+from contextlib import ExitStack
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -81,6 +82,23 @@ class RecoveryTest(unittest.TestCase):
                                                  recover_owned=recovery))
             recovery.assert_called_once_with(SCOPE, LEASE)
 
+    def test_watchdog_completion_requires_an_explicit_success_byte(self):
+        poll = Mock()
+        recovery = Mock(return_value=True)
+        with (patch.object(launch.select, "POLLIN", 1, create=True),
+              patch.object(launch, "verify_pidfd"), patch.object(launch.os, "read") as read):
+            poll.poll.side_effect = [[(9, 1)], [(7, 1)]]
+            read.return_value = b""
+            self.assertTrue(launch.watchdog_wait(SCOPE, LEASE, 51, 7, poll_factory=lambda: poll,
+                                                recover_owned=recovery, completion_fd=9))
+            recovery.assert_called_once_with(SCOPE, LEASE)
+            recovery.reset_mock()
+            poll.poll.side_effect = [[(9, 1)]]
+            read.return_value = b"C"
+            self.assertTrue(launch.watchdog_wait(SCOPE, LEASE, 51, 7, poll_factory=lambda: poll,
+                                                recover_owned=recovery, completion_fd=9))
+            recovery.assert_not_called()
+
     def test_fragment_publication_never_replaces_existing_entry(self):
         armed = launch.ArmedWatchdog(52, LEASE)
         with (patch.object(launch.os, "WNOHANG", 1, create=True),
@@ -113,6 +131,63 @@ class RecoveryTest(unittest.TestCase):
             observed.return_value = SimpleNamespace(st_dev=10, st_ino=21, st_mode=stat.S_IFREG)
             launch.unlink_owned(8, "unit.fragment", LEASE.fragment)
             unlink.assert_called_once_with("unit.fragment", dir_fd=8)
+
+
+class PreparationTest(unittest.TestCase):
+    def setUp(self):
+        stack = ExitStack()
+        self.addCleanup(stack.close)
+        self.scope = Scope(replace(RUN, unit_nonce=SCOPE.nonce), SCOPE.nonce)
+        parent = SimpleNamespace(st_dev=10, st_ino=1, st_mode=stat.S_IFDIR | 0o700, st_uid=1001)
+        scratch = SimpleNamespace(st_dev=10, st_ino=20, st_mode=stat.S_IFDIR | 0o700, st_uid=1001)
+        stack.enter_context(patch.object(launch, "unit_fragment", return_value=b"unit"))
+        stack.enter_context(patch.object(launch, "absent", return_value=True))
+        stack.enter_context(patch.object(Path, "lstat", return_value=parent))
+        stack.enter_context(patch.object(Path, "resolve", lambda path, strict: path))
+        for name, value in (("O_NOFOLLOW", 1 << 20), ("O_DIRECTORY", 1 << 21), ("O_CLOEXEC", 1 << 22)):
+            stack.enter_context(patch.object(launch.os, name, value, create=True))
+        stack.enter_context(patch.object(launch.os, "geteuid", return_value=1001, create=True))
+        self.open = stack.enter_context(patch.object(launch.os, "open", side_effect=[8, 9]))
+        self.fstat = stack.enter_context(patch.object(launch.os, "fstat", side_effect=[parent, scratch]))
+        self.mkdir = stack.enter_context(patch.object(launch.os, "mkdir"))
+        self.stat = stack.enter_context(patch.object(launch.os, "stat", return_value=scratch))
+        self.close = stack.enter_context(patch.object(launch.os, "close"))
+        self.unlink = stack.enter_context(patch.object(launch, "unlink_owned"))
+
+    def prepare(self):
+        return launch.prepare_lease(self.scope, "/unused", "tracking", controller_pid=51)
+
+    def test_failed_scratch_open_retains_unbound_custody(self):
+        failure = OSError(errno.EMFILE, "scratch open failed")
+        self.open.side_effect = [8, failure]
+        with self.assertRaises(launch.PreflightFailure) as error:
+            self.prepare()
+        self.assertIs(error.exception.primary, failure)
+        self.assertEqual(str(error.exception.cleanup[0][1]), "LAUNCH_CUSTODY_SCRATCH_UNBOUND")
+        self.unlink.assert_not_called()
+        self.close.assert_called_once_with(8)
+
+    def test_failed_scratch_identity_read_retains_unbound_custody(self):
+        self.stat.side_effect = OSError(errno.EIO, "scratch stat failed")
+        with self.assertRaises(launch.PreflightFailure) as error:
+            self.prepare()
+        self.assertEqual(str(error.exception.cleanup[0][1]), "LAUNCH_CUSTODY_SCRATCH_UNBOUND")
+        self.assertEqual(self.open.call_count, 1)
+        self.unlink.assert_not_called()
+
+    def test_preexisting_scratch_is_not_cleaned_up(self):
+        self.mkdir.side_effect = FileExistsError()
+        with self.assertRaises(FileExistsError):
+            self.prepare()
+        self.stat.assert_not_called()
+        self.unlink.assert_not_called()
+
+    def test_bound_scratch_can_be_rolled_back_on_later_failure(self):
+        self.mkdir.side_effect = [None, OSError(errno.EIO, "root mkdir failed")]
+        with self.assertRaises(OSError):
+            self.prepare()
+        self.unlink.assert_called_once_with(8, self.scope.scratch.name, (10, 20), directory=True)
+        self.assertEqual([call.args for call in self.close.call_args_list], [(9,), (8,)])
 
 
 class DenialTest(unittest.TestCase):

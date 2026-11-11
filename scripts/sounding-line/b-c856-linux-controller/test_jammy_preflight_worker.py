@@ -42,7 +42,7 @@ class ProtocolTest(unittest.TestCase):
             unpack.assert_not_called()
 
     def test_loader_child_dispatch_only_has_two_fixed_modes(self):
-        value = {"host": {}, "request": {}}
+        value = {"host": {}, "request": {}, "barrier": [9, 10]}
         with (patch.object(worker, "read_lease", return_value=LEASE),
               patch.object(worker, "read_child_input", return_value=value),
               patch.object(worker, "verify_request", return_value=(b"receipt", {})),
@@ -51,11 +51,20 @@ class ProtocolTest(unittest.TestCase):
                 worker.namespace_child(SCOPE, "/bin/sh", 8)
             execute.assert_not_called()
             worker.namespace_child(SCOPE, "version", 8)
-            execute.assert_called_once_with(SCOPE, LEASE, {}, b"receipt", {}, 1)
+            execute.assert_called_once_with(SCOPE, LEASE, {}, b"receipt", {}, 1, (9, 10))
+
+    def test_dormant_entrypoints_refuse_before_any_native_calls(self):
+        with patch.object(worker, "verify_run") as verify:
+            with self.assertRaisesRegex(ValueError, "LAUNCH_ACTION_NOT_AUTHORIZED"):
+                worker.controller(SCOPE, RUN.source, b"", {}, "", "", Path("/unused"))
+            with self.assertRaisesRegex(ValueError, "LAUNCH_ACTION_NOT_AUTHORIZED"):
+                worker.main([])
+            verify.assert_not_called()
 
     def test_namespace_probe_cannot_take_loader_request(self):
         with (patch.object(worker, "read_lease", return_value=LEASE),
-              patch.object(worker, "read_child_input", return_value={"host": {}, "request": {}}),
+              patch.object(worker, "read_child_input",
+                           return_value={"host": {}, "request": {}, "barrier": [9, 10]}),
               patch.object(worker, "run_denial_worker") as run):
             with self.assertRaisesRegex(ValueError, "LAUNCH_DENIAL_CHILD_FIELDS"):
                 worker.namespace_child(SCOPE, "denials", 8)

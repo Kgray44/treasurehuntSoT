@@ -313,7 +313,8 @@ def reap_canary(pid, pidfd):
     return True
 
 
-def bounded_command(argv, *, timeout, output_limit=LISTING_LIMIT, pass_fds=(), stdin=subprocess.DEVNULL):
+def bounded_command(argv, *, timeout, output_limit=LISTING_LIMIT, pass_fds=(), stdin=subprocess.DEVNULL,
+                    before_capture=None):
     """Bounded, non-shell invocation for a trusted fixed command."""
     deadline = time.monotonic() + timeout
     env = {"PATH": "/usr/bin:/bin", "LANG": "C", "XDG_RUNTIME_DIR": "/run/user/1001",
@@ -321,6 +322,8 @@ def bounded_command(argv, *, timeout, output_limit=LISTING_LIMIT, pass_fds=(), s
     child = subprocess.Popen(argv, env=env, stdin=stdin, pass_fds=pass_fds,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
+        if before_capture is not None:
+            before_capture(child.pid, deadline)
         with selectors.DefaultSelector() as selector:
             streams = {child.stdout: bytearray(), child.stderr: bytearray()}
             for stream in streams:
@@ -494,11 +497,12 @@ def attest_worker_root(pid, pidfd, root_identity, staged):
     return True
 
 
-def verify_root(root, plan):
+def verify_root(root, plan, *, executable=True):
     tmpfs, proc = root["mounts"]
     require(root["privatePropagation"] is True and root["scratchOutsideRoot"] is True and
             tmpfs["path"] == "/" and tmpfs["type"] == "tmpfs" and
-            set(tmpfs["flags"]) - {"relatime"} == MOUNT_FLAGS and "ro" in tmpfs["superFlags"] and
+            set(tmpfs["flags"]) - {"relatime"} == (MOUNT_FLAGS if executable else PROC_FLAGS) and
+            "ro" in tmpfs["superFlags"] and
             proc["path"] == "/proc" and proc["type"] == "proc" and
             set(proc["flags"]) - {"relatime"} == PROC_FLAGS and
             all(type(m["id"]) is int and m["id"] > 0 for m in (tmpfs, proc)) and tmpfs["id"] != proc["id"] and

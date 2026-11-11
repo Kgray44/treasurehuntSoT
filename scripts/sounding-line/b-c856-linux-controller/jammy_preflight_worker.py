@@ -3,6 +3,7 @@ import base64
 import json
 import os
 import re
+import select
 import socket
 import struct
 import sys
@@ -17,18 +18,21 @@ if __name__ == "__main__":
 from jammy_confined_preflight import namespace_ids, verify_runtime_output
 from jammy_native_runtime_inputs import LISTING_LIMIT, bind_member_bytes, load_plan, require, verify_inventory
 from jammy_preflight_launcher import (
-    arm_watchdog, compare_with_positive_controls, exec_loader_worker, finish_watchdog, prepare_lease, publish_fragment,
-    read_lease, recover, run_denial_worker, start_owned_unit,
+    arm_watchdog, attest_service_peer, compare_with_positive_controls, exec_loader_worker,
+    finish_watchdog, publish_fragment, read_lease, recover, run_denial_worker,
+    start_owned_unit,
 )
 from jammy_preflight_supervisor import (
-    PreflightFailure, Run, Scope, bounded_command, control_write, load_supervisor_plan, read_control,
-    verify_denials, verify_limits, verify_run,
+    PreflightFailure, Run, Scope, TrackedProcess, attest_worker_root, bounded_command, control_write,
+    load_supervisor_plan, read_control, read_private_root, verify_denials, verify_limits,
+    verify_pidfds_gone, verify_root, verify_run,
 )
 
 REQUEST_BYTES = 8 * 1024 * 1024
 RESPONSE_BYTES = 64 * 1024
 SOURCE = Path(__file__).resolve()
 CGROUP_ROOT = Path("/sys/fs/cgroup")
+NATIVE_ENABLED = False
 
 
 def encode(value):
@@ -128,6 +132,44 @@ def verify_request(value):
     return receipt, members
 
 
+def worker_child(wrapper_pid):
+    location = Path("/proc") / str(wrapper_pid) / "task" / str(wrapper_pid)
+    children = read_control(location, "children").split()
+    require(len(children) == 1 and re.fullmatch(r"[1-9][0-9]{0,9}", children[0]),
+            "LAUNCH_NAMESPACE_CHILD")
+    return int(children[0])
+
+
+def attest_child(scope, tracked, root_id, details, members):
+    pid = tracked.pid
+    fd = os.pidfd_open(pid)
+    try:
+        verify_limits(scope.run, pid, "preflight-worker")
+        status = read_control(Path("/proc") / str(pid), "status")
+        require(all(re.search(pattern, status, re.M) for pattern in (
+            r"^NoNewPrivs:\s+1$", r"^Seccomp:\s+2$", r"^CapEff:\s+0+$",
+        )), "LAUNCH_CHILD_KERNEL_POLICY")
+        plan = load_supervisor_plan()
+        root = read_private_root(pid, details["host"], scope.scratch)
+        if members is None:
+            probe = [row for row in root["mounts"] if row["path"] == "/probe"]
+            require(len(probe) == 1 and probe[0]["type"] == "cgroup2" and
+                    {"ro", "nosuid", "nodev", "noexec"} <= probe[0]["flags"] and
+                    not probe[0]["propagation"], "LAUNCH_PROBE_ROOT_MOUNT")
+            root["mounts"] = [row for row in root["mounts"] if row["path"] != "/probe"]
+            plan["limits"] = {**plan["limits"], "privateTmpfsBytes": 1048576, "privateTmpfsInodes": 32}
+            proc_root = Path("/proc") / str(pid) / "root"
+            info, target = proc_root.stat(), (proc_root / "probe").stat()
+            require((info.st_dev, info.st_ino) == root_id and
+                    (target.st_dev, target.st_ino) == tuple(details["identity"]) and
+                    set(os.listdir(proc_root)) == {"probe", "proc"}, "LAUNCH_PROBE_ROOT_ATTESTATION")
+        else:
+            attest_worker_root(pid, fd, root_id, bind_member_bytes(load_plan(), members))
+        verify_root(root, plan, executable=members is not None)
+    finally:
+        os.close(fd)
+
+
 def child_command(scope, mode, details, timeout):
     import fcntl
 
@@ -135,7 +177,46 @@ def child_command(scope, mode, details, timeout):
     require(mode in ("denials", "listing", "version") and 0 < len(raw) <= REQUEST_BYTES,
             "LAUNCH_CHILD_REQUEST")
     fd = os.memfd_create("sl-native-input", os.MFD_CLOEXEC | os.MFD_ALLOW_SEALING)
+    owned_fds = {fd}
+    tracked = None
     try:
+        members = None if mode == "denials" else verify_request(details["request"])[1]
+        ack_read, ack_write = os.pipe2(os.O_CLOEXEC)
+        owned_fds.update((ack_read, ack_write))
+        permit_read, permit_write = os.pipe2(os.O_CLOEXEC)
+        owned_fds.update((permit_read, permit_write))
+        child_barrier = (ack_write, permit_read)
+        details = {**details, "barrier": child_barrier}
+        raw = encode(details)
+        require(len(raw) <= REQUEST_BYTES, "LAUNCH_CHILD_REQUEST")
+
+        def before_capture(wrapper_pid, deadline):
+            nonlocal tracked
+            for descriptor in child_barrier:
+                owned_fds.remove(descriptor)
+                os.close(descriptor)
+
+            def receive_ack(maximum):
+                remaining = deadline - time.monotonic()
+                require(remaining > 0 and select.select([ack_read], [], [], remaining)[0] == [ack_read],
+                        "LAUNCH_ROOT_BARRIER_TIMEOUT")
+                return os.read(ack_read, maximum)
+
+            require(receive_ack(1) == b"R", "LAUNCH_STAGE_BARRIER")
+            pid = worker_child(wrapper_pid)
+            pidfd = os.pidfd_open(pid)
+            try:
+                tracked = TrackedProcess(pid, pidfd)
+                verify_limits(scope.run, pid, "preflight-worker")
+            finally:
+                os.close(pidfd)
+            require(deadline > time.monotonic() and os.write(permit_write, b"S") == 1, "LAUNCH_STAGE_PERMIT")
+            match = re.fullmatch(rb"([1-9][0-9]{0,19}):([1-9][0-9]{0,19})\n", receive_ack(128))
+            require(match is not None and worker_child(wrapper_pid) == pid, "LAUNCH_ROOT_BARRIER_IDENTITY")
+            attest_child(scope, tracked, (int(match[1]), int(match[2])), details, members)
+            require(deadline > time.monotonic() and os.write(permit_write, b"G") == 1,
+                    "LAUNCH_ROOT_BARRIER_PERMIT")
+
         require(os.write(fd, raw) == len(raw), "LAUNCH_CHILD_INPUT")
         fcntl.fcntl(fd, fcntl.F_ADD_SEALS, fcntl.F_SEAL_SEAL | fcntl.F_SEAL_SHRINK |
                     fcntl.F_SEAL_GROW | fcntl.F_SEAL_WRITE)
@@ -144,9 +225,15 @@ def child_command(scope, mode, details, timeout):
                    "--pid", "--fork", "--kill-child=KILL", "--net", "--cgroup", "--",
                    "/usr/bin/python3", "-IB", str(SOURCE), scope.run.source, str(scope.run.run_id),
                    "1", scope.nonce, mode, str(fd)]
-        return bounded_command(command, timeout=timeout, pass_fds=(fd,))
+        result = bounded_command(command, timeout=timeout, pass_fds=(fd, *child_barrier),
+                                 before_capture=before_capture)
+        require(tracked is not None and verify_pidfds_gone([tracked], 1), "LAUNCH_NAMESPACE_CHILD_STILL_LIVE")
+        return result
     finally:
-        os.close(fd)
+        if tracked is not None:
+            tracked.release()
+        for descriptor in owned_fds:
+            os.close(descriptor)
 
 
 def drive_denials(scope, lease, group, deadline):
@@ -232,37 +319,50 @@ def read_child_input(fd):
 def namespace_child(scope, mode, fd):
     lease = read_lease(scope)
     value = read_child_input(fd)
+    barrier = value.get("barrier")
+    require(type(barrier) is list and len(barrier) == 2 and
+            all(type(item) is int and item >= 3 and item != fd for item in barrier) and
+            barrier[0] != barrier[1], "LAUNCH_LOADER_BARRIER")
     if mode == "denials":
-        require(set(value) == {"host", "target", "identity"}, "LAUNCH_DENIAL_CHILD_FIELDS")
-        proof = run_denial_worker(scope, lease, value["host"], Path(value["target"]), tuple(value["identity"]))
+        require(set(value) == {"host", "target", "identity", "barrier"}, "LAUNCH_DENIAL_CHILD_FIELDS")
+        proof = run_denial_worker(scope, lease, value["host"], Path(value["target"]),
+                                  tuple(value["identity"]), tuple(barrier))
         os.write(1, encode(proof))
     else:
-        require(mode in ("listing", "version") and set(value) == {"host", "request"}, "LAUNCH_LOADER_MODE")
+        require(mode in ("listing", "version") and set(value) == {"host", "request", "barrier"},
+                "LAUNCH_LOADER_MODE")
         receipt, members = verify_request(value["request"])
-        exec_loader_worker(scope, lease, value["host"], receipt, members, int(mode == "version"))
+        exec_loader_worker(scope, lease, value["host"], receipt, members, int(mode == "version"), tuple(barrier))
 
 
-def controller(scope, expected_source, receipt, members, tracking, runner_image):
+def controller(scope, expected_source, receipt, members, tracking, runner_image, runner_temp):
     """Held workflow integration point. No remote acquisition or publication."""
+    require(NATIVE_ENABLED is True, "LAUNCH_ACTION_NOT_AUTHORIZED")
     verify_run(scope.run, expected_source)
     require(scope.run.unit_nonce in (None, scope.nonce) and re.fullmatch(r"[a-f0-9]{32}", scope.nonce),
             "LAUNCH_UNIT_NONCE")
     scope = Scope(replace(scope.run, unit_nonce=scope.nonce), scope.nonce)
-    expected = load_supervisor_plan()["runner"]
+    plan = load_supervisor_plan()
+    expected = plan["runner"]
     host = os.uname()
     require(host.sysname == "Linux" and host.machine == expected["architecture"] and
             host.release == expected["kernel"] and os.geteuid() == expected["uid"] and
             runner_image == expected["image"], "LAUNCH_RUNNER")
+    runtime = os.statvfs(scope.scratch.parent)
+    free = os.statvfs(runner_temp)
+    require(runtime.f_bavail * runtime.f_frsize >= plan["limits"]["hostScratchBytes"] and
+            free.f_bavail * free.f_frsize >=
+            plan["limits"]["hostScratchBytes"] + plan["limits"]["minimumHostFreeBytesAfterScratch"],
+            "LAUNCH_FREE_SPACE")
     request = build_request(receipt, members)
     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as listener:
         listener.bind(channel_name(scope))
         listener.listen(1)
-        lease = prepare_lease(scope, SOURCE, tracking)
+        watchdog = arm_watchdog(scope, SOURCE, tracking, timeout=2)
+        lease = watchdog.lease
         primary = None
         output = None
-        watchdog = None
         try:
-            watchdog = arm_watchdog(scope, lease, timeout=2)
             publish_fragment(scope, lease, watchdog)
             start_owned_unit(scope, lease, watchdog, timeout=3)
             listener.settimeout(5)
@@ -270,6 +370,7 @@ def controller(scope, expected_source, receipt, members, tracking, runner_image)
                 pid = peer_pid(channel)
                 deadline = time.monotonic() + 12
                 require(receive(channel, RESPONSE_BYTES, deadline) == {"ready": pid}, "LAUNCH_WORKER_READY")
+                scope.owned.invocation = attest_service_peer(scope, lease, pid, timeout=2)
                 verify_limits(scope.run, pid, "preflight-worker")
                 transmit(channel, request, REQUEST_BYTES, deadline)
                 response = receive(channel, RESPONSE_BYTES, deadline)
@@ -302,6 +403,7 @@ def controller(scope, expected_source, receipt, members, tracking, runner_image)
 
 
 def main(args):
+    require(NATIVE_ENABLED is True, "LAUNCH_ACTION_NOT_AUTHORIZED")
     require(len(args) in (5, 6) and re.fullmatch(r"[a-f0-9]{40}", args[0]) and
             re.fullmatch(r"[1-9][0-9]{0,14}", args[1]) and args[2] == "1" and
             re.fullmatch(r"[a-f0-9]{32}", args[3]) and os.geteuid() == 1001, "LAUNCH_WORKER_ARGS")

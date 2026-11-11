@@ -9,7 +9,7 @@ import select
 import socket
 import stat
 import time
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from jammy_confined_preflight import (
@@ -17,7 +17,7 @@ from jammy_confined_preflight import (
 )
 from jammy_native_runtime_inputs import bind_member_bytes, load_plan, require, verify_inventory
 from jammy_preflight_supervisor import (
-    MS_PRIVATE, MS_REC, Scope, absent, bounded_command, exercise_cgroup_canary, has_identity,
+    MS_PRIVATE, MS_REC, PreflightFailure, Scope, absent, bounded_command, exercise_cgroup_canary, has_identity,
     load_supervisor_plan, manager_positive_controls, read_mounts, reap_canary, stage_private_root,
     unit_properties, verify_limits, verify_pidfd, verify_run, verify_unloaded,
 )
@@ -89,20 +89,22 @@ def unit_fragment(scope, python_worker, tracking, controller_pid=None):
     ).encode("ascii")
 
 
-def exclusive_file(directory, name, data):
-    fd = os.open(directory / name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
-                 0o600)
+def exclusive_file(directory_fd, name, data, entries):
+    fd = os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+                 0o600, dir_fd=directory_fd)
     try:
+        created = identity(os.fstat(fd))
+        entries.append((name, created, False))
         require(os.write(fd, data) == len(data), "LAUNCH_CUSTODY_SHORT_WRITE")
         os.fsync(fd)
-        return identity(os.fstat(fd))
+        return created
     finally:
         os.close(fd)
 
 
-def prepare_lease(scope, python_worker, tracking):
+def prepare_lease(scope, python_worker, tracking, *, controller_pid):
     """Prepare only private metadata. No manager-visible unit exists yet."""
-    body = unit_fragment(scope, python_worker, tracking)
+    body = unit_fragment(scope, python_worker, tracking, controller_pid)
     require(scope.run.unit_nonce == scope.nonce, "LAUNCH_UNIT_NONCE")
     digest = hashlib.sha256(body).hexdigest()
     parent = scope.scratch.parent
@@ -110,20 +112,52 @@ def prepare_lease(scope, python_worker, tracking):
     require(parent.resolve(strict=True) == parent and stat.S_ISDIR(info.st_mode) and
             info.st_uid == os.geteuid() == 1001 and not info.st_mode & 0o077 and
             absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_PARENT")
-    scope.scratch.mkdir(mode=0o700)
-    scratch = identity(scope.scratch.lstat())
-    (scope.scratch / PRIVATE_ROOT).mkdir(mode=0o700)
-    root = identity((scope.scratch / PRIVATE_ROOT).lstat())
-    fragment = exclusive_file(scope.scratch, FRAGMENT, body)
-    journal = {"source": scope.run.source, "run": scope.run.run_id, "attempt": scope.run.attempt,
-               "nonce": scope.nonce, "scratch": scratch, "fragment": fragment,
-               "fragmentSha256": digest, "root": root}
-    marker = exclusive_file(scope.scratch, SCRATCH_MARKER,
-                            json.dumps(journal, sort_keys=True, separators=(",", ":")).encode("ascii"))
-    lease = RecoveryLease(scope.run.source, scope.run.run_id, scope.run.attempt, scope.nonce,
-                          scratch, fragment, marker, root, digest)
-    validate_lease(scope, lease)
-    return lease
+    name = scope.scratch.name
+    flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_DIRECTORY | os.O_CLOEXEC
+    parent_fd = os.open(parent, flags)
+    scratch = fd = None
+    created_scratch = scratch_bound = False
+    entries = []
+    try:
+        require(identity(os.fstat(parent_fd)) == identity(info), "LAUNCH_CUSTODY_PARENT")
+        os.mkdir(name, mode=0o700, dir_fd=parent_fd)
+        created_scratch = True
+        created = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
+        require(stat.S_ISDIR(created.st_mode) and created.st_uid == 1001 and
+                not created.st_mode & 0o077, "LAUNCH_CUSTODY_SCRATCH")
+        scratch = identity(created)
+        fd = os.open(name, flags, dir_fd=parent_fd)
+        require(identity(os.fstat(fd)) == scratch, "LAUNCH_CUSTODY_SCRATCH")
+        scratch_bound = True
+        os.mkdir(PRIVATE_ROOT, mode=0o700, dir_fd=fd)
+        root = identity(os.stat(PRIVATE_ROOT, dir_fd=fd, follow_symlinks=False))
+        entries.append((PRIVATE_ROOT, root, True))
+        fragment = exclusive_file(fd, FRAGMENT, body, entries)
+        journal = {"source": scope.run.source, "run": scope.run.run_id, "attempt": scope.run.attempt,
+                   "nonce": scope.nonce, "scratch": scratch, "fragment": fragment,
+                   "fragmentSha256": digest, "root": root}
+        marker = exclusive_file(fd, SCRATCH_MARKER,
+                                json.dumps(journal, sort_keys=True, separators=(",", ":")).encode("ascii"),
+                                entries)
+        lease = RecoveryLease(scope.run.source, scope.run.run_id, scope.run.attempt, scope.nonce,
+                              scratch, fragment, marker, root, digest)
+        validate_lease(scope, lease)
+        return lease
+    except BaseException as primary:
+        if not created_scratch:
+            raise
+        try:
+            require(scratch_bound, "LAUNCH_CUSTODY_SCRATCH_UNBOUND")
+            for name, owned, directory in reversed(entries):
+                unlink_owned(fd, name, owned, directory=directory)
+            unlink_owned(parent_fd, scope.scratch.name, scratch, directory=True)
+        except BaseException as error:
+            raise PreflightFailure(primary, [("unpublished_lease_recovery", error)]) from error
+        raise
+    finally:
+        if fd is not None:
+            os.close(fd)
+        os.close(parent_fd)
 
 
 def unlink_owned(directory_fd, name, expected, *, directory=False):
@@ -212,10 +246,11 @@ def recover(scope, lease, *, clock=time.monotonic, sleep=time.sleep,
 
 
 def watchdog_wait(scope, lease, controller_pid, controller_pidfd, *, poll_factory=None,
-                  recover_owned=recover, acknowledge=None, completion_fd=None):
+                  recover_owned=recover, acknowledge=None, completion_fd=None, validated=False):
     """Run in an independent trusted process with a retained controller pidfd."""
     validate_lease(scope, lease)
-    verify_pidfd(controller_pid, controller_pidfd)
+    if not validated:
+        verify_pidfd(controller_pid, controller_pidfd)
     poll = (poll_factory or select.poll)()
     poll.register(controller_pidfd, select.POLLIN)
     if completion_fd is not None:
@@ -245,9 +280,8 @@ class ArmedWatchdog:
     completion_fd: int | None = None
 
 
-def arm_watchdog(scope, lease, timeout):
+def arm_watchdog(scope, python_worker, tracking, timeout):
     """Fork before publishing the fragment; the child cannot hold workload FDs."""
-    validate_lease(scope, lease)
     require(0 < timeout <= 3, "LAUNCH_WATCHDOG_TIMEOUT")
     controller = os.getpid()
     controller_fd = os.pidfd_open(controller)
@@ -278,13 +312,30 @@ def arm_watchdog(scope, lease, timeout):
                         except OSError as error:
                             if error.errno != errno.EBADF:
                                 raise
+                verify_pidfd(controller, controller_fd)
+                try:
+                    lease = prepare_lease(scope, python_worker, tracking, controller_pid=controller)
+                except Exception as error:
+                    reason = ("LAUNCH_WATCHDOG_PREPARE_CUSTODY_HELD" if isinstance(error, PreflightFailure)
+                              else "LAUNCH_WATCHDOG_PREPARE_REFUSED")
+                    try:
+                        os.write(write_fd, json.dumps({"refusal": reason}).encode("ascii"))
+                    except BrokenPipeError:
+                        pass
+                    raise
 
                 def acknowledge():
-                    require(os.write(write_fd, b"R") == 1, "LAUNCH_WATCHDOG_ACK")
-                    os.close(write_fd)
+                    payload = json.dumps(asdict(lease), separators=(",", ":")).encode("ascii")
+                    try:
+                        require(len(payload) <= 4096 and os.write(write_fd, payload) == len(payload),
+                                "LAUNCH_WATCHDOG_ACK")
+                    except BrokenPipeError:
+                        pass  # Controller died during preparation; recover via pidfd.
+                    finally:
+                        os.close(write_fd)
 
                 if watchdog_wait(scope, lease, controller, controller_fd, acknowledge=acknowledge,
-                                 completion_fd=complete_read):
+                                 completion_fd=complete_read, validated=True):
                     status = 0
             finally:
                 os._exit(status)
@@ -292,7 +343,18 @@ def arm_watchdog(scope, lease, timeout):
         os.close(complete_read)
         try:
             ready, _, _ = select.select([read_fd], [], [], timeout)
-            require(ready == [read_fd] and os.read(read_fd, 2) == b"R", "LAUNCH_WATCHDOG_ACK")
+            require(ready == [read_fd], "LAUNCH_WATCHDOG_ACK")
+            payload = os.read(read_fd, 4097)
+            require(0 < len(payload) <= 4096, "LAUNCH_WATCHDOG_ACK")
+            record = json.loads(payload)
+            if type(record) is dict and set(record) == {"refusal"}:
+                require(record["refusal"] in ("LAUNCH_WATCHDOG_PREPARE_CUSTODY_HELD",
+                                              "LAUNCH_WATCHDOG_PREPARE_REFUSED"), "LAUNCH_WATCHDOG_ACK")
+                raise ValueError(record["refusal"])
+            for name in ("scratch", "fragment", "marker", "root"):
+                record[name] = tuple(record[name])
+            lease = RecoveryLease(**record)
+            validate_lease(scope, lease)
         except BaseException:
             os.close(complete_write)
             raise
@@ -395,6 +457,22 @@ def start_owned_unit(scope, lease, watchdog, *, timeout):
     status, output, error = manager_command("--job-mode=fail", "--no-block", "start", scope.run.unit,
                                             timeout=remaining)
     require(status == 0 and not output and not error, "LAUNCH_UNIT_START")
+
+
+def attest_service_peer(scope, lease, pid, timeout):
+    verify_fragment(Path(scope.run.fragment), lease)
+    status, output, error = manager_command(
+        "show", "--property=FragmentPath,DropInPaths,ControlGroup,InvocationID,MainPID,ActiveState",
+        scope.run.unit, timeout=timeout)
+    rows = [line.split("=", 1) for line in output.decode("ascii").splitlines()]
+    values = dict(rows)
+    invocation = values.pop("InvocationID", "")
+    require(status == 0 and not error and len(rows) == 6 and
+            re.fullmatch(r"(?!0{32}$)[a-f0-9]{32}", invocation) and
+            values == {"FragmentPath": scope.run.fragment, "DropInPaths": "",
+                       "ControlGroup": scope.run.cgroup, "MainPID": str(pid), "ActiveState": "active"},
+            "LAUNCH_SERVICE_PEER")
+    return invocation
 
 
 def validate_canary_mount(target, expected_identity, *, readonly):
@@ -520,9 +598,13 @@ def probe_filter(*, loader=False):
     return lib, context
 
 
-def verify_worker_descriptors():
-    require(set(os.listdir("/proc/self/fd")) <= {"0", "1", "2", "3"}, "LAUNCH_PROBE_FDS")
-    denied(lambda: os.fstat(3), {errno.EBADF}, "LAUNCH_PROBE_FD")
+def verify_worker_descriptors(extra=()):
+    expected = {0, 1, 2, *extra}
+    transient = next(fd for fd in range(len(expected) + 1) if fd not in expected)
+    require(set(os.listdir("/proc/self/fd")) <= {str(fd) for fd in expected | {transient}},
+            "LAUNCH_PROBE_FDS")
+    denied(lambda: os.fstat(transient), {errno.EBADF}, "LAUNCH_PROBE_FD")
+    require(all(stat.S_ISFIFO(os.fstat(fd).st_mode) for fd in extra), "LAUNCH_WORKER_BARRIER")
     stdin = os.fstat(0)
     null = Path("/dev/null").stat()
     require((stat.S_ISFIFO(stdin.st_mode) or (stat.S_ISCHR(stdin.st_mode) and
@@ -530,8 +612,8 @@ def verify_worker_descriptors():
             all(stat.S_ISFIFO(os.fstat(fd).st_mode) for fd in (1, 2)), "LAUNCH_WORKER_STDIO")
 
 
-def enter_sealed_root(root, *, loader=False):
-    verify_worker_descriptors()
+def enter_sealed_root(root, *, loader=False, extra=()):
+    verify_worker_descriptors(extra)
     lib, context = probe_filter(loader=loader)
     try:
         drop_caps_and_chroot(root)
@@ -540,7 +622,23 @@ def enter_sealed_root(root, *, loader=False):
         lib.seccomp_release(context)
 
 
-def run_denial_worker(scope, lease, host_namespaces, source, canary_identity):
+def wait_stage(barrier):
+    verify_worker_descriptors(barrier)
+    ready, permit = barrier
+    require(os.write(ready, b"R") == 1 and os.read(permit, 1) == b"S", "LAUNCH_STAGE_PERMIT")
+
+
+def wait_sealed(barrier, root_id):
+    ready, permit = barrier
+    try:
+        require(os.write(ready, f"{root_id[0]}:{root_id[1]}\n".encode("ascii")) > 0, "LAUNCH_ROOT_READY")
+        require(os.read(permit, 1) == b"G", "LAUNCH_ROOT_PERMIT")
+    finally:
+        os.close(ready)
+        os.close(permit)
+
+
+def run_denial_worker(scope, lease, host_namespaces, source, canary_identity, barrier):
     """Inside a dedicated new namespace, on a diagnostic root without ELF members."""
     validate_lease(scope, lease)
     observed = namespace_ids()
@@ -552,6 +650,7 @@ def run_denial_worker(scope, lease, host_namespaces, source, canary_identity):
             "LAUNCH_PROBE_SOURCE")
     root = scope.scratch / PRIVATE_ROOT
     require(has_identity(root, lease.root) and not any(root.iterdir()), "LAUNCH_PROBE_ROOT")
+    wait_stage(barrier)
     host_mount(None, "/", flags=MS_REC | MS_PRIVATE)
     host_mount("sl-jammy-denials", root, "tmpfs", MS_NOSUID | MS_NODEV | MS_NOEXEC,
                "size=1048576,nr_inodes=32,mode=0700")
@@ -564,11 +663,13 @@ def run_denial_worker(scope, lease, host_namespaces, source, canary_identity):
     proc.mkdir(mode=0o700)
     host_mount("proc", proc, "proc", MS_RDONLY | MS_NODEV | MS_NOSUID | MS_NOEXEC)
     host_mount(None, root, flags=MS_REMOUNT | MS_RDONLY | MS_NODEV | MS_NOSUID | MS_NOEXEC)
-    enter_sealed_root(root)
+    root_id = identity(root.stat())
+    enter_sealed_root(root, extra=barrier)
+    wait_sealed(barrier, root_id)
     return {**manager_denials(scope), **cgroup_denials(Path("/probe"), canary_identity)}
 
 
-def exec_loader_worker(scope, lease, host_namespaces, receipt, members, ordinal):
+def exec_loader_worker(scope, lease, host_namespaces, receipt, members, ordinal, barrier):
     """Use a separate namespace and root for each fixed loader command."""
     validate_lease(scope, lease)
     require(type(ordinal) is int and ordinal in (0, 1) and scope.owned.scratch == lease.scratch,
@@ -577,7 +678,9 @@ def exec_loader_worker(scope, lease, host_namespaces, receipt, members, ordinal)
     verify_inventory(inputs, receipt)
     bound = bind_member_bytes(inputs, members)
     command = load_supervisor_plan()["launchCommands"][ordinal]
-    verify_worker_descriptors()
+    wait_stage(barrier)
     root = stage_private_root(scope, bound, host_namespaces)
-    enter_sealed_root(root, loader=True)
+    root_id = identity(root.stat())
+    enter_sealed_root(root, loader=True, extra=barrier)
+    wait_sealed(barrier, root_id)
     os.execve(command[0], command, {"LANG": "C"})
