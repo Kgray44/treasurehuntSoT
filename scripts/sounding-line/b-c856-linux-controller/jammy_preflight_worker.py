@@ -17,10 +17,10 @@ if __name__ == "__main__":
 
 from jammy_confined_preflight import namespace_ids, verify_runtime_output
 from jammy_native_runtime_inputs import LISTING_LIMIT, bind_member_bytes, load_plan, require, verify_inventory
+from jammy_preflight_custody import CustodyBinding
 from jammy_preflight_launcher import (
-    arm_watchdog, attest_service_peer, compare_with_positive_controls, exec_loader_worker,
-    finish_watchdog, publish_fragment, read_lease, recover, run_denial_worker,
-    start_owned_unit,
+    admit_owned_unit, arm_watchdog, attest_service_peer, compare_with_positive_controls, exec_loader_worker,
+    finish_watchdog, read_lease, recover, run_denial_worker,
 )
 from jammy_preflight_supervisor import (
     PreflightFailure, Run, Scope, TrackedProcess, attest_worker_root, bounded_command, control_write,
@@ -224,7 +224,7 @@ def child_command(scope, mode, details, timeout):
         command = ["/usr/bin/unshare", "--user", "--map-current-user", "--keep-caps", "--mount",
                    "--pid", "--fork", "--kill-child=KILL", "--net", "--cgroup", "--",
                    "/usr/bin/python3", "-IB", str(SOURCE), scope.run.source, str(scope.run.run_id),
-                   "1", scope.nonce, mode, str(fd)]
+                   "1", scope.nonce, mode, *scope.custody.arguments(), str(fd)]
         result = bounded_command(command, timeout=timeout, pass_fds=(fd, *child_barrier),
                                  before_capture=before_capture)
         require(tracked is not None and verify_pidfds_gone([tracked], 1), "LAUNCH_NAMESPACE_CHILD_STILL_LIVE")
@@ -339,9 +339,10 @@ def controller(scope, expected_source, receipt, members, tracking, runner_image,
     """Held workflow integration point. No remote acquisition or publication."""
     require(NATIVE_ENABLED is True, "LAUNCH_ACTION_NOT_AUTHORIZED")
     verify_run(scope.run, expected_source)
-    require(scope.run.unit_nonce in (None, scope.nonce) and re.fullmatch(r"[a-f0-9]{32}", scope.nonce),
+    require(type(scope.custody) is CustodyBinding and
+            scope.run.unit_nonce in (None, scope.nonce) and re.fullmatch(r"[a-f0-9]{32}", scope.nonce),
             "LAUNCH_UNIT_NONCE")
-    scope = Scope(replace(scope.run, unit_nonce=scope.nonce), scope.nonce)
+    scope = Scope(replace(scope.run, unit_nonce=scope.nonce), scope.nonce, custody=scope.custody)
     plan = load_supervisor_plan()
     expected = plan["runner"]
     host = os.uname()
@@ -363,8 +364,7 @@ def controller(scope, expected_source, receipt, members, tracking, runner_image,
         primary = None
         output = None
         try:
-            publish_fragment(scope, lease, watchdog)
-            start_owned_unit(scope, lease, watchdog, timeout=3)
+            admit_owned_unit(scope, lease, watchdog)
             listener.settimeout(5)
             with listener.accept()[0] as channel:
                 pid = peer_pid(channel)
@@ -404,20 +404,22 @@ def controller(scope, expected_source, receipt, members, tracking, runner_image,
 
 def main(args):
     require(NATIVE_ENABLED is True, "LAUNCH_ACTION_NOT_AUTHORIZED")
-    require(len(args) in (5, 6) and re.fullmatch(r"[a-f0-9]{40}", args[0]) and
+    require(len(args) in (9, 10) and re.fullmatch(r"[a-f0-9]{40}", args[0]) and
             re.fullmatch(r"[1-9][0-9]{0,14}", args[1]) and args[2] == "1" and
-            re.fullmatch(r"[a-f0-9]{32}", args[3]) and os.geteuid() == 1001, "LAUNCH_WORKER_ARGS")
+            re.fullmatch(r"[a-f0-9]{32}", args[3]) and
+            all(re.fullmatch(r"[1-9][0-9]{0,19}", value) for value in args[5:9]) and
+            os.geteuid() == 1001, "LAUNCH_WORKER_ARGS")
     source, run_id, _, nonce, mode = args[:5]
     run = Run(source, source, int(run_id), 1, "Kgray44", "Kgray44", "Kgray44/treasurehuntSoT",
               "refs/heads/main", "workflow_dispatch", "confined-loader-and-denials-only", nonce)
-    scope = Scope(run, nonce)
+    scope = Scope(run, nonce, custody=CustodyBinding.from_values([int(value) for value in args[5:9]]))
     verify_run(run, source)
-    if len(args) == 5:
+    if len(args) == 9:
         require(re.fullmatch(r"[1-9][0-9]{0,9}", mode) and int(mode) > 1, "LAUNCH_CONTROLLER_PID")
         service(scope, int(mode))
     else:
-        require(re.fullmatch(r"[1-9][0-9]{0,5}", args[5]) and int(args[5]) >= 3, "LAUNCH_CHILD_FD")
-        namespace_child(scope, mode, int(args[5]))
+        require(re.fullmatch(r"[1-9][0-9]{0,5}", args[9]) and int(args[9]) >= 3, "LAUNCH_CHILD_FD")
+        namespace_child(scope, mode, int(args[9]))
 
 
 if __name__ == "__main__":

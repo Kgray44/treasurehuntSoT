@@ -16,6 +16,7 @@ from jammy_confined_preflight import (
     MANAGER_ENDPOINTS, NAMESPACES, clone_policy_attempt, connect, denied, namespace_ids, open_control,
 )
 from jammy_native_runtime_inputs import bind_member_bytes, load_plan, require, verify_inventory
+from jammy_preflight_custody import custody, owner_record, verify_owners_gone
 from jammy_preflight_supervisor import (
     MS_PRIVATE, MS_REC, PreflightFailure, Scope, absent, bounded_command, exercise_cgroup_canary, has_identity,
     load_supervisor_plan, manager_positive_controls, read_mounts, reap_canary, stage_private_root,
@@ -76,6 +77,7 @@ def unit_fragment(scope, python_worker, tracking, controller_pid=None):
     verify_run(scope.run, scope.run.source)
     controller = os.getpid() if controller_pid is None else controller_pid
     require(type(controller) is int and controller > 1, "LAUNCH_CONTROLLER_PID")
+    binding = "" if scope.custody is None else " " + " ".join(scope.custody.arguments())
     return (
         "[Unit]\nJobTimeoutSec=8s\nCollectMode=inactive-or-failed\n"
         "[Service]\nType=exec\nSlice=app.slice\nDelegate=yes\n"
@@ -85,7 +87,7 @@ def unit_fragment(scope, python_worker, tracking, controller_pid=None):
         "StandardInput=null\nStandardOutput=null\nStandardError=journal\n"
         f"ExecStart=/usr/bin/env -i PATH=/usr/bin:/bin LANG=C "
         f"RUNNER_TRACKING_ID={tracking} /usr/bin/python3 -IB {path} "
-        f"{scope.run.source} {scope.run.run_id} 1 {scope.nonce} {controller}\n"
+        f"{scope.run.source} {scope.run.run_id} 1 {scope.nonce} {controller}{binding}\n"
     ).encode("ascii")
 
 
@@ -102,7 +104,7 @@ def exclusive_file(directory_fd, name, data, entries):
         os.close(fd)
 
 
-def prepare_lease(scope, python_worker, tracking, *, controller_pid):
+def prepare_lease(scope, python_worker, tracking, *, controller_pid, journal=None):
     """Prepare only private metadata. No manager-visible unit exists yet."""
     body = unit_fragment(scope, python_worker, tracking, controller_pid)
     require(scope.run.unit_nonce == scope.nonce, "LAUNCH_UNIT_NONCE")
@@ -120,6 +122,9 @@ def prepare_lease(scope, python_worker, tracking, *, controller_pid):
     entries = []
     try:
         require(identity(os.fstat(parent_fd)) == identity(info), "LAUNCH_CUSTODY_PARENT")
+        if journal is not None:
+            require(identity(info) == scope.custody.base, "LAUNCH_CUSTODY_BASE")
+            journal.reserve(owner_record(controller_pid, os.getpid()))
         os.mkdir(name, mode=0o700, dir_fd=parent_fd)
         created_scratch = True
         created = os.stat(name, dir_fd=parent_fd, follow_symlinks=False)
@@ -129,6 +134,8 @@ def prepare_lease(scope, python_worker, tracking, *, controller_pid):
         fd = os.open(name, flags, dir_fd=parent_fd)
         require(identity(os.fstat(fd)) == scratch, "LAUNCH_CUSTODY_SCRATCH")
         scratch_bound = True
+        if journal is not None:
+            journal.bind(scratch)
         os.mkdir(PRIVATE_ROOT, mode=0o700, dir_fd=fd)
         root = identity(os.stat(PRIVATE_ROOT, dir_fd=fd, follow_symlinks=False))
         entries.append((PRIVATE_ROOT, root, True))
@@ -225,7 +232,7 @@ def verify_no_host_mount(scope):
                for row in read_mounts("self"))
 
 
-def recover(scope, lease, *, clock=time.monotonic, sleep=time.sleep,
+def recover_bound(scope, lease, *, clock=time.monotonic, sleep=time.sleep,
             quiescent=observe_quiescence, mounts_gone=verify_no_host_mount,
             remove_fragment=remove_owned_fragment, remove_scratch=remove_owned_scratch):
     """Never send StopUnit or a signal. Wait out the manager's bound, then verify."""
@@ -243,6 +250,56 @@ def recover(scope, lease, *, clock=time.monotonic, sleep=time.sleep,
             "LAUNCH_RECOVERY_UNIT_RECHECK")
     require(end > clock() and remove_scratch(scope, lease) is True, "LAUNCH_RECOVERY_SCRATCH")
     return True
+
+
+def lease_record(lease):
+    return json.loads(json.dumps(asdict(lease)))
+
+
+def decode_lease(scope, record):
+    values = dict(record)
+    for name in ("scratch", "fragment", "marker", "root"):
+        values[name] = tuple(values[name])
+    lease = RecoveryLease(**values)
+    validate_lease(scope, lease)
+    return lease
+
+
+def recover(scope, lease, **options):
+    if scope.custody is None:
+        return recover_bound(scope, lease, **options)
+    validate_lease(scope, lease)
+    with custody(scope) as journal:
+        require(journal.read("reserved") is not None and
+                journal.read("bound") == {"scratch": list(lease.scratch)}, "LAUNCH_CUSTODY_RECOVERY_PHASE")
+        admitted = journal.read("admitted")
+        require(admitted is None or admitted == lease_record(lease), "LAUNCH_CUSTODY_RECOVERY_PHASE")
+        terminal = {"admitted": admitted is not None}
+        previous = journal.read("retired")
+        if previous is not None:
+            require(previous == terminal and journal.scratch_identity() is None and
+                    absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RETIREMENT")
+            return True
+        recover_bound(scope, lease, **options)
+        journal.write("retired", terminal)
+        return True
+
+
+def recover_after_cancellation(scope, **options):
+    """Reconcile an authenticated prior scope after both launcher processes exit."""
+    with custody(scope) as journal:
+        verify_owners_gone(journal.read("reserved"))
+        admitted = journal.read("admitted")
+        if admitted is None:
+            if journal.read("retired") is not None:
+                require(journal.read("retired") == {"admitted": False} and journal.scratch_identity() is None and
+                        absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RETIREMENT")
+                return True
+            require(absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RECOVERY_FRAGMENT")
+            journal.recover_empty()
+            return True
+        lease = decode_lease(scope, admitted)
+    return recover(scope, lease, **options)
 
 
 def watchdog_wait(scope, lease, controller_pid, controller_pidfd, *, poll_factory=None,
@@ -314,7 +371,9 @@ def arm_watchdog(scope, python_worker, tracking, timeout):
                                 raise
                 verify_pidfd(controller, controller_fd)
                 try:
-                    lease = prepare_lease(scope, python_worker, tracking, controller_pid=controller)
+                    with custody(scope) as journal:
+                        lease = prepare_lease(scope, python_worker, tracking, controller_pid=controller,
+                                              journal=journal)
                 except Exception as error:
                     reason = ("LAUNCH_WATCHDOG_PREPARE_CUSTODY_HELD" if isinstance(error, PreflightFailure)
                               else "LAUNCH_WATCHDOG_PREPARE_REFUSED")
@@ -351,10 +410,7 @@ def arm_watchdog(scope, python_worker, tracking, timeout):
                 require(record["refusal"] in ("LAUNCH_WATCHDOG_PREPARE_CUSTODY_HELD",
                                               "LAUNCH_WATCHDOG_PREPARE_REFUSED"), "LAUNCH_WATCHDOG_ACK")
                 raise ValueError(record["refusal"])
-            for name in ("scratch", "fragment", "marker", "root"):
-                record[name] = tuple(record[name])
-            lease = RecoveryLease(**record)
-            validate_lease(scope, lease)
+            lease = decode_lease(scope, record)
         except BaseException:
             os.close(complete_write)
             raise
@@ -428,6 +484,11 @@ def read_lease(scope):
             has_identity(scope.scratch / PRIVATE_ROOT, lease.root), "LAUNCH_CUSTODY_MARKER_PATHS")
     verify_fragment(scope.scratch / FRAGMENT, lease)
     verify_fragment(Path(scope.run.fragment), lease)
+    if scope.custody is not None:
+        with custody(scope, timeout=2) as journal:
+            require(journal.read("admitted") == lease_record(lease) and
+                    journal.read("retired") is None and journal.scratch_identity() == lease.scratch,
+                    "LAUNCH_CUSTODY_ADMISSION")
     scope.owned.scratch = lease.scratch
     scope.owned.fragment = lease.fragment
     return lease
@@ -457,6 +518,14 @@ def start_owned_unit(scope, lease, watchdog, *, timeout):
     status, output, error = manager_command("--job-mode=fail", "--no-block", "start", scope.run.unit,
                                             timeout=remaining)
     require(status == 0 and not output and not error, "LAUNCH_UNIT_START")
+
+
+def admit_owned_unit(scope, lease, watchdog):
+    validate_lease(scope, lease)
+    with custody(scope) as journal:
+        journal.admit(lease.scratch, lease_record(lease))
+        publish_fragment(scope, lease, watchdog)
+        start_owned_unit(scope, lease, watchdog, timeout=3)
 
 
 def attest_service_peer(scope, lease, pid, timeout):

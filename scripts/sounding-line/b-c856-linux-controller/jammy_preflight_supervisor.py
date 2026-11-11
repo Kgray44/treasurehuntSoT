@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from jammy_confined_preflight import CONTROLS, MANAGER_ENDPOINTS, NAMESPACES, verify_runtime_output
+from jammy_preflight_custody import CustodyBinding, base_path
 from jammy_native_runtime_inputs import (
     LISTING_LIMIT, PLAN_SHA256, bind_member_bytes, bounded_read, load_plan, require, staged_paths,
     verify_inventory,
@@ -71,9 +72,12 @@ class Scope:
     run: Run
     nonce: str
     owned: "Ownership" = field(default_factory=lambda: Ownership(), compare=False)
+    custody: CustodyBinding | None = None
 
     @property
     def scratch(self):
+        if self.custody is not None:
+            return base_path(self.run.run_id, self.nonce) / "scratch"
         return Path(f"/run/user/1001/sl-native-{self.run.run_id}-{self.nonce}")
 
     @property
