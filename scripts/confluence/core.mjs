@@ -76,20 +76,17 @@ export function weekFor(date = new Date()) {
     weekday: "short",
   }).formatToParts(date);
   const part = Object.fromEntries(local.map(({ type, value }) => [type, value]));
-  const d = new Date(`${part.year}-${part.month}-${part.day}T12:00:00Z`);
+  const monday = new Date(`${part.year}-${part.month}-${part.day}T12:00:00Z`);
   const weekday = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 7 }[part.weekday];
-  d.setUTCDate(d.getUTCDate() - weekday + 1);
-  const thursday = new Date(d);
-  thursday.setUTCDate(d.getUTCDate() + 3);
-  const firstThursday = new Date(Date.UTC(thursday.getUTCFullYear(), 0, 4));
-  const week = 1 + Math.round(((thursday - firstThursday) / 86400000 - 3 + ((firstThursday.getUTCDay() + 6) % 7)) / 7);
-  const start = `${part.year}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}T00:00:00-04:00`;
-  const endDate = new Date(d);
-  endDate.setUTCDate(d.getUTCDate() + 7);
-  const end = `${part.year}-${String(endDate.getUTCMonth() + 1).padStart(2, "0")}-${String(endDate.getUTCDate()).padStart(2, "0")}T00:00:00-04:00`;
-  return { weekId: `${thursday.getUTCFullYear()}-W${String(week).padStart(2, "0")}`, start, end, timezone: TIMEZONE };
+  monday.setUTCDate(monday.getUTCDate() - weekday + 1);
+  const thursday = new Date(monday);
+  thursday.setUTCDate(monday.getUTCDate() + 3);
+  const isoYear = thursday.getUTCFullYear();
+  const firstMonday = new Date(Date.UTC(isoYear, 0, 4, 12));
+  firstMonday.setUTCDate(firstMonday.getUTCDate() - ((firstMonday.getUTCDay() + 6) % 7));
+  const week = Math.round((monday.getTime() - firstMonday.getTime()) / (7 * 86400000)) + 1;
+  return periodForWeek(`${isoYear}-W${String(week).padStart(2, "0")}`);
 }
-
 function offsetFor(date) {
   const value = new Intl.DateTimeFormat("en-US", { timeZone: TIMEZONE, timeZoneName: "longOffset" })
     .formatToParts(date)
@@ -396,13 +393,15 @@ export async function statusForWeek({ archiveRoot, publicRoot, weekId }) {
   const publicMetadata = join(publicRoot, "Developer_Journals", year, weekId, "metadata.json");
   return {
     weekId,
-    HUMAN_EVIDENCE_READY: Boolean(human),
+    HUMAN_EVIDENCE_PRESENT: Boolean(human),
+    HUMAN_EVIDENCE_READY: Boolean(human?.hasRecoverableSource),
+    HUMAN_EVIDENCE_SOURCE_COUNT: human?.sourceChatCount ?? 0,
     ENGINEERING_EVIDENCE_READY: await exists(engineering),
     DESIGN_AUTHORITY_READY: await exists(join(archiveRoot, "references", "journal-design-tokens.json")),
     MASTER_READY: await exists(journal),
     PUBLISH_SAFETY_READY: await exists(safety),
     PUBLIC_DELIVERY_READY: await exists(publicMetadata),
-    readiness: human && (await exists(engineering)) ? "READY_FOR_SYNTHESIS" : "WAITING_FOR_EVIDENCE",
+    readiness: human?.hasRecoverableSource && (await exists(engineering)) ? "READY_FOR_SYNTHESIS" : "WAITING_FOR_EVIDENCE",
   };
 }
 
@@ -416,23 +415,42 @@ export async function humanEvidenceForWeek(archiveRoot, weekId) {
     validateRecord(record, "human-weekly");
     if (record.weekId !== weekId || record.timezone !== TIMEZONE)
       throw new Error("CONFLUENCE_HUMAN_EVIDENCE_PERIOD_MISMATCH");
-    return { path: canonical, format: "confluence-human-weekly-v1", digest: digest(record) };
+    const sourceChats = record.sourceChats ?? record.source_chats ?? [];
+    return { path: canonical, format: "confluence-human-weekly-v1", digest: digest(record),
+      sourceChatCount: Array.isArray(sourceChats) ? sourceChats.length : 0,
+      hasRecoverableSource: Array.isArray(sourceChats) && sourceChats.length > 0 };
   }
-  const source = join(root, "human-evidence.json");
-  if (!(await exists(source))) return undefined;
-  const record = await readJson(source);
-  if (
-    record?.schema_version !== CONFLUENCE_VERSION ||
-    !["human_weekly_evidence", "weekly_human_evidence"].includes(record?.record_type) ||
-    record?.week?.iso_week !== weekId ||
-    record?.week?.timezone !== TIMEZONE ||
-    !record?.coverage ||
-    !record?.evidence_policy
-  )
-    throw new Error("CONFLUENCE_HUMAN_EVIDENCE_SOURCE_INVALID");
-  return { path: source, format: "confluence-human-source-weekly-v1", digest: digest(record) };
+  // Older weekly captures used several filenames and field spellings. Read them without rewriting source evidence.
+  const candidates = ["human-evidence.json", "weekly-human-evidence.json"];
+  for (const filename of candidates) {
+    const source = join(root, filename);
+    if (!(await exists(source))) continue;
+    const record = await readJson(source);
+    const evidenceWeek = record.weekId ??
+      (typeof record.week === "string" ? record.week : undefined) ??
+      record.week?.iso_week ?? record.week?.isoWeek ?? record.week?.label ??
+      record.period?.iso_week ?? record.period?.weekId;
+    const sourceTimezone = record.timezone ?? record.week?.timezone ??
+      record.week?.local_timezone ?? record.period?.timezone ??
+      record.period?.timezone_context ?? record.period?.timezoneBasis ??
+      record.local_timezone;
+    const declaredType = String(record.recordType ?? record.record_type ?? record.schemaVersion ?? "").toLowerCase();
+    const hasSourcePolicy = Boolean(record.evidence_policy ?? record.sourcePolicy ??
+      record.source_policy ?? record.collectionPolicy ?? record.purpose ??
+      record.project_scope ?? record.collection_scope ?? record.scope);
+    if (evidenceWeek !== weekId || !String(sourceTimezone ?? "").includes(TIMEZONE) ||
+        !declaredType.includes("weekly") || !record.coverage || !hasSourcePolicy)
+      throw new Error("CONFLUENCE_HUMAN_EVIDENCE_SOURCE_INVALID");
+    const sourceChats = record.sourceChats ?? record.source_chats ??
+      record.sourceChatList ?? record.source_chat_list ?? [];
+    const sourceChatCount = Array.isArray(sourceChats) ? sourceChats.length : 0;
+    return { path: source, format: filename === "human-evidence.json" ?
+      "confluence-human-source-weekly-v1" : "confluence-human-weekly-legacy",
+      digest: digest(record), sourceChatCount, hasRecoverableSource: sourceChatCount > 0,
+      coverage: record.coverage };
+  }
+  return undefined;
 }
-
 export async function validateDesign({ archiveRoot, metadataPath }) {
   const tokens = await readJson(join(archiveRoot, "references", "journal-design-tokens.json"));
   for (const [key, value] of Object.entries(DESIGN_TOKENS))
