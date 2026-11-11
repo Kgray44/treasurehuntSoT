@@ -16,7 +16,7 @@ from jammy_confined_preflight import (
     MANAGER_ENDPOINTS, NAMESPACES, clone_policy_attempt, connect, denied, namespace_ids, open_control,
 )
 from jammy_native_runtime_inputs import bind_member_bytes, load_plan, require, verify_inventory
-from jammy_preflight_custody import custody, owner_record, verify_owners_gone
+from jammy_preflight_custody import JournalPublicationError, custody, owner_record, verify_owners_gone
 from jammy_preflight_supervisor import (
     MS_PRIVATE, MS_REC, PreflightFailure, Scope, absent, bounded_command, exercise_cgroup_canary, has_identity,
     load_supervisor_plan, manager_positive_controls, read_mounts, reap_canary, stage_private_root,
@@ -280,7 +280,7 @@ def recover(scope, lease, **options):
             require(previous == terminal and journal.scratch_identity() is None and
                     absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RETIREMENT")
             return True
-        recover_bound(scope, lease, **options)
+        require(recover_bound(scope, lease, **options) is True, "LAUNCH_CUSTODY_RETIREMENT")
         journal.write("retired", terminal)
         return True
 
@@ -288,7 +288,9 @@ def recover(scope, lease, **options):
 def recover_after_cancellation(scope, **options):
     """Reconcile an authenticated prior scope after both launcher processes exit."""
     with custody(scope) as journal:
-        verify_owners_gone(journal.read("reserved"))
+        reserved = journal.read("reserved")
+        require(reserved is not None, "LAUNCH_CUSTODY_JOURNAL_INCOMPLETE")
+        verify_owners_gone(reserved)
         admitted = journal.read("admitted")
         if admitted is None:
             if journal.read("retired") is not None:
@@ -375,7 +377,8 @@ def arm_watchdog(scope, python_worker, tracking, timeout):
                         lease = prepare_lease(scope, python_worker, tracking, controller_pid=controller,
                                               journal=journal)
                 except Exception as error:
-                    reason = ("LAUNCH_WATCHDOG_PREPARE_CUSTODY_HELD" if isinstance(error, PreflightFailure)
+                    reason = ("LAUNCH_WATCHDOG_PREPARE_CUSTODY_HELD"
+                              if isinstance(error, (PreflightFailure, JournalPublicationError))
                               else "LAUNCH_WATCHDOG_PREPARE_REFUSED")
                     try:
                         os.write(write_fd, json.dumps({"refusal": reason}).encode("ascii"))

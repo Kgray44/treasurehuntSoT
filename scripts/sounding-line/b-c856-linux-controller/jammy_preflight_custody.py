@@ -15,6 +15,10 @@ PHASES = ("reserved", "bound", "admitted", "retired")
 MAX_RECORD = 4096
 
 
+class JournalPublicationError(ValueError):
+    """A phase may have reached disk and must remain in custody."""
+
+
 @dataclass(frozen=True)
 class CustodyBinding:
     base: tuple[int, int]
@@ -83,11 +87,13 @@ def verify_owners_gone(record):
 
 @contextmanager
 def custody(scope, timeout=0):
+    binding = scope.custody
+    require(type(binding) is CustodyBinding and type(scope.nonce) is str and
+            re.fullmatch(r"[a-f0-9]{32}", scope.nonce) and scope.run.unit_nonce == scope.nonce,
+            "LAUNCH_CUSTODY_BINDING")
+    CustodyBinding.from_values((*binding.base, *binding.lock))
     import fcntl
 
-    binding = scope.custody
-    require(type(binding) is CustodyBinding, "LAUNCH_CUSTODY_BINDING")
-    CustodyBinding.from_values((*binding.base, *binding.lock))
     base = scope.scratch.parent
     require(base == base_path(scope.run.run_id, scope.nonce) and base.resolve(strict=True) == base,
             "LAUNCH_CUSTODY_BASE")
@@ -125,7 +131,8 @@ class Journal:
         self.scope = scope
         self.fd = base_fd
         self.binding = {"source": scope.run.source, "run": scope.run.run_id, "attempt": scope.run.attempt,
-                        "nonce": scope.nonce, "base": list(scope.custody.base), "lock": list(scope.custody.lock)}
+                        "nonce": scope.nonce, "unit": scope.run.unit,
+                        "base": list(scope.custody.base), "lock": list(scope.custody.lock)}
 
     def read(self, phase):
         require(phase in PHASES, "LAUNCH_CUSTODY_PHASE")
@@ -157,19 +164,25 @@ class Journal:
         # between link and unlink, both names must identify the same inode.
         require(self.read(phase) is None, "LAUNCH_CUSTODY_PHASE_EXISTS")
         pending = phase + ".pending"
-        fd = os.open(pending, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
-                     0o600, dir_fd=self.fd)
         try:
-            require(os.write(fd, data) == len(data), "LAUNCH_CUSTODY_SHORT_WRITE")
-            os.fsync(fd)
-            os.link(pending, phase, src_dir_fd=self.fd, dst_dir_fd=self.fd, follow_symlinks=False)
-            os.fsync(self.fd)
-            require(identity(os.stat(pending, dir_fd=self.fd, follow_symlinks=False)) == identity(os.fstat(fd)),
-                    "LAUNCH_CUSTODY_RECORD_LINK")
-            os.unlink(pending, dir_fd=self.fd)
-            os.fsync(self.fd)
-        finally:
-            os.close(fd)
+            fd = os.open(pending, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+                         0o600, dir_fd=self.fd)
+        except FileExistsError as error:
+            raise JournalPublicationError("LAUNCH_CUSTODY_JOURNAL_PENDING") from error
+        try:
+            try:
+                require(os.write(fd, data) == len(data), "LAUNCH_CUSTODY_SHORT_WRITE")
+                os.fsync(fd)
+                os.link(pending, phase, src_dir_fd=self.fd, dst_dir_fd=self.fd, follow_symlinks=False)
+                os.fsync(self.fd)
+                require(identity(os.stat(pending, dir_fd=self.fd, follow_symlinks=False)) == identity(os.fstat(fd)),
+                        "LAUNCH_CUSTODY_RECORD_LINK")
+                os.unlink(pending, dir_fd=self.fd)
+                os.fsync(self.fd)
+            finally:
+                os.close(fd)
+        except (OSError, ValueError) as error:
+            raise JournalPublicationError("LAUNCH_CUSTODY_JOURNAL_PUBLICATION") from error
 
     def scratch_identity(self):
         name = self.scope.scratch.name

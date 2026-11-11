@@ -2,6 +2,7 @@ import os
 import sys
 import unittest
 from contextlib import contextmanager
+from dataclasses import replace
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
@@ -10,7 +11,8 @@ import jammy_preflight_launcher as launcher
 from jammy_preflight_supervisor import Scope
 from test_jammy_preflight_launcher import LEASE, RUN, SCOPE
 
-BOUND = Scope(RUN, SCOPE.nonce, custody=custody.CustodyBinding((10, 1), (10, 2)))
+BOUND = Scope(replace(RUN, unit_nonce=SCOPE.nonce), SCOPE.nonce,
+              custody=custody.CustodyBinding((10, 1), (10, 2)))
 OWNERS = {"boot": "recorded-boot", "owners": [[51, 100], [52, 200]]}
 
 
@@ -55,6 +57,14 @@ class CustodyTest(unittest.TestCase):
             self.journal.reserve(OWNERS)
         self.assertEqual(self.journal.records, {})
 
+    def test_recovery_cannot_use_unsuffixed_or_different_unit(self):
+        for nonce in (None, "b" * 32):
+            wrong = replace(BOUND, run=replace(RUN, unit_nonce=nonce))
+            with (patch.object(os, "open") as opened,
+                  self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_BINDING")):
+                launcher.recover_after_cancellation(wrong)
+            opened.assert_not_called()
+
     def test_contended_lock_exposes_no_journal_to_recovery(self):
         lock = Mock(LOCK_EX=1, LOCK_NB=2)
         lock.flock.side_effect = BlockingIOError()
@@ -93,6 +103,21 @@ class CustodyTest(unittest.TestCase):
             journal.write("reserved", OWNERS)
         self.assertEqual(events, [("fsync", 9), ("link", ("reserved.pending", "reserved")),
                                   ("fsync", 8), ("unlink", ("reserved.pending",)), ("fsync", 8)])
+
+    def test_partial_reservation_is_reported_as_retained_custody(self):
+        journal = custody.Journal(BOUND, 8)
+        with (patch.object(journal, "read", return_value=None),
+              patch.object(os, "O_NOFOLLOW", 1 << 21, create=True),
+              patch.object(os, "O_CLOEXEC", 1 << 22, create=True),
+              patch.object(os, "open", return_value=9),
+              patch.object(os, "write", return_value=1),
+              patch.object(os, "link") as link, patch.object(os, "unlink") as unlink,
+              patch.object(os, "close") as close):
+            with self.assertRaisesRegex(custody.JournalPublicationError, "LAUNCH_CUSTODY_JOURNAL_PUBLICATION"):
+                journal.write("reserved", OWNERS)
+        link.assert_not_called()
+        unlink.assert_not_called()
+        close.assert_called_once_with(9)
 
     def test_process_loss_after_mkdir_before_binding_recovers_only_empty_scratch(self):
         self.journal.reserve(OWNERS)
