@@ -1,0 +1,31 @@
+# Local publication candidate. Keep the job disabled until native authorization.
+name: Sounding Line Jammy confined runtime preflight
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact independently reviewed protected source
+        type: string
+        required: true
+      operation:
+        description: Separately authorized confined diagnostic action
+        type: choice
+        options:
+          - confined-loader-and-denials-only
+        required: true
+permissions: {}
+concurrency:
+  group: sounding-line-jammy-confined-preflight
+  cancel-in-progress: false
+jobs:
+  confined:
+    # A dispatch actor is an identity check, never approval to run.
+    if: ${{ false }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Refuse while native publication and execution are held
+        shell: bash
+        run: |
+          printf '%s\n' PREFLIGHT_ACTION_NOT_AUTHORIZED >&2
+          exit 1

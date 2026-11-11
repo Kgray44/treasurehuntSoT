@@ -1,0 +1,66 @@
+{
+  "kind": "SOUNDING_LINE_JAMMY_CONFINED_PREFLIGHT_DRAFT_V1",
+  "protectedSource": "0f5ec2311999324d933ad334c8d9b794b2ad51ec",
+  "protectedTree": "2094b0c7195009ca3c380c010e9939f9ec3dad74",
+  "runtimeInputPlanSha256": "6f6e9900e45aac6b8e7fc4b5063fdffb1c12c073c48f53b51562eb9b52cee273",
+  "systemdCapabilityRun": 42883672410,
+  "runner": {
+    "label": "ubuntu-22.04",
+    "image": "20261101.347.1",
+    "kernel": "6.8.0-1070-azure",
+    "architecture": "x86_64",
+    "uid": 1001
+  },
+  "limits": {
+    "jobSeconds": 300,
+    "inventorySeconds": 90,
+    "jobDeadlineSeconds": 8,
+    "startupSeconds": 5,
+    "runtimeSeconds": 12,
+    "stopSeconds": 2,
+    "hostScratchBytes": 67108864,
+    "minimumHostFreeBytesAfterScratch": 2147483648,
+    "privateTmpfsBytes": 16777216,
+    "privateTmpfsInodes": 256,
+    "memoryBytes": 134217728,
+    "swapBytes": 0,
+    "tasks": 8,
+    "commandOutputBytesPerStream": 8192
+  },
+  "launchCommands": [
+    ["/lib64/ld-linux-x86-64.so.2", "--inhibit-cache", "--library-path",
+     "/usr/lib/x86_64-linux-gnu", "--list", "/usr/bin/bwrap"],
+    ["/usr/bin/bwrap", "--version"]
+  ],
+  "requiredDenials": [
+    "sameUidManagerAccess", "cgroupRemount", "cgroupMigration", "cgroupLimitMutation"
+  ],
+  "launcher": {
+    "entry": "jammy_preflight_worker.py",
+    "controller": "controller",
+    "unitIdentity": "provider run plus exclusive 128-bit scope nonce",
+    "watchdog": "controller pidfd, separate session, no named stop or recursive cleanup",
+    "passiveExpirySeconds": 27,
+    "recoverySeconds": 32,
+    "runtimeAdapterLiveVerified": false
+  },
+  "beforeDispatch": [
+    "Source-bind exact workflow, owner authorization, protected head, and attempt one",
+    "Bind the held workflow to the reviewed launcher and exact authenticated public archive acquisition",
+    "Review how runner-wide cancellation preserves recovery custody when both controller and watchdog are terminated"
+  ],
+  "nativeAdmissionRequires": [
+    "Prove scoped user-manager delegation is available for canary leaves under the bounded service",
+    "Verify the scoped unit and passive expiry on the exact runner without stopping any unit by name",
+    "Attest the valid sacrificial cgroup v2 mount and migration target",
+    "Prove remount, migration and limit mutation denial against valid positive controls",
+    "Prove effective cgroup bounds and membership for every writer before staging any member",
+    "Use authenticated inventory and bind all seven members to a fresh private read-only root",
+    "Verify independent watchdog recovery after abrupt controller termination and partial staging",
+    "Verify the service, children, mounts, cgroup, fragment and scratch are gone"
+  ],
+  "runtimeAuthorized": false,
+  "qualification": false,
+  "externalIsolationProved": false,
+  "reuseAuthorized": false
+}
