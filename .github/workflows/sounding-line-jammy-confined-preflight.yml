@@ -1,4 +1,4 @@
-# Held beside the controller so GitHub cannot register or dispatch this draft.
+# Local publication candidate. Keep the job disabled until native authorization.
 name: Sounding Line Jammy confined runtime preflight
 on:
   workflow_dispatch:
