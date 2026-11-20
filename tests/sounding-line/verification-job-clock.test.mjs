@@ -170,6 +170,9 @@ test("retained native proc wire format is readable without mistaking replay for 
 test("the live provider clock uses credentials only in the protected workflow", () => {
   const workflow = readFileSync(new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url), "utf8");
   const finalCheck = workflow.split("\n  final-check:\n")[1];
+  const checkout = finalCheck.split("- uses: actions/checkout@v4")[1].split("\n      - ")[0];
+  assert.match(checkout, /path: authority/u);
+  assert.match(checkout, /persist-credentials: false/u);
   const clock = finalCheck.indexOf("- name: Bind the hosted verification clock on protected source");
   const install = finalCheck.indexOf("- run: npm ci --ignore-scripts");
   assert(clock >= 0 && clock < install);

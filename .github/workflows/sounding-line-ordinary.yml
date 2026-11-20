@@ -417,6 +417,7 @@ jobs:
         with:
           ref: ${{ steps.source.outputs.base }}
           path: authority
+          persist-credentials: false
           fetch-depth: 1
           sparse-checkout: |
             scripts
