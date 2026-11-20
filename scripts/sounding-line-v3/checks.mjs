@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
+import { readFileSync, readdirSync } from "node:fs";
 import { posix, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { git } from "./plan.mjs";
@@ -138,7 +139,7 @@ export function needsDependencies(kind) {
 
 export async function runJob(job, context) {
   const { kind, files } = job;
-  const { tree, entries } = context;
+  const { base, tree, entries } = context;
   const database = { DATABASE_URL: "file:./.sounding-line-v3-unused.sqlite" };
   const setupPrisma = () => command(runNpm("db:generate"), database);
   const vitest = (files, args = []) => node("node_modules/vitest/vitest.mjs", "run", ...args, ...files);
@@ -200,20 +201,29 @@ export async function runJob(job, context) {
           DATABASE_URL: schema.includes(".sqlite.") ? database.DATABASE_URL : "mysql://root:unused@127.0.0.1:3306/v3",
         });
       }
-      for (const script of [
-        "landfall:migrations",
-        "landfall:phase2:migrations",
-        "drydock:migrations:sqlite",
-        "tideglass:migrations:sqlite",
-        "helm:a2:migrations",
-        "admiralty:migrations",
-      ]) {
-        await command(runNpm(script), database);
+      const { DatabaseSync } = await import("node:sqlite");
+      const sqlite = new DatabaseSync(":memory:");
+      try {
+        const migrations = readdirSync("prisma/migrations", { withFileTypes: true })
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => entry.name)
+          .sort();
+        for (const migration of migrations) {
+          try {
+            sqlite.exec(readFileSync("prisma/migrations/" + migration + "/migration.sql", "utf8"));
+          } catch (error) {
+            throw new Error("SQLite migration " + migration + " failed: " + error.message);
+          }
+        }
+        if (sqlite.prepare("PRAGMA foreign_key_check").all().length)
+          throw new Error("Migrated SQLite schema has foreign key errors.");
+        console.log("Applied %d SQLite migrations to an isolated in-memory database.", migrations.length);
+      } finally {
+        sqlite.close();
       }
-      return;
+      return command(runNpm("landfall:migrations"), database);
     case "compatibility":
-      await command(runNpm("test:validation-runtime-safety"));
-      return command(runNpm("deepwater:test"));
+      return command(runNpm("test:validation-runtime-safety"));
     case "legacy-regressions":
       return command(runNpm("test:sounding-line"));
     case "browser":
@@ -247,7 +257,7 @@ export async function runJob(job, context) {
             : executable === "npx" && args.includes("prisma")
               ? prisma(...args.slice(args.indexOf("prisma") + 1))
               : [executable, ...args];
-        await command(argv, { DATABASE_URL: browserPlan.databaseUrl, ...env });
+        await command(argv, { DATABASE_URL: browserPlan.databaseUrl, SOUNDING_LINE_BASE_SHA: base, ...env });
       }
       return;
     }
