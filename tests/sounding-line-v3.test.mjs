@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { classifyFormatting } from "../scripts/sounding-line-v3/format.mjs";
+import { reusableSource } from "../scripts/sounding-line-v3/reuse.mjs";
 import { disposition, prerequisites } from "../scripts/sounding-line-v3/integrate.mjs";
 import { metadata, passive, registry, select } from "../scripts/sounding-line-v3/plan.mjs";
 
@@ -53,7 +55,7 @@ test("Formatting and workflow changes take distinct maintenance routes", () => {
   assert.deepEqual(names(formatting), ["diff", "format"]);
   const workflow = plan([".github/workflows/sounding-line-v3.yml"]);
   assert.equal(workflow.category, "maintenance");
-  assert.deepEqual(names(workflow), ["diff", "workflow"]);
+  assert.deepEqual(names(workflow), ["diff", "format", "workflow"]);
 });
 
 test("Wayfarer and Landfall select registered coverage for their changed code", () => {
@@ -119,6 +121,60 @@ test("A changed project test executes directly without widening to its whole pro
   assert.ok(fixture);
   const result = plan([fixture]);
   assert.equal(result.category, "maintenance");
-  assert.deepEqual(names(result), ["diff", "changed-tests"]);
+  assert.deepEqual(names(result), ["diff", "format", "changed-tests"]);
   assert.deepEqual(result.jobs.at(-1).files, [fixture]);
+});
+
+test("full formatting reports only exact unchanged debt under the same formatter policy", () => {
+  const baseline = { prettier: "3.6.2", config: { ".prettierrc.json": "config" }, files: { "docs/old.md": "old" } };
+  const files = new Map([
+    [".prettierrc.json", "config"],
+    ["docs/old.md", "old"],
+    ["src/new.ts", "fresh"],
+  ]);
+  const findings = ["docs/old.md", "src/new.ts"];
+  const classify = (changed = [], version = "3.6.2") =>
+    classifyFormatting(findings, new Set(changed), files, baseline, version);
+  assert.deepEqual(classify(), { debt: ["docs/old.md"], violations: ["src/new.ts"] });
+  assert.deepEqual(classify(["docs/old.md"]).violations, findings);
+  assert.deepEqual(classify([], "4.0.0").violations, findings);
+  files.set(".prettierrc.json", "updated");
+  assert.deepEqual(classify().violations, findings);
+  files.set(".prettierrc.json", "config");
+  files.set("docs/old.md", "different bytes");
+  assert.deepEqual(classify().violations, findings);
+});
+
+test("stylesheets, fixtures and dependency changes remain reuse inputs", () => {
+  for (const file of [
+    "src/landfall/chart.css",
+    "src/components/wayfarer/profile.css",
+    "package-lock.json",
+    "prisma/schema.sqlite.prisma",
+    "tests/fixtures/profile.json",
+    "testing/generated/active-test-registry.json",
+  ])
+    assert.ok(reusableSource(file), file);
+  assert.equal(reusableSource("README.md"), false);
+});
+
+test("formatting applies to changed code even under a documentation label", () => {
+  const result = plan(["src/wayfarer/profile.ts"], "", { mode: "documentation" });
+  assert.equal(result.category, "product");
+  assert.ok(names(result).includes("format"));
+  assert.ok(names(result).includes("unit.wayfarer"));
+});
+
+test("registry changes and unmapped application paths explain their conservative coverage", () => {
+  const registryChange = plan(["testing/impact-map.json"], "{}", { mode: "documentation" });
+  assert.equal(registryChange.category, "maintenance");
+  assert.ok(names(registryChange).includes("workflow"));
+  assert.ok(names(registryChange).includes("all-vitest"));
+  assert.ok(registryChange.notes.some((reason) => /Verification registry/.test(reason)));
+
+  const unknown = plan(["future-module-in-stabilization.ts"]);
+  assert.equal(unknown.category, "product");
+  assert.ok(names(unknown).includes("all-vitest"));
+  assert.ok(names(unknown).includes("types"));
+  assert.ok(unknown.notes.some((reason) => /Unmapped path/.test(reason)));
 });

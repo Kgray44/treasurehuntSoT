@@ -4,7 +4,8 @@ import { randomBytes } from "node:crypto";
 import { mkdirSync, mkdtempSync, readFileSync, readdirSync } from "node:fs";
 import { posix, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { git } from "./plan.mjs";
+import { formatApplicable, git } from "./plan.mjs";
+import { checkFormatting } from "./format.mjs";
 
 const npm =
   process.platform === "win32"
@@ -243,14 +244,17 @@ export async function runJob(job, context) {
       await setupPrisma();
       return command(runNpm("typecheck"), database);
     case "format": {
-      const paths =
-        context.plan.category === "full"
-          ? ["."]
-          : entries.filter(({ file, status }) => status !== "D" && isText.test(file)).map(({ file }) => file);
-      for (const part of chunks(paths)) {
-        if (part.length) await command(node("node_modules/prettier/bin/prettier.cjs", "--check", ...part));
-      }
-      return;
+      const full = context.plan.category === "full";
+      const paths = full
+        ? [["."]]
+        : chunks(
+            entries
+              .filter(
+                ({ file, mode, status }) => status !== "D" && /^100(?:644|755)$/.test(mode) && formatApplicable(file),
+              )
+              .map(({ file }) => file),
+          ).filter((part) => part.length);
+      return checkFormatting({ tree, entries, full, paths });
     }
     case "build":
       await setupPrisma();

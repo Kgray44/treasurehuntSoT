@@ -76,6 +76,14 @@ test("Journey B: Anonymous Chronicle start", async ({ page }) => {
   await expect(page).toHaveURL(/\/play\/[^/]+\/session\/[^/]+$/u);
   const anonymousSession = await db.taleSession.findFirst({ where: { ownerLabel: "Anonymous Harbor Guest" } });
   expect(anonymousSession).toBeTruthy();
+
+  const opening = page.getByRole("dialog", { name: "Open the voyage journal" });
+  await expect(opening).toBeVisible();
+  await opening.getByRole("button", { name: "Open the journal" }).click();
+  await expect(page.locator(".chronicle-journal-shell")).toHaveAttribute("data-journal-phase", "JOURNAL_READY", {
+    timeout: 30_000,
+  });
+  await expect(opening).toBeHidden();
   const menu = await accountMenu(page, "Account");
   await expect(menu.getByRole("link", { name: "Create Account", exact: true })).toBeVisible();
 });
