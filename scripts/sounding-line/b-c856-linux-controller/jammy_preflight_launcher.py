@@ -16,7 +16,7 @@ from jammy_confined_preflight import (
     MANAGER_ENDPOINTS, NAMESPACES, clone_policy_attempt, connect, denied, namespace_ids, open_control,
 )
 from jammy_native_runtime_inputs import bind_member_bytes, load_plan, require, verify_inventory
-from jammy_preflight_custody import JournalPublicationError, custody, owner_record, verify_owners_gone
+from jammy_preflight_custody import JournalPublicationError, custody, owner_record, verify_owner_gone, verify_owners_gone
 from jammy_preflight_supervisor import (
     MS_PRIVATE, MS_REC, PreflightFailure, Scope, absent, bounded_command, exercise_cgroup_canary, has_identity,
     load_supervisor_plan, manager_positive_controls, read_mounts, reap_canary, stage_private_root,
@@ -285,11 +285,16 @@ def recover(scope, lease, **options):
         return True
 
 
-def recover_after_cancellation(scope, **options):
+def recover_after_cancellation(scope, *, bootstrap_owner=None, **options):
     """Reconcile an authenticated prior scope after both launcher processes exit."""
     with custody(scope) as journal:
         reserved = journal.read("reserved")
-        require(reserved is not None, "LAUNCH_CUSTODY_JOURNAL_INCOMPLETE")
+        if reserved is None:
+            require(bootstrap_owner is not None, "LAUNCH_CUSTODY_JOURNAL_INCOMPLETE")
+            verify_owner_gone(bootstrap_owner)
+            require(absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RECOVERY_FRAGMENT")
+            journal.retire_pre_reservation()
+            return True
         verify_owners_gone(reserved)
         admitted = journal.read("admitted")
         if admitted is None:

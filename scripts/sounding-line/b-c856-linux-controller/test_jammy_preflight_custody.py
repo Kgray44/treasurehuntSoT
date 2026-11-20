@@ -34,6 +34,46 @@ class FixtureJournal(custody.Journal):
         return self.current_scratch
 
 
+class PreReservationRecoveryTest(unittest.TestCase):
+    def recover(self, entries):
+        journal = FixtureJournal()
+
+        @contextmanager
+        def reopen(_scope):
+            yield journal
+
+        with (patch.object(launcher, "custody", reopen),
+              patch.object(launcher, "verify_owner_gone", create=True) as gone,
+              patch.object(launcher, "absent", return_value=True),
+              patch.object(os, "listdir", return_value=entries)):
+            try:
+                return launcher.recover_after_cancellation(BOUND, bootstrap_owner=[51, 100])
+            finally:
+                self.journal = journal
+                self.gone = gone
+
+    def test_empty_scope_is_retired_before_a_late_watchdog_can_reserve(self):
+        self.assertTrue(self.recover([custody.LOCK]))
+        self.gone.assert_called_once_with([51, 100])
+        self.assertEqual(self.journal.records, {"retired": {"admitted": False}})
+        with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_ALREADY_RESERVED"):
+            self.journal.reserve(OWNERS)
+
+    def test_still_running_bootstrap_owner_refuses_even_with_empty_custody(self):
+        with patch.object(custody, "process_identity", return_value=("S", 100)):
+            with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_ORIGINAL_PROCESSES_LIVE"):
+                custody.verify_owner_gone([51, 100])
+        with patch.object(custody, "process_identity", return_value=("S", 101)):
+            custody.verify_owner_gone([51, 100])
+
+    def test_pending_or_unexpected_entries_are_retained(self):
+        for name in ("reserved.pending", "scratch"):
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_BOOTSTRAP_AMBIGUOUS"):
+                    self.recover([custody.LOCK, name])
+                self.assertEqual(self.journal.records, {})
+
+
 class CustodyTest(unittest.TestCase):
     def setUp(self):
         self.journal = FixtureJournal()

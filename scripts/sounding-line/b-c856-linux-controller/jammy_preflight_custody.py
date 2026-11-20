@@ -113,26 +113,33 @@ def process_identity(pid):
     return fields[0], int(fields[19])
 
 
+def capture_owner(pid):
+    info = process_identity(pid)
+    require(info is not None and info[0] not in ("Z", "X", "x"), "LAUNCH_CUSTODY_PID")
+    return [pid, info[1]]
+
+
 def owner_record(controller, watchdog):
     require(controller != watchdog, "LAUNCH_CUSTODY_PID")
-    actors = []
-    for pid in (controller, watchdog):
-        info = process_identity(pid)
-        require(info is not None and info[0] not in ("Z", "X", "x"), "LAUNCH_CUSTODY_PID")
-        actors.append([pid, info[1]])
-    return {"boot": boot_id(), "owners": actors}
+    return {"boot": boot_id(), "owners": [capture_owner(pid) for pid in (controller, watchdog)]}
+
+
+def verify_owner_gone(owner):
+    require(type(owner) is list and len(owner) == 2 and all(type(item) is int for item in owner) and
+            1 < owner[0] < 2**31 and owner[1] > 0, "LAUNCH_CUSTODY_OWNER_RECORD")
+    pid, start = owner
+    current = process_identity(pid)
+    require(current is None or current[1] != start or current[0] in ("Z", "X", "x"),
+            "LAUNCH_CUSTODY_ORIGINAL_PROCESSES_LIVE")
 
 
 def verify_owners_gone(record):
     require(type(record) is dict and set(record) == {"boot", "owners"} and record["boot"] == boot_id() and
             type(record["owners"]) is list and len(record["owners"]) == 2 and
-            all(type(row) is list and len(row) == 2 and all(type(item) is int and item > 0 for item in row)
-                for row in record["owners"]) and record["owners"][0][0] != record["owners"][1][0],
-            "LAUNCH_CUSTODY_OWNER_RECORD")
-    for pid, start in record["owners"]:
-        current = process_identity(pid)
-        require(current is None or current[1] != start or current[0] in ("Z", "X", "x"),
-                "LAUNCH_CUSTODY_ORIGINAL_PROCESSES_LIVE")
+            all(type(row) is list and len(row) == 2 for row in record["owners"]) and
+            record["owners"][0][0] != record["owners"][1][0], "LAUNCH_CUSTODY_OWNER_RECORD")
+    for owner in record["owners"]:
+        verify_owner_gone(owner)
 
 
 @contextmanager
@@ -260,6 +267,16 @@ class Journal:
                 self.read("admitted") is None and self.read("retired") is None and
                 self.scratch_identity() == scratch, "LAUNCH_CUSTODY_ADMIT_PHASE")
         self.write("admitted", lease)
+
+    def retire_pre_reservation(self):
+        """Tombstone empty custody while holding the lock so a late watchdog cannot reserve it."""
+        retired = self.read("retired")
+        entries = set(os.listdir(self.fd))
+        require((retired is None and entries == {LOCK}) or
+                (retired == {"admitted": False} and entries == {LOCK, "retired"}),
+                "LAUNCH_CUSTODY_BOOTSTRAP_AMBIGUOUS")
+        if retired is None:
+            self.write("retired", {"admitted": False})
 
     def recover_empty(self):
         require(self.read("reserved") is not None and self.read("admitted") is None and

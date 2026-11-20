@@ -12,7 +12,7 @@ from pathlib import Path
 import jammy_preflight_worker as worker
 from jammy_native_inventory import collect_inventory
 from jammy_native_runtime_inputs import bind_member_bytes, bounded_read, load_plan, require, sha256, verify_inventory
-from jammy_preflight_custody import MAX_RECORD, CustodyBinding, boot_id, identity, private_directory, provision_binding
+from jammy_preflight_custody import MAX_RECORD, CustodyBinding, boot_id, capture_owner, identity, private_directory, provision_binding
 from jammy_preflight_launcher import recover_after_cancellation
 from jammy_preflight_provider import authenticate_jammy_preflight_run
 from jammy_preflight_supervisor import Run, Scope, load_supervisor_plan, verify_run
@@ -85,14 +85,14 @@ def custody_receipt_name(run):
     return f"jammy-preflight-custody-{run.run_id}.json"
 
 
-def encode_custody_receipt(scope, approval, receipt_sha256, boot):
+def encode_custody_receipt(scope, approval, receipt_sha256, boot, controller):
     run, binding = scope.run, scope.custody
     record = {
         "kind": "JAMMY_PREFLIGHT_CUSTODY_V1",
         "runId": run.run_id, "attempt": run.attempt, "workflowId": approval["workflowId"],
         "source": run.source, "tree": approval["tree"], "workflowSha256": approval["workflowSha256"],
         "inventoryReceiptSha256": receipt_sha256,
-        "boot": boot, "nonce": scope.nonce, "unit": run.unit,
+        "boot": boot, "controller": controller, "nonce": scope.nonce, "unit": run.unit,
         "base": list(binding.base), "lock": list(binding.lock),
     }
     return json.dumps(record, sort_keys=True, separators=(",", ":")).encode("ascii")
@@ -106,6 +106,7 @@ def provision_preflight_scope(prepared, receipt_dir_fd):
             "JAMMY_PREPARATION_CUSTODY_OUTPUT")
     nonce = secrets.token_hex(16)
     boot = boot_id()
+    controller = capture_owner(os.getpid())
     name = custody_receipt_name(run)
     try:
         receipt_fd = os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
@@ -117,7 +118,7 @@ def provision_preflight_scope(prepared, receipt_dir_fd):
         scope = Scope(replace(run, unit_nonce=nonce), nonce, custody=binding)
         approval = {"workflowId": prepared.workflow_id, "tree": prepared.tree,
                     "workflowSha256": prepared.workflow_sha256}
-        data = encode_custody_receipt(scope, approval, sha256(prepared.receipt), boot)
+        data = encode_custody_receipt(scope, approval, sha256(prepared.receipt), boot, controller)
         require(len(data) <= MAX_RECORD, "JAMMY_PREPARATION_CUSTODY_SIZE")
         require(os.write(receipt_fd, data) == len(data), "JAMMY_PREPARATION_CUSTODY_SHORT_WRITE")
         os.fsync(receipt_fd)
@@ -164,10 +165,10 @@ def recover_preflight_scope(run_id, approval, token, receipt_dir_fd, expected_re
     binding = CustodyBinding.from_values(proof["base"] + proof["lock"])
     scope = Scope(replace(run, unit_nonce=nonce), nonce, custody=binding)
     receipt_sha256 = load_plan()["inventory"]["receiptSha256"]
-    require(data == encode_custody_receipt(scope, approval, receipt_sha256, boot_id()),
+    require(data == encode_custody_receipt(scope, approval, receipt_sha256, boot_id(), proof.get("controller")),
             "JAMMY_PREPARATION_CUSTODY_RECEIPT")
     # The launcher independently verifies the saved inodes, lease, and terminated owners.
-    return recover_after_cancellation(scope)
+    return recover_after_cancellation(scope, bootstrap_owner=proof.get("controller"))
 
 
 def run_published_preflight(run_id, approval, token, receipt, receipt_dir_fd, evidence):

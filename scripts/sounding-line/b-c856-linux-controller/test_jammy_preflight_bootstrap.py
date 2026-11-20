@@ -89,6 +89,7 @@ class CustodyReceiptTest(unittest.TestCase):
             stack.enter_context(patch.object(os, name, 1 << index, create=True))
         stack.enter_context(patch.object(preparation.secrets, "token_hex", return_value=NONCE))
         stack.enter_context(patch.object(preparation, "boot_id", return_value="recorded-boot"))
+        stack.enter_context(patch.object(preparation, "capture_owner", return_value=[51, 100]))
         root = SimpleNamespace(st_dev=10, st_ino=1, st_uid=1001, st_mode=0o40700)
         self.file = SimpleNamespace(st_dev=10, st_ino=2, st_uid=1001, st_mode=0o100600, st_nlink=1)
         self.file.st_size = 0
@@ -146,7 +147,7 @@ class CustodyReceiptTest(unittest.TestCase):
     def test_independent_recovery_reopens_exact_prior_scope(self):
         scope, digest = preparation.provision_preflight_scope(self.prepared, 7)
         self.assertTrue(self.recover(digest))
-        self.recovery.assert_called_once_with(scope)
+        self.recovery.assert_called_once_with(scope, bootstrap_owner=[51, 100])
 
     def test_changed_boot_or_substituted_receipt_never_attempt_cleanup(self):
         _, digest = preparation.provision_preflight_scope(self.prepared, 7)
