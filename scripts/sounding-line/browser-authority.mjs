@@ -308,6 +308,12 @@ function nextServerMode(argumentsList) {
 }
 
 export function browserAuthorityExecutionTimeoutMs(environment = process.env) {
+  if (
+    environment.SOUNDING_LINE_V3_FULL_BROWSER === "1" &&
+    environment.SOUNDING_LINE_TASK_OWNED_HTTP === "1" &&
+    environment.SOUNDING_LINE_SUITE_PROFILE
+  )
+    return 45 * 60_000;
   return environment.SOUNDING_LINE_SUITE_PROFILE === "generic" && environment.SOUNDING_LINE_PR_NUMBER === "776"
     ? 45 * 60_000
     : 15 * 60_000;

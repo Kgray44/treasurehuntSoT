@@ -141,7 +141,7 @@ function checkDocs({ base, tree, entries, read }) {
   if (invalid.length) throw new Error(invalid.join("\n"));
 }
 
-async function runBrowserProfile(profileId, files, tree) {
+async function runBrowserProfile(profileId, files, tree, fullBrowser) {
   const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
     "../sounding-line/browser-suite-profiles.mjs"
   );
@@ -158,6 +158,7 @@ async function runBrowserProfile(profileId, files, tree) {
     DATABASE_URL: "file:" + db.replaceAll("\\", "/"),
     SOUNDING_LINE_SUITE_PROFILE: profileId,
     SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+    SOUNDING_LINE_V3_FULL_BROWSER: fullBrowser ? "1" : "0",
     FOREVER_VALIDATION_ISOLATION: "1",
     FOREVER_VALIDATION_NONCE_HASH: randomBytes(32).toString("hex"),
     FOREVER_VALIDATION_PRODUCTION_IDENTITY: "1",
@@ -321,11 +322,26 @@ export async function runJob(job, context) {
       const commands = verificationCommands(browserPlan);
       const build = commands.findIndex(([executable, args]) => executable === "npm" && args.join(" ") === "run build");
       if (build < 0) throw new Error("Browser fixture planner did not provide a build.");
-      for (const [executable, args] of commands.slice(build)) {
+      await command(runNpm("build"), {
+        DATABASE_URL: browserPlan.databaseUrl,
+        SOUNDING_LINE_BASE_SHA: base,
+        SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+        SOUNDING_LINE_SUITE_PROFILE: "v3-browser",
+      });
+      const fullBrowser = kind === "browser-full";
+      const profileFailures = [];
+      for (const [executable, args] of commands.slice(build + 1)) {
         if (args[0] === "scripts/sounding-line/run-browser-suite.mjs") {
           // Dedicated runners can restore the normal MySQL client on exit.
           await setupPrisma();
-          await runBrowserProfile(args[args.indexOf("--profile") + 1], args.slice(args.indexOf("--") + 1), tree);
+          const profile = args[args.indexOf("--profile") + 1];
+          try {
+            await runBrowserProfile(profile, args.slice(args.indexOf("--") + 1), tree, fullBrowser);
+          } catch (error) {
+            if (!fullBrowser) throw error;
+            profileFailures.push(profile);
+            console.error("Browser profile %s failed: %s", profile, error.message);
+          }
           continue;
         }
         const env = verificationEnvironment(browserPlan, executable, args);
@@ -337,6 +353,7 @@ export async function runJob(job, context) {
               : [executable, ...args];
         await command(argv, { DATABASE_URL: browserPlan.databaseUrl, SOUNDING_LINE_BASE_SHA: base, ...env });
       }
+      if (profileFailures.length) throw new Error("Failed browser profiles: " + profileFailures.join(", "));
       return;
     }
     default:

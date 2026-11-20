@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { browserAuthorityExecutionTimeoutMs } from "../scripts/sounding-line/browser-authority.mjs";
 import { classifyFormatting } from "../scripts/sounding-line-v3/format.mjs";
 import { reusableSource } from "../scripts/sounding-line-v3/reuse.mjs";
 import { disposition, prerequisites } from "../scripts/sounding-line-v3/integrate.mjs";
@@ -91,6 +92,13 @@ test("Bridgewatch changes and full verification use the Bridgewatch package test
     assert.equal(selection.jobs.find(({ id }) => id === "unit.bridgewatch")?.kind, "bridgewatch-vitest");
     assert.ok(!names(selection).includes("changed-tests"));
   }
+});
+
+test("only task-owned full browser profiles receive the larger V3 execution budget", () => {
+  const profile = { SOUNDING_LINE_SUITE_PROFILE: "lanternwake-phase3", SOUNDING_LINE_TASK_OWNED_HTTP: "1" };
+  assert.equal(browserAuthorityExecutionTimeoutMs(profile), 15 * 60_000);
+  assert.equal(browserAuthorityExecutionTimeoutMs({ SOUNDING_LINE_V3_FULL_BROWSER: "1" }), 15 * 60_000);
+  assert.equal(browserAuthorityExecutionTimeoutMs({ ...profile, SOUNDING_LINE_V3_FULL_BROWSER: "1" }), 45 * 60_000);
 });
 
 test("Owner labels add coverage and unknown requests fail closed", () => {
