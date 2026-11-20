@@ -9,7 +9,7 @@ import { PR776_CONTROLLER } from "./experience-pr776-controller-reconciliation.m
 import { documentationCheckoutReadSet } from "./ordinary-documentation-checkout-profile.mjs";
 import { certifiedNoncampaignCustodyReadSet } from "./noncampaign-custody-read-set.mjs";
 
-export const NONCAMPAIGN_CUSTODY_CHECKOUT_MODE = "ACTIVE";
+export const NONCAMPAIGN_CUSTODY_CHECKOUT_MODE = "SHADOW";
 
 const repository = "Kgray44/treasurehuntSoT";
 const need = (value, code) => {

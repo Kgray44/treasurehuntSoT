@@ -1,15 +1,15 @@
 {
   "version": 1,
   "status": "SHADOW_NOT_A_READ_SET_CERTIFICATE",
-  "readerObservationSource": "e12aad72315533a81fbfcdc98e5c5a2e1d905697",
+  "readerObservationSource": "958107447886b1ac9ef84f713d93262b2a5d5a04",
   "entrypoint": "scripts/sounding-line/experience-exception.mjs",
   "readers": [
     {
       "path": "scripts/sounding-line/authenticated-completed-evidence.mjs",
       "mode": "100644",
       "type": "blob",
-      "blob": "871eb90c7e8f1f4b73546de35aed6a6ddbda287e",
-      "sha256": "f2510080a6a0cf9e90842c39ec171609c6d6188749053cf5a47cbb6124a2c2e1"
+      "blob": "fb4074d698ddb72251c5cc4ed17644e42572a5f8",
+      "sha256": "1ecd3d45c173e499698ff9de179399690b321f18b6ab973669568faecdb2c757"
     },
     {
       "path": "scripts/sounding-line/browser-authority.mjs",
@@ -45,6 +45,13 @@
       "type": "blob",
       "blob": "b6db243c8fada389f5026647cd46c1886662cd28",
       "sha256": "bb2689d56da0d08f1f8f73fe6fa6053730fc44b1e7406d8ea691ab7c63b0c100"
+    },
+    {
+      "path": "scripts/sounding-line/completed-evidence-v2.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "blob": "d0957dbe441f29c04c1ca0fefa023f7240d86a3c",
+      "sha256": "78bc4a25ca44b17feda7a68076fee576aa1c5a0f081804884bdeeb33ecd42521"
     },
     {
       "path": "scripts/sounding-line/development-failure-evidence.mjs",
@@ -393,8 +400,8 @@
       "path": "scripts/sounding-line/ordinary.mjs",
       "mode": "100644",
       "type": "blob",
-      "blob": "a974ccca1766e8ae5978d964cdab863e85af6193",
-      "sha256": "7cbb4a2f5f0650d600f91441d4a29f9fbd8e8d45d5c7c226dda076b7ba22ae8a"
+      "blob": "f90e0f40c649e906d418532ba69938aea9b38276",
+      "sha256": "0f70e34ba262905d335c8225f8ac1f9e6bfe9b417d216d7fb11effd0d1e267b6"
     },
     {
       "path": "scripts/sounding-line/owned-process.mjs",
@@ -546,7 +553,12 @@
       "blob": "089308bf475a2b22bfdc64ac46164996855e7010"
     }
   ],
-  "excludedPullRequests": [721, 776, 805, 820],
+  "excludedPullRequests": [
+    721,
+    776,
+    805,
+    820
+  ],
   "maximumMetadataPaths": 64,
   "sourceRebind": {
     "kind": "ACCEPTED_RETENTION_SOURCE_PENDING_FRESH_NATIVE_ACCEPTANCE",
