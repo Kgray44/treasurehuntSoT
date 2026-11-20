@@ -29,6 +29,8 @@ import {
 } from "./experience-raw-output.mjs";
 import { retainRawCaptureOutput, verifiedRawCapturePaths } from "./experience-raw-retention.mjs";
 import { emitPreparationPhase } from "./preparation-phases.mjs";
+import { createPrivateCapturePublication, requirePrivateCapturePolicy } from "./experience-private-publication.mjs";
+import { admitPrivateNativeCapture } from "./experience-private-allocation.mjs";
 
 const canonical = "Development_Docs/Testing/Product_Experience/evidence";
 const staging = "artifacts/sounding-line/product-experience-capture-staging";
@@ -160,6 +162,8 @@ export async function publishExperienceCapture({
   promote = rename,
   writeJournal = writeFile,
   preparedJournal = false,
+  privatePublication,
+  privateAuxiliaryFiles = [],
 }) {
   root = path.resolve(root);
   if ((await realpath(root)) !== root) fail("ROOT_SYMLINK");
@@ -291,6 +295,49 @@ export async function publishExperienceCapture({
     validateExperienceArtifacts({ root, plan, evidence: capture, readArtifact: ({ file }) => read(file) });
     validatePairedEvidence({ root, plan, evidence: capture, read });
     if (record?.currentSourceAdmission) validateCurrentPublicationArtifacts(capture.artifacts);
+    if (privatePublication) {
+      // Preserve the existing original-byte, media and paired-witness validators
+      // above. The private route ends before any canonical/history promotion.
+      const selectedFiles = targets.map((file) => ({
+        path: file,
+        sourcePath: `${ready}/${file.slice(canonical.length + 1)}`,
+        type: file.endsWith(".json") ? "json" : capture.artifacts.find((item) => item.path === file)?.type,
+      }));
+      // Retain the producer's original JSON bytes as well as the established
+      // remapped review manifests. Neither is projected to public plaintext.
+      for (const file of sourceFiles.filter((item) => item.endsWith(".json"))) {
+        const suffix = file.slice(workingDirectory.length + 1);
+        const sourcePath = `${ready}/private/original-producer/${suffix}`;
+        const output = await ownedPath(root, sourcePath, { directories: true });
+        await copyFile(await ownedPath(root, file), output, constants.COPYFILE_EXCL);
+        assert.deepEqual(await fingerprint(output), await fingerprint(path.join(root, file)));
+        selectedFiles.push({ path: `private/original-producer/${suffix}`, sourcePath, type: "json" });
+      }
+      const auxiliary = [...new Set([...privateAuxiliaryFiles, `${journalDirectory}/journal.json`])];
+      for (const [index, file] of auxiliary.entries()) {
+        validPath(file);
+        if (
+          !file.endsWith(".json") ||
+          !(inside(file, "artifacts/sounding-line/browser-diagnostics") || file === `${journalDirectory}/journal.json`)
+        )
+          fail("PRIVATE_AUXILIARY_INVALID");
+        const sourcePath = `${ready}/private/invocation/receipt-${index}.json`;
+        const output = await ownedPath(root, sourcePath, { directories: true });
+        await copyFile(await ownedPath(root, file), output, constants.COPYFILE_EXCL);
+        assert.deepEqual(await fingerprint(output), await fingerprint(path.join(root, file)));
+        selectedFiles.push({ path: `private/invocation/receipt-${index}.json`, sourcePath, type: "json" });
+      }
+      const privatePlanPath = `${ready}/private/invocation/plan.json`;
+      await writeFile(await ownedPath(root, privatePlanPath, { directories: true }), json(plan), {
+        flag: "wx",
+        mode: 0o600,
+      });
+      selectedFiles.push({ path: "private/invocation/plan.json", sourcePath: privatePlanPath, type: "json" });
+      const publicationToken = await privatePublication({ root, plan, capture, sourceDirectory: ready, selectedFiles });
+      journal.status = "PRIVATE_ENCRYPTED";
+      await save();
+      return { capturePath: path.join(root, ready, "capture.json"), journalPath, publicationToken };
+    }
     for (const file of targets) {
       const destination = await ownedPath(root, file);
       const existing = await statOrNull(destination);
@@ -406,6 +453,7 @@ export async function captureAndPublishExperience({
   promote = rename,
   onPaths = async () => {},
   retainRaw = retainRawCaptureOutput,
+  privatePublication,
 }) {
   root = path.resolve(root);
   if ((await realpath(root)) !== root) fail("ROOT_SYMLINK");
@@ -513,6 +561,16 @@ export async function captureAndPublishExperience({
     journalDirectory,
     preparedJournal: true,
     promote,
+    privatePublication,
+    privateAuxiliaryFiles: [...runtimePaths, ...profilePaths],
   });
   return { ...result, ...published };
+}
+
+// Protected new captures cannot select the historical plaintext publication path.
+// The source-controlled installation gate runs before staging or producer work.
+export async function captureAndPublishPrivateExperience(options) {
+  requirePrivateCapturePolicy();
+  admitPrivateNativeCapture();
+  return captureAndPublishExperience({ ...options, privatePublication: createPrivateCapturePublication });
 }

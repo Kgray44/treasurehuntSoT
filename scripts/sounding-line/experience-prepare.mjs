@@ -11,7 +11,8 @@ import {
   validateExperienceEvidence,
 } from "./product-experience.mjs";
 import { experienceChangedPaths } from "./experience-browser.mjs";
-import { captureAndPublishExperience, createCaptureSubmission } from "./experience-capture-publication.mjs";
+import { captureAndPublishPrivateExperience, createCaptureSubmission } from "./experience-capture-publication.mjs";
+import { requirePrivateCapturePolicy } from "./experience-private-publication.mjs";
 import { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { buildPlan } from "./ordinary.mjs";
 import { exceptionStore, trustedExceptions, sealedReviewIdentity } from "./experience-exception.mjs";
@@ -109,6 +110,9 @@ async function main() {
   const candidateSha = options.candidate;
   if (!/^[a-f0-9]{40}$/u.test(baseSha ?? "") || !/^[a-f0-9]{40}$/u.test(candidateSha ?? ""))
     throw new Error("PRODUCT_EXPERIENCE_EXACT_SOURCE_REQUIRED");
+  // No reservation, planning/build, staging, auth or producer action is admitted
+  // until the separately reviewed private publication/access policy is installed.
+  if (["capture", "review", "verify"].includes(options.mode)) requirePrivateCapturePolicy();
   if (
     process.env.GITHUB_ACTIONS === "true" &&
     (process.env.GITHUB_SHA !== baseSha || process.env.GITHUB_REF !== "refs/heads/main")
@@ -145,7 +149,7 @@ async function main() {
   if (process.env.GITHUB_OUTPUT)
     await appendFile(process.env.GITHUB_OUTPUT, `source_digest=${plan.sourceDigest.slice(0, 16)}\n`);
   if (options.mode === "capture") {
-    const replay = await captureAndPublishExperience({
+    const replay = await captureAndPublishPrivateExperience({
       root,
       plan,
       record: plan.exception

@@ -74,6 +74,9 @@ jobs:
           fetch-tags: false
           show-progress: true
           persist-credentials: false
+      - name: Require installed private evidence policy before finite reservation
+        if: github.event_name == 'workflow_dispatch' && inputs.experience_mode != 'ordinary'
+        run: node authority/scripts/sounding-line/experience-private-publication.mjs --check-policy
       - uses: actions/checkout@v4
         if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
         timeout-minutes: 10
@@ -217,19 +220,12 @@ jobs:
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@v4
-        if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_plan_path != ''
+        if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_private_verified_paths != ''
         with:
           name: product-experience-capture-${{ steps.experience.outputs.source_digest }}
           if-no-files-found: error
           path: |
-            ${{ steps.experience.outcome == 'success' && steps.experience.outputs.capture_manifest_path || '' }}
-            ${{ steps.experience.outputs.capture_plan_path }}
-            ${{ steps.experience.outcome == 'success' && steps.experience.outputs.capture_activation_path || '' }}
-            ${{ steps.experience.outcome == 'success' && 'candidate/Development_Docs/Testing/Product_Experience/evidence/' || '' }}
-            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_stage_path || '' }}
-            ${{ steps.experience.outputs.capture_journal_path }}
-            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_journal_failure_path || '' }}
-            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_journal_pending_path || '' }}
+            ${{ steps.experience.outputs.capture_private_verified_paths }}
           retention-days: 90
       - name: Retain current raw capture after failure or cancellation
         id: capture-raw-retention
@@ -245,28 +241,8 @@ jobs:
           path: ${{ steps.experience.outputs.capture_raw_verified_paths || steps.capture-raw-retention.outputs.capture_raw_verified_paths }}
           if-no-files-found: error
           retention-days: 90
-      - uses: actions/upload-artifact@v4
-        if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_plan_path != ''
-        with:
-          name: product-experience-lifecycle-${{ inputs.candidate_sha }}-${{ github.run_id }}
-          path: |
-            ${{ steps.experience.outputs.capture_runtime_paths }}
-            ${{ steps.experience.outputs.capture_profile_paths }}
-            ${{ steps.experience.outputs.capture_plan_path }}
-          if-no-files-found: warn
-          retention-days: 90
-      - uses: actions/upload-artifact@v4
-        if: inputs.experience_mode == 'review'
-        with:
-          name: product-experience-review-${{ steps.experience.outputs.source_digest }}
-          path: candidate/artifacts/sounding-line/product-experience-submission/review.json
-          retention-days: 90
-      - uses: actions/upload-artifact@v4
-        if: inputs.experience_mode == 'verify'
-        with:
-          name: product-experience-activation-${{ steps.experience.outputs.source_digest }}
-          path: candidate/artifacts/sounding-line/product-experience-submission/activation.json
-          retention-days: 90
+      # Private reviewer/verifier publication is intentionally unavailable until
+      # approved access and authenticated private transport are installed.
   final-check:
     name: Sounding Line / Focused verification
     needs: campaign-custody

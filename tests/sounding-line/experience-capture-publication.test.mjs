@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { createHash } from "node:crypto";
+import { createHash, generateKeyPairSync, randomUUID } from "node:crypto";
+import {
+  createPrivateCaptureFixtureRealm,
+  privateCaptureKeyFingerprint,
+} from "../../scripts/sounding-line/experience-private-publication.mjs";
 import {
   chmodSync,
   existsSync,
@@ -1190,73 +1194,45 @@ function projectWorkflowUpload(block, outcome, outputs, mode = "capture") {
   return { enabled: true, paths };
 }
 
-test("capture workflow projects only emitted current paths for success, failure and cancellation; no-output early failure skips uploads", () => {
+test("capture workflow projects only the verified encrypted current set for every outcome; plaintext and early failures have no fallback", () => {
   const workflow = readFileSync(new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url), "utf8");
   const blocks = workflow.split(/(?=^      - )/mu);
   const capture = blocks.find((block) => block.includes("name: product-experience-capture-"));
-  const lifecycle = blocks.find((block) => block.includes("name: product-experience-lifecycle-"));
-  assert(capture && lifecycle);
+  assert(capture);
+  assert.equal(
+    blocks.some((block) => block.includes("name: product-experience-lifecycle-")),
+    false,
+  );
+  const directory =
+    "candidate/artifacts/sounding-line/private-capture-publication/00000000-0000-0000-0000-000000000000";
+  const expected = [
+    directory + "/part-000001.encrypted",
+    directory + "/index.encrypted",
+    directory + "/retention.json",
+  ];
   const current = {
+    capture_private_verified_paths: expected.join("\n"),
     capture_plan_path: "candidate/artifacts/sounding-line/product-experience-submission/plan.json",
     capture_manifest_path: "candidate/artifacts/sounding-line/product-experience-submission/capture.json",
     capture_activation_path: "candidate/artifacts/sounding-line/product-experience-submission/activation.json",
-    capture_stage_path: `candidate/${staging}/current-only/capture`,
-    capture_journal_path: `candidate/${publication}/current-only/journal.json`,
-    capture_journal_failure_path: `candidate/${publication}/current-only/journal-failure.json`,
-    capture_journal_pending_path: `candidate/${publication}/current-only/journal.*.pending`,
-    capture_runtime_paths: [1, 2]
-      .map(
-        (index) => `candidate/artifacts/sounding-line/browser-diagnostics/current/scope-${index}/browser-runtime.json`,
-      )
-      .join("\n"),
-    capture_profile_paths: [1, 2]
-      .map(
-        (index) =>
-          `candidate/artifacts/sounding-line/browser-diagnostics/current/scope-${index}/browser-suite-profile.json`,
-      )
-      .join("\n"),
+    capture_stage_path: "candidate/" + staging + "/current-only/capture",
+    capture_journal_path: "candidate/" + publication + "/current-only/journal.json",
+    capture_runtime_paths: "candidate/artifacts/sounding-line/browser-diagnostics/current/browser-runtime.json",
+    capture_profile_paths: "candidate/artifacts/sounding-line/browser-diagnostics/current/browser-suite-profile.json",
   };
   for (const outcome of ["success", "failure", "cancelled"]) {
-    const actual = projectWorkflowUpload(capture, outcome, current);
-    assert.equal(actual.enabled, true);
-    assert.deepEqual(
-      actual.paths,
-      outcome === "success"
-        ? [
-            current.capture_manifest_path,
-            current.capture_plan_path,
-            current.capture_activation_path,
-            `candidate/${canonical}/`,
-            current.capture_journal_path,
-          ]
-        : [
-            current.capture_plan_path,
-            current.capture_stage_path,
-            current.capture_journal_path,
-            current.capture_journal_failure_path,
-            current.capture_journal_pending_path,
-          ],
-    );
-    const actualLifecycle = projectWorkflowUpload(lifecycle, outcome, current);
-    assert.equal(actualLifecycle.enabled, true);
-    assert.deepEqual(actualLifecycle.paths, [
-      ...current.capture_runtime_paths.split("\n"),
-      ...current.capture_profile_paths.split("\n"),
-      current.capture_plan_path,
-    ]);
-    for (const file of [...actual.paths, ...actualLifecycle.paths]) {
-      assert.equal(file.includes("**"), false);
-      assert.equal(file.includes("stale"), false);
-      assert(file === current.capture_journal_pending_path || !file.includes("*"));
-    }
-  }
-  for (const block of [capture, lifecycle]) {
-    assert.deepEqual(projectWorkflowUpload(block, "failure", {}), { enabled: false, paths: [] });
-    assert.deepEqual(projectWorkflowUpload(block, "cancelled", { ...current, capture_plan_path: "" }), {
+    assert.deepEqual(projectWorkflowUpload(capture, outcome, current), { enabled: true, paths: expected });
+    assert.deepEqual(projectWorkflowUpload(capture, outcome, {}), { enabled: false, paths: [] });
+    assert.deepEqual(projectWorkflowUpload(capture, outcome, { ...current, capture_private_verified_paths: "" }), {
       enabled: false,
       paths: [],
     });
-    assert.deepEqual(projectWorkflowUpload(block, "success", current, "review"), { enabled: false, paths: [] });
+    assert.deepEqual(projectWorkflowUpload(capture, outcome, current, "review"), { enabled: false, paths: [] });
+    for (const file of expected) {
+      assert.equal(file.includes("*"), false);
+      assert.equal(file.includes("stale"), false);
+      assert(file.startsWith(directory + "/"));
+    }
   }
 });
 
@@ -1287,4 +1263,116 @@ test("failed progress emission still retains raw output and preserves the replay
   assert(events.at(-1).capture_raw_verified_paths.length >= 2);
   for (const file of events.at(-1).capture_raw_verified_paths) assert(existsSync(path.join(f.root, file)));
   assert.deepEqual(snapshot(f.root), f.before);
+});
+
+test("private capture packet keeps original 32 plus 6 validators and canonical history intact", async (t) => {
+  const f = fixture(t);
+  const keys = generateKeyPairSync("rsa", {
+    modulusLength: 3072,
+    publicKeyEncoding: { type: "spki", format: "pem" },
+    privateKeyEncoding: { type: "pkcs8", format: "pem" },
+  });
+  const binding = {
+    repository: "fixture/repository",
+    controllerSha: f.plan.baseSha,
+    baseSha: f.plan.baseSha,
+    candidateSha: f.plan.candidateSha,
+    candidateTree: f.git("rev-parse", "HEAD^{tree}").trim(),
+    sourceDigest: f.plan.sourceDigest,
+    contractDigest: f.plan.contractDigest,
+    planDigest: hash(Buffer.from(JSON.stringify(f.plan))),
+    workflowPath: ".github/workflows/sounding-line-ordinary.yml",
+    runId: "123",
+    runAttempt: "1",
+    sessionId: randomUUID(),
+    policyDigest: "1".repeat(64),
+    keyFingerprint: privateCaptureKeyFingerprint(keys.publicKey),
+  };
+  let paths;
+  const realm = createPrivateCaptureFixtureRealm({
+    publicKey: keys.publicKey,
+    loadArtifact: async () => {
+      const entries = new Map(paths.map((file) => [path.posix.basename(file), readFileSync(path.join(f.root, file))]));
+      const archive = Buffer.from(
+        JSON.stringify([...entries].map(([name, bytes]) => [name, bytes.toString("base64")])),
+      );
+      const digest = "sha256:" + hash(archive);
+      return {
+        entries,
+        archiveBytes: archive.length,
+        archiveDigest: digest,
+        artifact: {
+          id: 456,
+          name: "product-experience-capture-" + binding.sourceDigest.slice(0, 16),
+          expired: false,
+          expires_at: "2099-01-01T00:00:00Z",
+          workflow_run: { id: 123 },
+          size_in_bytes: archive.length,
+          digest,
+        },
+        run: {
+          id: 123,
+          run_attempt: 1,
+          head_sha: binding.baseSha,
+          head_branch: "main",
+          head_repository: { full_name: binding.repository },
+          event: "workflow_dispatch",
+          conclusion: "success",
+          actor: { login: "fixture-owner" },
+          triggering_actor: { login: "fixture-owner" },
+        },
+        workflow: { path: binding.workflowPath },
+      };
+    },
+  });
+  let originalManifestBytes;
+  const result = await captureAndPublishExperience({
+    ...f,
+    replay: async (options) => {
+      const replay = await completedCapture(options);
+      originalManifestBytes = readFileSync(replay.capturePath);
+      return replay;
+    },
+    privatePublication: ({ root, sourceDirectory, selectedFiles }) =>
+      realm.createPublication({ root, sourceDirectory, selectedFiles, binding }),
+  });
+  assert.deepEqual(snapshot(f.root), f.before);
+  assert.deepEqual(readFileSync(path.join(f.root, evidencePath)), f.reviewBytes);
+  paths = await realm.verifiedPaths(result.publicationToken, { binding });
+  const privateRoot = mkdtempSync(path.join(tmpdir(), "paired-private-review-"));
+  t.after(() => rmSync(privateRoot, { recursive: true, force: true }));
+  const access = realm.approveFixtureAccess({
+    privateKey: keys.privateKey,
+    actors: ["fixture-owner"],
+    reviewRoot: privateRoot,
+  });
+  const view = await realm.openView({ artifactId: 456, expectedBinding: binding, approvedAccess: access });
+  try {
+    assert.deepEqual(view.readArtifact({ file: "private/original-producer/capture.json" }), originalManifestBytes);
+    assert.deepEqual(JSON.parse(view.readArtifact({ file: "private/invocation/plan.json" })), f.plan);
+    assert.equal(view.evidence.journeys.length, 32);
+    assert.equal(view.evidence.pairedEvidence.browserContexts, 6);
+    validateExperienceArtifacts({
+      root: f.root,
+      plan: f.plan,
+      evidence: view.evidence,
+      readArtifact: view.readArtifact,
+    });
+    validatePairedEvidence({
+      root: f.root,
+      plan: f.plan,
+      evidence: view.evidence,
+      read: (file) => view.readArtifact({ file }),
+    });
+    validateCurrentPublicationArtifacts(view.evidence.artifacts);
+    const changed = structuredClone(view.evidence);
+    changed.artifacts[0].sha256 = "0".repeat(64);
+    assert.throws(
+      () =>
+        validateExperienceArtifacts({ root: f.root, plan: f.plan, evidence: changed, readArtifact: view.readArtifact }),
+      /ARTIFACT_DIGEST_MISMATCH/u,
+    );
+  } finally {
+    await view.close();
+  }
 });
