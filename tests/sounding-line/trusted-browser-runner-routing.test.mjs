@@ -106,7 +106,7 @@ test("candidate and lookalike product paths cannot retain GITHUB_OUTPUT or be re
         path.join(candidate, "scripts/sounding-line/browser-authority.mjs"),
       ].entries()) {
         const output = path.join(owner, `product-${index}.json`);
-        const argv = [script, output, "--unchanged", "value with spaces"];
+        const argv = [script, output, "--unchanged", "value with spaces", "", 'quoted "value"'];
         ordinary.browserDiagnosticRunner(diagnostics, invoke)(candidate, process.execPath, argv, {
           env: {
             GITHUB_OUTPUT: path.join(owner, "caller-action-output"),

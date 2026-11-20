@@ -1348,7 +1348,9 @@ export function run(root, command, argumentsList, { env = {}, ...options } = {})
     execFileSync(command, argumentsList, {
       cwd: root,
       stdio: "inherit",
-      shell: process.platform === "win32",
+      // Windows command shims still need the shell. Executables take argv
+      // directly so one argument stays one argument even with spaces.
+      shell: process.platform === "win32" && !/\.exe$/iu.test(command),
       env: candidateEnvironment,
       ...options,
       ...(process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS

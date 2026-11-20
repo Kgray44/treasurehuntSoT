@@ -174,7 +174,7 @@ for (const mode of ["early-global-error", "test-without-attachments"]) {
       const packageRoot = path.dirname(packageFile),
         config = path.join(f.root, "playwright.config.mjs"),
         reportFile = path.join(f.root, "original-report.private.json");
-      assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.56.1");
+      assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.61.1");
       if (mode === "early-global-error") writeFileSync(config, `throw new Error(${JSON.stringify(canary)});`);
       else {
         writeFileSync(
@@ -279,7 +279,7 @@ test("real failing Playwright worker preserves four actual attachment paths, ori
     ? path.join(process.env.SOUNDING_LINE_TEST_PLAYWRIGHT_PACKAGE, "package.json")
     : require.resolve("@playwright/test/package.json");
   const packageRoot = path.dirname(packageFile);
-  assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.56.1", "locked real Playwright worker");
+  assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.61.1", "locked real Playwright worker");
   const packageEntry = path.join(packageRoot, "index.mjs");
   writeFileSync(
     path.join(f.root, "playwright.config.mjs"),

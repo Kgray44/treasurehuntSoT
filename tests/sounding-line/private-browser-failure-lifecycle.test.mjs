@@ -48,7 +48,7 @@ async function fixture(t, mode) {
     ? path.join(process.env.SOUNDING_LINE_TEST_PLAYWRIGHT_PACKAGE, "package.json")
     : require.resolve("@playwright/test/package.json");
   const packageRoot = path.dirname(packageFile);
-  assert.equal(JSON.parse(await readFile(packageFile, "utf8")).version, "1.56.1");
+  assert.equal(JSON.parse(await readFile(packageFile, "utf8")).version, "1.61.1");
   await mkdir(path.join(root, "node_modules/@playwright"), { recursive: true });
   await symlink(packageRoot, path.join(root, "node_modules/@playwright/test"), "junction");
   await mkdir(path.join(root, "node_modules/next/dist/bin"), { recursive: true });
