@@ -184,6 +184,14 @@ jobs:
           node-version-file: authority/.nvmrc
           cache: npm
           cache-dependency-path: candidate/package-lock.json
+      - name: Observe capacity before capture dependency installation
+        if: inputs.experience_mode == 'capture'
+        continue-on-error: true
+        timeout-minutes: 1
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-capacity.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --stage preinstall
       - name: Install isolated browser dependencies
         if: inputs.experience_mode == 'capture'
         working-directory: candidate
@@ -191,6 +199,14 @@ jobs:
           npm ci --ignore-scripts
           npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
           npx --no-install playwright install --with-deps chromium
+      - name: Observe capacity after capture dependency installation
+        if: always() && inputs.experience_mode == 'capture'
+        continue-on-error: true
+        timeout-minutes: 1
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-capacity.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --stage postinstall
       - name: Prepare through protected-base authority
         id: experience
         env:

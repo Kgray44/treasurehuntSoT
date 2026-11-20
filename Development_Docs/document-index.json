@@ -3597,6 +3597,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Capacity_Safety_Correction_20261023.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Capture_Lifecycle_Repair_Record.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -3730,6 +3736,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Legacy_Test_Migration_Ledger.csv",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Local_Media_Intake_20261023.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

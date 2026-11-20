@@ -3,7 +3,7 @@ title: Sounding Line testing records
 audience: engineering
 status: current
 canonical_for: sounding-line-testing-records-navigation
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-23
 ---
 
 # Project Sounding Line Testing Documentation
@@ -14,6 +14,8 @@ This directory defines the testing-system architecture; it does not replace `scr
 
 - [Governing charter](../Governing/Project_Sounding_Line_Governing_Document.md)
 - [Current testing-system audit](Current_Testing_System_Audit.md)
+- [Accepted-route capacity safety correction](../Programs/Sounding_Line/Project_Sounding_Line_Capacity_Safety_Correction_20261023.md)
+- [Local verified media intake preparation](../Programs/Sounding_Line/Project_Sounding_Line_Local_Media_Intake_20261023.md)
 - [Target architecture](Testing_Architecture.md)
 - [Taxonomy and ownership](Test_Taxonomy_and_Ownership.md)
 - [Resource isolation](Parallel_Execution_and_Resource_Isolation.md)

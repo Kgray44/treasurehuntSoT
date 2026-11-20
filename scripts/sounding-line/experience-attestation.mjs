@@ -6,13 +6,19 @@ import {
 } from "./experience-reviewed-adoption.mjs";
 import { validatePreSourceCaptureBinding } from "./experience-review-source-gate.mjs";
 import { execFileSync } from "node:child_process";
-import { createHash } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
 import { experienceDigest } from "./product-experience.mjs";
 import { verifyExceptionAttestation } from "./experience-exception.mjs";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { isCurrentAdmissionPlan, validateCurrentCaptureIdentity } from "./experience-current-admission.mjs";
 import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
+import {
+  createBoundedArtifactIntake,
+  createLocalMediaArtifactIntake,
+  intakeResponse,
+  readBoundedArtifactMetadata,
+} from "./experience-artifact-intake.mjs";
+import { capacityBinding, EXPERIENCE_INTAKE_LIMITS } from "./experience-capacity.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -65,59 +71,196 @@ export function validateAttestationProvenance({ artifact, run, workflow, plan, k
     fail("ATTESTATION_PROVENANCE_INVALID");
   return true;
 }
-export async function loadTrustedExperienceArtifact({ root, plan, artifactId, kind, policy, request }) {
+function frozenContext(value) {
+  const copy = structuredClone(value),
+    queue = [copy],
+    seen = new Set();
+  while (queue.length) {
+    const item = queue.pop();
+    if (!item || typeof item !== "object" || seen.has(item)) continue;
+    if (seen.size >= 100000) fail("ATTESTATION_CONTEXT_LIMIT");
+    seen.add(item);
+    queue.push(...Object.values(item));
+    Object.freeze(item);
+  }
+  return copy;
+}
+function provenanceIdentity(artifact, run, workflow) {
+  return experienceDigest({
+    artifact: {
+      id: artifact.id,
+      name: artifact.name,
+      expired: artifact.expired,
+      expires_at: artifact.expires_at,
+      digest: artifact.digest,
+      size_in_bytes: artifact.size_in_bytes,
+      runId: artifact.workflow_run?.id,
+    },
+    run: {
+      id: run.id,
+      run_attempt: run.run_attempt,
+      workflow_id: run.workflow_id,
+      event: run.event,
+      head_branch: run.head_branch,
+      head_sha: run.head_sha,
+      repository: run.head_repository?.full_name,
+      actor: run.actor?.login,
+      triggering_actor: run.triggering_actor?.login,
+      conclusion: run.conclusion,
+    },
+    workflow: { id: workflow.id, path: workflow.path },
+  });
+}
+export async function loadTrustedExperienceArtifact(options) {
+  return trustedArtifactSession(options, (manifest) => manifest, false);
+}
+export async function withTrustedLocalExperienceArtifact(options, action) {
+  if (typeof action !== "function") fail("LOCAL_MEDIA_ACTION_REQUIRED");
+  return trustedArtifactSession(options, action, true);
+}
+async function trustedArtifactSession(
+  { root, intakeRoot = root, plan, artifactId, kind, policy, request, signal, measure },
+  action,
+  localMedia,
+) {
   if (!Number.isSafeInteger(artifactId) || artifactId < 1) fail("TRUSTED_ATTESTATION_REQUIRED");
+  plan = frozenContext(plan);
+  policy = frozenContext(policy);
+  if (!["capture", "review"].includes(kind) || !Array.isArray(policy?.trustedReviewActors))
+    fail("ATTESTATION_PROVENANCE_INVALID");
+  const deadline = AbortSignal.any([
+    ...(signal ? [signal] : []),
+    AbortSignal.timeout(localMedia ? 900000 : EXPERIENCE_INTAKE_LIMITS.timeoutMs),
+  ]);
+  deadline.throwIfAborted();
   const remote = execFileSync("git", ["remote", "get-url", "origin"], { cwd: root, encoding: "utf8" }).trim();
   const repository = process.env.GITHUB_REPOSITORY ?? remote.match(/github\.com[:/]([^/]+\/[^/.]+)(?:\.git)?$/u)?.[1];
   if (!repository || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(repository)) fail("ATTESTATION_REPOSITORY_INVALID");
   let token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN;
   if (!request && !token) {
     try {
-      token = execFileSync("gh", ["auth", "token"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+      token = execFileSync("gh", ["auth", "token"], {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+        timeout: 5000,
+        maxBuffer: 65536,
+      }).trim();
     } catch {
       fail("ATTESTATION_ACCESS_UNAVAILABLE");
     }
   }
-  const api =
-    request ??
-    (async (endpoint, binary = false) => {
-      const response = await fetch(`https://api.github.com/repos/${repository}/${endpoint}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github+json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      });
-      if (!response.ok) fail(`ATTESTATION_ACCESS_FAILED_${response.status}`);
-      return binary ? Buffer.from(await response.arrayBuffer()) : response.json();
+  const responseFor = async (endpoint, binary = false, activeSignal = deadline) => {
+    if (request) {
+      // Retain the established in-memory injection seam for synthetic fixtures.
+      // Production transport below never buffers the complete artifact.
+      const value = await request(endpoint, binary);
+      if (value instanceof Response) return value;
+      return new Response(binary ? value : JSON.stringify(value), { status: 200 });
+    }
+    return fetch(`https://api.github.com/repos/${repository}/${endpoint}`, {
+      signal: activeSignal,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json",
+        "Accept-Encoding": "identity",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
     });
-  const artifact = await api(`actions/artifacts/${artifactId}`);
-  const run = await api(`actions/runs/${artifact.workflow_run?.id}`);
-  const workflow = await api(`actions/workflows/${run.workflow_id}`);
-  validateAttestationProvenance({
-    artifact,
-    run,
-    workflow,
-    plan,
-    kind,
-    repository,
-    actors: policy.trustedReviewActors,
-  });
-  const archive = await api(`actions/artifacts/${artifactId}/zip`, true);
-  if (`sha256:${createHash("sha256").update(archive).digest("hex")}` !== artifact.digest)
-    fail("ATTESTATION_ARCHIVE_DIGEST_MISMATCH");
-  const manifest = artifactJson(archive, `${kind}.json`);
-  if (
-    manifest.baseSha !== plan.baseSha ||
-    manifest.sourceDigest !== plan.sourceDigest ||
-    manifest.contractDigest !== plan.contractDigest ||
-    (plan.exception && experienceDigest(manifest.exception) !== experienceDigest(plan.exception))
-  )
-    fail("ATTESTATION_SOURCE_MISMATCH");
-  return {
-    ...manifest,
-    trustedArtifact: { id: artifact.id, digest: artifact.digest, runId: run.id, runAttempt: run.run_attempt },
   };
+  const api = async (endpoint) =>
+    readBoundedArtifactMetadata(
+      await intakeResponse((activeSignal) => responseFor(endpoint, false, activeSignal), deadline),
+      deadline,
+    );
+  const artifact = frozenContext(await api(`actions/artifacts/${artifactId}`));
+  if (!Number.isSafeInteger(artifact.workflow_run?.id) || artifact.workflow_run.id < 1)
+    fail("ATTESTATION_PROVENANCE_INVALID");
+  const run = frozenContext(await api(`actions/runs/${artifact.workflow_run?.id}`));
+  if (!Number.isSafeInteger(run.workflow_id) || run.workflow_id < 1) fail("ATTESTATION_PROVENANCE_INVALID");
+  const workflow = frozenContext(await api(`actions/workflows/${run.workflow_id}`));
+  const validate = (artifact, run, workflow) => {
+    validateAttestationProvenance({
+      artifact,
+      run,
+      workflow,
+      plan,
+      kind,
+      repository,
+      actors: policy.trustedReviewActors,
+    });
+    if (
+      artifact.id !== artifactId ||
+      !Number.isSafeInteger(run.id) ||
+      !Number.isSafeInteger(run.run_attempt) ||
+      !Number.isSafeInteger(run.workflow_id) ||
+      workflow.id !== run.workflow_id ||
+      !Number.isSafeInteger(artifact.size_in_bytes) ||
+      artifact.size_in_bytes < 22 ||
+      artifact.size_in_bytes > EXPERIENCE_INTAKE_LIMITS.archiveBytes ||
+      !Number.isFinite(Date.parse(artifact.expires_at)) ||
+      Date.parse(artifact.expires_at) <= Date.now()
+    )
+      fail("ATTESTATION_PROVENANCE_INVALID");
+  };
+  validate(artifact, run, workflow);
+  const binding = capacityBinding({
+    repository,
+    baseSha: plan.baseSha,
+    candidateSha: plan.candidateSha,
+    sourceDigest: plan.sourceDigest,
+    contractDigest: plan.contractDigest,
+    planDigest: experienceDigest(plan),
+    runId: String(run.id),
+    runAttempt: String(run.run_attempt),
+  });
+  const factory = localMedia ? createLocalMediaArtifactIntake : createBoundedArtifactIntake;
+  const result = await factory({
+    root: localMedia ? intakeRoot : root,
+    ...(localMedia && measure ? { measure } : {}),
+  }).withArtifact(
+    {
+      binding,
+      expectedBytes: artifact.size_in_bytes,
+      expectedDigest: artifact.digest,
+      signal: deadline,
+      request: (activeSignal) => responseFor(`actions/artifacts/${artifactId}/zip`, true, activeSignal),
+    },
+    async (archive) => {
+      const manifest = await archive.readJson(`${kind}.json`);
+      if (
+        manifest.baseSha !== plan.baseSha ||
+        manifest.sourceDigest !== plan.sourceDigest ||
+        manifest.contractDigest !== plan.contractDigest ||
+        (plan.exception && experienceDigest(manifest.exception) !== experienceDigest(plan.exception))
+      )
+        fail("ATTESTATION_SOURCE_MISMATCH");
+      const afterArtifact = await api(`actions/artifacts/${artifactId}`);
+      const afterRun = await api(`actions/runs/${run.id}`);
+      const afterWorkflow = await api(`actions/workflows/${run.workflow_id}`);
+      validate(afterArtifact, afterRun, afterWorkflow);
+      if (provenanceIdentity(artifact, run, workflow) !== provenanceIdentity(afterArtifact, afterRun, afterWorkflow))
+        fail("ATTESTATION_PROVENANCE_CHANGED");
+      deadline.throwIfAborted();
+      const trustedManifest = frozenContext({
+        ...manifest,
+        trustedArtifact: { id: artifact.id, digest: artifact.digest, runId: run.id, runAttempt: run.run_attempt },
+      });
+      const value = await action(trustedManifest, archive);
+      if (localMedia) {
+        const finalArtifact = await api(`actions/artifacts/${artifactId}`),
+          finalRun = await api(`actions/runs/${run.id}`),
+          finalWorkflow = await api(`actions/workflows/${run.workflow_id}`);
+        validate(finalArtifact, finalRun, finalWorkflow);
+        if (provenanceIdentity(artifact, run, workflow) !== provenanceIdentity(finalArtifact, finalRun, finalWorkflow))
+          fail("ATTESTATION_PROVENANCE_CHANGED");
+      }
+      deadline.throwIfAborted();
+      return value;
+    },
+  );
+  validate(artifact, run, workflow);
+  deadline.throwIfAborted();
+  return result;
 }
 export async function verifyTrustedExperienceAttestation({
   root,

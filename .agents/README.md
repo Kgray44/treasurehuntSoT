@@ -3,7 +3,7 @@ title: Repository automation guidance
 audience: automation
 status: current
 canonical_for: repository-automation-guidance
-last_reviewed: 2026-10-21
+last_reviewed: 2026-10-23
 ---
 
 # Repository automation guidance
@@ -14,6 +14,8 @@ retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
 - [Focused development and final verification](testing-workflow.md)
+- [Accepted-route capacity safety correction](capacity-safety-correction.md)
+- [Local verified media intake draft](local-media-intake.md)
 - [Immutable recognition read reuse repair](immutable-recognition-read-repair.md)
 - [Capture preparation observability repair](capture-preparation-observability-repair.md)
 - [Unrelated work after expired R26 execution authority](unrelated-expired-r26-repair.md)
