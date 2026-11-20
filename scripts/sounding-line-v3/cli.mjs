@@ -6,7 +6,8 @@ import { needsDependencies, runJob, runLocal, snapshotReader } from "./checks.mj
 
 import { suiteCacheKey } from "./reuse.mjs";
 
-const usage = "sl plan|explain|test [--base <ref>] [--head <ref>] [--project <name>] [--suite <id>] [--mode <mode>] [--full]";
+const usage =
+  "sl plan|explain|test [--base <ref>] [--head <ref>] [--project <name>] [--suite <id>] [--mode <mode>] [--full]";
 const [operation = "plan", ...args] = process.argv.slice(2);
 try {
   const { values } = parseArgs({
@@ -46,14 +47,26 @@ try {
 
   if (operation === "ci-plan") {
     const include = plan.jobs.map((job) => ({
-      id: job.id, kind: job.kind, dependencies: needsDependencies(job.kind),
+      id: job.id,
+      kind: job.kind,
+      dependencies: needsDependencies(job.kind),
       cache: plan.category === "full" ? "" : suiteCacheKey(job, tree, event.pull_request?.number),
     }));
     appendFileSync(process.env.GITHUB_OUTPUT, "matrix=" + JSON.stringify({ include }) + "\n");
-    const summary = ["## Sounding Line V3", "", "Mode **" + plan.category + "**", "",
-      "Base " + base, "Test tree " + git(["rev-parse", tree + "^{tree}"]).trim(),
-      "", ...plan.jobs.map(({ id, files }) => "- " + id + (files.length ? " (" + files.length + " files)" : "")),
-      "", ...plan.notes, "", ...Object.entries(plan.reasons).map(([id, reasons]) => id + " ← " + reasons.join(", "))].join("\n");
+    const summary = [
+      "## Sounding Line V3",
+      "",
+      "Mode **" + plan.category + "**",
+      "",
+      "Base " + base,
+      "Test tree " + git(["rev-parse", tree + "^{tree}"]).trim(),
+      "",
+      ...plan.jobs.map(({ id, files }) => "- " + id + (files.length ? " (" + files.length + " files)" : "")),
+      "",
+      ...plan.notes,
+      "",
+      ...Object.entries(plan.reasons).map(([id, reasons]) => id + " ← " + reasons.join(", ")),
+    ].join("\n");
     appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary + "\n");
   } else if (operation === "ci-job") {
     const job = plan.jobs.find(({ id }) => id === process.env.SL_JOB);

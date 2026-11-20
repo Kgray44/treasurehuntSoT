@@ -5,9 +5,13 @@ import { pathToFileURL } from "node:url";
 const repository = "Kgray44/treasurehuntSoT";
 const required = "Sounding Line V3 / Verification";
 const actionsApp = 15368;
-const api = (route, ...args) => JSON.parse(execFileSync("gh", [
-  "api", "repos/" + repository + "/" + route, ...args,
-], { encoding: "utf8", maxBuffer: 8 * 1024 * 1024 }));
+const api = (route, ...args) =>
+  JSON.parse(
+    execFileSync("gh", ["api", "repos/" + repository + "/" + route, ...args], {
+      encoding: "utf8",
+      maxBuffer: 8 * 1024 * 1024,
+    }),
+  );
 const pull = (number) => api("pulls/" + number);
 
 export function prerequisites(body) {
@@ -15,8 +19,7 @@ export function prerequisites(body) {
   for (const line of (body ?? "").split(/\r?\n/)) {
     if (!/^\s*Depends on:/i.test(line)) continue;
     const list = line.slice(line.indexOf(":") + 1).trim();
-    if (!/^#[1-9]\d*(?:\s*,\s*#[1-9]\d*)*$/.test(list))
-      throw new Error("Use Depends on: #123, #456.");
+    if (!/^#[1-9]\d*(?:\s*,\s*#[1-9]\d*)*$/.test(list)) throw new Error("Use Depends on: #123, #456.");
     for (const item of list.split(",")) dependencies.add(Number(item.trim().slice(1)));
   }
   return [...dependencies];
@@ -24,14 +27,20 @@ export function prerequisites(body) {
 
 function verifyProtection() {
   const protection = api("branches/main/protection");
-  if (!protection.enforce_admins?.enabled || !protection.required_status_checks?.strict ||
-      !protection.required_status_checks.checks?.some((check) => check.context === required && check.app_id === actionsApp))
+  if (
+    !protection.enforce_admins?.enabled ||
+    !protection.required_status_checks?.strict ||
+    !protection.required_status_checks.checks?.some(
+      (check) => check.context === required && check.app_id === actionsApp,
+    )
+  )
     throw new Error("Strict V3 protection by GitHub Actions is required before integrating.");
 }
 
 function decisionPassed(head) {
   const { check_runs: checks } = api("commits/" + head + "/check-runs?per_page=100&filter=latest");
-  const decisions = checks.filter((check) => check.name === required && check.app.id === actionsApp)
+  const decisions = checks
+    .filter((check) => check.name === required && check.app.id === actionsApp)
     .sort((a, b) => b.id - a.id);
   return decisions[0]?.conclusion === "success";
 }
@@ -63,10 +72,19 @@ function integrate(number, apply) {
     return "base update requested; waiting for exact-tree verification";
   }
   const tested = api("git/commits/" + pr.merge_commit_sha).tree.sha;
-  const result = api("pulls/" + number + "/merge", "-X", "PUT", "-f", "sha=" + pr.head.sha, "-f", "merge_method=squash");
+  const result = api(
+    "pulls/" + number + "/merge",
+    "-X",
+    "PUT",
+    "-f",
+    "sha=" + pr.head.sha,
+    "-f",
+    "merge_method=squash",
+  );
   if (!result.merged) throw new Error("GitHub did not merge the candidate.");
   const landed = api("git/commits/" + result.sha).tree.sha;
-  if (landed !== tested) throw new Error("Landed tree differs from the proposed tree at " + result.sha + ". Stop and investigate.");
+  if (landed !== tested)
+    throw new Error("Landed tree differs from the proposed tree at " + result.sha + ". Stop and investigate.");
   return "merged and matched tree " + landed + " at " + result.sha;
 }
 
@@ -88,7 +106,9 @@ function main(args) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  try { main(process.argv.slice(2)); } catch (error) {
+  try {
+    main(process.argv.slice(2));
+  } catch (error) {
     console.error(error.message);
     process.exitCode = 1;
   }

@@ -11,7 +11,8 @@ export function commit(ref) {
 
 export function changes(base, tree) {
   const entries = git(["diff", "--raw", "--no-abbrev", "--no-renames", "-z", base, tree, "--"])
-    .split("\0").slice(0, -1);
+    .split("\0")
+    .slice(0, -1);
   const result = [];
   for (let index = 0; index < entries.length; index += 2) {
     const [, mode, , , status] = entries[index].split(" ");
@@ -22,13 +23,20 @@ export function changes(base, tree) {
 
 const image = /\.(png|jpe?g|webp|gif|svg|pdf)$/i;
 const passiveRoot = /^(?:docs|Development_Docs|Experience_Images|Developer_Journals)\//;
-const executable = /<\s*(?:script|iframe|object|embed|foreignObject|form|link|style)\b|\bon[a-z]+\s*=|(?:(?:javascript|vbscript)\s*:|data\s*:\s*text\/html)|<!ENTITY\b|\b(?:src|href|xlink:href)\s*=\s*["'](?:https?:|\/\/)/gi;
-const authorityPath = /^(?:\.github\/|\.agents\/|testing\/|scripts\/sounding-line(?:-v3)?\/|tests\/sounding-line(?:-v3)?\/|scripts\/workspaces\/|tests\/workspaces\/|tests\/sounding-line-v3\.test\.mjs$)/;
+const executable =
+  /<\s*(?:script|iframe|object|embed|foreignObject|form|link|style)\b|\bon[a-z]+\s*=|(?:(?:javascript|vbscript)\s*:|data\s*:\s*text\/html)|<!ENTITY\b|\b(?:src|href|xlink:href)\s*=\s*["'](?:https?:|\/\/)/gi;
+const authorityPath =
+  /^(?:\.github\/|\.agents\/|testing\/|scripts\/sounding-line(?:-v3)?\/|tests\/sounding-line(?:-v3)?\/|scripts\/workspaces\/|tests\/workspaces\/|tests\/sounding-line-v3\.test\.mjs$)/;
 const formatting = /^(?:\.prettier(?:ignore|rc\.json)|eslint\.config\.mjs|\.editorconfig)$/;
-const toolchain = /^(?:package(?:-lock)?\.json|\.node-version|\.nvmrc|tsconfig\.json|vitest(?:\.config|\.setup)\.ts|(?:next\.config\.ts|postcss\.config\.mjs))$/;
+const toolchain =
+  /^(?:package(?:-lock)?\.json|\.node-version|\.nvmrc|tsconfig\.json|vitest(?:\.config|\.setup)\.ts|(?:next\.config\.ts|postcss\.config\.mjs))$/;
 const shared = /^(?:src\/(?:proxy\.ts|instrumentation\.ts|lib\/|platform\/|types\/|styles\/|app\/layout\.)|prisma\/)/;
 const protectedPath = /(?:^|\/)(?:auth|authorization|sign-in|security|private-content|proxy\.ts)(?:[/.=-]|$)/i;
-const scalar = (text) => text.toLowerCase().replace(/^project[- ]/, "").replace(/[^a-z0-9]+/g, "-");
+const scalar = (text) =>
+  text
+    .toLowerCase()
+    .replace(/^project[- ]/, "")
+    .replace(/[^a-z0-9]+/g, "-");
 const matches = (file, rule) => file === rule || file.startsWith(rule + "/") || posix.matchesGlob(file, rule);
 
 export function passive(change, read) {
@@ -40,9 +48,11 @@ export function passive(change, read) {
   if (!/\.(?:mdx?|svg)$/i.test(file)) return true;
   const source = read(file).toString("utf8");
   const content = /\.md$/i.test(file) ? source.replace(/^`{3,}[^\n]*\n[\s\S]*?^`{3,}[^\n]*$/gm, "") : source;
-  return content.search(executable) === -1 &&
+  return (
+    content.search(executable) === -1 &&
     (!/\.mdx$/i.test(file) || !/[{}]|<(?:[A-Z][\w.]*)\b|^\s*(?:import|export)\s/m.test(content)) &&
-    (!/\.svg$/i.test(file) || !/(?:url\s*\(|<\s*(?:use|image|animate|set)\b|&(?:#|[A-Za-z]+\s*;))/i.test(content));
+    (!/\.svg$/i.test(file) || !/(?:url\s*\(|<\s*(?:use|image|animate|set)\b|&(?:#|[A-Za-z]+\s*;))/i.test(content))
+  );
 }
 
 export function metadata(labels) {
@@ -73,7 +83,9 @@ export function registry(tree = "HEAD") {
 export function select(entries, read, request, data, readBase) {
   const { suites, mappings, cases, files: tracked } = data;
   const trackedFiles = new Set(tracked);
-  const trackedUnit = tracked.filter((file) => /(?:^src\/|^tests\/(?:private-content|tideglass)\/|^scripts\/features\/).*\.test\.tsx?$|\.test\.mjs$/.test(file));
+  const trackedUnit = tracked.filter((file) =>
+    /(?:^src\/|^tests\/(?:private-content|tideglass)\/|^scripts\/features\/).*\.test\.tsx?$|\.test\.mjs$/.test(file),
+  );
   const trackedBrowser = tracked.filter((file) => /^tests\/e2e\/.*\.spec\.ts$/.test(file));
   const byId = new Map(suites.map((suite) => [suite.id, suite]));
   const selected = new Map();
@@ -104,7 +116,8 @@ export function select(entries, read, request, data, readBase) {
     if (!readBase || file !== "package.json") return false;
     const redact = (raw) => {
       const manifest = JSON.parse(raw);
-      for (const script of ["sl", "sl:integrate", "test:changed", "test:release", "validate"]) delete manifest.scripts?.[script];
+      for (const script of ["sl", "sl:integrate", "test:changed", "test:release", "validate"])
+        delete manifest.scripts?.[script];
       return JSON.stringify(manifest);
     };
     return redact(readBase(file)) === redact(read(file));
@@ -185,7 +198,8 @@ export function select(entries, read, request, data, readBase) {
     category = "full";
     broadUnit = true;
     broadBrowser = true;
-    for (const check of ["docs", "format", "workflow", "types", "build", "schema", "privacy", "compatibility"]) checks.add(check);
+    for (const check of ["docs", "format", "workflow", "types", "build", "schema", "privacy", "compatibility"])
+      checks.add(check);
   }
 
   const jobs = new Map(Array.from(checks, (kind) => [kind, { id: kind, kind, files: [] }]));
@@ -193,7 +207,8 @@ export function select(entries, read, request, data, readBase) {
   for (const [id] of selected) {
     const suite = byId.get(id);
     const files = cases.filter((item) => item.suiteId === id && trackedFiles.has(item.file)).map((item) => item.file);
-    const inferFiles = (available) => available.filter((file) => suite.affectedPaths?.some((rule) => matches(file, rule)));
+    const inferFiles = (available) =>
+      available.filter((file) => suite.affectedPaths?.some((rule) => matches(file, rule)));
     switch (suite.adapter) {
       case "vitest-family":
       case "vitest-family-serial": {
@@ -213,15 +228,28 @@ export function select(entries, read, request, data, readBase) {
         for (const file of files) directBrowser.add(file);
         if (!files.length) throw new Error("No registered browser tests for " + id);
         break;
-      case "docs": add("docs", "docs", []); break;
-      case "static": add("types", "types", []); break;
-      case "build": add("build", "build", []); break;
+      case "docs":
+        add("docs", "docs", []);
+        break;
+      case "static":
+        add("types", "types", []);
+        break;
+      case "build":
+        add("build", "build", []);
+        break;
       case "sqlite-validate":
-      case "mysql-validate": add("schema", "schema", []); break;
-      case "node-test-browser-family": add("legacy-regressions", "legacy-regressions", []); break;
+      case "mysql-validate":
+        add("schema", "schema", []);
+        break;
+      case "node-test-browser-family":
+        add("legacy-regressions", "legacy-regressions", []);
+        break;
       case "p34-retirement":
-      case "powershell-family": add("compatibility", "compatibility", []); break;
-      default: throw new Error("Unsupported suite adapter for " + id);
+      case "powershell-family":
+        add("compatibility", "compatibility", []);
+        break;
+      default:
+        throw new Error("Unsupported suite adapter for " + id);
     }
   }
   if (directNode.size) add("changed-node-tests", "node", directNode);

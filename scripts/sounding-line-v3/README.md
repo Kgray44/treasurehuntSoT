@@ -2,14 +2,14 @@
 
 Run these commands from an owned checkout with the repository Node version.
 
-| Command | Use |
-| --- | --- |
-| npm run sl -- plan | Show the checks for commits since the merge base with origin/main. |
-| npm run sl -- explain --project Wayfarer | Show selected files and the reason for each suite. |
-| npm run sl -- test | Run the selected checks against a clean checkout of HEAD. |
-| npm run sl -- test --suite unit.landfall | Add a registered test suite. |
-| npm run sl -- test --full | Request the full verification plan. |
-| npm run sl:integrate -- 123 124 | Preview integration for the listed PRs. Add --apply to update or merge eligible PRs. |
+| Command                                  | Use                                                                                  |
+| ---------------------------------------- | ------------------------------------------------------------------------------------ |
+| npm run sl -- plan                       | Show the checks for commits since the merge base with origin/main.                   |
+| npm run sl -- explain --project Wayfarer | Show selected files and the reason for each suite.                                   |
+| npm run sl -- test                       | Run the selected checks against a clean checkout of HEAD.                            |
+| npm run sl -- test --suite unit.landfall | Add a registered test suite.                                                         |
+| npm run sl -- test --full                | Request the full verification plan.                                                  |
+| npm run sl:integrate -- 123 124          | Preview integration for the listed PRs. Add --apply to update or merge eligible PRs. |
 
 Use npm.cmd in Windows PowerShell if it intercepts npm argument separators. Use --base and --head to inspect another committed comparison. Tests run from the checked-out commit. Install locked dependencies before local product jobs and Playwright browsers before local browser jobs. GitHub installs those dependencies only for the jobs that use them.
 

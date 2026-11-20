@@ -4,9 +4,18 @@ import { disposition, prerequisites } from "../scripts/sounding-line-v3/integrat
 import { metadata, passive, registry, select } from "../scripts/sounding-line-v3/plan.mjs";
 
 const change = (file, mode = "100644", status = "M") => ({ file, mode, status });
-const read = (content = "") => () => Buffer.from(content);
+const read =
+  (content = "") =>
+  () =>
+    Buffer.from(content);
 const data = registry();
-const plan = (files, content = "", request = {}) => select(files.map((file) => change(file)), read(content), request, data);
+const plan = (files, content = "", request = {}) =>
+  select(
+    files.map((file) => change(file)),
+    read(content),
+    request,
+    data,
+  );
 const names = (result) => result.jobs.map(({ id }) => id);
 
 test("Markdown and evidence images use the same dependency-free fast path", () => {
@@ -16,7 +25,10 @@ test("Markdown and evidence images use the same dependency-free fast path", () =
     assert.deepEqual(names(result), ["diff", "docs"]);
   }
   assert.equal(passive(change("docs/diagram.svg", "120000"), read("<svg/>")), false);
-  assert.equal(passive(change("docs/old.md", "000000", "D"), () => assert.fail()), true);
+  assert.equal(
+    passive(change("docs/old.md", "000000", "D"), () => assert.fail()),
+    true,
+  );
 });
 
 test("Executable docs and active application assets cannot claim the docs fast path", () => {
@@ -28,7 +40,10 @@ test("Executable docs and active application assets cannot claim the docs fast p
   ]) {
     const result = plan([file], content, { mode: "documentation" });
     assert.equal(result.category, "product");
-    assert.ok(names(result).some((job) => ["all-vitest", "build"].includes(job)), file);
+    assert.ok(
+      names(result).some((job) => ["all-vitest", "build"].includes(job)),
+      file,
+    );
   }
 });
 
@@ -79,14 +94,21 @@ test("Owner labels add coverage and unknown requests fail closed", () => {
 
 test("Integration holds dependencies and conflicts while independent PRs are eligible", () => {
   const candidate = {
-    state: "open", number: 17, base: { ref: "main", repo: { full_name: "o/r" } },
-    head: { repo: { full_name: "o/r" } }, mergeable: true, mergeable_state: "clean",
+    state: "open",
+    number: 17,
+    base: { ref: "main", repo: { full_name: "o/r" } },
+    head: { repo: { full_name: "o/r" } },
+    mergeable: true,
+    mergeable_state: "clean",
   };
   const held = { ...candidate, body: "Depends on: #12, #15" };
   const dependency = (number) => ({ base: { ref: "main" }, merged: number === 12 });
   assert.deepEqual(prerequisites(held.body), [12, 15]);
   assert.match(disposition(held, dependency), /waiting for #15/);
-  assert.equal(disposition(held, () => ({ base: { ref: "main" }, merged: true })), "ready");
+  assert.equal(
+    disposition(held, () => ({ base: { ref: "main" }, merged: true })),
+    "ready",
+  );
   assert.equal(disposition({ ...candidate, mergeable: false }, dependency), "merge conflict");
   assert.equal(disposition({ ...candidate, mergeable_state: "behind" }, dependency), "behind");
   assert.equal(disposition(candidate, dependency), "ready");

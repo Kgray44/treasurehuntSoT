@@ -68,18 +68,29 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
+          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            .agents
-            .github
-            bridgewatch
-            docs
-            native
-            prisma
-            public
-            scripts
-            src
-            testing
-            tests
+            /*
+            !/*/
+            /.agents/
+            /.github/
+            /bridgewatch/
+            /docs/
+            /native/
+            /prisma/
+            /public/
+            /scripts/
+            /src/
+            /testing/
+            /tests/
+            /Development_Docs/**/*.json
+            /Development_Docs/**/*.md
+            /Development_Docs/**/*.mdx
+            /Development_Docs/**/*.yaml
+            /Development_Docs/**/*.yml
+            /Development_Docs/**/*.txt
+            /Development_Docs/**/*.sql
+            /Development_Docs/**/*.csv
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
