@@ -384,17 +384,18 @@ def controller(scope, expected_source, receipt, members, tracking, runner_image,
                 output = verify_runtime_output(receipt, *commands[0], *commands[1])
         except BaseException as error:
             primary = error
+        cleanup_failures = []
         try:
             require(recover(scope, lease) is True, "LAUNCH_RECOVERY_UNVERIFIED")
         except BaseException as error:
-            if watchdog is not None:
-                finish_watchdog(watchdog, cleanup_verified=False)
-            raise PreflightFailure(primary, [("passive_recovery", error)]) from error
+            cleanup_failures.append(("passive_recovery", error))
         if watchdog is not None:
             try:
-                finish_watchdog(watchdog, cleanup_verified=True)
+                finish_watchdog(watchdog, cleanup_verified=not cleanup_failures)
             except BaseException as error:
-                raise PreflightFailure(primary, [("watchdog_retirement", error)]) from error
+                cleanup_failures.append(("watchdog_retirement", error))
+        if cleanup_failures:
+            raise PreflightFailure(primary, cleanup_failures) from cleanup_failures[0][1]
         if primary is not None:
             raise primary
     return {"kind": "PREFLIGHT_DIAGNOSTIC_ONLY", "source": scope.run.source, "run": scope.run.run_id,

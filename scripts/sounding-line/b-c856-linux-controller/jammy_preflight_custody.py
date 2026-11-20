@@ -11,7 +11,7 @@ from pathlib import Path
 from jammy_native_runtime_inputs import require
 
 LOCK = "ownership.lock"
-PHASES = ("reserved", "bound", "admitted", "retired")
+PHASES = ("reserved", "bound", "prepared", "admitted", "retired")
 MAX_RECORD = 4096
 
 
@@ -42,6 +42,56 @@ def base_path(run_id, nonce):
     return Path(f"/run/user/1001/sl-native-custody-{run_id}-{nonce}")
 
 
+def private_directory(info):
+    return stat.S_ISDIR(info.st_mode) and info.st_uid == 1001 and stat.S_IMODE(info.st_mode) == 0o700
+
+
+def provision_binding(run_id, nonce):
+    """Exclusively create a private base and empty lock. Preserve any incomplete creation."""
+    require(type(run_id) is int and 0 < run_id < 10**15 and type(nonce) is str and
+            re.fullmatch(r"[a-f0-9]{32}", nonce), "LAUNCH_CUSTODY_BOOTSTRAP_SCOPE")
+    require(hasattr(os, "getuid") and os.getuid() == os.geteuid() == 1001, "LAUNCH_CUSTODY_BOOTSTRAP_OWNER")
+    base = base_path(run_id, nonce)
+    root = base.parent
+    require(root.resolve(strict=True) == root, "LAUNCH_CUSTODY_BOOTSTRAP_ROOT")
+    directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
+    root_fd = os.open(root, directory_flags)
+    try:
+        parent = os.fstat(root_fd)
+        require(private_directory(parent) and identity(parent) ==
+                identity(os.stat(root, follow_symlinks=False)), "LAUNCH_CUSTODY_BOOTSTRAP_ROOT")
+        try:
+            os.mkdir(base.name, 0o700, dir_fd=root_fd)
+        except FileExistsError as error:
+            raise ValueError("LAUNCH_CUSTODY_BOOTSTRAP_COLLISION") from error
+        base_fd = os.open(base.name, directory_flags, dir_fd=root_fd)
+        try:
+            opened = os.fstat(base_fd)
+            require(private_directory(opened) and opened.st_dev == parent.st_dev,
+                    "LAUNCH_CUSTODY_BOOTSTRAP_BASE")
+            lock_fd = os.open(LOCK, os.O_RDWR | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+                              0o600, dir_fd=base_fd)
+            try:
+                lock = os.fstat(lock_fd)
+                require(stat.S_ISREG(lock.st_mode) and lock.st_uid == 1001 and
+                        stat.S_IMODE(lock.st_mode) == 0o600 and lock.st_nlink == 1 and
+                        lock.st_size == 0 and lock.st_dev == opened.st_dev, "LAUNCH_CUSTODY_BOOTSTRAP_LOCK")
+                binding = CustodyBinding.from_values((*identity(opened), *identity(lock)))
+                os.fsync(lock_fd)
+                os.fsync(base_fd)
+                os.fsync(root_fd)
+                require(identity(os.stat(base.name, dir_fd=root_fd, follow_symlinks=False)) == binding.base and
+                        identity(os.stat(LOCK, dir_fd=base_fd, follow_symlinks=False)) == binding.lock,
+                        "LAUNCH_CUSTODY_BOOTSTRAP_IDENTITY")
+                return binding
+            finally:
+                os.close(lock_fd)
+        finally:
+            os.close(base_fd)
+    finally:
+        os.close(root_fd)
+
+
 def boot_id():
     with Path("/proc/sys/kernel/random/boot_id").open("r", encoding="ascii") as stream:
         value = stream.read(64).strip()
@@ -63,26 +113,33 @@ def process_identity(pid):
     return fields[0], int(fields[19])
 
 
+def capture_owner(pid):
+    info = process_identity(pid)
+    require(info is not None and info[0] not in ("Z", "X", "x"), "LAUNCH_CUSTODY_PID")
+    return [pid, info[1]]
+
+
 def owner_record(controller, watchdog):
     require(controller != watchdog, "LAUNCH_CUSTODY_PID")
-    actors = []
-    for pid in (controller, watchdog):
-        info = process_identity(pid)
-        require(info is not None and info[0] not in ("Z", "X", "x"), "LAUNCH_CUSTODY_PID")
-        actors.append([pid, info[1]])
-    return {"boot": boot_id(), "owners": actors}
+    return {"boot": boot_id(), "owners": [capture_owner(pid) for pid in (controller, watchdog)]}
+
+
+def verify_owner_gone(owner):
+    require(type(owner) is list and len(owner) == 2 and all(type(item) is int for item in owner) and
+            1 < owner[0] < 2**31 and owner[1] > 0, "LAUNCH_CUSTODY_OWNER_RECORD")
+    pid, start = owner
+    current = process_identity(pid)
+    require(current is None or current[1] != start or current[0] in ("Z", "X", "x"),
+            "LAUNCH_CUSTODY_ORIGINAL_PROCESSES_LIVE")
 
 
 def verify_owners_gone(record):
     require(type(record) is dict and set(record) == {"boot", "owners"} and record["boot"] == boot_id() and
             type(record["owners"]) is list and len(record["owners"]) == 2 and
-            all(type(row) is list and len(row) == 2 and all(type(item) is int and item > 0 for item in row)
-                for row in record["owners"]) and record["owners"][0][0] != record["owners"][1][0],
-            "LAUNCH_CUSTODY_OWNER_RECORD")
-    for pid, start in record["owners"]:
-        current = process_identity(pid)
-        require(current is None or current[1] != start or current[0] in ("Z", "X", "x"),
-                "LAUNCH_CUSTODY_ORIGINAL_PROCESSES_LIVE")
+            all(type(row) is list and len(row) == 2 for row in record["owners"]) and
+            record["owners"][0][0] != record["owners"][1][0], "LAUNCH_CUSTODY_OWNER_RECORD")
+    for owner in record["owners"]:
+        verify_owner_gone(owner)
 
 
 @contextmanager
@@ -205,15 +262,41 @@ class Journal:
                 self.scratch_identity() == scratch, "LAUNCH_CUSTODY_BIND_PHASE")
         self.write("bound", {"scratch": list(scratch)})
 
+    def require_no_pending(self):
+        for phase in PHASES:
+            try:
+                os.stat(phase + ".pending", dir_fd=self.fd, follow_symlinks=False)
+            except FileNotFoundError:
+                continue
+            raise ValueError("LAUNCH_CUSTODY_JOURNAL_PENDING")
+
+    def prepare(self, scratch, lease):
+        require(self.read("reserved") is not None and self.read("bound") == {"scratch": list(scratch)} and
+                all(self.read(phase) is None for phase in ("prepared", "admitted", "retired")) and
+                self.scratch_identity() == scratch, "LAUNCH_CUSTODY_PREPARE_PHASE")
+        self.require_no_pending()
+        self.write("prepared", lease)
+
     def admit(self, scratch, lease):
         require(self.read("reserved") is not None and self.read("bound") == {"scratch": list(scratch)} and
-                self.read("admitted") is None and self.read("retired") is None and
+                self.read("prepared") == lease and self.read("admitted") is None and self.read("retired") is None and
                 self.scratch_identity() == scratch, "LAUNCH_CUSTODY_ADMIT_PHASE")
+        self.require_no_pending()
         self.write("admitted", lease)
 
+    def retire_pre_reservation(self):
+        """Tombstone empty custody while holding the lock so a late watchdog cannot reserve it."""
+        retired = self.read("retired")
+        entries = set(os.listdir(self.fd))
+        require((retired is None and entries == {LOCK}) or
+                (retired == {"admitted": False} and entries == {LOCK, "retired"}),
+                "LAUNCH_CUSTODY_BOOTSTRAP_AMBIGUOUS")
+        if retired is None:
+            self.write("retired", {"admitted": False})
+
     def recover_empty(self):
-        require(self.read("reserved") is not None and self.read("admitted") is None and
-                self.read("retired") is None, "LAUNCH_CUSTODY_RECOVERY_PHASE")
+        require(self.read("reserved") is not None and self.read("prepared") is None and
+                self.read("admitted") is None and self.read("retired") is None, "LAUNCH_CUSTODY_RECOVERY_PHASE")
         bound = self.read("bound")
         scratch = self.scratch_identity()
         if bound is not None:

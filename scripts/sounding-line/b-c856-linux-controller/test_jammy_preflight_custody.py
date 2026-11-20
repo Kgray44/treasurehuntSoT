@@ -33,6 +33,66 @@ class FixtureJournal(custody.Journal):
     def scratch_identity(self):
         return self.current_scratch
 
+    def require_no_pending(self):
+        if getattr(self, "pending", False):
+            raise ValueError("LAUNCH_CUSTODY_JOURNAL_PENDING")
+
+
+class PreReservationRecoveryTest(unittest.TestCase):
+    def recover(self, entries):
+        journal = FixtureJournal()
+
+        @contextmanager
+        def reopen(_scope, *, timeout):
+            yield journal
+
+        with (patch.object(launcher, "custody", reopen),
+              patch.object(launcher, "verify_owner_gone", create=True) as gone,
+              patch.object(launcher, "absent", return_value=True),
+              patch.object(os, "listdir", return_value=entries)):
+            try:
+                return launcher.recover_after_cancellation(BOUND, bootstrap_owner=[51, 100])
+            finally:
+                self.journal = journal
+                self.gone = gone
+
+    def test_empty_scope_is_retired_before_a_late_watchdog_can_reserve(self):
+        self.assertTrue(self.recover([custody.LOCK]))
+        self.gone.assert_called_once_with([51, 100])
+        self.assertEqual(self.journal.records, {"retired": {"admitted": False}})
+        with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_ALREADY_RESERVED"):
+            self.journal.reserve(OWNERS)
+
+    def test_still_running_bootstrap_owner_refuses_even_with_empty_custody(self):
+        with patch.object(custody, "process_identity", return_value=("S", 100)):
+            with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_ORIGINAL_PROCESSES_LIVE"):
+                custody.verify_owner_gone([51, 100])
+        with patch.object(custody, "process_identity", return_value=("S", 101)):
+            custody.verify_owner_gone([51, 100])
+
+    def test_late_empty_retirement_is_held_after_deadline(self):
+        journal = FixtureJournal()
+
+        @contextmanager
+        def reopen(_scope, *, timeout):
+            yield journal
+
+        clock = Mock(side_effect=[100.0, 101.0, 133.0])
+        with (patch.object(launcher, "custody", reopen),
+              patch.object(launcher, "verify_owner_gone"),
+              patch.object(launcher, "absent", return_value=True),
+              patch.object(os, "listdir", return_value=[custody.LOCK])):
+            with self.assertRaisesRegex(ValueError, "LAUNCH_RECOVERY_DEADLINE"):
+                launcher.recover_after_cancellation(BOUND, bootstrap_owner=[51, 100], clock=clock)
+        self.assertEqual(journal.records["retired"], {"admitted": False})
+
+    def test_pending_or_unexpected_entries_are_retained(self):
+        for name in ("reserved.pending", "scratch"):
+            with self.subTest(name=name):
+                with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_BOOTSTRAP_AMBIGUOUS"):
+                    self.recover([custody.LOCK, name])
+                self.assertEqual(self.journal.records, {})
+
 
 class CustodyTest(unittest.TestCase):
     def setUp(self):
@@ -119,6 +179,21 @@ class CustodyTest(unittest.TestCase):
         unlink.assert_not_called()
         close.assert_called_once_with(9)
 
+    def test_prepared_publication_failure_after_link_keeps_pending_record(self):
+        journal = custody.Journal(BOUND, 8)
+        with (patch.object(journal, "read", return_value=None),
+              patch.object(os, "O_NOFOLLOW", 1 << 21, create=True),
+              patch.object(os, "O_CLOEXEC", 1 << 22, create=True),
+              patch.object(os, "open", return_value=9),
+              patch.object(os, "write", side_effect=lambda fd, data: len(data)),
+              patch.object(os, "fsync", side_effect=[None, OSError("base sync failed")]),
+              patch.object(os, "link") as link, patch.object(os, "unlink") as unlink,
+              patch.object(os, "close")):
+            with self.assertRaisesRegex(custody.JournalPublicationError, "LAUNCH_CUSTODY_JOURNAL_PUBLICATION"):
+                journal.write("prepared", launcher.lease_record(LEASE))
+        link.assert_called_once()
+        unlink.assert_not_called()
+
     def test_process_loss_after_mkdir_before_binding_recovers_only_empty_scratch(self):
         self.journal.reserve(OWNERS)
         self.journal.current_scratch = LEASE.scratch
@@ -146,6 +221,7 @@ class CustodyTest(unittest.TestCase):
         self.journal.reserve(OWNERS)
         self.journal.current_scratch = LEASE.scratch
         self.journal.bind(LEASE.scratch)
+        self.journal.prepare(LEASE.scratch, launcher.lease_record(LEASE))
         events = []
 
         @contextmanager
@@ -178,15 +254,18 @@ class CustodyTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_OWNER_RECORD"):
                 custody.verify_owners_gone(OWNERS)
 
-    def test_independent_recovery_replays_admitted_lease_after_original_owners_exit(self):
+    def test_prepared_but_unadmitted_lease_replays_exact_owned_cleanup(self):
         self.journal.reserve(OWNERS)
         self.journal.current_scratch = LEASE.scratch
         self.journal.bind(LEASE.scratch)
-        self.journal.admit(LEASE.scratch, launcher.lease_record(LEASE))
+        self.journal.prepare(LEASE.scratch, launcher.lease_record(LEASE))
 
         @contextmanager
-        def locked(scope):
+        def locked(_scope, *, timeout):
+            self.assertEqual(timeout, 2)
             yield self.journal
+
+        clock = lambda: 100.0
 
         def cleanup(*args, **kwargs):
             self.journal.current_scratch = None
@@ -195,10 +274,89 @@ class CustodyTest(unittest.TestCase):
         with (patch.object(launcher, "custody", locked), patch.object(launcher, "verify_owners_gone") as gone,
               patch.object(launcher, "recover_bound", side_effect=cleanup) as recover,
               patch.object(launcher, "absent", return_value=True)):
-            self.assertTrue(launcher.recover_after_cancellation(BOUND))
-            self.assertTrue(launcher.recover_after_cancellation(BOUND))
+            self.assertTrue(launcher.recover_after_cancellation(BOUND, clock=clock))
+            self.assertTrue(launcher.recover_after_cancellation(BOUND, clock=clock))
             gone.assert_called_with(OWNERS)
-            recover.assert_called_once_with(BOUND, LEASE)
+            recover.assert_called_once_with(BOUND, LEASE, clock=clock, deadline=132.0)
+        self.assertEqual(self.journal.records["retired"], {"admitted": False})
+
+    def test_watchdog_waits_for_brief_contention_within_recovery_budget(self):
+        self.journal.reserve(OWNERS)
+        self.journal.current_scratch = LEASE.scratch
+        self.journal.bind(LEASE.scratch)
+        self.journal.prepare(LEASE.scratch, launcher.lease_record(LEASE))
+        observed = []
+
+        @contextmanager
+        def busy_then_locked(_scope, *, timeout):
+            observed.append(timeout)
+            if timeout == 0:
+                raise ValueError("LAUNCH_CUSTODY_LOCK_BUSY")
+            yield self.journal
+
+        clock = lambda: 100.0
+        with (patch.object(launcher, "custody", busy_then_locked),
+              patch.object(launcher, "absent", return_value=True),
+              patch.object(launcher, "recover_bound", return_value=True) as recover):
+            self.assertTrue(launcher.recover(BOUND, LEASE, clock=clock))
+        self.assertEqual(observed, [2])
+        recover.assert_called_once_with(BOUND, LEASE, clock=clock, deadline=132.0)
+
+    def test_recovery_budget_cannot_be_reset_after_waiting_for_custody(self):
+        sleep = Mock()
+        with self.assertRaisesRegex(ValueError, "LAUNCH_RECOVERY_DEADLINE"):
+            launcher.recover_bound(BOUND, LEASE, clock=lambda: 100.0, deadline=126.0, sleep=sleep)
+        sleep.assert_not_called()
+
+    def test_pending_or_mismatched_admission_never_attempts_prepared_cleanup(self):
+        self.journal.reserve(OWNERS)
+        self.journal.current_scratch = LEASE.scratch
+        self.journal.bind(LEASE.scratch)
+        with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_ADMIT_PHASE"):
+            self.journal.admit(LEASE.scratch, launcher.lease_record(LEASE))
+        self.journal.prepare(LEASE.scratch, launcher.lease_record(LEASE))
+
+        @contextmanager
+        def locked(_scope, *, timeout):
+            self.assertEqual(timeout, 2)
+            yield self.journal
+
+        with (patch.object(launcher, "custody", locked), patch.object(launcher, "verify_owners_gone"),
+              patch.object(launcher, "recover_bound") as recover):
+            self.journal.pending = True
+            with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_JOURNAL_PENDING"):
+                launcher.recover_after_cancellation(BOUND)
+            self.journal.pending = False
+            self.journal.records["admitted"] = {**launcher.lease_record(LEASE), "scratch": [10, 99]}
+            with self.assertRaisesRegex(ValueError, "LAUNCH_CUSTODY_RECOVERY_PHASE"):
+                launcher.recover_after_cancellation(BOUND)
+            recover.assert_not_called()
+            self.assertNotIn("retired", self.journal.records)
+
+    def test_independent_recovery_replays_admitted_lease_after_original_owners_exit(self):
+        self.journal.reserve(OWNERS)
+        self.journal.current_scratch = LEASE.scratch
+        self.journal.bind(LEASE.scratch)
+        self.journal.prepare(LEASE.scratch, launcher.lease_record(LEASE))
+        self.journal.admit(LEASE.scratch, launcher.lease_record(LEASE))
+
+        @contextmanager
+        def locked(scope, *, timeout):
+            yield self.journal
+
+        clock = lambda: 100.0
+
+        def cleanup(*args, **kwargs):
+            self.journal.current_scratch = None
+            return True
+
+        with (patch.object(launcher, "custody", locked), patch.object(launcher, "verify_owners_gone") as gone,
+              patch.object(launcher, "recover_bound", side_effect=cleanup) as recover,
+              patch.object(launcher, "absent", return_value=True)):
+            self.assertTrue(launcher.recover_after_cancellation(BOUND, clock=clock))
+            self.assertTrue(launcher.recover_after_cancellation(BOUND, clock=clock))
+            gone.assert_called_with(OWNERS)
+            recover.assert_called_once_with(BOUND, LEASE, clock=clock, deadline=132.0)
         self.assertEqual(self.journal.records["retired"], {"admitted": True})
 
 
