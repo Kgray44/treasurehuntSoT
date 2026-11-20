@@ -321,6 +321,8 @@ export async function runJob(job, context) {
       if (build < 0) throw new Error("Browser fixture planner did not provide a build.");
       for (const [executable, args] of commands.slice(build)) {
         if (args[0] === "scripts/sounding-line/run-browser-suite.mjs") {
+          // Dedicated runners can restore the normal MySQL client on exit.
+          await setupPrisma();
           await runBrowserProfile(args[args.indexOf("--profile") + 1], args.slice(args.indexOf("--") + 1), tree);
           continue;
         }

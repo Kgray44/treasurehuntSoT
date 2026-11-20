@@ -319,21 +319,27 @@ test("privileged users bring the standalone Bridgewatch watch home without expos
 
   await admin.page.setViewportSize({ width: 390, height: 844 });
   await admin.page.reload();
-  await expect(admin.page.getByRole("heading", { name: "BRIDGEWATCH" })).toBeVisible();
-  const width = await admin.page.evaluate(() => ({
-    client: document.documentElement.clientWidth,
-    scroll: document.documentElement.scrollWidth,
-    overflow: Array.from(document.querySelectorAll("body *"))
-      .map((element) => ({
-        tag: element.tagName,
-        className: element.className,
-        right: Math.round(element.getBoundingClientRect().right),
-        width: Math.round(element.getBoundingClientRect().width),
-      }))
-      .filter((element) => element.right > innerWidth)
-      .sort((a, b) => b.right - a.right)
-      .slice(0, 12),
-  }));
+  await expect(admin.page.getByRole("heading", { name: "Fleet overview", exact: true })).toBeVisible();
+  const width = await admin.page.evaluate(() => {
+    const { clientWidth: client, scrollWidth: scroll } = document.documentElement;
+    const overflow = [];
+    if (scroll > client) {
+      for (const element of document.querySelectorAll("body, body *")) {
+        const { right } = element.getBoundingClientRect();
+        if (right <= client && element.scrollWidth <= element.clientWidth) continue;
+        overflow.push({
+          tag: element.tagName,
+          id: element.id,
+          className: element.className,
+          client: element.clientWidth,
+          scroll: element.scrollWidth,
+          right: Math.round(right),
+          overflowX: getComputedStyle(element).overflowX,
+        });
+      }
+    }
+    return { client, scroll, overflow: overflow.slice(0, 16) };
+  });
   expect(width.scroll, JSON.stringify(width.overflow)).toBeLessThanOrEqual(width.client);
   await capture(admin.page, "ADM2-EV-O-BRIDGEWATCH-MOBILE");
   await admin.context.close();
