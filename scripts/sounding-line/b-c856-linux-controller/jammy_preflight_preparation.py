@@ -7,6 +7,7 @@ import stat
 import sys
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
+from errno import errorcode
 from pathlib import Path
 
 import jammy_preflight_worker as worker
@@ -66,14 +67,22 @@ def read_inventory_inputs(manifest_hash):
 def prepare_runtime_inputs(run_id, approval, token, receipt, runner_image):
     """Reacquire the seven pinned members. This step neither authorizes nor starts a service."""
     approval = dict(approval) if type(approval) is dict else approval
-    run = authenticate_jammy_preflight_run(run_id, approval, token, launch=True)
+    try:
+        run = authenticate_jammy_preflight_run(run_id, approval, token, launch=True)
+    except OSError as error:
+        code = errorcode.get(error.errno, "OS_ERROR")
+        raise ValueError(f"JAMMY_PREPARATION_PROVIDER_{code}") from error
     verify_runner(run, runner_image)
     plan = load_plan()
     expected = verify_inventory(plan, receipt)
     inventory = plan["inventory"]
     require(inventory["run"] == ORIGINAL_INVENTORY_RUN, "JAMMY_PREPARATION_INVENTORY_RUN")
     manifest, verifier = read_inventory_inputs(inventory["manifestSha256"])
-    observed, members = collect_inventory(manifest, verifier, snapshot_attested_at=ORIGINAL_INVENTORY_STARTED)
+    try:
+        observed, members = collect_inventory(manifest, verifier, snapshot_attested_at=ORIGINAL_INVENTORY_STARTED)
+    except OSError as error:
+        code = errorcode.get(error.errno, "OS_ERROR")
+        raise ValueError(f"JAMMY_PREPARATION_INVENTORY_{code}") from error
     require(observed["ownedScratchRemoved"] is True and observed["members"] == expected,
             "JAMMY_PREPARATION_INVENTORY_DRIFT")
     bind_member_bytes(plan, members)

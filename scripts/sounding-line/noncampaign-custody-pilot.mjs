@@ -28,7 +28,7 @@ const need = (value, code) => {
 const singleLink = (stat) => stat.isFile() && stat.nlink === 1n;
 const signature = (stat) =>
   [stat.dev, stat.ino, stat.mode, stat.nlink, stat.size, stat.mtimeNs, stat.ctimeNs].map(String).join(":");
-export const CUSTODY_ORDINARY_WORKFLOW_SHA256 = "acfb1977b0039dba3021b4f973964bcc43cfd1b764ec0d01c4b7143035f80ae0";
+export const CUSTODY_ORDINARY_WORKFLOW_SHA256 = "f395f4f6495ccef1252607f2fe631321a03289fb024323492738197d0dec4235";
 
 export function custodyPilotSourceFiles() {
   const policy = JSON.parse(
