@@ -1,9 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { readNativeVerificationClock } from "../../scripts/sounding-line/verification-job-clock.mjs";
-import { currentVerificationJob } from "../../scripts/sounding-line/ordinary-supervised.mjs";
 import { verificationBudgetFromElapsed } from "../../scripts/sounding-line/verification-budget.mjs";
 
 function fixture(change = () => {}) {
@@ -169,31 +167,32 @@ test("retained native proc wire format is readable without mistaking replay for 
   assert.equal(clock.qualification, false);
 });
 
+test("the live provider clock uses credentials only in the protected workflow", () => {
+  const workflow = readFileSync(new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url), "utf8");
+  const finalCheck = workflow.split("\n  final-check:\n")[1];
+  const clock = finalCheck.indexOf("- name: Bind the hosted verification clock on protected source");
+  const install = finalCheck.indexOf("- run: npm ci --ignore-scripts");
+  assert(clock >= 0 && clock < install);
+  const trusted = finalCheck.slice(clock, install);
+  assert.match(trusted, /steps\.route\.outputs\.kind == 'control-plane'/u);
+  assert.match(trusted, /working-directory: authority/u);
+  assert.match(trusted, /GH_TOKEN: \$\{\{ github\.token \}\}/u);
+  assert.match(trusted, /CANDIDATE_SHA: \$\{\{ steps\.source\.outputs\.candidate \}\}/u);
+  assert.match(trusted, /await currentVerificationJob/u);
+  assert.doesNotMatch(trusted, /continue-on-error|\.\.\/candidate\/scripts/u);
+  const regression = finalCheck.split("- name: Run focused Sounding Line regression")[1].split("- name:")[0];
+  assert.match(regression, /working-directory: candidate/u);
+  assert.doesNotMatch(regression, /GH_TOKEN|GITHUB_TOKEN|continue-on-error/u);
+});
+
 test(
-  "actual hosted kernel ancestry and current exact job bind a conservative clock despite provider header skew",
-  {
-    skip: process.platform !== "linux" || process.env.GITHUB_ACTIONS !== "true",
-  },
-  async () => {
-    const candidateSha = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8", timeout: 15000 }).trim();
-    // The repository is public. This trusted test adapter reads the real own-run
-    // API over TLS without exposing a token to candidate regression tests. It
-    // supplies no synthetic provider data and issues no decision or mutation.
-    const result = await currentVerificationJob({
-      candidateSha,
-      env: { ...process.env, GH_TOKEN: "public-read-fixture-no-credential" },
-      request: (url, options) => {
-        const headers = new Headers(options.headers);
-        headers.delete("Authorization");
-        return fetch(url, { ...options, headers });
-      },
-    });
-    assert.equal(result.clockObservation.providerJob.candidateSha, candidateSha);
-    assert.equal(result.clockObservation.nativeClock.originPid, process.pid);
-    assert(result.setupMs >= result.clockObservation.nativeClock.setupMs);
-    assert.equal(result.limitMs, 2700000);
-    assert.equal(result.tailMs, 120000);
-    assert(result.executionMs > 0);
-    console.log(JSON.stringify({ namespace: "SOUNDING_LINE_NATIVE_CLOCK_PROOF", ...result, qualification: false }));
+  "actual hosted candidate process binds its kernel clock without provider credentials",
+  { skip: process.platform !== "linux" || process.env.GITHUB_ACTIONS !== "true" },
+  () => {
+    const clock = readNativeVerificationClock();
+    assert.equal(clock.originPid, process.pid);
+    assert(clock.setupMs > 0);
+    assert.equal(clock.qualification, false);
+    console.log(JSON.stringify({ namespace: "SOUNDING_LINE_KERNEL_CLOCK_PROOF", ...clock }));
   },
 );

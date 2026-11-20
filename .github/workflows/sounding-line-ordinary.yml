@@ -498,6 +498,22 @@ jobs:
             appendFileSync(process.env.GITHUB_OUTPUT, "kind=control-plane\n");
           }
           EOF
+      - name: Bind the hosted verification clock on protected source
+        if: steps.route.outputs.kind == 'control-plane'
+        working-directory: authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CANDIDATE_SHA: ${{ steps.source.outputs.candidate }}
+        run: |
+          node --input-type=module <<'EOF'
+          import { currentVerificationJob } from "./scripts/sounding-line/ordinary-supervised.mjs";
+
+          const result = await currentVerificationJob({
+            candidateSha: process.env.CANDIDATE_SHA,
+            root: "../candidate",
+          });
+          console.log(JSON.stringify({ namespace: "SOUNDING_LINE_NATIVE_CLOCK_PROOF", ...result, qualification: false }));
+          EOF
       - run: npm ci --ignore-scripts
         working-directory: candidate
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
