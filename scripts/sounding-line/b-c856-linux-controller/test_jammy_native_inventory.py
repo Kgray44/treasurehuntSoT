@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
+from urllib.error import HTTPError, URLError
 
 import jammy_native_inventory as probe
 
@@ -40,6 +41,35 @@ def fixture_elf(needed="libc.so.6", interpreter=probe.INTERPRETER, tag=1):
 
 
 class StaticInventoryTests(unittest.TestCase):
+    def test_archive_transport_recovers_once_on_exact_timeout(self):
+        fetch = Mock(side_effect=[URLError(TimeoutError("private diagnostic")), b"matching bytes"])
+        args = (object(), probe.NOBLE_METADATA_SNAPSHOT + "dists/noble-updates/InRelease", 64)
+        self.assertEqual(probe.fetch_inventory_archive(fetch, *args), b"matching bytes")
+        self.assertEqual([item.args for item in fetch.call_args_list], [args, args])
+
+    def test_archive_transport_retains_original_and_final_failure(self):
+        url = probe.NOBLE_METADATA_SNAPSHOT + "pool/private-fixture.deb"
+        status = HTTPError(url, 404, "private diagnostic", {}, io.BytesIO(b"private body"))
+        fetch = Mock(side_effect=[TimeoutError("private first diagnostic"), status])
+        with self.assertRaisesRegex(ValueError, "^INVENTORY_SNAPSHOT_PACKAGE_TIMEOUT_THEN_HTTP_404$"):
+            probe.fetch_inventory_archive(fetch, object(), url, 64)
+        self.assertEqual(fetch.call_count, 2)
+        self.assertTrue(status.fp.closed)
+
+    def test_archive_transport_does_not_retry_permanent_or_reserved_errors(self):
+        url = probe.ARCHIVE + "dists/fixture/InRelease"
+        for error, code in (
+            (HTTPError(url, 429, "private diagnostic", {"Retry-After": "60"}, None), "HTTP_429"),
+            (HTTPError(url, 503, "private diagnostic", {"Retry-After": "5"}, None), "HTTP_503"),
+            (ValueError("INVENTORY_DEADLINE"), "DEADLINE"),
+            (PermissionError("private diagnostic"), "OS_ERROR"),
+        ):
+            with self.subTest(code=code):
+                fetch = Mock(side_effect=error)
+                with self.assertRaisesRegex(ValueError, f"INVENTORY_(?:UBUNTU_RELEASE_)?{code}$"):
+                    probe.fetch_inventory_archive(fetch, object(), url, 64)
+                fetch.assert_called_once()
+
     def test_libc_whole_archive_bound_does_not_raise_selected_member_bound(self):
         name = probe.LIBDIR+"/libc.so.6"
         selected = (name, b"selected", tarfile.REGTYPE, "")
@@ -83,6 +113,8 @@ class StaticInventoryTests(unittest.TestCase):
             self.assertEqual(archive.KEYRING_SHA256,
                              "bfdb0512804d0740816d836bb05b1ef8b27609771d7b9962c95bcc57bfaac230")
             self.assertIs(archive.signed_release.__globals__["archive_key"], archive.archive_key)
+            self.assertIs(archive.authenticated_package.__globals__["fetch"], archive.fetch)
+            self.assertIs(archive.fetch.func, probe.fetch_inventory_archive)
             with self.assertRaisesRegex(ValueError, "INVENTORY_VERIFIER_PIN"):
                 probe.inventory_verifier(frozen+b"x")
 

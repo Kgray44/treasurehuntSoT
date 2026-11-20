@@ -16,10 +16,13 @@ import tarfile
 import tempfile
 import time
 import types
+import urllib.error
 import urllib.request
 import zipfile
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
+from functools import partial
+from http.client import HTTPException, IncompleteRead
 from pathlib import Path, PurePosixPath
 
 MIB = 1 << 20
@@ -243,7 +246,40 @@ def trusted_tool(name):
 
 
 def expired(_signal, _frame):
-    raise TimeoutError("INVENTORY_DEADLINE")
+    raise ValueError("INVENTORY_DEADLINE")
+
+
+def archive_transport_failure(error):
+    if isinstance(error, urllib.error.HTTPError):
+        retry = error.code in (408, 500, 502, 503, 504) and not error.headers.get("Retry-After")
+        return f"HTTP_{error.code}", retry
+    reason = error.reason if isinstance(error, urllib.error.URLError) else error
+    if isinstance(reason, TimeoutError):
+        return "TIMEOUT", True
+    if isinstance(reason, ConnectionResetError):
+        return "RESET", True
+    if isinstance(reason, IncompleteRead):
+        return "INCOMPLETE", True
+    return ("PROTOCOL" if isinstance(reason, HTTPException) else "OS_ERROR"), False
+
+
+def fetch_inventory_archive(fetch, client, url, maximum):
+    """Allow one retry of the same bounded request under the inventory alarm."""
+    first = None
+    for attempt in range(2):
+        try:
+            return fetch(client, url, maximum)
+        except (OSError, HTTPException) as error:
+            code, retry = archive_transport_failure(error)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            if attempt == 0 and retry:
+                first = code
+                continue
+            origin = "SNAPSHOT" if url.startswith(NOBLE_METADATA_SNAPSHOT) else "UBUNTU"
+            artifact = "RELEASE" if url.endswith("/InRelease") else "INDEX" if "/by-hash/" in url else "PACKAGE"
+            reason = f"{first}_THEN_{code}" if first else code
+            raise ValueError(f"INVENTORY_{origin}_{artifact}_{reason}") from error
 
 
 def inventory_verifier(verifier):
@@ -264,6 +300,7 @@ def inventory_verifier(verifier):
     public = modules["archive"]
     public.KEYRING_BYTES = JAMMY_ARCHIVE_KEY_BYTES
     public.KEYRING_SHA256 = JAMMY_ARCHIVE_KEY_SHA256
+    public.fetch = partial(fetch_inventory_archive, public.fetch)
     return public, modules["package"]
 
 
@@ -315,6 +352,10 @@ def collect_inventory(plan, verifier, *, snapshot_attested_at=None):
                 files.update(selected)
                 require(sum(len(member) for _, member in files.values()) <= 8*MIB, "INVENTORY_CLOSURE_SIZE")
             members = exact_closure(files)
+        except package.PackageError as error:
+            reason = str(error)
+            code = "INVENTORY_" + reason if re.fullmatch(r"[A-Z0-9_]{1,64}", reason) else "INVENTORY_ARCHIVE_REFUSED"
+            raise ValueError(code) from error
         finally:
             signal.alarm(0)
             tempfile.tempdir = previous_tempdir
