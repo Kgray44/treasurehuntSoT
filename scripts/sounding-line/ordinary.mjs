@@ -598,30 +598,115 @@ function extractModuleSpecifiers(contents) {
   return result;
 }
 
+function decodeSnapshotBlobBatch(output, entries) {
+  if (!Buffer.isBuffer(output)) return null;
+  const values = [];
+  let offset = 0;
+  for (const { blob } of entries) {
+    const newline = output.indexOf(0x0a, offset);
+    if (newline < 0 || newline - offset > 80) return null;
+    const header = /^([a-f0-9]{40}) blob ([0-9]+)$/u.exec(output.toString("ascii", offset, newline));
+    if (!header || header[1] !== blob) return null;
+    const size = Number(header[2]);
+    const end = newline + 1 + size;
+    if (!Number.isSafeInteger(size) || end >= output.length || output[end] !== 0x0a) return null;
+    const data = output.subarray(newline + 1, end);
+    const digest = createHash("sha1")
+      .update("blob " + size + "\0")
+      .update(data)
+      .digest("hex");
+    if (digest !== blob) return null;
+    values.push(data.toString("utf8"));
+    offset = end + 1;
+  }
+  return offset === output.length ? values : null;
+}
+
 // One immutable snapshot owns this bounded raw-success reader. Errors and derived
-// closures/fingerprints are never cached; the delegate keeps its original options.
+// closures/fingerprints are never cached; the individual delegate keeps its options.
 export function createSnapshotSourceReader(root, candidateSha, execute = execFileSync) {
   const values = new Map();
+  const entryLimit = 4096;
+  const byteLimit = 64 * 1024 * 1024;
+  const attempted = new Set();
+  let batchesRemaining = 32;
+  let prefetchMs = 10_000;
   let bytes = 0;
-  return (file) => {
-    const selector = `${candidateSha}:${file}`;
-    if (values.has(selector)) return values.get(selector).trim();
-    const raw = execute("git", ["show", selector], { cwd: root, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
-    if (
-      sha.test(candidateSha) &&
-      typeof raw === "string" &&
-      values.size < 4096 &&
-      bytes + Buffer.byteLength(raw) <= 64 * 1024 * 1024
-    ) {
-      values.set(selector, raw);
-      bytes += Buffer.byteLength(raw);
-    }
+  const selector = (file) => candidateSha + ":" + file;
+  const retain = (key, raw) => {
+    if (!sha.test(candidateSha) || typeof raw !== "string" || values.size >= entryLimit) return;
+    const size = Buffer.byteLength(raw);
+    if (bytes + size > byteLimit) return;
+    values.set(key, raw);
+    bytes += size;
+  };
+  const read = (file) => {
+    const key = selector(file);
+    if (values.has(key)) return values.get(key).trim();
+    const raw = execute("git", ["show", key], { cwd: root, encoding: "utf8", maxBuffer: byteLimit });
+    retain(key, raw);
     return raw.trim();
   };
+  read.prefetch = (entries) => {
+    if (!sha.test(candidateSha) || values.size >= entryLimit || bytes >= byteLimit) return;
+    const pending = entries
+      .filter(
+        ({ path, blob }) =>
+          sha.test(blob) &&
+          !/[\0\r\n\ufffd]/u.test(path) &&
+          !attempted.has(path) &&
+          !values.has(selector(path)),
+      )
+      .slice(0, entryLimit - attempted.size);
+    const batchSize = 128;
+    for (
+      let start = 0;
+      start + 1 < pending.length && batchesRemaining > 0 && values.size < entryLimit && bytes < byteLimit;
+      start += batchSize
+    ) {
+      let timeout = Math.floor(prefetchMs);
+      const deadline = process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS;
+      try {
+        if (deadline) timeout = Math.min(timeout, commandDeadline(deadline));
+      } catch {
+        return;
+      }
+      if (timeout < 1) return;
+      const batch = pending.slice(start, start + batchSize);
+      for (const { path } of batch) attempted.add(path);
+      batchesRemaining--;
+      const started = performance.now();
+      try {
+        const output = execute("git", ["cat-file", "--batch"], {
+          cwd: root,
+          input: batch.map(({ path }) => selector(path)).join("\n") + "\n",
+          env: { ...process.env, GIT_NO_LAZY_FETCH: "1", GIT_ALLOW_PROTOCOL: "" },
+          maxBuffer: 16 * 1024 * 1024,
+          timeout,
+        });
+        const raw = decodeSnapshotBlobBatch(output, batch);
+        if (raw) batch.forEach(({ path }, index) => retain(selector(path), raw[index]));
+      } catch {
+        // Missing or oversized batches use the normal individual read.
+      } finally {
+        prefetchMs -= performance.now() - started;
+      }
+    }
+  };
+  return read;
 }
 
 function staticSourceClosure(snapshot, seeds) {
   const queue = [...new Set(seeds)].sort();
+  const readableSource = /\.(?:[cm]?[jt]sx?|json|css)$/u;
+  const prefetchQueuedSources = () => {
+    const entries = [...new Set(queue)]
+      .filter((file) => readableSource.test(file))
+      .map((file) => snapshot.byPath.get(file))
+      .filter(Boolean);
+    snapshot.readSource.prefetch(entries);
+  };
+  prefetchQueuedSources();
   const visited = new Set();
   let unknown = false;
   while (queue.length) {
@@ -633,7 +718,7 @@ function staticSourceClosure(snapshot, seeds) {
       continue;
     }
     visited.add(file);
-    if (!/\.(?:[cm]?[jt]sx?|json|css)$/u.test(file)) continue;
+    if (!readableSource.test(file)) continue;
     let contents;
     try {
       contents = snapshot.readSource(file);
@@ -666,6 +751,7 @@ function staticSourceClosure(snapshot, seeds) {
       if (resolved.unknown) unknown = true;
       if (resolved.path && !visited.has(resolved.path)) queue.push(resolved.path);
     }
+    if (visited.size % 128 === 0) prefetchQueuedSources();
     if (visited.size > 2_000)
       return { entries: [...visited].map((filePath) => snapshot.byPath.get(filePath)), unknown: true };
   }
