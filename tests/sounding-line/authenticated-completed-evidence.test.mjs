@@ -535,7 +535,7 @@ test(
       const candidateSha = fixtureCommit(root, "synthetic candidate");
       for (const command of ["npm", "npx"]) {
         const script = path.join(shims, `${command}.cjs`);
-        const source = `require('node:fs').appendFileSync(${JSON.stringify(calls)},JSON.stringify({command:${JSON.stringify(command)},args:process.argv.slice(2)})+'\\n');process.stderr.write('INERT_BOUNDED_COMMAND_FAILURE\\n');process.exit(23);\n`;
+        const source = `require('node:fs').appendFileSync(${JSON.stringify(calls)},JSON.stringify({command:${JSON.stringify(command)},args:process.argv.slice(2)})+'\\n');if (process.argv[3] === 'prettier') process.exit(0);process.stderr.write('INERT_BOUNDED_COMMAND_FAILURE\\n');process.exit(23);\n`;
         writeFileSync(script, source);
         put(shims, command, `#!${process.execPath}\n${source}`);
         chmodSync(path.join(shims, command), 0o700);
@@ -580,6 +580,20 @@ test(
       assert.equal(decision.completedEvidenceIntake.qualification, false);
       assert.equal(decision.failureObservation.stage, "TECHNICAL_VERIFICATION");
       assert.equal(decision.failureObservation.exitCode, 23);
+      const { reconciliation, obligations, finalization, freshObligations } = decision.evidenceReconciliation;
+      assert.equal(reconciliation.length, 1);
+      assert.equal(freshObligations, 1);
+      assert.equal(finalization.decision, "EVIDENCE_INVALID");
+      const completed = reconciliation[0];
+      assert.equal(completed.obligationId, obligations[0].id);
+      assert.equal(completed.freshExecuted, true);
+      assert.deepEqual(finalization.closure[0], {
+        obligationId: completed.obligationId,
+        receiptId: completed.receiptId,
+        satisfied: true,
+      });
+      assert.deepEqual(finalization.remainder, obligations.slice(1).map((obligation) => obligation.id));
+      assert.deepEqual(decision.timing.commands.map((entry) => entry.status), ["PASS", "FAIL"]);
       assert.equal(decision.browserRequired, false);
       assert.equal(decision.buildRequired, false);
       assert.equal(decision.productExperience.applicable, false);
@@ -589,7 +603,10 @@ test(
           .trim()
           .split("\n")
           .map((line) => JSON.parse(line)),
-        [{ command: "npx", args: ["--no-install", "prettier", "--check", "Development_Docs/guide.md"] }],
+        [
+          { command: "npx", args: ["--no-install", "prettier", "--check", "Development_Docs/guide.md"] },
+          { command: "npm", args: ["run", "db:generate"] },
+        ],
       );
       assert.equal(existsSync(network), false);
       assert(result.stdout.endsWith(`${JSON.stringify(decision, null, 2)}\n`));

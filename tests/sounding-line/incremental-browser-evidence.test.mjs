@@ -211,7 +211,8 @@ for (const file of [
 
 test("a later command failure retains only previously completed whole obligations", async () => {
   await fixture(async ({ root, owner, plan }) => {
-    const error = new Error("EXPECTED_SECOND_OBLIGATION_FAILURE");
+    const error = Object.freeze(new Error("EXPECTED_SECOND_OBLIGATION_FAILURE"));
+    const progress = {};
     let calls = 0;
     const output = path.join(owner, "completed");
     await assert.rejects(
@@ -221,7 +222,7 @@ test("a later command failure retains only previously completed whole obligation
         () => {
           if (++calls === 2) throw error;
         },
-        { completedEvidenceRoot: output },
+        { completedEvidenceRoot: output, progress },
       ),
       (observed) => observed === error,
     );
@@ -233,6 +234,13 @@ test("a later command failure retains only previously completed whole obligation
     assert.equal(saved[0].receipts[0].result, "PASSED");
     assert.equal(saved[0].wholeVerificationPassed, false);
     assert.equal(saved[0].authentication, "RETENTION_ONLY_NO_AUTHENTICATED_PRODUCER");
+    assert.deepEqual(progress.receipts, saved[0].receipts);
+    assert.deepEqual(
+      progress.reconciliation.map((entry) => entry.receiptId),
+      saved[0].receipts.map((receipt) => receipt.id),
+    );
+    assert.deepEqual(progress.timings.map((entry) => entry.status), ["PASS", "FAIL"]);
+    assert(progress.obligations.length >= 2);
   });
 });
 
@@ -616,7 +624,7 @@ for (const source of [
 test("canonical candidate symlink alias cannot place completed export inside its real tree", async () => {
   await fixture(async ({ root, owner, plan }) => {
     const alias = path.join(owner, "candidate-alias");
-    symlinkSync(root, alias, "dir");
+    symlinkSync(root, alias, process.platform === "win32" ? "junction" : "dir");
     assert.equal(completedEvidenceDirectory(alias, root), undefined);
     await assert.rejects(
       runReconciledVerification(alias, plan, () => assert.fail("must not execute"), {
