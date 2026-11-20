@@ -215,6 +215,10 @@ This repository intentionally preserves Voyagewright's engineering history, incl
 
 The [engineering-record archive](Development_Docs/README.md) organizes those materials separately from the user guide.
 
+### Verification for authorized development
+
+The [Sounding Line V3 operations guide](scripts/sounding-line-v3/README.md) covers verification, CI controls, and protected integration for project maintainers.
+
 ## Proprietary software
 
 Voyagewright is proprietary software. Copyright © 2026 Kato Gray. All rights reserved.
