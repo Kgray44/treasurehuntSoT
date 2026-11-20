@@ -1,3 +1,4 @@
+import { validatePreSourceCaptureBinding } from "./experience-review-source-gate.mjs";
 // A finite Crossdeck admission exception, not a second qualification authority.
 import { execFileSync } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
@@ -28,7 +29,7 @@ import { CURRENT_R18 } from "./experience-current-r18.mjs";
 import { CURRENT_R19 } from "./experience-current-r19.mjs";
 import { CURRENT_R20 } from "./experience-current-r20.mjs";
 import { CURRENT_R21 } from "./experience-current-r21.mjs";
-import { r21ReviewProvenanceBinding } from "./experience-media-first-r21.mjs";
+import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -1037,7 +1038,7 @@ export function sealedReviewIdentity(plan, evidence) {
     artifactsDigest: digest(evidence.artifacts),
     journeysDigest: digest(evidence.journeys),
     ...(plan.paired ? { pairedEvidenceDigest: digest(evidence.pairedEvidence) } : {}),
-    ...r21ReviewProvenanceBinding(plan, evidence),
+    ...mediaFirstReviewProvenanceBinding(plan, evidence),
   };
 }
 export async function validateExceptionSubmissionEvidence({ root, plan, mode, candidateSha, evidenceRoot = root }) {
@@ -2208,6 +2209,7 @@ export async function verifyExceptionAttestation({
   const captureSeal = await store.read("capture");
   const reviewSlot = `review${record.remainingIndependentReviewOrdinal}`;
   const sealed = await store.read(reviewSlot);
+  validatePreSourceCaptureBinding(plan, evidence, capture, prepare, root);
   if (
     !captureSeal ||
     digest(captureSeal.provenance) !== digest(capture.trustedArtifact) ||
