@@ -34,7 +34,7 @@ try {
   let result;
   switch (operation) {
     case "bootstrap-d-only":
-      result = manager.bootstrapDOnly({
+      result = await manager.bootstrapDOnly({
         source: options.source,
         canonical: options.canonical,
         repository: options.repository,
@@ -55,7 +55,7 @@ try {
       result = manager.adopt(input());
       break;
     case "status":
-      result = manager.status();
+      result = dOnlyTask && !manager.config ? manager.bootstrapStatus() : manager.status();
       break;
     case "audit":
       result = options.id ? manager.auditRecord(manager.record(options.id)) : manager.inventory();
@@ -73,7 +73,7 @@ try {
       result = manager.sweep({ limit: options.limit ? Number(options.limit) : 4 });
       break;
     case "recover":
-      result = manager.sweep({ recoverOnly: true });
+      result = dOnlyTask && !manager.config ? manager.recoverDOnlyBootstrap() : manager.sweep({ recoverOnly: true });
       break;
     case "hook": {
       const payload = JSON.parse(fs.readFileSync(0, "utf8") || "{}");

@@ -9,6 +9,7 @@ import {
   POLICY,
   GiB,
   checkBudget,
+  copyDOnlySeed,
   workspaceBudget,
   git,
   sourceLanded,
@@ -695,19 +696,29 @@ test("a D-only admission requires zero C writes and retains the D reserve", () =
     ...admission, dOnly: true, free: { C: 6 * GiB, D: 42 * GiB },
   }), /RESERVE_DENIED:D/);
 });
+function scopedRegistryFixture(f, seedPeakBytes = 16 * 1024 ** 2) {
+  const state = path.join(f.root, "d-only-state");
+  const db = JSON.parse(fs.readFileSync(path.join(f.state, "registry.json"), "utf8"));
+  db.config.dOnlyTask = "approved-task";
+  db.config.seedPeakBytes = seedPeakBytes;
+  fs.mkdirSync(state);
+  fs.writeFileSync(path.join(state, "registry.json"), JSON.stringify(db));
+  return state;
+}
+
 test("the D-only registry admits its task and refuses other owners", (t) => {
   if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
     t.skip("requires a D: fixture directory");
     return;
   }
   const f = fixture(t);
-  const state = path.join(f.root, "d-only-state");
+  const state = scopedRegistryFixture(f);
   const manager = new Lifecycle(state, {
     ...f.dependencies,
     dOnlyTask: "approved-task",
     guard: () => ({ allowed: true, cFreeBytes: 6 * GiB, dFreeBytes: 100 * GiB }),
   });
-  assert.equal(manager.init(f.main, "synthetic/test").dOnlyTask, "approved-task");
+  assert.equal(manager.config.dOnlyTask, "approved-task");
   assert.throws(() => new Lifecycle(state), /D_ONLY_TASK_REQUIRED/);
   const request = { task: "other-task", path: path.join(f.root, "owned"), branch: "codex/owned", peakBytes: 16 * 1024 ** 2 };
   assert.throws(() => manager.create(request), /D_ONLY_TASK_MISMATCH/);
@@ -716,7 +727,7 @@ test("the D-only registry admits its task and refuses other owners", (t) => {
   assert.equal(result.record.state, "ACTIVE");
   assert.ok(git(result.record.path, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).startsWith("D:/"));
 });
-test("a second D-only initializer cannot replace an in-progress registry", (t) => {
+test("a second D-only initializer cannot replace an in-progress registry", async (t) => {
   if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
     t.skip("requires a D: fixture directory");
     return;
@@ -727,7 +738,160 @@ test("a second D-only initializer cannot replace an in-progress registry", (t) =
   fs.mkdirSync(state);
   const lock = path.join(state, "bootstrap.lock");
   fs.writeFileSync(lock, "first initializer");
-  assert.throws(() => manager.init(f.main, "synthetic/test"), /D_ONLY_BOOTSTRAP_BUSY/);
+  await assert.rejects(manager.bootstrapDOnly({ source: f.main, canonical: path.join(f.root, "new-canonical") }),
+    /D_ONLY_BOOTSTRAP_BUSY/u);
   assert.equal(fs.readFileSync(lock, "utf8"), "first initializer");
   assert.equal(fs.existsSync(path.join(state, "registry.json")), false);
+});
+
+test("D-only state rejects unchecked canonical initialization, seed and alternates", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const dependencies = { ...f.dependencies, dOnlyTask: "approved-task" };
+  const uninitialized = new Lifecycle(path.join(f.root, "uninitialized"), dependencies);
+  assert.throws(() => uninitialized.init(f.main, "synthetic/test"), /D_ONLY_BOOTSTRAP_REQUIRED/u);
+  const state = scopedRegistryFixture(f, 0);
+  assert.throws(() => new Lifecycle(state, dependencies), /D_ONLY_SEED_BUDGET_INVALID/u);
+  const file = path.join(state, "registry.json");
+  const db = JSON.parse(fs.readFileSync(file));
+  db.config.seedPeakBytes = 16 * 1024 ** 2;
+  fs.writeFileSync(file, JSON.stringify(db));
+  fs.writeFileSync(path.join(f.main, ".git", "objects", "info", "alternates"), f.main);
+  assert.throws(() => new Lifecycle(state, dependencies), /D_ONLY_OBJECT_ALTERNATES/u);
+});
+
+test("D-only receipt publication refuses a redirected registry child", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const state = scopedRegistryFixture(f);
+  const manager = new Lifecycle(state, { ...f.dependencies, dOnlyTask: "approved-task" });
+  const elsewhere = path.join(f.root, "elsewhere");
+  fs.mkdirSync(elsewhere);
+  fs.symlinkSync(elsewhere, path.join(state, "receipts"), "junction");
+  assert.throws(() => manager.receipt(null, "TEST", {}), /REPARSE_ANCESTOR/u);
+  assert.deepEqual(fs.readdirSync(elsewhere), []);
+});
+
+test("D-only adoption cannot sidestep its finite reservation", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const state = scopedRegistryFixture(f);
+  const manager = new Lifecycle(state, { ...f.dependencies, dOnlyTask: "approved-task" });
+  const runtime = path.join(f.root, "unregistered-runtime");
+  fs.mkdirSync(runtime);
+  assert.throws(() => manager.adopt({ path: runtime, kind: "runtime", task: "approved-task",
+    peakBytes: 13 * GiB, adoptedReason: "Synthetic oversized adoption for the D-only task" }),
+  /WORKSPACE_BUDGET_DENIED/u);
+  assert.deepEqual(fs.readdirSync(runtime), []);
+});
+
+test("D-only seed copies only scanned bytes and refuses changed objects before writing them", async (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const source = path.join(f.root, "seed-source");
+  const prefix = "ab";
+  const name = "0".repeat(38);
+  fs.mkdirSync(path.join(source, prefix), { recursive: true });
+  const original = path.join(source, prefix, name);
+  fs.writeFileSync(original, "admitted");
+  const manifest = scan(source, { entries: true }).entries;
+  fs.writeFileSync(path.join(source, prefix, "1".repeat(38)), "late arrival");
+  const destination = path.join(f.root, "seed-target");
+  await copyDOnlySeed(source, destination, manifest);
+  assert.deepEqual(fs.readdirSync(path.join(destination, prefix)), [name]);
+  assert.equal(fs.readFileSync(path.join(destination, prefix, name), "utf8"), "admitted");
+  fs.appendFileSync(original, " exceeded");
+  const changed = path.join(f.root, "changed-target");
+  await assert.rejects(copyDOnlySeed(source, changed, manifest), /BOOTSTRAP_SOURCE_OBJECT_CHANGED/u);
+  assert(!fs.existsSync(changed));
+});
+
+test("D-only bootstrap recovery releases only an exited exact owner and preserves partials", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const state = path.join(f.root, "d-only-state");
+  fs.mkdirSync(state);
+  const lock = path.join(state, "bootstrap.lock");
+  const owner = { pid: 999, creationDate: "original", task: "approved-task" };
+  const partial = path.join(f.root, "partial-seed");
+  fs.mkdirSync(partial);
+  fs.writeFileSync(path.join(partial, "owned-data"), "partial");
+  let current = { ...owner };
+  const manager = new Lifecycle(state, {
+    ...f.dependencies, dOnlyTask: "approved-task", processes: () => [current, { pid: process.pid, creationDate: "claimant" }],
+  });
+  fs.writeFileSync(lock, JSON.stringify(owner));
+  assert.equal(manager.recoverDOnlyBootstrap().reason, "D_ONLY_BOOTSTRAP_OWNER_ACTIVE");
+  assert(fs.existsSync(lock));
+  current = { ...owner, creationDate: "reused-pid" };
+  assert.deepEqual(manager.recoverDOnlyBootstrap(), { state: "BOOTSTRAP_AVAILABLE", recovered: true });
+  assert(!fs.existsSync(lock));
+  assert.equal(fs.readFileSync(path.join(partial, "owned-data"), "utf8"), "partial");
+});
+
+test("D-only bootstrap refuses source overlap before creating a state directory", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const state = path.join(f.main, "unchecked-state");
+  const manager = new Lifecycle(state, { ...f.dependencies, dOnlyTask: "approved-task" });
+  assert.throws(() => manager.bootstrapDOnly({ source: f.main, canonical: path.join(f.root, "new-canonical") }),
+    /BOOTSTRAP_SOURCE_OVERLAP/u);
+  assert(!fs.existsSync(state));
+});
+
+test("D-only inventory charges retained seed attempts alongside the current seed", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const state = scopedRegistryFixture(f, 25 * GiB);
+  const manager = new Lifecycle(state, { ...f.dependencies, dOnlyTask: "approved-task" });
+  manager.receipt(null, "D_ONLY_BOOTSTRAP_RESERVED", {
+    task: "approved-task", canonical: f.main, peakBytes: 25 * GiB,
+  });
+  manager.receipt(null, "D_ONLY_BOOTSTRAP_RESERVED", {
+    task: "approved-task", canonical: path.join(f.root, "preserved-partial"), peakBytes: 25 * GiB,
+  });
+  assert.equal(manager.inventory().admissionFootprint, 50 * GiB);
+});
+
+test("D-only state rejects redirected writable Git metadata and reports an interrupted recovery owner", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const dependencies = { ...f.dependencies, dOnlyTask: "approved-task", processes: () => [] };
+  const state = scopedRegistryFixture(f);
+  const target = path.join(f.root, "other-store");
+  fs.mkdirSync(target);
+  fs.symlinkSync(target, path.join(f.main, ".git", "worktrees"), "junction");
+  assert.throws(() => new Lifecycle(state, dependencies), /D_ONLY_GIT_STORE_REDIRECTED/u);
+  const recovery = path.join(f.root, "pending-state");
+  fs.mkdirSync(recovery);
+  const lock = path.join(recovery, "bootstrap-recovery.lock");
+  fs.writeFileSync(lock, JSON.stringify({ pid: 123, creationDate: "original", task: "approved-task" }));
+  const pending = new Lifecycle(recovery, dependencies);
+  assert.equal(pending.bootstrapStatus().reason, "D_ONLY_BOOTSTRAP_RECOVERY_OWNER_EXITED");
+  assert.equal(pending.recoverDOnlyBootstrap().reason, "D_ONLY_BOOTSTRAP_RECOVERY_OWNER_EXITED");
+  assert(fs.existsSync(lock));
 });

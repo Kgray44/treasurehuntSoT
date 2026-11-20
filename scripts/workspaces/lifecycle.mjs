@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { mkdir as mkdirAsync, open as openAsync } from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
 import { randomUUID, createHash } from "node:crypto";
@@ -278,6 +279,70 @@ function onlyD(target) {
   if (path.parse(resolved).root.toUpperCase() !== "D:\\") fail("D_ONLY_PATH_REQUIRED");
   return resolved;
 }
+export async function copyDOnlySeed(source, destination, entries) {
+  source = physical(source);
+  destination = onlyD(destination);
+  // Only finalized SHA-1 object names can be seed inputs. Late packs, scratch,
+  // and repository-relative indirections are outside this admitted manifest.
+  const manifest = entries.filter((entry) => entry.kind === "file" &&
+    /^(?:[a-f0-9]{2}\/[a-f0-9]{38}|pack\/pack-[a-f0-9]{40}\.(?:pack|idx|rev|bitmap|promisor|keep|mtimes))$/u
+      .test(entry.path));
+  const controller = new AbortController();
+  const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(5 * 60 * 1000)]);
+  let next = 0;
+  const handlesNoFollow = fs.constants.O_NOFOLLOW ?? 0;
+  async function copyWorker() {
+    const buffer = Buffer.alloc(1024 ** 2);
+    try {
+      while (next < manifest.length) {
+        signal.throwIfAborted();
+        const entry = manifest[next++];
+        if (!Number.isSafeInteger(entry.bytes) || entry.bytes < 0) fail("BOOTSTRAP_OBJECT_SIZE_INVALID");
+        const from = physical(path.join(source, entry.path));
+        const to = onlyD(path.join(destination, entry.path));
+        const input = await openAsync(from, fs.constants.O_RDONLY | handlesNoFollow);
+        try {
+          const before = await input.stat();
+          if (!before.isFile() || before.size !== entry.bytes || before.mtimeMs !== entry.mtime)
+            fail("BOOTSTRAP_SOURCE_OBJECT_CHANGED");
+          await mkdirAsync(path.dirname(to), { recursive: true });
+          signal.throwIfAborted();
+          const output = await openAsync(onlyD(to), "wx", 0o600);
+          try {
+            let position = 0;
+            while (position < entry.bytes) {
+              signal.throwIfAborted();
+              const { bytesRead } = await input.read(buffer, 0, Math.min(buffer.length, entry.bytes - position), position);
+              if (bytesRead === 0) fail("BOOTSTRAP_SOURCE_OBJECT_CHANGED");
+              let written = 0;
+              while (written < bytesRead) {
+                signal.throwIfAborted();
+                const { bytesWritten } = await output.write(buffer, written, bytesRead - written, position + written);
+                if (bytesWritten === 0) fail("BOOTSTRAP_OBJECT_SHORT_WRITE");
+                written += bytesWritten;
+              }
+              position += bytesRead;
+            }
+            const after = await input.stat();
+            if ((await output.stat()).size !== entry.bytes ||
+                after.size !== before.size || after.mtimeMs !== before.mtimeMs)
+              fail("BOOTSTRAP_SOURCE_OBJECT_CHANGED");
+          } finally {
+            await output.close();
+          }
+        } finally {
+          await input.close();
+        }
+      }
+    } catch (error) {
+      controller.abort(error);
+      throw error;
+    }
+  }
+  await Promise.allSettled(Array.from({ length: Math.min(16, manifest.length) }, copyWorker));
+  signal.throwIfAborted();
+}
+
 export function reserve(estimates = { C: 0, D: 0 }) {
   if (process.platform !== "win32") fail("WINDOWS_RESERVE_GUARD_REQUIRED");
   const guard =
@@ -498,6 +563,7 @@ export class Lifecycle {
     if (fs.existsSync(this.file)) this.load();
   }
   load() {
+    if (this.dOnlyTask) onlyD(this.file);
     this.db = json(this.file);
     if (this.db.version !== 1 || !Array.isArray(this.db.records)) fail("REGISTRY_INVALID");
     this.config = this.db.config;
@@ -505,37 +571,137 @@ export class Lifecycle {
     if (this.dOnlyTask) {
       for (const p of [this.config.canonical, this.config.commonDir, this.config.physicalRegistryRoot,
         ...(this.config.registryAliases ?? []), ...this.db.records.map((record) => record.path)].filter(Boolean)) onlyD(p);
+      const seedPeak = this.config.seedPeakBytes;
+      if (!Number.isSafeInteger(seedPeak) || seedPeak <= 0 || seedPeak > POLICY.aggregateBytes - POLICY.workspaceBytes)
+        fail("D_ONLY_SEED_BUDGET_INVALID");
+      const objects = onlyD(path.join(this.config.commonDir, "objects"));
+      onlyD(path.join(objects, "pack"));
+      onlyD(path.join(objects, "info"));
+      if (literalExists(path.join(objects, "info", "alternates"))) fail("D_ONLY_OBJECT_ALTERNATES");
+      const gitMetadata = scan(this.config.commonDir, { excludedRoots: [objects], allowGitStores: true });
+      const objectDirectories = fs.readdirSync(objects, { withFileTypes: true });
+      const mutableObjects = ["pack", "info"].map((name) => scan(path.join(objects, name)));
+      if ([gitMetadata, ...mutableObjects].some((item) => item.errors.length || item.links.length) ||
+          objectDirectories.some((entry) => entry.isSymbolicLink())) fail("D_ONLY_GIT_STORE_REDIRECTED");
     }
     if (within(this.config.canonical, this.root)) fail("REGISTRY_INSIDE_CANONICAL");
     if (!this.authority) this.authority = new GitHubAuthority(this.config, { guard: this.guard });
   }
-  #withDOnlyBootstrap(initialize) {
-    this.guard({ C: 0, D: 1024 ** 2 });
-    fs.mkdirSync(this.root, { recursive: true });
-    const lock = path.join(this.root, "bootstrap.lock");
+  #retainedSeedReservations(excludeCanonical) {
+    const dir = onlyD(path.join(this.root, "receipts"));
+    if (!literalExists(dir)) return 0;
+    let reserved = 0;
+    for (const name of fs.readdirSync(dir)) {
+      if (!name.endsWith(".json")) continue;
+      const file = onlyD(path.join(dir, name));
+      const info = fs.statSync(file);
+      if (!info.isFile() || info.size <= 0 || info.size > 16 * 1024 ** 2)
+        fail("D_ONLY_BOOTSTRAP_RECEIPT_INVALID");
+      const receipt = json(file);
+      if (receipt?.event !== "D_ONLY_BOOTSTRAP_RESERVED") continue;
+      if (receipt.task !== this.dOnlyTask || typeof receipt.canonical !== "string" ||
+          !Number.isSafeInteger(receipt.peakBytes) || receipt.peakBytes <= 0 ||
+          receipt.peakBytes > POLICY.aggregateBytes - POLICY.workspaceBytes)
+        fail("D_ONLY_BOOTSTRAP_RECEIPT_INVALID");
+      const canonical = onlyD(receipt.canonical);
+      if (!excludeCanonical || !same(canonical, excludeCanonical)) reserved += receipt.peakBytes;
+    }
+    return reserved;
+  }
+  bootstrapStatus() {
+    if (!this.dOnlyTask) fail("D_ONLY_TASK_REQUIRED");
+    const recovery = this.#bootstrapLockStatus("bootstrap-recovery.lock", "D_ONLY_BOOTSTRAP_RECOVERY");
+    return recovery.state === "HELD" ? recovery : this.#bootstrapLockStatus("bootstrap.lock", "D_ONLY_BOOTSTRAP");
+  }
+  #bootstrapLockStatus(name, prefix) {
+    const lock = onlyD(path.join(this.root, name));
+    if (!literalExists(lock)) return { state: "BOOTSTRAP_AVAILABLE" };
+    const file = fs.statSync(lock, { bigint: true });
+    if (!file.isFile() || file.size <= 0n || file.size > 4096n)
+      return { state: "HELD", reason: `${prefix}_LOCK_UNAUTHENTICATED` };
     let owner;
     try {
-      owner = fs.openSync(lock, "wx", 0o600);
-    } catch (error) {
-      if (error.code === "EEXIST") fail("D_ONLY_BOOTSTRAP_BUSY");
-      throw error;
+      owner = json(lock);
+    } catch {
+      return { state: "HELD", reason: `${prefix}_LOCK_UNAUTHENTICATED` };
     }
+    if (owner?.task !== this.dOnlyTask || !Number.isSafeInteger(owner?.pid) || owner.pid <= 0 ||
+        typeof owner.creationDate !== "string" || !owner.creationDate)
+      return { state: "HELD", reason: `${prefix}_LOCK_UNAUTHENTICATED` };
+    const live = this.processes("__bootstrap_owner__", [owner])
+      .some((process) => process.pid === owner.pid && process.creationDate === owner.creationDate);
+    return { state: "HELD", reason: `${prefix}_OWNER_${live ? "ACTIVE" : "EXITED"}`,
+             owner, identity: [String(file.dev), String(file.ino)] };
+  }
+  recoverDOnlyBootstrap() {
+    if (this.config) fail("REGISTRY_ALREADY_EXISTS");
+    const status = this.bootstrapStatus();
+    if (status.reason !== "D_ONLY_BOOTSTRAP_OWNER_EXITED") return status;
+    this.guard({ C: 0, D: 1024 ** 2 });
+    const recovery = this.#claimBootstrapLock("bootstrap-recovery.lock");
     try {
-      fs.writeFileSync(owner, JSON.stringify({ pid: process.pid, task: this.dOnlyTask, startedAt: now() }));
-      return initialize();
+      const current = this.#bootstrapLockStatus("bootstrap.lock", "D_ONLY_BOOTSTRAP");
+      if (current.reason !== status.reason || current.identity.join() !== status.identity.join() ||
+          JSON.stringify(current.owner) !== JSON.stringify(status.owner))
+        fail("D_ONLY_BOOTSTRAP_LOCK_CHANGED");
+      this.receipt(null, "D_ONLY_BOOTSTRAP_STALE_LOCK_RELEASED", { owner: current.owner });
+      fs.unlinkSync(onlyD(path.join(this.root, "bootstrap.lock")));
+      return { state: "BOOTSTRAP_AVAILABLE", recovered: true };
     } finally {
-      fs.closeSync(owner);
+      fs.unlinkSync(recovery);
+    }
+  }
+  #claimBootstrapLock(name) {
+    const lock = onlyD(path.join(this.root, name));
+    if (literalExists(lock)) fail("D_ONLY_BOOTSTRAP_BUSY");
+    const identity = this.processes("__bootstrap_owner__", [{ pid: process.pid }])
+      .find((candidate) => candidate.pid === process.pid && candidate.creationDate);
+    if (!identity) fail("PROCESS_IDENTITY_REQUIRED");
+    const staged = onlyD(path.join(this.root, name + "." + randomUUID() + ".pending"));
+    const fd = fs.openSync(staged, "wx", 0o600);
+    try {
+      try {
+        fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, creationDate: identity.creationDate,
+                                             task: this.dOnlyTask, startedAt: now() }));
+        fs.fsyncSync(fd);
+      } finally {
+        fs.closeSync(fd);
+      }
+      try {
+        fs.linkSync(staged, lock);
+      } catch (error) {
+        if (error.code === "EEXIST") fail("D_ONLY_BOOTSTRAP_BUSY");
+        throw error;
+      }
+      return lock;
+    } finally {
+      fs.unlinkSync(staged);
+    }
+  }
+  async #withDOnlyBootstrap(initialize) {
+    this.guard({ C: 0, D: 1024 ** 2 });
+    fs.mkdirSync(this.root, { recursive: true });
+    if (literalExists(onlyD(path.join(this.root, "bootstrap-recovery.lock")))) fail("D_ONLY_BOOTSTRAP_RECOVERY_HELD");
+    const lock = this.#claimBootstrapLock("bootstrap.lock");
+    try {
+      return await initialize();
+    } finally {
       fs.unlinkSync(lock);
     }
   }
   bootstrapDOnly(options) {
     if (!this.dOnlyTask) fail("D_ONLY_TASK_REQUIRED");
-    return this.#withDOnlyBootstrap(() => this.#seedDOnly(options));
+    const source = physical(options.source);
+    const canonical = onlyD(options.canonical);
+    const sourceGit = physical(git(source, ["rev-parse", "--path-format=absolute", "--git-common-dir"]));
+    for (const destination of [this.root, canonical]) {
+      if ([source, sourceGit].some((root) => same(root, destination) || within(root, destination) || within(destination, root)))
+        fail("BOOTSTRAP_SOURCE_OVERLAP");
+    }
+    return this.#withDOnlyBootstrap(() => this.#seedDOnly({ ...options, source, canonical, sourceGit }));
   }
-  #seedDOnly({ source, canonical, repository, expectedMain, peakBytes }) {
+  async #seedDOnly({ source, canonical, sourceGit, repository, expectedMain, peakBytes }) {
     if (fs.existsSync(this.file)) fail("REGISTRY_ALREADY_EXISTS");
-    canonical = onlyD(canonical);
-    source = physical(source);
     if (literalExists(canonical) || same(canonical, this.root) ||
         within(canonical, this.root) || within(this.root, canonical)) fail("BOOTSTRAP_TARGET_UNAVAILABLE");
     const remote = `https://github.com/${repository}.git`;
@@ -548,13 +714,14 @@ export class Lifecycle {
     if (git(source, ["rev-parse", "--is-shallow-repository"]) !== "false" ||
         git(source, ["rev-list", "--objects", "--no-object-names", "--missing=print", "--max-count=1", expectedMain])
           .split("\n").some((line) => line.startsWith("?"))) fail("BOOTSTRAP_INCOMPLETE_SOURCE");
-    const sourceGit = physical(git(source, ["rev-parse", "--path-format=absolute", "--git-common-dir"]));
     const objects = path.join(sourceGit, "objects");
     if (literalExists(path.join(objects, "info", "alternates"))) fail("BOOTSTRAP_SOURCE_ALTERNATES");
-    const storage = scan(objects);
+    const storage = scan(objects, { entries: true });
     if (storage.links.length || storage.errors.length) fail("BOOTSTRAP_SOURCE_SCAN_FAILED");
     if (!Number.isSafeInteger(peakBytes) || peakBytes > POLICY.aggregateBytes - POLICY.workspaceBytes ||
         storage.allocationBoundBytes + 64 * 1024 ** 2 > peakBytes) fail("BOOTSTRAP_BUDGET_DENIED");
+    if (this.#retainedSeedReservations() + peakBytes > POLICY.aggregateBytes - POLICY.workspaceBytes)
+      fail("BOOTSTRAP_AGGREGATE_BUDGET_DENIED");
     this.guard({ C: 0, D: peakBytes });
     const template = path.join(this.root, "bootstrap-template-" + randomUUID());
     fs.mkdirSync(this.root, { recursive: true });
@@ -565,14 +732,7 @@ export class Lifecycle {
     fs.mkdirSync(path.dirname(canonical), { recursive: true });
     run("git", ["-c", "core.longpaths=true", "init", "-b", "main", `--template=${template}`, canonical], this.root);
     const cloneGit = onlyD(git(canonical, ["rev-parse", "--path-format=absolute", "--git-common-dir"]));
-    try {
-      run("robocopy.exe", [objects, path.join(cloneGit, "objects"), "/E", "/J", "/MT:16",
-        "/R:0", "/W:0", "/XJ", "/NP", "/NFL", "/NDL"], this.root, { timeout: 5 * 60 * 1000 });
-    } catch (error) {
-      // Robocopy returns 1 on a successful copy. Other nonzero statuses either
-      // report unexpected destination contents or an incomplete transfer.
-      if (error.status !== 1 || error.signal) throw error;
-    }
+    await copyDOnlySeed(objects, path.join(cloneGit, "objects"), storage.entries);
     if (literalExists(path.join(cloneGit, "objects", "info", "alternates"))) fail("BOOTSTRAP_CLONE_ALTERNATES");
     const cloneStorage = scan(cloneGit);
     if (cloneStorage.links.length || cloneStorage.errors.length ||
@@ -594,8 +754,8 @@ export class Lifecycle {
     return config;
   }
   init(canonical, repository) {
-    const initialize = () => this.#initialize(canonical, repository);
-    return this.dOnlyTask ? this.#withDOnlyBootstrap(initialize) : initialize();
+    if (this.dOnlyTask) fail("D_ONLY_BOOTSTRAP_REQUIRED");
+    return this.#initialize(canonical, repository);
   }
   #initialize(canonical, repository, { seedPeakBytes } = {}) {
     if (fs.existsSync(this.file)) fail("REGISTRY_ALREADY_EXISTS");
@@ -626,7 +786,8 @@ export class Lifecycle {
     const stateWrites = this.estimate(this.root, 8 * 1024 ** 2);
     const gitWrites = this.estimate(this.config.commonDir, 8 * 1024 ** 2);
     this.guard({ C: stateWrites.C + gitWrites.C, D: stateWrites.D + gitWrites.D });
-    const lock = path.join(this.root, "registry.lock");
+    const lockPath = path.join(this.root, "registry.lock");
+    const lock = this.dOnlyTask ? onlyD(lockPath) : lockPath;
     try {
       fs.mkdirSync(lock);
     } catch (e) {
@@ -649,12 +810,13 @@ export class Lifecycle {
     }
   }
   save() {
-    atomic(this.file, this.db);
+    atomic(this.dOnlyTask ? onlyD(this.file) : this.file, this.db);
   }
   registryPath(p) {
     const target = this.config.physicalRegistryRoot ?? this.root;
     const alias = [this.root, ...(this.config.registryAliases ?? [])].find((a) => same(a, p) || within(a, p));
-    return alias ? path.join(target, path.relative(alias, p)) : p;
+    const resolved = alias ? path.join(target, path.relative(alias, p)) : p;
+    return this.dOnlyTask ? onlyD(resolved) : resolved;
   }
   bindHost(physicalRoot) {
     return this.transaction(() => {
@@ -670,7 +832,8 @@ export class Lifecycle {
   }
   receipt(record, event, details) {
     const receipt = { id: randomUUID(), at: now(), workspaceId: record?.id ?? null, event, ...details };
-    const dir = path.join(this.root, "receipts");
+    const target = path.join(this.root, "receipts");
+    const dir = this.dOnlyTask ? onlyD(target) : target;
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(
       path.join(dir, `${receipt.at.replaceAll(/[:.]/gu, "-")}-${receipt.id}.json`),
@@ -774,13 +937,14 @@ export class Lifecycle {
       logicalBytes: items.reduce((s, i) => s + i.logicalBytes, 0),
       allocationBoundBytes: actualBound,
       reservedAdditionalBytes: reservations,
-      admissionFootprint: actualBound + reservations + (this.config.seedPeakBytes ?? 0),
+      admissionFootprint: actualBound + reservations + (this.config.seedPeakBytes ?? 0) +
+        (this.dOnlyTask ? this.#retainedSeedReservations(this.config.canonical) : 0),
     };
   }
   assertTask(task) {
     if (this.dOnlyTask && task !== this.dOnlyTask) fail("D_ONLY_TASK_MISMATCH");
   }
-  register({
+  #register({
     path: p,
     task,
     kind = "worktree",
@@ -952,7 +1116,7 @@ export class Lifecycle {
           ]);
         this.db.records = this.db.records.filter((r) => r.id !== pending.id);
         // --no-checkout has a valid HEAD; register and mark before hydration.
-        const r = this.register({ ...options, path: p });
+        const r = this.#register({ ...options, path: p });
         r.state = "CREATING";
         this.save();
         if (pending.kind === "worktree") {
@@ -981,7 +1145,33 @@ export class Lifecycle {
     this.assertTask(options.task);
     return this.transaction(() => {
       if (!options.adoptedReason || options.adoptedReason.length < 30) fail("EXPLICIT_CUSTODY_REASON_REQUIRED");
-      return this.register(options);
+      if (this.dOnlyTask) {
+        const target = this.assertTarget(options.path);
+        const kind = options.kind ?? "worktree";
+        if (kind === "worktree") {
+          const commonDir = onlyD(git(target, ["rev-parse", "--path-format=absolute", "--git-common-dir"]));
+          if (!same(commonDir, this.config.commonDir)) fail("D_ONLY_WORKTREE_STORE_MISMATCH");
+        }
+        const peak = options.peakBytes ?? this.config.policy.workspaceBytes;
+        if (!Number.isSafeInteger(peak) || peak <= 0 || peak > this.config.policy.workspaceBytes)
+          fail("WORKSPACE_BUDGET_DENIED");
+        const storage = scan(target);
+        const inventory = this.inventory();
+        if (storage.errors.length || !inventory.complete) fail("STORAGE_SCAN_INCOMPLETE");
+        const existing = inventory.items.find((item) => same(item.path, target));
+        const estimates = this.estimate(target, Math.max(0, peak - storage.allocationBoundBytes) + 2 * 1024 ** 2);
+        const free = this.guard(estimates);
+        checkBudget({
+          policy: this.config.policy,
+          dOnly: true,
+          free: { C: free.cFreeBytes, D: free.dFreeBytes },
+          estimates,
+          footprint: inventory.admissionFootprint - (existing?.allocationBoundBytes ?? 0),
+          peak,
+        });
+        if (storage.allocationBoundBytes > peak) fail("ADOPT_EXCEEDS_DECLARED_PEAK");
+      }
+      return this.#register(options);
     });
   }
   finish(id, outcome, pr) {
