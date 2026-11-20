@@ -36,20 +36,29 @@ function NavigationLinks({
   activeId,
   motionKey,
   onNavigate,
+  focusFirstLink = false,
 }: {
   items: readonly ProjectedNavigationItem[];
   activeId?: string;
   motionKey: string;
   onNavigate: () => void;
+  focusFirstLink?: boolean;
 }) {
   const { mode } = useMotionMode();
   const micro = resolvePlatformMotionToken("micro", mode);
-  return items.map((item) => {
+  const firstLinkRef = useCallback(
+    (element: HTMLAnchorElement | null) => {
+      if (element && focusFirstLink) element.focus();
+    },
+    [focusFirstLink],
+  );
+  return items.map((item, index) => {
     if (!item.href) return null;
     const current = activeId === item.id;
     return (
       <Link
         key={item.id}
+        ref={index === 0 && focusFirstLink ? firstLinkRef : undefined}
         className={current ? "current" : undefined}
         href={item.href}
         aria-current={current ? "page" : undefined}
@@ -109,6 +118,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   const navigationDrawerRef = useRef<HTMLDivElement>(null);
   const accountDisclosureRef = useRef<HTMLDivElement>(null);
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const observedPathnameRef = useRef<string | null>(null);
   const accountHeadingPrefix = useId();
   const compact = route.shellMode === "COMPACT" || route.shellMode === "IMMERSIVE";
   const ordinaryNavigation = ["GATEWAY_STANDARD", "PUBLIC_STANDARD", "WORKSPACE_STANDARD"].includes(route.shellMode);
@@ -143,7 +153,15 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // A browser history or non-link route change must close any modal shell navigation before focus handoff.
+    // A browser history or non-link route change must close any modal shell
+    // navigation before focus handoff. Do not treat initial hydration as a
+    // route change: it can otherwise close a drawer opened just after load.
+    if (observedPathnameRef.current === null) {
+      observedPathnameRef.current = pathname;
+      return;
+    }
+    if (observedPathnameRef.current === pathname) return;
+    observedPathnameRef.current = pathname;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     closeAll();
   }, [closeAll, pathname]);
@@ -213,8 +231,14 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
   }, [accountOpen, closeAccount, closeNavigation, navigationOpen]);
 
   useEffect(() => {
-    if (navigationOpen)
-      queueMicrotask(() => navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus());
+    if (!navigationOpen) return;
+    // The mobile drawer is modal. Hand focus to its first destination in the
+    // next frame so the trigger's pointer activation cannot retake focus after
+    // the drawer has opened.
+    const focusFrame = requestAnimationFrame(() => {
+      navigationDrawerRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    });
+    return () => cancelAnimationFrame(focusFrame);
   }, [navigationOpen]);
 
   useEffect(() => {
@@ -316,6 +340,7 @@ export function ProductShell({ children }: { children: React.ReactNode }) {
                 activeId={projection.activeGlobalItem?.id}
                 motionKey="global"
                 onNavigate={closeAll}
+                focusFirstLink={navigationOpen}
               />
             </nav>
             {projection.workspaceItems.length ? (
