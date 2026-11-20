@@ -26,9 +26,9 @@ class WorkflowEvidence:
         self.step = step
 
     def write(self, line):
-        match = re.fullmatch(r"jammyPreflightCustodySha256=([a-f0-9]{64})\n", line)
+        match = re.fullmatch(r"jammyPreflight(Custody|Intent)Sha256=([a-f0-9]{64})\n", line)
         require(match, "JAMMY_ENTRY_WORKFLOW_EVIDENCE")
-        step_line = f"custody_sha256={match[1]}\n"
+        step_line = f"{match[1].lower()}_sha256={match[2]}\n"
         require(self.step.write(step_line) == len(step_line) and self.provider.write(line) == len(line),
                 "JAMMY_ENTRY_WORKFLOW_EVIDENCE")
         return len(line)
@@ -47,7 +47,11 @@ def approved_ingress(operation):
             os.environ.get("REQUESTED_OPERATION") == OPERATION, "JAMMY_ENTRY_DISPATCH")
     if operation == "recover":
         del data["inventoryReceipt"]
-        data["custodyReceiptSha256"] = os.environ.get("PRIOR_CUSTODY_SHA256", "")
+        custody = os.environ.get("PRIOR_CUSTODY_SHA256", "")
+        if custody:
+            data["custodyReceiptSha256"] = custody
+        else:
+            data["intentReceiptSha256"] = os.environ.get("PRIOR_INTENT_SHA256", "")
     return run_id, publication, io.BytesIO(json.dumps(data, separators=(",", ":")).encode("ascii"))
 
 

@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
 import jammy_preflight_worker as worker
 from jammy_native_runtime_inputs import RECEIPT_LIMIT, bounded_read, require
-from jammy_preflight_preparation import recover_preflight_scope, run_published_preflight
+from jammy_preflight_preparation import reconcile_preflight_intent, recover_preflight_scope, run_published_preflight
 from jammy_preflight_provider import OPERATION, REPOSITORY
 from jammy_preflight_supervisor import CLEANUP, PreflightFailure
 
@@ -32,8 +32,8 @@ def unique_object(items):
 def read_approval(stream, operation):
     data = json.loads(bounded_read(stream, APPROVAL_LIMIT, "JAMMY_ENTRY_APPROVAL_SIZE"),
                       object_pairs_hook=unique_object)
-    payload = "inventoryReceipt" if operation == "launch" else "custodyReceiptSha256"
-    require(type(data) is dict and set(data) == {"publication", "dispatch", payload},
+    payloads = ("inventoryReceipt",) if operation == "launch" else ("custodyReceiptSha256", "intentReceiptSha256")
+    require(type(data) is dict and any(set(data) == {"publication", "dispatch", payload} for payload in payloads),
             "JAMMY_ENTRY_APPROVAL")
     return data
 
@@ -81,7 +81,8 @@ def run(operation, receipt_directory, ingress, evidence):
     if operation == "launch":
         payload = decode_inventory(data["inventoryReceipt"])
     else:
-        payload = data["custodyReceiptSha256"]
+        intent_only = "intentReceiptSha256" in data
+        payload = data["intentReceiptSha256" if intent_only else "custodyReceiptSha256"]
         require(type(payload) is str and re.fullmatch(r"[a-f0-9]{64}", payload), "JAMMY_ENTRY_CUSTODY_DIGEST")
     token = os.environ.pop("JAMMY_PREFLIGHT_TOKEN", "")
     require(0 < len(token) <= 512 and re.fullmatch(r"[A-Za-z0-9_.-]+", token), "JAMMY_ENTRY_TOKEN")
@@ -91,6 +92,12 @@ def run(operation, receipt_directory, ingress, evidence):
     try:
         if operation == "launch":
             return run_published_preflight(run_id, publication, token, payload, fd, evidence)
+        if intent_only:
+            require(reconcile_preflight_intent(run_id, publication, token, fd, payload) is True,
+                    "JAMMY_ENTRY_RECOVERY_UNVERIFIED")
+            return {"kind": "JAMMY_PREFLIGHT_INTERRUPTED_BEFORE_CUSTODY", "run": run_id, "attempt": 1,
+                    "source": publication["source"], "runtimeCustodyPresent": False,
+                    "qualification": False, "externalIsolationProved": False, "reuseAuthorized": False}
         require(recover_preflight_scope(run_id, publication, token, fd, payload) is True,
                 "JAMMY_ENTRY_RECOVERY_UNVERIFIED")
         return {"kind": "JAMMY_PREFLIGHT_RECOVERY_ONLY", "run": run_id, "attempt": 1,

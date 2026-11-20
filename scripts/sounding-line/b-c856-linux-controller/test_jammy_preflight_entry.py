@@ -105,3 +105,26 @@ class PreflightEntryTest(unittest.TestCase):
         self.assertEqual(entry.failure_record(outer)["primary"], "PREFLIGHT_COMMAND_TIMEOUT")
         self.assertEqual([item["stage"] for item in entry.failure_record(outer)["cleanup"]],
                          ["trusted_command_reap", "passive_recovery"])
+
+
+    def test_intent_only_entry_distinguishes_absence_from_cleanup(self):
+        approval = self.approval()
+        del approval["inventoryReceipt"]
+        approval["intentReceiptSha256"] = "e" * 64
+        environment = {"JAMMY_PREFLIGHT_TOKEN": "fixture-token"}
+        with (patch.object(entry.sys, "platform", "linux"),
+              patch.object(entry, "validate_approval", return_value=(123, approval["publication"])),
+              patch.dict(os.environ, environment, clear=True),
+              patch.object(os, "O_DIRECTORY", 1 << 20, create=True),
+              patch.object(os, "O_NOFOLLOW", 1 << 21, create=True),
+              patch.object(os, "O_CLOEXEC", 1 << 22, create=True),
+              patch.object(os, "open", return_value=7),
+              patch.object(os, "close"),
+              patch.object(entry, "reconcile_preflight_intent", return_value=True) as intent,
+              patch.object(entry, "recover_preflight_scope") as recover):
+            result = entry.run("recover", str(Path.cwd()), io.BytesIO(json.dumps(approval).encode()), io.StringIO())
+        intent.assert_called_once_with(123, approval["publication"], "fixture-token", 7, "e" * 64)
+        recover.assert_not_called()
+        self.assertEqual(result["kind"], "JAMMY_PREFLIGHT_INTERRUPTED_BEFORE_CUSTODY")
+        self.assertIs(result["runtimeCustodyPresent"], False)
+        self.assertNotIn("cleanupVerified", result)

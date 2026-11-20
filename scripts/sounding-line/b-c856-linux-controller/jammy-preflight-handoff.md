@@ -13,7 +13,8 @@ For the reviewed runner wrapper, the isolated Python entry script takes the acti
 (`launch` or `recover`) and an absolute, owner-private receipt directory. Send the
 independently authorized publication and dispatch records over bounded JSON via
 stdin. For launch, include the original inventory receipt as base64. For recovery,
-include the custody digest preserved by the independent caller. Deliver the
+include the custody digest preserved by the independent caller, or the intent
+digest when final custody publication was interrupted. Deliver the
 read-only provider token to the entry process separately. The entry verifies
 these bindings against the current workflow metadata before invoking the
 controller or the same-boot recovery checks.
@@ -24,10 +25,13 @@ checkout commit and tree before passing the envelope to the entry point.
 On launch and recovery, the workflow reads the standard-library-only bootstrap
 from the exact Git commit. It checks the entire controller file set and every
 tracked blob before invoking Python on any checkout module.
-The launch step publishes the custody digest to its log and step output before
-starting the controller. The recovery step reads only that earlier step output
-and operates on the same job's receipt directory. GitHub's behavior under
-runner-wide cancellation still requires separate evidence.
+The launch step binds a fresh nonce and the empty custody receipt to an intent
+digest before creating runtime custody. It publishes the final custody digest
+before starting the controller. Both digests go to the launch log and step
+output. Recovery uses the final digest when available. With intent alone it
+verifies the controller exited, the exact receipt remains empty, and no runtime
+base exists. Any populated receipt or runtime base remains held. GitHub's
+behavior under runner-wide cancellation still requires separate evidence.
 
 ## Run within the pinned limits
 

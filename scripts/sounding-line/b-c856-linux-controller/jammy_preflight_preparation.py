@@ -12,7 +12,7 @@ from pathlib import Path
 import jammy_preflight_worker as worker
 from jammy_native_inventory import collect_inventory
 from jammy_native_runtime_inputs import bind_member_bytes, bounded_read, load_plan, require, sha256, verify_inventory
-from jammy_preflight_custody import MAX_RECORD, CustodyBinding, boot_id, capture_owner, identity, private_directory, provision_binding
+from jammy_preflight_custody import MAX_RECORD, CustodyBinding, base_path, boot_id, capture_owner, identity, private_directory, provision_binding, verify_owner_gone
 from jammy_preflight_launcher import recover_after_cancellation
 from jammy_preflight_provider import authenticate_jammy_preflight_run
 from jammy_preflight_supervisor import Run, Scope, load_supervisor_plan, verify_run
@@ -85,21 +85,64 @@ def custody_receipt_name(run):
     return f"jammy-preflight-custody-{run.run_id}.json"
 
 
-def encode_custody_receipt(scope, approval, receipt_sha256, boot, controller):
-    run, binding = scope.run, scope.custody
-    record = {
-        "kind": "JAMMY_PREFLIGHT_CUSTODY_V1",
+def intent_receipt_name(run):
+    return f"jammy-preflight-intent-{run.run_id}.json"
+
+
+def receipt_identity(run, approval, receipt_sha256, boot, controller, nonce):
+    return {
         "runId": run.run_id, "attempt": run.attempt, "workflowId": approval["workflowId"],
         "source": run.source, "tree": approval["tree"], "workflowSha256": approval["workflowSha256"],
-        "inventoryReceiptSha256": receipt_sha256,
-        "boot": boot, "controller": controller, "nonce": scope.nonce, "unit": run.unit,
-        "base": list(binding.base), "lock": list(binding.lock),
+        "inventoryReceiptSha256": receipt_sha256, "boot": boot, "controller": controller, "nonce": nonce,
     }
+
+
+def encode_record(record):
     return json.dumps(record, sort_keys=True, separators=(",", ":")).encode("ascii")
 
 
-def provision_preflight_scope(prepared, receipt_dir_fd):
-    """Publish custody in an already opened, owner-private output directory before handoff."""
+def encode_custody_receipt(scope, approval, receipt_sha256, boot, controller):
+    run, binding = scope.run, scope.custody
+    return encode_record({
+        **receipt_identity(run, approval, receipt_sha256, boot, controller, scope.nonce),
+        "kind": "JAMMY_PREFLIGHT_CUSTODY_V1", "unit": run.unit,
+        "base": list(binding.base), "lock": list(binding.lock),
+    })
+
+
+def open_new_receipt(directory, name):
+    try:
+        return os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+                       0o600, dir_fd=directory)
+    except FileExistsError as error:
+        raise ValueError("JAMMY_PREPARATION_CUSTODY_COLLISION") from error
+
+
+def valid_receipt(info):
+    return (stat.S_ISREG(info.st_mode) and info.st_uid == 1001 and info.st_nlink == 1
+            and stat.S_IMODE(info.st_mode) == 0o600)
+
+
+def persist_receipt(fd, directory, name, data):
+    require(0 < len(data) <= MAX_RECORD, "JAMMY_PREPARATION_CUSTODY_SIZE")
+    require(os.write(fd, data) == len(data), "JAMMY_PREPARATION_CUSTODY_SHORT_WRITE")
+    os.fsync(fd)
+    os.fsync(directory)
+    info = os.fstat(fd)
+    require(valid_receipt(info) and info.st_size == len(data), "JAMMY_PREPARATION_CUSTODY_RECEIPT")
+    require(identity(os.stat(name, dir_fd=directory, follow_symlinks=False)) == identity(info),
+            "JAMMY_PREPARATION_CUSTODY_REPLACED")
+    return sha256(data)
+
+
+def publish_digest(evidence, kind, digest):
+    line = f"jammyPreflight{kind}Sha256={digest}\n"
+    require(evidence.write(line) == len(line), "JAMMY_PREPARATION_CUSTODY_EVIDENCE")
+    evidence.flush()
+
+
+def provision_preflight_scope(prepared, receipt_dir_fd, evidence):
+    """Retain an intent digest before creating the runtime base and lock."""
     run = prepared.run
     verify_run(run, run.source)
     require(run.unit_nonce is None and private_directory(os.fstat(receipt_dir_fd)),
@@ -107,41 +150,38 @@ def provision_preflight_scope(prepared, receipt_dir_fd):
     nonce = secrets.token_hex(16)
     boot = boot_id()
     controller = capture_owner(os.getpid())
+    approval = {"workflowId": prepared.workflow_id, "tree": prepared.tree,
+                "workflowSha256": prepared.workflow_sha256}
+    inventory = sha256(prepared.receipt)
     name = custody_receipt_name(run)
+    receipt_fd = open_new_receipt(receipt_dir_fd, name)
     try:
-        receipt_fd = os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
-                             0o600, dir_fd=receipt_dir_fd)
-    except FileExistsError as error:
-        raise ValueError("JAMMY_PREPARATION_CUSTODY_COLLISION") from error
-    try:
+        placeholder = os.fstat(receipt_fd)
+        require(valid_receipt(placeholder) and placeholder.st_size == 0, "JAMMY_PREPARATION_CUSTODY_RECEIPT")
+        intent_name = intent_receipt_name(run)
+        intent_fd = open_new_receipt(receipt_dir_fd, intent_name)
+        try:
+            intent = encode_record({**receipt_identity(run, approval, inventory, boot, controller, nonce),
+                                    "kind": "JAMMY_PREFLIGHT_INTENT_V1", "receipt": list(identity(placeholder))})
+            digest = persist_receipt(intent_fd, receipt_dir_fd, intent_name, intent)
+        finally:
+            os.close(intent_fd)
+        publish_digest(evidence, "Intent", digest)
         binding = provision_binding(run.run_id, nonce)
         scope = Scope(replace(run, unit_nonce=nonce), nonce, custody=binding)
-        approval = {"workflowId": prepared.workflow_id, "tree": prepared.tree,
-                    "workflowSha256": prepared.workflow_sha256}
-        data = encode_custody_receipt(scope, approval, sha256(prepared.receipt), boot, controller)
-        require(len(data) <= MAX_RECORD, "JAMMY_PREPARATION_CUSTODY_SIZE")
-        require(os.write(receipt_fd, data) == len(data), "JAMMY_PREPARATION_CUSTODY_SHORT_WRITE")
-        os.fsync(receipt_fd)
-        os.fsync(receipt_dir_fd)
-        info = os.fstat(receipt_fd)
-        require(stat.S_ISREG(info.st_mode) and info.st_uid == 1001 and info.st_nlink == 1 and
-                stat.S_IMODE(info.st_mode) == 0o600 and info.st_size == len(data),
-                "JAMMY_PREPARATION_CUSTODY_RECEIPT")
-        require(identity(os.stat(name, dir_fd=receipt_dir_fd, follow_symlinks=False)) == identity(info),
-                "JAMMY_PREPARATION_CUSTODY_REPLACED")
-        return scope, sha256(data)
+        data = encode_custody_receipt(scope, approval, inventory, boot, controller)
+        return scope, persist_receipt(receipt_fd, receipt_dir_fd, name, data)
     finally:
         os.close(receipt_fd)
 
 
-def read_custody_receipt(run, receipt_dir_fd):
+def read_custody_receipt(run, receipt_dir_fd, *, intent=False):
     require(private_directory(os.fstat(receipt_dir_fd)), "JAMMY_PREPARATION_CUSTODY_OUTPUT")
-    name = custody_receipt_name(run)
+    name = intent_receipt_name(run) if intent else custody_receipt_name(run)
     flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC | os.O_NONBLOCK
     with os.fdopen(os.open(name, flags, dir_fd=receipt_dir_fd), "rb") as stream:
         info = os.fstat(stream.fileno())
-        require(stat.S_ISREG(info.st_mode) and info.st_uid == 1001 and info.st_nlink == 1 and
-                stat.S_IMODE(info.st_mode) == 0o600, "JAMMY_PREPARATION_CUSTODY_RECEIPT")
+        require(valid_receipt(info), "JAMMY_PREPARATION_CUSTODY_RECEIPT")
         data = bounded_read(stream, MAX_RECORD, "JAMMY_PREPARATION_CUSTODY_SIZE")
         require(len(data) == info.st_size and identity(info) ==
                 identity(os.stat(name, dir_fd=receipt_dir_fd, follow_symlinks=False)),
@@ -171,6 +211,50 @@ def recover_preflight_scope(run_id, approval, token, receipt_dir_fd, expected_re
     return recover_after_cancellation(scope, bootstrap_owner=proof.get("controller"))
 
 
+def reconcile_preflight_intent(run_id, approval, token, receipt_dir_fd, expected_intent_sha256):
+    """Confirm interruption before runtime custody, or retain the scope for review."""
+    approval = dict(approval) if type(approval) is dict else approval
+    run = authenticate_jammy_preflight_run(run_id, approval, token)
+    data = read_custody_receipt(run, receipt_dir_fd, intent=True)
+    require(sha256(data) == expected_intent_sha256, "JAMMY_PREPARATION_INTENT_DIGEST")
+    proof = json.loads(data)
+    require(type(proof) is dict and type(proof.get("nonce")) is str and
+            re.fullmatch(r"[a-f0-9]{32}", proof["nonce"]) and type(proof.get("receipt")) is list and
+            len(proof["receipt"]) == 2 and all(type(item) is int and 0 < item < 2**64 for item in proof["receipt"]),
+            "JAMMY_PREPARATION_INTENT_RECEIPT")
+    nonce, controller = proof["nonce"], proof.get("controller")
+    inventory = load_plan()["inventory"]["receiptSha256"]
+    expected = encode_record({**receipt_identity(run, approval, inventory, boot_id(), controller, nonce),
+                              "kind": "JAMMY_PREFLIGHT_INTENT_V1", "receipt": proof["receipt"]})
+    require(data == expected, "JAMMY_PREPARATION_INTENT_RECEIPT")
+    verify_owner_gone(controller)
+    final = os.stat(custody_receipt_name(run), dir_fd=receipt_dir_fd, follow_symlinks=False)
+    require(valid_receipt(final) and final.st_size == 0 and list(identity(final)) == proof["receipt"],
+            "JAMMY_PREPARATION_INTENT_HELD")
+    require_absent_intent_base(run, nonce)
+    return True
+
+
+def require_absent_intent_base(run, nonce):
+    # A directory without an independently authenticated inode binding is held,
+    # even if it happens to look empty. Never remove it from intent alone.
+    base = base_path(run.run_id, nonce)
+    root = base.parent
+    require(root.resolve(strict=True) == root, "JAMMY_PREPARATION_INTENT_ROOT")
+    fd = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC)
+    try:
+        opened = os.fstat(fd)
+        require(private_directory(opened) and identity(opened) ==
+                identity(os.stat(root, follow_symlinks=False)), "JAMMY_PREPARATION_INTENT_ROOT")
+        try:
+            os.stat(base.name, dir_fd=fd, follow_symlinks=False)
+        except FileNotFoundError:
+            return
+        raise ValueError("JAMMY_PREPARATION_INTENT_HELD")
+    finally:
+        os.close(fd)
+
+
 def run_published_preflight(run_id, approval, token, receipt, receipt_dir_fd, evidence):
     """Handoff from the trusted provider wrapper. Publication and dispatch stay externally gated."""
     require(worker.NATIVE_ENABLED is True, "LAUNCH_ACTION_NOT_AUTHORIZED")
@@ -180,9 +264,7 @@ def run_published_preflight(run_id, approval, token, receipt, receipt_dir_fd, ev
     require(re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", tracking) and runner_temp.is_absolute()
             and runner_temp.resolve(strict=True) == runner_temp, "JAMMY_PREPARATION_ENVIRONMENT")
     prepared = prepare_runtime_inputs(run_id, approval, token, receipt, runner_image)
-    scope, digest = provision_preflight_scope(prepared, receipt_dir_fd)
-    line = f"jammyPreflightCustodySha256={digest}\n"
-    require(evidence.write(line) == len(line), "JAMMY_PREPARATION_CUSTODY_EVIDENCE")
-    evidence.flush()
+    scope, digest = provision_preflight_scope(prepared, receipt_dir_fd, evidence)
+    publish_digest(evidence, "Custody", digest)
     return worker.controller(scope, prepared.run.source, prepared.receipt, prepared.members,
                              tracking, runner_image, runner_temp)

@@ -5,7 +5,7 @@ import json
 import os
 import unittest
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import jammy_preflight_custody as custody
 import jammy_preflight_preparation as preparation
@@ -101,17 +101,19 @@ class CustodyReceiptTest(unittest.TestCase):
                                          self.file if kw.get("dir_fd") == 7 else real_stat(path, *args, **kw)))
         self.close = stack.enter_context(patch.object(os, "close"))
         self.events = []
+        self.writes = []
         stack.enter_context(patch.object(os, "write", side_effect=self.record))
         stack.enter_context(patch.object(os, "fsync", side_effect=lambda fd: self.events.append(("fsync", fd))))
 
     def record(self, fd, data):
         self.events.append(("write", fd))
         self.raw = data
+        self.writes.append(data)
         self.file.st_size = len(data)
         return len(data)
 
     def test_persists_exact_publication_and_binding_before_returning_scope(self):
-        scope, digest = preparation.provision_preflight_scope(self.prepared, 7)
+        scope, digest = preparation.provision_preflight_scope(self.prepared, 7, io.StringIO())
         self.assertEqual(digest, hashlib.sha256(self.raw).hexdigest())
         proof = json.loads(self.raw)
         self.assertEqual(scope.custody, self.binding)
@@ -119,14 +121,22 @@ class CustodyReceiptTest(unittest.TestCase):
         self.assertEqual(proof["unit"], scope.run.unit)
         self.assertEqual(proof["boot"], "recorded-boot")
         self.assertEqual(proof["inventoryReceiptSha256"], hashlib.sha256(b"inventory").hexdigest())
-        self.assertEqual(self.events, [("write", 9), ("fsync", 9), ("fsync", 7)])
+        self.assertEqual(self.events, [("write", 9), ("fsync", 9), ("fsync", 7)] * 2)
         self.assertTrue(self.opened.call_args.args[1] & os.O_EXCL)
-        self.close.assert_called_once_with(9)
+        self.assertEqual([call.args for call in self.close.call_args_list], [(9,), (9,)])
+
+    def test_intent_evidence_failure_prevents_private_runtime_creation(self):
+        evidence = Mock()
+        evidence.write.side_effect = lambda line: len(line)
+        evidence.flush.side_effect = OSError("runner output unavailable")
+        with self.assertRaises(OSError):
+            preparation.provision_preflight_scope(self.prepared, 7, evidence)
+        self.provision.assert_not_called()
 
     def test_existing_receipt_refuses_before_private_custody_is_created(self):
         self.opened.side_effect = FileExistsError()
         with self.assertRaisesRegex(ValueError, "JAMMY_PREPARATION_CUSTODY_COLLISION"):
-            preparation.provision_preflight_scope(self.prepared, 7)
+            preparation.provision_preflight_scope(self.prepared, 7, io.StringIO())
         self.provision.assert_not_called()
 
     def recover(self, digest):
@@ -145,12 +155,12 @@ class CustodyReceiptTest(unittest.TestCase):
                 self.recovery = recovery
 
     def test_independent_recovery_reopens_exact_prior_scope(self):
-        scope, digest = preparation.provision_preflight_scope(self.prepared, 7)
+        scope, digest = preparation.provision_preflight_scope(self.prepared, 7, io.StringIO())
         self.assertTrue(self.recover(digest))
         self.recovery.assert_called_once_with(scope, bootstrap_owner=[51, 100])
 
     def test_changed_boot_or_substituted_receipt_never_attempt_cleanup(self):
-        _, digest = preparation.provision_preflight_scope(self.prepared, 7)
+        _, digest = preparation.provision_preflight_scope(self.prepared, 7, io.StringIO())
         with self.assertRaisesRegex(ValueError, "JAMMY_PREPARATION_CUSTODY_DIGEST"):
             self.recover("0" * 64)
         self.recovery.assert_not_called()
@@ -158,3 +168,46 @@ class CustodyReceiptTest(unittest.TestCase):
               self.assertRaisesRegex(ValueError, "JAMMY_PREPARATION_CUSTODY_RECEIPT")):
             self.recover(digest)
         self.recovery.assert_not_called()
+
+    def reconcile_intent(self, raw, digest, absent=None):
+        inventory = {"receiptSha256": hashlib.sha256(b"inventory").hexdigest()}
+        with (patch.object(preparation, "authenticate_jammy_preflight_run", return_value=self.run),
+              patch.object(preparation, "read_custody_receipt", return_value=raw),
+              patch.object(preparation, "load_plan", return_value={"inventory": inventory}),
+              patch.object(preparation, "verify_owner_gone") as gone,
+              patch.object(preparation, "require_absent_intent_base", side_effect=absent) as check):
+            try:
+                return preparation.reconcile_preflight_intent(RUN, self.approval, "token", 7, digest)
+            finally:
+                self.owner_check = gone
+                self.absence_check = check
+
+    def test_reconciles_only_the_exact_empty_final_receipt_and_absent_base(self):
+        target = io.StringIO()
+        self.provision.side_effect = OSError("interrupted before private custody")
+        with self.assertRaises(OSError):
+            preparation.provision_preflight_scope(self.prepared, 7, target)
+        raw = self.writes[0]
+        digest = hashlib.sha256(raw).hexdigest()
+        self.assertEqual(target.getvalue(), f"jammyPreflightIntentSha256={digest}\n")
+        self.file.st_size = 0
+        self.assertTrue(self.reconcile_intent(raw, digest))
+        self.owner_check.assert_called_once_with([51, 100])
+        self.absence_check.assert_called_once_with(self.run, NONCE)
+        self.file.st_ino += 1
+        with self.assertRaisesRegex(ValueError, "JAMMY_PREPARATION_INTENT_HELD"):
+            self.reconcile_intent(raw, digest)
+        self.absence_check.assert_not_called()
+
+    def test_intent_does_not_reconcile_a_substituted_receipt_or_a_present_base(self):
+        with self.assertRaisesRegex(ValueError, "JAMMY_PREPARATION_INTENT_DIGEST"):
+            self.reconcile_intent(b"substituted", "0" * 64)
+        self.owner_check.assert_not_called()
+        self.provision.side_effect = OSError("partial bootstrap")
+        with self.assertRaises(OSError):
+            preparation.provision_preflight_scope(self.prepared, 7, io.StringIO())
+        raw = self.writes[0]
+        self.file.st_size = 0
+        with self.assertRaisesRegex(ValueError, "JAMMY_PREPARATION_INTENT_HELD"):
+            self.reconcile_intent(raw, hashlib.sha256(raw).hexdigest(),
+                                  ValueError("JAMMY_PREPARATION_INTENT_HELD"))

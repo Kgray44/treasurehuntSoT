@@ -68,3 +68,31 @@ class WorkflowEvidenceTest(unittest.TestCase):
             self.assertEqual(json.load(stream), {"publication": publication, "dispatch": dispatch,
                                                   "custodyReceiptSha256": digest})
             self.assertNotIn("JAMMY_PREFLIGHT_APPROVAL", os.environ)
+
+    def test_intent_digest_is_written_to_both_workflow_channels(self):
+        digest = "d" * 64
+        provider, step = io.StringIO(), io.StringIO()
+        sink = workflow.WorkflowEvidence(provider, step)
+        line = f"jammyPreflightIntentSha256={digest}\n"
+        self.assertEqual(sink.write(line), len(line))
+        sink.flush()
+        self.assertEqual(step.getvalue(), f"intent_sha256={digest}\n")
+        self.assertEqual(provider.getvalue(), line)
+
+    def test_recovery_uses_intent_only_when_final_digest_is_absent(self):
+        publication = {"source": "a" * 40}
+        envelope = {"publication": publication, "dispatch": {}, "inventoryReceipt": "YQ=="}
+        environment = {"JAMMY_PREFLIGHT_APPROVAL": json.dumps(envelope), "REQUESTED_SOURCE": "a" * 40,
+                       "REQUESTED_OPERATION": workflow.OPERATION, "PRIOR_INTENT_SHA256": "e" * 64}
+        with (patch.dict(os.environ, environment, clear=True),
+              patch.object(workflow.entry, "validate_approval", return_value=(123, publication))):
+            run, actual, stream = workflow.approved_ingress("recover")
+            self.assertEqual((run, actual), (123, publication))
+            self.assertEqual(json.load(stream)["intentReceiptSha256"], "e" * 64)
+        environment["PRIOR_CUSTODY_SHA256"] = "f" * 64
+        with (patch.dict(os.environ, environment, clear=True),
+              patch.object(workflow.entry, "validate_approval", return_value=(123, publication))):
+            run, actual, stream = workflow.approved_ingress("recover")
+            proof = json.load(stream)
+            self.assertEqual(proof["custodyReceiptSha256"], "f" * 64)
+            self.assertNotIn("intentReceiptSha256", proof)
