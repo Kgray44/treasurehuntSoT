@@ -1,3 +1,4 @@
+import errno
 import hashlib
 import os
 from datetime import datetime, timezone
@@ -24,6 +25,21 @@ class RuntimePreparationTest(unittest.TestCase):
             return prep.prepare_runtime_inputs(123, {"workflowId": 414024776, "tree": "b" * 40,
                                                     "workflowSha256": "c" * 64},
                                                "token", b"original receipt", "pinned-image")
+
+    def test_provider_os_error_is_classified_before_acquisition(self):
+        original = ConnectionResetError(errno.ECONNRESET, "internal socket detail")
+        with (patch.object(prep, "authenticate_jammy_preflight_run", side_effect=original),
+              patch.object(prep, "collect_inventory") as collect):
+            with self.assertRaisesRegex(ValueError, f"^JAMMY_PREPARATION_PROVIDER_{errno.errorcode[original.errno]}$") as failure:
+                prep.prepare_runtime_inputs(123, {}, "token", b"receipt", "image")
+        self.assertIs(failure.exception.__cause__, original)
+        collect.assert_not_called()
+
+    def test_inventory_os_error_remains_distinct_from_provider_error(self):
+        original = PermissionError(errno.EACCES, "private local path")
+        with self.assertRaisesRegex(ValueError, "^JAMMY_PREPARATION_INVENTORY_EACCES$") as failure:
+            self.prepare(lambda *_, **_options: {}, Mock(side_effect=original))
+        self.assertIs(failure.exception.__cause__, original)
 
     def test_invalid_receipt_refuses_before_acquisition(self):
         collect = Mock()

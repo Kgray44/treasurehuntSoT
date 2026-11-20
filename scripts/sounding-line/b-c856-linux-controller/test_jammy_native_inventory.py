@@ -113,6 +113,8 @@ class StaticInventoryTests(unittest.TestCase):
             self.assertEqual(archive.KEYRING_SHA256,
                              "bfdb0512804d0740816d836bb05b1ef8b27609771d7b9962c95bcc57bfaac230")
             self.assertIs(archive.signed_release.__globals__["archive_key"], archive.archive_key)
+            self.assertIs(archive.authenticated_package.__globals__["fetch"], archive.fetch)
+            self.assertIs(archive.fetch.func, probe.fetch_inventory_archive)
             with self.assertRaisesRegex(ValueError, "INVENTORY_VERIFIER_PIN"):
                 probe.inventory_verifier(frozen+b"x")
 

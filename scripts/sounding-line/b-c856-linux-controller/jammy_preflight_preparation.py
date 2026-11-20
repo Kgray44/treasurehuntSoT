@@ -67,7 +67,11 @@ def read_inventory_inputs(manifest_hash):
 def prepare_runtime_inputs(run_id, approval, token, receipt, runner_image):
     """Reacquire the seven pinned members. This step neither authorizes nor starts a service."""
     approval = dict(approval) if type(approval) is dict else approval
-    run = authenticate_jammy_preflight_run(run_id, approval, token, launch=True)
+    try:
+        run = authenticate_jammy_preflight_run(run_id, approval, token, launch=True)
+    except OSError as error:
+        code = errorcode.get(error.errno, "OS_ERROR")
+        raise ValueError(f"JAMMY_PREPARATION_PROVIDER_{code}") from error
     verify_runner(run, runner_image)
     plan = load_plan()
     expected = verify_inventory(plan, receipt)
