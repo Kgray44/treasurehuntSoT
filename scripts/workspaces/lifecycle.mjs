@@ -90,6 +90,7 @@ export function run(command, args, cwd, options = {}) {
       "GIT_WORK_TREE",
       "GIT_INDEX_FILE",
       "GIT_OBJECT_DIRECTORY",
+      "GIT_ALTERNATE_OBJECT_DIRECTORIES",
       "GIT_NAMESPACE",
       "GIT_PREFIX",
     ])
@@ -249,16 +250,33 @@ export function removeOwnedTree(root, target) {
     fs.rmdirSync(target);
   } else fs.unlinkSync(target);
 }
-export function checkBudget({ policy = POLICY, free, estimates, footprint, peak, taskCount = 0, additionalReason }) {
-  for (const drive of ["C", "D"]) {
-    if (!Number.isSafeInteger(estimates[drive]) || estimates[drive] < 0) fail(`UNBOUNDED_ESTIMATE:${drive}`);
-    if (!Number.isSafeInteger(free[drive]) || free[drive] - estimates[drive] <= policy.reserveBytes)
-      fail(`RESERVE_DENIED:${drive}`);
-  }
+export function checkBudget({ policy = POLICY, free, estimates, footprint, peak, taskCount = 0, additionalReason, dOnly = false }) {
+  checkReserve({ policy, free, estimates, dOnly });
   if (!Number.isSafeInteger(peak) || peak <= 0 || peak > policy.workspaceBytes) fail("WORKSPACE_BUDGET_DENIED");
   if (footprint + peak > policy.aggregateBytes) fail("AGGREGATE_BUDGET_DENIED");
   if (taskCount > 0 && (!additionalReason || additionalReason.trim().length < 30))
     fail("TASK_WORKSPACE_ALREADY_EXISTS");
+}
+function checkReserve({ policy = POLICY, free, estimates, dOnly }) {
+  if (dOnly && estimates.C !== 0) fail("D_ONLY_C_WRITE_DENIED");
+  for (const drive of dOnly ? ["D"] : ["C", "D"]) {
+    if (!Number.isSafeInteger(estimates[drive]) || estimates[drive] < 0) fail(`UNBOUNDED_ESTIMATE:${drive}`);
+    if (!Number.isSafeInteger(free[drive]) || free[drive] - estimates[drive] <= policy.reserveBytes)
+      fail(`RESERVE_DENIED:${drive}`);
+  }
+}
+function reserveDOnly(estimates) {
+  if (process.platform !== "win32") fail("WINDOWS_RESERVE_GUARD_REQUIRED");
+  const volumes = JSON.parse(run("powershell.exe", ["-NoProfile", "-Command",
+    "ConvertTo-Json -Compress -InputObject @([IO.DriveInfo]::new('C').AvailableFreeSpace,[IO.DriveInfo]::new('D').AvailableFreeSpace)"]));
+  const [cFreeBytes, dFreeBytes] = volumes;
+  checkReserve({ free: { C: cFreeBytes, D: dFreeBytes }, estimates, dOnly: true });
+  return { allowed: true, cFreeBytes, dFreeBytes, dOnly: true };
+}
+function onlyD(target) {
+  const resolved = physical(path.resolve(target));
+  if (path.parse(resolved).root.toUpperCase() !== "D:\\") fail("D_ONLY_PATH_REQUIRED");
+  return resolved;
 }
 export function reserve(estimates = { C: 0, D: 0 }) {
   if (process.platform !== "win32") fail("WINDOWS_RESERVE_GUARD_REQUIRED");
@@ -464,7 +482,12 @@ export class Lifecycle {
   constructor(stateRoot, dependencies = {}) {
     this.root = physical(path.resolve(stateRoot));
     this.file = path.join(this.root, "registry.json");
-    this.guard = dependencies.guard ?? reserve;
+    this.dOnlyTask = dependencies.dOnlyTask;
+    if (this.dOnlyTask) {
+      onlyD(this.root);
+      onlyD(os.tmpdir());
+    }
+    this.guard = dependencies.guard ?? (this.dOnlyTask ? reserveDOnly : reserve);
     this.processes = dependencies.processes ?? windowsProcesses;
     this.smoke = dependencies.smoke ?? ((r) => this.landedSmoke(r));
     this.authority = dependencies.authority;
@@ -478,12 +501,107 @@ export class Lifecycle {
     this.db = json(this.file);
     if (this.db.version !== 1 || !Array.isArray(this.db.records)) fail("REGISTRY_INVALID");
     this.config = this.db.config;
+    if ((this.config.dOnlyTask ?? null) !== (this.dOnlyTask ?? null)) fail("D_ONLY_TASK_REQUIRED");
+    if (this.dOnlyTask) {
+      for (const p of [this.config.canonical, this.config.commonDir, this.config.physicalRegistryRoot,
+        ...(this.config.registryAliases ?? []), ...this.db.records.map((record) => record.path)].filter(Boolean)) onlyD(p);
+    }
     if (within(this.config.canonical, this.root)) fail("REGISTRY_INSIDE_CANONICAL");
     if (!this.authority) this.authority = new GitHubAuthority(this.config, { guard: this.guard });
   }
-  init(canonical, repository) {
+  #withDOnlyBootstrap(initialize) {
+    this.guard({ C: 0, D: 1024 ** 2 });
+    fs.mkdirSync(this.root, { recursive: true });
+    const lock = path.join(this.root, "bootstrap.lock");
+    let owner;
+    try {
+      owner = fs.openSync(lock, "wx", 0o600);
+    } catch (error) {
+      if (error.code === "EEXIST") fail("D_ONLY_BOOTSTRAP_BUSY");
+      throw error;
+    }
+    try {
+      fs.writeFileSync(owner, JSON.stringify({ pid: process.pid, task: this.dOnlyTask, startedAt: now() }));
+      return initialize();
+    } finally {
+      fs.closeSync(owner);
+      fs.unlinkSync(lock);
+    }
+  }
+  bootstrapDOnly(options) {
+    if (!this.dOnlyTask) fail("D_ONLY_TASK_REQUIRED");
+    return this.#withDOnlyBootstrap(() => this.#seedDOnly(options));
+  }
+  #seedDOnly({ source, canonical, repository, expectedMain, peakBytes }) {
     if (fs.existsSync(this.file)) fail("REGISTRY_ALREADY_EXISTS");
-    canonical = physical(canonical);
+    canonical = onlyD(canonical);
+    source = physical(source);
+    if (literalExists(canonical) || same(canonical, this.root) ||
+        within(canonical, this.root) || within(this.root, canonical)) fail("BOOTSTRAP_TARGET_UNAVAILABLE");
+    const remote = `https://github.com/${repository}.git`;
+    if (!/^[\w.-]+\/[\w.-]+$/u.test(repository ?? "") ||
+        git(source, ["remote", "get-url", "origin"]) !== remote) fail("BOOTSTRAP_ORIGIN_MISMATCH");
+    if (!/^[a-f0-9]{40}$/u.test(expectedMain ?? "") ||
+        git(source, ["rev-parse", "refs/remotes/origin/main"]) !== expectedMain ||
+        git(source, ["ls-remote", "origin", "refs/heads/main"]) !== `${expectedMain}\trefs/heads/main`)
+      fail("BOOTSTRAP_PROTECTED_MAIN_MISMATCH");
+    if (git(source, ["rev-parse", "--is-shallow-repository"]) !== "false" ||
+        git(source, ["rev-list", "--objects", "--no-object-names", "--missing=print", "--max-count=1", expectedMain])
+          .split("\n").some((line) => line.startsWith("?"))) fail("BOOTSTRAP_INCOMPLETE_SOURCE");
+    const sourceGit = physical(git(source, ["rev-parse", "--path-format=absolute", "--git-common-dir"]));
+    const objects = path.join(sourceGit, "objects");
+    if (literalExists(path.join(objects, "info", "alternates"))) fail("BOOTSTRAP_SOURCE_ALTERNATES");
+    const storage = scan(objects);
+    if (storage.links.length || storage.errors.length) fail("BOOTSTRAP_SOURCE_SCAN_FAILED");
+    if (!Number.isSafeInteger(peakBytes) || peakBytes > POLICY.aggregateBytes - POLICY.workspaceBytes ||
+        storage.allocationBoundBytes + 64 * 1024 ** 2 > peakBytes) fail("BOOTSTRAP_BUDGET_DENIED");
+    this.guard({ C: 0, D: peakBytes });
+    const template = path.join(this.root, "bootstrap-template-" + randomUUID());
+    fs.mkdirSync(this.root, { recursive: true });
+    fs.mkdirSync(template);
+    this.receipt(null, "D_ONLY_BOOTSTRAP_RESERVED", {
+      task: this.dOnlyTask, canonical, repository, expectedMain, peakBytes,
+    });
+    fs.mkdirSync(path.dirname(canonical), { recursive: true });
+    run("git", ["-c", "core.longpaths=true", "init", "-b", "main", `--template=${template}`, canonical], this.root);
+    const cloneGit = onlyD(git(canonical, ["rev-parse", "--path-format=absolute", "--git-common-dir"]));
+    try {
+      run("robocopy.exe", [objects, path.join(cloneGit, "objects"), "/E", "/J", "/MT:16",
+        "/R:0", "/W:0", "/XJ", "/NP", "/NFL", "/NDL"], this.root, { timeout: 5 * 60 * 1000 });
+    } catch (error) {
+      // Robocopy returns 1 on a successful copy. Other nonzero statuses either
+      // report unexpected destination contents or an incomplete transfer.
+      if (error.status !== 1 || error.signal) throw error;
+    }
+    if (literalExists(path.join(cloneGit, "objects", "info", "alternates"))) fail("BOOTSTRAP_CLONE_ALTERNATES");
+    const cloneStorage = scan(cloneGit);
+    if (cloneStorage.links.length || cloneStorage.errors.length ||
+        cloneStorage.allocationBoundBytes > peakBytes) fail("BOOTSTRAP_CLONE_BUDGET_EXCEEDED");
+    this.guard({ C: 0, D: 16 * 1024 ** 2 });
+    if (git(canonical, ["rev-list", "--objects", "--no-object-names", "--missing=print", "--max-count=1", expectedMain])
+          .split("\n").some((line) => line.startsWith("?"))) fail("BOOTSTRAP_INCOMPLETE_COPY");
+    git(canonical, ["remote", "add", "origin", remote]);
+    if (fs.readdirSync(path.join(cloneGit, "objects", "pack")).some((name) => name.endsWith(".promisor"))) {
+      git(canonical, ["config", "remote.origin.promisor", "true"]);
+      git(canonical, ["config", "remote.origin.partialclonefilter", "blob:none"]);
+    }
+    git(canonical, ["update-ref", "refs/heads/main", expectedMain]);
+    git(canonical, ["update-ref", "refs/remotes/origin/main", expectedMain]);
+    const config = this.#initialize(canonical, repository, { seedPeakBytes: peakBytes });
+    this.receipt(null, "D_ONLY_BOOTSTRAP_READY", {
+      task: this.dOnlyTask, canonical, repository, expectedMain, peakBytes, cloneStorage,
+    });
+    return config;
+  }
+  init(canonical, repository) {
+    const initialize = () => this.#initialize(canonical, repository);
+    return this.dOnlyTask ? this.#withDOnlyBootstrap(initialize) : initialize();
+  }
+  #initialize(canonical, repository, { seedPeakBytes } = {}) {
+    if (fs.existsSync(this.file)) fail("REGISTRY_ALREADY_EXISTS");
+    canonical = this.dOnlyTask ? onlyD(canonical) : physical(canonical);
+    const commonDir = physical(git(canonical, ["rev-parse", "--path-format=absolute", "--git-common-dir"]));
+    if (this.dOnlyTask) onlyD(commonDir);
     const listed = worktrees(canonical);
     if (!same(listed[0]?.path ?? "", canonical) || listed[0].branch !== "refs/heads/main")
       fail("CANONICAL_MAIN_REQUIRED");
@@ -492,8 +610,9 @@ export class Lifecycle {
     fs.mkdirSync(this.root, { recursive: true });
     this.config = {
       canonical,
-      commonDir: physical(git(canonical, ["rev-parse", "--path-format=absolute", "--git-common-dir"])),
+      commonDir,
       repository,
+      ...(this.dOnlyTask ? { dOnlyTask: this.dOnlyTask, seedPeakBytes } : {}),
       policy: { ...POLICY },
       smokeFiles: ["scripts/workspaces/lifecycle.mjs", "tests/workspaces/lifecycle.test.mjs"],
     };
@@ -539,7 +658,7 @@ export class Lifecycle {
   }
   bindHost(physicalRoot) {
     return this.transaction(() => {
-      const target = path.join(physicalRoot, "registry.json");
+      const target = path.join(this.dOnlyTask ? onlyD(physicalRoot) : physicalRoot, "registry.json");
       const original = fs.statSync(this.file, { bigint: true });
       const resolved = fs.statSync(target, { bigint: true });
       if (original.ino !== resolved.ino || original.dev !== resolved.dev) fail("HOST_REGISTRY_FILE_ID_MISMATCH");
@@ -566,7 +685,7 @@ export class Lifecycle {
     return r;
   }
   assertTarget(p) {
-    p = physical(p);
+    p = this.dOnlyTask ? onlyD(p) : physical(p);
     if (
       same(p, this.config.canonical) ||
       within(this.config.canonical, p) ||
@@ -655,8 +774,11 @@ export class Lifecycle {
       logicalBytes: items.reduce((s, i) => s + i.logicalBytes, 0),
       allocationBoundBytes: actualBound,
       reservedAdditionalBytes: reservations,
-      admissionFootprint: actualBound + reservations,
+      admissionFootprint: actualBound + reservations + (this.config.seedPeakBytes ?? 0),
     };
+  }
+  assertTask(task) {
+    if (this.dOnlyTask && task !== this.dOnlyTask) fail("D_ONLY_TASK_MISMATCH");
   }
   register({
     path: p,
@@ -668,6 +790,7 @@ export class Lifecycle {
     preserveRef = null,
     custodyManifest = null,
   }) {
+    this.assertTask(task);
     p = this.assertTarget(p);
     if (!["worktree", "runtime"].includes(kind)) fail("RESOURCE_CLASS_NOT_RETIRABLE");
     if (kind === "runtime" && fs.existsSync(path.join(p, ".git"))) fail("RUNTIME_CONTAINS_GIT");
@@ -729,6 +852,7 @@ export class Lifecycle {
     return r;
   }
   create(options) {
+    this.assertTask(options.task);
     return this.transaction(() => {
       const kind = options.kind ?? "worktree";
       if (!["worktree", "runtime"].includes(kind)) fail("RESOURCE_CLASS_NOT_RETIRABLE");
@@ -770,6 +894,7 @@ export class Lifecycle {
       const free = this.guard(estimate);
       checkBudget({
         policy: this.config.policy,
+        dOnly: Boolean(this.dOnlyTask),
         free: { C: free.cFreeBytes, D: free.dFreeBytes },
         estimates: estimate,
         footprint: inventory.admissionFootprint,
@@ -853,6 +978,7 @@ export class Lifecycle {
     });
   }
   adopt(options) {
+    this.assertTask(options.task);
     return this.transaction(() => {
       if (!options.adoptedReason || options.adoptedReason.length < 30) fail("EXPLICIT_CUSTODY_REASON_REQUIRED");
       return this.register(options);

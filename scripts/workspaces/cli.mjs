@@ -12,7 +12,10 @@ for (let i = 0; i < args.length; i += 2) {
   options[args[i].slice(2)] = args[i + 1];
 }
 const state = options.state ?? path.join(os.homedir(), "AppData", "Local", "Voyagewright", "Workspaces");
-const manager = new Lifecycle(state);
+const dOnlyTask = options["d-only-task"];
+if (dOnlyTask && !options.state) throw new Error("D_ONLY_EXPLICIT_STATE_REQUIRED");
+if (dOnlyTask && options.output) throw new Error("D_ONLY_STDOUT_REQUIRED");
+const manager = new Lifecycle(state, { dOnlyTask });
 const list = (name) => options[name]?.split(",").filter(Boolean) ?? [];
 const input = () => ({
   path: options.path,
@@ -30,6 +33,15 @@ const input = () => ({
 try {
   let result;
   switch (operation) {
+    case "bootstrap-d-only":
+      result = manager.bootstrapDOnly({
+        source: options.source,
+        canonical: options.canonical,
+        repository: options.repository,
+        expectedMain: options["expected-main"],
+        peakBytes: Number(options["peak-bytes"]),
+      });
+      break;
     case "init":
       result = manager.init(options.canonical, options.repository);
       break;
@@ -78,7 +90,7 @@ try {
       break;
     }
     default:
-      throw new Error("OPERATION_REQUIRED:create|status|audit|retire|sweep|recover|init|adopt|finish|lease|hook");
+      throw new Error("OPERATION_REQUIRED:bootstrap-d-only|create|status|audit|retire|sweep|recover|init|adopt|finish|lease|hook");
   }
   if (options.output) {
     fs.writeFileSync(options.output, `${JSON.stringify(result, null, 2)}\n`, { flag: "wx", mode: 0o600 });

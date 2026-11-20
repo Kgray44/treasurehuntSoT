@@ -679,3 +679,55 @@ test("invalid sweep limits fail before resource mutation", (t) => {
   const f = fixture(t);
   for (const limit of [-1, 0, 21, NaN]) assert.throws(() => f.manager.sweep({ limit }), /INVALID_SWEEP_LIMIT/u);
 });
+test("a D-only admission requires zero C writes and retains the D reserve", () => {
+  const admission = {
+    free: { C: 6 * GiB, D: 45 * GiB },
+    estimates: { C: 0, D: 12 * GiB },
+    footprint: 0,
+    peak: 12 * GiB,
+  };
+  assert.throws(() => checkBudget(admission), /RESERVE_DENIED:C/);
+  assert.doesNotThrow(() => checkBudget({ ...admission, dOnly: true }));
+  assert.throws(() => checkBudget({
+    ...admission, dOnly: true, estimates: { C: 1, D: 12 * GiB },
+  }), /D_ONLY_C_WRITE_DENIED/);
+  assert.throws(() => checkBudget({
+    ...admission, dOnly: true, free: { C: 6 * GiB, D: 42 * GiB },
+  }), /RESERVE_DENIED:D/);
+});
+test("the D-only registry admits its task and refuses other owners", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const state = path.join(f.root, "d-only-state");
+  const manager = new Lifecycle(state, {
+    ...f.dependencies,
+    dOnlyTask: "approved-task",
+    guard: () => ({ allowed: true, cFreeBytes: 6 * GiB, dFreeBytes: 100 * GiB }),
+  });
+  assert.equal(manager.init(f.main, "synthetic/test").dOnlyTask, "approved-task");
+  assert.throws(() => new Lifecycle(state), /D_ONLY_TASK_REQUIRED/);
+  const request = { task: "other-task", path: path.join(f.root, "owned"), branch: "codex/owned", peakBytes: 16 * 1024 ** 2 };
+  assert.throws(() => manager.create(request), /D_ONLY_TASK_MISMATCH/);
+  assert.throws(() => manager.create({ ...request, task: "approved-task", path: "C:\\forbidden" }), /D_ONLY_PATH_REQUIRED/);
+  const result = manager.create({ ...request, task: "approved-task" });
+  assert.equal(result.record.state, "ACTIVE");
+  assert.ok(git(result.record.path, ["rev-parse", "--path-format=absolute", "--git-common-dir"]).startsWith("D:/"));
+});
+test("a second D-only initializer cannot replace an in-progress registry", (t) => {
+  if (process.platform !== "win32" || path.parse(os.tmpdir()).root.toUpperCase() !== "D:\\") {
+    t.skip("requires a D: fixture directory");
+    return;
+  }
+  const f = fixture(t);
+  const state = path.join(f.root, "d-only-state");
+  const manager = new Lifecycle(state, { ...f.dependencies, dOnlyTask: "approved-task" });
+  fs.mkdirSync(state);
+  const lock = path.join(state, "bootstrap.lock");
+  fs.writeFileSync(lock, "first initializer");
+  assert.throws(() => manager.init(f.main, "synthetic/test"), /D_ONLY_BOOTSTRAP_BUSY/);
+  assert.equal(fs.readFileSync(lock, "utf8"), "first initializer");
+  assert.equal(fs.existsSync(path.join(state, "registry.json")), false);
+});

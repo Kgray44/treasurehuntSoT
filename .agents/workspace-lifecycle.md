@@ -96,3 +96,22 @@ continue. The separate 30 GiB reserves apply to all admitted host writes. These
 rules cannot stop external applications, cloud jobs or existing uninstrumented
 writers. Recheck live capacity before each large allocation and every five minutes
 during a long writer. Report net volume change separately from measured file bytes.
+## Task-scoped D: reserve exception
+
+Use this only with explicit owner authorization for a named task. Use a new D:
+registry and canonical repository, separate from the installed host registry.
+The owner task ID is required on every command against that registry. The
+exception admits only zero estimated writes on C: and continues to reject
+writes that would leave 30 GiB or less free on D:.
+
+`bootstrap-d-only` takes `--state`, `--d-only-task`, `--source`, `--canonical`,
+`--repository`, `--expected-main`, and `--peak-bytes`. The source is read-only.
+The manager checks the protected remote commit, measures the source Git object
+store, records the bounded seed reservation, and copies the objects into an
+independent D: Git store. The canonical checkout starts unhydrated. The seed
+reservation counts toward the new registry's aggregate admission limit.
+
+Run `recover`, `sweep`, `status`, and `audit` against the new registry before
+`create`. Keep command temporary files, package caches, and test output on D:.
+The source registry and its receipts remain in their original custody. A failed
+bootstrap retains its reservation receipt and any partial copy for inspection.
