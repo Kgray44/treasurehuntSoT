@@ -21,6 +21,9 @@ controller or the same-boot recovery checks.
 The dormant workflow uses the owner-protected `sounding-line-jammy-preflight`
 environment for the independently retained approval envelope. It binds the
 checkout commit and tree before passing the envelope to the entry point.
+On launch and recovery, the workflow reads the standard-library-only bootstrap
+from the exact Git commit. It checks the entire controller file set and every
+tracked blob before invoking Python on any checkout module.
 The launch step publishes the custody digest to its log and step output before
 starting the controller. The recovery step reads only that earlier step output
 and operates on the same job's receipt directory. GitHub's behavior under

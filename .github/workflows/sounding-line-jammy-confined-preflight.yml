@@ -53,7 +53,11 @@ jobs:
         env:
           JAMMY_PREFLIGHT_APPROVAL: ${{ secrets.JAMMY_PREFLIGHT_APPROVAL }}
           JAMMY_PREFLIGHT_TOKEN: ${{ github.token }}
-        run: exec /usr/bin/python3 -IB scripts/sounding-line/b-c856-linux-controller/jammy_preflight_workflow.py launch
+        run: |
+          /usr/bin/env -i PATH=/usr/bin:/bin GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
+            GIT_NO_LAZY_FETCH=1 GIT_OPTIONAL_LOCKS=0 /usr/bin/git --no-replace-objects -c core.fsmonitor=false \
+            show "${GITHUB_SHA}:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_checkout.py" |
+            /usr/bin/python3 -IB - launch
       - name: Reconcile same-job custody after interruption
         if: ${{ always() && (failure() || cancelled()) && steps.preflight.outputs.custody_sha256 != '' }}
         working-directory: source
@@ -62,4 +66,8 @@ jobs:
           JAMMY_PREFLIGHT_APPROVAL: ${{ secrets.JAMMY_PREFLIGHT_APPROVAL }}
           JAMMY_PREFLIGHT_TOKEN: ${{ github.token }}
           PRIOR_CUSTODY_SHA256: ${{ steps.preflight.outputs.custody_sha256 }}
-        run: exec /usr/bin/python3 -IB scripts/sounding-line/b-c856-linux-controller/jammy_preflight_workflow.py recover
+        run: |
+          /usr/bin/env -i PATH=/usr/bin:/bin GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
+            GIT_NO_LAZY_FETCH=1 GIT_OPTIONAL_LOCKS=0 /usr/bin/git --no-replace-objects -c core.fsmonitor=false \
+            show "${GITHUB_SHA}:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_checkout.py" |
+            /usr/bin/python3 -IB - recover
