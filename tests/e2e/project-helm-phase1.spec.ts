@@ -25,6 +25,7 @@ const displayName = `Helm Captain ${suffix}`;
 let accountId = "";
 let playerProfileId = "";
 let accountSessionId = "";
+let signInClientOrdinal = 0;
 
 test.describe.configure({ mode: "serial", timeout: 600_000 });
 
@@ -179,6 +180,11 @@ test.beforeAll(async ({ request }) => {
 test.afterAll(async () => db.$disconnect());
 
 async function signInThroughProduct(page: Page) {
+  // The suite exercises distinct browser contexts as distinct devices. Give each
+  // context a documentation-reserved test-network address so the interactive
+  // login guard observes the same client boundary it would behind a proxy.
+  signInClientOrdinal += 1;
+  await page.context().setExtraHTTPHeaders({ "x-forwarded-for": `198.18.0.${signInClientOrdinal}` });
   await page.goto("/sign-in");
   await expect(page.getByLabel("Email or legacy Player name")).toBeVisible({ timeout: 30_000 });
   await page.getByLabel("Email or legacy Player name").fill(email);
@@ -1135,15 +1141,19 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
   });
   await page.goto(`/player/playthroughs/${shared.playthroughId}`);
   await expect(page.getByRole("heading", { name: sharedName })).toBeVisible({ timeout: 30_000 });
-  await expect(page.getByText("Captain launch available")).toBeVisible();
+  await expect(page.getByText("Captain review in progress")).toBeVisible();
   await expect(page.getByText("Awaiting Captain")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Begin Voyage" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Begin Voyage" })).toHaveCount(0);
   await expect(page.locator('[data-captain="true"] .muster-badge-captain')).toHaveText("Captain");
+  await expect(page.getByRole("button", { name: "Resend invitation" })).toHaveCount(2);
   await expect(page.getByRole("link", { name: "Leave Waiting Room" })).toHaveAttribute("href", "/player/library");
   await expect(page.getByRole("button", { name: "Leave Voyage" })).toBeVisible();
 
-  const guest = await acceptGuestInvitation(browser, shared.invitations[0]!.link, shared.playthroughId);
+  const guests = await Promise.all(
+    shared.invitations.map((invitation) => acceptGuestInvitation(browser, invitation.link, shared.playthroughId)),
+  );
   try {
+    const guest = guests[0]!;
     await expect(guest.page.getByRole("heading", { name: sharedName })).toBeVisible({ timeout: 30_000 });
     await expect(guest.page.getByRole("button", { name: "Leave Voyage" })).toBeVisible();
     await expect(guest.page.getByRole("link", { name: "Leave Waiting Room" })).toHaveAttribute(
@@ -1153,8 +1163,10 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
     await expect(guest.page.getByRole("button", { name: "Begin Voyage" })).toHaveCount(0);
 
     await page.getByRole("button", { name: "Reconnect and Refresh" }).click();
-    await expect(page.locator('[data-membership-status="ACCEPTED"]')).toBeVisible({ timeout: 30_000 });
-    await expect(page.getByRole("button", { name: "Transfer Captaincy" })).toBeVisible();
+    await expect(page.locator('[data-membership-status="READY"]')).toHaveCount(3, { timeout: 30_000 });
+    await expect(page.getByText("Captain launch available")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Begin Voyage" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Transfer Captaincy" })).toHaveCount(2);
 
     await page.setViewportSize({ width: 390, height: 844 });
     const overflow = await page.evaluate(
@@ -1166,6 +1178,6 @@ test("Ready the Room keeps the Captain-only, participating-Captain, and ordinary
     const axe = await new AxeBuilder({ page }).analyze();
     expect(axe.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
   } finally {
-    await guest.context.close();
+    await Promise.all(guests.map((guest) => guest.context.close()));
   }
 });

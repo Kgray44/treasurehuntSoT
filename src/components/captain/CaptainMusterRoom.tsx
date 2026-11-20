@@ -333,7 +333,7 @@ export function CaptainMusterRoom({ voyageId }: { voyageId: string }) {
   }
 
   useEffect(() => {
-    void load();
+    queueMicrotask(() => void load());
     const source = new EventSource(`/api/play/sessions/${voyageId}/events`);
     const refresh = () => void load();
     source.onopen = refresh;
