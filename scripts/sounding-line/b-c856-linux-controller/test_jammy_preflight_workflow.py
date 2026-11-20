@@ -13,7 +13,8 @@ class WorkflowEvidenceTest(unittest.TestCase):
         document = (workflow.ROOT / ".github/workflows/sounding-line-jammy-confined-preflight.yml").read_text(encoding="utf-8")
         lines = document.splitlines()
         job_gate = next(line for line in lines if line.startswith("    if:"))
-        for binding in ("always()", "github.event_name == 'workflow_dispatch'",
+        self.assertNotIn("always()", job_gate)
+        for binding in ("!cancelled()", "github.event_name == 'workflow_dispatch'",
                         "github.repository == 'Kgray44/treasurehuntSoT'",
                         "github.ref == 'refs/heads/main'", "github.actor == 'Kgray44'",
                         "github.triggering_actor == 'Kgray44'", "github.run_attempt == 1",
@@ -21,6 +22,7 @@ class WorkflowEvidenceTest(unittest.TestCase):
             self.assertIn(binding, job_gate)
         launch = document.split("id: preflight", 1)[1].split("- name: Reconcile", 1)[0]
         self.assertIn("success() && !cancelled()", launch)
+        self.assertIn('exec /usr/bin/python3 -IB -c "${entry%.}" launch', launch)
         recovery = document.split("- name: Reconcile", 1)[1]
         self.assertIn("always() && (failure() || cancelled())", recovery)
         self.assertIn("steps.preflight.outputs.intent_sha256", recovery)
@@ -31,6 +33,7 @@ class WorkflowEvidenceTest(unittest.TestCase):
         rehearsal = document.split("id: rehearsal", 1)[1].split("id: preflight", 1)[0]
         exercise, recovery = rehearsal.split("- name: Verify same-job", 1)
         self.assertIn("!cancelled() && inputs.operation == 'recovery-transport-only'", exercise)
+        self.assertIn('exec /usr/bin/python3 -IB -c "${entry%.}" exercise', exercise)
         self.assertIn("always() && inputs.operation == 'recovery-transport-only'", recovery)
         self.assertIn("steps.rehearsal.outputs.intent_sha256", recovery)
         self.assertIn("REHEARSAL_CANCELLED: ${{ job.status == 'cancelled' && "
