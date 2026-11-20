@@ -6,6 +6,7 @@ import json
 import re
 import urllib.error
 import urllib.request
+from weakref import WeakValueDictionary
 
 from admission import REPOSITORY, need
 from jammy_preflight_supervisor import Run, verify_run
@@ -17,12 +18,13 @@ OWNER_ID = 64373011
 REPOSITORY_ID = 1303074266
 OPERATION = "confined-loader-and-denials-only"
 MAX_WORKFLOW_BYTES = 64 * 1024
+_launch_authorizations = WeakValueDictionary()
 
 
 def metadata(client, path, token):
     if re.fullmatch(r"actions/(?:runs|workflows)/[1-9][0-9]{0,14}", path):
         return action_metadata(client, path, token)
-    need(re.fullmatch(r"git/commits/[a-f0-9]{40}", path) or
+    need(path == "branches/main" or re.fullmatch(r"git/commits/[a-f0-9]{40}", path) or
          re.fullmatch(rf"contents/{re.escape(WORKFLOW_PATH)}\?ref=[a-f0-9]{{40}}", path),
          "JAMMY_PROVIDER_API_PATH")
     request = urllib.request.Request(API + path, headers={
@@ -56,7 +58,7 @@ def verify_workflow_file(record, expected_hash):
          "JAMMY_PROVIDER_WORKFLOW_BYTES")
 
 
-def authenticate_jammy_preflight_run(run_id, approval, token):
+def authenticate_jammy_preflight_run(run_id, approval, token, *, launch=False):
     """Compare provider records to a separately approved publication and dispatch."""
     need(type(run_id) is int and 0 < run_id < 10**15 and type(approval) is dict and
          set(approval) == {"workflowId", "source", "tree", "workflowSha256"} and
@@ -95,4 +97,15 @@ def authenticate_jammy_preflight_run(run_id, approval, token):
     result = Run(source, source, run_id, 1, OWNER, OWNER, REPOSITORY, "refs/heads/main",
                  "workflow_dispatch", OPERATION)
     verify_run(result, source)
+    if launch:
+        branch = metadata(client, "branches/main", token)
+        need(type(branch) is dict and branch.get("name") == "main" and branch.get("protected") is True and
+             type(branch.get("commit")) is dict and branch["commit"].get("sha") == source,
+             "JAMMY_PROVIDER_PROTECTED_MAIN")
+        _launch_authorizations[id(result)] = result
     return result
+
+
+def consume_launch_authorization(run):
+    """Only the provider-authenticated object can authorize this in-process controller."""
+    return run is not None and _launch_authorizations.pop(id(run), None) is run

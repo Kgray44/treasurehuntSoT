@@ -9,6 +9,44 @@ import jammy_preflight_workflow as workflow
 
 
 class WorkflowEvidenceTest(unittest.TestCase):
+    def test_approved_workflow_keeps_normal_cancellation_recovery_on_the_same_job(self):
+        document = (workflow.ROOT / ".github/workflows/sounding-line-jammy-confined-preflight.yml").read_text(encoding="utf-8")
+        lines = document.splitlines()
+        job_gate = next(line for line in lines if line.startswith("    if:"))
+        for binding in ("always()", "github.event_name == 'workflow_dispatch'",
+                        "github.repository == 'Kgray44/treasurehuntSoT'",
+                        "github.ref == 'refs/heads/main'", "github.actor == 'Kgray44'",
+                        "github.triggering_actor == 'Kgray44'", "github.run_attempt == 1",
+                        "inputs.source_sha == github.sha", "inputs.operation == 'confined-loader-and-denials-only'"):
+            self.assertIn(binding, job_gate)
+        launch = document.split("id: preflight", 1)[1].split("- name: Reconcile", 1)[0]
+        self.assertIn("success() && !cancelled()", launch)
+        recovery = document.split("- name: Reconcile", 1)[1]
+        self.assertIn("always() && (failure() || cancelled())", recovery)
+        self.assertIn("steps.preflight.outputs.intent_sha256", recovery)
+        self.assertIn("steps.preflight.outputs.custody_sha256", recovery)
+
+    def test_rehearsal_and_native_execution_have_separate_operation_conditions(self):
+        document = (workflow.ROOT / ".github/workflows/sounding-line-jammy-confined-preflight.yml").read_text(encoding="utf-8")
+        rehearsal = document.split("id: rehearsal", 1)[1].split("id: preflight", 1)[0]
+        exercise, recovery = rehearsal.split("- name: Verify same-job", 1)
+        self.assertIn("!cancelled() && inputs.operation == 'recovery-transport-only'", exercise)
+        self.assertIn("always() && inputs.operation == 'recovery-transport-only'", recovery)
+        self.assertIn("steps.rehearsal.outputs.intent_sha256", recovery)
+        self.assertIn("REHEARSAL_CANCELLED: ${{ job.status == 'cancelled' && "
+                      "steps.rehearsal.outcome == 'cancelled' }}", recovery)
+        self.assertNotIn("JAMMY_PREFLIGHT_APPROVAL", rehearsal)
+        native = document.split("id: preflight", 1)[1]
+        self.assertIn("!cancelled() && inputs.operation == 'confined-loader-and-denials-only'", native)
+
+    def test_bound_native_entry_can_reach_environment_approval(self):
+        self.assertIs(workflow.entry.worker.NATIVE_ENABLED, True)
+        with (patch.object(workflow.sys, "platform", "linux"),
+              patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}, clear=True),
+              patch.object(workflow, "approved_ingress", side_effect=ValueError("JAMMY_ENTRY_APPROVAL_SIZE"))):
+            with self.assertRaisesRegex(ValueError, "JAMMY_ENTRY_APPROVAL_SIZE"):
+                workflow.run_step("launch", io.StringIO())
+
     def test_launch_digest_is_retained_in_step_output_before_returning(self):
         digest = "a" * 64
         provider, step = io.StringIO(), io.StringIO()
@@ -27,7 +65,8 @@ class WorkflowEvidenceTest(unittest.TestCase):
         self.assertEqual(step.getvalue(), "")
 
     def test_dormant_launch_refuses_before_reading_runner_credentials(self):
-        with patch.object(workflow, "approved_ingress") as ingress:
+        with (patch.object(workflow.entry.worker, "NATIVE_ENABLED", False),
+              patch.object(workflow, "approved_ingress") as ingress):
             with self.assertRaisesRegex(ValueError, "LAUNCH_ACTION_NOT_AUTHORIZED"):
                 workflow.run_step("launch", io.StringIO())
         ingress.assert_not_called()

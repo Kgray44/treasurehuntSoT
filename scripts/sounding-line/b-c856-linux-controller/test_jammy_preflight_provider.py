@@ -1,4 +1,5 @@
 import base64
+from dataclasses import replace
 import hashlib
 import unittest
 from unittest.mock import patch
@@ -30,22 +31,38 @@ class ProviderPublicationTest(unittest.TestCase):
             "content": base64.b64encode(DATA).decode("ascii"),
         }
         self.responses = {
+            "branches/main": {"name": "main", "protected": True, "commit": {"sha": SOURCE}},
             f"actions/runs/{RUN_ID}": self.run,
             f"actions/workflows/{WORKFLOW_ID}": self.workflow,
             f"git/commits/{SOURCE}": self.commit,
             f"contents/{WORKFLOW}?ref={SOURCE}": self.file,
         }
 
-    def authenticate(self):
+    def authenticate(self, *, launch=False):
         approval = {"workflowId": WORKFLOW_ID, "source": SOURCE, "tree": TREE,
                     "workflowSha256": hashlib.sha256(DATA).hexdigest()}
         with patch.object(provider, "metadata", side_effect=lambda _client, path, _token: self.responses[path]):
-            return provider.authenticate_jammy_preflight_run(RUN_ID, approval, "test-token")
+            return provider.authenticate_jammy_preflight_run(RUN_ID, approval, "test-token", launch=launch)
 
     def test_authenticates_exact_provider_run_and_publication(self):
         result = self.authenticate()
         self.assertEqual(result.run_id, RUN_ID)
         self.assertEqual(result.source, SOURCE)
+
+    def test_launch_requires_the_live_protected_tip_and_consumes_one_provider_identity(self):
+        self.responses["branches/main"]["commit"]["sha"] = "d" * 40
+        with self.assertRaisesRegex(ValueError, "JAMMY_PROVIDER_PROTECTED_MAIN"):
+            self.authenticate(launch=True)
+        self.assertFalse(provider.consume_launch_authorization(self.authenticate()))
+        self.responses["branches/main"]["commit"]["sha"] = SOURCE
+        self.responses["branches/main"]["protected"] = False
+        with self.assertRaisesRegex(ValueError, "JAMMY_PROVIDER_PROTECTED_MAIN"):
+            self.authenticate(launch=True)
+        self.responses["branches/main"]["protected"] = True
+        exact = self.authenticate(launch=True)
+        self.assertFalse(provider.consume_launch_authorization(replace(exact)))
+        self.assertTrue(provider.consume_launch_authorization(exact))
+        self.assertFalse(provider.consume_launch_authorization(exact))
 
     def test_rejects_rerun_and_substituted_trigger(self):
         self.run["run_attempt"] = 2

@@ -4,9 +4,16 @@
   "protectedTree": "2094b0c7195009ca3c380c010e9939f9ec3dad74",
   "runtimeInputPlanSha256": "6f6e9900e45aac6b8e7fc4b5063fdffb1c12c073c48f53b51562eb9b52cee273",
   "systemdCapabilityRun": 42883672410,
+  "runnerObservation": {
+    "workflowId": 413454829,
+    "run": 44762455867,
+    "attempt": 1,
+    "source": "958107447886b1ac9ef84f713d93262b2a5d5a04",
+    "receiptSha256": "6c47249f580d63a7e92ad5ad72f944039519d87c9c918842f5a690d0962cc410"
+  },
   "runner": {
     "label": "ubuntu-22.04",
-    "image": "20261101.347.1",
+    "image": "20261116.365.1",
     "kernel": "6.8.0-1070-azure",
     "architecture": "x86_64",
     "uid": 1001

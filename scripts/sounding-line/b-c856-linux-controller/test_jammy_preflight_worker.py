@@ -56,7 +56,8 @@ class ProtocolTest(unittest.TestCase):
             execute.assert_called_once_with(SCOPE, LEASE, {}, b"receipt", {}, 1, (9, 10))
 
     def test_dormant_entrypoints_refuse_before_any_native_calls(self):
-        with patch.object(worker, "verify_run") as verify:
+        with (patch.object(worker, "NATIVE_ENABLED", False),
+              patch.object(worker, "verify_run") as verify):
             with self.assertRaisesRegex(ValueError, "LAUNCH_ACTION_NOT_AUTHORIZED"):
                 worker.controller(SCOPE, RUN.source, b"", {}, "", "", Path("/unused"))
             with self.assertRaisesRegex(ValueError, "LAUNCH_ACTION_NOT_AUTHORIZED"):
@@ -73,6 +74,12 @@ class ProtocolTest(unittest.TestCase):
             run.assert_not_called()
 
 
+    def test_locally_constructed_scope_is_rejected_before_runtime_access(self):
+        with patch.object(worker.os, "statvfs", create=True) as statvfs:
+            with self.assertRaisesRegex(ValueError, "LAUNCH_PROVIDER_NOT_AUTHENTICATED"):
+                worker.controller(SCOPE, RUN.source, b"", {}, "", "", Path("/unused"), authorized_run=RUN)
+        statvfs.assert_not_called()
+
     def test_controller_keeps_primary_when_recovery_and_watchdog_both_fail(self):
         from jammy_preflight_custody import CustodyBinding
 
@@ -83,6 +90,7 @@ class ProtocolTest(unittest.TestCase):
         recovery = ValueError("passive recovery failed")
         retirement = OSError("watchdog retirement failed")
         with (patch.object(worker, "NATIVE_ENABLED", True),
+              patch.object(worker, "consume_launch_authorization", return_value=True),
               patch.object(worker, "load_supervisor_plan", return_value=plan),
               patch.object(worker.os, "uname", return_value=SimpleNamespace(
                   sysname="Linux", machine="x86_64", release="kernel"), create=True),
@@ -96,7 +104,8 @@ class ProtocolTest(unittest.TestCase):
               patch.object(worker, "recover", side_effect=recovery),
               patch.object(worker, "finish_watchdog", side_effect=retirement)):
             with self.assertRaises(worker.PreflightFailure) as error:
-                worker.controller(scope, RUN.source, b"receipt", {}, "tracking", "image", Path("/tmp"))
+                worker.controller(scope, RUN.source, b"receipt", {}, "tracking", "image", Path("/tmp"),
+                                  authorized_run=replace(scope.run, unit_nonce=None))
         self.assertIs(error.exception.primary, primary)
         self.assertEqual(error.exception.cleanup, (("passive_recovery", recovery), ("watchdog_retirement", retirement)))
 
