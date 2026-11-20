@@ -23,7 +23,7 @@ from jammy_native_runtime_inputs import (
 from producer_boundary import MS_NODEV, MS_NOEXEC, MS_NOSUID, MS_RDONLY, MS_REMOUNT, host_mount
 
 PLAN = Path(__file__).with_name("jammy-confined-preflight-plan.json")
-SUPERVISOR_PLAN_SHA256 = "31911adc93ee1156441c96633cace23bcc80d3b98b47ed65da940b9c1b711cbc"
+SUPERVISOR_PLAN_SHA256 = "18af502289e1e045c6847efd4c9581c9648e087563c01bacc08ca1c5604c9b96"
 GROUP_PARENT = "/user.slice/user-1001.slice/user@1001.service/app.slice"
 MOUNT_FLAGS = {"ro", "nosuid", "nodev"}
 PROC_FLAGS = MOUNT_FLAGS | {"noexec"}

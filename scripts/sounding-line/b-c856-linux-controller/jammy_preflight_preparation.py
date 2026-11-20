@@ -66,7 +66,7 @@ def read_inventory_inputs(manifest_hash):
 def prepare_runtime_inputs(run_id, approval, token, receipt, runner_image):
     """Reacquire the seven pinned members. This step neither authorizes nor starts a service."""
     approval = dict(approval) if type(approval) is dict else approval
-    run = authenticate_jammy_preflight_run(run_id, approval, token)
+    run = authenticate_jammy_preflight_run(run_id, approval, token, launch=True)
     verify_runner(run, runner_image)
     plan = load_plan()
     expected = verify_inventory(plan, receipt)
@@ -267,4 +267,4 @@ def run_published_preflight(run_id, approval, token, receipt, receipt_dir_fd, ev
     scope, digest = provision_preflight_scope(prepared, receipt_dir_fd, evidence)
     publish_digest(evidence, "Custody", digest)
     return worker.controller(scope, prepared.run.source, prepared.receipt, prepared.members,
-                             tracking, runner_image, runner_temp)
+                             tracking, runner_image, runner_temp, authorized_run=prepared.run)

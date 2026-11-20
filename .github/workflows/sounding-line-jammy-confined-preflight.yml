@@ -1,4 +1,4 @@
-# Keep the job disabled until native publication and dispatch are independently authorized.
+# Protected environment approval and exact run binding are required for the native diagnostic.
 name: Sounding Line Jammy confined runtime preflight
 on:
   workflow_dispatch:
@@ -12,6 +12,7 @@ on:
         type: choice
         options:
           - confined-loader-and-denials-only
+          - recovery-transport-only
         required: true
 permissions: {}
 concurrency:
@@ -19,8 +20,8 @@ concurrency:
   cancel-in-progress: false
 jobs:
   confined:
-    # A dispatch actor is an identity check, never approval to run.
-    if: ${{ false }}
+    # Preserve the same-job recovery step after ordinary cancellation.
+    if: ${{ always() && github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && inputs.source_sha == github.sha && (inputs.operation == 'confined-loader-and-denials-only' || inputs.operation == 'recovery-transport-only') }}
     runs-on: ubuntu-22.04
     timeout-minutes: 5
     environment: sounding-line-jammy-preflight
@@ -32,22 +33,46 @@ jobs:
       REQUESTED_OPERATION: ${{ inputs.operation }}
     steps:
       - name: Check protected dispatch identity
+        if: ${{ success() && !cancelled() }}
         shell: bash
         run: |
           test "$GITHUB_REF" = refs/heads/main
           test "$GITHUB_EVENT_NAME" = workflow_dispatch
           test "$GITHUB_RUN_ATTEMPT" = 1
           test "$REQUESTED_SOURCE" = "$GITHUB_SHA"
-          test "$REQUESTED_OPERATION" = confined-loader-and-denials-only
+          case "$REQUESTED_OPERATION" in
+            confined-loader-and-denials-only|recovery-transport-only) ;;
+            *) exit 1 ;;
+          esac
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        if: ${{ success() && !cancelled() }}
         with:
           ref: ${{ github.sha }}
           path: source
           fetch-depth: 1
           persist-credentials: false
           sparse-checkout: scripts/sounding-line/b-c856-linux-controller
+      - name: Rehearse cancellation with an owned marker
+        id: rehearsal
+        if: ${{ success() && !cancelled() && inputs.operation == 'recovery-transport-only' }}
+        working-directory: source
+        shell: bash
+        run: |
+          /usr/bin/git --no-replace-objects show "$GITHUB_SHA:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_rehearsal.py" |
+            /usr/bin/python3 -IB - exercise
+      - name: Verify same-job recovery after cancellation
+        if: ${{ always() && inputs.operation == 'recovery-transport-only' && steps.rehearsal.outputs.intent_sha256 != '' }}
+        working-directory: source
+        shell: bash
+        env:
+          REHEARSAL_INTENT_SHA256: ${{ steps.rehearsal.outputs.intent_sha256 }}
+          REHEARSAL_CANCELLED: ${{ cancelled() }}
+        run: |
+          /usr/bin/git --no-replace-objects show "$GITHUB_SHA:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_rehearsal.py" |
+            /usr/bin/python3 -IB - recover
       - name: Run the independently approved confined diagnostic
         id: preflight
+        if: ${{ success() && !cancelled() && inputs.operation == 'confined-loader-and-denials-only' }}
         working-directory: source
         shell: bash
         env:
@@ -59,7 +84,7 @@ jobs:
             show "${GITHUB_SHA}:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_checkout.py" |
             /usr/bin/python3 -IB - launch
       - name: Reconcile same-job custody after interruption
-        if: ${{ always() && (failure() || cancelled()) && (steps.preflight.outputs.custody_sha256 != '' || steps.preflight.outputs.intent_sha256 != '') }}
+        if: ${{ always() && (failure() || cancelled()) && inputs.operation == 'confined-loader-and-denials-only' && (steps.preflight.outputs.custody_sha256 != '' || steps.preflight.outputs.intent_sha256 != '') }}
         working-directory: source
         shell: bash
         env:

@@ -22,6 +22,7 @@ from jammy_preflight_launcher import (
     admit_owned_unit, arm_watchdog, attest_service_peer, compare_with_positive_controls, exec_loader_worker,
     finish_watchdog, read_lease, recover, run_denial_worker,
 )
+from jammy_preflight_provider import consume_launch_authorization
 from jammy_preflight_supervisor import (
     PreflightFailure, Run, Scope, TrackedProcess, attest_worker_root, bounded_command, control_write,
     load_supervisor_plan, read_control, read_private_root, verify_denials, verify_limits,
@@ -32,7 +33,7 @@ REQUEST_BYTES = 8 * 1024 * 1024
 RESPONSE_BYTES = 64 * 1024
 SOURCE = Path(__file__).resolve()
 CGROUP_ROOT = Path("/sys/fs/cgroup")
-NATIVE_ENABLED = False
+NATIVE_ENABLED = True
 
 
 def encode(value):
@@ -335,9 +336,12 @@ def namespace_child(scope, mode, fd):
         exec_loader_worker(scope, lease, value["host"], receipt, members, int(mode == "version"), tuple(barrier))
 
 
-def controller(scope, expected_source, receipt, members, tracking, runner_image, runner_temp):
-    """Held workflow integration point. No remote acquisition or publication."""
+def controller(scope, expected_source, receipt, members, tracking, runner_image, runner_temp, *, authorized_run=None):
+    """Start the bounded controller after authenticated workflow admission."""
     require(NATIVE_ENABLED is True, "LAUNCH_ACTION_NOT_AUTHORIZED")
+    require(type(authorized_run) is Run and authorized_run.unit_nonce is None and
+            replace(authorized_run, unit_nonce=scope.run.unit_nonce) == scope.run and
+            consume_launch_authorization(authorized_run), "LAUNCH_PROVIDER_NOT_AUTHENTICATED")
     verify_run(scope.run, expected_source)
     require(type(scope.custody) is CustodyBinding and
             scope.run.unit_nonce in (None, scope.nonce) and re.fullmatch(r"[a-f0-9]{32}", scope.nonce),
