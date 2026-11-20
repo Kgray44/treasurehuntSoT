@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
 import { randomBytes } from "node:crypto";
-import { mkdirSync, readFileSync, readdirSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync } from "node:fs";
 import { posix, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { git } from "./plan.mjs";
@@ -196,7 +196,7 @@ async function runBrowserProfile(profileId, files, tree) {
 }
 
 export function needsDependencies(kind) {
-  return !["diff", "docs", "workflow", "node"].includes(kind);
+  return !["diff", "docs", "workflow", "node", "compatibility"].includes(kind);
 }
 
 export async function runJob(job, context) {
@@ -299,6 +299,10 @@ export async function runJob(job, context) {
           : files;
       if (!browserTests.length) throw new Error("Browser suite has no selected specs.");
       await setupPrisma();
+      const taskRoot = resolve("artifacts", "sounding-line");
+      mkdirSync(taskRoot, { recursive: true });
+      const databaseRoot = mkdtempSync(resolve(taskRoot, "v3-build-"));
+      const databasePath = resolve(databaseRoot, ".sounding-line-" + tree.slice(0, 12) + ".sqlite");
       const browserPlan = {
         mode: "ordinary",
         candidateSha: tree,
@@ -306,7 +310,7 @@ export async function runJob(job, context) {
         buildRequired: true,
         safetyPaths: [],
         lintPaths: [],
-        databaseUrl: "file:./.sounding-line-v3-browser.sqlite",
+        databaseUrl: "file:" + databasePath.replaceAll("\\", "/"),
       };
       const commands = verificationCommands(browserPlan);
       const build = commands.findIndex(([executable, args]) => executable === "npm" && args.join(" ") === "run build");

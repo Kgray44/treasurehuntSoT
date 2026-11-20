@@ -75,6 +75,7 @@ jobs:
             /.agents/
             /.github/
             /bridgewatch/
+            /deploy/
             /docs/
             /native/
             /prisma/
