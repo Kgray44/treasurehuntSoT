@@ -25,7 +25,6 @@ const COMPACT_WIRING = [
   `      - name: ${COMPACT_STEP}`,
   "        id: compact-completed-evidence",
   "        if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}",
-  "        continue-on-error: true",
   "        timeout-minutes: 2",
   "        working-directory: authority",
   `        run: node ${COMPACT_PUBLISHER}`,

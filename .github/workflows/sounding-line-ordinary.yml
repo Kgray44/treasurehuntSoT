@@ -535,7 +535,6 @@ jobs:
       - name: Compact completed whole obligations for transport
         id: compact-completed-evidence
         if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}
-        continue-on-error: true
         timeout-minutes: 2
         working-directory: authority
         run: node scripts/sounding-line/publish-completed-evidence-v2.mjs

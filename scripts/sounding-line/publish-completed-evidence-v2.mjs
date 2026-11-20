@@ -74,7 +74,15 @@ export async function publishCompactCompletedEvidence(root) {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const root = fileURLToPath(new URL("../../", import.meta.url));
-  const result = await publishCompactCompletedEvidence(root);
+  let result;
+  try {
+    result = await publishCompactCompletedEvidence(root);
+  } catch (error) {
+    // The original checkpoints are still available for the legacy upload.
+    // Only the optional transport conversion can take this fallback.
+    const reason = /^SOUNDING_LINE_COMPLETED_(EVIDENCE_COMPACTION|V2)_[A-Z0-9_]+$/u.exec(error?.message ?? "");
+    console.warn(JSON.stringify({ status: "LEGACY_FALLBACK", reason: reason?.[0] ?? "COMPACT_EXPORT_UNAVAILABLE" }));
+  }
   if (result) {
     await writeFile(process.env.GITHUB_OUTPUT, "format=compact-v2\n", { flag: "a" });
     console.log(JSON.stringify(result));
