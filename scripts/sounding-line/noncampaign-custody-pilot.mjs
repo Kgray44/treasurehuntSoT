@@ -28,7 +28,7 @@ const need = (value, code) => {
 const singleLink = (stat) => stat.isFile() && stat.nlink === 1n;
 const signature = (stat) =>
   [stat.dev, stat.ino, stat.mode, stat.nlink, stat.size, stat.mtimeNs, stat.ctimeNs].map(String).join(":");
-export const CUSTODY_ORDINARY_WORKFLOW_SHA256 = "b020542e205810dac90c86384ffc02e7bcc538d3bbb24c2a1ec9f6e2f88f0217";
+export const CUSTODY_ORDINARY_WORKFLOW_SHA256 = "acfb1977b0039dba3021b4f973964bcc43cfd1b764ec0d01c4b7143035f80ae0";
 
 export function custodyPilotSourceFiles() {
   const policy = JSON.parse(
@@ -38,7 +38,7 @@ export function custodyPilotSourceFiles() {
   );
   need(
     hash(Buffer.from(JSON.stringify(policy.readers))) ===
-      "81105442b6b70bd26e545bc65661ec32eb990e5d1e982e1afc00b9b8b63c620e",
+      "72b14fe4713a4754557fff1e38e6891cb1b8302595280a59b8f266d3f5aaadf1",
     "FIXED_READER_MAP_CHANGED",
   );
   return [

@@ -254,6 +254,17 @@ test("custody proposal preserves complete path/change identities and cannot issu
   assert(Object.isFrozen(result) && Object.isFrozen(result.omissions) && Object.isFrozen(result.omissions[0]));
   assert.deepEqual(parseCustodyShadowTree(custodyTree(input.baseEntries)), input.baseEntries);
 });
+test("custody shadow pins the compact evidence reader and falls back when its bytes drift", () => {
+  const compact = "scripts/sounding-line/completed-evidence-v2.mjs";
+  assert(custodyCertificatePaths.includes(compact));
+  assert(custodyPilotSourceFiles().includes(compact));
+  const input = custodySetup();
+  const candidateReader = input.candidateEntries.find((entry) => entry.path === compact);
+  assert(candidateReader);
+  candidateReader.blob = sha("7");
+  assert.equal(proposeNoncampaignCustodyShadow(input).reason, "INSTALLED_READER_CHANGED");
+});
+
 test("custody reader, policy, owner, malformed metadata and finite scope failures retain FULL", () => {
   const cases = [
     ...[721, 776, 805, 820].map((number) => (v) => {
@@ -313,7 +324,7 @@ test("custody reader, policy, owner, malformed metadata and finite scope failure
     input.candidateEntries.find((row) => row.path === pin.path).blob = sha("0");
     assert.equal(proposeNoncampaignCustodyShadow(input).profile, "FULL_SNAPSHOT");
   }
-  assert.equal(cases.length + custodyPolicy.readers.length, 155);
+  assert.equal(cases.length + custodyPolicy.readers.length, 157);
   assert.throws(() => parseCustodyShadowTree(Buffer.from("100644 blob bad\tfile\0")), /TREE_METADATA/u);
   assert.throws(() => parseCustodyShadowTree(Buffer.from([255, 0])), /encoded data/u);
 });
@@ -1373,18 +1384,22 @@ test("qualified supervisor rebind changes only its accepted pin and preserves pr
   assert.deepEqual(custodyPolicy.metadata, original.metadata);
   assert.deepEqual(custodyPolicy.excludedPullRequests, original.excludedPullRequests);
   assert.equal(custodyPolicy.maximumMetadataPaths, original.maximumMetadataPaths);
-  assert.equal(custodyPolicy.readers.length, 69);
-  assert.equal(custodyCertificatePaths.length, 91);
+  assert.equal(custodyPolicy.readers.length, 70);
+  assert.equal(custodyCertificatePaths.length, 92);
   const nativeContext = "scripts/sounding-line/native-evidence-context.mjs";
   const exception = "scripts/sounding-line/experience-exception.mjs";
+  const compact = "scripts/sounding-line/completed-evidence-v2.mjs";
+  const evidenceReader = "scripts/sounding-line/authenticated-completed-evidence.mjs";
+  const ordinary = "scripts/sounding-line/ordinary.mjs";
+  const refreshedReaders = new Set([exception, evidenceReader, ordinary]);
   const priorMap = custodyPolicy.readers
-    .filter((pin) => pin.path !== nativeContext)
-    .map((pin) => (pin.path === exception ? original.readers.find((old) => old.path === exception) : pin));
+    .filter((pin) => pin.path !== nativeContext && pin.path !== compact)
+    .map((pin) => (refreshedReaders.has(pin.path) ? original.readers.find((old) => old.path === pin.path) : pin));
   assert.equal(
     createHash("sha256").update(JSON.stringify(priorMap)).digest("hex"),
     "c8014dc9ae0d53409917138448ddbbbaf4a75e42164c13d89f73b1b59c397e76",
   );
-  for (const file of [nativeContext, exception]) {
+  for (const file of [nativeContext, exception, compact, evidenceReader, ordinary]) {
     const pin = custodyPolicy.readers.find((row) => row.path === file);
     assert(custodyCertificatePaths.includes(file) && custodyPilotSourceFiles().includes(file));
     assert.equal(pin.sha256, createHash("sha256").update(fs.readFileSync(file)).digest("hex"));
