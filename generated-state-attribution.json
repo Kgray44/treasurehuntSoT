@@ -1,0 +1,66 @@
+{
+  "kind": "GENERATED_STATE_ATTRIBUTION",
+  "schemaVersion": "1.0",
+  "changedPaths": [
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+    "scripts/rehearse-harborlight-phase3-migrations.ts",
+    "src/app/community/voyage-logs/[slug]/page.tsx",
+    "src/styles/community.css",
+    "testing/generated/active-test-registry.json",
+    "testing/generated/p34-retirement-ledger.json",
+    "tests/e2e/harborlight-phase3.spec.ts"
+  ],
+  "generatedDriftPaths": [
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+    "testing/generated/p34-retirement-ledger.json"
+  ],
+  "nonSemanticChangedPaths": [
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+    "testing/generated/p34-retirement-ledger.json"
+  ],
+  "records": [
+    {
+      "id": "active-test-registry",
+      "generator": "scripts/sounding-line/test-registry.mjs",
+      "validator": null,
+      "impactDisposition": "SEMANTIC_GENERATED_STATE",
+      "candidateInputPaths": [
+        "tests/e2e/harborlight-phase3.spec.ts"
+      ],
+      "candidateOutputPaths": [
+        "testing/generated/active-test-registry.json"
+      ],
+      "generatedDriftPaths": [],
+      "disposition": "CANDIDATE_RECONCILED",
+      "handling": "NONE"
+    },
+    {
+      "id": "p34-retirement-ledger",
+      "generator": "scripts/sounding-line/reconcile-p34-ledger.mjs",
+      "validator": "scripts/sounding-line/p34-retirement.mjs",
+      "impactDisposition": "DERIVED_RECORD_ONLY",
+      "candidateInputPaths": [
+        "testing/generated/active-test-registry.json"
+      ],
+      "candidateOutputPaths": [
+        "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+        "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+        "testing/generated/p34-retirement-ledger.json"
+      ],
+      "generatedDriftPaths": [
+        "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Retirement_Ledger.csv",
+        "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_P34_Semantic_Retirement_Ledger.csv",
+        "testing/generated/p34-retirement-ledger.json"
+      ],
+      "disposition": "DERIVED_RECORD_RECONCILIATION",
+      "handling": "ASYNC_QUARANTINE_NONBLOCKING"
+    }
+  ],
+  "errors": [],
+  "status": "ATTRIBUTED",
+  "trustedBaseSha": "863e17c506d06386efffb4491c77c8294512c8c1",
+  "candidateSha": "31901a0370160365b4ce8f0c3456bfa44abe055f"
+}
