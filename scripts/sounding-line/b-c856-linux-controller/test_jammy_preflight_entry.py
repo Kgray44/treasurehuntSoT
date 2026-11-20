@@ -39,7 +39,8 @@ class PreflightEntryTest(unittest.TestCase):
                         entry.validate_approval(approval)
 
     def test_disabled_launch_refuses_before_ingress_or_token_reads(self):
-        with patch.object(entry, "read_approval") as read:
+        with (patch.object(entry.worker, "NATIVE_ENABLED", False),
+              patch.object(entry, "read_approval") as read):
             with self.assertRaisesRegex(ValueError, "LAUNCH_ACTION_NOT_AUTHORIZED"):
                 entry.run("launch", "/unused", io.BytesIO(), io.StringIO())
         read.assert_not_called()
@@ -90,13 +91,14 @@ class PreflightEntryTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "JAMMY_ENTRY_APPROVAL_DUPLICATE"):
             entry.read_approval(io.BytesIO(data), "launch")
 
-    def test_real_command_remains_dormant_in_isolated_python(self):
+    def test_real_command_refuses_without_authenticated_inputs_in_isolated_python(self):
         script = Path(entry.__file__).resolve()
         result = subprocess.run([sys.executable, "-IB", str(script), "launch", "unused"],
                                 input=b"invalid JSON", capture_output=True, timeout=10)
         self.assertEqual(result.returncode, 1)
         self.assertEqual(result.stderr, b"")
-        self.assertEqual(json.loads(result.stdout)["primary"], "LAUNCH_ACTION_NOT_AUTHORIZED")
+        expected = "JAMMY_ENTRY_REFUSED" if sys.platform == "linux" else "JAMMY_ENTRY_PLATFORM"
+        self.assertEqual(json.loads(result.stdout)["primary"], expected)
 
     def test_nested_controller_failure_keeps_inner_primary_and_cleanup(self):
         inner = PreflightFailure(ValueError("PREFLIGHT_COMMAND_TIMEOUT"),

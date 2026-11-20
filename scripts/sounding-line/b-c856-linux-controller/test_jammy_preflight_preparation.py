@@ -65,7 +65,8 @@ class RuntimePreparationTest(unittest.TestCase):
 
     def test_dormant_wrapper_refuses_before_preparation_or_writes(self):
         evidence = Mock()
-        with patch.object(prep, "prepare_runtime_inputs") as prepare:
+        with (patch.object(prep.worker, "NATIVE_ENABLED", False),
+              patch.object(prep, "prepare_runtime_inputs") as prepare):
             with self.assertRaisesRegex(ValueError, "LAUNCH_ACTION_NOT_AUTHORIZED"):
                 prep.run_published_preflight(123, {}, "token", b"inventory", 7, evidence)
         prepare.assert_not_called()
@@ -83,7 +84,7 @@ class RuntimePreparationTest(unittest.TestCase):
         evidence = Mock()
         evidence.write.side_effect = lambda data: events.append(data) or len(data)
         evidence.flush.side_effect = lambda: events.append("flushed")
-        controller = Mock(side_effect=lambda *args: events.append("controller") or {"diagnostic": True})
+        controller = Mock(side_effect=lambda *args, **kwargs: events.append("controller") or {"diagnostic": True})
         env = {"RUNNER_TRACKING_ID": "tracking", "RUNNER_TEMP": str(Path.cwd()), "ImageVersion": "image"}
         with (patch.object(prep.worker, "NATIVE_ENABLED", True),
               patch.dict(os.environ, env, clear=True),
@@ -92,7 +93,7 @@ class RuntimePreparationTest(unittest.TestCase):
               patch.object(prep.worker, "controller", controller)):
             self.assertEqual(prep.run_published_preflight(123, {}, "token", receipt, 7, evidence), {"diagnostic": True})
             controller.assert_called_once_with(scope, prepared.run.source, receipt, prepared.members,
-                                               "tracking", "image", Path.cwd())
+                                               "tracking", "image", Path.cwd(), authorized_run=prepared.run)
             self.assertEqual(events, [f"jammyPreflightCustodySha256={digest}\n", "flushed", "controller"])
             controller.reset_mock()
             evidence.flush.side_effect = OSError("provider evidence write failed")

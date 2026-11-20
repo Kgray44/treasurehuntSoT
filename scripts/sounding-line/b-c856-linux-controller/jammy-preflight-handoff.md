@@ -1,6 +1,6 @@
 # Jammy preflight authorization and handoff
 
-The proposed native action is one diagnostic attempt on the pinned Ubuntu 22.04 runner. It checks the loader closure, Bubblewrap version, isolation denials, and cleanup. The local publication candidate places the workflow at `.github/workflows/sounding-line-jammy-confined-preflight.yml` with its job disabled and native entry hard-disabled. This candidate covers registration of the disabled workflow only.
+The proposed native action is one diagnostic attempt on the pinned Ubuntu 22.04 runner. It checks the loader closure, Bubblewrap version, isolation denials, and cleanup. The registered workflow at `.github/workflows/sounding-line-jammy-confined-preflight.yml` requires the protected environment, the exact installed source, the approved owner identity, and a single first attempt. The run-specific approval envelope is bound before the job starts.
 
 ## Authenticate the action
 
@@ -19,7 +19,7 @@ read-only provider token to the entry process separately. The entry verifies
 these bindings against the current workflow metadata before invoking the
 controller or the same-boot recovery checks.
 
-The dormant workflow uses the owner-protected `sounding-line-jammy-preflight`
+The workflow uses the owner-protected `sounding-line-jammy-preflight`
 environment for the independently retained approval envelope. It binds the
 checkout commit and tree before passing the envelope to the entry point.
 On launch and recovery, the workflow reads the standard-library-only bootstrap
@@ -30,10 +30,22 @@ digest before creating runtime custody. It publishes the final custody digest
 before starting the controller. Both digests go to the launch log and step
 output. Recovery uses the final digest when available. With intent alone it
 verifies the controller exited, the exact receipt remains empty, and no runtime
-base exists. Any populated receipt or runtime base remains held. GitHub's
-behavior under runner-wide cancellation still requires separate evidence.
+base exists. Any populated receipt or runtime base remains held. The job remains eligible for same-job recovery during ordinary cancellation. Launch steps are eligible only while the run has succeeded and cancellation is absent. A retained digest is required for recovery. Provider force cancellation and VM loss require separate evidence.
+
+## Verify the recovery transport
+
+Before the native launch, use the separately authorized `recovery-transport-only` operation on the
+exact installed source. The same protected job writes one owned marker and publishes its digest
+through the step-output transport. Cancel that run normally while the rehearsal step is active.
+Require the exact provider attempt and the exercise step to report cancellation. Require the
+recovery step to remove the original marker using the retained device, inode, and digest on the
+same boot. Retain the original step logs and exact source bindings.
+The rehearsal covers provider recovery scheduling and digest transport. Native process recovery
+and provider force cancellation retain their separate acceptance requirements.
 
 ## Run within the pinned limits
+
+The approved read-only observation on protected commit `958107447886b1ac9ef84f713d93262b2a5d5a04` observed Ubuntu image `20261116.365.1`, kernel `6.8.0-1070-azure`, UID 1001, an active delegated systemd user unit, and a verified cgroup v2 mount. Its original receipt SHA-256 is `6c47249f580d63a7e92ad5ad72f944039519d87c9c918842f5a690d0962cc410`. The confined job still checks its own actual image and kernel before acquiring packages. [Runner observation](https://github.com/Kgray44/treasurehuntSoT/actions/runs/44762455867)
 
 - Set a five-minute job limit with no rerun. The public archive phase has a 90-second ceiling. Reserve at most 64 MiB of host scratch and require at least 2 GiB of runner-disk free space after that reservation. Keep private tmpfs at 16 MiB and 256 inodes.
 - Require the user service's eight-second queue deadline, five-second start deadline, 12-second active deadline, and two-second stop deadline. Verify 128 MiB memory, zero swap, eight tasks, and the exact service and child membership before staging. Use the existing unprivileged user manager. Host security policy and privileges stay in their provider configuration.
@@ -48,4 +60,4 @@ recovery verifies the recorded controller has exited. Under the ownership lock
 it retires an empty, unreserved scope to prevent a late watchdog from reserving
 it. Pending records, scratch, or an unexpected fragment hold the scope.
 
-Before activation, verify how a trusted recovery caller survives or is relaunched after runner-wide cancellation. If the provider destroys the VM, obtain provider teardown evidence for that exact run. A synthetic recovery pass cannot establish provider cleanup or native isolation. Diagnostic success does not authorize B or C reuse or replace any existing protected release decision.
+Before native dispatch, require the hosted recovery transport rehearsal on the reviewed publication. Require actual native recovery evidence for the accepted fault scope. If the provider destroys the VM, obtain provider teardown evidence for that exact run. A synthetic recovery pass cannot establish provider cleanup or native isolation. Diagnostic success does not authorize B or C reuse or replace any existing protected release decision.
