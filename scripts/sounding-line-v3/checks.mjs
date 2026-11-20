@@ -133,9 +133,11 @@ export async function runJob(job, context) {
     case "docs": return checkDocs(context);
     case "workflow":
       await command(node("--test", "tests/sounding-line-v3.test.mjs"));
-      if (entries.some(({ file }) => /^\.github\/workflows\/.*\.ya?ml$/.test(file))) {
+      const workflows = entries.filter(({ file, status }) =>
+        status !== "D" && /^\.github\/workflows\/.*\.ya?ml$/.test(file)).map(({ file }) => file);
+      if (workflows.length) {
         if (process.env.GITHUB_ACTIONS === "true") {
-          await command(["go", "run", "github.com/rhysd/actionlint/cmd/actionlint@v1.7.7", "-shellcheck=", "-pyflakes="]);
+          await command(["go", "run", "github.com/rhysd/actionlint/cmd/actionlint@v1.7.7", "-shellcheck=", "-pyflakes=", ...workflows]);
         } else {
           console.log("Hosted workflow check also runs actionlint.");
         }

@@ -17,7 +17,7 @@ concurrency:
 jobs:
   plan:
     name: Select suites
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
@@ -50,7 +50,7 @@ jobs:
       fail-fast: false
       max-parallel: 6
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
-    runs-on: ${{ matrix.kind == 'compatibility' && 'windows-latest' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.kind == 'compatibility' && 'windows-latest' || 'ubuntu-24.04' }}
     timeout-minutes: ${{ matrix.kind == 'browser-full' && 90 || matrix.kind == 'browser' && 45 || 15 }}
     steps:
       - uses: actions/checkout@v4
@@ -129,7 +129,7 @@ jobs:
     name: ${{ github.event_name == 'pull_request' && 'Sounding Line V3 / Verification' || 'Sounding Line V3 / Full verification' }}
     needs: [plan, suites]
     if: ${{ always() }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
       - name: Require every selected check

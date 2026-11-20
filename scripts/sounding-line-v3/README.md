@@ -11,7 +11,7 @@ Run these commands from an owned checkout with the repository Node version.
 | npm run sl -- test --full | Request the full verification plan. |
 | npm run sl:integrate -- 123 124 | Preview integration for the listed PRs. Add --apply to update or merge eligible PRs. |
 
-Use --base and --head to inspect another committed comparison. Tests run from the checked-out commit. Install locked dependencies before local product jobs and Playwright browsers before local browser jobs. GitHub installs those dependencies only for the jobs that use them.
+Use npm.cmd in Windows PowerShell if it intercepts npm argument separators. Use --base and --head to inspect another committed comparison. Tests run from the checked-out commit. Install locked dependencies before local product jobs and Playwright browsers before local browser jobs. GitHub installs those dependencies only for the jobs that use them.
 
 Use PR labels sl:mode:maintenance, sl:project:Wayfarer, sl:suite:unit.landfall, or sl:full to add coverage. Use the actual owners and IDs from [the suite registry](../../testing/suites.json). A label can increase coverage. Changed paths and shared contracts still determine the minimum. Unknown project names and suite IDs fail with an error.
 
@@ -20,5 +20,7 @@ Open **Actions → Sounding Line V3** to inspect the selector's summary, job out
 The lightweight path checks Markdown links, image signatures, applicable document-index entries, Git diff sanity, and changed text for private-material markers. The selector uses repository test families and impact mappings for product changes. Unknown source changes can widen to the available unit and browser checks. TypeScript checking and production builds cover the application workspace whenever selected.
 
 Add a line such as **Depends on: #123, #124** to the PR description to declare predecessors. The coordinator holds dependent PRs until their predecessors land, and continues through independent candidates. It uses GitHub's exact-head update and merge APIs, keeps strict main protection enabled, and compares the proposed tree with the landed tree after each merge. GitHub's manual merge control remains available to the owner. Check dependencies in the PR description before merging manually.
+
+For the registered Wayfarer and Landfall unit suites, Actions may reuse a successful result on the same PR when the selected tests, toolchain, runner image, and tracked suite inputs match. The logs identify reuse. Other selected checks run on the current proposed tree.
 
 The legacy ordinary workflow accepts manual dispatch for historical diagnostics. Its historical source and receipts remain in Git. This workflow uses the existing project test fixtures, including browser harnesses, in isolated runner jobs.
