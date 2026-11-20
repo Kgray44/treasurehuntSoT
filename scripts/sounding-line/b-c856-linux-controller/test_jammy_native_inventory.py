@@ -165,3 +165,14 @@ class StaticInventoryTests(unittest.TestCase):
                                      "unverifiedDenials": []}}
         with self.assertRaisesRegex(ValueError, "INVENTORY_RUNTIME_REFUSED"):
             probe.inventory(plan, b"")
+
+class InventoryImportCustodyTest(unittest.TestCase):
+    def test_restores_module_bindings_after_loading_pinned_verifier(self):
+        original = {"package": SimpleNamespace(name="original package"),
+                    "archive": SimpleNamespace(name="original archive")}
+        verifier = Path(probe.__file__).with_name("diagnostic-v3.zip").read_bytes()
+        with patch.dict(sys.modules, original):
+            public, package = probe.inventory_verifier(verifier)
+            self.assertIs(public.verified_package_member, package.verified_package_member)
+            for name, module in original.items():
+                self.assertIs(sys.modules[name], module)

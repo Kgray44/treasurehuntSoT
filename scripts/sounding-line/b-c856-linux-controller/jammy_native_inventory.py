@@ -248,18 +248,26 @@ def expired(_signal, _frame):
 
 def inventory_verifier(verifier):
     require(sha256(verifier) == VERIFIER_SHA256, "INVENTORY_VERIFIER_PIN")
-    with zipfile.ZipFile(io.BytesIO(verifier)) as archive:
-        for name in ("package", "archive"):
-            module = types.ModuleType(name)
-            sys.modules[name] = module
-            exec(compile(archive.read(name+".py"), name+".py", "exec"), module.__dict__)
-    public = sys.modules["archive"]
+    modules = {name: types.ModuleType(name) for name in ("package", "archive")}
+    previous = {name: sys.modules[name] for name in modules if name in sys.modules}
+    try:
+        with zipfile.ZipFile(io.BytesIO(verifier)) as archive:
+            for name, module in modules.items():
+                sys.modules[name] = module
+                exec(compile(archive.read(name+".py"), name+".py", "exec"), module.__dict__)
+    finally:
+        for name in modules:
+            if name in previous:
+                sys.modules[name] = previous[name]
+            else:
+                sys.modules.pop(name, None)
+    public = modules["archive"]
     public.KEYRING_BYTES = JAMMY_ARCHIVE_KEY_BYTES
     public.KEYRING_SHA256 = JAMMY_ARCHIVE_KEY_SHA256
-    return public, sys.modules["package"]
+    return public, modules["package"]
 
 
-def inventory(plan, verifier):
+def collect_inventory(plan, verifier, *, snapshot_attested_at=None):
     require(plan["kind"] == "SOUNDING_LINE_JAMMY_STATIC_NATIVE_INVENTORY_V1" and
             plan["runtimeAdmission"] == {"authorized": False, "requiredDenials": list(DENIALS),
                                          "unverifiedDenials": list(DENIALS)}, "INVENTORY_RUNTIME_REFUSED")
@@ -274,10 +282,12 @@ def inventory(plan, verifier):
     public, package = inventory_verifier(verifier)
     client = urllib.request.build_opener(public.NoRedirect(), urllib.request.ProxyHandler({}))
     with tempfile.TemporaryDirectory(prefix="sl-jammy-inventory-", dir=root) as scratch:
-        tempfile.tempdir = scratch
-        signal.signal(signal.SIGALRM, expired)
-        signal.alarm(90)
+        require(signal.getitimer(signal.ITIMER_REAL) == (0.0, 0.0), "INVENTORY_TIMER_BUSY")
+        previous_handler = signal.signal(signal.SIGALRM, expired)
+        previous_tempdir = tempfile.tempdir
         try:
+            tempfile.tempdir = scratch
+            signal.alarm(90)
             pins = plan["noble"]
             prefix = NOBLE_METADATA_SNAPSHOT+"dists/"+pins["pocket"]+"/"
             signed = public.fetch(client, prefix+"InRelease", 512*1024)
@@ -285,14 +295,17 @@ def inventory(plan, verifier):
             release = public.signed_release(signed)
             index = public.fetch(client, prefix+INDEX.rsplit("/", 1)[0]+"/by-hash/SHA256/"+pins["indexSha256"],
                                  pins["indexBytes"])
-            noble_rows(release, index, plan, datetime.now(timezone.utc))
+            # Historical selection validates the immutable Noble snapshot at its original
+            # admission time. Bubblewrap's live archive policy still uses the real clock.
+            noble_rows(release, index, plan, snapshot_attested_at or datetime.now(timezone.utc))
+            package_origin = NOBLE_METADATA_SNAPSHOT if snapshot_attested_at is not None else ARCHIVE
             deb, binary, bubblewrap_proof = public.authenticated_package()
             bwrap = plan["bubblewrap"]
             require(len(deb) == bwrap["packageBytes"] and hashlib.sha512(deb).hexdigest() == bwrap["packageSha512"] and
                     len(binary) == bwrap["bytes"] and sha256(binary) == bwrap["sha256"], "INVENTORY_BWRAP_PIN")
             files = {"bwrap": ("usr/bin/bwrap", binary)}
             for name, (_, path, size, digest, targets) in plan["packages"].items():
-                deb = public.fetch(client, ARCHIVE+path, size)
+                deb = public.fetch(client, package_origin+path, size)
                 require(len(deb) == size and sha256(deb) == digest, "INVENTORY_PACKAGE_PIN")
                 if name == "libc6":
                     selected = tar_members(bounded_libc_tar(deb), targets, LIBC_TAR_LIMIT)
@@ -304,9 +317,16 @@ def inventory(plan, verifier):
             members = exact_closure(files)
         finally:
             signal.alarm(0)
-            tempfile.tempdir = None
+            tempfile.tempdir = previous_tempdir
+            signal.signal(signal.SIGALRM, previous_handler)
     require(not Path(scratch).exists(), "INVENTORY_CLEANUP")
-    return {"members": members, "bubblewrapArchive": bubblewrap_proof, "ownedScratchRemoved": True,
+    report = {"members": members, "bubblewrapArchive": bubblewrap_proof, "ownedScratchRemoved": True,
             "status": "STATIC_INVENTORY_ONLY", "runtimeAdmitted": False,
             "unverifiedRuntimeDenials": list(DENIALS), "qualification": False,
             "externalIsolationProved": False, "reuseAuthorized": False}
+    return report, {name: body for name, (_, body) in files.items()}
+
+
+def inventory(plan, verifier):
+    report, _ = collect_inventory(plan, verifier)
+    return report
