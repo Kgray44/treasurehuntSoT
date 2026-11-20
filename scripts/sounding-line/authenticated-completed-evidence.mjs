@@ -721,15 +721,6 @@ async function authenticateProducer(root, plan, producer, api, download) {
   );
   const run = await api(`actions/runs/${producer.runId}`);
   const authoritySha = validateRun(run, producer);
-  const source = await acceptedSource(root, plan.baseSha, authoritySha, api);
-  const workflow = await api("actions/workflows/sounding-line-ordinary.yml");
-  requireValue(
-    workflow?.id === run.workflow_id && workflow.path === WORKFLOW && workflow.state === "active",
-    "PROVIDER_WORKFLOW_INVALID",
-  );
-  validateJobs(await api(`actions/runs/${producer.runId}/attempts/${producer.attempt}/jobs?per_page=100`), run, source);
-  const commit = await api(`git/commits/${run.head_sha}`);
-  requireValue(commit?.sha === run.head_sha && SHA.test(commit.tree?.sha ?? ""), "CANDIDATE_COMMIT_INVALID");
   const artifact = await api(`actions/artifacts/${producer.artifactId}`);
   requireValue(
     artifact?.id === producer.artifactId &&
@@ -745,6 +736,15 @@ async function authenticateProducer(root, plan, producer, api, download) {
       artifact.workflow_run.head_branch === run.head_branch,
     "PROVIDER_ARTIFACT_INVALID",
   );
+  const source = await acceptedSource(root, plan.baseSha, authoritySha, api);
+  const workflow = await api("actions/workflows/sounding-line-ordinary.yml");
+  requireValue(
+    workflow?.id === run.workflow_id && workflow.path === WORKFLOW && workflow.state === "active",
+    "PROVIDER_WORKFLOW_INVALID",
+  );
+  validateJobs(await api(`actions/runs/${producer.runId}/attempts/${producer.attempt}/jobs?per_page=100`), run, source);
+  const commit = await api(`git/commits/${run.head_sha}`);
+  requireValue(commit?.sha === run.head_sha && SHA.test(commit.tree?.sha ?? ""), "CANDIDATE_COMMIT_INVALID");
   const archive = await download(`actions/artifacts/${producer.artifactId}/zip`);
   requireValue(
     Buffer.isBuffer(archive) &&
@@ -795,44 +795,19 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
   );
   const hints = producers ?? (await discoverCompletedEvidenceProducerHints({ request: api })).hints;
   requireValue(Array.isArray(hints) && hints.length <= LIMITS.producers, "PRODUCER_LIMIT_INVALID");
-  // No producer hints can authenticate receipts. Defer the expensive immutable
-  // closure until reuse is possible; the verifier still fingerprints every group.
-  const obligations = hints.length
-    ? await withVerificationStage("EVIDENCE_FINGERPRINTS", () => buildEvidenceObligations(currentRoot, plan), {
-        observeFailure: false,
-      })
-    : [];
-  const current = new Map(obligations.map((obligation) => [obligation.id, clone(obligation)]));
-  requireValue(current.size === obligations.length, "CURRENT_OBLIGATION_DUPLICATE");
+  // Producer hints alone cannot justify the immutable closure pass. The fresh
+  // verifier will still fingerprint every group even when all hints are rejected.
+  let current;
   const receipts = new Map(),
     provenance = new Map(),
     rejections = [];
   const seen = new Set();
   for (const hint of hints) {
+    let authenticated;
     try {
       requireValue(!seen.has(hint?.artifactId), "PRODUCER_DUPLICATE");
       seen.add(hint?.artifactId);
-      const authenticated = await authenticateProducer(currentRoot, plan, hint, api, getArchive);
-      for (const receipt of authenticated.receipts) {
-        const obligation = current.get(receipt.obligationId);
-        if (
-          !obligation ||
-          obligation.kind === "browser" ||
-          obligation.reuseIndeterminate ||
-          !equal(createEvidenceFingerprint(obligation.fingerprint), obligation.fingerprint) ||
-          !equal(receipt.fingerprint, obligation.fingerprint)
-        )
-          continue;
-        if (!receipts.has(obligation.id)) {
-          receipts.set(obligation.id, clone(receipt));
-          provenance.set(obligation.id, {
-            obligationId: obligation.id,
-            receiptId: receipt.id,
-            receiptDigest: receipt.receiptDigest,
-            ...authenticated.provenance,
-          });
-        }
-      }
+      authenticated = await authenticateProducer(currentRoot, plan, hint, api, getArchive);
     } catch (error) {
       rejections.push({
         artifactId: positive(hint?.artifactId) ? hint.artifactId : null,
@@ -840,6 +815,36 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
           ? error.message
           : "SOUNDING_LINE_COMPLETED_EVIDENCE_PRODUCER_UNAVAILABLE",
       });
+      continue;
+    }
+    if (!current) {
+      const obligations = await withVerificationStage(
+        "EVIDENCE_FINGERPRINTS",
+        () => buildEvidenceObligations(currentRoot, plan),
+        { observeFailure: false },
+      );
+      current = new Map(obligations.map((obligation) => [obligation.id, clone(obligation)]));
+      requireValue(current.size === obligations.length, "CURRENT_OBLIGATION_DUPLICATE");
+    }
+    for (const receipt of authenticated.receipts) {
+      const obligation = current.get(receipt.obligationId);
+      if (
+        !obligation ||
+        obligation.kind === "browser" ||
+        obligation.reuseIndeterminate ||
+        !equal(createEvidenceFingerprint(obligation.fingerprint), obligation.fingerprint) ||
+        !equal(receipt.fingerprint, obligation.fingerprint)
+      )
+        continue;
+      if (!receipts.has(obligation.id)) {
+        receipts.set(obligation.id, clone(receipt));
+        provenance.set(obligation.id, {
+          obligationId: obligation.id,
+          receiptId: receipt.id,
+          receiptDigest: receipt.receiptDigest,
+          ...authenticated.provenance,
+        });
+      }
     }
   }
   requireValue(git(currentRoot, ["rev-parse", "HEAD"]).trim() === plan.candidateSha, "CURRENT_HEAD_CHANGED");
@@ -852,7 +857,7 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
     rejections: Object.freeze(rejections.map(Object.freeze)),
     qualification: false,
   });
-  proofs.set(token, { root: currentRoot, candidateSha: plan.candidateSha, current, receipts, provenance });
+  proofs.set(token, { root: currentRoot, candidateSha: plan.candidateSha, current: current ?? new Map(), receipts, provenance });
   return token;
 }
 

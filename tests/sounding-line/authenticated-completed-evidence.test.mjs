@@ -1481,6 +1481,76 @@ test("empty discovered producer window skips intake fingerprints and executes ev
   });
 });
 
+test("rejected producer artifacts do not trigger intake fingerprint work", async () => {
+  await fixture(async (state) => {
+    state.artifact.expired = true;
+    const selected = state.plan.selected;
+    Object.defineProperty(state.plan, "selected", {
+      configurable: true,
+      get() {
+        throw new Error("rejected intake must not build fingerprints");
+      },
+    });
+    const proof = await state.authenticate();
+    assert.equal(proof.admitted, 0);
+    assert.equal(state.lookup(proof), null);
+    assert.deepEqual(proof.rejections, [
+      { artifactId: 601, reason: "SOUNDING_LINE_COMPLETED_EVIDENCE_PROVIDER_ARTIFACT_INVALID" },
+    ]);
+    assert(!state.calls.includes("actions/artifacts/601/zip"));
+    assert(!state.calls.some((endpoint) => endpoint.startsWith("git/blobs/")));
+    Object.defineProperty(state.plan, "selected", { configurable: true, writable: true, value: selected });
+    const executed = [];
+    const result = await runReconciledVerification(
+      state.root,
+      state.plan,
+      async (_root, command, args) => {
+        executed.push([command, args]);
+      },
+      { authenticatedEvidence: proof },
+    );
+    assert.deepEqual(executed, state.obligations.flatMap((obligation) => obligation.commands));
+    assert.equal(result.freshObligations, state.obligations.length);
+    assert(result.receipts.every((receipt) => receipt.disposition === "FRESH"));
+  });
+});
+
+test("a rejected hint does not prevent a later authenticated producer from matching", async () => {
+  await fixture(async (state) => {
+    const producer = { runId: 101, attempt: 1 };
+    const proof = await state.authenticate({
+      producers: [{ ...producer, artifactId: 602 }, { ...producer, artifactId: 601 }],
+      request: async (endpoint, ...args) => {
+        if (endpoint === "actions/artifacts/602") {
+          state.calls.push(endpoint);
+          return { ...state.artifact, id: 602, expired: true };
+        }
+        return state.request(endpoint, ...args);
+      },
+    });
+    assert.equal(proof.admitted, matchingReusableObligations(state).length);
+    assert(state.lookup(proof));
+    assert.deepEqual(proof.rejections, [
+      { artifactId: 602, reason: "SOUNDING_LINE_COMPLETED_EVIDENCE_PROVIDER_ARTIFACT_INVALID" },
+    ]);
+    const firstSourceRead = state.calls.findIndex((endpoint) => endpoint.startsWith("git/blobs/"));
+    assert(firstSourceRead > state.calls.indexOf("actions/artifacts/601"));
+  });
+});
+
+test("authenticated artifacts still require current fingerprints before admitting receipts", async () => {
+  await fixture(async (state) => {
+    Object.defineProperty(state.plan, "selected", {
+      configurable: true,
+      get() {
+        throw new Error("current fingerprint unavailable");
+      },
+    });
+    await assert.rejects(state.authenticate(), /current fingerprint unavailable/u);
+    assert(state.calls.includes("actions/artifacts/601/zip"));
+  });
+});
+
 test("empty discovery still rejects changed protected base, dirty source and post-discovery HEAD drift", async () => {
   await fixture(async (state) => {
     const request = emptyDiscoveryRequest(state);
