@@ -11,6 +11,7 @@ import {
   authenticatedCompletedReceipt,
   discoverCompletedEvidenceProducerHints,
 } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
+import { compactCompletedEvidenceV2 } from "../../scripts/sounding-line/completed-evidence-v2.mjs";
 import {
   canonicalJson,
   createEvidenceFingerprint,
@@ -27,11 +28,14 @@ import {
 const REPOSITORY = "Kgray44/treasurehuntSoT";
 const WORKFLOW = ".github/workflows/sounding-line-ordinary.yml";
 const UPLOAD = "Retain completed whole obligations after any verifier outcome";
+const COMPACT_STEP = "Compact completed whole obligations for transport";
 const MODULES = [
   WORKFLOW,
   "scripts/sounding-line/ordinary.mjs",
   "scripts/sounding-line/evidence.mjs",
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
+  "scripts/sounding-line/completed-evidence-v2.mjs",
+  "scripts/sounding-line/publish-completed-evidence-v2.mjs",
   "scripts/sounding-line/ordinary-supervised.mjs",
   "scripts/sounding-line/verification-budget.mjs",
   "scripts/sounding-line/verification-job-clock.mjs",
@@ -1005,6 +1009,56 @@ test("ordinary source integration never promotes a JSON-cloned proof token and r
     assert(result.receipts.every((receipt) => receipt.disposition === "FRESH" && receipt.originalReceiptId === null));
   });
 });
+test("compact transport requires its protected publishing step and authenticates the restored whole receipts", async () => {
+  await fixture(async (state) => {
+    const steps = state.jobs.jobs[0].steps;
+    const upload = steps.at(-1);
+    const compactNumber = upload.number;
+    upload.number++;
+    steps.splice(steps.length - 1, 0, {
+      name: COMPACT_STEP,
+      status: "completed",
+      conclusion: "success",
+      number: compactNumber,
+    });
+    state.memberTransform = (entries) => [...compactCompletedEvidenceV2(new Map(entries)).members];
+    state.rebuild();
+    const success = await state.authenticate();
+    assert.equal(success.admitted, 1);
+    assert(state.lookup(success));
+
+    const publisher = steps.find((step) => step.name === COMPACT_STEP);
+    publisher.conclusion = "skipped";
+    const missingPublisher = await state.authenticate();
+    assert.equal(missingPublisher.admitted, 0);
+    assert.match(missingPublisher.rejections[0].reason, /ZIP_MEMBER_INVALID/u);
+
+    publisher.conclusion = "success";
+    state.memberTransform = (entries) => {
+      const { members } = compactCompletedEvidenceV2(new Map(entries));
+      const name = [...members.keys()].find((entry) => entry.startsWith("receipt-"));
+      members.set(name, Buffer.from("{}\n"));
+      return [...members];
+    };
+    state.rebuild();
+    const corrupt = await state.authenticate();
+    assert.equal(corrupt.admitted, 0);
+    assert.match(corrupt.rejections[0].reason, /COMPLETED_EVIDENCE_V2_RECEIPT_BYTES/u);
+
+    state.memberTransform = (entries) => [...entries, ...compactCompletedEvidenceV2(new Map(entries)).members];
+    state.rebuild();
+    const mixed = await state.authenticate();
+    assert.equal(mixed.admitted, 0);
+    assert.match(mixed.rejections[0].reason, /ZIP_MEMBER_INVALID/u);
+
+    state.memberTransform = (entries) => entries;
+    state.rebuild();
+    const fallback = await state.authenticate();
+    assert.equal(fallback.admitted, 1);
+    assert(state.lookup(fallback));
+  });
+});
+
 test("automatic bounded artifact discovery authenticates hints without owner-supplied IDs", async () => {
   await fixture(async (state) => {
     const proof = await state.authenticate({ producers: undefined });

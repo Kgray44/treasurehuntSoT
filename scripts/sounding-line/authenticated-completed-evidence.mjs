@@ -8,6 +8,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { inflateRawSync } from "node:zlib";
 import { canonicalJson, createEvidenceFingerprint, digest, verifyReceipt } from "./evidence.mjs";
+import { COMPACT_EVIDENCE_TRANSPORT, restoreCompletedEvidenceV2 } from "./completed-evidence-v2.mjs";
 // CLI startup awaits intake, so a deferred import would wait on that same startup.
 import { buildEvidenceObligations, completedEvidenceEnvironmentClass } from "./ordinary.mjs";
 import { withVerificationStage } from "./verification-diagnostics.mjs";
@@ -16,11 +17,34 @@ const REPOSITORY = "Kgray44/treasurehuntSoT";
 const WORKFLOW = ".github/workflows/sounding-line-ordinary.yml";
 const JOB = "Sounding Line / Focused verification";
 const UPLOAD = "Retain completed whole obligations after any verifier outcome";
+const COMPACT_STEP = "Compact completed whole obligations for transport";
+const COMPACT_PUBLISHER = "scripts/sounding-line/publish-completed-evidence-v2.mjs";
+const LEGACY_EXPORT = "authority/artifacts/sounding-line/completed-evidence/checkpoint-*.json";
+const COMPACT_EXPORT = "authority/artifacts/sounding-line/completed-evidence-v2/*.json";
+const COMPACT_WIRING = [
+  `      - name: ${COMPACT_STEP}`,
+  "        id: compact-completed-evidence",
+  "        if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}",
+  "        continue-on-error: true",
+  "        timeout-minutes: 2",
+  "        working-directory: authority",
+  `        run: node ${COMPACT_PUBLISHER}`,
+  `      - name: ${UPLOAD}`,
+  "        id: completed-evidence-artifact",
+  "        if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}",
+  "        uses: actions/upload-artifact@v4",
+  "        with:",
+  "          name: sounding-line-completed-evidence-${{ github.run_id }}-${{ github.run_attempt }}",
+  "          path: ${{ steps.compact-completed-evidence.outcome == 'success' && " +
+    "steps.compact-completed-evidence.outputs.format == 'compact-v2' && " +
+    `'${COMPACT_EXPORT}' || '${LEGACY_EXPORT}' }}`,
+].join("\n");
 const MODULES = [
   WORKFLOW,
   "scripts/sounding-line/ordinary.mjs",
   "scripts/sounding-line/evidence.mjs",
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
+  "scripts/sounding-line/completed-evidence-v2.mjs",
 ];
 const SUPERVISED_MODULES = [
   "ordinary-supervised.mjs",
@@ -55,7 +79,7 @@ const LIMITS = Object.freeze({
   listedRuns: 20,
   runs: 5,
   artifacts: 100,
-  archive: 8 * 1024 * 1024,
+  archive: COMPACT_EVIDENCE_TRANSPORT.archiveBytes,
   member: 2 * 1024 * 1024,
   expanded: 16 * 1024 * 1024,
   members: 128,
@@ -259,7 +283,7 @@ function crc32(bytes) {
   return (crc ^ 0xffffffff) >>> 0;
 }
 
-function checkpointMembers(archive) {
+function checkpointMembers(archive, allowCompact) {
   requireValue(Buffer.isBuffer(archive) && archive.length >= 22 && archive.length <= LIMITS.archive, "ZIP_INVALID");
   let end = -1;
   for (let i = archive.length - 22; i >= Math.max(0, archive.length - 65557); i--)
@@ -277,10 +301,16 @@ function checkpointMembers(archive) {
   const count = archive.readUInt16LE(end + 10),
     centralSize = archive.readUInt32LE(end + 12),
     centralStart = archive.readUInt32LE(end + 16);
-  requireValue(count > 0 && count <= LIMITS.members && centralStart + centralSize === end, "ZIP_INVALID");
+  requireValue(
+    count > 0 &&
+      count <= (allowCompact ? COMPACT_EVIDENCE_TRANSPORT.members : LIMITS.members) &&
+      centralStart + centralSize === end,
+    "ZIP_INVALID",
+  );
   const entries = [];
   let offset = centralStart,
-    expanded = 0;
+    expanded = 0,
+    format;
   for (let i = 0; i < count; i++) {
     requireValue(offset + 46 <= end && archive.readUInt32LE(offset) === 0x02014b50, "ZIP_INVALID");
     const flags = archive.readUInt16LE(offset + 8),
@@ -301,18 +331,24 @@ function checkpointMembers(archive) {
         archive.readUInt16LE(offset + 34) === 0 &&
         [0, 8, 0x800, 0x808].includes(flags) &&
         [0, 8].includes(method) &&
-        bytes <= LIMITS.member &&
         compressed <= LIMITS.archive,
       "ZIP_INVALID",
     );
     const name = archive.subarray(offset + 46, offset + 46 + nameSize).toString("utf8");
+    const compact = name === COMPACT_EVIDENCE_TRANSPORT.manifest || /^receipt-[a-f0-9]{64}\.json$/u.test(name);
+    const currentFormat = compact ? "compact" : "legacy";
+    const memberLimit = compact ? COMPACT_EVIDENCE_TRANSPORT.memberBytes : LIMITS.member;
     requireValue(
-      /^checkpoint-[0-9]{4}\.json$/u.test(name) &&
+      (compact ? allowCompact : /^checkpoint-[0-9]{4}\.json$/u.test(name)) &&
+        (format === undefined || format === currentFormat) &&
+        (compact || count <= LIMITS.members) &&
+        bytes <= memberLimit &&
         !entries.some((entry) => entry.name === name) &&
         local + 30 <= centralStart &&
         archive.readUInt32LE(local) === 0x04034b50,
       "ZIP_MEMBER_INVALID",
     );
+    format = currentFormat;
     const localNameSize = archive.readUInt16LE(local + 26),
       localExtra = archive.readUInt16LE(local + 28),
       start = local + 30 + localNameSize + localExtra;
@@ -343,12 +379,17 @@ function checkpointMembers(archive) {
     const compressedBytes = archive.subarray(start, start + compressed);
     let value;
     try {
-      value = method === 0 ? compressedBytes : inflateRawSync(compressedBytes, { maxOutputLength: LIMITS.member });
+      value = method === 0 ? compressedBytes : inflateRawSync(compressedBytes, { maxOutputLength: memberLimit });
     } catch {
       throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_ZIP_INVALID");
     }
     expanded += value.length;
-    requireValue(value.length === bytes && crc32(value) === crc && expanded <= LIMITS.expanded, "ZIP_INVALID");
+    requireValue(
+      value.length === bytes &&
+        crc32(value) === crc &&
+        expanded <= (compact ? COMPACT_EVIDENCE_TRANSPORT.expandedBytes : LIMITS.expanded),
+      "ZIP_INVALID",
+    );
     entries.push({ name, bytes: value, start: local, end: start + compressed + descriptor });
     offset = next;
   }
@@ -359,6 +400,15 @@ function checkpointMembers(archive) {
       regions.every((entry, index) => entry.end === (regions[index + 1]?.start ?? centralStart)),
     "ZIP_INVALID",
   );
+  if (format === "compact") {
+    try {
+      const restored = restoreCompletedEvidenceV2(new Map(entries.map(({ name, bytes }) => [name, bytes])));
+      return [...restored].map(([name, bytes]) => ({ name, bytes }));
+    } catch (error) {
+      const reason = /^SOUNDING_LINE_COMPLETED_(V2_[A-Z0-9_]+)$/u.exec(error?.message ?? "");
+      requireValue(false, reason?.[1] ?? "V2_INVALID");
+    }
+  }
   return entries.sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -377,10 +427,13 @@ async function acceptedSource(root, baseSha, authoritySha, api) {
   );
   requireValue(direct !== supervised, "WORKFLOW_CONTRACT_UNSUPPORTED");
   const selectedCheckout = workflow.includes(CHECKOUT_COMMAND);
+  const finalJob = /\n {2}final-check:\n([\s\S]*?)(?=\n {2}[a-z][a-z0-9-]*:\n|$)/u.exec(workflow)?.[1];
+  const supportsCompact = finalJob?.split(`\n${COMPACT_WIRING}\n`).length === 2;
   for (const name of [
     ...MODULES,
     ...(supervised ? SUPERVISED_MODULES : []),
     ...(selectedCheckout ? CHECKOUT_MODULES : []),
+    ...(supportsCompact ? [COMPACT_PUBLISHER] : []),
   ]) {
     requireValue(
       git(root, ["ls-tree", authoritySha, "--", name]).startsWith("100644 blob ") &&
@@ -424,13 +477,13 @@ async function acceptedSource(root, baseSha, authoritySha, api) {
     "id: completed-evidence-artifact",
     "uses: actions/upload-artifact@v4",
     "sounding-line-completed-evidence-${{ github.run_id }}-${{ github.run_attempt }}",
-    "authority/artifacts/sounding-line/completed-evidence/checkpoint-*.json",
+    LEGACY_EXPORT,
     "SOUNDING_LINE_EVIDENCE_PURPOSE: PROTECTED_FINAL_VERIFICATION",
   ])
     requireValue(workflow.includes(fragment), "WORKFLOW_CONTRACT_UNSUPPORTED");
   const commit = await api(`git/commits/${authoritySha}`);
   requireValue(commit?.sha === authoritySha && SHA.test(commit.tree?.sha ?? ""), "AUTHORITY_COMMIT_INVALID");
-  return { ordinarySha256: rawHash(source.get(MODULES[1])), selectedCheckout, installed, source };
+  return { ordinarySha256: rawHash(source.get(MODULES[1])), selectedCheckout, supportsCompact, installed, source };
 }
 
 function validateRun(run, producer) {
@@ -516,6 +569,15 @@ function validateJobs(value, run, source) {
   const checkouts = job.steps.filter(
     (item) => item.name === "Run actions/checkout@v4" && item.number > bind.number && item.number < route.number,
   );
+  const compact = job.steps.filter((item) => item.name === COMPACT_STEP);
+  const compactPublished =
+    source.supportsCompact &&
+    compact.length === 1 &&
+    compact[0].status === "completed" &&
+    compact[0].conclusion === "success" &&
+    positive(compact[0].number) &&
+    verifier.number < compact[0].number &&
+    compact[0].number < upload.number;
   if (source.selectedCheckout) {
     const helper = step(CHECKOUT_STEP);
     const authority = checkouts.filter((item) => item.conclusion === "success");
@@ -530,7 +592,7 @@ function validateJobs(value, run, source) {
         checkouts.every((item) => item.status === "completed" && ["success", "skipped"].includes(item.conclusion)),
       "PROVIDER_CHECKOUT_INVALID",
     );
-    return;
+    return compactPublished;
   }
   requireValue(
     !job.steps.some((item) => item.name === CHECKOUT_STEP && item.conclusion !== "skipped"),
@@ -540,6 +602,7 @@ function validateJobs(value, run, source) {
     checkouts.length === 2 && checkouts.every((item) => item.status === "completed" && item.conclusion === "success"),
     "PROVIDER_CHECKOUT_INVALID",
   );
+  return compactPublished;
 }
 
 function canonicalReceipt(receipt, checkpoint) {
@@ -631,8 +694,8 @@ function canonicalReceipt(receipt, checkpoint) {
   return receipt;
 }
 
-function authenticatedCheckpoints(archive, { run, authoritySha, source, candidateTree }) {
-  const entries = checkpointMembers(archive);
+function authenticatedCheckpoints(archive, { run, authoritySha, source, candidateTree, compactPublished }) {
+  const entries = checkpointMembers(archive, compactPublished);
   let prior = [],
     observation;
   const topKeys = [
@@ -750,7 +813,11 @@ async function authenticateProducer(producer, api, download, verifyAuthority) {
     workflow?.id === run.workflow_id && workflow.path === WORKFLOW && workflow.state === "active",
     "PROVIDER_WORKFLOW_INVALID",
   );
-  validateJobs(await api(`actions/runs/${producer.runId}/attempts/${producer.attempt}/jobs?per_page=100`), run, source);
+  const compactPublished = validateJobs(
+    await api(`actions/runs/${producer.runId}/attempts/${producer.attempt}/jobs?per_page=100`),
+    run,
+    source,
+  );
   const commit = await api(`git/commits/${run.head_sha}`);
   requireValue(commit?.sha === run.head_sha && SHA.test(commit.tree?.sha ?? ""), "CANDIDATE_COMMIT_INVALID");
   const archive = await download(`actions/artifacts/${producer.artifactId}/zip`);
@@ -761,7 +828,13 @@ async function authenticateProducer(producer, api, download, verifyAuthority) {
     "ARTIFACT_DIGEST_INVALID",
   );
   return {
-    receipts: authenticatedCheckpoints(archive, { run, authoritySha, source, candidateTree: commit.tree.sha }),
+    receipts: authenticatedCheckpoints(archive, {
+      run,
+      authoritySha,
+      source,
+      candidateTree: commit.tree.sha,
+      compactPublished,
+    }),
     provenance: {
       runId: run.id,
       attempt: run.run_attempt,
