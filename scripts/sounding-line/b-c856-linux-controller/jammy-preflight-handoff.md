@@ -18,6 +18,14 @@ read-only provider token to the entry process separately. The entry verifies
 these bindings against the current workflow metadata before invoking the
 controller or the same-boot recovery checks.
 
+The dormant workflow uses the owner-protected `sounding-line-jammy-preflight`
+environment for the independently retained approval envelope. It binds the
+checkout commit and tree before passing the envelope to the entry point.
+The launch step publishes the custody digest to its log and step output before
+starting the controller. The recovery step reads only that earlier step output
+and operates on the same job's receipt directory. GitHub's behavior under
+runner-wide cancellation still requires separate evidence.
+
 ## Run within the pinned limits
 
 - Set a five-minute job limit with no rerun. The public archive phase has a 90-second ceiling. Reserve at most 64 MiB of host scratch and require at least 2 GiB of runner-disk free space after that reservation. Keep private tmpfs at 16 MiB and 256 inodes.

@@ -1,4 +1,4 @@
-# Local publication candidate. Keep the job disabled until native authorization.
+# Keep the job disabled until native publication and dispatch are independently authorized.
 name: Sounding Line Jammy confined runtime preflight
 on:
   workflow_dispatch:
@@ -23,9 +23,43 @@ jobs:
     if: ${{ false }}
     runs-on: ubuntu-22.04
     timeout-minutes: 5
+    environment: sounding-line-jammy-preflight
+    permissions:
+      contents: read
+      actions: read
+    env:
+      REQUESTED_SOURCE: ${{ inputs.source_sha }}
+      REQUESTED_OPERATION: ${{ inputs.operation }}
     steps:
-      - name: Refuse while native publication and execution are held
+      - name: Check protected dispatch identity
         shell: bash
         run: |
-          printf '%s\n' PREFLIGHT_ACTION_NOT_AUTHORIZED >&2
-          exit 1
+          test "$GITHUB_REF" = refs/heads/main
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          test "$REQUESTED_SOURCE" = "$GITHUB_SHA"
+          test "$REQUESTED_OPERATION" = confined-loader-and-denials-only
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          path: source
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: scripts/sounding-line/b-c856-linux-controller
+      - name: Run the independently approved confined diagnostic
+        id: preflight
+        working-directory: source
+        shell: bash
+        env:
+          JAMMY_PREFLIGHT_APPROVAL: ${{ secrets.JAMMY_PREFLIGHT_APPROVAL }}
+          JAMMY_PREFLIGHT_TOKEN: ${{ github.token }}
+        run: exec /usr/bin/python3 -IB scripts/sounding-line/b-c856-linux-controller/jammy_preflight_workflow.py launch
+      - name: Reconcile same-job custody after interruption
+        if: ${{ always() && (failure() || cancelled()) && steps.preflight.outputs.custody_sha256 != '' }}
+        working-directory: source
+        shell: bash
+        env:
+          JAMMY_PREFLIGHT_APPROVAL: ${{ secrets.JAMMY_PREFLIGHT_APPROVAL }}
+          JAMMY_PREFLIGHT_TOKEN: ${{ github.token }}
+          PRIOR_CUSTODY_SHA256: ${{ steps.preflight.outputs.custody_sha256 }}
+        run: exec /usr/bin/python3 -IB scripts/sounding-line/b-c856-linux-controller/jammy_preflight_workflow.py recover
