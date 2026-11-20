@@ -24,8 +24,8 @@ const need = (value, code) => {
 need(
   policy.version === 1 &&
     policy.status === "SHADOW_NOT_A_READ_SET_CERTIFICATE" &&
-    policy.readerObservationSource === "e12aad72315533a81fbfcdc98e5c5a2e1d905697" &&
-    digest(policy.readers) === "81105442b6b70bd26e545bc65661ec32eb990e5d1e982e1afc00b9b8b63c620e" &&
+    policy.readerObservationSource === "958107447886b1ac9ef84f713d93262b2a5d5a04" &&
+    digest(policy.readers) === "72b14fe4713a4754557fff1e38e6891cb1b8302595280a59b8f266d3f5aaadf1" &&
     digest(policy.metadata) === "3b45f3cb53056ae24523a084741eabe4b8d3a37962a56f0a15b97fd154121412" &&
     JSON.stringify(policy.excludedPullRequests) === "[721,776,805,820]" &&
     policy.maximumMetadataPaths === 64,
