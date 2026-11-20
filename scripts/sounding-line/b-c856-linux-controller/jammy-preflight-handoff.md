@@ -9,6 +9,15 @@ The proposed native action is one diagnostic attempt on the pinned Ubuntu 22.04 
 3. Use inventory workflow `413733115`, run `42904385774` attempt `1`, source `0f5ec2311999324d933ad334c8d9b794b2ad51ec`, tree `2094b0c7195009ca3c380c010e9939f9ec3dad74`, and original receipt SHA-256 `bb6ad7b76ee9cb11e8fb63c2699b7de7003a086b3510f68fff82ceedb5a9ef1a`. The runtime input plan pins all seven original members, their archive paths, sizes, and hashes. Acquire only their authenticated public packages through the existing inventory verifier. Retain the original receipt and validate each member before passing its bytes to the service. [Original inventory run](https://github.com/Kgray44/treasurehuntSoT/actions/runs/42904385774)
 4. The trusted wrapper must exclusively provision `/run/user/1001/sl-native-custody-<run>-<nonce>` and its empty `ownership.lock`. Use UID 1001, a new random 128-bit nonce, directory mode 0700, and lock mode 0600. Confirm the private base and lock device/inode identities through opened descriptors. Retain them with the authenticated run record so an independent owner can reopen the exact scope. A name collision, unverified base, replaced lock, or incomplete bootstrap retains custody and refuses native admission.
 
+For the reviewed runner wrapper, the isolated Python entry script takes the action
+(`launch` or `recover`) and an absolute, owner-private receipt directory. Send the
+independently authorized publication and dispatch records over bounded JSON via
+stdin. For launch, include the original inventory receipt as base64. For recovery,
+include the custody digest preserved by the independent caller. Deliver the
+read-only provider token to the entry process separately. The entry verifies
+these bindings against the current workflow metadata before invoking the
+controller or the same-boot recovery checks.
+
 ## Run within the pinned limits
 
 - Set a five-minute job limit with no rerun. The public archive phase has a 90-second ceiling. Reserve at most 64 MiB of host scratch and require at least 2 GiB of runner-disk free space after that reservation. Keep private tmpfs at 16 MiB and 256 inodes.
