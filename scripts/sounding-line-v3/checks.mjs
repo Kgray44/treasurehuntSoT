@@ -36,11 +36,17 @@ const signatures = {
 
 async function command([executable, ...args], env = {}) {
   const started = performance.now();
-  const child = spawn(executable, args, {
-    stdio: "inherit",
-    windowsHide: true,
-    env: { ...process.env, ...env },
-  });
+  const environment = { ...process.env, ...env };
+  for (const key of [
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+    "GITHUB_OUTPUT",
+    "GITHUB_ENV",
+    "GITHUB_PATH",
+    "SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE",
+  ])
+    delete environment[key];
+  const child = spawn(executable, args, { stdio: "inherit", windowsHide: true, env: environment });
   const [code, signal] = await once(child, "exit");
   console.log("%s finished in %d ms", executable, Math.round(performance.now() - started));
   if (code !== 0) throw new Error(executable + " failed (" + (signal ?? code) + ")");
