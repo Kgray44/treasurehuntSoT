@@ -157,6 +157,20 @@ class PreparationTest(unittest.TestCase):
     def prepare(self):
         return launch.prepare_lease(self.scope, "/unused", "tracking", controller_pid=51)
 
+    def test_completed_preparation_flushes_scratch_before_saving_lease(self):
+        from jammy_preflight_custody import CustodyBinding
+
+        scope = replace(self.scope, custody=CustodyBinding((10, 1), (10, 2)))
+        journal = Mock()
+        events = []
+        journal.prepare.side_effect = lambda *args: events.append("prepared")
+        with (patch.object(launch, "owner_record", return_value={}),
+              patch.object(launch, "exclusive_file", side_effect=[(10, 21), (10, 22)]),
+              patch.object(launch.os, "fsync", side_effect=lambda fd: events.append(("fsync", fd)))):
+            lease = launch.prepare_lease(scope, "/unused", "tracking", controller_pid=51, journal=journal)
+        self.assertEqual(events, [("fsync", 9), "prepared"])
+        journal.prepare.assert_called_once_with(lease.scratch, launch.lease_record(lease))
+
     def test_failed_scratch_open_retains_unbound_custody(self):
         failure = OSError(errno.EMFILE, "scratch open failed")
         self.open.side_effect = [8, failure]

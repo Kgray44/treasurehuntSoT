@@ -37,7 +37,7 @@ runner-wide cancellation still requires separate evidence.
 
 ## Recover and verify
 
-On the same runner boot, an independent trusted caller can reopen the authenticated private base and lock after the original controller and watchdog have exited. Recovery verifies both recorded process identities, including boot and process start time. Before admission, only empty scratch in the exact private base is eligible for removal. Once admission is recorded, recovery uses the retained lease and allows up to 32 seconds for passive expiry and cleanup checks. Preserve ambiguous entries and incomplete records. Keep the private base, journal, and original receipts for the owner until evidence is collected.
+On the same runner boot, an independent trusted caller can reopen the authenticated private base and lock after the original controller and watchdog have exited. Recovery verifies both recorded process identities, including boot and process start time. Before admission, recovery can remove empty scratch or use the complete prepared lease to reconcile the exact files it owns. The launcher flushes scratch before publishing that lease. Partial preparation with live entries and an incomplete lease remains held. After admission, recovery requires the admitted lease to match the prepared lease. The custody wait, passive expiry, and cleanup checks share a 32-second deadline. Preserve ambiguous entries and incomplete records. Keep the private base, journal, and original receipts for the owner until evidence is collected.
 
 If interruption follows custody receipt publication and precedes reservation,
 recovery verifies the recorded controller has exited. Under the ownership lock

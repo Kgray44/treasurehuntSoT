@@ -11,7 +11,7 @@ from pathlib import Path
 from jammy_native_runtime_inputs import require
 
 LOCK = "ownership.lock"
-PHASES = ("reserved", "bound", "admitted", "retired")
+PHASES = ("reserved", "bound", "prepared", "admitted", "retired")
 MAX_RECORD = 4096
 
 
@@ -262,10 +262,26 @@ class Journal:
                 self.scratch_identity() == scratch, "LAUNCH_CUSTODY_BIND_PHASE")
         self.write("bound", {"scratch": list(scratch)})
 
+    def require_no_pending(self):
+        for phase in PHASES:
+            try:
+                os.stat(phase + ".pending", dir_fd=self.fd, follow_symlinks=False)
+            except FileNotFoundError:
+                continue
+            raise ValueError("LAUNCH_CUSTODY_JOURNAL_PENDING")
+
+    def prepare(self, scratch, lease):
+        require(self.read("reserved") is not None and self.read("bound") == {"scratch": list(scratch)} and
+                all(self.read(phase) is None for phase in ("prepared", "admitted", "retired")) and
+                self.scratch_identity() == scratch, "LAUNCH_CUSTODY_PREPARE_PHASE")
+        self.require_no_pending()
+        self.write("prepared", lease)
+
     def admit(self, scratch, lease):
         require(self.read("reserved") is not None and self.read("bound") == {"scratch": list(scratch)} and
-                self.read("admitted") is None and self.read("retired") is None and
+                self.read("prepared") == lease and self.read("admitted") is None and self.read("retired") is None and
                 self.scratch_identity() == scratch, "LAUNCH_CUSTODY_ADMIT_PHASE")
+        self.require_no_pending()
         self.write("admitted", lease)
 
     def retire_pre_reservation(self):
@@ -279,8 +295,8 @@ class Journal:
             self.write("retired", {"admitted": False})
 
     def recover_empty(self):
-        require(self.read("reserved") is not None and self.read("admitted") is None and
-                self.read("retired") is None, "LAUNCH_CUSTODY_RECOVERY_PHASE")
+        require(self.read("reserved") is not None and self.read("prepared") is None and
+                self.read("admitted") is None and self.read("retired") is None, "LAUNCH_CUSTODY_RECOVERY_PHASE")
         bound = self.read("bound")
         scratch = self.scratch_identity()
         if bound is not None:

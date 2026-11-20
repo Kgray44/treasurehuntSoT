@@ -140,15 +140,18 @@ def prepare_lease(scope, python_worker, tracking, *, controller_pid, journal=Non
         root = identity(os.stat(PRIVATE_ROOT, dir_fd=fd, follow_symlinks=False))
         entries.append((PRIVATE_ROOT, root, True))
         fragment = exclusive_file(fd, FRAGMENT, body, entries)
-        journal = {"source": scope.run.source, "run": scope.run.run_id, "attempt": scope.run.attempt,
-                   "nonce": scope.nonce, "scratch": scratch, "fragment": fragment,
-                   "fragmentSha256": digest, "root": root}
+        marker_record = {"source": scope.run.source, "run": scope.run.run_id, "attempt": scope.run.attempt,
+                         "nonce": scope.nonce, "scratch": scratch, "fragment": fragment,
+                         "fragmentSha256": digest, "root": root}
         marker = exclusive_file(fd, SCRATCH_MARKER,
-                                json.dumps(journal, sort_keys=True, separators=(",", ":")).encode("ascii"),
+                                json.dumps(marker_record, sort_keys=True, separators=(",", ":")).encode("ascii"),
                                 entries)
         lease = RecoveryLease(scope.run.source, scope.run.run_id, scope.run.attempt, scope.nonce,
                               scratch, fragment, marker, root, digest)
         validate_lease(scope, lease)
+        if journal is not None:
+            os.fsync(fd)
+            journal.prepare(scratch, lease_record(lease))
         return lease
     except BaseException as primary:
         if not created_scratch:
@@ -234,10 +237,13 @@ def verify_no_host_mount(scope):
 
 def recover_bound(scope, lease, *, clock=time.monotonic, sleep=time.sleep,
             quiescent=observe_quiescence, mounts_gone=verify_no_host_mount,
-            remove_fragment=remove_owned_fragment, remove_scratch=remove_owned_scratch):
+            remove_fragment=remove_owned_fragment, remove_scratch=remove_owned_scratch, deadline=None):
     """Never send StopUnit or a signal. Wait out the manager's bound, then verify."""
     validate_lease(scope, lease)
     end = clock() + RECOVERY_SECONDS
+    if deadline is not None:
+        end = min(end, deadline)
+    require(end - clock() >= STOP_WINDOW, "LAUNCH_RECOVERY_DEADLINE")
     # A queued start can precede controller death. A momentary unloaded result
     # is insufficient until the complete queue/start/active/stop window passes.
     sleep(STOP_WINDOW)
@@ -249,6 +255,7 @@ def recover_bound(scope, lease, *, clock=time.monotonic, sleep=time.sleep,
     require(remaining > 0 and quiescent(scope, min(2, remaining)) is True,
             "LAUNCH_RECOVERY_UNIT_RECHECK")
     require(end > clock() and remove_scratch(scope, lease) is True, "LAUNCH_RECOVERY_SCRATCH")
+    require(clock() <= end, "LAUNCH_RECOVERY_DEADLINE")
     return True
 
 
@@ -268,26 +275,37 @@ def decode_lease(scope, record):
 def recover(scope, lease, **options):
     if scope.custody is None:
         return recover_bound(scope, lease, **options)
-    validate_lease(scope, lease)
     with custody(scope) as journal:
-        require(journal.read("reserved") is not None and
-                journal.read("bound") == {"scratch": list(lease.scratch)}, "LAUNCH_CUSTODY_RECOVERY_PHASE")
-        admitted = journal.read("admitted")
-        require(admitted is None or admitted == lease_record(lease), "LAUNCH_CUSTODY_RECOVERY_PHASE")
-        terminal = {"admitted": admitted is not None}
-        previous = journal.read("retired")
-        if previous is not None:
-            require(previous == terminal and journal.scratch_identity() is None and
-                    absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RETIREMENT")
-            return True
-        require(recover_bound(scope, lease, **options) is True, "LAUNCH_CUSTODY_RETIREMENT")
-        journal.write("retired", terminal)
+        return recover_locked(scope, lease, journal, **options)
+
+
+def recover_locked(scope, lease, journal, **options):
+    validate_lease(scope, lease)
+    journal.require_no_pending()
+    record = lease_record(lease)
+    require(journal.read("reserved") is not None and journal.read("bound") == {"scratch": list(lease.scratch)} and
+            journal.read("prepared") == record, "LAUNCH_CUSTODY_RECOVERY_PHASE")
+    admitted = journal.read("admitted")
+    require(admitted is None or admitted == record, "LAUNCH_CUSTODY_RECOVERY_PHASE")
+    if admitted is None:
+        require(absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RECOVERY_FRAGMENT")
+    terminal = {"admitted": admitted is not None}
+    previous = journal.read("retired")
+    if previous is not None:
+        require(previous == terminal and journal.scratch_identity() is None and
+                absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RETIREMENT")
         return True
+    require(recover_bound(scope, lease, **options) is True, "LAUNCH_CUSTODY_RETIREMENT")
+    journal.write("retired", terminal)
+    return True
 
 
 def recover_after_cancellation(scope, *, bootstrap_owner=None, **options):
     """Reconcile an authenticated prior scope after both launcher processes exit."""
-    with custody(scope) as journal:
+    clock = options.get("clock", time.monotonic)
+    deadline = clock() + RECOVERY_SECONDS
+    with custody(scope, timeout=2) as journal:
+        require(clock() < deadline, "LAUNCH_RECOVERY_DEADLINE")
         reserved = journal.read("reserved")
         if reserved is None:
             require(bootstrap_owner is not None, "LAUNCH_CUSTODY_JOURNAL_INCOMPLETE")
@@ -296,8 +314,11 @@ def recover_after_cancellation(scope, *, bootstrap_owner=None, **options):
             journal.retire_pre_reservation()
             return True
         verify_owners_gone(reserved)
+        journal.require_no_pending()
+        prepared = journal.read("prepared")
         admitted = journal.read("admitted")
-        if admitted is None:
+        require(admitted is None or admitted == prepared, "LAUNCH_CUSTODY_RECOVERY_PHASE")
+        if prepared is None:
             if journal.read("retired") is not None:
                 require(journal.read("retired") == {"admitted": False} and journal.scratch_identity() is None and
                         absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RETIREMENT")
@@ -305,8 +326,8 @@ def recover_after_cancellation(scope, *, bootstrap_owner=None, **options):
             require(absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RECOVERY_FRAGMENT")
             journal.recover_empty()
             return True
-        lease = decode_lease(scope, admitted)
-    return recover(scope, lease, **options)
+        lease = decode_lease(scope, prepared)
+        return recover_locked(scope, lease, journal, **{**options, "deadline": deadline})
 
 
 def watchdog_wait(scope, lease, controller_pid, controller_pidfd, *, poll_factory=None,
@@ -494,7 +515,7 @@ def read_lease(scope):
     verify_fragment(Path(scope.run.fragment), lease)
     if scope.custody is not None:
         with custody(scope, timeout=2) as journal:
-            require(journal.read("admitted") == lease_record(lease) and
+            require(journal.read("prepared") == journal.read("admitted") == lease_record(lease) and
                     journal.read("retired") is None and journal.scratch_identity() == lease.scratch,
                     "LAUNCH_CUSTODY_ADMISSION")
     scope.owned.scratch = lease.scratch
