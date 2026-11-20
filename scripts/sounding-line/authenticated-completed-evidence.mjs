@@ -430,7 +430,7 @@ async function acceptedSource(root, baseSha, authoritySha, api) {
     requireValue(workflow.includes(fragment), "WORKFLOW_CONTRACT_UNSUPPORTED");
   const commit = await api(`git/commits/${authoritySha}`);
   requireValue(commit?.sha === authoritySha && SHA.test(commit.tree?.sha ?? ""), "AUTHORITY_COMMIT_INVALID");
-  return { ordinarySha256: rawHash(source.get(MODULES[1])), selectedCheckout };
+  return { ordinarySha256: rawHash(source.get(MODULES[1])), selectedCheckout, installed, source };
 }
 
 function validateRun(run, producer) {
@@ -718,7 +718,7 @@ function authenticatedCheckpoints(archive, { run, authoritySha, source, candidat
   return prior;
 }
 
-async function authenticateProducer(root, plan, producer, api, download) {
+async function authenticateProducer(producer, api, download, verifyAuthority) {
   requireValue(
     object(producer) &&
       positive(producer.runId) &&
@@ -744,7 +744,7 @@ async function authenticateProducer(root, plan, producer, api, download) {
       artifact.workflow_run.head_branch === run.head_branch,
     "PROVIDER_ARTIFACT_INVALID",
   );
-  const source = await acceptedSource(root, plan.baseSha, authoritySha, api);
+  const source = await verifyAuthority(authoritySha);
   const workflow = await api("actions/workflows/sounding-line-ordinary.yml");
   requireValue(
     workflow?.id === run.workflow_id && workflow.path === WORKFLOW && workflow.state === "active",
@@ -809,13 +809,32 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
   const receipts = new Map(),
     provenance = new Map(),
     rejections = [];
+  const authorities = new Map();
+  const verifyAuthority = async (authoritySha) => {
+    const verified = authorities.get(authoritySha);
+    if (verified) {
+      // Commit and blob identities are immutable. Recheck the installed
+      // reader bytes before reusing the proof within this verification.
+      for (const [name, pinned] of verified.source) {
+        if (name === WORKFLOW) continue;
+        requireValue(
+          pinned.equals(await readFile(path.join(verified.installed, name))),
+          "AUTHORITY_SOURCE_CHANGED",
+        );
+      }
+      return verified;
+    }
+    const source = await acceptedSource(currentRoot, plan.baseSha, authoritySha, api);
+    authorities.set(authoritySha, source);
+    return source;
+  };
   const seen = new Set();
   for (const hint of hints) {
     let authenticated;
     try {
       requireValue(!seen.has(hint?.artifactId), "PRODUCER_DUPLICATE");
       seen.add(hint?.artifactId);
-      authenticated = await authenticateProducer(currentRoot, plan, hint, api, getArchive);
+      authenticated = await authenticateProducer(hint, api, getArchive, verifyAuthority);
     } catch (error) {
       rejections.push({
         artifactId: positive(hint?.artifactId) ? hint.artifactId : null,

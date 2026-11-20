@@ -1571,6 +1571,42 @@ test("a rejected hint does not prevent a later authenticated producer from match
   });
 });
 
+test("producers sharing an authority reuse its verified source while authenticating each run", async () => {
+  await fixture(async (state) => {
+    const first = { runId: 102, attempt: 1, artifactId: 602 };
+    const second = { runId: 101, attempt: 1, artifactId: 601 };
+    const proof = await state.authenticate({
+      producers: [first, second],
+      request: async (endpoint, ...args) => {
+        if (endpoint === "actions/runs/102") return { ...state.run, id: 102 };
+        if (endpoint === "actions/artifacts/602")
+          return {
+            ...state.artifact,
+            id: 602,
+            name: "sounding-line-completed-evidence-102-1",
+            workflow_run: { ...state.artifact.workflow_run, id: 102 },
+          };
+        if (endpoint === "actions/runs/102/attempts/1/jobs?per_page=100") {
+          state.calls.push(endpoint);
+          return { ...state.jobs, jobs: [{ ...state.jobs.jobs[0], run_id: 102, conclusion: "skipped" }] };
+        }
+        return state.request(endpoint, ...args);
+      },
+    });
+    assert.equal(proof.admitted, 1);
+    assert(state.lookup(proof));
+    assert.deepEqual(proof.rejections, [
+      { artifactId: 602, reason: "SOUNDING_LINE_COMPLETED_EVIDENCE_PROVIDER_JOB_INVALID" },
+    ]);
+    assert.equal(state.calls.filter((endpoint) => endpoint === `git/commits/${state.baseSha}`).length, 1);
+    const blobReads = state.calls.filter((endpoint) => endpoint.startsWith("git/blobs/"));
+    assert.equal(blobReads.length, MODULES.length);
+    assert.equal(new Set(blobReads).size, MODULES.length);
+    assert(state.calls.includes("actions/runs/102/attempts/1/jobs?per_page=100"));
+    assert(state.calls.includes("actions/runs/101/attempts/1/jobs?per_page=100"));
+  });
+});
+
 test("authenticated artifacts still require current fingerprints before admitting receipts", async () => {
   await fixture(async (state) => {
     Object.defineProperty(state.plan, "selected", {
