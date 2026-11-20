@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
 import { randomBytes } from "node:crypto";
-import { mkdirSync, mkdtempSync, readFileSync, readdirSync } from "node:fs";
+import { mkdirSync, readFileSync, readdirSync } from "node:fs";
 import { posix, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { git } from "./plan.mjs";
@@ -134,17 +134,18 @@ function checkDocs({ base, tree, entries, read }) {
   if (invalid.length) throw new Error(invalid.join("\n"));
 }
 
-async function runBrowserProfile(profileId, files) {
+async function runBrowserProfile(profileId, files, tree) {
   const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
     "../sounding-line/browser-suite-profiles.mjs"
   );
   const profile = browserSuiteProfiles[profileId];
   if (!profile?.validationIsolation || !files.length)
     throw new Error("Missing browser profile or test files: " + profileId);
-  const taskParent = resolve("artifacts", "sounding-line-v3");
-  mkdirSync(taskParent, { recursive: true });
-  const task = mkdtempSync(resolve(taskParent, profileId + "-"));
-  const db = resolve(task, "validation-isolated-19700101-000000000-" + randomBytes(16).toString("hex") + ".db");
+  const profileRoot = resolve("artifacts", "sounding-line", profileId + "-" + tree.slice(0, 12));
+  mkdirSync(profileRoot, { recursive: true });
+  const identity = randomBytes(16).toString("hex");
+  const task = resolve(profileRoot, identity);
+  const db = resolve(profileRoot, "validation-isolated-19700101-000000000-" + identity + ".db");
   const env = {
     ...profile.environment,
     DATABASE_URL: "file:" + db.replaceAll("\\", "/"),
@@ -306,7 +307,7 @@ export async function runJob(job, context) {
       if (build < 0) throw new Error("Browser fixture planner did not provide a build.");
       for (const [executable, args] of commands.slice(build)) {
         if (args[0] === "scripts/sounding-line/run-browser-suite.mjs") {
-          await runBrowserProfile(args[args.indexOf("--profile") + 1], args.slice(args.indexOf("--") + 1));
+          await runBrowserProfile(args[args.indexOf("--profile") + 1], args.slice(args.indexOf("--") + 1), tree);
           continue;
         }
         const env = verificationEnvironment(browserPlan, executable, args);
