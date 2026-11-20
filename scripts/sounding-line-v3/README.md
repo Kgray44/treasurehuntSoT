@@ -21,6 +21,6 @@ The lightweight path checks Markdown links, image signatures, applicable documen
 
 Add a line such as **Depends on: #123, #124** to the PR description to declare predecessors. The coordinator holds dependent PRs until their predecessors land, and continues through independent candidates. It uses GitHub's exact-head update and merge APIs, keeps strict main protection enabled, and compares the proposed tree with the landed tree after each merge. GitHub's manual merge control remains available to the owner. Check dependencies in the PR description before merging manually.
 
-For the registered Wayfarer and Landfall unit suites, Actions may reuse a successful result on the same PR when the selected tests, toolchain, runner image, and tracked suite inputs match. The logs identify reuse. Other selected checks run on the current proposed tree.
+For the registered Wayfarer and Landfall unit suites, Actions may reuse a successful result on the same PR when the selected tests, toolchain, runner OS family, and tracked suite inputs match. The logs identify reuse. Other selected checks run on the current proposed tree.
 
-The legacy ordinary workflow accepts manual dispatch for historical diagnostics. Its historical source and receipts remain in Git. This workflow uses the existing project test fixtures, including browser harnesses, in isolated runner jobs.
+The cutover disables the legacy ordinary workflow in GitHub Actions. Its source and receipts remain available for historical diagnostics. This workflow uses the existing project test fixtures, including browser harnesses, in isolated runner jobs.

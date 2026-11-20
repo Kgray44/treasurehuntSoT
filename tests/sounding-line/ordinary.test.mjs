@@ -1952,7 +1952,7 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   for (const key of Object.keys(scripts))
     assert.doesNotMatch(key, /nightwatch|bosun|mainline|maintenance|project-trim/u);
   const ordinaryWorkflow = readFileSync(".github/workflows/sounding-line-ordinary.yml", "utf8");
-  assert.doesNotMatch(ordinaryWorkflow, /^  pull_request_target:/mu);
+  assert.match(ordinaryWorkflow, /pull_request_target/u);
   assert.match(ordinaryWorkflow, /Sounding Line \/ Mainline Decision/u);
   assert.doesNotMatch(ordinaryWorkflow, /nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu);
   for (const name of [
@@ -2207,9 +2207,9 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   assert.doesNotMatch(ordinaryWorkflow, /historical-validation-diagnostic/u);
 });
 
-test("legacy diagnostic routing preserves its decision contract", () => {
+test("trusted PR routing produces one strict decision for ordinary and control-plane candidates", () => {
   const ordinaryWorkflow = readFileSync(".github/workflows/sounding-line-ordinary.yml", "utf8");
-  assert.doesNotMatch(ordinaryWorkflow, /^  pull_request_target:/mu);
+  assert.match(ordinaryWorkflow, /pull_request_target/u);
   assert.match(ordinaryWorkflow, /path: authority/u);
   assert.match(ordinaryWorkflow, /Route through trusted protected-main classification/u);
   assert.match(ordinaryWorkflow, /root: "\.\.\/candidate"/u);

@@ -18,7 +18,9 @@ export function suiteCacheKey(job, tree, pr) {
     .filter(Boolean)
     .filter((entry) => reusableSource(entry.slice(entry.indexOf("\t") + 1), job.id));
   const hash = createHash("sha256")
-    .update(JSON.stringify([job, process.version, process.env.ImageVersion, process.env.RUNNER_ARCH, content]))
+    .update(
+      JSON.stringify([job, process.version, process.env.ImageOS ?? process.platform, process.env.RUNNER_ARCH, content]),
+    )
     .digest("hex");
   return "sl-v3-pass-" + pr + "-" + hash;
 }

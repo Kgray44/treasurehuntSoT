@@ -2,6 +2,9 @@ name: Sounding Line ordinary
 run-name: Sounding Line finite 1 ${{ inputs.experience_mode || 'ordinary' }} ${{ github.event.pull_request.number || inputs.pr_number || 'unbound' }} ${{ github.event.pull_request.head.sha || inputs.candidate_sha || 'unbound' }} ${{ github.event.pull_request.draft == true && 'draft' || 'active' }}
 
 on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, reopened, synchronize, converted_to_draft, ready_for_review]
   workflow_dispatch:
     inputs:
       candidate_ref:
