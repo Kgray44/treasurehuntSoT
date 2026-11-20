@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
-import { readFileSync, readdirSync } from "node:fs";
+import { randomBytes } from "node:crypto";
+import { mkdirSync, mkdtempSync, readFileSync, readdirSync } from "node:fs";
 import { posix, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
 import { git } from "./plan.mjs";
@@ -133,6 +134,60 @@ function checkDocs({ base, tree, entries, read }) {
   if (invalid.length) throw new Error(invalid.join("\n"));
 }
 
+async function runBrowserProfile(profileId, files) {
+  const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
+    "../sounding-line/browser-suite-profiles.mjs"
+  );
+  const profile = browserSuiteProfiles[profileId];
+  if (!profile?.validationIsolation || !files.length)
+    throw new Error("Missing browser profile or test files: " + profileId);
+  const taskParent = resolve("artifacts", "sounding-line-v3");
+  mkdirSync(taskParent, { recursive: true });
+  const task = mkdtempSync(resolve(taskParent, profileId + "-"));
+  const db = resolve(task, "validation-isolated-19700101-000000000-" + randomBytes(16).toString("hex") + ".db");
+  const env = {
+    ...profile.environment,
+    DATABASE_URL: "file:" + db.replaceAll("\\", "/"),
+    SOUNDING_LINE_SUITE_PROFILE: profileId,
+    SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+    FOREVER_VALIDATION_ISOLATION: "1",
+    FOREVER_VALIDATION_NONCE_HASH: randomBytes(32).toString("hex"),
+    FOREVER_VALIDATION_PRODUCTION_IDENTITY: "1",
+    HOMEPORT_TRANSACTIONAL_EMAIL_PROVIDER: "SYNTHETIC_OUTBOX",
+    HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
+    HOMEPORT_PHASE7_TASK_ROOT: task,
+    HOMEPORT_SYNTHETIC_OUTBOX_PATH: resolve(task, "outbox", "messages.jsonl"),
+    VALIDATION_ARTIFACTS: task,
+    ...(profile.homeportPhase3Runtime ? { HOMEPORT_PHASE3_DATABASE_PATH: db } : {}),
+    ...(profileId === "generic"
+      ? {
+          SOUNDING_LINE_INTERNAL_RUNTIME: "1",
+          ...isolatedBrowserFixtureCredentials(profileId),
+        }
+      : {}),
+  };
+  if (profile.bootstrap)
+    await command(node("scripts/sounding-line/sqlite-bootstrap.mjs", "--database-url", env.DATABASE_URL), env);
+  if (profile.seed) await command(node("node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"), env);
+  for (const preparer of profile.preparers ?? []) {
+    const engine = preparer.runtime === "tsx" ? ["node_modules/tsx/dist/cli.mjs"] : [];
+    await command(node(...engine, preparer.script, ...(preparer.arguments ?? [])), env);
+  }
+  await command(
+    node(
+      "scripts/sounding-line/browser-authority.mjs",
+      ...profile.fixtureArguments.flatMap((file) => ["--fixture", file]),
+      ...(profile.fixtureProject ? ["--fixture-project", profile.fixtureProject] : []),
+      "--",
+      ...files,
+      ...(profile.browserArguments ?? []),
+      "--project",
+      profile.browserProject ?? "chromium",
+    ),
+    env,
+  );
+}
+
 export function needsDependencies(kind) {
   return !["diff", "docs", "workflow", "node"].includes(kind);
 }
@@ -250,6 +305,10 @@ export async function runJob(job, context) {
       const build = commands.findIndex(([executable, args]) => executable === "npm" && args.join(" ") === "run build");
       if (build < 0) throw new Error("Browser fixture planner did not provide a build.");
       for (const [executable, args] of commands.slice(build)) {
+        if (args[0] === "scripts/sounding-line/run-browser-suite.mjs") {
+          await runBrowserProfile(args[args.indexOf("--profile") + 1], args.slice(args.indexOf("--") + 1));
+          continue;
+        }
         const env = verificationEnvironment(browserPlan, executable, args);
         const argv =
           executable === "npm"
