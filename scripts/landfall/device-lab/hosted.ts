@@ -252,7 +252,7 @@ export async function dispatchLandfallHostedLab(
     appleDevices: target === "ios-devices" ? ["sextant-native-apple-devices"] : [],
     browser:
       target === "sextant-consumers"
-        ? ["sextant-consumer-journeys"]
+        ? ["sextant-consumer-journeys", "sextant-contextual-entry-journeys"]
         : target === "sextant-resources"
           ? ["sextant-resource-journeys"]
           : target === "sextant-paired-clue"

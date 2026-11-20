@@ -59,9 +59,14 @@ for (const viewport of [
             publishedVersionId: true,
             status: true,
             captainAccountId: true,
+            voyageName: true,
+            ownerLabel: true,
           },
         });
         expect(baseline).toHaveLength(2);
+        const operationalBaseline = baseline.find((row) => row.id === fixture.voyageId);
+        expect(operationalBaseline).toBeDefined();
+        const operationalName = operationalBaseline!.voyageName ?? operationalBaseline!.ownerLabel ?? "Voyage";
         const editionIds = baseline.map((row) => row.publishedVersionId!);
         const editions = await db.publishedTaleVersion.findMany({
           where: { id: { in: editionIds } },
@@ -95,14 +100,57 @@ for (const viewport of [
         expect((await new AxeBuilder({ page }).include(".muster-scene").analyze()).violations).toEqual([]);
         await page.screenshot({ path: info.outputPath("captain-muster.png") });
         const console = page.getByRole("main", { name: "Captain command console", exact: true });
+        const operational = page.getByRole("region", { name: "Captain operational view", exact: true });
+        const scan = operational.getByRole("region", { name: "What needs your attention", exact: true });
         await measure(
           "Captain console",
           () => page.getByRole("link", { name: "Open Captain’s Console", exact: true }).click(),
-          () => expect(console).toContainText(fixture.title),
+          async () => {
+            await expect(console).toContainText(fixture.title);
+            await expect(
+              operational.getByRole("heading", { name: "Operational voyage summary", exact: true }),
+            ).toHaveText(operationalName);
+            await expect(scan.getByRole("heading", { name: "What needs your attention", exact: true })).toBeVisible();
+          },
         );
-        const pause = console
-          .getByRole("button")
-          .filter({ has: page.getByText("Pause Voyage", { exact: true }) });
+        expect((await new AxeBuilder({ page }).include(".captain-operational-panel").analyze()).violations).toEqual([]);
+        const captureCurrentSurface = async (name: string, target: typeof scan) => {
+          await target.evaluate((node) => node.scrollIntoView({ block: "center", behavior: "instant" }));
+          await expect(target).toBeInViewport({ ratio: 1 });
+          const bounds = await target.boundingBox();
+          const banner = await page.locator(".product-shell-header").boundingBox();
+          expect(bounds).not.toBeNull();
+          expect(banner).not.toBeNull();
+          expect(bounds!.y).toBeGreaterThanOrEqual(banner!.y + banner!.height);
+          expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+          await page.screenshot({ path: info.outputPath(`${name}.png`) });
+        };
+        await captureCurrentSurface(
+          "captain-operational-scan",
+          scan.getByRole("heading", { name: "What needs your attention", exact: true }),
+        );
+        const statusCells = scan.locator(".captain-status-cells > div");
+        await expect(statusCells).toHaveCount(4);
+        for (const [index, label] of [
+          "Who is ready",
+          "Who is present",
+          "Synchronization",
+          "Is this view current?",
+        ].entries()) {
+          const cell = statusCells.filter({ has: page.getByText(label, { exact: true }) });
+          await expect(cell).toHaveCount(1);
+          await captureCurrentSurface(`captain-operational-cell-${index + 1}`, cell);
+        }
+        const choices = console.getByRole("region", { name: "What you can do now", exact: true });
+        await expect(choices).toContainText(
+          "Authority actions change shared state and show their consequence before confirmation.",
+        );
+        await captureCurrentSurface(
+          "captain-command-choices",
+          choices.getByRole("heading", { name: "What you can do now", exact: true }),
+        );
+        const pause = console.getByRole("button").filter({ has: page.getByText("Pause Voyage", { exact: true }) });
+        await captureCurrentSurface("captain-pause-choice", pause);
         await pause.click();
         const command = page.getByRole("dialog", { name: "Pause Voyage?", exact: true });
         await expect(command).toContainText("The Voyage pauses until a Captain resumes it.");
@@ -263,6 +311,8 @@ for (const viewport of [
               publishedVersionId: true,
               status: true,
               captainAccountId: true,
+              voyageName: true,
+              ownerLabel: true,
             },
           }),
         ).toEqual(baseline);

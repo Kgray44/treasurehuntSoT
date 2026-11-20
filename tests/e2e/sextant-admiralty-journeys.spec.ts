@@ -102,6 +102,22 @@ for (const viewport of [
           "ADMINISTRATOR",
         );
         await capture("admiralty-overview");
+        const watch = page.locator(".chartroom-panel").filter({ has: heading("Your watch") });
+        await expect(watch).toHaveCount(1);
+        await expect(watch).toContainText(fixture.displayName);
+        await expect(watch).toContainText("ADMINISTRATOR");
+        await capture("admiralty-watch-heading", watch.getByRole("heading", { name: "Your watch", exact: true }));
+        for (const [index, label] of [
+          "Operator",
+          "Roles",
+          "Session expires",
+          "Privileged assurance",
+          "Support grants",
+        ].entries()) {
+          const row = watch.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) });
+          await expect(row).toHaveCount(1);
+          await capture(`admiralty-watch-detail-${index + 1}`, row);
+        }
         await capture(
           "admiralty-operator-controls",
           page.getByRole("group", { name: "Admiralty controls", exact: true }),
