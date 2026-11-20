@@ -508,15 +508,28 @@ export class GitHubAuthority {
     const branch = this.api(`repos/${repo}/branches/main`);
     if (!branch.protected) fail("MAIN_NOT_PROTECTED");
     const protection = this.api(`repos/${repo}/branches/main/protection/required_status_checks`);
-    if (
-      !protection.strict ||
-      !protection.checks?.some((c) => c.context === "Sounding Line / Mainline Decision" && c.app_id === 15368)
-    )
+    const legacyContext = "Sounding Line / Mainline Decision";
+    const v3Context = "Sounding Line V3 / Verification";
+    const protectedBy = (context) =>
+      protection.checks?.some((check) => check.context === context && check.app_id === 15368);
+    if (!protection.strict || (!protectedBy(legacyContext) && !protectedBy(v3Context)))
       fail("REQUIRED_MAINLINE_PROTECTION_CHANGED");
     const checks = this.api(`repos/${repo}/commits/${pr.head.sha}/check-runs?per_page=100`).check_runs;
-    const decision = checks
-      .filter((c) => c.name === "Sounding Line / Mainline Decision" && c.app.id === 15368)
+    const latest = (runs, context) => runs
+      .filter((check) => check.name === context && check.app.id === 15368)
       .sort((a, b) => b.id - a.id)[0];
+    let decision = latest(checks, v3Context);
+    if (!decision && protectedBy(v3Context)) {
+      const runs = this.api(`repos/${repo}/actions/workflows/sounding-line-v3.yml/runs?event=pull_request&head_sha=${pr.head.sha}&per_page=30`);
+      const run = runs.workflow_runs.find((item) =>
+        item.head_sha === pr.head.sha &&
+        item.pull_requests.some((candidate) => candidate.number === record.pr));
+      if (run) {
+        const suite = this.api(`repos/${repo}/check-suites/${run.check_suite_id}/check-runs?per_page=100`);
+        decision = latest(suite.check_runs, v3Context);
+      }
+    }
+    decision ??= latest(checks, legacyContext);
     if (!decision || decision.conclusion !== "success") fail("REQUIRED_PROTECTED_DECISION_MISSING");
     const commits = this.api(`repos/${repo}/pulls/${record.pr}/commits?per_page=100`).map((c) => c.sha);
     if (pr.commits > commits.length) fail("PR_COMMIT_PAGINATION_REQUIRED");

@@ -65,20 +65,8 @@ provenance. A self-hashed cache file or a historical stdout pass is insufficient
 Missing, incompatible, partial or unauthenticated evidence requires fresh proof.
 Retained partial progress never changes the failed whole-run outcome.
 
-After the cause is corrected, focused regressions and applicable
-[Product Experience Engineering](product-experience-workflow.md) evidence are
-complete, freeze one candidate and use the normal protected final check. Preserve
-current source, base, product/browser obligations and qualification requirements.
-Merge only after that check and its exact seals pass; verify the actual landed
-tree before releasing dependent integration work.
-
-For an ordinary pull-request transaction, use the owner-side
-`scripts/sounding-line/protected-merge-transaction.mjs --operation merge --pr <number>
---head <exact-head> --base <exact-protected-base> --run <successful-run-id>
---receipt <new-private-receipt-prefix>`. This independently checks the successful
-required check, trusted app/workflow/run/attempt, readiness transition, source
-identities, live strict protection and administrator enforcement immediately
-before the server's exact-head merge. Unknown rulesets, moved source, skipped or
-neutral checks and unavailable proof stop the transaction. It creates no release
-authority. Finite campaign qualification and historical evidence remain governed
-by their installed selectors; this merge client accepts ordinary PR-target runs.
+Use [Sounding Line V3](../scripts/sounding-line-v3/README.md) to inspect the
+selected checks and verify the final candidate. Merge after the required
+GitHub check succeeds and its dependency PRs have landed. Run a landed-tree
+smoke check before releasing dependent work. The V3 integration command
+previews or applies ordinary protected merges and checks the landed source.
