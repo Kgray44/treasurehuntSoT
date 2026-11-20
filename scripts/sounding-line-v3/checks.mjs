@@ -240,6 +240,8 @@ export async function runJob(job, context) {
       for (const part of chunks(files))
         await command(vitest(part, kind === "vitest-serial" ? ["--maxWorkers=1"] : []), database);
       return;
+    case "bridgewatch-vitest":
+      return command([...npm, "--workspace", "bridgewatch", "test"]);
     case "types":
       await setupPrisma();
       return command(runNpm("typecheck"), database);

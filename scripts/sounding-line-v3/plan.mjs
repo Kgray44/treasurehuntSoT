@@ -202,6 +202,7 @@ export function select(entries, read, request, data, readBase) {
     category = "full";
     broadUnit = true;
     broadBrowser = true;
+    selectSuite("unit.bridgewatch", "Full verification includes the Bridgewatch workspace");
     for (const check of ["docs", "format", "workflow", "types", "build", "schema", "privacy", "compatibility"])
       checks.add(check);
   }
@@ -209,6 +210,11 @@ export function select(entries, read, request, data, readBase) {
   const jobs = new Map(Array.from(checks, (kind) => [kind, { id: kind, kind, files: [] }]));
   const add = (id, kind, files) => jobs.set(id, { id, kind, files: [...new Set(files)].sort() });
   for (const [id] of selected) {
+    if (id === "unit.bridgewatch") {
+      for (const file of directUnit) if (file.startsWith("bridgewatch/test/")) directUnit.delete(file);
+      add(id, "bridgewatch-vitest", []);
+      continue;
+    }
     const suite = byId.get(id);
     const files = cases.filter((item) => item.suiteId === id && trackedFiles.has(item.file)).map((item) => item.file);
     const inferFiles = (available) =>

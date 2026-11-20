@@ -96,6 +96,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - name: Hydrate Bridgewatch registry sources
+        if: ${{ matrix.kind == 'bridgewatch-vitest' }}
+        shell: bash
+        run: |
+          git sparse-checkout add \
+            "/Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf" \
+            "/Development_Docs/Projects/Project Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf" \
+            "/Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf"
       - name: Hydrate Homeport publication history
         if: ${{ matrix.publicationHistory }}
         timeout-minutes: 8

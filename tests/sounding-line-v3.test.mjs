@@ -82,6 +82,17 @@ test("Shared, schema, and security changes get conservative coverage", () => {
   assert.ok(security.some((job) => job.includes("browser")));
 });
 
+test("Bridgewatch changes and full verification use the Bridgewatch package test command", () => {
+  for (const selection of [
+    plan(["bridgewatch/public/style.css"]),
+    plan(["bridgewatch/test/mission-control-ui.test.ts"]),
+    plan([], "", { full: true }),
+  ]) {
+    assert.equal(selection.jobs.find(({ id }) => id === "unit.bridgewatch")?.kind, "bridgewatch-vitest");
+    assert.ok(!names(selection).includes("changed-tests"));
+  }
+});
+
 test("Owner labels add coverage and unknown requests fail closed", () => {
   const request = metadata(["sl:mode:maintenance", "sl:project:Wayfarer", "sl:suite:unit.landfall"]);
   const result = names(plan(["README.md"], "", request));
