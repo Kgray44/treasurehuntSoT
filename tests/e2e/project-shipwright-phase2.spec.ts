@@ -3,6 +3,16 @@ import { expect, test } from "@playwright/test";
 
 test.skip(({ browserName }) => browserName !== "chromium", "The task-owned mutable Studio journey runs once.");
 
+test("Shipwright Phase 2 binds a governed worker to its sealed source identity", async () => {
+  const { resolveSourceSha } = await import("../../scripts/shipwright/run-phase2-journeys.mjs");
+  const sealed = "a".repeat(40);
+  expect(
+    resolveSourceSha({ SOUNDING_LINE_SEALED_SOURCE_SHA: sealed, GITHUB_SHA: sealed }, () => {
+      throw new Error("Git must not be required in the isolated worker copy.");
+    }),
+  ).toBe(sealed);
+});
+
 test("Shipwright Phase 2 keeps contract-aware authoring usable across modes and responsive Inspector states", async ({
   page,
 }) => {
