@@ -20,8 +20,8 @@ concurrency:
   cancel-in-progress: false
 jobs:
   confined:
-    # Preserve the same-job recovery step after ordinary cancellation.
-    if: ${{ always() && github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && inputs.source_sha == github.sha && (inputs.operation == 'confined-loader-and-denials-only' || inputs.operation == 'recovery-transport-only') }}
+    # Allow normal cancellation to reach the runner. Only the recovery steps use always().
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 && inputs.source_sha == github.sha && (inputs.operation == 'confined-loader-and-denials-only' || inputs.operation == 'recovery-transport-only') }}
     runs-on: ubuntu-22.04
     timeout-minutes: 5
     environment: sounding-line-jammy-preflight
@@ -58,8 +58,9 @@ jobs:
         working-directory: source
         shell: bash
         run: |
-          /usr/bin/git --no-replace-objects show "$GITHUB_SHA:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_rehearsal.py" |
-            /usr/bin/python3 -IB - exercise
+          # Preserve trailing newlines from the Git blob and replace the runner's shell with Python.
+          entry=$(/usr/bin/git --no-replace-objects show "$GITHUB_SHA:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_rehearsal.py" && printf .)
+          exec /usr/bin/python3 -IB -c "${entry%.}" exercise
       - name: Verify same-job recovery after cancellation
         if: ${{ always() && inputs.operation == 'recovery-transport-only' && steps.rehearsal.outputs.intent_sha256 != '' }}
         working-directory: source
@@ -79,10 +80,13 @@ jobs:
           JAMMY_PREFLIGHT_APPROVAL: ${{ secrets.JAMMY_PREFLIGHT_APPROVAL }}
           JAMMY_PREFLIGHT_TOKEN: ${{ github.token }}
         run: |
-          /usr/bin/env -i PATH=/usr/bin:/bin GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
-            GIT_NO_LAZY_FETCH=1 GIT_OPTIONAL_LOCKS=0 /usr/bin/git --no-replace-objects -c core.fsmonitor=false \
-            show "${GITHUB_SHA}:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_checkout.py" |
-            /usr/bin/python3 -IB - launch
+          # Deliver the runner's cancellation signal to the exact source-bound entrypoint.
+          entry=$(
+            /usr/bin/env -i PATH=/usr/bin:/bin GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
+              GIT_NO_LAZY_FETCH=1 GIT_OPTIONAL_LOCKS=0 /usr/bin/git --no-replace-objects -c core.fsmonitor=false \
+              show "${GITHUB_SHA}:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_checkout.py" && printf .
+          )
+          exec /usr/bin/python3 -IB -c "${entry%.}" launch
       - name: Reconcile same-job custody after interruption
         if: ${{ always() && (failure() || cancelled()) && inputs.operation == 'confined-loader-and-denials-only' && (steps.preflight.outputs.custody_sha256 != '' || steps.preflight.outputs.intent_sha256 != '') }}
         working-directory: source

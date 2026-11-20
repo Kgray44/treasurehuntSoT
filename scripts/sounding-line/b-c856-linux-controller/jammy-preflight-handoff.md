@@ -30,7 +30,10 @@ digest before creating runtime custody. It publishes the final custody digest
 before starting the controller. Both digests go to the launch log and step
 output. Recovery uses the final digest when available. With intent alone it
 verifies the controller exited, the exact receipt remains empty, and no runtime
-base exists. Any populated receipt or runtime base remains held. The job remains eligible for same-job recovery during ordinary cancellation. Launch steps are eligible only while the run has succeeded and cancellation is absent. A retained digest is required for recovery. Provider force cancellation and VM loss require separate evidence.
+base exists. Any populated receipt or runtime base remains held. The job condition permits GitHub to deliver normal cancellation to the runner.
+The launch step replaces its shell with the verified Python entrypoint so signals
+reach that process. Recovery steps use `always()` and require an original retained
+digest. Provider force cancellation and VM loss require separate evidence.
 
 ## Verify the recovery transport
 
