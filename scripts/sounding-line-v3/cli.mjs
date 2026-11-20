@@ -50,6 +50,9 @@ try {
       id: job.id,
       kind: job.kind,
       dependencies: needsDependencies(job.kind),
+      publicationHistory:
+        job.kind === "browser-full" ||
+        (job.kind === "browser" && job.files.includes("tests/e2e/homeport-phase7-owner-correction-round2.spec.ts")),
       cache: plan.category === "full" ? "" : suiteCacheKey(job, tree, event.pull_request?.number),
     }));
     appendFileSync(process.env.GITHUB_OUTPUT, "matrix=" + JSON.stringify({ include }) + "\n");
