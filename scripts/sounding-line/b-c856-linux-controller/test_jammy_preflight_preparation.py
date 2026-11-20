@@ -20,7 +20,9 @@ class RuntimePreparationTest(unittest.TestCase):
               patch.object(prep, "verify_inventory", side_effect=verify_receipt),
               patch.object(prep, "read_inventory_inputs", return_value=({}, b"verifier")),
               patch.object(prep, "collect_inventory", side_effect=collect)):
-            return prep.prepare_runtime_inputs(123, {}, "token", b"original receipt", "pinned-image")
+            return prep.prepare_runtime_inputs(123, {"workflowId": 414024776, "tree": "b" * 40,
+                                                    "workflowSha256": "c" * 64},
+                                               "token", b"original receipt", "pinned-image")
 
     def test_invalid_receipt_refuses_before_acquisition(self):
         collect = Mock()

@@ -42,6 +42,56 @@ def base_path(run_id, nonce):
     return Path(f"/run/user/1001/sl-native-custody-{run_id}-{nonce}")
 
 
+def private_directory(info):
+    return stat.S_ISDIR(info.st_mode) and info.st_uid == 1001 and stat.S_IMODE(info.st_mode) == 0o700
+
+
+def provision_binding(run_id, nonce):
+    """Exclusively create a private base and empty lock. Preserve any incomplete creation."""
+    require(type(run_id) is int and 0 < run_id < 10**15 and type(nonce) is str and
+            re.fullmatch(r"[a-f0-9]{32}", nonce), "LAUNCH_CUSTODY_BOOTSTRAP_SCOPE")
+    require(hasattr(os, "getuid") and os.getuid() == os.geteuid() == 1001, "LAUNCH_CUSTODY_BOOTSTRAP_OWNER")
+    base = base_path(run_id, nonce)
+    root = base.parent
+    require(root.resolve(strict=True) == root, "LAUNCH_CUSTODY_BOOTSTRAP_ROOT")
+    directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
+    root_fd = os.open(root, directory_flags)
+    try:
+        parent = os.fstat(root_fd)
+        require(private_directory(parent) and identity(parent) ==
+                identity(os.stat(root, follow_symlinks=False)), "LAUNCH_CUSTODY_BOOTSTRAP_ROOT")
+        try:
+            os.mkdir(base.name, 0o700, dir_fd=root_fd)
+        except FileExistsError as error:
+            raise ValueError("LAUNCH_CUSTODY_BOOTSTRAP_COLLISION") from error
+        base_fd = os.open(base.name, directory_flags, dir_fd=root_fd)
+        try:
+            opened = os.fstat(base_fd)
+            require(private_directory(opened) and opened.st_dev == parent.st_dev,
+                    "LAUNCH_CUSTODY_BOOTSTRAP_BASE")
+            lock_fd = os.open(LOCK, os.O_RDWR | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC,
+                              0o600, dir_fd=base_fd)
+            try:
+                lock = os.fstat(lock_fd)
+                require(stat.S_ISREG(lock.st_mode) and lock.st_uid == 1001 and
+                        stat.S_IMODE(lock.st_mode) == 0o600 and lock.st_nlink == 1 and
+                        lock.st_size == 0 and lock.st_dev == opened.st_dev, "LAUNCH_CUSTODY_BOOTSTRAP_LOCK")
+                binding = CustodyBinding.from_values((*identity(opened), *identity(lock)))
+                os.fsync(lock_fd)
+                os.fsync(base_fd)
+                os.fsync(root_fd)
+                require(identity(os.stat(base.name, dir_fd=root_fd, follow_symlinks=False)) == binding.base and
+                        identity(os.stat(LOCK, dir_fd=base_fd, follow_symlinks=False)) == binding.lock,
+                        "LAUNCH_CUSTODY_BOOTSTRAP_IDENTITY")
+                return binding
+            finally:
+                os.close(lock_fd)
+        finally:
+            os.close(base_fd)
+    finally:
+        os.close(root_fd)
+
+
 def boot_id():
     with Path("/proc/sys/kernel/random/boot_id").open("r", encoding="ascii") as stream:
         value = stream.read(64).strip()
