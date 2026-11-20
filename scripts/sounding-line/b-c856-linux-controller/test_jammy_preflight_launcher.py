@@ -171,6 +171,21 @@ class PreparationTest(unittest.TestCase):
         self.assertEqual(events, [("fsync", 9), "prepared"])
         journal.prepare.assert_called_once_with(lease.scratch, launch.lease_record(lease))
 
+    def test_uncertain_prepared_journal_publication_preserves_scratch(self):
+        from jammy_preflight_custody import CustodyBinding, JournalPublicationError
+
+        scope = replace(self.scope, custody=CustodyBinding((10, 1), (10, 2)))
+        primary = JournalPublicationError("LAUNCH_CUSTODY_JOURNAL_PUBLICATION")
+        journal = Mock()
+        journal.prepare.side_effect = primary
+        with (patch.object(launch, "owner_record", return_value={}),
+              patch.object(launch, "exclusive_file", side_effect=[(10, 21), (10, 22)]),
+              patch.object(launch.os, "fsync")):
+            with self.assertRaises(JournalPublicationError) as error:
+                launch.prepare_lease(scope, "/unused", "tracking", controller_pid=51, journal=journal)
+        self.assertIs(error.exception, primary)
+        self.unlink.assert_not_called()
+
     def test_failed_scratch_open_retains_unbound_custody(self):
         failure = OSError(errno.EMFILE, "scratch open failed")
         self.open.side_effect = [8, failure]

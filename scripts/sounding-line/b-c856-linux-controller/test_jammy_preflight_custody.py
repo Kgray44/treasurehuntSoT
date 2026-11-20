@@ -70,6 +70,22 @@ class PreReservationRecoveryTest(unittest.TestCase):
         with patch.object(custody, "process_identity", return_value=("S", 101)):
             custody.verify_owner_gone([51, 100])
 
+    def test_late_empty_retirement_is_held_after_deadline(self):
+        journal = FixtureJournal()
+
+        @contextmanager
+        def reopen(_scope, *, timeout):
+            yield journal
+
+        clock = Mock(side_effect=[100.0, 101.0, 133.0])
+        with (patch.object(launcher, "custody", reopen),
+              patch.object(launcher, "verify_owner_gone"),
+              patch.object(launcher, "absent", return_value=True),
+              patch.object(os, "listdir", return_value=[custody.LOCK])):
+            with self.assertRaisesRegex(ValueError, "LAUNCH_RECOVERY_DEADLINE"):
+                launcher.recover_after_cancellation(BOUND, bootstrap_owner=[51, 100], clock=clock)
+        self.assertEqual(journal.records["retired"], {"admitted": False})
+
     def test_pending_or_unexpected_entries_are_retained(self):
         for name in ("reserved.pending", "scratch"):
             with self.subTest(name=name):
@@ -163,6 +179,21 @@ class CustodyTest(unittest.TestCase):
         unlink.assert_not_called()
         close.assert_called_once_with(9)
 
+    def test_prepared_publication_failure_after_link_keeps_pending_record(self):
+        journal = custody.Journal(BOUND, 8)
+        with (patch.object(journal, "read", return_value=None),
+              patch.object(os, "O_NOFOLLOW", 1 << 21, create=True),
+              patch.object(os, "O_CLOEXEC", 1 << 22, create=True),
+              patch.object(os, "open", return_value=9),
+              patch.object(os, "write", side_effect=lambda fd, data: len(data)),
+              patch.object(os, "fsync", side_effect=[None, OSError("base sync failed")]),
+              patch.object(os, "link") as link, patch.object(os, "unlink") as unlink,
+              patch.object(os, "close")):
+            with self.assertRaisesRegex(custody.JournalPublicationError, "LAUNCH_CUSTODY_JOURNAL_PUBLICATION"):
+                journal.write("prepared", launcher.lease_record(LEASE))
+        link.assert_called_once()
+        unlink.assert_not_called()
+
     def test_process_loss_after_mkdir_before_binding_recovers_only_empty_scratch(self):
         self.journal.reserve(OWNERS)
         self.journal.current_scratch = LEASE.scratch
@@ -248,6 +279,28 @@ class CustodyTest(unittest.TestCase):
             gone.assert_called_with(OWNERS)
             recover.assert_called_once_with(BOUND, LEASE, clock=clock, deadline=132.0)
         self.assertEqual(self.journal.records["retired"], {"admitted": False})
+
+    def test_watchdog_waits_for_brief_contention_within_recovery_budget(self):
+        self.journal.reserve(OWNERS)
+        self.journal.current_scratch = LEASE.scratch
+        self.journal.bind(LEASE.scratch)
+        self.journal.prepare(LEASE.scratch, launcher.lease_record(LEASE))
+        observed = []
+
+        @contextmanager
+        def busy_then_locked(_scope, *, timeout):
+            observed.append(timeout)
+            if timeout == 0:
+                raise ValueError("LAUNCH_CUSTODY_LOCK_BUSY")
+            yield self.journal
+
+        clock = lambda: 100.0
+        with (patch.object(launcher, "custody", busy_then_locked),
+              patch.object(launcher, "absent", return_value=True),
+              patch.object(launcher, "recover_bound", return_value=True) as recover):
+            self.assertTrue(launcher.recover(BOUND, LEASE, clock=clock))
+        self.assertEqual(observed, [2])
+        recover.assert_called_once_with(BOUND, LEASE, clock=clock, deadline=132.0)
 
     def test_recovery_budget_cannot_be_reset_after_waiting_for_custody(self):
         sleep = Mock()

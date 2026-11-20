@@ -154,7 +154,7 @@ def prepare_lease(scope, python_worker, tracking, *, controller_pid, journal=Non
             journal.prepare(scratch, lease_record(lease))
         return lease
     except BaseException as primary:
-        if not created_scratch:
+        if not created_scratch or isinstance(primary, JournalPublicationError):
             raise
         try:
             require(scratch_bound, "LAUNCH_CUSTODY_SCRATCH_UNBOUND")
@@ -275,8 +275,13 @@ def decode_lease(scope, record):
 def recover(scope, lease, **options):
     if scope.custody is None:
         return recover_bound(scope, lease, **options)
-    with custody(scope) as journal:
-        return recover_locked(scope, lease, journal, **options)
+    clock = options.get("clock", time.monotonic)
+    deadline = min(clock() + RECOVERY_SECONDS, options.get("deadline", float("inf")))
+    with custody(scope, timeout=2) as journal:
+        require(clock() < deadline, "LAUNCH_RECOVERY_DEADLINE")
+        recovered = recover_locked(scope, lease, journal, **{**options, "deadline": deadline})
+        require(clock() <= deadline, "LAUNCH_RECOVERY_DEADLINE")
+        return recovered
 
 
 def recover_locked(scope, lease, journal, **options):
@@ -306,29 +311,34 @@ def recover_after_cancellation(scope, *, bootstrap_owner=None, **options):
     deadline = clock() + RECOVERY_SECONDS
     with custody(scope, timeout=2) as journal:
         require(clock() < deadline, "LAUNCH_RECOVERY_DEADLINE")
-        reserved = journal.read("reserved")
-        if reserved is None:
-            require(bootstrap_owner is not None, "LAUNCH_CUSTODY_JOURNAL_INCOMPLETE")
-            verify_owner_gone(bootstrap_owner)
-            require(absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RECOVERY_FRAGMENT")
-            journal.retire_pre_reservation()
-            return True
-        verify_owners_gone(reserved)
-        journal.require_no_pending()
-        prepared = journal.read("prepared")
-        admitted = journal.read("admitted")
-        require(admitted is None or admitted == prepared, "LAUNCH_CUSTODY_RECOVERY_PHASE")
-        if prepared is None:
-            if journal.read("retired") is not None:
-                require(journal.read("retired") == {"admitted": False} and journal.scratch_identity() is None and
-                        absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RETIREMENT")
-                return True
-            require(absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RECOVERY_FRAGMENT")
-            journal.recover_empty()
-            return True
-        lease = decode_lease(scope, prepared)
-        return recover_locked(scope, lease, journal, **{**options, "deadline": deadline})
+        recovered = recover_cancelled_locked(scope, journal, bootstrap_owner, **{**options, "deadline": deadline})
+        require(clock() <= deadline, "LAUNCH_RECOVERY_DEADLINE")
+        return recovered
 
+
+def recover_cancelled_locked(scope, journal, bootstrap_owner, **options):
+    reserved = journal.read("reserved")
+    if reserved is None:
+        require(bootstrap_owner is not None, "LAUNCH_CUSTODY_JOURNAL_INCOMPLETE")
+        verify_owner_gone(bootstrap_owner)
+        require(absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RECOVERY_FRAGMENT")
+        journal.retire_pre_reservation()
+        return True
+    verify_owners_gone(reserved)
+    journal.require_no_pending()
+    prepared = journal.read("prepared")
+    admitted = journal.read("admitted")
+    require(admitted is None or admitted == prepared, "LAUNCH_CUSTODY_RECOVERY_PHASE")
+    if prepared is None:
+        if journal.read("retired") is not None:
+            require(journal.read("retired") == {"admitted": False} and journal.scratch_identity() is None and
+                    absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RETIREMENT")
+            return True
+        require(absent(Path(scope.run.fragment)), "LAUNCH_CUSTODY_RECOVERY_FRAGMENT")
+        journal.recover_empty()
+        return True
+    lease = decode_lease(scope, prepared)
+    return recover_locked(scope, lease, journal, **options)
 
 def watchdog_wait(scope, lease, controller_pid, controller_pidfd, *, poll_factory=None,
                   recover_owned=recover, acknowledge=None, completion_fd=None, validated=False):
