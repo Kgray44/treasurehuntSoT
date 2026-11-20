@@ -106,7 +106,7 @@ test("candidate and lookalike product paths cannot retain GITHUB_OUTPUT or be re
         path.join(candidate, "scripts/sounding-line/browser-authority.mjs"),
       ].entries()) {
         const output = path.join(owner, `product-${index}.json`);
-        const argv = [script, output, "--unchanged", "value with spaces"];
+        const argv = [script, output, "--unchanged", "value with spaces", "", 'quoted "value"'];
         ordinary.browserDiagnosticRunner(diagnostics, invoke)(candidate, process.execPath, argv, {
           env: {
             GITHUB_OUTPUT: path.join(owner, "caller-action-output"),
@@ -297,6 +297,7 @@ test("first failed browser profile stops before the later selected profile", asy
     assert(!calls.some(([command, args]) => command === "npm" && args.join(" ") === "run build"));
     assert(!calls.some(([, args]) => args.includes("prisma") && args.includes("generate")));
     const saved = readdirSync(output)
+      .filter((name) => /^checkpoint-[0-9]{4}\.json$/u.test(name))
       .sort()
       .map((name) => JSON.parse(readFileSync(path.join(output, name), "utf8")));
     assert.equal(saved.length, expectedPrefix.length);

@@ -532,13 +532,19 @@ jobs:
             authority/artifacts/sounding-line/verification-supervision/session-*/controller-failure.json
           if-no-files-found: error
           retention-days: 90
+      - name: Compact completed whole obligations for transport
+        id: compact-completed-evidence
+        if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}
+        timeout-minutes: 2
+        working-directory: authority
+        run: node scripts/sounding-line/publish-completed-evidence-v2.mjs
       - name: Retain completed whole obligations after any verifier outcome
         id: completed-evidence-artifact
         if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}
         uses: actions/upload-artifact@v4
         with:
           name: sounding-line-completed-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: authority/artifacts/sounding-line/completed-evidence/checkpoint-*.json
+          path: ${{ steps.compact-completed-evidence.outcome == 'success' && steps.compact-completed-evidence.outputs.format == 'compact-v2' && 'authority/artifacts/sounding-line/completed-evidence-v2/*.json' || 'authority/artifacts/sounding-line/completed-evidence/checkpoint-*.json' }}
           if-no-files-found: warn
           retention-days: 90
       - name: Retain encrypted browser failure diagnostics

@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 import { builtinModules } from "node:module";
 import { validateR8RawOriginals } from "./experience-r8-format.mjs";
 import { existsSync, realpathSync } from "node:fs";
-import { lstat, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
+import { link, lstat, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -1076,11 +1076,18 @@ async function completedEvidenceCheckpoint(root, plan, planDigest, directory) {
       wholeVerificationPassed: false,
       qualification: false,
     };
+    const filename = path.join(target, `checkpoint-${String(sequence + 1).padStart(4, "0")}.json`);
+    const pending = `${filename}.pending`;
     await writeFile(
-      path.join(target, `checkpoint-${String(++sequence).padStart(4, "0")}.json`),
+      pending,
       `${canonicalJson(checkpoint)}\n`,
-      { flag: "wx", mode: 0o600 },
+      { flag: "wx", mode: 0o600, flush: true },
     );
+    // Link only after the full record is written. This is create-only on Unix
+    // and Windows. The bounded staging alias shares the payload blocks and
+    // stays outside the workflow's checkpoint-*.json upload.
+    await link(pending, filename);
+    sequence++;
   };
 }
 
@@ -1088,7 +1095,7 @@ export async function runReconciledVerification(
   root,
   plan,
   runCommand = run,
-  { completedEvidenceRoot, authenticatedEvidence } = {},
+  { completedEvidenceRoot, authenticatedEvidence, progress } = {},
 ) {
   if (git(root, ["rev-parse", "HEAD"]) !== plan.candidateSha)
     throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_HEAD_CHANGED");
@@ -1096,6 +1103,10 @@ export async function runReconciledVerification(
   const obligations = await withVerificationStage("EVIDENCE_FINGERPRINTS", () => buildEvidenceObligations(root, plan), {
     observeFailure: false,
   });
+  const receipts = [];
+  const reconciliation = [];
+  const timings = [];
+  if (progress) Object.assign(progress, { obligations, receipts, reconciliation, timings });
   const store = new FileEvidenceStore(path.join(root, "artifacts", "sounding-line", "evidence-store"));
   const observedRoot = path.join(root, "artifacts", "sounding-line", "parent-observed-evidence");
   await mkdir(observedRoot, { recursive: true });
@@ -1109,9 +1120,6 @@ export async function runReconciledVerification(
     obligations: obligations.map((entry) => entry.id),
   });
   const checkpoint = await completedEvidenceCheckpoint(root, plan, planDigest, completedEvidenceRoot);
-  const receipts = [];
-  const reconciliation = [];
-  const timings = [];
   for (const obligation of obligations) {
     let resolution;
     let producerProvenance = null;
@@ -1164,65 +1172,65 @@ export async function runReconciledVerification(
       const denial = reusableReceiptDisposition(root, resolution.receipt, obligation.fingerprint);
       if (denial) resolution = { disposition: "CONSERVATIVE_FALLBACK", reasonCodes: [denial], receipt: null };
     }
-    if (["PRESERVED", "REBOUND"].includes(resolution.disposition) && resolution.receipt) {
-      const receipt =
-        resolution.disposition === "PRESERVED"
-          ? resolution.receipt
-          : await observedStore.rebind({
-              sourceReceipt: resolution.receipt,
-              candidateSha: plan.candidateSha,
-              obligationId: obligation.id,
-              fingerprint: obligation.fingerprint,
-              planDigest,
-              commands: obligation.commandLabels,
-              decision: resolution,
-            });
-      if (resolution.disposition === "REBOUND") {
-        const source = resolution.receipt;
-        const identity = {
-          originalReceiptId: source.id,
-          priorFingerprintDigest: source.fingerprint.fingerprintDigest,
-          currentFingerprintDigest: obligation.fingerprint.fingerprintDigest,
-          disposition: resolution.disposition,
-        };
-        assertExactParentReceipt(receipt, {
-          candidateSha: plan.candidateSha,
-          obligationId: obligation.id,
-          fingerprint: obligation.fingerprint,
-          planDigest,
-          commands: obligation.commandLabels,
-          durationMs: source.durationMs ?? null,
-          authorityVersion: EVIDENCE_VERSION,
-          producer: "SOUNDING_LINE_DIRECT",
-          result: "PASSED",
-          disposition: resolution.disposition,
-          originalReceiptId: source.id,
-          lineage: {
-            version: EVIDENCE_VERSION,
-            immutable: true,
-            ...identity,
-            reasonCodes: resolution.reasonCodes,
-            lineageDigest: evidenceDigest(identity),
-          },
-        });
-      }
-      rememberObservedReceipt(root, receipt, producerProvenance);
-      receipts.push(receipt);
-      if (checkpoint) await checkpoint(receipts);
-      reconciliation.push({
-        obligationId: obligation.id,
-        disposition: resolution.disposition,
-        reasonCodes: resolution.reasonCodes,
-        receiptId: receipt.id,
-        commandsAvoided: obligation.commandLabels,
-        freshExecuted: false,
-        ...(producerProvenance ? { producerProvenance: JSON.parse(canonicalJson(producerProvenance)) } : {}),
-      });
-      timings.push({ phase: obligation.kind, durationMs: 0, status: "REUSED", obligationId: obligation.id });
-      continue;
-    }
     const startedAt = Date.now();
     try {
+      if (["PRESERVED", "REBOUND"].includes(resolution.disposition) && resolution.receipt) {
+        const receipt =
+          resolution.disposition === "PRESERVED"
+            ? resolution.receipt
+            : await observedStore.rebind({
+                sourceReceipt: resolution.receipt,
+                candidateSha: plan.candidateSha,
+                obligationId: obligation.id,
+                fingerprint: obligation.fingerprint,
+                planDigest,
+                commands: obligation.commandLabels,
+                decision: resolution,
+              });
+        if (resolution.disposition === "REBOUND") {
+          const source = resolution.receipt;
+          const identity = {
+            originalReceiptId: source.id,
+            priorFingerprintDigest: source.fingerprint.fingerprintDigest,
+            currentFingerprintDigest: obligation.fingerprint.fingerprintDigest,
+            disposition: resolution.disposition,
+          };
+          assertExactParentReceipt(receipt, {
+            candidateSha: plan.candidateSha,
+            obligationId: obligation.id,
+            fingerprint: obligation.fingerprint,
+            planDigest,
+            commands: obligation.commandLabels,
+            durationMs: source.durationMs ?? null,
+            authorityVersion: EVIDENCE_VERSION,
+            producer: "SOUNDING_LINE_DIRECT",
+            result: "PASSED",
+            disposition: resolution.disposition,
+            originalReceiptId: source.id,
+            lineage: {
+              version: EVIDENCE_VERSION,
+              immutable: true,
+              ...identity,
+              reasonCodes: resolution.reasonCodes,
+              lineageDigest: evidenceDigest(identity),
+            },
+          });
+        }
+        rememberObservedReceipt(root, receipt, producerProvenance);
+        if (checkpoint) await checkpoint([...receipts, receipt]);
+        receipts.push(receipt);
+        reconciliation.push({
+          obligationId: obligation.id,
+          disposition: resolution.disposition,
+          reasonCodes: resolution.reasonCodes,
+          receiptId: receipt.id,
+          commandsAvoided: obligation.commandLabels,
+          freshExecuted: false,
+          ...(producerProvenance ? { producerProvenance: JSON.parse(canonicalJson(producerProvenance)) } : {}),
+        });
+        timings.push({ phase: obligation.kind, durationMs: 0, status: "REUSED", obligationId: obligation.id });
+        continue;
+      }
       for (const [command, argumentsList] of obligation.commands)
         await runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
       const durationMs = Date.now() - startedAt;
@@ -1251,8 +1259,8 @@ export async function runReconciledVerification(
         originalReceiptId: null,
       });
       rememberObservedReceipt(root, receipt);
+      if (checkpoint) await checkpoint([...receipts, receipt]);
       receipts.push(receipt);
-      if (checkpoint) await checkpoint(receipts);
       reconciliation.push({
         obligationId: obligation.id,
         disposition: resolution.disposition,
@@ -1271,21 +1279,30 @@ export async function runReconciledVerification(
         status: "FAIL",
         obligationId: obligation.id,
       });
-      if (error && typeof error === "object") error.soundingLineTimings = timings;
+      try {
+        if (error && typeof error === "object") error.soundingLineTimings = timings;
+      } catch {
+        // An immutable error still owns the failure. The caller retains progress.
+      }
       throw error;
     }
   }
+  const result = reconciledVerificationResult(plan, { obligations, receipts, reconciliation, timings });
+  if (result.finalization.decision !== "PASS") {
+    const error = new Error(`SOUNDING_LINE_EVIDENCE_FINALIZATION_FAILED:${result.finalization.errors.join(",")}`);
+    error.soundingLineTimings = timings;
+    throw error;
+  }
+  return result;
+}
+
+function reconciledVerificationResult(plan, { obligations, receipts, reconciliation, timings }) {
   const finalization = finalizeEvidence({
     candidateSha: plan.candidateSha,
     obligations,
     receipts,
     reconciliations: reconciliation,
   });
-  if (finalization.decision !== "PASS") {
-    const error = new Error(`SOUNDING_LINE_EVIDENCE_FINALIZATION_FAILED:${finalization.errors.join(",")}`);
-    error.soundingLineTimings = timings;
-    throw error;
-  }
   return {
     timings,
     obligations: obligations.map(({ commands, ...obligation }) => ({
@@ -1331,7 +1348,9 @@ export function run(root, command, argumentsList, { env = {}, ...options } = {})
     execFileSync(command, argumentsList, {
       cwd: root,
       stdio: "inherit",
-      shell: process.platform === "win32",
+      // Windows command shims still need the shell. Executables take argv
+      // directly so one argument stays one argument even with spaces.
+      shell: process.platform === "win32" && !/\.exe$/iu.test(command),
       env: candidateEnvironment,
       ...options,
       ...(process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS
@@ -1872,17 +1891,7 @@ export function exceptionCommandRunner(plan, runCommand, authorize = assertExcep
   };
 }
 
-export async function completeOrdinaryVerification({
-  root,
-  plan,
-  result,
-  verification,
-  diagnostics,
-  verifyExperience = verifyProductExperience,
-  replay = runTrustedExperienceReplay,
-}) {
-  // Verification has returned, so retain its observations even if a later stage fails.
-  // These fields do not change the overall FAIL decision or qualify a replay.
+function retainVerificationResult(result, verification) {
   result.timing.commands = verification.timings;
   result.evidenceReconciliation = {
     evidenceVersion: EVIDENCE_VERSION,
@@ -1894,6 +1903,19 @@ export async function completeOrdinaryVerification({
     commandsAvoided: verification.commandsAvoided,
     avoidedDurationMs: verification.avoidedDurationMs,
   };
+}
+
+export async function completeOrdinaryVerification({
+  root,
+  plan,
+  result,
+  verification,
+  diagnostics,
+  verifyExperience = verifyProductExperience,
+  replay = runTrustedExperienceReplay,
+}) {
+  // Retain technical observations even if a later stage fails.
+  retainVerificationResult(result, verification);
   await withVerificationStage("TECHNICAL_COMPLETE", () => markExceptionTechnicalComplete(root, plan.productExperience));
   if (plan.productExperience.applicable) diagnostics.clearScope();
   result.productExperienceDecision = await withVerificationStage("HISTORICAL_EXPERIENCE", () =>
@@ -1980,14 +2002,22 @@ async function main() {
     currentAdmissionObservation = createCurrentAdmissionObservation({ root, plan: plan.productExperience });
     activeObservation = currentAdmissionObservation ?? r14Observation;
     const verify = async () => {
+      const progress = {};
       const verification = await withVerificationStage("TECHNICAL_VERIFICATION", () =>
         runReconciledVerification(
           root,
           plan,
           exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
-          { completedEvidenceRoot: completedEvidenceDirectory(root), authenticatedEvidence },
+          { completedEvidenceRoot: completedEvidenceDirectory(root), authenticatedEvidence, progress },
         ),
-      );
+      ).catch((error) => {
+        try {
+          if (progress.obligations) retainVerificationResult(result, reconciledVerificationResult(plan, progress));
+        } catch {
+          // Reporting the completed prefix must not replace the verification error.
+        }
+        throw error;
+      });
       await completeOrdinaryVerification({ root, plan, result, verification, diagnostics });
     };
     if (activeObservation) await withSourceDiagnosticCapture(activeObservation, verify);

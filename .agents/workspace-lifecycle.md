@@ -96,3 +96,29 @@ continue. The separate 30 GiB reserves apply to all admitted host writes. These
 rules cannot stop external applications, cloud jobs or existing uninstrumented
 writers. Recheck live capacity before each large allocation and every five minutes
 during a long writer. Report net volume change separately from measured file bytes.
+## Task-scoped D: reserve exception
+
+Use this only with explicit owner authorization for a named task. Use a new D:
+registry and canonical repository, separate from the installed host registry.
+The owner task ID is required on every command against that registry. The
+exception admits only zero estimated writes on C: and continues to reject
+writes that would leave 30 GiB or less free on D:.
+
+`bootstrap-d-only` takes `--state`, `--d-only-task`, `--source`, `--canonical`,
+`--repository`, `--expected-main`, and `--peak-bytes`. The source is read-only.
+The manager checks the protected remote commit, measures a fixed manifest of
+Git objects and records the bounded seed reservation before copying. Source and
+destination roots must be disjoint. The copy accepts only scanned objects and
+caps each write at its admitted size. The canonical checkout starts unhydrated. The seed
+reservation counts toward the new registry's aggregate admission limit.
+
+Run `recover`, `sweep`, `status`, and `audit` against the new registry before
+`create`. Keep command temporary files, package caches, and test output on D:.
+The source registry and its receipts remain in their original custody. A failed
+bootstrap retains its reservation receipt and any partial copy for inspection.
+Before registry initialization, `status` reports the bootstrap owner or the exact
+hold. `recover` releases a lock only when its recorded process identity has
+exited. A partial canonical directory and its reservation remain in custody.
+A retry uses a fresh destination within the same aggregate budget. If recovery
+itself was interrupted, `status` identifies that recovery owner. The remaining
+lock holds bootstrap for owner review.

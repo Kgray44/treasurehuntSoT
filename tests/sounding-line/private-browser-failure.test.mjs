@@ -174,7 +174,7 @@ for (const mode of ["early-global-error", "test-without-attachments"]) {
       const packageRoot = path.dirname(packageFile),
         config = path.join(f.root, "playwright.config.mjs"),
         reportFile = path.join(f.root, "original-report.private.json");
-      assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.56.1");
+      assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.61.1");
       if (mode === "early-global-error") writeFileSync(config, `throw new Error(${JSON.stringify(canary)});`);
       else {
         writeFileSync(
@@ -272,14 +272,14 @@ test(
   },
 );
 
-test("real failing Playwright worker preserves four actual attachment paths, original reporters, binding and missing diagnostics from a second failure", async (t) => {
+test("real failing Playwright worker preserves explicit and generated diagnostics with exact source and failure binding", async (t) => {
   const f = await fixture(t);
   const require = createRequire(path.join(sourceRoot, "package.json"));
   const packageFile = process.env.SOUNDING_LINE_TEST_PLAYWRIGHT_PACKAGE
     ? path.join(process.env.SOUNDING_LINE_TEST_PLAYWRIGHT_PACKAGE, "package.json")
     : require.resolve("@playwright/test/package.json");
   const packageRoot = path.dirname(packageFile);
-  assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.56.1", "locked real Playwright worker");
+  assert.equal(JSON.parse(readFileSync(packageFile)).version, "1.61.1", "locked real Playwright worker");
   const packageEntry = path.join(packageRoot, "index.mjs");
   writeFileSync(
     path.join(f.root, "playwright.config.mjs"),
@@ -351,17 +351,17 @@ test("real failing Playwright worker preserves four actual attachment paths, ori
   assert.equal(readFileSync(path.join(f.session.directory, "failure.encrypted"), "utf8").includes(canary), false);
   const { header, plaintext } = decrypt(f);
   for (const [key, value] of Object.entries(f.context.binding)) assert.equal(header[key], value);
-  assert.equal(plaintext.files.length, 5);
+  assert.equal(plaintext.files.length, 7);
   assert.equal(
     receipt.rawBytes,
     plaintext.files.reduce((total, file) => total + file.bytes, 0),
   );
-  assert.equal(plaintext.inventory.length, 4);
+  assert.equal(plaintext.inventory.length, 6);
   const privateManifest = JSON.parse(Buffer.from(plaintext.files[0].content, "base64"));
   assert.equal(
     privateManifest.failures.length,
     2,
-    "expected failure is excluded; empty unexpected failure remains visible",
+    "expected failure is excluded; both unexpected failures remain visible",
   );
   assert.equal(new Set(privateManifest.failures.map((failure) => failure.id)).size, 2);
   assert.equal(
@@ -369,9 +369,28 @@ test("real failing Playwright worker preserves four actual attachment paths, ori
     false,
     "case identity is opaque",
   );
-  assert(
-    plaintext.files.slice(1).every((member) => Buffer.from(member.content, "base64").toString().startsWith(canary)),
+  const generatedContexts = plaintext.inventory.filter(
+    (record) => record.kind === "error-context" && path.posix.basename(record.path) === "error-context.md",
   );
+  assert.equal(generatedContexts.length, 2);
+  assert.deepEqual(
+    generatedContexts.map((record) => record.failureId).sort(),
+    privateManifest.failures.map((failure) => failure.id).sort(),
+  );
+  const retained = new Map(plaintext.files.map((file) => [file.name, Buffer.from(file.content, "base64").toString()]));
+  const contexts = new Map(
+    generatedContexts.map((record) => [record.failureId, retained.get(`private/results/${record.path}`)]),
+  );
+  assert([...contexts.values()].every((context) => /# Error details/u.test(context)));
+  const full = [...contexts].find(([, context]) => /- Name: .*actual unexpected worker failure/u.test(context));
+  assert(full);
+  assert([...contexts.values()].some((context) => /- Name: .*unexpected worker failure without attachments/u.test(context)));
+  const explicit = plaintext.inventory.filter((record) => !generatedContexts.includes(record));
+  assert.deepEqual(explicit.map((record) => record.kind).sort(), ["error-context", "screenshot", "trace", "video"]);
+  for (const record of explicit) {
+    assert.equal(record.failureId, full[0]);
+    assert.equal(retained.get(`private/results/${record.path}`), canary + record.kind);
+  }
   assert.equal(lstatSync(f.session.directory).mode & 0o777, 0o700);
   assert.equal(lstatSync(path.join(f.session.directory, "failure.encrypted")).mode & 0o777, 0o600);
   assert.deepEqual(

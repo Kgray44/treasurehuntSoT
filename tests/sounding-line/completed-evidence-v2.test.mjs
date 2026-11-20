@@ -1,12 +1,16 @@
 import assert from "node:assert/strict";
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import test from "node:test";
 import { canonicalJson, digest } from "../../scripts/sounding-line/evidence.mjs";
 import {
   compactCompletedEvidenceV2,
   restoreCompletedEvidenceV2,
 } from "../../scripts/sounding-line/completed-evidence-v2.mjs";
+import { publishCompactCompletedEvidence } from "../../scripts/sounding-line/publish-completed-evidence-v2.mjs";
 const bytes = (value) => Buffer.from(canonicalJson(value) + "\n");
-function fixture(count = 4) {
+function fixture(count = 4, payload = "original inputs ".repeat(1000)) {
   const receipts = [],
     checkpoints = new Map();
   for (let i = 0; i < count; i++) {
@@ -19,7 +23,7 @@ function fixture(count = 4) {
       obligationId: `unit.${i}`,
       disposition: "FRESH",
       result: "PASSED",
-      fingerprint: { version: "1.4", fingerprintDigest: digest(i), payload: "original inputs ".repeat(1000) },
+      fingerprint: { version: "1.4", fingerprintDigest: digest(i), payload },
     };
     receipts.push({ ...original, receiptDigest: digest(original) });
     checkpoints.set(
@@ -76,6 +80,48 @@ test("missing, modified, extra and wrongly referenced receipt bytes cannot recon
     const changed = new Map(packed);
     change(changed);
     assert.throws(() => restoreCompletedEvidenceV2(changed), /COMPLETED_V2_/u);
+  }
+});
+test("publisher reads only committed checkpoints and writes an exact compact export once", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "sl-completed-publisher-"));
+  const parent = path.join(root, "artifacts", "sounding-line");
+  const originalDirectory = path.join(parent, "completed-evidence");
+  const compactDirectory = path.join(parent, "completed-evidence-v2");
+  try {
+    assert.equal(await publishCompactCompletedEvidence(root), null);
+    await mkdir(originalDirectory, { recursive: true });
+    await writeFile(path.join(originalDirectory, "checkpoint-0005.json.pending"), "{");
+    assert.equal(await publishCompactCompletedEvidence(root), null);
+    const original = fixture();
+    for (const [name, content] of original) await writeFile(path.join(originalDirectory, name), content);
+    const measurements = await publishCompactCompletedEvidence(root);
+    const names = await readdir(compactDirectory);
+    const compact = new Map(
+      await Promise.all(names.map(async (name) => [name, await readFile(path.join(compactDirectory, name))])),
+    );
+    assert.equal(names.length, measurements.members);
+    assert.deepEqual(restoreCompletedEvidenceV2(compact), original);
+    await assert.rejects(publishCompactCompletedEvidence(root), { code: "EEXIST" });
+    assert.equal(
+      JSON.parse(await readFile(path.join(compactDirectory, "manifest-v2.json"), "utf8")).checkpoints.length,
+      original.size,
+    );
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("published export stays within the transfer budget even before compression", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "sl-completed-publisher-bound-"));
+  const parent = path.join(root, "artifacts", "sounding-line");
+  const source = path.join(parent, "completed-evidence");
+  try {
+    await mkdir(source, { recursive: true });
+    for (const [name, content] of fixture(2, "x".repeat(3990000))) await writeFile(path.join(source, name), content);
+    await assert.rejects(publishCompactCompletedEvidence(root), /COMPACTION_TRANSPORT_BOUND/u);
+    assert.deepEqual(await readdir(parent), ["completed-evidence"]);
+  } finally {
+    await rm(root, { recursive: true, force: true });
   }
 });
 test("forked prefixes, source changes, missing sequence and self-asserted acceptance are rejected", () => {

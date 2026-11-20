@@ -11,6 +11,7 @@ import {
   authenticatedCompletedReceipt,
   discoverCompletedEvidenceProducerHints,
 } from "../../scripts/sounding-line/authenticated-completed-evidence.mjs";
+import { compactCompletedEvidenceV2 } from "../../scripts/sounding-line/completed-evidence-v2.mjs";
 import {
   canonicalJson,
   createEvidenceFingerprint,
@@ -27,11 +28,14 @@ import {
 const REPOSITORY = "Kgray44/treasurehuntSoT";
 const WORKFLOW = ".github/workflows/sounding-line-ordinary.yml";
 const UPLOAD = "Retain completed whole obligations after any verifier outcome";
+const COMPACT_STEP = "Compact completed whole obligations for transport";
 const MODULES = [
   WORKFLOW,
   "scripts/sounding-line/ordinary.mjs",
   "scripts/sounding-line/evidence.mjs",
   "scripts/sounding-line/authenticated-completed-evidence.mjs",
+  "scripts/sounding-line/completed-evidence-v2.mjs",
+  "scripts/sounding-line/publish-completed-evidence-v2.mjs",
   "scripts/sounding-line/ordinary-supervised.mjs",
   "scripts/sounding-line/verification-budget.mjs",
   "scripts/sounding-line/verification-job-clock.mjs",
@@ -359,7 +363,7 @@ async function fixture(action, { browser = false, dedicated = false, workflowTra
       if (endpoint === "branches/main") return { name: "main", protected: true, commit: { sha: baseSha } };
       if (
         endpoint ===
-        "actions/workflows/sounding-line-ordinary.yml/runs?event=pull_request_target&status=completed&per_page=5"
+        "actions/workflows/sounding-line-ordinary.yml/runs?event=pull_request_target&status=completed&per_page=20"
       )
         return { total_count: 1000, workflow_runs: [state.run] };
       if (endpoint === "actions/runs/101/artifacts?per_page=100")
@@ -535,7 +539,7 @@ test(
       const candidateSha = fixtureCommit(root, "synthetic candidate");
       for (const command of ["npm", "npx"]) {
         const script = path.join(shims, `${command}.cjs`);
-        const source = `require('node:fs').appendFileSync(${JSON.stringify(calls)},JSON.stringify({command:${JSON.stringify(command)},args:process.argv.slice(2)})+'\\n');process.stderr.write('INERT_BOUNDED_COMMAND_FAILURE\\n');process.exit(23);\n`;
+        const source = `require('node:fs').appendFileSync(${JSON.stringify(calls)},JSON.stringify({command:${JSON.stringify(command)},args:process.argv.slice(2)})+'\\n');if (process.argv[3] === 'prettier') process.exit(0);process.stderr.write('INERT_BOUNDED_COMMAND_FAILURE\\n');process.exit(23);\n`;
         writeFileSync(script, source);
         put(shims, command, `#!${process.execPath}\n${source}`);
         chmodSync(path.join(shims, command), 0o700);
@@ -580,6 +584,20 @@ test(
       assert.equal(decision.completedEvidenceIntake.qualification, false);
       assert.equal(decision.failureObservation.stage, "TECHNICAL_VERIFICATION");
       assert.equal(decision.failureObservation.exitCode, 23);
+      const { reconciliation, obligations, finalization, freshObligations } = decision.evidenceReconciliation;
+      assert.equal(reconciliation.length, 1);
+      assert.equal(freshObligations, 1);
+      assert.equal(finalization.decision, "EVIDENCE_INVALID");
+      const completed = reconciliation[0];
+      assert.equal(completed.obligationId, obligations[0].id);
+      assert.equal(completed.freshExecuted, true);
+      assert.deepEqual(finalization.closure[0], {
+        obligationId: completed.obligationId,
+        receiptId: completed.receiptId,
+        satisfied: true,
+      });
+      assert.deepEqual(finalization.remainder, obligations.slice(1).map((obligation) => obligation.id));
+      assert.deepEqual(decision.timing.commands.map((entry) => entry.status), ["PASS", "FAIL"]);
       assert.equal(decision.browserRequired, false);
       assert.equal(decision.buildRequired, false);
       assert.equal(decision.productExperience.applicable, false);
@@ -589,7 +607,10 @@ test(
           .trim()
           .split("\n")
           .map((line) => JSON.parse(line)),
-        [{ command: "npx", args: ["--no-install", "prettier", "--check", "Development_Docs/guide.md"] }],
+        [
+          { command: "npx", args: ["--no-install", "prettier", "--check", "Development_Docs/guide.md"] },
+          { command: "npm", args: ["run", "db:generate"] },
+        ],
       );
       assert.equal(existsSync(network), false);
       assert(result.stdout.endsWith(`${JSON.stringify(decision, null, 2)}\n`));
@@ -988,6 +1009,56 @@ test("ordinary source integration never promotes a JSON-cloned proof token and r
     assert(result.receipts.every((receipt) => receipt.disposition === "FRESH" && receipt.originalReceiptId === null));
   });
 });
+test("compact transport requires its protected publishing step and authenticates the restored whole receipts", async () => {
+  await fixture(async (state) => {
+    const steps = state.jobs.jobs[0].steps;
+    const upload = steps.at(-1);
+    const compactNumber = upload.number;
+    upload.number++;
+    steps.splice(steps.length - 1, 0, {
+      name: COMPACT_STEP,
+      status: "completed",
+      conclusion: "success",
+      number: compactNumber,
+    });
+    state.memberTransform = (entries) => [...compactCompletedEvidenceV2(new Map(entries)).members];
+    state.rebuild();
+    const success = await state.authenticate();
+    assert.equal(success.admitted, 1);
+    assert(state.lookup(success));
+
+    const publisher = steps.find((step) => step.name === COMPACT_STEP);
+    publisher.conclusion = "skipped";
+    const missingPublisher = await state.authenticate();
+    assert.equal(missingPublisher.admitted, 0);
+    assert.match(missingPublisher.rejections[0].reason, /ZIP_MEMBER_INVALID/u);
+
+    publisher.conclusion = "success";
+    state.memberTransform = (entries) => {
+      const { members } = compactCompletedEvidenceV2(new Map(entries));
+      const name = [...members.keys()].find((entry) => entry.startsWith("receipt-"));
+      members.set(name, Buffer.from("{}\n"));
+      return [...members];
+    };
+    state.rebuild();
+    const corrupt = await state.authenticate();
+    assert.equal(corrupt.admitted, 0);
+    assert.match(corrupt.rejections[0].reason, /COMPLETED_EVIDENCE_V2_RECEIPT_BYTES/u);
+
+    state.memberTransform = (entries) => [...entries, ...compactCompletedEvidenceV2(new Map(entries)).members];
+    state.rebuild();
+    const mixed = await state.authenticate();
+    assert.equal(mixed.admitted, 0);
+    assert.match(mixed.rejections[0].reason, /ZIP_MEMBER_INVALID/u);
+
+    state.memberTransform = (entries) => entries;
+    state.rebuild();
+    const fallback = await state.authenticate();
+    assert.equal(fallback.admitted, 1);
+    assert(state.lookup(fallback));
+  });
+});
+
 test("automatic bounded artifact discovery authenticates hints without owner-supplied IDs", async () => {
   await fixture(async (state) => {
     const proof = await state.authenticate({ producers: undefined });
@@ -1080,7 +1151,7 @@ test("empty recent window performs at most five run-specific artifact reads", as
         return endpoint.includes("/runs?event=")
           ? {
               total_count: 99999,
-              workflow_runs: Array.from({ length: 5 }, (_, index) => ({ id: index + 1, run_attempt: 1 })),
+              workflow_runs: Array.from({ length: 20 }, (_, index) => ({ id: index + 1, run_attempt: 1 })),
             }
           : { total_count: 0, artifacts: [] };
       },
@@ -1088,6 +1159,39 @@ test("empty recent window performs at most five run-specific artifact reads", as
   assert.deepEqual(result.hints, []);
   assert.equal(calls.length, 6);
   assert.equal(result.examinedRuns, 5);
+});
+test("bound draft titles do not crowd out a producer in the recent workflow window", async () => {
+  const sha = "a".repeat(40),
+    draftTitle = `Sounding Line finite 1 ordinary 870 ${sha} draft`,
+    calls = [];
+  const result = await discoverCompletedEvidenceProducerHints({
+    request: async (endpoint) => {
+      calls.push(endpoint);
+      if (endpoint.includes("/runs?event="))
+        return {
+          total_count: 7,
+          workflow_runs: [
+            ...Array.from({ length: 5 }, (_, index) => ({
+              id: index + 1,
+              run_attempt: index === 0 ? 2 : 1,
+              head_sha: sha,
+              display_title: draftTitle,
+            })),
+            { id: 6, run_attempt: 2, head_sha: "b".repeat(40), display_title: draftTitle },
+            { id: 7, run_attempt: 1, conclusion: "failure" },
+          ],
+        };
+      if (endpoint === "actions/runs/6/artifacts?per_page=100") return { total_count: 0, artifacts: [] };
+      assert.equal(endpoint, "actions/runs/7/artifacts?per_page=100");
+      return {
+        total_count: 1,
+        artifacts: [{ id: 107, name: "sounding-line-completed-evidence-7-1", expired: false }],
+      };
+    },
+  });
+  assert.deepEqual(result.hints, [{ runId: 7, attempt: 1, artifactId: 107 }]);
+  assert.equal(result.examinedRuns, 2);
+  assert.equal(calls.length, 3);
 });
 for (const [name, mutate] of [
   [
@@ -1478,6 +1582,112 @@ test("empty discovered producer window skips intake fingerprints and executes ev
       state.obligations,
       "new snapshot returns identical complete fingerprints",
     );
+  });
+});
+
+test("rejected producer artifacts do not trigger intake fingerprint work", async () => {
+  await fixture(async (state) => {
+    state.artifact.expired = true;
+    const selected = state.plan.selected;
+    Object.defineProperty(state.plan, "selected", {
+      configurable: true,
+      get() {
+        throw new Error("rejected intake must not build fingerprints");
+      },
+    });
+    const proof = await state.authenticate();
+    assert.equal(proof.admitted, 0);
+    assert.equal(state.lookup(proof), null);
+    assert.deepEqual(proof.rejections, [
+      { artifactId: 601, reason: "SOUNDING_LINE_COMPLETED_EVIDENCE_PROVIDER_ARTIFACT_INVALID" },
+    ]);
+    assert(!state.calls.includes("actions/artifacts/601/zip"));
+    assert(!state.calls.some((endpoint) => endpoint.startsWith("git/blobs/")));
+    Object.defineProperty(state.plan, "selected", { configurable: true, writable: true, value: selected });
+    const executed = [];
+    const result = await runReconciledVerification(
+      state.root,
+      state.plan,
+      async (_root, command, args) => {
+        executed.push([command, args]);
+      },
+      { authenticatedEvidence: proof },
+    );
+    assert.deepEqual(executed, state.obligations.flatMap((obligation) => obligation.commands));
+    assert.equal(result.freshObligations, state.obligations.length);
+    assert(result.receipts.every((receipt) => receipt.disposition === "FRESH"));
+  });
+});
+
+test("a rejected hint does not prevent a later authenticated producer from matching", async () => {
+  await fixture(async (state) => {
+    const producer = { runId: 101, attempt: 1 };
+    const proof = await state.authenticate({
+      producers: [{ ...producer, artifactId: 602 }, { ...producer, artifactId: 601 }],
+      request: async (endpoint, ...args) => {
+        if (endpoint === "actions/artifacts/602") {
+          state.calls.push(endpoint);
+          return { ...state.artifact, id: 602, expired: true };
+        }
+        return state.request(endpoint, ...args);
+      },
+    });
+    assert.equal(proof.admitted, matchingReusableObligations(state).length);
+    assert(state.lookup(proof));
+    assert.deepEqual(proof.rejections, [
+      { artifactId: 602, reason: "SOUNDING_LINE_COMPLETED_EVIDENCE_PROVIDER_ARTIFACT_INVALID" },
+    ]);
+    const firstSourceRead = state.calls.findIndex((endpoint) => endpoint.startsWith("git/blobs/"));
+    assert(firstSourceRead > state.calls.indexOf("actions/artifacts/601"));
+  });
+});
+
+test("producers sharing an authority reuse its verified source while authenticating each run", async () => {
+  await fixture(async (state) => {
+    const first = { runId: 102, attempt: 1, artifactId: 602 };
+    const second = { runId: 101, attempt: 1, artifactId: 601 };
+    const proof = await state.authenticate({
+      producers: [first, second],
+      request: async (endpoint, ...args) => {
+        if (endpoint === "actions/runs/102") return { ...state.run, id: 102 };
+        if (endpoint === "actions/artifacts/602")
+          return {
+            ...state.artifact,
+            id: 602,
+            name: "sounding-line-completed-evidence-102-1",
+            workflow_run: { ...state.artifact.workflow_run, id: 102 },
+          };
+        if (endpoint === "actions/runs/102/attempts/1/jobs?per_page=100") {
+          state.calls.push(endpoint);
+          return { ...state.jobs, jobs: [{ ...state.jobs.jobs[0], run_id: 102, conclusion: "skipped" }] };
+        }
+        return state.request(endpoint, ...args);
+      },
+    });
+    assert.equal(proof.admitted, 1);
+    assert(state.lookup(proof));
+    assert.deepEqual(proof.rejections, [
+      { artifactId: 602, reason: "SOUNDING_LINE_COMPLETED_EVIDENCE_PROVIDER_JOB_INVALID" },
+    ]);
+    assert.equal(state.calls.filter((endpoint) => endpoint === `git/commits/${state.baseSha}`).length, 1);
+    const blobReads = state.calls.filter((endpoint) => endpoint.startsWith("git/blobs/"));
+    assert.equal(blobReads.length, MODULES.length);
+    assert.equal(new Set(blobReads).size, MODULES.length);
+    assert(state.calls.includes("actions/runs/102/attempts/1/jobs?per_page=100"));
+    assert(state.calls.includes("actions/runs/101/attempts/1/jobs?per_page=100"));
+  });
+});
+
+test("authenticated artifacts still require current fingerprints before admitting receipts", async () => {
+  await fixture(async (state) => {
+    Object.defineProperty(state.plan, "selected", {
+      configurable: true,
+      get() {
+        throw new Error("current fingerprint unavailable");
+      },
+    });
+    await assert.rejects(state.authenticate(), /current fingerprint unavailable/u);
+    assert(state.calls.includes("actions/artifacts/601/zip"));
   });
 });
 
