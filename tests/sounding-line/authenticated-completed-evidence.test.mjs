@@ -1507,6 +1507,76 @@ test("snapshot source reader preserves raw delegate semantics, scope and failed-
   assert.equal(moving("src/a.ts"), "2");
 });
 
+test("snapshot source reader batches two tracked blobs without changing their decoded content", () => {
+  const root = path.resolve("inert-snapshot");
+  const revision = "a".repeat(40);
+  const samples = [
+    ["src/one.ts", Buffer.from("  export const label = 'caf\u00e9';\n")],
+    ["src/empty.ts", Buffer.alloc(0)],
+  ].map(([path, bytes]) => {
+    const blob = createHash("sha1").update(`blob ${bytes.length}\0`).update(bytes).digest("hex");
+    return { path, bytes, blob };
+  });
+  const calls = [];
+  const execute = (binary, args, options) => {
+    calls.push({ binary, args, options });
+    if (args[0] === "show") return samples.find((row) => args[1] === `${revision}:${row.path}`).bytes.toString();
+    return Buffer.concat(
+      samples.flatMap(({ bytes, blob }) => [Buffer.from(`${blob} blob ${bytes.length}\n`), bytes, Buffer.from("\n")]),
+    );
+  };
+  const read = createSnapshotSourceReader(root, revision, execute);
+  read.prefetch(samples);
+  for (const { path, bytes } of samples) assert.equal(read(path), bytes.toString().trim());
+  assert.equal(calls.length, 1);
+  assert.deepEqual(calls[0].args, ["cat-file", "--batch"]);
+  assert.equal(calls[0].options.env?.GIT_NO_LAZY_FETCH, "1");
+  assert.equal(calls[0].options.input, samples.map(({ path }) => revision + ":" + path).join("\n") + "\n");
+});
+
+test("snapshot source reader falls back after a batch reports corrupt blob bytes", () => {
+  const root = path.resolve("inert-snapshot");
+  const expected = Buffer.from("clean");
+  const blob = createHash("sha1").update("blob 5\0").update(expected).digest("hex");
+  const calls = [];
+  const read = createSnapshotSourceReader(root, "a".repeat(40), (_binary, args) => {
+    calls.push(args[0]);
+    if (args[0] === "cat-file") {
+      return Buffer.from(`${blob} blob 5\nwrong\n${blob} blob 5\nclean\n`);
+    }
+    return expected.toString();
+  });
+  const entries = [
+    { path: "src/a.ts", blob },
+    { path: "src/b.ts", blob },
+  ];
+  read.prefetch(entries);
+  read.prefetch(entries);
+  assert.equal(read("src/a.ts"), "clean");
+  assert.equal(read("src/b.ts"), "clean");
+  assert.deepEqual(calls, ["cat-file", "show", "show"]);
+});
+
+test("snapshot source reader keeps ambiguous paths and expired speculative work on the ordinary read path", () => {
+  const calls = [];
+  const read = createSnapshotSourceReader(path.resolve("inert-snapshot"), "a".repeat(40), (_binary, args) => {
+    calls.push(args[0]);
+    return "ordinary";
+  });
+  const row = (path) => ({ path, blob: "b".repeat(40) });
+  read.prefetch([row("src/good.ts"), row("src/\ufffd.ts"), row("src/line\nbreak.ts")]);
+  assert.equal(read("src/\ufffd.ts"), "ordinary");
+  const previous = process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS;
+  process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS = String(Date.now() - 1);
+  try {
+    read.prefetch([row("src/a.ts"), row("src/b.ts")]);
+  } finally {
+    if (previous === undefined) delete process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS;
+    else process.env.SOUNDING_LINE_COMMAND_DEADLINE_AT_MS = previous;
+  }
+  assert.deepEqual(calls, ["show"]);
+});
+
 test("snapshot source reader keeps fixed entry and byte caps with uncached fallback", () => {
   let calls = 0;
   const execute = () => {
