@@ -60,7 +60,7 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
   await search(admin.page, "Consent Harbor");
   await expect(admin.page.getByRole("link", { name: "Consent Harbor" })).toBeVisible();
   await admin.page.getByRole("link", { name: "Consent Harbor" }).click();
-  await expect(admin.page.getByRole("heading", { name: "Consent Harbor" })).toBeVisible();
+  await expect(admin.page.getByRole("heading", { name: "Consent Harbor", exact: true, level: 1 })).toBeVisible();
   for (const section of [
     "Overview",
     "Identity",
@@ -323,8 +323,18 @@ test("privileged users bring the standalone Bridgewatch watch home without expos
   const width = await admin.page.evaluate(() => ({
     client: document.documentElement.clientWidth,
     scroll: document.documentElement.scrollWidth,
+    overflow: Array.from(document.querySelectorAll("body *"))
+      .map((element) => ({
+        tag: element.tagName,
+        className: element.className,
+        right: Math.round(element.getBoundingClientRect().right),
+        width: Math.round(element.getBoundingClientRect().width),
+      }))
+      .filter((element) => element.right > innerWidth)
+      .sort((a, b) => b.right - a.right)
+      .slice(0, 12),
   }));
-  expect(width.scroll).toBeLessThanOrEqual(width.client);
+  expect(width.scroll, JSON.stringify(width.overflow)).toBeLessThanOrEqual(width.client);
   await capture(admin.page, "ADM2-EV-O-BRIDGEWATCH-MOBILE");
   await admin.context.close();
 });
