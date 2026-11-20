@@ -33,6 +33,8 @@ class WorkflowEvidenceTest(unittest.TestCase):
         self.assertIn("!cancelled() && inputs.operation == 'recovery-transport-only'", exercise)
         self.assertIn("always() && inputs.operation == 'recovery-transport-only'", recovery)
         self.assertIn("steps.rehearsal.outputs.intent_sha256", recovery)
+        self.assertIn("REHEARSAL_CANCELLED: ${{ job.status == 'cancelled' && "
+                      "steps.rehearsal.outcome == 'cancelled' }}", recovery)
         self.assertNotIn("JAMMY_PREFLIGHT_APPROVAL", rehearsal)
         native = document.split("id: preflight", 1)[1]
         self.assertIn("!cancelled() && inputs.operation == 'confined-loader-and-denials-only'", native)

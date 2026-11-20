@@ -66,7 +66,7 @@ jobs:
         shell: bash
         env:
           REHEARSAL_INTENT_SHA256: ${{ steps.rehearsal.outputs.intent_sha256 }}
-          REHEARSAL_CANCELLED: ${{ cancelled() }}
+          REHEARSAL_CANCELLED: ${{ job.status == 'cancelled' && steps.rehearsal.outcome == 'cancelled' }}
         run: |
           /usr/bin/git --no-replace-objects show "$GITHUB_SHA:scripts/sounding-line/b-c856-linux-controller/jammy_preflight_rehearsal.py" |
             /usr/bin/python3 -IB - recover
