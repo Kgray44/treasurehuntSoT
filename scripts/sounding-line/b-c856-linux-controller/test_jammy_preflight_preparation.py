@@ -1,4 +1,5 @@
 import hashlib
+import os
 from datetime import datetime, timezone
 import unittest
 
@@ -61,3 +62,40 @@ class RuntimePreparationTest(unittest.TestCase):
         manifest, verifier = prep.read_inventory_inputs(load_plan()["inventory"]["manifestSha256"])
         self.assertEqual(manifest["kind"], "SOUNDING_LINE_JAMMY_STATIC_NATIVE_INVENTORY_V1")
         self.assertEqual(hashlib.sha256(verifier).hexdigest(), VERIFIER_SHA256)
+
+    def test_dormant_wrapper_refuses_before_preparation_or_writes(self):
+        evidence = Mock()
+        with patch.object(prep, "prepare_runtime_inputs") as prepare:
+            with self.assertRaisesRegex(ValueError, "LAUNCH_ACTION_NOT_AUTHORIZED"):
+                prep.run_published_preflight(123, {}, "token", b"inventory", 7, evidence)
+        prepare.assert_not_called()
+        evidence.write.assert_not_called()
+
+    def test_controller_starts_only_after_custody_digest_is_written_and_flushed(self):
+        from pathlib import Path
+
+        receipt = b"original"
+        prepared = Mock(receipt=receipt, members={"loader": b"bytes"})
+        prepared.run.source = "a" * 40
+        scope = Mock()
+        digest = "b" * 64
+        events = []
+        evidence = Mock()
+        evidence.write.side_effect = lambda data: events.append(data) or len(data)
+        evidence.flush.side_effect = lambda: events.append("flushed")
+        controller = Mock(side_effect=lambda *args: events.append("controller") or {"diagnostic": True})
+        env = {"RUNNER_TRACKING_ID": "tracking", "RUNNER_TEMP": str(Path.cwd()), "ImageVersion": "image"}
+        with (patch.object(prep.worker, "NATIVE_ENABLED", True),
+              patch.dict(os.environ, env, clear=True),
+              patch.object(prep, "prepare_runtime_inputs", return_value=prepared),
+              patch.object(prep, "provision_preflight_scope", return_value=(scope, digest)),
+              patch.object(prep.worker, "controller", controller)):
+            self.assertEqual(prep.run_published_preflight(123, {}, "token", receipt, 7, evidence), {"diagnostic": True})
+            controller.assert_called_once_with(scope, prepared.run.source, receipt, prepared.members,
+                                               "tracking", "image", Path.cwd())
+            self.assertEqual(events, [f"jammyPreflightCustodySha256={digest}\n", "flushed", "controller"])
+            controller.reset_mock()
+            evidence.flush.side_effect = OSError("provider evidence write failed")
+            with self.assertRaises(OSError):
+                prep.run_published_preflight(123, {}, "token", receipt, 7, evidence)
+            controller.assert_not_called()

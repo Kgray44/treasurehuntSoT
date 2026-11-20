@@ -1,5 +1,7 @@
 import struct
 import unittest
+from dataclasses import replace
+from types import SimpleNamespace
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -69,6 +71,34 @@ class ProtocolTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "LAUNCH_DENIAL_CHILD_FIELDS"):
                 worker.namespace_child(SCOPE, "denials", 8)
             run.assert_not_called()
+
+
+    def test_controller_keeps_primary_when_recovery_and_watchdog_both_fail(self):
+        from jammy_preflight_custody import CustodyBinding
+
+        scope = replace(SCOPE, custody=CustodyBinding((10, 1), (10, 2)))
+        plan = {"runner": {"architecture": "x86_64", "kernel": "kernel", "uid": 1001, "image": "image"},
+                "limits": {"hostScratchBytes": 1, "minimumHostFreeBytesAfterScratch": 1}}
+        primary = ValueError("worker admission failed")
+        recovery = ValueError("passive recovery failed")
+        retirement = OSError("watchdog retirement failed")
+        with (patch.object(worker, "NATIVE_ENABLED", True),
+              patch.object(worker, "load_supervisor_plan", return_value=plan),
+              patch.object(worker.os, "uname", return_value=SimpleNamespace(
+                  sysname="Linux", machine="x86_64", release="kernel"), create=True),
+              patch.object(worker.os, "geteuid", return_value=1001, create=True),
+              patch.object(worker.os, "statvfs", return_value=SimpleNamespace(f_bavail=2, f_frsize=2), create=True),
+              patch.object(worker, "build_request"),
+              patch.object(worker.socket, "AF_UNIX", 1, create=True),
+              patch.object(worker.socket, "socket"),
+              patch.object(worker, "arm_watchdog", return_value=SimpleNamespace(lease=LEASE)),
+              patch.object(worker, "admit_owned_unit", side_effect=primary),
+              patch.object(worker, "recover", side_effect=recovery),
+              patch.object(worker, "finish_watchdog", side_effect=retirement)):
+            with self.assertRaises(worker.PreflightFailure) as error:
+                worker.controller(scope, RUN.source, b"receipt", {}, "tracking", "image", Path("/tmp"))
+        self.assertIs(error.exception.primary, primary)
+        self.assertEqual(error.exception.cleanup, (("passive_recovery", recovery), ("watchdog_retirement", retirement)))
 
 
 if __name__ == "__main__":

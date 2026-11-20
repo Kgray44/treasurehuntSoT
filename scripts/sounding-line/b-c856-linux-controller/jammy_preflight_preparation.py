@@ -9,6 +9,7 @@ from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from pathlib import Path
 
+import jammy_preflight_worker as worker
 from jammy_native_inventory import collect_inventory
 from jammy_native_runtime_inputs import bind_member_bytes, bounded_read, load_plan, require, sha256, verify_inventory
 from jammy_preflight_custody import MAX_RECORD, CustodyBinding, boot_id, identity, private_directory, provision_binding
@@ -167,3 +168,20 @@ def recover_preflight_scope(run_id, approval, token, receipt_dir_fd, expected_re
             "JAMMY_PREPARATION_CUSTODY_RECEIPT")
     # The launcher independently verifies the saved inodes, lease, and terminated owners.
     return recover_after_cancellation(scope)
+
+
+def run_published_preflight(run_id, approval, token, receipt, receipt_dir_fd, evidence):
+    """Handoff from the trusted provider wrapper. Publication and dispatch stay externally gated."""
+    require(worker.NATIVE_ENABLED is True, "LAUNCH_ACTION_NOT_AUTHORIZED")
+    tracking = os.environ.get("RUNNER_TRACKING_ID", "")
+    runner_image = os.environ.get("ImageVersion", "")
+    runner_temp = Path(os.environ.get("RUNNER_TEMP", ""))
+    require(re.fullmatch(r"[A-Za-z0-9_.:-]{1,128}", tracking) and runner_temp.is_absolute()
+            and runner_temp.resolve(strict=True) == runner_temp, "JAMMY_PREPARATION_ENVIRONMENT")
+    prepared = prepare_runtime_inputs(run_id, approval, token, receipt, runner_image)
+    scope, digest = provision_preflight_scope(prepared, receipt_dir_fd)
+    line = f"jammyPreflightCustodySha256={digest}\n"
+    require(evidence.write(line) == len(line), "JAMMY_PREPARATION_CUSTODY_EVIDENCE")
+    evidence.flush()
+    return worker.controller(scope, prepared.run.source, prepared.receipt, prepared.members,
+                             tracking, runner_image, runner_temp)
