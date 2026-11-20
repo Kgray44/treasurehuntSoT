@@ -52,6 +52,7 @@ const CHECKOUT_COMMAND = "node authority/scripts/sounding-line/ordinary-checkout
 const CHECKOUT_STEP = "Checkout exact ordinary ancestry and installed reader closure";
 const LIMITS = Object.freeze({
   producers: 3,
+  listedRuns: 20,
   runs: 5,
   artifacts: 100,
   archive: 8 * 1024 * 1024,
@@ -189,20 +190,26 @@ function authenticatedTransport() {
   };
 }
 
+function isDraftRun(run) {
+  if (typeof run.display_title !== "string") return false;
+  const title = /^Sounding Line finite 1 ordinary [1-9][0-9]* ([a-f0-9]{40}) draft$/u.exec(run.display_title);
+  return title !== null && title[1] === run.head_sha;
+}
+
 // This small recent window is intentionally nonexhaustive. Each result remains
 // an untrusted hint; history, names and uploaded assertions never admit receipts.
 export async function discoverCompletedEvidenceProducerHints({ request, limit = LIMITS.producers } = {}) {
   requireValue(positive(limit) && limit <= LIMITS.producers, "DISCOVERY_LIMIT_INVALID");
   const api = request ?? authenticatedTransport();
   const listing = await api(
-    "actions/workflows/sounding-line-ordinary.yml/runs?event=pull_request_target&status=completed&per_page=5",
+    `actions/workflows/sounding-line-ordinary.yml/runs?event=pull_request_target&status=completed&per_page=${LIMITS.listedRuns}`,
   );
   requireValue(
     object(listing) &&
       Number.isSafeInteger(listing.total_count) &&
       listing.total_count >= 0 &&
       Array.isArray(listing.workflow_runs) &&
-      listing.workflow_runs.length <= LIMITS.runs &&
+      listing.workflow_runs.length <= LIMITS.listedRuns &&
       listing.workflow_runs.length <= listing.total_count,
     "DISCOVERY_INVALID",
   );
@@ -210,7 +217,8 @@ export async function discoverCompletedEvidenceProducerHints({ request, limit = 
     hints = [];
   let examinedRuns = 0;
   for (const run of listing.workflow_runs) {
-    if (!positive(run?.id) || !positive(run?.run_attempt) || seen.has(run.id)) continue;
+    if (examinedRuns === LIMITS.runs) break;
+    if (!positive(run?.id) || !positive(run?.run_attempt) || seen.has(run.id) || isDraftRun(run)) continue;
     seen.add(run.id);
     examinedRuns++;
     const artifacts = await api(`actions/runs/${run.id}/artifacts?per_page=100`);

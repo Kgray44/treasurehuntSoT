@@ -359,7 +359,7 @@ async function fixture(action, { browser = false, dedicated = false, workflowTra
       if (endpoint === "branches/main") return { name: "main", protected: true, commit: { sha: baseSha } };
       if (
         endpoint ===
-        "actions/workflows/sounding-line-ordinary.yml/runs?event=pull_request_target&status=completed&per_page=5"
+        "actions/workflows/sounding-line-ordinary.yml/runs?event=pull_request_target&status=completed&per_page=20"
       )
         return { total_count: 1000, workflow_runs: [state.run] };
       if (endpoint === "actions/runs/101/artifacts?per_page=100")
@@ -1080,7 +1080,7 @@ test("empty recent window performs at most five run-specific artifact reads", as
         return endpoint.includes("/runs?event=")
           ? {
               total_count: 99999,
-              workflow_runs: Array.from({ length: 5 }, (_, index) => ({ id: index + 1, run_attempt: 1 })),
+              workflow_runs: Array.from({ length: 20 }, (_, index) => ({ id: index + 1, run_attempt: 1 })),
             }
           : { total_count: 0, artifacts: [] };
       },
@@ -1088,6 +1088,39 @@ test("empty recent window performs at most five run-specific artifact reads", as
   assert.deepEqual(result.hints, []);
   assert.equal(calls.length, 6);
   assert.equal(result.examinedRuns, 5);
+});
+test("bound draft titles do not crowd out a producer in the recent workflow window", async () => {
+  const sha = "a".repeat(40),
+    draftTitle = `Sounding Line finite 1 ordinary 870 ${sha} draft`,
+    calls = [];
+  const result = await discoverCompletedEvidenceProducerHints({
+    request: async (endpoint) => {
+      calls.push(endpoint);
+      if (endpoint.includes("/runs?event="))
+        return {
+          total_count: 7,
+          workflow_runs: [
+            ...Array.from({ length: 5 }, (_, index) => ({
+              id: index + 1,
+              run_attempt: index === 0 ? 2 : 1,
+              head_sha: sha,
+              display_title: draftTitle,
+            })),
+            { id: 6, run_attempt: 2, head_sha: "b".repeat(40), display_title: draftTitle },
+            { id: 7, run_attempt: 1, conclusion: "failure" },
+          ],
+        };
+      if (endpoint === "actions/runs/6/artifacts?per_page=100") return { total_count: 0, artifacts: [] };
+      assert.equal(endpoint, "actions/runs/7/artifacts?per_page=100");
+      return {
+        total_count: 1,
+        artifacts: [{ id: 107, name: "sounding-line-completed-evidence-7-1", expired: false }],
+      };
+    },
+  });
+  assert.deepEqual(result.hints, [{ runId: 7, attempt: 1, artifactId: 107 }]);
+  assert.equal(result.examinedRuns, 2);
+  assert.equal(calls.length, 3);
 });
 for (const [name, mutate] of [
   [
