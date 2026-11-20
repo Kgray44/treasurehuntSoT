@@ -1,7 +1,17 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { cpSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  statSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -101,10 +111,14 @@ async function runtimeUnitGroup(root, plan) {
     })
   ).find((entry) => entry.kind === "unit");
 }
-function checkpoints(directory) {
+function checkpointNames(directory) {
   return readdirSync(directory)
-    .sort()
-    .map((name) => JSON.parse(readFileSync(path.join(directory, name), "utf8")));
+    .filter((name) => /^checkpoint-[0-9]{4}\.json$/u.test(name))
+    .sort();
+}
+
+function checkpoints(directory) {
+  return checkpointNames(directory).map((name) => JSON.parse(readFileSync(path.join(directory, name), "utf8")));
 }
 
 test("whole-suite wrappers preserve legacy partition and order without dropping canonical commands", () => {
@@ -676,6 +690,53 @@ test("checkpoint module identity is SHA256 of original module bytes", async () =
       .update(readFileSync(new URL("../../scripts/sounding-line/ordinary.mjs", import.meta.url)))
       .digest("hex");
     assert.equal(checkpoints(output)[0].producerObservation.authorityModuleSha256, expected);
+  });
+});
+
+test("partially staged checkpoint leaves only the prior whole obligation visible to upload", async () => {
+  await fixture(async ({ root, owner, plan }) => {
+    const output = path.join(owner, "completed");
+    const pending = path.join(output, "checkpoint-0002.json.pending");
+    const progress = {};
+    let calls = 0;
+    await assert.rejects(
+      runReconciledVerification(
+        root,
+        plan,
+        () => {
+          if (++calls === 2) writeFileSync(pending, "{", { flag: "wx" });
+        },
+        { completedEvidenceRoot: output, progress },
+      ),
+      { code: "EEXIST" },
+    );
+    assert.equal(calls, 2);
+    assert.equal(readFileSync(pending, "utf8"), "{");
+    assert.deepEqual(checkpointNames(output), ["checkpoint-0001.json"]);
+    assert.deepEqual(checkpoints(output)[0].receipts, progress.receipts);
+    assert.deepEqual(progress.timings.map((entry) => entry.status), ["PASS", "FAIL"]);
+    const first = path.join(output, "checkpoint-0001.json");
+    assert.deepEqual(readFileSync(first), readFileSync(`${first}.pending`));
+    assert.equal(statSync(first).nlink, 2);
+  });
+});
+
+test("checkpoint publication cannot overwrite an existing final name", async () => {
+  await fixture(async ({ root, owner, plan }) => {
+    const output = path.join(owner, "completed");
+    const final = path.join(output, "checkpoint-0001.json");
+    const prior = "existing export";
+    const progress = {};
+    await assert.rejects(
+      runReconciledVerification(root, plan, () => writeFileSync(final, prior, { flag: "wx" }), {
+        completedEvidenceRoot: output,
+        progress,
+      }),
+      { code: "EEXIST" },
+    );
+    assert.equal(readFileSync(final, "utf8"), prior);
+    assert.equal(JSON.parse(readFileSync(`${final}.pending`, "utf8")).completedWholeObligations, 1);
+    assert.deepEqual(progress.receipts, []);
   });
 });
 

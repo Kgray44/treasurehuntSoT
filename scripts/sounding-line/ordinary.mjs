@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 import { builtinModules } from "node:module";
 import { validateR8RawOriginals } from "./experience-r8-format.mjs";
 import { existsSync, realpathSync } from "node:fs";
-import { lstat, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
+import { link, lstat, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -1076,11 +1076,18 @@ async function completedEvidenceCheckpoint(root, plan, planDigest, directory) {
       wholeVerificationPassed: false,
       qualification: false,
     };
+    const filename = path.join(target, `checkpoint-${String(sequence + 1).padStart(4, "0")}.json`);
+    const pending = `${filename}.pending`;
     await writeFile(
-      path.join(target, `checkpoint-${String(++sequence).padStart(4, "0")}.json`),
+      pending,
       `${canonicalJson(checkpoint)}\n`,
-      { flag: "wx", mode: 0o600 },
+      { flag: "wx", mode: 0o600, flush: true },
     );
+    // Link only after the full record is written. This is create-only on Unix
+    // and Windows. The bounded staging alias shares the payload blocks and
+    // stays outside the workflow's checkpoint-*.json upload.
+    await link(pending, filename);
+    sequence++;
   };
 }
 
