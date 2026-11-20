@@ -317,9 +317,17 @@ test("privileged users bring the standalone Bridgewatch watch home without expos
   await assertNoSeriousAxeViolations(admin.page);
   await capture(admin.page, "ADM2-EV-N-BRIDGEWATCH-DESKTOP");
 
+  const longReference = "BRIDGEWATCH_SYNTHETIC_OBSERVATION_IDENTIFIER_WITHOUT_WORD_BREAKS";
+  await admin.page.route("**/bridgewatch/api/summary", async (route) => {
+    const response = await route.fetch();
+    const data = await response.json();
+    data.attention.push({ title: "Synthetic source observation", level: "bad", message: longReference });
+    await route.fulfill({ response, json: data });
+  });
   await admin.page.setViewportSize({ width: 390, height: 844 });
   await admin.page.reload();
   await expect(admin.page.getByRole("heading", { name: "Fleet overview", exact: true })).toBeVisible();
+  await expect(admin.page.getByText(longReference, { exact: true })).toBeVisible();
   const width = await admin.page.evaluate(() => {
     const { clientWidth: client, scrollWidth: scroll } = document.documentElement;
     const overflow = [];
