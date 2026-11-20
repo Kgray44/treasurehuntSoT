@@ -250,7 +250,24 @@ async function fixture(t, mode) {
     const manifest = JSON.parse(await readFile(path.join(privateContext.directory, "manifest.private.json"), "utf8"));
     assert.equal(manifest.failures.length, 1);
     assert.match(manifest.failures[0].id, /^[a-f0-9]{64}$/u);
-    assert.equal(manifest.records.length, ["missing", "development-missing"].includes(mode) ? 0 : 4);
+    assert(manifest.records.every((entry) => entry.failureId === manifest.failures[0].id));
+    const generated = manifest.records.filter(
+      (entry) => entry.kind === "error-context" && path.posix.basename(entry.path) === "error-context.md",
+    );
+    assert.equal(generated.length, 1, "Playwright 1.61 writes an error context for the unexpected failure");
+    const contextText = await readFile(path.join(privateContext.directory, "results", generated[0].path), "utf8");
+    assert.match(contextText, /# Error details/u);
+    assert.match(contextText, /inert authority worker/u);
+    const explicit = manifest.records.filter((entry) => entry !== generated[0]);
+    assert.deepEqual(
+      explicit.map((entry) => entry.kind).sort(),
+      ["missing", "development-missing"].includes(mode) ? [] : ["error-context", "screenshot", "trace", "video"],
+    );
+    for (const entry of explicit)
+      assert.equal(
+        await readFile(path.join(privateContext.directory, "results", entry.path), "utf8"),
+        `INERT_PRIVATE_LIFECYCLE_${entry.kind}`,
+      );
   }
   if (process.env.SOUNDING_LINE_TEST_RECEIPTS_DIRECTORY) {
     const out = path.join(process.env.SOUNDING_LINE_TEST_RECEIPTS_DIRECTORY, mode);
@@ -312,8 +329,9 @@ test(
     assert.equal(receipt.lifecycle.cleanup.status, "PASS");
     assert.equal(retention.worker.exitCode, 1);
     assert.equal(retention.retention, "INCOMPLETE");
-    assert(retention.issues.includes("NO_FAILURE_ATTACHMENTS"));
-    assert.equal(retention.memberCount, 7);
+    for (const issue of ["FAILURE_ATTACHMENTS_INCOMPLETE", "MISSING_SCREENSHOT", "MISSING_VIDEO", "MISSING_TRACE"])
+      assert(retention.issues.includes(issue));
+    assert.equal(retention.memberCount, 8);
     assert.equal(retention.qualification, false);
   },
 );
@@ -342,6 +360,10 @@ for (const mode of ["failure", "missing", "cancel", "collection-error", "fixture
         );
       }
       assert.equal(retention.qualification, false);
+      if (mode === "missing") {
+        for (const issue of ["FAILURE_ATTACHMENTS_INCOMPLETE", "MISSING_SCREENSHOT", "MISSING_VIDEO", "MISSING_TRACE"])
+          assert(retention.issues.includes(issue));
+      }
       if (mode === "fixture-failure") {
         assert.equal(receipt.lifecycle.fixture, "FAIL");
         assert.equal(receipt.lifecycle.capture, "NOT_STARTED");
