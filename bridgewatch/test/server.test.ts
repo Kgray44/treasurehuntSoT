@@ -1,9 +1,9 @@
-import { execFileSync } from "node:child_process";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import type { BridgewatchProgramSnapshot } from "../src/history.js";
+import { createGitFixture } from "./fixtures/git.js";
 
 const priorEnv = { ...process.env };
 
@@ -353,24 +353,12 @@ describe("Bridgewatch read-only API", () => {
   });
 
   it("reconciles current governing-document and branch evidence for Bridgewatch v1.2", async () => {
-    const fixture = mkdtempSync(join(tmpdir(), "bridgewatch-reconciliation-"));
     const branch = "codex/project-bridgewatch-v1.2-mission-control";
-    const git = (...args: string[]) => execFileSync("git", ["-C", fixture, ...args], { stdio: "pipe" });
-    git("init", "--initial-branch", branch);
-    git(
-      "-c",
-      "user.name=Bridgewatch Test",
-      "-c",
-      "user.email=bridgewatch@example.test",
-      "commit",
-      "--allow-empty",
-      "-m",
-      "Fixture",
-    );
-    process.env.GIT_DIR = join(fixture, ".git");
-    process.env.GIT_WORK_TREE = fixture;
+    const fixture = createGitFixture(branch);
+    process.env.GIT_DIR = fixture.gitDir;
+    process.env.GIT_WORK_TREE = fixture.root;
     process.env.BRIDGEWATCH_REPOSITORY = "owner/repository";
-    process.env.BRIDGEWATCH_DB_PATH = join(fixture, "cache.sqlite");
+    process.env.BRIDGEWATCH_DB_PATH = join(fixture.root, "cache.sqlite");
     const { buildServer } = await import("../lib/server.js");
     const { app, refreshSources } = buildServer();
     try {
@@ -397,6 +385,7 @@ describe("Bridgewatch read-only API", () => {
       );
     } finally {
       await app.close();
+      fixture.cleanup();
     }
   });
 
