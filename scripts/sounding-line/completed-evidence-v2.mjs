@@ -3,6 +3,13 @@
 import { createHash } from "node:crypto";
 import { canonicalJson, verifyReceipt } from "./evidence.mjs";
 const MiB = 1024 * 1024;
+export const COMPACT_EVIDENCE_TRANSPORT = Object.freeze({
+  manifest: "manifest-v2.json",
+  memberBytes: 4 * MiB,
+  expandedBytes: 16 * MiB,
+  archiveBytes: 8 * MiB,
+  members: 129,
+});
 const TOP = [
   "version",
   "kind",
