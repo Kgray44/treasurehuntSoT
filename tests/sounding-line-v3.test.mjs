@@ -47,6 +47,7 @@ test("Wayfarer and Landfall select registered coverage for their changed code", 
   assert.ok(names(wayfarer).includes("unit.wayfarer"));
   assert.ok(names(landfall).includes("unit.landfall"));
   assert.ok(!names(wayfarer).includes("unit.landfall"));
+  assert.ok(!names(wayfarer).includes("unit.homeport"));
   assert.ok(!names(landfall).includes("unit.wayfarer"));
   assert.ok(!names(wayfarer).includes("all-vitest"));
   assert.ok(!names(landfall).includes("all-vitest"));
@@ -89,4 +90,13 @@ test("Integration holds dependencies and conflicts while independent PRs are eli
   assert.equal(disposition({ ...candidate, mergeable: false }, dependency), "merge conflict");
   assert.equal(disposition({ ...candidate, mergeable_state: "behind" }, dependency), "behind");
   assert.equal(disposition(candidate, dependency), "ready");
+});
+
+test("A changed project test executes directly without widening to its whole project", () => {
+  const fixture = data.files.find((file) => file.startsWith("src/wayfarer/") && file.endsWith(".test.ts"));
+  assert.ok(fixture);
+  const result = plan([fixture]);
+  assert.equal(result.category, "maintenance");
+  assert.deepEqual(names(result), ["diff", "changed-tests"]);
+  assert.deepEqual(result.jobs.at(-1).files, [fixture]);
 });

@@ -134,6 +134,13 @@ export function select(entries, read, request, data, readBase) {
       }
       continue;
     }
+    if (status !== "D" && (trackedUnit.includes(file) || trackedBrowser.includes(file))) {
+      if (category === "documentation") category = "maintenance";
+      if (file.endsWith(".test.mjs")) directNode.add(file);
+      else if (trackedBrowser.includes(file)) directBrowser.add(file);
+      else directUnit.add(file);
+      continue;
+    }
     category = "product";
     if (image.test(file) || /\.mdx?$/i.test(file)) checks.add("docs");
     if (!file.startsWith("public/") && (passiveRoot.test(file) || !file.includes("/")) && /\.(?:mdx?|svg)$/i.test(file))
@@ -148,8 +155,10 @@ export function select(entries, read, request, data, readBase) {
       }
     }
     const matching = new Set(mappings.filter((rule) => matches(file, rule.path)).flatMap((rule) => rule.suiteIds));
-    for (const suite of suites) {
-      if (suite.affectedPaths?.some((path) => matches(file, path))) matching.add(suite.id);
+    if (matching.size === 0) {
+      for (const suite of suites) {
+        if (suite.affectedPaths?.some((path) => matches(file, path))) matching.add(suite.id);
+      }
     }
     if (/\.test\.mjs$/.test(file) && status !== "D") directNode.add(file);
     if (/\.test\.tsx?$/.test(file) && status !== "D") directUnit.add(file);
@@ -188,7 +197,7 @@ export function select(entries, read, request, data, readBase) {
     switch (suite.adapter) {
       case "vitest-family":
       case "vitest-family-serial": {
-        files.push(...inferFiles(trackedUnit));
+        if (!files.length) files.push(...inferFiles(trackedUnit));
         const nodeFiles = files.filter((file) => file.endsWith(".test.mjs"));
         const vitest = files.filter((file) => !file.endsWith(".test.mjs"));
         for (const file of vitest) directUnit.delete(file);
@@ -200,7 +209,7 @@ export function select(entries, read, request, data, readBase) {
       }
       case "playwright-family":
       case "admiralty-phase2-browser":
-        files.push(...inferFiles(trackedBrowser));
+        if (!files.length) files.push(...inferFiles(trackedBrowser));
         for (const file of files) directBrowser.add(file);
         if (!files.length) throw new Error("No registered browser tests for " + id);
         break;
