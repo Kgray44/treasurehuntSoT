@@ -9,7 +9,13 @@ const harness = vi.hoisted(() => {
     taleSessionEvent: { createMany: vi.fn() },
     platformAuditEvent: { create: vi.fn() },
   };
-  return { tx, db: { $transaction: vi.fn(async (callback) => callback(tx)) } };
+  return {
+    tx,
+    db: {
+      $transaction: vi.fn(async (callback) => callback(tx)),
+      voyageCaptainAuthorityReceipt: { findFirst: vi.fn() },
+    },
+  };
 });
 
 vi.mock("@/lib/db", () => ({ db: harness.db }));
@@ -22,6 +28,7 @@ vi.mock("@/chronicle/captain-authorization", () => ({
 }));
 
 import {
+  acknowledgeRelinquishedCaptaincy,
   HelmAuthorityError,
   continueSolo,
   relinquishCaptaincy,
@@ -101,6 +108,7 @@ function membership(overrides: Record<string, unknown> = {}) {
 function resetHarness() {
   vi.clearAllMocks();
   harness.db.$transaction.mockImplementation(async (callback) => callback(harness.tx));
+  harness.db.voyageCaptainAuthorityReceipt.findFirst.mockResolvedValue(null);
   for (const model of Object.values(harness.tx))
     for (const method of Object.values(model)) (method as ReturnType<typeof vi.fn>).mockResolvedValue({ count: 1 });
   harness.tx.voyageCaptainAuthorityReceipt.findUnique.mockResolvedValue(null);
@@ -117,6 +125,36 @@ function resetHarness() {
 
 describe("Helm A2 Captain authority and solo lineage", () => {
   beforeEach(resetHarness);
+
+  it("acknowledges only the same Captain's exact committed relinquishment command", async () => {
+    harness.db.voyageCaptainAuthorityReceipt.findFirst.mockResolvedValue(
+      receipt({
+        action: "CAPTAIN_RELINQUISHED",
+        nextCaptainAccountId: null,
+        authorityState: "VACANT",
+        idempotencyKey: "relinquish-key-1",
+      }),
+    );
+
+    await expect(
+      acknowledgeRelinquishedCaptaincy("voyage-1", actor, { expectedVersion: 7, idempotencyKey: "relinquish-key-1" }),
+    ).resolves.toMatchObject({
+      voyageId: "voyage-1",
+      action: "CAPTAIN_RELINQUISHED",
+      authorityState: "VACANT",
+      idempotent: true,
+    });
+    expect(harness.db.voyageCaptainAuthorityReceipt.findFirst).toHaveBeenCalledWith({
+      where: {
+        voyageId: "voyage-1",
+        action: "CAPTAIN_RELINQUISHED",
+        previousCaptainAccountId: "captain-account",
+        idempotencyKey: "relinquish-key-1",
+        sourceConcurrencyVersion: 7,
+      },
+    });
+    expect(harness.tx.taleSession.updateMany).not.toHaveBeenCalled();
+  });
 
   it("transfers authority atomically without touching either Player membership", async () => {
     harness.tx.taleSession.findUnique.mockResolvedValue(session());

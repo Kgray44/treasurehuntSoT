@@ -27,11 +27,19 @@ last_reviewed: 2026-08-27
 ## Validation entry points
 
 - `npm run helm:a2:migrations`
-- `npm run helm:a2:journeys` (fresh task-owned SQLite plus optimized `next build` / `next start` Chromium journey)
-- `npx playwright test tests/e2e/project-helm-phase1.spec.ts --project chromium` after the standard Sounding Line build, SQLite bootstrap, and seed; the default fixture starts the built application with `next start`.
+- `npm run helm:a2:journeys` (fresh task-owned SQLite plus isolated `.next-helm-a2-browser` `next build` / `next start` Chromium semantics journey).
+- `npx playwright test tests/e2e/project-helm-phase1.spec.ts --project chromium` after the standard Sounding Line build, SQLite bootstrap, and seed; the default fixture starts `next dev --webpack` and uses the default `.next` directory.
 - `src/helm/authority-lifecycle.test.ts`
 - `src/components/platform/PlayerLibrary.test.tsx`
 - `src/components/platform/PlayerVoyageRoom.test.tsx`
+
+The isolated built-start runner is valid task-owned semantics evidence, but is
+not an ordinary Sounding Line authority substitute. The ordinary plan builds
+before it starts the default dev fixture; a 2026-08-27 Chromium trace observed
+that shared-directory handoff emit webpack hot updates and abort an in-flight
+authority POST after its durable receipt committed. This is a control-plane
+fixture finding, not a product-behavior waiver or a replacement for the exact
+candidate-bound ordinary browser decision.
 
 ## Excluded scope
 

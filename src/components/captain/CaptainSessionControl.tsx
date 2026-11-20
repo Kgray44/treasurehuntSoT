@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 import { ErrorState, LoadingState, MutationStatus } from "@/components/ui/AsyncState";
 import { captainCopy } from "@/language/captain-copy";
@@ -74,23 +74,37 @@ export function CaptainSessionControl({ sessionId, authenticated }: { sessionId:
   const [simResult, setSimResult] = useState("match");
   const [confidence, setConfidence] = useState(0.95);
   const { requestAction, dialog } = useActionDialog();
-  const load = useCallback(async () => {
-    const [detail, list] = await Promise.all([
-      fetch(`/api/captain/sessions/${sessionId}`, { cache: "no-store" }),
-      fetch("/api/captain/sessions", { cache: "no-store" }),
-    ]);
-    const body = (await detail.json()) as State & { error?: string };
-    const meta = (await list.json()) as { csrfToken?: string };
-    if (!detail.ok)
-      setError(
-        body.error ??
-          "This Voyage could not be opened. No progress has changed. Check your connection, then try again.",
-      );
-    else {
-      setState(body);
-      setError("");
-    }
-    setCsrf(meta.csrfToken ?? "");
+  const inFlightLoad = useRef<Promise<void> | null>(null);
+  const load = useCallback(() => {
+    if (inFlightLoad.current) return inFlightLoad.current;
+    const request = (async () => {
+      const [detail, list] = await Promise.all([
+        fetch(`/api/captain/sessions/${sessionId}`, { cache: "no-store" }),
+        fetch("/api/captain/sessions", { cache: "no-store" }),
+      ]);
+      const body = (await detail.json()) as State & { error?: string };
+      const meta = (await list.json()) as { csrfToken?: string };
+      if (!detail.ok)
+        setError(
+          body.error ??
+            "This Voyage could not be opened. No progress has changed. Check your connection, then try again.",
+        );
+      else {
+        setState(body);
+        setError("");
+      }
+      setCsrf(meta.csrfToken ?? "");
+    })();
+    inFlightLoad.current = request;
+    void request.then(
+      () => {
+        if (inFlightLoad.current === request) inFlightLoad.current = null;
+      },
+      () => {
+        if (inFlightLoad.current === request) inFlightLoad.current = null;
+      },
+    );
+    return request;
   }, [sessionId]);
   useEffect(() => {
     if (!authenticated) return;

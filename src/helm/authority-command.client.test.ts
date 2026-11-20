@@ -27,6 +27,8 @@ describe("postIdempotentAuthorityCommand", () => {
       responseTimeoutMs: 25,
     });
     await vi.advanceTimersByTimeAsync(25);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    await vi.advanceTimersByTimeAsync(750);
 
     await expect(result).resolves.toMatchObject({ status: 200 });
     expect(fetchMock).toHaveBeenCalledTimes(2);

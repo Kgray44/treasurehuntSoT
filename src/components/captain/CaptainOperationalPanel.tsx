@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ErrorState, LoadingState, StatusBanner } from "@/components/ui/AsyncState";
 import { useActionDialog } from "@/components/ui/ActionDialog";
 import { postIdempotentAuthorityCommand } from "@/helm/authority-command.client";
@@ -73,14 +73,28 @@ export function CaptainOperationalPanel({ voyageId, authenticated }: { voyageId:
   const [busyMemberId, setBusyMemberId] = useState("");
   const [cancelling, setCancelling] = useState(false);
   const [authorityAction, setAuthorityAction] = useState<"transfer" | "relinquish" | "">("");
-  const load = useCallback(async () => {
-    const response = await fetch(`/api/captain/voyages/${voyageId}`, { cache: "no-store" });
-    const body = (await response.json()) as Projection & { error?: string };
-    if (!response.ok) setError(body.error ?? "The operational view is unavailable. No Voyage state has changed.");
-    else {
-      setProjection(body);
-      setError("");
-    }
+  const inFlightLoad = useRef<Promise<void> | null>(null);
+  const load = useCallback(() => {
+    if (inFlightLoad.current) return inFlightLoad.current;
+    const request = (async () => {
+      const response = await fetch(`/api/captain/voyages/${voyageId}`, { cache: "no-store" });
+      const body = (await response.json()) as Projection & { error?: string };
+      if (!response.ok) setError(body.error ?? "The operational view is unavailable. No Voyage state has changed.");
+      else {
+        setProjection(body);
+        setError("");
+      }
+    })();
+    inFlightLoad.current = request;
+    void request.then(
+      () => {
+        if (inFlightLoad.current === request) inFlightLoad.current = null;
+      },
+      () => {
+        if (inFlightLoad.current === request) inFlightLoad.current = null;
+      },
+    );
+    return request;
   }, [voyageId]);
 
   async function removeMember(member: Projection["crew"][number]) {

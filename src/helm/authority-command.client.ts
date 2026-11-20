@@ -1,4 +1,5 @@
 const defaultResponseTimeoutMs = 20_000;
+const responseRecoveryDelayMs = 750;
 
 type AuthorityCommand = Readonly<{
   url: string;
@@ -32,6 +33,10 @@ async function postOnce(command: AuthorityCommand) {
   }
 }
 
+function waitForCommittedReceipt() {
+  return new Promise<void>((resolve) => window.setTimeout(resolve, responseRecoveryDelayMs));
+}
+
 /**
  * A2 authority mutations are idempotency-keyed. If a response is lost after a
  * commit, repeat exactly the same command once so the server can reconcile the
@@ -42,6 +47,9 @@ export async function postIdempotentAuthorityCommand(command: AuthorityCommand) 
     return await postOnce(command);
   } catch (cause) {
     if (!(cause instanceof AuthorityResponseTimeoutError || cause instanceof TypeError)) throw cause;
+    // Give a just-committed command a short window to finish its transaction
+    // before its exact-key retry asks the server for the durable receipt.
+    await waitForCommittedReceipt();
     return postOnce(command);
   }
 }

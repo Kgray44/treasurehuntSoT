@@ -123,6 +123,31 @@ function receiptForRequest(receipt: AuthorityReceipt | null, input: { voyageId: 
   return receipt;
 }
 
+/**
+ * A response can be interrupted after relinquishment commits, at which point
+ * the former Captain correctly no longer passes current-authority checks. This
+ * acknowledgement is deliberately narrower than a normal mutation: it reads
+ * only the exact durable receipt that belongs to the authenticated former
+ * Captain and the validated command that was already committed.
+ */
+export async function acknowledgeRelinquishedCaptaincy(
+  voyageId: string,
+  actor: CanonicalCaptainActor,
+  unchecked: z.infer<typeof helmAuthorityMutationSchema>,
+) {
+  const input = helmAuthorityMutationSchema.parse(unchecked);
+  const receipt = await db.voyageCaptainAuthorityReceipt.findFirst({
+    where: {
+      voyageId,
+      action: "CAPTAIN_RELINQUISHED",
+      previousCaptainAccountId: actor.accountId,
+      idempotencyKey: input.idempotencyKey,
+      sourceConcurrencyVersion: input.expectedVersion,
+    },
+  });
+  return receipt ? receiptResult(receipt, true) : null;
+}
+
 export async function transferCaptainAuthority(
   voyageId: string,
   actor: CanonicalCaptainActor,
