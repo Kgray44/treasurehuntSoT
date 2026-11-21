@@ -273,6 +273,7 @@ function ChronicleJournalSessionIdentity({
   const activeOpeningPolicy = useRef<JournalOpeningPolicy | null>(null);
   const chapterDrawer = useRef<HTMLElement>(null);
   const objectDrawer = useRef<HTMLElement>(null);
+  const [gestureFeedbackRoot, setGestureFeedbackRoot] = useState<HTMLDivElement | null>(null);
   const drawerFocusOrigin = useRef<HTMLElement | null>(null);
   const previousDrawer = useRef<PlayerJournalReadingState["openDrawer"]>(null);
   const openingRun = useRef<AbortController | null>(null);
@@ -1222,6 +1223,8 @@ function ChronicleJournalSessionIdentity({
                 <CrossdeckHandoff
                   voyageId={sessionId}
                   csrfToken={state.csrfToken}
+                  gestureSource={reading.openDrawer === "map" || pages[currentPage]?.block?.journalKind === "map"}
+                  gestureFeedbackRoot={gestureFeedbackRoot}
                   object={(() => {
                     const selected = pages[currentPage]?.block ?? currentBlock;
                     const family =
@@ -1529,6 +1532,7 @@ function ChronicleJournalSessionIdentity({
               ×
             </button>
             <h2>{drawerTitle(reading.openDrawer)}</h2>
+            {reading.openDrawer === "map" && <div ref={setGestureFeedbackRoot} />}
             {identitySession &&
               reading.openDrawer === "map" &&
               (state?.session.status === "ACTIVE" || state?.session.status === "COMPLETED") && <LandfallJournalChart />}

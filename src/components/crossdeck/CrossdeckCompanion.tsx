@@ -441,6 +441,7 @@ export function CrossdeckCompanion({
             voyageId={state.session.id}
             csrfToken={state.csrfToken ?? connection.csrf}
             object={object}
+            gestureSource={role === "CHART" && object?.family === "MAP"}
             context={context}
             captureContext={captureContext}
             onConnectionChange={setSyncConnection}

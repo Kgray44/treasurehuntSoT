@@ -4,7 +4,14 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { beforeAll, afterAll, beforeEach, describe, expect, it } from "vitest";
 import { crossdeckFixture } from "./test-fixture";
 import { createCrossdeckSyncService } from "./sync-service";
-import { commandSchema, HANDOFF_TTL_MS, type ObjectRef, type SyncCommand } from "./sync-contracts";
+import {
+  commandSchema,
+  GESTURE_DECISION_MS,
+  GESTURE_TTL_MS,
+  HANDOFF_TTL_MS,
+  type ObjectRef,
+  type SyncCommand,
+} from "./sync-contracts";
 import { STALE_MS } from "./contracts";
 import { createCrossdeckPhase2Packs } from "./lab-phase2";
 import { runDeviceLabScenario } from "@/device-lab/runner";
@@ -120,6 +127,69 @@ async function offer(
   });
   return next.handoffs.at(-1)!;
 }
+describe("camera-directed Chart handoff", () => {
+  const arm = async () => {
+    const next = await command("source", { action: "gesture-arm", object: ref("MAP"), context: { blockId: "map" } });
+    expect(next.handoffs).toEqual([]);
+    expect(next.gesture?.receiverCount).toBe(0);
+    return next.gesture!.id;
+  };
+  it("uses an authorized receiver's release as acceptance and waits for its separate acknowledgement", async () => {
+    const gestureId = await arm();
+    const visible = (await sync.read(f.receiver, f.voyage.id, target)).gesture;
+    expect(visible?.id).toBe(gestureId);
+    expect(visible).not.toHaveProperty("object");
+    expect(visible).not.toHaveProperty("receiverCount");
+    await expect(command("source", { action: "gesture-receive", gestureId })).rejects.toThrow();
+    await command("target", { action: "gesture-receive", gestureId });
+    await command("target", { action: "gesture-receive", gestureId });
+    await expect(command("source", { action: "gesture-send", gestureId })).rejects.toThrow();
+    f.advance(GESTURE_DECISION_MS);
+    const sent = await command("source", { action: "gesture-send", gestureId });
+    expect(sent.gesture).toBeUndefined();
+    expect(sent.handoffs).toMatchObject([{ id: gestureId, targetId: target, state: "COMMITTED", mode: "SEND_VIEW" }]);
+    await expect(command("source", { action: "gesture-send", gestureId })).rejects.toThrow();
+    const received = await command("target", { action: "acknowledge", handoffId: gestureId });
+    expect(received.handoffs[0].state).toBe("ACKNOWLEDGED");
+    expect(received.presentations[0]).toMatchObject({ object: ref("MAP"), custody: f.source });
+  });
+
+  it("refuses ambiguous releases", async () => {
+    const extra = await f.service.act(f.receiver, f.claim(await f.challenge()));
+    if (!("surface" in extra) || !extra.surface) throw new Error("Second receiver missing");
+    const gestureId = await arm();
+    await command("target", { action: "gesture-receive", gestureId });
+    await sync.command(f.receiver, {
+      messageId: randomUUID(),
+      surfaceId: extra.surface.surfaceId,
+      voyageId: f.voyage.id,
+      sequence: 1,
+      payloadSchemaVersion: 1,
+      payload: { action: "gesture-receive", gestureId },
+    });
+    f.advance(GESTURE_DECISION_MS);
+    const next = await sync.read(f.actor, f.voyage.id, f.source);
+    expect(next.gesture?.receiverCount).toBe(2);
+    await expect(command("source", { action: "gesture-send", gestureId })).rejects.toThrow();
+    expect((await sync.read(f.actor, f.voyage.id, f.source)).handoffs).toEqual([]);
+  });
+
+  it("rejects private content, revoked targets, cancellations and expired arms", async () => {
+    await expect(command("source", { action: "gesture-arm", object: ref("NOTE"), context: {} })).rejects.toThrow();
+    const cancelled = await arm();
+    await command("source", { action: "gesture-cancel", gestureId: cancelled });
+    await expect(command("target", { action: "gesture-receive", gestureId: cancelled })).rejects.toThrow();
+    const expired = await arm();
+    f.advance(GESTURE_TTL_MS);
+    await expect(command("target", { action: "gesture-receive", gestureId: expired })).rejects.toThrow();
+    const revoked = await arm();
+    await command("target", { action: "gesture-receive", gestureId: revoked });
+    await f.db.accountSession.update({ where: { id: f.phone.id }, data: { revokedAt: f.now() } });
+    f.advance(GESTURE_DECISION_MS);
+    await expect(command("source", { action: "gesture-send", gestureId: revoked })).rejects.toThrow();
+  });
+});
+
 describe("durable manual handoff and convergence", { timeout: 30_000 }, () => {
   it("separates offer, server commit, destination acknowledgment and source departure without story mutation", async () => {
     const before = await f.counts();

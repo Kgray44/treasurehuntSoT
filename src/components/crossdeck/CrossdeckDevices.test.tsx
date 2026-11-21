@@ -6,6 +6,8 @@ import { storageKey } from "@/crossdeck/client";
 import { CrossdeckDevices } from "./CrossdeckDevices";
 import { VoyageContext } from "./VoyageContext";
 
+vi.mock("./ChartGesturePreference", () => ({ ChartGesturePreference: () => null }));
+
 const router = vi.hoisted(() => ({ push: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => router }));
 vi.mock("qrcode", () => ({ default: { toDataURL: vi.fn().mockResolvedValue("data:image/png;base64,synthetic") } }));
