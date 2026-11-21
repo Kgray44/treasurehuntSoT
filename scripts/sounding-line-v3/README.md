@@ -24,3 +24,13 @@ Add a line such as **Depends on: #123, #124** to the PR description to declare p
 For the registered Wayfarer and Landfall unit suites, Actions may reuse a successful result on the same PR when the selected tests, toolchain, runner OS family, and tracked suite inputs match. The logs identify reuse. Other selected checks run on the current proposed tree.
 
 The cutover disables the legacy ordinary workflow in GitHub Actions. Its source and receipts remain available for historical diagnostics. This workflow uses the existing project test fixtures, including browser harnesses, in isolated runner jobs.
+
+Full browser verification uses independent jobs for dedicated journey runners, Lanternwake, and the other browser profiles. The generic Chromium profile runs in four Playwright shards, with spec files kept intact. Each job owns its build and fixture data. The full decision requires every job to pass.
+
+The manual `generic-serial` scope runs the same generic Chromium profile in one job for timing comparisons. It has its own result.
+
+### Formatting
+
+Ordinary PRs run Prettier on new or modified supported source and configuration files. Passive Markdown and image changes keep the dependency-free diff, link, and asset checks.
+
+Manual full verification reports every unchanged violation in the recorded 78-file baseline. A grandfathered finding requires the same tracked path, blob, formatter version, and formatting configuration. New or modified violations fail the check. Historical files stay intact until they are revised for their own purpose.

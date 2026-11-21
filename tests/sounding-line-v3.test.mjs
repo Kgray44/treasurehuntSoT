@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { browserAuthorityExecutionTimeoutMs } from "../scripts/sounding-line/browser-authority.mjs";
+import { classifyFormatting } from "../scripts/sounding-line-v3/format.mjs";
+import { reusableSource } from "../scripts/sounding-line-v3/reuse.mjs";
 import { disposition, prerequisites } from "../scripts/sounding-line-v3/integrate.mjs";
 import { metadata, passive, registry, select } from "../scripts/sounding-line-v3/plan.mjs";
 
@@ -53,7 +56,7 @@ test("Formatting and workflow changes take distinct maintenance routes", () => {
   assert.deepEqual(names(formatting), ["diff", "format"]);
   const workflow = plan([".github/workflows/sounding-line-v3.yml"]);
   assert.equal(workflow.category, "maintenance");
-  assert.deepEqual(names(workflow), ["diff", "workflow"]);
+  assert.deepEqual(names(workflow), ["diff", "format", "workflow"]);
 });
 
 test("Wayfarer and Landfall select registered coverage for their changed code", () => {
@@ -80,6 +83,42 @@ test("Shared, schema, and security changes get conservative coverage", () => {
   assert.ok(security.some((job) => job.includes("browser")));
 });
 
+test("Bridgewatch changes and full verification use the Bridgewatch package test command", () => {
+  for (const selection of [
+    plan(["bridgewatch/public/style.css"]),
+    plan(["bridgewatch/test/mission-control-ui.test.ts"]),
+    plan([], "", { full: true }),
+  ]) {
+    assert.equal(selection.jobs.find(({ id }) => id === "unit.bridgewatch")?.kind, "bridgewatch-vitest");
+    assert.ok(!names(selection).includes("changed-tests"));
+  }
+});
+
+test("Homeport Node tests require their application checkout and dependency setup", () => {
+  const declared = plan(["README.md"], "", { suites: ["unit.homeport"] });
+  assert.equal(declared.jobs.find(({ id }) => id === "unit.homeport-node")?.kind, "node-homeport");
+  const focused = plan(["tests/homeport/phase6-surfaces.test.mjs"]);
+  assert.equal(focused.jobs.find(({ id }) => id === "changed-node-tests")?.kind, "node-homeport");
+});
+
+test("only task-owned full browser profiles receive the larger V3 execution budget", () => {
+  const profile = { SOUNDING_LINE_SUITE_PROFILE: "lanternwake-phase3", SOUNDING_LINE_TASK_OWNED_HTTP: "1" };
+  assert.equal(browserAuthorityExecutionTimeoutMs(profile), 15 * 60_000);
+  assert.equal(browserAuthorityExecutionTimeoutMs({ SOUNDING_LINE_V3_FULL_BROWSER: "1" }), 15 * 60_000);
+  assert.equal(browserAuthorityExecutionTimeoutMs({ ...profile, SOUNDING_LINE_V3_FULL_BROWSER: "1" }), 60 * 60_000);
+});
+
+test("full browser verification selects four distinct generic shards", () => {
+  const full = plan([], "", { full: true });
+  assert.deepEqual(
+    full.jobs.filter(({ shard }) => shard).map(({ id, kind, shard }) => [id, kind, shard]),
+    [1, 2, 3, 4].map((index) => ["browser-generic-" + index, "browser-full", index + "/4"]),
+  );
+  const focused = plan(["tests/e2e/acceptance.spec.ts"]);
+  assert.ok(focused.jobs.some(({ id, kind }) => id === "browser" && kind === "browser"));
+  assert.ok(focused.jobs.every(({ shard }) => shard === undefined));
+});
+
 test("Owner labels add coverage and unknown requests fail closed", () => {
   const request = metadata(["sl:mode:maintenance", "sl:project:Wayfarer", "sl:suite:unit.landfall"]);
   const result = names(plan(["README.md"], "", request));
@@ -88,7 +127,17 @@ test("Owner labels add coverage and unknown requests fail closed", () => {
   assert.throws(() => plan(["README.md"], "", { projects: ["NoSuchProject"] }), /No registered/);
   assert.throws(() => metadata(["sl:mode:full", "sl:mode:documentation"]), /one sl:mode/);
   const full = names(plan([], "", metadata(["sl:full"])));
-  for (const expected of ["all-vitest", "browser", "format", "build", "schema", "privacy", "compatibility"])
+  for (const expected of [
+    "all-vitest",
+    "browser",
+    "browser-lanternwake",
+    "browser-profiles",
+    "format",
+    "build",
+    "schema",
+    "privacy",
+    "compatibility",
+  ])
     assert.ok(full.includes(expected));
 });
 
@@ -119,6 +168,60 @@ test("A changed project test executes directly without widening to its whole pro
   assert.ok(fixture);
   const result = plan([fixture]);
   assert.equal(result.category, "maintenance");
-  assert.deepEqual(names(result), ["diff", "changed-tests"]);
+  assert.deepEqual(names(result), ["diff", "format", "changed-tests"]);
   assert.deepEqual(result.jobs.at(-1).files, [fixture]);
+});
+
+test("full formatting reports only exact unchanged debt under the same formatter policy", () => {
+  const baseline = { prettier: "3.6.2", config: { ".prettierrc.json": "config" }, files: { "docs/old.md": "old" } };
+  const files = new Map([
+    [".prettierrc.json", "config"],
+    ["docs/old.md", "old"],
+    ["src/new.ts", "fresh"],
+  ]);
+  const findings = ["docs/old.md", "src/new.ts"];
+  const classify = (changed = [], version = "3.6.2") =>
+    classifyFormatting(findings, new Set(changed), files, baseline, version);
+  assert.deepEqual(classify(), { debt: ["docs/old.md"], violations: ["src/new.ts"] });
+  assert.deepEqual(classify(["docs/old.md"]).violations, findings);
+  assert.deepEqual(classify([], "4.0.0").violations, findings);
+  files.set(".prettierrc.json", "updated");
+  assert.deepEqual(classify().violations, findings);
+  files.set(".prettierrc.json", "config");
+  files.set("docs/old.md", "different bytes");
+  assert.deepEqual(classify().violations, findings);
+});
+
+test("stylesheets, fixtures and dependency changes remain reuse inputs", () => {
+  for (const file of [
+    "src/landfall/chart.css",
+    "src/components/wayfarer/profile.css",
+    "package-lock.json",
+    "prisma/schema.sqlite.prisma",
+    "tests/fixtures/profile.json",
+    "testing/generated/active-test-registry.json",
+  ])
+    assert.ok(reusableSource(file), file);
+  assert.equal(reusableSource("README.md"), false);
+});
+
+test("formatting applies to changed code even under a documentation label", () => {
+  const result = plan(["src/wayfarer/profile.ts"], "", { mode: "documentation" });
+  assert.equal(result.category, "product");
+  assert.ok(names(result).includes("format"));
+  assert.ok(names(result).includes("unit.wayfarer"));
+});
+
+test("registry changes and unmapped application paths explain their conservative coverage", () => {
+  const registryChange = plan(["testing/impact-map.json"], "{}", { mode: "documentation" });
+  assert.equal(registryChange.category, "maintenance");
+  assert.ok(names(registryChange).includes("workflow"));
+  assert.ok(names(registryChange).includes("all-vitest"));
+  assert.ok(registryChange.notes.some((reason) => /Verification registry/.test(reason)));
+
+  const unknown = plan(["future-module-in-stabilization.ts"]);
+  assert.equal(unknown.category, "product");
+  assert.ok(names(unknown).includes("all-vitest"));
+  assert.ok(names(unknown).includes("types"));
+  assert.ok(unknown.notes.some((reason) => /Unmapped path/.test(reason)));
 });

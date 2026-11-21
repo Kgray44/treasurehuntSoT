@@ -2,6 +2,7 @@
 import { createBrowserUuid } from "@/lib/browser-uuid";
 
 import Link from "next/link";
+import styles from "./ChronicleJournalSession.module.css";
 import { ParallaxJournalProvider, ChronicleLensEntry } from "@/components/player/parallax/ChronicleLens";
 import { CrossdeckDevices } from "@/components/crossdeck/CrossdeckDevices";
 import { CrossdeckHandoff } from "@/components/crossdeck/CrossdeckHandoff";
@@ -1564,10 +1565,12 @@ function ChronicleJournalSessionIdentity({
 
             {!historical ? (
               <aside
-                className="chronicle-objective-tray persistent-objective"
+                className={`chronicle-objective-tray persistent-objective ${styles.objectiveTray}`}
                 data-opening-actor="objective"
+                aria-label="Current objective"
                 aria-hidden={openingActive}
                 inert={openingActive ? true : undefined}
+                tabIndex={openingActive ? undefined : 0}
               >
                 <div>
                   <p>Current objective</p>

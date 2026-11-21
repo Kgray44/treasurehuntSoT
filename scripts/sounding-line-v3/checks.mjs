@@ -4,7 +4,8 @@ import { randomBytes } from "node:crypto";
 import { mkdirSync, mkdtempSync, readFileSync, readdirSync } from "node:fs";
 import { posix, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { git } from "./plan.mjs";
+import { formatApplicable, git } from "./plan.mjs";
+import { checkFormatting } from "./format.mjs";
 
 const npm =
   process.platform === "win32"
@@ -140,7 +141,7 @@ function checkDocs({ base, tree, entries, read }) {
   if (invalid.length) throw new Error(invalid.join("\n"));
 }
 
-async function runBrowserProfile(profileId, files, tree) {
+async function runBrowserProfile(profileId, files, tree, fullBrowser, shard) {
   const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
     "../sounding-line/browser-suite-profiles.mjs"
   );
@@ -157,6 +158,7 @@ async function runBrowserProfile(profileId, files, tree) {
     DATABASE_URL: "file:" + db.replaceAll("\\", "/"),
     SOUNDING_LINE_SUITE_PROFILE: profileId,
     SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+    SOUNDING_LINE_V3_FULL_BROWSER: fullBrowser ? "1" : "0",
     FOREVER_VALIDATION_ISOLATION: "1",
     FOREVER_VALIDATION_NONCE_HASH: randomBytes(32).toString("hex"),
     FOREVER_VALIDATION_PRODUCTION_IDENTITY: "1",
@@ -188,6 +190,7 @@ async function runBrowserProfile(profileId, files, tree) {
       "--",
       ...files,
       ...(profile.browserArguments ?? []),
+      ...(shard && shard !== "1/1" ? ["--shard=" + shard] : []),
       "--project",
       profile.browserProject ?? "chromium",
     ),
@@ -231,6 +234,7 @@ export async function runJob(job, context) {
       }
       return;
     case "node":
+    case "node-homeport":
       for (const part of chunks(files)) await command(node("--test", ...part));
       return;
     case "vitest":
@@ -239,18 +243,23 @@ export async function runJob(job, context) {
       for (const part of chunks(files))
         await command(vitest(part, kind === "vitest-serial" ? ["--maxWorkers=1"] : []), database);
       return;
+    case "bridgewatch-vitest":
+      return command([...npm, "--workspace", "bridgewatch", "test"]);
     case "types":
       await setupPrisma();
       return command(runNpm("typecheck"), database);
     case "format": {
-      const paths =
-        context.plan.category === "full"
-          ? ["."]
-          : entries.filter(({ file, status }) => status !== "D" && isText.test(file)).map(({ file }) => file);
-      for (const part of chunks(paths)) {
-        if (part.length) await command(node("node_modules/prettier/bin/prettier.cjs", "--check", ...part));
-      }
-      return;
+      const full = context.plan.category === "full";
+      const paths = full
+        ? [["."]]
+        : chunks(
+            entries
+              .filter(
+                ({ file, mode, status }) => status !== "D" && /^100(?:644|755)$/.test(mode) && formatApplicable(file),
+              )
+              .map(({ file }) => file),
+          ).filter((part) => part.length);
+      return checkFormatting({ tree, entries, full, paths });
     }
     case "build":
       await setupPrisma();
@@ -298,7 +307,6 @@ export async function runJob(job, context) {
               .filter((file) => file.endsWith(".spec.ts"))
           : files;
       if (!browserTests.length) throw new Error("Browser suite has no selected specs.");
-      await setupPrisma();
       const taskRoot = resolve("artifacts", "sounding-line");
       mkdirSync(taskRoot, { recursive: true });
       const databaseRoot = mkdtempSync(resolve(taskRoot, "v3-build-"));
@@ -315,20 +323,62 @@ export async function runJob(job, context) {
       const commands = verificationCommands(browserPlan);
       const build = commands.findIndex(([executable, args]) => executable === "npm" && args.join(" ") === "run build");
       if (build < 0) throw new Error("Browser fixture planner did not provide a build.");
-      for (const [executable, args] of commands.slice(build)) {
-        if (args[0] === "scripts/sounding-line/run-browser-suite.mjs") {
-          await runBrowserProfile(args[args.indexOf("--profile") + 1], args.slice(args.indexOf("--") + 1), tree);
+      const buildEnvironment = {
+        DATABASE_URL: browserPlan.databaseUrl,
+        SOUNDING_LINE_BASE_SHA: base,
+      };
+      const fullBrowser = kind === "browser-full";
+      const dedicated = [];
+      const profiles = [];
+      for (const step of commands.slice(build + 1)) {
+        const [, args] = step;
+        if (args[0] !== "scripts/sounding-line/run-browser-suite.mjs") {
+          if (!fullBrowser || job.id === "browser") dedicated.push(step);
           continue;
         }
-        const env = verificationEnvironment(browserPlan, executable, args);
-        const argv =
-          executable === "npm"
-            ? [...npm, ...args]
-            : executable === "npx" && args.includes("prisma")
+        const profile = args[args.indexOf("--profile") + 1];
+        const matchesFullJob =
+          profile === "generic"
+            ? Boolean(job.shard)
+            : job.id === (profile === "lanternwake-phase3" ? "browser-lanternwake" : "browser-profiles");
+        if (!fullBrowser || matchesFullJob) profiles.push({ profile, specs: args.slice(args.indexOf("--") + 1) });
+      }
+      // The legacy planner always emits a Prisma step, even without dedicated fixtures.
+      const hasDedicatedFixtures = dedicated.some(([executable]) => executable !== "npx");
+      if (!hasDedicatedFixtures && !profiles.length) throw new Error("Browser job has no fixture commands: " + job.id);
+      if (hasDedicatedFixtures) {
+        await setupPrisma();
+        await command(runNpm("build"), buildEnvironment);
+        for (const [executable, args] of dedicated) {
+          const env = verificationEnvironment(browserPlan, executable, args);
+          const argv =
+            executable === "npx" && args.includes("prisma")
               ? prisma(...args.slice(args.indexOf("prisma") + 1))
               : [executable, ...args];
-        await command(argv, { DATABASE_URL: browserPlan.databaseUrl, SOUNDING_LINE_BASE_SHA: base, ...env });
+          await command(argv, { ...buildEnvironment, ...env });
+        }
       }
+      if (profiles.length) {
+        await setupPrisma();
+        // Dedicated runners can rebuild .next. Prepare the profile build after
+        // those runners finish, with the existing test-only settings enabled.
+        await command(runNpm("build"), {
+          ...buildEnvironment,
+          SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+          SOUNDING_LINE_SUITE_PROFILE: "v3-browser",
+        });
+      }
+      const profileFailures = [];
+      for (const { profile, specs } of profiles) {
+        try {
+          await runBrowserProfile(profile, specs, tree, fullBrowser, job.shard);
+        } catch (error) {
+          if (!fullBrowser) throw error;
+          profileFailures.push(profile);
+          console.error("Browser profile %s failed: %s", profile, error.message);
+        }
+      }
+      if (profileFailures.length) throw new Error("Failed browser profiles: " + profileFailures.join(", "));
       return;
     }
     default:

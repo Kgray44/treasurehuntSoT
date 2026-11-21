@@ -23,8 +23,14 @@ const nextConfig: NextConfig = {
         env: {
           FOREVER_TASK_OWNED_ANIMATION_FAILPOINTS: "1",
           HOMEPORT_SYNTHETIC_EMAIL_ADAPTER: "TASK_OWNED_TEST",
-          HOMEPORT_PHASE7_TASK_ROOT: process.env.HOMEPORT_PHASE7_TASK_ROOT ?? "",
-          HOMEPORT_SYNTHETIC_OUTBOX_PATH: process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH ?? "",
+          // V3 shares the build across suites. Let each isolated fixture supply
+          // its own runtime paths when the build has no specific email fixture.
+          ...(process.env.HOMEPORT_PHASE7_TASK_ROOT
+            ? { HOMEPORT_PHASE7_TASK_ROOT: process.env.HOMEPORT_PHASE7_TASK_ROOT }
+            : {}),
+          ...(process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH
+            ? { HOMEPORT_SYNTHETIC_OUTBOX_PATH: process.env.HOMEPORT_SYNTHETIC_OUTBOX_PATH }
+            : {}),
           // This is compiled into only the task-owned browser build so the
           // ordinary browser proof can reach its existing local animation lab.
           // It is never enabled in a normal production build.

@@ -24,9 +24,11 @@ export function changes(base, tree) {
 const image = /\.(png|jpe?g|webp|gif|svg|pdf)$/i;
 const passiveRoot = /^(?:docs|Development_Docs|Experience_Images|Developer_Journals)\//;
 const executable =
-  /<\s*(?:script|iframe|object|embed|foreignObject|form|link|style)\b|\bon[a-z]+\s*=|(?:(?:javascript|vbscript)\s*:|data\s*:\s*text\/html)|<!ENTITY\b|\b(?:src|href|xlink:href)\s*=\s*["'](?:https?:|\/\/)/gi;
+  /<\s*(?:script|iframe|object|embed|foreignObject|form|link|style)\b|\bon[a-z]+\s*=|(?:(?:javascript|vbscript)\s*:|data\s*:\s*text\/html)|<!\s*(?:ENTITY|DOCTYPE)\b|<\?xml-stylesheet\b|\b(?:src|href|xlink:href)\s*=\s*["'](?:https?:|\/\/)/gi;
 const authorityPath =
   /^(?:\.github\/|\.agents\/|testing\/|scripts\/sounding-line(?:-v3)?\/|tests\/sounding-line(?:-v3)?\/|scripts\/workspaces\/|tests\/workspaces\/|tests\/sounding-line-v3\.test\.mjs$)/;
+export const formatApplicable = (file) =>
+  file !== "package-lock.json" && /\.(?:[cm]?[jt]sx?|css|scss|html|json|ya?ml|mdx?)$/i.test(file);
 const formatting = /^(?:\.prettier(?:ignore|rc\.json)|eslint\.config\.mjs|\.editorconfig)$/;
 const toolchain =
   /^(?:package(?:-lock)?\.json|\.node-version|\.nvmrc|tsconfig\.json|vitest(?:\.config|\.setup)\.ts|(?:next\.config\.ts|postcss\.config\.mjs))$/;
@@ -50,7 +52,7 @@ export function passive(change, read) {
   const content = /\.md$/i.test(file) ? source.replace(/^`{3,}[^\n]*\n[\s\S]*?^`{3,}[^\n]*$/gm, "") : source;
   return (
     content.search(executable) === -1 &&
-    (!/\.mdx$/i.test(file) || !/[{}]|<(?:[A-Z][\w.]*)\b|^\s*(?:import|export)\s/m.test(content)) &&
+    (!/\.mdx$/i.test(file) || !/[{}]|<\/?[A-Za-z][\w.:-]*\b|^\s*(?:import|export)\s/m.test(content)) &&
     (!/\.svg$/i.test(file) || !/(?:url\s*\(|<\s*(?:use|image|animate|set)\b|&(?:#|[A-Za-z]+\s*;))/i.test(content))
   );
 }
@@ -128,6 +130,7 @@ export function select(entries, read, request, data, readBase) {
       checks.add("docs");
       continue;
     }
+    if (status !== "D" && /^100(?:644|755)$/.test(entry.mode) && formatApplicable(file)) checks.add("format");
     if (authorityPath.test(file) || formatting.test(file) || toolchain.test(file)) {
       if (category === "documentation") category = "maintenance";
       if (authorityPath.test(file)) {
@@ -177,7 +180,8 @@ export function select(entries, read, request, data, readBase) {
     if (/\.test\.tsx?$/.test(file) && status !== "D") directUnit.add(file);
     if (/^tests\/e2e\/.*\.spec\.ts$/.test(file) && status !== "D") directBrowser.add(file);
     for (const id of matching) selectSuite(id, file);
-    if (!matching.size && !directUnit.has(file) && !directNode.has(file) && !directBrowser.has(file)) {
+    const targeted = [...matching].some((id) => !["static", "build"].includes(byId.get(id)?.adapter));
+    if (!targeted && !directUnit.has(file) && !directNode.has(file) && !directBrowser.has(file)) {
       selectShared("Unmapped path: " + file, /^(?:src\/app\/|src\/components\/|public\/|tests\/e2e\/)/.test(file));
     }
     if (/\.[cm]?[jt]sx?$/.test(file) && !directUnit.has(file)) checks.add("types");
@@ -198,13 +202,22 @@ export function select(entries, read, request, data, readBase) {
     category = "full";
     broadUnit = true;
     broadBrowser = true;
+    selectSuite("unit.bridgewatch", "Full verification includes the Bridgewatch workspace");
     for (const check of ["docs", "format", "workflow", "types", "build", "schema", "privacy", "compatibility"])
       checks.add(check);
   }
 
   const jobs = new Map(Array.from(checks, (kind) => [kind, { id: kind, kind, files: [] }]));
-  const add = (id, kind, files) => jobs.set(id, { id, kind, files: [...new Set(files)].sort() });
+  const add = (id, kind, files, options = {}) =>
+    jobs.set(id, { id, kind, files: [...new Set(files)].sort(), ...options });
+  const addNodeTests = (id, files) =>
+    add(id, files.some((file) => file.startsWith("tests/homeport/")) ? "node-homeport" : "node", files);
   for (const [id] of selected) {
+    if (id === "unit.bridgewatch") {
+      for (const file of directUnit) if (file.startsWith("bridgewatch/test/")) directUnit.delete(file);
+      add(id, "bridgewatch-vitest", []);
+      continue;
+    }
     const suite = byId.get(id);
     const files = cases.filter((item) => item.suiteId === id && trackedFiles.has(item.file)).map((item) => item.file);
     const inferFiles = (available) =>
@@ -216,7 +229,7 @@ export function select(entries, read, request, data, readBase) {
         const nodeFiles = files.filter((file) => file.endsWith(".test.mjs"));
         const vitest = files.filter((file) => !file.endsWith(".test.mjs"));
         for (const file of vitest) directUnit.delete(file);
-        if (nodeFiles.length) add(id + "-node", "node", nodeFiles);
+        if (nodeFiles.length) addNodeTests(id + "-node", nodeFiles);
         if ((!broadUnit || suite.adapter === "vitest-family-serial") && vitest.length)
           add(id, suite.adapter === "vitest-family-serial" ? "vitest-serial" : "vitest", vitest);
         if (!files.length) throw new Error("No registered tests for " + id);
@@ -252,11 +265,17 @@ export function select(entries, read, request, data, readBase) {
         throw new Error("Unsupported suite adapter for " + id);
     }
   }
-  if (directNode.size) add("changed-node-tests", "node", directNode);
+  if (directNode.size) addNodeTests("changed-node-tests", [...directNode]);
   if (broadUnit) add("all-vitest", "vitest", []);
   else if (directUnit.size) add("changed-tests", "vitest", directUnit);
-  if (broadBrowser) add("browser", "browser-full", []);
-  else if (directBrowser.size) add("browser", "browser", directBrowser);
+  if (broadBrowser) {
+    add("browser", "browser-full", []);
+    add("browser-lanternwake", "browser-full", []);
+    add("browser-profiles", "browser-full", []);
+    const shardCount = 4;
+    for (let shard = 1; shard <= shardCount; shard++)
+      add("browser-generic-" + shard, "browser-full", [], { shard: shard + "/" + shardCount });
+  } else if (directBrowser.size) add("browser", "browser", directBrowser);
   return {
     category,
     projects: [...projects].sort(),

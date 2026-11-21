@@ -156,6 +156,9 @@ footer {
   padding: 0.85rem;
   border-radius: 0.35rem;
 }
+.list-item .quiet {
+  overflow-wrap: anywhere;
+}
 .list-item .quiet + .quiet {
   margin-top: 0.45rem;
 }

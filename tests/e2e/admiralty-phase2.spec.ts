@@ -60,7 +60,7 @@ test("administrator reaches the Chartroom naturally and inspects every Phase 2 r
   await search(admin.page, "Consent Harbor");
   await expect(admin.page.getByRole("link", { name: "Consent Harbor" })).toBeVisible();
   await admin.page.getByRole("link", { name: "Consent Harbor" }).click();
-  await expect(admin.page.getByRole("heading", { name: "Consent Harbor" })).toBeVisible();
+  await expect(admin.page.getByRole("heading", { name: "Consent Harbor", exact: true, level: 1 })).toBeVisible();
   for (const section of [
     "Overview",
     "Identity",
@@ -317,14 +317,38 @@ test("privileged users bring the standalone Bridgewatch watch home without expos
   await assertNoSeriousAxeViolations(admin.page);
   await capture(admin.page, "ADM2-EV-N-BRIDGEWATCH-DESKTOP");
 
+  const longReference = "BRIDGEWATCH_SYNTHETIC_OBSERVATION_IDENTIFIER_WITHOUT_WORD_BREAKS";
+  await admin.page.route("**/bridgewatch/api/summary", async (route) => {
+    const response = await route.fetch();
+    const data = await response.json();
+    data.attention.push({ title: "Synthetic source observation", level: "bad", message: longReference });
+    await route.fulfill({ response, json: data });
+  });
   await admin.page.setViewportSize({ width: 390, height: 844 });
   await admin.page.reload();
-  await expect(admin.page.getByRole("heading", { name: "BRIDGEWATCH" })).toBeVisible();
-  const width = await admin.page.evaluate(() => ({
-    client: document.documentElement.clientWidth,
-    scroll: document.documentElement.scrollWidth,
-  }));
-  expect(width.scroll).toBeLessThanOrEqual(width.client);
+  await expect(admin.page.getByRole("heading", { name: "Fleet overview", exact: true })).toBeVisible();
+  await expect(admin.page.getByText(longReference, { exact: true })).toBeVisible();
+  const width = await admin.page.evaluate(() => {
+    const { clientWidth: client, scrollWidth: scroll } = document.documentElement;
+    const overflow = [];
+    if (scroll > client) {
+      for (const element of document.querySelectorAll("body, body *")) {
+        const { right } = element.getBoundingClientRect();
+        if (right <= client && element.scrollWidth <= element.clientWidth) continue;
+        overflow.push({
+          tag: element.tagName,
+          id: element.id,
+          className: element.className,
+          client: element.clientWidth,
+          scroll: element.scrollWidth,
+          right: Math.round(right),
+          overflowX: getComputedStyle(element).overflowX,
+        });
+      }
+    }
+    return { client, scroll, overflow: overflow.slice(0, 16) };
+  });
+  expect(width.scroll, JSON.stringify(width.overflow)).toBeLessThanOrEqual(width.client);
   await capture(admin.page, "ADM2-EV-O-BRIDGEWATCH-MOBILE");
   await admin.context.close();
 });

@@ -1,11 +1,17 @@
 name: Sounding Line V3
-run-name: Sounding Line V3 ${{ github.event.pull_request.number || 'full' }}
+run-name: Sounding Line V3 ${{ github.event.pull_request.number || inputs.verification_scope || 'full' }}
 
 on:
   pull_request:
     branches: [main]
     types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
   workflow_dispatch:
+    inputs:
+      verification_scope:
+        description: Full verification or serial Chromium comparison
+        type: choice
+        default: full
+        options: [full, generic-serial]
 
 permissions:
   contents: read
@@ -92,9 +98,50 @@ jobs:
             /Development_Docs/**/*.txt
             /Development_Docs/**/*.sql
             /Development_Docs/**/*.csv
+            /Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2/experience-images-index.html
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+      - name: Hydrate Bridgewatch registry sources
+        if: ${{ matrix.kind == 'bridgewatch-vitest' }}
+        shell: bash
+        run: |
+          git sparse-checkout add \
+            "/Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf" \
+            "/Development_Docs/Projects/Project Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf" \
+            "/Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf"
+      - name: Hydrate Homeport inventory evidence
+        if: ${{ matrix.kind == 'node-homeport' }}
+        shell: bash
+        run: |
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const root = "Development_Docs/Projects/Project_Homeport/";
+            const { records } = JSON.parse(readFileSync(root + "Homeport_Visual_Baseline_Manifest.json", "utf8"));
+            for (const file of new Set(records.map(record => record.committedScreenshotPath))) {
+              if (file?.startsWith(root + "evidence/") && !file.includes("\n")) console.log("/" + file);
+            }
+          ' | git sparse-checkout add --stdin
+          git sparse-checkout add "/Development_Docs/Projects/Project_Homeport/evidence/phase6/"
+      - name: Hydrate Homeport publication history
+        if: ${{ matrix.publicationHistory }}
+        timeout-minutes: 8
+        shell: bash
+        run: |
+          evidence=Development_Docs/Projects/Project_Homeport/evidence/phase7-owner-correction-round2
+          if [[ "$(git rev-parse --is-shallow-repository)" == true ]]; then
+            git fetch --no-tags --filter=blob:none --unshallow origin "$GITHUB_REF"
+          fi
+          publication="$(git log -1 --diff-filter=A --format=%H HEAD -- "$evidence/experience-images-manifest.json")"
+          [[ "$publication" =~ ^[a-f0-9]{40}$ ]]
+          git ls-tree -r "$publication" -- Experience_Images | awk '$2 == "blob" { print $3 }' |
+            sort -u | GIT_NO_LAZY_FETCH=1 git cat-file --batch-check |
+            awk '$2 == "missing" { print $1 }' > "$RUNNER_TEMP/homeport-publication-blobs"
+          if [[ -s "$RUNNER_TEMP/homeport-publication-blobs" ]]; then
+            git fetch --no-tags --no-write-fetch-head --filter=blob:none origin --stdin \
+              < "$RUNNER_TEMP/homeport-publication-blobs"
+          fi
+
       - uses: actions/cache/restore@v4
         if: ${{ matrix.cache != '' }}
         id: prior
@@ -141,7 +188,7 @@ jobs:
           key: ${{ matrix.cache }}
 
   decision:
-    name: ${{ github.event_name == 'pull_request' && 'Sounding Line V3 / Verification' || 'Sounding Line V3 / Full verification' }}
+    name: ${{ github.event_name == 'pull_request' && 'Sounding Line V3 / Verification' || inputs.verification_scope == 'generic-serial' && 'Sounding Line V3 / Serial browser comparison' || 'Sounding Line V3 / Full verification' }}
     needs: [plan, suites]
     if: ${{ always() }}
     runs-on: ubuntu-24.04

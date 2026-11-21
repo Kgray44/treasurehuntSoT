@@ -44,19 +44,26 @@ try {
   request.mode = values.mode ?? request.mode;
   request.full ||= values.full;
   const plan = select(entries, read, request, registry(tree), snapshotReader(base));
+  const scope = ci && !event.pull_request ? (event.inputs?.verification_scope ?? "full") : "full";
+  if (scope === "generic-serial" && request.full) {
+    plan.jobs = [{ id: "browser-generic-serial", kind: "browser-full", files: [], shard: "1/1" }];
+  } else if (scope !== "full") throw new Error("Unknown manual verification scope " + scope);
 
   if (operation === "ci-plan") {
     const include = plan.jobs.map((job) => ({
       id: job.id,
       kind: job.kind,
       dependencies: needsDependencies(job.kind),
+      publicationHistory:
+        (job.kind === "browser-full" && job.id === "browser") ||
+        (job.kind === "browser" && job.files.includes("tests/e2e/homeport-phase7-owner-correction-round2.spec.ts")),
       cache: plan.category === "full" ? "" : suiteCacheKey(job, tree, event.pull_request?.number),
     }));
     appendFileSync(process.env.GITHUB_OUTPUT, "matrix=" + JSON.stringify({ include }) + "\n");
     const summary = [
       "## Sounding Line V3",
       "",
-      "Mode **" + plan.category + "**",
+      "Mode **" + (scope === "full" ? plan.category : scope) + "**",
       "",
       "Base " + base,
       "Test tree " + git(["rev-parse", tree + "^{tree}"]).trim(),
