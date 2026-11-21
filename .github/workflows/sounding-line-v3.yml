@@ -11,7 +11,7 @@ on:
         description: Full verification or serial Chromium comparison
         type: choice
         default: full
-        options: [full, generic-serial, setup-current, setup-optimized]
+        options: [full, generic-serial, setup-current, setup-optimized, setup-chromium]
 
 permissions:
   contents: read
@@ -241,7 +241,7 @@ jobs:
   benchmark-shards:
     name: Benchmark shard ${{ matrix.shard }}
     needs: benchmark-build
-    if: ${{ always() && (inputs.verification_scope == 'setup-current' || (inputs.verification_scope == 'setup-optimized' && needs.benchmark-build.result == 'success')) }}
+    if: ${{ always() && (inputs.verification_scope == 'setup-current' || inputs.verification_scope == 'setup-chromium' || (inputs.verification_scope == 'setup-optimized' && needs.benchmark-build.result == 'success')) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
@@ -273,7 +273,7 @@ jobs:
         if: ${{ inputs.verification_scope == 'setup-current' }}
         run: npx --no-install playwright install --with-deps chromium webkit
       - name: Install Chromium
-        if: ${{ inputs.verification_scope == 'setup-optimized' }}
+        if: ${{ inputs.verification_scope == 'setup-optimized' || inputs.verification_scope == 'setup-chromium' }}
         run: npx --no-install playwright install chromium
       - uses: actions/download-artifact@v4
         if: ${{ inputs.verification_scope == 'setup-optimized' }}
