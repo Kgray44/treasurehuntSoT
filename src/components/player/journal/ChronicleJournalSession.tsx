@@ -1223,7 +1223,7 @@ function ChronicleJournalSessionIdentity({
                 <CrossdeckHandoff
                   voyageId={sessionId}
                   csrfToken={state.csrfToken}
-                  gestureSource={reading.openDrawer === "map"}
+                  gestureSource={reading.openDrawer === "map" || pages[currentPage]?.block?.journalKind === "map"}
                   gestureFeedbackRoot={gestureFeedbackRoot}
                   object={(() => {
                     const selected = pages[currentPage]?.block ?? currentBlock;

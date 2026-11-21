@@ -788,7 +788,7 @@
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["PLAYER"],
         "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
-        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available. Manual Crossdeck send and acceptance remain available with hand gestures disabled or the camera unavailable.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -808,11 +808,7 @@
           }
         ],
         "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
-        "browserTests": [
-          "tests/e2e/crossdeck-experience-refit.spec.ts",
-          "tests/e2e/crossdeck-refit-recovery.spec.ts",
-          "tests/e2e/crossdeck-chart-gesture.spec.ts"
-        ],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "continuity": {
@@ -6869,7 +6865,6 @@
           "src/app/devices",
           "src/app/account/devices",
           "src/app/account/preferences",
-          "src/reach/chart-transfer-gesture.ts",
           "src/components/player/journal",
           "src/app/player/playthroughs/[playthroughId]/journal",
           "src/app/play/[taleSlug]/session/[sessionId]",
@@ -6884,7 +6879,7 @@
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["PLAYER"],
         "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
-        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available. Manual Crossdeck send and acceptance remain available with hand gestures disabled or the camera unavailable.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -6904,7 +6899,11 @@
           }
         ],
         "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
-        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "browserTests": [
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts",
+          "tests/e2e/crossdeck-chart-gesture.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "continuity": {

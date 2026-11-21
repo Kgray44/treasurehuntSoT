@@ -310,6 +310,9 @@ export function createCrossdeckSyncService(
             if (state.gesture.sourceId !== input.surfaceId) delete state.gesture;
           } else {
             const policy = await resolve(tx, actor, input.voyageId, payload.object, payload.context);
+            const presentation = state.objects[objectKey(payload.object)];
+            if (presentation?.object.version === payload.object.version && presentation.custody !== input.surfaceId)
+              conflict("Recover this Chart on this device before sending.");
             if (policy.visibility === "PRIVATE") throw new CrossdeckError(403, "This Chart cannot be sent by gesture.");
             state.gesture = {
               id: randomUUID(),

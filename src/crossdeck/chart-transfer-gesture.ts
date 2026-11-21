@@ -1,4 +1,4 @@
-import type { HandObservation } from "./observation";
+import type { HandObservation } from "@/reach/observation";
 
 type Hand = HandObservation["hands"][number];
 type Point = Hand["landmarks"][number];

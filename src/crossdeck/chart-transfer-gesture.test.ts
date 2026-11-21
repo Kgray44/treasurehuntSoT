@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { BrowserHandAdapter } from "@/watchglass/hand-provider";
 import { ChartTransferGesture } from "./chart-transfer-gesture";
 
-type Posture = "open" | "fist" | "middle" | "lost" | "two" | "changed";
+type Posture = "open" | "fist" | "soft-open" | "soft-fist" | "middle" | "lost" | "two" | "changed";
 function stream(receiver = false) {
   const adapter = new BrowserHandAdapter({
     providerGeneration: 1,
@@ -27,7 +27,8 @@ function stream(receiver = false) {
     ]),
   ];
   const sample = (at: number, posture: Posture) => {
-    const points = hand(posture === "fist" ? 4 : posture === "middle" ? 2 : 0);
+    const points = hand(posture === "fist" ? 4 : posture === "soft-fist" ? 3 : posture === "middle" ? 2 : 0);
+    if (posture === "soft-open" || posture === "soft-fist") points[20].y = 0.395;
     const landmarks = posture === "lost" ? [] : posture === "two" ? [points, hand(0)] : [points];
     const observation = adapter.envelope({ landmarks, handedness: [] }, at, at, 640, 480);
     if (posture === "changed") observation.hands[0].trackGeneration++;
@@ -78,6 +79,16 @@ describe("Chart transfer gesture", () => {
     expect(s.sample(780, "open")).toBe("HELD");
     expect(s.sample(850, "open")).toBe("HELD");
     expect(s.sample(920, "open")).toBe("RELEASED");
+  });
+
+  it("recognizes relaxed palm and fist shapes with one partially bent finger", () => {
+    const s = stream();
+    for (const at of [10, 80, 150]) s.sample(at, "soft-open");
+    expect(s.sample(220, "soft-open")).toBe("READY");
+    for (const at of [290, 360]) s.sample(at, "soft-fist");
+    expect(s.sample(430, "soft-fist")).toBe("HELD");
+    for (const at of [500, 570]) s.sample(at, "soft-open");
+    expect(s.sample(640, "soft-open")).toBe("RELEASED");
   });
 
   it.each(["lost", "two", "changed", "gap"] as const)("interrupts a gesture on %s", (condition) => {

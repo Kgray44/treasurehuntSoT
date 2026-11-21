@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { ReachBrowserRuntime } from "@/reach/browser-runtime";
-import { ChartTransferGesture } from "@/reach/chart-transfer-gesture";
+import { ChartTransferGesture } from "@/crossdeck/chart-transfer-gesture";
 
 function subscribeVisibility(change: () => void) {
   document.addEventListener("visibilitychange", change);
@@ -55,7 +55,10 @@ export function ChartGestureCamera(inputs: CameraInputs) {
           binding = key;
         }
         const phase = recognizer.observe(observation);
-        if (phase === "INTERRUPTED") recognizer = new ChartTransferGesture(!sourceKey || !!incomingId);
+        if (phase === "INTERRUPTED") {
+          recognizer = new ChartTransferGesture(!sourceKey || !!incomingId);
+          if (sourceKey && !incomingId) setStatus("");
+        }
         if (phase === "READY" && sourceKey && !incomingId) setStatus("Ready to pick up this Chart.");
         if (phase === "HELD" && sourceKey && !incomingId) {
           recognizer = new ChartTransferGesture();

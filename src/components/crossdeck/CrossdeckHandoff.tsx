@@ -240,7 +240,9 @@ function CrossdeckHandoffSession({
             !stillCurrent() ||
             document.visibilityState !== "visible" ||
             (payload.action === "gesture-arm" && !sourceKeyRef.current) ||
-            (payload.action === "gesture-send" && gestureAttempt.current?.id !== payload.gestureId)
+            (payload.action === "gesture-send" &&
+              gestureAttempt.current?.id !== payload.gestureId &&
+              !current.current?.handoffs.some((handoff) => handoff.id === payload.gestureId))
           )
             throw error;
           return sendExact();
@@ -356,7 +358,11 @@ function CrossdeckHandoffSession({
   });
   const gestureConnected = gestureEnabled && online && !!snapshot && snapshot.surfaceId === ownId;
   const sourceKey =
-    gestureConnected && gestureSource && object?.family === "MAP" && !object.version.startsWith("draft:")
+    gestureConnected &&
+    gestureSource &&
+    object?.family === "MAP" &&
+    !object.version.startsWith("draft:") &&
+    (!presentation || presentation.custody === ownId)
       ? `${objectKey(object)}:${object.version}:${ownId}`
       : null;
   const gesture = gestureConnected ? snapshot?.gesture : undefined;
