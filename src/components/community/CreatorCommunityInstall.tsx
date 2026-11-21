@@ -16,6 +16,7 @@ type Review = {
   alreadyInstalled: boolean;
   studioUrl?: string | null;
 };
+const reviewHeadingId = "creator-install-title";
 
 export function CreatorCommunityInstall({
   listingId,
@@ -35,9 +36,17 @@ export function CreatorCommunityInstall({
   const [opened, setOpened] = useState<string | null>(null);
   const requestId = useRef<string>(crypto.randomUUID());
   const refreshReviewRef = useRef<HTMLButtonElement>(null);
+  const reviewHeadingRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     if (staleReview) refreshReviewRef.current?.focus();
   }, [staleReview]);
+  useEffect(() => {
+    const heading = reviewHeadingRef.current;
+    if (review && heading && window.location.hash === `#${reviewHeadingId}`) {
+      heading.focus({ preventScroll: true });
+      heading.scrollIntoView({ block: "start", behavior: "instant" });
+    }
+  }, [review]);
   useEffect(() => {
     let cancelled = false;
     void fetch(`/api/community/${path}/install/review?listingId=${encodeURIComponent(listingId)}`, {
@@ -99,9 +108,14 @@ export function CreatorCommunityInstall({
   };
   const destination = opened ?? review?.studioUrl ?? null;
   return (
-    <section className="community-detail__action" aria-labelledby="creator-install-title">
+    <section className="community-detail__action" aria-labelledby={reviewHeadingId}>
       <p className="community-eyebrow">Creator reuse</p>
-      <h3 id="creator-install-title">
+      <h3
+        id={reviewHeadingId}
+        ref={reviewHeadingRef}
+        tabIndex={-1}
+        style={{ scrollMarginBlockStart: "calc(var(--shell-header-height, 4.75rem) + 1rem)" }}
+      >
         {itemType === "CHRONICLE" ? "Copy this Chronicle privately" : "Install this saved Creator item"}
       </h3>
       {!review && !error && !authRequired && <p role="status">Checking the exact release and license…</p>}
@@ -158,7 +172,10 @@ export function CreatorCommunityInstall({
           className="community-button community-button--primary"
           type="button"
           aria-describedby="creator-install-error"
-          onClick={() => window.location.reload()}
+          onClick={() => {
+            window.location.hash = reviewHeadingId;
+            window.location.reload();
+          }}
         >
           Review current release
         </button>

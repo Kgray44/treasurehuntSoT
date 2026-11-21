@@ -590,8 +590,14 @@ test("Chapter template rejection stays private and installation rechecks the cur
   await expect(install).toHaveCount(0);
   await installerPage.screenshot({ path: test.info().outputPath("outdated-install-review.png") });
   await refresh.press("Enter");
-  await expect(installerPage.getByText(/release 3\.0\.0 by Synthetic owner Creator/)).toBeVisible();
-  await expect(installerPage.getByText(/An updated fictional harbor introduction/)).toBeVisible();
+  const currentReview = installerPage.getByRole("region", { name: "Install this saved Creator item" });
+  await expect(currentReview.getByText(/release 3\.0\.0 by Synthetic owner Creator/)).toBeInViewport({ ratio: 1 });
+  await expect(currentReview.getByRole("heading", { name: "Install this saved Creator item" })).toBeFocused();
+  await expect(currentReview.getByText(/An updated fictional harbor introduction/)).toBeInViewport({ ratio: 1 });
+  await expect(currentReview.getByText(/License: Synthetic reuse/)).toBeInViewport({ ratio: 1 });
+  await expect(currentReview.getByText("Credits: Synthetic owner Creator", { exact: true })).toBeInViewport({
+    ratio: 1,
+  });
   expect(
     await db.communityInstallation.count({
       where: {
