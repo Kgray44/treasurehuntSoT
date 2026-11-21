@@ -107,6 +107,7 @@ export type HomeportListingDetail = Readonly<{
     minimumPlatformVersion?: string;
     publishedAt: string;
   };
+  creatorInstallEligible?: boolean;
   tideglassComparison?: {
     href: string;
     sourceReleaseVersion: string;
@@ -487,6 +488,8 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
           semanticVersion: true,
           minimumPlatformVersion: true,
           licenseSnapshot: true,
+          manifest: true,
+          packageChecksum: true,
           moderationStatus: true,
           deprecatedAt: true,
           publishedAt: true,
@@ -593,6 +596,35 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
           publishedAt: listing.currentRelease.publishedAt.toISOString(),
         }
       : undefined;
+  let creatorInstallEligible = false;
+  if (
+    listing.currentRelease &&
+    ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType) &&
+    listing.currentRelease.moderationStatus === "ACTIVE" &&
+    !listing.currentRelease.deprecatedAt &&
+    listing.currentRelease.packageChecksum
+  ) {
+    try {
+      const manifest = JSON.parse(listing.currentRelease.manifest) as {
+        reviewDigest?: string;
+        packageChecksum?: string;
+      };
+      const record = await db.communityPackage.findUnique({
+        where: { releaseId: listing.currentRelease.id },
+        select: { packageChecksum: true, storageStatus: true, scanStatus: true, finalizedAt: true },
+      });
+      creatorInstallEligible = Boolean(
+        manifest.reviewDigest &&
+          manifest.packageChecksum === listing.currentRelease.packageChecksum &&
+          record?.packageChecksum === listing.currentRelease.packageChecksum &&
+          record.storageStatus === "READY" &&
+          record.scanStatus === "CLEAN" &&
+          record.finalizedAt,
+      );
+    } catch {
+      creatorInstallEligible = false;
+    }
+  }
   const tale = listing.currentRelease?.sourcePublishedTaleVersion?.tale;
   const useAction =
     listing.itemType === "CHRONICLE" && tale?.status === "PUBLISHED" && tale.visibility === "PUBLIC"
@@ -647,6 +679,7 @@ export async function getHomeportListingDetail(slug: string, viewerAccountId?: s
         }
       : {}),
     ...(release ? { release } : {}),
+    ...(creatorInstallEligible ? { creatorInstallEligible: true } : {}),
     ...(tideglassComparison ? { tideglassComparison } : {}),
     useAction,
   } satisfies HomeportListingDetail;
