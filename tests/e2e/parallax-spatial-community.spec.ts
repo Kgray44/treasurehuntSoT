@@ -551,8 +551,10 @@ test("rich Environment and pinned Scene use reviewed geometry without private Li
     await expect(wizard.getByText("Required pinned Environment")).toBeVisible();
     await expect(wizard.getByText("items/environment.json")).toBeHidden();
     await wizard.getByText("Inspect the sanitized package").click();
-    await expect(wizard.locator("pre")).toContainText("items/environment.json");
-    await expect(wizard.locator("pre")).not.toContainText("room-photo.jpg");
+    const packageContents = wizard.getByRole("region", { name: "Sanitized Community package contents" });
+    await expect(packageContents).toBeVisible();
+    await expect(packageContents).toContainText("items/environment.json");
+    await expect(packageContents).not.toContainText("room-photo.jpg");
     await page.screenshot({ path: testInfo.outputPath("scene-package-review.png"), fullPage: true });
     await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
     await wizard.getByRole("button", { name: "Submit to Community" }).click();
@@ -618,7 +620,9 @@ test("owned synthetic Environment publishes from Library and installs as a read-
   await page.screenshot({ path: testInfo.outputPath("environment-review-mobile.png"), fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await wizard.getByText("Inspect the sanitized package").click();
-  await expect(wizard.locator("pre")).not.toContainText("glasshouse-photo.jpg");
+  const packageContents = wizard.getByRole("region", { name: "Sanitized Community package contents" });
+  await expect(packageContents).toBeVisible();
+  await expect(packageContents).not.toContainText("glasshouse-photo.jpg");
   await page.screenshot({ path: testInfo.outputPath("environment-review-desktop.png"), fullPage: true });
   await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
   await wizard.getByRole("button", { name: "Submit to Community" }).click();
