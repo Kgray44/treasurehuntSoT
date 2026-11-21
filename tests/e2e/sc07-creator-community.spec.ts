@@ -241,6 +241,21 @@ test("second Creator installs the approved Passage preset and applies it in priv
   await reviewPage.getByText("Inspect every included field").press("Enter");
   await expect(reviewPage.getByText(/A synthetic harbor greeting for another Creator/)).toBeVisible();
   expect(await reviewPage.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  const packageChecksum = reviewPage.getByText(/^Package checksum: [a-f0-9]{64}$/);
+  expect(
+    await packageChecksum.evaluate((element) => {
+      const text = document.createRange();
+      text.selectNodeContents(element);
+      return [...text.getClientRects()].every((line) => line.left >= 0 && line.right <= innerWidth);
+    }),
+  ).toBe(true);
+  const listingCopy = reviewPage.getByRole("button", { name: "Copy listing ID" });
+  expect(
+    await listingCopy.evaluate((button) => {
+      const bounds = button.getBoundingClientRect();
+      return bounds.left >= 0 && bounds.right <= innerWidth;
+    }),
+  ).toBe(true);
   await reviewPage.screenshot({ path: test.info().outputPath("moderator-exact-package.png"), fullPage: true });
   await reviewPage.getByLabel("Confirm current password for privileged assurance").fill(moderatorPassword);
   await reviewPage.getByRole("button", { name: "Verify identity" }).press("Enter");
@@ -254,6 +269,7 @@ test("second Creator installs the approved Passage preset and applies it in priv
   await expect(approval).toBeFocused();
   await expect(approval).toBeInViewport({ ratio: 1 });
   await expect(reviewPage.getByRole("cell", { name: /^Awaiting approval/ })).toHaveCount(0);
+  await expect(approval).toBeFocused();
   await reviewPage.screenshot({ path: test.info().outputPath("moderator-approved-receipt.png") });
   await reviewPage.setViewportSize({ width: 1280, height: 800 });
   const review = await db.communityRelease.findFirstOrThrow({ where: { listingId } });

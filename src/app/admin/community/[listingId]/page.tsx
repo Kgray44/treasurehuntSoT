@@ -44,6 +44,12 @@ export default async function CommunityListingPage({ params }: { params: Promise
   const creatorPublication = ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType);
   const creatorPending =
     creatorPublication && ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
+  const recordedCreatorDecision =
+    creatorPublication &&
+    listing.currentReleaseId &&
+    (listing.publicationStatus === "PUBLISHED" || listing.publicationStatus === "REJECTED")
+      ? listing.publicationStatus
+      : null;
   const assuranceActive =
     (spatialPending || creatorPending) && operator.capabilities.includes("COMMUNITY_MODERATE")
       ? (await privilegedAssuranceState(operator)).recent
@@ -54,10 +60,10 @@ export default async function CommunityListingPage({ params }: { params: Promise
       title={listing.title}
       description={listing.shortDescription ?? "No description recorded."}
     >
-      <div className="chartroom-identity">
+      <div className="chartroom-identity" style={creatorPublication ? { flexWrap: "wrap" } : undefined}>
         <div>
           <StatusBadge state={listing.publicationStatus} />
-          <h2>{listing.slug}</h2>
+          <h2 style={creatorPublication ? { overflowWrap: "anywhere" } : undefined}>{listing.slug}</h2>
         </div>
         <Identifier value={listing.id} label="listing ID" />
       </div>
@@ -112,28 +118,22 @@ export default async function CommunityListingPage({ params }: { params: Promise
           />
         </Panel>
       )}
-      {creatorPending && (
+      {(creatorPending || recordedCreatorDecision) && (
         <Panel
           title="Creator publication review"
           kicker="Exact saved content, rights and spoilers before public release"
         >
           <CreatorPublicationReviewPanel
+            key={listing.currentReleaseId}
             listingId={listing.id}
             slug={listing.slug}
             itemType={listing.itemType as "CHRONICLE" | "CHRONICLE_TEMPLATE" | "STORY_BLOCK_PRESET"}
             csrfToken={operator.csrfToken}
-            enabled={operator.capabilities.includes("COMMUNITY_MODERATE")}
+            enabled={creatorPending && operator.capabilities.includes("COMMUNITY_MODERATE")}
             assuranceActive={assuranceActive}
+            recordedDecision={recordedCreatorDecision}
           />
         </Panel>
-      )}
-      {creatorPublication && listing.currentReleaseId && listing.publicationStatus === "PUBLISHED" && (
-        <p role="status">
-          Release approved. <a href={`/community/${listing.slug}`}>Open Community listing</a>.
-        </p>
-      )}
-      {creatorPublication && listing.currentReleaseId && listing.publicationStatus === "REJECTED" && (
-        <p role="status">Release rejected. It remains private.</p>
       )}
       <Panel title="Releases" kicker="Manifest contents, license snapshots, and attribution prose excluded">
         {listing.releases.length ? (

@@ -24,6 +24,7 @@ type Review = {
   spoilerLevel: string;
   attribution: Array<{ displayName: string; contributionType: string }>;
 };
+type CreatorPublicationDecision = "PUBLISHED" | "REJECTED";
 
 export function CreatorPublicationReviewPanel({
   listingId,
@@ -32,6 +33,7 @@ export function CreatorPublicationReviewPanel({
   csrfToken,
   enabled,
   assuranceActive,
+  recordedDecision,
 }: {
   listingId: string;
   slug: string;
@@ -39,6 +41,7 @@ export function CreatorPublicationReviewPanel({
   csrfToken: string;
   enabled: boolean;
   assuranceActive: boolean;
+  recordedDecision: CreatorPublicationDecision | null;
 }) {
   const router = useRouter();
   const [review, setReview] = useState<Review | null>(null);
@@ -49,12 +52,13 @@ export function CreatorPublicationReviewPanel({
   const [assured, setAssured] = useState(assuranceActive);
   const [packageInspected, setPackageInspected] = useState(false);
   const [acknowledged, setAcknowledged] = useState(false);
-  const [decision, setDecision] = useState<"PUBLISHED" | "REJECTED" | null>(null);
+  const [submittedDecision, setSubmittedDecision] = useState<CreatorPublicationDecision | null>(null);
   const [reason, setReason] = useState("");
+  const decision = recordedDecision ?? submittedDecision;
   const decisionRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
-    if (decision) decisionRef.current?.focus();
-  }, [decision]);
+    if (submittedDecision) decisionRef.current?.focus();
+  }, [submittedDecision]);
   const route = itemType === "CHRONICLE" ? "creator-chronicle" : "creator-reuse";
   const endpoint = `/api/admin/community/${route}/${encodeURIComponent(listingId)}/review`;
   useEffect(() => {
@@ -110,13 +114,10 @@ export function CreatorPublicationReviewPanel({
         decision: outcome,
         ...(outcome === "REJECT" ? { reason } : {}),
       });
-      setDecision(outcome === "APPROVE" ? "PUBLISHED" : "REJECTED");
+      setSubmittedDecision(outcome === "APPROVE" ? "PUBLISHED" : "REJECTED");
       router.refresh();
     });
   }
-  if (!enabled) return <p>Community moderation permission is required to inspect this pending package.</p>;
-  if (loading) return <p role="status">Loading the pinned Creator release for review…</p>;
-  if (!review) return <p role="alert">{error || "This Creator release is unavailable."}</p>;
   if (decision)
     return (
       <p ref={decisionRef} role="status" tabIndex={-1}>
@@ -129,6 +130,9 @@ export function CreatorPublicationReviewPanel({
         )}
       </p>
     );
+  if (!enabled) return <p>Community moderation permission is required to inspect this pending package.</p>;
+  if (loading) return <p role="status">Loading the pinned Creator release for review…</p>;
+  if (!review) return <p role="alert">{error || "This Creator release is unavailable."}</p>;
   return (
     <section
       className="chartroom-support"
@@ -181,7 +185,9 @@ export function CreatorPublicationReviewPanel({
           {JSON.stringify(review.included, null, 2)}
         </pre>
       </details>
-      <p>Package checksum: {review.packageChecksum}</p>
+      <p>
+        Package checksum: <code style={{ overflowWrap: "anywhere" }}>{review.packageChecksum}</code>
+      </p>
       {!packageInspected && <p role="status">Open the exact package before confirming this review.</p>}
       {error && (
         <p role="alert" className="chartroom-notice">
