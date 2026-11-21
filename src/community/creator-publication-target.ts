@@ -41,7 +41,8 @@ export async function resolveCreatorPublicationTarget(
     listing.archivedAt ||
     listing.removedAt ||
     listing.moderationStatus !== "ACTIVE" ||
-    release.moderationStatus !== "ACTIVE"
+    (release.moderationStatus !== "ACTIVE" &&
+      !(listing.publicationStatus === "REJECTED" && release.moderationStatus === "REJECTED"))
   )
     throw new CommunityError("COMMUNITY_SOURCE_CONFLICT", "This listing is unavailable for a replacement submission.");
   let sourceId = release.sourcePublishedTaleVersion?.taleId;

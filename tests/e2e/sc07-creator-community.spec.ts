@@ -447,7 +447,7 @@ test("second Creator edits an installed Chronicle through private Studio", async
   await expect(ownerPage.getByRole("heading", { name: "Chronicle access unavailable" })).toBeVisible();
 });
 
-test("rejected Chapter template remains private until a replacement is approved and reused", async () => {
+test("rejected Chapter template stays private after its approved replacement is reused", async ({ request }) => {
   test.setTimeout(75_000);
   const suffix = randomUUID().slice(0, 8);
   const slug = `sc07-template-${suffix}`;
@@ -506,6 +506,12 @@ test("rejected Chapter template remains private until a replacement is approved 
   const approved = await db.communityListing.findUniqueOrThrow({ where: { slug }, include: { currentRelease: true } });
   expect(approved.currentRelease?.semanticVersion).toBe("2.0.0");
   expect(approved.currentReleaseId).not.toBe(rejectedId);
+  const publicReplacement = await request.get(`/api/community/releases/${approved.currentReleaseId}/public`);
+  expect(publicReplacement.status()).toBe(200);
+  expect(await publicReplacement.json()).toMatchObject({ semanticVersion: "2.0.0" });
+  const rejectedRelease = await request.get(`/api/community/releases/${rejectedId}/public`);
+  expect(rejectedRelease.status()).toBe(404);
+  expect(await rejectedRelease.json()).toMatchObject({ code: "COMMUNITY_RELEASE_NOT_FOUND" });
   await installerPage.goto("/community/templates");
   await installerPage.locator(listingLink).first().press("Enter");
   await installerPage.getByRole("button", { name: "Install to my reusable Library" }).press("Enter");

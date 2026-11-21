@@ -42,8 +42,11 @@ export async function recordCreatorPublicationDecision(
     });
     if (changed.count !== 1)
       throw new CommunityError("COMMUNITY_REVIEW_STALE", "The submission changed before the decision was recorded.");
+    await tx.communityRelease.update({
+      where: { id: input.releaseId },
+      data: publishedAt ? { publishedAt } : { moderationStatus: "REJECTED" },
+    });
     if (publishedAt) {
-      await tx.communityRelease.update({ where: { id: input.releaseId }, data: { publishedAt } });
       await tx.communityOutboxEvent.create({
         data: {
           eventType: "COMMUNITY_RELEASE_PUBLISHED",
