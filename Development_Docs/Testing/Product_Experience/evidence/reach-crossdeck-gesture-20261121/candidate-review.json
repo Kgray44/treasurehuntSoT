@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "contractId": "crossdeck.phase2.continuity",
+  "baseSha": "cf072f72e3478d2749d873de2e83516c3eab87fb",
+  "candidateSha": "fa3bc2843b599bae09b1ade422e7f81cf9dfd10f",
+  "sourceDigest": "9bb0473ad4e43957db989c93d556bcdbefcf5bd0e0b5720441fbc8f92cad23b4",
+  "contractDigest": "f1e246f2452084562c5a66745c954393ce26e29e98f9c7fa79bd0eb20ac49351",
+  "packetDigest": "69bed4e89ff073b00b062809c0808b87de865c0ef32f1d1316fdcf40b0315e39",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "builderContext": "01a1ff86-66f0-7c10-afaa-4cb3e3e67037",
+  "reviewerContext": "/root/gesture_experience_review",
+  "independence": "The independent reviewer inspected the recapture after the protected-main merge and verified that the settings repair and the visible handoff states were preserved.",
+  "status": "NO_BLOCKING_FINDINGS_OBSERVED",
+  "artifacts": [
+    {
+      "id": "device-settings-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/device-settings-normal.png",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "sha256": "ab4e4eafc21c74bc5d7fca7961d38a14b590b8274c69867380e366fc3d2c4f26"
+    },
+    {
+      "id": "source-held-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-held-normal.png",
+      "sha256": "62006e43239f03d00231551824eb4d357ce744a2bf6fecbd4743e998a8c82da7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "source-held-reduced",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-held-reduced.png",
+      "sha256": "15425449bfbf70b109bf0d67f7ced87b3e20ab54b735800a5e509d1670d5e837",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "source-delivered-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-delivered-normal.png",
+      "sha256": "580b8c666434aa17f1c5c06c14ca951f25e1ba9340b989efa4f04d35cabfb84d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "phone-pinned-chart-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/phone-pinned-chart-normal.png",
+      "sha256": "7fd6be20f69ab7b439a112fcbd08033a92dbad696087376236bb659f3c6db0bf",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "source-gesture-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-gesture-normal.webm",
+      "sha256": "5cd62c2d05c368865a7bb09bb9fadc9fb4bfc68af3a3cbdd364cf5fd0347b559",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "timings",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/timings.json",
+      "sha256": "cb3b620c77033486a4a384d41020d7c7a352d668c3894a58535d2207336c54c0",
+      "type": "timing",
+      "origin": "ACTUAL_APPLICATION"
+    }
+  ],
+  "journeyVerification": {
+    "spec": "tests/e2e/crossdeck-chart-gesture.spec.ts",
+    "result": "PASS_NORMAL_AND_REDUCED",
+    "runtime": "Task-owned Sounding Line V3 production build, isolated SQLite and two paired Chromium contexts",
+    "verified": [
+      "Keyboard opt-in in Voyage device settings persists after reload. The checkbox and label stay adjacent and aligned in both contexts.",
+      "Camera gestures arm and complete the pinned Chart transfer through Crossdeck.",
+      "The receiving Chart opens automatically and acknowledges its rendered view.",
+      "One exact command retry after response loss produces one acknowledged handoff.",
+      "Animation is present with normal motion and suppressed with reduced motion."
+    ]
+  },
+  "reviewObservations": [
+    {
+      "dimension": "device settings",
+      "evidenceIds": ["device-settings-normal"],
+      "observation": "The checked control sits beside its per-device label on a single row. The camera guidance appears directly below, and a separate section contains pairing fields."
+    },
+    {
+      "dimension": "state feedback",
+      "evidenceIds": ["source-held-normal", "source-gesture-normal", "source-delivered-normal"],
+      "observation": "The Chart drawer distinguishes the carried state, the check for a receiving device, and the acknowledgement in a consistent, readable position."
+    },
+    {
+      "dimension": "accessibility and motion",
+      "evidenceIds": ["source-held-reduced", "source-gesture-normal"],
+      "observation": "The reduced-motion presentation preserves the carried instruction and the readable Journal fallback. Each state is available as text."
+    },
+    {
+      "dimension": "layout and continuity",
+      "evidenceIds": ["source-delivered-normal", "phone-pinned-chart-normal"],
+      "observation": "The desktop retains a visible drawer close affordance and Continue Voyage. The phone shows the same Voyage, a synced read-only Chart, and Return to Chronicle without observed horizontal clipping."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "LOW",
+      "evidenceIds": ["source-delivered-normal"],
+      "observation": "Readiness appears just above acknowledgement and can draw the first glance. The explicit delivered line remains visible."
+    },
+    {
+      "severity": "LOW",
+      "evidenceIds": ["source-held-normal", "phone-pinned-chart-normal"],
+      "observation": "The existing Chart and Journal each label their distinct objectives as Current objective. The receiving device shows the same objective as the Chart."
+    }
+  ],
+  "limits": [
+    "The browser proof uses synthetic landmarks. It supplies no physical webcam, lighting or hand-recognition acceptance.",
+    "The reviewer inspected sequential frames and stills. Continuous animation quality, assistive-technology announcements and activation of the return control remain unverified by this review.",
+    "The linked recording is trimmed to the Chart interaction after pairing."
+  ],
+  "repairs": [
+    {
+      "finding": "The original device-settings checkbox floated above its label.",
+      "repair": "Grouped the checkbox and label in a single left-aligned row with a 44-pixel label target.",
+      "evidenceIds": ["device-settings-normal"],
+      "reviewDisposition": "RESOLVED"
+    }
+  ],
+  "testFixtureVerification": {
+    "commit": "c73c9c5e23af2ebd344f4dc1266edf873a7c56fe",
+    "path": "src/components/player/journal/ChronicleJournalSession.test.ts",
+    "outcome": "33 passed",
+    "captureBinding": "The only delta from the reviewed PR candidate is the isolated Journal fixture. The application source, browser spec and captured artifacts are identical."
+  }
+}

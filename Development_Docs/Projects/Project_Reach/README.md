@@ -10,6 +10,14 @@ last_reviewed: 2026-10-11
 
 Reach is Voyagewright's reusable browser-first spatial interaction and intent system. Phase 1's browser hand laboratory, observation/coordinate foundation and independent calibration workflow are integrated as a foundation preview through [PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697), main commit `7284b0dfaa31037d074d27df0f27b968f3977000`, after the [required Mainline Decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38113725340) passed. Landed source/asset verification passed. Physical webcam and held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open; full Phase 1 is not accepted. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md). Later-phase target acquisition, selection, manipulation and owner integrations are not implemented by this phase.
 
+## Chart transfer and research status
+
+Broader Project Reach research is **PAUSED / FUTURE DEVELOPMENT** following integration of the camera-directed Chart handoff. The calibration work and evidence remain available in [PR #769](https://github.com/Kgray44/treasurehuntSoT/pull/769).
+
+Enable Chart hand gestures in your Voyage device settings on each participating device. With a released Chart open, close an open palm into a fist on the source. Open the fist toward one paired device to receive the same edition there. Crossdeck preserves the source view and confirms delivery after the receiver renders and acknowledges it. The manual send path remains available.
+
+Two isolated browsers with simulated landmarks qualify the software journey. Product acceptance requires a real laptop-to-phone run with both cameras, confirming that the receiving phone opens the pinned Chart and the laptop shows its receipt.
+
 ## Effective governing sources
 
 The [recognition, calibration and experience refit](Recognition_Calibration_Experience_Refit_20261011.md) revises interpretation and the laboratory: detected hands remain distinct from posture/eligibility, an active hand can coexist with an incidental hand, stable acquisition survives brief interruptions, and relative movement has a separate setup and independent cursor check. Its record tracks qualification, rendered review and the remaining owner/physical walkthrough. The older Phase 1 record describes its original frozen protocol.

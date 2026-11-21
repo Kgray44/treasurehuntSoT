@@ -902,5 +902,13 @@
         "Screen-reader speech, reduced motion, contrast ratios, continuous recording playback on the repair, physical devices, live provider invoices, and product-owner acceptance remain unverified."
       ]
     }
+  ],
+  "subsequentSourceBoundReviews": [
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "candidateSha": "fa3bc2843b599bae09b1ade422e7f81cf9dfd10f",
+      "sourceDigest": "9bb0473ad4e43957db989c93d556bcdbefcf5bd0e0b5720441fbc8f92cad23b4",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/candidate-review.json"
+    }
   ]
 }

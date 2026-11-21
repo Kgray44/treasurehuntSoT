@@ -11,6 +11,7 @@ import { signInHref } from "@/homeport/return-to";
 import { useCrossdeckSession } from "./useCrossdeckSession";
 import { VoyageContext, type VoyageContextData } from "./VoyageContext";
 import styles from "./CrossdeckDevices.module.css";
+import { ChartGesturePreference } from "./ChartGesturePreference";
 
 const pendingKey = "crossdeck.pending-pair.v1";
 export function DeviceMark({ phone = false }: { phone?: boolean }) {
@@ -440,6 +441,7 @@ export function CrossdeckDevices({
         signin
       ) : (
         <>
+          <ChartGesturePreference />
           <div className={styles.setup}>
             <label>
               Chronicle

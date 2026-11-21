@@ -20,17 +20,20 @@ function setup() {
     },
   );
   const stops: number[] = [];
+  const trackEvents: EventTarget[] = [];
   const media = {
     getUserMedia: async () => {
       const index = stops.push(0) - 1;
+      const events = new EventTarget();
+      trackEvents.push(events);
       const track = {
         readyState: "live",
         stop() {
           this.readyState = "ended";
           stops[index]++;
         },
-        addEventListener() {},
-        removeEventListener() {},
+        addEventListener: events.addEventListener.bind(events),
+        removeEventListener: events.removeEventListener.bind(events),
       };
       return { getTracks: () => [track], getVideoTracks: () => [track] } as unknown as MediaStream;
     },
@@ -46,8 +49,9 @@ function setup() {
     )
     .mockResolvedValue(undefined);
   const video = { play, pause: vi.fn(), srcObject: null } as unknown as HTMLVideoElement;
-  const runtime = new ReachBrowserRuntime(video, vi.fn(), vi.fn(), media);
-  return { runtime, stops, play, resume: () => resume() };
+  const status = vi.fn();
+  const runtime = new ReachBrowserRuntime(video, vi.fn(), status, media);
+  return { runtime, stops, play, media, trackEvents, status, resume: () => resume() };
 }
 it("a late video-play completion cannot stop a newer camera generation", async () => {
   const s = setup();
@@ -79,4 +83,21 @@ it("page suspension releases a camera while video startup is still pending", asy
   } finally {
     s.runtime.stop();
   }
+});
+
+it("surfaces denied permission and leaves no worker or camera behind", async () => {
+  const s = setup();
+  vi.spyOn(s.media, "getUserMedia").mockRejectedValue(new DOMException("denied", "NotAllowedError"));
+  await s.runtime.start(true, false);
+  expect(s.status).toHaveBeenLastCalledWith("PERMISSION_DENIED");
+  expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+});
+
+it("releases the camera and worker when browser permission ends the track", async () => {
+  const s = setup();
+  s.play.mockReset().mockResolvedValue(undefined);
+  await s.runtime.start(true, false);
+  s.trackEvents[0].dispatchEvent(new Event("ended"));
+  expect(s.status).toHaveBeenLastCalledWith("SUSPENDED");
+  expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
 });
