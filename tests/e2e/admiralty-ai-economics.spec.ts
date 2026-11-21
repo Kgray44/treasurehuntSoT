@@ -204,6 +204,7 @@ test("Administrator investigates AI economics and changes capability allowances 
   await page.setViewportSize({ width: 320, height: 720 });
   await expect.poll(() => changes.evaluate((element) => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
   await expect(mobileChange.getByText("3", { exact: true })).toBeVisible();
+  await expect(changes.getByText("Person capability override", { exact: true }).first()).toBeVisible();
   await capture("allowance-preview-320-mobile", changes);
   await page.setViewportSize({ width: 1440, height: 900 });
   await capture("allowance-preview-desktop");
@@ -236,8 +237,22 @@ test("Administrator investigates AI economics and changes capability allowances 
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   await capture("capabilities-mobile");
   await workspace.getByRole("button", { name: "Operation History", exact: true }).click();
-  await expect(workspace.getByRole("button", { name: /^Inspect synthetic-economics/ }).first()).toBeVisible();
-  await capture("history-mobile");
+  const operationRecords = workspace.getByRole("region", { name: "AI operation records" });
+  const firstRecord = operationRecords.getByRole("row").nth(1);
+  const inspect = firstRecord.getByRole("button", { name: /^Inspect synthetic-economics/ });
+  await expect(inspect).toBeVisible();
+  await expect
+    .poll(() => operationRecords.evaluate((element) => element.scrollWidth <= element.clientWidth + 1))
+    .toBe(true);
+  await capture("history-mobile", firstRecord);
+  await expect(inspect).toBeInViewport();
+  await inspect.focus();
+  await page.keyboard.press("Enter");
+  const mobileInspector = workspace.getByRole("region", { name: "AI operation inspector" });
+  await expect(mobileInspector).toBeFocused();
+  await capture("operation-inspector-mobile", mobileInspector.getByRole("heading", { level: 3 }));
+  await mobileInspector.getByRole("button", { name: "Close operation inspector" }).click();
+  await expect(inspect).toBeFocused();
   await workspace.getByRole("button", { name: "Overview", exact: true }).click();
   await capture("overview-mobile");
   const comparison = workspace.getByRole("region", { name: "Model cost comparison", exact: true });

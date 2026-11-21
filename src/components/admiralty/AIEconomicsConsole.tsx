@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { aiEconomicsOverview, aiEconomicsHistory, aiEconomicsOperation } from "@/parallax/ai-economics";
 import styles from "./AIEconomicsConsole.module.css";
 
@@ -147,6 +147,11 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
     [error, setError] = useState("");
   const [history, setHistory] = useState<History>({ records: [], nextCursor: null });
   const [operation, setOperation] = useState<Operation | null>(null);
+  const operationInspector = useRef<HTMLElement>(null);
+  const inspectTrigger = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (operation) operationInspector.current?.focus();
+  }, [operation]);
   function parameters(section: string) {
     const end = new Date(`${to}T00:00:00.000Z`);
     end.setUTCDate(end.getUTCDate() + 1);
@@ -784,10 +789,15 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
             </label>
             <button disabled={busy}>Search operation history</button>
           </form>
-          <div className={styles.table} role="region" aria-label="AI operation records" tabIndex={0}>
-            <table>
-              <thead>
-                <tr>
+          <div
+            className={`${styles.table} ${styles.operationRecords}`}
+            role="region"
+            aria-label="AI operation records"
+            tabIndex={0}
+          >
+            <table role="table">
+              <thead role="rowgroup">
+                <tr role="row">
                   <th>Started / capability</th>
                   <th>Person / model</th>
                   <th>Outcome</th>
@@ -796,34 +806,59 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
                   <th>Details</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody role="rowgroup">
                 {history.records.map((row) => (
-                  <tr key={row.id}>
-                    <td>
+                  <tr role="row" key={row.id}>
+                    <td role="cell">
+                      <span className={styles.mobileColumn} aria-hidden="true">
+                        Started / capability
+                      </span>
                       {when(row.createdAt)}
                       <br />
                       {initial.capabilities.find((item) => item.id === row.capabilityId)?.name ?? row.capabilityId}
                     </td>
-                    <td>
+                    <td role="cell">
+                      <span className={styles.mobileColumn} aria-hidden="true">
+                        Person / model
+                      </span>
                       {row.accountId}
                       <br />
                       {row.model}
                     </td>
-                    <td>{label(row.outcome)}</td>
-                    <td>
+                    <td role="cell">
+                      <span className={styles.mobileColumn} aria-hidden="true">
+                        Outcome
+                      </span>
+                      {label(row.outcome)}
+                    </td>
+                    <td role="cell">
+                      <span className={styles.mobileColumn} aria-hidden="true">
+                        Cost / basis
+                      </span>
                       {economicsUSD(row.settledCostNano)}
                       <br />
                       {label(row.costBasis)}
                     </td>
-                    <td>{row._count.attempts}</td>
-                    <td>
+                    <td role="cell">
+                      <span className={styles.mobileColumn} aria-hidden="true">
+                        Attempts
+                      </span>
+                      {row._count.attempts}
+                    </td>
+                    <td role="cell">
+                      <span className={styles.mobileColumn} aria-hidden="true">
+                        Operation
+                      </span>
+                      <span className={styles.recordIdentifier}>{row.requestId}</span>
                       <button
                         disabled={busy}
-                        onClick={() =>
-                          void run(async () => setOperation((await read("operation", { id: row.id })).operation))
-                        }
+                        aria-label={`Inspect ${row.requestId}`}
+                        onClick={(event) => {
+                          inspectTrigger.current = event.currentTarget;
+                          void run(async () => setOperation((await read("operation", { id: row.id })).operation));
+                        }}
                       >
-                        Inspect {row.requestId}
+                        Inspect
                       </button>
                     </td>
                   </tr>
@@ -846,10 +881,22 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
             </button>
           )}
           {operation && (
-            <section className={styles.inspector} aria-label="AI operation inspector" tabIndex={-1}>
+            <section
+              ref={operationInspector}
+              className={styles.inspector}
+              aria-label="AI operation inspector"
+              tabIndex={-1}
+            >
               <header>
                 <h3>{operation.requestId}</h3>
-                <button onClick={() => setOperation(null)}>Close operation inspector</button>
+                <button
+                  onClick={() => {
+                    setOperation(null);
+                    inspectTrigger.current?.focus();
+                  }}
+                >
+                  Close operation inspector
+                </button>
               </header>
               <dl>
                 {Object.entries({

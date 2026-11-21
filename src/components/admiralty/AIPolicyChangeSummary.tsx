@@ -66,7 +66,9 @@ function fields(value: unknown, path: string[] = [], result = new Map<string, st
             ? `$${(value / 1_000_000_000).toFixed(9).replace(/0+$/, "").replace(/\.$/, "")} USD`
             : Array.isArray(value)
               ? value.join(", ") || "None"
-              : String(value);
+              : typeof value === "string" && (key === "source" || key.endsWith("Origin"))
+                ? words(value).replace(/^./, (initial) => initial.toUpperCase())
+                : String(value);
     result.set(path.join("."), formatted);
   }
   return result;
