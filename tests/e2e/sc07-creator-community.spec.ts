@@ -184,7 +184,7 @@ test("second Creator installs the approved release from public detail and opens 
   const reviewPage = moderator.page;
   await reviewPage.goto(`/admin/community/${listingId}`);
   await expect(reviewPage.getByRole("heading", { name: "Review exact Creator release" })).toBeVisible();
-  await expect(reviewPage.getByText("Awaiting approval", { exact: true })).toBeVisible();
+  await expect(reviewPage.getByRole("cell", { name: /^Awaiting approval/ })).toBeVisible();
   await reviewPage.getByText("Inspect every included field").click();
   await expect(reviewPage.getByText(/A synthetic harbor greeting for another Creator/)).toBeVisible();
   await reviewPage.screenshot({ path: test.info().outputPath("moderator-exact-package.png"), fullPage: true });
@@ -193,7 +193,7 @@ test("second Creator installs the approved release from public detail and opens 
   await reviewPage.getByLabel(/I reviewed the exact content, ownership declaration/).check();
   await reviewPage.getByRole("button", { name: "Approve and publish release" }).click();
   await expect(reviewPage.getByText("Release approved.")).toBeVisible();
-  await expect(reviewPage.getByText("Awaiting approval", { exact: true })).toHaveCount(0);
+  await expect(reviewPage.getByRole("cell", { name: /^Awaiting approval/ })).toHaveCount(0);
   await reviewPage.screenshot({ path: test.info().outputPath("moderator-approved-receipt.png"), fullPage: true });
   const review = await db.communityRelease.findFirstOrThrow({ where: { listingId } });
   const page = installer.page;

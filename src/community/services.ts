@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import {
   CommunityError,
+  assertArtifactExchangeType,
   assertTransition,
   listingInputSchema,
   manifestChecksum,
@@ -305,14 +306,63 @@ export async function getPublicListingBySlug(slug: string) {
   return listing ? publicListingProjection(listing) : null;
 }
 
-export async function createRelease(...args: [CommunityActor, string, unknown]) {
-  void args;
-  // The former caller-supplied manifest path could point at another Creator's
-  // published version and supplied no source-derived package or rights proof.
-  throw new CommunityError(
-    "COMMUNITY_DEDICATED_FLOW_REQUIRED",
-    "Publish through the Creator source review and moderated package flow.",
-  );
+export async function createRelease(actor: CommunityActor, listingId: string, raw: unknown) {
+  rate(actor, "community-release-create", 5);
+  const profile = await ownProfile(actor);
+  const request = releaseManifestSchema.parse(raw);
+  if (request.listingId !== listingId)
+    throw new CommunityError("COMMUNITY_SOURCE_VERSION_MISMATCH", "Release manifest targets another listing.");
+  if (process.env.COMMUNITY_ENABLED === "false")
+    throw new CommunityError("COMMUNITY_NOT_ENABLED", "Community Harbor is disabled.");
+  return db.$transaction(async (tx) => {
+    const listing = await tx.communityListing.findFirst({ where: { id: listingId, ownerProfileId: profile.id } });
+    if (!listing) throw new CommunityError("COMMUNITY_ACCESS_DENIED", "You cannot release this listing.");
+    assertArtifactExchangeType(listing.itemType);
+    const source = await tx.publishedTaleVersion.findFirst({
+      where: {
+        id: request.sourcePublishedTaleVersionId,
+        tale: { OR: [{ visibility: "PUBLIC" }, { creatorAccountId: actor.accountId }] },
+      },
+    });
+    if (!source || !source.isCurrent)
+      throw new CommunityError(
+        "COMMUNITY_SOURCE_NOT_IMMUTABLE",
+        "An immutable published Chronicle version is required.",
+      );
+    const manifest = request;
+    const checksum = manifestChecksum(manifest);
+    const release = await tx.communityRelease.create({
+      data: {
+        listingId,
+        semanticVersion: manifest.semanticVersion,
+        manifestSchemaVersion: manifest.schemaVersion,
+        sourcePublishedTaleVersionId: source.id,
+        manifest: JSON.stringify(manifest),
+        manifestChecksum: checksum,
+        compatibility: JSON.stringify({ sourceTaleId: source.taleId, sourceChecksum: source.checksum }),
+        licenseSnapshot: JSON.stringify(manifest.license),
+        attributionSnapshot: JSON.stringify(manifest.attribution),
+        spoilerSnapshot: JSON.stringify({ level: manifest.publicMetadata.spoilerLevel }),
+        publishedByProfileId: profile.id,
+      },
+    });
+    const listingUpdate =
+      listing.publicationStatus === "PUBLISHED"
+        ? (assertTransition("PUBLISHED", "UPDATE_PENDING"),
+          { currentReleaseId: release.id, publicationStatus: "UPDATE_PENDING" })
+        : { currentReleaseId: release.id };
+    await tx.communityListing.update({ where: { id: listingId }, data: listingUpdate });
+    await outbox(tx, "COMMUNITY_RELEASE_CREATED", "COMMUNITY_RELEASE", release.id, {
+      listingId,
+      semanticVersion: release.semanticVersion,
+      checksum: release.manifestChecksum,
+    });
+    await audit(tx, actor, "COMMUNITY_RELEASE_CREATED", "COMMUNITY_RELEASE", release.id, {
+      listingId,
+      semanticVersion: release.semanticVersion,
+    });
+    return ownerReleaseProjection(release);
+  });
 }
 export async function getPublicRelease(id: string) {
   const release = await db.communityRelease.findFirst({

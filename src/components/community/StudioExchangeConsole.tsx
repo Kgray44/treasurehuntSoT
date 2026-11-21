@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
+import { ArtifactPreview } from "./ArtifactPreview";
 import { CreatorPublicationConsole } from "./CreatorPublicationConsole";
 import { CreatorInstalledCommunityLibrary } from "./CreatorInstalledCommunityLibrary";
 
 export function StudioExchangeConsole({ authenticated }: { authenticated: boolean }) {
+  const { mode } = useMotionMode();
   if (!authenticated)
     return (
       <main className="studio-auth-gate">
@@ -43,6 +46,13 @@ export function StudioExchangeConsole({ authenticated }: { authenticated: boolea
         </aside>
       </div>
       <CreatorInstalledCommunityLibrary />
+      <ArtifactPreview
+        title="Preview sandbox"
+        description="A static poster fallback is available for 3D Exchange artifacts."
+        posterUrl="/animations/stills/compass-fallback.svg"
+        kind="3D"
+        reducedMotion={mode === "reduced"}
+      />
     </main>
   );
 }
