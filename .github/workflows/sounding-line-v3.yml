@@ -11,7 +11,7 @@ on:
         description: Full verification or serial Chromium comparison
         type: choice
         default: full
-        options: [full, generic-serial]
+        options: [full, generic-serial, setup-current, setup-optimized]
 
 permissions:
   contents: read
@@ -23,6 +23,7 @@ concurrency:
 jobs:
   plan:
     name: Select suites
+    if: ${{ !startsWith(inputs.verification_scope, 'setup-') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
@@ -75,7 +76,7 @@ jobs:
           fetch-depth: 2
           persist-credentials: false
           sparse-checkout-cone-mode: false
-          sparse-checkout: |
+          sparse-checkout: &product-files |
             /*
             !/*/
             /.agents/
@@ -190,7 +191,7 @@ jobs:
   decision:
     name: ${{ github.event_name == 'pull_request' && 'Sounding Line V3 / Verification' || inputs.verification_scope == 'generic-serial' && 'Sounding Line V3 / Serial browser comparison' || 'Sounding Line V3 / Full verification' }}
     needs: [plan, suites]
-    if: ${{ always() }}
+    if: ${{ always() && !startsWith(inputs.verification_scope, 'setup-') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
@@ -199,3 +200,96 @@ jobs:
           PLAN_RESULT: ${{ needs.plan.result }}
           SUITE_RESULT: ${{ needs.suites.result }}
         run: test "$PLAN_RESULT" = success && test "$SUITE_RESULT" = success
+
+  benchmark-build:
+    name: Benchmark shared browser build
+    if: ${{ inputs.verification_scope == 'setup-optimized' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: *product-files
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Generate SQLite client
+        run: npm run db:generate
+      - name: Build task-owned browser application
+        env:
+          DATABASE_URL: file:./.v3-benchmark-build.sqlite
+          SOUNDING_LINE_TASK_OWNED_HTTP: "1"
+          SOUNDING_LINE_SUITE_PROFILE: v3-browser
+        run: npm run build
+      - name: Pack browser build
+        run: |
+          tar --exclude=.next/cache -czf "$RUNNER_TEMP/v3-browser-build.tar.gz" .next
+          stat -c '%s browser build artifact bytes' "$RUNNER_TEMP/v3-browser-build.tar.gz"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v3-browser-build
+          path: ${{ runner.temp }}/v3-browser-build.tar.gz
+          compression-level: 0
+          retention-days: 1
+
+  benchmark-shards:
+    name: Benchmark shard ${{ matrix.shard }}
+    needs: benchmark-build
+    if: ${{ always() && (inputs.verification_scope == 'setup-current' || (inputs.verification_scope == 'setup-optimized' && needs.benchmark-build.result == 'success')) }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: 1
+            spec: tests/e2e/animations.spec.ts
+          - shard: 2
+            spec: tests/e2e/acceptance.spec.ts
+          - shard: 3
+            spec: tests/e2e/wayfarer-phase3.spec.ts
+          - shard: 4
+            spec: tests/e2e/landfall-phase2.spec.ts
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: *product-files
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: ${{ inputs.verification_scope == 'setup-optimized' && 'npm' || '' }}
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install full browser compatibility coverage
+        if: ${{ inputs.verification_scope == 'setup-current' }}
+        run: npx --no-install playwright install --with-deps chromium webkit
+      - name: Install Chromium
+        if: ${{ inputs.verification_scope == 'setup-optimized' }}
+        run: npx --no-install playwright install chromium
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.verification_scope == 'setup-optimized' }}
+        with:
+          name: v3-browser-build
+          path: ${{ runner.temp }}
+      - name: Unpack browser build
+        if: ${{ inputs.verification_scope == 'setup-optimized' }}
+        run: tar -xzf "$RUNNER_TEMP/v3-browser-build.tar.gz"
+      - name: Run the isolated browser fixture
+        env:
+          V3_BENCHMARK_SPEC: ${{ matrix.spec }}
+          V3_BENCHMARK_SHARED_BUILD: ${{ inputs.verification_scope == 'setup-optimized' && '1' || '0' }}
+        run: |
+          node --input-type=module -e '
+            import { runJob } from "./scripts/sounding-line-v3/checks.mjs";
+            const tree = process.env.GITHUB_SHA;
+            await runJob({ kind: "browser", files: [process.env.V3_BENCHMARK_SPEC] }, { base: tree, tree });
+          '
