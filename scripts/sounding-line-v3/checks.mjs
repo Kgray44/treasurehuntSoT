@@ -234,6 +234,7 @@ export async function runJob(job, context) {
       }
       return;
     case "node":
+    case "node-homeport":
       for (const part of chunks(files)) await command(node("--test", ...part));
       return;
     case "vitest":

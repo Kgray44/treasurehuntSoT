@@ -110,6 +110,19 @@ jobs:
             "/Development_Docs/Projects/Project Drydock/Project_Drydock_Governing_Document.pdf" \
             "/Development_Docs/Projects/Project Shipwright/Project_Shipwright_Creator_Studio_Authoring_Experience_Governing_Document.pdf" \
             "/Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Governing_Document.pdf"
+      - name: Hydrate Homeport inventory evidence
+        if: ${{ matrix.kind == 'node-homeport' }}
+        shell: bash
+        run: |
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const root = "Development_Docs/Projects/Project_Homeport/";
+            const { records } = JSON.parse(readFileSync(root + "Homeport_Visual_Baseline_Manifest.json", "utf8"));
+            for (const file of new Set(records.map(record => record.committedScreenshotPath))) {
+              if (file?.startsWith(root + "evidence/") && !file.includes("\n")) console.log("/" + file);
+            }
+          ' | git sparse-checkout add --stdin
+          git sparse-checkout add "/Development_Docs/Projects/Project_Homeport/evidence/phase6/"
       - name: Hydrate Homeport publication history
         if: ${{ matrix.publicationHistory }}
         timeout-minutes: 8

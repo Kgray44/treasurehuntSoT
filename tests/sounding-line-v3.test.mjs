@@ -94,6 +94,13 @@ test("Bridgewatch changes and full verification use the Bridgewatch package test
   }
 });
 
+test("Homeport Node tests require their application checkout and dependency setup", () => {
+  const declared = plan(["README.md"], "", { suites: ["unit.homeport"] });
+  assert.equal(declared.jobs.find(({ id }) => id === "unit.homeport-node")?.kind, "node-homeport");
+  const focused = plan(["tests/homeport/phase6-surfaces.test.mjs"]);
+  assert.equal(focused.jobs.find(({ id }) => id === "changed-node-tests")?.kind, "node-homeport");
+});
+
 test("only task-owned full browser profiles receive the larger V3 execution budget", () => {
   const profile = { SOUNDING_LINE_SUITE_PROFILE: "lanternwake-phase3", SOUNDING_LINE_TASK_OWNED_HTTP: "1" };
   assert.equal(browserAuthorityExecutionTimeoutMs(profile), 15 * 60_000);

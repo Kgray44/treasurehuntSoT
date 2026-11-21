@@ -210,6 +210,8 @@ export function select(entries, read, request, data, readBase) {
   const jobs = new Map(Array.from(checks, (kind) => [kind, { id: kind, kind, files: [] }]));
   const add = (id, kind, files, options = {}) =>
     jobs.set(id, { id, kind, files: [...new Set(files)].sort(), ...options });
+  const addNodeTests = (id, files) =>
+    add(id, files.some((file) => file.startsWith("tests/homeport/")) ? "node-homeport" : "node", files);
   for (const [id] of selected) {
     if (id === "unit.bridgewatch") {
       for (const file of directUnit) if (file.startsWith("bridgewatch/test/")) directUnit.delete(file);
@@ -227,7 +229,7 @@ export function select(entries, read, request, data, readBase) {
         const nodeFiles = files.filter((file) => file.endsWith(".test.mjs"));
         const vitest = files.filter((file) => !file.endsWith(".test.mjs"));
         for (const file of vitest) directUnit.delete(file);
-        if (nodeFiles.length) add(id + "-node", "node", nodeFiles);
+        if (nodeFiles.length) addNodeTests(id + "-node", nodeFiles);
         if ((!broadUnit || suite.adapter === "vitest-family-serial") && vitest.length)
           add(id, suite.adapter === "vitest-family-serial" ? "vitest-serial" : "vitest", vitest);
         if (!files.length) throw new Error("No registered tests for " + id);
@@ -263,7 +265,7 @@ export function select(entries, read, request, data, readBase) {
         throw new Error("Unsupported suite adapter for " + id);
     }
   }
-  if (directNode.size) add("changed-node-tests", "node", directNode);
+  if (directNode.size) addNodeTests("changed-node-tests", [...directNode]);
   if (broadUnit) add("all-vitest", "vitest", []);
   else if (directUnit.size) add("changed-tests", "vitest", directUnit);
   if (broadBrowser) {
