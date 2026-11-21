@@ -99,6 +99,13 @@ async function enableGestures(page: Page, baseURL: string) {
   await expect(preference).toBeChecked();
   await page.reload();
   await expect(preference).toBeChecked();
+  const box = await preference.boundingBox();
+  const caption = await preference.locator("..").locator("span").boundingBox();
+  expect(box).not.toBeNull();
+  expect(caption).not.toBeNull();
+  expect(caption!.x - box!.x - box!.width).toBeGreaterThan(0);
+  expect(caption!.x - box!.x - box!.width).toBeLessThan(18);
+  expect(Math.abs(box!.y + box!.height / 2 - caption!.y - caption!.height / 2)).toBeLessThan(2);
 }
 
 test.afterAll(() => db.$disconnect());

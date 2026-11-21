@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { BrowserCameraBroker } from "@/sextant/camera";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
+import styles from "./CrossdeckDevices.module.css";
 
 const changeEvent = "crossdeck-gesture-preference";
 const disabled = () => false;
@@ -88,8 +89,8 @@ export function ChartGesturePreference() {
     }
   };
   return (
-    <section className="harbor-stack" aria-labelledby="chart-transfer-preference">
-      <h2 id="chart-transfer-preference">Chart hand gestures</h2>
+    <section className={styles.gesturePreference} aria-labelledby="chart-transfer-preference">
+      <h3 id="chart-transfer-preference">Chart hand gestures</h3>
       <label>
         <input
           type="checkbox"
@@ -100,10 +101,10 @@ export function ChartGesturePreference() {
             if (event.target.checked) void enable();
             else save(false);
           }}
-        />{" "}
-        Use hand gestures on this device
+        />
+        <span>Use hand gestures on this device</span>
       </label>
-      <p id="chart-transfer-privacy">
+      <p id="chart-transfer-privacy" className={styles.muted}>
         Allow the camera on each device you want to use for gestures. With a Chart open, close an open hand into a fist
         to pick it up. Open your fist in front of another connected device to receive it there. Camera images and hand
         landmarks stay on this device. The camera runs while an eligible connected Voyage is visible.
