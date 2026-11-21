@@ -334,6 +334,31 @@ describe("Capability economics over real isolated SQLite", () => {
       ),
     ).rejects.toMatchObject({ code: "SETTLEMENT_CONFLICT" });
   });
+  it("records late token usage without replacing an already-confirmed bill", async () => {
+    const admission = await reserveAIUsage(request("billing-first"), store, now);
+    await markAIDispatched(admission.record.id, store, now);
+    const attemptId = `${admission.record.id}:1`;
+    await reconcileAIProviderAttempt(
+      attemptId,
+      { providerResponseId: "billing-first", confirmedCostNano: "451234" },
+      store,
+      now,
+    );
+    const row = await reconcileAIProviderAttempt(
+      attemptId,
+      { providerResponseId: "billing-first", usage },
+      other,
+      new Date(now.getTime() + 1000),
+    );
+    expect(row).toMatchObject({
+      status: "SETTLED",
+      costBasis: "CONFIRMED",
+      settledCostNano: BigInt(451234),
+      confirmedCostNano: BigInt(451234),
+    });
+    const attempt = await store.aIProviderAttempt.findUniqueOrThrow({ where: { id: attemptId } });
+    expect(JSON.parse(attempt.usage!)).toEqual(usage);
+  });
   it("counts one logical operation and every explicitly reserved retry attempt", async () => {
     const admitted = await reserveAIUsage(request("retry"), store, now);
     await markAIDispatched(admitted.record.id, store, now);
@@ -344,6 +369,13 @@ describe("Capability economics over real isolated SQLite", () => {
       now,
     );
     const retry = await beginAIProviderRetry(admitted.record.id, store, new Date(now.getTime() + 61000));
+    const replayed = await reconcileAIProviderAttempt(
+      `${admitted.record.id}:1`,
+      { usage, providerResponseId: "first" },
+      other,
+      new Date(now.getTime() + 62000),
+    );
+    expect(replayed.status).toBe("DISPATCHED");
     const inFlight = await aiEconomicsOverview(filter, store);
     const editing = inFlight.capabilities.find((item) => item.id === "GROUNDED_ASSISTANT_EDIT")!;
     expect(inFlight.totals.knownCostNano).toBe("450000");

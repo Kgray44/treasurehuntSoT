@@ -95,6 +95,7 @@ export async function beginAIProviderRetry(operationId: string, store: PrismaCli
       data: {
         status: "DISPATCHED",
         outcome: "IN_PROGRESS",
+        settledAt: null,
         exposureNano: { increment: reservation },
         reservationNano: { increment: reservation },
         leaseExpiresAt: new Date(now.getTime() + policy.timeoutMs + 60000),
@@ -129,7 +130,10 @@ export async function reconcileAIProviderAttempt(
   const input = reconciliationSchema.parse(raw);
   return store.$transaction(async (tx) => {
     const { control, policy } = await lockAIControl(tx);
-    const attempt = await tx.aIProviderAttempt.findUniqueOrThrow({ where: { id: attemptId } });
+    const attempt = await tx.aIProviderAttempt.findUniqueOrThrow({
+      where: { id: attemptId },
+      include: { operation: { select: { settledAt: true } } },
+    });
     if (attempt.providerResponseId && attempt.providerResponseId !== input.providerResponseId)
       throw new SpatialAssistantError("SETTLEMENT_CONFLICT", "Provider response identity changed.", 409);
     if (attempt.usage && input.usage) {
@@ -141,13 +145,12 @@ export async function reconcileAIProviderAttempt(
           409,
         );
     }
-    const cost =
-      input.confirmedCostNano !== undefined
-        ? BigInt(input.confirmedCostNano)
-        : aiUsageCostNano(JSON.parse(attempt.pricing) as AIModelPricing, input.usage);
-    const basis = input.confirmedCostNano !== undefined ? "CONFIRMED" : "CALCULATED";
-    if (attempt.costBasis === "CONFIRMED" && (cost !== attempt.costNano || basis !== "CONFIRMED"))
+    const confirmedCost = input.confirmedCostNano === undefined ? undefined : BigInt(input.confirmedCostNano);
+    if (attempt.costBasis === "CONFIRMED" && confirmedCost !== undefined && confirmedCost !== attempt.costNano)
       throw new SpatialAssistantError("SETTLEMENT_CONFLICT", "Confirmed billing cannot be silently rewritten.", 409);
+    const billedCost = confirmedCost ?? (attempt.costBasis === "CONFIRMED" ? attempt.costNano : null);
+    const cost = billedCost ?? aiUsageCostNano(JSON.parse(attempt.pricing) as AIModelPricing, input.usage);
+    const basis = billedCost !== null ? "CONFIRMED" : "CALCULATED";
     if (attempt.costBasis === "CALCULATED" && basis === "CALCULATED" && attempt.costNano !== cost)
       throw new SpatialAssistantError(
         "SETTLEMENT_CONFLICT",
@@ -175,10 +178,11 @@ export async function reconcileAIProviderAttempt(
       .filter((item) => item.costBasis === "CONFIRMED")
       .reduce((sum, item) => sum + item.costNano!, BigInt(0));
     const pending = attempts.some((item) => item.costNano === null);
+    const active = attempts.some((item) => item.status === "DISPATCHED");
     const row = await tx.aIUsageLedger.update({
       where: { id: attempt.operationId },
       data: {
-        status: pending ? "UNKNOWN" : "SETTLED",
+        status: active ? "DISPATCHED" : pending ? "UNKNOWN" : "SETTLED",
         exposureNano: exposure,
         settledCostNano: known.length ? total : null,
         confirmedCostNano: known.some((item) => item.costBasis === "CONFIRMED") ? confirmed : null,
@@ -189,7 +193,7 @@ export async function reconcileAIProviderAttempt(
             : known.some((item) => item.costBasis === "ESTIMATED")
               ? "ESTIMATED"
               : "CALCULATED",
-        settledAt: pending ? null : now,
+        settledAt: pending ? null : (attempt.operation.settledAt ?? now),
       },
     });
     if (exposure > row.reservationNano && policy.enabled) {
