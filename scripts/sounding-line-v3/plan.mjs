@@ -208,7 +208,8 @@ export function select(entries, read, request, data, readBase) {
   }
 
   const jobs = new Map(Array.from(checks, (kind) => [kind, { id: kind, kind, files: [] }]));
-  const add = (id, kind, files) => jobs.set(id, { id, kind, files: [...new Set(files)].sort() });
+  const add = (id, kind, files, options = {}) =>
+    jobs.set(id, { id, kind, files: [...new Set(files)].sort(), ...options });
   for (const [id] of selected) {
     if (id === "unit.bridgewatch") {
       for (const file of directUnit) if (file.startsWith("bridgewatch/test/")) directUnit.delete(file);
@@ -269,6 +270,9 @@ export function select(entries, read, request, data, readBase) {
     add("browser", "browser-full", []);
     add("browser-lanternwake", "browser-full", []);
     add("browser-profiles", "browser-full", []);
+    const shardCount = 4;
+    for (let shard = 1; shard <= shardCount; shard++)
+      add("browser-generic-" + shard, "browser-full", [], { shard: shard + "/" + shardCount });
   } else if (directBrowser.size) add("browser", "browser", directBrowser);
   return {
     category,

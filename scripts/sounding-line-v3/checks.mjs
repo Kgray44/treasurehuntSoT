@@ -141,7 +141,7 @@ function checkDocs({ base, tree, entries, read }) {
   if (invalid.length) throw new Error(invalid.join("\n"));
 }
 
-async function runBrowserProfile(profileId, files, tree, fullBrowser) {
+async function runBrowserProfile(profileId, files, tree, fullBrowser, shard) {
   const { browserSuiteProfiles, isolatedBrowserFixtureCredentials } = await import(
     "../sounding-line/browser-suite-profiles.mjs"
   );
@@ -190,6 +190,7 @@ async function runBrowserProfile(profileId, files, tree, fullBrowser) {
       "--",
       ...files,
       ...(profile.browserArguments ?? []),
+      ...(shard && shard !== "1/1" ? ["--shard=" + shard] : []),
       "--project",
       profile.browserProject ?? "chromium",
     ),
@@ -335,9 +336,11 @@ export async function runJob(job, context) {
           continue;
         }
         const profile = args[args.indexOf("--profile") + 1];
-        const profileJob = profile === "lanternwake-phase3" ? "browser-lanternwake" : "browser-profiles";
-        if (!fullBrowser || job.id === profileJob)
-          profiles.push({ profile, specs: args.slice(args.indexOf("--") + 1) });
+        const matchesFullJob =
+          profile === "generic"
+            ? Boolean(job.shard)
+            : job.id === (profile === "lanternwake-phase3" ? "browser-lanternwake" : "browser-profiles");
+        if (!fullBrowser || matchesFullJob) profiles.push({ profile, specs: args.slice(args.indexOf("--") + 1) });
       }
       // The legacy planner always emits a Prisma step, even without dedicated fixtures.
       const hasDedicatedFixtures = dedicated.some(([executable]) => executable !== "npx");
@@ -367,7 +370,7 @@ export async function runJob(job, context) {
       const profileFailures = [];
       for (const { profile, specs } of profiles) {
         try {
-          await runBrowserProfile(profile, specs, tree, fullBrowser);
+          await runBrowserProfile(profile, specs, tree, fullBrowser, job.shard);
         } catch (error) {
           if (!fullBrowser) throw error;
           profileFailures.push(profile);

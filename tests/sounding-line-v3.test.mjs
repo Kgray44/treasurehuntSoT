@@ -101,6 +101,17 @@ test("only task-owned full browser profiles receive the larger V3 execution budg
   assert.equal(browserAuthorityExecutionTimeoutMs({ ...profile, SOUNDING_LINE_V3_FULL_BROWSER: "1" }), 60 * 60_000);
 });
 
+test("full browser verification selects four distinct generic shards", () => {
+  const full = plan([], "", { full: true });
+  assert.deepEqual(
+    full.jobs.filter(({ shard }) => shard).map(({ id, kind, shard }) => [id, kind, shard]),
+    [1, 2, 3, 4].map((index) => ["browser-generic-" + index, "browser-full", index + "/4"]),
+  );
+  const focused = plan(["tests/e2e/acceptance.spec.ts"]);
+  assert.ok(focused.jobs.some(({ id, kind }) => id === "browser" && kind === "browser"));
+  assert.ok(focused.jobs.every(({ shard }) => shard === undefined));
+});
+
 test("Owner labels add coverage and unknown requests fail closed", () => {
   const request = metadata(["sl:mode:maintenance", "sl:project:Wayfarer", "sl:suite:unit.landfall"]);
   const result = names(plan(["README.md"], "", request));

@@ -25,7 +25,9 @@ For the registered Wayfarer and Landfall unit suites, Actions may reuse a succes
 
 The cutover disables the legacy ordinary workflow in GitHub Actions. Its source and receipts remain available for historical diagnostics. This workflow uses the existing project test fixtures, including browser harnesses, in isolated runner jobs.
 
-Full browser verification uses independent jobs for dedicated journey runners, Lanternwake, and the other browser profiles. Each job owns its build and fixture data. The full decision requires every job to pass.
+Full browser verification uses independent jobs for dedicated journey runners, Lanternwake, and the other browser profiles. The generic Chromium profile runs in four Playwright shards, with spec files kept intact. Each job owns its build and fixture data. The full decision requires every job to pass.
+
+The manual `generic-serial` scope runs the same generic Chromium profile in one job for timing comparisons. It has its own result.
 
 ### Formatting
 

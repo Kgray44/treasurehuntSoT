@@ -1,11 +1,17 @@
 name: Sounding Line V3
-run-name: Sounding Line V3 ${{ github.event.pull_request.number || 'full' }}
+run-name: Sounding Line V3 ${{ github.event.pull_request.number || inputs.verification_scope || 'full' }}
 
 on:
   pull_request:
     branches: [main]
     types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
   workflow_dispatch:
+    inputs:
+      verification_scope:
+        description: Full verification or serial Chromium comparison
+        type: choice
+        default: full
+        options: [full, generic-serial]
 
 permissions:
   contents: read
@@ -169,7 +175,7 @@ jobs:
           key: ${{ matrix.cache }}
 
   decision:
-    name: ${{ github.event_name == 'pull_request' && 'Sounding Line V3 / Verification' || 'Sounding Line V3 / Full verification' }}
+    name: ${{ github.event_name == 'pull_request' && 'Sounding Line V3 / Verification' || inputs.verification_scope == 'generic-serial' && 'Sounding Line V3 / Serial browser comparison' || 'Sounding Line V3 / Full verification' }}
     needs: [plan, suites]
     if: ${{ always() }}
     runs-on: ubuntu-24.04

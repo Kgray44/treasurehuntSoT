@@ -1738,6 +1738,11 @@ html[data-motion-level="reduced"]
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
   transform: rotate(-0.12deg);
 }
+.chronicle-objective-tray:focus-visible {
+  box-shadow:
+    var(--focus-ring),
+    0 20px 45px rgba(0, 0, 0, 0.5);
+}
 .chronicle-objective-tray p,
 .chronicle-objective-tray strong,
 .chronicle-objective-tray span {

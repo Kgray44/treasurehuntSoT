@@ -619,8 +619,14 @@ test.describe("Project Lanternwake Phase 3 accessibility and six required viewpo
         if (viewport.width === 844 && flow.id === "pause") {
           const objective = page.getByRole("complementary", { name: "Current objective" });
           await expect(objective).toHaveAttribute("tabindex", "0");
-          await objective.focus();
+          const restingShadow = await objective.evaluate((element) => getComputedStyle(element).boxShadow);
+          await page
+            .getByRole("navigation", { name: "Journal tools" })
+            .getByRole("button", { name: "messages" })
+            .focus();
+          await page.keyboard.press("Tab");
           await expect(objective).toBeFocused();
+          expect(await objective.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe(restingShadow);
           await test
             .info()
             .attach("landscape-paused-objective", { body: await page.screenshot(), contentType: "image/png" });

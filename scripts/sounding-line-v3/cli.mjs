@@ -44,6 +44,10 @@ try {
   request.mode = values.mode ?? request.mode;
   request.full ||= values.full;
   const plan = select(entries, read, request, registry(tree), snapshotReader(base));
+  const scope = ci && !event.pull_request ? (event.inputs?.verification_scope ?? "full") : "full";
+  if (scope === "generic-serial" && request.full) {
+    plan.jobs = [{ id: "browser-generic-serial", kind: "browser-full", files: [], shard: "1/1" }];
+  } else if (scope !== "full") throw new Error("Unknown manual verification scope " + scope);
 
   if (operation === "ci-plan") {
     const include = plan.jobs.map((job) => ({
@@ -59,7 +63,7 @@ try {
     const summary = [
       "## Sounding Line V3",
       "",
-      "Mode **" + plan.category + "**",
+      "Mode **" + (scope === "full" ? plan.category : scope) + "**",
       "",
       "Base " + base,
       "Test tree " + git(["rev-parse", tree + "^{tree}"]).trim(),
