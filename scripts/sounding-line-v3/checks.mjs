@@ -362,15 +362,11 @@ export async function runJob(job, context) {
         await setupPrisma();
         // Dedicated runners can rebuild .next. Prepare the profile build after
         // those runners finish, with the existing test-only settings enabled.
-        if (process.env.V3_BENCHMARK_SHARED_BUILD === "1") {
-          readFileSync(".next/BUILD_ID");
-        } else {
-          await command(runNpm("build"), {
-            ...buildEnvironment,
-            SOUNDING_LINE_TASK_OWNED_HTTP: "1",
-            SOUNDING_LINE_SUITE_PROFILE: "v3-browser",
-          });
-        }
+        await command(runNpm("build"), {
+          ...buildEnvironment,
+          SOUNDING_LINE_TASK_OWNED_HTTP: "1",
+          SOUNDING_LINE_SUITE_PROFILE: "v3-browser",
+        });
       }
       const profileFailures = [];
       for (const { profile, specs } of profiles) {
