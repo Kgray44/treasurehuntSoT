@@ -1,14 +1,14 @@
 [
   {
     "profile": "reduced",
-    "elapsedMs": 2287,
-    "recordingStartMs": 7168,
+    "elapsedMs": 2233,
+    "recordingStartMs": 4765,
     "camera": "synthetic-landmarks"
   },
   {
     "profile": "normal",
-    "elapsedMs": 2371,
-    "recordingStartMs": 13321,
+    "elapsedMs": 2259,
+    "recordingStartMs": 12930,
     "camera": "synthetic-landmarks"
   }
 ]

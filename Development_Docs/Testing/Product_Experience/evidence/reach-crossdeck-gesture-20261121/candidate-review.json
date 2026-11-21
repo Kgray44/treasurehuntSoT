@@ -2,10 +2,10 @@
   "version": 1,
   "contractId": "crossdeck.phase2.continuity",
   "baseSha": "4053d4ee5833bc6130f91a0b8d2cd11d1ce0b97f",
-  "candidateSha": "e679720fd6b95099308436d57da5f08b311d34da",
-  "sourceDigest": "3da46ce348267a79250e1ec0fc5daa5d2a6112e249ab8aaa332ceb6434c3bd9e",
-  "contractDigest": "faaa2cd7233f6a9e7892a466d541dbf23552c5e3591cccd2704836770e0faee9",
-  "packetDigest": "827c585eb16f81173ef0f7f1f4cb810b7b6862dccec228137864859e0cf3689f",
+  "candidateSha": "57a2ce23b97c31b51ddb52b92747d8f195554d96",
+  "sourceDigest": "c473d50fbdfed903265b521244f582940201e178f0ffde818038a596177c9a6e",
+  "contractDigest": "f1e246f2452084562c5a66745c954393ce26e29e98f9c7fa79bd0eb20ac49351",
+  "packetDigest": "08b34d138c2c835779d8812b2b4958697f18b9171830dbefe8c906afcc0b63a4",
   "ownerAcceptance": "NOT_CLAIMED",
   "builderContext": "01a1ff86-66f0-7c10-afaa-4cb3e3e67037",
   "reviewerContext": "/root/gesture_experience_review",
@@ -13,23 +13,30 @@
   "status": "NO_BLOCKING_FINDINGS_OBSERVED",
   "artifacts": [
     {
+      "id": "device-settings-normal",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/device-settings-normal.png",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "sha256": "ab4e4eafc21c74bc5d7fca7961d38a14b590b8274c69867380e366fc3d2c4f26"
+    },
+    {
       "id": "source-held-normal",
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-held-normal.png",
-      "sha256": "8aa60def7126b965943c26d68c4e7cfcd27413491a96133f6ec31f6893674cb3",
+      "sha256": "5dc633927f14265d516c57ac42bb4cb0ddb44033a5fa1a1e978c56cf97afd992",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION"
     },
     {
       "id": "source-held-reduced",
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-held-reduced.png",
-      "sha256": "c2f97ee003f18921b114fb00b29b2d90c7e51e26cb9c20ba3c38e81ec04e7e6e",
+      "sha256": "478f2e9e3d842dd537cb495994ee690fe1fb0c5e43dda7e5a3f3efc88aca5aec",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION"
     },
     {
       "id": "source-delivered-normal",
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-delivered-normal.png",
-      "sha256": "e0c4424998db1c3d1e2977a1738de664cfd5293b2fce561673a663d6dea6ab30",
+      "sha256": "3c3bde2995718fce99fb21d937f9e9cc481aaa13790ce80526403a1c1f0b7fd8",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION"
     },
@@ -43,14 +50,14 @@
     {
       "id": "source-gesture-normal",
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/source-gesture-normal.webm",
-      "sha256": "740036fe045396cc5395d81c9a8e4c120d65614517d0615718452c7d706e204f",
+      "sha256": "37ad21e2203196f97936078a0babd4a0176f97cc402369246f65e56a23ac0b25",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION"
     },
     {
       "id": "timings",
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/timings.json",
-      "sha256": "3feedb234fe41bf738bbe8d3b2346ad0414ff8f8505cb81a76689b9b0b5f076c",
+      "sha256": "616ddb6e5116f983de9ab40d70f30f4adc28076e95fd34f4130a19d72996b721",
       "type": "timing",
       "origin": "ACTUAL_APPLICATION"
     }
@@ -60,7 +67,7 @@
     "result": "PASS_NORMAL_AND_REDUCED",
     "runtime": "Task-owned Sounding Line V3 production build, isolated SQLite and two paired Chromium contexts",
     "verified": [
-      "Keyboard opt-in persists in both device contexts after reload.",
+      "Keyboard opt-in in Voyage device settings persists after reload. The checkbox and label stay adjacent and aligned in both contexts.",
       "Camera gestures arm and complete the pinned Chart transfer through Crossdeck.",
       "The receiving Chart opens automatically and acknowledges its rendered view.",
       "One exact command retry after response loss produces one acknowledged handoff.",
@@ -68,6 +75,11 @@
     ]
   },
   "reviewObservations": [
+    {
+      "dimension": "device settings",
+      "evidenceIds": ["device-settings-normal"],
+      "observation": "The checked control sits beside its per-device label on a single row. The camera guidance appears directly below, and a separate section contains pairing fields."
+    },
     {
       "dimension": "state feedback",
       "evidenceIds": ["source-held-normal", "source-gesture-normal", "source-delivered-normal"],
@@ -100,5 +112,13 @@
     "The browser proof uses synthetic landmarks. It supplies no physical webcam, lighting or hand-recognition acceptance.",
     "The reviewer inspected sequential frames and stills. Continuous animation quality, assistive-technology announcements and activation of the return control remain unverified by this review.",
     "The linked recording is trimmed to the Chart interaction after pairing."
+  ],
+  "repairs": [
+    {
+      "finding": "The original device-settings checkbox floated above its label.",
+      "repair": "Grouped the checkbox and label in a single left-aligned row with a 44-pixel label target.",
+      "evidenceIds": ["device-settings-normal"],
+      "reviewDisposition": "RESOLVED"
+    }
   ]
 }

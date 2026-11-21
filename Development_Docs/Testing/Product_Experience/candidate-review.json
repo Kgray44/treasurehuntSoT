@@ -1714,8 +1714,8 @@
   "subsequentSourceBoundReviews": [
     {
       "contractId": "crossdeck.phase2.continuity",
-      "candidateSha": "e679720fd6b95099308436d57da5f08b311d34da",
-      "sourceDigest": "3da46ce348267a79250e1ec0fc5daa5d2a6112e249ab8aaa332ceb6434c3bd9e",
+      "candidateSha": "57a2ce23b97c31b51ddb52b92747d8f195554d96",
+      "sourceDigest": "c473d50fbdfed903265b521244f582940201e178f0ffde818038a596177c9a6e",
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-crossdeck-gesture-20261121/candidate-review.json"
     }
   ]
