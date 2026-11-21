@@ -3,7 +3,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { parsePublishedSnapshot } from "@/chronicle/types";
 import { publishedSourceChecksum } from "@/chronicle/snapshot";
-import { isInstalledCommunityChronicle } from "./creator-installed-library";
+import { snapshotContainsInstalledCommunityReuse, isInstalledCommunityChronicle } from "./creator-installed-library";
 import { assertCommunityDrydockPublicationGate } from "./drydock-publication-gate";
 import { assertPublishingAllowed, CommunityError, listingInputSchema, stableJson } from "./domain";
 import { resolveCreatorPublicationTarget, stageCreatorPublicationListing } from "./creator-publication-target";
@@ -92,6 +92,11 @@ async function loadSource(accountId: string, publishedVersionId: string) {
     throw new CommunityError(
       "COMMUNITY_SOURCE_VERSION_MISMATCH",
       "The published Chronicle failed exact-source verification.",
+    );
+  if (await snapshotContainsInstalledCommunityReuse(version.taleId, snapshot, version.publishedAt))
+    throw new CommunityError(
+      "COMMUNITY_DERIVED_SOURCE_UNSUPPORTED",
+      "This Chronicle includes work licensed for private reuse. Community publication requires verified upstream rights and credit.",
     );
   return { version, snapshot };
 }

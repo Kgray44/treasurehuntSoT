@@ -1,9 +1,22 @@
 import { randomUUID } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
+import {
+  createStudioTale,
+  forkPublishedVersion,
+  getStudioTale,
+  restorePublishedVersionToDraft,
+  saveStudioDraft,
+} from "@/chronicle/studio-service";
+import { freezeChronicleFixture } from "../../tests/fixtures/sc07-chronicle";
+import { preflightCreatorChroniclePublication } from "./creator-chronicle-publication";
 import { createReusableFixtureEnvelope } from "../../tests/fixtures/sc07-reusable";
 import { parseReusableEnvelope, planReusableInsertion, applyReusableInsertion } from "@/studio/reusable-content";
-import { createReusableAuthoringItem, getReusableAuthoringItemVersion } from "@/studio/reusable-library-service";
+import {
+  createChapterTemplate,
+  createReusableAuthoringItem,
+  getReusableAuthoringItemVersion,
+} from "@/studio/reusable-library-service";
 import type { DraftState } from "@/components/studio/studio-types";
 import { decideCreatorReusablePublication, reviewCreatorReusablePublication } from "./creator-reusable-moderation";
 import { installCreatorReusableRelease, reviewCreatorReusableInstallation } from "./creator-reusable-installation";
@@ -213,6 +226,73 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
       const changed = applyReusableInsertion(destination, plan);
       expect(changed.chapters.some((chapter) => chapter.blocks.some((block) => block.title === "Welcome"))).toBe(true);
       await expect(getReusableAuthoringItemVersion(ownerId, installed.itemId)).rejects.toThrow();
+      if (kind === "CHAPTER_TEMPLATE") {
+        const draft = await createStudioTale({
+          creatorId: installerId,
+          title: "Private reuse",
+          slug: `sc07-derivative-${suffix}`,
+        });
+        const studio = await getStudioTale(draft.id);
+        const originalChapter = studio.draft.chapters[0];
+        const originalPassage = { ...source.blocks[0], id: randomUUID(), nextBlockId: null, connections: [] };
+        const current = { tale: studio.tale, chapters: [{ ...originalChapter, blocks: [originalPassage] }] };
+        const insertion = planReusableInsertion({ envelope: reusable, draft: current, operationId: randomUUID() });
+        const workingCopy = applyReusableInsertion(current, insertion);
+        const save = {
+          ...workingCopy,
+          autosaveVersion: studio.draft.autosaveVersion,
+          reusableUsage: {
+            itemId: privateItem.envelope.itemId,
+            versionId: privateItem.envelope.versionId,
+            sourceKind: "FRAGMENT_INSERTED",
+            insertedBlockIds: Object.values(insertion.remap.blocks),
+            insertedChapterIds: Object.values(insertion.remap.chapters),
+            provenance: insertion.attribution,
+          },
+        };
+        await expect(
+          saveStudioDraft(draft.id, { ...save, tale: { ...save.tale, visibility: "PUBLIC" } }, installerId),
+        ).rejects.toThrow(/Community content must remain private/);
+        await saveStudioDraft(draft.id, save, installerId);
+        const loaded = await getStudioTale(draft.id);
+        await expect(
+          saveStudioDraft(
+            draft.id,
+            {
+              tale: { ...loaded.tale, visibility: "UNLISTED" },
+              chapters: loaded.draft.chapters,
+              autosaveVersion: loaded.draft.autosaveVersion,
+            },
+            installerId,
+          ),
+        ).rejects.toThrow(/Community content must remain private/);
+        const chapterId = Object.values(insertion.remap.chapters)[0];
+        await expect(
+          createChapterTemplate(installerId, draft.id, { chapterId, name: "Recaptured chapter" }),
+        ).rejects.toThrow(/upstream rights and credit/);
+        await expect(
+          createChapterTemplate(installerId, draft.id, { chapterId: current.chapters[0].id, name: "Original chapter" }),
+        ).resolves.toHaveProperty("itemId");
+        const derivative = await freezeChronicleFixture(draft.id, installerId, `derived-${suffix}`);
+        await expect(
+          preflightCreatorChroniclePublication(installerId, {
+            publishedVersionId: derivative.id,
+            slug: `sc07-derived-release-${suffix}`,
+            title: "Private reuse",
+            description: "An edited private draft.",
+            tags: [],
+            licenseKey: "SC07_TEST_REUSE",
+            rightsAcknowledged: true,
+            spoilersAcknowledged: true,
+          }),
+        ).rejects.toMatchObject({ code: "COMMUNITY_DERIVED_SOURCE_UNSUPPORTED" });
+        await expect(forkPublishedVersion(draft.id, derivative.id, installerId)).rejects.toThrow(
+          /upstream Community rights and credit/,
+        );
+        await expect(restorePublishedVersionToDraft(draft.id, derivative.id, installerId)).rejects.toThrow(
+          /upstream Community rights and credit/,
+        );
+      }
     },
   );
 });

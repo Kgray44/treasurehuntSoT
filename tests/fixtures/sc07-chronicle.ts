@@ -38,11 +38,16 @@ export async function createChronicleFixture(ownerId: string, suffix: string) {
     },
     ownerId,
   );
-  const snapshot = snapshotFromStudio(await getStudioTale(source.id));
+  const version = await freezeChronicleFixture(source.id, ownerId, suffix);
+  return { source, version };
+}
+
+export async function freezeChronicleFixture(taleId: string, ownerId: string, suffix: string) {
+  const snapshot = snapshotFromStudio(await getStudioTale(taleId));
   const checksum = publishedSourceChecksum(snapshot);
   const version = await db.publishedTaleVersion.create({
     data: {
-      taleId: source.id,
+      taleId: taleId,
       versionNumber: 1,
       versionLabel: "1.0",
       publishedBy: ownerId,
@@ -69,8 +74,8 @@ export async function createChronicleFixture(ownerId: string, suffix: string) {
     },
   });
   await db.chronicle.update({
-    where: { id: source.id },
+    where: { id: taleId },
     data: { status: "PUBLISHED", latestPublishedVersionId: version.id },
   });
-  return { source, version };
+  return version;
 }

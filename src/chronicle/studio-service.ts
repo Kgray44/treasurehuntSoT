@@ -1,7 +1,11 @@
 import { z } from "zod";
 import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
-import { isInstalledCommunityChronicle } from "@/community/creator-installed-library";
+import {
+  containsInstalledCommunityReuse,
+  isInstalledCommunityChronicle,
+  snapshotContainsInstalledCommunityReuse,
+} from "@/community/creator-installed-library";
 import { getBlockDefinition } from "@/chronicle/block-registry";
 import { journalPresentationSchema } from "@/chronicle/journal-contract";
 import type { JsonObject, StudioDraftInput } from "@/chronicle/types";
@@ -369,6 +373,21 @@ export async function saveStudioDraft(
       (await isInstalledCommunityChronicle(taleId, tx))
     )
       throw new Error("Community Chronicle copies must remain private to preserve their published rights and credit.");
+    if (
+      (input.tale.visibility ?? tale.visibility) !== "PRIVATE" &&
+      (await containsInstalledCommunityReuse(
+        {
+          taleId,
+          blockIds: new Set(input.chapters.flatMap((chapter) => chapter.blocks.map((block) => block.id))),
+          chapterIds: new Set(input.chapters.map((chapter) => chapter.id)),
+          pendingItemId: input.reusableUsage?.itemId,
+        },
+        tx,
+      ))
+    )
+      throw new Error(
+        "Community content must remain private until its upstream rights and credit can be verified for publication.",
+      );
     const reserved = await tx.chronicle.findFirst({
       where: { slug: input.tale.slug, id: { not: taleId } },
       select: { id: true },
@@ -662,6 +681,11 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
   if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.chapters))
     throw new Error("This Chronicle version cannot be copied into the current draft.");
 
+  if (await snapshotContainsInstalledCommunityReuse(taleId, snapshot, version.publishedAt))
+    throw new Error(
+      "Restoring this version as a new draft requires preserving its upstream Community rights and credit. Keep editing the existing private draft.",
+    );
+
   const previousDraftId = tale.currentDraftRevisionId;
   const draft = await db.taleDraft.create({
     data: {
@@ -736,6 +760,13 @@ export async function forkPublishedVersion(
   const fork = async (tx: Prisma.TransactionClient) => {
     const version = await tx.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
     const snapshot = parsePublishedSnapshot(version.contentSnapshot);
+    if (
+      (await isInstalledCommunityChronicle(taleId, tx)) ||
+      (await snapshotContainsInstalledCommunityReuse(taleId, snapshot, version.publishedAt, tx))
+    )
+      throw new Error(
+        "Making another Chronicle copy requires preserving its upstream Community rights and credit. Keep editing the existing private draft.",
+      );
     let slug = slugify(`${snapshot.tale.slug}-copy`);
     let suffix = 2;
     const base = slug;

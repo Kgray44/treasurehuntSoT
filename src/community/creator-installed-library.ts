@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import type { PublishedTaleSnapshot } from "@/chronicle/types";
 import { parseReusableEnvelope } from "@/studio/reusable-content";
 
 export async function isInstalledCommunityChronicle(
@@ -10,6 +11,58 @@ export async function isInstalledCommunityChronicle(
       where: { sourceId: "chronicle", targetId: taleId, kind: "CHRONICLE" },
       select: { id: true },
     }),
+  );
+}
+
+/** Check saved selections against persisted Community installation mappings. */
+export async function containsInstalledCommunityReuse(
+  input: {
+    taleId: string;
+    blockIds: ReadonlySet<string>;
+    chapterIds?: ReadonlySet<string>;
+    publishedAt?: Date;
+    pendingItemId?: string;
+  },
+  client: Pick<typeof db, "reusableAuthoringUsage" | "communityInstallMapping"> = db,
+) {
+  const uses = await client.reusableAuthoringUsage.findMany({
+    where: { draft: { taleId: input.taleId }, ...(input.publishedAt && { createdAt: { lte: input.publishedAt } }) },
+    select: { itemId: true, insertedBlockIds: true, insertedChapterIds: true },
+  });
+  const intersects = (encoded: string, selection?: ReadonlySet<string>) =>
+    Boolean(selection?.size && (JSON.parse(encoded) as string[]).some((id) => selection.has(id)));
+  const relevantItems = new Set(
+    uses
+      .filter(
+        (usage) =>
+          intersects(usage.insertedBlockIds, input.blockIds) || intersects(usage.insertedChapterIds, input.chapterIds),
+      )
+      .map((usage) => usage.itemId),
+  );
+  if (input.pendingItemId) relevantItems.add(input.pendingItemId);
+  if (!relevantItems.size) return false;
+  return Boolean(
+    await client.communityInstallMapping.findFirst({
+      where: { sourceId: "creator-item", targetId: { in: [...relevantItems] } },
+      select: { id: true },
+    }),
+  );
+}
+
+export function snapshotContainsInstalledCommunityReuse(
+  taleId: string,
+  snapshot: PublishedTaleSnapshot,
+  publishedAt: Date,
+  client?: Parameters<typeof containsInstalledCommunityReuse>[1],
+) {
+  return containsInstalledCommunityReuse(
+    {
+      taleId,
+      blockIds: new Set(snapshot.chapters.flatMap((chapter) => chapter.blocks.map((block) => block.id))),
+      chapterIds: new Set(snapshot.chapters.map((chapter) => chapter.id)),
+      publishedAt,
+    },
+    client,
   );
 }
 
