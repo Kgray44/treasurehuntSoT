@@ -47,6 +47,11 @@ export const commandSchema = z.strictObject({
   // Server binds actor/session and server timestamps. Browser clocks never arbitrate custody.
   payload: z.discriminatedUnion("action", [
     transferSchema,
+    z.strictObject({ action: z.literal("gesture-arm"), object: objectRefSchema, context: continuitySchema }),
+    z.strictObject({
+      action: z.enum(["gesture-receive", "gesture-send", "gesture-cancel"]),
+      gestureId: z.string().uuid(),
+    }),
     z.strictObject({ action: z.enum(["accept", "acknowledge", "cancel"]), handoffId: z.string().uuid() }),
     z.strictObject({ action: z.literal("recover"), object: objectRefSchema }),
     z.strictObject({
@@ -86,11 +91,25 @@ export type Presentation = {
   snapshots?: Record<string, Continuity>;
   revision: number;
 };
+type GestureOffer = {
+  id: string;
+  sourceId: string;
+  expiresAt: string;
+  decisionAt?: string;
+};
+export type ChartGesture = GestureOffer & {
+  object: ObjectRef;
+  context: Continuity;
+  visibility: Handoff["visibility"];
+  receivers: string[];
+};
+export type GestureProjection = GestureOffer & { receiverCount?: number };
 export type DeckState = {
   version: 1;
   focus: Partial<Record<ObjectRef["family"], string>>;
   objects: Record<string, Presentation>;
   handoffs: Handoff[];
+  gesture?: ChartGesture;
   sequences: Record<string, number>;
   messages: { id: string; surfaceId: string; sequence: number; digest: string; handoffId?: string }[];
 };
@@ -103,6 +122,7 @@ export type SyncSnapshot = {
   handoffs: Handoff[];
   focus: DeckState["focus"];
   observedAt: string;
+  gesture?: GestureProjection;
 };
 export const objectKey = (ref: ObjectRef) => `${ref.family}:${ref.objectId}`;
 export const emptyDeck = (): DeckState => ({
@@ -113,4 +133,6 @@ export const emptyDeck = (): DeckState => ({
   sequences: {},
   messages: [],
 });
+export const GESTURE_TTL_MS = 12_000;
+export const GESTURE_DECISION_MS = 1_100;
 export const HANDOFF_TTL_MS = 120_000;

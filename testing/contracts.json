@@ -788,7 +788,7 @@
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["PLAYER"],
         "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
-        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available. Manual Crossdeck send and acceptance remain available with hand gestures disabled or the camera unavailable.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -808,7 +808,11 @@
           }
         ],
         "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
-        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "browserTests": [
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts",
+          "tests/e2e/crossdeck-chart-gesture.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "continuity": {
@@ -6864,6 +6868,8 @@
           "src/components/player/journal/ChronicleJournalSession.tsx",
           "src/app/devices",
           "src/app/account/devices",
+          "src/app/account/preferences",
+          "src/reach/chart-transfer-gesture.ts",
           "src/components/player/journal",
           "src/app/player/playthroughs/[playthroughId]/journal",
           "src/app/play/[taleSlug]/session/[sessionId]",
@@ -6935,7 +6941,7 @@
         "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
         "states": ["JOURNAL_READY", "CONNECT_READY", "RETURNED"],
         "navigation": "Open the Journal, use Connect another device, inspect contextual pairing instructions, then Continue the Chronicle in the same Voyage.",
-        "designTarget": "Keep the current passage legible and reachable, with operable contextual connection controls, focused QR/code guidance and direct return to the same Chronicle. Preserve an unobscured current heading and the existing substantive first-viewport reading-area and hit-test requirements. Editorial first-viewport dominance, utility grouping and appearance refinement are assigned to Project Refit; obstruction, unreadability and inaccessible controls remain Crossdeck blockers.",
+        "designTarget": "A released Chart can be picked up from its open view with a palm-to-fist gesture and opened on a single authorized receiver with fist-to-palm. On opted-in devices, a compact status at the Chart shows ready, held and confirmed states without adding a per-transfer control. Reduced motion keeps the same status and flow. Keep the current passage legible and reachable, with operable contextual connection controls, focused QR/code guidance and direct return to the same Chronicle. Preserve an unobscured current heading and the existing substantive first-viewport reading-area and hit-test requirements. Editorial first-viewport dominance, utility grouping and appearance refinement are assigned to Project Refit; obstruction, unreadability and inaccessible controls remain Crossdeck blockers.",
         "roleSetup": {
           "PLAYER": {
             "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",

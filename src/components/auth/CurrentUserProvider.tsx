@@ -134,8 +134,12 @@ export function CurrentUserProvider({ children }: { children: React.ReactNode })
   );
 }
 
+export function useOptionalCurrentUser() {
+  return useContext(CurrentUserReactContext);
+}
+
 export function useCurrentUser() {
-  const context = useContext(CurrentUserReactContext);
+  const context = useOptionalCurrentUser();
   if (!context) throw new Error("useCurrentUser must be used inside CurrentUserProvider.");
   return context;
 }

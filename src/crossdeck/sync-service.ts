@@ -8,6 +8,10 @@ import {
   emptyDeck,
   objectKey,
   HANDOFF_TTL_MS,
+  GESTURE_TTL_MS,
+  GESTURE_DECISION_MS,
+  type Handoff,
+  type Presentation,
   type DeckState,
   type SyncCommand,
   type SyncSnapshot,
@@ -28,6 +32,23 @@ const conflict = (message = "Another device changed this view. Refresh and try a
 };
 const active = (s: Awaited<ReturnType<typeof surface>>, now: Date) =>
   presence(s.lifecycle, s.lastSeenAt, s.expiresAt, s.revokedAt, now) === "ACTIVE";
+function commitHandoff(state: DeckState, h: Handoff, p: Presentation, now: Date) {
+  h.state = "COMMITTED";
+  h.committedAt = now.toISOString();
+  p.views[h.targetId] = h.mode;
+  if (h.mode === "SEND_VIEW") {
+    p.snapshots ??= {};
+    p.snapshots[h.targetId] = h.context;
+  }
+  if (["MOVE_FOCUS", "MOVE_CUSTODY"].includes(h.mode)) p.custody = h.targetId;
+  if (h.mode === "MOVE_FOCUS") {
+    p.focus = h.targetId;
+    state.focus[h.object.family] = h.targetId;
+  }
+  p.context = h.context;
+  p.revision += 1;
+}
+
 /** Durable compare-and-swap serialization across processes. No in-memory authority or story mutation. */
 export function createCrossdeckSyncService(
   db: PrismaClient,
@@ -78,6 +99,10 @@ export function createCrossdeckSyncService(
   }
   async function reconcile(tx: Store, actor: Actor, voyageId: string, state: DeckState, now: Date) {
     let changed = false;
+    if (state.gesture && Date.parse(state.gesture.expiresAt) <= now.getTime()) {
+      delete state.gesture;
+      changed = true;
+    }
     for (const h of state.handoffs) {
       if (!["OFFERED", "COMMITTED"].includes(h.state)) continue;
       let lost = h.state === "OFFERED" && Date.parse(h.expiresAt) <= now.getTime();
@@ -138,7 +163,20 @@ export function createCrossdeckSyncService(
     if (changed) await persist(tx, row, state);
     const shared = own.role === "SHARED_CREW_DISPLAY";
     const allowed = (v: string) => !shared || v === "CREW";
+    const gesture = state.gesture;
     return {
+      ...(gesture && active(own, now) && allowed(gesture.visibility)
+        ? {
+            gesture: {
+              id: gesture.id,
+              sourceId: gesture.sourceId,
+              expiresAt: gesture.expiresAt,
+              ...(gesture.sourceId === id
+                ? { decisionAt: gesture.decisionAt, receiverCount: gesture.receivers.length }
+                : {}),
+            },
+          }
+        : {}),
       revision: row.revision + Number(changed),
       nextSequence: (state.sequences[id] ?? 0) + 1,
       surfaceId: id,
@@ -186,7 +224,25 @@ export function createCrossdeckSyncService(
         }
         if (input.sequence !== (state.sequences[input.surfaceId] ?? 0) + 1)
           conflict("This device needs to reconnect before trying again.");
-        const command = input.payload;
+        const payload = input.payload;
+        let command = payload;
+        let gestureId: string | undefined;
+        if (payload.action === "gesture-send") {
+          const gesture = state.gesture;
+          if (!gesture || gesture.id !== payload.gestureId || gesture.sourceId !== input.surfaceId)
+            throw new CrossdeckError(409, "The Chart gesture ended.");
+          if (!gesture.decisionAt || Date.parse(gesture.decisionAt) > now.getTime() || gesture.receivers.length !== 1)
+            throw new CrossdeckError(409, "Show your open hand to one connected device.");
+          command = {
+            action: "send",
+            object: gesture.object,
+            context: gesture.context,
+            targetId: gesture.receivers[0],
+            mode: "SEND_VIEW",
+            privateConfirmed: false,
+          };
+          gestureId = gesture.id;
+        }
         let handoffId: string | undefined;
         if (command.action === "send") {
           if (own.role === "SHARED_CREW_DISPLAY")
@@ -226,8 +282,8 @@ export function createCrossdeckSyncService(
           state.objects[key] = p;
           if (state.handoffs.filter((h) => ["OFFERED", "COMMITTED"].includes(h.state)).length >= 32)
             conflict("Finish a pending transfer before sending another.");
-          handoffId = randomUUID();
-          state.handoffs.push({
+          handoffId = gestureId ?? randomUUID();
+          const handoff: Handoff = {
             id: handoffId,
             sourceId: input.surfaceId,
             targetId: command.targetId,
@@ -238,7 +294,46 @@ export function createCrossdeckSyncService(
             state: "OFFERED",
             requestedAt: now.toISOString(),
             expiresAt: new Date(now.getTime() + HANDOFF_TTL_MS).toISOString(),
-          });
+          };
+          state.handoffs.push(handoff);
+          if (!gestureId && state.gesture?.sourceId === input.surfaceId) delete state.gesture;
+          if (gestureId) {
+            // The destination already accepted through its own authorized gesture command.
+            commitHandoff(state, handoff, p, now);
+            delete state.gesture;
+          }
+        } else if (payload.action === "gesture-arm") {
+          if (own.role === "SHARED_CREW_DISPLAY" || payload.object.family !== "MAP")
+            throw new CrossdeckError(403, "Open a released Chart on your personal screen.");
+          if (state.gesture) {
+            // Competing sources must not select a winner by transaction order.
+            if (state.gesture.sourceId !== input.surfaceId) delete state.gesture;
+          } else {
+            const policy = await resolve(tx, actor, input.voyageId, payload.object, payload.context);
+            if (policy.visibility === "PRIVATE") throw new CrossdeckError(403, "This Chart cannot be sent by gesture.");
+            state.gesture = {
+              id: randomUUID(),
+              sourceId: input.surfaceId,
+              object: payload.object,
+              context: payload.context,
+              visibility: policy.visibility,
+              expiresAt: new Date(now.getTime() + GESTURE_TTL_MS).toISOString(),
+              receivers: [],
+            };
+          }
+        } else if (payload.action === "gesture-receive") {
+          const gesture = state.gesture;
+          if (!gesture || gesture.id !== payload.gestureId || gesture.sourceId === input.surfaceId)
+            throw new CrossdeckError(409, "There is no Chart waiting for this device.");
+          if (gesture.decisionAt && Date.parse(gesture.decisionAt) <= now.getTime())
+            throw new CrossdeckError(409, "That release window has ended.");
+          const policy = await resolve(tx, actor, input.voyageId, gesture.object, gesture.context);
+          await eligible(tx, actor, input.surfaceId, input.voyageId, now, policy.visibility);
+          if (!gesture.receivers.includes(input.surfaceId)) gesture.receivers.push(input.surfaceId);
+          gesture.decisionAt ??= new Date(now.getTime() + GESTURE_DECISION_MS).toISOString();
+        } else if (payload.action === "gesture-cancel") {
+          if (state.gesture?.id === payload.gestureId && state.gesture.sourceId === input.surfaceId)
+            delete state.gesture;
         } else if (["accept", "acknowledge", "cancel"].includes(command.action) && "handoffId" in command) {
           const h = state.handoffs.find((h) => h.id === command.handoffId);
           if (!h || ![h.sourceId, h.targetId].includes(input.surfaceId))
@@ -257,20 +352,7 @@ export function createCrossdeckSyncService(
               if (h.state === "OFFERED") {
                 await eligible(tx, actor, h.sourceId, input.voyageId, now, h.visibility);
                 if (p.custody !== h.sourceId) conflict();
-                h.state = "COMMITTED";
-                h.committedAt = now.toISOString();
-                p.views[h.targetId] = h.mode;
-                if (h.mode === "SEND_VIEW") {
-                  p.snapshots ??= {};
-                  p.snapshots[h.targetId] = h.context;
-                }
-                if (["MOVE_FOCUS", "MOVE_CUSTODY"].includes(h.mode)) p.custody = h.targetId;
-                if (h.mode === "MOVE_FOCUS") {
-                  p.focus = h.targetId;
-                  state.focus[h.object.family] = h.targetId;
-                }
-                p.context = h.context;
-                p.revision += 1;
+                commitHandoff(state, h, p, now);
               } else if (!["COMMITTED", "ACKNOWLEDGED"].includes(h.state))
                 conflict("That invitation expired. The item stayed here.");
             } else {

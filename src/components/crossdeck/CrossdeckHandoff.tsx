@@ -1,5 +1,6 @@
 "use client";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { createCrossdeckId, storageKey } from "@/crossdeck/client";
 import { createHttpSyncTransport, type SurfaceSyncTransport, SyncTransportError } from "@/crossdeck/transport";
 import {
@@ -16,6 +17,9 @@ import type { SurfaceDto } from "@/crossdeck/service";
 import { useCrossdeckContinuity } from "./CrossdeckContinuity";
 import styles from "./CrossdeckDevices.module.css";
 import { roleNames } from "@/crossdeck/experiences";
+import { ChartGestureCamera } from "./ChartGestureCamera";
+import { useChartGestureEnabled } from "./ChartGesturePreference";
+import gestureStyles from "./ChartTransferGesture.module.css";
 
 const modeNames: Record<TransferMode, string> = {
   MOVE_FOCUS: "Continue there",
@@ -32,6 +36,8 @@ type HandoffProps = {
   object: ObjectRef | null;
   context: Continuity;
   captureContext?: () => Continuity;
+  gestureSource?: boolean;
+  gestureFeedbackRoot?: HTMLElement | null;
   /** A companion purpose follows only its own background views; accepted arrivals still open explicitly. */
   followingFamily?: ObjectRef["family"] | null;
   /** Projects this transport's verified state without opening another synchronization channel. */
@@ -51,6 +57,8 @@ function CrossdeckHandoffSession({
   object,
   context,
   captureContext,
+  gestureSource,
+  gestureFeedbackRoot,
   followingFamily,
   onConnectionChange,
   resume,
@@ -66,6 +74,11 @@ function CrossdeckHandoffSession({
   const [confirmation, setConfirmation] = useState("");
   const [message, setMessage] = useState("");
   const [online, setOnline] = useState(false);
+  const gestureEnabled = useChartGestureEnabled();
+  const gestureAttempt = useRef<{ key: string; id?: string } | null>(null);
+  const sourceKeyRef = useRef<string | null>(null);
+  const [heldId, setHeldId] = useState("");
+  const [gestureReceipt, setGestureReceipt] = useState("");
   const [busy, setBusy] = useState(false);
   const [retryPayload, setRetryPayload] = useState<SyncCommand["payload"] | null>(null);
   const transport = useRef<SurfaceSyncTransport | null>(null);
@@ -99,7 +112,7 @@ function CrossdeckHandoffSession({
     connectionRef.current?.("connecting");
     const id = ownId;
     if (!id) return;
-    const sync = createHttpSyncTransport(voyageId, id, csrfToken);
+    const sync = createHttpSyncTransport(voyageId, id, csrfToken, fetch, gestureEnabled ? 1_250 : undefined);
     transport.current = sync;
     const controller = new AbortController();
     commandController.current = controller;
@@ -181,20 +194,25 @@ function CrossdeckHandoffSession({
       applied.clear();
       versions.clear();
     };
-  }, [voyageId, csrfToken, ownId]);
+  }, [voyageId, csrfToken, ownId, gestureEnabled]);
 
   const command = useCallback(
     async (payload: SyncCommand["payload"], retry = false) => {
       if (lock.current || !transport.current || !current.current) return;
+      const signalOnly = ["gesture-arm", "gesture-receive", "gesture-cancel"].includes(payload.action);
+      if (payload.action.startsWith("gesture-") && pending.current && !retry) return;
       lock.current = true;
       setBusy(true);
-      setMessage(
-        payload.action === "send"
-          ? "Preparing the view for your other screen…"
-          : payload.action === "accept"
-            ? "Opening your view…"
-            : "Updating your connected screens…",
-      );
+      if (!signalOnly)
+        setMessage(
+          payload.action === "send"
+            ? "Preparing the view for your other screen…"
+            : payload.action === "gesture-send"
+              ? "Releasing the Chart to your other device…"
+              : payload.action === "accept"
+                ? "Opening your view…"
+                : "Updating your connected screens…",
+        );
       const input =
         retry && pending.current
           ? pending.current
@@ -207,12 +225,26 @@ function CrossdeckHandoffSession({
               payload,
             };
       pending.current = input;
-      setRetryPayload(payload);
+      const isGesture = payload.action.startsWith("gesture-");
+      if (!isGesture) setRetryPayload(payload);
       const sessionTransport = transport.current;
       const signal = commandController.current?.signal;
       const stillCurrent = () => !signal?.aborted && transport.current === sessionTransport;
       try {
-        const next = await sessionTransport.send(input, signal);
+        const sendExact = () => sessionTransport.send(input, signal);
+        const next = await sendExact().catch(async (error: unknown) => {
+          if (!isGesture || (error instanceof SyncTransportError && error.status < 500)) throw error;
+          // An interrupted response can follow a successful write. Retry the same command, never a fresh offer.
+          await new Promise((resolve) => setTimeout(resolve, 180));
+          if (
+            !stillCurrent() ||
+            document.visibilityState !== "visible" ||
+            (payload.action === "gesture-arm" && !sourceKeyRef.current) ||
+            (payload.action === "gesture-send" && gestureAttempt.current?.id !== payload.gestureId)
+          )
+            throw error;
+          return sendExact();
+        });
         if (!stillCurrent()) return;
         pending.current = null;
         setRetryPayload(null);
@@ -222,17 +254,24 @@ function CrossdeckHandoffSession({
         const connectedNow = navigator.onLine !== false;
         setOnline(connectedNow);
         connectionRef.current?.(connectedNow ? "live" : "offline");
-        setMessage(
-          payload.action === "send" ? "Ready to receive on your other screen." : "Your devices are up to date.",
-        );
+        if (!signalOnly)
+          setMessage(
+            payload.action === "send"
+              ? "Ready to receive on your other screen."
+              : payload.action === "gesture-send"
+                ? ""
+                : "Your devices are up to date.",
+          );
         return next;
       } catch (error) {
         if (!stillCurrent()) return;
-        if (error instanceof SyncTransportError && error.status < 500) {
+        if (isGesture || (error instanceof SyncTransportError && error.status < 500)) {
           pending.current = null;
           setRetryPayload(null);
         }
-        setMessage(error instanceof Error ? error.message : "Check the transfer before trying again.");
+        if (!signalOnly || payload.action === "gesture-arm") {
+          setMessage(error instanceof Error ? error.message : "Check the transfer before trying again.");
+        }
       } finally {
         if (stillCurrent()) {
           lock.current = false;
@@ -315,8 +354,89 @@ function CrossdeckHandoffSession({
     ...captureContext?.(),
     ...(object?.family === "MAP" ? (bridge?.current?.capture() ?? {}) : {}),
   });
+  const gestureConnected = gestureEnabled && online && !!snapshot && snapshot.surfaceId === ownId;
+  const sourceKey =
+    gestureConnected && gestureSource && object?.family === "MAP" && !object.version.startsWith("draft:")
+      ? `${objectKey(object)}:${object.version}:${ownId}`
+      : null;
+  const gesture = gestureConnected ? snapshot?.gesture : undefined;
+  const holding = !!sourceKey && !!gesture && gesture.sourceId === ownId && heldId === gesture.id;
+  const cancelGesture = useCallback(() => {
+    const attempt = gestureAttempt.current;
+    gestureAttempt.current = null;
+    setHeldId("");
+    if (attempt?.id) void command({ action: "gesture-cancel", gestureId: attempt.id });
+  }, [command]);
+
+  useLayoutEffect(() => {
+    sourceKeyRef.current = sourceKey;
+  }, [sourceKey]);
+  useEffect(() => {
+    if (gestureAttempt.current && gestureAttempt.current.key !== sourceKey) cancelGesture();
+  }, [sourceKey, cancelGesture]);
+
+  const holdChart = () => {
+    if (!object || !sourceKey || gesture || gestureAttempt.current || lock.current || pending.current) return;
+    const attempt: { key: string; id?: string } = { key: sourceKey };
+    gestureAttempt.current = attempt;
+    void command({ action: "gesture-arm", object, context: captured() }).then((next) => {
+      const armed = next?.gesture?.sourceId === ownId ? next?.gesture : undefined;
+      if (gestureAttempt.current !== attempt || sourceKeyRef.current !== attempt.key) {
+        if (armed) void command({ action: "gesture-cancel", gestureId: armed.id });
+        return;
+      }
+      if (armed) {
+        attempt.id = armed.id;
+        setHeldId(armed.id);
+      } else gestureAttempt.current = null;
+    });
+  };
+  const ownGesture = holding ? gesture : undefined;
+  const gestureId = ownGesture?.id;
+  const decisionAt = ownGesture?.decisionAt;
+  const receiverCount = ownGesture?.receiverCount;
+  const observedAt = snapshot?.observedAt;
+  useEffect(() => {
+    if (!gestureId || !decisionAt || !observedAt) return;
+    let timer: ReturnType<typeof setTimeout>;
+    const finish = () => {
+      const latest = current.current?.gesture;
+      if (
+        !sourceKeyRef.current ||
+        document.visibilityState !== "visible" ||
+        gestureAttempt.current?.id !== gestureId ||
+        latest?.id !== gestureId
+      )
+        return;
+      if (latest.receiverCount !== 1) {
+        cancelGesture();
+        setMessage("More than one device saw the release. Pick up the Chart and try again with one device in view.");
+        return;
+      }
+      if (lock.current) {
+        timer = setTimeout(finish, 100);
+        return;
+      }
+      setGestureReceipt(gestureId);
+      void command({ action: "gesture-send", gestureId });
+    };
+    timer = setTimeout(finish, Math.max(0, Date.parse(decisionAt) - Date.parse(observedAt)) + 75);
+    return () => clearTimeout(timer);
+  }, [gestureId, decisionAt, receiverCount, observedAt, cancelGesture, command]);
+
+  const projectedGestureId = gesture?.id;
+  useEffect(() => {
+    const attempt = gestureAttempt.current;
+    if (!attempt?.id || projectedGestureId === attempt.id) return;
+    gestureAttempt.current = null;
+    if (current.current?.handoffs.every((h) => h.id !== attempt.id))
+      setMessage("The Chart stayed here. Pick it up again when the receiving device is ready.");
+  }, [projectedGestureId]);
+
   const send = () => {
     if (object && selectedTarget) {
+      gestureAttempt.current = null;
+      setHeldId("");
       picker.current?.close();
       sendTrigger.current?.focus();
       void command({
@@ -363,8 +483,32 @@ function CrossdeckHandoffSession({
       if (timer) clearTimeout(timer);
     };
   }, [bridge]);
+  const heldFeedback = holding && (
+    <div className={gestureStyles.held} role="status">
+      <span className={gestureStyles.chart} aria-hidden="true" />
+      <span>
+        {decisionAt
+          ? "Release detected. Checking the receiving device…"
+          : "Chart in hand. Open your palm toward a connected device."}
+      </span>
+    </div>
+  );
   return (
     <section className={styles.handoff} aria-label="Send to your devices">
+      {gestureEnabled && (
+        <ChartGestureCamera
+          key={ownId}
+          enabled={gestureConnected}
+          sourceKey={sourceKey}
+          incomingId={gesture && gesture.sourceId !== ownId ? gesture.id : null}
+          holding={holding}
+          feedbackRoot={gestureFeedbackRoot}
+          hold={holdChart}
+          release={(id) => void command({ action: "gesture-receive", gestureId: id })}
+          suspend={cancelGesture}
+        />
+      )}
+      {gestureFeedbackRoot && heldFeedback ? createPortal(heldFeedback, gestureFeedbackRoot) : heldFeedback}
       <button
         ref={sendTrigger}
         className={styles.sendTrigger}
@@ -513,40 +657,48 @@ function CrossdeckHandoffSession({
           </button>
         </div>
       ))}
-      {outgoing.slice(-1).map((handoff) => (
-        <div className={styles.receipt} key={handoff.id}>
-          <p>
-            {handoff.state === "ACKNOWLEDGED"
-              ? `${handoff.title} is open on your other device.`
-              : handoff.state === "COMMITTED"
-                ? `${handoff.title} arrived. Waiting for that device to open it.`
-                : handoff.state === "OFFERED"
-                  ? `${handoff.title} is ready to receive. It stays here until opened there.`
-                  : handoff.state === "EXPIRED"
-                    ? "The invitation expired. Your view remains recoverable."
-                    : "That transfer ended. Your view remains recoverable."}
-          </p>
-          {handoff.state === "OFFERED" && (
-            <button
-              type="button"
-              disabled={busy || !online}
-              onClick={() => void command({ action: "cancel", handoffId: handoff.id })}
-            >
-              Cancel send
-            </button>
-          )}
-          {["COMMITTED", "ACKNOWLEDGED"].includes(handoff.state) &&
-            !snapshot?.presentations.some((p) => objectKey(p.object) === objectKey(handoff.object)) && (
+      {outgoing.slice(-1).map((handoff) => {
+        const receipt = (
+          <div className={styles.receipt} key={handoff.id} role={gestureReceipt === handoff.id ? "status" : undefined}>
+            {gestureReceipt === handoff.id && handoff.state === "COMMITTED" && (
+              <span className={gestureStyles.release} aria-hidden="true" />
+            )}
+            <p>
+              {handoff.state === "ACKNOWLEDGED"
+                ? `${handoff.title} is open on your other device.`
+                : handoff.state === "COMMITTED"
+                  ? `${handoff.title} arrived. Waiting for that device to open it.`
+                  : handoff.state === "OFFERED"
+                    ? `${handoff.title} is ready to receive. It stays here until opened there.`
+                    : handoff.state === "EXPIRED"
+                      ? "The invitation expired. Your view remains recoverable."
+                      : "That transfer ended. Your view remains recoverable."}
+            </p>
+            {handoff.state === "OFFERED" && (
               <button
                 type="button"
                 disabled={busy || !online}
-                onClick={() => void command({ action: "recover", object: handoff.object })}
+                onClick={() => void command({ action: "cancel", handoffId: handoff.id })}
               >
-                Recover {handoff.title} here
+                Cancel send
               </button>
             )}
-        </div>
-      ))}
+            {["COMMITTED", "ACKNOWLEDGED"].includes(handoff.state) &&
+              !snapshot?.presentations.some((p) => objectKey(p.object) === objectKey(handoff.object)) && (
+                <button
+                  type="button"
+                  disabled={busy || !online}
+                  onClick={() => void command({ action: "recover", object: handoff.object })}
+                >
+                  Recover {handoff.title} here
+                </button>
+              )}
+          </div>
+        );
+        return gestureFeedbackRoot && gestureReceipt === handoff.id
+          ? createPortal(receipt, gestureFeedbackRoot, handoff.id)
+          : receipt;
+      })}
       {snapshot?.presentations.length ? (
         <details className={styles.viewOptions}>
           <summary>Connected view options</summary>
