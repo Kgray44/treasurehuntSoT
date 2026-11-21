@@ -1,0 +1,42 @@
+name: Confluence focused compatibility
+
+# Narrow, nonauthoritative regression proof; Sounding Line remains merge/release authority.
+on:
+  pull_request:
+    paths:
+      - 'scripts/confluence/**'
+      - 'tests/confluence/**'
+      - '.github/workflows/confluence-focused-compatibility.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  human-archive-compatibility:
+    name: Confluence / Human archive compatibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch only commit-bound Confluence source and tests
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_SHA" =~ ^[a-f0-9]{40}$ ]]
+          mkdir -p scripts/confluence tests/confluence
+          for path in scripts/confluence/core.mjs tests/confluence/core.test.mjs; do
+            gh api "repos/$REPO/contents/$path?ref=$SOURCE_SHA" --jq '.content' | base64 --decode > "$path"
+            test -s "$path"
+          done
+          echo "Confluence source bound to $SOURCE_SHA"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run focused builtin-node Confluence regressions
+        # The existing full Confluence suite has Windows-only PowerShell/path fixtures.
+        # This nonauthoritative Linux job proves only the new archive parser/DST regressions.
+        run: node --test --test-name-pattern='recognizes archival weekly human|recognizes later legacy weekly human|weekFor returns real Eastern' tests/confluence/core.test.mjs
