@@ -233,7 +233,7 @@ test("validates A4 PDF and DOCX structural invariants", async () => {
     );
     const docx = join(root, "master.docx");
     execFileSync(
-      "powershell",
+      process.platform === "win32" ? "powershell" : "pwsh",
       [
         "-NoProfile",
         "-Command",

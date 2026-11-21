@@ -515,7 +515,8 @@ export async function inspectDocx(docxPath) {
     "  [pscustomobject]@{a4=($document -match 'w:w=\"11906\"' -and $document -match 'w:h=\"16838\"'); margins=($document -match 'w:left=\"340\"' -and $document -match 'w:right=\"340\"' -and $document -match 'w:top=\"340\"' -and $document -match 'w:bottom=\"340\"'); headings=($styles -match 'Heading'); tableHeaders=($document -match 'w:tblHeader'); altText=($document -match 'descr=') } | ConvertTo-Json -Compress",
     "} finally { $zip.Dispose() }",
   ].join("; ");
-  const output = execFileSync("powershell", ["-NoProfile", "-Command", script], {
+  const shell = process.platform === "win32" ? "powershell" : "pwsh";
+  const output = execFileSync(shell, ["-NoProfile", "-Command", script], {
     encoding: "utf8",
     env: { ...process.env, CONFLUENCE_DOCX_INSPECT_PATH: docxPath },
   }).trim();
