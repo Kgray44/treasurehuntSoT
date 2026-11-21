@@ -33,8 +33,9 @@ test("uses natural America/New_York ISO weeks", () => {
 });
 
 test("rejects archive path traversal and incomplete evidence", () => {
-  assert.equal(inside("C:\\archive", "C:\\archive\\engineering\\weekly"), true);
-  assert.equal(inside("C:\\archive", "C:\\outside"), false);
+  const archive = join(tmpdir(), "archive");
+  assert.equal(inside(archive, join(archive, "engineering", "weekly")), true);
+  assert.equal(inside(archive, join(archive, "..", "outside")), false);
   assert.throws(
     () => validateRecord({ weekId: "2026-W34" }, "engineering-weekly"),
     /CONFLUENCE_SCHEMA_ENGINEERING_WEEKLY_MISSING/,
