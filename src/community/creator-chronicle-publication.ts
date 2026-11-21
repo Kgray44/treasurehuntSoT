@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { parsePublishedSnapshot } from "@/chronicle/types";
 import { publishedSourceChecksum } from "@/chronicle/snapshot";
+import { isInstalledCommunityChronicle } from "./creator-installed-library";
 import { assertCommunityDrydockPublicationGate } from "./drydock-publication-gate";
 import { assertPublishingAllowed, CommunityError, listingInputSchema, stableJson } from "./domain";
 import { resolvePublicProfileProjection } from "./public-profile";
@@ -59,7 +60,7 @@ async function loadSource(accountId: string, publishedVersionId: string) {
   const version = await db.publishedTaleVersion.findUnique({
     where: { id: publishedVersionId },
     include: {
-      tale: { select: { id: true, creatorAccountId: true, latestPublishedVersionId: true } },
+      tale: { select: { id: true, creatorAccountId: true, latestPublishedVersionId: true, forkedFromVersionId: true } },
       drydockPublishingEvidence: { select: { digest: true, sourceChecksum: true } },
     },
   });
@@ -71,6 +72,11 @@ async function loadSource(accountId: string, publishedVersionId: string) {
     version.tale.latestPublishedVersionId !== version.id
   )
     throw new CommunityError("COMMUNITY_SOURCE_NOT_OWNED", "Select your current published Chronicle version.");
+  if (version.tale.forkedFromVersionId && (await isInstalledCommunityChronicle(version.taleId)))
+    throw new CommunityError(
+      "COMMUNITY_DERIVED_SOURCE_UNSUPPORTED",
+      "This installed Chronicle is licensed for private editing in Studio. Community republication requires verified upstream rights and credit.",
+    );
   assertCommunityDrydockPublicationGate(version);
   let snapshot;
   try {

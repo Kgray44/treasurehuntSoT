@@ -4,9 +4,9 @@ import { requireAdmiraltyOperator } from "@/admiralty/authorization";
 import { admiraltyErrorResponse, enforceAdmiraltyRateLimit, parseAdmiraltyBody } from "@/admiralty/http";
 import { communityApiError } from "@/community/api";
 import { CommunityError } from "@/community/domain";
+import { creatorPublicationDecisionSchema } from "@/community/creator-publication-decision";
 import {
-  approveCreatorReusablePublication,
-  creatorReusableApprovalSchema,
+  decideCreatorReusablePublication,
   reviewCreatorReusablePublication,
 } from "@/community/creator-reusable-moderation";
 
@@ -34,9 +34,9 @@ export async function POST(request: Request, context: Context) {
     const operator = await requireAdmiraltyOperator("COMMUNITY_MODERATE", { request });
     await requireRecentPrivilegedAssurance(operator);
     const headers = enforceAdmiraltyRateLimit(`creator-reuse-approval:${operator.accountId}`, 5, 10 * 60_000);
-    const input = await parseAdmiraltyBody(request, creatorReusableApprovalSchema);
+    const input = await parseAdmiraltyBody(request, creatorPublicationDecisionSchema);
     return NextResponse.json(
-      await approveCreatorReusablePublication(
+      await decideCreatorReusablePublication(
         {
           accountId: operator.accountId,
           roles: operator.roles.includes("ADMINISTRATOR") ? ["ADMINISTRATOR"] : ["MODERATOR"],

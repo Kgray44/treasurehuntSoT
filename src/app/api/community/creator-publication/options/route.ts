@@ -8,7 +8,7 @@ export async function GET() {
   if (!actor)
     return NextResponse.json({ code: "COMMUNITY_ACCESS_DENIED", error: "Creator access required." }, { status: 403 });
   try {
-    const [tales, items, licenses] = await Promise.all([
+    const [tales, items, licenses, submissions] = await Promise.all([
       db.publishedTaleVersion.findMany({
         where: {
           isCurrent: true,
@@ -44,6 +44,25 @@ export async function GET() {
         select: { key: true, displayName: true, requiresAttribution: true, shareAlike: true },
         orderBy: { displayName: "asc" },
       }),
+      db.communityListing.findMany({
+        where: {
+          owner: { accountId: actor.accountId },
+          itemType: { in: ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"] },
+          publicationStatus: { in: ["READY_FOR_REVIEW", "IN_REVIEW", "PUBLISHED", "REJECTED"] },
+          currentReleaseId: { not: null },
+          archivedAt: null,
+          removedAt: null,
+        },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          publicationStatus: true,
+          currentRelease: { select: { semanticVersion: true } },
+        },
+        orderBy: { updatedAt: "desc" },
+        take: 50,
+      }),
     ]);
     return NextResponse.json(
       {
@@ -71,6 +90,7 @@ export async function GET() {
           ),
         ],
         licenses,
+        submissions,
       },
       { headers: { "Cache-Control": "private, no-store" } },
     );

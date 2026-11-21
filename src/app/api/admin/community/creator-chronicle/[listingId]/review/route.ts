@@ -4,9 +4,9 @@ import { requireAdmiraltyOperator } from "@/admiralty/authorization";
 import { admiraltyErrorResponse, enforceAdmiraltyRateLimit, parseAdmiraltyBody } from "@/admiralty/http";
 import { communityApiError } from "@/community/api";
 import { CommunityError } from "@/community/domain";
+import { creatorPublicationDecisionSchema } from "@/community/creator-publication-decision";
 import {
-  approveCreatorChroniclePublication,
-  creatorChronicleApprovalSchema,
+  decideCreatorChroniclePublication,
   reviewCreatorChroniclePublication,
 } from "@/community/creator-chronicle-moderation";
 
@@ -34,9 +34,9 @@ export async function POST(request: Request, context: Context) {
     const operator = await requireAdmiraltyOperator("COMMUNITY_MODERATE", { request });
     await requireRecentPrivilegedAssurance(operator);
     const headers = enforceAdmiraltyRateLimit(`creator-chronicle-approval:${operator.accountId}`, 5, 10 * 60_000);
-    const input = await parseAdmiraltyBody(request, creatorChronicleApprovalSchema);
+    const input = await parseAdmiraltyBody(request, creatorPublicationDecisionSchema);
     return NextResponse.json(
-      await approveCreatorChroniclePublication(
+      await decideCreatorChroniclePublication(
         {
           accountId: operator.accountId,
           roles: operator.roles.includes("ADMINISTRATOR") ? ["ADMINISTRATOR"] : ["MODERATOR"],

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { db } from "@/lib/db";
 import { createStudioTale, getStudioTale, saveStudioDraft } from "@/chronicle/studio-service";
 import { publishedSourceChecksum, snapshotFromStudio } from "@/chronicle/snapshot";
-import { approveCreatorChroniclePublication, reviewCreatorChroniclePublication } from "./creator-chronicle-moderation";
+import { decideCreatorChroniclePublication, reviewCreatorChroniclePublication } from "./creator-chronicle-moderation";
 import { installCreatorChronicleRelease, reviewCreatorChronicleInstallation } from "./creator-chronicle-installation";
 import {
   preflightCreatorChroniclePublication,
@@ -134,7 +134,7 @@ describe.skipIf(!isolated)("SC-07 Chronicle Community journey", () => {
     const moderator = { accountId: moderatorId, roles: ["MODERATOR"] };
     const moderation = await reviewCreatorChroniclePublication(moderator, pending.listingId);
     expect(moderation.included.chapters[0].blocks[0].title).toBe("Welcome");
-    await approveCreatorChroniclePublication(moderator, pending.listingId, {
+    await decideCreatorChroniclePublication(moderator, pending.listingId, {
       releaseId: pending.releaseId,
       packageChecksum: moderation.packageChecksum,
       packageReviewed: true,
@@ -175,6 +175,22 @@ describe.skipIf(!isolated)("SC-07 Chronicle Community journey", () => {
     const fork = await getStudioTale(installed.taleId);
     expect(fork.tale.visibility).toBe("PRIVATE");
     expect(fork.draft.chapters[0].blocks[0].title).toBe("Welcome");
+    const privateEdit = {
+      autosaveVersion: fork.draft.autosaveVersion,
+      tale: { ...fork.tale, title: "Edited private Chronicle", visibility: "PRIVATE" as const },
+      chapters: fork.draft.chapters,
+    };
+    await expect(
+      saveStudioDraft(
+        installed.taleId,
+        { ...privateEdit, tale: { ...privateEdit.tale, visibility: "PUBLIC" } },
+        installerId,
+      ),
+    ).rejects.toThrow("Community Chronicle copies must remain private");
+    await saveStudioDraft(installed.taleId, privateEdit, installerId);
+    expect((await getStudioTale(installed.taleId)).tale.title).toBe("Edited private Chronicle");
+    expect((await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: version.id } })).checksum).toBe(checksum);
+
     const lineage = await db.chronicle.findUniqueOrThrow({ where: { id: installed.taleId } });
     expect(lineage.creatorAccountId).toBe(installerId);
     expect(lineage.forkedFromVersionId).toBe(version.id);

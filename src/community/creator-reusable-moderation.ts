@@ -1,16 +1,10 @@
-import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { CommunityError, stableJson } from "./domain";
 import { requireModerator, type CommunityModeratorActor } from "./moderation";
 import { sha256 } from "./package";
 import { verifyCreatorReusablePackage } from "./creator-reusable-publication";
-
-export const creatorReusableApprovalSchema = z.strictObject({
-  releaseId: z.string().min(1),
-  packageChecksum: z.string().regex(/^[a-f0-9]{64}$/),
-  packageReviewed: z.literal(true),
-});
+import { creatorPublicationDecisionSchema, recordCreatorPublicationDecision } from "./creator-publication-decision";
 
 async function loadCandidate(listingId: string) {
   const listing = await db.communityListing.findUnique({
@@ -110,7 +104,10 @@ export async function reviewCreatorReusablePublication(actor: CommunityModerator
   requireModerator(actor);
   const candidate = await loadCandidate(listingId);
   if (actor.accountId === candidate.listing.owner.accountId)
-    throw new CommunityError("COMMUNITY_SELF_MODERATION_FORBIDDEN", "A moderator cannot approve their own release.");
+    throw new CommunityError(
+      "COMMUNITY_SELF_MODERATION_FORBIDDEN",
+      "A moderator cannot review or decide their own release.",
+    );
   return {
     listingId,
     releaseId: candidate.release.id,
@@ -126,50 +123,20 @@ export async function reviewCreatorReusablePublication(actor: CommunityModerator
   };
 }
 
-export async function approveCreatorReusablePublication(
+export async function decideCreatorReusablePublication(
   actor: CommunityModeratorActor,
   listingId: string,
   raw: unknown,
 ) {
-  const input = creatorReusableApprovalSchema.parse(raw);
-  const candidate = await loadCandidate(listingId);
+  const input = creatorPublicationDecisionSchema.parse(raw);
   requireModerator(actor);
+  const candidate = await loadCandidate(listingId);
   if (actor.accountId === candidate.listing.owner.accountId)
-    throw new CommunityError("COMMUNITY_SELF_MODERATION_FORBIDDEN", "A moderator cannot approve their own release.");
+    throw new CommunityError(
+      "COMMUNITY_SELF_MODERATION_FORBIDDEN",
+      "A moderator cannot review or decide their own release.",
+    );
   if (input.releaseId !== candidate.release.id || input.packageChecksum !== candidate.record.packageChecksum)
     throw new CommunityError("COMMUNITY_REVIEW_STALE", "The release changed after moderation review.");
-  return db.$transaction(async (tx) => {
-    const changed = await tx.communityListing.updateMany({
-      where: {
-        id: listingId,
-        currentReleaseId: input.releaseId,
-        publicationStatus: { in: ["READY_FOR_REVIEW", "IN_REVIEW"] },
-        moderationStatus: "ACTIVE",
-      },
-      data: { publicationStatus: "PUBLISHED", publishedAt: new Date() },
-    });
-    if (changed.count !== 1)
-      throw new CommunityError("COMMUNITY_REVIEW_STALE", "The submission changed before approval.");
-    await tx.communityOutboxEvent.create({
-      data: {
-        eventType: "COMMUNITY_RELEASE_PUBLISHED",
-        aggregateType: "COMMUNITY_RELEASE",
-        aggregateId: input.releaseId,
-        payload: JSON.stringify({ listingId, releaseId: input.releaseId }),
-        idempotencyKey: `COMMUNITY_CREATOR_RELEASE_PUBLISHED:${input.releaseId}`,
-      },
-    });
-    await tx.platformAuditEvent.create({
-      data: {
-        actorType: "USER_ACCOUNT",
-        actorId: actor.accountId,
-        action: "COMMUNITY_CREATOR_RELEASE_APPROVED",
-        resourceType: "COMMUNITY_LISTING",
-        resourceId: listingId,
-        correlationId: randomUUID(),
-        metadata: JSON.stringify({ releaseId: input.releaseId, packageChecksum: input.packageChecksum }),
-      },
-    });
-    return { listingId, releaseId: input.releaseId, publicationStatus: "PUBLISHED" as const };
-  });
+  return recordCreatorPublicationDecision(actor, "CREATOR", listingId, input);
 }

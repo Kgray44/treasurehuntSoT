@@ -47,7 +47,8 @@ export function CreatorPublicationReviewPanel({
   const [assured, setAssured] = useState(assuranceActive);
   const [packageInspected, setPackageInspected] = useState(false);
   const [acknowledged, setAcknowledged] = useState(false);
-  const [published, setPublished] = useState(false);
+  const [decision, setDecision] = useState<"PUBLISHED" | "REJECTED" | null>(null);
+  const [reason, setReason] = useState("");
   const route = itemType === "CHRONICLE" ? "creator-chronicle" : "creator-reuse";
   const endpoint = `/api/admin/community/${route}/${encodeURIComponent(listingId)}/review`;
   useEffect(() => {
@@ -79,7 +80,7 @@ export function CreatorPublicationReviewPanel({
       body: JSON.stringify(body),
     });
     const result = await response.json().catch(() => null);
-    if (!response.ok) throw new Error(result?.error ?? "The approval could not be completed.");
+    if (!response.ok) throw new Error(result?.error ?? "The moderation decision could not be completed.");
     return result;
   }
   async function run(action: () => Promise<void>) {
@@ -88,15 +89,29 @@ export function CreatorPublicationReviewPanel({
     try {
       await action();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The approval could not be completed.");
+      setError(cause instanceof Error ? cause.message : "The moderation decision could not be completed.");
     } finally {
       setBusy(false);
     }
   }
+  async function submitDecision(outcome: "APPROVE" | "REJECT") {
+    if (!review || !assured || !packageInspected || !acknowledged) return;
+    await run(async () => {
+      await post(endpoint, {
+        releaseId: review.releaseId,
+        packageChecksum: review.packageChecksum,
+        packageReviewed: true,
+        decision: outcome,
+        ...(outcome === "REJECT" ? { reason } : {}),
+      });
+      setDecision(outcome === "APPROVE" ? "PUBLISHED" : "REJECTED");
+    });
+  }
   if (!enabled) return <p>Community moderation permission is required to inspect this pending package.</p>;
   if (loading) return <p role="status">Loading the pinned Creator release for review…</p>;
   if (!review) return <p role="alert">{error || "This Creator release is unavailable."}</p>;
-  if (published)
+  if (decision === "REJECTED") return <p role="status">Release rejected. It remains private.</p>;
+  if (decision === "PUBLISHED")
     return (
       <p role="status">
         Release approved. <a href={`/community/${slug}`}>Open Community listing</a>.
@@ -199,18 +214,23 @@ export function CreatorPublicationReviewPanel({
       <button
         type="button"
         disabled={busy || !assured || !packageInspected || !acknowledged}
-        onClick={() =>
-          void run(async () => {
-            await post(endpoint, {
-              releaseId: review.releaseId,
-              packageChecksum: review.packageChecksum,
-              packageReviewed: true,
-            });
-            setPublished(true);
-          })
-        }
+        onClick={() => void submitDecision("APPROVE")}
       >
-        {busy ? "Publishing…" : "Approve and publish release"}
+        Approve and publish release
+      </button>
+      <label htmlFor="creator-rejection-reason">Rejection reason for the moderation record</label>
+      <textarea
+        id="creator-rejection-reason"
+        value={reason}
+        maxLength={500}
+        onChange={(event) => setReason(event.target.value)}
+      />
+      <button
+        type="button"
+        disabled={busy || !assured || !packageInspected || !acknowledged || reason.trim().length < 5}
+        onClick={() => void submitDecision("REJECT")}
+      >
+        Reject release
       </button>
     </section>
   );

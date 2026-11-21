@@ -11,7 +11,14 @@ type Source = {
   sourceChecksum: string;
 };
 type License = { key: string; displayName: string; requiresAttribution: boolean; shareAlike: boolean };
-type Options = { sources: Source[]; licenses: License[] };
+type Submission = {
+  id: string;
+  title: string;
+  slug: string;
+  publicationStatus: "READY_FOR_REVIEW" | "IN_REVIEW" | "PUBLISHED" | "REJECTED";
+  currentRelease: { semanticVersion: string } | null;
+};
+type Options = { sources: Source[]; licenses: License[]; submissions?: Submission[] };
 type Preflight = {
   reviewDigest: string;
   sourceChecksum: string;
@@ -144,6 +151,28 @@ export function CreatorPublicationConsole() {
         Select your exact saved source, review the included content and license, then submit it for independent
         moderation.
       </p>
+      {Boolean(options?.submissions?.length) && (
+        <section aria-labelledby="creator-publication-history">
+          <h3 id="creator-publication-history">Your Community submissions</h3>
+          <ul>
+            {options?.submissions?.map((submission) => (
+              <li key={submission.id}>
+                {submission.publicationStatus === "PUBLISHED" ? (
+                  <Link href={`/community/${submission.slug}`}>{submission.title}</Link>
+                ) : (
+                  submission.title
+                )}
+                {submission.currentRelease && ` · ${submission.currentRelease.semanticVersion}`}
+                {submission.publicationStatus === "PUBLISHED"
+                  ? " · Approved"
+                  : submission.publicationStatus === "REJECTED"
+                    ? " · Rejected"
+                    : " · Pending moderation"}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       {!options && !error && <p role="status">Loading your saved Creator sources…</p>}
       {options && (
         <>

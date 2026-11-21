@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
+import { isInstalledCommunityChronicle } from "@/community/creator-installed-library";
 import { getBlockDefinition } from "@/chronicle/block-registry";
 import { journalPresentationSchema } from "@/chronicle/journal-contract";
 import type { JsonObject, StudioDraftInput } from "@/chronicle/types";
@@ -360,6 +361,13 @@ export async function saveStudioDraft(
     });
     const draft = tale.drafts[0];
     if (!draft) throw new Error("This Chronicle has no editable draft.");
+    if (
+      input.tale.visibility &&
+      input.tale.visibility !== "PRIVATE" &&
+      tale.forkedFromVersionId &&
+      (await isInstalledCommunityChronicle(taleId, tx))
+    )
+      throw new Error("Community Chronicle copies must remain private to preserve their published rights and credit.");
     const reserved = await tx.chronicle.findFirst({
       where: { slug: input.tale.slug, id: { not: taleId } },
       select: { id: true },

@@ -12,6 +12,7 @@ type Item = {
   packageChecksum: string;
   licenseName: string;
   credits: string[];
+  studioUrl: string | null;
 };
 
 export function CreatorInstalledCommunityLibrary() {
@@ -52,7 +53,12 @@ export function CreatorInstalledCommunityLibrary() {
           {items.map((item) => (
             <li key={item.itemId}>
               <h3>
-                {item.name} · {item.kind === "PRESET" ? "Passage preset" : "Chapter template"}
+                {item.name} ·{" "}
+                {item.kind === "PRESET"
+                  ? "Passage preset"
+                  : item.kind === "CHRONICLE"
+                    ? "Chronicle"
+                    : "Chapter template"}
               </h3>
               <p>
                 Private installed copy of release {item.semanticVersion}. License: {item.licenseName}.
@@ -64,6 +70,7 @@ export function CreatorInstalledCommunityLibrary() {
               <p>
                 Package checksum: <code style={{ overflowWrap: "anywhere" }}>{item.packageChecksum}</code>
               </p>
+              {item.studioUrl && <Link href={item.studioUrl}>Open private Chronicle</Link>}
             </li>
           ))}
         </ul>

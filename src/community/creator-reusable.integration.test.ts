@@ -10,7 +10,7 @@ import {
 } from "@/studio/reusable-content";
 import { createReusableAuthoringItem, getReusableAuthoringItemVersion } from "@/studio/reusable-library-service";
 import type { DraftState } from "@/components/studio/studio-types";
-import { approveCreatorReusablePublication, reviewCreatorReusablePublication } from "./creator-reusable-moderation";
+import { decideCreatorReusablePublication, reviewCreatorReusablePublication } from "./creator-reusable-moderation";
 import { installCreatorReusableRelease, reviewCreatorReusableInstallation } from "./creator-reusable-installation";
 import { preflightCreatorReusablePublication, submitCreatorReusablePublication } from "./creator-reusable-publication";
 import { getPublicListingBySlug } from "./services";
@@ -138,16 +138,32 @@ describe.skipIf(!isolated)("SC-07 Creator reusable Community journey", () => {
         code: "COMMUNITY_LISTING_NOT_FOUND",
       });
       const moderator = { accountId: moderatorId, roles: ["MODERATOR"] };
+      const rejectedInput = { ...input, slug: `${input.slug}-rejected` };
+      const rejectedPreflight = await preflightCreatorReusablePublication(ownerId, rejectedInput);
+      const rejection = await submitCreatorReusablePublication(ownerId, rejectedInput, rejectedPreflight.reviewDigest);
+      const rejectedReview = await reviewCreatorReusablePublication(moderator, rejection.listingId);
+      const rejected = await decideCreatorReusablePublication(moderator, rejection.listingId, {
+        releaseId: rejection.releaseId,
+        packageChecksum: rejectedReview.packageChecksum,
+        packageReviewed: true,
+        decision: "REJECT",
+        reason: "This synthetic listing needs clearer public credit.",
+      });
+      expect(rejected.publicationStatus).toBe("REJECTED");
+      expect(await getPublicListingBySlug(rejectedInput.slug)).toBeNull();
+      await expect(reviewCreatorReusableInstallation(installerId, rejection.listingId)).rejects.toMatchObject({
+        code: "COMMUNITY_LISTING_NOT_FOUND",
+      });
       const moderation = await reviewCreatorReusablePublication(moderator, pending.listingId);
       expect(moderation.included.checksum).toBe(source.checksum);
       await expect(
-        approveCreatorReusablePublication({ accountId: ownerId, roles: ["MODERATOR"] }, pending.listingId, {
+        decideCreatorReusablePublication({ accountId: ownerId, roles: ["MODERATOR"] }, pending.listingId, {
           releaseId: pending.releaseId,
           packageChecksum: moderation.packageChecksum,
           packageReviewed: true,
         }),
       ).rejects.toMatchObject({ code: "COMMUNITY_SELF_MODERATION_FORBIDDEN" });
-      await approveCreatorReusablePublication(moderator, pending.listingId, {
+      await decideCreatorReusablePublication(moderator, pending.listingId, {
         releaseId: pending.releaseId,
         packageChecksum: moderation.packageChecksum,
         packageReviewed: true,
