@@ -120,5 +120,11 @@
       "evidenceIds": ["device-settings-normal"],
       "reviewDisposition": "RESOLVED"
     }
-  ]
+  ],
+  "testFixtureVerification": {
+    "commit": "c73c9c5e23af2ebd344f4dc1266edf873a7c56fe",
+    "path": "src/components/player/journal/ChronicleJournalSession.test.ts",
+    "outcome": "33 passed",
+    "captureBinding": "The only delta from the reviewed PR candidate is the isolated Journal fixture. The application source, browser spec and captured artifacts are identical."
+  }
 }
