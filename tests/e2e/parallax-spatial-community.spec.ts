@@ -902,9 +902,7 @@ test("a lost submission response reports uncertainty and exact retry recovers on
   expect(await db.communityRelease.count({ where: { listingId: listing.id } })).toBe(1);
 });
 
-test("a Creator reaches server package review from the ordinary Studio entry without publishing", async ({
-  page,
-}, testInfo) => {
+test("the ordinary Studio journey explains lost Creator access after package review", async ({ page }, testInfo) => {
   requireOwnedBrowser();
   test.skip(process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic", "Uses the isolated generic experience identity.");
   const accountId = "00000000-0000-4000-8000-00000000a105";
@@ -945,6 +943,22 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await expect(wizard).toContainText("SERVER-VERIFIED PACKAGE");
   await expect(wizard).toContainText("this release is a Spatial asset");
   await page.screenshot({ path: testInfo.outputPath("natural-studio-package-review.png"), fullPage: true });
+  const where = { id: accountId };
+  const { ordinaryWorkspaceEntryAt } = await db.userAccount.findUniqueOrThrow({ where });
+  expect(ordinaryWorkspaceEntryAt).toBeTruthy();
+  await db.userAccount.update({ where, data: { ordinaryWorkspaceEntryAt: null } });
+  try {
+    await wizard.getByLabel(/I reviewed the included content, credits, warnings/).check();
+    await wizard.getByRole("button", { name: "Submit to Community" }).click();
+    const alert = wizard.getByRole("alert");
+    await expect(alert).toContainText("Active Creator access and a valid session are required.");
+    await expect(alert).toContainText("Your saved source is preserved.");
+    await expect(alert).toBeFocused();
+    await expect(wizard.getByRole("heading", { name: "Community review is next" })).not.toBeVisible();
+    await page.screenshot({ path: testInfo.outputPath("creator-access-lost.png"), fullPage: true });
+  } finally {
+    await db.userAccount.update({ where, data: { ordinaryWorkspaceEntryAt } });
+  }
   expect(await db.communityListing.count({ where: { owner: { accountId } } })).toBe(0);
   await wizard.getByRole("button", { name: "Close publishing" }).click();
   await page.getByRole("link", { name: "← Creator Studio" }).click();

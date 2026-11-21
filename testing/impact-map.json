@@ -1728,7 +1728,12 @@
       ]
     },
     {
-      "path": "src/app/api/community/**",
+      "path": "src/app/api/community/spatial-publication/**",
+      "suiteIds": ["unit.community", "browser.spatial-community"],
+      "contractIds": ["parallax.spatial-community-publishing.experience"]
+    },
+    {
+      "path": "src/app/api/community/!(spatial-publication){,/**}",
       "suiteIds": ["unit.homeport", "component.homeport", "browser.homeport"],
       "contractIds": [
         "homeport.community.harbor-home",

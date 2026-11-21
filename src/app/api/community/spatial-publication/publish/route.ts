@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { requireCanonicalAccountIdentity, verifyPlayerCsrf } from "@/platform/auth";
+import { verifyPlayerCsrf } from "@/platform/auth";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { communityApiError } from "@/community/api";
 import { publishSpatialToCommunity, spatialPublicationInputSchema } from "@/community/spatial-publication";
 
@@ -10,10 +11,13 @@ const requestSchema = z.strictObject({
 });
 
 export async function POST(request: Request) {
-  const actor = await requireCanonicalAccountIdentity();
-  if (!actor || !(await verifyPlayerCsrf(request.headers.get("x-csrf-token"))))
+  const actor = await requireStudioWorkspace(request);
+  if (actor?.account.profile?.status !== "ACTIVE" || !(await verifyPlayerCsrf(request.headers.get("x-csrf-token"))))
     return NextResponse.json(
-      { code: "COMMUNITY_ACCESS_DENIED", error: "Creator access and CSRF verification required." },
+      {
+        code: "COMMUNITY_ACCESS_DENIED",
+        error: "Active Creator access and a valid session are required. Your saved source is preserved.",
+      },
       { status: 403 },
     );
   try {
