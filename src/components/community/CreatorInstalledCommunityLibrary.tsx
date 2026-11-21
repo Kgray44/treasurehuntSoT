@@ -40,7 +40,7 @@ export function CreatorInstalledCommunityLibrary() {
     <section
       id="installed-community"
       className="studio-exchange-workflow"
-      style={{ marginTop: "1rem" }}
+      style={{ marginTop: "1rem", scrollMarginBlockStart: "calc(var(--shell-header-height) + 1rem)" }}
       aria-labelledby="installed-community-title"
     >
       <p className="eyebrow">Your private Library</p>

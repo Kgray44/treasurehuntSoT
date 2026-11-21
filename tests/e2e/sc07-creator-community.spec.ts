@@ -215,7 +215,15 @@ test("second Creator installs the approved Passage preset and applies it in priv
   await page.getByRole("link", { name: "View my installed item" }).click();
   await expect(page).toHaveURL(/\/studio\/exchange#installed-community/u);
   const installedPanel = page.locator("#installed-community");
-  await expect(installedPanel.getByRole("heading", { name: "Installed from Community" })).toBeVisible();
+  const installedHeading = installedPanel.getByRole("heading", { name: "Installed from Community" });
+  await expect(installedHeading).toBeInViewport();
+  await expect
+    .poll(async () => {
+      const heading = await installedHeading.boundingBox();
+      const header = await page.getByRole("banner").boundingBox();
+      return heading !== null && header !== null && heading.y >= header.y + header.height;
+    })
+    .toBe(true);
   await expect(installedPanel.getByText("Credits: Synthetic owner Creator.")).toBeVisible();
   await expect(installedPanel.getByText(review.packageChecksum!)).toBeVisible();
   await installedPanel.screenshot({ path: test.info().outputPath("installed-private-studio.png") });
@@ -252,7 +260,12 @@ test("second Creator installs the approved Passage preset and applies it in priv
     },
     installer.accountId,
   );
-  await page.goto(`/studio/tales/${destination.id}`);
+  await installedPanel.getByRole("link", { name: "Open a Chronicle to reuse an installed item" }).press("Enter");
+  const destinationCard = page
+    .getByRole("article")
+    .filter({ has: page.getByRole("heading", { name: "Private Passage destination" }) });
+  await destinationCard.getByRole("link", { name: "Edit Chronicle" }).press("Enter");
+  await expect(page).toHaveURL(`/studio/tales/${destination.id}`);
   await page.getByRole("group", { name: "Passage: Destination Passage" }).press("Enter");
   await page.getByRole("tab", { name: "Reuse" }).press("Enter");
   await page
