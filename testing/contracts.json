@@ -6864,7 +6864,6 @@
           "src/components/player/journal/ChronicleJournalSession.tsx",
           "src/app/devices",
           "src/app/account/devices",
-          "src/app/account/preferences",
           "src/components/player/journal",
           "src/app/player/playthroughs/[playthroughId]/journal",
           "src/app/play/[taleSlug]/session/[sessionId]",

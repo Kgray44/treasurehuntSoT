@@ -4,6 +4,8 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { CrossdeckHandoff } from "./CrossdeckHandoff";
 import { storageKey } from "@/crossdeck/client";
 import type { SyncSnapshot } from "@/crossdeck/sync-contracts";
+vi.mock("./ChartGesturePreference", () => ({ useChartGestureEnabled: () => false }));
+
 const mocks = vi.hoisted(() => ({
   next: null as null | ((snapshot: SyncSnapshot) => void),
   failed: null as null | ((error: Error) => void),

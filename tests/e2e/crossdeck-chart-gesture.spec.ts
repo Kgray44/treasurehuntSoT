@@ -91,7 +91,7 @@ async function setPose(page: Page, pose: "open" | "fist" | "empty") {
   );
 }
 async function enableGestures(page: Page, baseURL: string) {
-  await page.goto(baseURL + "/account/preferences");
+  await page.goto(baseURL + "/account/devices");
   const preference = page.getByRole("checkbox", { name: "Use hand gestures on this device" });
   await expect(preference).toBeEnabled();
   await preference.focus();
@@ -137,6 +137,10 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       desktopVideo = desktop.video();
       const phone = await receiver.newPage();
       await Promise.all([enableGestures(desktop, baseURL), enableGestures(phone, baseURL)]);
+      await testInfo.attach(`device-settings-${reducedMotion}`, {
+        body: await desktop.screenshot(),
+        contentType: "image/png",
+      });
       await openClosureJournal(desktop, voyage.id, baseURL);
       await desktop.getByRole("button", { name: "Connect another device", exact: true }).click();
       const pair = desktop.getByRole("dialog", { name: "Bring your phone aboard" });

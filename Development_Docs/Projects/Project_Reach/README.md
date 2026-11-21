@@ -14,7 +14,7 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 Broader Project Reach research is **PAUSED / FUTURE DEVELOPMENT** following integration of the camera-directed Chart handoff. The calibration work and evidence remain available in [PR #769](https://github.com/Kgray44/treasurehuntSoT/pull/769).
 
-Enable Chart hand gestures in Preferences on each participating device. With a released Chart open, close an open palm into a fist on the source. Open the fist toward one paired device to receive the same edition there. Crossdeck preserves the source view and confirms delivery after the receiver renders and acknowledges it. The manual send path remains available.
+Enable Chart hand gestures in your Voyage device settings on each participating device. With a released Chart open, close an open palm into a fist on the source. Open the fist toward one paired device to receive the same edition there. Crossdeck preserves the source view and confirms delivery after the receiver renders and acknowledges it. The manual send path remains available.
 
 Two isolated browsers with simulated landmarks qualify the software journey. Product acceptance requires a real laptop-to-phone run with both cameras, confirming that the receiving phone opens the pinned Chart and the laptop shows its receipt.
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { BrowserCameraBroker } from "@/sextant/camera";
-import { useOptionalCurrentUser } from "@/components/auth/CurrentUserProvider";
+import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 
 const changeEvent = "crossdeck-gesture-preference";
 const disabled = () => false;
@@ -17,8 +17,8 @@ function subscribe(change: () => void) {
 }
 
 function usePreferenceKey() {
-  const state = useOptionalCurrentUser()?.state;
-  return state?.authenticated ? `voyagewright:chart-gestures:${state.user.accountId}` : null;
+  const { state } = useCurrentUser();
+  return state.authenticated ? `voyagewright:chart-gestures:${state.user.accountId}` : null;
 }
 
 export function useChartGestureEnabled() {
