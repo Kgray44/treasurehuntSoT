@@ -88,6 +88,21 @@
       "contractIds": ["admiralty.ai-economics"]
     },
     {
+      "path": "src/components/studio/parallax/RoomPhotoPanel.tsx",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics", "parallax.protected-photo-room.experience"]
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialAssistant.tsx",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics", "parallax.integration.pilot-owner-boundary"]
+    },
+    {
+      "path": "src/components/studio/parallax/spatial-assistant-port.ts",
+      "suiteIds": ["unit.admiralty-ai-economics", "browser.admiralty-ai-economics"],
+      "contractIds": ["admiralty.ai-economics", "parallax.integration.pilot-owner-boundary"]
+    },
+    {
       "path": "src/lib/browser-uuid.ts",
       "suiteIds": ["unit.crossdeck", "browser.spatial-pilot", "static.core"],
       "contractIds": ["crossdeck.phase1.participation", "crossdeck.phase2.continuity", "spatial-pilot.experience"]

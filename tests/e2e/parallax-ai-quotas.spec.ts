@@ -26,7 +26,10 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await db.accountCredential.create({ data: { accountId: operator.id, passwordHash: await hash(password, 10) } });
   await authenticateClosure(context, operator, baseURL!);
   await page.goto("/admin/ai-usage");
-  await page.getByText("Policies, allowances & model configuration", { exact: true }).click();
+  await page
+    .locator("#chartroom-main")
+    .getByText("Policies, allowances & model configuration", { exact: true })
+    .click();
   await expect(page.getByRole("heading", { name: "AI Usage & Quotas", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Users", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Search users", exact: true })).toHaveCount(0);
