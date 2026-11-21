@@ -3,7 +3,7 @@ title: Automatic Product Experience Engineering workflow
 audience: automation
 status: current
 canonical_for: product-experience-development-workflow
-last_reviewed: 2026-10-11
+last_reviewed: 2026-11-21
 ---
 
 # Product Experience Engineering
@@ -69,24 +69,23 @@ domain owners retain their canonical data and progression authority.
    grant this authority. Both previous findings must be resolved with current
    repair evidence; any unresolved fourth review stops with evidence, and a
    fifth review remains unauthorized. This is not a new round or a runtime
-   exception. Fresh source-bound capture, independent review, authenticated
-   submission, replay and ordinary protected verification remain required.
+   exception. Fresh source-bound capture, independent review and
+   ordinary protected verification remain required.
 7. Assemble source-bound capture/review evidence at
    `Development_Docs/Testing/Product_Experience/candidate-review.json`.
    Commit the actual referenced artifacts. Record substantive dimensions,
    separate builder/reviewer contexts, packet digest, findings and repair
    evidence. Preserve baseline debt IDs, accountable repair owners and repair
-   paths; unchanged debt is not permission for new regressions or a false
-   completion claim. Sounding Line checks trusted requirements and replays
-   visible journeys against the exact built candidate.
-   A stable draft PR uses the existing ordinary workflow on protected main with
-   `experience_mode=capture`, followed by authenticated `review` submission.
-   Download and commit reviewed artifact paths and both immutable artifact IDs.
-   [Operations](../Development_Docs/Testing/Product_Experience/README.md) defines
-   the exact sequence. Preparation jobs issue no required mainline decision.
+   paths. Keep unchanged debt visible and record any new regressions.
+   Use `npm run experience:plan -- --base BASE --candidate SHA --plan true`
+   to identify affected journeys. Capture the changed experience in the owned
+   runtime and commit the reviewed artifacts. Keep the capture and independent
+   review bound to the candidate source. Use the
+   [V3 operations guide](../scripts/sounding-line-v3/README.md) for protected
+   verification.
 8. Complete focused development checks, documentation/catalog decisions and
-   formatting before freezing one candidate. Obtain ordinary Sounding Line
-   acceptance, merge through protection where authorized, and verify landed
+   formatting before freezing one candidate. Obtain ordinary Sounding Line V3
+   verification, merge through protection where authorized, and verify landed
    source. Keep IMPLEMENTED, CONTRACT_VALIDATED, INTEGRATED,
    VISUALLY_COMPLETE, JOURNEY_VALIDATED and READY_FOR_OWNER_WALKTHROUGH
    distinct. Only the owner may grant PRODUCT_ACCEPTED.

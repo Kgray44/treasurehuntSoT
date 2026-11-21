@@ -3,10 +3,15 @@ title: Product Experience Engineering operations
 audience: engineering
 status: current
 canonical_for: product-experience-engineering
-last_reviewed: 2026-10-20
+last_reviewed: 2026-11-21
 ---
 
 # Product Experience Engineering
+
+Follow the [current product experience workflow](../../../.agents/product-experience-workflow.md)
+for capture and independent review. [Sounding Line V3](../../../scripts/sounding-line-v3/README.md)
+provides ordinary protected verification. The procedures and checkpoints below
+record the earlier capture and review system and its source-bound evidence.
 
 The [R19 source-bound checkpoint](../../Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/causal-disposition.md)
 preserves its original preparation, private-packet validation and consumed R18

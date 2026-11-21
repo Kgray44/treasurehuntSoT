@@ -2,14 +2,38 @@
 title: Project Sounding Line Program Completion Receipt
 audience: engineering
 status: current
-last_reviewed: 2026-07-31
+last_reviewed: 2026-11-21
 ---
 
 # Project Sounding Line Program Completion Receipt
 
-## Release-candidate evidence complete
+## Operational closure
 
-Sounding Line is the sole test and release-decision authority. Its finalizer
+Sounding Line V3 is **COMPLETE / OPERATIONAL**. Legacy Sounding Line modernization
+is **RETIRED / SUPERSEDED**, including its ordinary workflow and required decision
+check. GitHub protects `main` with the sole ordinary required check
+`Sounding Line V3 / Verification`. See the [V3 operations guide](../../../scripts/sounding-line-v3/README.md).
+
+V3 was integrated in [#880](https://github.com/Kgray44/treasurehuntSoT/pull/880),
+extended verification repaired in [#886](https://github.com/Kgray44/treasurehuntSoT/pull/886),
+the four-shard configuration stabilized in [#887](https://github.com/Kgray44/treasurehuntSoT/pull/887),
+and Chromium provisioning narrowed in [#888](https://github.com/Kgray44/treasurehuntSoT/pull/888).
+Protected `main` at the start of closure was
+`0a9fd80f8da12f50859532d2c747d92339956f72`.
+
+The [latest manual full verification](https://github.com/Kgray44/treasurehuntSoT/actions/runs/44857857808)
+failed in the [Lanternwake performance proof](https://github.com/Kgray44/treasurehuntSoT/issues/889)
+and the [Sealed Hold private-media obligation](https://github.com/Kgray44/treasurehuntSoT/issues/891),
+which needs approved provider configuration. A separate focused diagnostic
+identified a [Homeport evidence and census mismatch](https://github.com/Kgray44/treasurehuntSoT/issues/890).
+Those obligations remain with their product owners.
+
+Legacy development has concluded. Further Sounding Line engineering requires a
+demonstrated V3 defect or an explicit owner decision.
+
+## Historical release-candidate evidence
+
+Legacy Sounding Line was the test and release-decision authority. Its finalizer
 emitted `RELEASE_GO` for the complete `release-candidate` gate in hosted run
 `30691520484`. The sealed plan selected 42 required suites; exactly 42 unique
 receipts were reconciled, all `PASSED` with exit code `0` and cleanup state
