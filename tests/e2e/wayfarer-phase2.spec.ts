@@ -47,6 +47,7 @@ test("Wayfarer Passport directs account changes to the current Personal Harbor s
   await page.getByRole("button", { name: "Use this crop" }).click();
   await page.getByRole("button", { name: "Save avatar image" }).click();
   await expect(page.getByText("Image normalized and stored. The public projection has been refreshed.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Adjust avatar crop" })).toBeVisible();
   await page
     .getByLabel("Banner image")
     .setInputFiles({ name: "banner.png", mimeType: "image/png", buffer: syntheticPng });

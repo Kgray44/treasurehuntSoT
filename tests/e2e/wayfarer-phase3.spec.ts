@@ -3,7 +3,12 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { db } from "../../src/lib/db";
 
-type Account = { context: import("@playwright/test").BrowserContext; profileId: string; csrfToken: string };
+type Account = {
+  context: import("@playwright/test").BrowserContext;
+  profileId: string;
+  csrfToken: string;
+  displayName: string;
+};
 
 const unique = `wayfarer-p3-${randomUUID().slice(0, 12)}`;
 const launchedAt = new Date("2026-07-25T10:00:00.000Z");
@@ -13,10 +18,11 @@ const completedAt = new Date("2026-07-25T10:15:00.000Z");
 async function register(browser: import("@playwright/test").Browser, label: string): Promise<Account> {
   const context = await browser.newContext();
   const email = `${unique}-${label.toLowerCase()}@example.test`;
+  const displayName = `Synthetic ${label} ${unique.slice(-12)}`;
   const password = "Cobalt-tide-lantern-2026!";
   const response = await context.request.post("/api/auth/register", {
     data: {
-      displayName: `Synthetic ${label}`,
+      displayName,
       email,
       password,
       confirmPassword: password,
@@ -44,7 +50,7 @@ async function register(browser: import("@playwright/test").Browser, label: stri
   const signIn = await context.request.post("/api/auth/sign-in", { data: { login: email, password } });
   expect(signIn.status(), await signIn.text()).toBe(200);
   const signedIn = (await signIn.json()) as { csrfToken: string };
-  return { context, profileId: body.player.id, csrfToken: signedIn.csrfToken };
+  return { context, profileId: body.player.id, csrfToken: signedIn.csrfToken, displayName };
 }
 
 async function seedVoyage(ownerId: string, crewId: string) {
@@ -331,8 +337,8 @@ test("Wayfarer Phase 3 authenticated Passport history is private, pinned, consen
     (await owner.context.request.post(`/api/passport/history/${recordId}/keepsake`, { headers })).ok(),
   ).toBeTruthy();
   const keepsake = await db.voyageKeepsake.findUniqueOrThrow({ where: { playerChronicleRecordId: recordId } });
-  expect(keepsake.presentationPayload).toContain("Synthetic Crew");
-  expect(keepsake.presentationPayload).not.toContain("Synthetic Owner");
+  expect(keepsake.presentationPayload).toContain(crew.displayName);
+  expect(keepsake.presentationPayload).not.toContain(owner.displayName);
   expect(await db.voyageKeepsake.count({ where: { playerChronicleRecordId: recordId } })).toBe(1);
   const revoked = await crew.context.request.put(`/api/passport/history/${recordId}/keepsake/consent`, {
     headers: { "x-csrf-token": crew.csrfToken },
@@ -344,14 +350,14 @@ test("Wayfarer Phase 3 authenticated Passport history is private, pinned, consen
   ).toBeTruthy();
   expect(
     (await db.voyageKeepsake.findUniqueOrThrow({ where: { playerChronicleRecordId: recordId } })).presentationPayload,
-  ).not.toContain("Synthetic Crew");
+  ).not.toContain(crew.displayName);
 
   await db.chronicle.update({ where: { id: fixture.chronicle.id }, data: { title: "Mutable rename must not leak" } });
   await db.playerProfile.update({ where: { id: crew.profileId }, data: { displayName: "Mutable crew rename" } });
   const stable = await owner.context.request.get(`/api/passport/history/${recordId}`);
   const stableText = await stable.text();
   expect(stableText).toContain("Synthetic Harbor Chronicle");
-  expect(stableText).toContain("Synthetic Crew");
+  expect(stableText).toContain(crew.displayName);
   expect(stableText).not.toContain("Mutable crew rename");
 
   const foreignDetail = await foreign.context.request.get(`/api/passport/history/${recordId}`);
