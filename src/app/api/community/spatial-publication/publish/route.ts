@@ -12,7 +12,7 @@ const requestSchema = z.strictObject({
 
 export async function POST(request: Request) {
   const actor = await requireStudioWorkspace(request);
-  if (!actor || !(await verifyPlayerCsrf(request.headers.get("x-csrf-token"))))
+  if (actor?.account.profile?.status !== "ACTIVE" || !(await verifyPlayerCsrf(request.headers.get("x-csrf-token"))))
     return NextResponse.json(
       { code: "COMMUNITY_ACCESS_DENIED", error: "Creator access and CSRF verification required." },
       { status: 403 },

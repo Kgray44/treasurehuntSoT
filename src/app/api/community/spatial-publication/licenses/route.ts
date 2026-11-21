@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
   const actor = await requireStudioWorkspace();
-  if (!actor)
+  if (actor?.account.profile?.status !== "ACTIVE")
     return NextResponse.json(
       { code: "COMMUNITY_ACCESS_DENIED", error: "Active Creator access is required to review Community licenses." },
       { status: 403 },

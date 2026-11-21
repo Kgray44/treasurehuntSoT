@@ -31,6 +31,7 @@ import { POST as preflight } from "./preflight/route";
 import { POST as publish } from "./publish/route";
 
 const base = "http://localhost/api/community/spatial-publication";
+const creator = { accountId: "creator-1", account: { profile: { status: "ACTIVE" } } };
 function post(path: string, body: unknown) {
   return new Request(`${base}/${path}`, {
     method: "POST",
@@ -63,7 +64,7 @@ describe("spatial publication Creator authorization", () => {
   });
 
   it("also refuses mutation without CSRF after Creator authorization", async () => {
-    mocks.workspace.mockResolvedValue({ accountId: "creator-1" });
+    mocks.workspace.mockResolvedValue(creator);
     mocks.csrf.mockResolvedValue(false);
     expect((await preflight(post("preflight", {}))).status).toBe(403);
     expect((await publish(post("publish", {}))).status).toBe(403);
@@ -71,8 +72,19 @@ describe("spatial publication Creator authorization", () => {
     expect(mocks.publish).not.toHaveBeenCalled();
   });
 
+  it("preserves the active profile check for license and listing access", async () => {
+    const request = new Request(`${base}/licenses?kind=ASSET&id=owned&revision=2`);
+    mocks.workspace.mockResolvedValue({ ...creator, account: { profile: { status: "INACTIVE" } } });
+    expect((await getLicenses(request)).status).toBe(403);
+    expect(mocks.listings).not.toHaveBeenCalled();
+
+    mocks.workspace.mockResolvedValue(creator);
+    expect((await getLicenses(request)).status).toBe(200);
+    expect(mocks.listings).toHaveBeenCalledWith("creator-1", { kind: "ASSET", id: "owned", revision: 2 });
+  });
+
   it("passes the authorized account into publication review and submission", async () => {
-    mocks.workspace.mockResolvedValue({ accountId: "creator-1" });
+    mocks.workspace.mockResolvedValue(creator);
     mocks.preflight.mockResolvedValue({ reviewDigest: "b".repeat(64) });
     mocks.publish.mockResolvedValue({ listingId: "listing-1" });
     const publication = { source: { kind: "ASSET", id: "owned", revision: 2 } };
