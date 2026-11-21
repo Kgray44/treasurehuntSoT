@@ -2,12 +2,16 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { StudioExchangeConsole } from "./StudioExchangeConsole";
 
+const motion = vi.hoisted(() => ({ mode: "reduced" as "full" | "reduced" }));
+vi.mock("@/animation/motion/useMotionMode", () => ({ useMotionMode: () => ({ mode: motion.mode }) }));
+
 const response = (body: unknown, status = 200) => ({ ok: status < 400, status, json: async () => body }) as Response;
 
 describe("Studio Exchange Console", () => {
   afterEach(() => {
     cleanup();
     vi.unstubAllGlobals();
+    motion.mode = "reduced";
   });
 
   it("requires Creator access without presenting a publication control", () => {
@@ -18,6 +22,19 @@ describe("Studio Exchange Console", () => {
       "/sign-in?returnTo=%2Fstudio%2Fexchange",
     );
     expect(screen.queryByRole("button", { name: "Review exact package" })).not.toBeInTheDocument();
+  });
+
+  it("keeps the read-only preview responsive to the effective motion policy", () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => response({ sources: [], licenses: [], items: [] })),
+    );
+    const view = render(<StudioExchangeConsole authenticated />);
+    expect(screen.getByText("Reduced motion is on. A static poster is shown.")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Rotate right" })).not.toBeInTheDocument();
+    motion.mode = "full";
+    view.rerender(<StudioExchangeConsole authenticated />);
+    expect(screen.getByRole("button", { name: "Rotate right" })).toBeEnabled();
   });
 
   it("reviews the server package before sending the exact digest for moderation", async () => {
