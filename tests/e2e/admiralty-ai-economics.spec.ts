@@ -213,6 +213,7 @@ test("Administrator investigates AI economics and changes capability allowances 
   await panel.getByRole("button", { name: "Verify current password", exact: true }).click();
   await panel.getByRole("button", { name: "Confirm & apply policy", exact: true }).click();
   await expect(panel.getByText(/Policy applied at revision 1/)).toBeVisible();
+  await expect(panel.getByText("person capability override", { exact: true }).first()).toBeVisible();
   await capture("allowance-applied-mobile");
   await page.setViewportSize({ width: 1440, height: 900 });
   await capture("allowance-applied-desktop");
@@ -250,6 +251,7 @@ test("Administrator investigates AI economics and changes capability allowances 
   await page.keyboard.press("Enter");
   const mobileInspector = workspace.getByRole("region", { name: "AI operation inspector" });
   await expect(mobileInspector).toBeFocused();
+  await expect(mobileInspector.getByRole("heading", { level: 3 })).toBeInViewport();
   await capture("operation-inspector-mobile", mobileInspector.getByRole("heading", { level: 3 }));
   await mobileInspector.getByRole("button", { name: "Close operation inspector" }).click();
   await expect(inspect).toBeFocused();

@@ -166,7 +166,7 @@ export function AIQuotaUserPanel({
                     </td>
                     <td>
                       {item.used} / {item.monthlyRequests}
-                      <small>{item.allowanceOrigin}</small>
+                      <small>{item.allowanceOrigin.replaceAll("_", " ").toLowerCase()}</small>
                     </td>
                     <td>{item.remaining}</td>
                     <td>{item.allowedModels.join(", ")}</td>

@@ -150,7 +150,10 @@ export function AIEconomicsConsole({ initial }: { initial: Overview }) {
   const operationInspector = useRef<HTMLElement>(null);
   const inspectTrigger = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (operation) operationInspector.current?.focus();
+    if (operation && operationInspector.current) {
+      operationInspector.current.scrollIntoView({ block: "start", behavior: "instant" });
+      operationInspector.current.focus({ preventScroll: true });
+    }
   }, [operation]);
   function parameters(section: string) {
     const end = new Date(`${to}T00:00:00.000Z`);
