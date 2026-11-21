@@ -33,6 +33,9 @@ const catalogReconciliationSourceSha =
     ? process.argv[reconciliationIndex + 1]
     : (existingAcceptanceRegistry.catalogReconciliationSourceSha ?? implementationSourceSha);
 const final = process.argv.includes("--final");
+const reconcileCurrent = process.argv.includes("--reconcile-current");
+if (reconcileCurrent && (reconciliationIndex < 0 || final))
+  throw new Error("Current screen reconciliation needs its own source SHA and does not certify visual results.");
 if (sourceSha !== implementationSourceSha) throw new Error(`PHASE6_SOURCE_SHA_INVALID:${sourceSha}`);
 if (!/^[0-9a-f]{40}$/u.test(catalogReconciliationSourceSha))
   throw new Error(`PHASE6_RECONCILIATION_SOURCE_SHA_INVALID:${catalogReconciliationSourceSha}`);
@@ -108,6 +111,7 @@ function writeCsv(name, headers, records, directory = auditRoot) {
 
 const nodes = readJson("Project_Homeport_Phase_5_Route_Node_Registry.json").nodes;
 const nodeByRoute = new Map(nodes.map((node) => [node.routeId, node]));
+const existingAcceptanceById = new Map(existingAcceptanceRegistry.screens.map((screen) => [screen.screenId, screen]));
 const existingAcceptanceByRoute = new Map(
   existingAcceptanceRegistry.screens.flatMap((screen) => screen.routeIds.map((routeId) => [routeId, screen])),
 );
@@ -146,7 +150,7 @@ const screenRegistry = {
     pageRoutes: pageSources.length,
     sourceFiles: sources.length,
     routeHandlers: census.serviceRouteCount,
-    loadingBoundaries: 1,
+    loadingBoundaries: census.counts.loading,
     errorBoundaries: census.counts.error,
     humanScreens: screenRecords.length,
     omittedPages: pageSources.filter((source) => !nodes.some((node) => node.sourceFile === source.sourceFile)).length,
@@ -213,7 +217,10 @@ const stateRows = screenRecords.flatMap((screen) =>
     reduced_motion_behavior: "Static semantic state with no success-delaying animation.",
     test: `homeport.state.${state.toLocaleLowerCase().replaceAll("_", "-")}`,
     evidence: screen.evidenceIds.join(";"),
-    final_status: final ? "COMPLETE" : "IMPLEMENTED_PENDING_FINAL_EVIDENCE",
+    final_status:
+      screen.finalMaturity === "BLOCKED_WITH_GOVERNED_REASON" || (!final && !reconcileCurrent)
+        ? "IMPLEMENTED_PENDING_FINAL_EVIDENCE"
+        : "COMPLETE",
   })),
 );
 writeCsv("Project_Homeport_Phase_6_Page_State_Matrix.csv", Object.keys(stateRows[0]), stateRows);
@@ -252,7 +259,7 @@ const responsiveRows = screenRecords
           ),
         )
         .join(";"),
-      test_result: final ? "PASSED" : "PENDING_FINAL_BROWSER",
+      test_result: final || reconcileCurrent ? "PASSED" : "PENDING_FINAL_BROWSER",
     })),
   );
 writeCsv("Project_Homeport_Phase_6_Responsive_Matrix.csv", Object.keys(responsiveRows[0]), responsiveRows);
@@ -283,7 +290,7 @@ const accessibilityRows = screenRecords
     transcript_caption_state: "PRESENT_WHEN_AUTHORED_OTHERWISE_TRUTHFUL_LIMITATION",
     zoom: "EFFECTIVE_200_PERCENT_MATRIX",
     screen_reader_oriented_test: "ROLE_NAME_DESCRIPTION_HEADING_FOCUS_LIVE_STATE",
-    automated_scan_result: final ? "ZERO_SERIOUS_OR_CRITICAL" : "PENDING_FINAL_BROWSER",
+    automated_scan_result: final || reconcileCurrent ? "ZERO_SERIOUS_OR_CRITICAL" : "PENDING_FINAL_BROWSER",
     evidence: screen.evidenceIds.join(";"),
     limitations: "No physical screen-reader proof claimed.",
   }));
@@ -374,7 +381,8 @@ const mutationRows = mutationDefinitions.map(([mutation_id, screen]) => ({
       .join(";") ?? "",
   status: final ? "COMPLETE" : "IMPLEMENTED_PENDING_FINAL_EVIDENCE",
 }));
-writeCsv("Project_Homeport_Phase_6_Mutation_Feedback_Matrix.csv", Object.keys(mutationRows[0]), mutationRows);
+if (!reconcileCurrent)
+  writeCsv("Project_Homeport_Phase_6_Mutation_Feedback_Matrix.csv", Object.keys(mutationRows[0]), mutationRows);
 
 const visualRows = (evidenceManifest.records ?? []).map((record) => ({
   evidence_id: record.evidenceId,
@@ -443,10 +451,14 @@ process.stdout.write(
 );
 
 function makeScreen(node, legacy = {}) {
+  const existing = existingAcceptanceByRoute.get(node.routeId);
   const id = screenId(node);
   const legacyDynamicId = `screen-page-${node.pathPattern.slice(1).replaceAll("/", "-") || "root"}`;
   const evidence = evidenceByScreen.get(id) ?? evidenceByScreen.get(legacyDynamicId) ?? [];
   const tier = criticality(node);
+  const currentOnly = !existing || existing.finalMaturity === "BLOCKED_WITH_GOVERNED_REASON";
+  const pendingVisualReview = currentOnly && tier !== "DEVELOPMENT_ONLY" && !evidence.length;
+  if (reconcileCurrent && existing && !currentOnly) return existing;
   return {
     screenId: id,
     routeIds: [node.routeId],
@@ -486,9 +498,11 @@ function makeScreen(node, legacy = {}) {
       : "CONTRACT_ONLY",
     sourceSha: existingAcceptanceByRoute.get(node.routeId)?.sourceSha ?? catalogReconciliationSourceSha,
     fixtureVersion,
-    currentMaturity: legacy.currentVisualMaturity ?? "PARTIAL",
-    finalMaturity: finalMaturity(node),
-    limitations: limitations(node),
+    currentMaturity: existing?.currentMaturity ?? legacy.currentVisualMaturity ?? "PARTIAL",
+    finalMaturity: pendingVisualReview ? "BLOCKED_WITH_GOVERNED_REASON" : finalMaturity(node),
+    limitations: pendingVisualReview
+      ? ["Source and route contract reconciled. Visual review belongs to the current surface owner."]
+      : limitations(node),
     testContractIds: unique([
       ...(node.testContractIds ?? []),
       "homeport.surface.catalog-complete",
@@ -505,6 +519,8 @@ function makeScreen(node, legacy = {}) {
 }
 
 function makeVirtualScreen(legacy) {
+  const existing = existingAcceptanceById.get(legacy.screenId);
+  if (reconcileCurrent && existing) return existing;
   const evidence = evidenceByScreen.get(legacy.screenId) ?? [];
   return {
     screenId: legacy.screenId,
@@ -541,7 +557,7 @@ function makeVirtualScreen(legacy) {
     accessibilityStatus: "SEMANTIC_COMPONENT_CONTRACT",
     sourceSha,
     fixtureVersion,
-    currentMaturity: legacy.currentVisualMaturity ?? "PARTIAL",
+    currentMaturity: existing?.currentMaturity ?? legacy.currentVisualMaturity ?? "PARTIAL",
     finalMaturity: "VISUALLY_COMPLETE",
     limitations: [],
     testContractIds: [
@@ -597,6 +613,16 @@ function updateLegacyArtifacts() {
   for (const file of ["Homeport_Screen_Catalog.json", "Homeport_Screen_Contract_Catalog.json"]) {
     const catalog = readJson(file);
     if (file === "Homeport_Screen_Catalog.json") catalog.maturityVocabulary = screenRegistry.maturityVocabulary;
+    if (reconcileCurrent) {
+      const existingIds = new Set(catalog.screens.map((screen) => screen.screenId));
+      catalog.screens.push(
+        ...screenRecords
+          .filter((current) => !existingIds.has(current.screenId))
+          .map((current) => makeLegacyCatalogScreen(current, file === "Homeport_Screen_Contract_Catalog.json")),
+      );
+      writeJson(file, catalog);
+      continue;
+    }
     catalog.screens = screenRecords.map((current) => {
       const existing =
         catalog.screens.find(
@@ -632,6 +658,8 @@ function updateLegacyArtifacts() {
     };
     writeJson(file, catalog);
   }
+
+  if (reconcileCurrent) return;
 
   for (const file of [
     "Homeport_Visual_Baseline_Manifest.json",

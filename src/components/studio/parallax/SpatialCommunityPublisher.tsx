@@ -1,5 +1,7 @@
 "use client";
 
+import { ReceiptDetails } from "@/components/ui/ReceiptDetails";
+
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { SpatialSource } from "@/community/spatial-package";
@@ -741,13 +743,9 @@ export function SpatialCommunityPublisher({
                   ))}
                   <details>
                     <summary>Inspect the sanitized package</summary>
-                    <pre tabIndex={0} aria-label="Sanitized Community package JSON">
-                      {JSON.stringify(
-                        review.included.map((item) => ({ path: item.path, preview: item.preview })),
-                        null,
-                        2,
-                      )}
-                    </pre>
+                    <div tabIndex={0} role="region" aria-label="Sanitized Community package contents">
+                      <ReceiptDetails value={review.included.map(({ path, preview }) => ({ path, preview }))} />
+                    </div>
                   </details>
                   <label className={styles.reviewCheck}>
                     <input

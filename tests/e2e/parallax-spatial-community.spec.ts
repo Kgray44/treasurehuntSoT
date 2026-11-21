@@ -177,6 +177,10 @@ async function approveFromAdmin(browser: Browser, baseURL: string, listingId: st
     const panel = page.locator('section[aria-labelledby="spatial-publication-review-title"]');
     await expect(panel.getByRole("heading", { name: "Review exact spatial release" })).toBeVisible();
     await panel.getByText("Inspect the full sanitized package").click();
+    const packageContents = panel.getByRole("region", { name: "Spatial release package contents" });
+    await expect(packageContents).toBeVisible();
+    await expect(packageContents.locator("dt").filter({ hasText: /^Path$/ })).not.toHaveCount(0);
+    await expect(packageContents.locator("pre")).toHaveCount(0);
     await panel.getByLabel(/I reviewed the exact content, rights declaration/).check();
     await panel.getByRole("button", { name: "Approve and publish release" }).click();
     await expect(page.getByRole("link", { name: "Open Community listing" })).toBeVisible();

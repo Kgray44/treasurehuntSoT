@@ -1,4 +1,3 @@
-import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { format, resolveConfig } from "prettier";
@@ -738,8 +737,6 @@ for (const suiteId of ["unit.homeport", "component.homeport", "browser.homeport"
   suite.currentImplementationState = "phase-4-homeport-community-contract-family";
 }
 await writeTestingJson("suites.json", suites);
-
-execFileSync(process.execPath, ["scripts/sounding-line/test-registry.mjs"], { cwd: root, stdio: "inherit" });
 
 process.stdout.write(
   `Project Homeport Phase 4 inventories updated (${final ? "final branch validation" : "implemented pending validation"}); ` +

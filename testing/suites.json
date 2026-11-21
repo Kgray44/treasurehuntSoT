@@ -1481,7 +1481,7 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["local-change", "subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
+      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
       "adapter": "vitest-family"
     },
     {
@@ -1987,7 +1987,7 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
+      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
       "adapter": "vitest-family"
     },
     {
@@ -2477,7 +2477,7 @@
         "src/app/api/webhooks/postmark/**"
       ],
       "releaseGates": ["subsystem", "mainline", "release-candidate"],
-      "currentImplementationState": "phase-5-homeport-route-reachability-contract-family",
+      "currentImplementationState": "phase-7-owner-correction-round-3-source-bound",
       "adapter": "playwright-family"
     },
     {

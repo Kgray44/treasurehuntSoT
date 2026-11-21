@@ -74,6 +74,19 @@ function fields(value: unknown, path: string[] = [], result = new Map<string, st
   return result;
 }
 
+function PolicySnapshot({ values }: { values: ReadonlyMap<string, string> }) {
+  return (
+    <dl>
+      {[...values].map(([key, value]) => (
+        <div key={key}>
+          <dt>{key.split(".").map(name).join(" · ")}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 export function AIPolicyChangeSummary({ current, proposed }: { current: unknown; proposed: unknown }) {
   const before = fields(current),
     after = fields(proposed);
@@ -134,11 +147,11 @@ export function AIPolicyChangeSummary({ current, proposed }: { current: unknown;
         <div className={styles.columns}>
           <div>
             <h3>Current effective policy</h3>
-            <pre>{JSON.stringify(current, null, 2)}</pre>
+            <PolicySnapshot values={before} />
           </div>
           <div>
             <h3>Proposed effective policy</h3>
-            <pre>{JSON.stringify(proposed, null, 2)}</pre>
+            <PolicySnapshot values={after} />
           </div>
         </div>
       </details>

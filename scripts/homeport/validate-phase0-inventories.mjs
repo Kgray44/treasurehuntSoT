@@ -604,7 +604,8 @@ assert.equal(
       (route.phase2Implementation ||
         route.phase3Implementation ||
         route.phase4Implementation ||
-        route.phase5Implementation),
+        route.phase5Implementation ||
+        route.currentSourceReconciliation?.state === "SOURCE_RECONCILED"),
   ).length,
   routes.totals.pages,
   "Every current page must have a validated additive implementation record",
@@ -645,13 +646,25 @@ for (let number = 1; number <= 20; number += 1) {
 }
 for (const record of nonconformities) {
   requireKeys(record, ncRequired, record.id);
-  assert.match(record.id, /^HP-NC-\d{3}$/u);
+  assert.match(record.id, /^(?:HP-NC-\d{3}|HP-NC-CD-B1-\d{2}|PE-DEBT-[A-Z]+(?:-[A-Z]+)+)$/u);
   requireVocabulary(record.severity, ["CRITICAL", "HIGH", "MODERATE", "LOW"], record.id);
   if (record.parent_id) assert.ok(ncIds.has(record.parent_id), `${record.id} references unknown parent`);
-  for (const journeyId of record.journeys.split(";").filter(Boolean))
-    assert.ok(journeyIds.has(journeyId), `${record.id} references unknown ${journeyId}`);
-  for (const evidenceId of record.evidence_ids.split(";").filter(Boolean))
-    assert.ok(evidenceIds.has(evidenceId), `${record.id} references unknown ${evidenceId}`);
+  if (record.id.startsWith("PE-DEBT-") || record.id.startsWith("HP-NC-CD-B1-")) {
+    assert.ok(record.canonical_owner && record.integration_owner, `${record.id} must retain its assigned owners`);
+    assert.ok(record.evidence_ids && record.acceptance_contract && record.notes, `${record.id} must retain provenance`);
+    assert.ok(
+      (record.id.startsWith("PE-DEBT-")
+        ? ["TRACKED_NO_WAIVER", "CLOSED_BROWSER_RENDERED_OUTCOME"]
+        : ["FUNCTIONAL_RESOLVED_EDITORIAL_DEFERRED"]
+      ).includes(record.disposition),
+      `${record.id} has an unsupported cross-project disposition`,
+    );
+  } else {
+    for (const journeyId of record.journeys.split(";").filter(Boolean))
+      assert.ok(journeyIds.has(journeyId), `${record.id} references unknown ${journeyId}`);
+    for (const evidenceId of record.evidence_ids.split(";").filter(Boolean))
+      assert.ok(evidenceIds.has(evidenceId), `${record.id} references unknown ${evidenceId}`);
+  }
 }
 
 for (const id of ["HP-NC-001", "HP-NC-006", "HP-NC-010", "HP-NC-016"]) {

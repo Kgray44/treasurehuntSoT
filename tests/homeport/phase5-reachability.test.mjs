@@ -9,6 +9,8 @@ import { discoverAppRouteSources } from "../../scripts/homeport/phase5-route-cen
 import { knownPagePatterns } from "../../scripts/homeport/phase5-route-policy.mjs";
 import { validatePhase5Reachability } from "../../scripts/homeport/validate-phase5-reachability.mjs";
 
+import { withInventoryWorkspace } from "./inventory-test-workspace.mjs";
+
 const root = process.cwd();
 const audit = "Development_Docs/Projects/Project_Homeport";
 const generatedFiles = [
@@ -34,15 +36,14 @@ const generatedFiles = [
   "testing/impact-map.json",
   "testing/ownership.json",
   "testing/suites.json",
-  "testing/generated/active-test-registry.json",
 ];
 
-const digests = () =>
+const digests = (workspace) =>
   Object.fromEntries(
     generatedFiles.map((file) => [
       file,
       createHash("sha256")
-        .update(readFileSync(path.join(root, file)))
+        .update(readFileSync(path.join(workspace, file)))
         .digest("hex"),
     ]),
   );
@@ -61,8 +62,17 @@ test("Phase 5 graph independently clears source, reachability, capability, dead-
 });
 
 test("Phase 5 inventory updater is byte-identical on its second provisional run", () => {
-  execFileSync(process.execPath, ["scripts/homeport/apply-phase5-inventory-updates.mjs"], { cwd: root });
-  const first = digests();
-  execFileSync(process.execPath, ["scripts/homeport/apply-phase5-inventory-updates.mjs"], { cwd: root });
-  assert.deepEqual(digests(), first);
+  withInventoryWorkspace(
+    (workspace) => {
+      execFileSync(process.execPath, [path.join(root, "scripts/homeport/apply-phase5-inventory-updates.mjs")], {
+        cwd: workspace,
+      });
+      const first = digests(workspace);
+      execFileSync(process.execPath, [path.join(root, "scripts/homeport/apply-phase5-inventory-updates.mjs")], {
+        cwd: workspace,
+      });
+      assert.deepEqual(digests(workspace), first);
+    },
+    { source: true },
+  );
 });

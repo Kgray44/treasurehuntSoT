@@ -6,6 +6,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
+import { discoverAppRouteSources } from "../../scripts/homeport/phase5-route-census.mjs";
+
 const root = process.cwd();
 const tsxCli = path.join(root, "node_modules", "tsx", "dist", "cli.mjs");
 const generator = path.join(root, "scripts", "homeport", "generate-phase2-contracts.ts");
@@ -46,9 +48,14 @@ test("homeport.shell.mode-classification generates one mode for every current pa
     const registry = JSON.parse(
       readFileSync(path.join(temporaryRoot, "Project_Homeport_Phase_2_Shell_Mode_Registry.json"), "utf8"),
     );
-    assert.equal(registry.pageCount, 69);
-    assert.equal(registry.records.length, 69);
-    assert.equal(new Set(registry.records.map((record) => record.routeId)).size, 69);
+    const pages = discoverAppRouteSources(root).filter((source) => source.kind === "page");
+    assert.equal(registry.pageCount, pages.length);
+    assert.equal(new Set(registry.records.map((record) => record.routeId)).size, pages.length);
+    assert.deepEqual(
+      registry.records.map((record) => [record.routePattern, record.implementationSource]).sort(),
+      pages.map((source) => [source.pathPattern, source.sourceFile]).sort(),
+    );
+    for (const record of registry.records) assert.ok(registry.validModes.includes(record.mode), record.routePattern);
     assert.equal(
       registry.records.some((record) => record.routePattern.startsWith("/api")),
       false,

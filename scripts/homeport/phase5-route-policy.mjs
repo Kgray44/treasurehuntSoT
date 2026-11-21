@@ -8,6 +8,8 @@ export const routeClassifications = [
   "PRIVILEGED_DIRECT_ENTRY",
   "DEVELOPMENT_ONLY",
   "API_OR_SERVICE",
+  "AUTHENTICATED_RETURN_HANDOFF",
+  "OFFLINE_FALLBACK",
   "STATIC_ASSET",
   "DEPRECATED",
 ];
@@ -46,8 +48,11 @@ export const knownPagePatterns = [
   "/account/security",
   "/account/sessions",
   "/account/support-access",
+  "/account/devices",
   "/admin",
   "/admin/audit",
+  "/admin/ai-usage",
+  "/admin/support/cases",
   "/admin/chronicles",
   "/admin/chronicles/[chronicleId]",
   "/admin/community",
@@ -68,6 +73,7 @@ export const knownPagePatterns = [
   "/captain/sign-in",
   "/captain/tales/[taleId]",
   "/captain/voyages/[playthroughId]/player-preview",
+  "/captain/voyages/[playthroughId]/muster",
   "/chronicles/[taleSlug]",
   "/chronicles/[taleSlug]/compare",
   "/community",
@@ -93,8 +99,19 @@ export const knownPagePatterns = [
   "/community/voyage-logs/owner",
   "/community/voyage-logs/owner/[id]",
   "/dev/animations",
+  "/dev/spatial-pilot",
+  "/devices/companion",
+  "/devices/display",
+  "/devices/pair",
+  "/devices/reach",
   "/forgot-password",
   "/passport",
+  "/passport/atlas",
+  "/passport/history/[recordId]/book",
+  "/passport/history/[recordId]/replay",
+  "/passport/people",
+  "/passport/statistics",
+  "/passport/timeline",
   "/passport/artifacts",
   "/passport/artifacts/[artifactId]",
   "/passport/history",
@@ -108,6 +125,8 @@ export const knownPagePatterns = [
   "/player",
   "/player/invitation",
   "/player/library",
+  "/player/landfall-return",
+  "/player/offline-landfall",
   "/player/playthroughs/[playthroughId]",
   "/player/playthroughs/[playthroughId]/archive",
   "/player/playthroughs/[playthroughId]/journal",
@@ -121,6 +140,8 @@ export const knownPagePatterns = [
   "/studio",
   "/studio/exchange",
   "/studio/library",
+  "/studio/parallax",
+  "/studio/tales/[taleId]/landfall",
   "/studio/private-content",
   "/studio/private-content/operations",
   "/studio/sign-in",
@@ -138,6 +159,10 @@ export const knownPagePatterns = [
 ];
 
 const contextualRoutes = new Set([
+  "/captain/voyages/[playthroughId]/muster",
+  "/passport/history/[recordId]/book",
+  "/passport/history/[recordId]/replay",
+  "/studio/tales/[taleId]/landfall",
   "/admin/chronicles/[chronicleId]",
   "/admin/community/[listingId]",
   "/admin/people/[accountId]",
@@ -203,7 +228,12 @@ const redirectRoutes = new Set([
 
 const internalRoutes = new Set(["/studio/private-content/operations"]);
 const privilegedDirectRoutes = new Set(["/admin"]);
-const developmentRoutes = new Set(["/dev/animations"]);
+const boundedEntrypoints = new Map([
+  ["/player/landfall-return", "AUTHENTICATED_RETURN_HANDOFF"],
+  ["/player/offline-landfall", "OFFLINE_FALLBACK"],
+]);
+
+const developmentRoutes = new Set(["/dev/animations", "/dev/spatial-pilot"]);
 
 export function classificationForPath(pathPattern) {
   if (!knownPagePatterns.includes(pathPattern)) throw new Error(`UNCLASSIFIED_PAGE_ROUTE:${pathPattern}`);
@@ -215,10 +245,21 @@ export function classificationForPath(pathPattern) {
   if (internalRoutes.has(pathPattern)) return "INTERNAL_DIAGNOSTIC";
   if (privilegedDirectRoutes.has(pathPattern)) return "PRIVILEGED_DIRECT_ENTRY";
   if (developmentRoutes.has(pathPattern)) return "DEVELOPMENT_ONLY";
+  if (boundedEntrypoints.has(pathPattern)) return boundedEntrypoints.get(pathPattern);
   return "USER_NAVIGABLE";
 }
 
 const parentOverrides = {
+  "/captain/voyages/[playthroughId]/muster": "/captain/library",
+  "/devices/companion": "/account/devices",
+  "/devices/display": "/account/devices",
+  "/devices/pair": "/account/devices",
+  "/devices/reach": "/devices/pair",
+  "/passport/history/[recordId]/book": "/passport/history/[recordId]",
+  "/passport/history/[recordId]/replay": "/passport/history/[recordId]",
+  "/player/landfall-return": "/player/library",
+  "/player/offline-landfall": "/player/library",
+  "/studio/tales/[taleId]/landfall": "/studio/tales/[taleId]",
   "/": null,
   "/account": "/",
   "/account/claim": "/sign-in",
@@ -322,6 +363,10 @@ function defaultParent(pathPattern) {
 }
 
 function authenticationFor(pathPattern, classification) {
+  if (classification === "OFFLINE_FALLBACK") return "ANONYMOUS_ALLOWED";
+  if (classification === "AUTHENTICATED_RETURN_HANDOFF") return "AUTHENTICATED_PLAYER_REQUIRED";
+  if (pathPattern === "/devices/companion") return "AUTHENTICATED_PLAYER_REQUIRED";
+  if (pathPattern === "/devices/display") return "BOUND_DEVICE_OR_AUTHENTICATED_PLAYER";
   if (classification === "TOKENIZED_DEEP_LINK") return "BOUNDED_TOKEN_OR_CODE";
   if (classification === "PRIVILEGED_DIRECT_ENTRY") return "AUTHENTICATED_CAPABILITY_REQUIRED";
   if (pathPattern.startsWith("/admin/")) return "AUTHENTICATED_CAPABILITY_REQUIRED";
@@ -341,6 +386,8 @@ function authenticationFor(pathPattern, classification) {
 }
 
 function capabilitiesFor(pathPattern) {
+  if (pathPattern === "/devices/companion") return ["PLAYER"];
+  if (pathPattern === "/player/offline-landfall") return [];
   if (pathPattern === "/admin" || pathPattern.startsWith("/admin/")) return ["PLATFORM_OBSERVE"];
   if (pathPattern === "/community/moderation" || pathPattern === "/community/moderation/[id]") return ["MODERATOR"];
   if (pathPattern === "/studio/private-content/operations") return ["ADMINISTRATOR"];
@@ -372,6 +419,10 @@ function navigationOwnerFor(pathPattern) {
 }
 
 const dynamicSourceIds = {
+  "/captain/voyages/[playthroughId]/muster": ["source-captain-muster"],
+  "/passport/history/[recordId]/book": ["source-wakebook-book"],
+  "/passport/history/[recordId]/replay": ["source-wakebook-replay"],
+  "/studio/tales/[taleId]/landfall": ["source-studio-landfall"],
   "/admin/audit": ["source-admiralty-navigation"],
   "/admin/chronicles": ["source-admiralty-navigation"],
   "/admin/chronicles/[chronicleId]": ["source-admiralty-chronicle-results"],
@@ -461,11 +512,63 @@ export function nodePolicy(pathPattern, base = {}) {
                   ? "OWNER_ONLY_DIAGNOSTIC"
                   : classification === "PRIVILEGED_DIRECT_ENTRY"
                     ? "INTENTIONALLY_PRIVILEGED_DIRECT_ENTRY"
-                    : "DEPRECATED_WITH_DISPOSITION",
+                    : classification === "AUTHENTICATED_RETURN_HANDOFF"
+                      ? "AUTHENTICATED_NATIVE_NOTIFICATION_RETURN"
+                      : classification === "OFFLINE_FALLBACK"
+                        ? "SERVICE_WORKER_OFFLINE_FALLBACK"
+                        : "DEPRECATED_WITH_DISPOSITION",
   };
 }
 
 export const dynamicSources = [
+  [
+    "source-captain-muster",
+    "/captain/voyages/[playthroughId]/muster",
+    "/captain/library",
+    "src/components/platform/CaptainLibrary.tsx",
+    "/muster",
+    "/muster",
+    "Crew muster",
+    "CAPTAIN",
+    "PRIVATE",
+    "synthetic-captain-voyage",
+  ],
+  [
+    "source-wakebook-book",
+    "/passport/history/[recordId]/book",
+    "/passport/history/[recordId]",
+    "src/components/wakebook/WakebookVoyageBook.tsx",
+    "/book",
+    "/book",
+    "Open Voyage book",
+    "AUTHENTICATED",
+    "PRIVATE",
+    "synthetic-voyage-record",
+  ],
+  [
+    "source-wakebook-replay",
+    "/passport/history/[recordId]/replay",
+    "/passport/history/[recordId]",
+    "src/components/wakebook/WakebookVoyageDetail.tsx",
+    "/replay",
+    "/replay",
+    "Replay Voyage",
+    "AUTHENTICATED",
+    "PRIVATE",
+    "synthetic-voyage-record",
+  ],
+  [
+    "source-studio-landfall",
+    "/studio/tales/[taleId]/landfall",
+    "/studio/tales/[taleId]",
+    "src/components/studio/TaleEditor.tsx",
+    '"landfall"',
+    "Landfall",
+    "Landfall",
+    "CREATOR",
+    "PRIVATE",
+    "synthetic-owned-chronicle",
+  ],
   [
     "source-admiralty-navigation",
     "/admin/audit",
@@ -1168,6 +1271,126 @@ const admiraltyEntryBindings = [
 ];
 
 export const entryBindings = [
+  [
+    "edge-account-devices",
+    "MANUAL_CONTEXT_LINK",
+    "/account/sessions",
+    "/account/devices",
+    "account-devices",
+    "Manage devices",
+    "src/app/account/sessions/page.tsx",
+    "/account/devices",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
+    "edge-device-pair",
+    "MANUAL_CONTEXT_LINK",
+    "/account/devices",
+    "/devices/pair",
+    "device-pair",
+    "Connect a device",
+    "src/components/crossdeck/CrossdeckDevices.tsx",
+    "/devices/pair#code=",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
+    "edge-device-companion",
+    "MANUAL_CONTEXT_LINK",
+    "/account/devices",
+    "/devices/companion",
+    "device-companion",
+    "Open companion",
+    "src/components/crossdeck/CrossdeckDevices.tsx",
+    "companionHref(surface.voyageId)",
+    "AUTHENTICATED",
+    ["PLAYER"],
+  ],
+  [
+    "edge-device-display",
+    "MANUAL_CONTEXT_LINK",
+    "/account/devices",
+    "/devices/display",
+    "device-display",
+    "Open crew display",
+    "src/components/crossdeck/CrossdeckDevices.tsx",
+    "/devices/display?voyage=",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
+    "edge-device-reach",
+    "MANUAL_CONTEXT_LINK",
+    "/devices/pair",
+    "/devices/reach",
+    "device-reach",
+    "Find the Hand",
+    "src/app/devices/pair/page.tsx",
+    "/devices/reach",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
+    "edge-studio-parallax",
+    "MANUAL_CONTEXT_LINK",
+    "/studio/library",
+    "/studio/parallax",
+    "studio-parallax",
+    "Open Spatial Studio",
+    "src/components/studio/StudioHome.tsx",
+    "/studio/parallax",
+    "AUTHENTICATED",
+    ["CREATOR"],
+  ],
+  [
+    "edge-passport-atlas",
+    "MANUAL_CONTEXT_LINK",
+    "/passport",
+    "/passport/atlas",
+    "passport-atlas",
+    "Voyage Atlas",
+    "src/components/wakebook/PassportLayout.tsx",
+    "/passport/atlas",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
+    "edge-passport-people",
+    "MANUAL_CONTEXT_LINK",
+    "/passport",
+    "/passport/people",
+    "passport-people",
+    "People",
+    "src/components/wakebook/PassportLayout.tsx",
+    "/passport/people",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
+    "edge-passport-statistics",
+    "MANUAL_CONTEXT_LINK",
+    "/passport",
+    "/passport/statistics",
+    "passport-statistics",
+    "Statistics",
+    "src/components/wakebook/PassportLayout.tsx",
+    "/passport/statistics",
+    "AUTHENTICATED",
+    [],
+  ],
+  [
+    "edge-passport-timeline",
+    "MANUAL_CONTEXT_LINK",
+    "/passport",
+    "/passport/timeline",
+    "passport-timeline",
+    "Timeline",
+    "src/components/wakebook/PassportLayout.tsx",
+    "/passport/timeline",
+    "AUTHENTICATED",
+    [],
+  ],
   ...admiraltyEntryBindings,
   [
     "edge-global-explore",
@@ -1279,25 +1502,25 @@ export const entryBindings = [
   ],
   [
     "edge-account-history",
-    "ACCOUNT_NAV",
-    "/",
+    "SECTION_NAV",
+    "/passport",
     "/passport/history",
     "account-history",
     "Chronicle History",
-    "src/navigation/registry.ts",
-    "account-history",
+    "src/components/wakebook/PassportLayout.tsx",
+    "/passport/history",
     "AUTHENTICATED",
     [],
   ],
   [
     "edge-account-artifacts",
-    "ACCOUNT_NAV",
-    "/",
+    "SECTION_NAV",
+    "/passport",
     "/passport/artifacts",
     "account-artifacts",
     "Artifact Cabinet",
-    "src/navigation/registry.ts",
-    "account-artifacts",
+    "src/components/wakebook/PassportLayout.tsx",
+    "/passport/artifacts",
     "AUTHENTICATED",
     [],
   ],
@@ -1596,8 +1819,8 @@ export const entryBindings = [
     "/passport/memories",
     "passport-memories",
     "Memories",
-    "src/homeport/personal-harbor-navigation.ts",
-    "passport/memories",
+    "src/components/wakebook/PassportLayout.tsx",
+    "/passport/memories",
     "AUTHENTICATED",
     [],
   ],
@@ -1608,8 +1831,8 @@ export const entryBindings = [
     "/passport/saved",
     "passport-saved",
     "Saved",
-    "src/homeport/personal-harbor-navigation.ts",
-    "passport/saved",
+    "src/components/wakebook/PassportLayout.tsx",
+    "/passport/saved",
     "AUTHENTICATED",
     [],
   ],
