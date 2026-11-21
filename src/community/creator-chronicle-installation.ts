@@ -67,101 +67,74 @@ export async function installCreatorChronicleRelease(input: {
     throw new CommunityError("COMMUNITY_REVIEW_STALE", "The Chronicle release changed. Review its current version.");
   if (!source.license.allowsPrivateUse)
     throw new CommunityError("COMMUNITY_LICENSE_INCOMPATIBLE", "This license does not permit private reuse.");
-  const prior = await installedFork(input.accountId, input.releaseId);
-  if (prior)
+  const existingResult = async () => {
+    const prior = await installedFork(input.accountId, input.releaseId);
+    if (!prior) return null;
+    if (
+      prior.receipt.packageId !== source.record.id ||
+      prior.receipt.installedPackageChecksum !== input.packageChecksum
+    )
+      throw new CommunityError(
+        "COMMUNITY_INSTALLATION_STALE",
+        "The private Chronicle copy no longer matches this release.",
+      );
     return {
       status: "ALREADY_INSTALLED" as const,
       taleId: prior.fork.id,
       releaseId: input.releaseId,
       studioUrl: `/studio/tales/${prior.fork.id}`,
     };
+  };
+  const assertRequestMatches = async () => {
+    const existing = await db.communityInstallOperation.findUnique({
+      where: { accountId_requestId: { accountId: input.accountId, requestId: input.requestId } },
+    });
+    if (existing && (existing.releaseId !== input.releaseId || existing.packageId !== source.record.id))
+      throw new CommunityError("COMMUNITY_SOURCE_CONFLICT", "This request was used for another release.");
+  };
+  await assertRequestMatches();
+  const prior = await existingResult();
+  if (prior) return prior;
+
   const operationId = randomUUID();
-  const operation = await db.communityInstallOperation
-    .create({
-      data: {
-        id: operationId,
-        requestId: input.requestId,
-        idempotencyKey: `CREATOR_CHRONICLE:${input.accountId}:${input.requestId}`,
-        packageId: source.record.id,
-        releaseId: input.releaseId,
-        accountId: input.accountId,
-        mode: "PRIVATE_COPY",
-        status: "PLANNED",
-        destinationRevision: "NEW_PRIVATE_CHRONICLE",
-        plan: JSON.stringify({
-          sourceVersionId: source.source.id,
-          sourceChecksum: source.source.checksum,
-          packageChecksum: source.record.packageChecksum,
-        }),
-      },
-    })
-    .catch(async (cause: unknown) => {
-      if ((cause as { code?: string })?.code !== "P2002") throw cause;
-      const existing = await db.communityInstallOperation.findUnique({
-        where: { accountId_requestId: { accountId: input.accountId, requestId: input.requestId } },
+  try {
+    return await db.$transaction(async (tx) => {
+      // Claim a single operation per account and release before creating a private fork.
+      await tx.communityInstallOperation.create({
+        data: {
+          id: operationId,
+          requestId: input.requestId,
+          idempotencyKey: `CREATOR_CHRONICLE_RELEASE:${input.accountId}:${input.releaseId}`,
+          packageId: source.record.id,
+          releaseId: input.releaseId,
+          accountId: input.accountId,
+          mode: "PRIVATE_COPY",
+          status: "COMMITTED",
+          destinationRevision: "NEW_PRIVATE_CHRONICLE",
+          plan: JSON.stringify({
+            sourceVersionId: source.source.id,
+            sourceChecksum: source.source.checksum,
+            packageChecksum: source.record.packageChecksum,
+          }),
+          completedAt: new Date(),
+        },
       });
-      if (!existing || existing.releaseId !== input.releaseId || existing.packageId !== source.record.id)
-        throw new CommunityError("COMMUNITY_SOURCE_CONFLICT", "This request was used for another release.");
-      const completed = await installedFork(input.accountId, input.releaseId);
-      if (completed) return existing;
-      if (existing.status === "FAILED")
-        throw new CommunityError(
-          "COMMUNITY_INSTALLATION_FAILED",
-          "The previous private copy failed. Start a new installation review.",
-        );
-      throw new CommunityError(
-        "COMMUNITY_INSTALLATION_IN_PROGRESS",
-        "This private Chronicle copy is still being created.",
-      );
-    });
-  if (operation.status !== "PLANNED" || operation.id !== operationId) {
-    const completed = await installedFork(input.accountId, input.releaseId);
-    if (!completed) throw new CommunityError("COMMUNITY_INSTALLATION_STALE", "The installation receipt is incomplete.");
-    return {
-      status: "ALREADY_INSTALLED" as const,
-      taleId: completed.fork.id,
-      releaseId: input.releaseId,
-      studioUrl: `/studio/tales/${completed.fork.id}`,
-    };
-  }
-  let fork;
-  try {
-    fork = await forkPublishedVersion(source.source.taleId, source.source.id, input.accountId);
-  } catch (cause) {
-    await db.communityInstallOperation.update({
-      where: { id: operationId },
-      data: {
-        status: "FAILED",
-        finalizationErrorCode: "PRIVATE_FORK_FAILED",
-      },
-    });
-    throw cause;
-  }
-  try {
-    await db.$transaction(async (tx) => {
       const stillPublic = await tx.communityListing.findFirst({
         where: {
           id: input.listingId,
           currentReleaseId: input.releaseId,
           publicationStatus: "PUBLISHED",
+          visibility: "COMMUNITY",
           moderationStatus: "ACTIVE",
           archivedAt: null,
           removedAt: null,
+          currentRelease: { moderationStatus: "ACTIVE", deprecatedAt: null, packageChecksum: input.packageChecksum },
+          owner: { moderationStatus: "ACTIVE", creatorStatus: { not: "SUSPENDED" } },
         },
       });
       if (!stillPublic)
         throw new CommunityError("COMMUNITY_REVIEW_STALE", "This Chronicle release is no longer public.");
-      const privateFork = await tx.chronicle.findFirst({
-        where: {
-          id: fork.id,
-          creatorAccountId: input.accountId,
-          forkedFromTaleId: source.source.taleId,
-          forkedFromVersionId: source.source.id,
-          visibility: "PRIVATE",
-        },
-      });
-      if (!privateFork)
-        throw new CommunityError("COMMUNITY_INSTALLATION_STALE", "The private fork did not match its pinned source.");
+      const fork = await forkPublishedVersion(source.source.taleId, source.source.id, input.accountId, tx);
       await tx.communityInstallMapping.create({
         data: { operationId, sourceId: "chronicle", targetId: fork.id, kind: "CHRONICLE" },
       });
@@ -176,45 +149,20 @@ export async function installCreatorChronicleRelease(input: {
           upstreamReleaseId: input.releaseId,
         },
       });
-      await tx.communityInstallOperation.update({
-        where: { id: operationId },
-        data: {
-          status: "COMMITTED",
-          completedAt: new Date(),
-        },
-      });
+      return {
+        status: "COMMITTED" as const,
+        taleId: fork.id,
+        releaseId: input.releaseId,
+        studioUrl: `/studio/tales/${fork.id}`,
+      };
     });
   } catch (cause) {
-    // The Studio fork is created by an existing non-transactional service. Compensate
-    // a failed receipt commit so an unreceipted private copy is not left usable.
-    const removed = await db.chronicle.deleteMany({
-      where: {
-        id: fork.id,
-        creatorAccountId: input.accountId,
-        forkedFromTaleId: source.source.taleId,
-        forkedFromVersionId: source.source.id,
-        visibility: "PRIVATE",
-      },
-    });
-    await db.communityInstallOperation.updateMany({
-      where: { id: operationId, status: "PLANNED" },
-      data: {
-        status: "FAILED",
-        finalizationErrorCode:
-          removed.count === 1 ? "PRIVATE_FORK_FINALIZATION_FAILED" : "PRIVATE_FORK_CLEANUP_REQUIRED",
-      },
-    });
-    if (removed.count !== 1)
-      throw new CommunityError(
-        "COMMUNITY_INSTALLATION_RECOVERY_REQUIRED",
-        "The private Chronicle copy needs recovery before another attempt.",
-      );
+    const code = (cause as { code?: string } | null)?.code;
+    if (code === "P2002" || code === "P2034") {
+      await assertRequestMatches();
+      const completed = await existingResult();
+      if (completed) return completed;
+    }
     throw cause;
   }
-  return {
-    status: "COMMITTED" as const,
-    taleId: fork.id,
-    releaseId: input.releaseId,
-    studioUrl: `/studio/tales/${fork.id}`,
-  };
 }

@@ -145,13 +145,32 @@ describe.skipIf(!isolated)("SC-07 Chronicle Community journey", () => {
     expect(JSON.stringify(publicDetail)).not.toContain("A fictional harbor awaits.");
     const installReview = await reviewCreatorChronicleInstallation(installerId, pending.listingId);
     expect(installReview.included.passages).toBe(1);
-    const installed = await installCreatorChronicleRelease({
+    const installInput = {
       accountId: installerId,
       listingId: pending.listingId,
       releaseId: pending.releaseId,
       packageChecksum: installReview.packageChecksum,
       requestId: `sc07-${randomUUID()}`,
-    });
+    };
+    await db.$executeRawUnsafe(`CREATE TEMP TRIGGER sc07_block_chronicle_receipt
+      BEFORE INSERT ON CommunityInstallation
+      BEGIN SELECT RAISE(ABORT, 'SC07 synthetic receipt failure'); END`);
+    try {
+      await expect(installCreatorChronicleRelease(installInput)).rejects.toThrow();
+    } finally {
+      await db.$executeRawUnsafe("DROP TRIGGER sc07_block_chronicle_receipt");
+    }
+    expect(
+      await db.chronicle.count({ where: { creatorAccountId: installerId, forkedFromVersionId: version.id } }),
+    ).toBe(0);
+    expect(
+      await db.communityInstallOperation.count({
+        where: { accountId: installerId, requestId: installInput.requestId },
+      }),
+    ).toBe(0);
+    const installed = await installCreatorChronicleRelease(installInput);
+    const retry = await installCreatorChronicleRelease({ ...installInput, requestId: `sc07-${randomUUID()}` });
+    expect(retry).toMatchObject({ status: "ALREADY_INSTALLED", taleId: installed.taleId });
     expect(installed.status).toBe("COMMITTED");
     const fork = await getStudioTale(installed.taleId);
     expect(fork.tale.visibility).toBe("PRIVATE");

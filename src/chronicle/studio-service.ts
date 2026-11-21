@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { getBlockDefinition } from "@/chronicle/block-registry";
 import { journalPresentationSchema } from "@/chronicle/journal-contract";
@@ -145,23 +146,26 @@ export async function listStudioTales(accountId: string) {
   }));
 }
 
-export async function createStudioTale(input: {
-  title: string;
-  slug?: string;
-  subtitle?: string;
-  shortDescription?: string;
-  longDescription?: string;
-  theme?: string;
-  playerCountMin?: number;
-  playerCountMax?: number;
-  estimatedDuration?: number;
-  visibility?: "PRIVATE" | "UNLISTED" | "PUBLIC";
-  initialChapterTitle?: string;
-  creatorId: string;
-}) {
+export async function createStudioTale(
+  input: {
+    title: string;
+    slug?: string;
+    subtitle?: string;
+    shortDescription?: string;
+    longDescription?: string;
+    theme?: string;
+    playerCountMin?: number;
+    playerCountMax?: number;
+    estimatedDuration?: number;
+    visibility?: "PRIVATE" | "UNLISTED" | "PUBLIC";
+    initialChapterTitle?: string;
+    creatorId: string;
+  },
+  transaction?: Prisma.TransactionClient,
+) {
   const slug = slugSchema.parse(input.slug?.trim() || slugify(input.title));
-  const creatorAccountId = await canonicalAccountForLegacyActor(input.creatorId);
-  return db.$transaction(async (tx) => {
+  const create = async (tx: Prisma.TransactionClient) => {
+    const creatorAccountId = await canonicalAccountForLegacyActor(input.creatorId, tx);
     const tale = await tx.chronicle.create({
       data: {
         slug,
@@ -186,7 +190,8 @@ export async function createStudioTale(input: {
     });
     await tx.chronicle.update({ where: { id: tale.id }, data: { currentDraftRevisionId: draft.id } });
     return { id: tale.id, slug: tale.slug, draftId: draft.id };
-  });
+  };
+  return transaction ? create(transaction) : db.$transaction(create);
 }
 
 export class StudioNoEditableDraftError extends Error {
@@ -330,7 +335,12 @@ function json(value: unknown) {
   return JSON.stringify(value ?? {});
 }
 
-export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInput, userId: string) {
+export async function saveStudioDraft(
+  taleId: string,
+  unchecked: StudioDraftInput,
+  userId: string,
+  transaction?: Prisma.TransactionClient,
+) {
   const input = studioDraftSchema.parse(unchecked);
   const landfall = input.landfall == null ? input.landfall : validateLandfallDefinition(input.landfall);
   if (landfall && landfall.taleId !== taleId) throw new Error("LANDFALL_TALE_MISMATCH");
@@ -343,7 +353,7 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
         throw new Error("This Chronicle contains an unrecognized Passage type.");
     }
   }
-  return db.$transaction(async (tx) => {
+  const save = async (tx: Prisma.TransactionClient) => {
     const tale = await tx.chronicle.findUniqueOrThrow({
       where: { id: taleId },
       include: { drafts: { orderBy: { revisionNumber: "desc" }, take: 1 } },
@@ -546,7 +556,8 @@ export async function saveStudioDraft(taleId: string, unchecked: StudioDraftInpu
       savedAt: updated.updatedAt.toISOString(),
       validationState: updated.validationState,
     };
-  });
+  };
+  return transaction ? save(transaction) : db.$transaction(save);
 }
 
 export async function archiveStudioTale(taleId: string, archived: boolean) {
@@ -693,68 +704,83 @@ export async function restorePublishedVersionToDraft(taleId: string, versionId: 
   return { draftId: draft.id, basedOnPublishedVersionId: version.id, revisionNumber: draft.revisionNumber };
 }
 
-export async function forkPublishedVersion(taleId: string, versionId: string, creatorId: string) {
-  const version = await db.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
-  const snapshot = parsePublishedSnapshot(version.contentSnapshot);
-  let slug = slugify(`${snapshot.tale.slug}-copy`);
-  let suffix = 2;
-  const base = slug;
-  while (await db.chronicle.findUnique({ where: { slug }, select: { id: true } })) slug = `${base}-${suffix++}`;
-  const created = await createStudioTale({
-    title: `${snapshot.tale.title} Copy`,
-    slug,
-    subtitle: snapshot.tale.subtitle ?? undefined,
-    shortDescription: snapshot.tale.shortDescription ?? undefined,
-    longDescription: snapshot.tale.longDescription ?? undefined,
-    theme: snapshot.tale.theme,
-    visibility: "PRIVATE",
-    playerCountMin: snapshot.tale.playerCountMin,
-    playerCountMax: snapshot.tale.playerCountMax,
-    estimatedDuration: snapshot.tale.estimatedDuration ?? undefined,
-    initialChapterTitle: snapshot.chapters[0]?.title ?? "Chapter One",
-    creatorId,
-  });
-  await db.chronicle.update({
-    where: { id: created.id },
-    data: { forkedFromTaleId: taleId, forkedFromVersionId: versionId },
-  });
-  const target = await getStudioTale(created.id);
-  const chapterIds = new Map(snapshot.chapters.map((chapter) => [chapter.id, crypto.randomUUID()]));
-  const blockIds = new Map(
-    snapshot.chapters.flatMap((chapter) => chapter.blocks.map((block) => [block.id, crypto.randomUUID()] as const)),
-  );
-  const remap = (value: unknown) => (typeof value === "string" && blockIds.has(value) ? blockIds.get(value) : value);
-  await saveStudioDraft(
-    created.id,
-    {
-      autosaveVersion: target.draft.autosaveVersion,
-      tale: { ...snapshot.tale, title: `${snapshot.tale.title} Copy`, slug, visibility: "PRIVATE" },
-      chapters: snapshot.chapters.map((chapter) => ({
-        ...chapter,
-        id: chapterIds.get(chapter.id)!,
-        blocks: chapter.blocks.map((block) => ({
-          ...block,
-          id: blockIds.get(block.id)!,
-          connections: block.connections?.map((connection) => ({
-            ...connection,
-            targetBlockId: blockIds.get(connection.targetBlockId) ?? connection.targetBlockId,
+export async function forkPublishedVersion(
+  taleId: string,
+  versionId: string,
+  creatorId: string,
+  transaction?: Prisma.TransactionClient,
+) {
+  const fork = async (tx: Prisma.TransactionClient) => {
+    const version = await tx.publishedTaleVersion.findFirstOrThrow({ where: { id: versionId, taleId } });
+    const snapshot = parsePublishedSnapshot(version.contentSnapshot);
+    let slug = slugify(`${snapshot.tale.slug}-copy`);
+    let suffix = 2;
+    const base = slug;
+    while (await tx.chronicle.findUnique({ where: { slug }, select: { id: true } })) slug = `${base}-${suffix++}`;
+    const created = await createStudioTale(
+      {
+        title: `${snapshot.tale.title} Copy`,
+        slug,
+        subtitle: snapshot.tale.subtitle ?? undefined,
+        shortDescription: snapshot.tale.shortDescription ?? undefined,
+        longDescription: snapshot.tale.longDescription ?? undefined,
+        theme: snapshot.tale.theme,
+        visibility: "PRIVATE",
+        playerCountMin: snapshot.tale.playerCountMin,
+        playerCountMax: snapshot.tale.playerCountMax,
+        estimatedDuration: snapshot.tale.estimatedDuration ?? undefined,
+        initialChapterTitle: snapshot.chapters[0]?.title ?? "Chapter One",
+        creatorId,
+      },
+      tx,
+    );
+    await tx.chronicle.update({
+      where: { id: created.id },
+      data: { forkedFromTaleId: taleId, forkedFromVersionId: versionId },
+    });
+    const draft = await tx.taleDraft.findUniqueOrThrow({
+      where: { id: created.draftId },
+      select: { autosaveVersion: true },
+    });
+    const chapterIds = new Map(snapshot.chapters.map((chapter) => [chapter.id, crypto.randomUUID()]));
+    const blockIds = new Map(
+      snapshot.chapters.flatMap((chapter) => chapter.blocks.map((block) => [block.id, crypto.randomUUID()] as const)),
+    );
+    const remap = (value: unknown) => (typeof value === "string" && blockIds.has(value) ? blockIds.get(value) : value);
+    await saveStudioDraft(
+      created.id,
+      {
+        autosaveVersion: draft.autosaveVersion,
+        tale: { ...snapshot.tale, title: `${snapshot.tale.title} Copy`, slug, visibility: "PRIVATE" },
+        chapters: snapshot.chapters.map((chapter) => ({
+          ...chapter,
+          id: chapterIds.get(chapter.id)!,
+          blocks: chapter.blocks.map((block) => ({
+            ...block,
+            id: blockIds.get(block.id)!,
+            connections: block.connections?.map((connection) => ({
+              ...connection,
+              targetBlockId: blockIds.get(connection.targetBlockId) ?? connection.targetBlockId,
+            })),
+            configuration: {
+              ...block.configuration,
+              successTargetBlockId: remap(block.configuration.successTargetBlockId),
+              failureTargetBlockId: remap(block.configuration.failureTargetBlockId),
+              choices: Array.isArray(block.configuration.choices)
+                ? block.configuration.choices.map((choice) =>
+                    choice && typeof choice === "object" && !Array.isArray(choice)
+                      ? { ...choice, targetBlockId: remap(choice.targetBlockId) }
+                      : choice,
+                  )
+                : block.configuration.choices,
+            },
           })),
-          configuration: {
-            ...block.configuration,
-            successTargetBlockId: remap(block.configuration.successTargetBlockId),
-            failureTargetBlockId: remap(block.configuration.failureTargetBlockId),
-            choices: Array.isArray(block.configuration.choices)
-              ? block.configuration.choices.map((choice) =>
-                  choice && typeof choice === "object" && !Array.isArray(choice)
-                    ? { ...choice, targetBlockId: remap(choice.targetBlockId) }
-                    : choice,
-                )
-              : block.configuration.choices,
-          },
         })),
-      })),
-    },
-    creatorId,
-  );
-  return { id: created.id, slug, forkedFromTaleId: taleId, forkedFromVersionId: versionId };
+      },
+      creatorId,
+      tx,
+    );
+    return { id: created.id, slug, forkedFromTaleId: taleId, forkedFromVersionId: versionId };
+  };
+  return transaction ? fork(transaction) : db.$transaction(fork);
 }

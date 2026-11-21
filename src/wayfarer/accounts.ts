@@ -38,9 +38,12 @@ export function normalizeEmail(email: string) {
   return email.trim().toLocaleLowerCase("en-US");
 }
 
-export async function canonicalAccountForLegacyActor(actorId?: string | null) {
+export async function canonicalAccountForLegacyActor(
+  actorId?: string | null,
+  client: Pick<typeof db, "userAccount"> = db,
+) {
   if (!actorId) return null;
-  const account = await db.userAccount.findFirst({
+  const account = await client.userAccount.findFirst({
     where: { OR: [{ id: actorId }, { legacyGameMasterId: actorId }] },
     select: { id: true },
   });
