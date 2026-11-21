@@ -88,16 +88,27 @@ test("recognizes archival weekly human formats without treating an empty week as
     const w38 = join(root, "human", "weekly", "2026", "2026-W38");
     await mkdir(w35, { recursive: true });
     await mkdir(w38, { recursive: true });
-    await writeFile(join(w35, "weekly-human-evidence.json"), JSON.stringify({
-      schemaVersion: "1.0", recordType: "weekly-human-evidence",
-      week: { isoWeek: "2026-W35", timezone: "America/New_York" },
-      purpose: "human evidence", coverage: "BEST_EFFORT_PARTIAL", sourceChats: [{ title: "recovered" }],
-    }));
-    await writeFile(join(w38, "weekly-human-evidence.json"), JSON.stringify({
-      schemaVersion: "weekly-human-evidence.v1",
-      week: { label: "2026-W38", timezone: "America/New_York" },
-      purpose: "human evidence", coverage: { classification: "BEST_EFFORT_PARTIAL" }, sourceChatList: [],
-    }));
+    await writeFile(
+      join(w35, "weekly-human-evidence.json"),
+      JSON.stringify({
+        schemaVersion: "1.0",
+        recordType: "weekly-human-evidence",
+        week: { isoWeek: "2026-W35", timezone: "America/New_York" },
+        purpose: "human evidence",
+        coverage: "BEST_EFFORT_PARTIAL",
+        sourceChats: [{ title: "recovered" }],
+      }),
+    );
+    await writeFile(
+      join(w38, "weekly-human-evidence.json"),
+      JSON.stringify({
+        schemaVersion: "weekly-human-evidence.v1",
+        week: { label: "2026-W38", timezone: "America/New_York" },
+        purpose: "human evidence",
+        coverage: { classification: "BEST_EFFORT_PARTIAL" },
+        sourceChatList: [],
+      }),
+    );
     const found = await humanEvidenceForWeek(root, "2026-W35");
     assert.equal(found.format, "confluence-human-weekly-legacy");
     assert.equal(found.hasRecoverableSource, true);
@@ -107,6 +118,9 @@ test("recognizes archival weekly human formats without treating an empty week as
     assert.equal(status.HUMAN_EVIDENCE_PRESENT, true);
     assert.equal(status.HUMAN_EVIDENCE_READY, false);
     assert.equal(status.readiness, "WAITING_FOR_EVIDENCE");
+    const missing = await statusForWeek({ archiveRoot: root, publicRoot: root, weekId: "2026-W39" });
+    assert.equal(missing.HUMAN_EVIDENCE_PRESENT, false);
+    assert.equal(missing.HUMAN_EVIDENCE_SOURCE_COUNT, 0);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
@@ -117,12 +131,20 @@ test("recognizes later legacy weekly human sources and rejects period substituti
   try {
     const dir = join(root, "human", "weekly", "2026", "2026-W44");
     await mkdir(dir, { recursive: true });
-    const record = { schema_version: "2.0", record_type: "weekly-human-evidence",
+    const record = {
+      schema_version: "2.0",
+      record_type: "weekly-human-evidence",
       week: { iso_week: "2026-W44", timezone: "America/New_York" },
-      scope: "Voyagewright", coverage: "BEST_EFFORT_PARTIAL", source_chat_list: [{ id: "C01" }] };
+      scope: "Voyagewright",
+      coverage: "BEST_EFFORT_PARTIAL",
+      source_chat_list: [{ id: "C01" }],
+    };
     await writeFile(join(dir, "weekly-human-evidence.json"), JSON.stringify(record));
     assert.equal((await humanEvidenceForWeek(root, "2026-W44")).sourceChatCount, 1);
-    await writeFile(join(dir, "weekly-human-evidence.json"), JSON.stringify({ ...record, week: { iso_week: "2026-W43", timezone: "America/New_York" } }));
+    await writeFile(
+      join(dir, "weekly-human-evidence.json"),
+      JSON.stringify({ ...record, week: { iso_week: "2026-W43", timezone: "America/New_York" } }),
+    );
     await assert.rejects(() => humanEvidenceForWeek(root, "2026-W44"), /CONFLUENCE_HUMAN_EVIDENCE_SOURCE_INVALID/);
   } finally {
     await rm(root, { recursive: true, force: true });
@@ -133,6 +155,7 @@ test("weekFor returns real Eastern DST boundaries", () => {
   assert.deepEqual(weekFor(new Date("2026-10-30T15:00:00Z")), periodForWeek("2026-W44"));
   assert.equal(weekFor(new Date("2026-10-30T15:00:00Z")).end, "2026-11-02T00:00:00-05:00");
   assert.equal(weekFor(new Date("2026-11-08T20:00:00Z")).start, "2026-11-02T00:00:00-05:00");
+  assert.deepEqual(weekFor(new Date("2027-01-01T12:00:00Z")), periodForWeek("2026-W53"));
 });
 test("public metadata refuses every private evidence field", async () => {
   await assert.rejects(
@@ -214,7 +237,7 @@ test("validates A4 PDF and DOCX structural invariants", async () => {
       [
         "-NoProfile",
         "-Command",
-        "Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::Open($env:CONFLUENCE_TEST_DOCX, [System.IO.Compression.ZipArchiveMode]::Create); try { Get-ChildItem -LiteralPath $env:CONFLUENCE_TEST_SOURCE -Recurse -File | ForEach-Object { [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $_.FullName.Substring($env:CONFLUENCE_TEST_SOURCE.Length + 1).Replace('\\', '/')) } } finally { $zip.Dispose() }",
+        "$ErrorActionPreference = 'Stop'; Add-Type -AssemblyName System.IO.Compression; Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::Open($env:CONFLUENCE_TEST_DOCX, [System.IO.Compression.ZipArchiveMode]::Create); try { Get-ChildItem -LiteralPath $env:CONFLUENCE_TEST_SOURCE -Recurse -File | ForEach-Object { [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $_.FullName, $_.FullName.Substring($env:CONFLUENCE_TEST_SOURCE.Length + 1).Replace('\\', '/')) } } finally { $zip.Dispose() }",
       ],
       { env: { ...process.env, CONFLUENCE_TEST_SOURCE: source, CONFLUENCE_TEST_DOCX: docx } },
     );

@@ -4,9 +4,9 @@ name: Confluence focused compatibility
 on:
   pull_request:
     paths:
-      - 'scripts/confluence/**'
-      - 'tests/confluence/**'
-      - '.github/workflows/confluence-focused-compatibility.yml'
+      - "scripts/confluence/**"
+      - "tests/confluence/**"
+      - ".github/workflows/confluence-focused-compatibility.yml"
   workflow_dispatch:
 
 permissions:
@@ -35,7 +35,7 @@ jobs:
           echo "Confluence source bound to $SOURCE_SHA"
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
       - name: Run focused builtin-node Confluence regressions
         # The existing full Confluence suite has Windows-only PowerShell/path fixtures.
         # This nonauthoritative Linux job proves only the new archive parser/DST regressions.

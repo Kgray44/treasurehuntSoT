@@ -401,7 +401,8 @@ export async function statusForWeek({ archiveRoot, publicRoot, weekId }) {
     MASTER_READY: await exists(journal),
     PUBLISH_SAFETY_READY: await exists(safety),
     PUBLIC_DELIVERY_READY: await exists(publicMetadata),
-    readiness: human?.hasRecoverableSource && (await exists(engineering)) ? "READY_FOR_SYNTHESIS" : "WAITING_FOR_EVIDENCE",
+    readiness:
+      human?.hasRecoverableSource && (await exists(engineering)) ? "READY_FOR_SYNTHESIS" : "WAITING_FOR_EVIDENCE",
   };
 }
 
@@ -416,9 +417,13 @@ export async function humanEvidenceForWeek(archiveRoot, weekId) {
     if (record.weekId !== weekId || record.timezone !== TIMEZONE)
       throw new Error("CONFLUENCE_HUMAN_EVIDENCE_PERIOD_MISMATCH");
     const sourceChats = record.sourceChats ?? record.source_chats ?? [];
-    return { path: canonical, format: "confluence-human-weekly-v1", digest: digest(record),
+    return {
+      path: canonical,
+      format: "confluence-human-weekly-v1",
+      digest: digest(record),
       sourceChatCount: Array.isArray(sourceChats) ? sourceChats.length : 0,
-      hasRecoverableSource: Array.isArray(sourceChats) && sourceChats.length > 0 };
+      hasRecoverableSource: Array.isArray(sourceChats) && sourceChats.length > 0,
+    };
   }
   // Older weekly captures used several filenames and field spellings. Read them without rewriting source evidence.
   const candidates = ["human-evidence.json", "weekly-human-evidence.json"];
@@ -426,28 +431,52 @@ export async function humanEvidenceForWeek(archiveRoot, weekId) {
     const source = join(root, filename);
     if (!(await exists(source))) continue;
     const record = await readJson(source);
-    const evidenceWeek = record.weekId ??
+    const evidenceWeek =
+      record.weekId ??
       (typeof record.week === "string" ? record.week : undefined) ??
-      record.week?.iso_week ?? record.week?.isoWeek ?? record.week?.label ??
-      record.period?.iso_week ?? record.period?.weekId;
-    const sourceTimezone = record.timezone ?? record.week?.timezone ??
-      record.week?.local_timezone ?? record.period?.timezone ??
-      record.period?.timezone_context ?? record.period?.timezoneBasis ??
+      record.week?.iso_week ??
+      record.week?.isoWeek ??
+      record.week?.label ??
+      record.period?.iso_week ??
+      record.period?.weekId;
+    const sourceTimezone =
+      record.timezone ??
+      record.week?.timezone ??
+      record.week?.local_timezone ??
+      record.period?.timezone ??
+      record.period?.timezone_context ??
+      record.period?.timezoneBasis ??
       record.local_timezone;
     const declaredType = String(record.recordType ?? record.record_type ?? record.schemaVersion ?? "").toLowerCase();
-    const hasSourcePolicy = Boolean(record.evidence_policy ?? record.sourcePolicy ??
-      record.source_policy ?? record.collectionPolicy ?? record.purpose ??
-      record.project_scope ?? record.collection_scope ?? record.scope);
-    if (evidenceWeek !== weekId || !String(sourceTimezone ?? "").includes(TIMEZONE) ||
-        !declaredType.includes("weekly") || !record.coverage || !hasSourcePolicy)
+    const hasSourcePolicy = Boolean(
+      record.evidence_policy ??
+        record.sourcePolicy ??
+        record.source_policy ??
+        record.collectionPolicy ??
+        record.purpose ??
+        record.project_scope ??
+        record.collection_scope ??
+        record.scope,
+    );
+    if (
+      evidenceWeek !== weekId ||
+      !String(sourceTimezone ?? "").includes(TIMEZONE) ||
+      !declaredType.includes("weekly") ||
+      !record.coverage ||
+      !hasSourcePolicy
+    )
       throw new Error("CONFLUENCE_HUMAN_EVIDENCE_SOURCE_INVALID");
-    const sourceChats = record.sourceChats ?? record.source_chats ??
-      record.sourceChatList ?? record.source_chat_list ?? [];
+    const sourceChats =
+      record.sourceChats ?? record.source_chats ?? record.sourceChatList ?? record.source_chat_list ?? [];
     const sourceChatCount = Array.isArray(sourceChats) ? sourceChats.length : 0;
-    return { path: source, format: filename === "human-evidence.json" ?
-      "confluence-human-source-weekly-v1" : "confluence-human-weekly-legacy",
-      digest: digest(record), sourceChatCount, hasRecoverableSource: sourceChatCount > 0,
-      coverage: record.coverage };
+    return {
+      path: source,
+      format:
+        filename === "human-evidence.json" ? "confluence-human-source-weekly-v1" : "confluence-human-weekly-legacy",
+      digest: digest(record),
+      sourceChatCount,
+      hasRecoverableSource: sourceChatCount > 0,
+    };
   }
   return undefined;
 }
@@ -619,7 +648,7 @@ export async function replay({ archiveRoot, publicRoot, repositoryRoot, period, 
   const collection = await collectEngineering({ archiveRoot, repositoryRoot, period });
   state.engineering = collection;
   const humanEvidence = await humanEvidenceForWeek(archiveRoot, period.weekId);
-  if (!humanEvidence) {
+  if (!humanEvidence?.hasRecoverableSource) {
     await writeJson(join(archiveRoot, "requests", "human-replay", `${runId}.json`), {
       runId,
       period,
@@ -629,6 +658,8 @@ export async function replay({ archiveRoot, publicRoot, repositoryRoot, period, 
         join(archiveRoot, "human", "weekly", period.weekId.slice(0, 4), period.weekId, "human.json"),
       ).replaceAll("\\", "/"),
       currentEvidenceStatus: "WAITING_FOR_HUMAN_EVIDENCE",
+      humanEvidencePresent: Boolean(humanEvidence),
+      humanEvidenceSourceCount: humanEvidence?.sourceChatCount ?? 0,
       createdAt: now(),
     });
     await transition("WAITING_FOR_HUMAN_EVIDENCE");
