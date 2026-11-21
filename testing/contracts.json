@@ -52,7 +52,7 @@
           {
             "family": "Gateway / public entry",
             "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
-            "sourceSha": "6037807836df7d84ed41372846ea73ead066d7e9",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
             "reason": "Accepted entry establishes readable destinations and account continuity.",
             "preserve": "Readable hierarchy and clear account context."
