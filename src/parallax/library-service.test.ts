@@ -19,6 +19,7 @@ vi.mock("@/lib/db", () => ({
     reusableAuthoringItemVersion: { findFirst: mocks.findVersion },
     $transaction: async (run: (tx: unknown) => unknown) =>
       run({
+        aIUsageLedger: { findMany: vi.fn(async () => []), updateMany: vi.fn(async () => ({ count: 0 })) },
         reusableAuthoringItem: { findUnique: mocks.find, create: mocks.create, updateMany: mocks.claim },
         reusableAuthoringItemVersion: {
           update: mocks.updateDraft,

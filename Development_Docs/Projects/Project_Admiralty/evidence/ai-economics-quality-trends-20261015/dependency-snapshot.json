@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-15T04:43:24.539Z",
+  "sourceCandidate": "ca670ddad1418f8de581cdb0701309683c21968d",
+  "reviewedPrerequisite": "a5eeb5b42561042cea7e799a3b0d54c1b03c1006",
+  "liveProtectedMain": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "liveSpatialStudio": {
+    "pullRequest": "https://github.com/Kgray44/treasurehuntSoT/pull/722",
+    "branch": "codex/parallax-surface-orientation",
+    "head": "b443ba06d6c4ac22e7288afe6f3e56a0ca61ec07",
+    "state": "OPEN_DRAFT_UNMERGED",
+    "reviewedPrerequisiteIsAncestor": true,
+    "additionalCommits": 1
+  },
+  "observations": [
+    "Git ls-remote verified all live branch heads after fetching. The repository fetch refspec does not track every branch; the stale local origin/Spatial Studio tracking ref was not used as current truth.",
+    "Protected main advanced through Sounding Line lifecycle PR #724. The experience plan against its live head still stops at PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity.",
+    "Spatial Studio adds browser calibration recovery and private Assistant context changes after the inspected prerequisite. This Admiralty source does not claim those later changes are integrated."
+  ],
+  "planGate": {
+    "path": "Development_Docs/Projects/Project_Admiralty/evidence/ai-economics-quality-trends-20261015/refreshed-protected-plan-gate.log",
+    "sha256": "30a6f9a4ce31c595d625def758b115b5b859f674f09b21a4726693af2d5c2e64",
+    "outcome": "PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity"
+  },
+  "nextTerminalTrigger": "After Spatial Studio PR #722 lands and the selected Crossdeck consumer design is accepted, integrate the landed prerequisites, retarget the existing dependent PR, freeze a new exact source, and obtain fresh ordinary Sounding Line capture/review and qualification before protected integration.",
+  "acceptance": { "protectedAttestation": false, "mainlineDecision": false, "ownerAcceptance": false }
+}

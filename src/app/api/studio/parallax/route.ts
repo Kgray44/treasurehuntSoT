@@ -30,6 +30,7 @@ import { assistantApplicationSchema, applySpatialAssistant } from "@/parallax/sp
 import { creatorAIUsage, readAIPolicy } from "@/parallax/ai-ledger";
 import { openAIProviderConfiguration } from "@/parallax/openai-provider";
 import { SpatialAssistantError } from "@/parallax/spatial-assistant";
+import { recordAIPreviewDecision } from "@/parallax/ai-outcomes";
 import { DraftConflictError } from "@/chronicle/studio-service";
 import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service";
 import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
@@ -90,6 +91,11 @@ const inputSchema = z.discriminatedUnion("action", [
     definitionId: legacyEnvironmentBeginSchema.shape.definitionId,
     revision: z.number().int().nonnegative(),
     archived: z.boolean(),
+  }),
+  z.strictObject({
+    action: z.literal("AI_OUTCOME"),
+    requestId: spatialId,
+    decision: z.enum(["PREVIEWED", "REJECTED"]),
   }),
   z.strictObject({
     action: z.literal("ENVIRONMENT_SAVE"),
@@ -517,6 +523,10 @@ export async function POST(request: Request) {
           },
           { headers },
         );
+      case "AI_OUTCOME":
+        return NextResponse.json(await recordAIPreviewDecision(session.accountId, input.requestId, input.decision), {
+          headers,
+        });
       case "AI":
         if (input.kind === "ASSISTANT") {
           const { action: _action, kind: _kind, ...assistant } = input;

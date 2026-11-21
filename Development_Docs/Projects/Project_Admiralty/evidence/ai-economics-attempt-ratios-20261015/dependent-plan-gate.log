@@ -1,0 +1,11 @@
+file:///D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/scripts/sounding-line/product-experience.mjs:50
+  throw new Error(`PRODUCT_EXPERIENCE_${code}${detail ? `:${detail}` : ""}`);
+        ^
+
+Error: PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE:src/app/dev/spatial-pilot/page.tsx,src/app/player/playthroughs/[playthroughId]/journal/page.tsx,src/components/admiralty/AIQuotaOverrides.tsx,src/spatial-pilot/OwnerSeaTrials.tsx
+    at fail (file:///D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/scripts/sounding-line/product-experience.mjs:50:9)
+    at planProductExperience (file:///D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/scripts/sounding-line/product-experience.mjs:555:25)
+    at main (file:///D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/scripts/sounding-line/experience-browser.mjs:461:16)
+    at async file:///D:/CodexWorktrees/treasurehunt-admiralty-ai-economics-20261014/scripts/sounding-line/experience-browser.mjs:553:90
+
+Node.js v24.18.0

@@ -26,6 +26,10 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await db.accountCredential.create({ data: { accountId: operator.id, passwordHash: await hash(password, 10) } });
   await authenticateClosure(context, operator, baseURL!);
   await page.goto("/admin/ai-usage");
+  const policyDisclosure = page
+    .locator("#chartroom-main")
+    .getByText("Policies, allowances & model configuration", { exact: true });
+  await policyDisclosure.click();
   await expect(page.getByRole("heading", { name: "AI Usage & Quotas", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Users", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Search users", exact: true })).toHaveCount(0);
@@ -37,7 +41,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   const captureRoot = `artifacts/parallax-a1/browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
   await mkdir(captureRoot, { recursive: true });
   if (overview.daily.every((day: { requests: number }) => day.requests === 0)) {
-    await page.getByRole("button", { name: "Overview", exact: true }).click();
+    await page.getByRole("button", { name: "Quota Overview", exact: true }).click();
     await expect(page.getByRole("figure", { name: "Requests per day by UTC day", exact: true })).toBeVisible();
     await page.screenshot({ path: `${captureRoot}/owner-daily-empty.png`, fullPage: true });
   }
@@ -70,8 +74,11 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   ).toBe(250);
   expect(await db.aIQuotaPolicyRevision.count({ where: { targetAccountId: creator.id } })).toBe(1);
   await page.goto("/admin/ai-usage");
+  await policyDisclosure.click();
   await page.getByRole("button", { name: "User Overrides", exact: true }).click();
   const inventory = page.getByRole("region", { name: "Individual AI policies" });
+  const creatorOverride = inventory.getByRole("row").filter({ hasText: "Synthetic A1 quota Creator" });
+  const overrideCount = await db.aIQuotaUserPolicy.count({ where: { policy: { not: "null" } } });
   await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toBeVisible();
   await expect(inventory.getByText("Synthetic browser allowance exception", { exact: true })).toBeVisible();
   await expect(inventory.getByText("Room reconstruction: gpt-6-luna", { exact: true })).toBeVisible();
@@ -87,12 +94,12 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await page.keyboard.press("ArrowRight");
   await expect.poll(() => inventory.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
   await page.keyboard.press("Tab");
-  await expect(inventory.getByRole("button", { name: "Review / reset to global" })).toBeFocused();
+  await expect(inventory.getByRole("button", { name: "Review / reset to global" }).first()).toBeFocused();
   await page.screenshot({ path: `${captureRoot}/owner-ai-overrides-phone-actions.png`, fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole("combobox", { name: "Show", exact: true }).selectOption("MODELS");
   await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toBeVisible();
-  await inventory.getByRole("button", { name: "Review / reset to global" }).click();
+  await creatorOverride.getByRole("button", { name: "Review / reset to global" }).click();
   const overridePanel = page.getByRole("region", { name: "AI user overrides" });
   await overridePanel.getByRole("button", { name: "Reset to global", exact: true }).click();
   await expect(overridePanel.getByRole("button", { name: "Confirm & apply policy" })).toBeDisabled();
@@ -102,7 +109,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await overridePanel.getByRole("button", { name: "Confirm & apply policy" }).click();
   await expect(overridePanel.getByText("0 / 500", { exact: true })).toBeVisible();
   await overridePanel.getByRole("button", { name: "Back to overrides" }).click();
-  await expect(page.getByText("0 accounts with individual policies", { exact: false })).toBeVisible();
+  await expect(page.getByText(new RegExp(`^${overrideCount - 1} accounts with individual policies`))).toBeVisible();
   await expect(inventory.getByText("Synthetic A1 quota Creator", { exact: true })).toHaveCount(0);
   await page.goto("/admin/people");
   await page.getByLabel("Search", { exact: true }).fill(creator.id);
@@ -159,6 +166,7 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await page.screenshot({ path: `${captureRoot}/owner-people-ai-dossier-mobile.png`, fullPage: true });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/admin/ai-usage");
+  await policyDisclosure.click();
   await page.getByRole("button", { name: "Global Policy", exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Room reconstruction model", exact: true })).toHaveValue(
     "gpt-6.1-sol",

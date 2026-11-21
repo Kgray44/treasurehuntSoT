@@ -22,6 +22,7 @@ import {
   failAIUsage,
   creatorAIUsage,
   readAIPolicy,
+  lockAIControl,
 } from "./ai-ledger";
 import {
   countOpenAIInputTokens,
@@ -151,6 +152,11 @@ export async function requestRoomPerception(
   const fingerprint = createHash("sha256").update(JSON.stringify(input)).digest("hex");
   timings.contextPreparationMs = Math.round(performance.now() - started);
   const admissionStarted = performance.now();
+  const priorOperation = await store.aIUsageLedger.findFirst({
+    where: { accountId, definitionId: input.draft.content.definitionId, operationCategory: "ROOM_RECONSTRUCTION" },
+    orderBy: { createdAt: "desc" },
+    select: { id: true },
+  });
   const admission = await reserveAIUsage(
     {
       accountId,
@@ -159,6 +165,7 @@ export async function requestRoomPerception(
       fingerprint,
       definitionId: input.draft.content.definitionId,
       operationCategory: "ROOM_RECONSTRUCTION",
+      logicalParentId: priorOperation?.id,
       // Room model selection is category-specific in the canonical admission.
       // Text Assistant requests keep their independent standard/advanced policy.
       mode: "STANDARD",
@@ -279,13 +286,21 @@ export async function requestRoomPerception(
     if (outcome.usage)
       await settleAIUsage(
         admission.record.id,
-        { usage: outcome.usage, providerResponseId: outcome.responseId, result, timings },
+        {
+          usage: outcome.usage,
+          reportedUsage: outcome.reportedUsage,
+          providerResponseId: outcome.responseId,
+          result,
+          timings,
+        },
         store,
       );
     else
       await failAIUsage(admission.record.id, "UNKNOWN_PROVIDER_USAGE", false, store, new Date(), {
         result,
         timings,
+        reportedUsage: outcome.reportedUsage,
+        providerResponseId: outcome.responseId,
       });
     return {
       ...result,
@@ -369,11 +384,47 @@ export async function applyRoomPerception(
       room: { ...proposal.room, id: environment.id, name: environment.name },
       category: "RECONSTRUCTED",
     });
-    const saved = await store.$transaction((tx) =>
-      saveEnvironmentDraftInTransaction(accountId, document, input.revision, tx),
-    );
+    const saved = await store.$transaction(async (tx) => {
+      await lockAIControl(tx);
+      const revision = await saveEnvironmentDraftInTransaction(accountId, document, input.revision, tx);
+      await tx.aIUsageLedger.updateMany({
+        where: { id: ledger.id, acceptedAt: null },
+        data: {
+          outcome: "ACCEPTED",
+          outcomeAt: new Date(),
+          acceptedAt: new Date(),
+          acceptedResourceId: document.id,
+          acceptedVersion: canonicalChecksum(document.room),
+          outcomeEvidence: JSON.stringify({
+            authority: "PARALLAX_ROOM_ACCEPT_AND_SAVE",
+            revision,
+            checksum: canonicalChecksum(document),
+          }),
+        },
+      });
+      return revision;
+    });
     return { draft: environmentPreviewDraft(document), environmentDraft: document, revision: saved };
   }
-  const saved = await store.$transaction((tx) => saveSpatialDraftInTransaction(accountId, draft, input.revision, tx));
+  const saved = await store.$transaction(async (tx) => {
+    await lockAIControl(tx);
+    const revision = await saveSpatialDraftInTransaction(accountId, draft, input.revision, tx);
+    await tx.aIUsageLedger.updateMany({
+      where: { id: ledger.id, acceptedAt: null },
+      data: {
+        outcome: "ACCEPTED",
+        outcomeAt: new Date(),
+        acceptedAt: new Date(),
+        acceptedResourceId: draft.content.definitionId,
+        acceptedVersion: canonicalChecksum(proposal.room),
+        outcomeEvidence: JSON.stringify({
+          authority: "PARALLAX_ROOM_ACCEPT_AND_SAVE",
+          revision,
+          checksum: canonicalChecksum(draft),
+        }),
+      },
+    });
+    return revision;
+  });
   return { draft, revision: saved };
 }

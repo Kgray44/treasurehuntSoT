@@ -1,0 +1,20 @@
+{
+  "candidate": "cfd78948301e86531d45a12f79b0f3f2f37e192d",
+  "sourceState": "COMMITTED_CLEAN_AT_CAPTURE",
+  "buildId": "IyPi936tummwrzy7SDV0v",
+  "buildCompletedAt": "2026-10-15T04:03:00.479Z",
+  "screenshots": 25,
+  "tests": {
+    "focused": {
+      "files": 10,
+      "passed": 134
+    },
+    "soundingLineRegressions": {
+      "passed": 102
+    },
+    "browser": {
+      "passed": 2
+    }
+  },
+  "packetSha256": "6fb877a8e5c84beb122b10ae79b4ca81f7398acd2eadd8fc983aa70b2f7024bb"
+}
