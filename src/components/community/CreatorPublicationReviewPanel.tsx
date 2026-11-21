@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Review = {
   listingId: string;
@@ -51,6 +51,10 @@ export function CreatorPublicationReviewPanel({
   const [acknowledged, setAcknowledged] = useState(false);
   const [decision, setDecision] = useState<"PUBLISHED" | "REJECTED" | null>(null);
   const [reason, setReason] = useState("");
+  const decisionRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (decision) decisionRef.current?.focus();
+  }, [decision]);
   const route = itemType === "CHRONICLE" ? "creator-chronicle" : "creator-reuse";
   const endpoint = `/api/admin/community/${route}/${encodeURIComponent(listingId)}/review`;
   useEffect(() => {
@@ -113,11 +117,16 @@ export function CreatorPublicationReviewPanel({
   if (!enabled) return <p>Community moderation permission is required to inspect this pending package.</p>;
   if (loading) return <p role="status">Loading the pinned Creator release for review…</p>;
   if (!review) return <p role="alert">{error || "This Creator release is unavailable."}</p>;
-  if (decision === "REJECTED") return <p role="status">Release rejected. It remains private.</p>;
-  if (decision === "PUBLISHED")
+  if (decision)
     return (
-      <p role="status">
-        Release approved. <a href={`/community/${slug}`}>Open Community listing</a>.
+      <p ref={decisionRef} role="status" tabIndex={-1}>
+        {decision === "PUBLISHED" ? (
+          <>
+            Release approved. <a href={`/community/${slug}`}>Open Community listing</a>.
+          </>
+        ) : (
+          "Release rejected. It remains private."
+        )}
       </p>
     );
   return (

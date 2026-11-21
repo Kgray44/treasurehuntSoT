@@ -233,19 +233,29 @@ test("only the owner with Creator access submits the exact saved item for modera
 
 test("second Creator installs the approved Passage preset and applies it in private Studio", async () => {
   const reviewPage = moderator.page;
+  await reviewPage.setViewportSize({ width: 390, height: 844 });
+  await reviewPage.emulateMedia({ reducedMotion: "reduce" });
   await reviewPage.goto(`/admin/community/${listingId}`);
   await expect(reviewPage.getByRole("heading", { name: "Review exact Creator release" })).toBeVisible();
   await expect(reviewPage.getByRole("cell", { name: /^Awaiting approval/ })).toBeVisible();
-  await reviewPage.getByText("Inspect every included field").click();
+  await reviewPage.getByText("Inspect every included field").press("Enter");
   await expect(reviewPage.getByText(/A synthetic harbor greeting for another Creator/)).toBeVisible();
+  expect(await reviewPage.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await reviewPage.screenshot({ path: test.info().outputPath("moderator-exact-package.png"), fullPage: true });
   await reviewPage.getByLabel("Confirm current password for privileged assurance").fill(moderatorPassword);
-  await reviewPage.getByRole("button", { name: "Verify identity" }).click();
-  await reviewPage.getByLabel(/I reviewed the exact content, ownership declaration/).check();
-  await reviewPage.getByRole("button", { name: "Approve and publish release" }).click();
-  await expect(reviewPage.getByText("Release approved.")).toBeVisible();
+  await reviewPage.getByRole("button", { name: "Verify identity" }).press("Enter");
+  const acknowledgement = reviewPage.getByLabel(/I reviewed the exact content, ownership declaration/);
+  await acknowledgement.press("Space");
+  await expect(acknowledgement).toBeChecked();
+  const approve = reviewPage.getByRole("button", { name: "Approve and publish release" });
+  await expect(approve).toBeEnabled();
+  await approve.press("Enter");
+  const approval = reviewPage.getByRole("status").filter({ hasText: "Release approved." });
+  await expect(approval).toBeFocused();
+  await expect(approval).toBeInViewport({ ratio: 1 });
   await expect(reviewPage.getByRole("cell", { name: /^Awaiting approval/ })).toHaveCount(0);
-  await reviewPage.screenshot({ path: test.info().outputPath("moderator-approved-receipt.png"), fullPage: true });
+  await reviewPage.screenshot({ path: test.info().outputPath("moderator-approved-receipt.png") });
+  await reviewPage.setViewportSize({ width: 1280, height: 800 });
   const review = await db.communityRelease.findFirstOrThrow({ where: { listingId } });
   const page = installer.page;
   await page.goto("/community/templates");
@@ -464,7 +474,9 @@ test("rejected Chapter template remains private until a replacement is approved 
   await openTemplateReview(listing.id);
   await moderatorPage.getByLabel("Rejection reason for the moderation record").fill("Clarify the preview description.");
   await moderatorPage.getByRole("button", { name: "Reject release" }).press("Enter");
-  await expect(moderatorPage.getByText("Release rejected. It remains private.")).toBeVisible();
+  await expect(
+    moderatorPage.getByRole("status").filter({ hasText: "Release rejected. It remains private." }),
+  ).toBeFocused();
   await installerPage.goto("/community/templates");
   await expect(installerPage.locator(listingLink)).toHaveCount(0);
   await installerPage.goto(`/community/${slug}`);
