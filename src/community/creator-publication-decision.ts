@@ -25,6 +25,7 @@ export async function recordCreatorPublicationDecision(
 ) {
   const approved = input.decision === "APPROVE";
   const publicationStatus = approved ? "PUBLISHED" : "REJECTED";
+  const publishedAt = approved ? new Date() : null;
   return db.$transaction(async (tx) => {
     const changed = await tx.communityListing.updateMany({
       where: {
@@ -37,11 +38,12 @@ export async function recordCreatorPublicationDecision(
         archivedAt: null,
         removedAt: null,
       },
-      data: { publicationStatus, publishedAt: approved ? new Date() : null },
+      data: { publicationStatus, publishedAt },
     });
     if (changed.count !== 1)
       throw new CommunityError("COMMUNITY_REVIEW_STALE", "The submission changed before the decision was recorded.");
-    if (approved)
+    if (publishedAt) {
+      await tx.communityRelease.update({ where: { id: input.releaseId }, data: { publishedAt } });
       await tx.communityOutboxEvent.create({
         data: {
           eventType: "COMMUNITY_RELEASE_PUBLISHED",
@@ -51,6 +53,7 @@ export async function recordCreatorPublicationDecision(
           idempotencyKey: `COMMUNITY_${source}_RELEASE_PUBLISHED:${input.releaseId}`,
         },
       });
+    }
     await tx.platformAuditEvent.create({
       data: {
         actorType: "USER_ACCOUNT",

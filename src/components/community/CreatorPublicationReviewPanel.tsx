@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type Review = {
@@ -39,6 +40,7 @@ export function CreatorPublicationReviewPanel({
   enabled: boolean;
   assuranceActive: boolean;
 }) {
+  const router = useRouter();
   const [review, setReview] = useState<Review | null>(null);
   const [loading, setLoading] = useState(enabled);
   const [busy, setBusy] = useState(false);
@@ -105,6 +107,7 @@ export function CreatorPublicationReviewPanel({
         ...(outcome === "REJECT" ? { reason } : {}),
       });
       setDecision(outcome === "APPROVE" ? "PUBLISHED" : "REJECTED");
+      router.refresh();
     });
   }
   if (!enabled) return <p>Community moderation permission is required to inspect this pending package.</p>;

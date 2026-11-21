@@ -41,9 +41,9 @@ export default async function CommunityListingPage({ params }: { params: Promise
   const spatialPending =
     ["SPATIAL_ASSET", "SPATIAL_SCENE", "SPATIAL_ENVIRONMENT"].includes(listing.itemType) &&
     ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
+  const creatorPublication = ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType);
   const creatorPending =
-    ["CHRONICLE", "CHRONICLE_TEMPLATE", "STORY_BLOCK_PRESET"].includes(listing.itemType) &&
-    ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
+    creatorPublication && ["READY_FOR_REVIEW", "IN_REVIEW", "UPDATE_PENDING"].includes(listing.publicationStatus);
   const assuranceActive =
     (spatialPending || creatorPending) && operator.capabilities.includes("COMMUNITY_MODERATE")
       ? (await privilegedAssuranceState(operator)).recent
@@ -127,6 +127,14 @@ export default async function CommunityListingPage({ params }: { params: Promise
           />
         </Panel>
       )}
+      {creatorPublication && listing.currentReleaseId && listing.publicationStatus === "PUBLISHED" && (
+        <p role="status">
+          Release approved. <a href={`/community/${listing.slug}`}>Open Community listing</a>.
+        </p>
+      )}
+      {creatorPublication && listing.currentReleaseId && listing.publicationStatus === "REJECTED" && (
+        <p role="status">Release rejected. It remains private.</p>
+      )}
       <Panel title="Releases" kicker="Manifest contents, license snapshots, and attribution prose excluded">
         {listing.releases.length ? (
           <div className="chartroom-table-wrap" tabIndex={0}>
@@ -158,9 +166,13 @@ export default async function CommunityListingPage({ params }: { params: Promise
                       <StatusBadge state={release.moderationStatus} />
                     </td>
                     <td>
-                      {spatialPending && listing.currentReleaseId === release.id
+                      {listing.currentReleaseId === release.id && (spatialPending || creatorPending)
                         ? "Awaiting approval"
-                        : dateTime(release.publishedAt)}
+                        : listing.currentReleaseId === release.id &&
+                            creatorPublication &&
+                            listing.publicationStatus === "REJECTED"
+                          ? "Rejected before publication"
+                          : dateTime(release.publishedAt)}
                       <small>
                         {release.deprecatedAt
                           ? `Deprecated ${dateTime(release.deprecatedAt)}`
