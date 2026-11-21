@@ -1,15 +1,15 @@
 import { NextResponse } from "next/server";
-import { requireCanonicalAccountIdentity } from "@/platform/auth";
+import { requireStudioWorkspace } from "@/chronicle/studio-authorization";
 import { communityApiError } from "@/community/api";
 import { listOwnedSpatialPublications, listSpatialPublicationLicenses } from "@/community/spatial-publication";
 import { spatialCommunityProfileReady } from "@/community/public-profile";
 import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
-  const actor = await requireCanonicalAccountIdentity();
+  const actor = await requireStudioWorkspace();
   if (!actor)
     return NextResponse.json(
-      { code: "COMMUNITY_ACCESS_DENIED", error: "Sign in to review Community licenses." },
+      { code: "COMMUNITY_ACCESS_DENIED", error: "Active Creator access is required to review Community licenses." },
       { status: 403 },
     );
   try {
