@@ -93,7 +93,10 @@ function writeCsv(name, headers, records) {
   );
 }
 
+const shipwrightMigrationRoute = "/api/studio/tales/[taleId]/migrations/[blockId]";
+
 function sourceOwner(source) {
+  if (source.pathPattern === shipwrightMigrationRoute) return "shipwright";
   if (
     source.pathPattern.startsWith("/admin") ||
     source.pathPattern.startsWith("/api/admin") ||
@@ -176,10 +179,8 @@ for (const source of [...pages, ...handlers]) {
     existingBySource.set(source.sourceFile, route);
   }
   route.routePattern = source.pathPattern;
-  if (!reconcileCurrent) {
-    route.ownerProject = sourceOwner(source);
-    route.productArea = sourceProductArea(source);
-  }
+  if (!reconcileCurrent || source.pathPattern === shipwrightMigrationRoute) route.ownerProject = sourceOwner(source);
+  if (!reconcileCurrent) route.productArea = sourceProductArea(source);
   // Phase 5 originally emitted CURRENT_GOVERNED for newly discovered pages,
   // but that value is not part of the canonical route-maturity vocabulary.
   // Normalize the two historical records through this generator so reruns
@@ -576,7 +577,7 @@ for (const source of handlers) {
   };
 }
 routeInventory.classifications = routeClassifications;
-routeInventory.knownOwners = unique([...routeInventory.knownOwners, "project-admiralty"]);
+routeInventory.knownOwners = unique([...routeInventory.knownOwners, "project-admiralty", "shipwright"]);
 routeInventory.totals = {
   ...routeInventory.totals,
   routeFiles: routeInventory.routes.length,

@@ -38,7 +38,8 @@
     "lanternwake",
     "sounding-line",
     "project-admiralty",
-    "project-wakebook"
+    "project-wakebook",
+    "shipwright"
   ],
   "totals": {
     "routeFiles": 443,
@@ -55,7 +56,7 @@
       "implementationSource": "src/app/api/studio/tales/[taleId]/migrations/[blockId]/route.ts",
       "kind": "route",
       "classification": "API_OR_SERVICE",
-      "ownerProject": "one-voyage",
+      "ownerProject": "shipwright",
       "productArea": "Creator Studio",
       "shellMode": "N/A",
       "logicalParent": null,
